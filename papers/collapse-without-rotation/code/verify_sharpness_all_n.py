@@ -27,8 +27,8 @@ Sections:
      g = (1, 1, -2) at (omega, omega^2, 1) translate with w = 1 and are nondegenerate; R has the simple zeros
      +- i sqrt3/2, and for the triangle the numerator of R is -(z^3 + 3z + 2), with discriminant -216, and does not
      vanish at the cube roots of unity.
-  2. NUMERICAL (binary64): the induction step of Lemma 1, run from the triangle to m = 5, 7, 9, 11, 13, 15: two vortices
-     +-eps are placed at two simple zeros of R and eps is continued to 0.1; each result translates, is
+  2. NUMERICAL (binary64): the induction step of Lemma 1, run from the pair to m = 4, 6, 8 and from the triangle to
+     m = 5, 7, ..., 15: two vortices +-eps are placed at two simple zeros of R and eps is continued to 0.1; each result translates, is
      nondegenerate, and has only simple zeros of R. Illustration, not part of the proof.
   3. NUMERICAL (40 digits): the family of Theorem 3 at y0 = sqrt3/2 for each of these clusters, at
      gamma = 1e-2 .. 1e-5: Newton's method on the regularized system, then the original Biot-Savart velocities of all
@@ -38,7 +38,9 @@ Sections:
      at y0 = 1 tends to P(0) = 7/8, not sqrt3/2; a pair of equal signs does not translate.
 
 Needs numpy, sympy and mpmath (code/requirements.txt). Run: python3 code/verify_sharpness_all_n.py. Prints every
-check and exits with status 1 if any fails; its output is data/verify-sharpness-all-n.txt. About a minute.
+check and exits with status 1 if any fails; its output is data/verify-sharpness-all-n.txt. About twenty seconds.
+With --large it also grows a cluster of 101 vortices (pairs +-0.02, stagnation points polished by Newton's method and
+chosen far from the vortices) and checks its family at 40 digits after a binary64 solve; about a minute in all.
 """
 import os
 import sys
@@ -106,7 +108,7 @@ check('triangle: z^3 + 3z + 2 does not vanish at the cube roots of unity (they a
       all(sp.simplify((r**3 + 3*r + 2)) != 0 for r in tri))
 
 # ------------------------------------------------------------------------------------------ 2. the induction, binary64
-say('\n2. The induction step of Lemma 1 from the triangle to m = 15 (binary64; illustration)')
+say('\n2. The induction step of Lemma 1 from the pair to m = 8 and from the triangle to m = 15 (binary64; illustration)')
 
 
 def wfield(zv, g):
@@ -144,43 +146,47 @@ def stagnation(zv, g):
     return r, np.abs(np.polyval(np.polyder(num), r))/np.max(np.abs(num))
 
 
+def grow(zv, g, sizes, clusters, label):
+    """The induction step of Lemma 1, repeated: vortices +-eps at two simple zeros of R, eps continued to 0.1."""
+    for m in sizes:
+        r, simp = stagnation(zv, g)
+        idx = [i for i in np.argsort(-simp) if simp[i] > 1e-6][:5]
+        best = None
+        for a in range(len(idx)):
+            for b in range(a + 1, len(idx)):
+                zz = np.concatenate([zv, [r[idx[a]], r[idx[b]]]])
+                gg = np.concatenate([g, [1e-4, -1e-4]])
+                ok = True
+                for e in np.geomspace(1e-4, 0.1, 25):
+                    gg[-2:] = [e, -e]
+                    try:
+                        zz, res, cond = tre_solve(zz, gg)
+                    except np.linalg.LinAlgError:
+                        ok = False
+                        break
+                    if not np.isfinite(res) or res > 1e-10 or cond < 1e-9:
+                        ok = False
+                        break
+                if ok:
+                    dmin = min(abs(zz[i] - zz[j]) for i in range(len(zz)) for j in range(i))
+                    if best is None or cond*dmin > best[0]:
+                        best = (cond*dmin, zz.copy(), gg.copy(), res, cond, dmin)
+        if best is None:
+            check('m = %d: a translating cluster grown from m = %d' % (m, m - 2), False)
+            return
+        _, zv, g, res, cond, dmin = best
+        r, simp = stagnation(zv, g)
+        clusters[m] = (zv.copy(), g.copy())
+        check('m = %d (%s): translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations '
+              'nonzero with zero sum, all %d zeros of R simple' % (m, label, m),
+              res < 1e-12 and cond > 1e-3 and np.min(np.abs(g)) > 0.05 and abs(g.sum()) < 1e-14 and np.all(simp > 1e-6),
+              'residual %.1e, ratio %.2e, min separation %.3f, min |R\' zero| %.2e' % (res, cond, dmin, simp.min()))
+
+
 w3n = np.exp(2j*np.pi/3)
-g = np.array([1., 1., -2.])
-zv = np.array([w3n, w3n**2, 1.0])
 clusters = {}
-for m in (5, 7, 9, 11, 13, 15):
-    r, simp = stagnation(zv, g)
-    idx = [i for i in np.argsort(-simp) if simp[i] > 1e-6][:5]
-    best = None
-    for a in range(len(idx)):
-        for b in range(a + 1, len(idx)):
-            zz = np.concatenate([zv, [r[idx[a]], r[idx[b]]]])
-            gg = np.concatenate([g, [1e-4, -1e-4]])
-            ok = True
-            for e in np.geomspace(1e-4, 0.1, 25):
-                gg[-2:] = [e, -e]
-                try:
-                    zz, res, cond = tre_solve(zz, gg)
-                except np.linalg.LinAlgError:
-                    ok = False
-                    break
-                if not np.isfinite(res) or res > 1e-10 or cond < 1e-9:
-                    ok = False
-                    break
-            if ok:
-                dmin = min(abs(zz[i] - zz[j]) for i in range(len(zz)) for j in range(i))
-                if best is None or cond*dmin > best[0]:
-                    best = (cond*dmin, zz.copy(), gg.copy(), res, cond, dmin)
-    if best is None:
-        check('m = %d: a translating cluster grown from m = %d' % (m, m - 2), False)
-        break
-    _, zv, g, res, cond, dmin = best
-    r, simp = stagnation(zv, g)
-    clusters[m] = (zv.copy(), g.copy())
-    check('m = %d: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero '
-          'with zero sum, all %d zeros of R simple' % (m, m),
-          res < 1e-12 and cond > 1e-3 and np.min(np.abs(g)) > 0.05 and abs(g.sum()) < 1e-14 and np.all(simp > 1e-6),
-          'residual %.1e, ratio %.2e, min separation %.3f, min |R\' zero| %.2e' % (res, cond, dmin, simp.min()))
+grow(np.array([-0.5 + 0j, 0.5 + 0j]), np.array([1., -1.]), (4, 6, 8), clusters, 'from the pair')
+grow(np.array([w3n, w3n**2, 1.0]), np.array([1., 1., -2.]), (5, 7, 9, 11, 13, 15), clusters, 'from the triangle')
 
 # ------------------------------------------------------------------------------------------ 3. the families, 40 digits
 say('\n3. The family of Theorem 3 at y0 = sqrt3/2 for each grown cluster (40 digits; numerical)')
@@ -272,7 +278,7 @@ def family(zc_np, g_np, y0, gammas):
 
 
 GAMMAS = ['1e-2', '1e-3', '1e-4', '1e-5']
-for m, (zc_np, g_np) in clusters.items():
+for m, (zc_np, g_np) in sorted(clusters.items()):
     res0, rows = family(zc_np, g_np, SQ3_2, GAMMAS)
     slopes = [(P - SQ3_2)/gam for gam, _, _, _, P in rows]
     say('      m = %d, g = (%s): (P - sqrt3/2)/gamma = %s' % (m, ', '.join('%.4g' % v for v in g_np),
@@ -286,6 +292,148 @@ for m, (zc_np, g_np) in clusters.items():
     check('m = %d: P - sqrt3/2 = O(gamma), P -> sqrt3/2: (P - sqrt3/2)/gamma converges, its change falling about '
           'tenfold per decade of gamma' % m, 6 < d1/d2 < 16 and abs(slopes[-1]) < 10,
           'changes %s, %s' % (mp.nstr(d1, 3), mp.nstr(d2, 3)))
+
+# ------------------------------------------------------------------------------------------ 3b. optional: 101 vortices
+def grow_far(target, epsf=0.02):
+    """Lemma 1's induction with stagnation points polished by Newton's method on R and taken far from the vortices."""
+    zv, g = np.array([w3n, w3n**2, 1.0]), np.array([1., 1., -2.])
+    while len(zv) < target:
+        r0, _ = stagnation(zv, g)
+        pts = []
+        for x in r0:
+            for _ in range(50):
+                dx = (np.sum(g/(x - zv)) - 1)/(-np.sum(g/(x - zv)**2))
+                x -= dx
+                if abs(dx) < 1e-15*max(1, abs(x)):
+                    break
+            if abs(np.sum(g/(x - zv)) - 1) < 1e-10 and all(abs(x - q[0]) > 1e-8 for q in pts):
+                dist = np.min(np.abs(x - zv))
+                if abs(np.sum(g/(x - zv)**2))*dist**2 > 1e-3:
+                    pts.append((x, dist))
+        pts.sort(key=lambda q: -q[1])
+        best = None
+        for a in range(min(4, len(pts))):
+            for b in range(a + 1, min(5, len(pts))):
+                zz = np.concatenate([zv, [pts[a][0], pts[b][0]]])
+                gg = np.concatenate([g, [1e-4, -1e-4]])
+                ok = True
+                for e in np.geomspace(1e-4, epsf, 20):
+                    gg[-2:] = [e, -e]
+                    try:
+                        zz, res, cond = tre_solve(zz, gg)
+                    except np.linalg.LinAlgError:
+                        ok = False
+                        break
+                    if not np.isfinite(res) or res > 1e-10 or cond < 1e-12:
+                        ok = False
+                        break
+                if ok:
+                    dmin = min(abs(zz[i] - zz[j]) for i in range(len(zz)) for j in range(i))
+                    if best is None or dmin > best[0]:
+                        best = (dmin, zz.copy(), gg.copy(), res, cond)
+            if best is not None:
+                break
+        if best is None:
+            return None
+        _, zv, g, res, cond = best
+    return zv, g, res, cond
+
+
+def family_large(zc_np, g_np, gammas):
+    """Theorem 3's family by Newton's method in binary64, refined to 40 digits with the binary64 Jacobian."""
+    m = len(zc_np)
+    q0 = 0.5 + 1j*np.sqrt(3)/2
+
+    def F_np(x, gam):
+        zs = x[:m - 1] + 1j*x[m - 1:2*m - 2]
+        zs = np.append(zs, -zs.sum())
+        Lam, nu = x[2*m - 2] + 1j*x[2*m - 1], x[2*m]
+        gt = g_np.copy()
+        gt[-1] += gam*nu
+        D, S = np.sum(gt*zs), np.sum(gt**2)
+        zc = gam**2*(nu + D)/(1 + gam**2*nu)
+        w = wfield(zs, gt)
+        E = 1/(1 + gam*zs[:-1]) + w[:-1] - Lam*np.conj(1 + gam*zs[:-1] - zc)
+        E0 = nu - np.sum(gt*zs/(1 + gam*zs)) - Lam*(nu*(1 - np.conj(zc)) + np.conj(D))
+        return np.concatenate([E.real, E.imag, [E0.real, E0.imag, np.imag(-2*D/S) - np.sqrt(3)/2]])
+    G = [mp.mpf(float(v)) for v in g_np]
+
+    def F_mp(x, gam):
+        zs = [mp.mpc(x[k], x[m - 1 + k]) for k in range(m - 1)]
+        zs.append(-sum(zs))
+        Lam, nu = mp.mpc(x[2*m - 2], x[2*m - 1]), x[2*m]
+        gt = G[:-1] + [G[-1] + gam*nu]
+        D, S = mp.fsum(gt[k]*zs[k] for k in range(m)), mp.fsum(v**2 for v in gt)
+        zc = gam**2*(nu + D)/(1 + gam**2*nu)
+        Er, Ei = [], []
+        for k in range(m - 1):
+            E = 1/(1 + gam*zs[k]) + mp.fsum(gt[l]/(zs[k] - zs[l]) for l in range(m) if l != k) \
+                - Lam*mp.conj(1 + gam*zs[k] - zc)
+            Er.append(E.real)
+            Ei.append(E.imag)
+        E0 = nu - mp.fsum(gt[k]*zs[k]/(1 + gam*zs[k]) for k in range(m)) - Lam*(nu*(1 - mp.conj(zc)) + mp.conj(D))
+        return Er + Ei + [E0.real, E0.imag, mp.im(-2*D/S) - SQ3_2]
+    zs0 = (zc_np - zc_np.mean())*q0
+    x = np.concatenate([zs0[:-1].real, zs0[:-1].imag, [(1 + 1/q0).real, (1 + 1/q0).imag, np.sum(g_np**2)/2]])
+    rows = []
+    for gam in gammas:
+        for _ in range(30):
+            f0 = F_np(x, gam)
+            J = np.empty((len(f0), len(x)))
+            for j in range(len(x)):
+                xp = x.copy()
+                xp[j] += 1e-7
+                J[:, j] = (F_np(xp, gam) - f0)/1e-7
+            dx = np.linalg.solve(J, -f0)
+            x = x + dx
+            if np.max(np.abs(dx)) < 1e-14:
+                break
+        Jinv, gm = np.linalg.inv(J), mp.mpf(gam)
+        xm = [mp.mpf(float(v)) for v in x]
+        for _ in range(8):
+            fm = F_mp(xm, gm)
+            scale = max(abs(v) for v in fm)
+            if scale < mp.mpf('1e-38'):
+                break
+            corr = Jinv @ (np.array([float(v/scale) for v in fm]))
+            xm = [xm[i] - scale*mp.mpf(float(corr[i])) for i in range(len(xm))]
+        res = max(abs(v) for v in F_mp(xm, gm))
+        zs = [mp.mpc(xm[k], xm[m - 1 + k]) for k in range(m - 1)]
+        zs.append(-sum(zs))
+        gt = G[:-1] + [G[-1] + gm*xm[2*m]]
+        Z = [mp.mpc(0)] + [1 + gm*c for c in zs]
+        Gm = [mp.mpf(1)] + [gm*v for v in gt]
+        zc = mp.fsum(a*b for a, b in zip(Gm, Z))/mp.fsum(Gm)
+        kap = [mp.conj(mp.fsum(Gm[k]/(Z[j] - Z[k]) for k in range(len(Z)) if k != j)/(2j*mp.pi))/(Z[j] - zc)
+               for j in range(len(Z))]
+        spread = max(abs(k - kap[1]) for k in kap)/abs(kap[1])
+        P = abs(mp.im(kap[1]))/(2*abs(mp.re(kap[1])))
+        rows.append((gm, res, spread, mp.re(kap[1]), P))
+    return rows
+
+
+if '--large' in sys.argv[1:]:
+    say('\n3b. A cluster of 101 vortices and its family (binary64 solve, 40-digit refinement and check; numerical)')
+    grown = grow_far(101)
+    if grown is None:
+        check('m = 101: a translating cluster grown by the induction', False)
+    else:
+        zL, gL, resL, condL = grown
+        dminL = min(abs(zL[i] - zL[j]) for i in range(len(zL)) for j in range(i))
+        check('m = 101: translates, nondegenerate, circulations nonzero with zero sum', resL < 1e-12 and condL > 1e-8
+              and np.min(np.abs(gL)) > 0.01 and abs(gL.sum()) < 1e-13,
+              'residual %.1e, ratio %.2e, min separation %.3f' % (resL, condL, dminL))
+        rows = family_large(zL, gL, [1e-2, 1e-3, 1e-4, 1e-5])
+        slopes = [(P - SQ3_2)/gam for gam, _, _, _, P in rows]
+        say('      m = 101: (P - sqrt3/2)/gamma = %s' % ', '.join(mp.nstr(v, 7) for v in slopes))
+        check('m = 101: every family member solves the regularized system to 1e-30 and the Biot-Savart equations of all '
+              '102 vortices to 1e-30, with Re kappa < 0',
+              all(r_[1] < 1e-30 and r_[2] < 1e-30 and r_[3] < 0 for r_ in rows),
+              'max residual %s, max spread %s' % (mp.nstr(max(r_[1] for r_ in rows), 2),
+                                                  mp.nstr(max(r_[2] for r_ in rows), 2)))
+        d1, d2 = abs(slopes[1] - slopes[2]), abs(slopes[2] - slopes[3])
+        check('m = 101: (P - sqrt3/2)/gamma converges, its change falling about tenfold per decade', 6 < d1/d2 < 16,
+              'changes %s, %s' % (mp.nstr(d1, 3), mp.nstr(d2, 3)))
 
 # ------------------------------------------------------------------------------------------ 4. controls
 say('\n4. Negative controls')
