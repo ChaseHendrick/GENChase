@@ -1,0 +1,4 @@
+N = 4, seed 11, 800 starts: 342 collapses, 52 whose reversal is linearly stable
+N = 5, seed 1, 700 starts: 266 collapses, 14 whose reversal is linearly stable
+N = 5, seed 2, 700 starts: 277 collapses, 18 whose reversal is linearly stable
+N = 4: 52 of 342; N = 5: 32 of 543
