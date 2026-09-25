@@ -1821,3 +1821,10 @@ Re-search: reopen when visualpde.com, simunauts.vercel.app, apps.apple.com or so
 - **One weak triple, proved (same day):** Theorem 2 of the draft turns the first-order drop of item 1 into a theorem for one triple, by the implicit function theorem applied to the system with the degenerate combination divided by gamma; slope 2 sqrt(3) g1 g2 g3/S computed exactly over Q(t)(omega) (code/verify_triple_branch.py, 62 checks). Covered by the item-1 search above (CLEAN); no new search needed.
 - **Second reader of the whole draft: 8 must-fix items (statement ranges, wording, one continuation record, labels), all applied.**
 - Re-search: no for items 1, 2 and 4; read O'Neil 2010 before any continuum claim.
+
+### 2026-09-25  survey of open questions within reach  (session survey; scratch probes not committed)
+
+- **Stable self-similar expansion of N >= 4 point vortices: OPEN (as far as reached).** Zbarsky, arXiv:2402.07316 p. 20 and arXiv:1912.10862 pp. 4-5 [read], names the stability of such configurations as the missing step for extending his confinement theorem beyond three vortices; Novikov-Sedov 1979 [read]. Three queries, nothing found. A binary64 probe found 3 of 40 random four-vortex and 3 of 32 five-vortex collapses whose time reversal is linearly stable (all shape exponents of the collapse with positive real part); not certified. Whether this is the stability Zbarsky needs requires a closer reading of his argument.
+- **Computer-assisted proofs for Hodgkin-Huxley (subcritical Hopf near 9.78 uA/cm^2, bistability): none found.** Three searches found computer-assisted proofs for FitzHugh-Nagumo only; Hassard 1978 and Rinzel-Miller 1980 are numerical. Montbrio-Pazo-Roxin: bifurcations already in closed form (2015); no limit cycles by a Dulac function r^-2 (the survey's own derivation, not found in the literature checked). Cortex planform selection: classical.
+- **Four Euler vortices always rotate:** Yu 2023, Theorem 6.2, covers circulations (1, 1, k, k) only; otherwise open in everything reached.
+- Re-search: no for the Zbarsky and Hodgkin-Huxley items before acting on them, unless a week passes.
