@@ -1,4 +1,4 @@
-[1] 700 random scalene triangles, alpha in {0, 0.3, 1, 1.7, 3}: Lemma 2 circulations are self-similar (kappa spread <= 1.4e-38); P = |S|/(8 Area) to 2.9e-38 relative
+[1] 700 random scalene triangles, alpha in {0, 0.3, 1, 1.7, 3}: Lemma 5 circulations are self-similar (kappa spread <= 1.4e-38); P = |S|/(8 Area) to 2.9e-38 relative
 [2] g'(x) identity residual 0; identity residual 0; case m >= 2: D(2) = 4*beta**2 + 2*beta/3 - 1/3, D'(2) = 4*beta**2 + 8*beta/3 - 1/3, D'' = 2*beta**2 + 10*beta/3 + 2 (all > 0 for beta >= 1/2); limit P_0'(m*) = 0, P_0(m*) - B = 0
 [3] proof chain at 20000 random points (beta from just above 1/2 to 20, rho down to 1e-8): 0 violations; smallest (P - B)/B = 9.34e-9
 [4] alpha = 0.0, rho = 0.001: Re kappa < 0 True, spread 1.7e-56, P - B = 1.346e-6, G = (0.001, 1.0, -0.000999)

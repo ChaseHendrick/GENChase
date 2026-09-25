@@ -1,4 +1,6 @@
-# Reading still needed for the two papers (2026-09-25)
+# Reading still needed for the minimal-winding paper (2026-09-25)
+
+The two lists below were compiled for two papers; since 2026-09-25 (owner's decision) the alpha-model draft is merged into the minimal-winding paper, so both lists now belong to it.
 
 **Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
 (arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
@@ -43,7 +45,7 @@ J. Math. Fluid Mech. 9 (2007) 75-86 (free on arXiv). Not needed: Kimura 1987, De
 1985, Novikov-Sedov 1979, Groebli 1877, Reinaud-Dritschel-Scott 2022, Kudela 2014, Aref 1979 (all read or
 dismissed in the ledger).
 
-## Paper 2: Alpha-models draft (papers/alpha-winding/)
+## Paper 2: the alpha-model part (now Section 4 and part of Section 7 of papers/minimal-winding/)
 
 **Must read**
 
@@ -53,7 +55,7 @@ dismissed in the ledger).
 | free (you have it) | Reinaud, Dritschel and Scott, Physica D 434 (2022) 133226 | A line-by-line read of the relevant parts; the ledger's read was a search for rotation and minima. |
 | done | Yasunaga, Otobe and Iwayama, "Self-similar motion of three point vortices for a generalized two-dimensional fluid system", J. Phys. Soc. Jpn. 90 (2021) 124401, doi:10.7566/JPSJ.90.124401 | Read 2026-09-25: the spiral and its rates (Eqs. 31, 32, A.9) but no ratio, bound or minimum; credit it in Remark 2 (RESEARCH.md). |
 | done | Iwayama, Yajima and Watanabe, J. Phys. A 58 (2025) 075701, doi:10.1088/1751-8121/adaef8 (T. Yajima) | Read 2026-09-25: collapse that is not self-similar is possible for 0 < alpha < 2, so the draft must say "self-similar" throughout; credit Eq. (4.6) in Remark 2. |
-| paid | Chen and Liu, Physica D 470 (2024) 134392, Sects. 2-4 (Thms 2.1, 2.2, 4.1) | The main priority risk for Lemmas 2 and 3: explicit self-similar solutions. |
+| done | Chen and Liu, Physica D 470 (2024) 134392, Sects. 2-4 (Thms 2.1, 2.2, 4.1) | Read 2026-09-25 (RESEARCH.md): explicit self-similar solutions with the rotation in closed form, no bound or minimum; credited at the merged paper's Lemma 6 and in the Discussion. |
 | paid | O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126, doi:10.1134/S1560354707020013 | Section 5's four-vortex value P_4 = 0.7978967838... |
 
 **Optional**: O'Neil's 1985 thesis (UIUC, Sects. 7.4 and 8.3; the 1987 Trans. AMS article already read may

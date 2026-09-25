@@ -1,4 +1,21 @@
-"""Remark 1 of the paper (paper/alpha-winding.tex): rigorous (interval-arithmetic) proof of the m < 2 case of step (iii) for beta in [BLO, 1/2].
+#!/usr/bin/env python3
+# Copyright 2026 Chase Hendrick
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+"""Remark 4 of the manuscript (paper/minimal-winding.tex): rigorous (interval-arithmetic) proof of the m < 2 case of
+step (iii) of the proof of Theorem 2 for beta in [BLO, 1/2]. Run from any folder: python3 code/verify_alpha_extension.py
 With rho < 1: if b(m) = 1 + 6 beta - beta m^2 - m > 0 the right side of the identity is positive; otherwise it
 exceeds E(m) = A(m)^2 + b(m)/3 with A(m) = (1+beta) m - 2/m - 1, provided A(m) >= 0.  Every box of
 [BLO, 1/2] x [MLO, 2] must satisfy b > 0, or (A >= 0 and m^2 E > 0).  For m <= MLO we show b > 0 directly."""
@@ -27,3 +44,5 @@ msg = (f"beta in [{BLO}, 1/2], m in [1.5, 2]: {boxes} boxes, {'FAILED' if depth_
 print(msg)
 import os
 open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "verify_alpha_extension.txt"), "w").write(msg + "\n")
+if depth_fail:
+    raise SystemExit('FAILED: a box could not be resolved')

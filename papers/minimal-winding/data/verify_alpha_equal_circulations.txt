@@ -1,0 +1,5 @@
+[1] alpha = 2: P^2(u) - P^2(w = u + 1/u) = 0; -G2/G1 - 1/(u + 1/u) = 0; P^2(w) - P^2(gamma = 1/w) = 0; G1 - G3 = 0; r1^-2 + r3^-2 - r1^2 - r3^2 - (r1^2 + r3^2)(1 - r1^2 r3^2)/(r1^2 r3^2) = 0, so the family is r1 r3 = 1
+[1] dP^2/dw numerator 4*(w**2 - 2*w + 2)*(4*w**4 - 7*w**3 - 8*w**2 + 12); minimum at w = 2.3686197311838924157, gamma = 0.42218680644873976536, P_min = 1.10394516790405203899353179680; minimal polynomial of P_min: 27648*y**8 - 29952*y**6 - 3200*y**4 - 1556*y**2 - 125
+[1] gamma = 1/3: r1^2 = (3 + sqrt 5)/2 = phi^2 (0), r1 - phi = 0, r1^2 + r3^2 - 1/gamma = 0, r1 - r2 - r3 = phi - 1 - 1/phi = 0: collinear with sides phi, 1, 1/phi
+[2] alpha = 2, five values of gamma in (1/3, 1/2): Biot-Savart P equals the formula to 3.13e-40 relative (self-similarity spread included)
+[3] SQG collinear endpoint: r1 = 1 + x, r3 = x with -2*x**4 - 4*x**3 - 3*x**2 + x + 1 = 0, x = 0.52002090625079779035; gamma* = 0.387463945270524000465757194717, minimal polynomial 4*gm**4 - 8*gm**3 + gm**2 - 2*gm + 1 (Badin-Barry, Chen-Liu: 0.387464)

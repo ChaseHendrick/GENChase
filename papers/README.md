@@ -7,8 +7,10 @@ reproduce and how to cite, and two working folders that stay in this repository,
 
 | Paper | Status | Public repository |
 |---|---|---|
-| [Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons](minimal-winding/) | published with its code and data (v1.0.0); arXiv next; not yet peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
-| [A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models](alpha-winding/) | draft, not cleared for submission | ChaseHendrick/alpha-winding, once ready |
+| [Minimal Winding in the Self-Similar Collapse of Point Vortices](minimal-winding/) | published with its code and data (v1.0.0, before the merge); arXiv next; not yet peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
+
+The alpha-model draft that used to be a second paper here was merged into the minimal-winding paper on
+2026-09-25 (owner's decision), with its programs, data and notes.
 
 [`papers.json`](papers.json) is the record of each paper's status, and the identities note and the
 software paper are listed there too (they live in `identities/` and `paper/`).

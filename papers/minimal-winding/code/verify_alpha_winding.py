@@ -1,5 +1,22 @@
-"""Checks for the preprint paper/alpha-winding.tex (winding of self-similar three-vortex collapse
-in the alpha-models). Run from any folder: python3 code/verify_alpha_winding.py
+#!/usr/bin/env python3
+# Copyright 2026 Chase Hendrick
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+"""Checks of Section 4 of the manuscript (paper/minimal-winding.tex): the winding of self-similar three-vortex
+collapse in the alpha-models, Lemmas 5 and 6, Theorem 2 and Corollary 2, with a scan below alpha = -1 and
+Badin and Barry's SQG interval. Run from any folder: python3 code/verify_alpha_winding.py
 Model: dz_j/dt = (i/2pi) sum_k G_k (z_j - z_k) |z_j - z_k|^(-2 beta), beta = 1 + alpha/2 (alpha = 0 Euler, 1 SQG).
 P = |Im kappa| / (2 |Re kappa|), where dz_j/dt = kappa (z_j - z_c)."""
 import os
@@ -27,16 +44,17 @@ def area(z):
     return abs(((z[1] - z[0]).conjugate() * (z[2] - z[0])).imag) / 2
 
 def circulations(z, be):
-    """Lemma 2: G_i = r_i^2 / (f_j - f_k), f = r^(-2 beta), (i, j, k) cyclic."""
+    """Lemma 5: G_i = r_i^2 / (f_j - f_k), f = r^(-2 beta), (i, j, k) cyclic."""
     r = [abs(z[1] - z[2]), abs(z[2] - z[0]), abs(z[0] - z[1])]
     f = [x ** (-2 * be) for x in r]
     return [r[i] ** 2 / (f[(i + 1) % 3] - f[(i + 2) % 3]) for i in range(3)]
 
 out = []
+fails = []                                       # the checks that failed; the program exits with an error if any
 def say(s):
     print(s); out.append(s)
 
-# 1. Lemma 2 and Lemma 3 against Biot-Savart on random scalene triangles.
+# 1. Lemma 5 and Lemma 6 against Biot-Savart on random scalene triangles.
 mm.mp.dps = 40; random.seed(1); worst_ss = worst_P = 0; n = 0
 for t in range(700):
     al = mm.mpf(random.choice([0, 0.3, 1, 1.7, 3])); be = 1 + al / 2
@@ -46,8 +64,9 @@ for t in range(700):
     G = circulations(z, be); k, res = kappa_and_residual(G, z, al)
     P = abs(k.imag) / (2 * abs(k.real)); worst_ss = max(worst_ss, res)
     worst_P = max(worst_P, abs(P - abs(S_formula(z, be)) / (8 * area(z))) / P); n += 1
-say(f"[1] {n} random scalene triangles, alpha in {{0, 0.3, 1, 1.7, 3}}: Lemma 2 circulations are self-similar "
+say(f"[1] {n} random scalene triangles, alpha in {{0, 0.3, 1, 1.7, 3}}: Lemma 5 circulations are self-similar "
     f"(kappa spread <= {mm.nstr(worst_ss, 2)}); P = |S|/(8 Area) to {mm.nstr(worst_P, 2)} relative")
+if not (worst_ss < 1e-30 and worst_P < 1e-30): fails.append(1)
 
 # 2. The exact identities of the proof.
 x, rho, m, b = sp.symbols('x rho m beta', positive=True)
@@ -62,6 +81,7 @@ d3 = sp.simplify(sp.diff(Pc, m).subs(m, ms)); d4 = sp.simplify(Pc.subs(m, ms) - 
 say(f"[2] g'(x) identity residual {d1}; identity residual {d2}; case m >= 2: D(2) = {sp.expand(D.subs(m, 2))}, "
     f"D'(2) = {sp.expand(sp.diff(D, m).subs(m, 2))}, D'' = {sp.expand(sp.diff(D, m, 2))} (all > 0 for beta >= 1/2); "
     f"limit P_0'(m*) = {d3}, P_0(m*) - B = {d4}")
+if not (d1 == 0 and d2 == 0 and d3 == 0 and d4 == 0): fails.append(2)
 
 # 3. The chain S >= rho m + rho^2 coth b > (rho/beta) Lam, Lam/(4 beta sin psi) > B, at precision scaled to rho^(2 beta).
 random.seed(5); bad = 0; n = 0; margin = mm.inf
@@ -77,8 +97,9 @@ for t in range(20000):
     ok = S >= r * mx + r ** 2 * mm.coth(bh) > (r / be) * L and L > 0 and L / (4 * be * s) > B and S / (4 * r * s) > B
     bad += not ok; n += 1; margin = min(margin, (S / (4 * r * s) - B) / B)
 say(f"[3] proof chain at {n} random points (beta from just above 1/2 to 20, rho down to 1e-8): {bad} violations; smallest (P - B)/B = {mm.nstr(margin, 3)}")
+if bad or not margin > 0: fails.append(3)
 
-# 4. Sharpness: configurations near the limit, built from Lemma 2 and checked by Biot-Savart.
+# 4. Sharpness: configurations near the limit, built from Lemma 5 and checked by Biot-Savart.
 mm.mp.dps = 60
 for al in [0, 0.5, 1, 2]:
     al = mm.mpf(al); be = 1 + al / 2; B = mm.sqrt(1 + 2 * be) / (2 * be)
@@ -89,6 +110,7 @@ for al in [0, 0.5, 1, 2]:
         if k.real > 0:
             z = [c.conjugate() for c in z]; G = circulations(z, be); k, res = kappa_and_residual(G, z, al)
         P = abs(k.imag) / (2 * abs(k.real))
+        if not (k.real < 0 and res < 1e-30 and 0 < P - B < 1e-5): fails.append(4)
         say(f"[4] alpha = {mm.nstr(al, 2)}, rho = {mm.nstr(r, 1)}: Re kappa < 0 {k.real < 0}, spread {mm.nstr(res, 2)}, "
             f"P - B = {mm.nstr(P - B, 4)}, G = ({', '.join(mm.nstr(x / G[1], 4) for x in G)})")
 
@@ -112,10 +134,11 @@ def P_minus_B(al, lr, m):
 for al in [-1.0, -1.2, -1.5, -1.8]:
     best = min(((P_minus_B(al, lr, m), lr, m) for lr in [x / 4 for x in range(-40, 0)] for m in [0.05 + 0.1 * k for k in range(19)]))
     r = minimize(lambda v: P_minus_B(al, v[0], v[1]), [best[1], best[2]], method='Nelder-Mead', options={'xatol': 1e-10, 'fatol': 1e-40})
+    if not r.fun > 0: fails.append(6)
     say(f"[6] alpha = {al}: minimum of P - B found = {r.fun:.3e} ({'positive' if r.fun > 0 else 'NEGATIVE'}) at rho = 1e{r.x[0]:.1f}, m = {r.x[1]:.6f}")
 open(OUT, 'w').write('\n'.join(out) + '\n')
 
-# 7. Lemma 2 at SQG against Badin-Barry, Phys. Rev. E 98 (2018) 023110, Lemma 1 and Eq. (93): circulations (1, -G, 1)
+# 7. Lemma 5 at SQG against Badin-Barry, Phys. Rev. E 98 (2018) 023110, Lemma 1 and Eq. (93): circulations (1, -G, 1)
 #    collapse self-similarly exactly for 0.387464... < G < 1/2, and at G = 0.49 the side ratio is 0.751484.
 import numpy as np
 from scipy.optimize import brentq
@@ -134,6 +157,9 @@ with np.errstate(divide='ignore', invalid='ignore'):
                 if abs(F(r3)) < 1e-9:
                     G = circ_f(r1, 1.0, r3); pairs.append((-G[1] / G[0], r1, r3))
 g = [p[0] for p in pairs]; o = min(pairs, key=lambda p: abs(p[0] - 0.49))
+if not (abs(min(g) - 0.387464) < 1e-3 and abs(max(g) - 0.5) < 1e-3 and abs(min(o[1] / o[2], o[2] / o[1]) - 0.751484) < 1e-4): fails.append(7)
 say(f"[7] SQG, two equal circulations: {len(pairs)} collapsing triangles, -G2/G1 from {min(g):.6f} to {max(g):.6f} "
     f"(Badin-Barry: 0.387464... to 1/2); at G = {o[0]:.5f} the side ratio is {min(o[1] / o[2], o[2] / o[1]):.6f} (Badin-Barry: 0.751484)")
 open(OUT, 'w').write('\n'.join(out) + '\n')
+if fails:
+    raise SystemExit(f'FAILED: checks {fails}')

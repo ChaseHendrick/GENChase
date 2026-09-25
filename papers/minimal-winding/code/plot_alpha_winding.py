@@ -1,9 +1,24 @@
 #!/usr/bin/env python3
-"""Figure for the paper, paper/alpha-winding.tex.
+# Copyright 2026 Chase Hendrick
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+"""Figure 3 of the manuscript, paper/minimal-winding.tex.
 
-(a) The bound B(alpha) = sqrt(3 + alpha)/(2 + alpha) of Theorem 1 with P = |S|/(8 Area) (Lemma 3) of random
+(a) The bound B(alpha) = sqrt(3 + alpha)/(2 + alpha) of Theorem 2 with P = |S|/(8 Area) (Lemma 6) of random
     collapsing triangles, which lie above it. (b) The paths of the three vortices of one SQG collapse (alpha = 1),
-    integrated from the Biot-Savart law (1) with the circulations of Lemma 2.
+    integrated from the alpha-model law (Section 2) with the circulations of Lemma 5.
 Writes ../paper/figures/alpha-winding.svg (Typst) and alpha-winding.pdf (LaTeX). Seeded; runs in a few seconds.
 """
 import math, os, random
@@ -15,7 +30,7 @@ import matplotlib.pyplot as plt
 
 
 def P_of(r, beta):
-    """Lemma 3: P = |S|/(8A), r = (r1, r2, r3) side lengths opposite the vertices."""
+    """Lemma 6: P = |S|/(8A), r = (r1, r2, r3) side lengths opposite the vertices."""
     S = sum(r[i] ** 2 / math.tanh(beta * math.log(r[(i + 2) % 3] / r[(i + 1) % 3])) for i in range(3))
     s = sum(r) / 2
     A = math.sqrt(max(s * (s - r[0]) * (s - r[1]) * (s - r[2]), 0.0))
@@ -34,7 +49,7 @@ for alpha in np.linspace(0, 3, 61):
         cloud_a.append(alpha + random.uniform(-0.02, 0.02)); cloud_true.append(alpha); cloud_p.append(P_of(r, beta))
 al = np.linspace(-0.85, 3, 400); B = np.sqrt(3 + al) / (2 + al)
 
-# (b) one SQG collapse: sides rho, 1, sqrt(1 + rho m) with m = m*, circulations from Lemma 2
+# (b) one SQG collapse: sides rho, 1, sqrt(1 + rho m) with m = m*, circulations from Lemma 5
 alpha, beta = 1.0, 1.5
 rho = 0.45; m = math.sqrt(2 / (1 + beta)); psi = math.acos((rho - m) / 2)
 z = np.array([0, 1, rho * np.exp(1j * psi)])
@@ -50,7 +65,7 @@ def rhs(t, y):
 
 zc = (G @ z) / G.sum()
 k0 = (rhs(0, np.concatenate([z.real, z.imag]))[0] + 1j * rhs(0, np.concatenate([z.real, z.imag]))[3]) / (z[0] - zc)
-if k0.real > 0:                                   # take the collapsing orientation (Lemma 2)
+if k0.real > 0:                                   # take the collapsing orientation (Lemma 5)
     z = np.conj(z); zc = (G @ z) / G.sum()
     y0 = np.concatenate([z.real, z.imag]); k0 = (rhs(0, y0)[0] + 1j * rhs(0, y0)[3]) / (z[0] - zc)
 tc = -1 / (2 * beta * k0.real); Pb = abs(k0.imag) / (2 * abs(k0.real))

@@ -10,8 +10,11 @@ Point vortices in the α-model family move by
 with α = 0 the Euler case and α = 1 the surface quasi-geostrophic (SQG) case. In a self-similar
 collapse every vortex obeys dz_j/dt = κ(z_j − z_c) with one complex rate κ, so the cluster shrinks
 along a logarithmic spiral. Its winding is `P = |Im κ| / (2 |Re κ|)`. For three Euler vortices,
-`P > √3/2` is proved in the preprint under [research/](../research/). A companion preprint in
-preparation extends this to `P > √(3+α)/(2+α)` for α ≥ −59/40. Both bounds are sharp. For four or more
+`P > √3/2` is proved in the preprint in [papers/minimal-winding/](../papers/minimal-winding/), which also
+proves `P > √(3+α)/(2+α)` for α ≥ −59/40 (the alpha-model draft was merged into it on 2026-09-25). Both
+bounds are sharp. That paper also proves, in interval arithmetic, the four- to six-vortex Euler minima
+and the α = 1 and α = 2 four-vortex minima below as strict local minima, and the α = 2 collapse without
+rotation at N = 11 (mirror image of the stored point, which expands). For four or more
 vortices the answer is not known here, and that is what this search is for.
 
 ## The questions
@@ -247,7 +250,7 @@ self-similar collapse has at least N − 3 unstable shape modes. A pair with bot
 2 adds a second unstable mode. No least minimum recorded so far has an exponent at zero.
 
 The least minimum of every case has exactly N − 3 unstable modes, except the Euler minima from N = 10 to
-N = 30, the family that takes over at N = 10. Each of those has exactly one pair in (0, 2), and so N − 2
+N = 30, the family that takes over at N = 10 in the recorded runs (a later multistart, reported in the minimal-winding paper, finds this two-arm family lower already at N = 9, with P = 0.6592598630 against the recorded 0.6695811206). Each of those has exactly one pair in (0, 2), and so N − 2
 unstable modes. The largest exponent is large: about 12 for four Euler vortices, 49 for thirty, 639
 for 24 SQG vortices and 4274 for 60. Such fast growth is also why direct
 integration can only follow a collapse over a limited shrink. The job integrates only as far as the fastest mode can amplify

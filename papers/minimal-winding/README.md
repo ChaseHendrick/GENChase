@@ -1,42 +1,54 @@
-# Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons
+# Minimal Winding in the Self-Similar Collapse of Point Vortices
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 20 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 31 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
-In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the
-dimensionless number $P = |\omega_0| t_c$, the initial angular velocity times the collapse time,
-measures how tightly the spiral winds. We minimize $P$ over two classical collapsing families. Every
-self-similar collapse of three point vortices can be normalized to circulations
-$(1, \mu, -\mu/(1+\mu))$ with $0 < \mu \le 1$ and zero angular impulse. For each $\mu$ the collapsing
-configurations form two arcs, one for each orientation of the vortex triangle, and $P$ has exactly one
-critical point, a minimum, on each. The squares of the two minima are roots of an explicit cubic whose
-coefficients are polynomials in $\mu$, and for $\mu < 1$ the two minima differ. The smaller one
-increases strictly from $\sqrt{3}/2$, approached as $\mu \to 0$, to $\sqrt{2}$ at $\mu = 1$. Hence
-$P > \sqrt{3}/2$ for every self-similar collapse of three point vortices, and the constant is sharp;
-equivalently, every vortex travels more than twice its initial distance from the collision point. For
-$\mu = 1/2$ the two minima are $1.0647059762\ldots$ and $2.2038550160\ldots$, the positive roots of
-$8748\xi^6 - 49005\xi^4 + 27794\xi^2 + 18723$, and they are not expressible by real radicals. For two
-concentric regular $n$-gons with circulations $x_n$ and $-1$,
-$P = (K_n - \sqrt{2n-1}\cos n\theta)/(2n \sin n\theta)$ in terms of the relative rotation $\theta$,
-with an explicit constant $K_n$, and the minimum over $\theta$ is $\sqrt{K_n^2 - 2n + 1}/(2n)$; for
-pentagons it is $\sqrt{31682}/80$. With a vortex of any circulation added at the center, the minimum
-over $\theta$ is still explicit and exceeds $\sqrt{3}/2$ for every $n$, and the constant $\sqrt{3}/2$ is
-again sharp. A strong vortex with weak, tight opposite-signed pairs has $P \ge \sqrt{3}/2 - o(1)$ as the
-pairs weaken. All formulas are also checked against the Biot–Savart velocities in high-precision
-arithmetic.
+In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the angle
+$P$ through which the configuration turns while the square of its size decreases by the factor $e$
+measures how tightly the spiral winds; for the Euler equation $P = |\omega_0| t_c$, the initial angular
+velocity times the collapse time. For three Euler vortices with circulations $(1, \mu, -\mu/(1 + \mu))$,
+$0 < \mu \le 1$, the collapsing configurations form two arcs, one for each orientation of the triangle,
+and $P$ has exactly one critical point, a minimum, on each. The squared minima are roots of an explicit
+cubic, and the smaller one increases from $\sqrt{3}/2$, approached as $\mu \to 0$, to $\sqrt{2}$ at $\mu
+= 1$. Hence $P > \sqrt{3}/2$ for every self-similar collapse of three point vortices, and the constant
+is sharp: every vortex travels more than twice its initial distance from the collision point. In the
+$\alpha$-models, where a vortex induces the velocity $\Gamma r^{-\alpha-1}/(2\pi)$, every self-similar
+collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for $\alpha > -1$, again sharply.
+For two concentric regular $n$-gons, with or without a vortex at the center, $P$ has a closed form, and
+its minimum is explicit and exceeds $\sqrt{3}/2$. A strong vortex with weak, tight opposite-signed pairs
+has $P \ge \sqrt{3}/2 - o(1)$ as the pairs weaken. For more vortices the bound fails. Computer-assisted
+proofs show that four, five and six Euler vortices collapse self-similarly with $P < \sqrt{3}/2$, that
+$P$ has strict local minima $0.7978967838\ldots$, $0.7448144569\ldots$ and $0.7136801485\ldots$ on these
+collapses, that for $\alpha = 1$ and $\alpha = 2$ four vortices go below the three-vortex bounds, and
+that eleven vortices in the $\alpha = 2$ model collapse without rotating. Numerically, sixty-one Euler
+vortices reach $P = 0.498\ldots$.
 
 ## Contents
 
 | Folder | What is in it |
 |---|---|
-| [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the source arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), a Typst copy of the same text, and [`figures/`](paper/figures/) |
-| [`code/`](code/) | [`verify_general_mu.py`](code/verify_general_mu.py) (the general-μ theory, 121 checks, about 30 s), [`verify_floors_independent.py`](code/verify_floors_independent.py) (μ = 1/2 and the rings, independently, about a minute), [`verify_direct_proof.py`](code/verify_direct_proof.py) (every identity in the direct proof of Corollary 1, exact, a few seconds), [`verify_central_vortex.py`](code/verify_central_vortex.py) (Proposition 3, two rings with a central vortex, and the leading-order relations used in the proof of Theorem 2: exact identities, Biot–Savart at 50 digits and negative controls, about 10 s), [`verify_strong_vortex.py`](code/verify_strong_vortex.py) (Theorem 2, a strong vortex with weak pairs: every identity in the proof, exact self-similar solutions checked by Biot–Savart, and negative controls, XX checks, under a minute), [`plot_minimal_winding.py`](code/plot_minimal_winding.py) (the two figures), [`requirements.txt`](code/requirements.txt) |
-| [`data/`](data/) | The output of the five verification programs |
+| [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the only source, which arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), and [`figures/`](paper/figures/) |
+| [`code/`](code/) | The programs below and [`requirements.txt`](code/requirements.txt) |
+| [`data/`](data/) | The output of the ten verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
+
+| Program | What it checks |
+|---|---|
+| [`verify_general_mu.py`](code/verify_general_mu.py) | Three Euler vortices, the general-μ theory (Theorem 1): 121 checks, exact and at 50 digits, about 30 s |
+| [`verify_floors_independent.py`](code/verify_floors_independent.py) | μ = 1/2 and the rings, independently, with interval enclosures, about a minute |
+| [`verify_direct_proof.py`](code/verify_direct_proof.py) | Every identity in the direct proof of Corollary 1, exact, a few seconds |
+| [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, and the leading-order relations used in the proof of Theorem 3: 80 checks, about 10 s |
+| [`verify_strong_vortex.py`](code/verify_strong_vortex.py) | Theorem 3, a strong vortex with weak pairs: every identity in the proof, its explicit constants, exact self-similar solutions checked by Biot–Savart, and negative controls; 143 checks, about 17 s |
+| [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
+| [`verify_alpha_extension.py`](code/verify_alpha_extension.py) | The interval-arithmetic step of Remark 4 (α ≥ −59/40), under a second |
+| [`verify_alpha_equal_circulations.py`](code/verify_alpha_equal_circulations.py) | Remark 5, two equal circulations in the α-models, exact and at 40 digits, about 10 s |
+| [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorems 4 and 5 (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 92 checks, about a minute |
+| [`verify_many_vortices.py`](code/verify_many_vortices.py) | The numerical results of Section 7 from the stored configurations: the minimizers for N = 7 to 12, 33, 61 and 603, the two-arm family and its fit, and the SQG collapse of sixty vortices without rotation; about a minute |
+| [`plot_minimal_winding.py`](code/plot_minimal_winding.py), [`plot_alpha_winding.py`](code/plot_alpha_winding.py) | Figures 1 and 2, and Figure 3 |
 
 ## Reproduce
 
@@ -49,14 +61,17 @@ python3 code/verify_floors_independent.py --json data/verify-floors-independent-
 python3 code/verify_direct_proof.py
 python3 code/verify_central_vortex.py
 python3 code/verify_strong_vortex.py
+python3 code/verify_alpha_winding.py
+python3 code/verify_alpha_extension.py
+python3 code/verify_alpha_equal_circulations.py
+python3 code/certify_collapses.py
+python3 code/verify_many_vortices.py
 python3 code/plot_minimal_winding.py
+python3 code/plot_alpha_winding.py
 cd paper && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex
 ```
 
-Each verification program exits with an error if any check fails. `verify_general_mu.py` prints the
-report kept in `data/verify-general-mu-2026-09-23.txt`, `verify_central_vortex.py` the one kept in
-`data/verify-central-vortex-2026-09-25.txt`, and `verify_strong_vortex.py` the one kept in
-`data/verify-strong-vortex-2026-09-25.txt`.
+Each verification program exits with an error if any check fails and writes its report to `data/`.
 
 ## Cite
 
@@ -65,7 +80,7 @@ Until the arXiv identifier exists:
 ```bibtex
 @misc{hendrick2026minimal,
   author = {Hendrick, Chase},
-  title  = {Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons},
+  title  = {Minimal Winding in the Self-Similar Collapse of Point Vortices},
   year   = {2026},
   note   = {Preprint},
   url    = {https://github.com/ChaseHendrick/minimal-winding}

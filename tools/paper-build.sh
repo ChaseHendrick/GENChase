@@ -2,7 +2,6 @@
 # Build a paper's PDF from its LaTeX source, the same way arXiv does.
 #
 #   sh tools/paper-build.sh minimal-winding        papers/minimal-winding/paper/minimal-winding.pdf
-#   sh tools/paper-build.sh alpha-winding
 #
 # pdflatex runs three times (for the references) in a scratch folder, so no .aux or .log files land in
 # the repository, and only the finished PDF is copied next to the source. SOURCE_DATE_EPOCH is the date

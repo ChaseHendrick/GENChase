@@ -1,28 +1,27 @@
 # Submission checklist: the minimal-winding paper
 
-The paper is *Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
-(the manuscript, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf)) and its Typst copy
-[`../paper/minimal-winding.typ`](../paper/minimal-winding.typ).
+The paper is *Minimal Winding in the Self-Similar Collapse of Point Vortices*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
+(the manuscript and its only source, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); the Typst copy was dropped on 2026-09-25).
 The target is arXiv (physics.flu-dyn) and then *Regular and Chaotic Dynamics*. Checked 2026-09-24
 from the repository alone; no journal or arXiv page was consulted.
 
-The second draft, [`../../alpha-winding/`](../../alpha-winding/), is not
-covered here: the changelog records that it has not been peer reviewed and is not cleared for
-submission.
+By the owner's decision (2026-09-25) the second draft, on the α-models, is merged into this paper
+(Section 4 and part of Section 7), together with the computer-assisted proofs for four or more vortices.
+Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs to this paper.
 
 ## Ready
 
-- The manuscript in both formats, with the figures `paper/figures/minimal-winding.pdf` and
-  `paper/figures/minimal-winding-paths.pdf`, and its LaTeX build `paper/minimal-winding.pdf` (20 pages since
-  Proposition 3, Theorem 2 and Figure 2 were added on 2026-09-25), the same PDF arXiv will build. The author block
+- The manuscript, with the figures `paper/figures/minimal-winding.pdf`,
+  `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
+  `paper/minimal-winding.pdf` (31 pages since the merge of 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
-- The LaTeX and Typst texts cite the same 28 works in the same places. Every work cited in the
-  LaTeX source has an entry in its own bibliography, and every entry is cited.
+- The bibliography has 36 works. Every work cited in the LaTeX source has an entry, and every entry is
+  cited.
 - A data availability paragraph naming the verification programs in `code/` and their output in
   `data/`, a funding statement (no external funding), and the statement
   "This work was prepared with AI assistance. The author takes full responsibility for its content."
 - The arXiv metadata in [arxiv-metadata.md](arxiv-metadata.md): title, author, categories, MSC
-  classes, comments, license, and an abstract that matches the manuscript's abstract (1,916
+  classes, comments, license, and an abstract that matches the manuscript's abstract (1,845
   characters against the 1,920 limit it states).
 - A draft of the [cover letter](cover-letter-rcd.md). No endorsement is needed: the author's arXiv
   account can submit to physics.flu-dyn.

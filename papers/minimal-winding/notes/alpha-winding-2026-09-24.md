@@ -1,10 +1,10 @@
 # A sharp winding bound in the alpha-models: companion note
 
-This is the repository's working note for the draft preprint *A sharp winding bound for the self-similar collapse of three point vortices in the α-models* (Chase Hendrick). It is a **draft**. It has not been peer reviewed and must not be submitted until the reading list below is done.
+This was the repository's working note for the draft preprint *A sharp winding bound for the self-similar collapse of three point vortices in the α-models* (Chase Hendrick), kept as its record. By the owner's decision (2026-09-25) that draft was merged into the minimal-winding paper, *Minimal Winding in the Self-Similar Collapse of Point Vortices*, where its results are Section 4 (Lemmas 4 to 6, Theorem 2, Corollary 2, Remarks 4 and 5) and part of Section 7. Numbering below is the draft's: its Lemmas 2 and 3 are now Lemmas 5 and 6, its Theorem 1 is Theorem 2, its Remarks 1 and 2 are Remarks 4 and 5, and its Section 5 is Section 7.
 
-- Paper source: [`../paper/alpha-winding.tex`](../paper/alpha-winding.tex) (LaTeX, the manuscript), with a Typst copy of the same text, [`../paper/alpha-winding.typ`](../paper/alpha-winding.typ); keep the two in step
-- Paper PDF: [`../paper/alpha-winding.pdf`](../paper/alpha-winding.pdf), the LaTeX build, which `sh tools/paper-build.sh alpha-winding` remakes
-- Verification program: [`../code/verify_alpha_winding.py`](../code/verify_alpha_winding.py); its output is [`../data/verify_alpha_winding.txt`](../data/verify_alpha_winding.txt).
+- Paper source: [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) (LaTeX, the manuscript), with a Typst copy of the same text, [`../paper/minimal-winding.typ`](../paper/minimal-winding.typ); keep the two in step
+- Paper PDF: [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf), the LaTeX build, which `sh tools/paper-build.sh minimal-winding` remakes
+- Verification programs: [`../code/verify_alpha_winding.py`](../code/verify_alpha_winding.py), with output [`../data/verify_alpha_winding.txt`](../data/verify_alpha_winding.txt); [`../code/verify_alpha_extension.py`](../code/verify_alpha_extension.py); [`../code/verify_alpha_equal_circulations.py`](../code/verify_alpha_equal_circulations.py), which replaces `symmetric_family.py` of the research folder; and [`../code/verify_many_vortices.py`](../code/verify_many_vortices.py), which checks the 33- and 61-vortex configurations now stored in [`../data/`](../data/)
 
 Cite the person, Chase Hendrick, not the GitHub handle. No result here carries a personal name.
 
