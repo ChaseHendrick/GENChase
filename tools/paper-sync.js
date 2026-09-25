@@ -10,7 +10,8 @@
 //   node tools/paper-sync.js --self-test              the checks against planted mistakes (npm test)
 //
 // The companion holds papers/<id>/ without notes/ and submission/, which are working files that stay
-// here, plus a LICENSE, a CITATION.cff and a .zenodo.json written from papers.json; the Zenodo description,
+// here, plus a LICENSE, a CITATION.cff and a .zenodo.json written from papers.json. Zenodo archives each release
+// as a preprint (Publication / Preprint); its description,
 // which OpenAIRE and other indexes copy, is the abstract from the README with its TeX turned into plain text.
 // Staging refuses a paper without an "## Abstract" section, or whose abstract keeps TeX it cannot render, and a
 // paper whose public files point into this repository (a GENChase URL, a research/ or papers/ path, a
@@ -112,7 +113,9 @@ function zenodo(reg, p, paragraphs) {
   if (reg.author.orcid) creator.orcid = reg.author.orcid;
   const holds = 'This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.';
   return JSON.stringify({
-    title: p.title, upload_type: 'software',
+    // Each companion release is the paper's preprint on Zenodo (owner's decision, 2026-09-25): the manuscript with
+    // the programs that check it, typed Publication / Preprint so indexes list it as the paper.
+    title: p.title, upload_type: 'publication', publication_type: 'preprint',
     description: [...(paragraphs || []), holds].map(x => '<p>' + html(x) + '</p>').join(''),
     creators: [creator], license: 'Apache-2.0', ...(related.length ? { related_identifiers: related } : {}),
   }, null, 2) + '\n';
@@ -198,7 +201,8 @@ function selfTest() {
     const cff = fs.readFileSync(path.join(out, 'CITATION.cff'), 'utf8'), lic = fs.readFileSync(path.join(out, 'LICENSE'), 'utf8');
     checks++; if (!/family-names: "B"/.test(cff) || !/repository-code: "https:\/\/github.com\/o\/t"/.test(cff)) { failures++; console.log('FAIL CITATION.cff:\n' + cff); }
     checks++; if (!/^The manuscript in paper\/.*All rights reserved\./.test(lic) || !/Apache License/.test(lic)) { failures++; console.log('FAIL LICENSE:\n' + lic); }
-    const desc = JSON.parse(fs.readFileSync(path.join(out, '.zenodo.json'), 'utf8')).description;
+    const zen = JSON.parse(fs.readFileSync(path.join(out, '.zenodo.json'), 'utf8')), desc = zen.description;
+    checks++; if (zen.upload_type !== 'publication' || zen.publication_type !== 'preprint') { failures++; console.log('FAIL .zenodo.json type: ' + zen.upload_type + ' / ' + zen.publication_type); }
     checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
     expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/ChaseHendrick/GENChase\n'));
     expect(false, 'a GENChase link under the old account name', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));

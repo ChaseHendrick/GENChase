@@ -9,9 +9,11 @@ This repository may be private, so a paper never sends readers here. Each paper 
 repository of its own, its **companion** (for example `ChaseHendrick/minimal-winding`): the paper folder
 without its `notes/` and `submission/`, plus a LICENSE, a CITATION.cff and a .zenodo.json. The
 **publish papers** workflow keeps the companion in step and locked; nobody writes to it by hand.
-The Zenodo description, which OpenAIRE and other indexes copy, is the `## Abstract` section of the
-paper's README with its TeX turned into plain text, so a README needs that section before it can be
-published. A record already on Zenodo keeps the description it was archived with until you edit it there.
+Zenodo archives each release as a preprint (resource type Publication, Preprint): the manuscript with
+the programs that check it. Its description, which OpenAIRE and other indexes copy, is the `## Abstract`
+section of the paper's README with its TeX turned into plain text, so a README needs that section before
+it can be published. A record already on Zenodo keeps the type and description it was archived with until
+you edit it there (Edit, change the field, Publish; the DOI stays the same).
 
 Only you can do the steps that need your accounts (GitHub settings, Zenodo, arXiv, a journal's
 submission system) or your judgment. A Claude session can do everything else: edit the sources,
