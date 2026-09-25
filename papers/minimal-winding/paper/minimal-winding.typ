@@ -351,7 +351,7 @@ For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary ci
 + Y. Hiraoka, Remarks on collision manifolds and nonexistence of non self-similar collision solutions in the 3-vortex problem, _RIMS Kôkyûroku Bessatsu_ *B13* (2009) 35–43.
 + Y. Kimura, Similarity solution of two-dimensional point vortices, _J. Phys. Soc. Jpn._ *56* (1987) 2024–2030.
 + J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gonçalves de Oliveira, On Aref's vortex motions with a symmetry center, _Physica D_ *16* (1985) 27–61.
-+ V. S. Krishnamurthy, H. Aref and M. A. Stremler, Evolving geometry of a vortex triangle, _Phys. Rev. Fluids_ *3* (2018) 024702; arXiv:1706.00731.
++ V. S. Krishnamurthy, H. Aref and M. A. Stremler, Evolving geometry of a vortex triangle, _Phys. Rev. Fluids_ *3* (2018) 024702; arXiv:1706.00731v2, whose equation numbers are cited.
 + V. S. Krishnamurthy and M. A. Stremler, Finite-time collapse of three point vortices in the plane, _Regul. Chaotic Dyn._ *23* (2018) 530–550.
 + X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, _Phys. Fluids_ *12* (2000) 1911–1927.
 + P. K. Newton, _The $N$-Vortex Problem: Analytical Techniques_, Applied Mathematical Sciences 145, Springer, 2001.

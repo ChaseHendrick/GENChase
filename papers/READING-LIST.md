@@ -29,7 +29,7 @@ interlibrary loan, or emailing the author for a copy.
 | free | Grotto, Romito and Viviani, journal version in Physica D 457 (2024) 133947 (arXiv:2307.05133) | The bibliography cites the preprint; the published title differs. |
 | free | Gallay and Sverak, arXiv:2609.10847; Drivas et al., arXiv:2607.16490 | Newest versions; every theorem, section and equation pinpoint. |
 | done | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Read 2026-09-25: Sect. 3 gives a geometric reason that every triple collision is self-similar (proof in his 2008 paper). Hernandez-Garduno-Lacomba 2007 is earlier, so it keeps the credit; Hiraoka is now cited beside it. |
-| ? | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Eq. (40) (and (46b)) in the journal numbering. |
+| optional | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Not needed: since 2026-09-25 the bibliography says the arXiv v2 equation numbers are cited. Only if you want journal numbering: https://doi.org/10.1103/PhysRevFluids.3.024702 |
 | done | Hiraoka, Nonlinearity 21 (2008) 361-379 | Read 2026-09-25: Theorems 1-2 (regularizable iff the like-signed circulations are equal, near equality) and Prop. 2.8 now cited; nothing on rotation or P. |
 | paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
 | paid | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Fig. 18 and its caption in the journal version (read in the arXiv version). |
