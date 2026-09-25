@@ -1,5 +1,9 @@
 # Reading still needed for the two papers (2026-09-25)
 
+**Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
+(arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
+Grotto-Romito-Viviani. Their rows below are done unless a journal version is still named.
+
 Compiled from the research ledger (RESEARCH.md), the papers' notes and checklists, and web searches on
 2026-09-25. **Paper 2's list was confirmed by two independent checkers. Paper 1's list was not verified**:
 verification was stopped to save usage. Details a search summary gave (pages, DOIs, titles) should be
