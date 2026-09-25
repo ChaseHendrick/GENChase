@@ -32,7 +32,7 @@ interlibrary loan, or emailing the author for a copy.
 | optional | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Not needed: since 2026-09-25 the bibliography says the arXiv v2 equation numbers are cited. Only if you want journal numbering: https://doi.org/10.1103/PhysRevFluids.3.024702 |
 | done | Hiraoka, Nonlinearity 21 (2008) 361-379 | Read 2026-09-25: Theorems 1-2 (regularizable iff the like-signed circulations are equal, near equality) and Prop. 2.8 now cited; nothing on rotation or P. |
 | paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
-| paid | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Fig. 18 and its caption in the journal version (read in the arXiv version). |
+| done | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Read 2026-09-25 in the journal version: Fig. 18 and Lambda = e^{4 pi H} as cited; no change. |
 | paid | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | The review of Groebli's thesis; cited without a reading. |
 
 **Optional**: Borisov and Lebedev, Regul. Chaotic Dyn. 3(4) (1998) (free on arXiv; add pages); Aref,
