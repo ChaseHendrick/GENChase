@@ -36,7 +36,9 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
 - Remove scientific credits, license notices or explicit validation limitations.
 - Push an unpublished result, a draft of one, or a commitment's private record (`*.commitment.json`, which
   holds the salt) to this repository, on any branch: it is public, or may become public. Commit a hash with
-  `node tools/commit-hash.js` instead ([docs/COMMITMENTS.md](docs/COMMITMENTS.md)).
+  `node tools/commit-hash.js` instead ([docs/COMMITMENTS.md](docs/COMMITMENTS.md)). The owner decides
+  what is published: by the owner's decision (2026-09-25), the two vortex-collapse papers are merged into
+  `papers/minimal-winding/`, and its computer-assisted proofs and verification programs are committed with it.
 
 ## Verify before you commit
 
