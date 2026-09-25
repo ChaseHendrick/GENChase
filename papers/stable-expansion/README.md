@@ -24,10 +24,11 @@ motion with the same circulations that starts near one of the two configurations
 exactly self-similar expansion of a nearby member of the family, the member with the same energy, and an a priori
 estimate of the same kind holds for approximate solutions whose error is small and decays faster than the velocities.
 With this estimate in place of the one step of Zbarsky's proof that needs three vortices, his confinement theorem holds
-for the two configurations: vortex patches placed at the vortices stay within distance $t^{1/4 + \varepsilon}$ of their
-centres of vorticity for all time, and the centres move asymptotically like the self-similar expansion of a single
-member of the family. Linear stability is an open condition; in a random sample about one four-vortex collapse in seven
-and one five-vortex collapse in seventeen reverses into a linearly stable expansion.
+for the two configurations: vortex patches placed at the vortices stay within distance $\varepsilon t^{1/4 +
+\varepsilon}$ of their centres of vorticity for all time, and the centres stay within a bounded distance of an exactly
+self-similar expansion of a single member of the family. That proof adapts his estimates for single patches. Linear
+stability is an open condition; in a random sample about one four-vortex collapse in seven and one five-vortex collapse
+in seventeen reverses into a linearly stable expansion.
 
 ## Status of the results
 
@@ -40,8 +41,10 @@ and one five-vortex collapse in seventeen reverses into a linearly stable expans
   Commun. Math. Phys. 388 (2021) 707-733, with Proposition 1 in place of the one step that needs three vortices. It
   relies on his estimates for single patches, followed and adapted but not rederived in full.
 - **Numerical:** the direct integrations and the random sample of Section 6.
-- **Pending before this draft can advance:** a check of Theorem 4 by a specialist in vortex patches, and the full text
-  of Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701 (only its abstract has been seen).
+- **Pending before this draft can advance:** a check of Theorem 4 by a specialist in vortex patches, possibly with an
+  appendix restating Zbarsky's single-patch estimates for N patches; a comparison with the published CMP version of his
+  paper (the proof cites the equation numbers of arXiv:1912.10862v2); and the full text of Kallyadan and Shukla,
+  Phys. Rev. Fluids 7 (2022) 114701 (only its abstract has been seen).
 
 ## Contents
 
