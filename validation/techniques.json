@@ -2662,13 +2662,14 @@
   {
     "id": "flow",
     "source": "src/modules/flow.js",
-    "sourceSha256": "e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873",
-    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.",
+    "sourceSha256": "996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564",
+    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).",
     "equation": "theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom field mode draws streamlines of a vector field the viewer types. A user-defined field is not validated: the status line prints no comparison with theory in that mode, and nothing checks the typed field against any source."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -2885,13 +2886,14 @@
   {
     "id": "attractors",
     "source": "src/modules/attractors.js",
-    "sourceSha256": "b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7",
-    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.",
+    "sourceSha256": "935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da",
+    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom ODE mode integrates a system the viewer types, with the same RK4 step as the built-in flows and a divergence guard at 1e6. A user-defined system is not validated: the status line prints no comparison with theory in that mode, and no step-size or convergence check is made for it."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",

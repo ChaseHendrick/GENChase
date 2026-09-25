@@ -422,6 +422,11 @@
   .row.dim input, .row.dim button { pointer-events: none; }
   .field { display: flex; flex-direction: column; gap: 4px; }
   .field-hint { grid-column: 1 / -1; margin-top: -2px; }
+  .row .text-input { grid-column: 1 / -1; min-width: 0; width: 100%; font-family: "Geist Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line-strong); border-radius: 6px; padding: 6px 8px; }
+  .row .text-input[aria-invalid="true"] { border-color: var(--danger); }
+  .text-error { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 1px; color: var(--danger); font-size: 11.5px; line-height: 1.35; }
+  .text-error code { font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; white-space: pre; overflow: hidden; color: var(--ink-2); }
+  .text-error code.caret { color: var(--danger); }
 
   input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: transparent; margin: 0; }
   input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--line-strong); border-radius: 1px; }
@@ -4571,13 +4576,14 @@ shall not be misrepresented as the original profile.
   {
     "id": "flow",
     "source": "src/modules/flow.js",
-    "sourceSha256": "e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873",
-    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.",
+    "sourceSha256": "996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564",
+    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).",
     "equation": "theta(x,y) = fbm(x·s, y·s)·turbulence;   p \u003c- p + step·(cos theta, sin theta)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom field mode draws streamlines of a vector field the viewer types. A user-defined field is not validated: the status line prints no comparison with theory in that mode, and nothing checks the typed field against any source."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -4794,13 +4800,14 @@ shall not be misrepresented as the original profile.
   {
     "id": "attractors",
     "source": "src/modules/attractors.js",
-    "sourceSha256": "b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7",
-    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.",
+    "sourceSha256": "935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da",
+    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom ODE mode integrates a system the viewer types, with the same RK4 step as the built-in flows and a divergence guard at 1e6. A user-defined system is not validated: the status line prints no comparison with theory in that mode, and no step-size or convergence check is made for it."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -6685,7 +6692,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"837686fc9e43","fingerprint":"837686fc9e435d7b8d17326ba71256ee59e38b2a3111b88917a0d4edd328c5de","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"15697e484ffa6d7798656f45f37a454771f5c7553a1e54c2dcabcc4cf63bb4a3","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"3cb8b1bf5f6b","fingerprint":"3cb8b1bf5f6b10d32e56d0f6760e590c77587fc276f6e820ad5942588df29f79","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/expr.js":"e64489f7b418fd9e55a1aa47cbafb1bd34ca5b07ef06bcbac9f39358bb8bf839","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"db4bd6a846a4cebe21d7c03787bf1ace0288e30ce29fbe011f0a308106399678","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -6971,6 +6978,313 @@ shall not be misrepresented as the original profile.
     BASES, formatPair, formatValue, sigmas, sigmaText, compare,
   });
   root.GenChaseStats = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>/* The shared expression language. Formulas a person types into the studio travel inside shareable
+   URL hashes, so user text is never executed as code: no eval, no Function constructor, no string
+   timers and no string-built scripts. A tokenizer and a recursive-descent parser turn the text into
+   a syntax tree; compile() turns that tree into nested closures, and toGLSL() writes the same tree
+   as GLSL built only from whitelisted tokens. tools/expr-check.js tests all three, and tools/lint.js
+   fails any call to eval or the Function constructor in src/.
+
+   Grammar, loosest binding first:
+     expr    := term (('+' | '-') term)*
+     term    := unary (('*' | '/') unary)*
+     unary   := '-' unary | power
+     power   := primary ('^' unary)?        right-associative: 2^3^2 = 2^9, and -x^2 = -(x^2)
+     primary := number | name | function '(' expr (',' expr)* ')' | '(' expr ')'
+   Numbers are decimal with an optional exponent (1e-3, .5, 2.). Names are the caller's variables and
+   parameters, the constants pi and e, and the functions in FUNCTIONS; any other name is an error, and
+   the names constructor, __proto__ and prototype are always errors. Only ASCII letters, digits, _ . +
+   - * / ^ ( ) , space and tab are accepted. Text is at most 256 characters and nests at most 32 deep.
+   Every error carries a message and a 0-based character position, so the UI can point at it. */
+(function (root) {
+  'use strict';
+
+  const MAX_LENGTH = 256, MAX_DEPTH = 32, MAX_NAME = 32;
+  const RESERVED = new Set(['constructor', '__proto__', 'prototype']);
+  // name -> [arity, implementation, GLSL name]. Lookups go through a Map, never through an object
+  // indexed by user text.
+  const FUNCTIONS = new Map([
+    ['sin', [1, Math.sin, 'sin']], ['cos', [1, Math.cos, 'cos']], ['tan', [1, Math.tan, 'tan']],
+    ['asin', [1, Math.asin, 'asin']], ['acos', [1, Math.acos, 'acos']], ['atan', [1, Math.atan, 'atan']],
+    ['atan2', [2, Math.atan2, 'atan']],
+    ['sinh', [1, Math.sinh, 'sinh']], ['cosh', [1, Math.cosh, 'cosh']], ['tanh', [1, Math.tanh, 'tanh']],
+    ['exp', [1, Math.exp, 'exp']], ['log', [1, Math.log, 'log']], ['sqrt', [1, Math.sqrt, 'sqrt']],
+    ['abs', [1, Math.abs, 'abs']], ['min', [2, Math.min, 'min']], ['max', [2, Math.max, 'max']],
+    ['pow', [2, Math.pow, 'pow']], ['floor', [1, Math.floor, 'floor']], ['sign', [1, Math.sign, 'sign']],
+  ]);
+  const CONSTANTS = new Map([['pi', Math.PI], ['e', Math.E]]);
+  const pow = Math.pow;
+  const GLSL_NAMES = new Set([...FUNCTIONS.values()].map(f => f[2]));
+  const NAME_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+  class ExprError extends Error {
+    constructor(message, pos) { super(message); this.name = 'ExprError'; this.pos = pos; }
+  }
+  function fail(message, pos) { throw new ExprError(message, pos); }
+
+  // A character or name as the message shows it: printable ASCII in quotes, anything else as U+XXXX,
+  // so a right-to-left override or a zero-width space in the input cannot rearrange the message.
+  function show(text, i) {
+    const cp = text.codePointAt(i);
+    if (cp >= 0x21 && cp <= 0x7e) return '"' + String.fromCharCode(cp) + '"';
+    return 'U+' + cp.toString(16).toUpperCase().padStart(4, '0');
+  }
+  const quote = name => '"' + (name.length > 24 ? name.slice(0, 24) + '...' : name) + '"';
+  const isDigit = c => c >= 48 && c <= 57;
+  const isStart = c => (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c === 95;
+  const isPart = c => isStart(c) || isDigit(c);
+  const SYMBOLS = '+-*/^(),';
+
+  function tokenize(text) {
+    if (typeof text !== 'string') fail('expected text', 0);
+    if (text.length > MAX_LENGTH) fail('longer than ' + MAX_LENGTH + ' characters', MAX_LENGTH);
+    const out = [];
+    let i = 0;
+    while (i < text.length) {
+      const c = text.charCodeAt(i), start = i;
+      if (c === 32 || c === 9) { i++; continue; }
+      if (isDigit(c) || (c === 46 && isDigit(text.charCodeAt(i + 1)))) {
+        while (isDigit(text.charCodeAt(i))) i++;
+        if (text.charCodeAt(i) === 46) { i++; while (isDigit(text.charCodeAt(i))) i++; }
+        const ex = text.charCodeAt(i);
+        if (ex === 101 || ex === 69) {
+          let j = i + 1;
+          if (text[j] === '+' || text[j] === '-') j++;
+          if (!isDigit(text.charCodeAt(j))) fail('malformed number: an exponent needs digits', i);
+          i = j;
+          while (isDigit(text.charCodeAt(i))) i++;
+        }
+        const after = text.charCodeAt(i);
+        if (after === 46) fail('malformed number', i);
+        if (isPart(after)) fail('put * between a number and a name', i);
+        const v = Number(text.slice(start, i));
+        if (!Number.isFinite(v)) fail('number out of range', start);
+        out.push({ t: 'num', v, pos: start });
+      } else if (isStart(c)) {
+        while (isPart(text.charCodeAt(i))) i++;
+        const name = text.slice(start, i);
+        if (name.length > MAX_NAME) fail('name longer than ' + MAX_NAME + ' characters', start);
+        out.push({ t: 'name', v: name, pos: start });
+      } else if (c < 128 && SYMBOLS.indexOf(text[i]) >= 0) {
+        out.push({ t: text[i], pos: start });
+        i++;
+      } else fail('unexpected character ' + show(text, i), start);
+    }
+    out.push({ t: 'end', pos: text.length });
+    return out;
+  }
+
+  // The caller's names, in environment order: variables first, then parameters.
+  function nameTable(spec) {
+    const list = [].concat((spec && spec.vars) || [], (spec && spec.params) || []);
+    const map = new Map();
+    list.forEach((n, i) => {
+      if (typeof n !== 'string' || !NAME_RE.test(n) || n.length > MAX_NAME || RESERVED.has(n) ||
+        FUNCTIONS.has(n) || CONSTANTS.has(n) || map.has(n)) throw new TypeError('invalid whitelist name: ' + String(n));
+      map.set(n, i);
+    });
+    return map;
+  }
+
+  const made = new WeakSet();          // syntax trees this file built; nothing else is compiled
+  function freeze(node) {
+    if (node.a) freeze(node.a);
+    if (node.b) freeze(node.b);
+    if (node.args) { node.args.forEach(freeze); Object.freeze(node.args); }
+    return Object.freeze(node);
+  }
+  const describe = tok => tok.t === 'num' ? 'number' : tok.t === 'name' ? 'name ' + quote(tok.v) : tok.t === 'end' ? 'end' : '"' + tok.t + '"';
+
+  function parse(text, spec) {
+    const names = nameTable(spec);
+    const toks = tokenize(text);
+    if (toks.length === 1) fail('empty', 0);
+    const allowed = [...names.keys()];
+    let k = 0, depth = 0;
+    const peek = () => toks[k];
+    const enter = pos => { if (++depth > MAX_DEPTH) fail('nested more than ' + MAX_DEPTH + ' deep', pos); };
+    function expr() {
+      let left = term();
+      while (peek().t === '+' || peek().t === '-') {
+        const op = toks[k++];
+        left = { type: 'bin', op: op.t, a: left, b: term(), pos: op.pos };
+      }
+      return left;
+    }
+    function term() {
+      let left = unary();
+      while (peek().t === '*' || peek().t === '/') {
+        const op = toks[k++];
+        left = { type: 'bin', op: op.t, a: left, b: unary(), pos: op.pos };
+      }
+      return left;
+    }
+    function unary() {
+      const tok = peek();
+      if (tok.t !== '-') return power();
+      k++; enter(tok.pos);
+      const a = unary();
+      depth--;
+      return { type: 'neg', a, pos: tok.pos };
+    }
+    function power() {
+      const base = primary(), tok = peek();
+      if (tok.t !== '^') return base;
+      k++; enter(tok.pos);
+      const b = unary();
+      depth--;
+      return { type: 'bin', op: '^', a: base, b, pos: tok.pos };
+    }
+    function close(open) {
+      const tok = peek();
+      if (tok.t === ')') { k++; depth--; return; }
+      fail(tok.t === 'end' ? 'missing ")" for the "(" at column ' + (open.pos + 1) : 'expected an operator or ")", found ' + describe(tok), tok.pos);
+    }
+    function primary() {
+      const tok = toks[k++];
+      if (tok.t === 'num') return { type: 'num', v: tok.v, pos: tok.pos };
+      if (tok.t === '(') {
+        enter(tok.pos);
+        const inner = expr();
+        close(tok);
+        return inner;
+      }
+      if (tok.t === 'name') {
+        const name = tok.v;
+        if (RESERVED.has(name)) fail(quote(name) + ' is a reserved name', tok.pos);
+        if (FUNCTIONS.has(name)) {
+          const arity = FUNCTIONS.get(name)[0];
+          const open = peek();
+          if (open.t !== '(') fail(name + ' is a function: write ' + name + '(...)', tok.pos);
+          k++; enter(open.pos);
+          const args = [expr()];
+          while (peek().t === ',') { k++; args.push(expr()); }
+          close(open);
+          if (args.length !== arity) fail(name + ' takes ' + arity + (arity === 1 ? ' argument' : ' arguments'), tok.pos);
+          return { type: 'call', name, args, pos: tok.pos };
+        }
+        const known = CONSTANTS.has(name) || names.has(name);
+        if (!known) fail('unknown name ' + quote(name) + (allowed.length ? '; use ' + allowed.join(', ') : ''), tok.pos);
+        if (peek().t === '(') fail(quote(name) + ' is not a function', tok.pos);
+        if (CONSTANTS.has(name)) return { type: 'const', name, v: CONSTANTS.get(name), pos: tok.pos };
+        return { type: 'var', name, index: names.get(name), pos: tok.pos };
+      }
+      if (tok.t === 'end') fail('ends too early', tok.pos);
+      fail('unexpected ' + describe(tok), tok.pos);
+    }
+    const ast = expr();
+    if (peek().t !== 'end') fail('expected an operator, found ' + describe(peek()), peek().pos);
+    made.add(freeze(ast));
+    return ast;
+  }
+
+  // A tree this file built, or text to parse. Anything else, including a look-alike object, is
+  // refused by the tokenizer as "expected text".
+  function treeOf(source, spec) {
+    if (source && typeof source === 'object' && made.has(source)) return source;
+    return parse(source, spec);
+  }
+
+  /* ---- evaluation: the tree becomes nested closures over an environment array ---- */
+  function build(node) {
+    switch (node.type) {
+      case 'num': case 'const': { const v = node.v; return () => v; }
+      case 'var': { const i = node.index; return env => env[i]; }
+      case 'neg': { const a = build(node.a); return env => -a(env); }
+      case 'bin': {
+        const a = build(node.a), b = build(node.b);
+        switch (node.op) {
+          case '+': return env => a(env) + b(env);
+          case '-': return env => a(env) - b(env);
+          case '*': return env => a(env) * b(env);
+          case '/': return env => a(env) / b(env);
+          case '^': return env => pow(a(env), b(env));
+        }
+        break;
+      }
+      case 'call': {
+        const f = FUNCTIONS.get(node.name)[1];
+        const a = build(node.args[0]);
+        if (node.args.length === 1) return env => f(a(env));
+        const b = build(node.args[1]);
+        return env => f(a(env), b(env));
+      }
+    }
+    throw new TypeError('malformed tree');
+  }
+  // compile(text, { vars, params }) -> fn(env), where env holds the variables and then the parameters
+  // in the order the spec lists them. Throws ExprError on bad text.
+  function compile(source, spec) { return build(treeOf(source, spec)); }
+
+  // null when the text is a valid formula for this spec, otherwise { message, pos }.
+  function check(text, spec) {
+    try { parse(text, spec); return null; }
+    catch (err) {
+      if (err instanceof ExprError) return { message: err.message, pos: err.pos };
+      throw err;
+    }
+  }
+
+  /* ---- GLSL ---- */
+  // Shortest decimal that round-trips the double, always written as a GLSL float literal.
+  function glslFloat(v, pos) {
+    if (!Number.isFinite(Math.fround(v))) fail('number out of range for GLSL', pos);
+    const s = String(v);
+    return /[.e]/.test(s) ? s : s + '.0';
+  }
+  function emit(node, rename) {
+    switch (node.type) {
+      case 'num': case 'const': return glslFloat(node.v, node.pos);
+      case 'var': return rename.has(node.name) ? rename.get(node.name) : node.name;
+      case 'neg': return '(-' + emit(node.a, rename) + ')';
+      case 'bin':
+        if (node.op === '^') return 'pow(' + emit(node.a, rename) + ', ' + emit(node.b, rename) + ')';
+        return '(' + emit(node.a, rename) + ' ' + node.op + ' ' + emit(node.b, rename) + ')';
+      case 'call': return FUNCTIONS.get(node.name)[2] + '(' + node.args.map(n => emit(n, rename)).join(', ') + ')';
+    }
+    throw new TypeError('malformed tree');
+  }
+  const GLSL_TOKEN = /\s*(?:(\d+\.\d*(?:e[+-]?\d+)?|\d+e[+-]?\d+)|([A-Za-z_][A-Za-z0-9_]*(?:\.[xyzw]{1,4})?)|([-+*/(),]))/y;
+  // toGLSL(text or tree, spec, { rename: { x: 'p.x' } }) -> a GLSL expression string. Every operation
+  // is parenthesized, ^ becomes pow() and atan2(y, x) becomes atan(y, x). The output is re-scanned and
+  // refused unless every token is a float literal, an operator, a GLSL function from the whitelist or
+  // one of the caller's names.
+  function toGLSL(source, spec, opts) {
+    const names = nameTable(spec);
+    const tree = treeOf(source, spec);
+    const rename = new Map();
+    const given = opts && opts.rename;
+    if (given) {
+      for (const key of Object.keys(given)) {
+        if (!names.has(key)) throw new TypeError('rename names an unknown variable: ' + key);
+        const to = given[key];
+        if (typeof to !== 'string' || !/^[A-Za-z_][A-Za-z0-9_]*(\.[xyzw]{1,4})?$/.test(to) || /^gl_/.test(to)) throw new TypeError('invalid GLSL name for ' + key);
+        rename.set(key, to);
+      }
+    }
+    const out = emit(tree, rename);
+    const idents = new Set([...GLSL_NAMES, ...names.keys(), ...rename.values()]);
+    GLSL_TOKEN.lastIndex = 0;
+    let at = 0;
+    while (at < out.length) {
+      GLSL_TOKEN.lastIndex = at;
+      const m = GLSL_TOKEN.exec(out);
+      if (!m || (m[2] && !idents.has(m[2]))) throw new Error('GLSL emitter produced a token outside the whitelist at ' + at);
+      at = GLSL_TOKEN.lastIndex;
+    }
+    return out;
+  }
+
+  const api = Object.freeze({
+    parse, compile, check, toGLSL, tokenize, ExprError,
+    FUNCTIONS: Object.freeze([...FUNCTIONS.keys()]),
+    CONSTANTS: Object.freeze([...CONSTANTS.keys()]),
+    LIMITS: Object.freeze({ maxLength: MAX_LENGTH, maxDepth: MAX_DEPTH, maxName: MAX_NAME }),
+  });
+  root.GenChaseExpr = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
@@ -7576,7 +7890,9 @@ shall not be misrepresented as the original profile.
   // stats is the shared uncertainty harness (src/shared/stats.js). A status line that prints a measured
   // number against theory builds that span with util.stats.compare(), which refuses to print a
   // comparison without an error bar or a stated basis; tools/lint.js checks the modules use it.
-  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats };
+  // expr is the shared expression language (src/shared/expr.js): formulas a person types are parsed
+  // into a tree and compiled to closures, never evaluated as code.
+  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats, expr: window.GenChaseExpr };
 
   /* ================================================================
      gl — small WebGL2 helper for fullscreen-pass simulations
@@ -8301,6 +8617,20 @@ void main(){
     return out;
   }
 
+  // A text control's value is a string of at most maxLength characters (256 when unset) that the
+  // field's own validate(value) accepts. Returns null when it is fine, otherwise { message, pos }.
+  // A recipe whose text fails is given the default, so a hand-edited link cannot crash a plate.
+  function textProblem(f, v) {
+    const max = f.maxLength || 256;
+    if (typeof v !== 'string') return { message: 'expected text', pos: 0 };
+    if (v.length > max) return { message: 'longer than ' + max + ' characters', pos: max };
+    if (!f.validate) return null;
+    try {
+      const p = f.validate(v);
+      return p ? { message: String(p.message || 'invalid'), pos: Number.isInteger(p.pos) ? p.pos : 0 } : null;
+    } catch (err) { return { message: 'could not be checked', pos: 0 }; }
+  }
+
   function sanitize(mod, s) {
     const src = own(s);
     const out = Object.assign({}, mod.defaults, legacyFill(mod, src), src);
@@ -8321,6 +8651,7 @@ void main(){
           out[f.key] = loose ? loose[0] : mod.defaults[f.key];
         }
       } else if (f.type === 'toggle') out[f.key] = !!out[f.key];
+      else if (f.type === 'text') out[f.key] = textProblem(f, out[f.key]) ? mod.defaults[f.key] : out[f.key];
     }
     if (mod.palette) {
       const dp = typeof mod.defaultPalette === 'string' ? PALETTES[mod.defaultPalette] : (mod.defaultPalette || PALETTES.kiln);
@@ -9468,6 +9799,37 @@ void main(){
       sw.addEventListener('click', () => setParam(e, f.key, !state[f.key], f.kind));
       controls[f.key] = { sync: v => sw.setAttribute('aria-checked', String(!!v)) };
       row = h('div', { class: 'toggle' }, [h('label', { class: 'lbl', for: id, text: f.label }), sw]);
+    } else if (f.type === 'text') {
+      // Typed text is checked on every keystroke and committed on Enter or blur only when it is valid,
+      // so the plate and the recipe keep the last valid value. The problem and its column are shown
+      // with textContent; nothing the person typed is ever parsed as HTML.
+      const input = h('input', { type: 'text', id, class: 'text-input', spellcheck: 'false', autocomplete: 'off', autocapitalize: 'off', 'aria-label': f.label });
+      input.value = state[f.key];
+      if (f.placeholder) input.placeholder = f.placeholder;
+      const err = h('div', { class: 'text-error', id: id + '-error', role: 'status', 'aria-live': 'polite' });
+      err.hidden = true;
+      const show = p => {
+        input.setAttribute('aria-invalid', String(!!p));
+        err.hidden = !p;
+        err.textContent = '';
+        if (!p) return;
+        const at = Math.max(0, Math.min(p.pos, input.value.length));
+        err.appendChild(h('span', { text: p.message + ' (column ' + (at + 1) + ')' }));
+        err.appendChild(h('code', { text: input.value.slice(Math.max(0, at - 40), at + 40) }));
+        err.appendChild(h('code', { class: 'caret', text: ' '.repeat(Math.min(at, 40)) + '^' }));
+      };
+      let last = state[f.key];     // the value this control last showed from, or sent to, the state
+      const check = () => { const p = textProblem(f, input.value); show(p); return p; };
+      const commit = () => { if (!check() && input.value !== state[f.key]) { last = input.value; setParam(e, f.key, input.value, f.kind); } };
+      input.addEventListener('input', check);
+      input.addEventListener('change', commit);
+      input.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+        else if (ev.key === 'Escape') { input.value = state[f.key]; check(); }
+      });
+      // Another control changing leaves a half-typed entry alone; a new value in the state replaces it.
+      controls[f.key] = { sync: v => { if (v !== last) { last = v; input.value = v; check(); } } };
+      row = h('div', { class: 'row text-row' }, [h('label', { class: 'lbl', for: id, text: f.label }), h('span'), input, err]);
     } else if (f.type === 'action') {
       const btn = h('button', { type: 'button', class: 'btn small', id, text: f.label });
       btn.addEventListener('click', () => { try { e.inst.action && e.inst.action(f.key); } catch (err) { showError(err); } });
@@ -9960,6 +10322,7 @@ void main(){
     const st = e.state, parts = [];
     for (const f of e.mod.schema) {
       if (f.type === 'action') continue;
+      if (f.activeOnly && f.dimUnless && !f.dimUnless(st)) continue;
       const v = st[f.key];
       if (v === undefined) continue;
       let out;
@@ -11145,6 +11508,17 @@ void main(){
   const deg = v => v + '°';
   const signed2 = v => (v > 0 ? '+' : '') + v.toFixed(2);
 
+  // Custom field: u(x, y, t) and v(x, y, t) typed by the viewer, parsed by the shared expression
+  // language (never evaluated as code). x runs from -scale to +scale across the width, y upward from
+  // the centre, and t is the time slider. The default is the Taylor-Green vortex array.
+  const FIELD_SPEC = { vars: ['x', 'y', 't'] };
+  const FIELD_DEFAULTS = { fieldU: 'sin(pi*x)*cos(pi*y)', fieldV: '-cos(pi*x)*sin(pi*y)' };
+  const isCustom = s => s.fieldMode === 'custom';
+  const checkField = v => U.expr.check(v, FIELD_SPEC);
+  function compileField(text, fallback) {
+    try { return U.expr.compile(text, FIELD_SPEC); } catch (err) { return U.expr.compile(fallback, FIELD_SPEC); }
+  }
+
   const SCHEMA = [
     // ---- Canvas
     { group: 'Canvas', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, wrap: true,
@@ -11156,7 +11530,11 @@ void main(){
 
     // ---- Field
     { group: 'Field', key: 'fieldMode', label: 'Field', type: 'seg', kind: GEOM, wrap: true,
-      options: [['smooth', 'Smooth'], ['ridged', 'Ridged'], ['vortex', 'Vortex'], ['waves', 'Waves'], ['radial', 'Radial'], ['grid', 'Grid']] },
+      options: [['smooth', 'Smooth'], ['ridged', 'Ridged'], ['vortex', 'Vortex'], ['waves', 'Waves'], ['radial', 'Radial'], ['grid', 'Grid'], ['custom', 'Custom field']] },
+    { group: 'Field', key: 'fieldU', label: 'u(x, y, t) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkField, dimUnless: isCustom, activeOnly: true },
+    { group: 'Field', key: 'fieldV', label: 'v(x, y, t) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkField, dimUnless: isCustom, activeOnly: true },
+    { group: 'Field', key: 'fieldT', label: 'Time t in the custom field', type: 'range', kind: GEOM, min: 0, max: 10, step: 0.01, fmt: f2, dimUnless: isCustom, activeOnly: true,
+      hint: 'Custom field: strokes follow the direction of (u, v). x runs from -scale to +scale across the width and y upward from the centre. Operators + - * / ^, functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. A user-defined field is not validated.' },
     { group: 'Field', key: 'scale', label: 'Scale (features per canvas)', type: 'range', kind: GEOM, min: 0.2, max: 14, step: 0.1, fmt: f1 },
     { group: 'Field', key: 'octaves', label: 'Detail (octaves)', type: 'range', kind: GEOM, min: 1, max: 6, step: 1 },
     { group: 'Field', key: 'lacunarity', label: 'Lacunarity (octave spacing)', type: 'range', kind: GEOM, min: 1.5, max: 3.5, step: 0.05, fmt: f2 },
@@ -11246,8 +11624,8 @@ void main(){
 
   const DEFAULTS = Object.assign({
     aspectCustom: 1.25, offsetX: 0, offsetY: 0, fieldAlpha: 0.25, selfAvoid: true, autoFit: true,
-    shadowAngle: 135, shadowAlpha: 0.3, bgGradientAngle: 90,
-  }, PRESETS.studio.p, {
+    shadowAngle: 135, shadowAlpha: 0.3, bgGradientAngle: 90, fieldT: 0,
+  }, FIELD_DEFAULTS, PRESETS.studio.p, {
     animate: true, speed: 6, concurrent: 14, reveal: 'seed', animOrder: 'placed', fieldWhileDrawing: true,
   });
 
@@ -11278,8 +11656,22 @@ void main(){
     const noiseOff = rng() * 1000;
     const ox = P.offsetX * s, oy = P.offsetY * s;
 
-    // scalar noise sample with optional domain warping
+    // Custom field: the typed components at a point, in the viewer's coordinates (y up). Undefined
+    // values (log of a negative, 0/0) give NaN, which ends a stroke where the field is undefined.
+    const custom = isCustom(P);
+    const fu = custom ? compileField(P.fieldU, FIELD_DEFAULTS.fieldU) : null;
+    const fv = custom ? compileField(P.fieldV, FIELD_DEFAULTS.fieldV) : null;
+    const env = new Float64Array(3), unit = P.scale / (W / 2);
+    env[2] = P.fieldT;
+    function uv(x, y) { env[0] = (x - cx) * unit; env[1] = (cy - y) * unit; return [fu(env), fv(env)]; }
+
+    // scalar noise sample with optional domain warping; in the custom field, the speed |(u, v)| mapped
+    // to -1..1 with speed 1 in the middle, for coloring and width by field
     function sample(x, y) {
+      if (custom) {
+        const [u, v] = uv(x, y), q = u * u + v * v, n = (q - 1) / (q + 1);
+        return n === n ? n : 0;
+      }
       let nx = x * s + noiseOff + ox, ny = y * s + noiseOff + oy;
       if (P.warp > 0) {
         const qx = noise.fbm(nx + 5.2, ny + 1.3, 2, lac, gain);
@@ -11289,6 +11681,7 @@ void main(){
       return noise.fbm(nx, ny, oct, lac, gain);       // roughly -1..1
     }
     function field(x, y) {
+      if (custom) { const [u, v] = uv(x, y); return rot + Math.atan2(-v, u); }
       const n = sample(x, y);
       switch (P.fieldMode) {
         case 'ridged': return rot + (1 - 2 * Math.abs(n)) * turb * Math.PI;
@@ -11474,6 +11867,7 @@ void main(){
         default: cidx = Math.floor(rng() * n);
       }
       cidx = Math.min(n - 1, Math.max(0, cidx));
+      if (cidx !== cidx) cidx = 0;       // an undefined custom field at the start point
 
       // per-point profile noise for width variation, computed once here so it is seed-stable
       const prof = new Float32Array(pts.length);
@@ -11490,7 +11884,7 @@ void main(){
       dry = 0;
     }
 
-    return { strokes, W, H, frame, clip: P.bleed ? null : frame, totalPts, fieldSamples, target, full: strokes.length < target };
+    return { strokes, W, H, frame, clip: P.bleed ? null : frame, totalPts, fieldSamples, target, full: strokes.length < target, custom };
   }
 
   // Build the piece; when the requested count does not fit, shrink widths (and spacing) until it does
@@ -11803,7 +12197,13 @@ void main(){
           (pc.fitScale < 1 ? ' <span title="Widths and spacing were scaled down so the requested count would fit">(widths ×' + pc.fitScale.toFixed(2) + ' to fit)</span>' : '') +
         '</span>' +
         '<span>' + pc.W + '×' + pc.H + ' units</span>' +
+        (pc.custom ? customSpan(host.getState()) : '') +
         '<span>' + pc.ms + ' ms</span>');
+    }
+    // The typed field is shown only as escaped text, in a tooltip, and makes no claim.
+    function customSpan(P) {
+      const tip = 'u = ' + P.fieldU + ', v = ' + P.fieldV + ', t = ' + P.fieldT;
+      return '<span title="' + U.escapeHtml(tip) + '">custom field · user-defined, not validated</span>';
     }
     function stopAnim() {
       if (anim) { cancelAnimationFrame(anim.raf); anim = null; }
@@ -11939,12 +12339,14 @@ void main(){
   }
 
   Studio.register({
-    id: 'flow', name: 'Flow Field', subtitle: 'collision-avoiding strokes in a noise field · 1985', equation: 'theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)', credit: "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.", order: 70,
+    id: 'flow', name: 'Flow Field', subtitle: 'collision-avoiding strokes in a noise field · 1985', equation: 'theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)', credit: "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).", order: 70,
     blurb: 'A flow field assigns a direction to every point of the plane, here from fractal Perlin noise (summed octaves, ' +
       'optionally warped through itself) or from analytic vortex, radial, wave and lane fields. Strokes are particles integrated ' +
       'through that field one step at a time; a spatial hash lets each one stop the moment it would touch a neighbor, so the ' +
       'picture packs itself like a river braids or a bundle of fibres settles. Widths come from a geometric series of size ' +
-      'classes, and everything lives in a 1000-unit virtual canvas so a seed reproduces identically at any export size.',
+      'classes, and everything lives in a 1000-unit virtual canvas so a seed reproduces identically at any export size. ' +
+      'Custom field lets you type the two components u and v of your own vector field; the strokes follow its direction. ' +
+      'The formulas travel in the link, and a field you type is yours to judge: nothing checks it against theory.',
     schema: SCHEMA,
     defaults: DEFAULTS,
     presets: PRESETS,
@@ -14269,8 +14671,8 @@ void main(){
   }
   function flowSys(name, n, def, dt, view, roll, start, der) {
     return { name, kind: 'flow', n, def, dt, view, roll, start,
-      make: (co, h, yaw, pitch) => {
-        const step = rk4(der(co.a, co.b, co.c, co.d), h);
+      make: (co, h, yaw, pitch, rng, s) => {
+        const step = rk4(der(co.a, co.b, co.c, co.d, s), h);
         const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
         return st => {
           step(st);
@@ -14282,6 +14684,22 @@ void main(){
       } };
   }
   const j = (r, w) => (r() - 0.5) * w;
+
+  /* Custom ODE: dx/dt, dy/dt, dz/dt typed by the viewer in x, y, z and the coefficients a, b, c, d,
+     parsed by the shared expression language (never evaluated as code) and integrated with the same
+     RK4 step as every other flow here. The default is the Lorenz system written out, so the mode
+     opens on a known picture. A trajectory that leaves |x|, |y|, |z| < 1e6 or becomes undefined stops
+     the plate: the divergence guard reports it instead of silently restarting the walker. */
+  const ODE_SPEC = { vars: ['x', 'y', 'z'], params: ['a', 'b', 'c', 'd'] };
+  // Lorenz with its classical constants written in, so a link that picks the custom system without naming
+  // a, b and c still runs the Lorenz attractor instead of the tab's map coefficients, which diverge here.
+  const ODE_DEFAULTS = { odeX: '10*(y - x)', odeY: 'x*(28 - z) - y', odeZ: 'x*y - 8/3*z' };
+  const ODE_LIMIT = 1e6;
+  const checkOde = v => U.expr.check(v, ODE_SPEC);
+  function compileOde(text, fallback) {
+    try { return U.expr.compile(text, ODE_SPEC); } catch (err) { return U.expr.compile(fallback, ODE_SPEC); }
+  }
+  const sane = st => Math.abs(st[0]) < ODE_LIMIT && Math.abs(st[1]) < ODE_LIMIT && Math.abs(st[2]) < ODE_LIMIT;
 
   const SYSTEMS = {
     clifford: mapSys('Clifford', 4, { a: -1.4, b: 1.6, c: 1.0, d: 0.7 },
@@ -14375,6 +14793,16 @@ void main(){
       },
     },
   };
+  SYSTEMS.custom = Object.assign(flowSys('Custom ODE', 4, { a: 10, b: 28, c: 2.667, d: 0 }, 0.002, { yaw: 0, pitch: 0 },
+    // Reroll nudges the current coefficients by up to 15 per cent; random ones would mostly diverge.
+    (r, s) => ({ a: s.a * (1 + r.range(-0.15, 0.15)), b: s.b * (1 + r.range(-0.15, 0.15)), c: s.c * (1 + r.range(-0.15, 0.15)), d: s.d * (1 + r.range(-0.15, 0.15)) }),
+    (st, r) => { st[0] = r.range(-1, 1); st[1] = r.range(-1, 1); st[2] = r.range(-1, 1); },
+    (a, b, c, d, s) => {
+      const fx = compileOde(s.odeX, ODE_DEFAULTS.odeX), fy = compileOde(s.odeY, ODE_DEFAULTS.odeY), fz = compileOde(s.odeZ, ODE_DEFAULTS.odeZ);
+      const env = new Float64Array(7);
+      env[3] = a; env[4] = b; env[5] = c; env[6] = d;
+      return (x, y, z, k, o) => { env[0] = x; env[1] = y; env[2] = z; k[o] = fx(env); k[o + 1] = fy(env); k[o + 2] = fz(env); };
+    }), { custom: true });
   const SYS_KEYS = Object.keys(SYSTEMS);
 
   function resetWalker(sys, st, rng) {
@@ -14383,23 +14811,23 @@ void main(){
     st[4] = st[5] = st[6] = st[7] = 0;
   }
   function makeAdv(sys, co, s, rng) {
-    return sys.make(co, s.dt, s.yaw * TAU / 360, s.pitch * TAU / 360, rng);
+    return sys.make(co, s.dt, s.yaw * TAU / 360, s.pitch * TAU / 360, rng, s);
   }
   const bounded = st => st[4] * st[4] + st[5] * st[5] < 1e12;   // false for NaN too
 
   /* Quick quality check for rolled coefficients: bounded, not a fixed point / short cycle, not drifting away, not needle-thin. */
-  function probe(sysKey, co, rng) {
+  function probe(sysKey, co, rng, state) {
     const sys = SYSTEMS[sysKey];
     if (sys.kind === 'harm') return true;
-    const s = { dt: sys.dt * (sys.kind === 'flow' ? 3 : 1), yaw: 0, pitch: 0 };
+    const s = Object.assign({}, state, { dt: sys.dt * (sys.kind === 'flow' ? 3 : 1), yaw: 0, pitch: 0 });
     const adv = makeAdv(sys, co, s, rng);
     const nw = sys.kind === 'flow' ? 3 : 1, per = sys.kind === 'flow' ? 1500 : 4000;
     const xs = new Float64Array(nw * per), ys = new Float64Array(nw * per);
     let m = 0;
     for (let w = 0; w < nw; w++) {
       const st = new Float64Array(8); resetWalker(sys, st, rng);
-      for (let k = 0; k < 300; k++) { adv(st); if (!bounded(st)) return false; }
-      for (let k = 0; k < per; k++) { adv(st); if (!bounded(st) || Math.abs(st[4]) > 1e5 || Math.abs(st[5]) > 1e5) return false; xs[m] = st[4]; ys[m] = st[5]; m++; }
+      for (let k = 0; k < 300; k++) { adv(st); if (!bounded(st) || (sys.custom && !sane(st))) return false; }
+      for (let k = 0; k < per; k++) { adv(st); if (!bounded(st) || (sys.custom && !sane(st)) || Math.abs(st[4]) > 1e5 || Math.abs(st[5]) > 1e5) return false; xs[m] = st[4]; ys[m] = st[5]; m++; }
     }
     const box = (lo, hi) => { let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; for (let i = lo; i < hi; i++) { if (xs[i] < x0) x0 = xs[i]; if (xs[i] > x1) x1 = xs[i]; if (ys[i] < y0) y0 = ys[i]; if (ys[i] > y1) y1 = ys[i]; } return [x0, x1, y0, y1]; };
     const all = box(0, m), w = all[1] - all[0], h = all[3] - all[2];
@@ -14417,14 +14845,14 @@ void main(){
     }
     return filled >= G * G * 0.045;
   }
-  function rollCoeffs(sysKey, rng) {
+  function rollCoeffs(sysKey, rng, state) {
     const sys = SYSTEMS[sysKey];
     for (let t = 0; t < 60; t++) {
-      const co = sys.roll(rng);
+      const co = sys.roll(rng, state);
       for (const k in co) co[k] = Math.round(co[k] * 1000) / 1000;
-      if (probe(sysKey, co, rng)) return co;
+      if (probe(sysKey, co, rng, state)) return co;
     }
-    return Object.assign({}, sys.def);
+    return sys.custom ? { a: state.a, b: state.b, c: state.c, d: state.d } : Object.assign({}, sys.def);
   }
 
   /* ================================================================
@@ -14432,9 +14860,14 @@ void main(){
   ================================================================ */
   const sysOf = s => SYSTEMS[s.system] || SYSTEMS.clifford;
   const isFlow = s => sysOf(s).kind === 'flow';
+  const isCustom = s => s.system === 'custom';
   const schema = [
     { group: 'System', key: 'system', label: 'System', type: 'seg', kind: 'geom', wrap: true,
       options: SYS_KEYS.map(k => [k, SYSTEMS[k].name]) },
+    { group: 'System', key: 'odeX', label: 'dx/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true },
+    { group: 'System', key: 'odeY', label: 'dy/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true },
+    { group: 'System', key: 'odeZ', label: 'dz/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true,
+      hint: 'Custom ODE: right-hand sides in x, y, z and the coefficients a, b, c, d below, integrated with the same RK4 step as the other flows. Functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. A trajectory that passes 1e6 or becomes undefined stops the plate. A user-defined system is not validated.' },
     { group: 'System', key: 'a', label: 'a', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3 },
     { group: 'System', key: 'b', label: 'b', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3, dimUnless: s => sysOf(s).n >= 2 },
     { group: 'System', key: 'c', label: 'c', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3, dimUnless: s => sysOf(s).n >= 3 },
@@ -14470,6 +14903,7 @@ void main(){
 
   const defaults = {
     system: 'clifford', a: -1.4, b: 1.6, c: 1.0, d: 0.7, dt: 0.01, burnIn: 500,
+    odeX: ODE_DEFAULTS.odeX, odeY: ODE_DEFAULTS.odeY, odeZ: ODE_DEFAULTS.odeZ,
     points: 4000000, ppf: 150000,
     zoom: 1, offsetX: 0, offsetY: 0, rotation: 0, yaw: 0, pitch: 0, aspect: '1:1', res: '1200',
     tone: 'log', exposure: 1, gamma: 1, colorMode: 'density', colorMix: 0.6, blur: 0, sortRamp: false, invert: false,
@@ -14576,13 +15010,21 @@ void main(){
     for (let i = 0; i < nw; i++) { const st = new Float64Array(8); resetWalker(sys, st, rng); walkers.push(st); }
     const rot = s.rotation * TAU / 360;
     const A = {
-      sys, adv, walkers, rng, W, H, N: W * H,
+      sys, adv, walkers, rng, W, H, N: W * H, guard: !!sys.custom, diverged: null,
       dens: new Float32Array(W * H), col: new Float32Array(W * H), count: 0,
       colorMode: s.colorMode === 'velocity' ? 1 : s.colorMode === 'direction' ? 2 : 0,
       cr: Math.cos(rot), sr: Math.sin(rot), fs: 1, cx: 0, cy: 0, ox: W / 2, oy: H / 2,
     };
     const burn = sys.kind === 'harm' ? 0 : s.burnIn;
-    for (const st of walkers) for (let k = 0; k < burn; k++) { adv(st); if (!bounded(st)) resetWalker(sys, st, rng); }
+    for (const st of walkers) {
+      for (let k = 0; k < burn && !A.diverged; k++) {
+        adv(st);
+        if (!bounded(st) || (A.guard && !sane(st))) {
+          if (A.guard) A.diverged = 'during burn-in';
+          else resetWalker(sys, st, rng);
+        }
+      }
+    }
     frameAcc(A, s);
     return A;
   }
@@ -14594,9 +15036,12 @@ void main(){
     const xs = new Float64Array(n), ys = new Float64Array(n);
     let m = 0;
     for (const st of walkers) {
-      for (let k = 0; k < per && m < n; k++) {
+      for (let k = 0; k < per && m < n && !A.diverged; k++) {
         adv(st);
-        if (!bounded(st)) { resetWalker(sys, st, rng); continue; }
+        if (!bounded(st) || (A.guard && !sane(st))) {
+          if (A.guard) { A.diverged = 'while framing'; break; }
+          resetWalker(sys, st, rng); continue;
+        }
         const X = st[4], Y = st[5];
         xs[m] = X * cr - Y * sr; ys[m] = X * sr + Y * cr; m++;
       }
@@ -14616,13 +15061,17 @@ void main(){
 
   /* Iterate n more points into the buffers (round-robin over walkers). */
   function accumulate(A, n) {
-    const { sys, adv, walkers, rng, W, H, dens, col, fs, cx, cy, ox, oy, cr, sr, colorMode } = A;
+    const { sys, adv, walkers, rng, W, H, dens, col, fs, cx, cy, ox, oy, cr, sr, colorMode, guard } = A;
+    if (A.diverged) return;
     const per = Math.ceil(n / walkers.length), INV_TAU = 1 / TAU;
     for (const st of walkers) {
       let pxr = st[6], pyr = st[7];
       for (let k = 0; k < per; k++) {
         adv(st);
-        if (!bounded(st)) { resetWalker(sys, st, rng); pxr = 0; pyr = 0; continue; }
+        if (!bounded(st) || (guard && !sane(st))) {
+          if (guard) { A.diverged = 'after ' + fmtM(A.count) + ' points'; return; }
+          resetWalker(sys, st, rng); pxr = 0; pyr = 0; continue;
+        }
         const X = st[4], Y = st[5];
         const xr = X * cr - Y * sr, yr = X * sr + Y * cr;
         const fx = (xr - cx) * fs + ox, fy = oy - (yr - cy) * fs;
@@ -14690,8 +15139,8 @@ void main(){
      module
   ================================================================ */
   Studio.register({
-    id: 'attractors', name: 'Attractors', subtitle: 'strange attractors and harmonographs as density maps · 1963', equation: 'x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map', credit: "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.", order: 90,
-    blurb: 'A strange attractor is the shape a chaotic system keeps returning to: iterate a simple map or integrate a small set of differential equations, and although no two steps ever repeat, the orbit is confined to a folded, fractal set. Counting how often the orbit lands on each pixel turns that set into a density map — the bright veins are the folds where the dynamics pile up. Harmonographs are the mechanical cousin: damped pendulums summed into a pen path, tracing Lissajous curves that slowly drift as the frequencies beat against each other.',
+    id: 'attractors', name: 'Attractors', subtitle: 'strange attractors and harmonographs as density maps · 1963', equation: 'x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map', credit: "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).", order: 90,
+    blurb: 'A strange attractor is the shape a chaotic system keeps returning to: iterate a simple map or integrate a small set of differential equations, and although no two steps ever repeat, the orbit is confined to a folded, fractal set. Counting how often the orbit lands on each pixel turns that set into a density map — the bright veins are the folds where the dynamics pile up. Harmonographs are the mechanical cousin: damped pendulums summed into a pen path, tracing Lissajous curves that slowly drift as the frequencies beat against each other. Custom ODE lets you type the three right-hand sides of your own flow, which opens on the Lorenz equations written out; the equations travel in the link, and nothing checks a system you type against theory.',
     schema, defaults, presets,
     hints: {
       System: 'Coefficients mean different things per system. Clifford, De Jong, Svensson, Tinkerbell, Ikeda and Aizawa use all four; Gumowski-Mira uses a (μ), b (α), c (σ); Hopalong a, b, c; Lorenz a = σ, b = ρ, c = β; Rössler a, b, c; Bedhead a, b; Thomas and Halvorsen only a. Harmonograph: a = frequency ratio, b = detune, c = damping, d = phase. Unused coefficients are dimmed. Reroll draws a new set from the seed and keeps only sets that pass a quick “is it interesting” test.',
@@ -14746,8 +15195,17 @@ void main(){
         ctx.fillStyle = host.getState().bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
+      // A custom system says it is user-defined and makes no claim; a diverged one says where it stopped.
+      // The typed equations appear only as escaped text in a tooltip.
       function status(s) {
-        host.setStatus('<span><b>' + fmtM(Math.min(A.count, s.points)) + '</b> / ' + fmtM(s.points) + ' points</span><span>' + A.sys.name + (done ? ' · done' : '') + '</span>');
+        let tail = '';
+        if (A.sys.custom) {
+          const tip = U.escapeHtml('dx/dt = ' + s.odeX + ', dy/dt = ' + s.odeY + ', dz/dt = ' + s.odeZ);
+          tail = A.diverged
+            ? '<span title="' + tip + '">diverged ' + A.diverged + ': a coordinate passed 1e6 or became undefined · stopped</span>'
+            : '<span title="' + tip + '">user-defined, not validated</span>';
+        }
+        host.setStatus('<span><b>' + fmtM(Math.min(A.count, s.points)) + '</b> / ' + fmtM(s.points) + ' points</span><span>' + A.sys.name + (A.diverged ? '' : done ? ' · done' : '') + '</span>' + tail);
       }
       function draw() {
         const s = host.getState();
@@ -14762,7 +15220,7 @@ void main(){
       function accumulateFor(budgetMs, maxPoints) {
         const t0 = performance.now();
         let n = 0;
-        while (n < maxPoints) {
+        while (n < maxPoints && !A.diverged) {
           const step = Math.min(CHUNK, maxPoints - n);
           accumulate(A, step); n += step;
           if (performance.now() - t0 > budgetMs) break;
@@ -14774,7 +15232,7 @@ void main(){
         const s = host.getState();
         const remaining = s.points - A.count;
         if (remaining > 0) accumulateFor(FRAME_BUDGET_MS, Math.min(s.ppf, remaining));
-        done = A.count >= s.points;
+        done = A.count >= s.points || !!A.diverged;
         if (done || performance.now() >= nextDrawAt) draw();
         if (!done && host.isActive()) raf = requestAnimationFrame(frame);
       }
@@ -14807,11 +15265,11 @@ void main(){
           done = false;
           if (host.reducedMotion()) {
             const t0 = performance.now();
-            while (A.count < s.points && performance.now() - t0 < REDUCED_MOTION_BUDGET_MS) accumulate(A, Math.min(1e6, s.points - A.count));
+            while (A.count < s.points && !A.diverged && performance.now() - t0 < REDUCED_MOTION_BUDGET_MS) accumulate(A, Math.min(1e6, s.points - A.count));
             done = true;
           } else {
             accumulateFor(FRAME_BUDGET_MS * 2, Math.min(s.ppf, s.points));
-            done = A.count >= s.points;
+            done = A.count >= s.points || !!A.diverged;
           }
           draw();
           start();
@@ -14820,7 +15278,7 @@ void main(){
         live(key) {
           if (key === 'points' && A) {
             const s = host.getState();
-            done = A.count >= s.points;
+            done = A.count >= s.points || !!A.diverged;
             status(s);
             if (!done && !raf) start();
           }
@@ -14832,7 +15290,7 @@ void main(){
           if (key !== 'reroll') return;
           const s = host.getState();
           rollIndex++;
-          const co = rollCoeffs(s.system, U.makeRng(s.seed + '/roll/' + rollIndex));
+          const co = rollCoeffs(s.system, U.makeRng(s.seed + '/roll/' + rollIndex), s);
           if (!applyCoeffs(co)) this.regenerate();
         },
         async exportPNG(w, h) {
@@ -14850,7 +15308,7 @@ void main(){
             inst.exportNote = want > EXPORT_CAP
               ? ' Point budget capped at ' + EXPORT_CAP.toLocaleString() + ' for this sheet (asked for ' + Math.round(want).toLocaleString() + ').'
               : '';
-            while (E.count < target) {
+            while (E.count < target && !E.diverged) {
               accumulate(E, Math.min(1e6, target - E.count));
               await new Promise(r => setTimeout(r, 0));
             }

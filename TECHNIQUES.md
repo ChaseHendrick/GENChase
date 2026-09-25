@@ -313,7 +313,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Tennis Racket**. L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.
 
-**Flow Field**. Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.
+**Flow Field**. Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).
 
 **Chemotaxis**. Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.
 
@@ -329,7 +329,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Shallow Water**. A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.
 
-**Attractors**. Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.
+**Attractors**. Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).
 
 **Airy Beam**. M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.
 

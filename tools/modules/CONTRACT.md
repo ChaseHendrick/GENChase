@@ -46,7 +46,14 @@ Schema entries:
 { group, key, label, type: 'seg', kind, options: [[value, 'Label'], ...], wrap?: true, hint? }
 { group, key, label, type: 'toggle', kind, hint? }
 { group, key, label, type: 'action' }     // instance.action(key) is called
+{ group, key, label, type: 'text', kind, maxLength?, validate?(value) -> null | { message, pos }, activeOnly?, hint? }
 ```
+
+A `text` control holds typed text such as a formula. Parse formulas with `U.expr` (`src/shared/expr.js`),
+never with `eval` or `new Function`, which `tools/lint.js` rejects in `src/`. The shell commits only text
+that `validate` accepts and replaces an invalid value from a link with the default. `activeOnly: true`
+keeps a control out of the caption while `dimUnless` is false. A mode built on typed formulas is
+user-defined: say so on the status line and print no comparison with theory in it.
 
 `kind` is `'geom'` (regenerate), `'paint'` (repaint only) or `'live'` (instance.live(key) while running). Copy the `RANGE(group, key, label, kind, min, max, step, fmt, extra)` helper from the pde block. The shell's own `sanitize` clamps ranges, validates seg values and coerces toggles before calling yours. Every key in `defaults` must be either in the schema or a deliberate hidden key.
 
@@ -115,7 +122,11 @@ exportData()       -> Promise<{ arrays: { name: { data, shape, units?, descripti
 
 ## Util (`U = Studio.util`)
 
-`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob, stats`.
+`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob, stats, expr`.
+
+`U.expr` is the expression language: `check(text, { vars, params })` returns `null` or `{ message, pos }`,
+`compile(text, spec)` returns `fn(env)` with the variables then the parameters in spec order, and
+`toGLSL(text, spec, { rename })` writes whitelisted GLSL.
 
 `U.stats` is the uncertainty harness (`src/shared/stats.js`): `compare(record)` builds a status-line comparison span; `seriesMean(x)` and `tauInt(x)` for a correlated time series; `fieldMean(values, W, H)` for one correlated field; `blocking`, `blockBootstrap(x, stat, { seed })`, `slopeBootstrap(xs, ys, { seed })`, `sampleMean`, `ensemble`, `hill(values, k)`. Seed every resampling with `s.seed + '/<tag>'`.
 

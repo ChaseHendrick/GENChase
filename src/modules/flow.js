@@ -15,6 +15,17 @@
   const deg = v => v + '°';
   const signed2 = v => (v > 0 ? '+' : '') + v.toFixed(2);
 
+  // Custom field: u(x, y, t) and v(x, y, t) typed by the viewer, parsed by the shared expression
+  // language (never evaluated as code). x runs from -scale to +scale across the width, y upward from
+  // the centre, and t is the time slider. The default is the Taylor-Green vortex array.
+  const FIELD_SPEC = { vars: ['x', 'y', 't'] };
+  const FIELD_DEFAULTS = { fieldU: 'sin(pi*x)*cos(pi*y)', fieldV: '-cos(pi*x)*sin(pi*y)' };
+  const isCustom = s => s.fieldMode === 'custom';
+  const checkField = v => U.expr.check(v, FIELD_SPEC);
+  function compileField(text, fallback) {
+    try { return U.expr.compile(text, FIELD_SPEC); } catch (err) { return U.expr.compile(fallback, FIELD_SPEC); }
+  }
+
   const SCHEMA = [
     // ---- Canvas
     { group: 'Canvas', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, wrap: true,
@@ -26,7 +37,11 @@
 
     // ---- Field
     { group: 'Field', key: 'fieldMode', label: 'Field', type: 'seg', kind: GEOM, wrap: true,
-      options: [['smooth', 'Smooth'], ['ridged', 'Ridged'], ['vortex', 'Vortex'], ['waves', 'Waves'], ['radial', 'Radial'], ['grid', 'Grid']] },
+      options: [['smooth', 'Smooth'], ['ridged', 'Ridged'], ['vortex', 'Vortex'], ['waves', 'Waves'], ['radial', 'Radial'], ['grid', 'Grid'], ['custom', 'Custom field']] },
+    { group: 'Field', key: 'fieldU', label: 'u(x, y, t) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkField, dimUnless: isCustom, activeOnly: true },
+    { group: 'Field', key: 'fieldV', label: 'v(x, y, t) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkField, dimUnless: isCustom, activeOnly: true },
+    { group: 'Field', key: 'fieldT', label: 'Time t in the custom field', type: 'range', kind: GEOM, min: 0, max: 10, step: 0.01, fmt: f2, dimUnless: isCustom, activeOnly: true,
+      hint: 'Custom field: strokes follow the direction of (u, v). x runs from -scale to +scale across the width and y upward from the centre. Operators + - * / ^, functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. A user-defined field is not validated.' },
     { group: 'Field', key: 'scale', label: 'Scale (features per canvas)', type: 'range', kind: GEOM, min: 0.2, max: 14, step: 0.1, fmt: f1 },
     { group: 'Field', key: 'octaves', label: 'Detail (octaves)', type: 'range', kind: GEOM, min: 1, max: 6, step: 1 },
     { group: 'Field', key: 'lacunarity', label: 'Lacunarity (octave spacing)', type: 'range', kind: GEOM, min: 1.5, max: 3.5, step: 0.05, fmt: f2 },
@@ -116,8 +131,8 @@
 
   const DEFAULTS = Object.assign({
     aspectCustom: 1.25, offsetX: 0, offsetY: 0, fieldAlpha: 0.25, selfAvoid: true, autoFit: true,
-    shadowAngle: 135, shadowAlpha: 0.3, bgGradientAngle: 90,
-  }, PRESETS.studio.p, {
+    shadowAngle: 135, shadowAlpha: 0.3, bgGradientAngle: 90, fieldT: 0,
+  }, FIELD_DEFAULTS, PRESETS.studio.p, {
     animate: true, speed: 6, concurrent: 14, reveal: 'seed', animOrder: 'placed', fieldWhileDrawing: true,
   });
 
@@ -148,8 +163,22 @@
     const noiseOff = rng() * 1000;
     const ox = P.offsetX * s, oy = P.offsetY * s;
 
-    // scalar noise sample with optional domain warping
+    // Custom field: the typed components at a point, in the viewer's coordinates (y up). Undefined
+    // values (log of a negative, 0/0) give NaN, which ends a stroke where the field is undefined.
+    const custom = isCustom(P);
+    const fu = custom ? compileField(P.fieldU, FIELD_DEFAULTS.fieldU) : null;
+    const fv = custom ? compileField(P.fieldV, FIELD_DEFAULTS.fieldV) : null;
+    const env = new Float64Array(3), unit = P.scale / (W / 2);
+    env[2] = P.fieldT;
+    function uv(x, y) { env[0] = (x - cx) * unit; env[1] = (cy - y) * unit; return [fu(env), fv(env)]; }
+
+    // scalar noise sample with optional domain warping; in the custom field, the speed |(u, v)| mapped
+    // to -1..1 with speed 1 in the middle, for coloring and width by field
     function sample(x, y) {
+      if (custom) {
+        const [u, v] = uv(x, y), q = u * u + v * v, n = (q - 1) / (q + 1);
+        return n === n ? n : 0;
+      }
       let nx = x * s + noiseOff + ox, ny = y * s + noiseOff + oy;
       if (P.warp > 0) {
         const qx = noise.fbm(nx + 5.2, ny + 1.3, 2, lac, gain);
@@ -159,6 +188,7 @@
       return noise.fbm(nx, ny, oct, lac, gain);       // roughly -1..1
     }
     function field(x, y) {
+      if (custom) { const [u, v] = uv(x, y); return rot + Math.atan2(-v, u); }
       const n = sample(x, y);
       switch (P.fieldMode) {
         case 'ridged': return rot + (1 - 2 * Math.abs(n)) * turb * Math.PI;
@@ -344,6 +374,7 @@
         default: cidx = Math.floor(rng() * n);
       }
       cidx = Math.min(n - 1, Math.max(0, cidx));
+      if (cidx !== cidx) cidx = 0;       // an undefined custom field at the start point
 
       // per-point profile noise for width variation, computed once here so it is seed-stable
       const prof = new Float32Array(pts.length);
@@ -360,7 +391,7 @@
       dry = 0;
     }
 
-    return { strokes, W, H, frame, clip: P.bleed ? null : frame, totalPts, fieldSamples, target, full: strokes.length < target };
+    return { strokes, W, H, frame, clip: P.bleed ? null : frame, totalPts, fieldSamples, target, full: strokes.length < target, custom };
   }
 
   // Build the piece; when the requested count does not fit, shrink widths (and spacing) until it does
@@ -673,7 +704,13 @@
           (pc.fitScale < 1 ? ' <span title="Widths and spacing were scaled down so the requested count would fit">(widths ×' + pc.fitScale.toFixed(2) + ' to fit)</span>' : '') +
         '</span>' +
         '<span>' + pc.W + '×' + pc.H + ' units</span>' +
+        (pc.custom ? customSpan(host.getState()) : '') +
         '<span>' + pc.ms + ' ms</span>');
+    }
+    // The typed field is shown only as escaped text, in a tooltip, and makes no claim.
+    function customSpan(P) {
+      const tip = 'u = ' + P.fieldU + ', v = ' + P.fieldV + ', t = ' + P.fieldT;
+      return '<span title="' + U.escapeHtml(tip) + '">custom field · user-defined, not validated</span>';
     }
     function stopAnim() {
       if (anim) { cancelAnimationFrame(anim.raf); anim = null; }
@@ -809,12 +846,14 @@
   }
 
   Studio.register({
-    id: 'flow', name: 'Flow Field', subtitle: 'collision-avoiding strokes in a noise field · 1985', equation: 'theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)', credit: "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.", order: 70,
+    id: 'flow', name: 'Flow Field', subtitle: 'collision-avoiding strokes in a noise field · 1985', equation: 'theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)', credit: "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).", order: 70,
     blurb: 'A flow field assigns a direction to every point of the plane, here from fractal Perlin noise (summed octaves, ' +
       'optionally warped through itself) or from analytic vortex, radial, wave and lane fields. Strokes are particles integrated ' +
       'through that field one step at a time; a spatial hash lets each one stop the moment it would touch a neighbor, so the ' +
       'picture packs itself like a river braids or a bundle of fibres settles. Widths come from a geometric series of size ' +
-      'classes, and everything lives in a 1000-unit virtual canvas so a seed reproduces identically at any export size.',
+      'classes, and everything lives in a 1000-unit virtual canvas so a seed reproduces identically at any export size. ' +
+      'Custom field lets you type the two components u and v of your own vector field; the strokes follow its direction. ' +
+      'The formulas travel in the link, and a field you type is yours to judge: nothing checks it against theory.',
     schema: SCHEMA,
     defaults: DEFAULTS,
     presets: PRESETS,

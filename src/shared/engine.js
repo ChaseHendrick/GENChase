@@ -188,7 +188,9 @@
   // stats is the shared uncertainty harness (src/shared/stats.js). A status line that prints a measured
   // number against theory builds that span with util.stats.compare(), which refuses to print a
   // comparison without an error bar or a stated basis; tools/lint.js checks the modules use it.
-  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats };
+  // expr is the shared expression language (src/shared/expr.js): formulas a person types are parsed
+  // into a tree and compiled to closures, never evaluated as code.
+  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats, expr: window.GenChaseExpr };
 
   /* ================================================================
      gl — small WebGL2 helper for fullscreen-pass simulations
@@ -913,6 +915,20 @@ void main(){
     return out;
   }
 
+  // A text control's value is a string of at most maxLength characters (256 when unset) that the
+  // field's own validate(value) accepts. Returns null when it is fine, otherwise { message, pos }.
+  // A recipe whose text fails is given the default, so a hand-edited link cannot crash a plate.
+  function textProblem(f, v) {
+    const max = f.maxLength || 256;
+    if (typeof v !== 'string') return { message: 'expected text', pos: 0 };
+    if (v.length > max) return { message: 'longer than ' + max + ' characters', pos: max };
+    if (!f.validate) return null;
+    try {
+      const p = f.validate(v);
+      return p ? { message: String(p.message || 'invalid'), pos: Number.isInteger(p.pos) ? p.pos : 0 } : null;
+    } catch (err) { return { message: 'could not be checked', pos: 0 }; }
+  }
+
   function sanitize(mod, s) {
     const src = own(s);
     const out = Object.assign({}, mod.defaults, legacyFill(mod, src), src);
@@ -933,6 +949,7 @@ void main(){
           out[f.key] = loose ? loose[0] : mod.defaults[f.key];
         }
       } else if (f.type === 'toggle') out[f.key] = !!out[f.key];
+      else if (f.type === 'text') out[f.key] = textProblem(f, out[f.key]) ? mod.defaults[f.key] : out[f.key];
     }
     if (mod.palette) {
       const dp = typeof mod.defaultPalette === 'string' ? PALETTES[mod.defaultPalette] : (mod.defaultPalette || PALETTES.kiln);
@@ -2080,6 +2097,37 @@ void main(){
       sw.addEventListener('click', () => setParam(e, f.key, !state[f.key], f.kind));
       controls[f.key] = { sync: v => sw.setAttribute('aria-checked', String(!!v)) };
       row = h('div', { class: 'toggle' }, [h('label', { class: 'lbl', for: id, text: f.label }), sw]);
+    } else if (f.type === 'text') {
+      // Typed text is checked on every keystroke and committed on Enter or blur only when it is valid,
+      // so the plate and the recipe keep the last valid value. The problem and its column are shown
+      // with textContent; nothing the person typed is ever parsed as HTML.
+      const input = h('input', { type: 'text', id, class: 'text-input', spellcheck: 'false', autocomplete: 'off', autocapitalize: 'off', 'aria-label': f.label });
+      input.value = state[f.key];
+      if (f.placeholder) input.placeholder = f.placeholder;
+      const err = h('div', { class: 'text-error', id: id + '-error', role: 'status', 'aria-live': 'polite' });
+      err.hidden = true;
+      const show = p => {
+        input.setAttribute('aria-invalid', String(!!p));
+        err.hidden = !p;
+        err.textContent = '';
+        if (!p) return;
+        const at = Math.max(0, Math.min(p.pos, input.value.length));
+        err.appendChild(h('span', { text: p.message + ' (column ' + (at + 1) + ')' }));
+        err.appendChild(h('code', { text: input.value.slice(Math.max(0, at - 40), at + 40) }));
+        err.appendChild(h('code', { class: 'caret', text: ' '.repeat(Math.min(at, 40)) + '^' }));
+      };
+      let last = state[f.key];     // the value this control last showed from, or sent to, the state
+      const check = () => { const p = textProblem(f, input.value); show(p); return p; };
+      const commit = () => { if (!check() && input.value !== state[f.key]) { last = input.value; setParam(e, f.key, input.value, f.kind); } };
+      input.addEventListener('input', check);
+      input.addEventListener('change', commit);
+      input.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+        else if (ev.key === 'Escape') { input.value = state[f.key]; check(); }
+      });
+      // Another control changing leaves a half-typed entry alone; a new value in the state replaces it.
+      controls[f.key] = { sync: v => { if (v !== last) { last = v; input.value = v; check(); } } };
+      row = h('div', { class: 'row text-row' }, [h('label', { class: 'lbl', for: id, text: f.label }), h('span'), input, err]);
     } else if (f.type === 'action') {
       const btn = h('button', { type: 'button', class: 'btn small', id, text: f.label });
       btn.addEventListener('click', () => { try { e.inst.action && e.inst.action(f.key); } catch (err) { showError(err); } });
@@ -2572,6 +2620,7 @@ void main(){
     const st = e.state, parts = [];
     for (const f of e.mod.schema) {
       if (f.type === 'action') continue;
+      if (f.activeOnly && f.dimUnless && !f.dimUnless(st)) continue;
       const v = st[f.key];
       if (v === undefined) continue;
       let out;
