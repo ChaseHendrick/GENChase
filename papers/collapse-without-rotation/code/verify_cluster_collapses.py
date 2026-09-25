@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 """Exact self-similar collapses of a strong Euler vortex with weak tight clusters (Theorem 1 and the formal
-expansion of Section 3.4 of paper/collapse-without-rotation.tex), computed by Newton's method at 50 digits and
+expansion of Section 3.3 of paper/collapse-without-rotation.tex), computed by Newton's method at 50 digits and
 accepted only after a direct Biot-Savart check of every vortex.
 
 A cluster C carries circulations gamma g_k at z_k = Z_C + O(gamma). Its shape is a translating relative

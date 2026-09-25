@@ -16,7 +16,7 @@
 #
 """Exact (SymPy) checks of every identity used in the proof of Theorem 1 of the manuscript
 (paper/collapse-without-rotation.tex), a strong vortex with weak tight clusters, and of the formal
-first-order expansion of Section 3.4.
+first-order expansion of Section 3.3.
 
 Setting (Euler law, conj(dz_j/dt) = (1/(2 pi i)) sum_{k != j} Gamma_k/(z_j - z_k)). The class K(n, c), 0 < c <= 1:
 circulation 1 at the origin; weak vortices Gamma_k = gamma g_k at z_k (k = 1..n), c <= |g_k| <= 1/c, any signs,
