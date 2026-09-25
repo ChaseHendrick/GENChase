@@ -28,6 +28,7 @@
     "test:half-float": "node tools/half-float-check.js",
     "gpu:science": "node tools/build.js && node tools/gpu-science.js",
     "data": "node tools/run.js",
+    "xref": "python3 tools/xref/run.py",
     "setup:checks": "node tools/setup-checks.js"
   }
 }

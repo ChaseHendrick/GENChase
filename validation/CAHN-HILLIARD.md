@@ -32,6 +32,8 @@ This establishes a bounded discrete-stencil check. The cell spacing is fixed: th
 are not a continuum convergence study. Noise, clipping and half precision are excluded. There
 is no claim of validated long-time coarsening, all controls, or agreement with experiments.
 
+Supporting cross-check, 2026-09-25 (`npm run xref`, [tools/xref/](../tools/xref/README.md)). This does not change the status. The exported default field (grid 256, noise off, 2000 steps, T = 23.05, SwiftShader float32) was compared with an independent ETDRK4 pseudo-spectral solution of the published equation from the same initial field. Against the reference that uses the 5-point lattice symbol, the relative L2 difference is 1.19e-3 (the computed first-order time bound is 1.14e-2). Against the continuum reference, it is 7.1e-2, which is reported rather than gated. The domain length 2π/k1 is 10.419 in the studio and 10.560 in the continuum reference, 1.3 per cent apart (tolerance 5 per cent). PASS. The check covers constant mobility only.
+
 ## Time-step refinement
 
 `node tools/pde-convergence.js` holds the 32x32 grid, unit cell spacing and elapsed time 0.08
