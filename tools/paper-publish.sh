@@ -6,7 +6,10 @@
 #            repositories (docs/PUBLISHING-PAPERS.md, section 1). Without it nothing happens.
 # PAPER      publish only this paper id (optional).
 # RELEASE    also publish a release with this tag (v1.0.0 and so on) in PAPER's companion; Zenodo
-#            archives it and gives it a DOI, if Zenodo is switched on for that repository.
+#            archives it and gives it a DOI, if Zenodo is switched on for that repository. Its notes
+#            are the section "## <tag>" of papers/<id>/RELEASES.md, and a tag without one is refused
+#            before anything is published. For a release that already exists, the run brings its
+#            notes up to date; the tag and its files are never replaced.
 #
 # Direct edits are kept. The branch genchase-sync holds exactly what this repository published, one
 # commit per change, and each run merges it into the companion's default branch. Edits the owner makes
@@ -29,6 +32,15 @@ case "${RELEASE:-}" in
   v[0-9]*.[0-9]*.[0-9]*) [ -n "${PAPER:-}" ] || { echo "::error::A release needs the paper id too."; exit 1; } ;;
   *) echo "::error::The release tag must look like v1.0.0."; exit 1 ;;
 esac
+
+# The section of papers/<id>/RELEASES.md headed "## <tag>" (the heading may carry a date after the tag).
+notes_for() {
+  awk -v tag="$2" '/^## / { if (found) exit; if ($2 == tag) { found = 1; next } } found' "$ROOT/papers/$1/RELEASES.md" 2>/dev/null || true
+}
+if [ -n "${RELEASE:-}" ] && [ -z "$(notes_for "$PAPER" "$RELEASE" | tr -d '[:space:]')" ]; then
+  echo "::error::papers/$PAPER/RELEASES.md has no notes under '## $RELEASE'. Write what the release contains there, merge, and run again."
+  exit 1
+fi
 list=$(node "$ROOT/tools/paper-sync.js" --list ${PAPER:+--paper "$PAPER"})
 [ -n "$list" ] || { echo "No paper is marked ready in papers/papers.json, so there is nothing to publish."; exit 0; }
 [ "$REMOTE" != https://github.com ] || gh auth setup-git
@@ -103,11 +115,16 @@ while read -r id repo; do
   if [ "$REMOTE" = https://github.com ]; then
     lock "$repo"
     if [ -n "${RELEASE:-}" ] && [ "$id" = "${PAPER:-}" ]; then
+      notes_for "$id" "$RELEASE" > "$work/notes.md"
       if gh release view "$RELEASE" -R "$repo" >/dev/null 2>&1; then
-        echo "$repo already has the release $RELEASE; releases are never replaced."
+        if [ "$(gh release view "$RELEASE" -R "$repo" --json body --jq .body)" = "$(cat "$work/notes.md")" ]; then
+          echo "$repo already has the release $RELEASE with these notes; the tag and its files are never replaced."
+        else
+          gh release edit "$RELEASE" -R "$repo" --notes-file "$work/notes.md"
+          echo "Updated the notes of $RELEASE in $repo from papers/$id/RELEASES.md; the tag and its files are unchanged. Zenodo keeps the description it archived."
+        fi
       else
-        gh release create "$RELEASE" -R "$repo" --target "$branch" --title "$RELEASE" \
-          --notes "The paper, its verification programs and their output as of this release."
+        gh release create "$RELEASE" -R "$repo" --target "$branch" --title "$RELEASE" --notes-file "$work/notes.md"
         echo "Released $RELEASE of $repo. If Zenodo is switched on for it, the DOI appears on Zenodo within minutes."
       fi
     fi

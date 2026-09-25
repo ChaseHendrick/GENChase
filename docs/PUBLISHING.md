@@ -8,8 +8,10 @@ one action, and says how to check it worked.
 metadata (`CITATION.cff`, `.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) and the manuscripts
 all use it, and a DOI record carries whatever the metadata says on the day of the release. The git identity
 rule in AGENTS.md is about commits and is unaffected. The manuscripts carry the contact address
-`chasewhendrick@gmail.com` under the affiliation (owner's decision, 2026-09-24), as `author.email` in
-`papers/papers.json` records; `node tools/paper-check.js` refuses any other address in a paper's files.
+recorded as `author.email` in `papers/papers.json` under the affiliation (owner's decision, 2026-09-24),
+and only the manuscripts do: READMEs, CITATION.cff and submission files leave it out (owner's decision,
+2026-09-25). `node tools/paper-check.js` and `tools/paper-sync.js` refuse it anywhere else, and any
+other address anywhere.
 
 ## 1. A DOI for the software (RESEARCH-GRADE 1c)
 
@@ -29,11 +31,16 @@ Apache-2.0), the identities note has its own metadata in `identities/zenodo.json
    The integration works with public repositories only, so a release made while the repository is
    private is not archived ([COMMITMENTS.md](COMMITMENTS.md) lists the other costs of going private).
 3. **Prepare the release in a pull request.** In `CITATION.cff`, set `version` to the tag you are
-   about to create and `date-released` to the release day. Reread the description in
+   about to create and `date-released` to the release day. Move the `## Unreleased` entries of
+   `CHANGELOG.md` under `## vX.Y.Z`: that section becomes the public release notes, and the release
+   stops if it is missing or empty. Reread the description in
    `.zenodo.json`. Run `node tools/build.js --check`, `node tools/science.js` and
    `node tools/lint.js`; the release workflow runs all three and stops if any fails. Merge.
 4. **Make the release.** Run the "Publish offline studio" workflow (Actions, run on `main`, version
    `vX.Y.Z`). It needs a green `check` run on that commit, makes the tag and publishes the release.
+   To rewrite the notes of releases that already exist from the current CHANGELOG, run the same
+   workflow with **notes only** ticked and a version, or `all`; nothing is built and no tag or file
+   changes.
 5. **Copy the DOIs.** Zenodo's GitHub page lists the new record. It shows a DOI for this version and
    a concept DOI that always resolves to the latest version. Check that the record's title, type
    (Software), license and description are the ones in `.zenodo.json`.

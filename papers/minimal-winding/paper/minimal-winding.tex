@@ -1,6 +1,6 @@
 % The manuscript; minimal-winding.pdf beside it is this file built with pdflatex, run three times.
-% minimal-winding.typ is a Typst copy of the same text; keep the two in step.
-% The figure is figures/minimal-winding.pdf, written by ../code/plot_minimal_winding.py.
+% The figures are figures/minimal-winding.pdf and figures/minimal-winding-paths.pdf, written by ../code/plot_minimal_winding.py,
+% and figures/alpha-winding.pdf, written by ../code/plot_alpha_winding.py.
 \documentclass[11pt]{article}
 \usepackage[letterpaper,margin=1in]{geometry}
 \usepackage[T1]{fontenc}
@@ -8,11 +8,13 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 
 \hypersetup{
-  pdftitle={Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons},
+  pdftitle={Minimal Winding in the Self-Similar Collapse of Point Vortices},
   pdfauthor={Chase Hendrick}}
 
 \newtheorem{theorem}{Theorem}
@@ -33,8 +35,8 @@
 \newcommand{\Ap}{\mathcal{A}_+}
 \newcommand{\Am}{\mathcal{A}_-}
 
-\title{\Large\bfseries Minimal winding in the self-similar collapse of\\
-  three point vortices and of two concentric vortex polygons}
+\title{\Large\bfseries Minimal Winding in the Self-Similar Collapse\\
+  of Point Vortices}
 \author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
 \date{}
 
@@ -42,50 +44,70 @@
 \maketitle
 
 \begin{abstract}
-In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the dimensionless number $P = |\omega_0| t_c$, the initial angular velocity times the collapse time, measures how tightly the spiral winds. We minimize $P$ over two classical collapsing families. Every self-similar collapse of three point vortices can be normalized to circulations $(1, \mu, -\mu/(1 + \mu))$ with $0 < \mu \le 1$ and zero angular impulse. For each $\mu$ the collapsing configurations form two arcs, one for each orientation of the vortex triangle, and $P$ has exactly one critical point, a minimum, on each. The squares of the two minima are roots of an explicit cubic whose coefficients are polynomials in $\mu$, and for $\mu < 1$ the two minima differ. The smaller one increases strictly from $\sqrt{3}/2$, approached as $\mu \to 0$, to $\sqrt{2}$ at $\mu = 1$. Hence $P > \sqrt{3}/2$ for every self-similar collapse of three point vortices, and the constant is sharp; equivalently, every vortex travels more than twice its initial distance from the collision point. For $\mu = 1/2$ the two minima are $1.0647059762\ldots$ and $2.2038550160\ldots$, the positive roots of $8748 \xi^6 - 49005 \xi^4 + 27794 \xi^2 + 18723$, and they are not expressible by real radicals. For two concentric regular $n$-gons with circulations $x_n$ and $-1$, $P = (K_n - \sqrt{2n - 1} \cos n\theta)/(2n \sin n\theta)$ in terms of the relative rotation $\theta$, with an explicit constant $K_n$, and the minimum over $\theta$ is $\sqrt{K_n^2 - 2n + 1}/(2n)$; for pentagons it is $\sqrt{31682}/80$. All formulas are also checked against the Biot--Savart velocities in high-precision arithmetic.
+In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the angle $P$ through which the configuration turns while the square of its size decreases by the factor $e$ measures how tightly the spiral winds; for the Euler equation $P = |\omega_0| t_c$, the initial angular velocity times the collapse time. For three Euler vortices with circulations $(1, \mu, -\mu/(1 + \mu))$, $0 < \mu \le 1$, the collapsing configurations form two arcs, one for each orientation of the triangle, and $P$ has exactly one critical point, a minimum, on each. The squared minima are roots of an explicit cubic, and the smaller one increases from $\sqrt{3}/2$, approached as $\mu \to 0$, to $\sqrt{2}$ at $\mu = 1$. Hence $P > \sqrt{3}/2$ for every self-similar collapse of three point vortices, and the constant is sharp: every vortex travels more than twice its initial distance from the collision point. In the $\alpha$-models, where a vortex induces the velocity $\Gamma r^{-\alpha-1}/(2\pi)$, every self-similar collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for $\alpha > -2$, again sharply. For two concentric regular $n$-gons, with or without a vortex at the center, $P$ has a closed form, and its minimum is explicit and exceeds $\sqrt{3}/2$. A strong vortex with weak, tight opposite-signed pairs has $P > \sqrt{3}/2$ once the pairs are weak enough. For more vortices the bound fails. Computer-assisted proofs show that four, five and six Euler vortices collapse self-similarly with $P < \sqrt{3}/2$, that $P$ has strict local minima $0.7978967838\ldots$, $0.7448144569\ldots$ and $0.7136801485\ldots$ on these collapses, that for $\alpha = 1$ and $\alpha = 2$ four vortices go below the three-vortex bounds, and that eleven vortices in the $\alpha = 2$ model and sixty in the SQG model collapse without rotating. Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 
 \medskip
-\noindent\textbf{Keywords:} point vortices; vortex collapse; self-similar motion; logarithmic spiral.\\
-\textbf{MSC 2020:} 76B47, 37N10.
+\noindent\textbf{Keywords:} point vortices; vortex collapse; self-similar motion; logarithmic spiral; surface quasi-geostrophic equation; computer-assisted proof.\\
+\textbf{MSC 2020:} 76B47, 37N10, 76U60, 65G20.
 \end{abstract}
 
 \section{Introduction}
 
-Three point vortices collapse self-similarly only if $1/\Gamma_1 + 1/\Gamma_2 + 1/\Gamma_3 = 0$ and their angular impulse about the center of vorticity vanishes (Lemma~\ref{lem:necessary} below). Under these conditions every configuration moves self-similarly: the triangle keeps its shape and rotates while it shrinks to a point in finite time, expands, or rotates rigidly \cite[Sect.~4.5.2]{gallay2026}, \cite{kas2018}. Such collapse was found by Gr\"obli \cite{grobli1877} and found again by Aref \cite{aref1979} and by Novikov and Sedov \cite{ns1979}, who also constructed collapsing configurations of four and five vortices; see \cite[p.~17, Fig.~3]{art1992} for the history and \cite{newton2001} for the general theory. Synge \cite[Sect.~4, Theorem~8]{synge1949} identified $\Gamma_1\Gamma_2 + \Gamma_2\Gamma_3 + \Gamma_3\Gamma_1 = 0$ as an exceptional case: the configurations whose shape lies on a certain conic in his trilinear coordinates then come in one-parameter families of similar triangles, so that the shape does not determine the size. Conte and de Seze \cite{cds1980} solved the motion of three vortices of arbitrary circulations exactly and showed that when $\sum_{j<k} \Gamma_j \Gamma_k = 0$ and the angular impulse vanishes, each vortex runs a logarithmic spiral about the center of vorticity while the triangle keeps its shape, and the configuration either collapses in finite time or expands \cite[Sect.~4]{cds1980}. Kimura \cite{kimura1987} studied similarity solutions of point-vortex systems, Aref \cite{aref2010} derived formulas for the rate of collapse or expansion and the angular frequency of rotation, and Gotoda \cite{gotoda2021} gave explicit formulas for the self-similar motions of three vortices. Borisov and Lebedev \cite{bl1998} obtained conditions for the collapse and the scattering of three vortices within the Lie--Poisson formulation of the problem, and Krishnamurthy, Aref and Stremler \cite{kas2018} recast the motion of three vortices in terms of the circumcircle and the interior angles of the vortex triangle and derived equations of motion for these quantities. Collapse also occurs in configurations of higher symmetry. Aref \cite{aref1982} reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al.\ \cite{koiller1985} found collapsing configurations of two such rings, whose vortices move on logarithmic spirals. Demina and Kudryashov \cite[Sect.~3]{dk2014} gave explicitly a family of such configurations that collapse or scatter, with an additional vortex, possibly of zero circulation, at the center, together with the complex constant that determines their rates of collapse and rotation.
+In the Euler equation, three point vortices collapse self-similarly only if $1/\Gamma_1 + 1/\Gamma_2 + 1/\Gamma_3 = 0$ and their angular impulse about the center of vorticity vanishes (Lemma~\ref{lem:necessary} below). Under these conditions every configuration moves self-similarly: the triangle keeps its shape and rotates while it shrinks to a point in finite time, expands, or rotates rigidly \cite[Sect.~4.5.2]{gallay2026}, \cite{kas2018}. Such collapse was found by Gr\"obli \cite{grobli1877} and found again by Aref \cite{aref1979} and by Novikov and Sedov \cite{ns1979}, who also constructed collapsing configurations of four and five vortices; see \cite[p.~17, Fig.~3]{art1992} for the history and \cite{newton2001} for the general theory. Synge \cite[Sect.~4, Theorem~8]{synge1949} identified $\Gamma_1\Gamma_2 + \Gamma_2\Gamma_3 + \Gamma_3\Gamma_1 = 0$ as an exceptional case: the configurations whose shape lies on a certain conic in his trilinear coordinates then come in one-parameter families of similar triangles, so that the shape does not determine the size. Conte and de Seze \cite{cds1980} solved the motion of three vortices of arbitrary circulations exactly and showed that when $\sum_{j<k} \Gamma_j \Gamma_k = 0$ and the angular impulse vanishes, each vortex runs a logarithmic spiral about the center of vorticity while the triangle keeps its shape, and the configuration either collapses in finite time or expands \cite[Sect.~4]{cds1980}. Kimura \cite{kimura1987} studied similarity solutions of point-vortex systems, Aref \cite{aref2010} derived formulas for the rate of collapse or expansion and the angular frequency of rotation, and Gotoda \cite{gotoda2021} gave explicit formulas for the self-similar motions of three vortices. Borisov and Lebedev \cite{bl1998} obtained conditions for the collapse and the scattering of three vortices within the Lie--Poisson formulation of the problem, and Krishnamurthy, Aref and Stremler \cite{kas2018} recast the motion of three vortices in terms of the circumcircle and the interior angles of the vortex triangle and derived equations of motion for these quantities. Collapse also occurs in configurations of higher symmetry. Aref \cite{aref1982} reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al.\ \cite{koiller1985} found collapsing configurations of two such rings, whose vortices move on logarithmic spirals. Demina and Kudryashov \cite[Sect.~3]{dk2014} gave explicitly a family of such configurations that collapse or scatter, with an additional vortex, possibly of zero circulation, at the center, together with the complex constant that determines their rates of collapse and rotation.
 
-In a self-similar collapse at time $t_c$ the configuration has rotated by time $t$ through the angle $-\omega_0 t_c \ln(1 - t/t_c)$, where $\omega_0$ is the initial angular velocity. The angular velocity at time $t$ is $\omega_0 t_c/(t_c - t)$, so the product of the angular velocity and the remaining time does not depend on which instant is taken as initial. Each vortex moves on a logarithmic spiral about the collision point, whose exponent is fixed by this product \cite[p.~298]{ns1979}, \cite[Sect.~4]{cds1980}, \cite[Eq.~(29c)]{aref2010}, and the dimensionless number $P = |\omega_0| t_c$, which is invariant under rescaling of lengths, times and circulations, is the angle through which the configuration turns while the square of its size decreases by the factor $e$. Equivalently, the path of each vortex makes the constant angle $\arctan 2P$ with the direction to the collision point, and a vortex that starts at distance $r_0$ from that point travels the distance $r_0 \sqrt{1 + 4P^2}$ before the collapse. Within a collapsing family it is natural to ask which configuration winds least.
+Self-similar collapse of three vortices also occurs in the generalized Euler or $\alpha$-models of two-dimensional flow, in which the streamfunction is obtained from the vorticity by a fractional inverse Laplacian and which include the surface quasi-geostrophic (SQG) equation. Badin and Barry \cite{bb2018} derived conditions for collapse in these models, and the self-similar motions of three vortices were studied by Yasunaga, Otobe and Iwayama \cite{yoi2021}, Reinaud, Dritschel and Scott \cite{rds2022}, Chen and Liu \cite{cl2024} and Grotto and Pappalettera \cite{gp2025}, among others; we return to this literature in Section~\ref{sec:discussion}.
 
-For three vortices we answer this question for every ratio of the circulations (Section~\ref{sec:three}). After normalization the circulations are $(1, \mu, -\mu/(1 + \mu))$ with $0 < \mu \le 1$. The collapsing configurations form two arcs, one for each orientation of the triangle, and $P$ has a unique minimum on each (Theorem~\ref{thm:main}). For $\mu < 1$ the two minima differ, and the smaller one increases strictly with $\mu$, from $\sqrt{3}/2$ as $\mu \to 0$ to $\sqrt{2}$ at $\mu = 1$, the value for two equal circulations. Thus $P > \sqrt{3}/2$ for every self-similar collapse of three vortices, and the bound is sharp (Corollary~\ref{cor:bound}); the bound also has a short direct proof from Lemma~\ref{lem:rates} and an elementary inequality. For $\mu = 1/2$ the two minima are conjugate algebraic numbers of degree six, given explicitly in Proposition~\ref{prop:half}. In Section~\ref{sec:rings} we treat two concentric regular $n$-gons, for which the minimization reduces to an elementary inequality once $P$ is written in a suitable form. Section~\ref{sec:numerics} describes an independent numerical check.
+In a self-similar collapse at time $t_c$ the configuration has rotated by time $t$ through the angle $-\omega_0 t_c \ln(1 - t/t_c)$, where $\omega_0$ is the initial angular velocity. The angular velocity at time $t$ is $\omega_0 t_c/(t_c - t)$, so the product of the angular velocity and the remaining time does not depend on which instant is taken as initial. Each vortex moves on a logarithmic spiral about the collision point, whose exponent is fixed by this product \cite[p.~298]{ns1979}, \cite[Sect.~4]{cds1980}, \cite[Eq.~(29c)]{aref2010}, \cite[App.~A, Eq.~(A.19)]{dgc2023}, and the dimensionless number $P = |\omega_0| t_c$, which is invariant under rescaling of lengths, times and circulations, is the angle through which the configuration turns while the square of its size decreases by the factor $e$; in the $\alpha$-models below this angle is $P = \beta|\omega_0| t_c$ with $\beta = 1 + \alpha/2$ (Section~\ref{sec:selfsimilar}), and we keep this geometric definition of $P$. Equivalently, the path of each vortex makes the constant angle $\arctan 2P$ with the direction to the collision point, and a vortex that starts at distance $r_0$ from that point travels the distance $r_0 \sqrt{1 + 4P^2}$ before the collapse. Kimura \cite{kimura1987} and Aref \cite{aref2010} computed the rate of collapse and the rate of rotation, and the dimensionless combination $P$ of the two rates fixes the spiral \cite[Eq.~(29c)]{aref2010}, but we have not found $P$ minimized in the literature. Within a collapsing family it is natural to ask which configuration winds least, and whether any configuration can collapse without turning at all.
 
-\section{Self-similar collapse}
+For three vortices in the Euler equation we answer this question for every circulation ratio (Section~\ref{sec:three}). After normalization the circulations are $(1, \mu, -\mu/(1 + \mu))$ with $0 < \mu \le 1$. The collapsing configurations form two arcs, one for each orientation of the triangle, and $P$ has a unique minimum on each (Theorem~\ref{thm:main}). For $\mu < 1$ the two minima differ, and the smaller one increases strictly with $\mu$, from $\sqrt{3}/2$ as $\mu \to 0$ to $\sqrt{2}$ at $\mu = 1$, the value for two equal circulations. Thus $P > \sqrt{3}/2$ for every self-similar collapse of three vortices, and the bound is sharp (Corollary~\ref{cor:bound}); the bound also has a short direct proof from Lemma~\ref{lem:rates} and an elementary inequality. For $\mu = 1/2$ the two minima are conjugate algebraic numbers of degree six, given explicitly in Proposition~\ref{prop:half}. In Section~\ref{sec:alpha} we extend the bound to the $\alpha$-models: every self-similar collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for every $\alpha > -2$, whether the velocity induced by a vortex decays with distance ($\alpha > -1$) or not, and the constant is sharp (Theorem~\ref{thm:alpha}). The proof rests on two elementary identities: the circulations of a collapsing triangle are fixed, up to a factor, by its side lengths, and $P$ is a symmetric function of the side lengths alone. At $\alpha = 0$ the theorem is Corollary~\ref{cor:bound}. In Section~\ref{sec:rings} we treat two concentric regular $n$-gons, for which the minimization reduces to an elementary inequality once $P$ is written in a suitable form. With a vortex of any circulation at the center the minimum is again explicit; it exceeds $\sqrt{3}/2$ for every $n$ and tends to $\sqrt{3}/2$ as the central circulation grows (Proposition~\ref{prop:centre}). In both Euler families the infimum is approached as a strong vortex carries weak, tight pairs of opposite sign, and Theorem~\ref{thm:pairs} in Section~\ref{sec:pairs} shows that this structure alone forces the constant: for a strong vortex with any number of such pairs, $P \ge \sqrt{3}/2 - o(1)$ as the circulations of the pairs tend to zero, and $P$ comes close to $\sqrt{3}/2$ only if every pair makes the angle $60^\circ$ with the direction away from the strong vortex and all the pairs are at nearly the same distance from it. The theorem is asymptotic; Proposition~\ref{prop:pairsbound} gives $P > \sqrt{3}/2$, by a margin quadratic in the pair circulation, once the pairs are weaker than a threshold that is not explicit.
 
-The positions $z_j \in \C$ of point vortices with circulations $\Gamma_j$ evolve according to
+In Section~\ref{sec:more} we turn to more vortices, where the bound fails. With computer-assisted proofs in interval arithmetic we show that four, five and six Euler vortices can collapse self-similarly with $P < \sqrt{3}/2$, that $P$ has strict local minima $P_4 = 0.7978967838\ldots$, $P_5 = 0.7448144569\ldots$ and $P_6 = 0.7136801485\ldots$ on these collapses, and that four vortices in the SQG and $\alpha = 2$ models go below the three-vortex bounds (Theorem~\ref{thm:four}); and that eleven vortices in the $\alpha = 2$ model and sixty vortices in the SQG model can each collapse self-similarly without rotating, every vortex moving on a straight line into the collision point (Theorem~\ref{thm:norot}), which three vortices cannot do in any $\alpha$-model with $\alpha > -2$. Numerically, $P$ goes below $1/2$ for sixty-one Euler vortices. Section~\ref{sec:numerics} describes the numerical checks and the computer-assisted proofs, Section~\ref{sec:discussion} discusses the results and the literature, and Section~\ref{sec:open} lists open problems.
+
+\section{Self-similar collapse}\label{sec:selfsimilar}
+
+In the $\alpha$-models the point vortices, at positions $z_j \in \C$ with real circulations $\Gamma_j$, move by
+\begin{equation}\label{eq:alpha}
+  \frac{dz_j}{dt} = \frac{i}{2\pi} \sum_{k \ne j} \Gamma_k \frac{z_j - z_k}{|z_j - z_k|^{2\beta}}, \qquad \beta = 1 + \frac{\alpha}{2},
+\end{equation}
+so that a vortex of circulation $\Gamma$ induces the speed $|\Gamma| r^{-\alpha-1}/(2\pi)$ at distance $r$. The case $\alpha = 0$ is the Euler equation, which we write as
 \begin{equation}\label{eq:bs}
-  \overline{\dot z_j} = \frac{1}{2\pi i} \sum_{k \ne j} \frac{\Gamma_k}{z_j - z_k}.
+  \overline{\dot z_j} = \frac{1}{2\pi i} \sum_{k \ne j} \frac{\Gamma_k}{z_j - z_k},
 \end{equation}
-Suppose $\sum_j \Gamma_j \ne 0$, let $z_c = \sum_j \Gamma_j z_j / \sum_j \Gamma_j$ be the center of vorticity, which is conserved, and suppose that at $t = 0$ there is $\kappa \in \C$ with $\dot z_j = \kappa (z_j - z_c)$ for all $j$. The right-hand side of \eqref{eq:bs} is homogeneous of degree $-1$ in the relative positions and equivariant under rotations, so the solution is $z_j(t) = z_c + \lambda(t) e^{i\phi(t)} (z_j(0) - z_c)$ with $\lambda \dot\lambda = \re\kappa$ and $\lambda^2 \dot\phi = \im\kappa$. Hence $\lambda^2 = 1 + 2t \re\kappa$. If $\re\kappa < 0$ the vortices collide at $z_c$ at the time $t_c = -1/(2\re\kappa)$, and $\omega_0 = \im\kappa$, so that
+and $\alpha = 1$ ($\beta = 3/2$) is SQG. A constant factor in front of the sum, which differs between papers, only rescales time and does not change the number $P$ below. In the conventions of Badin and Barry \cite{bb2018}, Yasunaga, Otobe and Iwayama \cite{yoi2021} and Grotto and Pappalettera \cite{gp2025} the same system has the parameter $2 - \alpha$. The fluid models cover $-1 \le \alpha < 2$ in our convention, and the constant factor of their Green's function vanishes at $\alpha = 2$ \cite[Eq.~(2)]{yoi2021}; for $\alpha < -1$ and $\alpha \ge 2$ our statements are statements about the point-vortex system \eqref{eq:alpha} itself.
+
+A motion is \emph{self-similar} if $z_j(t) = a(t) + b(t) z_j(0)$ for every $j$, with complex $a(t)$ and $b(t) \ne 0$, and it is a \emph{self-similar collapse} if moreover $b(t) \to 0$ in finite time. Suppose $\sum_j \Gamma_j \ne 0$, let $z_c = \sum_j \Gamma_j z_j / \sum_j \Gamma_j$ be the center of vorticity, which is conserved, and suppose that at $t = 0$ there is $\kappa_0 \in \C$ with $\dot z_j = \kappa_0 (z_j - z_c)$ for all $j$. The right-hand side of \eqref{eq:alpha} is equivariant under rotations, and replacing every $z_j - z_c$ by $b(z_j - z_c)$ multiplies it by $b|b|^{-2\beta}$, so the solution is $z_j(t) = z_c + \lambda(t) e^{i\phi(t)} (z_j(0) - z_c)$ with $\lambda^{2\beta - 1}\dot\lambda = \re\kappa_0$ and $\lambda^{2\beta}\dot\phi = \im\kappa_0$. Hence
+\begin{equation}\label{eq:spiral}
+  \lambda^{2\beta} = 1 + 2\beta \re\kappa_0\, t, \qquad \phi = \frac{\im\kappa_0}{2\re\kappa_0} \ln\lambda^2,
+\end{equation}
+and $\dot z_j = \kappa(t)(z_j - z_c)$ with $\kappa(t) = \kappa_0 \lambda^{-2\beta}$. If $\re\kappa_0 < 0$ the vortices collide at $z_c$ at the time $t_c = -1/(2\beta\re\kappa_0)$, and the number
 \begin{equation}\label{eq:P}
-  P = |\omega_0| t_c = \frac{|\im\kappa|}{-2\re\kappa}.
+  P = \frac{|\im\kappa|}{-2\re\kappa}
 \end{equation}
-Integrating $\dot\phi = \omega_0/\lambda^2$ gives $\phi = -P \ln\lambda^2$ when $\omega_0 > 0$, which is the description of the spiral given in the introduction. This is Kimura's similarity solution \cite[Sect.~3.1]{kimura1987}: up to the factor $2\pi$ in his normalization of the circulations, $\kappa$ is his constant $A + iB$, \eqref{eq:P} reads $P = |B|/(-2A)$, and the spirals and the collision time $t_c = -1/(2A)$ are his Eqs.~(3.7) and~(3.9). Earlier, Conte and de Seze \cite[Sect.~4, pp.~24--25]{cds1980} wrote this motion as $z_j = z_{j,0} (1 - t/t_c)^{1/2 - i\omega t_c}$ and gave $-2\omega + i/t_c$ in closed form in their shape variable; there $\omega$ is the initial angular velocity, so $|\omega t_c| = P$. Demina and Kudryashov \cite[Eqs.~(7)--(12)]{dk2014} derive the same solution, like Kimura for any number of vortices but with the normalization of \eqref{eq:bs}, so that their complex constant $c_1$ equals $\kappa$; they give the collapse time $1/(2|\re c_1|)$ \cite[Eq.~(12)]{dk2014} and the rotation angle $(\im c_1/(2\re c_1))\ln(1 + 2t\re c_1)$ \cite[Eq.~(10)]{dk2014}, whose coefficient has absolute value $P$. Gallay and \v{S}ver\'ak \cite[Prop.~5.2, Eqs.~(5.5), (5.11)]{gallay2026} write the collapsing solution as $z_j(t) = (1 - t/T)^{1/2 + is} a_j$ with $z_c = 0$; comparing the two descriptions gives $T = t_c$ and $s = -\omega_0 t_c$, so $|s| = P$. The angular impulse about the center of vorticity satisfies
+does not depend on $t$. By \eqref{eq:spiral} it is the angle through which the configuration turns while the square of its size decreases by the factor $e$: each vortex moves on a logarithmic spiral about the collision point, its path makes the constant angle $\arctan 2P$ with the direction to that point, and a vortex that starts at distance $r_0$ from it travels the distance $r_0\sqrt{1 + 4P^2}$ before the collapse. The initial angular velocity $\omega_0 = \im\kappa_0$ satisfies $|\omega_0| t_c = P/\beta$, and by the time $t$ the configuration has turned through the angle $-\omega_0 t_c \ln(1 - t/t_c)$. For the Euler equation, $\beta = 1$, $t_c = -1/(2\re\kappa_0)$ and $P = |\omega_0| t_c$, and $\phi = -P\ln\lambda^2$ when $\omega_0 > 0$, which is the description of the spiral given in the introduction.
+
+For $\alpha = 0$ this is Kimura's similarity solution \cite[Sect.~3.1]{kimura1987}: up to the factor $2\pi$ in his normalization of the circulations, $\kappa$ is his constant $A + iB$, \eqref{eq:P} reads $P = |B|/(-2A)$, and the spirals and the collision time $t_c = -1/(2A)$ are his Eqs.~(3.7) and~(3.9). Earlier, Conte and de Seze \cite[Sect.~4, pp.~24--25]{cds1980} wrote this motion as $z_j = z_{j,0} (1 - t/t_c)^{1/2 - i\omega t_c}$ and gave $-2\omega + i/t_c$ in closed form in their shape variable; there $\omega$ is the initial angular velocity, so $|\omega t_c| = P$. Demina and Kudryashov \cite[Eqs.~(7)--(12)]{dk2014} derive the same solution, like Kimura for any number of vortices but with the normalization of \eqref{eq:bs}, so that their complex constant $c_1$ equals $\kappa$; they give the collapse time $1/(2|\re c_1|)$ \cite[Eq.~(12)]{dk2014} and the rotation angle $(\im c_1/(2\re c_1))\ln(1 + 2t\re c_1)$ \cite[Eq.~(10)]{dk2014}, whose coefficient has absolute value $P$. Gallay and \v{S}ver\'ak \cite[Prop.~5.2, Eqs.~(5.5), (5.11)]{gallay2026} write the collapsing solution as $z_j(t) = (1 - t/T)^{1/2 + is} a_j$ with $z_c = 0$; comparing the two descriptions gives $T = t_c$ and $s = -\omega_0 t_c$, so $|s| = P$. For the $\alpha$-models the spiral \eqref{eq:spiral} is in \cite[Eqs.~(31), (32), (A.9)]{yoi2021} and \cite[Eqs.~(3)--(6)]{iy2023}, in \cite[App.~A, Eq.~(A.19)]{dgc2023}, whose exponent $1/(\alpha + 1)$, in a parametrization where the Euler case is $\alpha = 1$, is our $1/(2\beta)$, and in \cite[Prop.~2.1]{gp2025}. For $\beta \ne 1$ the product $|\omega_0| t_c$ is the rotation per unit decrease of $\ln(t_c - t)$, and it differs from $P$ by the factor $1/\beta$; we state bounds for $P$, which measures the geometry of the spiral, and for $|\omega_0| t_c$ in Corollary~\ref{cor:geom}.
+
+The angular impulse about the center of vorticity satisfies
 \begin{equation}\label{eq:L}
   \sum_j \Gamma_j |z_j - z_c|^2 = \frac{1}{\sum_j \Gamma_j} \sum_{j < k} \Gamma_j \Gamma_k |z_j - z_k|^2.
 \end{equation}
-It is conserved and, in a self-similar motion, proportional to $\lambda^2$, so it must vanish for a collapse. Two of the minimizations below (Remark~\ref{rem:equal} and Proposition~\ref{prop:rings}) and the direct proof of Corollary~\ref{cor:bound} reduce to the following elementary inequality.
+It is conserved for every $\alpha$, since the terms of its derivative cancel in pairs, and in a self-similar motion it is proportional to $\lambda^2$, so it must vanish for a collapse. Three of the minimizations below (Remark~\ref{rem:equal} and Propositions~\ref{prop:rings} and~\ref{prop:centre}) and the direct proof of Corollary~\ref{cor:bound} reduce to the following elementary inequality.
 
 \begin{lemma}\label{lem:ineq}
-Let $a > |b|$. For $0 < \alpha < \pi$, $(a - b\cos\alpha)/\sin\alpha \ge \sqrt{a^2 - b^2}$, with equality if and only if $\cos\alpha = b/a$.
+Let $a > |b|$. For $0 < \tau < \pi$, $(a - b\cos\tau)/\sin\tau \ge \sqrt{a^2 - b^2}$, with equality if and only if $\cos\tau = b/a$.
 \end{lemma}
 
 \begin{proof}
-The numerator is positive, and $(a - b\cos\alpha)^2 - (a^2 - b^2)\sin^2\alpha = (a\cos\alpha - b)^2$.
+The numerator is positive, and $(a - b\cos\tau)^2 - (a^2 - b^2)\sin^2\tau = (a\cos\tau - b)^2$.
 \end{proof}
 
-\section{Three vortices}\label{sec:three}
+\section{Three vortices in the Euler equation}\label{sec:three}
+
+In this section and in Sections~\ref{sec:rings} and~\ref{sec:pairs} the vortices obey the Euler law \eqref{eq:bs}.
 
 \subsection{Normalization and the collapsing configurations}
 
-The Hamiltonian $H = -(4\pi)^{-1} \sum_{j<k} \Gamma_j \Gamma_k \ln|z_j - z_k|^2$ of \eqref{eq:bs} is conserved. We call a collapse self-similar if all mutual distances are $\lambda(t)$ times their initial values, with $\lambda(t) \to 0$ in finite time.
+The Hamiltonian $H = -(4\pi)^{-1} \sum_{j<k} \Gamma_j \Gamma_k \ln|z_j - z_k|^2$ of \eqref{eq:bs} is conserved, and in a self-similar collapse all mutual distances are $\lambda(t) = |b(t)|$ times their initial values, with $\lambda(t) \to 0$ in finite time.
 
 \begin{lemma}\label{lem:necessary}
 In a self-similar collapse of three point vortices all circulations are nonzero, $1/\Gamma_1 + 1/\Gamma_2 + 1/\Gamma_3 = 0$, $\sum_j \Gamma_j \ne 0$, and the angular impulse about the center of vorticity vanishes.
@@ -224,7 +246,7 @@ Equivalently, with $N = N(C)$ and $M = M(C)$, the three identities combine into
 For sharpness, take $\theta$ with $\sin\theta = -\sqrt{3}\,\mu/2$ and $C = -\sqrt{R}\sqrt{1 - 3\mu^2/4}$, which lies in $\Am$ because $C < -1/2 \le (\mu - 1)/2 = \sqrt{R}\cos\theta_0$. As $\mu \to 0$, $C + \sqrt{R} = 3\mu^2/8 + O(\mu^3)$; by the proof of Lemma~\ref{lem:rates}, $N(-\sqrt{R}) = 3\mu^2(1 + \mu)^2R/N(\sqrt{R}) = 3\mu^2/4 + O(\mu^3)$; and $N'(C) = 2 + O(\mu)$ near $C = -1$. So $N(C) = 3\mu^2/2 + O(\mu^3)$, $M(C) = -1 + O(\mu)$, and \eqref{eq:Ptheta} gives $P = \sqrt{3}/2 + O(\mu)$. The remaining statements follow as in the first proof.
 \end{proof}
 
-Every motion of three point vortices in the plane that ends in a total collision is self-similar \cite[Theorem~1]{hgl2007}, \cite[Prop.~2.8]{hiraoka2008}, \cite[Sect.~3]{hiraoka2009}, \cite[Sect.~3.1]{ks2018}, \cite[Prop.~5.2]{gallay2026}, \cite[Theorem~1.1]{drivas2026}, so the bound of Corollary~\ref{cor:bound} holds for every collapse of three point vortices. The bound fails for more vortices: the collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014}, with circulation $6383/2250$ at the origin, $14/15$ at $\pm 2$, $-62/45$ at $\pm 2e^{i\varphi}$ where $\cos 2\varphi = 13/18$, and $1$ at $\pm 4/3$, has the constant $\Omega = 12433/9000 - (31\sqrt{155}/450)\,i$, where $\Omega = 2\pi i\,\overline{\kappa}$ \cite[Eq.~(11)]{dk2014}, so $P = |\re\Omega|/(2|\im\Omega|) = 12433/(1240\sqrt{155}) = 0.8053\ldots < \sqrt{3}/2$.
+Every motion of three point vortices in the plane that ends in a total collision is self-similar \cite[Theorem~1]{hgl2007}, \cite[Prop.~2.8]{hiraoka2008}, \cite[Sect.~3]{hiraoka2009}, \cite[Sect.~3.1]{ks2018}, \cite[Prop.~5.2]{gallay2026}, \cite[Theorem~1.1]{drivas2026}, so the bound of Corollary~\ref{cor:bound} holds for every collapse of three point vortices. The bound fails for more vortices: the collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014}, with circulation $6383/2250$ at the origin, $14/15$ at $\pm 2$, $-62/45$ at $\pm 2e^{i\varphi}$ where $\cos 2\varphi = 13/18$, and $1$ at $\pm 4/3$, has the constant $\Omega = 12433/9000 - (31\sqrt{155}/450)\,i$, where $\Omega = 2\pi i\,\overline{\kappa}$ \cite[Eq.~(11)]{dk2014}, so $P = |\re\Omega|/(2|\im\Omega|) = 12433/(1240\sqrt{155}) = 0.8053\ldots < \sqrt{3}/2$ (see also Section~\ref{sec:more}).
 
 \begin{figure}[t]
   \centering
@@ -233,7 +255,14 @@ Every motion of three point vortices in the plane that ends in a total collision
   \label{fig:minima}
 \end{figure}
 
-The two minima are shown in Figure~\ref{fig:minima}.
+The two minima are shown in Figure~\ref{fig:minima}, and Figure~\ref{fig:paths} shows two minimizing configurations and the paths of their vortices.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/minimal-winding-paths.pdf}
+  \caption{Minimizing configurations on $\Am$ (dots, filled for positive circulation) and the logarithmic spiral paths of their vortices into the collision point ($+$), drawn until the distances have shrunk by the factor $100$, for (a) $\mu = 1/2$ and (b) $\mu = 0.05$, where the two weak vortices form a tight pair beside the strong one, as in Theorem~\ref{thm:pairs}, and $P$ is close to $\sqrt{3}/2$. Each path meets the line to the collision point at the constant angle $\arctan 2P > 60^\circ$ and has length $r_0\sqrt{1 + 4P^2} > 2r_0$ (Corollary~\ref{cor:bound}), marked here for the third vortex.}
+  \label{fig:paths}
+\end{figure}
 
 \subsection{The ratio \texorpdfstring{$\mu = 1/2$}{mu = 1/2}}
 
@@ -262,11 +291,164 @@ The two minima are conjugate algebraic numbers of degree six. Since the cubic in
 \end{remark}
 
 \begin{remark}\label{rem:equal}
-For $\mu = 1$, that is $\Gamma = (1, 1, -1/2)$, the zero-impulse circle is $|w - 1/2| = \sqrt{3}/2$. With $w = 1/2 + (\sqrt{3}/2) e^{i\beta}$, $z_1 = 0$ and $z_2 = 1$, the same computation gives $P = (3 - \cos 2\beta)/(2\sin 2\beta)$ on the collapsing arcs $0 < \beta < \pi/2$ and $\pi < \beta < 3\pi/2$, which are exchanged by interchanging the two equal vortices ($w \mapsto 1 - w$). Since $P$ has period $\pi$ in $\beta$, Lemma~\ref{lem:ineq} applies on both arcs and gives $P \ge \sqrt{2}$, with equality if and only if $\cos 2\beta = 1/3$, in agreement with Theorem~\ref{thm:main}. This parametrization is Kimura's \cite[Sect.~4]{kimura1987}, who gives the two rates for $\Gamma = (2, 2, -1)$ in his Eq.~(4.4); their ratio $B/(-2A)$ is this expression for $P$, which is also a specialization and reparametrization of Gr\"obli's spiral coefficient \cite[Sect.~10]{grobli1877}.
+For $\mu = 1$, that is $\Gamma = (1, 1, -1/2)$, the zero-impulse circle is $|w - 1/2| = \sqrt{3}/2$. With $w = 1/2 + (\sqrt{3}/2) e^{i\chi}$, $z_1 = 0$ and $z_2 = 1$, the same computation gives $P = (3 - \cos 2\chi)/(2\sin 2\chi)$ on the collapsing arcs $0 < \chi < \pi/2$ and $\pi < \chi < 3\pi/2$, which are exchanged by interchanging the two equal vortices ($w \mapsto 1 - w$). Since $P$ has period $\pi$ in $\chi$, Lemma~\ref{lem:ineq} applies on both arcs and gives $P \ge \sqrt{2}$, with equality if and only if $\cos 2\chi = 1/3$, in agreement with Theorem~\ref{thm:main}. This parametrization is Kimura's \cite[Sect.~4]{kimura1987}, who gives the two rates for $\Gamma = (2, 2, -1)$ in his Eq.~(4.4); their ratio $B/(-2A)$ is this expression for $P$, which is also a specialization and reparametrization of Gr\"obli's spiral coefficient \cite[Sect.~10]{grobli1877}.
 \end{remark}
 
 \begin{remark}\label{rem:swap}
 Interchanging the first two vortices and multiplying the circulations by $1/\mu$ maps the family with ratio $\mu$ onto the family with ratio $1/\mu$ and exchanges the two orientations, so the arc minima satisfy $P_+(\mu) = P_-(1/\mu)$. For $\mu > 1$ the smaller minimum is therefore attained on $\Ap$.
+\end{remark}
+
+\section{Three vortices in the \texorpdfstring{$\alpha$}{alpha}-models}\label{sec:alpha}
+
+In this section the vortices obey \eqref{eq:alpha}, and we write $B(\alpha) = \sqrt{3 + \alpha}/(2 + \alpha)$. We prove:
+
+\begin{theorem}\label{thm:alpha}
+Let $\alpha > -2$. Every self-similar collapse of three point vortices under \eqref{eq:alpha} has $P > B(\alpha)$, and for every $\delta > 0$ there is one with $P < B(\alpha) + \delta$.
+\end{theorem}
+
+For $\alpha = 0$, $B(0) = \sqrt{3}/2$ and Theorem~\ref{thm:alpha} is Corollary~\ref{cor:bound}. The proof below works with the side lengths of the triangle and does not use Section~\ref{sec:three}, and it gives only the bound, not the minima for each ratio of circulations of Theorem~\ref{thm:main}. It needs two facts proved in Section~\ref{sec:rates}: a collapsing triangle is scalene and carries circulations fixed up to a factor by its side lengths (Lemma~\ref{lem:circalpha}), and $P$ is a symmetric function of the side lengths alone (Lemma~\ref{lem:ratesalpha}). First, the motion has the form of Section~\ref{sec:selfsimilar}.
+
+\begin{lemma}\label{lem:ss}
+Let a self-similar motion of three point vortices under \eqref{eq:alpha} change size. Then $\Gamma_1 + \Gamma_2 + \Gamma_3 \ne 0$, and there is $\kappa_0 \in \C$ with $\re\kappa_0 \ne 0$ such that $\dot z_j = \kappa_0 (z_j - z_c)$ at $t = 0$ for every $j$. The motion is given by \eqref{eq:spiral}, and it collapses if and only if $\re\kappa_0 < 0$.
+\end{lemma}
+
+\begin{proof}
+The linear impulse $\sum_j \Gamma_j z_j$ is conserved. If $\sum_j \Gamma_j = 0$, then $\sum_j \Gamma_j z_j(t) = b(t) \sum_j \Gamma_j z_j(0)$, and since $|b|$ changes, $\sum_j \Gamma_j z_j(0) = 0$; then $\Gamma_1(z_1 - z_3) + \Gamma_2(z_2 - z_3) = 0$ with real coefficients not both zero, so the vortices are collinear, and a collinear triangle does not change size under \eqref{eq:alpha} (Lemma~\ref{lem:circalpha} below). Hence $\sum_j \Gamma_j \ne 0$, $z_c$ is conserved, and $z_c = a + b z_c$, so $z_j(t) - z_c = b(t)(z_j(0) - z_c)$ and $\dot z_j(0) = \kappa_0 (z_j(0) - z_c)$ for every $j$, with $\kappa_0 = \dot b(0)$. By Section~\ref{sec:selfsimilar} the motion is \eqref{eq:spiral}; its size changes, so $\re\kappa_0 \ne 0$, and it tends to $0$ in finite time exactly when $\re\kappa_0 < 0$.
+\end{proof}
+
+\subsection{Circulations and rates of a collapsing triangle}\label{sec:rates}
+
+Label the sides by the opposite vertices: $r_1 = |z_2 - z_3|$, $r_2 = |z_3 - z_1|$, $r_3 = |z_1 - z_2|$, and put $f_i = r_i^{-2\beta}$. Let $A_s = \im(\overline{(z_2 - z_1)}(z_3 - z_1))/2$ be the signed area, positive when $z_1, z_2, z_3$ are counterclockwise, and $A = |A_s|$. Indices $(i, j, k)$ run over the cyclic permutations of $(1, 2, 3)$.
+
+\begin{lemma}\label{lem:circalpha}
+Under \eqref{eq:alpha}, $d(r_i^2)/dt = (2A_s/\pi)\,\Gamma_i (f_j - f_k)$. A motion is self-similar and changes size if and only if the triangle is not collinear, its sides are pairwise different, and
+\begin{equation}\label{eq:circalpha}
+\Gamma_i = c\, \frac{r_i^2}{f_j - f_k} \qquad (i = 1, 2, 3)
+\end{equation}
+for some real $c \ne 0$. In that case $\re\kappa = cA_s/\pi$, and exactly one of a triangle and its mirror image collapses self-similarly.
+\end{lemma}
+
+\begin{proof}
+For $i = 3$, the terms of $\dot z_1 - \dot z_2$ proportional to $z_1 - z_2$ do not change $|z_1 - z_2|$, and the rest is $(i\Gamma_3/2\pi)((z_1 - z_3) f_2 - (z_2 - z_3) f_1)$. Since $\im(\overline{(z_1 - z_2)}(z_1 - z_3)) = \im(\overline{(z_1 - z_2)}(z_2 - z_3)) = 2A_s$, $d(r_3^2)/dt = 2\re(\overline{(z_1 - z_2)}(\dot z_1 - \dot z_2)) = (2A_s/\pi)\Gamma_3(f_1 - f_2)$, and the other sides follow by cyclic relabeling. In a self-similar motion $d\ln r_i^2/dt = 2\re\kappa$ for every $i$, so $(2A_s/\pi)\Gamma_i(f_j - f_k)/r_i^2$ is the same for all $i$; if the size changes, this common value is not $0$, so $A_s \ne 0$, $f_j \ne f_k$ for all pairs, and \eqref{eq:circalpha} holds with $c = \pi\re\kappa/A_s$. Conversely, if \eqref{eq:circalpha} holds with $c \ne 0$ on a scalene triangle that is not collinear, the three logarithmic rates coincide, so the ratios of the squared sides are stationary at this shape; the rates of these ratios are functions of the shape alone, multiplied by a power of the size, so the shape is an equilibrium of the reduced motion and is kept for all time, with the orientation, since the area cannot pass through zero. The motion is therefore self-similar, and its size changes because $\re\kappa = cA_s/\pi \ne 0$. Reflecting the triangle changes the sign of $A_s$ and keeps \eqref{eq:circalpha}, so it changes the sign of $\re\kappa$.
+\end{proof}
+
+In particular, isosceles, equilateral and collinear triangles never collapse self-similarly, and every scalene triangle collapses self-similarly in exactly one orientation, with the circulations \eqref{eq:circalpha} for a fixed $c$. On a scalene triangle, \eqref{eq:circalpha} says that the vector $(1/\Gamma_i)$ is proportional to the cross product of $(r_i^2)$ and $(r_i^{2 - 2\beta})$, that is, orthogonal to both; so it is equivalent to the vanishing of the angular impulse, $\sum_i r_i^2/\Gamma_i = 0$, together with $\sum_i r_i^{-\alpha}/\Gamma_i = 0$, which is the vanishing of $\sum_{j<k}\Gamma_j\Gamma_k r_i^{-\alpha}$ for $\alpha \ne 0$ and the classical condition $\sum_{j<k}\Gamma_j\Gamma_k = 0$ of Lemma~\ref{lem:necessary} for $\alpha = 0$. Conditions of this kind are given in \cite{bb2018,cl2024,gp2025,rds2022,yoi2021}; Lemma~\ref{lem:circalpha} is a short self-contained form of them, with the circulations explicit.
+
+\begin{lemma}\label{lem:ratesalpha}
+For a self-similar motion that changes size, with \eqref{eq:circalpha},
+\begin{equation}\label{eq:Salpha}
+2\pi\im\kappa = \frac12 \sum_{i=1}^3 \Gamma_i (f_j + f_k) = \frac{c}{2} S, \qquad S = \sum_{i=1}^3 r_i^2 \coth\Bigl(\beta\ln\frac{r_k}{r_j}\Bigr), \qquad P = \frac{|S|}{8A}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $\dot z_1 - \dot z_2 = \kappa(z_1 - z_2)$, $\im\kappa = \im((\dot z_1 - \dot z_2)/(z_1 - z_2))$. By \eqref{eq:alpha},
+\[
+2\pi\frac{\dot z_1 - \dot z_2}{z_1 - z_2} = i(\Gamma_1 + \Gamma_2) f_3 + i\Gamma_3 \frac{f_2(z_1 - z_3) - f_1(z_2 - z_3)}{z_1 - z_2},
+\]
+and by the law of cosines $\re((z_1 - z_3)/(z_1 - z_2)) = (r_2^2 + r_3^2 - r_1^2)/(2r_3^2)$ and $\re((z_2 - z_3)/(z_1 - z_2)) = (r_2^2 - r_1^2 - r_3^2)/(2r_3^2)$. Hence
+\[
+2\pi\im\kappa = (\Gamma_1 + \Gamma_2) f_3 + \Gamma_3 \frac{f_1 + f_2}{2} + \Gamma_3 \frac{(f_2 - f_1)(r_2^2 - r_1^2)}{2r_3^2}.
+\]
+By \eqref{eq:circalpha} the last term is $c(r_1^2 - r_2^2)/2$, and also $c(r_1^2 - r_2^2) = \Gamma_1(f_2 - f_3) + \Gamma_2(f_1 - f_3)$. Substituting gives $2\pi\im\kappa = \frac12\sum_i \Gamma_i(f_j + f_k)$, and by \eqref{eq:circalpha}, $\Gamma_i(f_j + f_k) = c r_i^2 (f_j + f_k)/(f_j - f_k) = c r_i^2 \coth(\beta\ln(r_k/r_j))$. With $\re\kappa = cA_s/\pi$ from Lemma~\ref{lem:circalpha}, \eqref{eq:P} gives $P = |S|/(8A)$.
+\end{proof}
+
+The circulations drop out: $P$ depends only on the shape of the triangle. Interchanging two labels reverses the cyclic order, which changes the sign of every term of $S$, so $|S|$ is a symmetric function of the side lengths. The first identity says that the rotation rate is half the sum of the rates at which the three pairs would rotate in isolation. Chen and Liu give every self-similar solution of three vortices explicitly, with the rotation angle in closed form in a shape variable and the circulations \cite[Theorems~2.1, 2.2]{cl2024}, so the rotation of the spiral, and with it $P$, is explicit there; Lemma~\ref{lem:ratesalpha} writes $P$ through the side lengths alone, in the form in which we minimize it.
+
+\subsection{The bound}\label{sec:bound}
+
+Throughout, $\alpha > -2$, that is, $\beta > 0$. Only step~(iii) of the proof below uses $\beta > 1/2$, and Remark~\ref{rem:below} completes that step for $0 < \beta \le 1/2$. We use the elementary inequality
+\begin{equation}\label{eq:log}
+\frac{1}{\ln(1 + x)} \ge \frac1x + \frac12 - \frac{x}{12} \qquad (x > 0).
+\end{equation}
+It is trivial where the right side is negative, that is, for $x \ge 3 + \sqrt{21}$. For $0 < x < 3 + \sqrt{21}$, the function $g(x) = 12x/(12 + 6x - x^2) - \ln(1 + x)$ has $g(0) = 0$ and $g'(x) = x^3(24 - x)/((12 + 6x - x^2)^2(1 + x)) > 0$, so $\ln(1 + x) \le 12x/(12 + 6x - x^2)$, which is \eqref{eq:log}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:alpha}]
+By Lemma~\ref{lem:circalpha} a collapsing triangle is scalene, and by Lemma~\ref{lem:ratesalpha}, $P = |S|/(8A)$ is symmetric in the sides and invariant under scaling. Order and scale the sides as $r_2 = \rho < r_3 = 1 < r_1$, and write $r_1^2 = 1 + \rho m$. With $\psi$ the angle at $z_1$, between the sides of lengths $\rho$ and $1$, the law of cosines gives $2\cos\psi = \rho - m$, so $0 < m < 2 + \rho$, $0 < \rho < 1$, $A = (\rho/2)\sin\psi$ and $4\sin^2\psi = 4 - (m - \rho)^2$. Put $X = \rho^{2\beta}$, $Y = (1 + \rho m)^\beta$ and $b = (\beta/2)\ln(1 + \rho m)$. Then $0 < X < 1 < Y$ and, from \eqref{eq:Salpha} with $(i, j, k) = (1, 2, 3)$ and its cyclic shifts,
+\[
+S = (1 + \rho m)\frac{1 + X}{1 - X} + \rho^2\coth b - \frac{Y + X}{Y - X}.
+\]
+(i) The function $t \mapsto (t + X)/(t - X)$ decreases for $t > X$, so $(Y + X)/(Y - X) \le (1 + X)/(1 - X)$ and $S \ge \rho m + \rho^2\coth b$. (ii) $\coth b > 1/b$, and \eqref{eq:log} with $x = \rho m$ gives $\rho^2/b \ge (\rho/\beta)(2/m + \rho - \rho^2 m/6)$. Hence
+\[
+S > \frac{\rho}{\beta}\Lambda, \qquad \Lambda = \beta m + \frac{2}{m} + \rho - \frac{\rho^2 m}{6} > 0,
+\]
+the last because $\rho^2 m/6 < \rho/2$. In particular $S > 0$, and
+\[
+P = \frac{S}{4\rho\sin\psi} > \frac{\Lambda}{2\beta\sqrt{4 - (m - \rho)^2}}.
+\]
+(iii) The identity
+\begin{equation}\label{eq:id}
+\Lambda^2 - (1 + 2\beta)(4 - (m - \rho)^2) = \Bigl((1 + \beta)m - \frac2m - \rho\Bigr)^2 + \frac{\rho^2}{3}\Bigl(1 + 6\beta - \beta m^2 - \rho m + \frac{\rho^2 m^2}{12}\Bigr)
+\end{equation}
+holds for all $\rho$, $m$, $\beta$, and for $\beta > 1/2$ its right side is positive. If $m < 2$, the second bracket exceeds $1 + 6\beta - 4\beta - 2 = 2\beta - 1 > 0$. If $m \ge 2$, then $2/m \le 1$ and $\rho < 1$, so $(1 + \beta)m - 2/m - \rho > (1 + \beta)m - 2 > 0$, and the second bracket is at least $b(m) = 1 + 6\beta - \beta m^2 - m$. If $b(m) \ge 0$ the right side is positive; otherwise $\rho^2 b(m) > b(m)$, and the right side exceeds $D(m) = ((1 + \beta)m - 2)^2 + b(m)/3$. Now $D'' = 2\beta^2 + 10\beta/3 + 2 > 0$ and $D'(2) = 4\beta^2 + 8\beta/3 - 1/3 > 0$, so $D$ increases on $[2, \infty)$, and $D(2) = 4\beta^2 + (2\beta - 1)/3 > 0$. Hence, as $\Lambda > 0$, $\Lambda > \sqrt{1 + 2\beta}\sqrt{4 - (m - \rho)^2}$ and $P > \sqrt{1 + 2\beta}/(2\beta) = B(\alpha)$.
+
+Sharpness. Let $\rho \to 0$ with $m$ fixed in $(0, 2)$. Exactly,
+\[
+S - \rho m - \rho^2\coth b = 2X\Bigl(\frac{1 + \rho m}{1 - X} - \frac{1}{Y - X}\Bigr) = \frac{2X\bigl((1 + \rho m)Y - 1 - \rho m X\bigr)}{(1 - X)(Y - X)},
+\]
+and for every $\beta > 0$ we have $X = \rho^{2\beta} \to 0$ and $Y = 1 + O(\rho)$, so the numerator is $O(X\rho)$ and the denominator tends to $1$. With $\rho^2\coth b = 2\rho/(\beta m) + O(\rho^2)$ this gives $S/\rho \to m + 2/(\beta m)$ and
+\[
+P \to P_0(m) = \frac{\beta m^2 + 2}{2\beta m\sqrt{4 - m^2}},
+\]
+whose only critical point on $(0, 2)$ is $m_* = \sqrt{2/(1 + \beta)}$, with $P_0(m_*) = \sqrt{1 + 2\beta}/(2\beta)$. By Lemma~\ref{lem:circalpha} each of these triangles, or its mirror image, collapses self-similarly with the circulations \eqref{eq:circalpha}, so $P$ comes arbitrarily close to $B(\alpha)$.
+\end{proof}
+
+\begin{remark}[the range $-2 < \alpha \le -1$]\label{rem:below}
+Steps (i) and (ii) and the sharpness argument hold for every $\beta > 0$, but for small $\beta$ the right side of \eqref{eq:id} can be negative, for instance at $\alpha = -1.7$, $\rho = 0.99$ and $m = 1.87$: step (i) discards the factor $(1 + X)/(1 - X)$, which is large when $X = \rho^{2\beta}$ is close to $1$. For $0 < \beta \le 1/2$ we complete step (iii) as follows. Let $q = 1 + 6\beta - \beta m^2 - \rho m + \rho^2 m^2/12$ be the second bracket in \eqref{eq:id}. If $q > 0$, the right side of \eqref{eq:id} is positive, and $\Lambda > 0$ by step (ii), since $\rho < 1$ and $m < 2 + \rho$ give $\rho m < 3$, that is, $\rho^2 m/6 < \rho/2$; taking square roots gives $\Lambda > \sqrt{1 + 2\beta}\sqrt{4 - (m - \rho)^2}$, and $P > B(\alpha)$ as in step (iii). If $q \le 0$, then $t = \rho m \ge 6 - 2\sqrt6$. Indeed, for $m^2 \le 6$, $t - t^2/12 = 1 + \beta(6 - m^2) - q \ge 1$, so $t^2 - 12t + 12 \le 0$; for $m^2 > 6$, $m < 2 + \rho$ gives $\rho > m - 2$, and since $(m - 2)m$ increases for $m > 1$, $t > (m - 2)m > (\sqrt6 - 2)\sqrt6 = 6 - 2\sqrt6$. In this case we keep the factor that step (i) discards: exactly
+\[
+S = \rho m\,\frac{1 + X}{1 - X} + \rho^2\coth b + \frac{2X(Y - 1)}{(1 - X)(Y - X)},
+\]
+where $\rho^2\coth b > 0$ because $b > 0$, and the last term is positive because $0 < X < 1 < Y$. With $u = \beta\ln(1/\rho) > 0$ we have $X = e^{-2u}$, so $(1 + X)/(1 - X) = \coth u > 1/u$, and therefore
+\[
+\frac{\beta S}{\rho} > \frac{m}{\ln(1/\rho)} = \frac{t}{\rho\ln(1/\rho)} \ge (6 - 2\sqrt6)\,e,
+\]
+because $\rho\ln(1/\rho) \le 1/e$ for $0 < \rho < 1$. Since $\sin\psi \le 1$,
+\[
+P = \frac{S}{4\rho\sin\psi} > \frac{(3 - \sqrt6)\,e}{2\beta} \ge \frac{\sqrt{1 + 2\beta}}{2\beta} = B(\alpha),
+\]
+where the last inequality holds whenever $1 + 2\beta \le (15 - 6\sqrt6)e^2$, that is, for $\beta \le ((15 - 6\sqrt6)e^2 - 1)/2 = 0.6196\ldots$, and so for every $\beta \le 1/2$. Hence Theorem~\ref{thm:alpha} holds for every $\alpha > -2$, and so does Corollary~\ref{cor:geom} below. No step uses a computer; the program \texttt{verify\_alpha\_below.py} checks each of them (Section~\ref{sec:numerics}).
+\end{remark}
+
+In the extremal limit $\rho \to 0$ the circulations \eqref{eq:circalpha} are, up to a factor, $\Gamma_2 \approx 1$ at the vertex opposite the shortest side and $\Gamma_1 \approx -\Gamma_3$ of order $\rho^{2\beta - 1}$ at its ends, and the line through the two vortices at the ends of the shortest side makes the angle $\arccos(1/\sqrt{2(1 + \beta)})$ with the line to the third vortex. For $\alpha > -1$ two weak vortices of opposite sign, at distance $\rho$, spiral into a strong vortex; for $-2 < \alpha < -1$ the tight pair is strong and the third vortex weak, and at $\alpha = -1$ the three circulations stay comparable. For $\alpha = 0$ this is the limit $\mu \to 0$ of Corollary~\ref{cor:bound}, with the angle $60^\circ$ of Theorem~\ref{thm:pairs}.
+
+\begin{corollary}\label{cor:geom}
+Let $\alpha > -2$. In every self-similar collapse of three point vortices under \eqref{eq:alpha}, each vortex travels more than $(4 + \alpha)/(2 + \alpha)$ times its initial distance from the collision point, the angle between its path and the direction to that point exceeds $\arccos((2 + \alpha)/(4 + \alpha))$, and $|\omega_0| t_c > 2\sqrt{3 + \alpha}/(2 + \alpha)^2$. None of these constants can be improved.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:ss} and Section~\ref{sec:selfsimilar} the three quantities are $\sqrt{1 + 4P^2}$, $\arctan 2P$ and $P/\beta$, which increase with $P$, and $\sqrt{1 + 4B^2} = (4 + \alpha)/(2 + \alpha)$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+ & $\alpha = 0$ (Euler) & $\alpha = 1/2$ & $\alpha = 1$ (SQG) & $\alpha = 3/2$ & $\alpha = 2$ \\
+\midrule
+$B(\alpha)$ & $\sqrt3/2 = 0.8660$ & $\sqrt{14}/5 = 0.7483$ & $2/3$ & $0.6061$ & $\sqrt5/4 = 0.5590$ \\
+path ratio & $2$ & $9/5$ & $5/3$ & $11/7$ & $3/2$ \\
+angle & $60^\circ$ & $56.25^\circ$ & $53.13^\circ$ & $50.48^\circ$ & $48.19^\circ$ \\
+\bottomrule
+\end{tabular}
+\caption{The bound of Theorem~\ref{thm:alpha} and the two constants of Corollary~\ref{cor:geom} for some values of $\alpha$.}
+\label{tab:values}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/alpha-winding.pdf}
+\caption{(a) The bound $B(\alpha)$ of Theorem~\ref{thm:alpha} (curve) and $P = |S|/(8A)$ for 24395 random collapsing triangles at 61 values of $\alpha$ (dots, spread slightly in $\alpha$ for visibility); none lies below the curve, which is approached as the shortest side tends to $0$. (b) The paths of the three vortices of an SQG collapse ($\alpha = 1$) with sides $0.45$, $1$ and $(1 + 0.45 m_*)^{1/2}$ and the circulations of Lemma~\ref{lem:circalpha}, integrated from \eqref{eq:alpha} to $10^{-6} t_c$ before the collapse; dots mark the initial positions and the cross the collision point. The program is \texttt{plot\_alpha\_winding.py}.}
+\label{fig:alpha}
+\end{figure}
+
+Since $d\ln B/d\alpha = -(4 + \alpha)/(2(3 + \alpha)(2 + \alpha)) < 0$ for $\alpha > -2$, the bound decreases strictly in $\alpha$, from $\infty$ as $\alpha \to -2$ through $\sqrt2$ at $\alpha = -1$, $\sqrt3/2$ in the Euler case and $2/3$ for SQG to $0$ as $\alpha \to \infty$ (Table~\ref{tab:values} and Figure~\ref{fig:alpha}): more local interactions allow tighter spirals, but three vortices never collapse without rotation, which eleven can do at $\alpha = 2$ and sixty can do in the SQG model (Theorem~\ref{thm:norot}). For $\alpha > -1$, that is, $2\beta > 1$, the velocity \eqref{eq:alpha} induced by a vortex decays with distance; the proof uses $2\beta > 1$ only in step (iii), which Remark~\ref{rem:below} completes for $-2 < \alpha \le -1$, where that velocity is constant or grows with distance.
+
+\begin{remark}[two equal circulations]\label{rem:equalalpha}
+For circulations $(1, -\gamma, 1)$ the self-similarly collapsing triangles form a single family. For $\alpha = 2$ it is $r_1 r_3 = r_2^2$, where $r_2$ joins the two equal vortices, the ratio is $\gamma = r_2^2/(r_1^2 + r_3^2)$, and Lemma~\ref{lem:ratesalpha} gives
+\[
+P^2 = \frac{(1 + \gamma)(2\gamma^2 - 2\gamma + 1)^2}{4(1 - 2\gamma)(1 + 2\gamma)(3\gamma - 1)}, \qquad \frac13 < \gamma < \frac12,
+\]
+whose minimum, $1.1039451679\ldots$, is a root of $27648y^8 - 29952y^6 - 3200y^4 - 1556y^2 - 125$. At $\gamma = 1/3$ the triangle degenerates to the collinear configuration with sides in the ratio $\varphi : 1 : 1/\varphi$, $\varphi$ the golden ratio, which Yasunaga, Otobe and Iwayama obtain at this end of their family in the limit $\alpha \to 2$ \cite[Sect.~3.1.1]{yoi2021}. For SQG the interval $0.387464\ldots < \gamma < 1/2$ of \cite[Lemma~1]{bb2018} and \cite[Theorem~4.1]{cl2024} has as its lower end the root in $(0, 1/2)$ of $4\gamma^4 - 8\gamma^3 + \gamma^2 - 2\gamma + 1$, where the triangle becomes collinear; Iwayama, Yajima and Watanabe give this endpoint in radicals \cite[Eq.~(4.6)]{iyw2025}.
 \end{remark}
 
 \section{Two concentric regular polygons}\label{sec:rings}
@@ -294,13 +476,13 @@ This is the circulation condition of Koiller et al.\ \cite[Sect.~11]{koiller1985
 \[
   x_n = \frac{n + \sqrt{2n - 1}}{n - 1} = e^\eta, \quad \cosh\eta = \frac{n}{n - 1}.
 \]
-The root $1/x_n$ gives the same family with the two rings interchanged, as one sees by multiplying the circulations by $-x_n$ and reflecting the configuration, so we take $x = x_n$. Then every $\theta$ gives a self-similar motion. Let $\rho = x_n^{n/2} = e^{n\eta/2} > 1$ and $\alpha = n\theta$, so that $v = \rho e^{i\alpha}$. The common value of $\overline{\kappa}$ is $S/(2\pi i)$ with $S = x_n(n - 1)/2 - n/(1 - v)$, so $\kappa = (\im S + i\re S)/(2\pi)$, and since $\im(1 - v)^{-1} = \rho\sin\alpha/|1 - v|^2$,
+The root $1/x_n$ gives the same family with the two rings interchanged, as one sees by multiplying the circulations by $-x_n$ and reflecting the configuration, so we take $x = x_n$. Then every $\theta$ gives a self-similar motion. Let $\rho = x_n^{n/2} = e^{n\eta/2} > 1$ and $\tau = n\theta$, so that $v = \rho e^{i\tau}$. The common value of $\overline{\kappa}$ is $S/(2\pi i)$ with $S = x_n(n - 1)/2 - n/(1 - v)$, so $\kappa = (\im S + i\re S)/(2\pi)$, and since $\im(1 - v)^{-1} = \rho\sin\tau/|1 - v|^2$,
 \[
-  \re\kappa = -\frac{n\rho\sin\alpha}{2\pi|1 - v|^2}.
+  \re\kappa = -\frac{n\rho\sin\tau}{2\pi|1 - v|^2}.
 \]
-The configuration therefore collapses exactly when $\sin n\theta > 0$, that is, for $0 < \theta < \pi/n$ modulo $2\pi/n$. Using $|1 - v|^2 = 1 - 2\rho\cos\alpha + \rho^2$ one finds
+The configuration therefore collapses exactly when $\sin n\theta > 0$, that is, for $0 < \theta < \pi/n$ modulo $2\pi/n$. Using $|1 - v|^2 = 1 - 2\rho\cos\tau + \rho^2$ one finds
 \[
-  \frac{|1 - v|^2 \re S}{\rho} = K_n - ((n - 1)x_n - n)\cos\alpha, \quad
+  \frac{|1 - v|^2 \re S}{\rho} = K_n - ((n - 1)x_n - n)\cos\tau, \quad
   K_n = \frac{(n - 1)x_n(\rho + \rho^{-1})}{2} - \frac{n}{\rho}.
 \]
 Here $(n - 1)x_n - n = \sqrt{2n - 1}$, and writing $n = (n - 1)\cosh\eta$ in the last term of $K_n$ gives
@@ -346,51 +528,375 @@ For $n = 2$ the configuration is a parallelogram of four vortices; Novikov and S
   P = \frac{127\sqrt{2} - 24\cos 5\theta}{80\sin 5\theta} \ge \frac{\sqrt{31682}}{80} = 2.2249297741726591\ldots.
 \]
 
-\section{Numerical verification}\label{sec:numerics}
+Now place a vortex of circulation $\Gamma_0$ at the center as well. The velocity that each ring induces at the center vanishes, so this vortex stays at rest, and it does not change the angular impulse. It adds $\Gamma_0$ to the bracket in the expression for $\overline{\dot z/z}$ above and $\Gamma_0/x$ to the bracket for $\overline{\dot\zeta/\zeta}$, so the two quotients are equal if and only if
+\begin{equation}\label{eq:circ0}
+  (n - 1)x^2 - 2(n - \Gamma_0)x + (n - 1) - 2\Gamma_0 = 0, \quad\text{that is,}\quad \Gamma_0 = \frac{(n - 1)x^2 - 2nx + n - 1}{2(1 - x)},
+\end{equation}
+and again every $\theta$ gives a self-similar motion. On \eqref{eq:circ0} the total circulation does not vanish, since $2(x - 1)(n(x - 1) + \Gamma_0) = (n + 1)x^2 - 2nx + n + 1 > 0$, so the center of vorticity is the origin. The left side of \eqref{eq:circ0} equals $-2$ at $x = 1$ and $n - 1 - 2\Gamma_0$ at $x = 0$, so for every real $\Gamma_0$ it has exactly one root $x > 1$, and for $\Gamma_0 < (n - 1)/2$ also exactly one root in $(0, 1)$. Multiplying the circulations by $-1/x$ and reflecting the configuration, as for $\Gamma_0 = 0$, interchanges the rings and maps the root $x < 1$ for $\Gamma_0$ to the root $1/x > 1$ for $-\Gamma_0/x$, with the same $P$. So we take $x > 1$ and write $x = e^{2t}$ with $t > 0$. With $A = x(n - 1)/2 + \Gamma_0$, the common value of $\overline{\kappa}$ is $S/(2\pi i)$ with $S = A - n/(1 - v)$.
 
-The results were checked numerically as summarized in Table~\ref{tab:checks}. Except where the table says otherwise, the checks evaluate the Biot--Savart velocities \eqref{eq:bs} directly for configurations built independently of \eqref{eq:pos} (two vortices fixed and the third moved around the zero-impulse circle), test self-similarity by comparing $\dot z_j/(z_j - z_c)$ across all vortices, and obtain $P$ from \eqref{eq:P}. The algebraic steps in the proofs were verified in exact arithmetic (SymPy): Lemma~\ref{lem:rates} for all three vortices, \eqref{eq:K}, the resultant in the proof of Theorem~\ref{thm:main}(b), the discriminant and the resultant in the proof of Theorem~\ref{thm:main}(c), the irreducibility of $Q$ and of each of the 277 sextics in Remark~\ref{rem:radicals}, the constants in Proposition~\ref{prop:half}, and, for general $n$, the identities of Section~\ref{sec:rings} from \eqref{eq:circ} to \eqref{eq:Pring}, together with the table of constants. The program \texttt{verify\_general\_mu.py} carries out these exact computations with SymPy~1.14.0 and the high-precision checks with mpmath~1.3.0; \texttt{verify\_floors\_independent.py} repeats the minimizations independently and contains the exact sign changes of $G$ and the interval enclosures in the proof of Proposition~\ref{prop:half}, computed with the interval arithmetic of mpmath at 30 digits. The program \texttt{verify\_direct\_proof.py} checks every identity in the direct proof of Corollary~\ref{cor:bound} exactly, with SymPy. Each program runs in under a minute under Python~3.11 and prints every check with its result; their output is in \texttt{data/}.
+\begin{proposition}\label{prop:centre}
+Let $n \ge 2$ and $\Gamma_0 \in \mathbb{R}$, and let $x = e^{2t}$, $t > 0$, be the root of \eqref{eq:circ0} greater than $1$. The configuration with relative rotation $\theta$ collapses exactly when $\sin n\theta > 0$, and then
+\begin{equation}\label{eq:Pcentre}
+  P = \frac{a - b\cos n\theta}{2n\sin n\theta}, \quad a = \coth t\cosh nt + n\sinh nt, \quad b = \coth t .
+\end{equation}
+Hence $P \ge \sqrt{D^2 - n^2}/(2n)$, where $D = \coth t\sinh nt + n\cosh nt > 2n$, with equality if and only if $\cos n\theta = b/a$. This minimum over $\theta$ exceeds $\sqrt{3}/2$ and decreases strictly from $\infty$ to $\sqrt{3}/2$ as $\Gamma_0$ increases from $-\infty$ to $\infty$; with $h = 1/(\Gamma_0 - 1/2)$ it is
+\[
+  \frac{\sqrt{3}}{2} + \frac{\sqrt{3}\,(1 + 2n^2)}{36}\,h^2 + O(h^4) \quad \text{as } \Gamma_0 \to +\infty.
+\]
+In particular $P > \sqrt{3}/2$ for every $n \ge 2$, every $\Gamma_0$ and both roots of \eqref{eq:circ0}, and no larger constant holds for all of them.
+\end{proposition}
 
-\begin{table}[tp]
-  \centering
-  \small
-  \renewcommand{\arraystretch}{1.25}
-  \begin{tabular}{|>{\raggedright\arraybackslash}p{0.53\textwidth}|>{\raggedright\arraybackslash}p{0.37\textwidth}|}
-    \hline
-    \textbf{Check} & \textbf{Result} \\ \hline
-    Lemma~\ref{lem:rates} against the Biot--Savart velocities of all three vortices, at the positions \eqref{eq:pos} for 36 pairs $(\mu, \theta)$ on a grid with $0.1 \le \mu \le 7$, and for 30 triangles built independently of \eqref{eq:pos}, 50 digits
-      & relative difference $\le 2 \times 10^{-49}$ \\ \hline
-    Arc minima by direct minimization of $P$, computed from the quotient of the first vortex, for 26 values of $\mu \in (0, 1]$ at 30 digits and 13 rational values at 50 digits
-      & agree with the roots of $Q(\mu, \cdot)$ to $5 \times 10^{-21}$ and $5 \times 10^{-45}$ \\ \hline
-    $\mu = 1/2$: the three quotients over 4000 shapes on the zero-impulse circle, 60 digits
-      & equal to 60-digit working precision; the collapsing shapes fill half of the circle, the arcs $\mathcal{A}_\pm$ \\ \hline
-    $\mu = 1/2$: local minima of $P$ over the collapsing shapes, located numerically
-      & two, equal to the values of Proposition~\ref{prop:half} to 60-digit working precision \\ \hline
-    $\mu = 1/2$: formula for $P(\theta)$ against direct evaluation at the positions \eqref{eq:pos}, 399 interior points of each arc
-      & relative difference $\le 10^{-59}$ \\ \hline
-    $\mu = 1/2$: integration of \eqref{eq:bs} from the minimizing configuration on $\Am$ (Taylor method, 30 digits)
-      & every $|z_j - z_c|^2$ follows $1 - t/t_c$, and every rotation angle follows $-\omega_0 t_c \ln(1 - t/t_c)$, to 30-digit working precision up to $t = 0.9\, t_c$ \\ \hline
-    Five configurations at the positions \eqref{eq:pos} with $\mu \in \{0.3, 0.5, 2\}$, on both arcs: integration of \eqref{eq:bs} to $t = 0.9\, t_c$ (fourth-order Runge--Kutta, 30 digits)
-      & distances to the collision point, rotation angles, the angle $\arctan 2P$ between each velocity and the direction to the collision point, and path lengths $r_0 \sqrt{1 + 4P^2}\,(1 - \sqrt{1 - t/t_c})$ agree to $2 \times 10^{-10}$ \\ \hline
-    $\mu = 1$ (Remark~\ref{rem:equal}): $P$ from \eqref{eq:bs} against $(3 - \cos 2\beta)/(2\sin 2\beta)$ on both collapsing arcs, and its minimum, 50 digits
-      & difference $\le 2 \times 10^{-47}$; minimum $\sqrt{2}$ at $\cos 2\beta = 1/3$ on both arcs \\ \hline
-    $\mu = 1$: the configuration with the fastest collapse at $|z_1 - z_2| = 1$, 50 digits
-      & $\cos 2\beta = 3/5$, $t_c = 4\pi/3$ and $P = 3/2$ to $10^{-40}$ \\ \hline
-    $\mu = 1$: Kimura's rates $A$, $B$ \cite[Eq.~(4.4)]{kimura1987} at ten angles in $0 < \beta < \pi/2$, 50 digits
-      & $\kappa = (A + iB)/(4\pi)$ for $\Gamma = (1, 1, -1/2)$, to $10^{-45}$ \\ \hline
-    Two rings, $n = 2, \dots, 10$: the reduced equations \eqref{eq:rings} and the two sums over roots of unity against the full Biot--Savart sum, 50 digits
-      & difference $\le 10^{-49}$ \\ \hline
-    Two rings, $n = 2, \dots, 8$: $P$ from \eqref{eq:bs} against \eqref{eq:Pring} over the collapsing range, and its numerical minimum against $F_n$, 60 digits
-      & relative difference $\le 3 \times 10^{-58}$; minima agree to $2 \times 10^{-60}$ \\ \hline
-    Two rings: the equations of Demina and Kudryashov \cite[Eqs.~(36)--(37)]{dk2014} at $\Gamma_0 = 0$ (exact, SymPy), and their constant against the Biot--Savart sum, $n = 2, \dots, 8$, 50 digits
-      & (37) is \eqref{eq:circ} with $x = r^2$; (36) minus $S$ is a multiple of \eqref{eq:circ}; difference $\le 10^{-45}$ \\ \hline
-    The collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014}, Biot--Savart at 50 digits
-      & self-similar, the printed $\Omega$ to $10^{-45}$, and $P = 12433/(1240\sqrt{155}) < \sqrt{3}/2$ \\ \hline
-  \end{tabular}
-  \caption{Numerical checks of the results.}
-  \label{tab:checks}
-\end{table}
+\begin{proof}
+The central vortex does not change $\im S = -n\rho\sin\tau/|1 - v|^2$, so the configuration collapses exactly when $\sin n\theta > 0$, and the computation that led to \eqref{eq:Pring} gives $|1 - v|^2 \re S/\rho = a - b\cos\tau$ with $a = A(\rho + \rho^{-1}) - n/\rho$ and $b = 2A - n$. By \eqref{eq:circ0}, $A = (n + 1)/2 + 1/(x - 1) = (n + \coth t)/2$, and with $\rho = e^{nt}$ this gives the stated $a$ and $b$. Since $a \mp b = \coth t\,(\cosh nt \mp 1) + n\sinh nt > 0$, $\re S > 0$, and \eqref{eq:P} gives \eqref{eq:Pcentre}. Lemma~\ref{lem:ineq} gives the minimum $\sqrt{a^2 - b^2}/(2n)$, and $a^2 - b^2 = D^2 - n^2$ because $\cosh^2 nt - \sinh^2 nt = 1$. The difference $\sinh nt - n\sinh t$ vanishes at $t = 0$ and has derivative $n(\cosh nt - \cosh t) \ge 0$, so $\coth t\sinh nt \ge n\cosh t > n$; with $n\cosh nt > n$ this gives $D > 2n$, and hence $D^2 - n^2 > 3n^2$. Moreover $\coth t\sinh nt = \cosh t\sum_{j=0}^{n-1} e^{(n - 1 - 2j)t}$, where the sum pairs into terms $2\cosh((n - 1 - 2j)t)$, plus $1$ when $n$ is odd, so $D$ increases strictly with $t$, from $2n$ as $t \to 0$ to $\infty$. By \eqref{eq:circ0}, $\Gamma_0 = (n + \coth t)/2 - (n - 1)e^{2t}/2$, which decreases strictly from $\infty$ to $-\infty$ as $t$ increases; this gives the monotonicity and the two limits. Finally, $D$ is even in $t$, with $D = 2n + n(1 + 2n^2)t^2/3 + O(t^4)$, and $\Gamma_0 - 1/2 = 1/(2t) + O(t)$, so $h = 2t + O(t^3)$ and $(D^2 - n^2)/(4n^2) = 3/4 + (1 + 2n^2)h^2/12 + O(h^4)$, which gives the expansion. The root $x < 1$ reduces to a root $x > 1$ by the interchange of the rings described above.
+\end{proof}
 
-\section{Discussion}
+For $\Gamma_0 = 0$ the root greater than $1$ is $x_n = e^\eta$, so $t = \eta/2$. Since $n = (n - 1)\cosh\eta$ and $(n - 1)\sinh\eta = \sqrt{2n - 1}$, we get $b = \coth(\eta/2) = \sqrt{2n - 1}$ and $a = (n - 1)\sinh((n + 2)\eta/2) = K_n$, so \eqref{eq:Pcentre} is \eqref{eq:Pring} and the minimum is $F_n$ of Proposition~\ref{prop:rings}; in particular $F_n > \sqrt{3}/2$ for every $n$. The family and its rates are those of Demina and Kudryashov \cite[Sect.~3, Eqs.~(36)--(37)]{dk2014}: their Eq.~(37) with $\Gamma_1 = r^2 = x$ is $x$ times \eqref{eq:circ0}, and on \eqref{eq:circ0} their constant $\Omega$ is $S$. For $n = 2$ the configuration is the five-vortex collapse of Novikov and Sedov \cite{ns1979}, a parallelogram with a vortex where its diagonals cross, and Gotoda gives its rates in closed form \cite{gotoda2021}, in his Eq.~(3.13) in arXiv:2002.09624v1. These sources give the rates, but none of them minimizes or bounds their ratio. Proposition~\ref{prop:centre} does not conflict with the seven-vortex collapse with $P = 0.8053\ldots$ in Section~\ref{sec:three}, which has three concentric 2-gons around the central vortex, not two.
+
+\section{A strong vortex with weak tight pairs}\label{sec:pairs}
+
+In Corollary~\ref{cor:bound} the value $\sqrt{3}/2$ is approached as $\mu \to 0$, and in Proposition~\ref{prop:centre} as $\Gamma_0 \to +\infty$; in both limits a strong vortex carries weak, tight pairs of opposite sign. For three vortices this picture appears in Krishnamurthy and Stremler \cite[Sect.~3.6, Fig.~9]{ks2018}: as their parameter $g$ tends to $-1$ they describe a small vortex dipole moving in the field of a strong, fixed vortex, and on their slice $A = \pi/3$ the self-induced motion of the dipole makes the angle $\pi/3$ with the motion induced by the strong vortex; they compute collapse times and the energy, not the rotation or $P$. We show that this structure alone forces the constant $\sqrt{3}/2$, for any number of pairs.
+
+Let $m \ge 1$ and $0 < c \le 1$. We consider $1 + 2m$ point vortices: one of circulation $1$ at the origin and, for $j = 1, \dots, m$, one of circulation $\gamma a_j$ at $Z_j$ and one of circulation $-\gamma b_j$ at $W_j$, where $\gamma > 0$ and, for all $j$ and all $l \ne j$,
+\begin{equation}\label{eq:class}
+  c \le a_j, b_j \le \frac{1}{c}, \quad c \le |Z_j| \le \frac{1}{c}, \quad c\gamma|Z_j| \le |W_j - Z_j| \le \frac{\gamma|Z_j|}{c}, \quad |Z_j - Z_l| \ge c.
+\end{equation}
+We write $d_j = W_j - Z_j$ and
+\[
+  u_j = \frac{d_j}{\gamma a_j Z_j} = p_j + iy_j, \qquad \nu_j = \frac{a_j - b_j}{\gamma a_j^2},
+\]
+so that $W_j = Z_j(1 + \gamma a_j u_j)$, $b_j = a_j(1 - \gamma a_j\nu_j)$ and, by \eqref{eq:class}, $c^2 \le |u_j| \le c^{-2}$. Pair $j$ has length $\gamma a_j|u_j||Z_j|$, and $\arg u_j$ is the angle from the direction $Z_j$, away from the strong vortex, to the direction from the positive to the negative vortex of the pair. The normalization is no loss of generality: a translation puts the strong vortex at the origin, multiplying all circulations by a positive constant leaves $P$ unchanged, and the map $(\Gamma_i, z_i) \mapsto (-\Gamma_i, \overline{z_i})$ of Section~\ref{sec:three} sends $\kappa$ to $\overline{\kappa}$ and keeps $P$, so a strong vortex of negative circulation is covered as well, after exchanging the roles of $Z_j$ and $W_j$ (and of $a_j$ and $b_j$); for $\gamma \le \gamma_0$ the image satisfies \eqref{eq:class} with $c$ replaced by $3c/4$.
+
+\begin{theorem}[A strong vortex with weak tight pairs]\label{thm:pairs}
+Let $m \ge 1$ and $0 < c \le 1$, and consider configurations as above that collapse self-similarly, that is, $\dot z_i = \kappa(z_i - z_c)$ for all $1 + 2m$ vortices, with $\re\kappa < 0$.
+
+\textup{(a)} For every $\delta > 0$ there is $\gamma_1 > 0$, depending only on $m$, $c$ and $\delta$, such that every such collapse with $\gamma < \gamma_1$ has $P > \sqrt{3}/2 - \delta$.
+
+\textup{(b)} For every $\delta > 0$ there are $\eta > 0$ and $\gamma_2 > 0$, depending only on $m$, $c$ and $\delta$, such that every such collapse with $\gamma < \gamma_2$ and $P < \sqrt{3}/2 + \eta$ has $|u_j - e^{i\pi/3}| < \delta$, $|\nu_j - 1| < \delta$ and $\bigl||Z_j|/|Z_l| - 1\bigr| < \delta$ for all $j$ and $l$.
+
+\textup{(c)} For every $\delta > 0$ and $\bar P > 0$ there is $\gamma_3 > 0$, depending only on $m$, $c$, $\delta$ and $\bar P$, such that every such collapse with $\gamma < \gamma_3$ and $P \le \bar P$ has, for every $j$, $|p_j - 1/2| < \delta$, $|\nu_j - 1| < \delta$, $y_j > 0$ and
+\[
+  \Bigl|P - \frac{y_j^2 + 3/4}{2y_j}\Bigr| < \delta, \qquad \text{where} \quad \frac{y_j^2 + 3/4}{2y_j} = \frac{\sqrt{3}}{2} + \frac{(y_j - \sqrt{3}/2)^2}{2y_j}.
+\]
+For every $m$, the constant $\sqrt{3}/2$ in \textup{(a)} cannot be increased when $c \le 1/2$ for $m = 1$ and $c \le \min(1/2, 2\sin(\pi/m))$ for $m \ge 2$.
+\end{theorem}
+
+So, for weak pairs, $P$ is close to $\sqrt{3}/2$ only if every pair has length close to $\gamma a_j|Z_j|$ and makes the angle $60^\circ$ with the direction away from the strong vortex, all the pairs are at nearly the same distance from the strong vortex, and the negative circulation of each pair, $-\gamma a_j + \gamma^2 a_j^2\nu_j$, differs from the three-vortex harmonic value $-\gamma a_j/(1 + \gamma a_j)$ by $\gamma^2 a_j^2(\nu_j - 1) + O(\gamma^3)$, which is small compared with $\gamma^2$.
+
+\begin{proof}
+It suffices to prove three statements about a sequence of such collapses with $\gamma = \gamma_n \to 0$, in which we write $P_n$, $\kappa_n$, $u_{j,n} = p_{j,n} + iy_{j,n}$, and so on:
+(S1) $\liminf P_n \ge \sqrt{3}/2$;
+(S2) if $P_n \to \sqrt{3}/2$, then $u_{j,n} \to e^{i\pi/3}$, $\nu_{j,n} \to 1$ and $|Z_{j,n}|/|Z_{l,n}| \to 1$ for all $j$ and $l$;
+(S3) if $\sup_n P_n < \infty$, then for every $j$, $p_{j,n} \to 1/2$, $\nu_{j,n} \to 1$, $\liminf_n y_{j,n} > 0$ and $P_n - (y_{j,n}^2 + 3/4)/(2y_{j,n}) \to 0$.
+Indeed, if (a) failed for some $\delta$, there would be a sequence with $\gamma_n \to 0$ and $P_n \le \sqrt{3}/2 - \delta$, contrary to (S1). If (b) failed for some $\delta$, there would be a sequence with $\gamma_n \to 0$ and $P_n < \sqrt{3}/2 + 1/n$ for which one of the inequalities fails for every $n$, and after passing to a subsequence it is always the same inequality, for the same $j$ and $l$; by (S1), $P_n \to \sqrt{3}/2$, contrary to (S2). The same argument with $P_n \le \bar P$ reduces (c) to (S3).
+
+Throughout, $\gamma \le \gamma_0 = c^3/(8m)$, which along a sequence with $\gamma_n \to 0$ holds after finitely many terms are discarded, and $O(\gamma^k)$ denotes a quantity bounded by $\gamma^k$ times a constant that depends only on $m$ and $c$. Each identity used below is a direct computation, verified in \texttt{verify\_strong\_vortex.py} (Section~\ref{sec:numerics}).
+
+\emph{Step 1: a priori bounds.} By \eqref{eq:class}, $|d_j| \le \gamma/c^2 \le c/8$. Hence $|W_j| \ge c/2$; every vortex of pair $j$ is at distance at least $c - 2\gamma/c^2 \ge c/2$ from every vortex of pair $l \ne j$; and $\sum_i \Gamma_i = 1 + \gamma\sum_j (a_j - b_j)$ lies in $[1/2, 2]$. The identity
+\begin{equation}\label{eq:zc}
+  \sum_i \Gamma_i z_i = \sum_j \bigl(\gamma(a_j - b_j)Z_j - \gamma b_j d_j\bigr)
+\end{equation}
+gives $|\sum_i \Gamma_i z_i| \le 2m\gamma/c^2$, so that $|z_c| \le 4m\gamma/c^2 \le c/2$ and $|Z_j - z_c| \ge c/2$. The contribution of pair $l$ to the sum in \eqref{eq:bs} at a point $z$ is
+\[
+  f_l(z) = \frac{\gamma a_l}{z - Z_l} - \frac{\gamma b_l}{z - W_l} = \frac{\gamma(a_l - b_l)}{z - Z_l} - \frac{\gamma b_l d_l}{(z - Z_l)(z - W_l)}.
+\]
+At the vortices of a pair $j \ne l$ it satisfies $|f_l| \le 4\gamma/c^2$, and
+\[
+  f_l(W_j) - f_l(Z_j) = d_j\Bigl(\frac{\gamma b_l}{(W_j - W_l)(Z_j - W_l)} - \frac{\gamma a_l}{(W_j - Z_l)(Z_j - Z_l)}\Bigr)
+\]
+gives $|f_l(W_j) - f_l(Z_j)| \le 8\gamma|d_j|/c^3$. Finally, $|\gamma b_j/d_j| \le c^{-3}$.
+
+\emph{Step 2: the equations of a pair.} With the strong vortex at the origin, the equation $\dot z_i = \kappa(z_i - z_c)$ at $Z_j$, and the difference of the equations at $W_j$ and $Z_j$, in which $z_c$ cancels, read by \eqref{eq:bs}
+\begin{align}
+  2\pi i\,\overline{\kappa}\,\overline{(Z_j - z_c)} &= \frac{1}{Z_j} + \frac{\gamma b_j}{d_j} + \sum_{l \ne j} f_l(Z_j), \label{eq:pairZ}\\
+  2\pi i\,\overline{\kappa}\,\overline{d_j} &= -\frac{d_j}{Z_jW_j} + \frac{\gamma(a_j - b_j)}{d_j} + \sum_{l \ne j} \bigl(f_l(W_j) - f_l(Z_j)\bigr). \label{eq:pairD}
+\end{align}
+By Step~1 the right side of \eqref{eq:pairZ} has absolute value at most $1/c + 1/c^3 + 4m\gamma/c^2 \le 3/c^3$, and $|Z_j - z_c| \ge c/2$, so $|\kappa| \le 3/(\pi c^4)$.
+
+\emph{Step 3: the relative motion.} Multiply \eqref{eq:pairD} by $Z_j/(\gamma a_j)$ and write $-d_j/(Z_jW_j) = -d_j/Z_j^2 + d_j^2/(Z_j^2W_j)$. Since $d_j = \gamma a_j u_j Z_j$, the multiplication turns $\overline{d_j}$ into $|Z_j|^2\,\overline{u_j}$, $\gamma(a_j - b_j)/d_j$ into $\nu_j/u_j$, $-d_j/Z_j^2$ into $-u_j$, and $d_j^2/(Z_j^2W_j)$ into $\gamma a_j u_j^2/(1 + \gamma a_j u_j)$. Hence, by Step~1 and $|\gamma a_j u_j| = |d_j|/|Z_j| \le \gamma/c^3 \le 1/8$,
+\begin{equation}\label{eq:rel}
+  2\pi i\,\overline{\kappa}\,|Z_j|^2\,\overline{u_j} = -u_j + \frac{\nu_j}{u_j} + \rho_j, \qquad |\rho_j| \le \gamma\Bigl(\frac{2}{c^5} + \frac{8(m - 1)}{c^7}\Bigr) \le \frac{1}{c^4}.
+\end{equation}
+Since $|\kappa|$, $|Z_j|$, $|u_j|$ and $1/|u_j|$ are bounded, \eqref{eq:rel} bounds $\nu_j$, for instance $|\nu_j| \le 8c^{-10}$; this uses no information on $b_j/a_j$. So $a_j - b_j = \gamma a_j^2 \nu_j = O(\gamma)$: the total circulation of each pair is $O(\gamma^2)$. Three consequences follow. By \eqref{eq:zc}, $\sum_i \Gamma_i z_i = \sum_j (\gamma^2 a_j^2 \nu_j Z_j - \gamma b_j d_j) = O(\gamma^2)$, so $z_c = O(\gamma^2)$. Next, $b_j/a_j = 1 - \gamma a_j\nu_j = 1 + O(\gamma)$. And by the second form of $f_l$, $f_l(Z_j) = O(\gamma^2)$ for $l \ne j$, although the bound $O(\gamma)$ of Step~1 suffices below. Multiplying \eqref{eq:pairZ} by $Z_j$ and using $\gamma b_j Z_j/d_j = (b_j/a_j)/u_j$ and $\overline{(Z_j - z_c)}\,Z_j = |Z_j|^2 - \overline{z_c}\,Z_j$, we obtain
+\begin{equation}\label{eq:rate}
+  2\pi i\,\overline{\kappa}\,|Z_j|^2 = 1 + \frac{1}{u_j} + O(\gamma).
+\end{equation}
+
+\emph{Step 4: the angular impulse.} The angular impulse about $z_c$ vanishes (Section~2). With the strong vortex at the origin, $\sum_i \Gamma_i |z_i - z_c|^2 = \sum_i \Gamma_i |z_i|^2 - |z_c|^2 \sum_i \Gamma_i$, and pair $j$ contributes
+\[
+  \gamma a_j|Z_j|^2 - \gamma b_j|W_j|^2 = \gamma^2|Z_j|^2\bigl(a_j^2\nu_j - 2a_jb_jp_j - \gamma a_j^2 b_j|u_j|^2\bigr)
+\]
+to $\sum_i \Gamma_i|z_i|^2$. Since $z_c = O(\gamma^2)$ and $a_jb_j = a_j^2 - \gamma a_j^3\nu_j$, dividing by $\gamma^2$ gives
+\begin{equation}\label{eq:imp}
+  \sum_j a_j^2|Z_j|^2(\nu_j - 2p_j) = O(\gamma).
+\end{equation}
+Here $z_c = O(\gamma^2)$ is needed: the a priori bound $z_c = O(\gamma)$ would leave a term of order $1$.
+
+\emph{Step 5: limits.} Along the sequence, $a_j$, $Z_j$, $u_j$, $\nu_j$ and $\kappa$ are bounded, so every subsequence has a further subsequence along which they converge, to $a_j^*$, $Z_j^*$, $u_j^* = p_j^* + iy_j^*$, $\nu_j^*$ and $\kappa^*$. Then $b_j \to a_j^*$, $a_j^* \ge c$, $|Z_j^*| \ge c$, $|u_j^*| \ge c^2$ and $\re\kappa^* \le 0$, and \eqref{eq:rate}, \eqref{eq:rel} and \eqref{eq:imp} become
+\begin{equation}\label{eq:limit}
+  2\pi i\,\overline{\kappa^*}\,|Z_j^*|^2 = 1 + \frac{1}{u_j^*}, \quad
+  2\pi i\,\overline{\kappa^*}\,|Z_j^*|^2\,\overline{u_j^*} = -u_j^* + \frac{\nu_j^*}{u_j^*}, \quad
+  \sum_j a_j^{*2}|Z_j^*|^2(\nu_j^* - 2p_j^*) = 0.
+\end{equation}
+Eliminating $\kappa^*$ between the first two and multiplying by $u_j^*$ gives
+\[
+  2p_j^{*2} + p_j^* - \nu_j^* + iy_j^*(2p_j^* - 1) = 0,
+\]
+so $y_j^*(2p_j^* - 1) = 0$ and $\nu_j^* = 2p_j^{*2} + p_j^*$. By the first equation, $\kappa^* = i\,\overline{(1 + 1/u_j^*)}/(2\pi|Z_j^*|^2)$, that is,
+\begin{equation}\label{eq:kstar}
+  \re\kappa^* = -\frac{y_j^*}{2\pi|Z_j^*|^2|u_j^*|^2}, \qquad \im\kappa^* = \frac{1 + p_j^*/|u_j^*|^2}{2\pi|Z_j^*|^2}
+\end{equation}
+for every $j$.
+
+\emph{Case A: some $y_j^* \ne 0$.} Then $\im(1 + 1/u_j^*) = -y_j^*/|u_j^*|^2 \ne 0$, so $2\pi i\,\overline{\kappa^*}$ is not real, and the first equation of \eqref{eq:limit} shows $y_l^* \ne 0$ for every $l$. Hence $p_l^* = 1/2$ and $\nu_l^* = 1$ for every $l$, and since $\re\kappa^* \le 0$, \eqref{eq:kstar} gives $y_l^* > 0$ for every $l$ and $\re\kappa^* < 0$. So $P$, a continuous function of $\kappa$ on $\re\kappa < 0$, converges along the subsequence to
+\[
+  P^* = \frac{\im\kappa^*}{-2\re\kappa^*} = \frac{|u_l^*|^2 + p_l^*}{2y_l^*} = \frac{y_l^{*2} + 3/4}{2y_l^*} = \frac{\sqrt{3}}{2} + \frac{(y_l^* - \sqrt{3}/2)^2}{2y_l^*} \ge \frac{\sqrt{3}}{2},
+\]
+the same number for every $l$. Thus every $y_l^*$ is one of the two positive roots, $y^*$ and $3/(4y^*)$, of $y^2 - 2P^*y + 3/4$; different pairs may take different roots, and they then lie at different distances from the strong vortex, by the first equation of \eqref{eq:limit}. If $P^* = \sqrt{3}/2$, the two roots coincide, every $y_l^* = \sqrt{3}/2$, so $u_l^* = e^{i\pi/3}$, and the first equation of \eqref{eq:limit} gives the same $|Z_l^*|$ for every $l$.
+
+\emph{Case B: every $y_j^* = 0$.} Then $1 + 1/u_j^*$ is real, so $\kappa^*$ is purely imaginary. If $\kappa^* \ne 0$, then $\re\kappa_n \to 0^-$ while $|\im\kappa_n| \to |\kappa^*| > 0$, so $P_n \to \infty$ along the subsequence. If $\kappa^* = 0$, then $1 + 1/p_j^* = 0$, so $p_j^* = -1$ and $\nu_j^* = 1$ for every $j$, and the last equation of \eqref{eq:limit} reads $3\sum_j a_j^{*2}|Z_j^*|^2 = 0$, which is impossible. This is the only place where the angular impulse enters.
+
+\emph{Conclusion.} Every subsequence has a further subsequence along which either $P_n \to \infty$, or Case~A holds and $P_n \to P^* \ge \sqrt{3}/2$; this proves (S1). If $P_n \to \sqrt{3}/2$, only Case~A with $P^* = \sqrt{3}/2$ can occur, so every subsequence has a further subsequence along which $u_{j,n} \to e^{i\pi/3}$, $\nu_{j,n} \to 1$ and $|Z_{j,n}|/|Z_{l,n}| \to 1$; since these limits do not depend on the subsequence, the whole sequence converges to them, which proves (S2). If $\sup_n P_n < \infty$, only Case~A can occur, and the same argument gives $p_{j,n} \to 1/2$, $\nu_{j,n} \to 1$ and $P_n - (y_{j,n}^2 + 3/4)/(2y_{j,n}) \to 0$, while $\liminf_n y_{j,n} > 0$ because every subsequence has a further subsequence along which $y_{j,n}$ has a positive limit; this proves (S3). Finally, the families of Corollary~\ref{cor:bound} and Proposition~\ref{prop:centre} contain collapses that satisfy \eqref{eq:class}, for $m = 1$ and for every $m = n \ge 2$, and have $P \to \sqrt{3}/2$, as shown next; so $\sqrt{3}/2$ in (a) cannot be increased.
+\end{proof}
+
+The two families lie in the class \eqref{eq:class} near their minima. For three vortices, translate vortex~$1$ to the origin and take $m = 1$, $\gamma = \mu$, $a_1 = 1$, $b_1 = 1/(1 + \mu)$, $Z_1 = z_2 - z_1$ and $W_1 = z_3 - z_1$ in \eqref{eq:pos}; then $\nu_1 = 1/(1 + \mu)$ and $|Z_1| = \sqrt{R}/(1 + \mu)$, and along the configurations with $\sin\theta = -\sqrt{3}\,\mu/2$ used for sharpness in the direct proof of Corollary~\ref{cor:bound}, $u_1 \to e^{i\pi/3}$ as $\mu \to 0$. For the rings of Proposition~\ref{prop:centre} with $\Gamma_0 > 0$, divide the circulations by $\Gamma_0$ and take $m = n$, $\gamma = 1/\Gamma_0$, $a_j = x$, $b_j = 1$, $Z_j = \epsilon^j$ and $W_j = \sqrt{x}\,e^{i\theta}\epsilon^j$; then $\nu_j = (x - 1)\Gamma_0/x^2 \to 1$ as $\Gamma_0 \to +\infty$, and at the minimizing $\theta$, where $\cos n\theta = b/a$ in \eqref{eq:Pcentre}, $\theta/t \to \sqrt{3}$ and $u_j = (\sqrt{x}\,e^{i\theta} - 1)\Gamma_0/x \to e^{i\pi/3}$. In both cases \eqref{eq:class} holds for all small $\gamma$, with $c = 1/2$ for three vortices and $c = \min(1/2, 2\sin(\pi/n))$ for the rings, and $P \to \sqrt{3}/2$ by Corollary~\ref{cor:bound} and Proposition~\ref{prop:centre}. This is why the same constant appears in both results. Theorem~\ref{thm:pairs} does not reprove them: it is asymptotic, Proposition~\ref{prop:pairsbound} below gives a bound only for $\gamma$ below a threshold that is not explicit, and for three vortices the fact that a bounded $P$ forces a tight pair as $\mu \to 0$ follows from \eqref{eq:Ptheta} and Theorem~\ref{thm:main}(c) (on $\Ap$, $P \ge P_+(\mu) \to \infty$; on $\Am$, a bounded $P$ forces $\theta - \pi$ to be of order $\mu$), not from the theorem. Nor does it say anything about collapses outside its hypotheses, and these cannot simply be dropped: the seven-vortex collapse of Section~\ref{sec:three}, with $P = 0.8053\ldots < \sqrt{3}/2$, has no dominant vortex, since its other circulations are $0.33$, $0.35$ and $0.49$ times the central one; its six other vortices are four positive and two negative, so they do not form opposite-signed pairs; and the nearest vortices of opposite sign in it are separated by $0.38$ times their distance from the center.
+
+\begin{proposition}[The bound at a fixed circulation]\label{prop:pairsbound}
+Let $m \ge 1$ and $0 < c \le 1/2$, and consider collapses as in Theorem~\ref{thm:pairs}. There are $\gamma_4 > 0$, $\eta_4 > 0$ and $K > 0$, depending only on $m$ and $c$, such that every such collapse with $\gamma < \gamma_4$ has
+\begin{equation}\label{eq:fixedbound}
+  P \ge \frac{\sqrt{3}}{2} + \frac{\sqrt{3}}{8}\,c^2\gamma^2 > \frac{\sqrt{3}}{2}.
+\end{equation}
+If moreover $P < \sqrt{3}/2 + \eta_4$, then the directions $\phi_j = \arg Z_j$ satisfy $|e^{i\phi_j} - e^{i\phi_l}| \ge 3c^2/4$ for $j \ne l$, and
+\begin{equation}\label{eq:sharpbound}
+  P \ge \frac{\sqrt{3}}{2} + (C_* - K\gamma)\gamma^2, \qquad C_* = \max_j C_j, \qquad C_j = \frac{3\sqrt{3}}{4}\,a_j^2 + \sum_{l \ne j} a_l^2\,\chi(\phi_l - \phi_j),
+\end{equation}
+where
+\begin{equation}\label{eq:chi}
+  \chi(\theta) = \frac{2\sqrt{3}}{3}\cos\theta + \frac{\sqrt{3}}{6\sin^2(\theta/2)} + \frac{\cos(\theta/2)\bigl(1 + 2\sin^2(\theta/2)\bigr)}{6\sin^3(\theta/2)};
+\end{equation}
+and $C_* \ge (\sqrt{3}/4)\min_j a_j^2 \ge (\sqrt{3}/4)\,c^2$.
+\end{proposition}
+
+Since the class \eqref{eq:class} grows as $c$ decreases, the proposition applies for $1/2 < c \le 1$ with $c$ replaced by $1/2$. The constants $\gamma_4$ and $\eta_4$ come from Theorem~\ref{thm:pairs}(b), which is proved by compactness, and are not explicit; $K$ could be made explicit from the proof. Unlike Theorem~\ref{thm:pairs}(a), the proposition gives $P > \sqrt{3}/2$ at every fixed $\gamma < \gamma_4$.
+
+\begin{proof}
+Let $\gamma_* = \min(\gamma_0, c^3/32)$ and $\delta_0 = c^2/4 \le 1/16$. Throughout, $\gamma \le \gamma_*$, so that $h_j = \gamma a_j \le \gamma/c \le c^2/32$, and $K$ denotes a positive constant that depends only on $m$ and $c$, not always the same one; $O(X)$ denotes a quantity bounded by $KX$. We use Steps~1--3 of the proof of Theorem~\ref{thm:pairs}, write $\Lambda = 2\pi i\,\overline{\kappa}$, $R_j = \Lambda|Z_j|^2$, $\beta_j = b_j/a_j = 1 - h_j\nu_j$, $t_{jl} = Z_l/Z_j$, $\tau_{jl} = t_{jl}/|t_{jl}| = e^{i(\phi_l - \phi_j)}$, $\xi_j = p_j - 1/2$ and $\Delta_j = y_j - \sqrt{3}/2$, and set
+\[
+  \delta_* = \max_{j,\,l}\max\Bigl(|u_j - e^{i\pi/3}|,\ |\nu_j - 1|,\ \Bigl|\frac{|Z_j|}{|Z_l|} - 1\Bigr|\Bigr).
+\]
+Since $\re\Lambda = 2\pi\im\kappa$ and $\im\Lambda = 2\pi\re\kappa < 0$, \eqref{eq:P} reads $P = |\re\Lambda|/(2|\im\Lambda|)$. Steps~1--5 below assume $\delta_* \le \delta_0$, and the constants in them do not depend on $\delta_*$. Then $|u_j| \le 17/16$, $y_j \ge \sqrt{3}/2 - 1/16 > 1/2$, $|\nu_j| \le 2$ and $|t_{jl}| \le 17/16$. By \eqref{eq:class}, $|1 - t_{jl}| = |Z_j - Z_l|/|Z_j| \ge c^2$, and $|t_{jl} - \tau_{jl}| = \bigl||t_{jl}| - 1\bigr| \le \delta_*$, so $|e^{i\phi_j} - e^{i\phi_l}| = |1 - \tau_{jl}| \ge 3c^2/4$ and $|\sin((\phi_l - \phi_j)/2)| \ge 3c^2/8$; hence $|C_j| \le K$.
+
+\emph{Step 1: the exact equations of a pair.} Multiply \eqref{eq:pairZ} by $Z_j$ and \eqref{eq:pairD} by $Z_j/(\gamma a_j)$, as in Step~3 of the proof of Theorem~\ref{thm:pairs}, but keep every term. Since $2\pi i\,\overline{\kappa}\,\overline{(Z_j - z_c)}\,Z_j = R_j - \Lambda\overline{z_c}\,Z_j$, $\gamma b_j Z_j/d_j = \beta_j/u_j$, $2\pi i\,\overline{\kappa}\,\overline{d_j}\,Z_j/(\gamma a_j) = R_j\overline{u_j}$, $-d_j/(Z_jW_j)\cdot Z_j/(\gamma a_j) = -u_j/(1 + h_ju_j)$ and $\gamma(a_j - b_j)/d_j\cdot Z_j/(\gamma a_j) = \nu_j/u_j$,
+\begin{align}
+  R_j &= 1 + \frac{\beta_j}{u_j} + \varepsilon_j, & \varepsilon_j &= \sum_{l \ne j} Z_j f_l(Z_j) + \Lambda\overline{z_c}\,Z_j, \label{eq:pairA}\\
+  R_j\overline{u_j} &= -\frac{u_j}{1 + h_ju_j} + \frac{\nu_j}{u_j} + \sigma_j, & \sigma_j &= \frac{Z_j}{\gamma a_j}\sum_{l \ne j}\bigl(f_l(W_j) - f_l(Z_j)\bigr). \label{eq:pairB}
+\end{align}
+Multiplying \eqref{eq:pairB} by $u_j$ and inserting \eqref{eq:pairA} gives
+\begin{equation}\label{eq:pairE}
+  (2p_j^2 + p_j - \nu_j) + iy_j(2p_j - 1) = |u_j|^2 + \overline{u_j} + u_j^2 - \nu_j = G_j := h_j\nu_j\overline{u_j} + \frac{h_ju_j^3}{1 + h_ju_j} + \sigma_ju_j - \varepsilon_j|u_j|^2.
+\end{equation}
+
+\emph{Step 2: the sources.} Inserting $b_l = a_l\beta_l$ and $W_l = Z_l(1 + h_lu_l)$ into $f_l$ and into \eqref{eq:zc}, where $\sum_i\Gamma_i = 1 + \gamma^2\sum_l a_l^2\nu_l$, gives the exact forms
+\begin{gather*}
+  Z_jf_l(Z_j) = \gamma^2a_l^2\,A(t_{jl}, u_l, \nu_l, h_l), \qquad
+  \frac{Z_j}{\gamma a_j}\bigl(f_l(W_j) - f_l(Z_j)\bigr) = \gamma^2a_l^2u_j\,B(t_{jl}, u_l, \nu_l, h_l, u_j, h_j),\\
+  \Lambda\overline{z_c}\,Z_j = R_j\,\overline{z_c/Z_j} = \gamma^2R_j\,\frac{\overline{\sum_l a_l^2(\nu_l - \beta_lu_l)\,t_{jl}}}{1 + \gamma^2\sum_l a_l^2\nu_l}\quad(t_{jj} = 1),
+\end{gather*}
+where
+\begin{align*}
+  A(t, u, \nu, h) &= \frac{\nu}{1 - t} - \frac{(1 - h\nu)\,ut}{(1 - t)(1 - t - hut)},\\
+  B(t, u', \nu', h', u, h) &= -\frac{\nu'}{(1 - t)(1 - t + hu)} + \frac{(1 - h'\nu')\,u't\,(2 - 2t - h'u't + hu)}{(1 - t)(1 - t - h'u't)(1 - t + hu)(1 - t - h'u't + hu)}.
+\end{align*}
+At $u = u' = e^{i\pi/3}$, $\nu' = \nu = 1$ and $h = h' = 0$ they become $A_0(t) = 1/(1 - t) - e^{i\pi/3}t/(1 - t)^2$ and $B_0(t) = -1/(1 - t)^2 + 2e^{i\pi/3}t/(1 - t)^3$. Let $\mathcal{K}$ be the compact set of the $(t, u', \nu', h', u, h)$ with $|t| \le 2$, $|1 - t| \ge c^2/2$, $|u'|, |\nu'|, |u| \le 2$ and $0 \le h, h' \le c^2/32$. On $\mathcal{K}$ the factors $1 - t - h'u't$, $1 - t + hu$ and $1 - t - h'u't + hu$ have modulus at least $3c^2/8$, $7c^2/16$ and $5c^2/16$, so $A$ and $B$ are smooth on a neighbourhood of $\mathcal{K}$, and they and their first derivatives are bounded on $\mathcal{K}$ by constants that depend only on $c$. The point $(t_{jl}, u_l, \nu_l, h_l, u_j, h_j)$ lies in $\mathcal{K}$, and so does the segment from it to $(\tau_{jl}, e^{i\pi/3}, 1, 0, e^{i\pi/3}, 0)$, since along it $|t| \le 17/16$ and $|1 - t| \ge |1 - t_{jl}| - \delta_* \ge c^2/2$. The mean value inequality along this segment gives $A(t_{jl}, u_l, \nu_l, h_l) = A_0(\tau_{jl}) + O(\delta_* + \gamma)$ and $u_jB(\ldots) = e^{i\pi/3}B_0(\tau_{jl}) + O(\delta_* + \gamma)$. In the last term, $|R_j| = |\Lambda||Z_j|^2 \le 6/c^6$ by Step~2 of the proof of Theorem~\ref{thm:pairs}, $\nu_l - \beta_lu_l = 1 - e^{i\pi/3} + O(\delta_* + \gamma)$, $t_{jl} = \tau_{jl} + O(\delta_*)$ and the denominator is $1 + O(\gamma^2)$. Hence first $|\varepsilon_j| + |\sigma_j| = O(\gamma^2)$; then, by \eqref{eq:pairA}, $|R_j - 1 - e^{-i\pi/3}| \le |1/u_j - e^{-i\pi/3}| + h_j|\nu_j/u_j| + |\varepsilon_j| = O(|u_j - e^{i\pi/3}| + \gamma)$; and, since $(1 + e^{-i\pi/3})\,\overline{(1 - e^{i\pi/3})} = \sqrt{3}\,e^{i\pi/6}$,
+\begin{equation}\label{eq:sources}
+\begin{gathered}
+  \varepsilon_j = \gamma^2E_j + O(\gamma^2(\delta_* + \gamma)), \qquad \sigma_j = \gamma^2S_j + O(\gamma^2(\delta_* + \gamma)),\\
+  E_j = \sum_{l \ne j} a_l^2A_0(\tau_{jl}) + \sqrt{3}\,e^{i\pi/6}\sum_l a_l^2\,\overline{\tau_{jl}}, \qquad S_j = e^{i\pi/3}\sum_{l \ne j} a_l^2B_0(\tau_{jl}).
+\end{gathered}
+\end{equation}
+
+\emph{Step 3: one pair.} Fix $j$ and let $F_j = \re(e^{-i\pi/3}R_j)$. By \eqref{eq:pairA}, $2|u_j|^2F_j = |u_j|^2 + \beta_j(p_j - \sqrt{3}\,y_j) + 2|u_j|^2\re(e^{-i\pi/3}\varepsilon_j)$. Insert $|u_j|^2 + p_j - \sqrt{3}\,y_j = \Delta_j^2 + 2\xi_j + \xi_j^2$, $\beta_j = 1 - h_j\nu_j$, $2\xi_j = \im G_j/y_j$ from \eqref{eq:pairE}, and $\im(u_j^3)/y_j = 3p_j^2 - y_j^2 = 3\xi_j + 3\xi_j^2 - \sqrt{3}\,\Delta_j - \Delta_j^2$; this gives the identity (dropping the index $j$)
+\begin{equation}\label{eq:master}
+\begin{split}
+  2|u|^2F = {}& (1 - h)\Delta^2 + \xi^2 + h(3 - \nu)\xi + 3h\xi^2 + \sqrt{3}\,h(\nu - 1)\Delta - \frac{h^2}{y}\im\frac{u^4}{1 + hu}\\
+  & + \frac{\im(\sigma u)}{y} + |u|^2\Bigl(2\re(e^{-i\pi/3}\varepsilon) - \frac{\im\varepsilon}{y}\Bigr).
+\end{split}
+\end{equation}
+By Step~2, $G = O(\gamma)$, so $\xi = \im G/(2y) = O(\gamma)$, and the real part of \eqref{eq:pairE}, $\nu - 1 = 2\xi(3/2 + \xi) - \re G$, gives $\nu - 1 = O(\gamma)$. Next, $y(2\xi + h) = \im G + hy = -h(\nu - 1)y + h\im(u^3/(1 + hu)) + \im(\sigma u) - |u|^2\im\varepsilon$, and $\im(u^3/(1 + hu)) = \im(u^3 - e^{i\pi}) + O(h) = O(\delta_* + \gamma)$, so $\zeta = \xi + h/2 = O(\gamma(\delta_* + \gamma))$. Then
+\[
+  \xi^2 + h(3 - \nu)\xi = -\tfrac34 h^2 + h\zeta + \zeta^2 + \tfrac12 h^2(\nu - 1) - h(\nu - 1)\zeta = -\tfrac34 h^2 + O(\gamma^2(\delta_* + \gamma)),
+\]
+$3h\xi^2 = O(\gamma^3)$, $\sqrt{3}\,h(\nu - 1)\Delta = O(\gamma^2\delta_*)$, and, since $\im(e^{4i\pi/3})/(\sqrt{3}/2) = -1$ and $(u, h) \mapsto \im(u^4/(1 + hu))/\im u$ is Lipschitz on $|u - e^{i\pi/3}| \le 1/16$, $0 \le h \le 1/128$, the sixth term is $h^2 + O(\gamma^2(\delta_* + \gamma))$. Replacing $u$ by $e^{i\pi/3}$ and $y$ by $\sqrt{3}/2$ in the last two terms costs $O((|\varepsilon| + |\sigma|)\delta_*) = O(\gamma^2\delta_*)$, and $\im(\sigma e^{i\pi/3})/(\sqrt{3}/2) = (2/\sqrt{3})\re(e^{-i\pi/6}\sigma)$, $2\re(e^{-i\pi/3}\varepsilon) - (2/\sqrt{3})\im\varepsilon = (2/\sqrt{3})\re(e^{-i\pi/6}\varepsilon)$. With $-\frac34h^2 + h^2 = \frac14h^2$, $h_j = \gamma a_j$ and \eqref{eq:sources}, we obtain for every $j$
+\begin{equation}\label{eq:pairexp}
+  2|u_j|^2F_j = (1 - h_j)\Delta_j^2 + \sqrt{3}\,\widehat C_j\gamma^2 + O(\gamma^2(\delta_* + \gamma)), \qquad
+  \sqrt{3}\,\widehat C_j = \frac{a_j^2}{4} + \frac{2}{\sqrt{3}}\re\bigl(e^{-i\pi/6}(E_j + S_j)\bigr).
+\end{equation}
+
+\emph{Step 4: the coefficients.} For $\tau = e^{i\theta}$, $\theta \notin 2\pi\mathbb{Z}$, a direct computation gives
+\begin{gather*}
+  \frac{2}{\sqrt{3}}\re\bigl(e^{-i\pi/6}(A_0(\tau) + e^{i\pi/3}B_0(\tau))\bigr) = \frac{1}{2\sin^2(\theta/2)} + \frac{\cos(\theta/2)\bigl(1 + 2\sin^2(\theta/2)\bigr)}{2\sqrt{3}\,\sin^3(\theta/2)},\\
+  \frac{2}{\sqrt{3}}\re\bigl(e^{-i\pi/6}\sqrt{3}\,e^{i\pi/6}\,\overline{\tau}\bigr) = 2\cos\theta,
+\end{gather*}
+and the sum of the two right sides is $\sqrt{3}\,\chi(\theta)$. The term $l = j$ of the second sum in $E_j$ contributes $2a_j^2$, and $a_j^2/4 + 2a_j^2 = \sqrt{3}\cdot 3\sqrt{3}\,a_j^2/4$. Hence $\widehat C_j = C_j$. The first two terms of $\chi$ are even and the last is odd, so in $\sum_j a_j^2C_j$ the odd part cancels between $(j, l)$ and $(l, j)$, and with $\sum_{j \ne l} a_j^2a_l^2\cos(\phi_l - \phi_j) = |\sum_j a_j^2e^{i\phi_j}|^2 - \sum_j a_j^4$,
+\begin{equation}\label{eq:sos}
+  \sum_j a_j^2C_j = \frac{\sqrt{3}}{12}\sum_j a_j^4 + \frac{2\sqrt{3}}{3}\Bigl|\sum_j a_j^2e^{i\phi_j}\Bigr|^2 + \frac{\sqrt{3}}{6}\sum_{j \ne l}\frac{a_j^2a_l^2}{\sin^2((\phi_j - \phi_l)/2)}.
+\end{equation}
+Put $x_j = a_j^2$, $x_1 = \min_j x_j$ after relabeling, $\Sigma_1 = \sum_j x_j$ and $\Sigma_2 = \sum_j x_j^2 \le \Sigma_1^2$. For $m = 1$, $C_* = C_1 = (3\sqrt{3}/4)x_1$. For $m \ge 2$, $C_* \ge \sum_j x_jC_j/\Sigma_1$, and \eqref{eq:sos} with $\sin^2 \le 1$ gives $\sum_j x_jC_j \ge (\sqrt{3}/12)\Sigma_2 + (\sqrt{3}/6)(\Sigma_1^2 - \Sigma_2)$. For $m = 2$ this exceeds $(\sqrt{3}/4)x_1\Sigma_1$ by $(\sqrt{3}/12)(x_2 - x_1)(x_2 + 2x_1) \ge 0$; for $m \ge 3$ it is at least $(\sqrt{3}/12)\Sigma_1^2 \ge (\sqrt{3}/12)\,m\,x_1\Sigma_1 \ge (\sqrt{3}/4)x_1\Sigma_1$. In both cases $C_* \ge (\sqrt{3}/4)\min_j a_j^2$.
+
+\emph{Step 5: from the pairs to $P$.} By Step~2, $\re R_j \ge 3/2 - O(\delta_* + \gamma) \ge 1$ and $|\im R_j| = \sqrt{3}/2 + O(\delta_* + \gamma)$ once $\delta_* + \gamma$ is at most a constant $\delta_2 > 0$ that depends only on $m$ and $c$, which we assume from now on, decreasing $\delta_2$ where needed. Then $\re\Lambda = \re R_j/|Z_j|^2 > 0$, and for every $j$
+\[
+  P - \frac{\sqrt{3}}{2} = \frac{\re\Lambda + \sqrt{3}\im\Lambda}{2|\im\Lambda|} = \frac{\re(e^{-i\pi/3}\Lambda)}{|\im\Lambda|} = \frac{F_j}{|\im R_j|} = \frac{2|u_j|^2F_j}{D_j},
+\]
+where $D_j = 2|u_j|^2|\im R_j| = \sqrt{3} + O(\delta_* + \gamma)$, so that $\sqrt{3}/2 \le D_j \le 2\sqrt{3}$. By \eqref{eq:pairexp} and $h_j < 1$, $2|u_j|^2F_j \ge L_j = \sqrt{3}\,C_j\gamma^2 - O(\gamma^2(\delta_* + \gamma))$, and $|L_j| = O(\gamma^2)$ because $|C_j| \le K$. Since $|L_j/D_j - L_j/\sqrt{3}| = |L_j||D_j - \sqrt{3}|/(\sqrt{3}\,D_j) = O(\gamma^2(\delta_* + \gamma))$, there is $K_1$, depending only on $m$ and $c$, such that
+\begin{equation}\label{eq:Pj}
+  P - \frac{\sqrt{3}}{2} \ge \bigl(C_* - K_1(\delta_* + \gamma)\bigr)\gamma^2.
+\end{equation}
+
+\emph{Step 6: conclusion.} Let $\delta_1 = \min(\delta_0, \delta_2/2, \sqrt{3}\,c^2/(16K_1))$, and let $\eta > 0$ and $\gamma_2 > 0$ be given by Theorem~\ref{thm:pairs}(b) for $\delta = \delta_1$; they depend only on $m$ and $c$. Put $\eta_4 = \eta$ and
+\[
+  \gamma_4 = \min\Bigl(\gamma_*, \gamma_2, \frac{\delta_2}{2}, \frac{\sqrt{3}\,c^2}{16K_1}, \Bigl(\frac{8\eta}{\sqrt{3}\,c^2}\Bigr)^{1/2}\Bigr).
+\]
+Let $\gamma < \gamma_4$. If $P \ge \sqrt{3}/2 + \eta$, then $P \ge \sqrt{3}/2 + (\sqrt{3}/8)c^2\gamma^2$ because $\gamma^2 < 8\eta/(\sqrt{3}\,c^2)$. Otherwise Theorem~\ref{thm:pairs}(b) gives $\delta_* < \delta_1$, so Steps~1--5 apply, the directions are separated as shown before Step~1, and \eqref{eq:Pj} with $K_1(\delta_* + \gamma) < \sqrt{3}\,c^2/8$ and $C_* \ge (\sqrt{3}/4)c^2$ gives \eqref{eq:fixedbound}.
+
+Now let also $P < \sqrt{3}/2 + \eta_4$, so that $\delta_* < \delta_1$. If $P - \sqrt{3}/2 \ge C_*\gamma^2$, \eqref{eq:sharpbound} holds. Otherwise $0 < P - \sqrt{3}/2 < C_*\gamma^2 \le K\gamma^2$, so $2|u_j|^2F_j = D_j(P - \sqrt{3}/2) = O(\gamma^2)$, and \eqref{eq:pairexp} with $1 - h_j \ge 1/2$ gives $\Delta_j^2 = O(\gamma^2)$. With $\xi_j = O(\gamma)$ and $\nu_j - 1 = O(\gamma)$ from Step~3, $u_j - e^{i\pi/3} = O(\gamma)$; then $R_j = 1 + e^{-i\pi/3} + O(\gamma)$ by Step~2, and since $|Z_j|^2/|Z_l|^2 = |R_j|/|R_l|$, $|1 + e^{-i\pi/3}| = \sqrt{3}$ and $|\sqrt{x} - 1| \le |x - 1|$ for $x > 0$, $\bigl||Z_j|/|Z_l| - 1\bigr| = O(\gamma)$. So $\delta_* = O(\gamma)$, and \eqref{eq:Pj} gives \eqref{eq:sharpbound}.
+\end{proof}
+
+\begin{remark}\label{rem:pairsbound}
+The exponent $2$ in \eqref{eq:fixedbound} cannot be lowered, and \eqref{eq:sharpbound} is attained up to $O(\gamma^3)$ by the rings of Proposition~\ref{prop:centre}. As shown after the proof of Theorem~\ref{thm:pairs}, near their minima they lie in the class with $m = n \ge 2$, $\gamma = 1/\Gamma_0$, $a_j = x = 1 + O(\gamma)$ and the directions of a regular $n$-gon. Since $\sum_{l=1}^{n-1}\cos(2\pi l/n) = -1$, $\sum_{l=1}^{n-1} 1/\sin^2(\pi l/n) = (n^2 - 1)/3$ and the odd part of $\chi$ cancels between $l$ and $n - l$, every $C_j$ equals $x^2\bigl(3\sqrt{3}/4 - 2\sqrt{3}/3 + \sqrt{3}(n^2 - 1)/18\bigr) = x^2\sqrt{3}(1 + 2n^2)/36$, and Proposition~\ref{prop:centre} gives the least $P$ of the family as $\sqrt{3}/2 + \sqrt{3}(1 + 2n^2)/(36(\Gamma_0 - 1/2)^2) + O(\Gamma_0^{-4})$, that is, $\sqrt{3}/2 + C_*\gamma^2 + O(\gamma^3)$. For $n = 2$ this is the case $C_1 = C_2 = (\sqrt{3}/4)\,x^2$ of equality in $C_* \ge (\sqrt{3}/4)\min_j a_j^2$. For $m = 1$ every collapse in the class is a three-vortex collapse with $\mu = \gamma a_1$, and $C_* = (3\sqrt{3}/4)a_1^2$ is also the coefficient in $P_-(\mu) = \sqrt{3}/2 + (3\sqrt{3}/4)\mu^2 + O(\mu^3)$: by Theorem~\ref{thm:main}, $P_-(\mu)^2$ is the root of $Q(\mu, \cdot)$ that tends to $3/4$, which is analytic at $\mu = 0$ because $Q(0, y) = -16(4y - 3)$ has a simple root there, and its Taylor coefficients follow from \eqref{eq:Q}. For other arrangements we have checked numerically, but not proved, that for fixed $a_j$ and $\phi_j$ the least value of $P$ over the collapses is $\sqrt{3}/2 + C_*\gamma^2 + O(\gamma^3)$, attained with $y_J - \sqrt{3}/2 = O(\gamma^2)$ for a pair $J$ with $C_J = C_*$ and with $y_j - \sqrt{3}/2 \approx \pm\gamma\,(\sqrt{3}(C_* - C_j))^{1/2}$ for the others. By \eqref{eq:sos} the weighted mean of the $C_j$ is positive for every arrangement of distinct directions; the separation $|Z_j - Z_l| \ge c$ enters the proof only through uniform bounds (Theorem~\ref{thm:pairs}(b), the set $\mathcal{K}$, $|C_j| \le K$), not through the sign of $C_*$.
+\end{remark}
+
+\section{More than three vortices}\label{sec:more}
+
+Self-similar collapse of any number of Euler vortices is described by the same equations $\dot z_j = \kappa(z_j - z_c)$ \cite{dk2014,gotoda2021,kimura1987,oneil1987}, and by Section~\ref{sec:selfsimilar} so is self-similar collapse in the $\alpha$-models, with $P$ given by \eqref{eq:P}. Once translations, rotations and the scalings of lengths and of circulations are divided out, a self-similar collapse of $N$ vortices is a solution of $2N - 2$ independent real equations in $3N - 3$ unknowns, and where these equations are independent the collapses form a manifold of dimension $N - 1$, the collapse set; for $N = 3$ its coordinates are $\mu$ and $\theta$ of Section~\ref{sec:three}. The bound of Corollary~\ref{cor:bound} does not extend to more vortices: the seven-vortex collapse of Section~\ref{sec:three} has $P = 0.8053\ldots$. We show that already four vortices go below $\sqrt{3}/2$, that $P$ has strict local minima on the collapse sets of four, five and six vortices, and that in the $\alpha$-models four vortices go below the three-vortex bounds of Theorem~\ref{thm:alpha}, eleven can collapse without rotating at $\alpha = 2$, and sixty can do so in the SQG model. The next two theorems are computer-assisted: their proofs, described in Section~\ref{sec:numerics}, are carried out in interval arithmetic by the program \texttt{certify\_collapses.py}, and, for part (b) of Theorem~\ref{thm:norot}, by \texttt{certify\_sqg60.py}.
+
+\begin{theorem}\label{thm:four}
+\textup{(a)} For $N = 4$, $5$ and $6$ there is a self-similar collapse of $N$ point vortices under \eqref{eq:bs} with $P < \sqrt{3}/2$, in which all circulations and their sum are nonzero, no two vortices coincide and the angular impulse vanishes.
+
+\textup{(b)} For $N = 4$, $5$ and $6$ there is such a collapse at which $P$ has a strict local minimum $P_N$ on the collapse set of $N$ vortices, a manifold of dimension $N - 1$ near it, with
+\begin{align*}
+P_4 &= 0.79789678387986348076760587182\ldots,\\
+P_5 &= 0.74481445696249246102875218111\ldots,\\
+P_6 &= 0.71368014852939247497732477960\ldots.
+\end{align*}
+
+\textup{(c)} Under \eqref{eq:alpha} with $\alpha = 1$ and with $\alpha = 2$ there is a self-similar collapse of four vortices at which $P$ has a strict local minimum on the collapse set, with the values $0.5499151189\ldots < B(1) = 2/3$ and $0.4116738600\ldots < B(2) = \sqrt{5}/4$.
+\end{theorem}
+
+The program encloses each of these minima in an interval of width $10^{-50}$. In the normalization $\Gamma_1 = 1$, $z_c = 0$, $\kappa = -1 + ib$ the four-vortex minimizer of part (b) has $b = 2P_4 = 1.5957935677597269615\ldots$ and
+\begin{align*}
+\Gamma &= (1,\ 0.1673914318538,\ 0.1041331880362,\ -0.2272513003829),\\
+z &= (0.0166495669172,\ -0.2191226402232 - 0.3290676220068\,i,\\
+&\qquad -0.1579874300122 - 0.2864759934272\,i,\ -0.1605333843048 - 0.3736601672808\,i),
+\end{align*}
+and in these coordinates the Hessian of the Lagrangian of the minimization of $P$ on the three-dimensional tangent space of the constraints has the eigenvalues $1.106$, $6.289$ and $9.377$. Like the minimizers of part (c), it has one strong and three weak vortices. The minima are local: we have not proved that $P_4$, $P_5$ and $P_6$ are the least values of $P$ over all collapses of four, five and six vortices. For four vortices a numerical minimization from many random starts ends at the configuration above, up to relabeling, and for five and six vortices $P_5$ and $P_6$ are the least values found by multistart searches.
+
+\begin{theorem}\label{thm:norot}
+\textup{(a)} Under \eqref{eq:alpha} with $\alpha = 2$ there is a self-similar collapse of eleven point vortices with $\kappa$ real, so that $P = 0$: every vortex moves on a straight line into the collision point, and $|z_j(t) - z_c|^4 = (1 - t/t_c)\,|z_j(0) - z_c|^4$. In it all circulations and their sum are nonzero, no two vortices coincide and the angular impulse vanishes. Near it, the self-similar collapses of eleven vortices with $\kappa$ real form, modulo translations, rotations and the scalings of lengths and of circulations, a manifold of dimension nine.
+
+\textup{(b)} Under \eqref{eq:alpha} with $\alpha = 1$ (SQG) there is a self-similar collapse of sixty point vortices with $\kappa$ real, so that $P = 0$: every vortex moves on a straight line into the collision point, and $|z_j(t) - z_c|^3 = (1 - t/t_c)\,|z_j(0) - z_c|^3$, with $t_c = 2\pi/3$. In it all circulations and their sum are nonzero, no two vortices coincide and the angular impulse vanishes. Near it, the self-similar collapses of sixty vortices with $\kappa$ real form, modulo the same symmetries, a manifold of dimension fifty-eight.
+\end{theorem}
+
+In the normalization of the program, $2\pi\kappa = -1$, so that $t_c = \pi/2$ for part (a), the collision point is the origin, one circulation is $1$ and nine others are fixed rational numbers. The configuration has one strong vortex of circulation $27.6\ldots$, the one closest to the collision point, one of circulation $-8.94\ldots$ and nine positive vortices with circulations between $0.37$ and $2.3$; the total circulation is $27.74\ldots$, the distances from the collision point lie between $0.21$ and $5.08$, and no two vortices are closer than $0.3487$.
+
+For part (b), a search that adds one vortex at a time to a family of minimizers reached this self-similar collapse of sixty SQG vortices without rotation; Newton's method with $\kappa$ held real refines it at 60 digits to a residual of $10^{-58}$, and in it the angular impulse and $\sum_{j<k}\Gamma_j\Gamma_k|z_j - z_k|^{-1}$, which every self-similar collapse makes vanish, vanish to the same precision; its circulations span a factor of $83$, and its closest pair is $0.0094$ times its size. In the normalization of the certifying program, $t_c = 2\pi/3$, the collision point is the origin, one circulation is $1$, fifty-eight others are fixed rational numbers and one, $\Gamma_7$, is the certified enclosure $1.0484485069\ldots$. The configuration has one strong vortex of circulation $41.00\ldots$, the one closest to the collision point, one of circulation $-37.44\ldots$ and fifty-eight positive vortices with circulations between $0.496$ and $1.718$; the total circulation is $43.48\ldots$, the distances from the collision point lie between $0.656$ and $9.499$, and no two vortices are closer than $0.0893$.
+
+By Theorem~\ref{thm:alpha} three vortices cannot collapse without rotation in any $\alpha$-model with $\alpha > -2$, and no Euler collapse without rotation is known for any number of vortices (Section~\ref{sec:open}).
+
+As controls, the same pipeline certifies the three-vortex minimum of Proposition~\ref{prop:half}, $P_-(1/2) = 1.06470597627120433735498624890810207179\ldots$, which it encloses within $10^{-94}$ of the closed form, and the minimum $P_-(1/20) = 0.869112874060804665568\ldots$; numerical searches with the same equations find no three-vortex collapse with $P < \sqrt{3}/2$ and none for $\alpha = 2$ with $\kappa$ real, as Corollary~\ref{cor:bound} and Theorem~\ref{thm:alpha} require, while the same search with $P = 11/10$ finds one, which is then certified.
+
+The following results are numerical, not proofs. Multistart searches for $N = 7, \dots, 12$ Euler vortices found no value of $P$ below $0.6936617908\ldots$, $0.6797704208\ldots$, $0.6592598630\ldots$, $0.6377055919\ldots$, $0.6179510627\ldots$ and $0.6044746933\ldots$ respectively. Up to $N = 8$ these minimizers have one strong vortex, one negative vortex and a chain of weak positive vortices; from $N = 9$ on a two-arm family is lower, with a vortex at the center of vorticity, two negative vortices and two arms of weak positive vortices. Continued in $N$ with no symmetry imposed, the values of this family decrease: $P = 0.5172291322\ldots$ for 33 vortices, $0.4981844392\ldots$ for 61 and $0.4793959201\ldots$ for 603, so a self-similar collapse can turn by less than half a radian per unit decrease of $\ln\lambda^2$. For $N \ge 301$ the values fit $P = 0.477364 + 1.2206/N + 2.93/N^2$ with a root-mean-square residual of $7 \cdot 10^{-10}$, and cubic Richardson extrapolation in $1/N$ through $N = 101, 203, 403, 603$ gives $0.4773635$. Whether a different structure takes over at much larger $N$, as the two-arm family took over at $N = 9$, is open.
+
+\section{Numerical verification and computer-assisted proofs}\label{sec:numerics}
+
+The results were checked numerically as summarized in Table~\ref{tab:checks}. For the Euler sections, except where the table says otherwise, the checks evaluate the Biot--Savart velocities \eqref{eq:bs} directly for configurations built independently of \eqref{eq:pos} (two vortices fixed and the third moved around the zero-impulse circle), test self-similarity by comparing $\dot z_j/(z_j - z_c)$ across all vortices, and obtain $P$ from \eqref{eq:P}. The algebraic steps in the proofs were verified in exact arithmetic (SymPy): Lemma~\ref{lem:rates} for all three vortices, \eqref{eq:K}, the resultant in the proof of Theorem~\ref{thm:main}(b), the discriminant and the resultant in the proof of Theorem~\ref{thm:main}(c), the irreducibility of $Q$ and of each of the 277 sextics in Remark~\ref{rem:radicals}, the constants in Proposition~\ref{prop:half}, and, for general $n$, the identities of Section~\ref{sec:rings} from \eqref{eq:circ} to \eqref{eq:Pring}, together with the table of constants. The program \texttt{verify\_general\_mu.py} carries out these exact computations with SymPy~1.14.0 and the high-precision checks with mpmath~1.3.0; \texttt{verify\_floors\_independent.py} repeats the minimizations independently and contains the exact sign changes of $G$ and the interval enclosures in the proof of Proposition~\ref{prop:half}, computed with the interval arithmetic of mpmath at 30 digits. The program \texttt{verify\_direct\_proof.py} checks every identity in the direct proof of Corollary~\ref{cor:bound} exactly, with SymPy. The program \texttt{verify\_central\_vortex.py} checks Proposition~\ref{prop:centre}: exactly, with SymPy, the derivation of \eqref{eq:circ0} and \eqref{eq:Pcentre} for symbolic $n$, every identity in the proof, the case $\Gamma_0 = 0$ and the expansion, and also the leading-order relations used in Step~5 of the proof of Theorem~\ref{thm:pairs}, with the limits of $u_j$ and $P$ along the two families; numerically, the Biot--Savart velocities and the minima over $\theta$ at 50 and 30 digits; and negative controls, checks that must fail and do. The program \texttt{verify\_strong\_vortex.py} makes 143 checks of Theorem~\ref{thm:pairs}: exactly, with SymPy, every identity its proof uses; the explicit constants of Steps~1--3 ($\gamma_0 = c^3/(8m)$, $|z_c| \le 4m\gamma/c^2$, $|\kappa| \le 3/(\pi c^4)$, the bound on $|\rho_j|$ and $|\nu_j| \le 8c^{-10}$), exactly where they are algebra and on 960 random configurations in the class \eqref{eq:class} where they are bounds; exact self-similar collapses at 50 digits for $m = 1$ and $m = 3$ weak pairs, symmetric and asymmetric, at $\gamma = 10^{-2}$, $10^{-3}$ and $10^{-4}$, and for $m = 2$ antipodal pairs at $\gamma = 10^{-4}$, each accepted only after a Biot--Savart residual below $10^{-40}$, along which $P$ stays above $\sqrt{3}/2$ and approaches it; that the two families lie in the class, with $c = 1/2$ for three vortices and $c = \min(1/2, 2\sin(\pi/n))$ for the rings; and negative controls: the seven-vortex collapse of Section~\ref{sec:three} lies outside the class, unconverged and perturbed points are rejected, $y_j \le 0$ does not collapse, and without the angular impulse the case $\kappa^* = 0$ is not excluded. The program \texttt{verify\_pairs\_bound.py} makes 69 checks of Proposition~\ref{prop:pairsbound} and Remark~\ref{rem:pairsbound}: exactly, with SymPy, every identity of the proof, among them \eqref{eq:pairA}, \eqref{eq:pairB}, \eqref{eq:pairE}, the exact forms of the sources in Step~2, \eqref{eq:master}, the coefficients of Step~4 and \eqref{eq:sos}, the constants of the set $\mathcal{K}$, and the coefficients of Remark~\ref{rem:pairsbound} for the rings and for three vortices; numerically, the remainders $O(\gamma^2(\delta_* + \gamma))$ of Steps~2 and~3 on 1500 random configurations of the class and 3000 random solutions of \eqref{eq:pairE}, with $\delta_* + \gamma$ down to $10^{-7}$, where they do not grow as $\delta_* + \gamma \to 0$, while in two negative controls, each with a wrong leading term, they grow like $1/(\delta_* + \gamma)$; and 90 exact self-similar collapses at 50 digits, $m = 1$ to $4$, $\gamma = 10^{-2}$, $10^{-3}$ and $10^{-4}$, each accepted only after a Biot--Savart residual below $10^{-40}$, which satisfy \eqref{eq:pairA}, \eqref{eq:pairB} and \eqref{eq:master} to $10^{-45}$ and have $P \ge \sqrt{3}/2 + (\sqrt{3}/8)c^2\gamma^2$. At these fixed values of $\gamma$, which may exceed the threshold $\gamma_4$, $P > \sqrt{3}/2$ is a numerical observation.
+
+For Section~\ref{sec:alpha}, the program \texttt{verify\_alpha\_winding.py} checks each step in high-precision arithmetic. On 700 random scalene triangles with $\alpha \in \{0, 0.3, 1, 1.7, 3\}$, the circulations \eqref{eq:circalpha} make the velocities \eqref{eq:alpha} self-similar to $2 \cdot 10^{-38}$, and $P$ computed from the velocities agrees with \eqref{eq:Salpha} to $3 \cdot 10^{-38}$. The derivative of $g$ and the identity \eqref{eq:id} are verified symbolically, and the critical point and value of $P_0$ as well. The chain of inequalities in the proof holds at $20000$ random points with $\beta$ from just above $1/2$ to $20$ and $\rho$ down to $10^{-8}$, computed with precision adapted to $\rho^{2\beta}$; in double precision the first step appears to fail at small $\rho$ and large $\beta$, where its margin, of order $\rho^{2\beta}$, is below the rounding error. For $\alpha$ from $-1.8$ to $-1$ the minimum of $P - B(\alpha)$ over the ordered triangles is positive in every run, as Remark~\ref{rem:below} requires, again only with precision adapted to $\rho$. For $\alpha = 1$, the scalene triangles on which \eqref{eq:circalpha} gives two equal circulations carry the ratios $-\Gamma_2/\Gamma_1$ from $0.3876$ to $0.49999$ on a grid, in agreement with the interval of \cite[Lemma~1]{bb2018}, and at $\Gamma = 0.49$ the ratio of sides is $0.7515$, against $0.751484$ in \cite{bb2018}. Near-extremal triangles at $\rho = 10^{-6}$ and $m = m_*$ collapse, and $P - B(\alpha)$ is $1.3\cdot 10^{-12}$, $1.8\cdot 10^{-13}$, $1.6\cdot 10^{-13}$ and $1.6\cdot 10^{-13}$ for $\alpha = 0, 1/2, 1, 2$. The program \texttt{verify\_alpha\_equal\_circulations.py} checks Remark~\ref{rem:equalalpha}, exactly with SymPy and against the velocities at 40 digits.
+
+The program \texttt{verify\_alpha\_below.py} checks Remark~\ref{rem:below} and the sharpness argument for $0 < \beta \le 1/2$. With SymPy it verifies exactly every identity they use, the roots $6 \pm 2\sqrt6$ and the maximum of $\rho\ln(1/\rho)$; in the ball arithmetic of FLINT/Arb it confirms $(6 - 2\sqrt6)e = 2.9928\ldots > 2\sqrt2$ and $((15 - 6\sqrt6)e^2 - 1)/2 > 1/2$; and, independently of the algebra, an Arb subdivision of $0 \le \beta \le 1/2$, $0 \le \rho \le 1$, $0 \le m \le 3$ into 733 boxes shows that every box meeting the domain has $q > 0$ or $m/\ln(1/\rho) > 2\sqrt{1 + 2\beta}$. On 1500 random collapsing triangles with $-2 < \alpha < -1$ and $\rho$ down to $10^{-300}$, the velocities \eqref{eq:alpha} at 50 to 950 digits are self-similar to $2 \cdot 10^{-49}$, $P$ agrees with \eqref{eq:Salpha} to $8 \cdot 10^{-47}$, and $P$ exceeds the lower bound of its case, which exceeds $B(\alpha)$. The case $q \le 0$ is far from the bound: on a grid of 2732 such collapses $P > 4.2\,B(\alpha)$. Near-extremal collapses at $\alpha = -1.5$, $-1.8$ and $-1.99$, with $\rho$ down to $10^{-4800}$, have $P - B(\alpha) > 0$, decreasing to $0$ like $\rho^{2\beta}$. Six negative controls fail, as they must: among them steps (i) to (iii) alone at $\alpha = -1.7$, $\rho = 0.99$, $m = 1.87$, the bound of the case $q \le 0$ near the extremal limit, and the subdivision with its threshold raised by ten per cent.
+
+The program \texttt{certify\_collapses.py}, with its modules \texttt{certify\_*.py}, proves Theorem~\ref{thm:four} and part (a) of Theorem~\ref{thm:norot} in the ball arithmetic of FLINT/Arb, through python-flint~0.9.0, at 320 bits. The equations are those of a self-similar collapse with the collision point at the origin, $2\pi v_j = 2\pi\kappa z_j$ for the velocities $v_j$, with $2\pi\kappa = -1 + 2iP$, and their first and second derivatives are computed by automatic differentiation in ball arithmetic. After a Newton iteration, the Krawczyk operator, evaluated on a box around the approximate solution, maps the box into its interior; this proves that the equations have exactly one solution in the box. For Theorem~\ref{thm:four}(a) the unknowns are $P$ and $2N - 1$ of the coordinates and circulations, the other $N - 1$ being fixed at rational values, and on the box the program proves that every circulation and their sum are nonzero, that the vortices are distinct and bounded away from each other, that the angular impulse vanishes and that $P < \sqrt{3}/2$. For Theorem~\ref{thm:four}(b) and~(c) the Krawczyk operator is applied to the Lagrange system of the minimization of $P$ on the collapse set, and the program proves that the Jacobian block of the $2N$ coordinates that are not chart coordinates is invertible on the box, so that there the collapse set is a graph over $N - 1$ chart coordinates, and that all leading principal minors of an enclosure of the reduced Hessian are positive on a box around the Lagrange point, so that the minimum is strict. It also encloses the eigenvalues quoted after Theorem~\ref{thm:four}, and it checks that the four-vortex configurations of part (c) have one vortex whose circulation exceeds four times the absolute value of each of the others. For Theorem~\ref{thm:norot}(a), $2\pi\kappa = -1$ is imposed exactly and nine circulations are fixed at rational values; the Krawczyk operator proves a unique solution of the 22 real equations in a box of radius $10^{-6}$, and the invertibility of their Jacobian gives the nine-dimensional family by the implicit function theorem. The program also carries out the controls of Section~\ref{sec:more}, tests its ball arithmetic derivatives against mpmath, and re-checks every certified point with separate Biot--Savart code at 80 digits. It makes 92 checks in about a minute.
+
+The program \texttt{certify\_sqg60.py} proves Theorem~\ref{thm:norot}(b) the same way, reusing the modules \texttt{certify\_ball\_ad.py}, \texttt{certify\_alpha\_model.py}, \texttt{certify\_pipeline.py} and \texttt{certify\_crosschecks.py} unmodified. It refines the stored configuration at 100 digits (mpmath, non-rigorous), fixes fifty-eight circulations at 12-decimal rationals and, for the remaining 120 real unknowns (119 position coordinates and $\Gamma_7$), the Krawczyk operator proves a unique solution of the collapse equations $2\pi v_j = -z_j$ ($2\pi\kappa = -1$ imposed exactly) in a box of radius $10^{-9}$; on the box every $\Gamma_j$ and their sum are nonzero, the vortices are pairwise distinct, and the angular impulse and $\sum_{j<k}\Gamma_j\Gamma_k|z_j - z_k|^{-1}$ enclose $0$, and the invertibility of the $120 \times 120$ Jacobian gives the fifty-eight-dimensional family by the implicit function theorem. It re-checks the certified point with separate Biot--Savart code at 80 digits and runs four negative controls, including a perturbed point that fails at the certified radius but passes at a wider one, and the mirror image, which expands and fails the collapse equations. It makes 11 checks in well under a minute.
+
+The program \texttt{verify\_many\_vortices.py} checks the numerical results of Section~\ref{sec:more} from the stored configurations: the minimizers for $N = 7, \dots, 12$, 33 and 61 Euler vortices, stored to 60 digits, satisfy the self-similarity equations to $4 \cdot 10^{-47}$ relative, and the 603-vortex one, stored in double precision, to $10^{-13}$, with $\sum_{j<k}\Gamma_j\Gamma_k$ and the angular impulse vanishing to the same precision; the program reproduces the fit and the extrapolation of the two-arm family from its stored values, and it refines the SQG collapse of sixty vortices with $\kappa$ held real, with the residuals of Section~\ref{sec:more}. Each program prints every check with its result and stops with an error if one fails; under Python~3.11 each runs in about a minute or less, and their output is in \texttt{data/}.
+
+{\small
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.555\textwidth}|>{\raggedright\arraybackslash}p{0.39\textwidth}|}
+\caption{Numerical checks and computer-assisted proofs of the results.}\label{tab:checks}\\
+  \hline
+  \textbf{Check} & \textbf{Result} \\ \hline
+  \endfirsthead
+  \hline
+  \textbf{Check} & \textbf{Result} \\ \hline
+  \endhead
+  Lemma~\ref{lem:rates} against the Biot--Savart velocities of all three vortices, at the positions \eqref{eq:pos} for 36 pairs $(\mu, \theta)$ on a grid with $0.1 \le \mu \le 7$, and for 30 triangles built independently of \eqref{eq:pos}, 50 digits
+    & relative difference $\le 2 \times 10^{-49}$ \\ \hline
+  Arc minima by direct minimization of $P$, computed from the quotient of the first vortex, for 26 values of $\mu \in (0, 1]$ at 30 digits and 13 rational values at 50 digits
+    & agree with the roots of $Q(\mu, \cdot)$ to $5 \times 10^{-21}$ and $5 \times 10^{-45}$ \\ \hline
+  $\mu = 1/2$: the three quotients over 4000 shapes on the zero-impulse circle, 60 digits
+    & equal to 60-digit working precision; the collapsing shapes fill half of the circle, the arcs $\mathcal{A}_\pm$ \\ \hline
+  $\mu = 1/2$: local minima of $P$ over the collapsing shapes, located numerically
+    & two, equal to the values of Proposition~\ref{prop:half} to 60-digit working precision \\ \hline
+  $\mu = 1/2$: formula for $P(\theta)$ against direct evaluation at the positions \eqref{eq:pos}, 399 interior points of each arc
+    & relative difference $\le 10^{-59}$ \\ \hline
+  $\mu = 1/2$: integration of \eqref{eq:bs} from the minimizing configuration on $\Am$ (Taylor method, 30 digits)
+    & every $|z_j - z_c|^2$ follows $1 - t/t_c$, and every rotation angle follows $-\omega_0 t_c \ln(1 - t/t_c)$, to 30-digit working precision up to $t = 0.9\, t_c$ \\ \hline
+  Five configurations at the positions \eqref{eq:pos} with $\mu \in \{0.3, 0.5, 2\}$, on both arcs: integration of \eqref{eq:bs} to $t = 0.9\, t_c$ (fourth-order Runge--Kutta, 30 digits)
+    & distances to the collision point, rotation angles, the angle $\arctan 2P$ between each velocity and the direction to the collision point, and path lengths $r_0 \sqrt{1 + 4P^2}\,(1 - \sqrt{1 - t/t_c})$ agree to $2 \times 10^{-10}$ \\ \hline
+  $\mu = 1$ (Remark~\ref{rem:equal}): $P$ from \eqref{eq:bs} against $(3 - \cos 2\chi)/(2\sin 2\chi)$ on both collapsing arcs, and its minimum, 50 digits
+    & difference $\le 2 \times 10^{-47}$; minimum $\sqrt{2}$ at $\cos 2\chi = 1/3$ on both arcs \\ \hline
+  $\mu = 1$: the configuration with the fastest collapse at $|z_1 - z_2| = 1$, 50 digits
+    & $\cos 2\chi = 3/5$, $t_c = 4\pi/3$ and $P = 3/2$ to $10^{-40}$ \\ \hline
+  $\mu = 1$: Kimura's rates $A$, $B$ \cite[Eq.~(4.4)]{kimura1987} at ten angles in $0 < \chi < \pi/2$, 50 digits
+    & $\kappa = (A + iB)/(4\pi)$ for $\Gamma = (1, 1, -1/2)$, to $10^{-45}$ \\ \hline
+  Two rings, $n = 2, \dots, 10$: the reduced equations \eqref{eq:rings} and the two sums over roots of unity against the full Biot--Savart sum, 50 digits
+    & difference $\le 10^{-49}$ \\ \hline
+  Two rings, $n = 2, \dots, 8$: $P$ from \eqref{eq:bs} against \eqref{eq:Pring} over the collapsing range, and its numerical minimum against $F_n$, 60 digits
+    & relative difference $\le 3 \times 10^{-58}$; minima agree to $2 \times 10^{-60}$ \\ \hline
+  Two rings: the equations of Demina and Kudryashov \cite[Eqs.~(36)--(37)]{dk2014} at $\Gamma_0 = 0$ (exact, SymPy), and their constant against the Biot--Savart sum, $n = 2, \dots, 8$, 50 digits
+    & (37) is \eqref{eq:circ} with $x = r^2$; (36) minus $S$ is a multiple of \eqref{eq:circ}; difference $\le 10^{-45}$ \\ \hline
+  The collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014}, Biot--Savart at 50 digits
+    & self-similar, the printed $\Omega$ to $10^{-45}$, and $P = 12433/(1240\sqrt{155}) < \sqrt{3}/2$ \\ \hline
+  Two rings with a central vortex, $n \in \{2, 3, 4, 5, 7\}$, $-1999.5 \le \Gamma_0 \le 250$, each positive root of \eqref{eq:circ0}: Biot--Savart for all $2n + 1$ vortices, 295 configurations, 50 digits; minima over $\theta$, 13 cases, 30 digits
+    & quotients equal to $\kappa$ to $3 \times 10^{-48}$, $P$ to \eqref{eq:Pcentre} to $6 \times 10^{-41}$, \cite[Eq.~(36)]{dk2014} holds to $3 \times 10^{-48}$; minima $\sqrt{D^2 - n^2}/(2n)$ to $4 \times 10^{-27}$ \\ \hline
+  Theorem~\ref{thm:pairs}: exact self-similar collapses at 50 digits, $m = 1$ and $m = 3$ weak pairs at $\gamma = 10^{-2}, 10^{-3}, 10^{-4}$ and $m = 2$ at $\gamma = 10^{-4}$, each accepted after a Biot--Savart residual below $10^{-40}$
+    & $P$ stays above $\sqrt{3}/2$ and approaches it \\ \hline
+  Proposition~\ref{prop:pairsbound} (\texttt{verify\_pairs\_bound.py}): its identities (exact, SymPy); the remainders of Steps~2 and~3 on 1500 random configurations and 3000 random pair solutions; 90 exact collapses at 50 digits, $m = 1$ to $4$, $\gamma = 10^{-2}, 10^{-3}, 10^{-4}$, Biot--Savart residual below $10^{-40}$
+    & remainders bounded by $20\gamma^2(\delta_* + \gamma)$ on the collapses; $P \ge \sqrt{3}/2 + (\sqrt{3}/8)c^2\gamma^2$ on all 90 \\ \hline
+  Lemmas~\ref{lem:circalpha} and~\ref{lem:ratesalpha}: the velocities \eqref{eq:alpha} of 700 random scalene triangles with $\alpha \in \{0, 0.3, 1, 1.7, 3\}$ and the circulations \eqref{eq:circalpha}, 40 digits
+    & self-similar to $2 \times 10^{-38}$; $P = |S|/(8A)$ to $3 \times 10^{-38}$ \\ \hline
+  Proof of Theorem~\ref{thm:alpha}: the chain of inequalities at 20000 random points, $\beta$ from just above $1/2$ to $20$, $\rho$ down to $10^{-8}$, precision adapted to $\rho^{2\beta}$
+    & no violation; least $(P - B(\alpha))/B(\alpha)$ is $9.3 \times 10^{-9}$ \\ \hline
+  Sharpness in Theorem~\ref{thm:alpha}: triangles with $\rho = 10^{-6}$ and $m = m_*$ for $\alpha = 0, 1/2, 1, 2$, velocities \eqref{eq:alpha} at 60 digits
+    & collapses; $P - B(\alpha) = 1.3 \times 10^{-12}$, $1.8 \times 10^{-13}$, $1.6 \times 10^{-13}$, $1.6 \times 10^{-13}$ \\ \hline
+  Theorem~\ref{thm:alpha} for $-1.8 \le \alpha \le -1$: minimization of $P - B(\alpha)$ with precision growing with $|\ln\rho|$
+    & the minimum is positive at $\alpha = -1, -1.2, -1.5, -1.8$ \\ \hline
+  Remark~\ref{rem:below} (\texttt{verify\_alpha\_below.py}): its identities (exact, SymPy); its constants and a subdivision of $0 \le \beta \le 1/2$, $0 \le \rho \le 1$, $0 \le m \le 3$ in Arb ball arithmetic; Biot--Savart at 50 to 950 digits for 1500 random collapsing triangles with $-2 < \alpha < -1$, and near-extremal collapses at $\alpha = -1.5, -1.8, -1.99$
+    & 733 boxes, all resolved; $P$ above the bound of its case, and so above $B(\alpha)$, in every triangle; $P - B(\alpha) \to 0^+$ \\ \hline
+  SQG, circulations $(1, -\gamma, 1)$: the collapsing triangles of Lemma~\ref{lem:circalpha} on a grid
+    & $\gamma$ from $0.3876$ to $0.49999$, as in \cite[Lemma~1]{bb2018}; side ratio $0.7515$ at $\gamma = 0.49$ \\ \hline
+  Remark~\ref{rem:equalalpha}: the $\alpha = 2$ family and its minimum (exact, SymPy), the formula against the velocities at five values of $\gamma$, 40 digits, and the SQG endpoint (exact)
+    & the octic and the quartic; difference $\le 4 \times 10^{-40}$ \\ \hline
+  Theorem~\ref{thm:four}: Krawczyk operator in ball arithmetic at 320 bits, on the collapse equations and on the Lagrange systems
+    & unique solutions in boxes of radius $10^{-4}$ to $10^{-8}$; the minima enclosed to width $10^{-50}$; reduced Hessians positive definite \\ \hline
+  Theorem~\ref{thm:norot}(a): Krawczyk operator with $2\pi\kappa = -1$ and nine circulations fixed
+    & unique solution in a box of radius $10^{-6}$; Jacobian invertible \\ \hline
+  Theorem~\ref{thm:norot}(b): Krawczyk operator (\texttt{certify\_sqg60.py}) with $2\pi\kappa = -1$ and fifty-eight circulations fixed
+    & unique solution in a box of radius $10^{-9}$; Jacobian invertible; independent recheck at 80 digits \\ \hline
+  Controls: Proposition~\ref{prop:half} and $\mu = 1/20$ by the same pipeline; searches for three-vortex collapses with $P < \sqrt{3}/2$, or with $\alpha = 2$ and $\kappa$ real
+    & $P_-(1/2)$ within $10^{-94}$ of the closed form; no such three-vortex collapse found \\ \hline
+  Every certified point, with separate Biot--Savart code at 80 digits
+    & self-similar to $4 \times 10^{-79}$; $P$ agrees with the enclosures \\ \hline
+  Numerical minimizers for $N = 7, \dots, 12$, 33, 61 (60 digits) and 603 (double precision) Euler vortices, Biot--Savart at 65 and 30 digits
+    & self-similar to $4 \times 10^{-47}$ and $10^{-13}$ relative; $P$ as stated \\ \hline
+  The two-arm family, $N = 9, \dots, 603$: fit over $N \ge 301$ and extrapolation in $1/N$
+    & $0.477364 + 1.2206/N + 2.93/N^2$, rms $7 \times 10^{-10}$; extrapolated limit $0.4773635$ \\ \hline
+  Independent recheck of the certified SQG collapse of sixty vortices, Newton's method with $\kappa$ held real at 60 digits
+    & residual $6 \times 10^{-59}$; angular impulse and $\sum_{j<k}\Gamma_j\Gamma_k|z_j - z_k|^{-1}$ below $10^{-61}$ relative \\ \hline
+\end{longtable}
+}
+
+\section{Discussion}\label{sec:discussion}
 
 Lemma~\ref{lem:rates} gives, in a form suited to minimization, the collapse and rotation rates that Aref \cite[Eqs.~(25a), (25d)]{aref2010} expresses through the side lengths of the triangle (see also \cite{gotoda2021}, \cite[Eq.~(E.1)]{gallay2026}, and, for equal circulations, \cite[Eq.~(4.4)]{kimura1987}); Aref also notes that the rotation rate times the collapse time, that is, the ratio of the two rates, fixes the logarithmic spiral \cite[Eq.~(29c)]{aref2010}. Theorem~\ref{thm:main} concerns the minimization of that ratio, which neither \cite{aref2010}, \cite{cds1980} nor \cite{kimura1987} considers. When the two circulations of the same sign differ, $\mu < 1$, the two orientations of the triangle are not equivalent and the minima on the two arcs differ, so a minimization restricted to one orientation finds only one of them. The infimum $\sqrt{3}/2$ of Corollary~\ref{cor:bound} is approached only as $\mu \to 0$ and is not attained.
 
@@ -398,17 +904,33 @@ Leoncini, Kuznetsov and Zaslavsky \cite{lkz2000} analyze the motion near collaps
 
 Hiraoka \cite{hiraoka2008} blows up the triple collision to McGehee's collision manifold and shows that it is topologically regularizable in Easton's sense when the two vortices of the same sign have equal circulations, $\mu = 1$ in our normalization, once those two vortices are identified \cite[Theorem~1]{hiraoka2008}, and not when their circulations differ by a small nonzero amount \cite[Theorem~2]{hiraoka2008}; his variables are the side lengths and the signed area of the triangle, so the rotation does not enter. Gallay and \v{S}ver\'ak \cite{gallay2026} ask when a collision of three point vortices is regularizable, that is, a limit of nearby motions without collision. Whether it is depends on the perturbation \cite[Theorems~5.8, 5.10, 5.15]{gallay2026}, and when it is, the limit is determined only up to a rotation \cite[Sect.~1]{gallay2026}, because the triangle turns through the angle $s \ln(1 - t/T)$ and so makes infinitely many turns before the collision \cite[Sect.~5.2]{gallay2026}. Grotto, Romito and Viviani \cite{grv2023} select a continuation after collapse by adding a vanishing stochastic diffusion, which yields a probability distribution over continuations rather than a single one. Gallay and \v{S}ver\'ak note that $s \neq 0$ \cite[Remark~E.2]{gallay2026}; since $|s| = P$, Corollary~\ref{cor:bound} sharpens this to $|s| > \sqrt{3}/2$ for every collision, and no larger constant holds for all of them.
 
-For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:rings} for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy \eqref{eq:circ}. Koiller et al.\ \cite{koiller1985} found the collapsing configurations and their rates. Demina and Kudryashov \cite{dk2014} study relative equilibria, collapse and scattering of point vortices with arbitrary circulations by a polynomial method. For two regular polygons with a vortex of circulation $\Gamma_0$, possibly zero, at the center, they give the equation for the ratio of the radii, which for $\Gamma_0 = 0$ is \eqref{eq:circ}, and the constant $\Omega$, which for $\Gamma_0 = 0$ is $S$, as an explicit function of the relative rotation \cite[Eqs.~(36)--(37)]{dk2014}, and they state that every relative rotation with $e^{in\theta} \neq \pm 1$ gives a collapse or a scattering. For this family they do not say which of the two occurs, and they do not write out the ratio of the two rates, although their general solution contains it \cite[Eq.~(10)]{dk2014}. Equation~\eqref{eq:Pring} writes this ratio in closed form, and Proposition~\ref{prop:rings} gives its minimum over the relative rotation. O'Neil \cite{oneil2007} proves that for generic circulations three concentric rings have finitely many relative equilibria and, for each fixed complex rate, finitely many collapse configurations. We have not found the minimal values of Theorem~\ref{thm:main} and Propositions~\ref{prop:half} and~\ref{prop:rings} stated in the literature, nor a proof of the bound of Corollary~\ref{cor:bound} or of its sharpness.
+For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:rings} for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy \eqref{eq:circ}. Koiller et al.\ \cite{koiller1985} found the collapsing configurations and their rates. Demina and Kudryashov \cite{dk2014} study relative equilibria, collapse and scattering of point vortices with arbitrary circulations by a polynomial method. For two regular polygons with a vortex of circulation $\Gamma_0$, possibly zero, at the center, they give the equation for the ratio of the radii, which is \eqref{eq:circ0} with $x = r^2$, and the constant $\Omega$, which on \eqref{eq:circ0} is $S$, as an explicit function of the relative rotation \cite[Eqs.~(36)--(37)]{dk2014}, and they state that every relative rotation with $e^{in\theta} \neq \pm 1$ gives a collapse or a scattering. For this family they do not say which of the two occurs, and they do not write out the ratio of the two rates, although their general solution contains it \cite[Eq.~(10)]{dk2014}. Equations~\eqref{eq:Pring} and~\eqref{eq:Pcentre} write this ratio in closed form, for $\Gamma_0 = 0$ and for every $\Gamma_0$, and Propositions~\ref{prop:rings} and~\ref{prop:centre} give its minimum over the relative rotation and, for every $n$, its infimum $\sqrt{3}/2$ over the whole family. Theorem~\ref{thm:pairs} explains why this infimum is the same as that of Corollary~\ref{cor:bound}: both are approached by a strong vortex carrying weak, tight pairs of opposite sign, and every such configuration has $P > \sqrt{3}/2$ once the pairs are weak enough (Proposition~\ref{prop:pairsbound}), with near-equality only at the shape $u_j = e^{i\pi/3}$. O'Neil \cite{oneil2007} proves that for generic circulations three concentric rings have finitely many relative equilibria and, for each fixed complex rate, finitely many collapse configurations. We have not found the minimal values of Theorem~\ref{thm:main} and Propositions~\ref{prop:half}--\ref{prop:centre} stated in the literature, nor a proof of the bounds of Corollary~\ref{cor:bound}, Theorem~\ref{thm:alpha}, Proposition~\ref{prop:centre} and Theorem~\ref{thm:pairs} or of their sharpness.
+
+Self-similar collapse of three vortices in the $\alpha$-models has been studied from several directions. Badin and Barry \cite{bb2018} derive the necessary conditions for collapse in Nambu form and show that in the SQG case collapse is self-similar when the energy vanishes and not self-similar otherwise; for circulations $(1, -\Gamma, 1)$ they find self-similar SQG collapse exactly for $0.387464\ldots < \Gamma < 1/2$ \cite[Lemma~1]{bb2018}, an interval that Lemma~\ref{lem:circalpha} reproduces. Yasunaga, Otobe and Iwayama \cite{yoi2021} give necessary conditions, the orbits of self-similar motion and its spiral, and Iwayama and Yajima \cite{iy2023} show that the collapsing motions are linearly unstable and the expanding ones stable. Reinaud \cite{reinaud2021} treats the self-similar collapse of three geophysical vortices; as the Correction to that article records, it predicts the collapse time analytically, confirms it with simulated collapses and maps it over a family of collapsing configurations. Chen and Liu \cite{cl2024} prove that the existence of self-similar collapse and expansion depends only on the circulations, give explicit expressions for all nontrivial self-similar solutions \cite[Theorems~2.1, 2.2]{cl2024}, and obtain the interval of Badin and Barry analytically \cite[Theorem~4.1]{cl2024}, a description from the side of the circulations that Lemma~\ref{lem:circalpha} complements from the side of the shape. Iwayama, Yajima and Watanabe \cite{iyw2025} prove that collapse that is not self-similar cannot occur for $-1 \le \alpha < 0$ and show its possible existence for $0 < \alpha < 2$. Grotto and Pappalettera \cite[Prop.~2.1]{gp2025} characterize the self-similar motions and write the collapsing spiral, as a step toward bursts out of arbitrary configurations. We have not found a bound on the winding, the spiral angle or the distance traveled in this literature. Theorem~\ref{thm:alpha} concerns self-similar collapse only; it says nothing about other singular motions of the $\alpha$-models, such as the collapses at nonzero energy studied in \cite{bb2018,iyw2025}.
+
+For more than three vortices, self-similar collapse has mostly been studied at fixed circulations. O'Neil \cite{oneil1987} defines collapse configurations through a complex rate \cite[Definition~1.1.3]{oneil1987} and computes one-parameter families of them for four vortices \cite[Sect.~8.5]{oneil1987}; Gotoda \cite{gotoda2021} continues such families numerically for up to ten vortices, and Novikov and Sedov \cite{ns1979} and Demina and Kudryashov \cite{dk2014} give explicit examples. None of these works bounds or minimizes $P$, and we have not found a self-similar collapse without rotation reported for any $\alpha$ or number of vortices. The minima of Theorem~\ref{thm:four} are over the circulations and the shape together, and the collapse of Theorem~\ref{thm:norot} shows that in the $\alpha$-models the winding of a self-similar collapse, bounded below for three vortices by Theorem~\ref{thm:alpha}, can vanish for more.
+
+\paragraph{Meaning and limits.} While the size of a collapsing configuration shrinks from $r_0$ to $r$, it turns through the angle $P\ln(r_0^2/r^2)$. By Corollary~\ref{cor:bound}, a triangle of three vortices that shrinks by the factor $10$ therefore turns through more than $(\sqrt{3}/2)\ln 100 = 3.988\ldots$ radians, about $0.63$ of a turn, whatever the circulations, and by Proposition~\ref{prop:centre} so do the ring configurations; by Proposition~\ref{prop:pairsbound} the same holds for a strong vortex with sufficiently weak, tight pairs; and the same constant bounds the spin $|s| = P$ of Gallay and \v{S}ver\'ak, as noted above. For three vortices in the $\alpha$-models the angle exceeds $B(\alpha)\ln 100$ by Theorem~\ref{thm:alpha}. Four vortices can turn less than three (Theorem~\ref{thm:four}). The comparison with gravitation is instructive. A homographic solution of the Newtonian $n$-body problem, one that keeps its shape, ends in a collision of all the bodies only if its angular momentum vanishes, and it is then homothetic: it shrinks without turning \cite[\S\S~370\,bis, 378]{wintner1941}. A collapsing vortex configuration also has zero angular impulse, the invariant associated with rotations, but that invariant depends on the positions alone, and three vortices, like the ring configurations, cannot collapse without turning; in the $\alpha = 2$ model eleven vortices can, and in the SQG model sixty can (Theorem~\ref{thm:norot}). The exact minima of Theorem~\ref{thm:main} and Propositions~\ref{prop:half}--\ref{prop:centre}, the certified minima of Theorem~\ref{thm:four}, and the configurations that attain them, can serve as benchmarks for point-vortex codes near a collapse. Since the contracting three-vortex configurations are unstable in shape \cite[Sect.~II]{tt1988}, \cite{iy2023}, a perturbed configuration follows a self-similar collapse only transiently. The results concern point vortices. Finite cores regularize the collision, and the bounds describe the approach only while the cores are small compared with the separations; an analysis with finite cores is future work.
+
+\section{Open problems}\label{sec:open}
+
+\begin{enumerate}
+\item Is there a positive lower bound for $P$ over self-similar collapses of any number of Euler vortices? The certified local minima decrease with the number of vortices, $P_4 > P_5 > P_6$ (Theorem~\ref{thm:four}), and the smallest values found numerically decrease further, to $0.4793959201\ldots$ for 603 vortices. The two-arm family that gives them tends to $0.47736$; is there a structure that goes lower at larger $N$, and can $P$ be made arbitrarily small?
+\item Can Euler vortices collapse self-similarly without rotation, for some number of vortices? Since the Euler law is holomorphic, such a collapse, with $\kappa$ real, is the same as a relative equilibrium, with angular velocity $-\kappa$, of the imaginary circulations $i\Gamma_j$. For $\alpha \ne 0$ there is no such correspondence, and Theorem~\ref{thm:norot} gives collapses without rotation for $\alpha = 2$ and for SQG.
+\item Are the local minima $P_4$, $P_5$ and $P_6$ of Theorem~\ref{thm:four} the least values of $P$ over all self-similar collapses of four, five and six Euler vortices, and are they algebraic numbers?
+\item Are the four-vortex minima $0.5499151189\ldots$ (SQG) and $0.4116738600\ldots$ ($\alpha = 2$) of Theorem~\ref{thm:four}(c) the least values for four vortices? What is the least number of vortices that can collapse self-similarly without rotation, for $\alpha = 2$, where eleven suffice, and for SQG, where sixty suffice (Theorem~\ref{thm:norot})?
+\item For $\alpha = 2$ the value of $P$ on the collapsing triangles is an explicit algebraic function of the circulations, and on the family with two equal circulations its minimum is the number $1.1039451679\ldots$ of Remark~\ref{rem:equalalpha}. For SQG with two equal circulations the collapsing shape solves a quartic, which Iwayama, Yajima and Watanabe solve in radicals \cite[Eqs.~(4.2), (4.3)]{iyw2025}, so $P$ is again algebraic along that family. What is its minimum there, and what is the minimal polynomial of that minimum?
+\end{enumerate}
 
 \medskip
-\noindent\textbf{Data availability.} The programs \texttt{verify\_general\_mu.py}, \texttt{verify\_floors\_independent.py}, \texttt{verify\_direct\_proof.py} and \texttt{plot\_minimal\_winding.py}, used for Section~\ref{sec:numerics} and Figure~\ref{fig:minima}, and their output are in the repository \url{https://github.com/ChaseHendrick/minimal-winding}: the programs in \texttt{code/}, the output of the three verification programs in \texttt{data/}, and the figure in \texttt{paper/figures/}.
+{\raggedright\noindent\textbf{Data availability.} The programs \texttt{verify\_general\_mu.py}, \texttt{verify\_floors\_independent.py}, \texttt{verify\_direct\_proof.py}, \texttt{verify\_central\_vortex.py}, \texttt{verify\_strong\_vortex.py}, \texttt{verify\_pairs\_bound.py}, \texttt{verify\_alpha\_winding.py}, \texttt{verify\_alpha\_below.py}, \texttt{verify\_alpha\_equal\_circulations.py}, \texttt{verify\_many\_vortices.py}, \texttt{certify\_collapses.py} with its modules and \texttt{certify\_sqg60.py}, used for Section~\ref{sec:numerics}, and \texttt{plot\_minimal\_winding.py} and \texttt{plot\_alpha\_winding.py}, used for Figures~\ref{fig:minima}--\ref{fig:alpha}, and their output are in the repository \url{https://github.com/ChaseHendrick/minimal-winding}: the programs in \texttt{code/}, the output of the twelve verification programs and the stored configurations of Section~\ref{sec:more} in \texttt{data/}, and the figures in \texttt{paper/figures/}.\par}
 
 \noindent\textbf{Funding.} This research received no external funding.
 
 \smallskip
 \noindent{\footnotesize This work was prepared with AI assistance. The author takes full responsibility for its content.}
 
-\begin{thebibliography}{26}
+\begin{thebibliography}{36}
 \small
 
 \bibitem{aref1979} H. Aref, Motion of three vortices, \emph{Phys. Fluids} \textbf{22} (1979) 393--400.
@@ -419,11 +941,17 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 
 \bibitem{art1992} H. Aref, N. Rott and H. Thomann, Gr\"obli's solution of the three-vortex problem, \emph{Annu. Rev. Fluid Mech.} \textbf{24} (1992) 1--21.
 
+\bibitem{bb2018} G. Badin and A. M. Barry, Collapse of generalized Euler and surface quasigeostrophic point vortices, \emph{Phys. Rev. E} \textbf{98} (2018) 023110; arXiv:1805.10127.
+
 \bibitem{bl1998} A. V. Borisov and V. G. Lebedev, Dynamics of three vortices on a plane and a sphere --- III. Noncompact case. Problems of collapse and scattering, \emph{Regul. Chaotic Dyn.} \textbf{3} (1998), no.~4, 74--86; arXiv:nlin/0503057.
+
+\bibitem{cl2024} J. Chen and Q. Liu, Sufficient and necessary conditions for self-similar motions of three point vortices in generalized fluid systems, \emph{Physica D} \textbf{470} (2024) 134392.
 
 \bibitem{cds1980} R. Conte and L. de Seze, Exact solution of the planar motion of three arbitrary point vortices, report DPhG/PSRM/1697/80, CEN Saclay (1980); also \emph{Mod. Phys. Lett. B} \textbf{29} (2015) 1530017; arXiv:1511.00069v1, whose page numbers are cited.
 
 \bibitem{dk2014} M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, \emph{Theor. Comput. Fluid Dyn.} \textbf{28} (2014) 357--368; doi:10.1007/s00162-014-0319-4.
+
+\bibitem{dgc2023} M. Donati and L. Godard-Cadillac, H\"older regularity for collapses of point-vortices, arXiv:2111.14230v4 (2023), whose appendix numbering is cited.
 
 \bibitem{drivas2026} T. D. Drivas, B. A. Khanikati and V. A. Khanikati, On the collapse of three point vortices on surfaces, preprint, arXiv:2607.16490 (2026).
 
@@ -433,6 +961,8 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 
 \bibitem{grobli1877} W. Gr\"obli, \emph{Specielle Probleme \"uber die Bewegung geradliniger paralleler Wirbelf\"aden}, Inaugural-Dissertation, G\"ottingen; Z\"urcher und Furrer, Z\"urich, 1877. English translation: arXiv:2404.01305.
 
+\bibitem{gp2025} F. Grotto and U. Pappalettera, Collapse and burst of generalized surface quasi-geostrophic point vortices, preprint, arXiv:2505.19782 (2025).
+
 \bibitem{grv2023} F. Grotto, M. Romito and M. Viviani, Zero-noise dynamics after collapse for three point vortices, \emph{Physica D} \textbf{457} (2024) 133947; arXiv:2307.05133.
 
 \bibitem{hgl2007} A. Hern\'andez-Gardu\~no and E. A. Lacomba, Collisions and regularization for the 3-vortex problem, \emph{J. Math. Fluid Mech.} \textbf{9} (2007) 75--86; arXiv:math-ph/0412024, whose theorem numbering is cited.
@@ -440,6 +970,10 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 \bibitem{hiraoka2008} Y. Hiraoka, Topological regularizations of the triple collision singularity in the 3-vortex problem, \emph{Nonlinearity} \textbf{21} (2008) 361--379.
 
 \bibitem{hiraoka2009} Y. Hiraoka, Remarks on collision manifolds and nonexistence of non self-similar collision solutions in the 3-vortex problem, \emph{RIMS K\^oky\^uroku Bessatsu} \textbf{B13} (2009) 35--43.
+
+\bibitem{iy2023} T. Iwayama and T. Yajima, Linear stability of self-similar motions of three point vortices in a generalized two-dimensional fluid system, \emph{J. Phys. Soc. Jpn.} \textbf{92} (2023) 084401.
+
+\bibitem{iyw2025} T. Iwayama, T. Yajima and T. Watanabe, Non-self-similar collapse of three point vortices in a generalized two-dimensional fluid system, \emph{J. Phys. A} \textbf{58} (2025) 075701; doi:10.1088/1751-8121/adaef8.
 
 \bibitem{kimura1987} Y. Kimura, Similarity solution of two-dimensional point vortices, \emph{J. Phys. Soc. Jpn.} \textbf{56} (1987) 2024--2030.
 
@@ -455,13 +989,21 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 
 \bibitem{ns1979} E. A. Novikov and Yu. B. Sedov, Vortex collapse, \emph{Sov. Phys. JETP} \textbf{50} (1979) 297--301 [\emph{Zh. Eksp. Teor. Fiz.} \textbf{77} (1979) 588--597].
 
+\bibitem{oneil1987} K. A. O'Neil, Stationary configurations of point vortices, \emph{Trans. Amer. Math. Soc.} \textbf{302} (1987) 383--425.
+
 \bibitem{oneil2007} K. A. O'Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, \emph{Physica D} \textbf{236} (2007) 123--130.
+
+\bibitem{reinaud2021} J. N. Reinaud, Self-similar collapse of three geophysical vortices, \emph{Geophys. Astrophys. Fluid Dyn.} \textbf{115} (2021) 369--392, doi:10.1080/03091929.2020.1828402; Correction, \emph{ibid.} \textbf{115} (2021) I--III, doi:10.1080/03091929.2020.1848127.
 
 \bibitem{rds2022} J. N. Reinaud, D. G. Dritschel and R. K. Scott, Self-similar collapse of three vortices in the generalised Euler and quasi-geostrophic equations, \emph{Physica D} \textbf{434} (2022) 133226.
 
 \bibitem{synge1949} J. L. Synge, On the motion of three vortices, \emph{Canad. J. Math.} \textbf{1} (1949) 257--270.
 
 \bibitem{tt1988} J. Tavantzis and L. Ting, The dynamics of three vortices revisited, \emph{Phys. Fluids} \textbf{31} (1988) 1392--1409.
+
+\bibitem{wintner1941} A. Wintner, \emph{The Analytical Foundations of Celestial Mechanics}, Princeton Mathematical Series 5, Princeton University Press, Princeton, 1941.
+
+\bibitem{yoi2021} T. Yasunaga, N. Otobe and T. Iwayama, Self-similar motion of three point vortices for a generalized two-dimensional fluid system, \emph{J. Phys. Soc. Jpn.} \textbf{90} (2021) 124401; doi:10.7566/JPSJ.90.124401.
 
 \end{thebibliography}
 

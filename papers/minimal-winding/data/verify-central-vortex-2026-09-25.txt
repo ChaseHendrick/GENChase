@@ -1,0 +1,121 @@
+1. Derivation for symbolic n
+OK    conj(zetadot/zeta) = (1/2 pi i)(-(n-1)/(2x) + Gamma0/x - n v/(1-v)) from the ring sums, v = zeta^n
+OK    2x (Sz - Szeta) = (n-1)x^2 - 2(n - Gamma0)x + (n-1) - 2 Gamma0  (eq:circ0)
+OK    Sz - Szeta does not depend on v, so every theta is self-similar
+OK    eq:circ0 at Gamma0 = 0 is eq:circ
+OK    Gamma0 = ((n-1)x^2 - 2nx + n - 1)/(2(1-x))
+OK    eq:circ0 at x = 1 equals -2, so one root is > 1 and the other < 1
+OK    eq:circ0 at x = 0 equals n - 1 - 2 Gamma0: the root < 1 is positive iff Gamma0 < (n-1)/2
+OK    discriminant/4 of eq:circ0 in x = (Gamma0 - 1)^2 + 2(n-1) > 0
+OK    on eq:circ0, 2(x-1)(total circulation) = (n+1)x^2 - 2nx + (n+1), whose discriminant -8n - 4 < 0
+OK       (the discriminant)
+OK    A = x(n-1)/2 + Gamma0 = (n+1)/2 + 1/(x-1) on eq:circ0
+OK    ring swap: eq:circ0 at (1/x, -Gamma0/x) is eq:circ0 / x^2
+OK    |1-v|^2 Re S / rho = a - b cos(alpha), a = A(rho + 1/rho) - n/rho, b = 2A - n
+OK    Im S = -n rho sin(alpha)/|1-v|^2, so Re kappa = Im S/(2 pi) < 0 iff sin(n theta) > 0
+OK    kappa = (Im S + i Re S)/(2 pi)
+      => P = |Im kappa|/(-2 Re kappa) = |a - b cos(n theta)|/(2n sin(n theta)) on sin(n theta) > 0
+OK    A = (n + coth t)/2
+OK    a = coth t cosh nt + n sinh nt
+OK    b = coth t
+OK    a - b = coth t (cosh nt - 1) + n sinh nt  (> 0 for t > 0)
+OK    a + b = coth t (cosh nt + 1) + n sinh nt  (> 0 for t > 0)
+OK    a^2 - b^2 = D^2 - n^2, D = sinh(nt) coth t + n cosh nt
+OK    Gamma0 = (n + coth t)/2 - (n-1) e^{2t}/2 on the root x = e^{2t}
+OK    t -> -t (the swap x -> 1/x) maps a -> -a
+OK    t -> -t maps b -> -b
+OK    Gamma0 = 0: x_n is the root > 1 of eq:circ0
+OK    Gamma0 = 0: b = coth(eta/2) = (x_n + 1)/(x_n - 1) = sqrt(2n - 1) = (n-1)x_n - n
+OK    Gamma0 = 0: a = K_n = (n-1) x_n (rho + 1/rho)/2 - n/rho
+OK    Gamma0 = 0: b = sqrt(2n-1), the coefficient in eq:Pring
+OK    Gamma0 = 0, n = 2: sqrt(D^2 - n^2)/(2n) = F_n of the table
+OK    Gamma0 = 0, n = 3: sqrt(D^2 - n^2)/(2n) = F_n of the table
+OK    Gamma0 = 0, n = 4: sqrt(D^2 - n^2)/(2n) = F_n of the table
+OK    Gamma0 = 0, n = 5: sqrt(D^2 - n^2)/(2n) = F_n of the table
+OK    n = 2, x = 2 (Gamma0 = 3/2): D = 19/4 and the minimum is 3 sqrt(33)/16 exactly
+OK    DK Eq. (37) with Gamma1 = r^2 = x is x times eq:circ0, for every Gamma0
+OK    DK Eq. (36) with Gamma1 = r^2 = x, R1 = 1, r^n b2 = v equals S = A - n/(1-v) on eq:circ0
+2. The proof of the bound and of the monotonicity
+OK    D - 2n = (sinh(nt) cosh t - n sinh t)/sinh t + n(cosh nt - 1)
+OK    d/dt [sinh(nt) - n sinh t] = n(cosh nt - cosh t) >= 0, so sinh(nt) >= n sinh t and coth t sinh nt >= n cosh t > n
+OK    4n^2 (min^2 - 3/4) = (D - 2n)(D + 2n), so D > 2n gives min > sqrt(3)/2
+OK    sinh(nt)/sinh t = sum_{j=0}^{n-1} e^{(n-1-2j)t}, a sum of terms cosh(ct) (and 1), increasing in t > 0; n = 2..8
+      => coth t sinh nt = cosh t * (that sum) and n cosh nt increase strictly, so D increases strictly in t
+OK    dGamma0/dt = -1/(2 sinh^2 t) - (n-1) e^{2t} < 0: Gamma0 decreases from +oo (t -> 0) to -oo (t -> oo)
+OK    D -> 2n as t -> 0
+OK    2Y(X^2 - 1)(D - 2n) = (Y^2 - 1)(X^2 + 1) - 2nY(X^2 - 1) + n(Y - 1)^2(X^2 - 1)
+OK    n = 2: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 24, 36, 18, 3]]
+OK    n = 3: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 76, 190, 200, 110, 32, 4]]
+OK    n = 4: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 176, 616, 996, 950, 576, 222, 50, 5]]
+OK    n = 5: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 340, 1530, 3344, 4564, 4252, 2790, 1280, 392, 72, 6]]
+OK    n = 6: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 584, 3212, 8854, 15753, 19872, 18522, 12914, 6677, 2488, 632, 98, 7]]
+OK    n = 7: that polynomial at X = 1 + w has coefficients >= 0 and a positive one, so D > 2n for X > 1   [w^0.. : [0, 0, 0, 924, 6006, 19992, 43890, 69948, 84690, 79480, 58058, 32760, 14014, 4396, 954, 128, 8]]
+3. The expansion of the minimum as Gamma0 -> infinity
+OK    D - 2n = n(1 + 2n^2) t^2/3 + O(t^4)
+OK    D is even in t (no odd powers through t^7)
+OK    min^2 = 3/4 + (1 + 2n^2) t^2/3 + O(t^4)
+OK    Gamma0 - 1/2 = 1/(2t) + (7/6 - n) t + O(t^2)
+OK    with h = 1/(Gamma0 - 1/2): t = h/2 + O(h^3) and min = sqrt(3)/2 + sqrt(3)(1 + 2n^2) h^2/36 + 0 h^3 + O(h^4)   [h^4 coefficient sqrt(3)*(7*n**4 - 1440*n**3 + 1690*n**2 - 720*n + 823)/25920]
+      n=2 Gamma0=1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -0.352039
+      n=2 Gamma0=1e4: (min - sqrt3/2 - k2 h^2)/h^4 = -0.351844
+      n=2 Gamma0=1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -0.351825
+      n=2 Gamma0=-1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -0.352039
+      n=2 Gamma0=-1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -0.351825
+      n=3 Gamma0=1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -1.63406
+      n=3 Gamma0=1e4: (min - sqrt3/2 - k2 h^2)/h^4 = -1.63324
+      n=3 Gamma0=1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -1.63316
+      n=3 Gamma0=-1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -1.63406
+      n=3 Gamma0=-1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -1.63316
+      n=5 Gamma0=1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -9.10294
+      n=5 Gamma0=1e4: (min - sqrt3/2 - k2 h^2)/h^4 = -9.09857
+      n=5 Gamma0=1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -9.09813
+      n=5 Gamma0=-1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -9.10294
+      n=5 Gamma0=-1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -9.09813
+OK    the remainder of the expansion, divided by h^4, stays bounded (n = 2, 3, 5; Gamma0 = +-1e3..1e5; both roots)   [max 9.103]
+4. Theorem 3, Step 5: strong vortex 1 at 0, weak pairs eps g at Z and -eps g + eps^2 sigma at Z(1 + eps g u); leading order
+OK    relative motion, times u: 2p^2 + p - s + i y(2p - 1) = 0
+      => for y != 0: p = 1/2 and s = 1, i.e. u = 1/2 + iy and the second circulation is -eps g + eps^2 g^2
+OK    -eps g + eps^2 g^2 agrees with the three-vortex harmonic value -eps g/(1 + eps g) to O(eps^3)
+OK    angular impulse of a pair about the strong vortex = eps^2 g^2 (s - 2p) + O(eps^3), zero at p = 1/2, s = 1
+OK    Re kappa = -y/(2 pi (y^2 + 1/4)): collapse iff y > 0
+OK    P -> (y^2 + 3/4)/(2y)
+OK    (y^2 + 3/4)/(2y) = sqrt(3)/2 + (y - sqrt(3)/2)^2/(2y): equality iff y = sqrt(3)/2, u = e^{i pi/3}
+OK    pairs at Z_k share kappa iff (1 + 1/u_k)/|Z_k|^2 agree; arg(1 + 1/u) is the same for y and 3/(4y)
+      => P = sqrt(3)/2 at leading order only if every y_k = sqrt(3)/2, and then all |Z_k| are equal
+OK    three vortices, mu = 1e-8, sin(theta) = -c mu on A_-: pair 2-3 has u -> 1/2 + ic and P -> (y^2 + 3/4)/(2y)   [max deviation 3.48e-8]
+OK    rings with a center, t = 1e-8 (Gamma0 ~ 5e7), n = 2, 5: u -> 1/2 + i theta/(2t) and P -> (y^2 + 3/4)/(2y)   [max deviation 6.5e-8]
+5. Biot-Savart velocities of all 2n + 1 vortices, 50 digits
+OK    the two ring sums over roots of unity, n = 2, 3, 4, 5, 7   [max 3.64e-50]
+OK    295 configurations (n = 2, 3, 4, 5, 7; Gamma0 from -1999.5 to 250; every positive root; five angles): the center is at rest   [max |center velocity|/|velocity of a ring vortex| = 3.06e-48]
+OK       all 2n quotients zdot/z equal the closed-form kappa   [max relative difference 2.87e-48]
+OK       P from Biot-Savart equals |a - b cos n theta|/(2n sin n theta) with a, b from t = ln(x)/2 (either root)   [max relative difference 5.62e-41]
+OK       collapse (Re kappa < 0) exactly when sin(n theta) > 0
+OK       a > |b| on every root x > 1
+OK       Demina-Kudryashov Eq. (36) for Gamma0 != 0 against the Biot-Savart sums   [max relative difference 2.83e-48]
+6. Minimum over theta from the Biot-Savart velocities, golden section, 30 digits
+      n=2 Gamma0=0     x=3.732050808    min P = 1.677050983124842272307
+      n=2 Gamma0=0     x=0.2679491924   min P = 1.677050983124842272307
+      n=3 Gamma0=0     x=2.618033989    min P = 1.79505493571150134375
+      n=3 Gamma0=0     x=0.3819660113   min P = 1.79505493571150134375
+      n=5 Gamma0=0     x=2.0            min P = 2.22492977417265914029
+      n=5 Gamma0=0     x=0.5            min P = 2.22492977417265914029
+      n=2 Gamma0=1.5   x=2.0            min P = 1.077105496225880373722
+      n=3 Gamma0=12.5  x=1.086308765    min P = 0.8722924311467667306669
+      n=4 Gamma0=-3    x=3.896805253    min P = 5.386944117242296671037
+      n=4 Gamma0=-3    x=0.7698614134   min P = 0.9753864496894554878545
+      n=5 Gamma0=-40   x=21.52436129    min P = 655.3050658179919895523
+      n=5 Gamma0=-40   x=0.975638706    min P = 0.8675180306188664096055
+      n=7 Gamma0=1000  x=1.001000998    min P = 0.8660301716641761851238
+OK    13 minima agree with sqrt(D^2 - n^2)/(2n)   [max relative difference 3.3e-27]
+OK       and are attained at cos(n theta) = b/a   [max |cos(n theta*) - b/a| = 2.5e-15]
+OK    Gamma0 = 0: the minimum is F_n of Proposition 2, n = 2..5   [max difference 3.94e-31]
+OK    on the root x > 1 the minimum decreases strictly as Gamma0 increases, n = 2..7 and 10, 13 values of Gamma0
+OK       and stays above sqrt(3)/2
+7. Negative controls (each must fail as described)
+OK    "min > sqrt(3)/2 + 1e-6" is false at Gamma0 = 2000 (root x > 1) and -2000 (root x < 1), n = 2..5: the constant is sharp
+OK    n = 2: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is negative   [lowest coefficients [0, -8*(kk - 2), -20*(kk - 2)]]
+OK    n = 5: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is negative   [lowest coefficients [0, -20*(kk - 2), -110*(kk - 2)]]
+OK    without zero angular impulse (|zeta|^2 = y != x) the quotients differ by a term n(x - y)/(y(v - 1)^2) that depends on theta
+OK    Biot-Savart, n = 3, Gamma0 = 2.5: the quotients agree (4.65e-31) but differ with |zeta|^2 = 1.1x (0.0775) or Gamma0 + 1e-3 (5.31e-5)
+
+all checks passed

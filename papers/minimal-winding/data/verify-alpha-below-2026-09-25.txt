@@ -1,0 +1,16 @@
+[1] identity (eq:id) residual 0; step (i) keeping the factor: S - rho m (1+X)/(1-X) - rho^2 coth b - 2X(Y-1)/((1-X)(Y-X)) = 0; (1+X)/(1-X) - coth(beta ln 1/rho) = 0; log-inequality g' residual 0; step (ii) residual 0; roots of t^2 - 12t + 12: [6 - 2*sqrt(6), 2*sqrt(6) + 6]; (sqrt6-2)sqrt6 - (6-2sqrt6) = 0; q - (1 + beta(6-m^2) - t + t^2/12) = 0; rho ln(1/rho): h'(1/e) = 0, h(1/e) - 1/e = 0, h'' = -1/rho; case-B range beta <= ((15-6sqrt6)e^2 - 1)/2 = 0.619669372439
+[1] sharpness for every beta > 0: S - rho m - rho^2 coth b - 2X((1+rho m)Y - 1 - rho m X)/((1-X)(Y-X)) = 0; (1+rho m)^(1+beta) - 1 - (1+beta) m rho = O(rho^2): residual of the first-order term 0; rho^2 coth b - 2rho/(beta m) - rho^2/beta = O(rho^3): residual 0
+[2] (6 - 2sqrt6) e = [2.99288405714560 +/- 3.89e-15] > 2 sqrt2 = [2.82842712474619 +/- 9.78e-17]: True; so case B gives P > B for beta <= [0.619669372440 +/- 4.59e-13], which exceeds 1/2: True
+[3] Arb subdivision of beta in [0, 1/2], rho in [0, 1], m in [0, 3]: 733 boxes, 270 with q > 0 (case A), 66 with m/ln(1/rho) > 2 sqrt(1+2beta) (case B); all resolved
+[4] Biot-Savart on 1500 random collapsing triangles with alpha in (-2, -1), rho down to 1e-300 (1344 in case A, 156 in case B): kappa spread <= 1.6e-49, |P - |S|/(8A)|/P <= 7.7e-47, P > (case lower bound) > B violated 0 times; smallest (P - B)/B = 2.73e-7
+[4] case-B grid, 2732 Biot-Savart collapses at alpha in {-1.4751, -1.6, -1.8, -1.95, -1.999}: smallest P/B = 4.22304
+[5] alpha = -1.5: rho = 1e-10: P - B = 1.021e-5 (spread 6.0e-64); rho = 1e-40: P - B = 1.021e-20 (spread 9.0e-70); rho = 1e-160: P - B = 1.021e-80 (spread 1.0e-93)
+[5] alpha = -1.8: rho = 1e-40: P - B = 1.004e-8 (spread 2.0e-69); rho = 1e-160: P - B = 1.004e-32 (spread 2.0e-93); rho = 1e-640: P - B = 1.004e-128 (spread 6.0e-190)
+[5] alpha = -1.99: rho = 1e-300: P - B = 0.001001 (spread 1.0e-122); rho = 1e-1200: P - B = 1.0e-12 (spread 9.0e-302); rho = 1e-4800: P - B = 1.0e-48 (spread 4.0e-1022)
+[6] negative control, must be False: chain alone at alpha=-1.7, rho=0.99, m=1.87: Lambda > sqrt(1+2beta) w: False (Lambda - sqrt(1+2beta)w = -0.0132, true P/B = 139.94)
+[6] negative control, must be False: case-B bound at rho=1e-6, m=m*: m/ln(1/rho) > sqrt(1+2beta) w: False (0.09546 vs 1.714)
+[6] negative control, must be False: (3 - sqrt6) e > sqrt(1 + 2*0.7): False ([1.4964420 +/- 2.86e-8] vs [1.5491933 +/- 3.85e-8])
+[6] negative control, must be False: subdivision with threshold x1.1 resolves: False (202 boxes, unresolved)
+[6] negative control, must be False: perturbed circulations self-similar (spread < 1e-30): False (spread 4.97e-8)
+[6] negative control, must be False: P > B + 1e-3 at alpha=-1.5, rho=1e-40, m=m*: False (P - B = 1.021e-20)
+RESULT: PASS: Theorem 2 (P > sqrt(3+alpha)/(2+alpha), sharp) holds for -2 < alpha <= -1, hence with the paper for every alpha > -2. Runtime 13 s (Python 3.11.15, SymPy 1.14.0, mpmath 1.3.0, python-flint).

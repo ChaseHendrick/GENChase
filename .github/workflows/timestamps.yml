@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Find commitments
         id: need
         run: |
@@ -40,7 +40,7 @@ jobs:
           stamps=(identities/commitments/*.txt)
           echo "count=${#stamps[@]}" >> "$GITHUB_OUTPUT"
           echo "${#stamps[@]} commitment(s) in the ledger."
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         if: steps.need.outputs.count != '0'
         with:
           node-version: '22'

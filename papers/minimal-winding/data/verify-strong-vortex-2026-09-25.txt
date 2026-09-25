@@ -1,0 +1,209 @@
+Checks of Theorem 3 (a strong vortex with m weak tight pairs). Parts 1 and 2 are exact or check the explicit
+bounds of the proof; parts 3 and 4 are numerical and illustrate the theorem without proving it: P > sqrt(3)/2
+at the fixed gamma used here is a numerical observation (Proposition 4 proves it only below a threshold that is
+not explicit; verify_pairs_bound.py checks that proof).
+
+1. Identities used in the proof (SymPy, exact)
+OK    [Step 2] (eq:pairZ) sum at Z_1 = 1/Z_1 + gamma b_1/d_1 + sum_{l != 1} f_l(Z_1)
+OK    [Step 2] (eq:pairD) sum at W_1 minus sum at Z_1 = -d/(Z W) + gamma(a - b)/d + sum_l [f_l(W_1) - f_l(Z_1)]
+OK    [Step 2]    and in it z_c cancels: (W - z_c) - (Z - z_c) = d
+OK    [Step 2] sum_i Gamma_i (sum at z_i) = sum_{i<k} Gamma_i Gamma_k [1/(z_i - z_k) + 1/(z_k - z_i)] = 0, so the equation of the strong vortex follows from those of the pairs
+OK    [Step 3] -d/(Z W) = -d/Z^2 + d^2/(Z^2 W)
+OK    [Step 1] f_l(z) = gamma(a_l - b_l)/(z - Z_l) - gamma b_l d_l/((z - Z_l)(z - W_l))  (second form: O(gamma^2) once a_l - b_l = O(gamma))
+OK    [Step 1] f_l(W_j) - f_l(Z_j) = d_j [gamma b_l/((W_j - W_l)(Z_j - W_l)) - gamma a_l/((W_j - Z_l)(Z_j - Z_l))]
+OK    [Step 1] (eq:zc) sum Gamma z = sum_j [gamma(a_j - b_j) Z_j - gamma b_j d_j]
+OK    [Step 3]    with a_j - b_j = gamma a_j^2 nu_j: sum Gamma z = sum_j [gamma^2 a_j^2 nu_j Z_j - gamma b_j d_j] = O(gamma^2)
+OK    [Step 3] b = a(1 - gamma a nu) is nu = (a - b)/(gamma a^2)
+OK    [Step 3] gamma b/d = (b/a)/(u Z)
+OK    [Step 3] conj(d) Z/(gamma a) = |Z|^2 conj(u)
+OK    [Step 3] [-d/Z^2 + gamma(a - b)/d] Z/(gamma a) = -u + nu/u
+OK    [Step 3] [d^2/(Z^2 W)] Z/(gamma a) = gamma a u^2/(1 + gamma a u), W = Z(1 + gamma a u)  (the self-induced part of rho_j)
+OK    [Step 3] Z [1/Z + gamma b/d] = 1 + 1/u - gamma a nu/u, since b/a = 1 - gamma a nu
+OK    [Step 3] conj(Z - z_c) Z = |Z|^2 - conj(z_c) Z
+OK    [Step 4] pair j contributes gamma a|Z|^2 - gamma b|W|^2 = gamma^2 |Z|^2 (a^2 nu - 2ab p - gamma a^2 b |u|^2) to sum Gamma|z|^2
+OK    [Step 4] a b = a^2 - gamma a^3 nu, so the pair contributes gamma^2 a^2 |Z|^2 (nu - 2p) + O(gamma^3)  (eq:imp)
+OK    [Step 4] sum Gamma|z - z_c|^2 = sum Gamma|z|^2 - |z_c|^2 sum Gamma
+OK    [Step 5] (eq:limit) eliminating kappa*: u[(1 + 1/u) conj(u) + u - nu/u] = (2p^2 + p - nu) + i y (2p - 1)
+OK    [Step 5] 2 pi i conj(kappa*) |Z*|^2 = 1 + 1/u* is solved by kappa* = i conj(1 + 1/u*)/(2 pi |Z*|^2)
+OK    [Step 5] (eq:kstar) Re kappa* = -y/(2 pi |Z*|^2 |u|^2)
+OK    [Step 5] (eq:kstar) Im kappa* = (1 + p/|u|^2)/(2 pi |Z*|^2)
+OK    [Case A] Im(1 + 1/u) = -y/|u|^2: 2 pi i conj(kappa*) is real iff y = 0, so y != 0 spreads to every pair
+OK    [Case A] y != 0 in y(2p - 1) = 0 and 2p^2 + p - nu = 0 gives p = 1/2 and nu = 1, and nothing else   [[{nu: 1, p: 1/2}]]
+OK    [Case A] p = 1/2: Re kappa* = -y/(2 pi |Z*|^2 (y^2 + 1/4)), so Re kappa* <= 0 forces y > 0 and Re kappa* < 0
+OK    [Case A] p = 1/2: P* = Im kappa*/(-2 Re kappa*) = (|u|^2 + p)/(2y) = (y^2 + 3/4)/(2y)
+OK    [Case A] (y^2 + 3/4)/(2y) = sqrt(3)/2 + (y - sqrt(3)/2)^2/(2y)
+OK    [Case A] P* = (y^2 + 3/4)/(2y) has the two roots y* and 3/(4y*) (product 3/4)
+OK    [Case A] |1 + 1/u|^2 differs at y and 3/(4y) unless y = sqrt(3)/2, so pairs on different roots lie at different radii   [difference 8*(4*y**2 - 3)*(4*y**2 + 3)/((4*y**2 + 1)*(4*y**2 + 9))]
+OK    [Case A] P* = sqrt(3)/2: y^2 - sqrt(3) y + 3/4 = (y - sqrt(3)/2)^2, a double root
+OK    [Case A] p = 1/2, y = sqrt(3)/2: u = e^{i pi/3}
+OK    [Case B] y = 0: kappa* = i (1 + 1/p)/(2 pi |Z*|^2), purely imaginary
+OK    [Case B] kappa* = 0 iff 1 + 1/p = 0 iff p = -1; then nu = 2p^2 + p = 1 and nu - 2p = 3, so (eq:limit) gives 3 sum a^2|Z|^2 = 0
+OK    [after the theorem] -gamma a + gamma^2 a^2 nu minus the harmonic value -gamma a/(1 + gamma a) = gamma^2 a^2 (nu - 1) + O(gamma^3)
+OK    [normalization] velocity of the reflected configuration (-Gamma, conj z) is conj of the velocity (three vortices, symbolic)
+      => conj(zdot) = kappa conj(z - z_c) becomes w-dot = conj(kappa)(w - w_c): Re kappa and |Im kappa|, hence P, are kept
+OK    [numerics] p = 1/2: y and 3/(4y) give the same arg(1 + 1/u), tan arg(1 + 1/u) = -y/(y^2 + 3/4)
+OK    [numerics]    d/dy [y/(y^2 + 3/4)] = (3/4 - y^2)/(y^2 + 3/4)^2: the two roots meet in a fold at y = sqrt(3)/2
+      => near the minimum the curve with fixed directions folds in Im u of a pair; part 3 parametrizes it by Im u of the
+         pair with the largest a, which is a coordinate there (and a negative control below shows the fold)
+OK    [numerics] one pair alone, to O(gamma): nu = 1 + gamma n1 = 1 - gamma a (the harmonic value), p = 1/2 + gamma p1 = 1/2 - gamma a (y^2 + 1/4)/2   [[{n1: -a, p1: -a*y**2/2 - a/8}]]
+OK    [numerics] Q(0, y) = -16(4y - 3), and the root of Q(mu, .) that tends to 3/4 gives P_-(mu) = sqrt3/2 + (3 sqrt3/4) mu^2 (1 - mu) + O(mu^4)
+2. gamma_0 = c^3/(8m) and the explicit bounds of Steps 1-3
+OK    [Step 1] |d_j| <= gamma/c^2 <= c/8 at gamma = gamma_0, so |W_j| >= c - c/8 >= c/2
+OK    [Step 1] c - 2 gamma_0/c^2 >= c/2: vortices of different pairs are at least c/2 apart
+OK    [Step 1] m gamma_0 (1/c - c) <= m gamma_0/c <= 1/2: sum Gamma = 1 + gamma sum(a_j - b_j) lies in [1/2, 2]
+OK    [Step 1] gamma_0 <= c, so |sum Gamma z| <= m gamma (1/c^2 + gamma/c^3) <= 2 m gamma/c^2
+OK    [Step 1] |z_c| <= (2 m gamma/c^2)/(1/2) = 4 m gamma/c^2, which is c/2 at gamma = gamma_0, so |Z_j - z_c| >= c/2
+OK    [Step 2] 1/c + 1/c^3 + 4 m gamma_0/c^2 <= 3/c^3 (the right side of eq:pairZ)
+OK    [Step 2]    and (3/c^3)/(2 pi c/2) = 3/(pi c^4): |kappa| <= 3/(pi c^4)
+OK    [Step 3] gamma_0/c^3 <= 1/8, so |gamma a u^2/(1 + gamma a u)| <= gamma c^-5/(1 - gamma c^-3) <= 2 gamma/c^5
+OK    [Step 3] gamma_0 (2/c^5 + 8(m - 1)/c^7) <= c^-4: |rho_j| <= c^-4
+OK    [Step 3] |nu_j| <= |u|(2 pi |kappa| |Z|^2 |u| + |u| + |rho|) <= c^-2 (6 c^-8 + c^-2 + c^-4) <= 8 c^-10
+OK    [bound] |d_j| <= gamma/c^2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess 1.23e-32, rounding margin 1e-24]
+OK    [bound] |W_j| >= c/2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.153, rounding margin 1e-24]
+OK    [bound] distance between pairs >= c/2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.175, rounding margin 1e-24]
+OK    [bound] sum Gamma in [1/2, 2] on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.48, rounding margin 1e-24]
+OK    [bound] |sum Gamma z| <= 2 m gamma/c^2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.00815, rounding margin 1e-24]
+OK    [bound] |z_c| <= 4 m gamma/c^2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.0189, rounding margin 1e-24]
+OK    [bound] |Z_j - z_c| >= c/2 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.155, rounding margin 1e-24]
+OK    [bound] |gamma b_j/d_j| <= c^-3 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess 1.97e-31, rounding margin 1e-24]
+OK    [bound] |u_j| in [c^2, c^-2] on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess 1.97e-31, rounding margin 1e-24]
+OK    [bound] |f_l| <= 4 gamma/c^2 at the vortices of other pairs on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.00457, rounding margin 1e-24]
+OK    [bound] |f_l(W_j) - f_l(Z_j)| <= 8 gamma |d_j|/c^3 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -5.83e-7, rounding margin 1e-24]
+OK    [bound] right side of eq:pairZ <= 3/c^3 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -1.0, rounding margin 1e-24]
+OK    [bound] |kappa_j| <= 3/(pi c^4), kappa_j solving eq:pairZ at Z_j on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.636, rounding margin 1e-24]
+OK    [bound] |gamma a u^2/(1 + gamma a u)| <= 2 gamma/c^5 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.00444, rounding margin 1e-24]
+OK    [bound] |rho_j| <= gamma (2/c^5 + 8(m - 1)/c^7) on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.0175, rounding margin 1e-24]
+OK    [bound] |rho_j| <= c^-4 on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -0.857, rounding margin 1e-24]
+OK    [bound] |nu_j| <= 8 c^-10, nu_j solving eq:rel with kappa_j on 960 random configurations of the class (m = 1..4, c = 0.3, 0.6, 1, gamma = gamma_0, gamma_0/7)   [largest excess -5.01, rounding margin 1e-24]
+3. Exact self-similar collapses of 1 + 2m vortices, Newton at 50 digits (illustration, not part of the proof)
+   m = 1 (three vortices): a = ['1.0'], directions of the pairs ['0.0'] degrees
+      gamma = 1e-2: P_min = 0.866154011871157813067, (P_min - sqrt3/2)/gamma^2 = 1.2860809; 25 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50262, max |nu_j - 1|/gamma = 0.9901, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.012859
+         |z_c|/gamma^2 = 0.9924, max |rho_j|/gamma = 0.98977, max remainder of eq:rate/gamma = 0.99288, |left side of eq:imp|/gamma = 0.014554
+OK       every solve converged; Biot-Savart residual of all 3 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 9.94e-50, impulse 0.0, sum 4.57e-54]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.01563, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2743 <= 15.28, max |rho_j| = 0.0099 <= 0.64]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 0.00012861]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.9901]
+OK       equals P_-(gamma) of Theorem 1 (root of G on A_-, eq:Ptheta), and nu_1 = 1/(1 + gamma)   [difference -1.27e-47; nu_1 - 1/(1 + gamma) = -2.67e-51]
+      gamma = 1e-3: P_min = 0.8660267015238316285691, (P_min - sqrt3/2)/gamma^2 = 1.2977394; 28 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50025, max |nu_j - 1|/gamma = 0.999, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.0012977
+         |z_c|/gamma^2 = 0.99925, max |rho_j|/gamma = 0.999, max remainder of eq:rate/gamma = 0.99925, |left side of eq:imp|/gamma = 0.0014955
+OK       every solve converged; Biot-Savart residual of all 3 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 5.77e-49, impulse 2.61e-54, sum 5.76e-54]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.01563, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2755 <= 15.28, max |rho_j| = 0.000999 <= 0.064]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 1.2977e-6]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.999]
+OK       equals P_-(gamma) of Theorem 1 (root of G on A_-, eq:Ptheta), and nu_1 = 1/(1 + gamma)   [difference -1.61e-45; nu_1 - 1/(1 + gamma) = 6.07e-48]
+      gamma = 1e-4: P_min = 0.8660254167735206979071, (P_min - sqrt3/2)/gamma^2 = 1.2989082; 28 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50003, max |nu_j - 1|/gamma = 0.9999, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.00012989
+         |z_c|/gamma^2 = 0.99992, max |rho_j|/gamma = 0.9999, max remainder of eq:rate/gamma = 0.99993, |left side of eq:imp|/gamma = 0.00014996
+OK       every solve converged; Biot-Savart residual of all 3 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 2.49e-46, impulse 2.45e-54, sum 7.35e-54]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.01563, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2757 <= 15.28, max |rho_j| = 0.0001 <= 0.0064]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 1.2989e-8]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.9999]
+OK       equals P_-(gamma) of Theorem 1 (root of G on A_-, eq:Ptheta), and nu_1 = 1/(1 + gamma)   [difference 1.28e-43; nu_1 - 1/(1 + gamma) = 7.41e-46]
+   m = 3 symmetric: a = ['1.0', '1.0', '1.0'], directions of the pairs ['0.0', '120.0', '240.0'] degrees
+      gamma = 1e-2: P_min = 0.8661158943332906735731, (P_min - sqrt3/2)/gamma^2 = 0.90490549; 25 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50271, max |nu_j - 1|/gamma = 0.9998, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.0090465
+         |z_c|/gamma^2 = 1.0437e-49, max |rho_j|/gamma = 0.98153, max remainder of eq:rate/gamma = 0.99116, |left side of eq:imp|/gamma = 0.014207
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 3.66e-49, impulse 1.25e-52, sum 4.99e-52]
+OK       in (eq:class) with c = 1/2 (gamma > gamma_0 = 0.005208: the explicit bounds of the proof are not claimed at this gamma)
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 9.0491e-5]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.2451]
+OK       the rings of Proposition 3 with Gamma0 = 1/(gamma b), x = a/b: eq:circ0 holds, P_min = sqrt(D^2 - n^2)/(2n), cos(n theta) = b/a   [Gamma0 = 100.99990101; residual of eq:circ0 3.42e-48; P_min - formula 1.31e-48]
+      gamma = 1e-3: P_min = 0.8660263170072831088113, (P_min - sqrt3/2)/gamma^2 = 0.91322284; 28 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50025, max |nu_j - 1|/gamma = 1.0, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.00091322
+         |z_c|/gamma^2 = 0.0, max |rho_j|/gamma = 0.99817, max remainder of eq:rate/gamma = 0.99909, |left side of eq:imp|/gamma = 0.001492
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 1.28e-48, impulse 7.83e-54, sum 1.65e-53]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.005208, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2755 <= 15.28, max |rho_j| = 0.000998 <= 2.11]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 9.1322e-7]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.2495]
+OK       the rings of Proposition 3 with Gamma0 = 1/(gamma b), x = a/b: eq:circ0 holds, P_min = sqrt(D^2 - n^2)/(2n), cos(n theta) = b/a   [Gamma0 = 1000.999999; residual of eq:circ0 -1.09e-47; P_min - formula -4.72e-48]
+      gamma = 1e-4: P_min = 0.8660254129249036762889, (P_min - sqrt3/2)/gamma^2 = 0.9140465; 28 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.50003, max |nu_j - 1|/gamma = 1.0, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 9.1405e-5
+         |z_c|/gamma^2 = 1.6313e-47, max |rho_j|/gamma = 0.99982, max remainder of eq:rate/gamma = 0.99991, |left side of eq:imp|/gamma = 0.00014992
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 2.43e-46, impulse 6.85e-54, sum 2.36e-53]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.005208, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2757 <= 15.28, max |rho_j| = 0.0001 <= 0.211]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 9.1405e-9]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.25]
+OK       the rings of Proposition 3 with Gamma0 = 1/(gamma b), x = a/b: eq:circ0 holds, P_min = sqrt(D^2 - n^2)/(2n), cos(n theta) = b/a   [Gamma0 = 10001.0; residual of eq:circ0 1.58e-45; P_min - formula 7.45e-46]
+   m = 2 antipodal: a = ['1.0', '1.0'], directions of the pairs ['0.0', '180.0'] degrees
+      gamma = 1e-4: P_min = 0.8660254081141326502847, (P_min - sqrt3/2)/gamma^2 = 0.4329694; 28 solves
+         max |u_j - e^{i pi/3}|/gamma = 0.5, max |nu_j - 1|/gamma = 0.99995, max ||Z_j|/|Z_l| - 1|/gamma = 0.0, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 4.3297e-5
+         |z_c|/gamma^2 = 0.0, max |rho_j|/gamma = 0.99986, max remainder of eq:rate/gamma = 0.99991, |left side of eq:imp|/gamma = 9.9968e-5
+OK       every solve converged; Biot-Savart residual of all 5 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 1.73e-46, impulse 3.59e-54, sum 1.06e-53]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.007813, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2757 <= 15.28, max |rho_j| = 0.0001 <= 0.109]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 4.3297e-9]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 0.5]
+OK       the rings of Proposition 3 with Gamma0 = 1/(gamma b), x = a/b: eq:circ0 holds, P_min = sqrt(D^2 - n^2)/(2n), cos(n theta) = b/a   [Gamma0 = 10001.0; residual of eq:circ0 1.09e-45; P_min - formula 5.13e-46]
+   m = 3 asymmetric: a = ['1.0', '0.6', '1.5'], directions of the pairs ['0.0', '97.0', '221.0'] degrees; curve parametrized by y_3 = Im u_3, the four leading-order branches of pairs 1 and 2
+      gamma = 1e-2: P_min = 0.8662581474301139377907, (P_min - sqrt3/2)/gamma^2 = 2.3274365 (branches ==, =*, *=, **: 2.3323402, 2.3422465, 2.3274365, 2.3372496); 124 solves
+         max |u_j - e^{i pi/3}|/gamma = 2.0739, max |nu_j - 1|/gamma = 1.4737, max ||Z_j|/|Z_l| - 1|/gamma = 1.0218, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.023266
+         |z_c|/gamma^2 = 1.3067, max |rho_j|/gamma = 1.4708, max remainder of eq:rate/gamma = 1.4778, |left side of eq:imp|/gamma = 0.018384
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 1.26e-49, impulse 4.18e-53, sum 6.56e-53]
+OK       in (eq:class) with c = 1/2 (gamma > gamma_0 = 0.005208: the explicit bounds of the proof are not claimed at this gamma)
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 0.00023274]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 3.659]
+      gamma = 1e-3: P_min = 0.866027771450516525174, (P_min - sqrt3/2)/gamma^2 = 2.3676661 (branches ==, =*, *=, **: 2.3681812, 2.3691798, 2.3676661, 2.3686637); 112 solves
+         max |u_j - e^{i pi/3}|/gamma = 2.0962, max |nu_j - 1|/gamma = 1.4973, max ||Z_j|/|Z_l| - 1|/gamma = 1.0317, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.0023677
+         |z_c|/gamma^2 = 1.3389, max |rho_j|/gamma = 1.4971, max remainder of eq:rate/gamma = 1.4976, |left side of eq:imp|/gamma = 0.0020492
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 1.99e-48, impulse 7.83e-54, sum 8.62e-54]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.005208, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2759 <= 15.28, max |rho_j| = 0.0015 <= 2.11]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 2.3677e-6]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 3.873]
+      gamma = 1e-4: P_min = 0.8660254275017103035738, (P_min - sqrt3/2)/gamma^2 = 2.3717272 (branches ==, =*, *=, **: 2.3717789, 2.3718789, 2.3717272, 2.3718271); 112 solves
+         max |u_j - e^{i pi/3}|/gamma = 2.0984, max |nu_j - 1|/gamma = 1.4997, max ||Z_j|/|Z_l| - 1|/gamma = 1.0327, max |P - (y_j^2 + 3/4)/(2y_j)|/gamma = 0.00023717
+         |z_c|/gamma^2 = 1.3421, max |rho_j|/gamma = 1.4997, max remainder of eq:rate/gamma = 1.4998, |left side of eq:imp|/gamma = 0.00020712
+OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; angular impulse and sum_{i<k} Gamma_i Gamma_k < 1e-40   [residual 1.61e-47, impulse 3.26e-55, sum 5.76e-55]
+OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.005208, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2757 <= 15.28, max |rho_j| = 0.00015 <= 0.211]
+OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 2.3717e-8]
+OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 3.895]
+OK    m = 1 (three vortices): P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 1 (three vortices): |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
+OK    m = 1 (three vortices): |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 0.9924, 0.9992, 0.9999; largest of the others 0.9929, 0.9993, 0.9999]
+OK    m = 3 symmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 3 symmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
+OK    m = 3 symmetric: |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 1.044e-49, 0.0, 1.631e-47; largest of the others 0.9912, 0.9991, 0.9999]
+OK    m = 3 asymmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 3 asymmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
+OK    m = 3 asymmetric: |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 1.307, 1.339, 1.342; largest of the others 1.478, 1.498, 1.5]
+OK    m = 1: (P_min - sqrt3/2)/gamma^2 agrees with the expansion (3 sqrt3/4)(1 - gamma) of part 1 to O(gamma^2)   [1.2860809, 1.2977394, 1.2989082; 3 sqrt3/4 = 1.2990381]
+OK    m = 3 symmetric: (P_min - sqrt3/2)/gamma^2 increases to sqrt3 (1 + 2*3^2)/36 = 19 sqrt3/36 (Proposition 3), the gap shrinking like gamma   [0.90490549, 0.91322284, 0.9140465; 19 sqrt3/36 = 0.91413793]
+OK    m = 2 antipodal, gamma = 1e-4: (P_min - sqrt3/2)/gamma^2 is near sqrt3 (1 + 2*2^2)/36 = sqrt3/4 (Proposition 3)   [0.4329694; sqrt3/4 = 0.4330127]
+OK    m = 3 asymmetric: (P_min - sqrt3/2)/gamma^2 settles (numerical evidence of a gamma^2 rate, not proved)   [2.327436, 2.367666, 2.371727]
+OK    (Gamma, z) -> (-Gamma, conj z) on the asymmetric m = 3 solution at gamma = 1e-2: again self-similar, kappa -> conj(kappa), same P   [residual 2.15e-49, |kappa' - conj(kappa)| = 2.5e-50]
+4. The families of Corollary 1 and Proposition 3 satisfy (eq:class) near their minima
+      sharpness sequence sin(theta) = -sqrt(3) mu/2, mu = 1e-2: u_1 - e^{i pi/3} = (-0.004988 - 0.004255j), P - sqrt3/2 = 0.0001383, residual 1.2e-51
+      sharpness sequence sin(theta) = -sqrt(3) mu/2, mu = 1e-3: u_1 - e^{i pi/3} = (-0.0004999 - 0.0004323j), P - sqrt3/2 = 1.405e-6, residual 3.83e-51
+      sharpness sequence sin(theta) = -sqrt(3) mu/2, mu = 1e-4: u_1 - e^{i pi/3} = (-5.0e-5 - 4.329e-5j), P - sqrt3/2 = 1.407e-8, residual 3.83e-51
+      sharpness sequence sin(theta) = -sqrt(3) mu/2, mu = 1e-6: u_1 - e^{i pi/3} = (-5.0e-7 - 4.33e-7j), P - sqrt3/2 = 1.407e-12, residual 1.71e-51
+      arc minimizer on A_-, mu = 1e-2: u_1 - e^{i pi/3} = (-0.005023 - 0.0001718j), P - sqrt3/2 = 0.0001286, residual 2.41e-51
+      arc minimizer on A_-, mu = 1e-3: u_1 - e^{i pi/3} = (-0.0005002 - 1.731e-6j), P - sqrt3/2 = 1.298e-6, residual 3.43e-51
+      arc minimizer on A_-, mu = 1e-4: u_1 - e^{i pi/3} = (-5.0e-5 - 1.732e-8j), P - sqrt3/2 = 1.299e-8, residual 2.42e-51
+      arc minimizer on A_-, mu = 1e-6: u_1 - e^{i pi/3} = (-5.0e-7 - 1.732e-12j), P - sqrt3/2 = 1.299e-12, residual 1.71e-51
+OK    three vortices (m = 1, gamma = mu, a = 1, b = 1/(1 + mu), Z = z_2 - z_1, W = z_3 - z_1): self-similar by Biot-Savart, in the class with c = 1/2, nu_1 = 1/(1 + mu), |Z_1| = sqrt(R)/(1 + mu); at the arc minimizer P = P_-(mu) to 1e-35
+OK       and u_1 -> e^{i pi/3}, P -> sqrt(3)/2 along both sequences (|u_1 - e^{i pi/3}| < 2 mu, 0 < P - sqrt3/2 < 2 mu)
+      n = 2, Gamma0 = 1e2: max|u_j - e^{i pi/3}| = 0.005051, nu - 1 = -0.01005, theta/t - sqrt3 = -0.000102, P - sqrt3/2 = 4.373e-5, residual 2.31e-50, gamma > gamma_0
+      n = 2, Gamma0 = 1e3: max|u_j - e^{i pi/3}| = 0.0005005, nu - 1 = -0.001, theta/t - sqrt3 = -1.011e-6, P - sqrt3/2 = 4.334e-7, residual 2.39e-49, gamma <= gamma_0
+      n = 2, Gamma0 = 1e4: max|u_j - e^{i pi/3}| = 5.001e-5, nu - 1 = -0.0001, theta/t - sqrt3 = -1.01e-8, P - sqrt3/2 = 4.331e-9, residual 2.69e-48, gamma <= gamma_0
+      n = 2, Gamma0 = 1e6: max|u_j - e^{i pi/3}| = 5.0e-7, nu - 1 = -1.0e-6, theta/t - sqrt3 = -1.01e-12, P - sqrt3/2 = 4.33e-13, residual 7.79e-47, gamma <= gamma_0
+      n = 7, Gamma0 = 1e2: max|u_j - e^{i pi/3}| = 0.005242, nu - 1 = -0.0103, theta/t - sqrt3 = -0.001194, P - sqrt3/2 = 0.0004808, residual 3.9e-50, gamma > gamma_0
+      n = 7, Gamma0 = 1e3: max|u_j - e^{i pi/3}| = 0.0005018, nu - 1 = -0.001003, theta/t - sqrt3 = -1.185e-5, P - sqrt3/2 = 4.768e-6, residual 4.73e-49, gamma <= gamma_0
+      n = 7, Gamma0 = 1e4: max|u_j - e^{i pi/3}| = 5.002e-5, nu - 1 = -0.0001, theta/t - sqrt3 = -1.184e-7, P - sqrt3/2 = 4.764e-8, residual 3.43e-48, gamma <= gamma_0
+      n = 7, Gamma0 = 1e6: max|u_j - e^{i pi/3}| = 5.0e-7, nu - 1 = -1.0e-6, theta/t - sqrt3 = -1.184e-11, P - sqrt3/2 = 4.763e-12, residual 4.23e-46, gamma <= gamma_0
+OK    rings, n = 2, 3, 5, 7, Gamma0 = 1e2..1e6, minimizing theta (m = n, gamma = 1/Gamma0, a = x, b = 1, Z_j = e^{2 pi i j/n}): self-similar by Biot-Savart (all 2n + 1 vortices), P = Proposition 3 minimum, nu_j = (x - 1) Gamma0/x^2, in the class with c = min(1/2, 2 sin(pi/n))
+OK       and u_j -> e^{i pi/3}, nu_j -> 1, theta/t -> sqrt(3), P -> sqrt(3)/2 (each deviation < 10/Gamma0)
+5. Negative controls (each must fail as described)
+OK    "P >= sqrt(3)/2 for every self-similar collapse" is false: the seven-vortex collapse of Demina and Kudryashov is self-similar (all 7 vortices, zero impulse) with P = 12433/(1240 sqrt 155) < sqrt(3)/2   [P = 0.805356928729, residual 3.65e-51]
+OK       it is not of the form of Theorem 3 for any c and gamma: its six weaker vortices are 4 positive and 2 negative, not m opposite pairs
+OK       its other circulations are 0.33, 0.35, 0.49 times the central one (no dominant vortex), far above gamma_0/c = c^2/(8m) <= 1/24 (m = 3), the largest weak/strong ratio covered by the explicit bounds of the proof
+OK       and its nearest opposite-sign neighbours are separated by 0.38 times their distance from the center (not tight; in the class with gamma <= gamma_0 this is at most gamma_0/c <= 1/24)
+OK    asymmetric m = 3, gamma = 1e-3, parametrized by Im u_1 = sqrt(3)/2 (the fold of part 1): Newton does not converge and the residual test rejects the point   [scaled residual 5.83e-6, Biot-Savart residual 2.09e-6]
+OK    m = 3, gamma = 1e-2: Newton stopped after 2 iterations from the leading-order guess is rejected by the residual test   [Biot-Savart residual 1.61e-5]
+OK    a converged solution (asymmetric m = 3, gamma = 1e-3) with Re u_1 moved by 1e-20 fails the residual test   [Biot-Savart residual 5.79e-21]
+OK    the limit rate kappa* = i conj(1 + 1/u)/(2 pi |Z|^2) with u = 1/2 + iy is not a collapse at y = 0 (Re kappa* = 0) or y = -1/2 (Re kappa* > 0), and is one at y = sqrt(3)/2
+OK    without the angular impulse Case B is not excluded: u = -1, nu = 1 solves the first two limit equations (eq:limit) with kappa* = 0
+OK    "P_min > sqrt(3)/2 + 1e-7" is false at gamma = 1e-4 for m = 1, symmetric and asymmetric m = 3: the constant is sharp
+OK    "u_j = e^{i pi/3} exactly" is false at gamma = 1e-2 (the theorem is asymptotic)
+
+143 checks, runtime 25 s
+all checks passed

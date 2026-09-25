@@ -74,8 +74,12 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
    branch and deleting or moving tags. A monthly run renews the lock. You can still edit the
    companion yourself (below).
 3. On Zenodo's GitHub page, switch the companion **on**.
-4. Actions, **publish papers**, Run workflow, with the paper id and a release tag such as `v1.0.0`.
-   Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+4. Write the release notes in `papers/<id>/RELEASES.md` under `## v1.0.0` (a date may follow the
+   tag): what the paper shows, how it was checked, the files, how to reproduce, the licenses. Merge.
+   Then Actions, **publish papers**, Run workflow, with the paper id and the release tag. The run
+   refuses a tag without notes before it publishes anything. Run again with an existing tag to bring
+   that release's notes up to date; the tag and its files never change, and Zenodo keeps the
+   description it archived. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
    it names exactly the programs you used; the concept DOI always points to the newest release.
 5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
    source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;

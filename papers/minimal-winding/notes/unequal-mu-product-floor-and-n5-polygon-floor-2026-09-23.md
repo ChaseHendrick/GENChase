@@ -1,6 +1,6 @@
 # Minimal winding in self-similar point-vortex collapse: companion note
 
-This is the repository's working note for the paper *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* (Chase Hendrick). The paper is the reviewed version and is meant to be posted as its first public version (v1). This note keeps what the paper leaves out: how the results were found, what was corrected on the way, what the verification covers, and what is still open before submission.
+This is the repository's working note for the paper *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* (Chase Hendrick), titled *Minimal Winding in the Self-Similar Collapse of Point Vortices* since the alpha-model draft was merged into it (2026-09-25). The paper is the reviewed version and is meant to be posted as its first public version (v1). This note keeps what the paper leaves out: how the results were found, what was corrected on the way, what the verification covers, and what is still open before submission.
 
 - Paper source: [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) (LaTeX, the manuscript), with a Typst copy of the same text, [`../paper/minimal-winding.typ`](../paper/minimal-winding.typ); keep the two in step
 - Paper PDF: [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf), the LaTeX build, which `sh tools/paper-build.sh minimal-winding` remakes

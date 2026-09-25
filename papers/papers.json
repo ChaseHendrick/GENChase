@@ -12,10 +12,10 @@
   "papers": [
     {
       "id": "minimal-winding",
-      "title": "Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons",
+      "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
       "status": "ready",
-      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md).",
-      "typst": "papers/minimal-winding/paper/minimal-winding.typ",
+      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge); the paper will cite the version DOI of the next release.",
+      "typst": null,
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
       "companion": "ChaseHendrick/minimal-winding",
@@ -29,31 +29,6 @@
       "journal": {
         "name": "Regular and Chaotic Dynamics",
         "coverLetter": "papers/minimal-winding/submission/cover-letter-rcd.md",
-        "submitted": null,
-        "doi": null
-      },
-      "codeDoi": null,
-      "commitments": []
-    },
-    {
-      "id": "alpha-winding",
-      "title": "A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models",
-      "status": "draft",
-      "note": "Not peer reviewed and not cleared for submission (CHANGELOG.md). Before it can go public, the checks it cites in research/generalizations-2026-09-24/ must move into its code/ and data/ folders (node tools/paper-sync.js --check alpha-winding).",
-      "typst": "papers/alpha-winding/paper/alpha-winding.typ",
-      "latex": "papers/alpha-winding/paper/alpha-winding.tex",
-      "pdf": "papers/alpha-winding/paper/alpha-winding.pdf",
-      "companion": "ChaseHendrick/alpha-winding",
-      "textLicense": "all-rights-reserved",
-      "arxiv": {
-        "category": "physics.flu-dyn",
-        "crossLists": [],
-        "metadata": null,
-        "id": null
-      },
-      "journal": {
-        "name": null,
-        "coverLetter": null,
         "submitted": null,
         "doi": null
       },
