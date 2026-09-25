@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Checks of Proposition 3 and Remark 4 of the manuscript (paper/minimal-winding.tex): two concentric
+"""Checks of Proposition 3 of the manuscript (paper/minimal-winding.tex), and of the leading-order relations
+used in Step 5 of the proof of Theorem 2. Proposition 3 concerns two concentric
 regular n-gons, n vortices of circulation x at radius 1 and n of circulation -1 at radius sqrt(x),
 relative rotation theta, and a vortex of circulation Gamma0 at the center.
 
@@ -24,7 +25,7 @@ relative rotation theta, and a vortex of circulation Gamma0 at the center.
   2. Every identity in the proof: a^2 - b^2 = D^2 - n^2, D > 2n, D increasing, Gamma0 decreasing in t;
      and, as a second certificate of D > 2n for n = 2..7, a polynomial with nonnegative coefficients.
   3. The expansion of the minimum as Gamma0 -> infinity, exactly and numerically.
-  4. The leading-order calculation of Remark 4 (strong vortex, weak tight pairs), and its two limits.
+  4. The leading-order relations used in Step 5 of Theorem 2 (strong vortex, weak tight pairs), and their limits along the two families.
   5. Biot-Savart velocities of all 2n + 1 vortices at 50 digits against the closed forms, both roots.
   6. Numerical minimization over theta from the Biot-Savart velocities at 30 digits.
   7. Negative controls: checks that must fail do fail.
@@ -223,8 +224,8 @@ for l in lines:
 check('the remainder of the expansion, divided by h^4, stays bounded (n = 2, 3, 5; Gamma0 = +-1e3..1e5; both roots)', worst < 20,
       'max %s' % mp.nstr(worst, 4))
 
-# ============================================================================ 4. Remark 4, leading order
-print('4. Remark 4: strong vortex 1 at 0, weak pairs eps g at Z and -eps g + eps^2 sigma at Z(1 + eps g u); leading order')
+# ============================================================================ 4. Theorem 2, leading order
+print('4. Theorem 2, Step 5: strong vortex 1 at 0, weak pairs eps g at Z and -eps g + eps^2 sigma at Z(1 + eps g u); leading order')
 p, y, s = sp.symbols('p y s', real=True)
 u = p + sp.I*y; ub = p - sp.I*y
 # with Z = 1: 2 pi i conj(zdot) of the + member = 1 + 1/u + O(eps); the relative motion d(eps g u) / dt = kappa eps g u at O(eps)

@@ -5,8 +5,17 @@ has not been peer reviewed.
 
 ## Unreleased
 
-Changes since v1.0.0, to appear in the next release:
+Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 20 pages):
 
+- **Why the same constant appears twice** (Theorem 2). A strong vortex carrying any number of weak, tight
+  pairs of opposite sign has P ≥ √3/2 − o(1) as the pairs weaken, and P comes close to √3/2 only when every
+  pair is tilted at 60° to the direction away from the strong vortex and all pairs are at the same
+  distance. This is an asymptotic statement, not a bound at fixed strength. It explains why √3/2 is the
+  limit both for three vortices and for the rings with a central vortex; it credits Krishnamurthy and
+  Stremler (2018), who describe the one-pair picture without the rotation.
+- **A comparison with gravity**, in the Discussion: a Newtonian collapse that keeps its shape needs zero
+  angular momentum and then falls straight in (Wintner 1941), whereas three vortices, and the ring
+  configurations, cannot collapse without turning.
 - **Two concentric vortex polygons with a vortex at their common center** (Proposition 3). For every
   n ≥ 2 and every circulation of the central vortex, P > √3/2, and no larger constant holds for all of
   them: the minimum over the relative rotation decreases to √3/2 as the central circulation grows, with

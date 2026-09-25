@@ -102,7 +102,7 @@ def spiral(z0, P, shrink=100.0, m=1200):
 
 cases = [(0.5, r'(a) $\mu = 1/2$', [r'$\Gamma_1 = 1$', r'$\Gamma_2 = 1/2$', r'$\Gamma_3 = -1/3$'],
           [(0.02, 0.21, 'left'), (0.80, -0.33, 'left'), (1.05, -0.07, 'left')]),
-         (0.05, r'(b) $\mu = 0.05$', [r'$\Gamma_1 = 1$', r'$\Gamma_2 = 0.05$', r'$\Gamma_3 = -0.048$'],
+         (0.05, r'(b) $\mu = 0.05$', [r'$\Gamma_1 = 1$', r'$\Gamma_2 = 0.05$', r'$\Gamma_3 = -1/21$'],
           [(0.0, -0.17, 'center'), (0.93, -0.15, 'left'), (1.05, 0.08, 'left')])]
 styles = [dict(color='black', lw=0.9), dict(color='0.55', lw=0.9), dict(color='black', lw=0.9, ls=(0, (3.5, 2)))]
 fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.9))

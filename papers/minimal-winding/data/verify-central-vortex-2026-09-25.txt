@@ -72,7 +72,7 @@ OK    with h = 1/(Gamma0 - 1/2): t = h/2 + O(h^3) and min = sqrt(3)/2 + sqrt(3)(
       n=5 Gamma0=-1e3: (min - sqrt3/2 - k2 h^2)/h^4 = -9.10294
       n=5 Gamma0=-1e5: (min - sqrt3/2 - k2 h^2)/h^4 = -9.09813
 OK    the remainder of the expansion, divided by h^4, stays bounded (n = 2, 3, 5; Gamma0 = +-1e3..1e5; both roots)   [max 9.103]
-4. Remark 4: strong vortex 1 at 0, weak pairs eps g at Z and -eps g + eps^2 sigma at Z(1 + eps g u); leading order
+4. Theorem 2, Step 5: strong vortex 1 at 0, weak pairs eps g at Z and -eps g + eps^2 sigma at Z(1 + eps g u); leading order
 OK    relative motion, times u: 2p^2 + p - s + i y(2p - 1) = 0
       => for y != 0: p = 1/2 and s = 1, i.e. u = 1/2 + iy and the second circulation is -eps g + eps^2 g^2
 OK    -eps g + eps^2 g^2 agrees with the three-vortex harmonic value -eps g/(1 + eps g) to O(eps^3)
