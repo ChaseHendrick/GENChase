@@ -161,7 +161,8 @@ polygon module and its broken control, successive recipe defaults, fixed RNG out
 invalid inputs, stale-data clearing, snapshot isolation, safe text rendering,
 shared print/colophon preferences across tabs, and text controls: validation, commit
 of valid text only, the hash round trip, fallback for bad link values, markup shown as
-text, Flow Field's custom field and Attractors' custom-ODE divergence guard. CI also retains saved-recipe, lazy-load,
+text, Flow Field's custom field, Attractors' custom-ODE divergence guard, and the Turing tab's custom reaction
+(its step ceiling on the status line, a constant GLSL cannot hold refused, a non-finite field stopped). CI also retains saved-recipe, lazy-load,
 loading failure/retry, UI, print and all scientific checks.
 
 ## Caption editing on desktop and mobile

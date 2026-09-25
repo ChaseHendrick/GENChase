@@ -257,13 +257,23 @@ void main(){
 
   // Per block: the min and the max of the view scalar over an 8x8 sample, each packed into 16 bits
   // over [-16, 16]. The CPU takes percentiles of the block extremes to set the black and white points.
+  // A typed reaction can leave that range, so its variant (WIDE_SPAN) packs over [-u_span, u_span], a power
+  // of two read from the field; every other plate compiles the fixed range exactly as before.
   const REDUCE_FS = `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
 ${FIELD_GLSL}
 uniform vec2 u_block;
+#ifdef WIDE_SPAN
+uniform float u_span;
+#define SPAN u_span
+#define SPAN2 (2.0 * u_span)
+#else
+#define SPAN 16.0
+#define SPAN2 32.0
+#endif
 vec2 enc(float v){
-  float x = clamp((v + 16.0) / 32.0, 0.0, 1.0) * 65535.0;
+  float x = clamp((v + SPAN) / SPAN2, 0.0, 1.0) * 65535.0;
   float hi = floor(x / 256.0);
   return vec2(hi, x - hi * 256.0) / 255.0;
 }
@@ -276,6 +286,32 @@ void main(){
     lo = min(lo, v); hi = max(hi, v);
   }
   outColor = vec4(enc(lo), enc(hi));
+}`;
+
+  // Typed reaction terms (a tab's spec.custom) have no step bound known in advance, so the field is sampled
+  // every CUSTOM_EVERY steps: one texel per block of a SAMPLES x SAMPLES partition of the grid, holding the
+  // block's center (u, v) and the (u, v) of its largest |u| + |v| cell, or, when any cell of the block is
+  // not finite or past 1e30, that value and a sentinel that is past 1e30 in float32 and infinite in float16.
+  const CUSTOM_EVERY = 50, SAMPLES = 32;
+  const SAMPLE_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_s; uniform vec2 u_res;
+${BASE_GLSL}
+bool bad(vec2 x){ return any(isnan(x)) || any(isinf(x)) || !all(lessThan(abs(x), vec2(1.0e30))); }
+void main(){
+  ivec2 res = ivec2(u_res), o = ivec2(gl_FragCoord.xy);
+  ivec2 lo = o * res / ${SAMPLES}, hi = (o + 1) * res / ${SAMPLES};
+  vec2 mid = ABS4(texelFetch(u_s, (lo + hi) / 2, 0)).xy, big = mid, flag = vec2(0.0);
+  float top = -1.0;
+  bool found = false;
+  for (int y = lo.y; y < hi.y; y++) for (int x = lo.x; x < hi.x; x++) {
+    vec2 q = ABS4(texelFetch(u_s, ivec2(x, y), 0)).xy;
+    if (bad(q)) { found = true; flag = q; }
+    float m = abs(q.x) + abs(q.y);
+    if (m > top) { top = m; big = q; }
+  }
+  outColor = found ? vec4(flag, 1.0e35, 1.0e35) : vec4(mid, big);
 }`;
 
   function hexToRgb01(hex) {
@@ -328,6 +364,13 @@ void main(){
       const mins = new Float32Array(RED * RED), maxs = new Float32Array(RED * RED);
       let reduceT = null, pbo = null, fence = null, raf = 0, chunkTimer = 0, stepCount = 0, nOff = 0;
       let mlo = 0, mhi = 1, measView = '', measStep = -1, measOK = false, dtEff = 0, lastPaint = 0;
+      // Typed reaction terms (spec.custom): their step shader and its source key, the latest step ceiling
+      // from a sample of the field, the parameters and step it was taken at, the model time, and why the
+      // plate stopped. Built lazily, so a tab that never enters the mode compiles nothing more.
+      const cust = { pass: null, key: null, bound: null, boundKey: '', at: -1, halt: null, time: 0 };
+      let samplePass = null, sampleT = null, wideReduce = null, span = 16, measSpan = 16;
+      const typed = s => !!(spec.custom && spec.custom.active(s));
+      const halted = s => typed(s) && !!cust.halt;
 
       function sizeOf(s) {
         const n = Number(s.grid) || 192;
@@ -364,18 +407,55 @@ void main(){
         if (ramp) ramp.dispose();
         ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
+      // The typed reaction's step shader, rebuilt when the text changes. Its source is spec.custom.stepFS,
+      // which writes the formulas only through U.expr.toGLSL.
+      function customPass(s) {
+        const key = spec.custom.key(s);
+        if (cust.key !== key) {
+          if (cust.pass) gl.deleteProgram(cust.pass.prog);
+          cust.pass = null; cust.key = key;
+          try { cust.pass = new G.Pass(gl, src(spec.custom.stepFS(s))); } catch (err) { console.error(err); }
+        }
+        if (!cust.pass && !cust.halt) cust.halt = { why: 'compile', step: stepCount };
+        return cust.pass;
+      }
+      // Sample the field (SAMPLE_FS), read the small target back and let the tab turn the samples into a step
+      // ceiling, or into a reason to stop. It runs at fixed step counts and whenever a parameter it depends on
+      // changes, never on a clock, so a recipe reprints whatever the chunking. The read-back is synchronous.
+      function estimate(s, k) {
+        cust.at = k; cust.boundKey = spec.custom.boundKey(s);
+        try {
+          if (!samplePass) samplePass = new G.Pass(gl, src(SAMPLE_FS));
+          if (!sampleT) sampleT = new G.Target(gl, SAMPLES, SAMPLES, { type: texType, filter: 'nearest' });
+        } catch (err) { console.error(err); cust.halt = { why: 'compile', step: k }; return false; }
+        samplePass.draw(sampleT, { u_s: C.read, u_res: [gw, gh], u_base: base });
+        cust.bound = spec.custom.bound(s, G.readTarget(sampleT));
+        span = cust.bound.span;
+        if (cust.bound.halt) { cust.halt = { why: cust.bound.halt, step: k }; return false; }
+        return true;
+      }
       function step(n) {
         const s = host.getState();
         const c = Number(s.scale) || 1;
-        dtEff = Math.min(s.dt, spec.dtMax(s));
+        const own = typed(s);
+        let pass = stepPass;
+        if (own) { if (cust.halt || !(pass = customPass(s))) return; }
+        else cust.boundKey = '';
+        dtEff = Math.min(s.dt, own && cust.bound ? cust.bound.ceiling : spec.dtMax(s));
         const uni = Object.assign({
           u_res: [gw, gh], u_dt: dtEff, u_c: c, u_c2: c * c, u_noise: s.noise || 0, u_nOff: nOff,
           u_lap9: { int: Number(s.lap) === 9 ? 1 : 0 }, u_base: base,
         }, spec.stepUniforms(s));
         for (let i = 0; i < n; i++) {
-          uni.u_s = C.read; uni.u_step = (stepCount + i) * 1.17;
-          stepPass.draw(C.write, uni);
+          const k = stepCount + i;
+          if (own && (cust.boundKey !== spec.custom.boundKey(s) || (k % CUSTOM_EVERY === 0 && cust.at !== k))) {
+            if (!estimate(s, k)) { stepCount = k; return; }
+            uni.u_dt = dtEff = Math.min(s.dt, cust.bound.ceiling);
+          }
+          uni.u_s = C.read; uni.u_step = k * 1.17;
+          pass.draw(C.write, uni);
           C.swap();
+          if (own) cust.time += dtEff;
         }
         stepCount += n;
       }
@@ -393,7 +473,16 @@ void main(){
       function measure() {
         if (fence) return;
         const s = host.getState();
-        reducePass.draw(reduceT, Object.assign(viewUniforms(s), { u_block: [gw / RED, gh / RED] }));
+        let pass = reducePass;
+        measSpan = 16;
+        if (typed(s)) {
+          if (!wideReduce) {
+            try { wideReduce = new G.Pass(gl, src(REDUCE_FS).replace('#version 300 es\n', '#version 300 es\n#define WIDE_SPAN 1\n')); }
+            catch (err) { console.error(err); wideReduce = reducePass; }
+          }
+          if (wideReduce !== reducePass) { pass = wideReduce; measSpan = span; }
+        }
+        pass.draw(reduceT, Object.assign(viewUniforms(s), { u_block: [gw / RED, gh / RED], u_span: measSpan }));
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, 0);
@@ -412,9 +501,10 @@ void main(){
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
         gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, redBuf);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+        const w2 = 2 * measSpan;     // 32 and 16 on every plate but a typed reaction's
         for (let i = 0; i < RED * RED; i++) {
-          mins[i] = ((redBuf[i * 4] * 256 + redBuf[i * 4 + 1]) / 65535) * 32 - 16;
-          maxs[i] = ((redBuf[i * 4 + 2] * 256 + redBuf[i * 4 + 3]) / 65535) * 32 - 16;
+          mins[i] = ((redBuf[i * 4] * 256 + redBuf[i * 4 + 1]) / 65535) * w2 - measSpan;
+          maxs[i] = ((redBuf[i * 4 + 2] * 256 + redBuf[i * 4 + 3]) / 65535) * w2 - measSpan;
         }
         mins.sort(); maxs.sort();
         const lo = mins[Math.floor(0.03 * (RED * RED - 1))];
@@ -452,7 +542,7 @@ void main(){
         const s = host.getState();
         host.setStatus(
           '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
-          spec.status(s, { lo: mlo, hi: mhi, dt: dtEff }) +
+          spec.status(s, { lo: mlo, hi: mhi, dt: dtEff, custom: typed(s) ? { bound: cust.bound, halt: cust.halt } : null }) +
           '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -462,6 +552,7 @@ void main(){
         raf = 0;
         const s = host.getState();
         step(s.steps);
+        if (halted(s)) { settle(() => { render(); status(); }); return; }
         if (fence) { if (collect()) status(); }
         else if (measView !== s.view || stepCount - measStep >= 24) measure();
         render();
@@ -470,7 +561,7 @@ void main(){
       function startLoop() {
         stop();
         const s = host.getState();
-        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        if (s.running && !host.reducedMotion() && !halted(s)) raf = requestAnimationFrame(frame);
         else settle(() => { render(); status(!s.running ? 'paused' : ''); });
       }
       // Run `total` steps in chunks sized to about 30 ms each, painting progress a few times a second
@@ -484,6 +575,7 @@ void main(){
           const n = Math.min(chunkN, left); left -= n;
           const t0 = performance.now();
           step(n);
+          if (halted(host.getState())) left = 0;
           const ms = Math.max(performance.now() - t0, 0.5);
           chunkN = Math.round(U.clamp(n * 30 / ms, 8, 128));
           if (fence) collect();
@@ -512,14 +604,24 @@ void main(){
           // nothing, because every read adds back the same values the upload took off.
           base = offset ? Array.from(Float32Array.from(spec.halfBase(s))) : [0, 0, 0, 0];
           upload(C.read, spec.seed(s, gw, gh));
-          settle(() => { render(); if (s.warmup > 0) burst(s.warmup); else { status(); startLoop(); } });
+          // A typed reaction starts over: its shader is compiled and the seeded field sampled for the first
+          // step ceiling before anything is drawn, so the first status already carries it.
+          Object.assign(cust, { bound: null, boundKey: '', at: -1, halt: null, time: 0 });
+          span = 16;
+          if (typed(s) && customPass(s)) estimate(s, 0);
+          settle(() => { render(); if (s.warmup > 0 && !halted(s)) burst(s.warmup); else { status(); startLoop(); } });
         },
         repaint() {
           if (!C) return;
           if (!raf && host.getState().view !== measView) settle(render);
           else render();
         },
-        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        live(key) {
+          // A typed reaction whose parameters moved gets a new ceiling at once, paused or not.
+          const s = host.getState();
+          if (C && typed(s) && !cust.halt && cust.boundKey !== spec.custom.boundKey(s)) estimate(s, stepCount);
+          if (key === 'running') startLoop(); else if (!raf) startLoop();
+        },
         resize() { if (C) render(); },
         pause() { stop(); },
         resume() { if (C) { render(); startLoop(); } },
@@ -547,11 +649,13 @@ void main(){
           return {
             arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' + (offset ? ', the stored deviations with the base state added back' : '') } },
             meta: { tab: spec.id, grid: [gw, gh], species: k, units: 'the model\'s dimensionless units on the step shader\'s lattice', boundary: 'periodic',
-              steps: stepCount, dt: s.dt, precision: texType, stateBase: offset ? base.slice(0, k) : null },
+              steps: stepCount, dt: s.dt, precision: texType, stateBase: offset ? base.slice(0, k) : null,
+              custom: typed(s) ? spec.custom.describe(s, { bound: cust.bound, halt: cust.halt, dt: dtEff, time: cust.time }) : undefined },
           };
         },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');
+          if (halted(host.getState())) throw new Error('the typed reaction stopped at step ' + cust.halt.step + '; change it or reseed before exporting');
           const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
           if (w > max || h > max) throw new Error('larger than this GPU allows (' + max + ' px)');
           const Tgt = new G.Target(gl, w, h, { type: 'rgba8' });
@@ -827,27 +931,214 @@ void main(){
     const lam = det > 0 ? TAU / Math.sqrt(Math.sqrt(det / (Du * Dv))) * (Number(s.scale) || 1) : 0;
     return { turing, hopf: tr > 0, lam, u0, v0 };
   }
+  /* Custom reaction: f(u, v) and g(u, v) typed by the viewer in u, v and the coefficients a, b, c, d, stepped as
+       u_t = D_u lap u + f,   v_t = D_v lap v + g
+     by forward Euler on this tab's stencils, without the clamps or the implicit loss terms of the built-in
+     kinetics, so a reaction that runs away is stopped and reported rather than held at a ceiling. The text is
+     parsed by the shared expression language (src/shared/expr.js): closures on the CPU for the uniform state and
+     the step ceiling, and U.expr.toGLSL for the step shader; nothing typed is evaluated as code. The default is
+     Schnakenberg's kinetics with this tab's constants written in, so a link that picks the mode and names
+     nothing else opens on the tab's own hexagonal spots. */
+  const REACT_SPEC = { vars: ['u', 'v'], params: ['a', 'b', 'c', 'd'] };
+  const REACT_GLSL = { rename: { a: 'p.x', b: 'p.y', c: 'p.z', d: 'p.w' } };
+  const REACT_DEFAULTS = { reactF: '0.1 - u + u^2*v', reactG: '0.9 - u^2*v' };
+  const isCustom = s => s.tmodel === 'custom';
+  // Text the step shader could not take (a constant outside the float range) is refused like a syntax error.
+  function reactionProblem(text) {
+    const p = U.expr.check(text, REACT_SPEC);
+    if (p) return p;
+    try { U.expr.toGLSL(text, REACT_SPEC, REACT_GLSL); return null; }
+    catch (err) { return { message: String(err.message), pos: Number.isInteger(err.pos) ? err.pos : 0 }; }
+  }
+  const reactText = (s, key) => reactionProblem(s[key]) ? REACT_DEFAULTS[key] : s[key];
+  // (u, v, out) -> out = [f, g], in double precision.
+  function reactionOf(s) {
+    const f = U.expr.compile(reactText(s, 'reactF'), REACT_SPEC), g = U.expr.compile(reactText(s, 'reactG'), REACT_SPEC);
+    const env = new Float64Array(6);
+    env[2] = s.pa; env[3] = s.pb; env[4] = s.pc; env[5] = s.pd;
+    return (u, v, out) => { env[0] = u; env[1] = v; out[0] = f(env); out[1] = g(env); return out; };
+  }
+  // Central-difference Jacobian [f_u, f_v, g_u, g_v] at (u, v); t is scratch.
+  function reactionJacobian(R, u, v, t) {
+    const hu = 1e-5 * Math.max(1, Math.abs(u)), hv = 1e-5 * Math.max(1, Math.abs(v));
+    R(u + hu, v, t); const fp = t[0], gp = t[1];
+    R(u - hu, v, t); const fu = (fp - t[0]) / (2 * hu), gu = (gp - t[1]) / (2 * hu);
+    R(u, v + hv, t); const fq = t[0], gq = t[1];
+    R(u, v - hv, t);
+    return [fu, (fq - t[0]) / (2 * hv), gu, (gq - t[1]) / (2 * hv)];
+  }
+  // Largest eigenvalue magnitude of a 2x2 matrix [a, b, c, d]; NaN where the reaction is undefined.
+  function spectralRadius(J) {
+    const tr = J[0] + J[3], det = J[0] * J[3] - J[1] * J[2], disc = tr * tr / 4 - det;
+    return disc >= 0 ? Math.abs(tr) / 2 + Math.sqrt(disc) : Math.sqrt(det);
+  }
+  // Newton's method for f = g = 0, the step capped at 1 + |(u, v)|; null unless it converges to a finite state.
+  function reactionRoot(R, u, v, t) {
+    for (let it = 0; it < 80; it++) {
+      R(u, v, t);
+      const f = t[0], g = t[1];
+      if (!Number.isFinite(f) || !Number.isFinite(g)) return null;
+      if (Math.abs(f) + Math.abs(g) < 1e-13 * (1 + Math.abs(u) + Math.abs(v))) return [u, v];
+      const [a, b, c, d] = reactionJacobian(R, u, v, t), det = a * d - b * c;
+      if (!Number.isFinite(det) || det === 0) return null;
+      let du = (b * g - d * f) / det, dv = (c * f - a * g) / det;
+      const lim = 1 + Math.hypot(u, v), len = Math.hypot(du, dv);
+      if (!Number.isFinite(len)) return null;
+      if (len > lim) { du *= lim / len; dv *= lim / len; }
+      u += du; v += dv;
+    }
+    R(u, v, t);
+    return Math.abs(t[0]) + Math.abs(t[1]) < 1e-9 * (1 + Math.abs(u) + Math.abs(v)) ? [u, v] : null;
+  }
+  // The uniform state the seeding perturbs: Newton's method from a fixed list of starts. A state that is stable
+  // without diffusion (trace < 0 < determinant, where a Turing instability can begin) wins, then any state with
+  // u, v >= 0, then any state. With none, the plate is seeded around u = v = 1 and the status line says so.
+  const REST_STARTS = [[1, 1], [0.5, 0.5], [2, 2], [1, 0.1], [0.1, 1], [0.2, 0.2], [5, 5], [3, 0.3], [0.3, 3], [10, 10], [0, 0]];
+  let restMemo = { key: null, rest: null };
+  function customRest(s) {
+    const key = [s.reactF, s.reactG, s.pa, s.pb, s.pc, s.pd].join('|');
+    if (restMemo.key === key) return restMemo.rest;
+    const R = reactionOf(s), t = [0, 0];
+    let best = null, rank = 0;
+    for (const [u0, v0] of REST_STARTS) {
+      const r = reactionRoot(R, u0, v0, t);
+      if (!r) continue;
+      const J = reactionJacobian(R, r[0], r[1], t), tr = J[0] + J[3], det = J[0] * J[3] - J[1] * J[2];
+      const nonneg = r[0] >= 0 && r[1] >= 0, k = nonneg && tr < 0 && det > 0 ? 3 : nonneg ? 2 : 1;
+      if (k > rank) { rank = k; best = r; }
+      if (k === 3) break;
+    }
+    const rest = best ? { u: best[0], v: best[1], found: true } : { u: 1, v: 1, found: false };
+    restMemo = { key, rest };
+    return rest;
+  }
+  // The step ceiling for a typed reaction, from the field samples (pairs u, v; see SAMPLE_FS). Diffusion: the
+  // stencil symbol reaches -Q at the grid scale (Q = 8 for the 5-point stencil, 16/3 for the 9-point), so
+  // lambda_D = Q c^2 max(D_u, D_v). Reaction: rho_J, the largest eigenvalue magnitude of the central-difference
+  // Jacobian of (f, g) over the samples. Forward Euler needs dt |mu| < 2 for a real negative mu; the ceiling adds
+  // the two magnitudes and keeps 0.8 of 2/(lambda_D + rho_J), the margin the other tabs use. It is an estimate,
+  // not a proof: when the Jacobian is not normal the eigenvalues of the sum are not bounded by the sum of the
+  // magnitudes, and forward Euler amplifies an eigenvalue on the imaginary axis at any step. A sample that is not
+  // finite, or past 1e30, stops the plate, and so does a ceiling below 1e-7 (a reaction too stiff for the step).
+  function customBound(s, px) {
+    const c = Number(s.scale) || 1, Q = Number(s.lap) === 9 ? 16 / 3 : 8;
+    const lamD = Q * c * c * Math.max(Number(s.Du) || 0, Number(s.Dv) || 0, 0);
+    const R = reactionOf(s), t = [0, 0];
+    let rho = 0, top = 0;
+    for (let i = 0; i + 1 < px.length; i += 2) {
+      const u = px[i], v = px[i + 1];
+      if (!(Math.abs(u) < 1e30 && Math.abs(v) < 1e30)) return { halt: 'nonfinite', lamD, rho, ceiling: 0, span: 16 };
+      top = Math.max(top, Math.abs(u), Math.abs(v));
+      const r = spectralRadius(reactionJacobian(R, u, v, t));
+      if (r > rho) rho = r;
+    }
+    const ceiling = 1.6 / Math.max(lamD + rho, 1e-12);
+    // the reduce pass's range: a power of two that holds u, v and u - v
+    const span = Math.max(16, Math.pow(2, Math.ceil(Math.log2(Math.max(2.5 * top, 1)))));
+    return { lamD, rho, ceiling, span, halt: ceiling >= 1e-7 ? null : 'stiff' };
+  }
+  // The step shader. f and g enter only as U.expr.toGLSL output, each inside its own function of (u, v, p) with
+  // a, b, c, d renamed to p.x, p.y, p.z, p.w. GLSL leaves pow, sqrt, log, asin and acos undefined outside their
+  // domains, including pow(x, y) for every x < 0, where Math.pow squares a negative number without complaint;
+  // a GPU may return NaN there or a finite number (SwiftShader returned a finite value for a negative base to
+  // the power 0.5). So the fixed shader text below routes those five through guarded versions (the #define
+  // lines rename the calls the emitter wrote; the formula text is not edited) that agree with JavaScript's
+  // Math: an integer power of a negative number keeps its sign, and a value Math makes NaN or infinite is NaN
+  // or infinite here too, so a reaction that leaves its domain stops the plate instead of running on another
+  // function. Division by zero and NaN inside min or max are left to the GPU.
+  function customStepFS(s) {
+    const f = U.expr.toGLSL(reactText(s, 'reactF'), REACT_SPEC, REACT_GLSL);
+    const g = U.expr.toGLSL(reactText(s, 'reactG'), REACT_SPEC, REACT_GLSL);
+    return STEP_HEAD + `
+uniform vec4 u_p; uniform float u_Du, u_Dv;
+#define NAN_ uintBitsToFloat(0x7fc00000u)
+#define INF_ uintBitsToFloat(0x7f800000u)
+float spow(float x, float y){
+  if (y == 0.0) return 1.0;
+  if (x > 0.0) return pow(x, y);
+  if (x == 0.0) return y > 0.0 ? 0.0 : INF_;
+  if (y != floor(y)) return NAN_;
+  float m = pow(-x, y);
+  return mod(y, 2.0) == 0.0 ? m : -m;
+}
+float ssqrt(float x){ return x >= 0.0 ? sqrt(x) : NAN_; }
+float slog(float x){ return x > 0.0 ? log(x) : (x == 0.0 ? -INF_ : NAN_); }
+float sasin(float x){ return abs(x) <= 1.0 ? asin(x) : NAN_; }
+float sacos(float x){ return abs(x) <= 1.0 ? acos(x) : NAN_; }
+#define pow(x, y) spow(x, y)
+#define sqrt(x) ssqrt(x)
+#define log(x) slog(x)
+#define asin(x) sasin(x)
+#define acos(x) sacos(x)
+float reactF(float u, float v, vec4 p){ return ${f}; }
+float reactG(float u, float v, vec4 p){ return ${g}; }
+void main(){
+  vec4 c = S(vec2(0.0)), e = S(vec2(1.0, 0.0)), w = S(vec2(-1.0, 0.0)), n = S(vec2(0.0, 1.0)), s = S(vec2(0.0, -1.0));
+  vec4 L = lapOf(c, e, w, n, s);
+  vec4 nz = noise4();
+  float u = c.r, v = c.g;
+  float du = u_Du * L.r + reactF(u, v, u_p), dv = u_Dv * L.g + reactG(u, v, u_p);
+  outColor = REL4(vec4(u + u_dt * du + nz.r, v + u_dt * dv + nz.g, 0.0, 1.0));
+}`;
+  }
+  // What a data export records about a typed reaction.
+  function customDescribe(s, x) {
+    const bd = x.bound, rest = customRest(s);
+    return {
+      note: 'user-defined reaction, not validated', f: s.reactF, g: s.reactG,
+      params: { a: s.pa, b: s.pb, c: s.pc, d: s.pd }, Du: s.Du, Dv: s.Dv,
+      scheme: 'forward Euler; dt = min(dt, 0.8 * 2 / (lambdaD + rhoJ)), rhoJ from a ' + SAMPLES + 'x' + SAMPLES + ' block sample every ' + CUSTOM_EVERY + ' steps',
+      uniformState: rest.found ? [rest.u, rest.v] : null, dtUsed: x.dt, time: x.time,
+      lambdaD: bd ? bd.lamD : null, rhoJ: bd ? bd.rho : null, ceiling: bd ? bd.ceiling : null,
+      stopped: x.halt ? { step: x.halt.step, why: x.halt.why } : null,
+    };
+  }
+  function customStatus(s, m) {
+    const x = m.custom || {}, bd = x.bound, halt = x.halt;
+    const head = '<span>Custom reaction · user-defined, not validated' +
+      (customRest(s).found ? '' : ' · no uniform state found, seeded near u = v = 1') + '</span>';
+    if (halt) {
+      const why = halt.why === 'compile' ? 'the step shader did not compile on this GPU'
+        : halt.why === 'stiff' ? 'the step ceiling fell below 1e-7' : 'the field was found non-finite';
+      return head + '<span>stopped at step ' + halt.step.toLocaleString() + ': ' + why + '; change the reaction or reseed</span>';
+    }
+    if (!bd) return head + '<span>dt <b>' + m.dt.toFixed(4) + '</b></span>';
+    const g3 = v => v >= 100 ? v.toFixed(0) : v.toPrecision(3);
+    return head + '<span>dt <b>' + m.dt.toFixed(4) + '</b> · ' + (s.dt > bd.ceiling ? 'clamped to' : 'under') +
+      ' 0.8 × 2/(λ<sub>D</sub> + ρ<sub>J</sub>) = ' + bd.ceiling.toPrecision(3) + ', λ<sub>D</sub> ' + g3(bd.lamD) + ', ρ<sub>J</sub> ' + g3(bd.rho) + '</span>';
+  }
   function turDtMax(s) {
     const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
+    // a typed reaction: the diffusion part here, and the reaction part from the field once it runs
+    if (isCustom(s)) return 1.6 / Math.max((lap9 ? 16 / 3 : 8) * c * c * Math.max(Number(s.Du) || 0, Number(s.Dv) || 0), 1e-12);
     const Dv = s.tmodel === 'le' ? s.lsig * s.D : s.D;
     const react = s.tmodel === 'le' ? 0.5 / Math.max(s.lsig * s.lb, 1) : s.tmodel === 'bruss' ? 0.5 / (s.bb + 1) : 0.25;
     return Math.min(dtDiff(Math.max(1, Dv), c, lap9), react);
   }
   function seedTuring(s, W, H) {
     const rng = U.makeRng(s.seed + '/turing');
-    const [u0, v0] = turRest(s);
+    const custom = isCustom(s), rest = custom ? customRest(s) : null;
+    const [u0, v0] = custom ? [rest.u, rest.v] : turRest(s);
+    // A typed reaction may rest at zero, where a relative perturbation vanishes, so its perturbation is scaled
+    // by |u0| and |v0| or by 0.1, whichever is larger. The draws are the same either way.
+    const su = Math.max(Math.abs(u0), 0.1), sv = Math.max(Math.abs(v0), 0.1);
     const data = blank(W, H, u0, v0);
     const amp = s.amp;
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const i = (y * W + x) * 4;
       let m = 1 + amp * (rng() * 2 - 1);
       if (s.init === 'band') m *= 1 + 0.35 * Math.sin((x / W) * TAU * 4 + 0.6 * Math.sin((y / H) * TAU));
+      if (custom) {
+        data[i] = u0 + su * (m - 1);
+        data[i + 1] = v0 + sv * amp * 0.5 * (rng() * 2 - 1);
+        continue;
+      }
       data[i] = u0 * m;
       data[i + 1] = v0 * (1 + amp * 0.5 * (rng() * 2 - 1));
     }
     if (s.init === 'spots') {
       const k = rng.int(5, 11);
-      for (let f = 0; f < k; f++) paintDisk(data, W, H, rng() * W, rng() * H, rng.range(2, 4) * Math.max(1, s.scale), 0, u0 * 2.2);
+      for (let f = 0; f < k; f++) paintDisk(data, W, H, rng() * W, rng() * H, rng.range(2, 4) * Math.max(1, s.scale), 0, custom ? u0 + 1.2 * su : u0 * 2.2);
     }
     return data;
   }
@@ -857,12 +1148,12 @@ void main(){
     subtitle: 'spots, stripes and hexagons from two chemicals · 1952',
     order: 62,
     equation: 'Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v',
-    credit: 'Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.',
-    blurb: 'Turing showed in 1952 that two chemicals that would settle to a dull uniform state on their own can break into a pattern when one of them diffuses much faster than the other: the fast inhibitor outruns the slow activator, so a rising bump starves its surroundings and the field organizes into spots or stripes with a wavelength the chemistry chooses. Four classic kinetics are here. Schnakenberg and the Brusselator are the textbook autocatalysts; the Brusselator is what Prigogine used to argue that chemistry can self-organize, and it is the one that most readily gives stripes, well above its threshold. Gierer-Meinhardt is the biology version, with a saturation term K that turns spots into stripes. Lengyel-Epstein is the kinetics of the reaction in which a Turing pattern was first photographed. The diffusion ratio D is the main dial: at large D the plate goes to spots, at moderate D to stripes and labyrinths. The status line reports the wavelength linear theory predicts, and whether the uniform state is inside the Turing band at all.',
+    credit: 'Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry. Typed reaction terms follow VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).',
+    blurb: 'Turing showed in 1952 that two chemicals that would settle to a dull uniform state on their own can break into a pattern when one of them diffuses much faster than the other: the fast inhibitor outruns the slow activator, so a rising bump starves its surroundings and the field organizes into spots or stripes with a wavelength the chemistry chooses. Four classic kinetics are here. Schnakenberg and the Brusselator are the textbook autocatalysts; the Brusselator is what Prigogine used to argue that chemistry can self-organize, and it is the one that most readily gives stripes, well above its threshold. Gierer-Meinhardt is the biology version, with a saturation term K that turns spots into stripes. Lengyel-Epstein is the kinetics of the reaction in which a Turing pattern was first photographed. The diffusion ratio D is the main dial: at large D the plate goes to spots, at moderate D to stripes and labyrinths. The status line reports the wavelength linear theory predicts, and whether the uniform state is inside the Turing band at all. Custom reaction lets you type the reaction terms f(u, v) and g(u, v) yourself, with the diffusion and the grid built in; it opens on Schnakenberg\'s kinetics written out, the time step is held under an explicit bound measured from the field as it runs, the equations travel in the link, and nothing checks a reaction you type against theory.',
     schema: GRID.concat([scaleField(0.3, 3, '0.6 to 1.5')]).concat([
       { group: 'Model', key: 'tmodel', label: 'Kinetics', type: 'seg', kind: LIVE, wrap: true,
-        options: [['schnak', 'Schnakenberg'], ['bruss', 'Brusselator'], ['gm', 'Gierer-Meinhardt'], ['le', 'Lengyel-Epstein']] },
-      RANGE('Model', 'D', 'Diffusion ratio D', LIVE, 1, 200, 0.5, f1, {
+        options: [['schnak', 'Schnakenberg'], ['bruss', 'Brusselator'], ['gm', 'Gierer-Meinhardt'], ['le', 'Lengyel-Epstein'], ['custom', 'Custom reaction']] },
+      RANGE('Model', 'D', 'Diffusion ratio D', LIVE, 1, 200, 0.5, f1, { dimUnless: s => !isCustom(s), activeOnly: true,
         hint: 'Inhibitor diffusion over activator diffusion. Every model needs D above a critical ratio before anything grows. Schnakenberg at D = 100 gives spots; the Brusselator patterns once b exceeds (1 + a/√D)², spots near that line and stripes well above it. Lengyel-Epstein: this is c, and σ multiplies it.' }),
       RANGE('Model', 'sa', 'a', LIVE, 0.01, 0.5, 0.005, f3, { dimUnless: s => s.tmodel === 'schnak' }),
       RANGE('Model', 'sb', 'b', LIVE, 0.3, 2, 0.01, f2, { dimUnless: s => s.tmodel === 'schnak' }),
@@ -878,6 +1169,16 @@ void main(){
       RANGE('Model', 'la', 'a', LIVE, 7, 20, 0.1, f1, { dimUnless: s => s.tmodel === 'le' }),
       RANGE('Model', 'lb', 'b', LIVE, 0.1, 1.5, 0.01, f2, { dimUnless: s => s.tmodel === 'le' }),
       RANGE('Model', 'lsig', 'σ', LIVE, 5, 60, 1, String, { dimUnless: s => s.tmodel === 'le' }),
+      { group: 'Model', key: 'reactF', label: 'f(u, v) =', type: 'text', kind: GEOM, maxLength: 256, validate: reactionProblem, dimUnless: isCustom, activeOnly: true },
+      { group: 'Model', key: 'reactG', label: 'g(u, v) =', type: 'text', kind: GEOM, maxLength: 256, validate: reactionProblem, dimUnless: isCustom, activeOnly: true,
+        hint: 'Custom reaction: ∂u/∂t = D_u∇²u + f(u, v) and ∂v/∂t = D_v∇²v + g(u, v), with f and g typed in u, v and the coefficients a, b, c, d below. It opens on Schnakenberg written out, 0.1 - u + u^2*v and 0.9 - u^2*v; type a and b in place of 0.1 and 0.9 to move them with the sliders. Operators + - * / ^, functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. The plate is seeded around a uniform state found by Newton\'s method. The step is forward Euler, held under 0.8 of 2/(λ_D + ρ_J): λ_D = Q c² max(D_u, D_v) from the stencil (Q = 8, or 16/3 for the 9-point), ρ_J the largest Jacobian eigenvalue magnitude over a sample of the field, measured again every 50 steps. That ceiling is an estimate, not a proof. A field that becomes non-finite stops the plate, and so does a reaction taken outside its domain (the square root or a fractional power of a negative number, log of zero or less, asin or acos beyond ±1). A user-defined reaction is not validated.' },
+      RANGE('Model', 'pa', 'a', LIVE, -10, 10, 0.001, f3, { dimUnless: isCustom, activeOnly: true }),
+      RANGE('Model', 'pb', 'b', LIVE, -10, 10, 0.001, f3, { dimUnless: isCustom, activeOnly: true }),
+      RANGE('Model', 'pc', 'c', LIVE, -10, 10, 0.001, f3, { dimUnless: isCustom, activeOnly: true }),
+      RANGE('Model', 'pd', 'd', LIVE, -10, 10, 0.001, f3, { dimUnless: isCustom, activeOnly: true }),
+      RANGE('Model', 'Du', 'Diffusion D_u', LIVE, 0, 200, 0.01, f2, { dimUnless: isCustom, activeOnly: true }),
+      RANGE('Model', 'Dv', 'Diffusion D_v', LIVE, 0, 200, 0.01, f2, { dimUnless: isCustom, activeOnly: true,
+        hint: 'D_u and D_v are in the length unit of the equations (see Cells per length unit); the explicit step shrinks as c² max(D_u, D_v) grows.' }),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
         options: [['noise', 'Noise'], ['spots', 'Spots'], ['band', 'Bands']] },
       RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0.01, 0.6, 0.01, f2),
@@ -888,6 +1189,7 @@ void main(){
     defaults: Object.assign({
       grid: 512, aspect: '1:1', lap: 9, scale: 0.6,
       tmodel: 'schnak', D: 100, sa: 0.1, sb: 0.9, ba: 2, bb: 3, ga: 0.02, gb: 1, gc: 1.5, gK: 0, la: 10, lb: 0.2, lsig: 20,
+      reactF: REACT_DEFAULTS.reactF, reactG: REACT_DEFAULTS.reactG, pa: 0.1, pb: 0.9, pc: 1, pd: 1, Du: 1, Dv: 100,
       init: 'noise', amp: 0.25,
       running: true, steps: 8, dt: 0.01, warmup: 1500, noise: 0,
       view: 'u', seed: 'turing-1952',
@@ -903,7 +1205,7 @@ void main(){
     },
     closedGroups: ['Seeding'],
     hints: {
-      Model: 'Only the sliders of the chosen kinetics matter; the rest are dimmed. D is the dial in every model: it has to exceed a critical ratio for any pattern, and the higher it goes the more the plate prefers spots.',
+      Model: 'Only the sliders of the chosen kinetics matter; the rest are dimmed. D is the dial in every model: it has to exceed a critical ratio for any pattern, and the higher it goes the more the plate prefers spots. Custom reaction replaces the kinetics with f and g typed below and its own diffusion D_u and D_v.',
       Picture: 'Activator u peaks are the spots. The inhibitor v is its negative, smoother. Edges is |∇u|, the outline of every spot.',
     },
     palette: true, defaultPalette: 'verdigris', paletteLabel: 'Colors (low → high)',
@@ -938,8 +1240,20 @@ void main(){
       views: { u: 0, v: 1, diff: 4, grad: 5, shade: 6 },
       pokeAdd: [0.6, 0, 0, 0], pokeRad: 0.05, pokeMode: 1,
       dtMax: turDtMax,
-      stepUniforms: s => ({ u_model: { int: TUR_MODELS[s.tmodel] || 0 }, u_p: turParams(s), u_D: s.D, u_sig: s.lsig }),
+      stepUniforms: s => isCustom(s) ? { u_p: [s.pa, s.pb, s.pc, s.pd], u_Du: s.Du, u_Dv: s.Dv }
+        : ({ u_model: { int: TUR_MODELS[s.tmodel] || 0 }, u_p: turParams(s), u_D: s.D, u_sig: s.lsig }),
+      // typed reaction terms: the shader and its key, the key that invalidates the step ceiling, the ceiling
+      // from a field sample, and what a data export records
+      custom: {
+        active: isCustom,
+        key: s => s.reactF + '\n' + s.reactG,
+        stepFS: customStepFS,
+        boundKey: s => [s.reactF, s.reactG, s.pa, s.pb, s.pc, s.pd, s.Du, s.Dv, s.scale, s.lap].join('|'),
+        bound: customBound,
+        describe: customDescribe,
+      },
       status: (s, m) => {
+        if (isCustom(s)) return customStatus(s, m);
         const info = turInfo(s);
         const names = { schnak: 'Schnakenberg', bruss: 'Brusselator', gm: 'Gierer-Meinhardt', le: 'Lengyel-Epstein' };
         const band = info.hopf ? 'Hopf unstable' : info.turing ? 'λ ≈ ' + info.lam.toFixed(0) + ' cells' : 'below the Turing threshold';

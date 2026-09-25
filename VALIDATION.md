@@ -358,6 +358,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - Linear regime only within this domain; status-line wavelength is the onset-critical value, not a saturated nonlinear pattern measurement.
 - No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.
 - Broader settings require additional independent evidence.
+- The Custom reaction mode steps reaction terms f(u, v) and g(u, v) the viewer types, u_t = D_u lap u + f and v_t = D_v lap v + g on the same periodic stencils, by forward Euler without the clamps or implicit loss terms of the built-in kinetics. A user-defined reaction is not validated: the status line says so and prints no comparison with theory in that mode, and none of the evidence above covers it. Its step ceiling, 0.8 of 2/(lambda_D + rho_J) with lambda_D = Q c^2 max(D_u, D_v) from the stencil symbol (Q = 8 or 16/3) and rho_J the largest eigenvalue magnitude of the finite-difference Jacobian over 2048 field samples refreshed every 50 steps, is an estimate, not a stability proof: summed magnitudes do not bound the eigenvalues of a non-normal sum, forward Euler amplifies imaginary eigenvalues at any step, and the field can stiffen between samples. A field found non-finite (or past 1e30) at a sample stops the plate (validation/RDX.md, Custom reaction).
 
 ### gyroid
 

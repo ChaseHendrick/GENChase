@@ -100,7 +100,28 @@ the well-mixed May-Leonard limit, all on one software renderer. They do not cove
 - the noise term;
 - the float16 fallback, which [HALF-FLOAT.md](HALF-FLOAT.md) measures but does not validate;
 - physical GPUs;
-- the print path.
+- the print path;
+- the Turing tab's Custom reaction mode (2026-09-25), described below.
+
+## Custom reaction (turing), not validated
+
+The Turing tab's Custom reaction steps u_t = D_u∇²u + f(u, v), v_t = D_v∇²v + g(u, v) with f and g typed by
+the viewer, by plain forward Euler: no clamps and no implicit loss terms, so a reaction that runs away is
+stopped rather than held. The formulas reach the step shader only through `U.expr.toGLSL`; pow, sqrt, log,
+asin and acos are routed through guarded versions that agree with JavaScript's `Math`, so a reaction taken
+outside its domain gives NaN on the GPU too. None of the evidence above covers this mode, and the status line
+says "user-defined, not validated" and prints no comparison with theory.
+
+The step is held under 0.8 of 2/(λ_D + ρ_J). λ_D = Q c² max(D_u, D_v), with Q = 8 for the 5-point stencil and
+16/3 for the Mehrstellen stencil, the most negative value of each symbol. ρ_J is the largest eigenvalue
+magnitude of the central-difference Jacobian of (f, g) over a sample of the field: the center and the
+largest-|u| + |v| cell of each of 32 × 32 blocks, 2048 points, taken at step 0, every 50 steps and whenever
+a parameter changes. This is an estimate, not a stability proof. Adding the two magnitudes does not bound the
+eigenvalues of J + σ diag(D_u, D_v) when J is not normal, forward Euler amplifies an eigenvalue on the
+imaginary axis at any step, and the field can stiffen between two samples. A sample that is not finite, or
+past 1e30, stops the plate, and so does a ceiling below 1e-7. The seeding perturbs a uniform state found by
+Newton's method from fixed starts, preferring one that is stable without diffusion; when none is found the
+plate is seeded near u = v = 1 and the status line says so.
 
 Grid refinement stops where float32 rounding of the base state would bias the measured rate by more than
 the discretization error it is meant to resolve (about 1e-3 relative).

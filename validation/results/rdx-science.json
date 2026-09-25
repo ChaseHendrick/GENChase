@@ -3,7 +3,7 @@
   "date": "2026-09-25",
   "source": {
     "path": "src/modules/rdx.js",
-    "sha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f"
+    "sha256": "c37f7640366435cf9720e3cb11ed403baeac6c23b19b50d60dff5b94857ac930"
   },
   "harness": {
     "path": "tools/rdx-science.js",
