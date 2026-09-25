@@ -4,7 +4,7 @@
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 14 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 16 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -24,16 +24,18 @@ $8748\xi^6 - 49005\xi^4 + 27794\xi^2 + 18723$, and they are not expressible by r
 concentric regular $n$-gons with circulations $x_n$ and $-1$,
 $P = (K_n - \sqrt{2n-1}\cos n\theta)/(2n \sin n\theta)$ in terms of the relative rotation $\theta$,
 with an explicit constant $K_n$, and the minimum over $\theta$ is $\sqrt{K_n^2 - 2n + 1}/(2n)$; for
-pentagons it is $\sqrt{31682}/80$. All formulas are also checked against the Biot–Savart velocities
-in high-precision arithmetic.
+pentagons it is $\sqrt{31682}/80$. With a vortex of any circulation added at the center, the minimum
+over $\theta$ is still explicit and exceeds $\sqrt{3}/2$ for every $n$, and the constant $\sqrt{3}/2$ is
+again sharp. All formulas are also checked against the Biot–Savart velocities in high-precision
+arithmetic.
 
 ## Contents
 
 | Folder | What is in it |
 |---|---|
 | [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the source arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), a Typst copy of the same text, and [`figures/`](paper/figures/) |
-| [`code/`](code/) | [`verify_general_mu.py`](code/verify_general_mu.py) (the general-μ theory, 121 checks, about 30 s), [`verify_floors_independent.py`](code/verify_floors_independent.py) (μ = 1/2 and the rings, independently, about a minute), [`verify_direct_proof.py`](code/verify_direct_proof.py) (every identity in the direct proof of Corollary 1, exact, a few seconds), [`plot_minimal_winding.py`](code/plot_minimal_winding.py) (the figure), [`requirements.txt`](code/requirements.txt) |
-| [`data/`](data/) | The output of the three verification programs |
+| [`code/`](code/) | [`verify_general_mu.py`](code/verify_general_mu.py) (the general-μ theory, 121 checks, about 30 s), [`verify_floors_independent.py`](code/verify_floors_independent.py) (μ = 1/2 and the rings, independently, about a minute), [`verify_direct_proof.py`](code/verify_direct_proof.py) (every identity in the direct proof of Corollary 1, exact, a few seconds), [`verify_central_vortex.py`](code/verify_central_vortex.py) (Proposition 3 and Remark 4, two rings with a central vortex: exact identities, Biot–Savart at 50 digits and negative controls, about 10 s), [`plot_minimal_winding.py`](code/plot_minimal_winding.py) (the two figures), [`requirements.txt`](code/requirements.txt) |
+| [`data/`](data/) | The output of the four verification programs |
 
 ## Reproduce
 
@@ -44,12 +46,14 @@ python3 -m pip install -r code/requirements.txt
 python3 code/verify_general_mu.py
 python3 code/verify_floors_independent.py --json data/verify-floors-independent-2026-09-23.json
 python3 code/verify_direct_proof.py
+python3 code/verify_central_vortex.py
 python3 code/plot_minimal_winding.py
 cd paper && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex
 ```
 
 Each verification program exits with an error if any check fails. `verify_general_mu.py` prints the
-report kept in `data/verify-general-mu-2026-09-23.txt`.
+report kept in `data/verify-general-mu-2026-09-23.txt`, and `verify_central_vortex.py` the one kept in
+`data/verify-central-vortex-2026-09-25.txt`.
 
 ## Cite
 
