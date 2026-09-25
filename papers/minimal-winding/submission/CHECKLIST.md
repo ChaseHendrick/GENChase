@@ -54,8 +54,7 @@ submission.
 0. Before the arXiv upload (license decided 2026-09-25: arXiv.org perpetual, non-exclusive):
    - Ask the *Regular and Chaotic Dynamics* editorial office in writing whether an arXiv posting counts
      as prior publication under its "not published previously" condition. Keep the reply.
-   - Tell the journal at submission that an earlier draft of the manuscript (not the arXiv version) was public from 2026-09-23 (and indexed by search engines through the repository's pull requests; note the date if the repository is made private),
-     in a repository under the Apache License 2.0, and attached to its releases v0.6.0 to v0.6.2.
+   - Owner's decision (2026-09-25): the earlier drafts in the GENChase repository are not disclosed in the cover letter. The cover letter names the arXiv preprint. Answer any direct question on the submission form truthfully.
    - Finish the must-read items in [../../READING-LIST.md](../../READING-LIST.md).
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this
