@@ -36,6 +36,21 @@
       "commitments": []
     },
     {
+      "id": "collapse-without-rotation",
+      "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
+      "status": "draft",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. Before 'preparing': read O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44 (the continuum section makes no claim of priority until then; a TODO in the LaTeX source marks it), and a second reader. The public companion repository does not exist yet.",
+      "typst": null,
+      "latex": "papers/collapse-without-rotation/paper/collapse-without-rotation.tex",
+      "pdf": "papers/collapse-without-rotation/paper/collapse-without-rotation.pdf",
+      "companion": "ChaseHendrick/collapse-without-rotation",
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
       "id": "identities-note",
       "title": "Closed forms and sharp minima of ω t_c on three classical point-vortex collapse families",
       "status": "preparing",
