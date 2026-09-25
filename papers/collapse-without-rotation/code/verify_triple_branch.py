@@ -27,18 +27,20 @@ nu = S/2, q0 = 1/2 + i y0.
 
 Sections:
   1. EXACT, over the field Q(t)(omega) with g1 = 1, g2 = t (the equations are invariant under
-     (gamma, g, zeta) -> (gamma/lam, lam g, lam zeta)): the point solves the system at gamma = 0; the complex-linear
-     form d(w1 - w2) at the triangle vanishes only where g3 = -(1 + t) = 0; and at y0 = sqrt3/2 the derivative of
+     (gamma, g, zeta) -> (gamma/lam, lam g, lam zeta)): the point solves the system at gamma = 0; at the unit
+     triangle zeta_k = omega^k the complex-linear form d(w1 - w2) is g3 (omega^2 dzeta1 - omega dzeta2), and at
+     a omega^k it is that form divided by a^2 (so it is nonzero for every y0); and at y0 = sqrt3/2 the derivative of
      P = Re Lambda/(-2 Im Lambda) along the branch is 2 sqrt3 g1 g2 g3/S at gamma = 0, for both omega.
   2. NUMERICAL, 40 digits: the branch by Newton's method at gamma = 1e-2 .. 1e-5 for three triples and both omega;
      every point also satisfies the original Biot-Savart equations of all four vortices; (P - P(0))/gamma tends to
      the exact slope with an error that falls about tenfold per decade of gamma; P < sqrt3/2 when g1 g2 g3 < 0;
-     other y0 give P(0) = (y0^2 + 3/4)/(2 y0); the Jacobian at gamma = 0 is invertible; for g = (1, 1, -2) the
+     P > sqrt3/2 when g1 g2 g3 > 0; other y0 give P(0) = (y0^2 + 3/4)/(2 y0); the Jacobian at gamma = 0 is
+     invertible; for g = (1, 1, -2) the
      configuration lies in the class K(3, 1/2).
   3. Negative controls.
 
 Needs sympy and mpmath (code/requirements.txt). Run: python3 code/verify_triple_branch.py. Prints every check and
-exits with status 1 if any fails; its output is data/verify-triple-branch.txt. About half a minute.
+exits with status 1 if any fails; its output is data/verify-triple-branch.txt. About ten seconds.
 """
 import os
 import sys
@@ -138,12 +140,14 @@ def exact_branch(sigma):
     def dw(k, j):
         return sum((-g[l]*(dz(k, j) - dz(l, j))/((z[k] - z[l])*(z[k] - z[l])) for l in (1, 2, 3) if l != k), W(0))
     ell = [dw(1, j) - dw(2, j) for j in (1, 2)]
-    nums = [sp.numer(sp.together(c)) for e in ell for c in (e.a, e.b)]
-    G = nums[0]
-    for p in nums[1:]:
-        G = sp.gcd(G, p)
-    check(name + ': the form d(w1 - w2) vanishes only where g3 = -(1 + t) = 0 (gcd of its coordinates)',
-          sp.degree(G, t) == 1 and sp.simplify(G.subs(t, -1)) == 0, sp.factor(G))
+    zu = {k: pw(k) for k in (1, 2, 3)}                 # the unit triangle
+    def dwu(k, j):
+        return sum((-g[l]*(dz(k, j) - dz(l, j))/((zu[k] - zu[l])*(zu[k] - zu[l])) for l in (1, 2, 3) if l != k), W(0))
+    ellu = [dwu(1, j) - dwu(2, j) for j in (1, 2)]
+    check(name + ': at the unit triangle d(w1 - w2) = g3 (omega^2 dzeta1 - omega dzeta2), nonzero since g3 != 0',
+          (ellu[0] - g[3]*rot*rot).iszero() and (ellu[1] + g[3]*rot).iszero())
+    check(name + ': at zeta_k = a omega^k the form is the unit-triangle form divided by a^2 (so nonzero for every y0)',
+          all((ell[j]*a*a - ellu[j]).iszero() for j in (0, 1)))
     check(name + ': d(w1 - w2) annihilates the scaling direction zeta0, and d w_1 . zeta0 = -1/q0',
           (ell[0]*z[1] + ell[1]*z[2]).iszero() and (dw(1, 1)*z[1] + dw(1, 2)*z[2] + 1/q0).iszero())
     O = W(0)
@@ -179,7 +183,8 @@ def exact_branch(sigma):
     # dP = i B/6 with B = (dL + dLb)(L0 - conj L0) - 3 (dL - dLb); i = (2 omega + 1)/sqrt3 and 2 sqrt3 = 6/sqrt3
     B = (dL + dLb)*(L0 - L0.conj()) - 3*(dL - dLb)
     check(name + ': dP/dgamma at gamma = 0 equals 2 sqrt3 g1 g2 g3/S, identically in t = g2/g1',
-          ((2*OM + 1)*B - 36*g[1]*g[2]*g[3]/S).iszero())
+          ((2*OM + 1)*B - 36*g[1]*g[2]*g[3]/S).iszero(),
+          "Lambda'(0) = [%s] + [%s] omega" % (sp.factor(dL.a), sp.factor(dL.b)))
     check(name + ': d nu/dgamma at gamma = 0 equals g3 S/2', (x[6] - g[3]*S*HALF).iszero(), sp.factor(x[6].a))
 
 
@@ -258,7 +263,7 @@ def Pof(L):
 
 
 y0 = mp.sqrt(3)/2
-triples = [(mp.mpf(1), mp.mpf(1)), (mp.mpf(1), mp.mpf('0.6')), (mp.mpf('-1.3'), mp.mpf('0.5'))]
+triples = [(mp.mpf(1), mp.mpf(1)), (mp.mpf(1), mp.mpf('0.6')), (mp.mpf('-1.3'), mp.mpf('0.5')), (mp.mpf(-1), mp.mpf('-0.6'))]
 for g1, g2 in triples:
     g3 = -g1 - g2
     S = g1**2 + g2**2 + g3**2
