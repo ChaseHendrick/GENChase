@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Releases carry real notes.** A studio release now takes its notes from its `CHANGELOG.md` section, under "What's new", followed by how to get the studio and where it was built from (`tools/release-notes.py`); the release stops if the section is missing or empty. The "Publish offline studio" workflow gains a **notes only** mode that rewrites the notes of existing releases, one version or `all`, without touching tags or files. A paper's companion release takes its notes from `papers/<id>/RELEASES.md`, which is published with the companion; the publish run refuses a tag without notes and brings the notes of an existing release up to date. `papers/minimal-winding/RELEASES.md` describes v1.0.0 and the changes since.
+- **The author's email address appears only in the manuscripts.** The paper READMEs show the ORCID instead, the generated CITATION.cff leaves the address out, and `paper-check` and `paper-sync` refuse it anywhere outside a manuscript.
+
 - The workflows use `actions/checkout@v5` and `actions/setup-node@v5`, which run on Node 24; GitHub is retiring Node 20 for Actions.
 
 - **The stage badge follows a user-typed mode.** In Turing Patterns' Custom reaction mode the badge now reads Unvalidated and the export provenance records `validation: unvalidated`, with the tab's own status in `tabValidation` and the reason in `validationNote`. A module reports such a mode through the new optional instance method `evidence()`, which can only lower the status, never raise it. The tab strip keeps the tab's status.

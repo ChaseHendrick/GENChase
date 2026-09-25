@@ -1,6 +1,6 @@
 # A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models
 
-**Chase Hendrick**, Independent Researcher · chasewhendrick@gmail.com
+**Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 **Draft.** Not peer reviewed and not cleared for submission.
 

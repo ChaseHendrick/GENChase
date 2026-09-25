@@ -97,6 +97,20 @@ try {
   ok(r.status === 0 && /not set/.test(r.stdout), 'without a token the script does nothing', r.stdout + r.stderr);
   r = run('paper-publish.sh', [], { RELEASE: 'latest', PAPER: 't' });
   ok(r.status !== 0, 'a malformed release tag is refused');
+
+  // 8. A release needs notes: a tag without a section in RELEASES.md is refused before anything is
+  // pushed, and one with a section passes that gate.
+  const mainBefore = remoteHead('main');
+  write(path.join(SRC, 'papers', 't', 'README.md'), read(path.join(SRC, 'papers', 't', 'README.md')) + '\nA change that must not be pushed.\n');
+  commitSrc('a change waiting for a release');
+  r = run('paper-publish.sh', [], { RELEASE: 'v1.0.0', PAPER: 't' });
+  ok(r.status !== 0 && /RELEASES\.md has no notes under '## v1\.0\.0'/.test(r.stdout + r.stderr), 'a release without notes is refused', r.stdout + r.stderr);
+  ok(remoteHead('main') === mainBefore, 'a refused release pushes nothing');
+  write(path.join(SRC, 'papers', 't', 'RELEASES.md'), '# Releases\n\n## Unreleased\n\n- next\n\n## v1.0.0 (2026-01-01)\n\nThe first release.\n');
+  commitSrc('release notes');
+  r = run('paper-publish.sh', [], { RELEASE: 'v1.0.0', PAPER: 't' });
+  ok(r.status === 0 && remoteHead('main') !== mainBefore, 'a release with notes publishes', r.stdout + r.stderr);
+  ok(/## v1\.0\.0/.test(remoteFile('main', 'RELEASES.md')), 'RELEASES.md reaches the companion');
 } catch (e) {
   failures++; console.log('FAIL ' + (e.stack || e.message) + (e.stderr ? '\n' + e.stderr : ''));
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }

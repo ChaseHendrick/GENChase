@@ -29,6 +29,8 @@ back here. A release there gives the paper's programs and data a Zenodo DOI.
 | `sh tools/arxiv-bundle.sh <id>` | Writes the arXiv upload, the LaTeX source and its figures, outside the repository |
 | `sh tools/paper-pull.sh <id>` | Brings edits made directly in the public repository back into `papers/<id>/` |
 
-The manuscripts carry the author's contact address, `chasewhendrick@gmail.com`; `paper-check` refuses
-any other address in a paper's files. Manuscript text is Copyright (c) 2026 Chase Hendrick, all rights
+The manuscripts carry the author's contact address in their author block, and nothing else does: the
+READMEs, CITATION.cff, the submission files and the other pages of the repositories leave it out (owner's
+decision, 2026-09-25). `paper-check` and `paper-sync` refuse an address anywhere else, and any other
+address anywhere. Manuscript text is Copyright (c) 2026 Chase Hendrick, all rights
 reserved; programs and data are Apache-2.0.

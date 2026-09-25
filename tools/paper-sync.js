@@ -12,7 +12,7 @@
 // The companion holds papers/<id>/ without notes/ and submission/, which are working files that stay
 // here, plus a LICENSE, a CITATION.cff and a .zenodo.json written from papers.json. Staging refuses a
 // paper whose public files point into this repository (a GENChase URL, a research/ or papers/ path, a
-// link out of the folder) or carry an email address other than the author's.
+// link out of the folder) or carry an email address outside the manuscript.
 'use strict';
 const fs = require('fs');
 const os = require('os');
@@ -58,7 +58,6 @@ function trackedFiles(root, id) {
 
 function citation(reg, p, year) {
   const a = reg.author, who = ['  - given-names: ' + yaml(a['given-names']), '    family-names: ' + yaml(a['family-names']), '    affiliation: ' + yaml(a.affiliation)];
-  if (a.email) who.push('    email: ' + yaml(a.email));
   if (a.orcid) who.push('    orcid: ' + yaml('https://orcid.org/' + a.orcid));
   const ids = [];
   if (p.arxiv && p.arxiv.id) ids.push('    - type: doi', '      value: ' + yaml('10.48550/arXiv.' + p.arxiv.id.replace(/v\d+$/, '')));
@@ -93,7 +92,8 @@ function license(root, reg, p, year) {
 }
 
 // Problems that keep a staged companion from going public: links back into this repository, and email
-// addresses other than the author's.
+// addresses. The author's own address may appear in the manuscript (paper/) and nowhere else, so the
+// README, CITATION.cff and the programs leave it out (owner's decision, 2026-09-25).
 function problems(dir, reg) {
   const out = [], allowed = new Set([String(reg.author.email || '').toLowerCase()]);
   const walk = rel => {
@@ -103,7 +103,7 @@ function problems(dir, reg) {
       if (BINARY.test(f) || f === 'LICENSE') continue;
       const s = fs.readFileSync(path.join(dir, f), 'utf8');
       for (const [re, what] of INTERNAL) if (re.test(s)) out.push(f + ': ' + what);
-      const stray = (s.match(EMAIL) || []).filter(a => !allowed.has(a.toLowerCase()) && !/@example\.(com|org|net)$/i.test(a));
+      const stray = (s.match(EMAIL) || []).filter(a => !(f.startsWith('paper/') && allowed.has(a.toLowerCase())) && !/@example\.(com|org|net)$/i.test(a));
       if (stray.length) out.push(f + ': email address ' + [...new Set(stray)].join(', '));
     }
   };
@@ -168,7 +168,8 @@ function selfTest() {
     expect(false, 'a papers/ path in the README', () => w('papers/t/README.md', 'Run python3 papers/t/code/run.py\n'));
     expect(false, 'a link out of the folder', () => w('papers/t/README.md', '[status](../papers.json)\n'));
     expect(false, 'another email address', () => w('papers/t/README.md', 'Write to someone@real-domain.org\n'));
-    expect(true, 'the author address and an example.com placeholder', () => w('papers/t/README.md', 'ab@real-domain.org, you@example.com\n'));
+    expect(false, 'the author address outside the manuscript', () => w('papers/t/README.md', 'ab@real-domain.org\n'));
+    expect(true, 'the author address in the manuscript and an example.com placeholder', () => { w('papers/t/paper/t.tex', 'ab@real-domain.org\n'); w('papers/t/README.md', 'you@example.com\n'); });
     expect(false, 'an unknown text license', r => { r.papers[0].textLicense = 'MIT'; });
     const listed = ready(reg()).map(p => p.id).join(' ');
     checks++; if (listed !== 't') { failures++; console.log('FAIL --list gave "' + listed + '", not "t"'); }

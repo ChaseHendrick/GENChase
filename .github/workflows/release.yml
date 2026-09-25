@@ -3,9 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Release version, for example v0.4.1
+        description: Release version, for example v0.4.1 (with notes only, "all" rewrites every release that has a CHANGELOG section)
         required: true
         type: string
+      notes_only:
+        description: Only rewrite the notes of an existing release from CHANGELOG.md; nothing is built or replaced
+        required: false
+        type: boolean
+        default: false
 permissions:
   contents: write
   actions: read
@@ -15,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && !inputs.notes_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -54,19 +59,36 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ inputs.version }}
+          PAGES_URL: ${{ vars.PAGES == 'on' && 'https://chasehendrick.github.io/GENChase/start.html' || '' }}
         run: |
-          python3 - <<'PY'
-          import os
-          from datetime import datetime, timezone
-          from pathlib import Path
-          repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
-          Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://chasehendrick.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
-
-          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Research papers from `papers/` are attached as PDFs, together with the programs that verify them and their output. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
-
-          Released {datetime.now(timezone.utc).date().isoformat()}.
-
-          Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
-          ''')
-          PY
+          # The notes are the version's CHANGELOG section; the script stops if there is none.
+          python3 tools/release-notes.py --version "$RELEASE_VERSION" --sha "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" ${PAGES_URL:+--pages-url "$PAGES_URL"} --output /tmp/release-notes.md
           gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt papers/*/paper/*.pdf papers/*/data/* papers/*/code/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
+  notes:
+    # Rewrites the notes of releases that already exist, from the CHANGELOG on main. The tag, the
+    # assets and the publication date stay as they were; the notes keep the commit each was built from.
+    if: github.ref == 'refs/heads/main' && inputs.notes_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Rewrite release notes from CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          PAGES_URL: ${{ vars.PAGES == 'on' && 'https://chasehendrick.github.io/GENChase/start.html' || '' }}
+        run: |
+          if [ "$RELEASE_VERSION" = all ]; then versions=$(gh release list --limit 100 --json tagName --jq '.[].tagName'); else versions=$RELEASE_VERSION; fi
+          for v in $versions; do
+            if ! grep -q "^## $v\( \|$\)" CHANGELOG.md; then echo "::warning::CHANGELOG.md has no section for $v, so its notes stay as they are."; continue; fi
+            sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$v" --jq .sha)
+            date=$(gh release view "$v" --json publishedAt --jq '.publishedAt[0:10]')
+            pdfs=$(gh release view "$v" --json assets --jq '[.assets[].name | select(endswith(".pdf"))] | length')
+            flag=; [ "$pdfs" -gt 0 ] || flag=--no-papers
+            python3 tools/release-notes.py --version "$v" --sha "$sha" --repo "$GITHUB_REPOSITORY" --date "$date" $flag ${PAGES_URL:+--pages-url "$PAGES_URL"} --output /tmp/notes.md
+            gh release edit "$v" --notes-file /tmp/notes.md
+            echo "Rewrote the notes of $v from CHANGELOG.md."
+          done

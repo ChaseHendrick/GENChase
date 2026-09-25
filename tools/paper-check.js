@@ -82,10 +82,12 @@ function checkPaper(root, p, opts = {}) {
   const t = titles(root, p);
   if (t.length && t.some(([, x]) => x !== p.title)) bad('title differs: ' + t.filter(([, x]) => x !== p.title).map(([w, x]) => w + ' has "' + x + '"').join('; '));
 
-  const allowed = new Set((opts.emails || []).map(a => a.toLowerCase()));
+  // The author's address belongs in the manuscript only; the submission files and the pages of the
+  // repository leave it out (owner's decision, 2026-09-25).
+  const allowed = new Set((opts.emails || []).map(a => a.toLowerCase())), manuscript = new Set([p.typst, p.latex, p.markdown]);
   for (const f of files.filter(f => !/\.pdf$/i.test(f))) {
-    const found = (read(root, f).match(EMAIL) || []).filter(a => !EXAMPLE.test(a) && !allowed.has(a.toLowerCase()));
-    if (found.length) bad(f + ' contains ' + [...new Set(found)].join(', ') + ', which is not the author address in papers/papers.json');
+    const found = (read(root, f).match(EMAIL) || []).filter(a => !EXAMPLE.test(a) && !(manuscript.has(f) && allowed.has(a.toLowerCase())));
+    if (found.length) bad(f + ' contains ' + [...new Set(found)].join(', ') + (manuscript.has(f) ? ', which is not the author address in papers/papers.json' : '; an email address belongs in the manuscript only'));
   }
 
   let pages = null;
@@ -194,6 +196,7 @@ function selfTest() {
     expect(true, 'a you@example.com placeholder is allowed', () => w('letter.md', 'Write to you@example.com.\n'));
     expect(true, "the author's published address is allowed", () => w('p.tex', read(tmp, 'p.tex').replace('Text', 'Author@Real-Domain.org. Text')));
     expect(false, 'another address beside the author one', () => w('letter.md', 'author@real-domain.org and me@real-domain.org\n'));
+    expect(false, "the author's address outside the manuscript", () => w('letter.md', 'Write to author@real-domain.org.\n'));
     expect(false, 'an abstract over 1,920 characters', () => w('meta.md', read(tmp, 'meta.md').replace(abstract, 'x'.repeat(1921)).replace('(' + abstract.length + ' characters', '(1921 characters')));
     expect(false, 'a wrong stated abstract length', () => w('meta.md', read(tmp, 'meta.md').replace('(' + abstract.length + ' characters', '(999 characters')));
     expect(false, 'a committed PDF with another page count', () => w('p.pdf', '%PDF-1.7\n<< /Type/Pages/Count 2 >>\n'));
