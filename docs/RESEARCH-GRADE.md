@@ -60,10 +60,11 @@ This is the largest gap, and most of it is not code.
 
 **1b. The vortex paper.**
 - **Finding:** `papers/minimal-winding/submission/cover-letter-rcd.md` is a draft. It still has placeholders
-  for the suggested reviewers and the arXiv identifier. No endorsement is needed.
+  for the suggested reviewers. arXiv is deferred until the owner has an endorsement (owner's decision,
+  2026-09-25); the Zenodo release v2.0.0 is the preprint of record.
 - **Why:** one peer-reviewed publication is worth more credibility than any number of internal
   audits.
-- **Done when:** the preprint has an arXiv identifier and the manuscript is submitted.
+- **Done when:** the manuscript is submitted to the journal.
 
 **1c. A DOI for the software.**
 - **Finding:** `.zenodo.json` describes the vortex identities note ("GENChase identities:

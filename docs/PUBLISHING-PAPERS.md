@@ -18,13 +18,16 @@ rebuild the PDFs, run the checks, update `papers.json`, and draft the messages.
 
 1. **The paper's programs and data get their DOI first, on Zenodo**, from a release of its
    companion. The paper then cites a DOI for the exact programs it used.
-2. **The paper goes to arXiv next.** arXiv is where this field reads preprints, its announcement
-   date is the community's record of when a result appeared, and it gives the paper a DOI of its own
-   (`10.48550/arXiv.<id>`).
+2. **arXiv is deferred for now.** By the owner's decision (2026-09-25), no paper goes to arXiv until the
+   owner has an endorsement: arXiv asked for one at the first attempt to submit to physics.flu-dyn. Until
+   then the companion's Zenodo release is the preprint of record: public, timestamped, with a DOI, and
+   holding the paper's PDF with its programs and data. Section 2 stays below for when an endorsement
+   arrives; arXiv's announcement date and DOI (`10.48550/arXiv.<id>`) are still worth having later.
 3. **Then reveal** any hash commitments that covered drafts of the paper.
-4. **Then one journal.** Journals in this area generally accept papers already posted on arXiv, but
-   check each journal's own policy before you submit.
-5. **After acceptance,** link the published version from arXiv and from the companion's README.
+4. **Then one journal.** Journals in this area generally accept papers already posted as preprints,
+   but check each journal's own policy before you submit.
+5. **After acceptance,** link the published version from the companion's README (and from arXiv, if the
+   paper is there by then).
 
 The identities note is the exception: it goes to Zenodo as a record of its own and not to a journal
 (below).
@@ -111,10 +114,13 @@ Edit it in either place.
 repositories: the first publish, a direct edit that survives an update, a conflict that pushes
 nothing, and the pull back.
 
-## 2. arXiv
+## 2. arXiv (deferred until an endorsement)
 
 1. **Endorsement.** arXiv asks some first-time submitters to a category for an endorsement from an
-   established author there. The owner's account needs none for physics.flu-dyn (2026-09-24).
+   established author there, and the owner's account needs one for physics.flu-dyn (found at the first
+   attempt, 2026-09-25; an earlier note here said none was needed, which was wrong). arXiv gives an
+   endorsement code with the request; ask one established author who knows the work, and send the
+   paper with it. Endorsement is not review, but nobody is obliged to give one.
 2. **Upload** the zip that `sh tools/arxiv-bundle.sh <id>` writes: the LaTeX source, which carries
    the contact email, and its `figures/` folder (arXiv prefers source). The paper's metadata file, for example
    [arxiv-metadata.md](../papers/minimal-winding/submission/arxiv-metadata.md), has every field of the form.
@@ -132,7 +138,7 @@ nothing, and the pull back.
 If you committed drafts of this paper with `tools/commit-hash.js`, reveal them now:
 
 ```
-node tools/commit-hash.js --reveal <private record> --published "arXiv:<id>"
+node tools/commit-hash.js --reveal <private record> --published "doi:<the preprint's Zenodo DOI>"
 ```
 
 For priority, the commitment that matters most is the **earliest** one whose file already contains
@@ -147,19 +153,21 @@ the result; reveal it, and any others you want on record. List their ids in the 
    generative AI to be reported in the work, Springer Nature asks for it in the manuscript (copy
    editing alone is exempt), and JOSS requires a fuller "AI usage disclosure" section, which the
    software paper has. A Zenodo-only record, such as the identities note, needs none.
-2. **Submit to one journal at a time.** arXiv plus one journal is normal; the same paper at two
+2. **Submit to one journal at a time.** A preprint plus one journal is normal; the same paper at two
    journals at once is not allowed.
 3. Fill the cover letter's placeholders only in the copy you send, never in the repository.
 4. Set `status: "submitted"` and `journal.submitted` (the date) in `papers.json`.
 5. **Revisions:** change both sources, rebuild, run `tools/paper-check.js`, and send the revision.
-   Posting the revised version to arXiv as v2 is optional; many authors wait for acceptance.
+   Archiving the revised version as a new release of the companion (a new Zenodo version) is optional;
+   many authors wait for acceptance.
 
 ## 5. Accepted and published
 
 1. Set `accepted`, and then `published` with `journal.doi`, in `papers.json`.
-2. On arXiv, add the journal reference and DOI to the record. That needs no new version. Replace the
-   PDF with the accepted manuscript only if the publisher's self-archiving policy allows it; many
-   publishers allow the accepted manuscript but not their typeset version.
+2. If the paper is on arXiv by then, add the journal reference and DOI to the record there; that needs
+   no new version. Replace a preprint's PDF (on arXiv or in a new companion release) with the accepted
+   manuscript only if the publisher's self-archiving policy allows it; many publishers allow the
+   accepted manuscript but not their typeset version.
 3. In the repository: cite the published paper in `CITATION.cff` under `references`, link it from
    the README, add a CHANGELOG line, and move the item in
    [RESEARCH-GRADE.md](RESEARCH-GRADE.md) to Done.
@@ -168,8 +176,7 @@ the result; reveal it, and any others you want on record. List their ids in the 
 
 - Each paper goes through the steps on its own, with its own line in `papers.json`.
   `node tools/paper-check.js` checks them all.
-- Post them to arXiv in dependency order, so that a later paper can cite an earlier one's arXiv
-  identifier.
+- Release them in dependency order, so that a later paper can cite an earlier one's preprint DOI.
 - Each paper has its own companion and its own DOI, so each cites exactly the programs it used.
 - Different papers may be under review at different journals at the same time. The same result must
   not appear in two papers as if it were new in each; journals treat that as redundant publication.

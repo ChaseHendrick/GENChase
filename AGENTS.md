@@ -39,6 +39,8 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   `node tools/commit-hash.js` instead ([docs/COMMITMENTS.md](docs/COMMITMENTS.md)). The owner decides
   what is published: by the owner's decision (2026-09-25), the two vortex-collapse papers are merged into
   `papers/minimal-winding/`, and its computer-assisted proofs and verification programs are committed with it.
+  By the same owner's decision, the follow-up paper `papers/collapse-without-rotation/` is drafted in this
+  repository with status "draft".
 
 ## Verify before you commit
 
@@ -251,4 +253,4 @@ Read VALIDATION.md and validation/README.md before modifying numerical methods. 
 
 The dated plan for what research grade still needs, in priority order, is [docs/RESEARCH-GRADE.md](docs/RESEARCH-GRADE.md): outside review, the exactly solvable tabs, an uncertainty gate, real-GPU runs, data export and provenance. Read it before choosing validation or infrastructure work, and move an item to its Done list in the pull request that finishes it.
 
-Every manuscript is listed with its status in `papers/papers.json`. When one is ready, [docs/PUBLISHING-PAPERS.md](docs/PUBLISHING-PAPERS.md) is the runbook (code DOI, arXiv, commitments, journal), and `node tools/paper-check.js` checks titles, email leaks, the arXiv abstract, page counts and the two reference lists before anything is sent.
+Every manuscript is listed with its status in `papers/papers.json`. When one is ready, [docs/PUBLISHING-PAPERS.md](docs/PUBLISHING-PAPERS.md) is the runbook (code DOI, commitments, journal; arXiv is deferred until the owner has an endorsement, by the owner's decision of 2026-09-25), and `node tools/paper-check.js` checks titles, email leaks, the arXiv abstract, page counts and the two reference lists before anything is sent.

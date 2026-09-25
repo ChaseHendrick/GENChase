@@ -14,7 +14,7 @@
       "id": "minimal-winding",
       "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
       "status": "ready",
-      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge); the paper will cite the version DOI of the next release.",
+      "note": "Ready for journal submission. By the owner's decision (2026-09-25) arXiv is deferred until an endorsement; the Zenodo release v2.0.0, doi:10.5281/zenodo.22963796, is the preprint of record and is in the data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge); the paper cites the version DOI of v2.0.0.",
       "typst": null,
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
@@ -32,6 +32,21 @@
         "submitted": null,
         "doi": null
       },
+      "codeDoi": "10.5281/zenodo.22963796",
+      "commitments": []
+    },
+    {
+      "id": "collapse-without-rotation",
+      "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
+      "status": "draft",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. Before 'preparing': read O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44 (the continuum section makes no claim of priority until then; a TODO in the LaTeX source marks it), and a second reader. The public companion repository does not exist yet.",
+      "typst": null,
+      "latex": "papers/collapse-without-rotation/paper/collapse-without-rotation.tex",
+      "pdf": "papers/collapse-without-rotation/paper/collapse-without-rotation.pdf",
+      "companion": "ChaseHendrick/collapse-without-rotation",
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
       "codeDoi": null,
       "commitments": []
     },

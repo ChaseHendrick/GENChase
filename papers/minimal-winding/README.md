@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
+Preprint, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)). Not yet peer reviewed.
 
 **[Read the paper (PDF, 36 pages)](paper/minimal-winding.pdf)**
 
@@ -32,7 +32,7 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 
 | Folder | What is in it |
 |---|---|
-| [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the only source, which arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), and [`figures/`](paper/figures/) |
+| [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the only source, which journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), and [`figures/`](paper/figures/) |
 | [`code/`](code/) | The programs below and [`requirements.txt`](code/requirements.txt) |
 | [`data/`](data/) | The output of the twelve verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
 
@@ -79,7 +79,7 @@ Each verification program exits with an error if any check fails and writes its 
 
 ## Cite
 
-Until the arXiv identifier exists:
+Until the paper is published in a journal:
 
 ```bibtex
 @misc{hendrick2026minimal,
@@ -87,9 +87,13 @@ Until the arXiv identifier exists:
   title  = {Minimal Winding in the Self-Similar Collapse of Point Vortices},
   year   = {2026},
   note   = {Preprint},
+  doi    = {10.5281/zenodo.22963796},
   url    = {https://github.com/ChaseHendrick/minimal-winding}
 }
 ```
+
+Release v2.0.0, with the programs and data of this version, is archived at
+[doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796).
 
 ## License
 
