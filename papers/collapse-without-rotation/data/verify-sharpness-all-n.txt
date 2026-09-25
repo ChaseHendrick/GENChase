@@ -6,12 +6,13 @@ OK    triangle: the numerator of R is -(z^3 + 3z + 2)   [-z**3 - 3*z - 2]
 OK    triangle: its discriminant is -216 (three simple zeros)   [-216]
 OK    triangle: z^3 + 3z + 2 does not vanish at the cube roots of unity (they are the vortices)
 
-2. The induction step of Lemma 1 from the triangle to m = 13 (binary64; illustration)
+2. The induction step of Lemma 1 from the triangle to m = 15 (binary64; illustration)
 OK    m = 5: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 5 zeros of R simple   [residual 4.6e-16, ratio 1.61e-01, min separation 1.208, min |R' zero| 1.42e+00]
 OK    m = 7: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 7 zeros of R simple   [residual 4.5e-16, ratio 9.08e-02, min separation 0.426, min |R' zero| 6.38e-01]
 OK    m = 9: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 9 zeros of R simple   [residual 6.7e-16, ratio 5.58e-02, min separation 0.351, min |R' zero| 1.93e-01]
 OK    m = 11: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 11 zeros of R simple   [residual 6.9e-16, ratio 4.03e-02, min separation 0.311, min |R' zero| 1.12e-01]
 OK    m = 13: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 13 zeros of R simple   [residual 7.9e-16, ratio 2.95e-02, min separation 0.284, min |R' zero| 3.84e-02]
+OK    m = 15: translates (max|w - 1| < 1e-12), nondegenerate (singular value ratio > 1e-3), circulations nonzero with zero sum, all 15 zeros of R simple   [residual 1.3e-15, ratio 2.24e-02, min separation 0.259, min |R' zero| 1.06e-02]
 
 3. The family of Theorem 3 at y0 = sqrt3/2 for each grown cluster (40 digits; numerical)
       m = 5, g = (1, 1, -2, 0.1, -0.1): (P - sqrt3/2)/gamma = -1.141162, -1.150452, -1.151075, -1.151134
@@ -29,6 +30,9 @@ OK    m = 11: P - sqrt3/2 = O(gamma), P -> sqrt3/2: (P - sqrt3/2)/gamma converge
       m = 13, g = (1, 1, -2, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1): (P - sqrt3/2)/gamma = -1.154999, -1.121257, -1.117379, -1.116986
 OK    m = 13: the gamma = 0 point solves the regularized system; every family member solves it (residual < 1e-30) and satisfies the Biot-Savart equations of all 14 vortices (relative spread of kappa < 1e-30) with Re kappa < 0   [max residual 1.4e-40, max spread 2.3e-36]
 OK    m = 13: P - sqrt3/2 = O(gamma), P -> sqrt3/2: (P - sqrt3/2)/gamma converges, its change falling about tenfold per decade of gamma   [changes 0.00388, 0.000393]
+      m = 15, g = (1, 1, -2, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, -0.1): (P - sqrt3/2)/gamma = -1.165288, -1.120106, -1.115052, -1.114541
+OK    m = 15: the gamma = 0 point solves the regularized system; every family member solves it (residual < 1e-30) and satisfies the Biot-Savart equations of all 16 vortices (relative spread of kappa < 1e-30) with Re kappa < 0   [max residual 2.3e-40, max spread 3.0e-36]
+OK    m = 15: P - sqrt3/2 = O(gamma), P -> sqrt3/2: (P - sqrt3/2)/gamma converges, its change falling about tenfold per decade of gamma   [changes 0.00505, 0.000511]
 
 4. Negative controls
 OK    control: the simplicity test flags the double zero of (z - 1)^2 (z + 2)   [|N'| at the zeros [3.e+00 3.e-08 3.e-08]]
@@ -36,4 +40,4 @@ OK    control: a cluster moved by 0.05 no longer translates (max|w - 1| > 1e-3) 
 OK    control: with y0 = 1 the five-vortex family tends to P(0) = (1 + 3/4)/2 = 7/8, not sqrt3/2   [0.87486066]
 OK    control: a pair of equal signs does not translate (w_1 = -w_2), as (I1) with a nonzero total requires   [w = [-1.+0.j  1.+0.j]]
 
-25 checks, 0 failed
+28 checks, 0 failed

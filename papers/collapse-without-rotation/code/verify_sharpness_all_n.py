@@ -27,7 +27,7 @@ Sections:
      g = (1, 1, -2) at (omega, omega^2, 1) translate with w = 1 and are nondegenerate; R has the simple zeros
      +- i sqrt3/2, and for the triangle the numerator of R is -(z^3 + 3z + 2), with discriminant -216, and does not
      vanish at the cube roots of unity.
-  2. NUMERICAL (binary64): the induction step of Lemma 1, run from the triangle to m = 5, 7, 9, 11, 13: two vortices
+  2. NUMERICAL (binary64): the induction step of Lemma 1, run from the triangle to m = 5, 7, 9, 11, 13, 15: two vortices
      +-eps are placed at two simple zeros of R and eps is continued to 0.1; each result translates, is
      nondegenerate, and has only simple zeros of R. Illustration, not part of the proof.
   3. NUMERICAL (40 digits): the family of Theorem 3 at y0 = sqrt3/2 for each of these clusters, at
@@ -106,7 +106,7 @@ check('triangle: z^3 + 3z + 2 does not vanish at the cube roots of unity (they a
       all(sp.simplify((r**3 + 3*r + 2)) != 0 for r in tri))
 
 # ------------------------------------------------------------------------------------------ 2. the induction, binary64
-say('\n2. The induction step of Lemma 1 from the triangle to m = 13 (binary64; illustration)')
+say('\n2. The induction step of Lemma 1 from the triangle to m = 15 (binary64; illustration)')
 
 
 def wfield(zv, g):
@@ -148,7 +148,7 @@ w3n = np.exp(2j*np.pi/3)
 g = np.array([1., 1., -2.])
 zv = np.array([w3n, w3n**2, 1.0])
 clusters = {}
-for m in (5, 7, 9, 11, 13):
+for m in (5, 7, 9, 11, 13, 15):
     r, simp = stagnation(zv, g)
     idx = [i for i in np.argsort(-simp) if simp[i] > 1e-6][:5]
     best = None
