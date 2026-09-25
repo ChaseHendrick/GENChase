@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Paper 2 is ready for its companion repository and its first Zenodo release.** `papers/collapse-without-rotation/` is marked ready in `papers/papers.json` (owner's decision, 2026-09-25), with release notes for v1.0.0 in its `RELEASES.md` and the data availability paragraph pointing at `ChaseHendrick/collapse-without-rotation`. Aref, Newton, Stremler, Tokieda and Vainchtein, *Vortex crystals* (2003), read for Lemma 1: it does not contain the construction, and the paper now cites it for the translating equilateral triangle and for the triangular-number restriction on translating configurations with circulations of equal magnitude. The README's reproduce list gains the two programs it was missing.
+
 ## v0.7.1
 
 The publication date is recorded in the GitHub release notes.

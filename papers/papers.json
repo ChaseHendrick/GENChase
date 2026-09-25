@@ -38,8 +38,8 @@
     {
       "id": "collapse-without-rotation",
       "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
-      "status": "draft",
-      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44, read in full (2026-09-25) and credited in Section 6; a second reader has checked the draft and its corrections are in. The public companion repository does not exist yet.",
+      "status": "ready",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44, read in full (2026-09-25) and credited in Section 6; a second reader has checked the draft and its corrections are in. Ready for its first release in its companion repository, archived on Zenodo for a DOI (owner's decision, 2026-09-25); Aref et al., Vortex crystals (2003), read and cited; O'Neil 2013 read in summary only. No journal chosen yet.",
       "typst": null,
       "latex": "papers/collapse-without-rotation/paper/collapse-without-rotation.tex",
       "pdf": "papers/collapse-without-rotation/paper/collapse-without-rotation.pdf",

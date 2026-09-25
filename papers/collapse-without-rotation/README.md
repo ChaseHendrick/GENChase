@@ -2,10 +2,10 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft**, not peer reviewed. It is the sequel to *Minimal Winding in the Self-Similar Collapse of Point Vortices*
+**Preprint**, not peer reviewed. It is the sequel to *Minimal Winding in the Self-Similar Collapse of Point Vortices*
 ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding)), which it cites as its companion.
 
-**[Read the draft (PDF, 24 pages)](paper/collapse-without-rotation.pdf)**
+**[Read the preprint (PDF, 24 pages)](paper/collapse-without-rotation.pdf)**
 
 ## Abstract
 
@@ -54,7 +54,10 @@ with the extrapolation of the finite family.
   the PDF, which is not committed): he found collapsing sheets with point vortices first, including the S-shaped
   sheet between two negative point vortices at P = 1/2, and Section 6 credits him; the minimum P_inf along the family
   and the direct continuum solution are not in his paper. A second reader has checked the draft (2026-09-25) and
-  its corrections are in.
+  its corrections are in. Aref, Newton, Stremler, Tokieda and Vainchtein, *Vortex crystals* (2003), has been read for the construction of
+  Lemma 1: it gives the translating equilateral triangle and, for circulations of equal magnitude, the restriction to
+  triangular numbers, both now cited, and not the construction. O'Neil, Nonlinearity 26 (2013), is read in summary
+  only (paywalled), as the paper says.
 
 ## Contents
 
@@ -92,6 +95,8 @@ python3 -m pip install -r code/requirements.txt
 python3 code/verify_cluster_identities.py
 python3 code/verify_cluster_remainders.py
 python3 code/verify_cluster_collapses.py
+python3 code/verify_triple_branch.py
+python3 code/verify_sharpness_all_n.py
 python3 code/verify_cluster_stored.py
 python3 code/verify_phase_diagram.py
 python3 code/plot_phase_diagram.py
@@ -112,7 +117,7 @@ Until the paper has a DOI of its own:
   author = {Hendrick, Chase},
   title  = {Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit},
   year   = {2026},
-  note   = {Draft},
+  note   = {Preprint},
   url    = {https://github.com/ChaseHendrick/collapse-without-rotation}
 }
 ```
