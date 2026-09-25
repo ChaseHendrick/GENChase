@@ -2,7 +2,7 @@
 
 **Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
 (arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
-Grotto-Romito-Viviani. Their rows below are done unless a journal version is still named.
+Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited). Their rows below are done unless a journal version is still named.
 
 Compiled from the research ledger (RESEARCH.md), the papers' notes and checklists, and web searches on
 2026-09-25. **Paper 2's list was confirmed by two independent checkers. Paper 1's list was not verified**:
@@ -28,7 +28,7 @@ interlibrary loan, or emailing the author for a copy.
 | free | Conte and de Seze, Mod. Phys. Lett. B 29 (2015) 1530017, doi:10.1142/S0217984915300173 (arXiv:1511.00069) | Add the journal printing; the "pp. 24-25" pinpoint is arXiv pagination. |
 | free | Grotto, Romito and Viviani, journal version in Physica D 457 (2024) 133947 (arXiv:2307.05133) | The bibliography cites the preprint; the published title differs. |
 | free | Gallay and Sverak, arXiv:2609.10847; Drivas et al., arXiv:2607.16490 | Newest versions; every theorem, section and equation pinpoint. |
-| ? | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Its title says it proves that every three-vortex collision is self-similar; credit may belong here. |
+| done | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Read 2026-09-25: Sect. 3 gives a geometric reason that every triple collision is self-similar (proof in his 2008 paper). Hernandez-Garduno-Lacomba 2007 is earlier, so it keeps the credit; Hiraoka is now cited beside it. |
 | ? | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Eq. (40) (and (46b)) in the journal numbering. |
 | paid | Hiraoka, Nonlinearity 21 (2008) 361-379 | The regularization of the triple collision; the Discussion's regularization paragraph. |
 | paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
