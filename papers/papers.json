@@ -14,7 +14,7 @@
       "id": "minimal-winding",
       "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
       "status": "ready",
-      "note": "Ready for arXiv: the code DOI of release v2.0.0, doi:10.5281/zenodo.22963796, is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge); the paper cites the version DOI of v2.0.0.",
+      "note": "Ready for journal submission. By the owner's decision (2026-09-25) arXiv is deferred until an endorsement; the Zenodo release v2.0.0, doi:10.5281/zenodo.22963796, is the preprint of record and is in the data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge); the paper cites the version DOI of v2.0.0.",
       "typst": null,
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",

@@ -1,5 +1,9 @@
 # arXiv submission metadata
 
+**Deferred (owner's decision, 2026-09-25).** arXiv asked this account for an endorsement to submit to
+physics.flu-dyn, so the paper is not going to arXiv for now; the Zenodo release v2.0.0,
+doi:10.5281/zenodo.22963796, is the preprint of record. Keep this file for when an endorsement arrives.
+
 Fill the arXiv form with the fields below.
 
 - **Files to upload:** `minimal-winding-arxiv.zip`, which `sh tools/arxiv-bundle.sh minimal-winding` makes: the LaTeX source [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) without its maintenance comment lines at the top, and the figures `figures/minimal-winding.pdf`, `figures/minimal-winding-paths.pdf` and `figures/alpha-winding.pdf` at that folder path. The source is plain `article` with standard packages (among them `booktabs` and `longtable`) and compiles without warnings after three `pdflatex` runs (arXiv reruns LaTeX as needed). arXiv's build is the same as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); compare its preview with that PDF before you submit. arXiv makes the source downloadable.
@@ -21,4 +25,5 @@ In a self-similar collapse of point vortices every vortex moves on a logarithmic
 
 ## Endorsement
 
-Not needed: the author's arXiv account can already submit to physics.flu-dyn (2026-09-24).
+Needed: arXiv asked for an endorsement at the first attempt to submit to physics.flu-dyn (2026-09-25).
+An earlier note here said none was needed, which was wrong.

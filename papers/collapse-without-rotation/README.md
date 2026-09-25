@@ -99,7 +99,7 @@ Each verification program exits with an error if any check fails and writes its 
 
 ## Cite
 
-Until the arXiv identifier exists:
+Until the paper has a DOI of its own:
 
 ```bibtex
 @misc{hendrick2026collapse,

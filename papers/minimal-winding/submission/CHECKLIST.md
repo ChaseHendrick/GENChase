@@ -2,8 +2,10 @@
 
 The paper is *Minimal Winding in the Self-Similar Collapse of Point Vortices*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
 (the manuscript and its only source, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); the Typst copy was dropped on 2026-09-25).
-The target is arXiv (physics.flu-dyn) and then *Regular and Chaotic Dynamics*. Checked 2026-09-24
-from the repository alone; no journal or arXiv page was consulted.
+The target is *Regular and Chaotic Dynamics*. By the owner's decision (2026-09-25) arXiv is deferred until
+the owner has an endorsement, which arXiv asked for at the first attempt; the Zenodo release v2.0.0 of the
+companion, doi:10.5281/zenodo.22963796, is the preprint of record. Checked 2026-09-24 from the repository
+alone; no journal page was consulted.
 
 By the owner's decision (2026-09-25) the second draft, on the α-models, is merged into this paper
 (Section 4 and part of Section 7), together with the computer-assisted proofs for four or more vortices.
@@ -20,17 +22,15 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 - A data availability paragraph naming the verification programs in `code/` and their output in
   `data/`, a funding statement (no external funding), and the statement
   "This work was prepared with AI assistance. The author takes full responsibility for its content."
-- The arXiv metadata in [arxiv-metadata.md](arxiv-metadata.md): title, author, categories, MSC
-  classes, comments, license, and an abstract that matches the manuscript's abstract (1,875
-  characters against the 1,920 limit it states).
-- A draft of the [cover letter](cover-letter-rcd.md). No endorsement is needed: the author's arXiv
-  account can submit to physics.flu-dyn.
+- A draft of the [cover letter](cover-letter-rcd.md), naming the Zenodo record as the preprint.
+- For later: the arXiv metadata in [arxiv-metadata.md](arxiv-metadata.md) (title, author, categories, MSC
+  classes, comments, license, and an abstract of 1,875 characters against arXiv's 1,920). arXiv needs an
+  endorsement for this account in physics.flu-dyn.
 
 ## Missing, and only the owner can supply it
 
 | Where | Placeholder | What goes there |
 |---|---|---|
-| cover-letter-rcd.md | `[arXiv identifier]` | The identifier arXiv assigns after the preprint is announced |
 | cover-letter-rcd.md | three `[name, affiliation, email]` lines | Suggested reviewers you have chosen, if the journal asks for them; this file deliberately names none |
 
 ## Inconsistencies to resolve first
@@ -50,21 +50,20 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 
 ## Next steps, in order
 
-0. Before the arXiv upload (license decided 2026-09-25: arXiv.org perpetual, non-exclusive):
-   - Ask the *Regular and Chaotic Dynamics* editorial office in writing whether an arXiv posting counts
+0. Before submitting:
+   - Ask the *Regular and Chaotic Dynamics* editorial office in writing whether the Zenodo preprint counts
      as prior publication under its "not published previously" condition. Keep the reply.
-   - Owner's decision (2026-09-25): the earlier drafts in the GENChase repository are not disclosed in the cover letter. The cover letter names the arXiv preprint. Answer any direct question on the submission form truthfully.
+   - Owner's decision (2026-09-25): the earlier drafts in the GENChase repository are not disclosed in the cover letter. The cover letter names the Zenodo preprint (it named the arXiv preprint until arXiv was deferred the same day). Answer any direct question on the submission form truthfully.
    - Finish the must-read items in [../../READING-LIST.md](../../READING-LIST.md).
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this
    repository records those policies.
 2. **Done 2026-09-25.** The code DOI of release v2.0.0, 10.5281/zenodo.22963796, is in the data
    availability paragraph and in `papers.json` (`codeDoi`), and the PDF is rebuilt.
-3. Make the upload with `sh tools/arxiv-bundle.sh minimal-winding` and submit it to physics.flu-dyn
-   with the fields in arxiv-metadata.md.
-4. When arXiv announces it, record the identifier in `cover-letter-rcd.md` and in
-   `papers/papers.json` (status `on-arxiv`) in a pull request.
-5. Choose suggested reviewers if the journal asks for them, fill the three lines only in the copy
+3. Deferred (owner's decision, 2026-09-25): the arXiv upload, with `sh tools/arxiv-bundle.sh
+   minimal-winding` and the fields in arxiv-metadata.md, once an endorsement exists; then record the
+   identifier in `papers/papers.json` (status `on-arxiv`) in a pull request.
+4. Choose suggested reviewers if the journal asks for them, fill the three lines only in the copy
    you send, and submit the manuscript with the cover letter through the journal's own system.
-6. Record the arXiv identifier and the submission date in `CHANGELOG.md`, and move item 1b of
+5. Set `status: "submitted"` and the date in `papers.json`, record the submission date in `CHANGELOG.md`, and move item 1b of
    [RESEARCH-GRADE.md](../../../docs/RESEARCH-GRADE.md) to Done once the manuscript is submitted.
