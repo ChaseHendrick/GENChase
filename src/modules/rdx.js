@@ -24,6 +24,21 @@
   }
 
   // ---- shared GLSL ----
+  // On a device without float32 color buffers the state is float16. A tab that declares halfBase then stores
+  // each species as its deviation from a base state (the uniform state of the model): every read adds the
+  // base back (ABS4) and every step writes the new state minus the base (REL4), so the shaders compute with
+  // the concentrations themselves and only the storage changes. Without STATE_BASE (every float32 device,
+  // every other tab) both macros are the identity.
+  const BASE_GLSL = `
+#ifdef STATE_BASE
+uniform vec4 u_base;
+#define ABS4(x) ((x) + u_base)
+#define REL4(x) ((x) - u_base)
+#else
+#define ABS4(x) (x)
+#define REL4(x) (x)
+#endif
+`;
   // Every step shader starts here: the state texture holds up to four species in RGBA,
   // u_c is cells per length unit (so a physical Laplacian is the cell Laplacian times u_c^2),
   // and the Laplacian is the 5-point or the 9-point (Mehrstellen) stencil.
@@ -34,7 +49,8 @@ uniform sampler2D u_s; uniform vec2 u_res;
 uniform float u_dt, u_c, u_c2, u_noise, u_step, u_nOff;
 uniform int u_lap9;
 ${G.GLSL.hash}
-vec4 S(vec2 d){ return texture(u_s, v_uv + d / u_res); }
+${BASE_GLSL}
+vec4 S(vec2 d){ return ABS4(texture(u_s, v_uv + d / u_res)); }
 vec4 lapOf(vec4 c, vec4 e, vec4 w, vec4 n, vec4 s){
   if (u_lap9 == 1) {
     vec4 ne = S(vec2(1.0, 1.0)), nw = S(vec2(-1.0, 1.0)), se = S(vec2(1.0, -1.0)), sw = S(vec2(-1.0, -1.0));
@@ -68,7 +84,7 @@ void main(){
     u = clamp(u + u_dt * fu + nz.r, -3.0, 3.0);
     v = clamp(v + u_dt * fv + nz.g, -3.0, 3.0);
   }
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // Schnakenberg (0), Brusselator (1), Gierer-Meinhardt with saturation (2), Lengyel-Epstein (3).
@@ -99,7 +115,7 @@ void main(){
   }
   u = clamp(un + nz.r, 0.0, 40.0);
   v = clamp(vn + nz.g, 0.0, 40.0);
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // May-Leonard cyclic competition, three species in R, G, B.
@@ -116,7 +132,7 @@ void main(){
   u = clamp(u + u_dt * fu + nz.r, 0.0, 2.0);
   v = clamp(v + u_dt * fv + nz.g, 0.0, 2.0);
   x = clamp(x + u_dt * fx + nz.b, 0.0, 2.0);
-  outColor = vec4(u, v, x, 1.0);
+  outColor = REL4(vec4(u, v, x, 1.0));
 }`;
 
   // Keller-Segel, saturating chemotactic sensitivity, logistic growth. The chemotactic flux is
@@ -139,7 +155,7 @@ void main(){
   float fv = u_D * L.g + u - u_a * v;
   u = clamp(u + u_dt * fu + nz.r, 0.0, 60.0);
   v = clamp(v + u_dt * fv + nz.g, 0.0, 200.0);
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // Klausmeier 1999: water w in R, plants n in G. Water runs downhill (toward -x) at speed v,
@@ -158,7 +174,7 @@ void main(){
   float pn = (pl + u_dt * (wa * pl * pl + u_Dn * L.g)) / (1.0 + u_dt * u_m);
   wa = clamp(wn + nz.r, 0.0, 40.0);
   pl = clamp(pn + nz.g, 0.0, 40.0);
-  outColor = vec4(wa, pl, 0.0, 1.0);
+  outColor = REL4(vec4(wa, pl, 0.0, 1.0));
 }`;
 
   // The scalar each view shows. Views: 0..3 one species, 4 difference, 5 interfaces |grad|,
@@ -167,12 +183,14 @@ void main(){
 uniform sampler2D u_s; uniform vec2 u_res;
 uniform int u_view, u_prim, u_sec, u_n, u_smooth;
 ${G.GLSL.bicubic}
+${BASE_GLSL}
 float ch(vec4 v, int i){ return i == 0 ? v.r : (i == 1 ? v.g : (i == 2 ? v.b : v.a)); }
 // A few hundred cells shown across a few thousand pixels: bilinear leaves the diamond creases of the grid
-// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel center is exact.
+// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel center is exact
+// (and its weights sum to one, so interpolating a stored deviation and adding the base is the same thing).
 vec4 fetch(vec2 uv){
-  if (u_smooth == 0) return texture(u_s, uv);
-  return texCR4(u_s, uv, u_res);
+  if (u_smooth == 0) return ABS4(texture(u_s, uv));
+  return ABS4(texCR4(u_s, uv, u_res));
 }
 float scalarAt(vec2 uv){
   vec4 v = fetch(uv);
@@ -290,11 +308,18 @@ void main(){
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+      // A tab whose float16 state is known not to run the model refuses the fallback instead of drawing
+      // something that looks like it (validation/HALF-FLOAT.md).
+      if (texType === 'rgba16f' && spec.halfRefuse) return dead(spec.halfRefuse);
+      // halfBase: on float16 state, store each species as its deviation from a base state (see BASE_GLSL).
+      const offset = texType === 'rgba16f' && !!spec.halfBase;
+      const src = fs => offset ? fs.replace('#version 300 es\n', '#version 300 es\n#define STATE_BASE 1\n') : fs;
+      let base = [0, 0, 0, 0];
       let stepPass, renderPass, reducePass, splatPass;
       try {
-        stepPass = new G.Pass(gl, spec.stepFS);
-        renderPass = new G.Pass(gl, RENDER_FS);
-        reducePass = new G.Pass(gl, REDUCE_FS);
+        stepPass = new G.Pass(gl, src(spec.stepFS));
+        renderPass = new G.Pass(gl, src(RENDER_FS));
+        reducePass = new G.Pass(gl, src(REDUCE_FS));
         splatPass = new G.Pass(gl, G.GLSL.splatFS);
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
@@ -328,7 +353,10 @@ void main(){
       function upload(target, f32) {
         gl.bindTexture(gl.TEXTURE_2D, target.tex);
         if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
-        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        else {
+          if (offset) { f32 = Float32Array.from(f32); for (let i = 0; i < f32.length; i++) f32[i] -= base[i & 3]; }
+          gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        }
       }
       function ensureRamp(s) {
         const key = (s.bg || '') + '|' + (s.palette || []).join(',');
@@ -342,7 +370,7 @@ void main(){
         dtEff = Math.min(s.dt, spec.dtMax(s));
         const uni = Object.assign({
           u_res: [gw, gh], u_dt: dtEff, u_c: c, u_c2: c * c, u_noise: s.noise || 0, u_nOff: nOff,
-          u_lap9: { int: Number(s.lap) === 9 ? 1 : 0 },
+          u_lap9: { int: Number(s.lap) === 9 ? 1 : 0 }, u_base: base,
         }, spec.stepUniforms(s));
         for (let i = 0; i < n; i++) {
           uni.u_s = C.read; uni.u_step = (stepCount + i) * 1.17;
@@ -354,7 +382,7 @@ void main(){
       function viewUniforms(s) {
         const v = spec.views[s.view];
         return {
-          u_s: C.read, u_res: [gw, gh],
+          u_s: C.read, u_res: [gw, gh], u_base: base,
           u_view: { int: v == null ? 0 : v }, u_prim: { int: spec.prim || 0 }, u_sec: { int: spec.sec == null ? 1 : spec.sec },
           u_n: { int: spec.n }, u_smooth: { int: 0 },
         };
@@ -480,6 +508,9 @@ void main(){
           const rng = U.makeRng(s.seed + '/' + spec.id + '/off');
           nOff = rng.range(0, 900);
           ensureGrid(s);
+          // The base is fixed for the life of this state: a later change of a parameter it came from moves
+          // nothing, because every read adds back the same values the upload took off.
+          base = offset ? Array.from(Float32Array.from(spec.halfBase(s))) : [0, 0, 0, 0];
           upload(C.read, spec.seed(s, gw, gh));
           settle(() => { render(); if (s.warmup > 0) burst(s.warmup); else { status(); startLoop(); } });
         },
@@ -498,9 +529,12 @@ void main(){
         },
         disturb(p) {
           if (!C || !splatPass) return;
+          // Mode 0 mixes toward u_add, so a stored deviation mixes toward u_add minus the base; mode 1 adds,
+          // which the base does not change. (Mode 2, a maximum, is not used by any tab here.)
+          const mode = spec.pokeMode == null ? 1 : spec.pokeMode;
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
-            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode == null ? 1 : spec.pokeMode },
+            u_add: offset && mode === 0 ? spec.pokeAdd.map((a, i) => a - base[i]) : spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: mode },
           });
           C.swap(); render(); startLoop();
         },
@@ -509,11 +543,11 @@ void main(){
           if (!C) throw new Error('nothing to export');
           const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, k = spec.n;
           const species = new Float32Array(n * k);
-          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = st[i * 4 + c];
+          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = offset ? st[i * 4 + c] + base[c] : st[i * 4 + c];
           return {
-            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' } },
+            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' + (offset ? ', the stored deviations with the base state added back' : '') } },
             meta: { tab: spec.id, grid: [gw, gh], species: k, units: 'the model\'s dimensionless units on the step shader\'s lattice', boundary: 'periodic',
-              steps: stepCount, dt: s.dt, precision: texType },
+              steps: stepCount, dt: s.dt, precision: texType, stateBase: offset ? base.slice(0, k) : null },
           };
         },
         async exportPNG(w, h) {
@@ -1100,6 +1134,8 @@ void main(){
     },
     create: rdxCreate({
       id: 'chemotaxis', stepFS: STEP_KS, n: 2, prim: 0, sec: 1,
+      // the uniform state u = 1, v = u/a
+      halfBase: s => [1, 1 / Math.max(s.a, 1e-3), 0, 0],
       views: { u: 0, v: 1, diff: 4, grad: 5, shade: 6 },
       pokeAdd: [0.8, 0, 0, 0], pokeRad: 0.05, pokeMode: 1,
       dtMax: ksDtMax,
@@ -1113,11 +1149,41 @@ void main(){
   });
 
   /* ---------- Vegetation Bands ---------- */
-  function vegDtMax(s) {
+  // The water row of the step is forward Euler in diffusion and upwind advection, with the loss w(1 + n^2)
+  // implicit. At the (pi, pi) grid mode the Laplacian symbol is -Q (Q = 8 for the 5-point stencil, 16/3 for
+  // the 9-point) and the upwind difference (e^{ik} - 1) gives -2, so the explicit factor is 1 - dt R with
+  // R = Q D_w c^2 + 2 v c and the mode is amplified by |1 - dt R| / (1 + dt (1 + n^2)). The two terms act
+  // together: the step needs dt R < 2 before the implicit loss is counted, and dt (R - 1) < 2 with the
+  // smallest loss (bare soil, n = 0). Every other mode is less restrictive (validation/PDE-ORDER.md).
+  const vegQ = s => (Number(s.lap) === 9 ? 16 / 3 : 8);
+  function vegWaterRate(s) {
+    const c = Number(s.scale) || 1;
+    return vegQ(s) * Math.max(Number(s.Dw) || 0, 0) * c * c + 2 * Math.max(Number(s.slope) || 0, 0) * c;
+  }
+  // Recipe v5 on: 0.8 of the combined bound 2/R (the margin the other tabs use), the plant diffusion row
+  // at the same margin, and the mortality and absolute caps.
+  function vegCombinedDtMax(s) {
+    const c = Number(s.scale) || 1;
+    const water = 1.6 / Math.max(vegWaterRate(s), 1e-6);
+    const plants = 1.6 / Math.max(vegQ(s) * Math.max(Number(s.Dn) || 0, 0.05) * c * c, 1e-6);
+    return Math.min(water, plants, 0.5 / Math.max(s.m, 0.05), 0.25);
+  }
+  // Before recipe v5: the smaller of a diffusion limit and an advection limit, each taken alone. When the two
+  // are comparable that overshoots 2/R by up to a factor 1.6 and a water checkerboard grows.
+  function vegSeparateDtMax(s) {
     const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
     const diff = dtDiff(Math.max(s.Dw, s.Dn, 0.05), c, lap9);
     const adv = s.slope > 0 ? 0.8 / (s.slope * c) : 1;
     return Math.min(diff, adv, 0.5 / Math.max(s.m, 0.05), 0.25);
+  }
+  // A recipe made before v5 (ceiling 'v4') keeps the step it was made at wherever that step was stable, so it
+  // reprints. Where it was not, the plate was a growing grid-scale checkerboard rather than the model, and
+  // the recipe takes the combined ceiling: a solver correction, not a change to a finished plate.
+  function vegDtMax(s) {
+    const combined = vegCombinedDtMax(s);
+    if (s.ceiling !== 'v4') return combined;
+    const old = vegSeparateDtMax(s), made = Math.min(Number(s.dt) || 0.02, old);
+    return made * (vegWaterRate(s) - 1) < 2 ? old : combined;
   }
   function seedVegetation(s, W, H) {
     const rng = U.makeRng(s.seed + '/vegetation');
@@ -1160,15 +1226,21 @@ void main(){
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
         options: [['noise', 'Noisy cover'], ['patches', 'Patches'], ['stripes', 'Stripes']] },
       RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0, 0.8, 0.01, f2),
-    ]).concat(simFields(0.001, 0.25, 0.001, 6000)).concat(pictureFields([
+    ]).concat(simFields(0.001, 0.25, 0.001, 6000).flatMap(f => f.key !== 'dt' ? [f] : [f,
+      { group: 'Simulation', key: 'ceiling', label: 'Step ceiling', type: 'seg', kind: LIVE,
+        options: [['combined', 'Combined'], ['v4', 'Recipe v4']],
+        hint: 'Combined keeps the step under 0.8 of the explicit bound set by water diffusion and downhill flow acting together. Recipe v4 is the ceiling recipes made before recipe v5 used, the smaller of the two limits taken separately; old links keep it where their step was stable, so they reprint, and take the combined ceiling where it was not.' },
+    ])).concat(pictureFields([
       ['v', 'Plants n'], ['u', 'Water w'], ['diff', 'w − n'], ['grad', 'Band edges'], ['shade', 'Relief'],
     ])),
-    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
+    // grid raised for print sharpness at v2 (see "Print sharpness" in AGENTS.md); the combined step ceiling
+    // arrived at v5, and recipes older than v5 keep the separate-limit ceiling wherever it was stable.
+    legacy: { 2: { grid: 192 }, 5: { ceiling: 'v4' } },
     defaults: Object.assign({
       grid: 512, aspect: '1:1', lap: 5, scale: 1,
       a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1,
       init: 'noise', amp: 0.5,
-      running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0,
+      running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0, ceiling: 'combined',
       view: 'v', seed: 'klausmeier-1999',
     }, PICTURE_DEFAULTS),
     presets: {

@@ -101,6 +101,7 @@ jobs:
           node tools/print-smoothing-check.js
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
+          node tools/three-vortex-custom-check.js
           npm test
           npm run test:validator
       - name: Structural checks

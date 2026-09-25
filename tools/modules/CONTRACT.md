@@ -46,7 +46,14 @@ Schema entries:
 { group, key, label, type: 'seg', kind, options: [[value, 'Label'], ...], wrap?: true, hint? }
 { group, key, label, type: 'toggle', kind, hint? }
 { group, key, label, type: 'action' }     // instance.action(key) is called
+{ group, key, label, type: 'text', kind, maxLength?, validate?(value) -> null | { message, pos }, activeOnly?, hint? }
 ```
+
+A `text` control holds typed text such as a formula. Parse formulas with `U.expr` (`src/shared/expr.js`),
+never with `eval` or `new Function`, which `tools/lint.js` rejects in `src/`. The shell commits only text
+that `validate` accepts and replaces an invalid value from a link with the default. `activeOnly: true`
+keeps a control out of the caption while `dimUnless` is false. A mode built on typed formulas is
+user-defined: say so on the status line and print no comparison with theory in it.
 
 `kind` is `'geom'` (regenerate), `'paint'` (repaint only) or `'live'` (instance.live(key) while running). Copy the `RANGE(group, key, label, kind, min, max, step, fmt, extra)` helper from the pde block. The shell's own `sanitize` clamps ranges, validates seg values and coerces toggles before calling yours. Every key in `defaults` must be either in the schema or a deliberate hidden key.
 
@@ -107,6 +114,7 @@ exportData()       -> Promise<{ arrays: { name: { data, shape, units?, descripti
 - `G.GLSL.hash` defines `hash21(vec2)` and `hash22(vec2)`. `G.GLSL.noise` defines `vnoise` and `fbm` and needs `hash` spliced in first. `G.GLSL.ramp` declares `uniform sampler2D u_ramp` and `vec3 ramp(float t)`. `G.GLSL.splatFS` is the shared brush used by `disturb`.
 - The vertex stage is fixed; fragment shaders start with `#version 300 es`, `precision highp float;`, `in vec2 v_uv; out vec4 outColor;` and `v_uv` runs 0..1.
 - `rgba32f` render targets need `gl.floatExt`. Otherwise use `rgba16f` after `gl.getExtension('EXT_color_buffer_half_float')` and upload with `toHalf` (copy the function from the pde block). Do the same `texType` selection the pde block does.
+- Float16 state keeps about three significant digits, so an increment below half the spacing of the stored value is lost. A slow instability around a nonzero uniform state can freeze and a conserved mean can drift. In `pdeCreate` and `rdxCreate` a tab can declare `halfBase(s)`, which stores the float16 state as the deviation from that base (the `ABSV` and `ABS4`/`REL4` macros add it back wherever the value itself is needed), or `halfRefuse`, a message shown instead of the plate when float16 state cannot run the model. `node tools/half-float-check.js` measures every pde and rdx tab on the fallback and holds both to recorded criteria (validation/HALF-FLOAT.md).
 - GLSL ES 3.00 does not have `step(genType, float)`. Write `step(edgeFloat, x)`. Integer state lives in float channels; round on read.
 - Nothing in the shell samples with mipmaps; use `nearest` for simulation state and `linear` only for display LUTs.
 - `G.GLSL.bicubic` defines `crW`, `texCR(sampler2D, uv, res)` for the red channel and `texCR4` for all four. Splice it into any render shader that draws a simulation grid coarser than the canvas. A few hundred cells across a few thousand print pixels is a 10x magnification, where nearest gives a mosaic and bilinear leaves the lattice crease on every front. Catmull-Rom interpolates, so a tap at a texel centre is exact and the simulation passes are unaffected. Use it in the reduce pass too, or the black and white points will not match what is drawn.
@@ -114,7 +122,11 @@ exportData()       -> Promise<{ arrays: { name: { data, shape, units?, descripti
 
 ## Util (`U = Studio.util`)
 
-`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob, stats`.
+`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob, stats, expr`.
+
+`U.expr` is the expression language: `check(text, { vars, params })` returns `null` or `{ message, pos }`,
+`compile(text, spec)` returns `fn(env)` with the variables then the parameters in spec order, and
+`toGLSL(text, spec, { rename })` writes whitelisted GLSL.
 
 `U.stats` is the uncertainty harness (`src/shared/stats.js`): `compare(record)` builds a status-line comparison span; `seriesMean(x)` and `tauInt(x)` for a correlated time series; `fieldMean(values, W, H)` for one correlated field; `blocking`, `blockBootstrap(x, stat, { seed })`, `slopeBootstrap(xs, ys, { seed })`, `sampleMean`, `ensemble`, `hill(values, k)`. Seed every resampling with `s.seed + '/<tag>'`.
 

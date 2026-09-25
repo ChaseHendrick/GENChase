@@ -6,7 +6,7 @@ with its status; `node tools/paper-check.js` checks each one against its files.
 [COMMITMENTS.md](COMMITMENTS.md) covers protecting a result before it is public.
 
 This repository may be private, so a paper never sends readers here. Each paper goes public as a
-repository of its own, its **companion** (for example `SharpMeow/minimal-winding`): the paper folder
+repository of its own, its **companion** (for example `ChaseHendrick/minimal-winding`): the paper folder
 without its `notes/` and `submission/`, plus a LICENSE, a CITATION.cff and a .zenodo.json. The
 **publish papers** workflow keeps the companion in step and locked; nobody writes to it by hand.
 

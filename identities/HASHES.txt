@@ -3,10 +3,11 @@
 # 2026-09-24: note.typ and note.pdf refingerprinted after the affiliation line changed to "Independent researcher"; no mathematical text changed.
 # 2026-09-24 (later): refingerprinted again after "Independent Researcher" was capitalized and three references in refs.bib were corrected against their publishers (Gotoda, Kimura, Groebli); no mathematical text changed.
 # UTF-8 LF. Block bytes: Name: through Recorded here:, including final newline.
+# 2026-09-25: STATEMENTS.txt, note.typ and note.pdf refingerprinted after the author line changed from the retired pseudonym "Chaos" to Chase Hendrick, the ORCID was added and the repository URLs moved to ChaseHendrick; no mathematical text changed.
 
-STATEMENTS.txt  d84bfcc71c223d8765bdaaa7381d7cfa4aace1e8783eafd4f41c7532f35e6704
-note.typ  1c4443e7a063d826303f7ac60e5d3bf2353bc8672e7b4b7a6ff5bc3a6a59ce36
-note.pdf  fbff75e33e79e1e558dd1971593e55713d4b4693647c7c01385c51a1ed1e10a6
+STATEMENTS.txt  98e77512806fe9ada510fc228e4d389b46aeaa9c19a214e3596c33e3474f99d8
+note.typ  be18459d4b8865caa5a748e886041e0caefc274cad789786487715502443d6d7
+note.pdf  8d9db4b97a778dd6292023558b5c0ede33279317164b9db828c19cb6539d75e5
 
 Three-vortex collapse bound  2cc88a7367826744af6ec683c2c2f40e682f5eda6896fe0ce3e813c672e75ee1
 Parallelogram lock  8071f9d9ca1ed3315af0d5be219d1b2cf0158d316a3748a2f922761d45beed2f

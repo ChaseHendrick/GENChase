@@ -21,7 +21,9 @@ function cases(src) {
   for (let i = 0; i < regs.length; i++) {
     const a = regs[i].index, b = i + 1 < regs.length ? regs[i + 1].index : src.length;
     const own = src.slice(a, b);
-    const leg = own.match(/legacy:\s*\{([^}]*\{[^}]*\}[^}]*)\}/);
+    // One or more transitions, { 2: { grid: 192 }, 5: { ceiling: 'v4' } }: every inner object is captured,
+    // not only the first (a single-object pattern once dropped the second transition without a word).
+    const leg = own.match(/legacy:\s*\{((?:[^{}]*\{[^{}]*\})+[^{}]*)\}/);
     if (!leg) continue;
     const id = regs[i][1];
     // the module's present-day value for each legacy key
@@ -65,7 +67,7 @@ function cases(src) {
   if (!cs.length) { console.log('no legacy declarations to check'); return; }
   const b = await chromium.launch({ args: glArgs() });
   const jobs = [];
-  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test' };
+  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test', ceiling: 'Step ceiling' };
   for (const c of cs) {
     const label = LABEL[c.key] || c.key;
     // The values were parsed out of the source as text, so they have to go back into a recipe as the

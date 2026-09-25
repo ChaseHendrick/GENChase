@@ -11,12 +11,12 @@ renderer string are in [results/pde-order.json](results/pde-order.json).
 ```
 node tools/build.js
 node tools/pde-order.js                 # quick: cahn and turing, every ladder; 60 s here
-node tools/pde-order.js --full --write  # every tab, every ladder, three seeds; 548 s here
+node tools/pde-order.js --full --write  # every tab, every ladder, three seeds; 437 s here
 node tools/pde-order.js --tab ks        # one tab (add --full for the full ladder)
 ```
 
-Times are for headless Chromium 141 on ANGLE/SwiftShader, on a 4-core machine shared with other jobs
-(load average about 15). The results file holds the `--full` run of all eleven tabs.
+Times are for headless Chromium 141 on ANGLE/SwiftShader, on a 4-core machine shared with other jobs. The
+results file holds the `--full` run of all eleven tabs.
 
 ## What is run
 
@@ -73,7 +73,7 @@ The references read nothing back from the shaders:
 - **Initial field.** One smooth initial field on the tab's own 32 x 32 lattice: a seeded sum of five Fourier
   modes with `1 <= |mx| + |my| <= 4`. PFC uses the band 4 to 6 (Findings).
 - **Starting step.** `dt0` is the step the studio takes at the default recipe: the default `dt` after the
-  module's own ceiling. Six tabs clamp it:
+  module's own ceiling. Seven tabs clamp it:
 
   | tab | `dt0` |
   |---|---|
@@ -83,6 +83,7 @@ The references read nothing back from the shaders:
   | swift | 0.01514 |
   | turing | 0.008333 |
   | chemotaxis | 0.019995 |
+  | vegetation | 0.01818 (recipe v5 ceiling; 0.02 before, Findings) |
 
 - **Ladder.** `dt0, dt0/2, ..., dt0/16` (`--full`; quick stops at `dt0/8`) at `T = n0 dt0`. `n0` is 32, except
   16 for excitable and 64 for turing and PFC.
@@ -130,7 +131,7 @@ The references read nothing back from the shaders:
 - **The bound.** The largest `dt` at which no decaying eigenvalue of that one-step map is amplified. For a scalar
   forward Euler row it is `dt < 2/|lambda|` (AGENTS.md). Modes that the frozen linearization grows set no bound.
 - **Where the runs sit.** Every `dt` is checked against the bound:
-  - on the time ladders, `dt0` sits between 0.11 (PFC) and 0.87 (vegetation) of it; turing is at 0.80;
+  - on the time ladders, `dt0` sits between 0.11 (PFC) and 0.80 (turing) of it; vegetation is at 0.79;
   - on the space ladders, at 0.54 or below.
 
 **The float32 floor.** Every GPU run on the time and space ladders is repeated in Float64 with the same discrete
@@ -168,12 +169,12 @@ Rounding is then at most a tenth of what is fitted.
 | turing | linearly implicit Euler | 1, 2 | 0.89 ± 0.01 (1.03 ± 0.05) | 1.92 ± 0.07 | 8.33e-3 to 5.2e-4, T = 0.533 | 16 to 128 (3.33 to 0.417) | yes: 1.99 | Schnakenberg; float32 floor from dt0/4 and at N = 128 |
 | cyclic | forward Euler | 1, 2 | 1.01 ± 0.01 (1.00 ± 0.01) | 1.94 ± 0.07 | 1e-1 to 6.25e-3, T = 3.2 | 16 to 128 (1 to 0.125) | no | |
 | chemotaxis | forward Euler | 1, 2 | 1.01 ± 0.01 (1.00 ± 0.01) | 1.98 ± 0.03 | 2e-2 to 1.25e-3, T = 0.64 | 16 to 128 (0.909 to 0.114) | no | |
-| vegetation | linearly implicit Euler, upwind advection | 1, 1 | **1.26 ± 0.51, mismatch** (1.05 ± 0.43) | 0.90 ± 0.09 | 2e-2 to 1.25e-3, T = 0.64 | 32 to 256 (1 to 0.125), uniform rain, T = 0.16 | no | pre-asymptotic at Courant 0.8; default recipe does not converge in space (Findings) |
+| vegetation | linearly implicit Euler, upwind advection | 1, 1 | **1.30 ± 0.45, mismatch** (1.10 ± 0.36) | 0.90 ± 0.09 | 1.82e-2 to 1.14e-3, T = 0.582 | 32 to 256 (1 to 0.125), uniform rain, T = 0.145 | no | pre-asymptotic at Courant 0.73; default recipe does not converge in space (Findings) |
 
 - **Time.** Every tab reproduces the formal order 1 except vegetation, whose ladder starts in a pre-asymptotic
-  range (Findings).
+  range (Findings); its true error is inside the band, its self-convergence is not.
   - The seed-to-seed standard deviation of the fitted order is 0.002 to 0.022 on the pde tabs, 0.004 to 0.013
-    on excitable, turing, cyclic and chemotaxis, and 0.15 on vegetation.
+    on excitable, turing, cyclic and chemotaxis, and 0.12 on vegetation.
   - Turing's successive differences keep only their first pair above the float32 floor, so its
     self-convergence order, 0.89, rests on one pair per seed; the `+/-` there is that pair's spread across seeds.
     Its true error, which the floor rule keeps at more levels, gives 1.03.
@@ -238,29 +239,79 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
 
 ## Findings
 
-1. **Vegetation's step ceiling can exceed the explicit bound.** `vegDtMax` takes the minimum of separate
-   diffusion (`0.2/(D c^2)`) and advection (`0.8/(v c)`) limits. Forward Euler on the water row at the grid mode
-   needs them combined: `dt (Q D_w c^2 + 2 v c - loss) < 2`, with `Q = 8` for the 5-point stencil (16/3 for the
-   9-point). When the two limits are comparable, the minimum overshoots the combined bound by up to a factor
-   1.6. Checked on the actual instance at slope 40, scale 1, all inside the UI ranges:
+1. **Vegetation's step ceiling exceeded the explicit bound; corrected at recipe v5.**
+   - **The bound, from the shader.** The water update is
+     `w' = (w + dt (a + v c (w_E - w) + D_w L w)) / (1 + dt (1 + n^2))`, with `w_E` the neighbor at `+x` and `L`
+     the 5- or 9-point Laplacian times `c^2`. On a Fourier mode the explicit part multiplies by `1 + dt lambda`,
+     `lambda = D_w c^2 sigma(k) + v c (e^{i kx} - 1)`, and the implicit loss divides by `1 + dt l` with
+     `l = 1 + n^2 >= 1`. At the (pi, pi) mode `sigma = -Q` (`Q = 8`, or 16/3 for the 9-point stencil) and
+     `e^{i pi} - 1 = -2`, so `lambda = -R` with `R = Q D_w c^2 + 2 v c`, and `|1 - dt R| <= 1 + dt l` requires
+     `dt (R - l) <= 2`. That is the bound this finding stated before the fix, with loss `l`; its smallest value,
+     `l = 1` on bare soil, gives the least stable case, `dt (R - 1) < 2`.
+   - **Every other mode is less restrictive.** Write `p = 1 - cos kx`, `A = -Re lambda` and `I = Im lambda`, so
+     `I^2 = (v c)^2 p (2 - p)`. Since `-sigma` lies in `[0, Q]`, `A >= p v c` and `R - A >= (2 - p) v c`, hence
+     `I^2 <= A (R - A)`. The condition for mode `k`, `dt (|lambda|^2 - l^2) <= 2 (A + l)`, then follows from
+     `dt (R - l) <= 2`, because `|lambda|^2 - l^2 <= A R - l^2 <= (A + l)(R - l)`. This holds for both stencils,
+     with the loss or without it. The tool also scans every mode numerically (below).
+   - **What the module did.** `vegDtMax` took the smaller of `0.2/(D c^2)` (0.3 for the 9-point stencil) and
+     `0.8/(v c)`, each 0.8 of its own term's bound. When the two terms are comparable, the smaller limit
+     overshoots the combined bound by up to a factor 1.6.
+   - **The fix.** From recipe v5 the ceiling is `min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25)`: 0.8 of the combined
+     bound before the implicit loss is counted, which is the margin the other tabs use, with the plant row at
+     the same margin.
+   - **Older recipes.** A recipe made before v5 gets `ceiling: 'v4'` through `legacy: { 5: { ceiling: 'v4' } }`.
+     - Where its pre-v5 step satisfied `dt (R - 1) < 2`, it was stable, and it keeps that step. It reprints:
+       float32 exports at recipe v4 (grid 256, 150 steps) of the default recipe, of `D_w` = 2 and 2.5 at slope 40,
+       and of the gentle, steep and flat preset settings are bit for bit the same as on main before this change
+       (a3b5e98), while `D_w` = 5, past the bound, differs as it should (a before-and-after hash, not a recorded
+       tool).
+     - Where the step was past the bound, the plate was a growing grid-scale checkerboard, not the model. Such a
+       recipe takes the combined ceiling. That is a solver correction and its plate changes.
+     - A recipe at v5 gets the combined ceiling. The default and six of the seven presets take a smaller step
+       than before: the default, tiger, sparse, runoff and relief 0.01818 instead of 0.02, steep 0.00969 instead
+       of 0.01, gentle 0.04 instead of 0.05. Flat ground is unchanged at 0.03.
+   - **The regression check.** The tool's `ceiling` section (`ORDER_ONLY=ceiling node tools/pde-order.js --tab
+     vegetation`) is recorded under `tabs.vegetation.ceiling`. A failing gate fails the run. It has four parts.
+     - **Sweep.** 51,840 settings spanning the UI ranges (eight scales from 0.3 to 3, eight slopes from 0 to 120,
+       nine values of `D_w` from 0 to 40, `D_n` 0.2, 1 and 3, `m` 0.05, 0.45 and 1.2, both stencils, requested `dt`
+       0.001 to 0.25), each under both rules, through the module's own sanitize and step clamp. Under the combined
+       rule the step is at most 0.800 of `2/R` and of the plant bound. Under the v4 rule the step is below
+       `2/(R - 1)` everywhere: it keeps the pre-v5 step in 42,600 settings and corrects it in 9,240 (17.8%), where
+       the pre-v5 step was up to 1.599 times the bound.
+     - **Modes.** At every swept step, every Fourier mode of the linearized water row (bare soil) and plant row,
+       on a 17 x 17 grid of wavenumbers in `[0, pi]^2`, from the stencil and upwind symbols. The largest
+       amplification is 0.99956 for water (the uniform mode at the smallest step, damped only by the implicit
+       loss) and 0.99998 for plants: none is amplified.
+     - **Instance.** The actual shader on a 32 x 32 lattice, from a smooth water field carrying a 1e-6
+       checkerboard on bare soil (`n = 0`, so the water row is decoupled and its bound is exactly `2/(R - 1)`),
+       at slope 40 and scale 1, for 200 steps:
 
-   | `D_w` | module ceiling | computed bound | ratio | 1e-6 water checkerboard |
-   |---|---|---|---|---|
-   | 5 | 0.020 | 0.0168 | 1.19 | 4.1e-4 at step 20, 0.16 at step 40 |
-   | 10 | 0.020 | 0.0126 | 1.59 | 1.6 at step 20 |
-   | 20 | 0.010 | 0.0084 | 1.19 | 5.9e-4 at step 20, 0.34 at step 40 |
+       | `D_w`, stencil | bound `2/(R - 1)` | step, recipe v5 | step, v4 rule | pre-v5 step / bound | checkerboard at step 200: v5 step, pre-v5 step, 1.02 x bound |
+       |---|---|---|---|---|---|
+       | 1, 5-point | 0.02299 | 0.01818 | 0.02000 (kept) | 0.87 | 5.2e-10, 2.6e-9, 2.1e-3 |
+       | 5, 5-point | 0.01681 | 0.01333 | 0.01333 (corrected) | 1.19 | 2.0e-9, 20, 2.2e-3 |
+       | 10, 5-point | 0.01258 | 0.01000 | 0.01000 (corrected) | 1.59 | 1.7e-9, 20, 2.3e-3 |
+       | 20, 5-point | 0.00837 | 0.00667 | 0.00667 (corrected) | 1.20 | 0, 20, 2.4e-3 |
+       | 10, 9-point | 0.01511 | 0.01200 | 0.01200 (corrected) | 1.32 | 1.7e-9, 20, 2.3e-3 |
 
-   The bound is computed over water 0.2 to 1.5 and plants 0 to 2.5. The shipped presets are inside it (0.78 to
-   0.97; `gentle` is at 0.97, with no margin), and so is the default (0.87). The check is the tool's `ceiling`
-   section (`ORDER_ONLY=ceiling node tools/pde-order.js --tab vegetation`), recorded under
-   `tabs.vegetation.ceiling`. A combined ceiling, `0.8 * 2/(Q D_w c^2 + 2 v c)`, would close the gap. The module is
-   not changed here.
+       The checkerboard starts at 1e-6. An amplitude of 20 is the field saturated at the shader's clamp of 40. The
+       Float64 twin, with both species linearized over the envelope, gives the same bound at all five settings.
+
+       The module's step decays the checkerboard under both rules. The pre-v5 step, run with the ceiling removed,
+       grows it wherever it is past the bound, and 0.98 and 1.02 of the computed bound decay and grow on the
+       actual shader.
+     - **Presets.** Under the combined rule every preset takes 0.8 of `2/R`, 0.78 to 0.80 of the twin bound. Under
+       the v4 rule each keeps its pre-v5 step, 0.785 to 0.975 of the twin bound (`gentle` at 0.975).
+   - **Margin of the kept steps.** The kept pre-v5 steps can have almost no margin. At the corner of the ranges
+     (scale 3, slope 120, `D_w` = 40, 5-point) the step is 0.9997 of the bare-soil bound, as it always was. A v5
+     recipe with those settings takes 0.8 of `2/R`.
 2. **Vegetation's time ladder starts pre-asymptotic.** At the studio's own step the Courant number of the upwind
-   advection is `v dt c = 0.8`. At a Courant number of 1, the time and space errors of pure upwind advection
-   cancel, so the error is not yet linear in `dt` at 0.8. The first pairwise orders, between `dt0`, `dt0/2`
-   and `dt0/4`, are 1.3 to 2.0; the finest are 1.0 to 1.1. The fit over the whole ladder, 1.26 +/- 0.51, is outside the
-   band. It is recorded as a mismatch, explained by the starting point rather than by the scheme. The true error
-   gives 1.05 +/- 0.43.
+   advection is `v dt c = 0.73` (0.8 before recipe v5). At a Courant number of 1, the time and space errors of
+   pure upwind advection cancel, so the error is not yet linear in `dt` at 0.73. The first pairwise orders, between
+   `dt0`, `dt0/2` and `dt0/4`, are 1.3 to 1.9; the finest are 0.96 to 1.13. The fit over the whole ladder,
+   1.30 +/- 0.45, is outside the band. It is recorded as a mismatch, explained by the starting point rather than
+   by the scheme. The true error gives 1.10 +/- 0.36, inside the band. (Before recipe v5, from `dt0 = 0.02`, the
+   two were 1.26 +/- 0.51 and 1.05 +/- 0.43.)
 3. **Vegetation's default recipe has no asymptotic range on its own lattice.** Two properties cause this:
    - The rainfall ramp `a (1 + agrad (2y - 1))` jumps by `2 agrad a` (1.32 at the defaults) across the periodic
      seam in `y`, which forces an internal layer into the water field.
@@ -270,12 +321,12 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
 
    | ladder | observed order | what it isolates |
    |---|---|---|
-   | default recipe, grids 16, 32, 64 | -0.09 | both properties |
-   | default `agrad` on the fine ladder, grids 32 to 128 | 0.10 to 0.30 | the seam |
-   | uniform rain on the tab's ladder | 0.22 to 0.75 | the numerical diffusion |
-   | uniform rain on the fine ladder, grids 32 to 256, `T = 0.16` | 0.90 +/- 0.09 | neither (the main measurement) |
+   | default recipe, grids 16, 32, 64 | -0.08 | both properties |
+   | default `agrad` on the fine ladder, grids 32 to 128 | 0.03 to 0.27 | the seam |
+   | uniform rain on the tab's ladder | 0.26 to 0.65 | the numerical diffusion |
+   | uniform rain on the fine ladder, grids 32 to 256, `T = 0.145` | 0.90 +/- 0.09 | neither (the main measurement) |
 
-   The main measurement's pairwise orders rise toward the formal 1 with refinement (finest 0.88 to 0.96). The
+   The main measurement's pairwise orders rise toward the formal 1 with refinement (finest 0.90 to 0.97). The
    seam is a modeling choice, not a numerical error, but it means the plate's top and bottom rows sit next to a
    rainfall step.
 4. **The implicit denominators set a float32 floor that rises as `dt` falls.** turing and vegetation form

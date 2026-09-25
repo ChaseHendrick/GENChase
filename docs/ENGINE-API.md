@@ -2,12 +2,17 @@
 
 The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
 `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
-`Studio.recipeVersion` is **4**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+`Studio.recipeVersion` is **5**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
 tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
 v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
 Version 4 (2026-09-24) makes the lozenge tab's frozen test the rim-connected one (a rhombus is frozen when rhombi
 of its own orientation join it to the rim); recipes older than v4 keep the local radius-3 test through
 `legacy: { 4: { ring: 3 } }` and reprint as they were made.
+Version 5 (2026-09-25) gives the vegetation tab a time-step ceiling that combines water diffusion and upwind
+advection. Recipes older than v5 get `ceiling: 'v4'` through `legacy: { 5: { ceiling: 'v4' } }`: they keep
+the step the separate limits gave them wherever that step was stable, and so reprint, and take the combined
+ceiling where it was past the explicit bound, where the plate was a growing grid-scale checkerboard
+([validation/PDE-ORDER.md](../validation/PDE-ORDER.md)).
 
 ## Compatibility boundary
 
@@ -31,12 +36,12 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
 engine recipe version and declare the old value at that transition:
 
 ```js
-// Example for a future recipe version 5, not an instruction to change version now:
-legacy: { 2: { grid: 192 }, 5: { grid: 256 } },
+// Example for a future recipe version 6, not an instruction to change version now:
+legacy: { 2: { grid: 192 }, 6: { grid: 256 } },
 defaults: { grid: 512 }
 ```
 
-Recipes older than version 2 get 192; versions 2 to 4 get 256; version 5 gets 512.
+Recipes older than version 2 get 192; versions 2 to 5 get 256; version 6 gets 512.
 An explicitly saved `grid` always wins. Migrations apply newer transitions first,
 so the earliest applicable historical default wins for old hashes. The API test
 covers successive changes and explicit overrides; `tools/recipe.js` covers existing
@@ -120,6 +125,30 @@ graphics hardware; it is recorded because precision and driver differences are p
 file. `node tools/provenance-check.js` reads every one back through the real export buttons.
 `node tools/run.js <hash> --out plate.npz --steps N` runs a recipe headlessly through `Studio.exportData()`.
 
+## Text controls and typed formulas
+
+These are additive API version 1 surfaces (2026-09-25). Existing schemas, recipes and
+module methods are unchanged, and the recipe version stays 4: a new text key with a
+default is left out of every hash that does not change it, so older links reprint as made.
+
+| Surface | Contract |
+| --- | --- |
+| Schema `{ type: 'text', key, label, kind, maxLength?, placeholder?, validate?, hint?, dimUnless?, activeOnly? }` | A single-line text control. `maxLength` defaults to 256. `validate(value)` returns `null` or `{ message, pos }` with a 0-based character position. |
+| Sanitizing | The shell keeps a text value only when it is a string no longer than `maxLength` that `validate` accepts, and otherwise uses the default, so a hand-edited link or settings file cannot crash a plate. A `validate` that throws counts as a refusal. |
+| Editing | The control checks every keystroke and commits on Enter or blur only when the text is valid, so the plate and the recipe keep the last valid value. The problem, its column and the typed text are shown with `textContent`, never as HTML. Escape restores the committed value. |
+| `activeOnly: true` | Leaves the control out of the caption's parameter list while its `dimUnless(state)` is false, so a formula that does not apply is not printed under a plate. |
+| `Studio.util.expr` | The expression language, `src/shared/expr.js`: `parse`, `compile`, `check`, `toGLSL`, `tokenize`, `ExprError`, `FUNCTIONS`, `CONSTANTS`, `LIMITS`. Text is parsed into a tree and compiled to closures; nothing is evaluated as code. |
+
+The grammar, limits and error positions are documented at the top of `src/shared/expr.js`.
+`compile(text, { vars, params })` returns `fn(env)`, where `env` holds the variables and then
+the parameters in the order the spec lists them. `toGLSL` writes the same tree with every
+operation parenthesized, `^` as `pow()` and `atan2(y, x)` as `atan(y, x)`, and refuses output
+containing any token outside its whitelist. `node tools/expr-check.js` (in `npm test`) checks
+agreement with `Math`, hostile inputs, the GLSL output and precedence negative controls;
+`tools/lint.js` fails any `eval(`, `new Function` or string timer in `src/`. A plate built
+from a typed formula is user-defined and not validated; a module must say so on its status
+line and print no comparison with theory in that mode.
+
 ## Contributor on-ramp and checks
 
 Copy the single [`src/modules/_template.js`](../src/modules/_template.js). Its witness
@@ -129,8 +158,10 @@ parameters. Follow the [module contract](../tools/modules/CONTRACT.md).
 
 `node tools/engine-api-check.js` tests the real engine, a controlled fixture, the real
 polygon module and its broken control, successive recipe defaults, fixed RNG output,
-invalid inputs, stale-data clearing, snapshot isolation, safe text rendering and
-shared print/colophon preferences across tabs. CI also retains saved-recipe, lazy-load,
+invalid inputs, stale-data clearing, snapshot isolation, safe text rendering,
+shared print/colophon preferences across tabs, and text controls: validation, commit
+of valid text only, the hash round trip, fallback for bad link values, markup shown as
+text, Flow Field's custom field and Attractors' custom-ODE divergence guard. CI also retains saved-recipe, lazy-load,
 loading failure/retry, UI, print and all scientific checks.
 
 ## Caption editing on desktop and mobile

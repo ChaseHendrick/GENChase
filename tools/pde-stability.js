@@ -8,7 +8,9 @@ const { chromium } = require('playwright');
   let source = fs.readFileSync(path.join(root, 'src/modules/pde.js'), 'utf8');
   const marker = '        fieldCells()';
   assert(source.includes(marker), 'PDE instrumentation marker is missing');
-  assert(source.includes('spec.pokeMode ?? 1'), 'The explicit mixing mode must be preserved');
+  // The mode bound to the brush shader; the module also reads the mode elsewhere, so the anchor is the binding itself.
+  const modeBinding = 'u_mode: { int: spec.pokeMode ?? 1 }';
+  assert.equal(source.split(modeBinding).length, 2, 'The explicit mixing mode must be preserved, bound once');
   source = source.replace(marker, `        auditAdvance(n) { step(n); },
         auditUpload(data) { upload(C.read, data); },
         auditField() {
@@ -29,7 +31,7 @@ ${marker}`);
         await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/stability');
         // The click failure control restores both historical defects. The uniform-mode
         // failure control changes only dt, isolating the amplitude-envelope error.
-        let tested = fixture === 'real-click' && legacy ? source.replace('spec.pokeMode ?? 1', 'spec.pokeMode || 1') : source;
+        let tested = fixture === 'real-click' && legacy ? source.replace(modeBinding, 'u_mode: { int: spec.pokeMode || 1 }') : source;
         // Reproduce the old failure faithfully: it clipped concentration and had
         // no batch/brush rejection. The maintained solver now rejects such states.
         if (legacy) tested = tested.replaceAll('if (crossedGuard())', 'if (false && crossedGuard())')

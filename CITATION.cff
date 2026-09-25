@@ -6,16 +6,17 @@ authors:
   - given-names: "Chase"
     family-names: "Hendrick"
     affiliation: "Independent Researcher"
-    website: "https://github.com/SharpMeow"
+    website: "https://github.com/ChaseHendrick"
+    orcid: "https://orcid.org/0009-0002-9754-6087"
 # Software DOI: when Zenodo archives a release (docs/PUBLISHING.md), add the concept DOI,
 # which resolves to the latest version, on the next line and delete this comment:
 # doi: 10.5281/zenodo.<number from the Zenodo record>
 version: "v0.6.2"
 date-released: "2026-09-24"
-repository-code: "https://github.com/SharpMeow/GENChase"
-url: "https://github.com/SharpMeow/GENChase"
+repository-code: "https://github.com/ChaseHendrick/GENChase"
+url: "https://github.com/ChaseHendrick/GENChase"
 license: Apache-2.0
-license-url: "https://github.com/SharpMeow/GENChase/blob/main/LICENSE"
+license-url: "https://github.com/ChaseHendrick/GENChase/blob/main/LICENSE"
 abstract: >-
   GENChase is a folder-based browser studio with one shared engine and
   130 pattern-forming systems from physics, chemistry, biology and mathematics,
@@ -62,11 +63,12 @@ references:
       - given-names: "Chase"
         family-names: "Hendrick"
         affiliation: "Independent Researcher"
-        website: "https://github.com/SharpMeow"
+        website: "https://github.com/ChaseHendrick"
+        orcid: "https://orcid.org/0009-0002-9754-6087"
     year: 2026
     month: 9
-    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
-    repository-code: "https://github.com/SharpMeow/GENChase"
+    url: "https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md"
+    repository-code: "https://github.com/ChaseHendrick/GENChase"
     abstract: >-
       Three point vortices with circulations (1, 1, -1/2) on the L=0 circle
       collapse self-similarly. Their dimensionless product of initial angular
@@ -89,10 +91,11 @@ references:
       - given-names: "Chase"
         family-names: "Hendrick"
         affiliation: "Independent Researcher"
-        website: "https://github.com/SharpMeow"
+        website: "https://github.com/ChaseHendrick"
+        orcid: "https://orcid.org/0009-0002-9754-6087"
     year: 2026
     month: 9
-    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
+    url: "https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md"
     notes: "Recorded in GENChase 2026-09-20. omega_0 t_c >= 3 sqrt(5)/4 at cos 2theta = 1/4."
   - type: generic
     title: "Quincunx lock: an explicit formula and sharp minimum for the Novikov–Sedov five-vortex quincunx collapse"
@@ -100,8 +103,9 @@ references:
       - given-names: "Chase"
         family-names: "Hendrick"
         affiliation: "Independent Researcher"
-        website: "https://github.com/SharpMeow"
+        website: "https://github.com/ChaseHendrick"
+        orcid: "https://orcid.org/0009-0002-9754-6087"
     year: 2026
     month: 9
-    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
+    url: "https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md"
     notes: "Recorded in GENChase 2026-09-20. omega_0 t_c >= 3 sqrt(33)/16 at cos 2theta = 4/7."

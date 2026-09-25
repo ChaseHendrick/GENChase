@@ -71,8 +71,8 @@ jobs:
           if [ -z "$(git status --porcelain -- identities/commitments)" ]; then echo "No proof changed."; exit 0; fi
           branch=automation/timestamps
           # The project identity from AGENTS.md; it is the only commit author this repository uses.
-          git config user.name 'Chaos'
-          git config user.email '326338179+SharpMeow@users.noreply.github.com'
+          git config user.name 'Chase Hendrick'
+          git config user.email '326338179+ChaseHendrick@users.noreply.github.com'
           git switch -c "$branch"
           git add identities/commitments
           git commit -q -m "OpenTimestamps proofs for the commitment ledger" -m "Made by the timestamps workflow, run $GITHUB_RUN_ID."

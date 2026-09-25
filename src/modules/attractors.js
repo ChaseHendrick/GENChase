@@ -45,8 +45,8 @@
   }
   function flowSys(name, n, def, dt, view, roll, start, der) {
     return { name, kind: 'flow', n, def, dt, view, roll, start,
-      make: (co, h, yaw, pitch) => {
-        const step = rk4(der(co.a, co.b, co.c, co.d), h);
+      make: (co, h, yaw, pitch, rng, s) => {
+        const step = rk4(der(co.a, co.b, co.c, co.d, s), h);
         const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
         return st => {
           step(st);
@@ -58,6 +58,22 @@
       } };
   }
   const j = (r, w) => (r() - 0.5) * w;
+
+  /* Custom ODE: dx/dt, dy/dt, dz/dt typed by the viewer in x, y, z and the coefficients a, b, c, d,
+     parsed by the shared expression language (never evaluated as code) and integrated with the same
+     RK4 step as every other flow here. The default is the Lorenz system written out, so the mode
+     opens on a known picture. A trajectory that leaves |x|, |y|, |z| < 1e6 or becomes undefined stops
+     the plate: the divergence guard reports it instead of silently restarting the walker. */
+  const ODE_SPEC = { vars: ['x', 'y', 'z'], params: ['a', 'b', 'c', 'd'] };
+  // Lorenz with its classical constants written in, so a link that picks the custom system without naming
+  // a, b and c still runs the Lorenz attractor instead of the tab's map coefficients, which diverge here.
+  const ODE_DEFAULTS = { odeX: '10*(y - x)', odeY: 'x*(28 - z) - y', odeZ: 'x*y - 8/3*z' };
+  const ODE_LIMIT = 1e6;
+  const checkOde = v => U.expr.check(v, ODE_SPEC);
+  function compileOde(text, fallback) {
+    try { return U.expr.compile(text, ODE_SPEC); } catch (err) { return U.expr.compile(fallback, ODE_SPEC); }
+  }
+  const sane = st => Math.abs(st[0]) < ODE_LIMIT && Math.abs(st[1]) < ODE_LIMIT && Math.abs(st[2]) < ODE_LIMIT;
 
   const SYSTEMS = {
     clifford: mapSys('Clifford', 4, { a: -1.4, b: 1.6, c: 1.0, d: 0.7 },
@@ -151,6 +167,16 @@
       },
     },
   };
+  SYSTEMS.custom = Object.assign(flowSys('Custom ODE', 4, { a: 10, b: 28, c: 2.667, d: 0 }, 0.002, { yaw: 0, pitch: 0 },
+    // Reroll nudges the current coefficients by up to 15 per cent; random ones would mostly diverge.
+    (r, s) => ({ a: s.a * (1 + r.range(-0.15, 0.15)), b: s.b * (1 + r.range(-0.15, 0.15)), c: s.c * (1 + r.range(-0.15, 0.15)), d: s.d * (1 + r.range(-0.15, 0.15)) }),
+    (st, r) => { st[0] = r.range(-1, 1); st[1] = r.range(-1, 1); st[2] = r.range(-1, 1); },
+    (a, b, c, d, s) => {
+      const fx = compileOde(s.odeX, ODE_DEFAULTS.odeX), fy = compileOde(s.odeY, ODE_DEFAULTS.odeY), fz = compileOde(s.odeZ, ODE_DEFAULTS.odeZ);
+      const env = new Float64Array(7);
+      env[3] = a; env[4] = b; env[5] = c; env[6] = d;
+      return (x, y, z, k, o) => { env[0] = x; env[1] = y; env[2] = z; k[o] = fx(env); k[o + 1] = fy(env); k[o + 2] = fz(env); };
+    }), { custom: true });
   const SYS_KEYS = Object.keys(SYSTEMS);
 
   function resetWalker(sys, st, rng) {
@@ -159,23 +185,23 @@
     st[4] = st[5] = st[6] = st[7] = 0;
   }
   function makeAdv(sys, co, s, rng) {
-    return sys.make(co, s.dt, s.yaw * TAU / 360, s.pitch * TAU / 360, rng);
+    return sys.make(co, s.dt, s.yaw * TAU / 360, s.pitch * TAU / 360, rng, s);
   }
   const bounded = st => st[4] * st[4] + st[5] * st[5] < 1e12;   // false for NaN too
 
   /* Quick quality check for rolled coefficients: bounded, not a fixed point / short cycle, not drifting away, not needle-thin. */
-  function probe(sysKey, co, rng) {
+  function probe(sysKey, co, rng, state) {
     const sys = SYSTEMS[sysKey];
     if (sys.kind === 'harm') return true;
-    const s = { dt: sys.dt * (sys.kind === 'flow' ? 3 : 1), yaw: 0, pitch: 0 };
+    const s = Object.assign({}, state, { dt: sys.dt * (sys.kind === 'flow' ? 3 : 1), yaw: 0, pitch: 0 });
     const adv = makeAdv(sys, co, s, rng);
     const nw = sys.kind === 'flow' ? 3 : 1, per = sys.kind === 'flow' ? 1500 : 4000;
     const xs = new Float64Array(nw * per), ys = new Float64Array(nw * per);
     let m = 0;
     for (let w = 0; w < nw; w++) {
       const st = new Float64Array(8); resetWalker(sys, st, rng);
-      for (let k = 0; k < 300; k++) { adv(st); if (!bounded(st)) return false; }
-      for (let k = 0; k < per; k++) { adv(st); if (!bounded(st) || Math.abs(st[4]) > 1e5 || Math.abs(st[5]) > 1e5) return false; xs[m] = st[4]; ys[m] = st[5]; m++; }
+      for (let k = 0; k < 300; k++) { adv(st); if (!bounded(st) || (sys.custom && !sane(st))) return false; }
+      for (let k = 0; k < per; k++) { adv(st); if (!bounded(st) || (sys.custom && !sane(st)) || Math.abs(st[4]) > 1e5 || Math.abs(st[5]) > 1e5) return false; xs[m] = st[4]; ys[m] = st[5]; m++; }
     }
     const box = (lo, hi) => { let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; for (let i = lo; i < hi; i++) { if (xs[i] < x0) x0 = xs[i]; if (xs[i] > x1) x1 = xs[i]; if (ys[i] < y0) y0 = ys[i]; if (ys[i] > y1) y1 = ys[i]; } return [x0, x1, y0, y1]; };
     const all = box(0, m), w = all[1] - all[0], h = all[3] - all[2];
@@ -193,14 +219,14 @@
     }
     return filled >= G * G * 0.045;
   }
-  function rollCoeffs(sysKey, rng) {
+  function rollCoeffs(sysKey, rng, state) {
     const sys = SYSTEMS[sysKey];
     for (let t = 0; t < 60; t++) {
-      const co = sys.roll(rng);
+      const co = sys.roll(rng, state);
       for (const k in co) co[k] = Math.round(co[k] * 1000) / 1000;
-      if (probe(sysKey, co, rng)) return co;
+      if (probe(sysKey, co, rng, state)) return co;
     }
-    return Object.assign({}, sys.def);
+    return sys.custom ? { a: state.a, b: state.b, c: state.c, d: state.d } : Object.assign({}, sys.def);
   }
 
   /* ================================================================
@@ -208,9 +234,14 @@
   ================================================================ */
   const sysOf = s => SYSTEMS[s.system] || SYSTEMS.clifford;
   const isFlow = s => sysOf(s).kind === 'flow';
+  const isCustom = s => s.system === 'custom';
   const schema = [
     { group: 'System', key: 'system', label: 'System', type: 'seg', kind: 'geom', wrap: true,
       options: SYS_KEYS.map(k => [k, SYSTEMS[k].name]) },
+    { group: 'System', key: 'odeX', label: 'dx/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true },
+    { group: 'System', key: 'odeY', label: 'dy/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true },
+    { group: 'System', key: 'odeZ', label: 'dz/dt =', type: 'text', kind: 'geom', maxLength: 256, validate: checkOde, dimUnless: isCustom, activeOnly: true,
+      hint: 'Custom ODE: right-hand sides in x, y, z and the coefficients a, b, c, d below, integrated with the same RK4 step as the other flows. Functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. A trajectory that passes 1e6 or becomes undefined stops the plate. A user-defined system is not validated.' },
     { group: 'System', key: 'a', label: 'a', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3 },
     { group: 'System', key: 'b', label: 'b', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3, dimUnless: s => sysOf(s).n >= 2 },
     { group: 'System', key: 'c', label: 'c', type: 'range', kind: 'geom', min: -12, max: 30, step: 0.001, fmt: f3, dimUnless: s => sysOf(s).n >= 3 },
@@ -246,6 +277,7 @@
 
   const defaults = {
     system: 'clifford', a: -1.4, b: 1.6, c: 1.0, d: 0.7, dt: 0.01, burnIn: 500,
+    odeX: ODE_DEFAULTS.odeX, odeY: ODE_DEFAULTS.odeY, odeZ: ODE_DEFAULTS.odeZ,
     points: 4000000, ppf: 150000,
     zoom: 1, offsetX: 0, offsetY: 0, rotation: 0, yaw: 0, pitch: 0, aspect: '1:1', res: '1200',
     tone: 'log', exposure: 1, gamma: 1, colorMode: 'density', colorMix: 0.6, blur: 0, sortRamp: false, invert: false,
@@ -352,13 +384,21 @@
     for (let i = 0; i < nw; i++) { const st = new Float64Array(8); resetWalker(sys, st, rng); walkers.push(st); }
     const rot = s.rotation * TAU / 360;
     const A = {
-      sys, adv, walkers, rng, W, H, N: W * H,
+      sys, adv, walkers, rng, W, H, N: W * H, guard: !!sys.custom, diverged: null,
       dens: new Float32Array(W * H), col: new Float32Array(W * H), count: 0,
       colorMode: s.colorMode === 'velocity' ? 1 : s.colorMode === 'direction' ? 2 : 0,
       cr: Math.cos(rot), sr: Math.sin(rot), fs: 1, cx: 0, cy: 0, ox: W / 2, oy: H / 2,
     };
     const burn = sys.kind === 'harm' ? 0 : s.burnIn;
-    for (const st of walkers) for (let k = 0; k < burn; k++) { adv(st); if (!bounded(st)) resetWalker(sys, st, rng); }
+    for (const st of walkers) {
+      for (let k = 0; k < burn && !A.diverged; k++) {
+        adv(st);
+        if (!bounded(st) || (A.guard && !sane(st))) {
+          if (A.guard) A.diverged = 'during burn-in';
+          else resetWalker(sys, st, rng);
+        }
+      }
+    }
     frameAcc(A, s);
     return A;
   }
@@ -370,9 +410,12 @@
     const xs = new Float64Array(n), ys = new Float64Array(n);
     let m = 0;
     for (const st of walkers) {
-      for (let k = 0; k < per && m < n; k++) {
+      for (let k = 0; k < per && m < n && !A.diverged; k++) {
         adv(st);
-        if (!bounded(st)) { resetWalker(sys, st, rng); continue; }
+        if (!bounded(st) || (A.guard && !sane(st))) {
+          if (A.guard) { A.diverged = 'while framing'; break; }
+          resetWalker(sys, st, rng); continue;
+        }
         const X = st[4], Y = st[5];
         xs[m] = X * cr - Y * sr; ys[m] = X * sr + Y * cr; m++;
       }
@@ -392,13 +435,17 @@
 
   /* Iterate n more points into the buffers (round-robin over walkers). */
   function accumulate(A, n) {
-    const { sys, adv, walkers, rng, W, H, dens, col, fs, cx, cy, ox, oy, cr, sr, colorMode } = A;
+    const { sys, adv, walkers, rng, W, H, dens, col, fs, cx, cy, ox, oy, cr, sr, colorMode, guard } = A;
+    if (A.diverged) return;
     const per = Math.ceil(n / walkers.length), INV_TAU = 1 / TAU;
     for (const st of walkers) {
       let pxr = st[6], pyr = st[7];
       for (let k = 0; k < per; k++) {
         adv(st);
-        if (!bounded(st)) { resetWalker(sys, st, rng); pxr = 0; pyr = 0; continue; }
+        if (!bounded(st) || (guard && !sane(st))) {
+          if (guard) { A.diverged = 'after ' + fmtM(A.count) + ' points'; return; }
+          resetWalker(sys, st, rng); pxr = 0; pyr = 0; continue;
+        }
         const X = st[4], Y = st[5];
         const xr = X * cr - Y * sr, yr = X * sr + Y * cr;
         const fx = (xr - cx) * fs + ox, fy = oy - (yr - cy) * fs;
@@ -466,8 +513,8 @@
      module
   ================================================================ */
   Studio.register({
-    id: 'attractors', name: 'Attractors', subtitle: 'strange attractors and harmonographs as density maps · 1963', equation: 'x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map', credit: "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.", order: 90,
-    blurb: 'A strange attractor is the shape a chaotic system keeps returning to: iterate a simple map or integrate a small set of differential equations, and although no two steps ever repeat, the orbit is confined to a folded, fractal set. Counting how often the orbit lands on each pixel turns that set into a density map — the bright veins are the folds where the dynamics pile up. Harmonographs are the mechanical cousin: damped pendulums summed into a pen path, tracing Lissajous curves that slowly drift as the frequencies beat against each other.',
+    id: 'attractors', name: 'Attractors', subtitle: 'strange attractors and harmonographs as density maps · 1963', equation: 'x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map', credit: "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).", order: 90,
+    blurb: 'A strange attractor is the shape a chaotic system keeps returning to: iterate a simple map or integrate a small set of differential equations, and although no two steps ever repeat, the orbit is confined to a folded, fractal set. Counting how often the orbit lands on each pixel turns that set into a density map — the bright veins are the folds where the dynamics pile up. Harmonographs are the mechanical cousin: damped pendulums summed into a pen path, tracing Lissajous curves that slowly drift as the frequencies beat against each other. Custom ODE lets you type the three right-hand sides of your own flow, which opens on the Lorenz equations written out; the equations travel in the link, and nothing checks a system you type against theory.',
     schema, defaults, presets,
     hints: {
       System: 'Coefficients mean different things per system. Clifford, De Jong, Svensson, Tinkerbell, Ikeda and Aizawa use all four; Gumowski-Mira uses a (μ), b (α), c (σ); Hopalong a, b, c; Lorenz a = σ, b = ρ, c = β; Rössler a, b, c; Bedhead a, b; Thomas and Halvorsen only a. Harmonograph: a = frequency ratio, b = detune, c = damping, d = phase. Unused coefficients are dimmed. Reroll draws a new set from the seed and keeps only sets that pass a quick “is it interesting” test.',
@@ -522,8 +569,17 @@
         ctx.fillStyle = host.getState().bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
+      // A custom system says it is user-defined and makes no claim; a diverged one says where it stopped.
+      // The typed equations appear only as escaped text in a tooltip.
       function status(s) {
-        host.setStatus('<span><b>' + fmtM(Math.min(A.count, s.points)) + '</b> / ' + fmtM(s.points) + ' points</span><span>' + A.sys.name + (done ? ' · done' : '') + '</span>');
+        let tail = '';
+        if (A.sys.custom) {
+          const tip = U.escapeHtml('dx/dt = ' + s.odeX + ', dy/dt = ' + s.odeY + ', dz/dt = ' + s.odeZ);
+          tail = A.diverged
+            ? '<span title="' + tip + '">diverged ' + A.diverged + ': a coordinate passed 1e6 or became undefined · stopped</span>'
+            : '<span title="' + tip + '">user-defined, not validated</span>';
+        }
+        host.setStatus('<span><b>' + fmtM(Math.min(A.count, s.points)) + '</b> / ' + fmtM(s.points) + ' points</span><span>' + A.sys.name + (A.diverged ? '' : done ? ' · done' : '') + '</span>' + tail);
       }
       function draw() {
         const s = host.getState();
@@ -538,7 +594,7 @@
       function accumulateFor(budgetMs, maxPoints) {
         const t0 = performance.now();
         let n = 0;
-        while (n < maxPoints) {
+        while (n < maxPoints && !A.diverged) {
           const step = Math.min(CHUNK, maxPoints - n);
           accumulate(A, step); n += step;
           if (performance.now() - t0 > budgetMs) break;
@@ -550,7 +606,7 @@
         const s = host.getState();
         const remaining = s.points - A.count;
         if (remaining > 0) accumulateFor(FRAME_BUDGET_MS, Math.min(s.ppf, remaining));
-        done = A.count >= s.points;
+        done = A.count >= s.points || !!A.diverged;
         if (done || performance.now() >= nextDrawAt) draw();
         if (!done && host.isActive()) raf = requestAnimationFrame(frame);
       }
@@ -583,11 +639,11 @@
           done = false;
           if (host.reducedMotion()) {
             const t0 = performance.now();
-            while (A.count < s.points && performance.now() - t0 < REDUCED_MOTION_BUDGET_MS) accumulate(A, Math.min(1e6, s.points - A.count));
+            while (A.count < s.points && !A.diverged && performance.now() - t0 < REDUCED_MOTION_BUDGET_MS) accumulate(A, Math.min(1e6, s.points - A.count));
             done = true;
           } else {
             accumulateFor(FRAME_BUDGET_MS * 2, Math.min(s.ppf, s.points));
-            done = A.count >= s.points;
+            done = A.count >= s.points || !!A.diverged;
           }
           draw();
           start();
@@ -596,7 +652,7 @@
         live(key) {
           if (key === 'points' && A) {
             const s = host.getState();
-            done = A.count >= s.points;
+            done = A.count >= s.points || !!A.diverged;
             status(s);
             if (!done && !raf) start();
           }
@@ -608,7 +664,7 @@
           if (key !== 'reroll') return;
           const s = host.getState();
           rollIndex++;
-          const co = rollCoeffs(s.system, U.makeRng(s.seed + '/roll/' + rollIndex));
+          const co = rollCoeffs(s.system, U.makeRng(s.seed + '/roll/' + rollIndex), s);
           if (!applyCoeffs(co)) this.regenerate();
         },
         async exportPNG(w, h) {
@@ -626,7 +682,7 @@
             inst.exportNote = want > EXPORT_CAP
               ? ' Point budget capped at ' + EXPORT_CAP.toLocaleString() + ' for this sheet (asked for ' + Math.round(want).toLocaleString() + ').'
               : '';
-            while (E.count < target) {
+            while (E.count < target && !E.diverged) {
               accumulate(E, Math.min(1e6, target - E.count));
               await new Promise(r => setTimeout(r, 0));
             }

@@ -51,6 +51,12 @@ submission.
 
 ## Next steps, in order
 
+0. Before the arXiv upload (license decided 2026-09-25: arXiv.org perpetual, non-exclusive):
+   - Ask the *Regular and Chaotic Dynamics* editorial office in writing whether an arXiv posting counts
+     as prior publication under its "not published previously" condition. Keep the reply.
+   - Tell the journal at submission that version 1 of the manuscript was briefly public, from 2026-09-23,
+     in a repository under the Apache License 2.0, and attached to its releases v0.6.0 to v0.6.2.
+   - Finish the must-read items in [../../READING-LIST.md](../../READING-LIST.md).
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this
    repository records those policies.

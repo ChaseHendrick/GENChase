@@ -1,6 +1,6 @@
 #set document(
   title: "Closed forms and sharp minima of ω t_c on three classical point-vortex collapse families",
-  author: "Chaos",
+  author: "Chase Hendrick",
   keywords: ("point vortices", "self-similar collapse", "Three-vortex collapse bound", "parallelogram lock", "quincunx lock"),
   date: datetime(year: 2026, month: 9, day: 21),
 )
@@ -11,14 +11,16 @@
 #set math.equation(numbering: "(1)")
 #show link: set text(fill: rgb("#0b3d6e"))
 
-#let affil = [Independent Researcher. Code: #link("https://github.com/SharpMeow/GENChase")[github.com/SharpMeow/GENChase]]
+#let affil = [Independent Researcher. Code: #link("https://github.com/ChaseHendrick/GENChase")[github.com/ChaseHendrick/GENChase]]
 
 #align(center)[
   #text(size: 14.5pt, weight: "bold")[Closed forms and sharp minima of $omega thin t_c$ on three classical point-vortex collapse families]
   #v(0.7em)
-  #text(size: 12pt)[Chaos]
+  #text(size: 12pt)[Chase Hendrick]
   #v(0.25em)
   #text(size: 10pt)[#affil]
+  #v(0.15em)
+  #text(size: 9pt)[ORCID #link("https://orcid.org/0009-0002-9754-6087")[0009-0002-9754-6087]]
   #v(0.55em)
   #text(size: 10pt)[Corrected attribution and scope · 21 September 2026]
 ]
@@ -101,7 +103,7 @@ The square identity $(a-b cos phi)^2-(a^2-b^2)sin^2 phi=(a cos phi-b)^2$ verifie
 
 No earlier exact minima were located in the inspected passages, but that absence does not establish historical originality or substantial novelty. The complete older two-ring literature remains an access gap for related polygon candidates. The project currently has zero confirmed novel findings.
 
-#link("https://github.com/SharpMeow/GENChase/blob/main/identities/ORIGINALITY-FOLLOWUP.md")[Read the original-source comparison] and #link("https://github.com/SharpMeow/GENChase/blob/main/identities/NOVELTY-AUDIT.md")[the novelty audit] before making a priority claim. No specialist endorsement is implied.
+#link("https://github.com/ChaseHendrick/GENChase/blob/main/identities/ORIGINALITY-FOLLOWUP.md")[Read the original-source comparison] and #link("https://github.com/ChaseHendrick/GENChase/blob/main/identities/NOVELTY-AUDIT.md")[the novelty audit] before making a priority claim. No specialist endorsement is implied.
 
 = Reuse and file provenance
 

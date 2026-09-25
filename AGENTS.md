@@ -6,9 +6,9 @@ Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print 
 
 ## Git identity
 
-This repository is SharpMeow. The only author for commits, `user.email`, and trailers is:
+This repository belongs to Chase Hendrick (GitHub account ChaseHendrick, formerly SharpMeow; the pseudonyms SharpMeow and Chaos are retired and must not be used in new commits or files). The only author for commits, `user.email`, and trailers is:
 
-    Chaos <326338179+SharpMeow@users.noreply.github.com>
+    Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>
 
 Never use `sharpie@users.noreply.github.com`. GitHub maps that address to github.com/Sharpie (Charlie Sharpsteen), who does not work here. Do not put it in `Co-authored-by` or `Signed-off-by`. Do not guess `login@users.noreply.github.com` from the display name. Squash-merge copies those trailers onto `main` and pins a stranger on the log. If you did not write the commit as a second person, omit `Co-authored-by`.
 

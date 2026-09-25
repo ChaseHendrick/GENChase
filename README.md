@@ -2,7 +2,7 @@
 
 **Generative art from real simulations you can check and print.**
 
-**[Make art in your browser](https://sharpmeow.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/SharpMeow/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://sharpmeow.github.io/GENChase/start.html#help)**
+**[Make art in your browser](https://chasehendrick.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/ChaseHendrick/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://chasehendrick.github.io/GENChase/start.html#help)**
 
 Open the browser studio immediately, or unzip the offline bundle and double-click `START-HERE.html`. No account, Node.js or Python is needed to make art. Device support and practical simulation sizes vary.
 
@@ -225,7 +225,7 @@ If you are an agent:
 
 To use the download, open it in a compatible desktop browser. GPU simulations require WebGL2 and suitable graphics support. You do not need Node or a source build.
 
-**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (includes maintained source and the portable HTML; the README tiles stay on GitHub). Unzip it, then double-click the launcher for your system:
+**[Download GENChase](https://github.com/ChaseHendrick/GENChase/archive/refs/heads/main.zip)** (includes maintained source and the portable HTML; the README tiles stay on GitHub). Unzip it, then double-click the launcher for your system:
 
 | | Double-click |
 |---|---|
@@ -240,7 +240,7 @@ Each one starts Python's own web server on a free loopback port, opens `index.ht
 Or do it by hand:
 
 ```bash
-git clone https://github.com/SharpMeow/GENChase.git
+git clone https://github.com/ChaseHendrick/GENChase.git
 cd GENChase
 python3 -m http.server 8080 --bind 127.0.0.1
 ```
@@ -298,7 +298,7 @@ The [research folder](research/) holds one preprint, *Minimal winding in the sel
 
 Anyone can lend their computer to the project's open questions without a model, an account or any AI tokens. [The local validator](apps/validate/HEADLESS.md) runs on macOS or Linux. It runs registered science checks and research searches, resumes from checkpoints, pauses on battery or heat on Apple Silicon Macs, and shares results only when you ask. The first open-problem search looks for [the least winding in self-similar vortex collapse](experiments/VORTEX-COLLAPSE.md). Every submitted minimum is re-verified from its positions and circulations before it is recorded. Each job measures its own CPU time and, where the operating system allows, its energy. [COMPUTE.md](COMPUTE.md) totals the computer time of shared jobs and recorded vortex results.
 
-Built by Chaos.
+Built by Chase Hendrick.
 
 ### Customize the printed caption
 

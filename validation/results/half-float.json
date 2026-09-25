@@ -1,15 +1,208 @@
 {
-  "date": "2026-09-24",
+  "date": "2026-09-25",
   "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
-  "recipeVersion": 2,
+  "recipeVersion": 5,
   "seed": "half-float-check",
   "steps": [
     100,
     1000
   ],
-  "method": "Real studio, each tab's default recipe with warmup N and running:false; float16 by hiding EXT_color_buffer_float in an init script; state from Studio.exportData(). relL2 = ||f16 - f32||2 / ||f32||2 over the exported array; maxRel = max|f16 - f32| / max|f32|; moments are the mean and standard deviation of each channel of the exported array; unchangedSince says whether the state of each precision is bit for bit the same as at the first step count. One seed: the differences are exact for it, with no sampling error, and their spread over seeds is not measured.",
-  "controls": "float32 repeated bit for bit at the largest step count; rgba16f in the fallback export and float16 provenance; half-float status span present only on the fallback; nonzero difference.",
-  "seconds": 638,
+  "method": "Real studio, each tab's default recipe with warmup N and running:false; float16 by hiding EXT_color_buffer_float in an init script; state from Studio.exportData(). relL2 = ||f16 - f32||2 / ||f32||2 over the exported array; maxRel = max|f16 - f32| / max|f32|; moments are the mean and standard deviation of each channel of the exported array; unchangedSince says whether the state of each precision is bit for bit the same as at the first step count; meanDrift is the change of each channel's mean between the step counts. One seed: the differences are exact for it, with no sampling error, and their spread over seeds is not measured.",
+  "acceptance": "For the tabs that store float16 state as a deviation from a base (chemotaxis, amb), fixed before the runs: at the largest step count the float16 state is not bit for bit its state at the first step count, every channel's standard deviation is within 10% of float32's, and it has moved the same way as float32's since the first step count. Refused tabs (pfc): the refusal is in the status line and on the stage, no step runs and no state exports. A fix for a refused tab would have to keep the mean drift within 3 times float32's.",
+  "controls": "float32 repeated bit for bit at the largest step count; rgba16f in the fallback export and float16 provenance; half-float status span present only on the fallback; nonzero difference; stateBase named only where the module declares it. Failure controls on patched copies: the based tabs without the base must fail the acceptance test; the refused tab without the refusal, plain and with a base, must fail the conservation test.",
+  "tabs": {
+    "amb": {
+      "handling": "float16 state stored as the deviation from a base state",
+      "plainFallback": "fluctuations shrank instead of growing",
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          0.9995836946789253
+        ],
+        "sameTrend": [
+          true
+        ],
+        "pass": true
+      }
+    },
+    "pfc": {
+      "handling": "refuses the float16 fallback",
+      "plainFallback": "the mean density, conserved by the equation, drifted"
+    },
+    "chemotaxis": {
+      "handling": "float16 state stored as the deviation from a base state",
+      "plainFallback": "froze: the float16 state stopped changing",
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          0.9827771459966659,
+          0.9786081080000937
+        ],
+        "sameTrend": [
+          true,
+          true
+        ],
+        "pass": true
+      }
+    }
+  },
+  "failureControls": [
+    {
+      "id": "amb",
+      "control": "nobase",
+      "mutant": "halfBase removed (the fallback as it was)",
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          0.8051446136934586
+        ],
+        "sameTrend": [
+          false
+        ],
+        "pass": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.0002334342035608672
+        ],
+        "float16": [
+          -0.00009900238365162517
+        ],
+        "ratio": [
+          0.42411258565118815
+        ],
+        "conserved": true
+      },
+      "sd": [
+        0.021918465474539815
+      ],
+      "detected": true
+    },
+    {
+      "id": "chemotaxis",
+      "control": "nobase",
+      "mutant": "halfBase removed (the fallback as it was)",
+      "accept": {
+        "frozen": true,
+        "sdRatio": [
+          0.012520083794857901,
+          0.003783950982637188
+        ],
+        "sameTrend": [
+          false,
+          false
+        ],
+        "pass": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.6469584766197681,
+          -2.464679514900161
+        ],
+        "float16": [
+          0,
+          0
+        ],
+        "ratio": [
+          0,
+          0
+        ],
+        "conserved": true
+      },
+      "sd": [
+        0.009713289929590944,
+        0.004113249290266399
+      ],
+      "detected": true
+    },
+    {
+      "id": "pfc",
+      "control": "plain",
+      "mutant": "refusal removed: float16 state stored as it is",
+      "meanDrift": {
+        "float32": [
+          -0.0001501204726836458
+        ],
+        "float16": [
+          0.00451203852457599
+        ],
+        "ratio": [
+          30.05611722316095
+        ],
+        "conserved": false
+      },
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          1.0439890783022445
+        ],
+        "sameTrend": [
+          true
+        ],
+        "pass": true
+      },
+      "moments": {
+        "first": [
+          {
+            "mean": 0.2797574342980677,
+            "sd": 0.23468098378121835
+          }
+        ],
+        "last": [
+          {
+            "mean": 0.2842694728226437,
+            "sd": 0.1656474566293911
+          }
+        ]
+      },
+      "relL2": 0.044780208244309706,
+      "detected": true
+    },
+    {
+      "id": "pfc",
+      "control": "base",
+      "mutant": "refusal removed, float16 state stored as the deviation from psi0",
+      "meanDrift": {
+        "float32": [
+          -0.0001501204726836458
+        ],
+        "float16": [
+          -0.0014086495037785585
+        ],
+        "ratio": [
+          9.383460354185372
+        ],
+        "conserved": false
+      },
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          1.049321712418434
+        ],
+        "sameTrend": [
+          true
+        ],
+        "pass": true
+      },
+      "moments": {
+        "first": [
+          {
+            "mean": 0.2802602715054188,
+            "sd": 0.23398501354967272
+          }
+        ],
+        "last": [
+          {
+            "mean": 0.27885162200164026,
+            "sd": 0.1664935739852531
+          }
+        ]
+      },
+      "relL2": 0.029219223005156367,
+      "detected": true
+    }
+  ],
+  "seconds": 467,
   "rows": [
     {
       "id": "amb",
@@ -20,9 +213,10 @@
       ],
       "array": "field",
       "dt": 0.011527377521613832,
-      "relL2": 0.0016473252517924563,
-      "maxAbs": 0.0028301775455474854,
-      "maxRel": 0.00569537694801203,
+      "stateBase": -0.4000000059604645,
+      "relL2": 0.000057007563925780264,
+      "maxAbs": 0.00019362568855285645,
+      "maxRel": 0.0003896473862079099,
       "fieldMaxAbs": 0.496925413608551,
       "nonfinite": 0,
       "moments": {
@@ -34,8 +228,8 @@
         ],
         "float16": [
           {
-            "mean": -0.40003110282122284,
-            "sd": 0.023170507780590315
+            "mean": -0.40014930311736085,
+            "sd": 0.02307531213368184
           }
         ]
       },
@@ -54,7 +248,7 @@
           ]
         }
       ],
-      "seconds": 11.9
+      "seconds": 4.4
     },
     {
       "id": "amb",
@@ -65,9 +259,10 @@
       ],
       "array": "field",
       "dt": 0.011527377521613832,
-      "relL2": 0.03221630622808971,
-      "maxAbs": 0.08028861880302429,
-      "maxRel": 0.1646215957920054,
+      "stateBase": -0.4000000059604645,
+      "relL2": 0.00016583604504412684,
+      "maxAbs": 0.0015186071395874023,
+      "maxRel": 0.003113710690594096,
       "fieldMaxAbs": 0.4877161979675293,
       "nonfinite": 0,
       "moments": {
@@ -79,8 +274,8 @@
         ],
         "float16": [
           {
-            "mean": -0.40013010520487446,
-            "sd": 0.021918465474539815
+            "mean": -0.4003845930737956,
+            "sd": 0.027211683874065487
           }
         ]
       },
@@ -99,11 +294,33 @@
           ]
         }
       ],
-      "seconds": 61.6,
+      "seconds": 41.1,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.0002334342035608672
+        ],
+        "float16": [
+          -0.0002352899564347366
+        ],
+        "ratio": [
+          1.0079497899003713
+        ],
+        "conserved": true
+      },
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          0.9995836946789253
+        ],
+        "sameTrend": [
+          true
+        ],
+        "pass": true
       }
     },
     {
@@ -115,6 +332,7 @@
       ],
       "array": "field",
       "dt": 0.011527377521613832,
+      "stateBase": null,
       "relL2": 0.0009785394291471385,
       "maxAbs": 0.00021983683109283447,
       "maxRel": 0.002158522583248077,
@@ -149,7 +367,7 @@
           ]
         }
       ],
-      "seconds": 6
+      "seconds": 3.9
     },
     {
       "id": "cahn",
@@ -160,6 +378,7 @@
       ],
       "array": "field",
       "dt": 0.011527377521613832,
+      "stateBase": null,
       "relL2": 0.0028412616722585564,
       "maxAbs": 0.0059130191802978516,
       "maxRel": 0.01262605500308893,
@@ -194,11 +413,23 @@
           ]
         }
       ],
-      "seconds": 50.9,
+      "seconds": 37.5,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.00009161814179559983
+        ],
+        "float16": [
+          -0.00010418562897030172
+        ],
+        "ratio": [
+          1.1371724740143712
+        ],
+        "conserved": true
       }
     },
     {
@@ -210,6 +441,7 @@
       ],
       "array": "field",
       "dt": 0.012123048946810122,
+      "stateBase": null,
       "relL2": 0.0010187715652805664,
       "maxAbs": 0.00027076900005340576,
       "maxRel": 0.0021639474517199516,
@@ -252,7 +484,7 @@
           ]
         }
       ],
-      "seconds": 7.4
+      "seconds": 3.8
     },
     {
       "id": "ohta",
@@ -263,6 +495,7 @@
       ],
       "array": "field",
       "dt": 0.012123048946810122,
+      "stateBase": null,
       "relL2": 0.0041408984569440725,
       "maxAbs": 0.00581786036491394,
       "maxRel": 0.01600226178524795,
@@ -305,11 +538,23 @@
           ]
         }
       ],
-      "seconds": 67.3,
+      "seconds": 35.3,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.00030179590308196174
+        ],
+        "float16": [
+          -0.0002946899569451559
+        ],
+        "ratio": [
+          0.9764544645429597
+        ],
+        "conserved": true
       }
     },
     {
@@ -321,6 +566,7 @@
       ],
       "array": "field",
       "dt": 0.01514472249106587,
+      "stateBase": null,
       "relL2": 0.0009803632866718969,
       "maxAbs": 0.0003015249967575073,
       "maxRel": 0.0015814713302733472,
@@ -363,7 +609,7 @@
           ]
         }
       ],
-      "seconds": 5.9
+      "seconds": 4.8
     },
     {
       "id": "swift",
@@ -374,6 +620,7 @@
       ],
       "array": "field",
       "dt": 0.01514472249106587,
+      "stateBase": null,
       "relL2": 0.004249678735050652,
       "maxAbs": 0.009002268314361572,
       "maxRel": 0.011425016074738076,
@@ -416,123 +663,66 @@
           ]
         }
       ],
-      "seconds": 54.2,
+      "seconds": 35.8,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.0005296397438695183
+        ],
+        "float16": [
+          -0.0005290685539876009
+        ],
+        "ratio": [
+          0.9989215501885407
+        ],
+        "conserved": true
       }
     },
     {
       "id": "pfc",
       "steps": 100,
-      "grid": [
-        512,
-        512
-      ],
-      "array": "field",
-      "dt": 0.005,
-      "relL2": 0.003631307887987568,
-      "maxAbs": 0.018887460231781006,
-      "maxRel": 0.013223787435208955,
-      "fieldMaxAbs": 1.42829430103302,
-      "nonfinite": 0,
-      "moments": {
-        "float32": [
+      "refused": true,
+      "message": "Half-float state cannot run the phase-field crystal faithfully. This device lacks float32 color buffers (EXT_color_buffer_float), so the density would be stored as float16, and rounding it every step breaks the conservation of the mean density that the model is built on: in the recorded test it drifts about ten to thirty times as far as in float32. The tab stops here rather than show a plate that is not the simulation.",
+      "precision": "no float state targets",
+      "float32": {
+        "grid": [
+          512,
+          512
+        ],
+        "moments": [
           {
             "mean": 0.27998601402136203,
             "sd": 0.234403115717288
           }
-        ],
-        "float16": [
-          {
-            "mean": 0.2797574342980677,
-            "sd": 0.23468098378121835
-          }
         ]
       },
       "float32Repeat": "not repeated at this step count",
-      "guard": {
-        "float32": null,
-        "float16": null
-      },
-      "status": [
-        {
-          "label": "⟨ψ⟩ ≈ #",
-          "float32": "⟨ψ⟩ ≈ 0.28",
-          "float16": "⟨ψ⟩ ≈ 0.28",
-          "diff": [
-            0
-          ]
-        },
-        {
-          "label": "r #",
-          "float32": "r -0.25",
-          "float16": "r -0.25",
-          "diff": [
-            0
-          ]
-        }
-      ],
-      "seconds": 10.2
+      "seconds": 4.1
     },
     {
       "id": "pfc",
       "steps": 1000,
-      "grid": [
-        512,
-        512
-      ],
-      "array": "field",
-      "dt": 0.005,
-      "relL2": 0.044780208244309706,
-      "maxAbs": 0.10414642095565796,
-      "maxRel": 0.11299068914357231,
-      "fieldMaxAbs": 0.9217256903648376,
-      "nonfinite": 0,
-      "moments": {
-        "float32": [
+      "refused": true,
+      "message": "Half-float state cannot run the phase-field crystal faithfully. This device lacks float32 color buffers (EXT_color_buffer_float), so the density would be stored as float16, and rounding it every step breaks the conservation of the mean density that the model is built on: in the recorded test it drifts about ten to thirty times as far as in float32. The tab stops here rather than show a plate that is not the simulation.",
+      "precision": "no float state targets",
+      "float32": {
+        "grid": [
+          512,
+          512
+        ],
+        "moments": [
           {
             "mean": 0.2798358935486784,
             "sd": 0.15866780608353703
           }
-        ],
-        "float16": [
-          {
-            "mean": 0.2842694728226437,
-            "sd": 0.1656474566293911
-          }
         ]
       },
       "float32Repeat": "identical",
-      "guard": {
-        "float32": null,
-        "float16": null
-      },
-      "status": [
-        {
-          "label": "⟨ψ⟩ ≈ #",
-          "float32": "⟨ψ⟩ ≈ 0.28",
-          "float16": "⟨ψ⟩ ≈ 0.28",
-          "diff": [
-            0
-          ]
-        },
-        {
-          "label": "r #",
-          "float32": "r -0.25",
-          "float16": "r -0.25",
-          "diff": [
-            0
-          ]
-        }
-      ],
-      "seconds": 101.8,
-      "unchangedSince": {
-        "steps": 100,
-        "float32": false,
-        "float16": false
-      }
+      "seconds": 32.9
     },
     {
       "id": "ks",
@@ -543,6 +733,7 @@
       ],
       "array": "field",
       "dt": 0.018,
+      "stateBase": null,
       "relL2": 0.0009638849671332509,
       "maxAbs": 0.0005868524312973022,
       "maxRel": 0.002385235776344188,
@@ -585,7 +776,7 @@
           ]
         }
       ],
-      "seconds": 6.4
+      "seconds": 4.4
     },
     {
       "id": "ks",
@@ -596,6 +787,7 @@
       ],
       "array": "field",
       "dt": 0.018,
+      "stateBase": null,
       "relL2": 0.015996610866000363,
       "maxAbs": 0.20644044876098633,
       "maxRel": 0.020030011451616366,
@@ -638,11 +830,23 @@
           ]
         }
       ],
-      "seconds": 56.8,
+      "seconds": 38.3,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -2.043519317335979
+        ],
+        "float16": [
+          -2.078390088572841
+        ],
+        "ratio": [
+          1.0170640771247128
+        ],
+        "conserved": true
       }
     },
     {
@@ -654,6 +858,7 @@
       ],
       "array": "species",
       "dt": 0.012,
+      "stateBase": null,
       "relL2": 0.0007316132974384531,
       "maxAbs": 0.0041318535804748535,
       "maxRel": 0.004131987313575224,
@@ -696,7 +901,7 @@
           ]
         }
       ],
-      "seconds": 5.1
+      "seconds": 3.7
     },
     {
       "id": "excitable",
@@ -707,6 +912,7 @@
       ],
       "array": "species",
       "dt": 0.012,
+      "stateBase": null,
       "relL2": 0.0012521736043517415,
       "maxAbs": 0.017150402069091797,
       "maxRel": 0.017150403091335482,
@@ -749,11 +955,26 @@
           ]
         }
       ],
-      "seconds": 34.8,
+      "seconds": 25.2,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          0.20027269053114705,
+          0.1853020575802749
+        ],
+        "float16": [
+          0.2003093533471628,
+          0.18527363009184714
+        ],
+        "ratio": [
+          1.000183064480327,
+          0.9998465883822394
+        ],
+        "conserved": true
       }
     },
     {
@@ -765,6 +986,7 @@
       ],
       "array": "species",
       "dt": 0.008333333333333333,
+      "stateBase": null,
       "relL2": 0.011105128101227843,
       "maxAbs": 0.055016398429870605,
       "maxRel": 0.03975892965137376,
@@ -815,7 +1037,7 @@
           ]
         }
       ],
-      "seconds": 6
+      "seconds": 4.4
     },
     {
       "id": "turing",
@@ -826,6 +1048,7 @@
       ],
       "array": "species",
       "dt": 0.008333333333333333,
+      "stateBase": null,
       "relL2": 0.3004459530464564,
       "maxAbs": 13.481945037841797,
       "maxRel": 0.9693512399357644,
@@ -876,11 +1099,26 @@
           ]
         }
       ],
-      "seconds": 45.1,
+      "seconds": 26.7,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          0.027845359470031417,
+          -0.35965185491471563
+        ],
+        "float16": [
+          0.028031210415059293,
+          -0.3603062194306418
+        ],
+        "ratio": [
+          1.0066743956107982,
+          1.0018194387349435
+        ],
+        "conserved": true
       }
     },
     {
@@ -892,6 +1130,7 @@
       ],
       "array": "species",
       "dt": 0.1,
+      "stateBase": null,
       "relL2": 0.00042879318476292996,
       "maxAbs": 0.0009407401084899902,
       "maxRel": 0.001139957088556963,
@@ -943,7 +1182,7 @@
           ]
         }
       ],
-      "seconds": 4.9
+      "seconds": 3.2
     },
     {
       "id": "cyclic",
@@ -954,6 +1193,7 @@
       ],
       "array": "species",
       "dt": 0.1,
+      "stateBase": null,
       "relL2": 0.005486458890032165,
       "maxAbs": 0.017042040824890137,
       "maxRel": 0.017065868853204626,
@@ -1005,11 +1245,29 @@
           ]
         }
       ],
-      "seconds": 32.3,
+      "seconds": 16.2,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.016571074532486407,
+          0.0040740142194433115,
+          0.029413314402923108
+        ],
+        "float16": [
+          -0.01685051170466667,
+          0.0038988043538774053,
+          0.029018905781408588
+        ],
+        "ratio": [
+          1.0168629482434859,
+          0.9569933102516643,
+          0.9865908133945176
+        ],
+        "conserved": true
       }
     },
     {
@@ -1021,9 +1279,13 @@
       ],
       "array": "species",
       "dt": 0.019994668088509727,
-      "relL2": 0.004034566078518487,
-      "maxAbs": 0.06876516342163086,
-      "maxRel": 0.013548826546909937,
+      "stateBase": [
+        1,
+        5
+      ],
+      "relL2": 0.000011743970702012026,
+      "maxAbs": 0.0004906654357910156,
+      "maxRel": 0.0000966759991732276,
       "fieldMaxAbs": 5.075359344482422,
       "nonfinite": 0,
       "moments": {
@@ -1039,12 +1301,12 @@
         ],
         "float16": [
           {
-            "mean": 1.0005276780575596,
-            "sd": 0.009713289929590944
+            "mean": 0.9997087307092454,
+            "sd": 0.0166861088257644
           },
           {
-            "mean": 4.999947756528922,
-            "sd": 0.004113249290266399
+            "mean": 4.999316833909754,
+            "sd": 0.0172433506378756
           }
         ]
       },
@@ -1063,7 +1325,7 @@
           ]
         }
       ],
-      "seconds": 5.5
+      "seconds": 3.2
     },
     {
       "id": "chemotaxis",
@@ -1074,9 +1336,13 @@
       ],
       "array": "species",
       "dt": 0.019994668088509727,
-      "relL2": 0.9965596869367523,
-      "maxAbs": 3.843390464782715,
-      "maxRel": 0.5167071337059826,
+      "stateBase": [
+        1,
+        5
+      ],
+      "relL2": 0.022009218737882513,
+      "maxAbs": 2.0354151725769043,
+      "maxRel": 0.2736421264924324,
       "fieldMaxAbs": 7.43823766708374,
       "nonfinite": 0,
       "moments": {
@@ -1092,12 +1358,12 @@
         ],
         "float16": [
           {
-            "mean": 1.0005276780575596,
-            "sd": 0.009713289929590944
+            "mean": 0.34443874147609416,
+            "sd": 0.7624549093802521
           },
           {
-            "mean": 4.999947756528922,
-            "sd": 0.004113249290266399
+            "mean": 2.546994073471066,
+            "sd": 1.0637714717104934
           }
         ]
       },
@@ -1116,11 +1382,38 @@
           ]
         }
       ],
-      "seconds": 34.7,
+      "seconds": 19.6,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
-        "float16": true
+        "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.6469584766197681,
+          -2.464679514900161
+        ],
+        "float16": [
+          -0.6552699892331513,
+          -2.452322760438688
+        ],
+        "ratio": [
+          1.0128470572899966,
+          0.9949864660347236
+        ],
+        "conserved": true
+      },
+      "accept": {
+        "frozen": false,
+        "sdRatio": [
+          0.9827771459966659,
+          0.9786081080000937
+        ],
+        "sameTrend": [
+          true,
+          true
+        ],
+        "pass": true
       }
     },
     {
@@ -1131,31 +1424,32 @@
         512
       ],
       "array": "species",
-      "dt": 0.02,
-      "relL2": 0.002731984851059475,
-      "maxAbs": 0.01709723472595215,
-      "maxRel": 0.004365981134183402,
-      "fieldMaxAbs": 3.9160120487213135,
+      "dt": 0.018181818181818184,
+      "stateBase": null,
+      "relL2": 0.0028866553270771186,
+      "maxAbs": 0.017028450965881348,
+      "maxRel": 0.004668160443149914,
+      "fieldMaxAbs": 3.6477861404418945,
       "nonfinite": 0,
       "moments": {
         "float32": [
           {
-            "mean": 0.43410045666382835,
-            "sd": 0.05858192552736371
+            "mean": 0.45462673645749446,
+            "sd": 0.06648901437811496
           },
           {
-            "mean": 1.2578965821669263,
-            "sd": 0.4625641122128083
+            "mean": 1.218073743012368,
+            "sd": 0.40621024700411434
           }
         ],
         "float16": [
           {
-            "mean": 0.43400555569679194,
-            "sd": 0.05832953443254503
+            "mean": 0.4544455772265786,
+            "sd": 0.06617146550381266
           },
           {
-            "mean": 1.257793767377714,
-            "sd": 0.4633865169783032
+            "mean": 1.2183491662144683,
+            "sd": 0.40740838529036927
           }
         ]
       },
@@ -1177,7 +1471,7 @@
           ]
         }
       ],
-      "seconds": 3.5
+      "seconds": 3
     },
     {
       "id": "vegetation",
@@ -1187,31 +1481,32 @@
         512
       ],
       "array": "species",
-      "dt": 0.02,
-      "relL2": 0.12769903157734888,
-      "maxAbs": 9.728507280349731,
-      "maxRel": 0.9191443320203574,
-      "fieldMaxAbs": 10.584308624267578,
+      "dt": 0.018181818181818184,
+      "stateBase": null,
+      "relL2": 0.13405515142547017,
+      "maxAbs": 9.72140508890152,
+      "maxRel": 0.9152146196941292,
+      "fieldMaxAbs": 10.621994972229004,
       "nonfinite": 0,
       "moments": {
         "float32": [
           {
-            "mean": 0.28727732557004143,
-            "sd": 0.1970280992845169
+            "mean": 0.2901266096561975,
+            "sd": 0.1985174267738583
           },
           {
-            "mean": 1.8061344129722696,
-            "sd": 1.7263073831055948
+            "mean": 1.797682842325876,
+            "sd": 1.6982056527977307
           }
         ],
         "float16": [
           {
-            "mean": 0.2832264289027051,
-            "sd": 0.1921080579363715
+            "mean": 0.2855524682090543,
+            "sd": 0.19303732944379873
           },
           {
-            "mean": 1.8118741234047908,
-            "sd": 1.7098358240996339
+            "mean": 1.803854555153546,
+            "sd": 1.6842973909814936
           }
         ]
       },
@@ -1233,11 +1528,26 @@
           ]
         }
       ],
-      "seconds": 19.1,
+      "seconds": 17.9,
       "unchangedSince": {
         "steps": 100,
         "float32": false,
         "float16": false
+      },
+      "meanDrift": {
+        "float32": [
+          -0.16450012680129694,
+          0.5796090993135079
+        ],
+        "float16": [
+          -0.1688931090175243,
+          0.5855053889390778
+        ],
+        "ratio": [
+          1.0267050384802057,
+          1.0101728727733112
+        ],
+        "conserved": true
       }
     }
   ]

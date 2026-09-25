@@ -6,7 +6,7 @@
     "family-names": "Hendrick",
     "affiliation": "Independent Researcher",
     "email": "chasewhendrick@gmail.com",
-    "orcid": null
+    "orcid": "0009-0002-9754-6087"
   },
   "statuses": ["draft", "preparing", "ready", "on-arxiv", "submitted", "accepted", "published"],
   "papers": [
@@ -18,7 +18,7 @@
       "typst": "papers/minimal-winding/paper/minimal-winding.typ",
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
-      "companion": "SharpMeow/minimal-winding",
+      "companion": "ChaseHendrick/minimal-winding",
       "textLicense": "all-rights-reserved",
       "arxiv": {
         "category": "physics.flu-dyn",
@@ -43,7 +43,7 @@
       "typst": "papers/alpha-winding/paper/alpha-winding.typ",
       "latex": "papers/alpha-winding/paper/alpha-winding.tex",
       "pdf": "papers/alpha-winding/paper/alpha-winding.pdf",
-      "companion": "SharpMeow/alpha-winding",
+      "companion": "ChaseHendrick/alpha-winding",
       "textLicense": "all-rights-reserved",
       "arxiv": {
         "category": "physics.flu-dyn",

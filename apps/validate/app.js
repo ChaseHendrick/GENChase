@@ -111,7 +111,7 @@ function paint() {
   $('share-submit').disabled = active || uploading || !connected || sharePreview?.job !== j?.id || !sharePreview;
   setText('share-status', submission.message || 'Nothing shared. Review the file list or enable automatic sharing before starting a run.');
   const url = submission.url;
-  $('share-link').hidden = !/^https:\/\/github\.com\/SharpMeow\/GENChase\/pull\/[0-9]+$/.test(url || '');
+  $('share-link').hidden = !/^https:\/\/github\.com\/ChaseHendrick\/GENChase\/pull\/[0-9]+$/.test(url || '');
   if (!$('share-link').hidden) $('share-link').href = url;
   $('share-submit').textContent = ['failed', 'interrupted'].includes(submission.status) ? 'Retry upload' : 'Upload and open review';
   $('elapsed').textContent = Math.floor(state.elapsed / 3600) + 'h ' + Math.floor(state.elapsed / 60) % 60 + 'm ' + Math.floor(state.elapsed % 60) + 's';

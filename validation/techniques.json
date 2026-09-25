@@ -246,7 +246,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -290,7 +290,7 @@
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -315,7 +315,7 @@
   {
     "id": "kpz",
     "source": "src/modules/kpz.js",
-    "sourceSha256": "ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4",
+    "sourceSha256": "539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
     "status": "partially validated",
@@ -323,6 +323,7 @@
       "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
       "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
       "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
+      "The relaxation rule now stops at the top lattice row like the other column rules (closed PR #123); the six column presets were bit-identical before and after in a scratch run of the real module, but no registered tool exercises a lattice thin enough to reach the top row (validation/KPZ.md).",
       "No print-state accuracy audit is registered."
     ],
     "remaining": [
@@ -717,7 +718,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -725,6 +726,7 @@
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
       "Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).",
+      "Time step: from recipe v5 the step is at most 0.8 of the combined explicit bound 2/(Q D_w c^2 + 2 v c) of the water row, and of the plant row. Recipes made before v5 keep the pre-v5 step where it was under the bare-soil bound 2/(R - 1), so they reprint, and take the combined step where it was not, which corrects plates that were growing grid-scale checkerboards. Kept pre-v5 steps can lie within 0.03% of the bound at the corner of the ranges (validation/PDE-ORDER.md). The bound is linear and frozen-coefficient, not a nonlinear stability proof.",
       "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
       "Broader settings require additional independent evidence."
     ],
@@ -741,6 +743,16 @@
         "failureControl": "Plant uptake sign flip, water advected the wrong way, water diffusion 5% high and a broken stencil; each must fail.",
         "command": "node tools/rdx-science.js --write",
         "results": "validation/results/rdx-science.json"
+      },
+      {
+        "test": "tools/pde-order.js",
+        "scope": "Vegetation step ceiling, the ceiling section of the order-of-accuracy harness: the step the actual instance takes (the module sanitize, then min(dt, dtMax)) over 51,840 settings spanning the UI ranges (scale, slope, D_w, D_n, m, stencil, requested dt) under both ceiling rules; every Fourier mode of the linearized water and plant rows at each step taken; the actual rdx.js step shader on a 32 x 32 lattice from a 1e-6 water checkerboard on bare soil at slope 40, scale 1, D_w = 1, 5, 10, 20 (5-point) and 10 (9-point); the Float64 twin two-species bound at those settings and at every preset.",
+        "criteria": "Rule combined (recipe v5 on): step at most 0.8 of 2/R, R = Q D_w c^2 + 2 v c, and of the plant bound, over the whole sweep. Rule v4 (older recipes): step below 2/(R - 1), equal to the pre-v5 step wherever that step was below 2/(R - 1) and to the combined step elsewhere. No Fourier mode amplified at any swept step. The checkerboard decays at the module step under both rules (every later amplitude below the initial one, the last below a tenth of it), and every preset is under the twin bound under both rules. A failing gate fails the run.",
+        "limitations": "Linear frozen-coefficient stability of the decoupled water (bare soil) and plant rows over all Fourier modes, and of the coupled system only at the corners of the twin envelope (water 0.2 to 1.5, plants 0 to 2.5). Not a nonlinear stability proof; the sweep is a finite grid over the UI ranges; SwiftShader float32 only.",
+        "benchmark": "The forward Euler bound of the water row derived from the step shader, |1 - dt R| <= 1 + dt (1 + n^2) at the (pi, pi) mode, shown in validation/PDE-ORDER.md to bind for both stencils with or without the implicit loss; the exact stencil and upwind symbols for every other mode; the bound computed numerically from the Float64 twin of the update.",
+        "failureControl": "The pre-v5 separate-limit step, run on the actual shader with the ceiling removed from a copy of the spec, must grow the checkerboard where it exceeds the bound (1.19 to 1.59 times it at the four settings past it) and decay where it does not; 0.98 and 1.02 of the computed bound must decay and grow on the actual shader.",
+        "command": "ORDER_ONLY=ceiling node tools/pde-order.js --tab vegetation (recorded by node tools/pde-order.js --full --write)",
+        "results": "validation/results/pde-order.json"
       }
     ],
     "print": [
@@ -761,7 +773,7 @@
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -1293,7 +1305,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -1337,7 +1349,7 @@
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -1491,13 +1503,14 @@
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "validated within stated limits",
     "limitations": [
       "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
-      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Float16 fallback, measured, not validated: the state is stored as the deviation from the mean composition c0. At the default recipe the fluctuations then grow as in float32 (standard deviation equal to float32's to three figures at 1000 steps), where the plain fallback shrank them to 0.80 of it (validation/HALF-FLOAT.md). Phase-separated states far from c0 get no finer float16 spacing than before; other recipes are not measured.",
       "Broader settings require additional independent evidence."
     ],
     "remaining": [
@@ -1533,6 +1546,16 @@
         "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
         "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
         "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
+      },
+      {
+        "test": "tools/half-float-check.js",
+        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: the field as its deviation from c0, added back for the local potential, the guard, the picture, the reduction, the brush and the data export.",
+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
+        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
+        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
+        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its standard deviation fell from step 100 to 1000 while float32's grew, ending at 0.80 of float32's.",
+        "command": "node tools/half-float-check.js --write",
+        "results": "validation/results/half-float.json"
       }
     ],
     "print": [
@@ -1553,7 +1576,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -1584,7 +1607,7 @@
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "validated within stated limits",
@@ -1676,7 +1699,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -1688,7 +1711,7 @@
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
     "status": "validated within stated limits",
@@ -1750,7 +1773,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -1820,7 +1843,7 @@
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
     "status": "validated within stated limits",
@@ -1882,7 +1905,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -1894,13 +1917,14 @@
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "validated within stated limits",
     "limitations": [
       "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
-      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Refuses float16 state: on a device without EXT_color_buffer_float the tab says why on the stage and in the status line and runs nothing, because float16 storage breaks the conservation of the mean density. At the default recipe between steps 100 and 1000 the mean drifted 30 times as far as in float32 stored plainly and 9.4 times stored as the deviation from psi0, against an acceptance limit of 3 (tools/half-float-check.js, validation/HALF-FLOAT.md).",
       "The orientation view encodes a local gradient direction, not crystallographic orientation."
     ],
     "remaining": [
@@ -1956,7 +1980,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -2160,12 +2184,13 @@
   {
     "id": "fluid",
     "source": "src/modules/fluid.js",
-    "sourceSha256": "65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092",
+    "sourceSha256": "459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de",
     "reference": "Stable fluids: Jos Stam, SIGGRAPH 1999. Vorticity confinement comes from Steinhoff and Underhill, 1994, brought into graphics by Fedkiw, Stam and Jensen, 2001.",
-    "equation": "du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye)",
+    "equation": "du/dt + (u·grad)u = -grad p - gamma·u + f,   div u ≈ 0   (no viscous term; gamma = -ln(dissipation) per step; f = vorticity confinement + forcing; advect -> force -> Jacobi project -> advect dye)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Since 2026-09-25 the catalog equation matches the code: no explicit viscosity (the old equation listed nu lap u, which no pass computes); velocity is damped by a constant per-step factor, semi-Lagrangian advection adds grid-dependent numerical diffusion, and the Jacobi pressure solve reduces the divergence without removing it. Compare it with a damped, forced incompressible model, not with viscous Navier-Stokes.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
     ],
     "remaining": [
@@ -2246,7 +2271,7 @@
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "validated within stated limits",
@@ -2308,7 +2333,7 @@
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -2378,7 +2403,7 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
@@ -2422,7 +2447,7 @@
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -2638,13 +2663,14 @@
   {
     "id": "flow",
     "source": "src/modules/flow.js",
-    "sourceSha256": "e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873",
-    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.",
+    "sourceSha256": "996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564",
+    "reference": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023); the default custom field is the Taylor-Green vortex array (Taylor and Green, Proc. R. Soc. A, 1937).",
     "equation": "theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom field mode draws streamlines of a vector field the viewer types. A user-defined field is not validated: the status line prints no comparison with theory in that mode, and nothing checks the typed field against any source."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -2657,7 +2683,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",
@@ -2665,11 +2691,12 @@
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
       "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.",
-      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "No noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Float16 fallback, measured, not validated: the state is stored as the deviation from the uniform state (1, 1/a). At the default recipe this ends the freeze of the plain fallback (its state stopped changing, so the aggregation never started) and keeps each species' standard deviation within 3% of float32's at 1000 steps; the plate is a different realization (validation/HALF-FLOAT.md). Other recipes and a live change of a, after which the stored deviations are larger, are not measured.",
       "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, the float16 fallback beyond the default recipe, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2681,6 +2708,16 @@
         "failureControl": "Non-conservative flux (sensitivity at the cell instead of the face), chemotactic flux sign flip, attractant diffusion 5% high and a broken stencil; each must fail.",
         "command": "node tools/rdx-science.js --write",
         "results": "validation/results/rdx-science.json"
+      },
+      {
+        "test": "tools/half-float-check.js",
+        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: each species as its deviation from (1, 1/a), added back in every read, the picture, the reduction and the data export.",
+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
+        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
+        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
+        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its float16 state froze between steps 100 and 1000, with standard deviations 1.3% and 0.4% of float32's.",
+        "command": "node tools/half-float-check.js --write",
+        "results": "validation/results/half-float.json"
       }
     ],
     "print": [
@@ -2701,7 +2738,7 @@
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -2850,13 +2887,14 @@
   {
     "id": "attractors",
     "source": "src/modules/attractors.js",
-    "sourceSha256": "b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7",
-    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.",
+    "sourceSha256": "935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da",
+    "reference": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom ODE mode integrates a system the viewer types, with the same RK4 step as the built-in flows and a divergence guard at 1e6. A user-defined system is not validated: the status line prints no comparison with theory in that mode, and no step-size or convergence check is made for it."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -3967,17 +4005,20 @@
   {
     "id": "three-vortex-bound",
     "source": "src/modules/three-vortex-bound.js",
-    "sourceSha256": "b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f",
-    "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
+    "sourceSha256": "a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a",
+    "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws. Custom takes any three circulations and positions, computes their Biot-Savart velocities in the same convention, and tests the classical conditions for self-similar collapse, Σ ΓᵢΓⱼ = 0 and zero angular impulse about the center of vorticity (Gröbli 1877; Aref, Phys. Fluids 22, 393 (1979) and 057104 (2010)). Its normalization, circulations (1, μ, −μ/(1+μ)) on the zero-impulse circle, is that of Gotoda, J. Dyn. Differ. Equ. 33, 1759 (2021). The bound P = |ω₀| t_c > √3/2 over every three-vortex collapse, printed beside a custom collapse, is from this project's manuscript Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons (papers/minimal-winding), which has not been peer reviewed.",
     "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
     "status": "validated within stated limits",
     "limitations": [
       "Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.",
       "Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.",
-      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed."
+      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed.",
+      "Custom configuration mode (kind custom, added 2026-09-25) computes user-entered circulations and positions; its numbers are computed, not validated beyond the documented checks. tools/three-vortex-custom-check.js is a binary64 formula regression test: Biot-Savart velocities against an independent complex sum on 300 random configurations, kappa and P against Lemma 3 and Eq. (10) of papers/minimal-winding on 936 family cases, the Make it collapse projection on 300 random inputs, and two mutation controls (kernel sign, P without its factor 2). Independent high-precision evidence and a browser plate and print review of the custom mode are pending.",
+      "The source fingerprint changed on 2026-09-25 to add the custom mode. The code paths of the four reviewed recipes are unchanged, but tools/vortex-family-review.js was not rerun for this fingerprint."
     ],
     "remaining": [
-      "Extend recipes, rendering paths and hardware only with additional reviewed evidence."
+      "Extend recipes, rendering paths and hardware only with additional reviewed evidence.",
+      "Custom mode: an independent high-precision (mpmath) check of velocities, self-similarity and P, a browser plate and print review, and a rerun of tools/vortex-family-review.js --write."
     ],
     "numerical": [
       {

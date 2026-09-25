@@ -1,17 +1,17 @@
 blank_issues_enabled: true
 contact_links:
   - name: Report a vulnerability
-    url: https://github.com/SharpMeow/GENChase/security/advisories/new
+    url: https://github.com/ChaseHendrick/GENChase/security/advisories/new
     about: Private advisory. Not a public issue.
   - name: How to contribute
-    url: https://github.com/SharpMeow/GENChase/blob/main/CONTRIBUTING.md
+    url: https://github.com/ChaseHendrick/GENChase/blob/main/CONTRIBUTING.md
     about: Commits, pull requests, and what belongs in this file.
   - name: Catalog
-    url: https://github.com/SharpMeow/GENChase/blob/main/TECHNIQUES.md
+    url: https://github.com/ChaseHendrick/GENChase/blob/main/TECHNIQUES.md
     about: Every tab, with the hash that reprints it. The count is the live catalog, not a social card. Check here before proposing a technique.
   - name: Identities
-    url: https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+    url: https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
     about: Derived bounds under descriptive titles, with the classical sources they specialize. Zero confirmed novel findings; cite the classical sources as well.
   - name: Prior-art ledger
-    url: https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md
+    url: https://github.com/ChaseHendrick/GENChase/blob/main/RESEARCH.md
     about: What was searched, what was not. Read this before claiming something is new.

@@ -57,8 +57,8 @@ JSON
 
 SYNC=genchase-sync
 # The project identity for every commit and merge here, whatever the environment or git config says.
-GIT_AUTHOR_NAME=Chaos GIT_COMMITTER_NAME=Chaos
-GIT_AUTHOR_EMAIL=326338179+SharpMeow@users.noreply.github.com GIT_COMMITTER_EMAIL=326338179+SharpMeow@users.noreply.github.com
+GIT_AUTHOR_NAME="Chase Hendrick" GIT_COMMITTER_NAME="Chase Hendrick"
+GIT_AUTHOR_EMAIL=326338179+ChaseHendrick@users.noreply.github.com GIT_COMMITTER_EMAIL=326338179+ChaseHendrick@users.noreply.github.com
 export GIT_AUTHOR_NAME GIT_COMMITTER_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_EMAIL
 while read -r id repo; do
   work=$(mktemp -d)

@@ -1,13 +1,13 @@
 # Browser studio and offline releases
 
-Use [Start here](https://sharpmeow.github.io/GENChase/start.html) to choose a pattern,
+Use [Start here](https://chasehendrick.github.io/GENChase/start.html) to choose a pattern,
 make a first print, download an offline copy, or find a contribution path. The direct
-[studio link](https://sharpmeow.github.io/GENChase/) still opens the app immediately
+[studio link](https://chasehendrick.github.io/GENChase/) still opens the app immediately
 and existing recipe links remain valid.
 
 ## For artists
 
-Download `GENChase-studio.zip` from the [latest release](https://github.com/SharpMeow/GENChase/releases/latest),
+Download `GENChase-studio.zip` from the [latest release](https://github.com/ChaseHendrick/GENChase/releases/latest),
 extract it, and open `GENChase/START-HERE.html`. Keep the folder together. The bundle
 contains the self-contained studio, introductory examples, licenses, and recorded
 scientific evidence. It needs no server or development tools. Keep `VERSION.json`

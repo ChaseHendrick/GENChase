@@ -60,8 +60,10 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
   Richardson order is 1.99, with its limit 3.4e-4 from the continuum.
 - The chemotaxis threshold is c* = 1.6 at the defaults. At 0.95c* the critical mode decays at −0.0164, and
   at 1.05c* it grows at +0.0168.
-- For vegetation, the fastest band mode on the default slope travels uphill at 0.768, against 0.831 in the
-  continuum (0.765 on the lattice at the step used).
+- For vegetation, the fastest band mode on the default slope travels uphill at 0.769, against 0.831 in the
+  continuum and 0.769 from the exact one-step map at the step used. That step is 0.9 of the module's ceiling at
+  the test's 1.47 cells per unit: 0.01070 under the recipe v5 ceiling, where it was 0.01227 before; the run
+  before the change measured 0.768.
 
 ## Findings
 
@@ -78,8 +80,12 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
   ceiling, record a worst-case rounding bound per run, and do not measure dt-refinement on the GPU. The
   dt → 0 limit is taken from the exact discrete map.
 - **Implicit denominators.** The vegetation water loss divides by 1 + dt, formed in float32. That quantizes
-  the effective loss rate by up to ulp(1)/(2dt): about 3e-5 relative at dt = 1e-3, and 1.5e-6 at the default
+  the effective loss rate by up to ulp(1)/(2dt): about 3e-5 relative at dt = 1e-3, and 1.6e-6 at the default
   step. The exact discrete reference uses the float32 denominator and records the unrounded one alongside it.
+- **Vegetation step ceiling.** Until recipe v5 the tab took the smaller of separate diffusion and advection
+  limits, which overshoots the combined explicit bound of the water row by up to 1.6 and grows a grid-scale
+  checkerboard. The ceiling now combines them; the derivation, the treatment of older recipes and the regression
+  check are in [PDE-ORDER.md](PDE-ORDER.md), Findings.
 - **Turing status line.** The status line reports the onset-critical wavelength 2π(D_u D_v/det)^(1/4),
   12 cells at the defaults. The fastest-growing wavelength is 10.8 cells, the dominant wavelength measured
   in the linear regime is 11.4 cells, and the saturated pattern measures 9.2 cells. This is recorded, not
@@ -92,7 +98,7 @@ the well-mixed May-Leonard limit, all on one software renderer. They do not cove
 
 - nonlinear pattern selection, spiral periods, band spacing or migration speed;
 - the noise term;
-- the float16 fallback;
+- the float16 fallback, which [HALF-FLOAT.md](HALF-FLOAT.md) measures but does not validate;
 - physical GPUs;
 - the print path.
 

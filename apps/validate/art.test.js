@@ -240,7 +240,7 @@ test('art job plumbing: progress units, resume copies the art folder, evidence a
   t.after(() => { fs.rmSync(repo, { recursive: true, force: true }); fs.rmSync(runs, { recursive: true, force: true }); });
   fs.mkdirSync(path.join(repo, 'tools')); fs.writeFileSync(path.join(repo, 'techniques.json'), '{"techniques":[]}');
   fs.writeFileSync(path.join(repo, 'tools/science.js'), 'const fs=require("fs"),p=require("path"),d=process.env.GENCHASE_JOB_DIR;const had=fs.existsSync(p.join(d,"art/checkpoint.json"))&&fs.existsSync(p.join(d,"art/thumbs/c-0001.jpg"));console.log(had?"RESUMED":"FRESH");fs.mkdirSync(p.join(d,"art/thumbs"),{recursive:true});fs.writeFileSync(p.join(d,"art/checkpoint.json"),"{}");fs.writeFileSync(p.join(d,"art/thumbs/c-0001.jpg"),"x");');
-  for (const args of [['init', '-q'], ['add', '.'], ['-c', 'user.name=Chaos', '-c', 'user.email=326338179+SharpMeow@users.noreply.github.com', 'commit', '-qm', 'Fixture']]) cp.execFileSync('git', args, { cwd: repo });
+  for (const args of [['init', '-q'], ['add', '.'], ['-c', 'user.name=Chase Hendrick', '-c', 'user.email=326338179+ChaseHendrick@users.noreply.github.com', 'commit', '-qm', 'Fixture']]) cp.execFileSync('git', args, { cwd: repo });
   const run = new Jobs(repo, runs);
   try {
     run.start({ workspace: 'validate', mode: 'inventory', power }); await run.wait();
@@ -392,7 +392,7 @@ test('the submission check accepts a shared art folder and names every structura
       assert.equal(main(args), 1, JSON.stringify(args));
     // --base lists the changes itself: NUL-separated, every change type, no rename pairing.
     const git = (...args) => cp.execFileSync('git', args, { cwd: base, encoding: 'utf8' });
-    const commit = message => git('-c', 'user.name=Chaos', '-c', 'user.email=326338179+SharpMeow@users.noreply.github.com', 'commit', '-qm', message);
+    const commit = message => git('-c', 'user.name=Chase Hendrick', '-c', 'user.email=326338179+ChaseHendrick@users.noreply.github.com', 'commit', '-qm', message);
     git('init', '-q'); fs.rmSync('validation/submissions/' + bad, { recursive: true }); git('add', '-A'); commit('base'); const baseSha = git('rev-parse', 'HEAD').trim();
     lines.length = 0; assert.equal(main(['--base', baseSha]), 0); assert.match(lines.join('\n'), /No art result folders to check/);
     fs.mkdirSync('validation/submissions/j k/art', { recursive: true }); fs.writeFileSync('validation/submissions/j k/art/share.json', '{'); git('add', '-A'); commit('space');

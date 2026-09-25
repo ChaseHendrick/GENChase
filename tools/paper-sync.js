@@ -24,7 +24,7 @@ const PRIVATE_DIRS = ['notes/', 'submission/'];
 const BINARY = /\.(pdf|png|jpe?g|gif|zip|npz|gz)$/i;
 const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/g;
 const INTERNAL = [
-  [/github\.com\/SharpMeow\/GENChase|SharpMeow\/GENChase/i, 'a link to the GENChase repository, which may be private'],
+  [/github\.com\/[A-Za-z0-9-]+\/GENChase\b|\b(ChaseHendrick|SharpMeow)\/GENChase\b|(chasehendrick|sharpmeow)\.github\.io\/GENChase/i, 'a link to the GENChase repository or its site, which may be private'],
   [/(^|[^A-Za-z0-9_./-])(research|papers)\/[A-Za-z0-9_-]/m, 'a research/ or papers/ path of the GENChase repository'],
   [/\]\(\.\.\//, 'a Markdown link out of the paper folder'],
 ];
@@ -162,7 +162,8 @@ function selfTest() {
     const cff = fs.readFileSync(path.join(out, 'CITATION.cff'), 'utf8'), lic = fs.readFileSync(path.join(out, 'LICENSE'), 'utf8');
     checks++; if (!/family-names: "B"/.test(cff) || !/repository-code: "https:\/\/github.com\/o\/t"/.test(cff)) { failures++; console.log('FAIL CITATION.cff:\n' + cff); }
     checks++; if (!/^The manuscript in paper\/.*All rights reserved\./.test(lic) || !/Apache License/.test(lic)) { failures++; console.log('FAIL LICENSE:\n' + lic); }
-    expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));
+    expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/ChaseHendrick/GENChase\n'));
+    expect(false, 'a GENChase link under the old account name', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));
     expect(false, 'a research/ path in the code', () => w('papers/t/code/run.py', "open('research/generalizations/x.json')\n"));
     expect(false, 'a papers/ path in the README', () => w('papers/t/README.md', 'Run python3 papers/t/code/run.py\n'));
     expect(false, 'a link out of the folder', () => w('papers/t/README.md', '[status](../papers.json)\n'));

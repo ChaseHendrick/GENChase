@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        A wrong plate is an issue. Script in someone else's origin is a [private advisory](https://github.com/SharpMeow/GENChase/security/advisories/new).
+        A wrong plate is an issue. Script in someone else's origin is a [private advisory](https://github.com/ChaseHendrick/GENChase/security/advisories/new).
 
         A measurement that disagrees with theory is also an issue if the tab rounded toward it, hid it, or cannot fail.
   - type: textarea

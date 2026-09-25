@@ -152,7 +152,7 @@ git commit -m "Hardware GPU run: <renderer>"
 git push -u origin HEAD
 ```
 
-and open the pull request against `SharpMeow/GENChase`. Say in the description what, if anything, had to
+and open the pull request against `ChaseHendrick/GENChase`. Say in the description what, if anything, had to
 be overridden. Volunteers can instead use the local runner: **Check simulations**, job **Hardware GPU:
 registered GPU science and print checks** (`npm run validator:headless -- --mode gpu-science --machine
 <label>`). It runs the same command, records the renderer on the job's hardware card, and **Review files to
@@ -170,5 +170,6 @@ than about the physics. A failure is recorded as a failure and is worth reading,
 passes. Identical pixels across GPUs are not claimed anywhere in this project, and a hardware run does not
 change a technique's validation status by itself.
 
-A device without float32 color buffers runs the pde and rdx tabs on float16 state instead; see
+A device without float32 color buffers runs the pde and rdx tabs on float16 state instead (chemotaxis and amb
+store it as the deviation from their uniform state, and pfc refuses to run on it); see
 `validation/HALF-FLOAT.md` for what that does to the plates and the status line.

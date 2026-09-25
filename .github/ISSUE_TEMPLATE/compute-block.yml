@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Claiming is optional. A job without `--start` picks a random block among two billion seeds, so collisions are rare. Claim a block when you plan a long run or want a specific range. The questions, the suggested jobs and the certificate are in [experiments/VORTEX-COLLAPSE.md](https://github.com/SharpMeow/GENChase/blob/main/experiments/VORTEX-COLLAPSE.md).
+        Claiming is optional. A job without `--start` picks a random block among two billion seeds, so collisions are rare. Claim a block when you plan a long run or want a specific range. The questions, the suggested jobs and the certificate are in [experiments/VORTEX-COLLAPSE.md](https://github.com/ChaseHendrick/GENChase/blob/main/experiments/VORTEX-COLLAPSE.md).
 
         Share the result file when the run ends, including blocks that found nothing new, then close this issue with a link to the evidence pull request. Rerunning somebody else's block on purpose is useful too: its results digest should match.
   - type: dropdown

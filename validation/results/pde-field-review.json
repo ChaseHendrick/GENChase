@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-25",
   "scope": "Twelve complete noise-free finite lattice trajectories at time 2 and every available view, with independent float64 reference and actual print comparisons. Not a long-time phase-diagram, stochastic or universal hardware certification.",
-  "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
-  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
+  "engineSha256": "15697e484ffa6d7798656f45f37a454771f5c7553a1e54c2dcabcc4cf63bb4a3",
   "environment": {
-    "node": "v24.21.0",
-    "chromium": "145.0.7632.6",
-    "platform": "darwin",
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
     "backend": "SwiftShader RGBA32F"
   },
   "cases": [
@@ -38,7 +38,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-cahn-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -56,50 +56,50 @@
       "initialSha256": "705c073b54e098ea8f885e83afee2392138a36bdbd281da2ffc428a216a318e4",
       "finalSha256": "fb87a309457e449068b8f8d9f7246f29b436ea3b58e23d75d3197e7f9dfde481",
       "discreteError": {
-        "max": 1.871267547581823e-7,
-        "rms": 5.088301982446836e-8
+        "max": 1.8712675464716e-7,
+        "rms": 5.08830198240831e-8
       },
       "referenceSensitivity": {
-        "max": 6.62188526234786e-10,
-        "rms": 1.5386090851885535e-10
+        "max": 6.621884707236347e-10,
+        "rms": 1.538609050185226e-10
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.0002593585441478252,
-            "rms": 0.00011344091079728861
+            "max": 0.00025935854414793624,
+            "rms": 0.00011344091079728774
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00012942041853747366,
-            "rms": 0.000056551911314406195
+            "max": 0.00012942041853758468,
+            "rms": 0.00005655191131440515
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.00006451096037707327,
-            "rms": 0.000028238207677602288
+            "max": 0.00006451096037718429,
+            "rms": 0.00002823820767760115
           }
         }
       ],
       "orders": [
-        1.0042933312158775,
-        1.0019272631092428
+        1.0042933312158928,
+        1.0019272631092746
       ],
       "wrongTimeError": {
         "max": 0.0389743109390307,
-        "rms": 0.01735222425101943
+        "rms": 0.017352224251019434
       },
       "chemicalError": {
         "max": 9.06036398573562e-7,
-        "rms": 2.2381997332275366e-7
+        "rms": 2.238199733237868e-7
       },
       "meanDrift": -1.8098944565281272e-9,
       "prints": [
@@ -108,9 +108,9 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00006024305555555556,
+          "meanChannelError": 0.00006128472222222222,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 4105755,
+          "shiftedPrintFailurePixels": 4105759,
           "statePreserved": true
         },
         {
@@ -118,9 +118,9 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00010763888888888889,
+          "meanChannelError": 0.00010804398148148148,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 4577059,
+          "shiftedPrintFailurePixels": 4577061,
           "statePreserved": true
         },
         {
@@ -163,7 +163,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-cahn-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -182,49 +182,49 @@
       "finalSha256": "e44305372f1f22bdec44daf74f76778dcc8b914325bf2c9fc82c4d4d7a253737",
       "discreteError": {
         "max": 8.791423182774594e-7,
-        "rms": 7.707574908412125e-8
+        "rms": 7.707574908331764e-8
       },
       "referenceSensitivity": {
-        "max": 3.447627050512381e-8,
-        "rms": 1.41538596673968e-9
+        "max": 3.447627061614611e-8,
+        "rms": 1.4153859663113873e-9
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.0005389031595173788,
-            "rms": 0.00007498250364950071
+            "max": 0.0005389031595174065,
+            "rms": 0.00007498250364949979
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00026914743842515465,
-            "rms": 0.00003733602136926771
+            "max": 0.0002691474384251824,
+            "rms": 0.0000373360213692669
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.00013427702845963951,
-            "rms": 0.000018631073441752247
+            "max": 0.00013427702845966727,
+            "rms": 0.000018631073441751414
           }
         }
       ],
       "orders": [
-        1.0059857995628283,
-        1.002857399627773
+        1.0059857995628416,
+        1.0028573996278063
       ],
       "wrongTimeError": {
         "max": 0.11665382019220497,
-        "rms": 0.016054867018390484
+        "rms": 0.016054867018390487
       },
       "chemicalError": {
         "max": 0.00000806161661947441,
-        "rms": 3.393391220706302e-7
+        "rms": 3.3933912206583803e-7
       },
       "meanDrift": 9.181098881150263e-9,
       "prints": [
@@ -233,7 +233,7 @@
           "width": 1920,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.000634765625,
+          "meanChannelError": 0.0006510416666666666,
           "channelsChecked": 13824000,
           "shiftedPrintFailurePixels": 723150,
           "statePreserved": true
@@ -279,7 +279,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-ohta-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -297,50 +297,50 @@
       "initialSha256": "a618ce3af46a5788fe36c5d6c5f9791704e1526569a5cf7b7adfcfd6c68de20a",
       "finalSha256": "d84dd91d19de56e1bd2ccdcf524c8cb054429e2f4f6c2b6a7b8d70292ec0833e",
       "discreteError": {
-        "max": 2.1850074904961048e-7,
-        "rms": 5.601049852848124e-8
+        "max": 2.1850074916063278e-7,
+        "rms": 5.6010498526586874e-8
       },
       "referenceSensitivity": {
-        "max": 5.920791079638832e-10,
-        "rms": 1.5766865739027752e-10
+        "max": 5.920792744973369e-10,
+        "rms": 1.5766865376314148e-10
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.00032983882165626977,
-            "rms": 0.00017110791639583087
+            "max": 0.0003298388216563808,
+            "rms": 0.0001711079163958284
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00016455514169411156,
-            "rms": 0.00008526430602613156
+            "max": 0.00016455514169422258,
+            "rms": 0.00008526430602612957
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.0000823007319040725,
-            "rms": 0.0000425731540347792
+            "max": 0.00008230073190418352,
+            "rms": 0.0000425731540347771
           }
         }
       ],
       "orders": [
-        1.004892687022969,
-        1.0019979400331804
+        1.0048926870229822,
+        1.0019979400332177
       ],
       "wrongTimeError": {
-        "max": 0.0657270488054239,
-        "rms": 0.04139817595268023
+        "max": 0.0657270488054238,
+        "rms": 0.041398175952680236
       },
       "chemicalError": {
-        "max": 7.714490770083238e-7,
-        "rms": 1.880768874244924e-7
+        "max": 7.714490776189464e-7,
+        "rms": 1.880768874214973e-7
       },
       "meanDrift": 2.217348082922399e-9,
       "prints": [
@@ -349,9 +349,9 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00007517361111111112,
+          "meanChannelError": 0.00007320601851851852,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 5014135,
+          "shiftedPrintFailurePixels": 5014131,
           "statePreserved": true
         },
         {
@@ -359,7 +359,7 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00012766203703703702,
+          "meanChannelError": 0.00012858796296296297,
           "channelsChecked": 17280000,
           "shiftedPrintFailurePixels": 4910859,
           "statePreserved": true
@@ -405,7 +405,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-ohta-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -423,12 +423,12 @@
       "initialSha256": "a83fb90dae612391fe636288334617105a59431920d9c8b4d4b249720e2a1b31",
       "finalSha256": "274db0101cd8da7ab37d1edfb30a7897b0000b017aa96aa5c0534e2d5bc7edf9",
       "discreteError": {
-        "max": 3.2616963707710056e-7,
-        "rms": 3.372389543296274e-8
+        "max": 3.2616963696607826e-7,
+        "rms": 3.372389543227258e-8
       },
       "referenceSensitivity": {
-        "max": 2.0254898536187227e-8,
-        "rms": 1.325926371094151e-9
+        "max": 2.0254898425164924e-8,
+        "rms": 1.3259263728700549e-9
       },
       "temporalLevels": [
         {
@@ -436,7 +436,7 @@
           "steps": 200,
           "error": {
             "max": 0.0006297727502594941,
-            "rms": 0.00009674956951864068
+            "rms": 0.00009674956951864204
           }
         },
         {
@@ -444,7 +444,7 @@
           "steps": 400,
           "error": {
             "max": 0.0003174444116364472,
-            "rms": 0.0000484141176241348
+            "rms": 0.00004841411762413602
           }
         },
         {
@@ -452,21 +452,21 @@
           "steps": 800,
           "error": {
             "max": 0.0001592834867249482,
-            "rms": 0.00002421302439656156
+            "rms": 0.00002421302439656279
           }
         }
       ],
       "orders": [
-        0.9988274413545747,
-        0.9996445062197769
+        0.9988274413545586,
+        0.99964450621974
       ],
       "wrongTimeError": {
         "max": 0.15074263892128636,
-        "rms": 0.027349691293853243
+        "rms": 0.027349691293853253
       },
       "chemicalError": {
-        "max": 0.0000015938158722805795,
-        "rms": 1.0097804959218232e-7
+        "max": 0.0000015938158715589346,
+        "rms": 1.0097804958727797e-7
       },
       "meanDrift": 8.41170355592169e-10,
       "prints": [
@@ -521,7 +521,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-amb-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#D9C7A7",
           "#B08968",
@@ -539,50 +539,50 @@
       "initialSha256": "18870347c176ad9988fb2b22128d7c73f157c50660d0e6566569e311ba641563",
       "finalSha256": "2c0748c376fa95bef2da4bce383d0fd8c71888fe38c00a8f0274ebea117f05cd",
       "discreteError": {
-        "max": 1.6424814242022023e-7,
-        "rms": 3.871618975862842e-8
+        "max": 1.6424814236470908e-7,
+        "rms": 3.87161897611483e-8
       },
       "referenceSensitivity": {
-        "max": 1.5171625344923e-7,
-        "rms": 1.9364318591781686e-8
+        "max": 1.5171625350474116e-7,
+        "rms": 1.936431859243145e-8
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.0002507175145882723,
-            "rms": 0.00005607821776603237
+            "max": 0.0002507175145883833,
+            "rms": 0.000056078217766032434
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00010794806978947635,
-            "rms": 0.000025831053707056
+            "max": 0.00010794806978942084,
+            "rms": 0.00002583105370705603
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.00005308199427372928,
-            "rms": 0.000012531937360156814
+            "max": 0.00005308199427367377,
+            "rms": 0.000012531937360156787
           }
         }
       ],
       "orders": [
-        1.1183340040266672,
-        1.043497031798473
+        1.1183340040266674,
+        1.0434970317984777
       ],
       "wrongTimeError": {
-        "max": 0.030897360530330265,
-        "rms": 0.0073057169696257645
+        "max": 0.03089736053033032,
+        "rms": 0.007305716969625761
       },
       "chemicalError": {
-        "max": 3.6766875805005483e-7,
-        "rms": 9.869234447041617e-8
+        "max": 3.6766875827209944e-7,
+        "rms": 9.869234447140847e-8
       },
       "meanDrift": -1.1632437235675752e-9,
       "prints": [
@@ -591,9 +591,9 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.000028761574074074073,
+          "meanChannelError": 0.000026736111111111112,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 1474782,
+          "shiftedPrintFailurePixels": 1474778,
           "statePreserved": true
         },
         {
@@ -601,7 +601,7 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.000028356481481481483,
+          "meanChannelError": 0.000027083333333333332,
           "channelsChecked": 17280000,
           "shiftedPrintFailurePixels": 2797419,
           "statePreserved": true
@@ -647,7 +647,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-amb-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#D9C7A7",
           "#B08968",
@@ -665,50 +665,50 @@
       "initialSha256": "b254c21cfd4927186ee75c195f79788d947c8b70df58d15447e1d4002fd3282f",
       "finalSha256": "f1b50fd85182ac931a2349a9463a9210440a286ed91e82379b2bfaf5b8ecb5ae",
       "discreteError": {
-        "max": 2.971199413170922e-7,
-        "rms": 4.4353529810949635e-8
+        "max": 2.971199410950476e-7,
+        "rms": 4.4353529809937715e-8
       },
       "referenceSensitivity": {
-        "max": 3.094777710765939e-7,
-        "rms": 1.2627248215431687e-8
+        "max": 3.094777709655716e-7,
+        "rms": 1.2627248213849256e-8
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.0008113223040225881,
-            "rms": 0.00010333203043351665
+            "max": 0.0008113223040224771,
+            "rms": 0.00010333203043351684
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.0003946858370426076,
-            "rms": 0.000051963737604157464
+            "max": 0.0003946858370424966,
+            "rms": 0.00005196373760415794
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.0001957851374271291,
-            "rms": 0.000026052573988338465
+            "max": 0.00019578513742701809,
+            "rms": 0.000026052573988338837
           }
         }
       ],
       "orders": [
-        0.9917104155533005,
-        0.9960792859924129
+        0.99171041555329,
+        0.9960792859924055
       ],
       "wrongTimeError": {
-        "max": 0.1281378305547385,
+        "max": 0.12813783055473849,
         "rms": 0.01875647148022604
       },
       "chemicalError": {
-        "max": 0.000002006597710546565,
-        "rms": 2.1969875730751945e-7
+        "max": 0.000002006597709103275,
+        "rms": 2.1969875729911945e-7
       },
       "meanDrift": -1.2368083501801408e-9,
       "prints": [
@@ -717,7 +717,7 @@
           "width": 1920,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.0032063802083333332,
+          "meanChannelError": 0.0031901041666666666,
           "channelsChecked": 13824000,
           "shiftedPrintFailurePixels": 2523600,
           "statePreserved": true
@@ -761,7 +761,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-swift-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1F3A5F",
           "#4F7CAC",
@@ -779,50 +779,50 @@
       "initialSha256": "54e9021fee67c5940698345939112d2a993782d8aba55c2e9c6d9b241ea1bc41",
       "finalSha256": "4be63ff11b528ed51b6d42666cae87001bb05b3b604e5d7634b519d68d75096d",
       "discreteError": {
-        "max": 2.102036513740302e-7,
-        "rms": 3.755739132309049e-8
+        "max": 2.102036514850525e-7,
+        "rms": 3.7557391324018086e-8
       },
       "referenceSensitivity": {
         "max": 3.3805913624007644e-10,
-        "rms": 5.7998999509461784e-11
+        "rms": 5.7999000586114266e-11
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.00013213823728158713,
-            "rms": 0.00006445433059796182
+            "max": 0.00013213823728153162,
+            "rms": 0.00006445433059797643
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00006606648854806663,
-            "rms": 0.00003223921391712872
+            "max": 0.00006606648854801112,
+            "rms": 0.00003223921391714319
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.000032956108375337134,
-            "rms": 0.000016123001489761586
+            "max": 0.00003295610837528162,
+            "rms": 0.00001612300148977602
           }
         }
       ],
       "orders": [
-        0.9994607272173442,
-        0.9996962235018719
+        0.999460727217024,
+        0.9996962235012278
       ],
       "wrongTimeError": {
         "max": 0.06397919186440065,
-        "rms": 0.039248826437224486
+        "rms": 0.0392488264372245
       },
       "chemicalError": {
         "max": 6.18734129709253e-7,
-        "rms": 9.283618549827133e-8
+        "rms": 9.283618549562242e-8
       },
       "meanDrift": 0.0009520472821094028,
       "prints": [
@@ -831,7 +831,7 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00006076388888888889,
+          "meanChannelError": 0.0000603587962962963,
           "channelsChecked": 17280000,
           "shiftedPrintFailurePixels": 5592611,
           "statePreserved": true
@@ -841,7 +841,7 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00022424768518518518,
+          "meanChannelError": 0.0002277199074074074,
           "channelsChecked": 17280000,
           "shiftedPrintFailurePixels": 5697200,
           "statePreserved": true
@@ -851,7 +851,7 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00006047453703703704,
+          "meanChannelError": 0.00003958333333333333,
           "channelsChecked": 17280000,
           "shiftedPrintFailurePixels": 5674333,
           "statePreserved": true
@@ -885,7 +885,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-swift-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1F3A5F",
           "#4F7CAC",
@@ -904,11 +904,11 @@
       "finalSha256": "317e4727a5e61e0685783a542eeedcdd461be4f3640337aaeec528a3c6cc8e8a",
       "discreteError": {
         "max": 1.9998613653982034e-7,
-        "rms": 3.077814037247711e-8
+        "rms": 3.0778140372923445e-8
       },
       "referenceSensitivity": {
-        "max": 9.784395516021505e-13,
-        "rms": 1.2050287334403855e-13
+        "max": 9.78328529299688e-13,
+        "rms": 1.2050346997627698e-13
       },
       "temporalLevels": [
         {
@@ -916,7 +916,7 @@
           "steps": 200,
           "error": {
             "max": 0.0004244019376073993,
-            "rms": 0.0001991077913121597
+            "rms": 0.00019910779131215872
           }
         },
         {
@@ -924,7 +924,7 @@
           "steps": 400,
           "error": {
             "max": 0.00021244782078611024,
-            "rms": 0.00009963902263380268
+            "rms": 0.00009963902263380202
           }
         },
         {
@@ -932,13 +932,13 @@
           "steps": 800,
           "error": {
             "max": 0.00010632175076352723,
-            "rms": 0.00004983518608647691
+            "rms": 0.00004983518608647625
           }
         }
       ],
       "orders": [
-        0.9987669011816522,
-        0.9995461546096777
+        0.9987669011816548,
+        0.9995461546096871
       ],
       "wrongTimeError": {
         "max": 0.16343013713656873,
@@ -946,7 +946,7 @@
       },
       "chemicalError": {
         "max": 5.177542408141278e-7,
-        "rms": 6.71981642039842e-8
+        "rms": 6.71981642029039e-8
       },
       "meanDrift": 0.05636473283749623,
       "prints": [
@@ -965,7 +965,7 @@
           "width": 1920,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.00234375,
+          "meanChannelError": 0.0023600260416666665,
           "channelsChecked": 13824000,
           "shiftedPrintFailurePixels": 1485000,
           "statePreserved": true
@@ -997,7 +997,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-ks-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#2C0F4A",
           "#8A1C6B",
@@ -1067,9 +1067,9 @@
           "width": 2400,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.000013194444444444444,
+          "meanChannelError": 0.000013657407407407408,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 3173882,
+          "shiftedPrintFailurePixels": 3173881,
           "statePreserved": true
         },
         {
@@ -1079,7 +1079,7 @@
           "maxChannelError": 1,
           "meanChannelError": 0.000028761574074074073,
           "channelsChecked": 17280000,
-          "shiftedPrintFailurePixels": 5251003,
+          "shiftedPrintFailurePixels": 5251002,
           "statePreserved": true
         },
         {
@@ -1119,7 +1119,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-ks-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#2C0F4A",
           "#8A1C6B",
@@ -1189,7 +1189,7 @@
           "width": 1920,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.005419921875,
+          "meanChannelError": 0.0054361979166666664,
           "channelsChecked": 13824000,
           "shiftedPrintFailurePixels": 3982500,
           "statePreserved": true
@@ -1235,7 +1235,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-pfc-0",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1254,11 +1254,11 @@
       "finalSha256": "ecf6300baba609a2e3629119486e52ddd3a64a77942474ada3fac886ba68e81e",
       "discreteError": {
         "max": 2.1862117449700236e-7,
-        "rms": 7.773176129399836e-8
+        "rms": 7.773176128353146e-8
       },
       "referenceSensitivity": {
         "max": 1.093075630009821e-11,
-        "rms": 1.862830849654384e-12
+        "rms": 1.8628308486820268e-12
       },
       "temporalLevels": [
         {
@@ -1266,7 +1266,7 @@
           "steps": 200,
           "error": {
             "max": 0.00005521513837764003,
-            "rms": 0.000014518228201938739
+            "rms": 0.000014518228201937806
           }
         },
         {
@@ -1274,7 +1274,7 @@
           "steps": 400,
           "error": {
             "max": 0.000027767199458572644,
-            "rms": 0.000007248602633538232
+            "rms": 0.000007248602633537304
           }
         },
         {
@@ -1282,13 +1282,13 @@
           "steps": 800,
           "error": {
             "max": 0.000013789910258743543,
-            "rms": 0.0000036136612309149823
+            "rms": 0.000003613661230913945
           }
         }
       ],
       "orders": [
-        1.0020905901137367,
-        1.0042416384590975
+        1.0020905901138286,
+        1.0042416384593271
       ],
       "wrongTimeError": {
         "max": 0.01947990715545911,
@@ -1296,7 +1296,7 @@
       },
       "chemicalError": {
         "max": 7.950241991405704e-7,
-        "rms": 2.1104747297679587e-7
+        "rms": 2.110474729703661e-7
       },
       "meanDrift": -1.0869371180888265e-8,
       "prints": [
@@ -1361,7 +1361,7 @@
         "contrast": 1,
         "grain": 0,
         "seed": "pde-field-pfc-1",
-        "v": 2,
+        "v": 5,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1379,50 +1379,50 @@
       "initialSha256": "3f71fae049dd3e04aa6dc7f781c78893dd16fc6844ab907a438fbbdcff8ec503",
       "finalSha256": "2b429333c09d273228283a7e67cd214edba75648fb44d76a0ca147cbe04bbd10",
       "discreteError": {
-        "max": 0.0000024439421481003976,
-        "rms": 3.6863454870456e-7
+        "max": 0.00000244394214821142,
+        "rms": 3.6863454870669014e-7
       },
       "referenceSensitivity": {
-        "max": 7.390643652627205e-12,
-        "rms": 8.081274174883236e-13
+        "max": 7.390560385900358e-12,
+        "rms": 8.081303228577217e-13
       },
       "temporalLevels": [
         {
           "dt": 0.01,
           "steps": 200,
           "error": {
-            "max": 0.0009203760588298859,
-            "rms": 0.00009248470383227285
+            "max": 0.000920376058830108,
+            "rms": 0.00009248470383227267
           }
         },
         {
           "dt": 0.005,
           "steps": 400,
           "error": {
-            "max": 0.00046046661974297187,
-            "rms": 0.00004621220479408317
+            "max": 0.0004604666197431939,
+            "rms": 0.00004621220479408295
           }
         },
         {
           "dt": 0.0025,
           "steps": 800,
           "error": {
-            "max": 0.00023027348162041328,
-            "rms": 0.00002314724700497508
+            "max": 0.00023027348162063532,
+            "rms": 0.000023147247004974783
           }
         }
       ],
       "orders": [
-        1.0009408536814708,
-        0.9974333042579921
+        1.0009408536814748,
+        0.9974333042580037
       ],
       "wrongTimeError": {
-        "max": 0.15748387233365047,
-        "rms": 0.020046051502261335
+        "max": 0.15748387233365002,
+        "rms": 0.020046051502261325
       },
       "chemicalError": {
-        "max": 0.0000028687350595024697,
-        "rms": 3.252559914578928e-7
+        "max": 0.0000028687350590583804,
+        "rms": 3.2525599146131924e-7
       },
       "meanDrift": -1.3741912163744985e-8,
       "prints": [
@@ -1451,7 +1451,7 @@
           "width": 1920,
           "height": 2400,
           "maxChannelError": 1,
-          "meanChannelError": 0.004296875,
+          "meanChannelError": 0.004264322916666666,
           "channelsChecked": 13824000,
           "shiftedPrintFailurePixels": 1860300,
           "statePreserved": true

@@ -1,6 +1,13 @@
-# Handoff: where things stand (2026-09-24, evening)
+# Handoff: where things stand (2026-09-25)
 
 Read this first when you come back. Newest state at the top of each list.
+
+## Added on 2026-09-25 (branch claude/optimistic-feynman-agrpck, PR #152)
+
+- Paper 1 now cites Synge 1949 and Hiraoka 2009 (25 references, 13 pages); citations checked against your PDFs (RESEARCH.md, 2026-09-25).
+- kpz: the relaxation rule stops at the top of the lattice (ported from the closed PR #123); presets unchanged.
+- `npm run xref`: optional cross-check of cahn, swift and ks against a NumPy spectral reference (tools/xref/); all pass. Not part of `npm test`.
+- Still running: the custom reaction-term box for the rdx tabs.
 
 ## Done and merged to main
 
@@ -31,7 +38,6 @@ Coverage now: 54 validated within stated limits, 8 partially validated, 68 unval
 
 | What | Where its result lands | If it is lost |
 |---|---|---|
-| Vegetation step bound and float16 policy for chemotaxis, pfc and amb (items 3 and 4) | agent `a1326c9d84e5f0d6b`, still running its final PDE-order rerun | Its unfinished work is saved as [wip/vegetation-float16.patch](wip/vegetation-float16.patch) (16 source, tool and doc files, against main at 7140ab1; generated files and results left out, so rebuild and rerun). Apply with `git apply`, finish, and rerun `node tools/pde-order.js --full --write`, `tools/half-float-check.js` and `node tools/recipe.js`. It also edits `src/shared/engine.js`, which now carries recipe v4 from the lozenge change, so merge that by hand. |
 | Research: license, rename, reading | stopped after all eight research tracks finished; verification only just started | Saved, unverified, in [wip/research-2026-09-24-unverified.md](wip/research-2026-09-24-unverified.md). Next: verify the load-bearing claims, then write the answer. |
 | Fresh-ideas sweep (publication, protection, legal, engineering, visibility) | stopped to save usage | Rerun on request |
 
@@ -66,7 +72,7 @@ Not needed: the signing key (dropped by your choice).
 ## Open questions being researched
 
 - **Is the arXiv license the best?** The current setup recommends the arXiv perpetual non-exclusive license, with CC BY 4.0 as the alternative. Companion repos mark the manuscript "all rights reserved" and the code and data Apache-2.0. One wrinkle is being checked: paper v1 sat in the public GENChase repo under its Apache-2.0 license, and the v0.6.x releases attached the PDF. Whether that license covers the paper text, and what it means for a journal, is part of the research. Do not rely on the restrictive license to protect the text until that answer is in.
-- **Renaming GitHub from SharpMeow.** Repo URLs redirect, but the Pages site (`sharpmeow.github.io`) and the profile URL do not. If you rename, do it before creating the companion repos and before arXiv or Zenodo, because those records are permanent and the papers print `github.com/SharpMeow/...` URLs. 62 files mention SharpMeow. The research is verifying the details.
+- **Renaming GitHub from ChaseHendrick.** Repo URLs redirect, but the Pages site (`chasehendrick.github.io`) and the profile URL do not. If you rename, do it before creating the companion repos and before arXiv or Zenodo, because those records are permanent and the papers print `github.com/ChaseHendrick/...` URLs. 62 files mention ChaseHendrick. The research is verifying the details.
 - **Reading still owed for paper 1.** Per the ledger, `RESEARCH.md` as updated in #149:
   - Stremler 2021, *Regul. Chaotic Dyn.* 26, 482 to 504 (paywalled; a review of the path-length observation Corollary 1 proves);
   - the zero-impulse section of Tavantzis and Ting 1988.
@@ -76,7 +82,7 @@ Not needed: the signing key (dropped by your choice).
 ## Code work left from your list
 
 - **2: done**, on this branch. Lozenge is frozen when connected to the rim; the Aztec and lozenge error bars are calibrated; both are validated within stated limits. Recipe v4.
-- **3 and 4 (running).** Compute the vegetation tab's combined step bound. Decide and document a float16 policy for chemotaxis, pfc and amb.
+- **3 and 4: done**, on the branch `vegetation-float16` (committed, not pushed). Vegetation's step ceiling is the combined explicit bound of its water row, recipe v5, with `legacy: { 5: { ceiling: 'v4' } }` for older links (`validation/PDE-ORDER.md`, Findings 1). On float16 state chemotaxis and amb store the deviation from their uniform state and pfc refuses to run (`validation/HALF-FLOAT.md`).
 - **7.** Add Done-list entries in `docs/RESEARCH-GRADE.md` for sections 1 and 4 (section 2 is done), and refresh the Atlas map artifact (https://claude.ai/artifact/GXYHX9XMdak9vhwgiLC1Gq).
 - **Recorded defects, not fixed:**
   - tilings: the P3 matching arcs (tilings.js:31) and the grout inset (tilings.js:626);
@@ -87,5 +93,5 @@ Not needed: the signing key (dropped by your choice).
 
 Open this session again, or start a new one on this repository and say "read docs/HANDOFF.md and continue".
 
-- Git author for every commit is `Chaos <326338179+SharpMeow@users.noreply.github.com>` (AGENTS.md).
+- Git author for every commit is `Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>` (AGENTS.md).
 - The session's own git hook asks for a Claude identity instead. The repository rule wins.

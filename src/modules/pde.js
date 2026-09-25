@@ -23,9 +23,20 @@
     return out;
   }
 
+  // On a device without float32 color buffers the state is float16. A tab that declares halfBase then stores
+  // the deviation of its field from that base value, and every pass that needs the field itself (a local
+  // nonlinearity, the guard, the picture, the reduction) adds it back through ABSV. Differences, Laplacians and
+  // increments do not see the base. Without STATE_BASE (every float32 device, every other tab) ABSV is the
+  // identity, and the compiled passes are the ones the float32 evidence was measured on.
   const HEAD = `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
+#ifdef STATE_BASE
+uniform float u_base;
+#define ABSV(x) ((x) + u_base)
+#else
+#define ABSV(x) (x)
+#endif
 float crossed(float value, float limit){
   return isnan(value) || isinf(value) || abs(value) > limit ? 1.0 : 0.0;
 }
@@ -98,7 +109,7 @@ void main(){
 uniform sampler2D u_c; uniform vec2 u_res; uniform float u_eps2, u_lambda;
 void main(){
   vec2 px = 1.0 / u_res;
-  float c = texture(u_c, v_uv).r;
+  float c = ABSV(texture(u_c, v_uv).r);
   float L = lap(u_c, v_uv, px);
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
@@ -123,7 +134,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   c += u_dt * (u_M * lap(u_mu, v_uv, px) - u_zeta * div + n);
-  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0);
+  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(ABSV(c), 1.7)), 0.0, 1.0);
 }`;
 
   const MU_SH = HEAD + `
@@ -196,7 +207,7 @@ uniform float u_r, u_k0;
 
 void main(){
   vec2 px = 1.0 / u_res;
-  float psi = texture(u_c, v_uv).r;
+  float psi = ABSV(texture(u_c, v_uv).r);
   float v = texture(u_v, v_uv).r;
   float w = lap9(u_v, v_uv, px);
   float k2 = u_k0 * u_k0;
@@ -216,7 +227,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   psi += u_dt * u_M * lmu + u_dt * n;
-  outColor = vec4(psi, max(texture(u_c, v_uv).g, crossed(psi, 2.8)), 0.0, 1.0);
+  outColor = vec4(psi, max(texture(u_c, v_uv).g, crossed(ABSV(psi), 2.8)), 0.0, 1.0);
 }`;
 
   const RENDER_FS = HEAD + `
@@ -231,7 +242,7 @@ ${G.GLSL.bicubic}
 void main(){
   vec2 px = 1.0 / u_res;
   // the grid is far coarser than the plate, so the displayed value is interpolated rather than blocked up
-  float u = texCR(u_c, v_uv, u_res);
+  float u = ABSV(texCR(u_c, v_uv, u_res));
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
   float t;
@@ -270,7 +281,7 @@ void main(){
   float sm = 0.0, sa = 0.0;
   for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
     vec2 uv = (o + vec2(x, y) * u_block * 0.125 + 0.5) / u_res;
-    float v = texture(u_c, uv).r;
+    float v = ABSV(texture(u_c, uv).r);
     sm += v; sa += abs(v);
   }
   outColor = vec4(0.5 + 0.5 * clamp(sm / 64.0, -1.0, 1.0), clamp(sa / 64.0, 0.0, 4.0) / 4.0, 0.0, 1.0);
@@ -287,7 +298,7 @@ void main(){
     ivec2 p = base + ivec2(x,y);
     if(p.x<u_size.x && p.y<u_size.y) {
       vec2 v = texelFetch(u_c,p,0).rg;
-      bad = max(bad, max(v.g, crossed(v.r, u_limit)));
+      bad = max(bad, max(v.g, crossed(ABSV(v.r), u_limit)));
     }
   }
   outColor=vec4(bad,0.0,0.0,1.0);
@@ -312,16 +323,23 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+      // A tab whose float16 state is known not to run the model refuses the fallback instead of drawing
+      // something that looks like it (validation/HALF-FLOAT.md).
+      if (texType === 'rgba16f' && spec.halfRefuse) return dead(spec.halfRefuse);
+      // halfBase: on float16 state, store the deviation from a base value (see HEAD).
+      const offset = texType === 'rgba16f' && !!spec.halfBase;
+      const src = fs => offset ? fs.replace('#version 300 es\n', '#version 300 es\n#define STATE_BASE 1\n') : fs;
+      let base = 0;
       let muPass, stepPass, renderPass, reducePass, splatPass, guardPass, copyPass, midPass = null;
       try {
-        guardPass = new G.Pass(gl, GUARD_FS);
+        guardPass = new G.Pass(gl, src(GUARD_FS));
         copyPass = new G.Pass(gl, COPY_FS);
-        muPass = new G.Pass(gl, spec.muFS);
-        stepPass = new G.Pass(gl, spec.stepFS);
-        renderPass = new G.Pass(gl, RENDER_FS);
-        reducePass = new G.Pass(gl, REDUCE_FS);
+        muPass = new G.Pass(gl, src(spec.muFS));
+        stepPass = new G.Pass(gl, src(spec.stepFS));
+        renderPass = new G.Pass(gl, src(RENDER_FS));
+        reducePass = new G.Pass(gl, src(REDUCE_FS));
         splatPass = new G.Pass(gl, G.GLSL.splatFS);
-        if (spec.midFS) midPass = new G.Pass(gl, spec.midFS);
+        if (spec.midFS) midPass = new G.Pass(gl, src(spec.midFS));
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
       let backupT = null, guardT = null, guardBuf = null, guardMessage = '', reactionMean = 0;
@@ -354,7 +372,10 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       function upload(target, f32) {
         gl.bindTexture(gl.TEXTURE_2D, target.tex);
         if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
-        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        else {
+          if (base) { f32 = Float32Array.from(f32); for (let i = 0; i < f32.length; i += 4) f32[i] -= base; }
+          gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        }
       }
       function ensureRamp(s) {
         const cyclic = s.view === 'orient';
@@ -364,11 +385,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         ramp = cyclic ? G.rampTexture(gl, [...s.palette, s.palette[0]], null) : G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
       function refreshChem(s) {
-        muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
-        if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh] }, spec.midUniforms(s)));
+        muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh], u_base: base }, spec.muUniforms(s)));
+        if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh], u_base: base }, spec.midUniforms(s)));
       }
       function crossedGuard() {
-        guardPass.draw(guardT, { u_c: C.read, u_size: { ivec: [gw, gh] }, u_limit: spec.id === 'ks' ? 10000 : spec.id === 'swift' ? 4 : spec.id === 'pfc' ? 2.8 : 1.7 });
+        guardPass.draw(guardT, { u_c: C.read, u_size: { ivec: [gw, gh] }, u_base: base, u_limit: spec.id === 'ks' ? 10000 : spec.id === 'swift' ? 4 : spec.id === 'pfc' ? 2.8 : 1.7 });
         gl.bindFramebuffer(gl.FRAMEBUFFER, guardT.fbo);
         gl.readPixels(0, 0, guardT.w, guardT.h, gl.RGBA, gl.UNSIGNED_BYTE, guardBuf);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -381,11 +402,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         const s = host.getState();
         copyPass.draw(backupT, { u_c: C.read });
         for (let i = 0; i < n; i++) {
-          muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
+          muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh], u_base: base }, spec.muUniforms(s)));
           const chem = midPass ? midT : muT;
-          if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh] }, spec.midUniforms(s)));
+          if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh], u_base: base }, spec.midUniforms(s)));
           stepPass.draw(C.write, Object.assign({
-            u_c: C.read, u_mu: chem, u_res: [gw, gh],
+            u_c: C.read, u_mu: chem, u_res: [gw, gh], u_base: base,
             u_dt: s.dt, u_noise: s.noise, u_step: (stepCount + i) * 1.17, u_nOff: nOff,
           }, spec.stepUniforms(s), spec.id === 'ohta' ? { u_m: reactionMean } : {}));
           C.swap();
@@ -406,7 +427,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         ensureRamp(s);
         const V = spec.views;
         renderPass.draw(target || null, {
-          u_c: C.read, u_mu: midT || muT, u_ramp: ramp, u_res: [gw, gh],
+          u_c: C.read, u_mu: midT || muT, u_ramp: ramp, u_res: [gw, gh], u_base: base,
           u_view: { int: V[s.view] || 0 },
           u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
           u_lo: s.lo, u_hi: s.hi, u_bump: s.bump, u_lightAng: s.lightAng,
@@ -414,7 +435,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         });
       }
       function measure() {
-        reducePass.draw(reduceT, { u_c: C.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED] });
+        reducePass.draw(reduceT, { u_c: C.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED], u_base: base });
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, redBuf);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -475,6 +496,9 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           const rng = U.makeRng(s.seed + '/' + spec.id + '/off');
           nOff = rng.range(0, 900);
           ensureGrid(s);
+          // The base is fixed for the life of this state: a later change of the parameter it came from moves
+          // nothing, because every pass adds back the same value the upload took off.
+          base = offset ? Math.fround(spec.halfBase(s)) : 0;
           const initial = spec.seed(s, gw, gh);
           reactionMean = 0;
           for (let i = 0; i < initial.length; i += 4) reactionMean += initial[i];
@@ -498,9 +522,12 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         disturb(p) {
           if (!C || !splatPass || guardMessage) return;
           copyPass.draw(backupT, { u_c: C.read });
+          // Mode 0 mixes the field toward u_add, so a stored deviation mixes toward u_add minus the base;
+          // mode 1 adds, which the base does not change.
+          const add = base && (spec.pokeMode ?? 1) === 0 ? [spec.pokeAdd[0] - base].concat(spec.pokeAdd.slice(1)) : spec.pokeAdd;
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
-            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
+            u_add: add, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
           });
           C.swap();
           if (crossedGuard()) {
@@ -518,16 +545,17 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           if (!C) throw new Error('nothing to export');
           const s = host.getState(), st = G.readTarget(C.read), aux = G.readTarget(midT || muT);
           const n = gw * gh, field = new Float32Array(n), auxField = new Float32Array(n);
+          if (base) for (let i = 0; i < n; i++) st[i * 4] += base;
           for (let i = 0; i < n; i++) { field[i] = st[i * 4]; auxField[i] = aux[i * 4]; }
           return {
             arrays: {
               field: { data: field, shape: [gh, gw], description: 'the evolved field, channel 0 of the state texture (the order parameter of this tab\'s equation)' },
-              state: { data: st, shape: [gh, gw, 4], description: 'all four channels of the state texture as stored' },
+              state: { data: st, shape: [gh, gw, 4], description: base ? 'all four channels of the state texture, channel 0 with the base added back (stored as the deviation from ' + base + ')' : 'all four channels of the state texture as stored' },
               auxiliary: { data: auxField, shape: [gh, gw], description: 'channel 0 of the auxiliary texture the step reads (the chemical potential for the Cahn-Hilliard family)' },
             },
             meta: { tab: spec.id, grid: [gw, gh], cellSpacing: 1, units: 'dimensionless lattice units', boundary: s.bc === 'noflux' ? 'no-flux' : 'periodic',
               steps: stepCount, dt: s.dt, time: stepCount * s.dt, timeNote: 'steps times the current dt; exact only if dt was not changed during the run',
-              precision: texType, guard: guardMessage || null },
+              precision: texType, stateBase: base || null, guard: guardMessage || null },
           };
         },
         async exportPNG(w, h) {
@@ -898,6 +926,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     create: pdeCreate({
       id: 'amb', muFS: MU_AMB, stepFS: STEP_AMB,
+      halfBase: s => s.c0,
       views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4 },
       pokeAdd: [1, 0, 0, 1], pokeRad: 0.06, pokeMode: 0,
       muUniforms: s => ({ u_eps2: s.eps * s.eps, u_lambda: s.lambda }),
@@ -1100,6 +1129,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     }),
   });
 
+  const PFC_HALF_REFUSAL = 'Half-float state cannot run the phase-field crystal faithfully. This device lacks float32 color buffers (EXT_color_buffer_float), so the density would be stored as float16, and rounding it every step breaks the conservation of the mean density that the model is built on: in the recorded test it drifts about ten to thirty times as far as in float32. The tab stops here rather than show a plate that is not the simulation.';
   function triPsi(x, y, theta, k, A, psi0) {
     const c = Math.cos(theta), s = Math.sin(theta);
     const xr = c * x + s * y, yr = -s * x + c * y;
@@ -1181,6 +1211,9 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     create: pdeCreate({
       id: 'pfc', muFS: MU_PFC, midFS: MID_PFC, stepFS: STEP_PFC,
+      // Float16 state breaks the conservation the model is built on, stored as it is or as the deviation
+      // from psi0 (tools/half-float-check.js, validation/HALF-FLOAT.md), so the tab does not run on it.
+      halfRefuse: PFC_HALF_REFUSAL,
       views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4, orient: 5 },
       pokeAdd: [0.7, 0, 0, 1], pokeRad: 0.09, pokeMode: 1,
       muUniforms: () => ({}),

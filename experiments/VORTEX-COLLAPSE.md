@@ -291,7 +291,7 @@ or reaches zero winding. `--from file.json` on the command-line tool starts from
 instead of the leaderboard.
 
 **Claiming a block** is optional. Random blocks rarely collide, but for a long run you can open a
-[Claim a seed block](https://github.com/SharpMeow/GENChase/issues/new?template=compute-block.yml)
+[Claim a seed block](https://github.com/ChaseHendrick/GENChase/issues/new?template=compute-block.yml)
 issue so others pick a different one. Deliberate reruns of a recorded block are welcome too, because
 their digests test reproducibility.
 

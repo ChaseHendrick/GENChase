@@ -1,15 +1,18 @@
 {
   "scope": "Paused initial 256x256 float32 RDX fields exported through each real module exportPNG to 2400x2400 (8 in at 300 ppi). Checks state preservation and dimensions, not nonlinear pattern fidelity or colorimetric print accuracy.",
   "limitations": "Preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
-  "reviewed": "2026-09-23",
+  "reviewed": "2026-09-25",
   "command": "node tools/rdx-print-state.js --write",
   "rows": [
     {
       "id": "excitable",
-      "cells": [256, 256],
+      "cells": [
+        256,
+        256
+      ],
       "width": 2400,
       "height": 2400,
-      "bytes": 5322587,
+      "bytes": 7010287,
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 135455,
@@ -21,10 +24,13 @@
     },
     {
       "id": "turing",
-      "cells": [256, 256],
+      "cells": [
+        256,
+        256
+      ],
       "width": 2400,
       "height": 2400,
-      "bytes": 8699291,
+      "bytes": 10164128,
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
@@ -36,10 +42,13 @@
     },
     {
       "id": "cyclic",
-      "cells": [256, 256],
+      "cells": [
+        256,
+        256
+      ],
       "width": 2400,
       "height": 2400,
-      "bytes": 7076188,
+      "bytes": 8616981,
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 262144,
@@ -51,10 +60,13 @@
     },
     {
       "id": "chemotaxis",
-      "cells": [256, 256],
+      "cells": [
+        256,
+        256
+      ],
       "width": 2400,
       "height": 2400,
-      "bytes": 7881544,
+      "bytes": 9940397,
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
@@ -66,17 +78,20 @@
     },
     {
       "id": "vegetation",
-      "cells": [256, 256],
+      "cells": [
+        256,
+        256
+      ],
       "width": 2400,
       "height": 2400,
-      "bytes": 12136966,
+      "bytes": 13392093,
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
       "failureControl": {
         "description": "Export wrapper advances the actual solver one step after producing the PNG",
         "rejected": true,
-        "changes": 131069
+        "changes": 131071
       }
     }
   ]

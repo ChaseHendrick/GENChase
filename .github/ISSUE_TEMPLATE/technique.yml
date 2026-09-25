@@ -6,9 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Read [CONTRIBUTING.md](https://github.com/SharpMeow/GENChase/blob/main/CONTRIBUTING.md) first, then [RESEARCH.md](https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md) and [TECHNIQUES.md](https://github.com/SharpMeow/GENChase/blob/main/TECHNIQUES.md). The live count is in `techniques.json`; do not cite an older number from a social card or a survey log.
+        Read [CONTRIBUTING.md](https://github.com/ChaseHendrick/GENChase/blob/main/CONTRIBUTING.md) first, then [RESEARCH.md](https://github.com/ChaseHendrick/GENChase/blob/main/RESEARCH.md) and [TECHNIQUES.md](https://github.com/ChaseHendrick/GENChase/blob/main/TECHNIQUES.md). The live count is in `techniques.json`; do not cite an older number from a social card or a survey log.
 
-        A tab has to be a real simulation that reprints, with a paper to credit. Do not propose a restyle of a tab that already exists. Existing equations keep their own names. A derived identity belongs in [IDENTITIES.md](https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md), uniqueness-checked, with a plate whose check can miss. Search the literature for the closed form and the extremum first. The three-vortex collapse bound is that case.
+        A tab has to be a real simulation that reprints, with a paper to credit. Do not propose a restyle of a tab that already exists. Existing equations keep their own names. A derived identity belongs in [IDENTITIES.md](https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md), uniqueness-checked, with a plate whose check can miss. Search the literature for the closed form and the extremum first. The three-vortex collapse bound is that case.
   - type: textarea
     id: system
     attributes:

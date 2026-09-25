@@ -18,7 +18,7 @@
 - [ ] a prior-art search or a "never been done" claim: the query and the conclusion in `RESEARCH.md`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
 - [ ] a derived identity: literature search first (closed form and extremum), a row in `IDENTITIES.md`, a plate whose check can miss, and the search in `RESEARCH.md`
-- [ ] git author is Chaos `<326338179+SharpMeow@users.noreply.github.com>`; no `sharpie@` trailer
+- [ ] git author is Chase Hendrick `<326338179+ChaseHendrick@users.noreply.github.com>`; no `sharpie@` trailer
 
 ## Notes for review
 

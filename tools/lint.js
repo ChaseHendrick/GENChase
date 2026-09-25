@@ -142,6 +142,22 @@ for (const m of mods) {
   if (hit) fail(m.id + ' uses Math.random at line ' + lineAt(m.start + hit.index) + ': a seeded plate cannot reprint');
 }
 
+/* ---- 5b. no code built from strings anywhere in src/ ---- */
+// Formulas a person types travel inside shareable links, and src/shared/expr.js parses them into a
+// tree precisely so that no text is ever run as code. One eval( or new Function in the maintained
+// source would undo that for every tab, so neither may appear there at all, not even in a comment.
+{
+  const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(d =>
+    d.isDirectory() ? walk(path.join(dir, d.name)) : /\.(js|html)$/.test(d.name) ? [path.join(dir, d.name)] : []);
+  for (const file of walk(path.join(root, 'src'))) {
+    fs.readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+      if (/\beval\s*\(|\bnew\s+Function\b|\bsetTimeout\s*\(\s*['"`]|\bsetInterval\s*\(\s*['"`]/.test(line)) {
+        fail(path.relative(root, file) + ':' + (i + 1) + ' builds code from a string (eval, new Function or a string timer); parse text with Studio.util.expr instead');
+      }
+    });
+  }
+}
+
 /* ---- 6. (deliberately absent) every schema control has a default ---- */
 // Tried and removed. A module's schema is assembled from shared helpers (GRID, simFields(),
 // pictureFields()) that are defined between registrations, so attributing a control to the module

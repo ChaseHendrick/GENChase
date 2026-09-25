@@ -10,7 +10,7 @@ async function until(fn){const end=Date.now()+15000;while(!fn()){if(Date.now()>e
  try {
   fs.mkdirSync(path.join(fixture,'tools'),{recursive:true});fs.writeFileSync(path.join(fixture,'techniques.json'),JSON.stringify({techniques:[{id:'fixture'}]}));
   fs.writeFileSync(path.join(fixture,'tools/science.js'),'const fs=require("fs");(async()=>{const browser=await require(' + JSON.stringify(require.resolve('playwright')) + ').chromium.launchServer({headless:true});fs.writeFileSync("browser.pid",String(browser.process().pid));setInterval(()=>{},1000);})().catch(e=>{console.error(e);process.exit(1)});');
-  cp.execFileSync('git',['init','-q'],{cwd:fixture});cp.execFileSync('git',['add','.'],{cwd:fixture});cp.execFileSync('git',['-c','user.name=Chaos','-c','user.email=326338179+SharpMeow@users.noreply.github.com','commit','-qm','Create browser lifecycle fixture.'],{cwd:fixture});
+  cp.execFileSync('git',['init','-q'],{cwd:fixture});cp.execFileSync('git',['add','.'],{cwd:fixture});cp.execFileSync('git',['-c','user.name=Chase Hendrick','-c','user.email=326338179+ChaseHendrick@users.noreply.github.com','commit','-qm','Create browser lifecycle fixture.'],{cwd:fixture});
   const data=path.join(temp,'stop-job');jobs=new Jobs(fixture,data);jobs.start({workspace:'validate',mode:'inventory',power});
   await until(()=>fs.existsSync(path.join(fixture,'browser.pid')));browserPid=+fs.readFileSync(path.join(fixture,'browser.pid'));
   assert(alive(browserPid));jobs.stop();await until(()=>!jobs.active());await until(()=>!alive(-browserPid));

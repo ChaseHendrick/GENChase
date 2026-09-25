@@ -1,10 +1,10 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-25",
   "scope": "Small-amplitude periodic Fourier mode at one fixed 64 by 64 physical domain and time 2, grids 16/32/64. Parameter and field rescalings account for the unit-cell production stencil. Nonlinear remainder bounded, no nonlinear sharp-interface spatial convergence claim.",
-  "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+  "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
   "environment": {
-    "node": "v24.21.0",
-    "chromium": "145.0.7632.6",
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
     "backend": "SwiftShader RGBA32F"
   },
   "rows": [

@@ -146,7 +146,7 @@ Run `npm run test:validator` for the app's regression suite, and `npm run test:a
 
 Install [GitHub CLI](https://cli.github.com/) once and run `gh auth login --hostname github.com`. Computation itself needs no account. The app uses that login without storing credentials in its UI or result files.
 
-After a run, choose **Review files to share**, inspect the list and select a file to read its exact redacted contents, then **Upload and open review**. The app creates an evidence branch in your GENChase fork (creating the fork if necessary) and a public pull request to SharpMeow/GENChase. The repository owner uses a new evidence branch directly. No download/reupload step is needed. The branch starts from the upstream default branch and never overwrites an existing branch.
+After a run, choose **Review files to share**, inspect the list and select a file to read its exact redacted contents, then **Upload and open review**. The app creates an evidence branch in your GENChase fork (creating the fork if necessary) and a public pull request to ChaseHendrick/GENChase. The repository owner uses a new evidence branch directly. No download/reupload step is needed. The branch starts from the upstream default branch and never overwrites an existing branch.
 
 To submit unattended, check **Automatically share this run when it finishes** before starting. This choice belongs to that run and is retained by restart/resume. The server submits even if the browser closes. Upload progress and a submission link appear under **Share results**. A failed upload stays local and offers retry; interrupted or ambiguous submissions are looked up before opening another review. There is no background retry loop or automatic merge.
 
