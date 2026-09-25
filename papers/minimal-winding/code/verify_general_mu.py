@@ -810,7 +810,7 @@ print('   Q_mu(y) is an irreducible cubic, hence (6d) Q_mu(P^2) is an irreducibl
 print('   minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.')
 
 # ==================================================================================
-hdr('10. Path length and spiral angle; Remark 2; Section 4; Proposition 1; Remark 1  [exact + numerical]')
+hdr('10. Path length and spiral angle; Remark 2; Section 5; Proposition 1; Remark 1  [exact + numerical]')
 # ==================================================================================
 # 10a. Integrate the Biot-Savart ODE (RK4, 30 digits) and compare each vortex's distance to the
 #      collision point, rotation angle, velocity angle and path length with the self-similar formulas.
@@ -966,16 +966,16 @@ check('10i DK Table 1: seven vortices collapse self-similarly with the printed O
       and abs(P_t1 - mp.mpf(12433)/(1240*mp.sqrt(155))) < mp.mpf('1e-45') and P_t1 < mp.sqrt(3)/2,
       'residual %s, P = %s' % (mp.nstr(dev_t1, 3), mp.nstr(P_t1, 15)))
 
-# 10c. Section 4, exact and for general n.
+# 10c. Section 5 (two concentric polygons), exact and for general n.
 n_, x_, rho_, al_ = sp.symbols('n x rho alpha', positive=True)
 Eh, mexp, zt, ztb = sp.symbols('E m zeta zetabar', positive=True)
 v_ = rho_*sp.exp(I*al_)
 S_z = x_*(n_ - 1)/2 - n_/(1 - v_)
 S_zeta = -(n_ - 1)/(2*x_) - n_*v_/(1 - v_)
-check('10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 11)',
+check('10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 17)',
       sp.simplify(2*x_*(S_z - S_zeta) - ((n_ - 1)*x_**2 - 2*n_*x_ + (n_ - 1))) == 0)
 zeta_quot = (-(n_ - 1)/(2*zt) + zt*ztb*n_*zt**(n_ - 1)/(zt**n_ - 1))/ztb       # conj(zeta dot)/conj(zeta), z = 1, x = |zeta|^2
-check('10c the zeta quotient follows from eq. (10) with z = 1, |zeta|^2 = x',
+check('10c the zeta quotient follows from eq. (16) with z = 1, |zeta|^2 = x',
       sp.simplify(sp.powsimp(zeta_quot - (-(n_ - 1)/(2*zt*ztb) - n_*zt**n_/(1 - zt**n_)), force=True)) == 0)
 pair_sum = sp.binomial(n_, 2)*x_**2 + sp.binomial(n_, 2) - n_**2*x_
 check('10c sum_{i<j} Gamma_i Gamma_j of the 2n vortices = (n/2)((n-1)x^2 - 2nx + (n-1))',
@@ -996,7 +996,7 @@ check('10c Re kappa = -n rho sin(alpha)/(2 pi |1-v|^2)',
       sp.simplify(sp.re(kap) + n_*rho_*sp.sin(al_)/(2*pi*absv2)) == 0)
 bS = sp.symbols('b', positive=True)                     # b stands for sqrt(2n-1) = (n-1)x - n
 Pring = sp.simplify((sp.im(kap)/(-2*sp.re(kap))).subs(x_, (bS + n_)/(n_ - 1)))
-check('10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 12)',
+check('10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 18)',
       sp.simplify(Pring - ((Kn.subs(x_, (bS + n_)/(n_ - 1)) - bS*sp.cos(al_))/(2*n_*sp.sin(al_)))) == 0)
 Kn_E = (n_ - 1)*Eh**2*(Eh**mexp + Eh**-mexp)/2 - (n_ - 1)*(Eh**2 + Eh**-2)/2*Eh**-mexp     # x = E^2, rho = E^n, n = (n-1)cosh(eta)
 check('10c K_n = (n-1) sinh((n+2) eta/2) when x = e^eta, rho = e^{n eta/2}, n = (n-1) cosh eta',

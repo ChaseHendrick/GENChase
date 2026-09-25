@@ -15,7 +15,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 
 - The manuscript, with the figures `paper/figures/minimal-winding.pdf`,
   `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
-  `paper/minimal-winding.pdf` (36 pages since Proposition 4, the bound at a fixed circulation for weak pairs, was added on 2026-09-25), the same PDF arXiv will build. The author block
+  `paper/minimal-winding.pdf` (38 pages since the fixes of the second readings of Sections 4 to 8, 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
 - The bibliography has 36 works. Every work cited in the LaTeX source has an entry, and every entry is
   cited.

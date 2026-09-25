@@ -367,7 +367,7 @@ out = dict(
     uniqueness_radius='1e-%d' % rmax,
     centre={nm[i]: ut[p].str(60, radius=False) for p, i in enumerate(U)},
     enclosures={nm[i]: K[p].str(40, radius=True) for p, i in enumerate(U)},
-    checks=COUNT[0], failed=FAILED, runtime_s=round(time.time() - T0, 1))
+    checks=COUNT[0], failed=FAILED)                # no run time here, so a rerun reproduces this file exactly
 with open(os.path.join(DATA, 'sqg60-certificate.json'), 'w') as f:
     json.dump(out, f, indent=1)
 print()

@@ -159,6 +159,7 @@ OK    alpha = 1: J_U invertible (chart x2, G2, G3) and every leading minor of th
 OK    alpha = 1: eigenvalues of the reduced Hessian in an orthonormal tangent basis, each certified by an inertia count   [[0.00054143903, 0.00054144011]  [0.13928804, 0.13928832]  [0.82604166, 0.82604331]]
 OK    alpha = 1: the reduced Hessian is positive definite at every (v, mu) in the box of radius 1e-8 about the KKT point
 OK    alpha = 1: on the box every Gamma_j != 0, sum Gamma_j != 0, the z_j distinct and nonzero, each 2 pi v_j/z_j contains 2 pi kappa = -1 + 2 i P, and sum Gamma_j z_j, I, E = sum Gamma_j Gamma_k r_jk^-alpha contain 0   [sum Gamma [9.6769137012411570286 +/- 2.42e-20], min |z_j - z_k| >= 0.6502127866, min |z_j| >= 0.09314896701]
+OK    alpha = 1: the objective has the right sign on the box (ow t > 0 for the certified t), so the objective is P there and the certified point is a minimum of P, not a maximum   [t in [0.5499151189 +/- 7.44e-13]]
       P_4 in [0.54991511890074225107337815205792292683185409733434, 0.54991511890074225107337815205792292683185409733435]
 OK    alpha = 1: P_4 = 0.5499151189... as printed (every printed digit correct)
 OK    alpha = 1: P_4 < 2/3, the three-vortex bound sqrt(3 + alpha)/(2 + alpha)
@@ -183,6 +184,7 @@ OK    alpha = 2: J_U invertible (chart x3, G2, G4) and every leading minor of th
 OK    alpha = 2: eigenvalues of the reduced Hessian in an orthonormal tangent basis, each certified by an inertia count   [[5.0296093e-5, 5.0296194e-5]  [0.023656395, 0.023656442]  [0.37029987, 0.37030061]]
 OK    alpha = 2: the reduced Hessian is positive definite at every (v, mu) in the box of radius 1e-8 about the KKT point
 OK    alpha = 2: on the box every Gamma_j != 0, sum Gamma_j != 0, the z_j distinct and nonzero, each 2 pi v_j/z_j contains 2 pi kappa = -1 + 2 i P, and sum Gamma_j z_j, I, E = sum Gamma_j Gamma_k r_jk^-alpha contain 0   [sum Gamma [24.790452069978391161 +/- 3.01e-19], min |z_j - z_k| >= 0.8384665939, min |z_j| >= 0.08038626005]
+OK    alpha = 2: the objective has the right sign on the box (ow t > 0 for the certified t), so the objective is P there and the certified point is a minimum of P, not a maximum   [t in [0.4116738600 +/- 4.54e-11]]
       P_4 in [0.41167386004534379850503649708175762358883241919520, 0.41167386004534379850503649708175762358883241919521]
 OK    alpha = 2: P_4 = 0.4116738600... as printed (every printed digit correct)
 OK    alpha = 2: P_4 < sqrt(5)/4, the three-vortex bound sqrt(3 + alpha)/(2 + alpha)
@@ -309,5 +311,5 @@ Summary of the certified enclosures
   N = 3 control: P_-(1/2)                              [1.064705976271204337354986248908102071790 +/- 4.98e-41]
   N = 3 control: P_-(1/20)                             [0.8691128740608046655681696500694968056762 +/- 4.52e-41]
 
-92 checks, run time 56 s
+94 checks, run time 125 s
 all checks passed

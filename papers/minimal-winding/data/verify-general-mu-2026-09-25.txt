@@ -303,7 +303,7 @@
    minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.
 
 ==============================================================================
-10. Path length and spiral angle; Remark 2; Section 4; Proposition 1; Remark 1  [exact + numerical]
+10. Path length and spiral angle; Remark 2; Section 5; Proposition 1; Remark 1  [exact + numerical]
 ==============================================================================
    mu=0.3 arc A+: P=3.305509054, 2P tan-angle check and path length to 0.9 t_c done
    mu=0.3 arc A-: P=1.67319919382, 2P tan-angle check and path length to 0.9 t_c done
@@ -323,13 +323,13 @@
   PASS 10h DK Eq. (36) at Gamma0 = 0, Gamma1 = x, R1 = 1, r^2 = x, r^n b2 = v equals S - circ/(2x) identically
   PASS 10h DK Eq. (36) against the Biot-Savart sum over all 2n vortices, n = 2..8, three relative rotations each :: max relative difference 1.35e-50
   PASS 10i DK Table 1: seven vortices collapse self-similarly with the printed Omega, and P = 12433/(1240 sqrt 155) < sqrt(3)/2 :: residual 1.2e-50, P = 0.805356928729417
-  PASS 10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 11)
-  PASS 10c the zeta quotient follows from eq. (10) with z = 1, |zeta|^2 = x
+  PASS 10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 17)
+  PASS 10c the zeta quotient follows from eq. (16) with z = 1, |zeta|^2 = x
   PASS 10c sum_{i<j} Gamma_i Gamma_j of the 2n vortices = (n/2)((n-1)x^2 - 2nx + (n-1))
   PASS 10c x_n = (n + sqrt(2n-1))/(n-1) is a root of (11), (x_n + 1/x_n)/2 = n/(n-1), (n-1)x_n - n = sqrt(2n-1)
   PASS 10c |1-v|^2 Re S / rho = K_n - ((n-1)x - n) cos alpha
   PASS 10c Re kappa = -n rho sin(alpha)/(2 pi |1-v|^2)
-  PASS 10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 12)
+  PASS 10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 18)
   PASS 10c K_n = (n-1) sinh((n+2) eta/2) when x = e^eta, rho = e^{n eta/2}, n = (n-1) cosh eta
   PASS 10c K_n - sqrt(2n-1) = (n-1) x (rho^{1/2} - rho^{-1/2})^2/2 + n(1 - 1/rho)
   PASS 10c the table of x_n, K_n, F_n and cos(n theta) at the minimum, n = 2..5, exactly
@@ -341,7 +341,7 @@
 ==============================================================================
 SUMMARY
 ==============================================================================
-checks: 121, passed: 121, failed: 0   (29.9 s)
+checks: 121, passed: 121, failed: 0   (43.8 s)
 
 kappa(theta; mu) = i (1+mu)^3/(2 pi sqrtR) * (sqrtR + (1-mu) e^{i theta}) / ((sqrtR - mu e^{i theta})(sqrtR + e^{i theta}))
    [normalization |z3 - z_c| = 1, R = 1 + mu + mu^2; zero-impulse circle |w - mu/(1+mu)| = sqrtR/(1+mu)]

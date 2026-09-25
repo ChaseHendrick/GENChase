@@ -39,11 +39,25 @@ GENChase: the companion repository does not carry `notes/`.
   generalizations entry O and the owner-supplied full texts. The paper's novelty statements say "we have not found".
   Open: O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126 (four-vortex collapse configurations at a fixed rate) is
   unread (paywalled); it bears on the four-vortex minimum of Theorem 4 only.
-- [ ] **6. Adversarial second reading.** Three independent reviews of the three-vortex paper (RESEARCH.md,
-  "pre-submission review of the minimal-winding paper", 2026-09-25; mathematics re-derived, fixes applied). Not yet
-  recorded for the parts added when the alpha-model draft was merged in: Section 4 (the alpha-models), Proposition 3
-  (rings with a central vortex), Section 6 (Theorem 3 and Proposition 4) and Sections 7 and 8 (the certificates).
-  Two independent readings of those parts started on 2026-09-25; this item is checked when their must-fix findings
-  are fixed and recorded here.
+- [x] **6. Adversarial second reading.** Three independent reviews of the three-vortex paper (RESEARCH.md,
+  "pre-submission review of the minimal-winding paper", 2026-09-25; mathematics re-derived, fixes applied). The parts
+  added when the alpha-model draft was merged in had two further independent readings on 2026-09-25, each briefed
+  only with the paper and its programs and told to find errors, each re-deriving the steps and rerunning every
+  program. Reading A, Sections 4 and 5 (Lemmas 4 to 6, Theorem 2, Remark 4, Corollary 2, Propositions 2 and 3): no
+  mathematical error; must-fix: Lemma 6 stated P = |S|/(8A) for expansions too (now stated for collapses, with the
+  sign of Re kappa used), and Corollary 2 did not exclude a vortex starting at the collision point (now excluded:
+  that would make the triangle collinear). Reading B, Sections 6 to 8 (Theorem 3, Proposition 4, Theorems 4 and 5 and
+  the certificates): no mathematical error, the certificates rerun and pass; must-fix: the theorems the certificates
+  rest on were neither stated nor cited (now stated, with Krawczyk 1969, Moore 1977, Rump 2010 Theorem 13.3 and
+  Johansson 2017, the trust base and the balls for non-dyadic parameters), and the angular impulse was said to be
+  proved by the program (it vanishes by Section 2; the program checks that its enclosure contains 0). Should-fix
+  items applied: Lemma 4 and 5 proofs written out, the standing hypothesis alpha > -2 moved to the start of Section 4,
+  notation clashes renamed (b to ell and q_0, t to s, u to v, beta_j to varrho_j, K to K_4), the directed extremal
+  angle and its asymptotics, the Figure 3 range, the ring interchange's rescaling and root count, the Section 7
+  equation count, coordinate-dependent eigenvalues, the second-order argument written out, the SQG control described
+  correctly, "computed at 50 digits" for the non-certified collapses, 1.717, a rigorous sign check of the objective
+  in certify_collapses.py part 5 (94 checks), the side ratio at Gamma = 0.49 solved exactly (0.7514840918), the
+  subdivision count (336 leaves, 733 boxes), stale labels in verify_general_mu.py, and no run time in
+  sqg60-certificate.json.
 - [x] **7. Reproducible.** The programs in `code/` run from the companion (release v2.0.0,
   doi:10.5281/zenodo.22963796); `paper-check` and `paper-sync --check` pass.
