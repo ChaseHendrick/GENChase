@@ -7,8 +7,8 @@ reproduce and how to cite, and two working folders that stay in this repository,
 
 | Paper | Status | Public repository |
 |---|---|---|
-| [Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons](minimal-winding/) | preparing for arXiv | SharpMeow/minimal-winding, once ready |
-| [A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models](alpha-winding/) | draft, not cleared for submission | SharpMeow/alpha-winding, once ready |
+| [Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons](minimal-winding/) | preparing for arXiv | ChaseHendrick/minimal-winding, once ready |
+| [A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models](alpha-winding/) | draft, not cleared for submission | ChaseHendrick/alpha-winding, once ready |
 
 [`papers.json`](papers.json) is the record of each paper's status, and the identities note and the
 software paper are listed there too (they live in `identities/` and `paper/`).

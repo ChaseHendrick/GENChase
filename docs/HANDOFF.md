@@ -66,7 +66,7 @@ Not needed: the signing key (dropped by your choice).
 ## Open questions being researched
 
 - **Is the arXiv license the best?** The current setup recommends the arXiv perpetual non-exclusive license, with CC BY 4.0 as the alternative. Companion repos mark the manuscript "all rights reserved" and the code and data Apache-2.0. One wrinkle is being checked: paper v1 sat in the public GENChase repo under its Apache-2.0 license, and the v0.6.x releases attached the PDF. Whether that license covers the paper text, and what it means for a journal, is part of the research. Do not rely on the restrictive license to protect the text until that answer is in.
-- **Renaming GitHub from SharpMeow.** Repo URLs redirect, but the Pages site (`sharpmeow.github.io`) and the profile URL do not. If you rename, do it before creating the companion repos and before arXiv or Zenodo, because those records are permanent and the papers print `github.com/SharpMeow/...` URLs. 62 files mention SharpMeow. The research is verifying the details.
+- **Renaming GitHub from ChaseHendrick.** Repo URLs redirect, but the Pages site (`chasehendrick.github.io`) and the profile URL do not. If you rename, do it before creating the companion repos and before arXiv or Zenodo, because those records are permanent and the papers print `github.com/ChaseHendrick/...` URLs. 62 files mention ChaseHendrick. The research is verifying the details.
 - **Reading still owed for paper 1.** Per the ledger, `RESEARCH.md` as updated in #149:
   - Stremler 2021, *Regul. Chaotic Dyn.* 26, 482 to 504 (paywalled; a review of the path-length observation Corollary 1 proves);
   - the zero-impulse section of Tavantzis and Ting 1988.
@@ -87,5 +87,5 @@ Not needed: the signing key (dropped by your choice).
 
 Open this session again, or start a new one on this repository and say "read docs/HANDOFF.md and continue".
 
-- Git author for every commit is `Chaos <326338179+SharpMeow@users.noreply.github.com>` (AGENTS.md).
+- Git author for every commit is `Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>` (AGENTS.md).
 - The session's own git hook asks for a Claude identity instead. The repository rule wins.

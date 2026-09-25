@@ -17,13 +17,13 @@ Not a vulnerability:
 - a technique that implements a paper you dislike
 - opening `studio.html` from a host you do not trust (that is the host)
 
-Use the [issue tracker](https://github.com/SharpMeow/GENChase/issues) for those.
+Use the [issue tracker](https://github.com/ChaseHendrick/GENChase/issues) for those.
 
 ## How to report
 
 Use GitHub's private advisory on this repository:
 
-**[Report a vulnerability](https://github.com/SharpMeow/GENChase/security/advisories/new)**
+**[Report a vulnerability](https://github.com/ChaseHendrick/GENChase/security/advisories/new)**
 
 Do not open a public issue for a real one. There is no separate security email.
 

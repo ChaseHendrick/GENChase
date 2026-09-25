@@ -23,7 +23,7 @@ Apache-2.0), the identities note has its own metadata in `identities/zenodo.json
 2026-09-24) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
 `.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
 
-1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `SharpMeow/GENChase`.
+1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `ChaseHendrick/GENChase`.
 2. **Switch on the repository** in Zenodo's GitHub settings page (under your account menu). Zenodo
    archives only releases published after the switch is on; v0.6.2 and earlier are not archived.
    The integration works with public repositories only, so a release made while the repository is

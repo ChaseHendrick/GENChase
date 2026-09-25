@@ -76,9 +76,8 @@ This is the largest gap, and most of it is not code.
   - `.zenodo.json` describes the software;
   - the note is its own Zenodo upload;
   - the software DOI is in `CITATION.cff`.
-- **Identity:** the scholarly identity is the owner's decision. The current creator entry is
-  "Chaos", while the draft cover letter is signed with the author's legal name. Consider an
-  ORCID. The git identity rule in AGENTS.md is about commits and is unaffected.
+- **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
+  with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).
 
 **1d. A software paper.**
 - **Venue:** the Journal of Open Source Software (JOSS) is the natural one. It accepts only
@@ -206,7 +205,7 @@ impossible to miss on the tab itself, if it is not already.
 
 ## Done
 
-**Section 3, uncertainty as a gate** ([SharpMeow/GENChase#146](https://github.com/SharpMeow/GENChase/pull/146)).
+**Section 3, uncertainty as a gate** ([ChaseHendrick/GENChase#146](https://github.com/ChaseHendrick/GENChase/pull/146)).
 - `src/shared/stats.js` is the shared harness: tau_int with Sokal's window, series and field means with
   honest standard errors, blocking, moving-block and slope bootstraps, the Hill estimator, and `compare()`.
   `node tools/stats-check.js` checks it against closed-form answers, with negative controls: the naive
@@ -220,7 +219,7 @@ impossible to miss on the tab itself, if it is not already.
 - Ising reports |m| with a tau_int error bar and, near T_c, tau_int itself in sweeps; below 0.95 T_c at
   h = 0 it is compared with Yang's exact magnetization. Wolff updates were not added.
 
-**Section 2, the exactly solvable tabs** ([SharpMeow/GENChase#146](https://github.com/SharpMeow/GENChase/pull/146), [#147](https://github.com/SharpMeow/GENChase/pull/147), [#148](https://github.com/SharpMeow/GENChase/pull/148) and [#150](https://github.com/SharpMeow/GENChase/pull/150)).
+**Section 2, the exactly solvable tabs** ([ChaseHendrick/GENChase#146](https://github.com/ChaseHendrick/GENChase/pull/146), [#147](https://github.com/ChaseHendrick/GENChase/pull/147), [#148](https://github.com/ChaseHendrick/GENChase/pull/148) and [#150](https://github.com/ChaseHendrick/GENChase/pull/150)).
 - Validated within stated limits: `ising` (Onsager's T_c by Binder crossings, Yang's magnetization),
   `percolation` (bond 1/2 and site 0.5927 by spanning probability, with diagonal and anisotropic controls),
   `sandpile` (the abelian property and exact toppling counts against independent references, after the

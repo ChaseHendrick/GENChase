@@ -60,7 +60,7 @@ Until the arXiv identifier exists:
   title  = {Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons},
   year   = {2026},
   note   = {Preprint},
-  url    = {https://github.com/SharpMeow/minimal-winding}
+  url    = {https://github.com/ChaseHendrick/minimal-winding}
 }
 ```
 

@@ -11,7 +11,7 @@
    Do not call partial scientific evidence full validation or an established identity novel.
 5. Wait for every required check on the exact pull-request head, then squash-merge
    using the repository author identity in AGENTS.md. Do not merge a stale tested head.
-6. Verify the GitHub Pages build and [hosted studio](https://sharpmeow.github.io/GENChase/).
+6. Verify the GitHub Pages build and [hosted studio](https://chasehendrick.github.io/GENChase/).
    Open a technique, its science report and print setup at a narrow viewport. Check
    the README link and repository homepage still point to the deployed studio.
 7. If a regression ships, create a focused fix or revert commit and run the relevant

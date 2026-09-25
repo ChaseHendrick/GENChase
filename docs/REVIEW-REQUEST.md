@@ -11,7 +11,7 @@ sections are in [REVIEWING.md](REVIEWING.md).
 Dear [title and name],
 
 I maintain GENChase, an open-source browser studio of seeded scientific simulations
-(https://github.com/SharpMeow/GENChase, Apache-2.0). Each technique has a validation record that
+(https://github.com/ChaseHendrick/GENChase, Apache-2.0). Each technique has a validation record that
 states its equations, the independent benchmark and deliberate failure control behind any numerical
 claim, the command that reproduces it, and its limitations. So far every record has been reviewed
 only inside the project, and I would be grateful for a review by someone with your expertise in
@@ -19,7 +19,7 @@ only inside the project, and I would be grateful for a review by someone with yo
 
 I am asking about the [family] techniques: [technique ids]. Their records, the commands to run and
 the points to compare with the primary sources are in the "[family section heading]" section of
-https://github.com/SharpMeow/GENChase/blob/main/docs/REVIEWING.md. The recorded tests run with
+https://github.com/ChaseHendrick/GENChase/blob/main/docs/REVIEWING.md. The recorded tests run with
 Node.js and, for the browser tests, Chromium; I estimate [time estimate you have checked] for a
 first pass.
 

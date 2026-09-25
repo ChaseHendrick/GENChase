@@ -60,7 +60,7 @@ jobs:
           from datetime import datetime, timezone
           from pathlib import Path
           repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
-          Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://sharpmeow.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
+          Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://chasehendrick.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
 
           The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Research papers from `papers/` are attached as PDFs, together with the programs that verify them and their output. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
 

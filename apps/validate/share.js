@@ -3,7 +3,7 @@
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { sanitize, redact } = require('./privacy');
 const { ART_MODES, LIMITS, jpegInfo, recipeLooksPrivate } = require('./art-tabs');
-const TARGET = 'SharpMeow/GENChase';
+const TARGET = 'ChaseHendrick/GENChase';
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 function gh(method, endpoint, body) {
   return new Promise((resolve, reject) => {
@@ -122,17 +122,17 @@ class Shares {
   async upload(id, p) {
     const api = this.request, user = await api('GET', 'user');
     if (!/^[a-zA-Z0-9-]+$/.test(user.login)) throw Error('Invalid GitHub account.');
-    const repo = user.login.toLowerCase() === 'sharpmeow' ? TARGET : user.login + '/GENChase';
+    const repo = user.login.toLowerCase() === 'chasehendrick' ? TARGET : user.login + '/GENChase';
     const progress = message => this.save(id, { status: 'uploading', digest:p.digest, message });
     if (repo !== TARGET) {
       let fork;
       try { fork = await api('GET', 'repos/' + repo); } catch(e) { if(e.status !== 404) throw e; fork = await api('POST', 'repos/' + TARGET + '/forks', {}); }
-      if (fork.full_name?.toLowerCase() !== repo.toLowerCase() || (!fork.fork) || (fork.parent && fork.parent.full_name !== TARGET)) throw Error('Your GENChase repository must be a fork of SharpMeow/GENChase.');
+      if (fork.full_name?.toLowerCase() !== repo.toLowerCase() || (!fork.fork) || (fork.parent && fork.parent.full_name !== TARGET)) throw Error('Your GENChase repository must be a fork of ChaseHendrick/GENChase.');
     }
     const branch = 'evidence/' + id + '-' + p.digest.slice(0, 12), art = ART_MODES.includes(p.job.input?.mode);
     const query = 'repos/' + TARGET + '/pulls?state=all&head=' + encodeURIComponent(user.login + ':' + branch);
     const finish = pr => {
-      if (!new RegExp('^https://github.com/SharpMeow/GENChase/pull/[0-9]+$').test(pr.html_url)) throw Error('Invalid submission URL.');
+      if (!new RegExp('^https://github.com/ChaseHendrick/GENChase/pull/[0-9]+$').test(pr.html_url)) throw Error('Invalid submission URL.');
       this.save(id, { status:'shared', digest:p.digest, url:pr.html_url, message:'Submitted for review. Scientific labels are unchanged.' });
     };
     const existing = await api('GET', query); if (existing.length) return finish(existing[0]);
@@ -153,7 +153,7 @@ class Shares {
         } else entries.push({ ...entry, content:f.content });
       }
       const tree = await api('POST', 'repos/' + repo + '/git/trees', { base_tree:base.commit.tree.sha, tree:entries });
-      const commit = await api('POST', 'repos/' + repo + '/git/commits', { message:(art ? 'Record local art results ' : 'Record local validation evidence ') + id, tree:tree.sha, parents:[base.sha], author:{name:'Chaos',email:'326338179+SharpMeow@users.noreply.github.com'} });
+      const commit = await api('POST', 'repos/' + repo + '/git/commits', { message:(art ? 'Record local art results ' : 'Record local validation evidence ') + id, tree:tree.sha, parents:[base.sha], author:{name:'Chase Hendrick',email:'326338179+ChaseHendrick@users.noreply.github.com'} });
       await api('POST', 'repos/' + repo + '/git/refs', { ref:'refs/heads/' + branch, sha:commit.sha });
     }
     progress('Opening the evidence review...');

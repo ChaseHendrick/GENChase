@@ -8,15 +8,15 @@ function mock({failPull=false,user='volunteer'}={}){const calls=[],refs=new Map(
  calls.push({method,url,body});
  if(url==='user')return {login:user};
  if(url.includes('/pulls?'))return prs;
- if(url==='repos/'+user+'/GENChase'&&user!=='SharpMeow')return {full_name:user+'/GENChase',fork:true,parent:{full_name:'SharpMeow/GENChase'}};
- if(url==='repos/SharpMeow/GENChase')return {default_branch:'main'};
+ if(url==='repos/'+user+'/GENChase'&&user!=='ChaseHendrick')return {full_name:user+'/GENChase',fork:true,parent:{full_name:'ChaseHendrick/GENChase'}};
+ if(url==='repos/ChaseHendrick/GENChase')return {default_branch:'main'};
  if(url.includes('/git/ref/')){if(refs.has(url.split('/heads/')[1]))return {};const e=Error('missing');e.status=404;throw e;}
  if(url.endsWith('/commits/main'))return {sha:'base',commit:{tree:{sha:'base-tree'}}};
  if(url.endsWith('/git/blobs'))return {sha:crypto.createHash('sha1').update(Buffer.from(body.content,'base64')).digest('hex')};
  if(url.endsWith('/git/trees'))return {sha:'tree'};
  if(url.endsWith('/git/commits'))return {sha:'commit'};
  if(url.endsWith('/git/refs')){refs.set(body.ref.replace('refs/heads/',''),true);return {};}
- if(url.endsWith('/pulls')){const pr={html_url:'https://github.com/SharpMeow/GENChase/pull/999'};prs.push(pr);if(failure){failure=false;throw Error('network interrupted after server accepted');}return pr;}
+ if(url.endsWith('/pulls')){const pr={html_url:'https://github.com/ChaseHendrick/GENChase/pull/999'};prs.push(pr);if(failure){failure=false;throw Error('network interrupted after server accepted');}return pr;}
  throw Error('unexpected '+url);
  }};}
 test('package includes failures and numeric data, redacts paths, excludes source and archives',t=>{
@@ -55,7 +55,7 @@ test('public submission endpoints require local session token and exact reviewed
  }finally{await app.close();}
 });
 test('automatic sharing is per-run opt-in and completes after a failed job with misses',async t=>{
- const cp=require('node:child_process'),{createServer}=require('./server');const root=fs.mkdtempSync(path.join(os.tmpdir(),'share-auto-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));fs.mkdirSync(path.join(root,'tools'));fs.writeFileSync(path.join(root,'tools/science.js'),'console.log("missing benchmark");process.exitCode=2;');fs.writeFileSync(path.join(root,'techniques.json'),'{"techniques":[]}');cp.execFileSync('git',['init','-q'],{cwd:root});cp.execFileSync('git',['add','.'],{cwd:root});cp.execFileSync('git',['-c','user.name=Chaos','-c','user.email=326338179+SharpMeow@users.noreply.github.com','commit','-qm','Fixture'],{cwd:root});
+ const cp=require('node:child_process'),{createServer}=require('./server');const root=fs.mkdtempSync(path.join(os.tmpdir(),'share-auto-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));fs.mkdirSync(path.join(root,'tools'));fs.writeFileSync(path.join(root,'tools/science.js'),'console.log("missing benchmark");process.exitCode=2;');fs.writeFileSync(path.join(root,'techniques.json'),'{"techniques":[]}');cp.execFileSync('git',['init','-q'],{cwd:root});cp.execFileSync('git',['add','.'],{cwd:root});cp.execFileSync('git',['-c','user.name=Chase Hendrick','-c','user.email=326338179+ChaseHendrick@users.noreply.github.com','commit','-qm','Fixture'],{cwd:root});
  const m=mock(),app=createServer({root,port:0,shareRequest:m.request}),input={workspace:'validate',mode:'inventory',power:{mode:'maximum',pauseOnBattery:false,thermalPause:false}};
  try {await app.listen();app.jobs.start(input);await app.jobs.wait();await app.shares.wait();assert.equal(m.calls.length,0);
  app.jobs.start({...input,shareAutomatically:true});await app.jobs.wait();await app.shares.wait();assert.equal(app.jobs.current.exitCode,2);assert.equal(app.shares.state(app.jobs.current.id).status,'shared');const tree=m.calls.find(c=>c.url.endsWith('/git/trees')).body.tree;assert(tree.some(x=>x.path.includes('/misses/')));assert(tree.some(x=>x.path.endsWith('/miss.json')));

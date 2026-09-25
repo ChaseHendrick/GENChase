@@ -109,8 +109,8 @@ The check command compares the complete generated artifact, not a screenshot or 
 ## License provenance review, 2026-09-21
 
 The repository owner authorized migration from PolyForm Small Business to Apache-2.0.
-The reviewed Git history contains Chaos author records and historical Claude tool author records;
-the source notice identifies Chaos as copyright holder. A scan of the current HTML and module
+The reviewed Git history contains author records under the owner's former pseudonym, Chaos, and
+historical Claude tool author records; the source notice identifies Chase Hendrick as copyright holder. A scan of the current HTML and module
 sources found no additional embedded copyright/license notices. This is a repository-level review,
 not proof of the provenance of every algorithm. The separately embedded Geist, Geist Mono and Instrument Serif fonts remain under SIL OFL 1.1; upstream license texts are retained in licenses/ and embedded in the portable HTML alongside the software notices. Scientific citations remain intact; citations alone
 do not license copied implementation code. Preserve any third-party notices when adding such code.

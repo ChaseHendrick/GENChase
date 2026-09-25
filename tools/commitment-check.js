@@ -19,7 +19,7 @@ const root = path.join(tmp, 'repo'), priv = path.join(tmp, 'private');
 fs.mkdirSync(root); fs.mkdirSync(priv);
 execFileSync('git', ['init', '-q', root]);
 fs.writeFileSync(path.join(root, '.gitignore'), 'private/\n');
-const g = ['-c', 'user.name=Chaos', '-c', 'user.email=326338179+SharpMeow@users.noreply.github.com'];
+const g = ['-c', 'user.name=Chase Hendrick', '-c', 'user.email=326338179+ChaseHendrick@users.noreply.github.com'];
 const commitAll = msg => { execFileSync('git', ['-C', root, 'add', '-A']); execFileSync('git', ['-C', root, ...g, 'commit', '-q', '-m', msg]); };
 
 try {

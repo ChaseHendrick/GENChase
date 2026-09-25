@@ -20,7 +20,7 @@ Finding a problem is as useful as a sign-off. Please report it the same way.
 You need Node.js 22 and, for the browser tests, Playwright with Chromium.
 
 ```
-git clone https://github.com/SharpMeow/GENChase.git && cd GENChase
+git clone https://github.com/ChaseHendrick/GENChase.git && cd GENChase
 git rev-parse HEAD                    # note the commit you reviewed
 npm run setup:checks                  # installs Playwright and Chromium for the browser tests
 node tools/build.js                   # assembles the studio from src/
@@ -178,7 +178,7 @@ Status: validated within stated limits (2026-09-22). Sources are the modules of 
 ## Recording the sign-off
 
 1. **You report** on a GitHub issue with the
-   [Outside review template](https://github.com/SharpMeow/GENChase/issues/new?template=outside-review.yml):
+   [Outside review template](https://github.com/ChaseHendrick/GENChase/issues/new?template=outside-review.yml):
    the techniques, the commit you reviewed, the commands and whether each passed, your environment,
    what you compared with which equation or table of which source, the problems you found, the scope
    you sign off in your own words, and whether you agree to be named. If you prefer not to use
@@ -193,7 +193,7 @@ Status: validated within stated limits (2026-09-22). Sources are the modules of 
        "affiliation": "as you give it",
        "date": "YYYY-MM-DD, the day of your review",
        "scope": "your scope statement",
-       "evidence": "https://github.com/SharpMeow/GENChase/issues/<number>"
+       "evidence": "https://github.com/ChaseHendrick/GENChase/issues/<number>"
      }
    ]
    ```

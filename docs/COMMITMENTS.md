@@ -42,7 +42,7 @@ publication: every branch, pull request, issue, commit message and Actions log i
 clones, forks and archives keep what they saw. Making the repository private later recalls none of it.
 
 Keep drafts outside the repository: a folder on your computer, or better, a separate **private**
-repository (for example `SharpMeow/GENChase-lab`) that you back up. The folder `private/` in this
+repository (for example `ChaseHendrick/GENChase-lab`) that you back up. The folder `private/` in this
 repository is ignored by git as a convenience, and `tools/commit-hash.js` accepts files there, but a
 folder outside the repository is safer: one `git add -f`, or a tool that commits everything, would
 publish an ignored file too.
@@ -55,7 +55,7 @@ GitHub documents these consequences
 Public to private:
 - stars and watchers are erased;
 - public forks stay public and are detached into their own network;
-- on GitHub Free, the published Pages site (the studio at sharpmeow.github.io/GENChase) is unpublished;
+- on GitHub Free, the published Pages site (the studio at chasehendrick.github.io/GENChase) is unpublished;
 - code scanning (the CodeQL check) stops unless GitHub Code Security is enabled for the repository;
 - the repository leaves the GitHub Archive Program.
 

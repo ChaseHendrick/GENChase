@@ -9,8 +9,8 @@ tags:
   - scientific visualization
   - generative art
 authors:
-  # Add an orcid: line when you have one (docs/PUBLISHING.md, section 2).
   - name: Chase Hendrick
+    orcid: 0009-0002-9754-6087
     affiliation: 1
 affiliations:
   - name: Independent Researcher

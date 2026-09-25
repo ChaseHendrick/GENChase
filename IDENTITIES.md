@@ -73,13 +73,13 @@ The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, 
 
 ## Dates recorded in GENChase
 
-These dates record this repository's statements by Chaos. They do not establish worldwide priority. All five candidates use classical motion; the formulas are derived from established dynamics. See the [2026-09-20 audit](identities/NOVELTY-AUDIT.md) for sources, equivalent forms, and access gaps.
+These dates record this repository's statements by Chase Hendrick. They do not establish worldwide priority. All five candidates use classical motion; the formulas are derived from established dynamics. See the [2026-09-20 audit](identities/NOVELTY-AUDIT.md) for sources, equivalent forms, and access gaps.
 
 | Statement | Recorded here | Record |
 |---|---|---|
-| Three-vortex collapse bound, ω₀ t_c ≥ √2 | 2026-09-19 | [SharpMeow/GENChase#24](https://github.com/SharpMeow/GENChase/pull/24), [IDENTITIES.md](https://github.com/SharpMeow/GENChase/commit/6632e64) |
-| Parallelogram lock, ω₀ t_c ≥ 3√5/4 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
-| Quincunx lock, ω₀ t_c ≥ 3√33/16 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
+| Three-vortex collapse bound, ω₀ t_c ≥ √2 | 2026-09-19 | [ChaseHendrick/GENChase#24](https://github.com/ChaseHendrick/GENChase/pull/24), [IDENTITIES.md](https://github.com/ChaseHendrick/GENChase/commit/6632e64) |
+| Parallelogram lock, ω₀ t_c ≥ 3√5/4 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
+| Quincunx lock, ω₀ t_c ≥ 3√33/16 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
 
 Anyone may use the mathematics. Cite this writeup when using it, and credit the underlying work of Gröbli, Novikov–Sedov, Aref, Gotoda and Koiller et al. Project names and timestamps are provenance, not proof of originality. Credit published results to their original sources.
 
@@ -192,16 +192,16 @@ When using this derivation or implementation, cite this project's writeup under 
 
 ### Cite
 
-Chaos. (2026). *Three-vortex collapse bound*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+Hendrick, C. (2026). *Three-vortex collapse bound*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
 
 ```bibtex
 @misc{three-vortex-bound-2026,
-  author       = {Chaos},
+  author       = {Hendrick, Chase},
   title        = {Three-vortex collapse bound: an explicit formula and sharp minimum
                   for a classical three-vortex collapse family},
   year         = {2026},
   howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
   note         = {Recorded in GENChase 2026-09-19}
 }
 ```
@@ -288,16 +288,16 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Cite
 
-Chaos. (2026). *Parallelogram lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+Hendrick, C. (2026). *Parallelogram lock*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
 
 ```bibtex
 @misc{parallelogram-lock-2026,
-  author       = {Chaos},
+  author       = {Hendrick, Chase},
   title        = {Parallelogram lock: an explicit formula and sharp minimum
                   for the Novikov--Sedov four-vortex parallelogram collapse},
   year         = {2026},
   howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
   note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
 }
 ```
@@ -381,16 +381,16 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Cite
 
-Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+Hendrick, C. (2026). *Quincunx lock*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
 
 ```bibtex
 @misc{quincunx-lock-2026,
-  author       = {Chaos},
+  author       = {Hendrick, Chase},
   title        = {Quincunx lock: an explicit formula and sharp minimum
                   for the Novikov--Sedov five-vortex quincunx collapse},
   year         = {2026},
   howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
   note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
 }
 ```

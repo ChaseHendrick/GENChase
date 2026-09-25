@@ -30,6 +30,8 @@
   #text(size: 9.5pt)[Independent Researcher]
   #v(0.1em)
   #text(size: 9.5pt)[#link("mailto:chasewhendrick@gmail.com")[`chasewhendrick@gmail.com`]]
+  #v(0.1em)
+  #text(size: 9.5pt)[ORCID #link("https://orcid.org/0009-0002-9754-6087")[0009-0002-9754-6087]]
 ]
 
 #v(1em)
@@ -179,7 +181,7 @@ Self-similar collapse of three vortices in the $alpha$-models has been studied f
 The bound concerns self-similar collapse only; it says nothing about other singular motions of the $alpha$-models, such as the collapses at nonzero energy found in [1, 10]. Its value lies in the geometry: however the circulations are chosen, a collapsing triangle turns by more than $B(alpha)$ radians per unit decrease of the logarithm of its squared size, and the infimum is realized only by a degenerate dipole beside a strong vortex.
 
 #v(0.5em)
-#par(justify: false)[*Data availability.* The programs `verify_alpha_winding.py` and `plot_alpha_winding.py` and their output are in the repository https://github.com/SharpMeow/alpha-winding, the programs in `code/` and their output in `data/`; the many-vortex configurations and their checks are in `research/generalizations-2026-09-24/`.]
+#par(justify: false)[*Data availability.* The programs `verify_alpha_winding.py` and `plot_alpha_winding.py` and their output are in the repository https://github.com/ChaseHendrick/alpha-winding, the programs in `code/` and their output in `data/`; the many-vortex configurations and their checks are in `research/generalizations-2026-09-24/`.]
 
 #par(justify: false)[*Funding.* This research received no external funding.]
 
@@ -197,7 +199,7 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 + M. Donati and L. Godard-Cadillac, Hölder regularity for collapses of point vortices, _Nonlinearity_ *36* (2023) 5773; arXiv:2111.14230.
 + T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, _J. Dyn. Differ. Equ._ *33* (2021) 1759–1777; arXiv:2002.09624.
 + F. Grotto and U. Pappalettera, Collapse and burst of generalized surface quasi-geostrophic point vortices, preprint, arXiv:2505.19782 (2025).
-+ C. Hendrick, Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons, preprint (2026), https://github.com/SharpMeow/minimal-winding.
++ C. Hendrick, Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons, preprint (2026), https://github.com/ChaseHendrick/minimal-winding.
 + T. Iwayama and T. Yajima, Linear stability of self-similar motions of three point vortices in a generalized two-dimensional fluid system, _J. Phys. Soc. Jpn._ *92* (2023) 084401.
 + T. Iwayama, S. Yajima and T. Watanabe, Non-self-similar collapse of three point vortices in a generalized two-dimensional fluid system, _J. Phys. A_ *58* (2025) 075701.
 + Y. Kimura, Similarity solution of two-dimensional point vortices, _J. Phys. Soc. Jpn._ *56* (1987) 2024–2030.

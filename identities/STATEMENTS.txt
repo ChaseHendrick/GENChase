@@ -1,6 +1,6 @@
 # GENChase identities — canonical statements
-# Author: Chaos
-# Repository: https://github.com/SharpMeow/GENChase
+# Author: Chase Hendrick
+# Repository: https://github.com/ChaseHendrick/GENChase
 # File: identities/STATEMENTS.txt
 # Encoding: UTF-8, newline LF, no BOM
 #

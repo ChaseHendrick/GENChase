@@ -21,7 +21,7 @@ const count = require('./count.js');
 
   fs.writeFileSync(path.join(root, 'techniques.json'), JSON.stringify({
     project: 'GENChase',
-    repository: 'https://github.com/SharpMeow/GENChase',
+    repository: 'https://github.com/ChaseHendrick/GENChase',
     file: 'index.html',
     portableFile: 'dist/studio.html',
     count: mods.length,

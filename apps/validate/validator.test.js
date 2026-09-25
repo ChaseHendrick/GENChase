@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {command}=require('./commands'),{Jobs}=require('./jobs'),{createServer}=require('./server'),{reason,settings}=require('./power'),{checkpoint}=require('./checkpoint'),{sweep}=require('./contribute'),{literature,restrained}=require('./literature');
 function fixture(script='console.log("FIXTURE completed");'){
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-validator-test-'));fs.mkdirSync(path.join(root,'tools'));fs.writeFileSync(path.join(root,'tools/science.js'),script);fs.writeFileSync(path.join(root,'techniques.json'),JSON.stringify({techniques:[{id:'fixture'}]}));
- cp.execFileSync('git',['init','-q'],{cwd:root});cp.execFileSync('git',['add','.'],{cwd:root});cp.execFileSync('git',['-c','user.name=Chaos','-c','user.email=326338179+SharpMeow@users.noreply.github.com','commit','-qm','Create test fixture.'],{cwd:root});return root;
+ cp.execFileSync('git',['init','-q'],{cwd:root});cp.execFileSync('git',['add','.'],{cwd:root});cp.execFileSync('git',['-c','user.name=Chase Hendrick','-c','user.email=326338179+ChaseHendrick@users.noreply.github.com','commit','-qm','Create test fixture.'],{cwd:root});return root;
 }
 const jsString=v=>JSON.stringify(String(v)).replace(/[<>\u2028\u2029]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
 const power={mode:'maximum',pauseOnBattery:false,thermalPause:false};

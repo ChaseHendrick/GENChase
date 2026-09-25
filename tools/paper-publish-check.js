@@ -52,7 +52,7 @@ try {
   const files = git(BARE, 'ls-tree', '-r', '--name-only', 'main').split('\n').sort().join(' ');
   ok(files === '.zenodo.json CITATION.cff LICENSE README.md code/run.py paper/t.tex', 'the companion holds the paper and generated files, not notes/', files);
   ok(remoteHead('main') === remoteHead('genchase-sync'), 'main starts at the published snapshot');
-  ok(git(BARE, 'log', '-1', '--format=%an <%ae> / %cn <%ce>', 'main') === 'Chaos <326338179+SharpMeow@users.noreply.github.com> / Chaos <326338179+SharpMeow@users.noreply.github.com>',
+  ok(git(BARE, 'log', '-1', '--format=%an <%ae> / %cn <%ce>', 'main') === 'Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com> / Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>',
     'publishing commits carry the project identity, even with another identity in the environment');
 
   // 2. Nothing new: nothing is pushed.

@@ -31,7 +31,7 @@ const jsString=v=>JSON.stringify(String(v)).replace(/[<>\u2028\u2029]/g,c=>'\\u'
   const diagnosticError=fixture+'/private-result.json volunteer@example.com 192.168.1.8';
   const injection=`<script>Studio.ready=Promise.resolve(Studio.ready).then(()=>{const id=Studio.getRecipe().id;if(id==='reuleaux'){Studio.getWitness=()=>({valid:false,measured:2.25,expected:1,tol:0.01,missWhen:'controlled witness mismatch'});document.querySelector('#status').textContent='measured 2.25; expected 1; tolerance 0.01';}else{setTimeout(()=>{throw Error(${jsString(diagnosticError)})},0);}});</script>`;
   fs.writeFileSync(path.join(fixture,'dist/studio.html'),fs.readFileSync(path.join(root,'dist/studio.html'),'utf8')+injection);
-  cp.execFileSync('git',['init','-q'],{cwd:fixture});cp.execFileSync('git',['add','.'],{cwd:fixture});cp.execFileSync('git',['-c','user.name=Chaos','-c','user.email=326338179+SharpMeow@users.noreply.github.com','commit','-qm','Create controlled harvest fixture.'],{cwd:fixture});
+  cp.execFileSync('git',['init','-q'],{cwd:fixture});cp.execFileSync('git',['add','.'],{cwd:fixture});cp.execFileSync('git',['-c','user.name=Chase Hendrick','-c','user.email=326338179+ChaseHendrick@users.noreply.github.com','commit','-qm','Create controlled harvest fixture.'],{cwd:fixture});
   const output=path.join(temp,'failures'),job=path.join(temp,'failure-job');
   const failed=await harvest({root:fixture,selected:['reuleaux','three-vortex-bound'],dwellMs:100,machineSlug:'fixture-machine',outputRoot:output,jobDir:job});
   assert.equal(failed.exitCode,1);assert.equal(failed.report.counts.misses,2);

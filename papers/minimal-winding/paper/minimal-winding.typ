@@ -30,6 +30,8 @@
   #text(size: 9.5pt)[Independent Researcher]
   #v(0.1em)
   #text(size: 9.5pt)[#link("mailto:chasewhendrick@gmail.com")[`chasewhendrick@gmail.com`]]
+  #v(0.1em)
+  #text(size: 9.5pt)[ORCID #link("https://orcid.org/0009-0002-9754-6087")[0009-0002-9754-6087]]
 ]
 
 #v(1em)
@@ -321,7 +323,7 @@ Gallay and Šverák [9] ask when a collision of three point vortices is regulari
 For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy @eq:circ. Koiller et al. [15] found the collapsing configurations and their rates. Demina and Kudryashov [7] study relative equilibria, collapse and scattering of point vortices with arbitrary circulations by a polynomial method. For two regular polygons with a vortex of circulation $Gamma_0$, possibly zero, at the center, they give the equation for the ratio of the radii, which for $Gamma_0 = 0$ is @eq:circ, and the constant $Omega$, which for $Gamma_0 = 0$ is $S$, as an explicit function of the relative rotation [7, Eqs. (36)–(37)], and they state that every relative rotation with $e^(i n theta) != plus.minus 1$ gives a collapse or a scattering. For this family they do not say which of the two occurs, separate the collapse rate from the rotation rate, or evaluate their ratio. @eq:Pring writes this ratio in closed form, and Proposition 2 gives its minimum over the relative rotation. O'Neil [21] proves that for generic circulations three concentric rings have finitely many relative equilibria and collapse configurations. We have not found the minimal values of Theorem 1 and Propositions 1 and 2 stated in the literature, nor a proof of the bound of Corollary 1 or of its sharpness.
 
 #v(0.5em)
-#par(justify: false)[*Data availability.* The programs `verify_general_mu.py`, `verify_floors_independent.py` and `plot_minimal_winding.py`, used for Section 5 and @fig:minima, and their output are in the repository https://github.com/SharpMeow/minimal-winding, the programs in `code/` and their output in `data/`.]
+#par(justify: false)[*Data availability.* The programs `verify_general_mu.py`, `verify_floors_independent.py` and `plot_minimal_winding.py`, used for Section 5 and @fig:minima, and their output are in the repository https://github.com/ChaseHendrick/minimal-winding, the programs in `code/` and their output in `data/`.]
 
 #par(justify: false)[*Funding.* This research received no external funding.]
 

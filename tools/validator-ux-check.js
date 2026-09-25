@@ -7,7 +7,7 @@ try{const address=await app.listen();browser=await chromium.launch();const page=
 const job={id:'2026-09-22T12-00-00-000Z-abcd1234',input:{workspace:'validate',mode:'inventory',shareAutomatically:false},command:'node tools/science.js',status:'complete',started:'2026-09-22T12:00:00Z',ended:'2026-09-22T12:00:01Z',commit:'a'.repeat(40),exitCode:0,artifacts:['hardware.json','result-bundle.tar.gz'],reason:'Command completed.'};
 let state={status:'complete',job,elapsed:1,resumeAvailable:false,misses:[{kind:'command-failure',jobId:'previous-run',status:'failed',reason:'Missing browser from an earlier run'}],log:'fixture',submission:{status:'not-shared'}};
 await page.route('**/api/state',r=>r.fulfill({json:state}));
-await page.route('**/api/share-preview?*',r=>r.fulfill({json:{target:'SharpMeow/GENChase',digest:'abc',files:[{name:'manifest.json',bytes:100}]}}));
+await page.route('**/api/share-preview?*',r=>r.fulfill({json:{target:'ChaseHendrick/GENChase',digest:'abc',files:[{name:'manifest.json',bytes:100}]}}));
 await page.route('**/api/share-file?*',r=>r.fulfill({json:{name:'manifest.json',content:'{"sourceSnapshotIncluded":false,"sha256":"fixture"}'}}));
 await page.goto('http://127.0.0.1:'+address.port);await page.waitForFunction(()=>document.querySelector('#connection').textContent==='Connected locally');
 assert.equal(await page.locator('#status').textContent(),'Run complete','Historical failures do not relabel the current run');

@@ -1,7 +1,7 @@
 # Outside-family prior-art hunt — P⋆ and F₅
 
 **Date.** 2026-09-23 (America/New_York).  
-**Repo.** SharpMeow/GENChase.  
+**Repo.** ChaseHendrick/GENChase.  
 **Requested by.** Project Manager (Sharpie priority): look **outside** classical families.  
 **Do not edit** `IDENTITIES.md`. No copyrighted PDF commits. No bot merge.
 

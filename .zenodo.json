@@ -5,6 +5,7 @@
   "creators": [
     {
       "name": "Hendrick, Chase",
+      "orcid": "0009-0002-9754-6087",
       "affiliation": "Independent Researcher"
     }
   ],
@@ -22,7 +23,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/SharpMeow/GENChase",
+      "identifier": "https://github.com/ChaseHendrick/GENChase",
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"

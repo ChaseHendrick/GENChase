@@ -94,7 +94,7 @@ For the manual download/upload alternative:
 
 1. Fork GENChase on GitHub and create a branch for the result.
 2. In your fork, use **Add file → Upload files** to upload the reviewed evidence JSON and hardware card into a clearly named results folder. Include failure or missing-evidence reports alongside passes.
-3. Open a pull request against `SharpMeow/GENChase`. State the source commit, command, machine label, result, known limits and whether the checkout changed during the run.
+3. Open a pull request against `ChaseHendrick/GENChase`. State the source commit, command, machine label, result, known limits and whether the checkout changed during the run.
 
 If you already use Git locally, generated result directories are intentionally ignored. Stage only the specific reviewed files you want to publish, for example:
 

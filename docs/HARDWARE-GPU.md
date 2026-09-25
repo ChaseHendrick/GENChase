@@ -152,7 +152,7 @@ git commit -m "Hardware GPU run: <renderer>"
 git push -u origin HEAD
 ```
 
-and open the pull request against `SharpMeow/GENChase`. Say in the description what, if anything, had to
+and open the pull request against `ChaseHendrick/GENChase`. Say in the description what, if anything, had to
 be overridden. Volunteers can instead use the local runner: **Check simulations**, job **Hardware GPU:
 registered GPU science and print checks** (`npm run validator:headless -- --mode gpu-science --machine
 <label>`). It runs the same command, records the renderer on the job's hardware card, and **Review files to

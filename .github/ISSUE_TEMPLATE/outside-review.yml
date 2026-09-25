@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you. [docs/REVIEWING.md](https://github.com/SharpMeow/GENChase/blob/main/docs/REVIEWING.md) lists, for each family, what to read, what to run and what to compare with the primary source.
+        Thank you. [docs/REVIEWING.md](https://github.com/ChaseHendrick/GENChase/blob/main/docs/REVIEWING.md) lists, for each family, what to read, what to run and what to compare with the primary source.
 
         A review covers the domain each record states and the scope you write below, not the whole tab. A problem report is as welcome as a sign-off. Do not post an email address or anything you do not want public.
   - type: input
