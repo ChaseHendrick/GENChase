@@ -40,10 +40,13 @@ Sections:
      tr((DE - I)^2).
   3b. Five vortices (x2 = 3/5, Gamma = (1, -3/7, -7/8, 9/7, 47/35)): existence, Lemma 1, and the four remaining
      exponents from u = (k - 1)^2, the roots of u^2 - s u + p with s and p from tr((DE - I)^2) and tr((DE - I)^4).
+  3c. Theorem 3 (nonlinear stability): sum_{j<k} Gamma_j Gamma_k = 0 exactly, so the energy H is conserved by the
+     similarity dynamics; grad H is a nonzero left null vector of DE; b and H are strictly monotone along the family.
   4. Controls: a four-vortex collapse whose reversal is unstable (c < 0, certified); a three-vortex collapse, where
      2N - 6 = 0 and the trace must equal that of the six symmetric exponents.
   5. Illustration in binary64 (not part of the proof): the eigenvalues at the midpoint, and direct integration of
-     the expanding configuration, perturbed and not, and of the unstable control.
+     the expanding configuration, perturbed and not (against the family member with the same energy, as Theorem 3
+     predicts), and of the unstable control.
 
 Needs python-flint, numpy and scipy (code/requirements.txt). Run: python3 code/verify_stable_expansion.py. Prints
 every check and exits with status 1 if any fails; its output is data/verify-stable-expansion.txt.
@@ -51,10 +54,12 @@ every check and exits with status 1 if any fails; its output is data/verify-stab
 import json
 import os
 import sys
+from fractions import Fraction
 
 import numpy as np
 from flint import arb, acb, fmpq, arb_mat
 from scipy.integrate import solve_ivp
+from scipy.optimize import least_squares
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -147,6 +152,38 @@ def tr_power(M, p):
 
 def as_real(vec_c):
     return [c.real for c in vec_c] + [c.imag for c in vec_c]
+
+
+def grad_H(z, G):
+    """Gradient of H = -sum_{j<k} Gamma_j Gamma_k ln|z_j - z_k| in (Re z, Im z)."""
+    N = len(z)
+    gx, gy = [arb(0) for _ in range(N)], [arb(0) for _ in range(N)]
+    for j in range(N):
+        for k in range(N):
+            if k != j:
+                dx, dy = z[j].real - z[k].real, z[j].imag - z[k].imag
+                r2 = dx*dx + dy*dy
+                gx[j] = gx[j] - G[j]*G[k]*dx/r2
+                gy[j] = gy[j] - G[j]*G[k]*dy/r2
+    return gx + gy
+
+
+def energy_checks(tag, Gq, z, G, M, v, db, sname):
+    """Hypotheses of Theorem 3 that are not already in Theorems 1 and 2: the energy H is invariant under scaling
+    (L = sum_{j<k} Gamma_j Gamma_k = 0 exactly, so H is conserved by the similarity dynamics), its gradient is a
+    nonzero left null vector of DE, and it is strictly monotone along the family (dH/dsigma != 0), as is b."""
+    L = sum((Gq[j]*Gq[k] for j in range(len(Gq)) for k in range(j + 1, len(Gq))), Fraction(0))
+    check(tag + 'sum_{j<k} Gamma_j Gamma_k = 0 in exact rational arithmetic, so H(lambda zeta) = H(zeta) for '
+          'lambda > 0 and H is conserved by the similarity dynamics', L == 0, 'Gamma = (%s)' % ', '.join(map(str, Gq)))
+    g = grad_H(z, G)
+    n = len(g)
+    gM = [sum((g[i]*M[i][j] for i in range(n)), arb(0)) for j in range(n)]
+    check(tag + 'grad H != 0 and grad H^T DE contains 0 (grad H . E = 0 identically, so grad H is a left null '
+          'vector of DE)', contains0(gM) and any(not x.contains(0) for x in g))
+    dH = sum((g[i]*v[i] for i in range(n)), arb(0))
+    check(tag + 'along the family b\' != 0 and dH/d%s != 0, so H is strictly monotone along it near zeta*' % sname,
+          not db.contains(0) and not dH.contains(0), 'b\' = %s, dH/d%s = %s' % (db.str(10, radius=True), sname,
+                                                                              dH.str(10, radius=True)))
 
 
 # ------------------------------------------------------------------------------------------------ 1. existence
@@ -281,6 +318,13 @@ if r5['ok']:
           bool((w1 - w2).abs_lower() > 0) and bool((w1 - b5).abs_lower() > 0) and bool((w2 - b5).abs_lower() > 0),
           'b = %s' % b5.str(8))
 
+# ------------------------------------------------------------------------------------------------ 3c. Theorem 3
+say('\n3c. Theorem 3 (nonlinear stability): the energy along the family')
+energy_checks('four vortices: ', [Fraction(1), Fraction(5, 2), Fraction(1, 9), Fraction(-4, 5)], z, G, M, vfam, db, 'x4')
+if r5['ok']:
+    energy_checks('five vortices: ', [Fraction(1), Fraction(-3, 7), Fraction(-7, 8), Fraction(9, 7), Fraction(47, 35)],
+                  z5, Gb5, M5, v5, 2*d5['P'], 'x2')
+
 # ------------------------------------------------------------------------------------------------ 4. controls
 say('\n4. Controls')
 ctl = load('starts-controls.json')
@@ -370,6 +414,69 @@ rows = run(zf, -Gf, 1e-5, 3, 1e5)
 say('      expanding, perturbed 1e-5: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows))
 check('binary64: a 1e-5 perturbation stays below 1e-3 while the size grows 178-fold (it settles on a nearby '
       'member of the family, a neutral direction, instead of growing)', max(r_[1] for r_ in rows) < 1e-3)
+
+
+def H_float(q, Gs):
+    return -sum(Gs[j]*Gs[k]*np.log(abs(q[j] - q[k])) for j in range(len(q)) for k in range(j + 1, len(q)))
+
+
+def member_with_energy(h, zs, Gs, bs):
+    """The member of the family (z_1 real, z_c = 0) whose energy is h, by least squares from zs."""
+    n = len(zs)
+
+    def unpack(u):
+        return np.concatenate([[u[0]], u[1:2*n - 1:2] + 1j*u[2:2*n - 1:2]])
+
+    def res(u):
+        q = unpack(u)
+        d = np.conj(q[:, None] - q[None, :])
+        np.fill_diagonal(d, 1)
+        w = 1j*Gs[None, :]/d
+        np.fill_diagonal(w, 0)
+        e = w.sum(1) + (1 - 1j*u[-1])*q
+        return np.concatenate([e.real, e.imag, [H_float(q, Gs) - h]])
+    u0 = np.concatenate([[zs[0].real], np.column_stack([zs[1:].real, zs[1:].imag]).ravel(), [bs]])
+    s_ = least_squares(res, u0, xtol=1e-15, ftol=1e-15, gtol=1e-15)
+    return unpack(s_.x), np.max(np.abs(s_.fun))
+
+
+def energy_run(zs, Gs, bs, eps, seed):
+    """Perturb the expanding configuration, integrate to t = 1e18 (a 5e8-fold growth), and measure the shape deviation (modulo
+    translation, rotation and scaling) from zeta* and from the family member with the perturbed energy."""
+    n = len(zs)
+    rng = np.random.default_rng(seed)
+    q0 = zs + eps*(rng.normal(size=n) + 1j*rng.normal(size=n))
+    zinf, resid = member_with_energy(H_float(q0, Gs), zs, Gs, bs)
+    ts = np.geomspace(1, 1e18, 37)
+    sol = solve_ivp(rhs_of(-Gs), (0, ts[-1]), np.concatenate([q0.real, q0.imag]), t_eval=ts, method='DOP853',
+                    rtol=1e-13, atol=1e-13)
+    out = []
+    for k in range(len(sol.t)):
+        q = sol.y[:n, k] + 1j*sol.y[n:, k]
+        d_star, size = shape_dev(q, zs, Gs)
+        out.append((size, d_star, shape_dev(q, zinf, Gs)[0], abs(H_float(q, Gs) - H_float(q0, Gs))))
+    return out, resid
+
+
+# Five vortices have two oscillating shape modes of nearly equal frequency (3.45 and 3.19), which beat with a period of
+# about 24 in s = ln(size); the product size x deviation therefore rises and falls over the run, bounded as Theorem 3 says.
+for tag, zs_, Gs_, bs_, bound in (('four', zf, Gf, bf, 1e-3), ('five', None, None, None, 3e-2)):
+    if tag == 'five':
+        if not r5['ok']:
+            continue
+        zs_ = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z5])
+        Gs_ = np.array([float(g.mid()) for g in Gb5])
+        bs_ = float(b5.mid())
+    rows, resid = energy_run(zs_, Gs_, bs_, 1e-4, 3)
+    say('      %s vortices expanding, perturbed 1e-4, against the member with the same energy (least-squares residual '
+        '%.0e): ' % (tag, resid) + '; '.join('size x%.3g dev %.1e (from zeta* %.1e)' % (r_[0], r_[2], r_[1]) for r_ in rows[::4])
+        + '; largest change of H %.1e' % max(r_[3] for r_ in rows))
+    check('binary64 (Theorem 3), %s vortices: the shape deviation from the family member with the same energy H decays '
+          'like 1/size (size x deviation stays below %.0e from 5-fold to 5e8-fold growth) while the deviation from '
+          'zeta* levels off, and H is conserved to 1e-12' % (tag, bound),
+          all(r_[0]*r_[2] < bound for r_ in rows if r_[0] > 5) and rows[-1][0] > 5e8 and rows[-1][1] > 1e3*rows[-1][2]
+          and max(r_[3] for r_ in rows) < 1e-12, 'size x deviation from 5-fold growth on: %.2e to %.2e' % (min(r_[0]*r_[2] for r_ in rows if r_[0] > 5),
+                                                                        max(r_[0]*r_[2] for r_ in rows if r_[0] > 5)))
 if r2['ok']:
     zu = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z2])
     Gu = np.array([float(g.mid()) for g in Gc2])

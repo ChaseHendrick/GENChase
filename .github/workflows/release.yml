@@ -63,7 +63,10 @@ jobs:
         run: |
           # The notes are the version's CHANGELOG section; the script stops if there is none.
           python3 tools/release-notes.py --version "$RELEASE_VERSION" --sha "$GITHUB_SHA" --repo "$GITHUB_REPOSITORY" ${PAGES_URL:+--pages-url "$PAGES_URL"} --output /tmp/release-notes.md
-          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt papers/*/paper/*.pdf papers/*/data/* papers/*/code/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
+          # The papers' PDFs, programs and data files: files only, and each asset name once (tools/release-assets.py).
+          python3 tools/release-assets.py > /tmp/release-assets.txt
+          mapfile -t paper_assets < /tmp/release-assets.txt
+          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt "${paper_assets[@]}" --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
   notes:
     # Rewrites the notes of releases that already exist, from the CHANGELOG on main. The tag, the
     # assets and the publication date stay as they were; the notes keep the commit each was built from.

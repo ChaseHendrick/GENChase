@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""The random sample of Section 4 of paper/stable-expansion.tex. NUMERICAL (binary64), not part of any proof.
+"""The random sample of Section 6 of paper/stable-expansion.tex. NUMERICAL (binary64), not part of any proof.
 
 A least-squares solver (scipy least_squares, trust-region reflective) from seeded random starts on the collapse equations
 E = 2 pi V(zeta) + (1 - i b) zeta = 0 in the gauge z_1 real, Gamma_1 = 1; the circulations Gamma_2..Gamma_N and b are

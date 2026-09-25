@@ -1,4 +1,4 @@
-# Linearly Stable Self-Similar Expansion of Four and Five Point Vortices
+# Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
@@ -6,35 +6,44 @@
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the draft (PDF, 6 pages)](paper/stable-expansion.pdf)**
+**[Read the draft (PDF, 12 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
-Point vortices can move self-similarly, keeping their shape while the configuration grows like $\sqrt{t}$ and turns.
-For three vortices such expanding configurations are stable, and Zbarsky used this to show that vortex patches
-placed at the three vortices stay confined for all time; he wrote that the result would most likely carry over to
-stably growing systems of four or more vortices, given sufficiently good stability. We give two such configurations
-that are linearly stable modulo their symmetries. For the circulations $(-1, -5/2, -1/9, 4/5)$ and $(-1, 3/7, 7/8,
--9/7, -47/35)$ there are self-similarly expanding configurations of four and five Euler point vortices whose
-linearization in similarity variables has, besides the double eigenvalue $0$ of the rotation and of the
-one-parameter family of such configurations, only eigenvalues with real part $-1$ or $-2$: in the invariant
-complement of the rotation and the family, every solution of the linearized equation decays, relative to the size of
-the configuration, at least like the inverse of the size. The proof is computer-assisted: the configurations are
-enclosed by the Krawczyk method in ball arithmetic, and the spectrum is controlled through an exact lemma, which
-shows that six eigenvalues are forced by the rotation, the scaling, the translations and the family (one of them
-through a pairing) and that the others come in pairs $k$, $2 - k$, together with enclosures of traces of powers of
-the Jacobian. The property is open, so such configurations form open sets; in a random sample about one four-vortex
-collapse in seven and one five-vortex collapse in seventeen reverses into a linearly stable expansion. We do not
-address whether this linear stability suffices for Zbarsky's confinement argument.
+Point vortices can move self-similarly, keeping their shape while the configuration grows like $\sqrt{t}$ and turns. For
+three vortices such expanding configurations are stable, and Zbarsky used this to show that vortex patches placed at the
+three vortices stay confined for all time; he wrote that the result would most likely carry over to stably growing
+systems of four or more vortices, given sufficiently good stability. We give such configurations of four and five
+vortices, with the circulations $(-1, -5/2, -1/9, 4/5)$ and $(-1, 3/7, 7/8, -9/7, -47/35)$. In similarity variables
+their linearization has, besides the double eigenvalue $0$ of the rotation and of the one-parameter family of such
+configurations, only eigenvalues with real part $-1$ or $-2$. The proof is computer-assisted: the configurations are
+enclosed by the Krawczyk method in ball arithmetic, and the spectrum is controlled through an exact lemma, which shows
+that six eigenvalues are forced by the rotation, the scaling, the translations and the family and that the others come
+in pairs $k$, $2 - k$, together with enclosures of traces of powers of the Jacobian. The stability is nonlinear: every
+motion with the same circulations that starts near one of the two configurations stays within a bounded distance of an
+exactly self-similar expansion of a nearby member of the family, the member with the same energy, and an a priori
+estimate of the same kind holds for approximate solutions whose error is small and decays faster than the velocities.
+With this estimate in place of the one step of Zbarsky's proof that needs three vortices, his confinement theorem holds
+for the two configurations: vortex patches placed at the vortices stay within distance $\varepsilon t^{1/4 +
+\varepsilon}$ of their centres of vorticity for all time, and the centres stay within a bounded distance of an exactly
+self-similar expansion of a single member of the family. That proof adapts his estimates for single patches. Linear
+stability is an open condition; in a random sample about one four-vortex collapse in seven and one five-vortex collapse
+in seventeen reverses into a linearly stable expansion.
 
 ## Status of the results
 
 - **Proved:** Lemma 1 (six eigenvalues forced by the symmetries and the family; the rest in pairs $k$, $2 - k$),
   Theorems 1 and 2 and Corollary 1, computer-assisted (Krawczyk test in FLINT/Arb ball arithmetic, with enclosures of
-  traces of powers of the Jacobian).
-- **Numerical:** the direct integrations and the random sample of Section 4.
-- **Not shown:** nonlinear stability, and whether this linear stability is enough for Zbarsky's confinement argument.
-- **Pending before this draft can advance:** a second reader, and the full text of Kallyadan and Shukla,
+  traces of powers of the Jacobian); Theorem 3, Corollary 2 and Proposition 1 (nonlinear stability, its sharp rate,
+  the limit fixed by the energy, and the forced version), from those certificates and the certified monotonicity of the
+  energy along the family.
+- **Proved by adapting a published proof:** Theorem 4 (confinement of vortex patches), which follows Zbarsky,
+  Commun. Math. Phys. 388 (2021) 707-733, with Proposition 1 in place of the one step that needs three vortices. It
+  relies on his estimates for single patches, followed and adapted but not rederived in full.
+- **Numerical:** the direct integrations and the random sample of Section 6.
+- **Pending before this draft can advance:** a check of Theorem 4 by a specialist in vortex patches, possibly with an
+  appendix restating Zbarsky's single-patch estimates for N patches; a comparison with the published CMP version of his
+  paper (the proof cites the equation numbers of arXiv:1912.10862v2); and the full text of Kallyadan and Shukla,
   Phys. Rev. Fluids 7 (2022) 114701 (only its abstract has been seen).
 
 ## Contents
@@ -47,8 +56,8 @@ address whether this linear stability suffices for Zbarsky's confinement argumen
 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
-| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 50 | 1 min |
-| [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 4 (numerical) | | 10 min |
+| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 58 | seconds |
+| [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 6 (numerical) | | 10 min |
 
 ## Reproduce
 
@@ -70,7 +79,7 @@ Until the paper has a DOI of its own:
 ```bibtex
 @misc{hendrick2026expansion,
   author = {Hendrick, Chase},
-  title  = {Linearly Stable Self-Similar Expansion of Four and Five Point Vortices},
+  title  = {Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches},
   year   = {2026},
   note   = {Draft}
 }

@@ -49,6 +49,7 @@ jobs:
         run: |
           python3 tools/package-release.py --version v0.0.0
           node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
+          python3 tools/release-assets.py --check
 
   pde-complete:
     name: complete PDE fields and prints

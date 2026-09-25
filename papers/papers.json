@@ -52,9 +52,9 @@
     },
     {
       "id": "stable-expansion",
-      "title": "Linearly Stable Self-Similar Expansion of Four and Five Point Vortices",
+      "title": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
       "status": "draft",
-      "note": "Drafted in this repository by the owner's decision (2026-09-25): computer-assisted proof that four and five Euler vortices have self-similarly expanding configurations that are linearly stable modulo rotation and their family, the missing ingredient Zbarsky names for extending his confinement theorem beyond three vortices. Before 'preparing': a second reader, and the full text of Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701 (only the abstract has been seen). The public companion repository does not exist yet.",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25): computer-assisted proof that four and five Euler vortices have self-similarly expanding configurations that are stable modulo rotation and their family, linearly and nonlinearly (orbital asymptotic stability with the rate 1/size, the limit fixed by the energy, and an a priori estimate for forced motions), and Zbarsky's vortex-patch confinement theorem carried over to them. Before 'preparing': a specialist's check of the patch theorem, which adapts Zbarsky's estimates, and the full text of Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701 (only the abstract has been seen). The public companion repository does not exist yet.",
       "typst": null,
       "latex": "papers/stable-expansion/paper/stable-expansion.tex",
       "pdf": "papers/stable-expansion/paper/stable-expansion.pdf",
