@@ -421,39 +421,62 @@ def H_float(q, Gs):
 
 
 def member_with_energy(h, zs, Gs, bs):
-    """The member of the four-vortex family (z_1 real, z_c = 0) whose energy is h, by least squares."""
+    """The member of the family (z_1 real, z_c = 0) whose energy is h, by least squares from zs."""
+    n = len(zs)
+
+    def unpack(u):
+        return np.concatenate([[u[0]], u[1:2*n - 1:2] + 1j*u[2:2*n - 1:2]])
+
     def res(u):
-        q = np.array([u[0], u[1] + 1j*u[2], u[3] + 1j*u[4], u[5] + 1j*u[6]])
+        q = unpack(u)
         d = np.conj(q[:, None] - q[None, :])
         np.fill_diagonal(d, 1)
         w = 1j*Gs[None, :]/d
         np.fill_diagonal(w, 0)
-        e = w.sum(1) + (1 - 1j*u[7])*q
+        e = w.sum(1) + (1 - 1j*u[-1])*q
         return np.concatenate([e.real, e.imag, [H_float(q, Gs) - h]])
-    u0 = np.array([zs[0].real, zs[1].real, zs[1].imag, zs[2].real, zs[2].imag, zs[3].real, zs[3].imag, bs])
-    s = least_squares(res, u0, xtol=1e-15, ftol=1e-15, gtol=1e-15)
-    return np.array([s.x[0], s.x[1] + 1j*s.x[2], s.x[3] + 1j*s.x[4], s.x[5] + 1j*s.x[6]]), np.max(np.abs(s.fun))
+    u0 = np.concatenate([[zs[0].real], np.column_stack([zs[1:].real, zs[1:].imag]).ravel(), [bs]])
+    s_ = least_squares(res, u0, xtol=1e-15, ftol=1e-15, gtol=1e-15)
+    return unpack(s_.x), np.max(np.abs(s_.fun))
 
 
-rng = np.random.default_rng(3)
-q0 = zf + 1e-4*(rng.normal(size=4) + 1j*rng.normal(size=4))
-zinf, resid = member_with_energy(H_float(q0, Gf), zf, Gf, bf)
-ts = np.geomspace(1, 1e8, 9)
-sol = solve_ivp(rhs_of(-Gf), (0, ts[-1]), np.concatenate([q0.real, q0.imag]), t_eval=ts, method='DOP853', rtol=1e-13,
-                atol=1e-13)
-rows = []
-for k in range(len(sol.t)):
-    q = sol.y[:4, k] + 1j*sol.y[4:, k]
-    d_star, size = shape_dev(q, zf, Gf)
-    rows.append((size, d_star, shape_dev(q, zinf, Gf)[0], abs(H_float(q, Gf) - H_float(q0, Gf))))
-say('      expanding, perturbed 1e-4, against the member with the same energy (least-squares residual %.0e): ' % resid
-    + '; '.join('size x%.3g dev %.1e (from zeta* %.1e)' % (r_[0], r_[2], r_[1]) for r_ in rows)
-    + '; largest change of H %.1e' % max(r_[3] for r_ in rows))
-check('binary64 (Theorem 3): the shape deviation from the family member with the same energy H decays like 1/size '
-      '(size x deviation stays below 2e-3 from 5-fold to 5600-fold growth) while the deviation from zeta* levels off '
-      'near 1e-3, the offset of that member, and H is conserved to 1e-12',
-      all(r_[0]*r_[2] < 2e-3 for r_ in rows if r_[0] > 5) and rows[-1][0] > 5000 and rows[-1][1] > 5e-4
-      and max(r_[3] for r_ in rows) < 1e-12, 'size x deviation: ' + ', '.join('%.1e' % (r_[0]*r_[2]) for r_ in rows))
+def energy_run(zs, Gs, bs, eps, seed):
+    """Perturb the expanding configuration, integrate to t = 1e18 (a 5e8-fold growth), and measure the shape deviation (modulo
+    translation, rotation and scaling) from zeta* and from the family member with the perturbed energy."""
+    n = len(zs)
+    rng = np.random.default_rng(seed)
+    q0 = zs + eps*(rng.normal(size=n) + 1j*rng.normal(size=n))
+    zinf, resid = member_with_energy(H_float(q0, Gs), zs, Gs, bs)
+    ts = np.geomspace(1, 1e18, 37)
+    sol = solve_ivp(rhs_of(-Gs), (0, ts[-1]), np.concatenate([q0.real, q0.imag]), t_eval=ts, method='DOP853',
+                    rtol=1e-13, atol=1e-13)
+    out = []
+    for k in range(len(sol.t)):
+        q = sol.y[:n, k] + 1j*sol.y[n:, k]
+        d_star, size = shape_dev(q, zs, Gs)
+        out.append((size, d_star, shape_dev(q, zinf, Gs)[0], abs(H_float(q, Gs) - H_float(q0, Gs))))
+    return out, resid
+
+
+# Five vortices have two oscillating shape modes of nearly equal frequency (3.45 and 3.19), which beat with a period of
+# about 24 in s = ln(size); the product size x deviation therefore rises and falls over the run, bounded as Theorem 3 says.
+for tag, zs_, Gs_, bs_, bound in (('four', zf, Gf, bf, 1e-3), ('five', None, None, None, 3e-2)):
+    if tag == 'five':
+        if not r5['ok']:
+            continue
+        zs_ = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z5])
+        Gs_ = np.array([float(g.mid()) for g in Gb5])
+        bs_ = float(b5.mid())
+    rows, resid = energy_run(zs_, Gs_, bs_, 1e-4, 3)
+    say('      %s vortices expanding, perturbed 1e-4, against the member with the same energy (least-squares residual '
+        '%.0e): ' % (tag, resid) + '; '.join('size x%.3g dev %.1e (from zeta* %.1e)' % (r_[0], r_[2], r_[1]) for r_ in rows[::4])
+        + '; largest change of H %.1e' % max(r_[3] for r_ in rows))
+    check('binary64 (Theorem 3), %s vortices: the shape deviation from the family member with the same energy H decays '
+          'like 1/size (size x deviation stays below %.0e from 5-fold to 5e8-fold growth) while the deviation from '
+          'zeta* levels off, and H is conserved to 1e-12' % (tag, bound),
+          all(r_[0]*r_[2] < bound for r_ in rows if r_[0] > 5) and rows[-1][0] > 5e8 and rows[-1][1] > 1e3*rows[-1][2]
+          and max(r_[3] for r_ in rows) < 1e-12, 'size x deviation from 5-fold growth on: %.2e to %.2e' % (min(r_[0]*r_[2] for r_ in rows if r_[0] > 5),
+                                                                        max(r_[0]*r_[2] for r_ in rows if r_[0] > 5)))
 if r2['ok']:
     zu = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z2])
     Gu = np.array([float(g.mid()) for g in Gc2])

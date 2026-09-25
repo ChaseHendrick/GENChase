@@ -20,14 +20,14 @@ configurations, only eigenvalues with real part $-1$ or $-2$. The proof is compu
 enclosed by the Krawczyk method in ball arithmetic, and the spectrum is controlled through an exact lemma, which shows
 that six eigenvalues are forced by the rotation, the scaling, the translations and the family and that the others come
 in pairs $k$, $2 - k$, together with enclosures of traces of powers of the Jacobian. The stability is nonlinear: every
-motion that starts near one of the two configurations stays within a bounded distance of an exactly self-similar
-expansion of a nearby member of the family, the member with the same energy, and an a priori estimate of the same kind
-holds for approximate solutions whose error decays in time. With this estimate in place of the one step of Zbarsky's
-proof that needs three vortices, his confinement theorem holds for the two configurations: vortex patches placed at the
-vortices stay within distance $t^{1/4 + \varepsilon}$ of their centres of vorticity for all time, and the centres move
-asymptotically like the self-similar expansion of a single member of the family. Linear stability is an open condition;
-in a random sample about one four-vortex collapse in seven and one five-vortex collapse in seventeen reverses into a
-linearly stable expansion.
+motion with the same circulations that starts near one of the two configurations stays within a bounded distance of an
+exactly self-similar expansion of a nearby member of the family, the member with the same energy, and an a priori
+estimate of the same kind holds for approximate solutions whose error is small and decays faster than the velocities.
+With this estimate in place of the one step of Zbarsky's proof that needs three vortices, his confinement theorem holds
+for the two configurations: vortex patches placed at the vortices stay within distance $t^{1/4 + \varepsilon}$ of their
+centres of vorticity for all time, and the centres move asymptotically like the self-similar expansion of a single
+member of the family. Linear stability is an open condition; in a random sample about one four-vortex collapse in seven
+and one five-vortex collapse in seventeen reverses into a linearly stable expansion.
 
 ## Status of the results
 
@@ -53,7 +53,7 @@ linearly stable expansion.
 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
-| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 57 | seconds |
+| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 58 | seconds |
 | [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 6 (numerical) | | 10 min |
 
 ## Reproduce
