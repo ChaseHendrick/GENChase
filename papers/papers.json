@@ -13,7 +13,7 @@
     {
       "id": "minimal-winding",
       "title": "Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons",
-      "status": "preparing",
+      "status": "ready",
       "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md).",
       "typst": "papers/minimal-winding/paper/minimal-winding.typ",
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
