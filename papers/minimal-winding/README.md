@@ -4,7 +4,7 @@
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 32 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 33 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -18,7 +18,7 @@ cubic, and the smaller one increases from $\sqrt{3}/2$, approached as $\mu \to 0
 = 1$. Hence $P > \sqrt{3}/2$ for every self-similar collapse of three point vortices, and the constant
 is sharp: every vortex travels more than twice its initial distance from the collision point. In the
 $\alpha$-models, where a vortex induces the velocity $\Gamma r^{-\alpha-1}/(2\pi)$, every self-similar
-collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for $\alpha > -1$, again sharply.
+collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for $\alpha > -2$, again sharply.
 For two concentric regular $n$-gons, with or without a vortex at the center, $P$ has a closed form, and
 its minimum is explicit and exceeds $\sqrt{3}/2$. A strong vortex with weak, tight opposite-signed pairs
 has $P \ge \sqrt{3}/2 - o(1)$ as the pairs weaken. For more vortices the bound fails. Computer-assisted
@@ -44,7 +44,7 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 | [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, and the leading-order relations used in the proof of Theorem 3: 80 checks, about 10 s |
 | [`verify_strong_vortex.py`](code/verify_strong_vortex.py) | Theorem 3, a strong vortex with weak pairs: every identity in the proof, its explicit constants, exact self-similar solutions checked by Biot–Savart, and negative controls; 143 checks, about 17 s |
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
-| [`verify_alpha_extension.py`](code/verify_alpha_extension.py) | The interval-arithmetic step of Remark 4 (α ≥ −59/40), under a second |
+| [`verify_alpha_below.py`](code/verify_alpha_below.py) | Remark 4, Theorem 2 for −2 < α ≤ −1: every identity exactly (SymPy), the constants and an independent interval subdivision in Arb ball arithmetic, Biot–Savart at 50 to 950 digits, near-extremal collapses and negative controls; about 15 s |
 | [`verify_alpha_equal_circulations.py`](code/verify_alpha_equal_circulations.py) | Remark 5, two equal circulations in the α-models, exact and at 40 digits, about 10 s |
 | [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorem 4 and Theorem 5(a) (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 92 checks, about a minute |
 | [`certify_sqg60.py`](code/certify_sqg60.py) | The computer-assisted proof of Theorem 5(b): sixty SQG vortices collapse without rotation, in the same ball arithmetic, reusing the `certify_*.py` modules; its input is `data/collapse-sqg-n60-no-rotation.json`; 11 checks, about half a minute |
@@ -63,7 +63,7 @@ python3 code/verify_direct_proof.py
 python3 code/verify_central_vortex.py
 python3 code/verify_strong_vortex.py
 python3 code/verify_alpha_winding.py
-python3 code/verify_alpha_extension.py
+python3 code/verify_alpha_below.py
 python3 code/verify_alpha_equal_circulations.py
 python3 code/certify_collapses.py
 python3 code/certify_sqg60.py

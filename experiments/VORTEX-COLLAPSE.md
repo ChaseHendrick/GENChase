@@ -11,7 +11,7 @@ with α = 0 the Euler case and α = 1 the surface quasi-geostrophic (SQG) case. 
 collapse every vortex obeys dz_j/dt = κ(z_j − z_c) with one complex rate κ, so the cluster shrinks
 along a logarithmic spiral. Its winding is `P = |Im κ| / (2 |Re κ|)`. For three Euler vortices,
 `P > √3/2` is proved in the preprint in [papers/minimal-winding/](../papers/minimal-winding/), which also
-proves `P > √(3+α)/(2+α)` for α ≥ −59/40 (the alpha-model draft was merged into it on 2026-09-25). Both
+proves `P > √(3+α)/(2+α)` for every α > −2 (the alpha-model draft was merged into it on 2026-09-25). Both
 bounds are sharp. That paper also proves, in interval arithmetic, the four- to six-vortex Euler minima
 and the α = 1 and α = 2 four-vortex minima below as strict local minima, and the α = 2 collapse without
 rotation at N = 11 (mirror image of the stored point, which expands). For four or more
@@ -26,10 +26,9 @@ vortices the answer is not known here, and that is what this search is for.
    61 vortices.
 2. **Is the four-vortex Euler value 0.7978967838 the global minimum?** A seed sweep that always
    finds the same basin is evidence, not proof.
-3. **Does the three-vortex bound hold for −2 < α < −59/40?** The proof in preparation covers
-   α ≥ −59/40. A single
-   certified three-vortex collapse below `√(3+α)/(2+α)` would disprove it for that α. The job flags
-   such a result automatically.
+3. **Does the three-vortex bound hold for −2 < α < −59/40?** Answered (2026-09-25): yes. The merged
+   paper proves it for every α > −2 (Theorem 2 and Remark 4, checked by `verify_alpha_below.py`). The
+   job still flags any three-vortex collapse below `√(3+α)/(2+α)`, which would now mean a bug.
 4. **What are the least windings for N ≥ 4 when α ≠ 0?** The SQG and α = 2 values fall faster with N
    than the Euler ones. **The search reached zero for α = 2 at N = 11 and for SQG at N = 60** (next
    section). The questions left are whether the Euler case also reaches zero, and at which α zero first

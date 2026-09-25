@@ -122,7 +122,7 @@ for al in [0, 0.5, 1, 1.5, 2]:
         f"spiral angle arctan(2B) = {mm.nstr(mm.degrees(mm.atan(2 * B)), 6)} deg, |omega_0| t_c bound 2B/(2+alpha) = {mm.nstr(2 * B / (2 + al), 10)}")
 open(OUT, 'w').write('\n'.join(out) + '\n')
 
-# 6. alpha <= -1 (not covered by the theorem): minimize P - B with precision growing with |log rho|.
+# 6. alpha <= -1 (proved in Remark 4; this is a numerical check): minimize P - B with precision growing with |log rho|.
 from scipy.optimize import minimize
 def P_minus_B(al, lr, m):
     mm.mp.dps = int(40 + 3 * abs(lr))

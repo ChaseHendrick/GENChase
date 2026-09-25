@@ -2,9 +2,9 @@
 
 This was the repository's working note for the draft preprint *A sharp winding bound for the self-similar collapse of three point vortices in the α-models* (Chase Hendrick), kept as its record. By the owner's decision (2026-09-25) that draft was merged into the minimal-winding paper, *Minimal Winding in the Self-Similar Collapse of Point Vortices*, where its results are Section 4 (Lemmas 4 to 6, Theorem 2, Corollary 2, Remarks 4 and 5) and part of Section 7. Numbering below is the draft's: its Lemmas 2 and 3 are now Lemmas 5 and 6, its Theorem 1 is Theorem 2, its Remarks 1 and 2 are Remarks 4 and 5, and its Section 5 is Section 7.
 
-- Paper source: [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) (LaTeX, the manuscript), with a Typst copy of the same text, [`../paper/minimal-winding.typ`](../paper/minimal-winding.typ); keep the two in step
+- Paper source: [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) (LaTeX, the manuscript and its only source; the Typst copy was dropped on 2026-09-25)
 - Paper PDF: [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf), the LaTeX build, which `sh tools/paper-build.sh minimal-winding` remakes
-- Verification programs: [`../code/verify_alpha_winding.py`](../code/verify_alpha_winding.py), with output [`../data/verify_alpha_winding.txt`](../data/verify_alpha_winding.txt); [`../code/verify_alpha_extension.py`](../code/verify_alpha_extension.py); [`../code/verify_alpha_equal_circulations.py`](../code/verify_alpha_equal_circulations.py), which replaces `symmetric_family.py` of the research folder; and [`../code/verify_many_vortices.py`](../code/verify_many_vortices.py), which checks the 33- and 61-vortex configurations now stored in [`../data/`](../data/)
+- Verification programs: [`../code/verify_alpha_winding.py`](../code/verify_alpha_winding.py), with output [`../data/verify_alpha_winding.txt`](../data/verify_alpha_winding.txt); [`../code/verify_alpha_below.py`](../code/verify_alpha_below.py), with output [`../data/verify-alpha-below-2026-09-25.txt`](../data/verify-alpha-below-2026-09-25.txt), which replaced `verify_alpha_extension.py` on 2026-09-25 (see "Below α = −1"); [`../code/verify_alpha_equal_circulations.py`](../code/verify_alpha_equal_circulations.py), which replaces `symmetric_family.py` of the research folder; and [`../code/verify_many_vortices.py`](../code/verify_many_vortices.py), which checks the 33- and 61-vortex configurations now stored in [`../data/`](../data/)
 
 Cite the person, Chase Hendrick, not the GitHub handle. No result here carries a personal name.
 
@@ -14,7 +14,7 @@ The model is dz_j/dt = (i/2π) Σ Γ_k (z_j − z_k)/|z_j − z_k|^(2β), with �
 
 1. **Lemma 2 (circulations).** A self-similar motion that changes size needs a scalene, non-collinear triangle, with Γ_i = c r_i²/(f_j − f_k), where f = r^(−2β) and the indices are cyclic. Exactly one orientation of each such triangle collapses. On scalene triangles this is equivalent to zero angular impulse together with Σ Γ_jΓ_k r_i^(−α) = 0; for α = 0 that sum becomes the harmonic condition Σ Γ_jΓ_k = 0.
 2. **Lemma 3 (rates).** 2π Im κ is half the sum of the isolated pair rates, and P = |S|/(8·Area), where S = Σ_cyc r_i² coth(β ln(r_k/r_j)). The circulations drop out.
-3. **Theorem 1.** For every α > −1 (every kernel whose velocity decays with distance), P > √(3+α)/(2+α), sharp and not attained. The bound is approached by a weak opposite-signed dipole spiralling into a strong vortex. Corollary 1 gives the path ratio (4+α)/(2+α), the spiral angle arccos((2+α)/(4+α)), and |ω₀|t_c > 2√(3+α)/(2+α)².
+3. **Theorem 1.** For every α > −1 (every kernel whose velocity decays with distance), P > √(3+α)/(2+α), sharp and not attained. In the paper it is Theorem 2 and holds for every α > −2 (see "Below α = −1"). The bound is approached by a weak opposite-signed dipole spiralling into a strong vortex. Corollary 1 gives the path ratio (4+α)/(2+α), the spiral angle arccos((2+α)/(4+α)), and |ω₀|t_c > 2√(3+α)/(2+α)².
 4. **Section 5 (Euler, N ≥ 4, numerical).** Four vortices reach P₄ = 0.7978967838…, a strict local minimum. Two-arm families reach P = 0.5172291322… at N = 33 and 0.4981844392… at N = 61. Whether P can tend to 0 as N grows is open.
 
 ## How each claim was checked
@@ -25,7 +25,7 @@ The explorer derived the proof, a separate checker verified it, and it was then 
 - **Exact identities:** every exact identity of the proof checks in SymPy.
 - **The inequality chain:** 20,000 random points, run with precision adapted to ρ^(2β).
 - **Sharpness:** near-extremal configurations.
-- **α ≤ −1:** the scan there, which is not claimed as a result.
+- **α ≤ −1:** the scan there, which the draft did not claim as a result; since 2026-09-25 it is a numerical check of Remark 4 of the paper, which proves the bound there.
 
 Two traps: in double precision, step (i) appears to fail at small ρ and large β, and the α ≤ −1 scan dips below the bound. Both are rounding errors, and both disappear once the precision grows with |ln ρ|.
 
@@ -37,7 +37,11 @@ The first version of the proof needed α > −0.896, because its m ≥ 2 case us
 
 ## Below α = −1
 
-Remark 1 extends the theorem to α ≥ −59/40 with one computer-assisted step: `verify_alpha_extension.py` subdivides 0.2622 ≤ β ≤ 1/2, 3/2 ≤ m ≤ 2 in interval arithmetic (1205 boxes, all resolved). Remark 2 adds the exact α = 2 equal-circulation formula and the exact SQG endpoint, checked by `generalizations-2026-09-24/checks/symmetric_family.py`. The paper now ends with an Open problems section.
+The draft's Remark 1 extended the theorem to α ≥ −59/40 with one computer-assisted step: `verify_alpha_extension.py` subdivided 0.2622 ≤ β ≤ 1/2, 3/2 ≤ m ≤ 2 in interval arithmetic (1205 boxes, all resolved).
+
+On 2026-09-25 a refereed elementary argument replaced that step and extended Theorem 2 of the paper to every α > −2. It covers β in (0, 1/2] and is now Remark 4 of the paper. Below β ≈ 0.19 the right side of the identity (eq:id) can be negative (at α = −1.7, ρ = 0.99, m = 1.87), because step (i) discards the factor (1 + X)/(1 − X). With q = 1 + 6β − βm² − ρm + ρ²m²/12, the second bracket of (eq:id): if q > 0, the right side is positive and the chain works, with Λ > 0 from ρm < 3. If q ≤ 0, then ρm ≥ 6 − 2√6 (for m² ≤ 6 from t − t²/12 ≥ 1; for m² > 6 because m < 2 + ρ gives ρ > m − 2 and (m − 2)m increases), and keeping the factor, exactly S = ρm coth(β ln(1/ρ)) + ρ² coth b + 2X(Y − 1)/((1 − X)(Y − X)), where the last two terms are positive since 0 < X < 1 < Y. So βS/ρ > m/ln(1/ρ) ≥ (6 − 2√6)e, because ρ ln(1/ρ) ≤ 1/e, and with sin ψ ≤ 1, P > (3 − √6)e/(2β) ≥ B for every β ≤ ((15 − 6√6)e² − 1)/2 = 0.6197. Sharpness for every β > 0 now uses the exact identity S − ρm − ρ² coth b = 2X((1 + ρm)Y − 1 − ρmX)/((1 − X)(Y − X)) = O(Xρ) instead of X = o(ρ), which fails for β < 1/2. In the extremal limit the tight pair is weak for α > −1 and strong for α < −1. `verify_alpha_below.py` checks every step: the identities with SymPy, the constants and an independent subdivision of β in [0, 1/2], ρ in [0, 1], m in [0, 3] in Arb ball arithmetic (733 boxes), Biot–Savart at 50 to 950 digits on 1500 random collapses with −2 < α < −1, sharpness at α = −1.5, −1.8 and −1.99, and six negative controls. `verify_alpha_extension.py` and its output were removed, and the paper's open problem on −2 < α < −59/40 was dropped.
+
+Remark 2 of the draft adds the exact α = 2 equal-circulation formula and the exact SQG endpoint, checked by `generalizations-2026-09-24/checks/symmetric_family.py`. The paper now ends with an Open problems section.
 
 ## Read
 

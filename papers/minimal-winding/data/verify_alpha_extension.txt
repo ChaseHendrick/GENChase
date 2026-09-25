@@ -1,1 +1,0 @@
-beta in [0.2622, 1/2], m in [1.5, 2]: 1205 boxes, all resolved; m < 1.5: b(m) > 3.75 beta - 0.5 = 0.4832 > 0

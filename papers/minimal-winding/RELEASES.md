@@ -5,7 +5,7 @@ has not been peer reviewed.
 
 ## Unreleased
 
-Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 32 pages):
+Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 33 pages):
 
 - **A new title and one paper instead of two.** The paper is now *Minimal Winding in the Self-Similar
   Collapse of Point Vortices*. The separate draft on the α-models (*A sharp winding bound for the
@@ -13,8 +13,11 @@ Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 
   data and figure, and the LaTeX source is now the only source: the Typst copy was dropped.
 - **The α-models** (Section 4). In the generalized Euler models, where a vortex of circulation Γ induces
   the velocity Γ r^(−α−1)/(2π), every self-similar collapse of three vortices has
-  P > √(3+α)/(2+α) for every α > −1, and the constant is sharp; one interval-arithmetic step extends
-  this to α ≥ −59/40. At α = 0 it is the bound √3/2 for Euler vortices.
+  P > √(3+α)/(2+α) for every α > −2, and the constant is sharp. At α = 0 it is the bound √3/2 for Euler
+  vortices. For α > −1, where the velocity decays with distance, the proof is a chain of elementary
+  inequalities; for −2 < α ≤ −1 a second elementary argument completes one step of it (Remark 4). No
+  step uses a computer: an earlier draft needed an interval-arithmetic step there and reached only
+  α ≥ −59/40.
 - **More than three vortices, with computer-assisted proofs** (Section 7). In ball arithmetic (FLINT/Arb
   through python-flint, 320 bits, the Krawczyk operator): four, five and six Euler vortices can collapse
   self-similarly with P < √3/2, and P has strict local minima 0.7978967838…, 0.7448144569… and
@@ -28,10 +31,10 @@ Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 
 - New programs: `code/certify_collapses.py` (92 checks, with its `certify_*.py` modules),
   `code/certify_sqg60.py` (11 checks, reusing those modules), `code/verify_strong_vortex.py`
   (143 checks), `code/verify_alpha_winding.py`,
-  `code/verify_alpha_extension.py`, `code/verify_alpha_equal_circulations.py`,
+  `code/verify_alpha_below.py`, `code/verify_alpha_equal_circulations.py`,
   `code/verify_many_vortices.py` and `code/plot_alpha_winding.py`, and the stored many-vortex
   configurations in `data/`.
-- **Why the same constant appears twice** (Theorem 2). A strong vortex carrying any number of weak, tight
+- **Why the same constant appears twice** (Theorem 3). A strong vortex carrying any number of weak, tight
   pairs of opposite sign has P ≥ √3/2 − o(1) as the pairs weaken, and P comes close to √3/2 only when every
   pair is tilted at 60° to the direction away from the strong vortex and all pairs are at the same
   distance. This is an asymptotic statement, not a bound at fixed strength. It explains why √3/2 is the
