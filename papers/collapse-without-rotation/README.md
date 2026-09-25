@@ -14,20 +14,23 @@ size decreases by the factor $e$. A companion paper proved that $P > \sqrt{3}/2$
 same constant is the limit for a strong vortex carrying weak tight pairs of opposite sign, and, with
 computer-assisted proofs, that eleven vortices in the $\alpha = 2$ model and sixty in the surface quasi-geostrophic
 (SQG) model can collapse without rotating at all. We first show that the constant $\sqrt{3}/2$ belongs to a larger
-class: a strong Euler vortex carrying any number of weak tight clusters, of any sizes and signs, has
-$P \ge \sqrt{3}/2 - o(1)$ as the clusters weaken. If $P$ stays bounded, every cluster is close to a translating
-relative equilibrium whose net circulation is half the sum of the squares of its circulations, measured in units of
-the strong one; a single isolated weak vortex forces $P$ to grow like the inverse of the weak circulations, with an
-explicit constant. In particular no such configuration collapses without rotation, whatever the number of vortices.
-A formal next-order expansion, confirmed by exact collapses computed at fifty digits, shows that triples of signs
-$(+,+,-)$ beside a positive strong vortex go below $\sqrt{3}/2$, which is why four vortices are the first to do so.
-We then map, numerically, the least $\alpha$ at which $N$ vortices can collapse without rotation along two families:
-the least $N$ is 5, 6, 8, 11, 17, 29 and 60 for $\alpha$ = 6, 4, 3, 2, 1.5, 1.2 and 1, and the thresholds
-extrapolate to a positive limit between 0.66 and 0.80, not to the Euler value 0. No self-similar collapse with
-nonzero total circulation is mirror symmetric; numerically, the two certified collapses without rotation are
-linearly unstable, with 8 and 57 unstable modes, and perturbed motions leave them without turning. Finally, the
-Euler minimizers of the companion paper approach a continuum of two point vortices and a positive vortex sheet, whose
-least winding we compute to forty digits, $P_\infty = 0.47736353369161202484\ldots$.
+class: a strong Euler vortex carrying any number of weak tight clusters, of any sizes and signs, has $P \ge
+\sqrt{3}/2 - o(1)$ as the clusters weaken. If $P$ stays bounded, every cluster is close to a translating relative
+equilibrium whose net circulation is half the sum of the squares of its circulations, measured in units of the strong
+one; a single isolated weak vortex forces $P$ to grow like the inverse of the weak circulations, with an explicit
+constant. In particular no such configuration collapses without rotation, whatever the number of vortices. A formal
+next-order expansion, confirmed by high-precision numerical collapses computed at fifty digits, shows that triples of
+signs $(+,+,-)$ beside a positive strong vortex go below $\sqrt{3}/2$, which is why four vortices are the first to do
+so. We then map, numerically, the least $\alpha$ at which $N$ vortices can collapse without rotation along two
+families: the least $N$ is 5, 6, 8, 11, 17, 29 and 60 for $\alpha$ = 6, 4, 3, 2, 1.5, 1.2 and 1, and fits of the
+thresholds give a positive limit between 0.66 and 0.80, while fits forced to the Euler value 0 are much worse. No
+self-similar collapse with nonzero total circulation is mirror symmetric; numerically, the two certified collapses
+without rotation are linearly unstable, with 8 and 57 unstable modes, and perturbed motions leave them without
+turning. Finally, numerically, the Euler minimizers of the companion paper approach a continuum of two point vortices
+and a positive vortex sheet; with a density that vanishes like a square root at the tips of the sheet, the winding
+has a local minimum along a one-parameter family of such continua, $P_\infty = 0.47736353369161202484\ldots$, stable
+to forty digits if the observed exponential convergence persists, which agrees with the extrapolation of the finite
+family.
 
 ## Status of the results
 
@@ -55,7 +58,7 @@ least winding we compute to forty digits, $P_\infty = 0.47736353369161202484\ldo
 |---|---|---:|---|
 | [`verify_cluster_identities.py`](code/verify_cluster_identities.py) | Every identity in the proof of Theorem 1 and in the formal expansion, exactly (SymPy), with negative controls | 62 | 10 s |
 | [`verify_cluster_remainders.py`](code/verify_cluster_remainders.py) | The remainders of the proof on random configurations, $\gamma$ from $10^{-2}$ to $10^{-7}$, a control that must grow, and the explicit constants of Step 1 and part (d) | 8 | 3 s |
-| [`verify_cluster_collapses.py`](code/verify_cluster_collapses.py) | Exact collapses at 50 digits of a strong vortex with clusters (Table 1), with convergence tests; singletons; controls. `--quick`: 72 checks, one minute | 90 | 2 min |
+| [`verify_cluster_collapses.py`](code/verify_cluster_collapses.py) | Collapses computed at 50 digits of a strong vortex with clusters (Table 1), with convergence tests; singletons; controls. `--quick`: 72 checks, one minute | 90 | 2 min |
 | [`verify_cluster_stored.py`](code/verify_cluster_stored.py) | The 21 stored collapses rechecked with separate code at 60 digits | 26 | 1 s |
 | [`verify_phase_diagram.py`](code/verify_phase_diagram.py) | All 120 thresholds from their stored configurations, Tables 2 and 3, the searches | 46 | 15 s |
 | [`plot_phase_diagram.py`](code/plot_phase_diagram.py) | Figure 1 | | 3 s |
