@@ -1,6 +1,6 @@
 # Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons
 
-**Chase Hendrick**, Independent Researcher · chasewhendrick@gmail.com
+**Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 

@@ -26,4 +26,3 @@ Possible reviewers, all with expertise in point-vortex collapse:
 Sincerely,
 Chase Hendrick
 Independent Researcher
-chasewhendrick@gmail.com
