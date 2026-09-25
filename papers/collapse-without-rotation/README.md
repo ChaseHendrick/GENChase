@@ -5,33 +5,34 @@
 **Draft**, not peer reviewed. It is the sequel to *Minimal Winding in the Self-Similar Collapse of Point Vortices*
 ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding)), which it cites as its companion.
 
-**[Read the draft (PDF, 22 pages)](paper/collapse-without-rotation.pdf)**
+**[Read the draft (PDF, 24 pages)](paper/collapse-without-rotation.pdf)**
 
 ## Abstract
 
-In a self-similar collapse of point vortices the configuration turns through the angle $P$ while the square of its
-size decreases by the factor $e$. A companion paper proved that $P > \sqrt{3}/2$ for three Euler vortices, that the
-same constant is the limit for a strong vortex carrying weak tight pairs of opposite sign, and, with
-computer-assisted proofs, that eleven vortices in the $\alpha = 2$ model and sixty in the surface quasi-geostrophic
-(SQG) model can collapse without rotating at all. We first show that the constant $\sqrt{3}/2$ belongs to a larger
-class: a strong Euler vortex carrying any number of weak tight clusters, of any sizes and signs, has $P \ge
-\sqrt{3}/2 - o(1)$ as the clusters weaken. If $P$ stays bounded, every cluster is close to a translating relative
-equilibrium whose net circulation is half the sum of the squares of its circulations, measured in units of the strong
-one; a single isolated weak vortex forces $P$ to grow like the inverse of the weak circulations, with an explicit
-constant. In particular no such configuration collapses without rotation, whatever the number of vortices. We prove
-that a weak triple of signs $(+,+,-)$ beside a positive strong vortex gives collapses with $P$ below $\sqrt{3}/2$ by
-an amount proportional to the weak circulations, so that $\sqrt{3}/2$ is a limit and not a bound at a fixed strength;
-a formal expansion, confirmed by high-precision numerical collapses computed at fifty digits, extends the first-order
-term to clusters of any size and explains why four vortices are the first to go below $\sqrt{3}/2$. We then map,
-numerically, the least $\alpha$ at which $N$ vortices can collapse without rotation along two families: the least $N$
-is 5, 6, 8, 11, 17, 29 and 60 for $\alpha$ = 6, 4, 3, 2, 1.5, 1.2 and 1, and fits of the thresholds give a positive
-limit between 0.66 and 0.80, while fits forced to the Euler value 0 are much worse. No self-similar collapse with
-nonzero total circulation is mirror symmetric; numerically, the two certified collapses without rotation are linearly
-unstable, with 8 and 57 unstable modes, and perturbed motions leave them without turning. Finally, numerically, the
-Euler minimizers of the companion paper approach a continuum of two point vortices and a positive vortex sheet; with
-a density that vanishes like a square root at the tips of the sheet, the winding has a local minimum along a
-one-parameter family of such continua, $P_\infty = 0.47736353369161202484\ldots$, stable to forty digits if the
-observed exponential convergence persists, which agrees with the extrapolation of the finite family.
+In a self-similar collapse of point vortices the configuration turns through the angle $P$ while the square of its size
+decreases by the factor $e$. A companion paper proved that $P > \sqrt{3}/2$ for three Euler vortices, that the same
+constant is the limit for a strong vortex carrying weak tight pairs of opposite sign, and, with computer-assisted
+proofs, that eleven vortices in the $\alpha = 2$ model and sixty in the surface quasi-geostrophic (SQG) model can
+collapse without rotating at all. We first show that the constant $\sqrt{3}/2$ belongs to a larger class: a strong Euler
+vortex carrying any number of weak tight clusters, of any sizes and signs, has $P \ge \sqrt{3}/2 - o(1)$ as the clusters
+weaken. If $P$ stays bounded, every cluster is close to a translating relative equilibrium whose net circulation is half
+the sum of the squares of its circulations, measured in units of the strong one; a single isolated weak vortex forces
+$P$ to grow like the inverse of the weak circulations, with an explicit constant. In particular no such configuration
+collapses without rotation, whatever the number of vortices. We prove that a weak triple of signs $(+,+,-)$ beside a
+positive strong vortex gives collapses with $P$ below $\sqrt{3}/2$ by an amount proportional to the weak circulations,
+so that $\sqrt{3}/2$ is a limit and not a bound at a fixed strength; a formal expansion, confirmed by high-precision
+numerical collapses computed at fifty digits, extends the first-order term to clusters of any size and explains why four
+vortices are the first to go below $\sqrt{3}/2$. We then map, numerically, the least $\alpha$ at which $N$ vortices can
+collapse without rotation along two families: the least $N$ is $5$, $6$, $8$, $11$, $17$, $29$ and $60$ for $\alpha =
+6$, $4$, $3$, $2$, $1.5$, $1.2$ and $1$, and fits of the thresholds give a positive limit between $0.66$ and $0.80$,
+while fits forced to the Euler value $0$ are much worse. No self-similar collapse with nonzero total circulation is
+mirror symmetric; numerically, the two certified collapses without rotation are linearly unstable, with $8$ and $57$
+unstable modes, and perturbed motions leave them without turning. Finally, numerically, the Euler minimizers of the
+companion paper approach a continuum of two point vortices and a positive vortex sheet, a kind of collapse that O'Neil
+found with point vortices approximating the sheet; with a density that vanishes like a square root at the tips of the
+sheet, the winding has a local minimum along a one-parameter family of such continua, $P_\infty =
+0.47736353369161202484\ldots$, stable to forty digits if the observed exponential convergence persists, which agrees
+with the extrapolation of the finite family.
 
 ## Status of the results
 
@@ -39,17 +40,21 @@ observed exponential convergence persists, which agrees with the extrapolation o
   Corollary 1 (no collapse without rotation in that regime, for any number of vortices), Theorem 2 and Corollary 2
   (one weak triple: a family of collapses with $P = \sqrt3/2 + (2\sqrt3\,g_1g_2g_3/S)\gamma + O(\gamma^2)$, so for
   signs $(+,+,-)$ the constant is undershot at every small strength; the first-order coefficient is computed exactly
-  by computer algebra), Proposition 1 (no self-similar collapse with nonzero total circulation is mirror symmetric).
-  The sharpness of the constant in Theorem 1(a) is proved for an even number of weak vortices and for three; for an
-  odd number from five on it is numerical.
+  by computer algebra), Theorem 3 (the same family for any single weak cluster that translates nondegenerately),
+  Lemma 1 (such clusters exist for every number of vortices, built from a pair or the triangle (1, 1, -2) by adding
+  weak vortices +-eps at stagnation points), Corollary 3 (the constant in Theorem 1(a) is sharp for every number of
+  weak vortices, for small enough c), Proposition 1 (no self-similar collapse with nonzero total circulation is mirror
+  symmetric).
 - **Formal, confirmed numerically:** the next-order expansion of Section 3.3 for several clusters and for clusters of
   more than three vortices.
 - **Numerical:** the phase diagram (Section 4), the family and its stability (Sections 5.2 and 5.3), the continuum
   limit (Section 6).
-- **Pending before this draft can advance:** the continuum section makes no claim of priority until
-  K. A. O'Neil, *Collapse and concentration of vortex sheets in two-dimensional flow*, Theor. Comput. Fluid Dyn. 24
-  (2010) 39-44, has been read; only its abstract, and a description of it in Kudela (Energies 14 (2021) 943), have
-  been seen. A second reader has checked the draft (2026-09-25) and its corrections are in.
+- **Pending before this draft can advance:** nothing in the text. O'Neil, *Collapse and concentration of vortex sheets
+  in two-dimensional flow*, Theor. Comput. Fluid Dyn. 24 (2010) 39-44, has been read (2026-09-25; the owner supplied
+  the PDF, which is not committed): he found collapsing sheets with point vortices first, including the S-shaped
+  sheet between two negative point vortices at P = 1/2, and Section 6 credits him; the minimum P_inf along the family
+  and the direct continuum solution are not in his paper. A second reader has checked the draft (2026-09-25) and
+  its corrections are in.
 
 ## Contents
 
@@ -65,6 +70,7 @@ observed exponential convergence persists, which agrees with the extrapolation o
 | [`verify_cluster_remainders.py`](code/verify_cluster_remainders.py) | The remainders of the proof on random configurations, $\gamma$ from $10^{-2}$ to $10^{-7}$, a control that must grow, and the explicit constants of Step 1 and part (d) | 8 | 3 s |
 | [`verify_cluster_collapses.py`](code/verify_cluster_collapses.py) | Collapses computed at 50 digits of a strong vortex with clusters (Table 1), with convergence tests; singletons; controls. `--quick`: 72 checks, one minute | 90 | 2 min |
 | [`verify_triple_branch.py`](code/verify_triple_branch.py) | Theorem 2 and Corollary 2: the point at $\gamma = 0$, the closed form of $d(w_1 - w_2)$ and the slope $2\sqrt3\,g_1g_2g_3/S$, exactly over $\mathbb{Q}(t)(\omega)$; the family at 40 digits against the Biot-Savart equations; the class $K(3, 1/2)$; a triple with $g_1g_2g_3 > 0$; controls | 62 | 10 s |
+| [`verify_sharpness_all_n.py`](code/verify_sharpness_all_n.py) | Lemma 1 and Corollary 3: the pair and the triangle exactly (translation, nondegeneracy, the zeros of R, discriminant -216); clusters of 4 to 15 vortices grown by the induction from both starting clusters (binary64) and their collapse families at forty digits, checked against the Biot-Savart equations of all vortices; controls; with `--large`, a cluster of 101 vortices | 37 (40 with `--large`) | 20 s (`--large`: 1 min) |
 | [`verify_cluster_stored.py`](code/verify_cluster_stored.py) | The 21 stored collapses rechecked with separate code at 60 digits | 26 | 1 s |
 | [`verify_phase_diagram.py`](code/verify_phase_diagram.py) | All 120 thresholds from their stored configurations, Tables 2 and 3, the searches | 46 | 15 s |
 | [`plot_phase_diagram.py`](code/plot_phase_diagram.py) | Figure 1 | | 3 s |
