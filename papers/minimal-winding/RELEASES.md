@@ -3,9 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
-## Unreleased
+## v2.0.0 (2026-09-25)
 
-Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 36 pages):
+The paper becomes *Minimal Winding in the Self-Similar Collapse of Point Vortices*: the alpha-model draft is merged in, and it grows from 14 to 36 pages. A major version because the title, scope and files changed. Changes since v1.0.0:
 
 - **A new title and one paper instead of two.** The paper is now *Minimal Winding in the Self-Similar
   Collapse of Point Vortices*. The separate draft on the α-models (*A sharp winding bound for the
