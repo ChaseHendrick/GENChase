@@ -889,6 +889,9 @@ void main(){
   let regenTimer = null, historyTimer = null;
   let downloads = null;
   let hashSilent = false;
+  // The hash the studio last wrote or applied. A hash that differs from it was set from outside (the address bar,
+  // a link, a script) and waits for its hashchange event, so the studio must not write over it first.
+  let knownHash = null;
   const undoStack = [];
   let undoLock = false;
 
@@ -1054,11 +1057,15 @@ void main(){
   function writeHash() {
     if (loadingId) return;
     const e = instances[currentId]; if (!e) return;
+    // Overwriting a hash set from outside before its hashchange runs would make that event apply the old tab again.
+    if (knownHash !== null && location.hash !== knownHash) return;
     const next = encodeRecipe(e);
-    if (location.hash === next) return;
-    hashSilent = true;
-    try { history.replaceState(null, '', next); } catch (err) { location.hash = next; }
-    hashSilent = false;
+    if (location.hash !== next) {
+      hashSilent = true;
+      try { history.replaceState(null, '', next); } catch (err) { location.hash = next; }
+      hashSilent = false;
+    }
+    knownHash = location.hash;
   }
   let hashTimer = 0;
   function scheduleHash() {
@@ -1357,6 +1364,7 @@ void main(){
     applyHash({ skipSnap: true });
   }
   async function applyHash(opts) {
+    knownHash = location.hash;
     const rec = parseHash();
     if (!rec || !rec.id || !byId[rec.id]) return false;
     const { id } = rec;
@@ -3705,6 +3713,7 @@ void main(){
     if (framed) {
       try { history.replaceState(null, '', location.pathname + location.search); } catch (err) { /* ignore */ }
     }
+    knownHash = location.hash;
     if (rec && rec.unknown) {
       toast('No technique called "' + rec.id + '" in this build');
       await switchTo(modules[0].id);

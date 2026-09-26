@@ -369,7 +369,8 @@ for alpha, printed, bound, chart in ((1, '0.5499151189', '2/3', ['x2', 'G2', 'G3
           % (alpha, mp.nstr(kap0, 8), 'expands; its mirror image z -> conj(z) collapses and is certified' if mirrored
              else 'collapses'))
     model = AM.AlphaModel(N, alpha)
-    r = PL.kkt(model, alpha_full(z, G, t), list(range(3*N - 1)), chart, ow=1 if t > 0 else -1)
+    ow = 1 if t > 0 else -1                    # objective ow*t = |t| = P; the sign comes from the binary64 start
+    r = PL.kkt(model, alpha_full(z, G, t), list(range(3*N - 1)), chart, ow=ow)
     check('alpha = %d, N = 4: the Lagrange system of min P (%d unknowns) has exactly one solution in the box of radius 1e-%s'
           % (alpha, r['unknowns'], r.get('rmax')), r['ok'] and r.get('rmax') is not None,
           'Newton residual %s; at radius 1e-40 ||I - Y J(X)|| <= %s'
@@ -394,6 +395,9 @@ for alpha, printed, bound, chart in ((1, '0.5499151189', '2/3', ['x2', 'G2', 'G3
           not bad, 'sum Gamma %s, min |z_j - z_k| >= %s, min |z_j| >= %s%s'
           % (sc['sum_Gamma'], sc['min_pair_distance_lower_bound'], sc['min_abs_z_lower_bound'],
              ('; failed: ' + ', '.join(bad)) if bad else ''))
+    check('alpha = %d: the objective has the right sign on the box (ow t > 0 for the certified t), so the objective is P'
+          ' there and the certified point is a minimum of P, not a maximum' % alpha, bool(ow*r['full'][model.iP] > 0),
+          't in %s' % r['full'][model.iP].str(10, radius=True))
     Pb = abs(r['full'][model.iP])
     show('P_4 in %s' % PL.dec(Pb, 50))
     check('alpha = %d: P_4 = %s... as printed (every printed digit correct)' % (alpha, printed), prefix_ok(Pb, printed))

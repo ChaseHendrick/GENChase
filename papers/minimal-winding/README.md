@@ -4,7 +4,7 @@
 
 Preprint, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)). Not yet peer reviewed.
 
-**[Read the paper (PDF, 36 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 38 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -47,7 +47,7 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
 | [`verify_alpha_below.py`](code/verify_alpha_below.py) | Remark 4, Theorem 2 for −2 < α ≤ −1: every identity exactly (SymPy), the constants and an independent interval subdivision in Arb ball arithmetic, Biot–Savart at 50 to 950 digits, near-extremal collapses and negative controls; about 15 s |
 | [`verify_alpha_equal_circulations.py`](code/verify_alpha_equal_circulations.py) | Remark 5, two equal circulations in the α-models, exact and at 40 digits, about 10 s |
-| [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorem 4 and Theorem 5(a) (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 92 checks, about a minute |
+| [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorem 4 and Theorem 5(a) (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 94 checks, one to two minutes |
 | [`certify_sqg60.py`](code/certify_sqg60.py) | The computer-assisted proof of Theorem 5(b): sixty SQG vortices collapse without rotation, in the same ball arithmetic, reusing the `certify_*.py` modules; its input is `data/collapse-sqg-n60-no-rotation.json`; 11 checks, about half a minute |
 | [`verify_many_vortices.py`](code/verify_many_vortices.py) | The numerical results of Section 7 from the stored configurations: the minimizers for N = 7 to 12, 33, 61 and 603, the two-arm family and its fit, and an independent, non-rigorous refinement of the now-certified SQG collapse of sixty vortices without rotation; about a minute |
 | [`plot_minimal_winding.py`](code/plot_minimal_winding.py), [`plot_alpha_winding.py`](code/plot_alpha_winding.py) | Figures 1 and 2, and Figure 3 |

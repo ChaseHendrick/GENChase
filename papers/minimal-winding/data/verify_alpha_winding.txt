@@ -18,4 +18,4 @@
 [6] alpha = -1.2: minimum of P - B found = 3.516e-32 (positive) at rho = 1e-61.0, m = 1.195229
 [6] alpha = -1.5: minimum of P - B found = 5.220e-33 (positive) at rho = 1e-65.0, m = 1.264911
 [6] alpha = -1.8: minimum of P - B found = 6.526e-32 (positive) at rho = 1e-161.1, m = 1.348400
-[7] SQG, two equal circulations: 1442 collapsing triangles, -G2/G1 from 0.387605 to 0.499998 (Badin-Barry: 0.387464... to 1/2); at G = 0.49000 the side ratio is 0.751494 (Badin-Barry: 0.751484)
+[7] SQG, two equal circulations: 1442 collapsing triangles, -G2/G1 from 0.387605 to 0.499998 (Badin-Barry: 0.387464... to 1/2); at G = 0.49 exactly the side ratio is 0.7514840918 (Badin-Barry: 0.751484; residual 0.0)

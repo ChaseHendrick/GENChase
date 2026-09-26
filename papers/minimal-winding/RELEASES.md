@@ -3,6 +3,26 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
+## v2.1.0 (2026-09-25)
+
+The corrected paper after two further independent readings of the parts merged in from the α-model draft
+(Sections 4 to 8). No result changes; 38 pages. Changes since v2.0.0:
+
+- **Two misstatements fixed.** Lemma 6 is stated for collapses, since its formula P = |S|/(8A) uses the sign of
+  Re κ, and Corollary 2 now shows that no vortex starts at the collision point, which its path-length bound needs.
+- **The certificates cite what they rest on.** Section 8 states the Krawczyk–Moore theorem in the form of Rump
+  (Acta Numerica 2010, Theorem 13.3): the inclusion proves a unique zero and the invertibility of every Jacobian in
+  the box, which Theorem 5 uses for its families. It names the trust base (Arb, python-flint and the listed
+  functions), says that non-dyadic parameters enter as balls, writes out the second-order argument for strict
+  minima, and says that the angular impulse vanishes by Section 2 while the program only checks its enclosure.
+- **Proofs written out and notation cleaned up.** The converse of Lemma 5 and the proof of Lemma 4 are written in full,
+  the standing hypothesis α > −2 opens Section 4, clashing symbols are renamed, and the extremal angle is stated as
+  a directed angle with its asymptotics.
+- **Programs.** `certify_collapses.py` checks the sign of the objective rigorously in its α-model part (94 checks);
+  `verify_alpha_winding.py` solves the Badin–Barry side ratio at Γ = 0.49 exactly (0.7514840918…);
+  `sqg60-certificate.json` no longer records a run time, so a rerun reproduces it exactly; stale section and
+  equation labels in `verify_general_mu.py` are corrected.
+
 ## v2.0.0 (2026-09-25)
 
 **DOI:** [10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)

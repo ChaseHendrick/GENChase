@@ -139,7 +139,8 @@ for al in [-1.0, -1.2, -1.5, -1.8]:
 open(OUT, 'w').write('\n'.join(out) + '\n')
 
 # 7. Lemma 5 at SQG against Badin-Barry, Phys. Rev. E 98 (2018) 023110, Lemma 1 and Eq. (93): circulations (1, -G, 1)
-#    collapse self-similarly exactly for 0.387464... < G < 1/2, and at G = 0.49 the side ratio is 0.751484.
+#    collapse self-similarly exactly for 0.387464... < G < 1/2, and at G = 0.49 the side ratio is 0.751484. The grid
+#    gives the interval; the side ratio is solved at G = 0.49 exactly, at 30 digits, from the nearest grid point.
 import numpy as np
 from scipy.optimize import brentq
 def circ_f(r1, r2, r3, be=1.5):
@@ -157,9 +158,18 @@ with np.errstate(divide='ignore', invalid='ignore'):
                 if abs(F(r3)) < 1e-9:
                     G = circ_f(r1, 1.0, r3); pairs.append((-G[1] / G[0], r1, r3))
 g = [p[0] for p in pairs]; o = min(pairs, key=lambda p: abs(p[0] - 0.49))
-if not (abs(min(g) - 0.387464) < 1e-3 and abs(max(g) - 0.5) < 1e-3 and abs(min(o[1] / o[2], o[2] / o[1]) - 0.751484) < 1e-4): fails.append(7)
+import mpmath as mpm
+with mpm.workdps(30):
+    def eqs(r1, r3):
+        G = circ_f(r1, mpm.mpf(1), r3, be=mpm.mpf(3) / 2)
+        return [G[0] - G[2], -G[1] - mpm.mpf(49) / 100 * G[0]]
+    s1, s3 = mpm.findroot(eqs, (mpm.mpf(o[1]), mpm.mpf(o[2])))
+    res = max(abs(e) for e in eqs(s1, s3)); ratio = min(s1 / s3, s3 / s1)
+if not (abs(min(g) - 0.387464) < 1e-3 and abs(max(g) - 0.5) < 1e-3 and res < mpm.mpf(10) ** -25
+        and abs(ratio - mpm.mpf('0.751484')) < 5e-7): fails.append(7)
 say(f"[7] SQG, two equal circulations: {len(pairs)} collapsing triangles, -G2/G1 from {min(g):.6f} to {max(g):.6f} "
-    f"(Badin-Barry: 0.387464... to 1/2); at G = {o[0]:.5f} the side ratio is {min(o[1] / o[2], o[2] / o[1]):.6f} (Badin-Barry: 0.751484)")
+    f"(Badin-Barry: 0.387464... to 1/2); at G = 0.49 exactly the side ratio is {mpm.nstr(ratio, 10)} (Badin-Barry: 0.751484; "
+    f"residual {mpm.nstr(res, 2)})")
 open(OUT, 'w').write('\n'.join(out) + '\n')
 if fails:
     raise SystemExit(f'FAILED: checks {fails}')
