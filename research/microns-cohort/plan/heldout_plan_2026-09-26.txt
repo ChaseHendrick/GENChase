@@ -1,0 +1,105 @@
+HELD-OUT ANALYSIS PLAN, MICrONS cohort ("higher-order") excess.
+Written 2026-09-26, about 16:40 UTC by the machine clock. Written before any statistic was computed on the new axons. Up to
+this point only file names, column headers and row counts of scratchpad/neuro-data/microns-heldout/ have been read.
+This plan is not changed after the held-out numbers are seen. Any deviation, and the reason for it, is recorded in
+heldout_deviations.txt with its time. The sha256 of this file is recorded in heldout_plan.sha256 when the file is
+written.
+
+0. PURPOSE
+The test asks whether postsynaptic partners of a presynaptic axon are more similar in function to one another than a
+pairwise connection model predicts, on axons that were not in Ding et al. 2025's 148. The model is the one that
+reproduces the main-data result in scratchpad/neuro-data/microns-fixes. The claim under test, and the only claim a
+positive result supports, is: structure remains in which cells each axon contacts that no pairwise model with free
+per-axon and per-cell propensities (and the stated pair covariates) reproduces. The size of the excess is a test
+statistic. It is not the size of a cohort rule. On synthetic data, the degree-preserving null absorbs 74 to 89% of an
+injected anchor-type rule (see section 7).
+
+1. DATA
+- Held-out: edges_new_axons_connected_adp_v1822_part*.csv (625 axons, materialization v1822).
+- Reference: edges_ding_axons_connected_adp_v1822_part*.csv (Ding's 148 axons), with co-travel recomputed by the same
+  pipeline. Every step below is applied to the reference exactly as to the held-out table.
+- Nodes: Ding et al.'s node_data_v1.pkl (responses, readout weights, RF positions, soma positions, layer, hva, CC).
+
+2. ROWS, CELLS AND UNITS (identical for both tables)
+a) Rows: population C (connected) and A (ADP, axon-dendrite proximity without synapse). Same-region rows are not used;
+   the analysis is at synaptic scale.
+b) Drop rows with post_excl29 == 1 (the 29 cells Ding et al. excluded everywhere).
+c) Both cells must be in node_data_v1 and pass cc_max_cvt > 0.4 and cc_abs_cvt > 0.2 (Methods).
+d) dend_len > 0 is required on every C and A row. A C or A row with dend_len <= 0 or missing is an error.
+e) Hard errors, checked before any statistic:
+   - duplicated (pre, post) rows;
+   - a presynaptic cell with C rows but no A rows;
+   - an overall A:C ratio below 5;
+   - nucleus coordinates outside the nm range of node_data_v1;
+   - hva labels other than V1 and HVA;
+   - for the held-out table only: any presynaptic cell shared with Ding's 148.
+f) Projection type comes from the node hva labels of the presynaptic and postsynaptic cells (V1->V1, HVA->HVA,
+   V1->HVA, HVA->V1).
+g) The unit is a (projection type, presynaptic cell) group. Groups with no C row are dropped.
+h) Pair covariates are computed from node_data_v1:
+   - sil: Pearson correlation of in_silico_resp;
+   - viv: Pearson correlation of in_vivo_mean_resp;
+   - fsim: cosine of readout_cvt;
+   - rfd: approximate RF distance, sqrt((99.81 dx)^2 + (55.14 dy)^2) of position_stim_cvt. On the release it has
+     Pearson 0.998 with Ding's column and median absolute error 0.17 deg. It is used for both tables alike.
+   - logsoma: log of the soma distance in um, floored at 1 um.
+i) Postsynaptic depth bins for N3: the six bin edges frozen from the main analysis (work/bin_edges.npy).
+
+3. ELIGIBILITY
+A group is eligible for the cohort statistic when it has at least 10 distinct connected partners in its table, as in
+Ding et al. Fig. 5c and the main analysis. The eligible set is fixed at the observed data. In the bootstrap, the same
+groups are kept, and the rule re-applied to each resample is recorded as a sensitivity.
+
+4. STATISTIC
+For each eligible group i: rho_i = sum over distinct cells j != k of N_ij N_ik S_jk, divided by sum over j != k of
+N_ij N_ik, with S the signal correlation.
+excess = mean over eligible groups of (rho_i observed - E_null rho_i).
+Primary: the digital-twin measure (S = sil) under the dt covariate family, pooled over projection types, null N1.
+
+5. NULLS (cx.py, frozen; code hashes in heldout_plan.sha256)
+- N1 (primary): every postsynaptic cell's total synapse count and every group's total are held fixed. Synapses are
+  reassigned by Metropolis swaps inside the proximity pools, with pair weight L exp(x b).
+  - b comes from the two-way (group and cell) fixed-effect Poisson fit, with covariates (sil, fsim, rfd) x projection
+    type, refitted on each table.
+  - Chains for the point estimate: 2 chains of 300 burn-in sweeps plus 1000 draws, thin 3.
+- N3 (key secondary): N1 plus logsoma x projection type, and each group's count in each postsynaptic depth bin held
+  fixed.
+- N0 (stage-1 comparator): a multinomial over the own pool with p ~ L exp(x b), with group fixed effects only.
+- In vivo (secondary): measure viv, family (viv, fsim, rfd), nulls N1 and N3.
+
+6. INFERENCE AND DECISION RULE
+a) Two-way bootstrap, B = 500.
+   - Presynaptic cells are resampled with replacement and enter as weights. Postsynaptic cells are resampled with
+     replacement and enter as distinct copies. Eligible groups are fixed.
+   - Every model is refitted in each replicate, with short swap chains (30 burn-in sweeps + 25 draws, thin 2).
+   - SE_boot is the SD of the replicates.
+   - In the coverage study on synthetic data, this bootstrap was conservative (SE ratio about 2 with and without a
+     rule), so it is the primary basis for the decision.
+b) PRIMARY DECISION: the held-out result replicates when the N1 excess (dt) has z_boot = excess / SE_boot >= 1.645
+   (one-sided alpha 0.05). Otherwise it does not replicate. The same rule applied to the reference table is reported
+   next to it.
+c) Also reported, with no bearing on the decision:
+   - the conditional z, excess / SD of the pooled rho over the null chain's draws, which ignores uncertainty in b and
+     misspecification;
+   - 95% percentile and normal intervals;
+   - N3 and in vivo, each with the same rule;
+   - N0;
+   - per projection type, with a Holm adjustment over 8 tests (4 types x 2 measures) under N1;
+   - the difference between held-out and reference, with SEs combined as independent.
+d) If a chain fails, or a fit fails to converge in more than 2% of replicates, that is reported, not hidden.
+
+7. CALIBRATION REPORTED ALONGSIDE
+- The absorption curve from the synthetic runs on the real design: injected anchor-rule strength gamma, then the
+  oracle excess against the true pairwise model, then the excess recovered by N0, N1 and N3.
+- The coverage and SE ratio of the bootstrap on the synthetic super-population.
+- Negative controls (no rule): realistic postsynaptic heterogeneity, laminar targeting, and generators outside the
+  null's family (overdispersed multi-synapse counts, axon-specific laminar preference).
+- Caveat stated with any result: a positive N1 excess shows structure beyond any pairwise model with free per-cell
+  propensities. It is not an effect size. A null result is weakly informative, because N1 recovers only about 12 to
+  26% of an injected anchor rule.
+
+8. WHAT IS NOT CLAIMED
+- The 625 axons are outside Ding et al.'s set. They are not provably proofread after Ding's snapshot.
+- Co-travel comes from substitute (pcg_skel) skeletons, so ADP is more inclusive than Ding's. That is why the
+  reference is the recomputed Ding table, not edge_data_v1.pkl.
+- One animal.

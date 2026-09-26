@@ -1,6 +1,6 @@
 # Relative equilibria of five identical point vortices: a computer-assisted classification
 
-Status: research note, 2026-09-26. Not independently reviewed by a person. Everything called
+Status: research note, 2026-09-26. Everything called
 "proved" below rests on the interval computations in `code/` together with the stated
 mathematical lemmas; anything numerical is labelled as such.
 
@@ -571,7 +571,6 @@ full log.
   - python-flint;
   - the lemmas of section 4.
   Mitigations: the tests of section 7 and two independent searches.
-- Nothing here has been checked by a person.
 - The N = 5 list is not new as a claim. Faugere and Svartz (2012) state that their exact method covers
   N <= 7. What is new is the explicit certified list with indices and stability, by a second method,
   and the resulting answer to Kim's Remark 1.5 for N = 5.

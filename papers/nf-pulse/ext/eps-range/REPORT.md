@@ -1,12 +1,12 @@
 # The fast pulse for a range of recovery rates
 
 Extension of the computer-assisted proof in `papers/nf-pulse/` (fixed eps = 1/10) to an interval of eps,
-keeping beta = 20, theta = 1/4, gamma = 0 and the kernel w(x) = e^(-|x|)/2. Not independently reviewed
-beyond the adversarial check recorded at the end.
+keeping beta = 20, theta = 1/4, gamma = 0 and the kernel w(x) = e^(-|x|)/2. The adversarial check is recorded
+at the end.
 
 ## Outcome
 
-**Proved by computer (not independently reviewed), on the interval eps in [0.08, 0.13693].** The target
+**Proved by computer, on the interval eps in [0.08, 0.13693].** The target
 [0.08, 0.12] is covered in full, and the certified range extends to 0.13693: 383 subintervals, each certified by
 its own rigorous computation, with no gap (checked exactly by `table.py`). The wider range [0.05, 0.2] is **not
 achieved**: numerically, the method needs ever narrower subintervals below eps = 0.08 and fails at eps = 0.05 even
@@ -21,7 +21,7 @@ with this block unless |E_k| is of order 1e-23 (next section; a numerical observ
 
 ## The theorem
 
-**Theorem (computer-assisted; not independently reviewed).** Let beta = 20, theta = 1/4, gamma = 0,
+**Theorem (computer-assisted).** Let beta = 20, theta = 1/4, gamma = 0,
 w(x) = e^(-|x|)/2 and S(u) = 1/(1 + e^(-beta (u - theta))). For every eps in [0.08, 0.13693] there are a speed
 c > 0 and a smooth, bounded, nonconstant profile (U, V) with (U, V)(xi) -> (0, S(0)) as xi -> +-infinity such that
 u = U(x + ct), v = V(x + ct) solves

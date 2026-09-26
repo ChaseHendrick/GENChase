@@ -3,8 +3,7 @@
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 **Work in progress** (drafted in this repository by the owner's decision of 2026-09-26). No manuscript yet; this folder
-holds the verification programs and their output. **The computer-assisted proof below has not been independently
-reviewed** by anyone outside this project, so it is a candidate result, not an established one. An adversarial
+holds the verification programs and their output. An adversarial
 in-repository review (mathematics, code audit with mutation tests, a partial independent reimplementation, prior art)
 is in [`review/lead/VERIFY.md`](review/lead/VERIFY.md); it found no gap in the proof, and its fixes are applied here.
 
@@ -26,7 +25,7 @@ integrator, and closes it with an isolating block around rest and a shooting arg
 
 ## Status of the results
 
-- **Proved by computer, not yet reviewed outside this project:** the theorem below (`code/run_all.sh`, 20 checks:
+- **Proved by computer:** the theorem below (`code/run_all.sh`, 20 checks:
   9 proof steps, 4 tests of the integrator and 7 negative controls, about two minutes on four cores).
 - **Numerical, not proved:** the speed to 55 digits from high-precision shooting and the profile in the figure.
   An earlier version of this README said that a second, slow pulse was not found and that the second switch of the
@@ -47,8 +46,7 @@ integrator, and closes it with an isolating block around rest and a shooting arg
 ## Extensions (`ext/`)
 
 Each extension has its own folder, programs, certificates and report, and imports the programs in `code/` unchanged.
-All of them are computer-assisted proofs in ball arithmetic that **have not been reviewed outside this project**, and
-they rest on the same lemmas as the base proof, whose written proofs are still to do.
+All of them are computer-assisted proofs in ball arithmetic, and they rest on the same lemmas as the base proof, whose written proofs are still to do.
 
 | Folder | Claim | Status |
 |---|---|---|
@@ -66,7 +64,7 @@ gamma:
     u_t = -u - v + (w * S(u)),     v_t = eps (u - gamma v),
     w(x) = e^(-|x|)/2,             S(u) = 1/(1 + e^(-beta (u - theta))).
 
-**Claim (computer-assisted; not independently reviewed).** Let beta = 20, theta = 1/4, eps = 1/10, gamma = 0. There are
+**Claim (computer-assisted).** Let beta = 20, theta = 1/4, eps = 1/10, gamma = 0. There are
 a speed c in (c1, c2), with c1 = 1.1027477097341592491478677 and c2 = c1 + 10^-25, and a smooth nonconstant profile
 (U, V) with (U, V) -> (0, S(0)) as xi -> +-infinity, such that u = U(x + ct), v = V(x + ct) solves the equations above.
 The orbit leaves rest on the branch of the unstable manifold where U increases, and U exceeds 0.7596 (a proved

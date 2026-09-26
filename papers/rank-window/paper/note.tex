@@ -1,0 +1,146 @@
+% Methods note. Build: pdflatex note.tex three times (see ../README.md). Every number in the text comes from
+% numbers.tex and the tab_*.tex fragments, which ../code/make_numbers.py writes from the outputs in ../out/;
+% the figures are written by ../code/make_figures.py.
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[font=small,skip=4pt]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+  pdftitle={A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound},
+  pdfauthor={Chase Hendrick}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+
+\input{numbers}
+
+\title{\Large\bfseries A finite rank window cannot show that a neural population code\\
+  satisfies the eigenspectrum smoothness bound}
+\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\section{Introduction}
+
+Stringer et al.\ \cite{stringer2019} recorded the responses of about ten thousand neurons in mouse visual cortex to 2,800 natural images and found that the variance of the $n$th principal component of the stimulus-related responses decays roughly as $n^{-1}$. They related the decay to the smoothness of the population code: ``We showed mathematically that if the sensory stimuli presented can be characterized by $d$ parameters, and if the mapping from these parameters to (noise-free) neural population responses is differentiable, then the population eigenspectrum must decay asymptotically faster than a power law of exponent $\alpha = 1 + 2/d$ (Supplementary Discussion \S2).'' The stated prediction was ordinal: ``We therefore hypothesized that lower-dimensional stimulus sets would evoke population responses with larger power-law exponents.'' They projected the natural images onto $d = 8$ or $d = 4$ dimensions and used drifting gratings of 32 directions for $d = 1$, and found: ``Consistent with the hypothesis, stimulus sets with $d = 8$, 4, and 1 yielded power-law scaling of eigenvalues with exponents of 1.49, 1.65, and 3.43, near but above the lower bounds of 1.25, 1.50, and 3.00 predicted by the $1 + 2/d$ exponent (Fig.~3h).'' The exponents come from a fixed window of ranks: ``We computed the linear fit of the eigenspectrum over the range of 11 to 500 dimensions for all recordings (and model fits) other than the 32 drifting grating recordings. For the 32-grating recordings, due to noise and the length of the spectrum, we computed the power-law exponent from 5 to 30.'' The stronger claims rest on these numbers. The Supplementary Discussion concludes: ``We conclude that our experimental observations of eigenspectrum decay only just faster than $n^{-1-2/d}$ indicate a neural code that is as high-dimensional as possible before hitting the regime where these pathological conditions must occur.'' The Discussion reads: ``Our results therefore suggest that the eigenspectrum of the visual cortical code decays almost as slowly as possible consistent with smooth neural coding.''
+
+That a finite window of ranks does not measure an asymptotic exponent is elementary, and parts of it are anticipated. The same Supplementary Discussion notes that for units of equal tuning radius ``the eigenspectrum does not follow a power law but is approximately flat until the eigenfunctions' spatial scale matches this radius, after which the eigenspectrum falls rapidly'' (its Example~3). Pospisil and Pillow \cite{pp2025} showed that ``cvPCA provides a biased estimator'' of the spectrum, fitted parametric spectra to unbiased eigenmoment estimates (minimizing eigenmoment error, MEME), and found for the seven natural-image recordings a broken power law with ``MEME average $\alpha_2 = 1.20$, cvPCA average $\alpha = 1.01$'' for the tail. They add: ``Thus it remains unclear whether the tail of the eigenspectrum decays as a power law as hypothesized by Stringer et al.'' They also state that their approach ``can infer eigenvalues beyond the rank of the data even if there is no relationship with early eigenvalues'', and that ``We can also assess whether the parametric form is a good assumption by determining whether it can account for systematic variation in the eigenmoments''. Davidovich and Roudi \cite{dr2022} refitted the exponents by Bayesian interpolation and found them to depend on the noise model and the range of ranks; for the natural images the bound was not decided, while ``in the case of 8D stimuli the results are consistently above the lower bound of 1.25 with a reasonable margin.'' In kernel methods, the eigenvalues of a kernel matrix on $P$ samples are known to converge to those of the integral operator as $P \to \infty$ \cite{kg2000}, with finite-sample bounds \cite{braun2006}, and in expectation the sum of the leading sample eigenvalues overestimates the corresponding sum of operator eigenvalues, while the sum of the trailing ones underestimates it \cite{stwck2005}.
+
+This note makes the elementary point quantitative for the stimulus sets on which the bound was tested. It adds four things. First, a statement of the finite-stimulus eigenvalue problem and a direct consequence of the kernel-matrix bounds of \cite{braun2006}: for codes built on bounded eigenfunctions, the finite-sample spectrum, and each eigenmoment, is continuous in the variance of the tail and blind to its rate of decay (Section~\ref{sec:theory}). Second, codes of fixed smoothness placed on the actual stimulus coordinates of all ten 8D and 4D stimulus sets, with the dependence of the window exponent on the tuning length scale, the rank window, the metric, the number of stimuli and the number of neurons. Third, for 32 grating directions, the split of the window shortfall into a pre-asymptotic part and an aliasing part. Fourth, the sensitivity of the MEME tail exponent to changes of the spectrum beyond the resolved ranks, and what the eigenmoment misfit can and cannot detect. Proposition~\ref{prop:window} and Corollary~\ref{cor:torus} are proved; every other result is numerical, computed in double precision, and none is stated as a theorem. We computed no spectrum of any recording and make no claim that the reported exponents are wrong or that the codes are not smooth; the question is only what exponents fitted over these windows can show.
+
+\section{The finite-stimulus eigenvalue problem}\label{sec:theory}
+
+\paragraph{Codes and spectra.} Let stimuli $s$ be drawn from a distribution $\mu$ on a stimulus space $S$, and let a population code map each stimulus to a noise-free response vector $\varphi(s)$ in a real Hilbert space $\mathcal{H}$ (for $N$ neurons, $\mathcal{H} = \mathbb{R}^N$). Write $\bar\varphi = \mathbb{E}_s \varphi(s)$ and $k(s, s') = \langle \varphi(s) - \bar\varphi, \varphi(s') - \bar\varphi \rangle$. The population eigenspectrum $\lambda_1 \ge \lambda_2 \ge \dots$ is the spectrum of the covariance operator of $\varphi(s)$, and its nonzero part equals the spectrum of the integral operator $(Tf)(s) = \int k(s, s') f(s')\, d\mu(s')$ on $L^2(\mu)$. Theorem~5 of the Supplementary Discussion of \cite{stringer2019} takes $S$ to be a closed compact $d$-dimensional Riemannian manifold with its canonical measure and states that if the expected squared derivative $\mathbb{E}_s \|\nabla_s \varphi(s)\|^2$ is finite, then $\lambda_n = o(n^{-1-2/d})$. Its proof writes $\mathbb{E}_s\|\nabla_s\varphi\|^2 = \sum_i \lambda_i\, \mathbb{E}_s|\nabla v_i|^2$ for the kernel eigenfunctions $v_i$ and uses Weyl's law for the Laplace--Beltrami eigenvalues, which grow as $n^{2/d}$.
+
+\paragraph{Finitely many stimuli.} An experiment presents $P$ stimuli $s_1, \dots, s_P$. In the noise-free limit the sample covariance of the population responses, with each neuron centred over the stimuli, has the same nonzero eigenvalues as the $P \times P$ matrix $P^{-1} H K H$, where $K_{ab} = \langle \varphi(s_a), \varphi(s_b) \rangle$ and $H = I - P^{-1}\mathbf{1}\mathbf{1}^{\top}$. The finite-stimulus eigenvalue problem is
+\begin{equation}\label{eq:nystrom}
+  \frac{1}{P} \sum_{b=1}^{P} (HKH)_{ab}\, v_b = m\, v_a, \qquad a = 1, \dots, P,
+\end{equation}
+with eigenvalues $m_1 \ge \dots \ge m_P = 0$, the Nystr\"om discretization of $T$ at the sample points. The window exponent is the slope of $\log m_n$ against $-\log n$ over a window of ranks, fitted as in \cite{stringer2019} by least squares with weights $1/n$; for the natural-image and low-dimensional sets the window is $11 \le n \le 500$. Estimators such as cross-validated PCA (cvPCA) target $m_n$ from noisy data and return it in the noise-free limit, so what follows applies to any estimator of $m_n$.
+
+\begin{proposition}\label{prop:window}
+Let $\psi_1, \psi_2, \dots$ be functions on $S$ with $\sup_s |\psi_j(s)| \le C$ for all $j$, and let $(\lambda_j)$ and $(\lambda'_j)$ be nonnegative summable sequences with $\lambda_j = \lambda'_j$ for $j \le M$. Define $k(s, s') = \sum_j \lambda_j \psi_j(s)\psi_j(s')$ and $k'$ likewise, and write $\tau_M = \sum_{j > M} \lambda_j$, $\tau'_M = \sum_{j > M} \lambda'_j$. Then for every $P$ and every choice of $s_1, \dots, s_P$ the eigenvalues of \eqref{eq:nystrom} for $k$ and $k'$ satisfy $|m_n - m'_n| \le C^2 \max(\tau_M, \tau'_M)$ for all $n$.
+\end{proposition}
+
+\begin{proof}
+The series converge absolutely and uniformly because $|\psi_j| \le C$. The matrices of \eqref{eq:nystrom} for $k$ and $k'$ differ by $P^{-1} H (B - B') H$, where $B_{ab} = \sum_{j > M} \lambda_j \psi_j(s_a)\psi_j(s_b)$ and $B'$ likewise. Both $B$ and $B'$ are positive semidefinite, so $\|B - B'\| \le \max(\|B\|, \|B'\|)$, and $\|B\| \le \operatorname{tr} B = \sum_{j>M}\lambda_j \sum_a \psi_j(s_a)^2 \le P C^2 \tau_M$. Multiplying by the projection $H$ on both sides does not increase the operator norm, so the difference has norm at most $C^2 \max(\tau_M, \tau'_M)$. By Weyl's inequality (the Courant--Fischer minimax characterization), the $n$th eigenvalues of two symmetric matrices differ by at most the operator norm of their difference.
+\end{proof}
+
+The proposition follows from Lemmas~5 and~8 of Braun \cite{braun2006}, which compare an uncentred kernel matrix with that of its truncation: applied to each of two kernels with a common head and combined by the triangle inequality, they give the bound with $\tau_M + \tau'_M$ in place of $\max(\tau_M, \tau'_M)$; the maximum uses the positivity of $B$ and $B'$. The proof uses neither orthonormality nor zero mean of the $\psi_j$; if they are orthonormal with mean zero in $L^2(\mu)$ and the $\lambda_j$ are nonincreasing, then $(\lambda_j)$ is the population spectrum of a code with kernel $k$. The head of the spectrum fixes the finite-sample eigenvalues up to $C^2 \tau_M$, whereas the smoothness bound concerns only how the tail decays, which $\tau_M$ does not determine. Two codes can trivially be made to agree at a given set of stimuli by changing one of them elsewhere; the proposition is stronger in that it holds uniformly, for every stimulus set of every size.
+
+\begin{corollary}\label{cor:torus}
+Let $S$ be the torus $\mathbb{R}^d/\mathbb{Z}^d$ with the uniform measure and $\psi_j$ the nonconstant real Fourier functions $\sqrt{2}\cos(2\pi\kappa\cdot s)$ and $\sqrt{2}\sin(2\pi\kappa\cdot s)$, with $\kappa \in \mathbb{Z}^d \setminus \{0\}$ taken once from each pair $\pm\kappa$ and ordered by $|\kappa|$, so that $C = \sqrt{2}$ and $\psi_j$ is a Laplacian eigenfunction with eigenvalue $\eta_j = 4\pi^2|\kappa_j|^2$. For any $P$, any stimuli, any $M$ and any $\delta > 0$ there are two codes whose spectra agree for $j \le M$, one continuously differentiable and one with $\mathbb{E}_s\|\nabla\varphi\|^2 = \infty$, whose finite-sample eigenvalues \eqref{eq:nystrom} differ by less than $\delta$ at every rank.
+\end{corollary}
+
+\begin{proof}
+Take $\varphi(s) = \sum_j \sqrt{\lambda_j}\, \psi_j(s) e_j$ for an orthonormal family $e_j$; its kernel is $k$ and $\mathbb{E}_s \|\nabla \varphi\|^2 = \sum_j \lambda_j \eta_j$. The number of lattice points with $|\kappa| \le R$ grows as $\omega_d R^d$, with $\omega_d$ the volume of the unit ball, so $\eta_j \sim 4\pi^2 (j/\omega_d)^{2/d}$. Take $\lambda_j = j^{-b}$ for $j \le L$ with some $b > 1$, and for $j > L$ continue with $\lambda_j = L^{-b}(j/L)^{-a}$ in one code and $L^{-b}(j/L)^{-a'}$ in the other, with $1 < a < 1 + 2/d < a'$. The first code has $\sum_j \lambda_j \eta_j = \infty$. For the second the sum is finite, and since $|\nabla\psi_j|^2 \le 2\eta_j$ the series of derivatives converges uniformly, so this code is continuously differentiable as a map into $\mathcal{H}$. Both tail masses beyond $L$ are at most $\int_L^\infty L^{-b}(x/L)^{-a}\,dx = L^{1-b}/(a-1)$, which is below $\delta/2$ for $L \ge M$ large enough, and Proposition~\ref{prop:window} with $M$ replaced by $L$ and $C^2 = 2$ gives the claim.
+\end{proof}
+
+For codes on bounded eigenfunctions, then, no estimator that depends continuously on the finite-sample spectrum, and none that is robust to arbitrarily small changes of it, can decide the bound without an assumption about the tail, even before any estimation error (Section~\ref{sec:d1} gives numerical instances on the circle). The same holds for the eigenmoments $\operatorname{tr}\Sigma^p = \sum_j \lambda_j^p$ that MEME fits: for nonincreasing spectra that agree for $j \le M$ they differ by at most $\sum_{j > M} (\lambda_j^p + \lambda_j'^p) \le \lambda_{M+1}^{p-1} \tau_M + \lambda_{M+1}'^{\,p-1} \tau'_M$, so for $p \ge 2$ the tail variance enters weighted by the $(p-1)$th power of eigenvalues beyond the head, and the trace ($p = 1$) records the tail variance but not its decay. A tail exponent fitted to moments is therefore the continuation of the assumed parametric form. We do not prove the analogue for the Mat\'ern codes on $\mathbb{R}^d$ below, whose eigenfunctions need not be bounded; for them we compute.
+
+\paragraph{Mat\'ern codes.} To see what happens for smooth, stationary codes, consider a population whose tuning curves are independent draws of a Gaussian process with the Mat\'ern covariance
+\begin{equation}\label{eq:matern}
+  k_{\nu,\ell}(r) = \frac{2^{1-\nu}}{\Gamma(\nu)} \Bigl(\frac{\sqrt{2\nu}\, r}{\ell}\Bigr)^{\nu} K_\nu\Bigl(\frac{\sqrt{2\nu}\, r}{\ell}\Bigr), \qquad r = \|s - s'\|,
+\end{equation}
+where $K_\nu$ is the modified Bessel function of the second kind; with infinitely many neurons the kernel of the code is $k_{\nu,\ell}$ up to a constant factor. Its spectral density is proportional to $(2\nu/\ell^2 + |\omega|^2)^{-(\nu + d/2)}$, so $\mathbb{E}_s\|\nabla\varphi\|^2 = -\Delta k_{\nu,\ell}(0)$ is proportional to $\int |\omega|^2 (2\nu/\ell^2 + |\omega|^2)^{-(\nu + d/2)}\, d\omega$, which is finite if and only if $\nu > 1$, whatever the stimulus distribution. We write $\alpha_\infty = 1 + 2\nu/d$. On the torus the lattice count above gives $\lambda_n \sim n^{-\alpha_\infty}$; for a stimulus density $p$ on $\mathbb{R}^d$ the Weyl-type phase-space count gives the same exponent if $\int p^{d/(2\nu + d)} < \infty$, which we assume and do not prove, and we use $\alpha_\infty$ only to label codes. The code with $\nu = 1$ sits at the border: $\alpha_\infty = 1 + 2/d$, and its expected squared gradient diverges logarithmically, so it fails the finite-gradient condition of Theorem~5 (whose compact-manifold hypothesis these stimulus sets do not meet in any case), while every $\nu > 1$ satisfies it. The length scale $\ell$ does not enter the bound.
+
+\section{Methods}\label{sec:methods}
+
+\paragraph{Stimulus coordinates.} The deposit of Stringer et al.\ \cite{stringerdata} contains, for each of the six 8D and four 4D recordings, the 2,800 stimulus images shown ($68 \times 270$ pixels, 8-bit integers). We used these image files and no neural data. For each set we centred the pixel matrix and took the top $d$ principal components as coordinates, without whitening. They carry at least \GeoFracMin{} of the pixel variance, and the next component has at most \GeoNextMax{} of the variance of the first, consistent with rounding to 8 bits. Table~\ref{tab:geometry} lists, for each set, the relative variances of the $d$ components, their participation ratio $(\sum_i v_i)^2/\sum_i v_i^2$, the median nearest-neighbour distance relative to the median pairwise distance, and the standard deviation of the smallest coordinate relative to the median nearest-neighbour distance. As a property of the stimuli alone we also computed their nearest-neighbour dimension $d_{\mathrm{nn}}$, defined as in \cite{sgw2020} by the scaling of the median nearest-neighbour distance of $n$ random stimuli as $n^{-1/d_{\mathrm{nn}}}$ (least squares on logarithms, $n = 175$, 350, 700, 1,400 and 2,800, 4 subsets per $n$), and, as a control for finite $n$, the same for 2,800 Gaussian points with the set's coordinate variances.
+
+\paragraph{Kernel spectra.} For each set, $\nu \in \{0.5, 0.75, 1, 1.5, 2.5\}$ and $\ell \in \{1/8, 1/4, 1/2, 1, 2, 4, 8\}$ times the median pairwise distance, we formed the $2{,}800 \times 2{,}800$ matrix of \eqref{eq:matern} and computed all eigenvalues of \eqref{eq:nystrom} in double precision. The window exponent is the weighted least-squares slope of \cite{stringer2019} (function \texttt{get\_powerlaw} of \cite{stringercode}, weights $1/n$) over ranks 11--500, and also over ranks 11--100 and 101--500. In every spectrum $m_{500}/m_1$ exceeds \RelFloorMin{}, far above rounding error. These computations are deterministic, with no sampling error. Two further versions test the choices behind them. In whitened coordinates each of the $d$ coordinates is scaled to unit variance, so that all stimulus parameters count equally ($\nu = 0.75$ and $1$ at every $\ell$, and $\nu = 0.5$, $1.5$, $2.5$ at $\ell = 1/4$ and $4$). For the dependence on the number of stimuli we took 4 random subsets of $P = 1{,}000$, $1{,}400$ and $2{,}000$ stimuli of each set, keeping the code fixed ($\nu = 0.75$ and $1$ at $\ell = 1$, $4$, $8$); the subsets sample the same kernel operator, so the change with $P$ is a finite-sample effect.
+
+\paragraph{Finite populations.} With $N$ neurons whose tuning curves are independent Gaussian-process draws, the centred response vectors $Hf_i$ are independent $\mathcal{N}(0, HKH)$, so the population spectrum is distributed exactly as the eigenvalues of $D^{1/2} W D^{1/2}$, where $D$ holds the eigenvalues of \eqref{eq:nystrom} and $W$ is a Wishart matrix with identity scale and $N$ degrees of freedom, divided by $N$. We drew $W$ by the Bartlett decomposition with $N = 8{,}704$ (the neuron count of the recording that calibrates the simulator below), the same draw for every kernel within a replicate, for $\nu = 1$ at every $\ell \ge 1/4$ and $\nu = 0.75$ at $\ell = 2$, $4$, $8$ on all ten sets, and for all five $\nu$ at $\ell = 1/4$, $1$, $4$ on two sets (8D MP032 2017-08-10, 4D MP032 2017-09-22). Cells of the first computation have \FinRFirst{} replicates and cells added in revision \FinRAdded{}; the between-population standard deviation is \FinSDMin{} to \FinSDMax{}, so either count fixes the mean well.
+
+\paragraph{Gratings, \texorpdfstring{$d = 1$}{d = 1}.} A stationary code on the circle of directions has Fourier eigenfunctions; we took the kernel spectrum $c_k = (1 + k^2/\kappa^2)^{-(\nu + 1/2)}$, $k \in \mathbb{Z}$, the circle's counterpart of \eqref{eq:matern}, with bandwidth $\kappa$ (tuning width of order $2\pi/\kappa$), $\alpha_\infty = 1 + 2\nu$ and operator eigenvalues $c_1, c_1, c_2, c_2, \dots$. For $P = 32$ equally spaced directions the centred matrix $K/P$ is circulant, with eigenvalues $\sum_{k \equiv j \,(\mathrm{mod}\, 32)} c_k$, $j = 1, \dots, 31$ (sums over $|k| \le 2^{22}$ plus the integral of the remainder). We fitted ranks 5--30 of the operator spectrum and of the 32-direction spectrum for $\nu \in \{0.5, 1, 1.5, 2\}$ and $\kappa \in \{0.5, 1, 2, 4, 8, 16\}$, and repeated the finite-population computation with $N = 8{,}704$ in \GratR{} replicates.
+
+\paragraph{Eigenmoment fits.} MEME \cite{pp2025} estimates the signal eigenmoments $\operatorname{tr}\Sigma^p$ without bias from cross-repeat products of differences of stimulus pairs, extending the estimator of Kong and Valiant \cite{kv2017} to noisy data, and fits a parametric spectrum over as many indices as there are neurons; the broken power law has exponent $\alpha_1$ before a break and $\alpha_2$ after it. We used the implementation of a preceding, unpublished feasibility analysis (\texttt{est.py}; see the README of the source folder), which follows the authors' code \cite{ppcode} with three deviations: eight moments, least squares on log moments, and diagonal weights (1/SD of each log moment) instead of a whitening matrix. The break is profiled over $\{4, 6, 8, 10, 12, 15, 20, 30\}$ and the fit runs over $N = 8{,}704$ indices. The base spectrum is a broken power law with $\lambda_1 = 200$, exponent 0.5 up to rank 10 and $\alpha_2 = 1.25$ or $1.5$ after it. Five variants agree with it up to rank 500 and continue with exponent 0.8, 1.0, 2.0 or 3.0, or drop to zero after rank 2,800; three more change every rank slightly (a constant floor adding 5\% or 15\% of the base variance, which is 4.8\% or 13\% of the total, or a factor $e^{-n/1000}$). We fitted their exact moments $\sum_n \lambda_n^p$, $p = 1, \dots, 8$, and moments estimated from simulated data. The simulated data follow the noise model of that analysis's simulator: 2,800 stimuli, two repeats, 8,704 neurons, noise equal to 0.75 times the signal covariance plus one shared mode of variance 590 plus independent per-neuron noise whose variances are set, as there, from the per-neuron noise and signal variances of the natural-image recording M170714\_MP032 2017-09-14. Neuron gains are equal here, so the signal spectrum is exactly the one specified. We simulated 20 data sets for the base ($\alpha_2 = 1.25$) and its five far-tail variants, with the same random numbers for every spectrum within a data set, and \MemeNW{} further data sets of the base alone. The weights are 1/SD of the log moment estimates over those \MemeNW{} data sets, independent of the 20 paired ones. The data sets redraw stimuli and noise but keep the neurons fixed; this understates the moment variances and so favours detecting a change. The misfit of a fit is its sum of squared weighted residuals. Its null distribution is that of the correctly specified model over all \MemeNB{} base data sets, each fitted with weights estimated from the other four fifths; a fit is flagged when its misfit exceeds the 95th percentile of this distribution. As a check closer to Pospisil and Pillow's method we repeated everything with full-covariance whitening of the log moments (covariance estimated from the same data sets; condition number \MemeFullCond{}). For the Mat\'ern codes we computed the eigenmoment estimates that MEME would obtain from noise-free responses at the 2,800 stimuli with infinitely many neurons, by applying its estimator, which without noise is the estimator of \cite{kv2017} applied to differences of stimulus pairs, to the kernel matrix itself (for $\nu \in \{0.75, 1, 1.5\}$ and $\ell \in \{1/4, 1, 4\}$); these estimate the population moments over the stimulus distribution, which is MEME's target, unlike the moments of the 2,800-stimulus sample spectrum. At $\ell = 1/4$ we repeated this for a finite population of 8,704 Gaussian-process neurons, whose Gram matrix is $L W L^{\top}$ with $L L^{\top} = K$ and $W$ a Wishart matrix as above (one draw per stimulus set). These fits use the weights and the misfit threshold of the simulated broken power law.
+
+\paragraph{cvPCA and noise level.} As a side result we repeated the computation of the cvPCA window bias against noise level from the independent check of that analysis: its simulator with the broken power law $\alpha_2 = 1.5$ and heterogeneous gains (realized window slope \SnrTruth{}), aligned noise unchanged and the other noise variance divided by $k \in \{1, 4, 16\}$, \SnrR{} replicates per level.
+
+\paragraph{Uncertainty.} Deterministic results carry no error bars. Simulated ones are given as mean $\pm$ standard error, with the standard deviation over data sets where a single data set matters, and paired differences with 95\% $t$ intervals.
+
+\section{Results}\label{sec:results}
+
+\input{results}
+
+\section{Discussion}\label{sec:discussion}
+
+\input{discussion}
+
+\medskip
+{\raggedright\noindent\textbf{Data and code availability.} The stimulus image files are part of the deposit of Stringer et al.\ on figshare, \url{https://doi.org/10.25378/janelia.6845348} (license CC BY-NC 4.0). The note's source folder lists the image files used, with their checksums, and holds the Python programs that produce every number, table and figure, their outputs and the commands to rerun them; it has not yet been deposited in a public archive.\par}
+
+\noindent\textbf{Funding.} This research received no external funding.
+
+\smallskip
+\noindent{\footnotesize This work was prepared with AI assistance. The author takes full responsibility for its content.}
+
+\begin{thebibliography}{10}
+\footnotesize\raggedright
+
+\bibitem{stringer2019} C. Stringer, M. Pachitariu, N. Steinmetz, M. Carandini and K. D. Harris, High-dimensional geometry of population responses in visual cortex, \emph{Nature} \textbf{571} (2019) 361--365; doi:10.1038/s41586-019-1346-5. Author manuscript PMC6642054; Supplementary Information read in part (Thms.~1, 2, 4, 5; \S\S2.1, 2.7, 3.5).
+
+\bibitem{stringerdata} C. Stringer, M. Pachitariu, M. Carandini and K. Harris, Responses of ten thousand neurons to 2,800 natural images, figshare (2018); doi:10.25378/janelia.6845348.v3 (reference [36] of \cite{stringer2019}).
+
+\bibitem{stringercode} MouseLand, \texttt{stringer-pachitariu-et-al-2018b}, \url{github.com/MouseLand/stringer-pachitariu-et-al-2018b}, commit 58443d1 (read: \texttt{python/utils.py}, \texttt{processResp/compileResps.m}).
+
+\bibitem{pp2025} D. A. Pospisil and J. W. Pillow, Revisiting the high-dimensional geometry of population responses in the visual cortex, \emph{Proc. Natl. Acad. Sci. USA} \textbf{122} (2025) e2506535122; doi:10.1073/pnas.2506535122. Correction: e2533074122. SI Appendix read in part (captions of Figs.~S1, S2).
+
+\bibitem{dr2022} I. A. Davidovich and Y. Roudi, Bayesian interpolation for power laws in neural data analysis, preprint, arXiv:2204.08525 (2022).
+
+\bibitem{kg2000} V. Koltchinskii and E. Gin\'e, Random matrix approximation of spectra of integral operators, \emph{Bernoulli} \textbf{6} (2000) 113--167 (abstract read).
+
+\bibitem{braun2006} M. L. Braun, Accurate error bounds for the eigenvalues of the kernel matrix, \emph{J. Mach. Learn. Res.} \textbf{7} (2006) 2303--2328.
+
+\bibitem{stwck2005} J. Shawe-Taylor, C. K. I. Williams, N. Cristianini and J. Kandola, On the eigenspectrum of the Gram matrix and the generalization error of kernel-PCA, \emph{IEEE Trans. Inf. Theory} \textbf{51} (2005) 2510--2522 (read: Sects.~I--III).
+
+\bibitem{kv2017} W. Kong and G. Valiant, Spectrum estimation from samples, \emph{Ann. Statist.} \textbf{45} (2017) 2218--2247 (read: arXiv:1602.00061v5, Sects.~1 and~3, Algorithm~1).
+
+\bibitem{sgw2020} S. Spigler, M. Geiger and M. Wyart, Asymptotic learning curves of kernel methods: empirical data versus teacher--student paradigm, preprint, arXiv:1905.10843v8 (2020) (read: Sects.~1 and~7).
+
+\bibitem{ppcode} D. A. Pospisil, \texttt{revisit\_hid\_geom}, \url{github.com/dapospisil/revisit_hid_geom}, commit afcd301 (read: \texttt{src/eig\_mom.py}).
+
+\end{thebibliography}
+
+\end{document}

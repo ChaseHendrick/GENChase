@@ -1,0 +1,21 @@
+code hashes: <ArrowStringArray>
+['280aef9f8938']
+Length: 1, dtype: str  datasets per scenario: {'G0': 20, 'G05': 20, 'G1': 20, 'G15': 20, 'G2': 20, 'G3': 20, 'L': 20, 'O': 20, 'OL': 20}
+
+ABSORPTION CURVE (DT measure, real design, heterogeneity s=1.6 + laminar rule; means over datasets):
+gamma 0.0: oracle -0.00066+/-0.00041 | N0 +0.00258 N1 -0.00002+/-0.00037 N3 -0.00015+/-0.00036
+gamma 0.5: oracle +0.00348+/-0.00055 | N0 +0.00623 N1 +0.00057+/-0.00037 N3 +0.00054+/-0.00033 | recovered/oracle: N0 1.79 N1 0.16 N3 0.16 | null rise / obs rise: N1 0.86 N3 0.83
+gamma 1.0: oracle +0.00784+/-0.00043 | N0 +0.01015 N1 +0.00178+/-0.00028 N3 +0.00152+/-0.00027 | recovered/oracle: N0 1.29 N1 0.23 N3 0.19 | null rise / obs rise: N1 0.79 N3 0.80
+gamma 1.5: oracle +0.00997+/-0.00047 | N0 +0.01197 N1 +0.00278+/-0.00032 N3 +0.00279+/-0.00028 | recovered/oracle: N0 1.20 N1 0.28 N3 0.28 | null rise / obs rise: N1 0.74 N3 0.73
+gamma 2.0: oracle +0.01552+/-0.00058 | N0 +0.01690 N1 +0.00536+/-0.00041 N3 +0.00515+/-0.00041 | recovered/oracle: N0 1.09 N1 0.35 N3 0.33 | null rise / obs rise: N1 0.67 N3 0.68
+gamma 3.0: oracle +0.02728+/-0.00092 | N0 +0.02812 N1 +0.01291+/-0.00073 N3 +0.01226+/-0.00076 | recovered/oracle: N0 1.03 N1 0.47 N3 0.45 | null rise / obs rise: N1 0.55 N3 0.57
+
+NO-RULE GENERATORS: mean excess and the conditional test (z = excess / SD of the null draws):
+G0  (n 20): oracle -0.00066 N0 +0.00258+/-0.00040 N1 -0.00002+/-0.00037 N3 -0.00015+/-0.00036 | N1 z mean -0.03 sd 1.34 P(z>1.645) 0.15; SD across/cond SD 1.36 | N3 z mean -0.12 sd 1.36 P(z>1.645) 0.15; SD across/cond SD 1.37
+L   (n 20): oracle +0.00021 N0 +0.00416+/-0.00042 N1 +0.00122+/-0.00040 N3 +0.00023+/-0.00033 | N1 z mean +0.99 sd 1.47 P(z>1.645) 0.45; SD across/cond SD 1.46 | N3 z mean +0.21 sd 1.29 P(z>1.645) 0.15; SD across/cond SD 1.26
+O   (n 20): oracle -0.00109 N0 +0.00264+/-0.00038 N1 -0.00039+/-0.00029 N3 -0.00016+/-0.00029 | N1 z mean -0.34 sd 0.99 P(z>1.645) 0.05; SD across/cond SD 1.05 | N3 z mean -0.18 sd 1.18 P(z>1.645) 0.05; SD across/cond SD 1.13
+OL  (n 20): oracle -0.00087 N0 +0.00345+/-0.00044 N1 +0.00105+/-0.00030 N3 +0.00032+/-0.00027 | N1 z mean +0.86 sd 1.09 P(z>1.645) 0.30; SD across/cond SD 1.09 | N3 z mean +0.29 sd 1.07 P(z>1.645) 0.15; SD across/cond SD 1.07
+
+real N1 +0.00848: anchor-family oracle-equivalent +0.02038 (NaN = beyond the largest injected rule, curve max +0.01291); N0 that rule would give +0.02154 against the real N0 +0.01478
+
+real N3 +0.00671: anchor-family oracle-equivalent +0.01811 (NaN = beyond the largest injected rule, curve max +0.01226); N0 that rule would give +0.01937 against the real N0 +0.01478

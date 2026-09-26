@@ -1,0 +1,9 @@
+MICrONS cohort wiring reanalysis: programs and aggregate outputs.
+Copyright 2026 Chase Hendrick
+
+The programs in code/ are licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
+
+The aggregate statistics in data/ and the figures are computed from the MICrONS functional connectomics data of
+Ding et al., Nature 640 (2025), and the MICrONS Consortium (BossDB; CAVE minnie65_public v1822). No licence for those
+data could be confirmed from the sources read (REPORT.md, "Data sources"), so no licence is granted here for data/ or
+figures/; cite the sources. The underlying tables and the per-cell derived tables are not in this repository.

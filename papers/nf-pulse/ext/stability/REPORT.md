@@ -1,7 +1,7 @@
 # Stability of the fast pulse: report
 
 Work in `papers/nf-pulse/ext/stability/`. Nothing else in the repository was changed. This extends the existence proof
-in `papers/nf-pulse/` (itself **not independently reviewed**). Everything below inherits that caveat.
+in `papers/nf-pulse/`.
 
 ## 1. Outcome
 
@@ -208,7 +208,7 @@ Not written: the session ended before this section was filled.
 
 ## 5. Exact statements
 
-**Theorem S (computer-assisted; not independently reviewed; conditional on the base existence proof's programs and
+**Theorem S (computer-assisted; conditional on the base existence proof's programs and
 the arb library).** Let (U, V) be any pulse of the class P of Section 2, and L its linearization on
 L^2(R) x L^2(R). Then:
 
@@ -231,7 +231,7 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
     order.
   - D(0) = 0 by translation invariance: (U', V', Q', P') solves the ODE at lambda = 0 and decays at both ends.
   - Hence 0 is the only eigenvalue in R, and D'(0) is nonzero.
-- **Part 3** is a written argument, standard but not independently reviewed. The independent check flagged it as
+- **Part 3** is a written argument, standard and not machine checked. The independent check flagged it as
   needed (Section 8, finding 1).
   - **Geometric multiplicity 1.** The solutions decaying at -infinity form the one-dimensional space spanned by
     phi^-.
@@ -259,7 +259,7 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
 | High-precision pulse table, double-precision Evans function, numerical winding numbers, D'(0) = 0.2501, and the checker's Fourier discretization | Numerical only |
 
 All rigorous computations rest on python-flint (Arb) ball arithmetic, and on the base programs of
-`papers/nf-pulse/code`, which are **not independently reviewed**.
+`papers/nf-pulse/code`.
 
 ## 7. What remains for nonlinear stability
 

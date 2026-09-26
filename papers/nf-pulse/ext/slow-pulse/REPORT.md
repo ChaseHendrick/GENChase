@@ -1,11 +1,11 @@
 # The slow pulse of the Pinto-Ermentrout neural field
 
-Extension of `papers/nf-pulse/` (work in progress, not independently reviewed). Everything here lives in this
+Extension of `papers/nf-pulse/` (work in progress). Everything here lives in this
 folder; the programs of the fast-pulse proof in `../../code/` are imported and run unchanged.
 
 ## Outcome
 
-**Proved by computer (ball arithmetic), not independently reviewed**, at two parameter points: the original point
+**Proved by computer (ball arithmetic)**, at two parameter points: the original point
 of the fast-pulse proof (eps = 1/10) and the point of Pinto and Ermentrout's Figs. 7 and 8 (eps = 3/20). At
 eps = 1/10 this gives a second travelling pulse besides the fast pulse already proved in `../../`.
 
@@ -22,7 +22,7 @@ Model (Pinto and Ermentrout, SIAM J. Appl. Math. 62 (2001), eq. (3), their feedb
     u_t = -u - v + (w * S(u)),     v_t = eps (u - gamma v),
     w(x) = e^(-|x|)/2,             S(u) = 1/(1 + e^(-beta (u - theta))).
 
-**Claim (computer-assisted; not independently reviewed).** Let beta = 20, theta = 1/4, gamma = 0.
+**Claim (computer-assisted).** Let beta = 20, theta = 1/4, gamma = 0.
 
 (a) eps = 1/10. There are a speed c in (c1, c2), with c1 = 0.3775319350688905765075606 and c2 = c1 + 10^-25,
 and a nonconstant smooth profile (U, V) with (U, V) -> (0, S(0)) as xi -> +-infinity, such that

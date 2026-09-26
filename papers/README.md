@@ -7,9 +7,12 @@ reproduce and how to cite, and two working folders that stay in this repository,
 
 | Paper | Status | Public repository |
 |---|---|---|
-| [Minimal Winding in the Self-Similar Collapse of Point Vortices](minimal-winding/) | published with its code and data (release 2.0.0, doi:10.5281/zenodo.22963796); journal submission next, arXiv deferred until an endorsement; not yet peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
-| [Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit](collapse-without-rotation/) | draft, with its programs and data; cites the minimal-winding paper as its companion | ChaseHendrick/collapse-without-rotation (not yet created) |
-| [Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches](stable-expansion/) | draft, with its programs and data; computer-assisted | ChaseHendrick/stable-expansion (not yet created) |
+| [Minimal Winding in the Self-Similar Collapse of Point Vortices](minimal-winding/) | preprint with its code and data (release 2.1.0, doi:10.5281/zenodo.22966989); journal submission next, arXiv deferred until an endorsement; not peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
+| [Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit](collapse-without-rotation/) | preprint with its code and data (release 1.0.0, doi:10.5281/zenodo.22969841); not peer reviewed | [ChaseHendrick/collapse-without-rotation](https://github.com/ChaseHendrick/collapse-without-rotation) |
+| [Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches](stable-expansion/) | preprint with its code and data (release 1.0.0, doi:10.5281/zenodo.22971173); computer-assisted; not peer reviewed | [ChaseHendrick/stable-expansion](https://github.com/ChaseHendrick/stable-expansion) |
+| [A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound](rank-window/) | draft methods note with its programs and outputs (outputs CC BY-NC 4.0); two in-project referee readings | none yet |
+| [Rigorous Dynamics of the Hodgkin-Huxley Equations at the 1952 Parameters](hh-dynamics/) | work in progress, no manuscript: computer-assisted proofs of the equilibria, Hopf points and bistability at J = 8 | none yet |
+| [A Travelling Pulse in a Neural Field with a Smooth Firing Rate](nf-pulse/) | work in progress, no manuscript: a computer-assisted proof with an in-project review, and five extensions | none yet |
 
 The alpha-model draft that used to be a second paper here was merged into the minimal-winding paper on
 2026-09-25 (owner's decision), with its programs, data and notes.

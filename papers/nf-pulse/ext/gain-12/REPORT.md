@@ -1,8 +1,8 @@
 # The fast pulse at Pinto and Ermentrout's own firing rate (gain-12 extension)
 
 **Chase Hendrick**, drafted in this repository by the owner's decision of 2026-09-26, as an extension of
-`papers/nf-pulse/`. **Not independently reviewed** (see "Independent check" below for what an adversarial
-subagent did and did not check). This folder changes nothing outside itself.
+`papers/nf-pulse/` (see "Independent check" below for what an adversarial subagent did and did not check).
+This folder changes nothing outside itself.
 
 ## Outcome
 
@@ -12,7 +12,7 @@ kernel e^(-|x|)/2. The speed is enclosed in an interval of width 10^-25. At this
 saddle-focus (a complex pair of stable eigenvalues), so the isolating block of `papers/nf-pulse/` had to be
 generalised; that generalisation, and one more obstacle that was not the complex eigenvalues, are described below.
 
-## Theorem (computer-assisted; not independently reviewed)
+## Theorem (computer-assisted)
 
 Let S(u) = (1 + tanh(6 (u - 1/4)))/2 = 1/(1 + e^(-12 (u - 1/4))), eps = 3/20, gamma = 0, w(x) = e^(-|x|)/2, and
 

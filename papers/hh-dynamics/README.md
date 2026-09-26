@@ -32,7 +32,7 @@ not prove.
   decimal bounds were rounded to nearest rather than outward, a Poincare map could be started off its section
   without an error, the certificates lacked negative controls that run their own code, and the summary needed
   corrections (it said "the unstable orbit", which is unique only within its box). All 13 mutations now stop the
-  program. The fixes have not had a second reading, and no person has reviewed the proofs.
+  program. The fixes have not had a second reading.
 - **In progress, in `work/`:**
   - [`work/chaos/`](work/chaos/REPORT.md): Guckenheimer and Oliva's chaotic orbits relocated numerically (their
     periodic points are fixed points of the return map crossed with u increasing, not decreasing), with a horseshoe

@@ -1,0 +1,26 @@
+67e62b875a7f19f17d2399425f79073a50e2ba30587d3a9d6d656318ffe44945  heldout_plan_2026-09-26.txt
+# code frozen for the held-out run, 2026-09-26 16:36:29 UTC, before any statistic on work/new1822
+bda8490f0bd10fba3cc2aefe4bd718de5c8d97b5fba68dc56edaa6ff7f799c10  cx.py
+3c0a2fa5accc2853e55b6352055547a2ebd4fdf4e9c5e8837c2bc75a13c86f42  build.py
+dc40c6ee5060a81041228ebd9718e2c6d92b614507104a4156bfa2ddf06fe140  point.py
+4701d551f8ca23d3d944e24754dba1e8dfe529aa6183452bade2b187759f285e  boot.py
+45441bd60c8c2c360841b80d996d8e40fcb665d0a4007e00e2ed3c4736ca557e  condz.py
+b4b8ef2cd4738328ea84a29c8ed5231b2a91d87891c70ac43ee73dd23eb719df  analyze.py
+# boot.py after deviation 3 (--nmeas option), 2026-09-26 16:40:20 UTC
+85d5ded7944b7dab869940c594d5bd1a8adde9b926a2824ab61568cb3f4794bb  boot.py
+# analyze_heldout.py written before any held-out statistic was seen, 2026-09-26 16:55:18 UTC
+aa0f9939a5b007bf515fe1df7f123d6de246a3fddeac92f392aae41d75e8fde9  analyze_heldout.py
+# point.py after deviation 5 (--nmeas option), 2026-09-26 16:56:39 UTC
+8b7b2cca82003138504f26ba691748bf5e7004e94c15f2dd37353a6e5270c2fd  point.py
+# calib_summary.py and cover2.py used for the calibration section, 2026-09-26 17:22:54 UTC
+be479f6fd591ba745b8bb21330e0b0b9a0c9878956c5f3deed6b35cc4e8af853  calib.py
+3863885098082c7c47cab5653f4b8a8b8e6a8827aa455d0f03b4c87c5779d7d5  calib_summary.py
+d79348163e4e47b70fd5eeec2c421c3695c8846d6e7c33ea73a1e5ea3262f694  cover2.py
+1992b50c1e10e8d25e54697b6ddbb5f1f1300f8b20e05f89b3be0dd0008bfd5c  supergen.py
+# boot.py after deviation 7 (--tol option), 2026-09-26 17:30:26 UTC
+4f0debb0a5256e2f9bf34f22f7b60e120bd93a4d87dbfc36fd9c890c7c848c44  boot.py
+# analyze_heldout.py after adding de-duplication by replicate index (no other change), 2026-09-26 18:06:34 UTC
+032d4256a9475bfce2452a16a028596701e50d1bcbc0fd34826b4d85f92e81e5  analyze_heldout.py
+# cx.py and prep.py after all reported runs: data and work folders overridable by MICRONS_DATA / MICRONS_WORK (defaults unchanged), 2026-09-26 19:44:47 UTC
+a8fa4560f778502ba07934dc9d24ad9c0b539e70eb75f04a4e4e53fe819abff4  cx.py
+b806f0eb604e20a94edf2b4a8dc41e2aaa2ef1e5713fc507548727ea12c135ee  prep.py

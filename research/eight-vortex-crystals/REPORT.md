@@ -1,6 +1,6 @@
 # Relative equilibria of eight identical point vortices: computer-assisted results
 
-Status: research notes, 2026-09-26. Not a manuscript and not reviewed by anyone outside this project.
+Status: research notes, 2026-09-26. Not a manuscript.
 Every statement below is labelled **proved** (established by a rigorous ball-arithmetic computation plus
 the argument written next to it), **numerical** (floating point, no error control), or **not proved**.
 

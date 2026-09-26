@@ -1,0 +1,71 @@
+{
+ "edges_files": [
+  "edges_new_axons_connected_adp_v1822_part0.csv",
+  "edges_new_axons_connected_adp_v1822_part1.csv",
+  "edges_new_axons_connected_adp_v1822_part10.csv",
+  "edges_new_axons_connected_adp_v1822_part2.csv",
+  "edges_new_axons_connected_adp_v1822_part3.csv",
+  "edges_new_axons_connected_adp_v1822_part4.csv",
+  "edges_new_axons_connected_adp_v1822_part5.csv",
+  "edges_new_axons_connected_adp_v1822_part6.csv",
+  "edges_new_axons_connected_adp_v1822_part7.csv",
+  "edges_new_axons_connected_adp_v1822_part8.csv",
+  "edges_new_axons_connected_adp_v1822_part9.csv"
+ ],
+ "nodes_file": null,
+ "rows_read": 2103763,
+ "derived": {
+  "proj_hva": "from nodes.hva",
+  "in_silico_sig_corr_cvt": "Pearson correlation of node in_silico_resp",
+  "in_vivo_sig_corr": "Pearson correlation of node in_vivo_mean_resp",
+  "readout_similarity_cvt": "cosine of node readout_cvt",
+  "readout_location_distance_cvt": "APPROXIMATE: anisotropic scaling (99.81, 55.14) of node position_stim_cvt differences, fitted on the release (Pearson 0.998, median abs error 0.17 deg)"
+ },
+ "checks": {},
+ "dropped_post_excl29": 4883,
+ "presynaptic_cells_shared_with_main": 0,
+ "cells_without_node_record": 0,
+ "adp_to_connected": 29.970178985111627,
+ "rows_without_cotravel": {
+  "rows": 327,
+  "synapses": 331,
+  "by_population": {
+   "Connected": 327
+  }
+ },
+ "per_projection": {
+  "HVA_HVA": {
+   "pre": 46,
+   "pairs": 62756,
+   "connected": 2290,
+   "synapses": 2563
+  },
+  "HVA_V1": {
+   "pre": 35,
+   "pairs": 20019,
+   "connected": 481,
+   "synapses": 517
+  },
+  "V1_HVA": {
+   "pre": 324,
+   "pairs": 151316,
+   "connected": 4832,
+   "synapses": 5344
+  },
+  "V1_V1": {
+   "pre": 579,
+   "pairs": 1498175,
+   "connected": 48404,
+   "synapses": 53439
+  }
+ },
+ "eligible_groups": [
+  562,
+  44,
+  147,
+  16
+ ],
+ "n_pre": 625,
+ "n_rows": 1732266,
+ "secs": 153.55208921432495
+}

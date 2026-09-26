@@ -1,0 +1,71 @@
+DEVIATIONS FROM heldout_plan_2026-09-26.txt (sha256 67e62b87...), each recorded when it was decided.
+
+1. 2026-09-26 16:27 UTC. The plan's header gives "about 16:40" as the time of writing. The hash was taken at 16:27:36 UTC
+   by the machine clock (heldout_plan.sha256). Only the stated time is affected.
+
+2. 2026-09-26 16:31 UTC, decided before any held-out statistic was computed. When the reference table was built,
+   plan 2d (a Connected or ADP row with dend_len <= 0 is an error) stopped the build. Connected rows with synapses but
+   zero co-travel under the substitute pcg_skel skeletons:
+   - Ding axons: 143 rows (144 synapses, about 1.8% of connected pairs);
+   - new axons: 329 rows (333 synapses, about 0.6%).
+   ADP rows have none. A pair with no co-travel has zero rate under the co-travel offset, so it cannot be in any
+   proximity pool.
+   Change: these rows are dropped, identically in both tables (build.py --drop-zero-L), and their counts are
+   reported. The error still applies to any table built without the flag.
+
+3. 2026-09-26 16:40 UTC, decided before any held-out statistic was looked at. The timing run wrote 2 bootstrap
+   replicates, which were deleted unread. At about 46 s per replicate for three dt configurations, the planned
+   B = 500 for N0, N1 and N3 in both families would take about 13 CPU-hours. Two changes, affecting speed only:
+   - boot.py gains --nmeas 2, which computes only the sil and viv measures and skips the laminar parts F, which the
+     plan does not use;
+   - the bootstrap covers the configurations the plan attaches a decision rule to (dt N1, dt N3, iv N1, iv N3).
+   N0 is reported as a point estimate with its conditional z. The plan gives it no decision rule.
+   B stays 500. The code hashes of boot.py before and after this change are recorded in heldout_plan.sha256.
+
+4. 2026-09-26 16:43 UTC, added before any held-out statistic was seen. A secondary, exploratory analysis with no
+   bearing on the decision. The held-out eligible groups are mostly V1->V1 (562 of 769; build_report.json), while the
+   reference is spread across all four projection types (35/66/17/44). V1->V1 carried almost no excess in the main
+   data. The pooled held-out statistic therefore mostly tests V1->V1.
+   Added: a composition-matched comparison, the held-out per-projection excesses weighted by the reference's group
+   counts per projection type, with its bootstrap SE from the same replicates. It is labelled exploratory.
+
+5. 2026-09-26 16:56 UTC, decided before any held-out statistic was produced or seen. The first held-out jobs were
+   killed after 15 minutes. They had written no statistic: point_new1822.json did not exist and boot_new1822.jsonl
+   was empty and was deleted. Two causes:
+   - on the shared machine (load average about 20 on 4 cores) the bootstrap setup took 15 minutes;
+   - the point-estimate chains as planned (N0: 4,000 multinomial draws; N1/N3: 1,000 draws) over 769 groups with
+     about 95 synapses each, times 4 measures, would take hours.
+   Changes, all fixed in advance:
+   a) Point estimates for new1822 and for the ding1822 reference comparison: point.py --ndraw 200 --nmeas 2.
+      - Swap chains: 2 chains of 300 burn-in + 200 draws, thin 3.
+      - N0: 800 independent multinomial draws.
+      - The chain-to-chain difference is reported as Monte Carlo precision.
+      - The ding1822 point estimate already computed with the full plan settings is kept, and it is reported.
+   b) Bootstrap: B = 200 first. It is extended to 500 only if the primary |z_boot - 1.645| < 0.3.
+      - With B = 200 the relative Monte Carlo error of SE_boot is about 5%, so z_boot is known to about +/-0.1 away
+        from that band.
+      - The reference bootstrap keeps running to B = 500 (it is cheap).
+   c) Conditional z (condz.py) for new1822 with --ndraw 200, instead of 400.
+
+6. 2026-09-26 17:23 UTC. An interpretive note, recorded before the held-out N1 and N3 statistics exist. Only the
+   held-out N0 point estimate had been printed; see the note below. The decision rule is unchanged.
+   A negative control finished at 17:22 (calib.py scenario L: no rule, each axon with its own random preference for
+   postsynaptic depth bins, 20 datasets on the real design). Result:
+   - N1 is biased, +0.0012 +/- 0.0004, and its conditional test rejects in 45% of datasets.
+   - N3 is not biased: +0.0002 +/- 0.0003.
+   Any N1 result, held-out or reference, is therefore read next to N3. A claim of structure beyond laminar targeting
+   needs N3.
+   Note: point.py prints each configuration as it finishes, so the held-out N0 point estimate (dt: +0.0044) appeared
+   in the log at about 17:11 while it was being monitored. N0 carries no decision.
+
+7. 2026-09-26 17:30 UTC, speed only, decided without looking at any held-out bootstrap value. Under the machine's
+   load one held-out replicate took about 9 minutes (prof_heldout.py: warm refit about 18 s, about 0.3 s per sweep),
+   so B = 200 would take about 15 hours. The replicates continue with:
+   - refit tolerance 1e-5 instead of 1e-8 on the standardized coefficients (boot.py --tol);
+   - 20 burn-in sweeps and 8 draws, thin 2 (boot.py --nburn 20 --ndraw 8).
+   The decision statistic z_boot = estimate / SE_boot takes its estimate from the long point-estimate chains, so these
+   settings enter only through the replicate spread:
+   - the extra Monte Carlo noise in each replicate's pooled null mean is about 3e-4 or less, against an SE of order
+     2e-3, so SE_boot rises by less than 1%;
+   - an incompletely relaxed chain shifts every replicate alike and does not change their spread.
+   Replicates already written with the earlier settings are kept. The reference bootstrap keeps the earlier settings.

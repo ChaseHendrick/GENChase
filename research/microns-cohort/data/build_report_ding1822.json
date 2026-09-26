@@ -1,0 +1,63 @@
+{
+ "edges_files": [
+  "edges_ding_axons_connected_adp_v1822_part0.csv",
+  "edges_ding_axons_connected_adp_v1822_part1.csv",
+  "edges_ding_axons_connected_adp_v1822_part2.csv"
+ ],
+ "nodes_file": null,
+ "rows_read": 398861,
+ "derived": {
+  "proj_hva": "from nodes.hva",
+  "in_silico_sig_corr_cvt": "Pearson correlation of node in_silico_resp",
+  "in_vivo_sig_corr": "Pearson correlation of node in_vivo_mean_resp",
+  "readout_similarity_cvt": "cosine of node readout_cvt",
+  "readout_location_distance_cvt": "APPROXIMATE: anisotropic scaling (99.81, 55.14) of node position_stim_cvt differences, fitted on the release (Pearson 0.998, median abs error 0.17 deg)"
+ },
+ "checks": {},
+ "dropped_post_excl29": 932,
+ "presynaptic_cells_shared_with_main": 143,
+ "cells_without_node_record": 0,
+ "adp_to_connected": 34.66311166875784,
+ "rows_without_cotravel": {
+  "rows": 142,
+  "synapses": 143,
+  "by_population": {
+   "Connected": 142
+  }
+ },
+ "per_projection": {
+  "HVA_HVA": {
+   "pre": 107,
+   "pairs": 126377,
+   "connected": 3581,
+   "synapses": 3957
+  },
+  "HVA_V1": {
+   "pre": 93,
+   "pairs": 68600,
+   "connected": 1437,
+   "synapses": 1580
+  },
+  "V1_HVA": {
+   "pre": 30,
+   "pairs": 19249,
+   "connected": 660,
+   "synapses": 751
+  },
+  "V1_V1": {
+   "pre": 36,
+   "pairs": 102181,
+   "connected": 3310,
+   "synapses": 3728
+  }
+ },
+ "eligible_groups": [
+  35,
+  66,
+  17,
+  44
+ ],
+ "n_pre": 144,
+ "n_rows": 316407,
+ "secs": 60.61562991142273
+}

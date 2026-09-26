@@ -5,7 +5,7 @@ reviewed**; see "Check" below for the adversarial reading that was done.
 
 ## Outcome
 
-**Proved by computer, at Faye's own eps = 0.01, and also at eps = 1/20 and eps = 1/50; not independently reviewed.**
+**Proved by computer, at Faye's own eps = 0.01, and also at eps = 1/20 and eps = 1/50.**
 For lambda = 20, kappa = 0.22, b = 4.5, beta = 5 (Faye's illustration values), a fast travelling pulse exists at eps =
 1/100, 1/50 and 1/20, with its speed enclosed in an interval of width 10^-144, 10^-88 and 10^-28 respectively. Every
 step is a ball-arithmetic computation; `sh code/run_all.sh <eps>` reruns each, with 14 checks: 5 negative controls and 2 tests (one
@@ -164,7 +164,7 @@ the Taylor recursion and its gradients, and the block.
 
 ## 4. Theorem
 
-**Theorem (computer-assisted; not independently reviewed).** In Faye's model (2.1)-(2.3) with tau = 1, lambda = 20,
+**Theorem (computer-assisted).** In Faye's model (2.1)-(2.3) with tau = 1, lambda = 20,
 kappa = 11/50, b = 9/2 and beta = 5, let (u0, q0) be the homogeneous steady state (it is unique; u0 =
 0.0151017095592381945561..., q0 = 0.9244914522038090272194...). For each eps and interval [c1, c2] below there are a
 speed c in (c1, c2) and a smooth nonconstant profile (U, Q) with (U, Q)(xi) -> (u0, q0) as xi -> +-infinity such that

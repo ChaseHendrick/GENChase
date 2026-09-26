@@ -1,7 +1,7 @@
 # Seven vortices on the sphere: the pentagonal bipyramid is a strict local minimum
 
-Status of this folder (2026-09-26): research work in progress, not reviewed by anyone outside this
-repository, not published. Everything below is labelled **proved** (a written argument plus a
+Status of this folder (2026-09-26): research work in progress, not
+published. Everything below is labelled **proved** (a written argument plus a
 rigorous computation in this folder establishes it), **numerical** (floating point, no error
 control) or **estimate**.
 

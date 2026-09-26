@@ -44,13 +44,22 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   (stable self-similar expansion of four and five vortices). By the owner's decision of 2026-09-26,
   `papers/hh-dynamics/` (computer-assisted results on the Hodgkin-Huxley equations at the 1952 parameters) is drafted
   here too, programs and results included, before it has a manuscript; by the owner's decision of the same day, so is
-  `papers/nf-pulse/` (a computer-assisted proof of a travelling pulse in a neural field with a smooth firing rate),
-  labelled as not independently reviewed until it has been. By the owner's decision of the same day, the same holds for
+  `papers/nf-pulse/` (a computer-assisted proof of a travelling pulse in a neural field with a smooth firing rate).
+  By the owner's decision of the same day, the same holds for
   `research/arctic-finite-size/` (exact finite-size frozen areas and the n^(-2/3) constants of Aztec diamond and lozenge
   tilings), `research/double-pendulum/` (a computer-assisted proof of a transversal homoclinic orbit in the equal double
   pendulum) and the point-vortex studies `research/seven-vortex-sphere/`, `research/eight-vortex-crystals/`,
   `research/five-vortex-equilibria/` and `research/four-vortex-stability/`: each is drafted here with its programs and
-  results, labelled as not independently reviewed until it has been.
+  results. By the owner's decision of the same day, which
+  stands for later work so that an agent does not ask again: a result produced in this project's sessions (a proof, a
+  computation, a data analysis, or a note or manuscript about one) may be drafted in this repository with its programs
+  and results, a manuscript in `papers/<id>/` (listed in `papers/papers.json` with status "draft" and its own
+  `notes/QUALITY.md`) and anything else in `research/<id>/`.
+  This does not cover a commitment's private record (`*.commitment.json`), copyrighted texts such as the papers a
+  study read, or raw data whose terms do not allow redistribution: commit the programs, the derived numbers and a
+  statement of where the data come from. By the owner's decision of the same day, for now, these drafts carry no label
+  saying that nobody outside the project has reviewed them; their quality records and review files still state what
+  was and was not checked, and no text may claim an outside review that has not taken place.
 
 ## Verify before you commit
 
