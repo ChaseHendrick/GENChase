@@ -1,6 +1,6 @@
 # Checks the characteristic polynomials of the 4D and 5D rest linearisations (exact rationals) and counts eigenvalues numerically over c; run: python3 charpoly_check.py
 import random, sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'code'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'code'))
 from flint import fmpq, fmpq_mat
 import numpy as np
 

@@ -1,6 +1,6 @@
 # Samples points and pairs of the block B actually used by prove_pulse.py (r = 4 rho) and checks, with the nonlinear 4D field in floating point (evidence, not proof), dL/dt > 0, the entrance inequality on {|y'| = rho, L <= 0}, and the matrix conditions (C), (E) on a grid of s; run: python3 block_points_check.py
 import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'code'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'code'))
 import numpy as np
 import prove_pulse as pp, block as bl, certify_rest as cr
 T, Tinv, rho, r, info = pp.block_data()

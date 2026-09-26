@@ -28,7 +28,7 @@
 import os, re, shutil, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.normpath(os.path.join(HERE, '..', '..'))       # papers/nf-pulse
+SRC = os.path.normpath(os.path.join(HERE, '..', '..', '..'))       # papers/nf-pulse
 
 LABELS = ['R', 'R-neg', 'M-c1', 'M-c2', 'M-int', 'M-neg', 'B', 'B-neg', 'B-iv', 'J',
           'P-int', 'P-c1', 'P-c2', 'N-same', 'N-far']

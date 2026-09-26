@@ -1,6 +1,6 @@
 # Checks that the validated manifold point P(t) satisfies Y = S(U) (enclosure of Y - S(U) contains 0) for the kappa interval and sigma = 1/7; run: python3 surface_check.py
 import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'code'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'code'))
 from flint import arb, ctx, fmpq
 import nfcore as nf, certify_rest as cr, manifold as mf
 ctx.prec = 256
