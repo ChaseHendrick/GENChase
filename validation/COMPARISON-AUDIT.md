@@ -41,7 +41,8 @@ resampled with the plate's seed so the error bar reprints with it.
 | `timecrystal` | period-doubled order m₂ | τ_int across periods |
 | `rmt` | unfolded spacing coefficient of variation against the Wigner surmise | bootstrap over independent spectra (rows) |
 | `kpz` | fitted growth exponent β against the class value | moving-block bootstrap over the log-spaced samples of one run |
-| `causticsea`, `faraday` | measured wavelength | τ_int across rows |
+| `faraday` | measured wavelength | τ_int across rows |
+| `causticsea` | measured wavelength: the power-weighted mean of the 5-point Laplacian symbol, orientation independent | delta method for the ratio of two field means, τ_int along rows and columns (`fieldMean`) |
 | `darkroom` | dark-window hits | interleaved ray groups, where the tracer allows it |
 
 Tabs that already printed an error bar (`lozenge`, `growdomain`, the `rotor` ladder) now print it through
@@ -111,7 +112,7 @@ With honest uncertainties several tabs now print a clear miss. These are reporte
 
 | Tab | What prints | Likely reason, where known |
 |---|---|---|
-| `causticsea` | measured wavelength 14 to 23σ above the preferred Swift–Hohenberg wavelength on every preset | not diagnosed |
+| `causticsea` | from recipe v6: default 1.2σ and Fold lock 0.7σ from the preferred wavelength; Open loop 9.5σ, Silk 7.6σ and Tight cells 9.7σ high, Locked rolls 11.0σ and Overwritten 11.9σ low | diagnosed and fixed (2026-09-26): the row zero-crossing estimator read λ/\|cos θ\| for oblique stripes (replaced), and the linear part was −∇²(∇² + k₀²), not the Swift–Hohenberg −(∇² + k₀²)² the tab displays (fixed at recipe v6; older recipes keep it and are compared with its own fastest-growing wavelength). What remains is the nonlinear pattern's own wavelength at strong drive and strong caustic feedback, which the linear preferred wavelength does not predict (plain Swift–Hohenberg replicas: 10.05–10.12 at r = 0.05, 10.62–10.68 at r = 0.5); the error bar is the spatial sampling error of one snapshot |
 | `darkroom` | the "tokarsky" room's dark window lit, 7 to 33σ above 0 | the room is not Tokarsky's construction (above) |
 | `faraday` | wavelength 12 to 17σ from the printed linear estimate (Noise presets), 2 to 4 times off on the others | the estimate formula (above) |
 | `kpz` | ballistic Rings and Wide presets 4.6 to 5.3σ below β = 1/3 | the slow crossover the tab's hint already documents |
