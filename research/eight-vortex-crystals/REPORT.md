@@ -208,13 +208,22 @@ ranges of (x, y)/(x^2 + y^2)) excludes 0, or if the Krawczyk operator excludes t
 
 **Measurements** (`data/bnb-knuth.txt`, `data/bnb-near-min.txt`):
 
-- Knuth's unbiased tree-size estimator over the whole domain: 5e9 to 1.2e11 nodes across seeds (heavy
-  tailed; standard errors as large as the estimates), about 13 microseconds per node. Deep probes end with
-  boxes still about 1 wide: nothing prunes until boxes are about 0.3 wide in all 15 coordinates.
-- Near the minimizer the box method does not converge at any affordable cost. The Krawczyk test succeeds
-  on a cube about x* only up to half-width 0.0025. With the certified basin of Theorem 3 removed, the cube
-  of half-width 0.03 about x* took 912,877 boxes, and half-width 0.04 did not finish in 100 s (the
-  0.045 to 0.055 runs are in the data file). The cost multiplies by more than ten per 0.01 of radius.
+- Knuth's unbiased tree-size estimator over the whole domain (`bnb knuth 200000 SEED`, seeds 101 to 103):
+  1.9e10, 2.9e10 and 9.0e10 nodes, with standard errors of 1.2e10 to 5.1e10 (heavy tailed, so these are
+  likely underestimates), at about 13 microseconds per node (measured on earlier 100,000-probe runs).
+  Deep probes (depth 36 or more, an exploratory run not saved) ended with boxes still about 0.6 to 2.5
+  wide: little prunes until boxes are a few tenths wide in all 15 coordinates.
+- Near the minimizer (`code/bnb/near_runs.sh`, 900 s limit per run): the Krawczyk test succeeds on a cube
+  about x* only up to half-width 0.0025 (`code/bnb/ktest.c`). The cube of half-width h about x* with the
+  Euclidean ball of radius BALL removed:
+
+  | BALL | h = 0.03 | h = 0.045 | h = 0.06 | h = 0.075 |
+  |---|---|---|---|---|
+  | 0.1 | 912,877 boxes | not finished in 900 s | not finished | not finished |
+  | 0.1637 (Theorem 3) | inside the ball | 864,637 boxes | not finished in 900 s | not finished |
+
+  So a cube only slightly wider than the certified ball (corner distance 0.23 at h = 0.06) is already out
+  of reach of a 15-minute run.
 - Reason: at distance rho from x*, f - f* is only about 0.146 rho^2 in the softest direction, while every
   box enclosure loses a term linear in the box width summed over 15 coordinates. Covering the shell between
   the certified radius (0.16) and the radius where coarse boxes start to prune (about 0.5, where
