@@ -75,12 +75,13 @@ for a given threshold".
 slow pulse this sign does not change: below the slow speed the orbit fires a second time and then escapes into
 Q < 0, above it escapes into Q < 0 at once. Its second switch, c = 0.37752881442319..., lies 3.1e-6 below the slow
 pulse and is a different object: there the orbit settles onto a periodic wave train (re-firing every 14.32 units,
-peaks U = 0.384) and never comes back to rest (least distance 0.049).
+peaks U = 0.384) and never comes back to rest (least Euclidean distance of (U, V, Q, P) to rest 0.049; the reviewer's sup-norm
+value is 0.031).
 
 `code/shoot_slow.py` uses a first-return criterion instead: after the first excursion (U up through theta and back
 down) an orbit is +1 if it fires again or escapes up, -1 if it escapes down without firing again, i.e. the side of
 the unstable direction on which it leaves the neighbourhood of rest. It also prints d_min, the least distance to
-rest between the first excursion and the decision. At a homoclinic switch d_min must go to 0 as the bracket
+rest (Euclidean norm of (U, V, Q, P) minus rest) between the first excursion and the decision. At a homoclinic switch d_min must go to 0 as the bracket
 shrinks; at a wave-train switch it does not.
 
 | eps | slow speed (first-return bisection, 320 or 256 bits) | final bracket width | d_min at the end |
@@ -123,7 +124,10 @@ Same chain as the fast pulse, through wrappers:
   U up to 0.15.
 - `prove_slow.py` runs `prove_pulse.main` unchanged: the box of all c in [c1, c2] is in the interior of B at
   xi = 40; the orbit at c1 then enters K+ (eps = 1/10 at xi = 46.875; eps = 3/20 at 43.625) and the orbit at c2
-  enters K- (at 47.0 and 42.75), each while its whole path stays in the interior of B.
+  enters K- (at 47.0 and 42.75), each while its whole path stays in the interior of B. The wrapper records the
+  cone margin lower(+-y1) - upper(|y'|) of the entering enclosure in `data/cone_*.json`: 1.25e-8 and 1.36e-8 at
+  eps = 1/10, 1.31e-11 and 3.17e-10 at eps = 3/20 (positive, but thin at eps = 3/20, c1). It also re-asserts that
+  the block's U-range stays below 0.05 after `prove_pulse.block_data` rounds rho (0.04914 and 0.04939).
 
 Negative controls, all refused: c1 asked to reach the other cone; a speed 1e-4 away; manifold scaling too large;
 block too wide; and, at eps = 1/10, the wave-train switch c = 0.3775288144231931360774251 with either cone.
@@ -135,7 +139,59 @@ selects coordinates), and the unwritten proofs of the lemmas.
 
 ## Independent check
 
-VERDICT_PLACEHOLDER
+An independent subagent reran everything from a copy, audited the parameter patching, ran mutation tests,
+recomputed the speeds with its own code, and re-checked the cone entries and the block.
+
+**Verdict: "Claims A and B hold as computer-assisted results, with the following caveats."** It found no defect
+that invalidates either claim.
+
+- **Rerun.** 26 of 26 checks passed, and every regenerated JSON file was byte-identical to the committed one.
+- **Parameter patching.** Every routine reads eps, theta and beta when called. A print inside the eps = 3/20 run
+  showed eps = 0.15. The remaining hard-coded values (eps = 0.1 and exp(5) in `block.setup` and
+  `slowsetup.float_matrix`) only choose coordinates.
+- **Mutation tests.** Every mutation was refused:
+  - the bracket shifted by +-1e-20 (wrong cone);
+  - the expected cones swapped;
+  - the bracket of the other eps (escape before xi = 40);
+  - bad block weights (cone condition fails);
+  - theta = 26/100, theta + 1e-15, beta = 201/10 or eps + 1e-12;
+  - the bracket widened to +-1e-15 (the integrator fails);
+  - the other branch of the manifold;
+  - gamma = 1e-6.
+- **Independent speeds.** Its own mpmath code (70 digits, a Taylor method of order 32, 105 bisections) gave:
+  - eps = 1/10: 0.37753193506889057650756065353441183 +- 2.5e-36, agreeing with the claim to 35 digits;
+  - eps = 3/20: 0.49329888797362856698000622034175242 +- 5e-36, agreeing to all 34 digits the claim gives.
+
+  Both speeds lie inside [c1, c2]. The distance to rest keeps shrinking along the bisection.
+- **Wave train.** At c = 0.3775288144231931360774251 the orbit re-fires with period about 14.3 and peaks of 0.3842,
+  and its distance to rest does not shrink. It is a different object from the slow pulse.
+- **Survey.** Its own LSODA scan finds the same two first-return switches at each eps, plus tangencies.
+- **Cone entries.** Recomputed from the full balls, all four are positive. These are the same margins that are
+  now stored in `data/cone_*.json`.
+- **Logic.** Nothing in the block lemma or the Wazewski argument uses real stable eigenvalues. `block_check_iv.py`
+  (mpmath.iv) certifies both slow blocks independently. The rest count at eps = 3/20, the Y = S(U) embedding, the
+  manifold tail and the phase-2 check were all checked and found sound.
+
+Findings and what was done:
+
+1. **(should-fix)** The block lemma, the openness step of the Wazewski argument, the manifold tail bound and the
+   reduction from a homoclinic orbit to a pulse still have no written proofs. The reviewer checked them informally
+   and found no gap. **Open:** they must be written out before either claim is called proved in a manuscript.
+2. **(minor)** The JSON files round y too coarsely to verify the cone entry. **Fixed:** the margins are now stored
+   in `data/cone_*.json`.
+3. **(minor)** `maxU_upper_phase1` is misnamed: it is the maximum over step endpoints. **Unchanged** (it is in
+   `../../code`). This report uses only its lower bound, which is rigorous.
+4. **(minor)** `block_data` does not re-check the U-range after rounding rho. **Fixed** in the wrapper, which now
+   asserts it.
+5. **(minor)** The coordinate choice hard-codes beta = 20, theta = 1/4, and eps = 1/10 when the stable
+   eigenvalues are real. **Documented:** only the two recorded parameter points are supported, and any other point
+   stops with an error.
+6. **(minor)** `../../code/certify_rest.py` has an unused `NF_PULSE=slow` branch that labels the wave-train switch
+   0.37752881442... as "c*_slow". That label is now known to be wrong. **Not changed:** it is outside this folder,
+   and the owner should correct or remove the branch.
+7. **(note)** The report did not say which norm the distance uses. **Fixed:** it is now stated.
+8. **(note)** The survey is numerical and limited by its grid: two switches closer together than the grid spacing
+   could be missed. **Stated as numerical above.**
 
 ## Rerun
 

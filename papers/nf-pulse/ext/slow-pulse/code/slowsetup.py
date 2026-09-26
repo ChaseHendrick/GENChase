@@ -24,6 +24,8 @@ BRACKETS = {
     fmpq(3, 20): (4932988879736285669800062, 25, 0.49329888797362857),
 }
 key = sp.EPS
+# Only the two recorded points are supported: block.setup (used when the stable eigenvalues are real) and
+# float_matrix below hard-code beta = 20, theta = 1/4 (and block.setup eps = 1/10) in their choice of coordinates.
 if sp.THETA != fmpq(1, 4) or sp.BETA != 20 or key not in BRACKETS:
     raise SystemExit('no slow-pulse bracket recorded for %s' % sp.TXT)
 num, ex, cref = BRACKETS[key]
