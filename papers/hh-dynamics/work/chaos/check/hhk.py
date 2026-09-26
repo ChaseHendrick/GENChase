@@ -265,3 +265,34 @@ def _batch(G, J, El, rtol, atol, hmax, tmax):
 def Pbatch(G, J, El=EL, rtol=1e-13, atol=1e-15, hmax=0.25, tmax=200.0):
     """Vectorised return map. info columns: t, umax, du/dt at arrival, min |u - 4.5| at interior extrema, status."""
     return _batch(np.ascontiguousarray(G, dtype=float), J, El, rtol, atol, hmax, tmax)
+
+
+@nb.njit(cache=True)
+def fate1(y0, J, El, eq, rtol, atol, hmax, tmax, uap):
+    """1 = AP (u > uap at an accepted step), 0 = REST (|u - u_eq| < 0.5 and max gate distance < 0.005 at an
+    accepted step, before any AP), -1 undecided by tmax. Also returns the time of the decision."""
+    d = 4
+    T = np.empty((KC, KC, d))
+    y = y0.copy(); t = 0.0; H = 0.05
+    while t < tmax:
+        Hs = min(H, hmax)
+        yn, err = gbs(y, Hs, J, El, T, rtol, atol)
+        if err > 1.0 or not np.isfinite(err):
+            H = Hs * max(0.2, 0.9 * err ** (-1.0 / 11))
+            continue
+        y = yn; t += Hs
+        if y[0] > uap:
+            return 1, t
+        if abs(y[0] - eq[0]) < 0.5 and max(abs(y[1] - eq[1]), abs(y[2] - eq[2]), abs(y[3] - eq[3])) < 0.005:
+            return 0, t
+        H = Hs * min(4.0, max(0.2, 0.9 * max(err, 1e-30) ** (-1.0 / 11)))
+    return -1, t
+
+
+@nb.njit(parallel=True, cache=True)
+def fates(Y0, J, El, eq, rtol, atol, hmax, tmax, uap):
+    N = Y0.shape[0]
+    out = np.empty(N, np.int64); tt = np.empty(N)
+    for k in nb.prange(N):
+        out[k], tt[k] = fate1(Y0[k].copy(), J, El, eq, rtol, atol, hmax, tmax, uap)
+    return out, tt

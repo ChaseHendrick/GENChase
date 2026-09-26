@@ -10,11 +10,11 @@ Hopf points. Work of 2026-09-26.
 
 - **Guckenheimer and Oliva's points are reproduced, and the discrepancy found earlier is resolved.** Their p1 and p2 are fixed points of
   the return map to u = 4.5 crossed with u **increasing** (v decreasing in their sign convention), at their current
-  I = 7.8617827403 with E_l = 10.599: |P(p1) - p1| = 2.0e-9 and |P(p2) - p2| = 7.5e-8, which is what 14 printed decimals allow
-  given the multipliers (33 and 2.8e7). Their text says "with v increasing"; on that crossing direction the points miss by
+  I = 7.8617827403 with E_l = 10.599: |P(p1) - p1| = 2.0e-9 and |P(p2) - p2| = 7.5e-8 (256-bit). p1 lies 8.6e-9 from the fixed point, so it is good to about 8
+  digits, not the 14 printed; p2's residual is at the level its multiplier 2.8e7 allows. Their text says "with v increasing"; on that crossing direction the points miss by
   about 0.16, which is the miss the earlier probe found. With our E_l = 10.5989209693917 the same orbits sit at
   J = 7.861806449482 (J + 0.3 E_l is invariant).
-- **p1 lies on the branch of periodic orbits born at the lower Hopf point** (orbit A, multipliers +33.07, +0.284, ~1e-13).
+- **p1 lies on the branch of periodic orbits born at the lower Hopf point** (orbit A, multipliers +33.07, +0.284, and a third of about 3e-37 by Liouville's formula).
   **p2 is a third orbit, C** (period 22.66 ms, multipliers +2.81e7, 4.7e-4), and it sits next to the one-return firing threshold of the section (within the resolution of our scans).
   The saddle with the negative multipliers that G&O describe is a different orbit, B (multipliers -510.0, -0.190), on the same
   branch past a period doubling.
@@ -38,7 +38,8 @@ Hopf points. Work of 2026-09-26.
   floor), as G&O's "hardly observable" remark anticipates.
 - **Literature.** Oliva's Cornell thesis (1998, advised by John Smillie) is on the complex Henon map and does not mention
   Hodgkin-Huxley. The Guckenheimer and Meloon preprint (1999) has no Hodgkin-Huxley example and no proof of chaos.
-- **Independent check:** pending (section 11).
+- **Independent check:** an independent re-implementation with a different integrator reproduced every number within float64
+  limits and could not break the covering relations (about 400,000 sampled returns); it corrected two statements (section 11).
 
 ## 1. Conventions
 
@@ -77,9 +78,9 @@ the sign of the leak potential.
 |---|---|---|
 | Lower Hopf point | I about 9.78 | J_H = 9.7797 (proved in `code/certify_equilibria_hopf.py`); the branch amplitude^2 extrapolates to 0 at J = 9.782 and the period to 2 pi/omega_H = 10.718 ms |
 | Section direction | "v increasing" (u decreasing) | their p1, p2 are fixed points only for u **increasing**; with u decreasing they miss by about 0.16 |
-| p1 | (0.08508337639787, 0.37698374610906, 0.43727279295129) | orbit A: \|P(p1) - p1\| = 2.0e-9 at I, E_l as printed (float64 and 256-bit Taylor agree); T = 15.8503 ms; multipliers +33.07, +0.284 |
-| p2 | (0.08499590453730, 0.37635277095981, 0.43229451177364) | orbit C: \|P(p2) - p2\| = 7.5e-8 (multiplier 2.8e7 times the 1e-14 printing error); T = 22.655 ms; multipliers +2.81e7, +4.7e-4 |
-| multipliers "negative unstable, negative stable, tiny positive" at 7.8618 | describes the orbit through p1 | true of orbit B (-510, -0.190, ~5e-13), not of A (p1) |
+| p1 | (0.08508337639787, 0.37698374610906, 0.43727279295129) | orbit A: \|P(p1) - p1\| = 2.0e-9 at I, E_l as printed (float64, 256-bit Taylor and the independent check agree); p1 is 8.6e-9 (in h) from the fixed point, so good to about 8 digits; T = 15.8503 ms; multipliers +33.07, +0.284 |
+| p2 | (0.08499590453730, 0.37635277095981, 0.43229451177364) | orbit C: \|P(p2) - p2\| = 7.5e-8 at 256 bits (float64 codes give 7.5e-8 to 9e-7, their noise level at multiplier 2.8e7); T = 22.655 ms; multipliers +2.81e7, +4.7e-4 |
+| multipliers "negative unstable, negative stable, tiny positive" at 7.8618 | describes the orbit through p1 | true of orbit B (-510, -0.190, and a third of about 1e-43), not of A (p1) |
 | folds / period doublings | 3 folds, PD on the red branch, dramatic change of lambda_2 for I - 7.92197 in [0.6, 1.6] x 1e-5 | F1 7.8465708, PD1 7.8495611, PD2 7.9220014, F2 7.9220092 (E_l exact); in G&O's convention PD2 and F2 at I - 7.92197 = 0.77e-5 and 1.55e-5. The third fold (onto the stable firing orbits) was not reached |
 | boxes R1, R2 | f(R_i) crosses R1 and R2 | not refuted, but hard to verify: see 5.4; about half of R1 lies beyond the firing threshold, and the crossings of R2 happen in slivers about 1e-12 wide |
 
@@ -124,17 +125,20 @@ right of it are thrown far away (c1' about 3e-2, c2' about 5e-2).
 
 | Orbit | Point on the section (m, n, h) | Residual \|P^k(x) - x\| | Period (ms) | Multipliers | Lyapunov exponents (1/ms) |
 |---|---|---|---|---|---|
-| A | (0.0850833767999797180787, 0.3769837472239149341109, 0.4372728015132783948672) | 4.6e-47 (256-bit; float64 start 1.0e-14) | 15.85030765456 | +33.0750, +0.28382, -5.1e-14 | +0.221, -0.079, -1.93 |
-| B | (0.0850242803889671853218, 0.3765574959290348228939, 0.4339092819779152506987) | 1.0e-44 (256-bit; float64 start 2.5e-12) | 17.80211535589 | -509.969, -0.19017, +4.8e-13 | +0.350, -0.093, -1.59 |
-| C | (0.0849959045373393334217, 0.3763527709600990809554, 0.4322945117759200968591) | 1.6e-27 (256-bit; float64 start 5.2e-08) | 22.65523985385 | +2.8145e7, +4.678e-4, -4.3e-8 | +0.757, -0.338, -0.749 |
-| AB (2 returns) | (0.0850187934177703033869, 0.3765172837185683008167, 0.4335863611388050708808) | 1.5e-42 (256-bit; float64 start 3.2e-10) | 34.52310172439 | -5.734e4, -0.0448, -1.3e-12 | +0.317, -0.090, -0.79 |
+| A | (0.0850833767999797180787, 0.3769837472239149341109, 0.4372728015132783948672) | 4.6e-47 (256-bit; float64 start 1.0e-14) | 15.85030765456 | +33.0750, +0.28382, 3.2e-37 (Liouville) | +0.221, -0.079, -5.30 |
+| B | (0.0850242803889671853218, 0.3765574959290348228939, 0.4339092819779152506987) | 1.0e-44 (256-bit; float64 start 2.5e-12) | 17.80211535589 | -509.969, -0.19017, 9.1e-44 (Liouville) | +0.350, -0.093, -5.57 |
+| C | (0.0849959045373393334217, 0.3763527709600990809554, 0.4322945117759200968591) | 1.6e-27 (256-bit; float64 start 5.2e-08) | 22.65523985385 | +2.814e7 to 2.819e7, 4.5e-4 to 5.1e-4 (spread over integrators), third not resolved | +0.757, -0.34, not resolved |
+| AB (2 returns) | (0.0850187934177703033869, 0.3765172837185683008167, 0.4335863611388050708808) | 1.5e-42 (256-bit; float64 start 3.2e-10) | 34.52310172439 | -5.734e4, -0.0448, third not resolved (below roundoff) | +0.317, -0.090, not resolved |
 
 Points and periods are the 256-bit values (points to 22 digits; the period balls have radius below 1e-23, which reflects only the
 arithmetic, not the truncation). The float64 points differ from them by at most 4e-15 (A, B, C) and 7e-15 (AB). In float64 alone the
 Newton residuals are 1.3e-14 (A), 8.9e-13 (B), 8.3e-8 (C), and <= 1.8e-11 for all 71 cycles up to period 8. For C the float64
 integrator's local error (rtol 1e-14) is amplified by the multiplier 2.8e7, so its float64 residual and return time are only good to
 about 1e-7 and 1e-4 ms (two float64 runs gave T = 22.65521 and 22.65530); the 256-bit values settle it.
-Unstable dimension: one (every cycle has exactly one multiplier outside the unit circle).
+Unstable dimension: one (every cycle has exactly one multiplier outside the unit circle). The third (strong-stable) multipliers are
+float64 roundoff in our runs (earlier values of about 1e-13 and third Lyapunov exponents of -1.9 and -1.6 per ms were noise); the
+independent check computed them from Liouville's formula (the integral of tr Df over the period is -81.784 for A and -94.533 for B).
+For C even the weak multiplier is only resolved to about 10% in float64.
 
 ### 5.3 The h-sets (recommended; `data/horseshoe_Jgo.json`, key `hsets`)
 
@@ -213,7 +217,7 @@ altogether. Their expansion per return (33 to about 6e3) is 10^3 to 10^6 times s
 - Return times: 15.850 (A), 17.802 (B), 22.655 (C) ms; u stays in [-6.9, 22.5] (no spike on the h-sets: sampled u_max 13.7 on N_A and 15.7 on N_B).
 - Expansion per return: 33 (A), 510 (B), 5.7e4 per two returns (AB), 2.8e7 (C). The largest derivative on the h-sets in their own
   charts is |dxi'/dxi| <= 1.4e3. The weak-stable multipliers are +0.284 (A) and -0.190 (B), with |deta'/deta| <= 0.69 in chart units,
-  and the strong contraction is about 1e-13 per return.
+  and the strong contraction is about 1e-37 (A) to 1e-43 (B) per return by Liouville's formula (float64 reports only roundoff there).
 - Stiffness: the Jacobian eigenvalues along the orbits have real parts in [-10.3, +2.8] per ms. The problem is mildly stiff at most,
   and explicit Taylor methods are appropriate.
 - Taylor radius of convergence of the solutions along A and B: 0.8 to 8 ms (root-test estimate). The 256-bit run used steps
@@ -222,7 +226,7 @@ altogether. Their expansion per return (33 to about 6e3) is 10^3 to 10^6 times s
 - Precision: double-precision interval arithmetic suffices. The smallest h-set half-width is 4.8e-8 against coordinates of size 0.4,
   and round-off amplified by the largest expansion (about 6e3) is below 1e-12 in c, while the margins are 3e-5 in c1 (13 times
   w_A) and 5e-4 in c2: 7 orders or more. The strong contraction
-  (1e-13) is handled by Lohner's QR representation and needs no extra precision.
+  (1e-37 and smaller) is handled by Lohner's QR representation and needs no extra precision.
 - Box counts (first-order enclosure, `code/cost.py`): per covering relation 3 to 12 boxes per exit face and 22 to 54 interior boxes, from
   sampled bounds on the first and second derivatives in chart coordinates and the margins (13 to 594 in xi on the faces, 0.17 to 0.20 in eta).
   With a safety factor of 10 to 100 for enclosure overestimation, 10^3 to 10^4 C^1 integrations of one return in total.
@@ -322,7 +326,7 @@ same integrator.
   Enclosures of boxes near its right face pass close to lap 3 (slope 2.6e7). Keeping w_B at 0.3 of the gap leaves margin, and the
   image of the right face is at xi' < -38.9 against -1, but the boxes near the top will need subdivision.
 - **The eta margin is 0.17.** Overestimation in the stable direction must stay below 0.17 x 2.8e-3 = 4.8e-4 in c2. That is generous for
-  first-order enclosures, but the zeta direction's contraction (1e-13) must be handled by the QR step and not by naive intervals.
+  first-order enclosures, but the zeta direction's contraction (1e-37 and smaller) must be handled by the QR step and not by naive intervals.
 - **The polynomial z_B** is only a fit (3e-10) to the zero curve; the proof does not need it to be exact, since the h-set is defined by
   the polynomial. But w_B is 4.8e-8 at the top, so the fit error is 0.6% of the width there.
 - **Parameter window.** The construction works for J in about [7.8605, 7.862] (with this window design; 7.863 is borderline). A proof at a single J
@@ -335,7 +339,31 @@ same integrator.
 
 ## 11. Independent check
 
-Pending: an independent subagent is reproducing the key numbers with its own code and a different integrator and trying to refute the covering relations.
+The independent check (`check/`, its own model, hand-written Jacobian, a Gragg-Bulirsch-Stoer extrapolation integrator of order 12
+compiled with numba, spot checks with scipy Radau at rtol 1e-12; nothing imported from `code/`; full report `check/CHECK.md`)
+reproduced every claim within float64 limits, and could not refute the covering relations. Its noise floor: about 1e-9 in u at a
+fixed time, 1e-9 ms in return times, 1e-12 in the gates on the section.
+
+- E_l, J*: identical. A, B, C: agree to 4.5e-14, 2.1e-15, 5.5e-15; periods of A, B to 1.1e-9 and 5.4e-9 ms; multipliers of A, B to
+  1e-8 relative. C's multipliers vary over six integrator settings (2.814e7 to 2.819e7; 4.5e-4 to 5.1e-4).
+- p1, p2 with u increasing: |P(p1) - p1| = 1.975e-9 with both of its integrators; |P(p2) - p2| = 2.5e-7 to 9e-7 (noise). With u
+  decreasing: residuals 0.13 and 0.29, confirming that the text's direction is wrong.
+- Branch: F1 at 7.8465708, PD1 at 7.8495611 (both agree); the upper fold between 7.9220084 and 7.9220086 against our 7.9220092 (a
+  difference of 7e-7, from locating a fold on a branch with multipliers of 3e3). It confirmed the short complex segment near it.
+- Covering: all four relations hold on about 400,000 sampled returns (faces, corners, eta endpoints, zeta = +-1, random points, edge
+  strips, continuity lines). The smallest exit-face margin is |xi'| - 1 = 12.9 (N_B left face into N_A); the images have eta' in
+  [0.00745, 0.79526] (N_A) and [-0.83214, -0.30576] (N_B), |zeta'| <= 0.0353. No firing on the h-sets (max u 13.70 and 15.73 mV),
+  min du/dt at arrival 1.26, no local extremum of u within 6.3 mV of the section, images strictly monotone along every tested line,
+  N_B's right face about 2.3 widths inside the non-firing region, the same verdict from rtol 1e-8 to 1e-13, Radau agreeing to 1.1e-10.
+- The 71 cycles: recomputed from the (xi, eta) locations; first points agree with ours to 2.2e-13, all inside their h-sets, periods to
+  3.2e-7 ms.
+- Threshold: the same switch counts 1, 3, 5, 9 for 10^2 to 10^5 points (also at rtol 1e-11); 8 of 9 switch locations confirmed with
+  Radau on both sides; the ninth (u = 4.500040292) has structure below 1e-8 mV, consistent with more switches at finer grids.
+- Two corrections, both applied above: p1 is good to about 8 digits, not 14; the third multipliers of A and B (and the third
+  Lyapunov exponents) were float64 roundoff and are now given from Liouville's formula.
+
+Verdict (the checker's): everything reproduces within float64 limits apart from those two corrections; the covering relations survive
+every refutation attempt with large margins, but rest on finite floating-point sampling, and only an interval computation makes them a proof.
 
 ## 12. How to rerun
 

@@ -2,7 +2,7 @@
 NOT RIGOROUS) test of the Zgliczynski-Gidea covering relations between them.
 
 Section: u = 4.5 crossed with u increasing (G&O's p1 and p2 lie there). Coordinates on the section: c = E^{-1}
-(x - A), x = (m, n, h), where A is the fixed point of orbit A (Floquet multipliers ~ +33, 0.28, ~1e-13) and E the
+(x - A), x = (m, n, h), where A is the fixed point of orbit A (Floquet multipliers ~ +33, 0.28, and a strong-stable one below float64 resolution) and E the
 real eigenvectors of DP(A) sorted by modulus: c1 unstable, c2 weak stable, c3 strong stable.
 
 The return map is a three-lap map along c1 (at fixed c2): lap 1 through A (increasing), lap 2 through B
