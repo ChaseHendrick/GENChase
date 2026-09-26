@@ -1,0 +1,29 @@
+data/cert_kite.json: family three-kite, [-0.13378, -0.0001], 983 boxes {'CERTIFIED': 983}
+  tiling gaps/overlaps: none
+  certified  [-0.133780000000, -0.000100000000]
+  ratio w1/w2 over certified boxes: [1.000690, 1.067312]
+  sign of D over certified boxes (+ means lower bound > 0): {'+': 983}
+  D / w1^3 enclosures: min lower 1.834, max upper 1.531e+05
+  J0 range: [0.488872, 0.499994]
+data/cert_collinear.json: family three-collinear, [-0.95, -0.85642], 12542 boxes {'CERTIFIED': 12536, 'REFUSED': 6}
+  tiling gaps/overlaps: none
+  certified  [-0.950000000000, -0.883959270935]
+  certified  [-0.883959270782, -0.868997008209]
+  certified  [-0.868997008057, -0.868387759552]
+  certified  [-0.868387758942, -0.856420000000]
+  refused    [-0.883959270935, -0.883959270782]  width 1.53e-10  resonance of order <= 4 not excluded (monomial (0,
+  refused    [-0.868997008209, -0.868997008057]  width 1.53e-10  Arnold determinant D != 0 not certified
+  refused    [-0.868387759552, -0.868387759247]  width 3.05e-10  Arnold determinant D != 0 not certified
+  refused    [-0.868387759247, -0.868387759094]  width 1.53e-10  resonance of order <= 4 not excluded (monomial (0,
+  refused    [-0.868387759094, -0.868387758942]  width 1.53e-10  Arnold determinant D != 0 not certified
+  ratio w1/w2 over certified boxes: [1.015665, 14.764825]
+  sign of D over certified boxes (+ means lower bound > 0): {'+': 12440, '-': 96}
+  D / w1^3 enclosures: min lower -2.482e+07, max upper 2.577e+07
+  J0 range: [0.0377101, 0.111076]
+data/cert_collinear_ext.json: family three-collinear, [-0.96, -0.95], 6658 boxes {'CERTIFIED': 6658}
+  tiling gaps/overlaps: none
+  certified  [-0.960000000000, -0.950000000000]
+  ratio w1/w2 over certified boxes: [14.748399, 20.940325]
+  sign of D over certified boxes (+ means lower bound > 0): {'+': 6658}
+  D / w1^3 enclosures: min lower 8.692e-05, max upper 0.4092
+  J0 range: [0.0301133, 0.0377105]

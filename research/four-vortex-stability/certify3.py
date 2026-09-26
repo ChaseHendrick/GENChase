@@ -4,6 +4,12 @@ Taylor coefficients and the normal form in second-order centred forms (cf.CF2), 
 enclosures are c0 + c1 t + d2 t^2/2 with c0, c1 thin (computed at t = 0) and d2 over the box.
 
 v*'(0): thin solve of DF v1 = -F_m at (v0, m0).
+R-enclosure argument: F is evaluated in CF2 with input value box X (range), first-derivative
+box P and second derivative 0.  The d2 field of the output is then, by the second-order chain
+rule applied to enclosures, an enclosure of D2F(v, t)[p, p] + 2 dF_v/dm(v, t) p + F_mm(v, t) for
+all v in X, p in P, t in T (the straight line s -> (v + p s, t + s) has zero second derivative,
+so the chain rule for it gives exactly this expression); in particular it contains the value at
+(v*(t), v*'(t), t).
 v*''(t): differentiate F(v*(t), m0 + t) = 0 twice:
     DF v'' = -R,  R = D2F[v', v'] + 2 dF_v/dm v' + F_mm   at (v*(t), t),
 R is enclosed by evaluating F in CF2 with inputs (value box X, derivative box P, second
@@ -64,7 +70,7 @@ def linear_inclusion(base, Cb, guess, n):
     raise Refused('linear inclusion failed', {})
 
 
-def certify_box(fam, m0, h):
+def certify_box(fam, m0, h, enclosure_only=False):
     t0 = time.time()
     rec = dict(m=[m0 - h, m0 + h])
     free = getattr(fam, 'free', (0, 1, 2, 3))
@@ -115,6 +121,16 @@ def certify_box(fam, m0, h):
         if not ok:
             raise Refused('parametric Krawczyk failed', {})
         rec['W'] = rho
+        # consistency: the thin zero v0 at m0 must lie in p(0) + W, the box in which the
+        # parametric Krawczyk step proved uniqueness at t = 0; then v0 and the branch v*(t)
+        # describe the same equilibrium, so the centred forms below (c0 from v0, ranges from
+        # p(t) + W) refer to one function of t.
+        for i in free:
+            if not (v0[i].lower() >= (pc[i].c + W).lower() and v0[i].upper() <= (pc[i].c + W).upper()):
+                raise Refused('thin zero not inside the parametric Krawczyk box', {})
+        if enclosure_only:
+            rec['status'] = 'CONSISTENT'
+            return rec
         # 3. derivative of the equilibrium: F_m over the box (m derivative only)
         Xm = [CF(pc[i].best() + W, pc[i].best() + W, arb(0)) if i in free else CF.const(arb(0)) for i in range(4)]
         Fm_cf, _, _ = F_and_DF(Gcf, Xm, RC, SP5)
@@ -203,7 +219,7 @@ def certify_box(fam, m0, h):
     return rec
 
 
-def certify_interval(fam, lo, hi):
+def certify_interval(fam, lo, hi, enclosure_only=False):
     """Certify the closed interval [lo, hi] (floats, exact): m0 = rounded midpoint, h rounded
     up so that [m0 - h, m0 + h] (exact) contains [lo, hi]."""
     import math
@@ -213,7 +229,7 @@ def certify_interval(fam, lo, hi):
     h = float(he)
     while Fr(h) < he:
         h = math.nextafter(h, math.inf)
-    r = certify_box(fam, m0, h)
+    r = certify_box(fam, m0, h, enclosure_only)
     r['lo'], r['hi'], r['m0'], r['h'] = lo, hi, m0, h
     return r
 

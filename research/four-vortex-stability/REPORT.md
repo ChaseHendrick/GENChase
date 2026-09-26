@@ -165,8 +165,8 @@ and a continuation scan):**
 | zero of D | m = −0.8689970082 (a sign change) | none (D/ω1³ ≥ 1.8) |
 
 The Rhombus A frequencies are in Ohsawa's Proposition 6.2. The survey found no other linearly
-stable (1, 1, m, m) equilibrium with m in (−1, 0), sampled at 19 values of m with 1500 random
-Newton starts each. (1, 1, m, m) with m < −1 is (1, 1, 1/m, 1/m) after a rescaling of time.
+stable (1, 1, m, m) equilibrium with m in (−1, 0), sampled at 17 values of m with 1500 random
+Newton starts each (`data/survey.txt`). (1, 1, m, m) with m < −1 is (1, 1, 1/m, 1/m) after a rescaling of time.
 
 ## 3. The theorem and its proof
 
@@ -174,11 +174,17 @@ Newton starts each. (1, 1, m, m) with m < −1 is (1, 1, 1/m, 1/m) after a resca
 (1, 1, 1, m). For every m in the sets below, the relative equilibrium z0(m) is orbitally stable
 (Lyapunov stable modulo rotations). That is: for every ε > 0 there is δ > 0 such that every
 solution with |z(0) − z0| < δ exists for all t in R and satisfies
-dist(z(t), {e^{iθ} z0 : θ ∈ R}) < ε for all t (z0 centred at its centre of vorticity).
-* (a) z0(m) is the collinear Group I relative equilibrium, and m ∈ [−0.96, −0.85642] \ E, where E
-  is the union of the three closed intervals listed in Section 5 (total length below 1e-8). Each
-  contains exactly one of the points m ≈ −0.8839592708 (1:3), −0.8689970082 (D = 0) and
-  −0.8683877592 (1:2). The "exactly one" part is numerical and is not needed for the theorem.
+dist(z(t), {e^{iθ} z0 : θ ∈ R}) < ε for all t (z0 centred at its centre of vorticity). This is
+stability modulo rotations; translations are handled because the centre of vorticity is
+conserved and moves by at most O(δ). The circulations are fixed; perturbations of position are
+arbitrary: they may change the angular impulse, the energy and the centre of vorticity.
+* (a) z0(m) is the collinear Group I relative equilibrium, and m ∈ [−0.96, −0.85642] \ E, with
+  E = [−0.883959270935, −0.883959270782] ∪ [−0.868997008209, −0.868997008057] ∪
+      [−0.868387759552, −0.868387758942]
+  (endpoints are the exact binary floats printed by `summarize.py`, total length 9.2e-10). The
+  three intervals contain respectively the 1:3 resonance (m ≈ −0.8839592708), the zero of D
+  (m ≈ −0.8689970082) and the 1:2 resonance (m ≈ −0.8683877592). That each contains exactly one
+  such point is numerical and is not needed for the theorem.
 * (b) z0(m) is the convex kite relative equilibrium, and m ∈ [−0.13378, −0.0001].
 
 In both cases the reduced quadratic form is indefinite, so a Dirichlet (energy) argument on the
@@ -234,15 +240,61 @@ reduced space does not apply.
   K4 = H4 + ½{H3, W3} and its resonant part A τ1² + B τ1τ2 + C τ2². Every inequality is decided
   on enclosures. Floating-point numbers enter only as predictors, preconditioners and a choice of
   column, which do not affect validity.
+* **Consistency.** The thin enclosure v0 at m0 lies inside p(0) + W, the box where the
+  parametric step proved uniqueness. So the exact values at t = 0 and the ranges over the box
+  describe one equilibrium branch. This assertion was added after the referee pointed out that it
+  was missing. It is now in `certify3.py`, and `check_consistency.py` reran it on all 20,177
+  certified boxes: 0 failures.
+* **Why the enclosure of R is valid.** F is evaluated in CF2 with value box X, derivative box P
+  and zero second derivative. The d2 field then encloses D²F(v,t)[p,p] + 2 ∂_m DF(v,t) p +
+  F_mm(v,t) for all v ∈ X, p ∈ P and t ∈ T: it is the second-order chain rule along the straight
+  line s ↦ (v + p s, t + s).
 * Arb precision is 160 bits. A refused box is split until its width is 1e-10.
 
-## 4. Controls (`controls.py`)
+## 4. Controls (`controls.py`, output in `data/controls.log`)
 
-[filled in below after the final runs]
+All 11 expectations hold:
+* collinear m = −0.85 (complex quartet) is refused;
+* kite m = −0.2 (past its Krein collision) is refused;
+* boxes containing the 1:2 resonance, the 1:3 resonance and the zero of D are each refused with
+  the matching reason (resonance monomials ξ2^0 η1 ... (0,1,0,2) and (0,1,0,3); "Arnold
+  determinant");
+* the boxes at m* and at the kite end point are refused;
+* Rhombus A at γ = −0.1 comes out DEFINITE: its reduced H2 is definite, so Ohsawa's case also
+  follows from Dirichlet's argument on the reduced space. This is consistent with his
+  energy-Casimir proof;
+* Rhombus A at γ = −0.3 (unstable) is refused;
+* interior boxes of both families are CERTIFIED.
 
-## 5. Certificates
+The referee's mutation tests (Section 7) show which bugs the controls and the integration
+check catch:
+* dropping the 1/2 in K4, flipping the sign of W3, or using 2B in D: the D = 0 control fails and
+  the Biot-Savart check disagrees;
+* a 1e-6 perturbation of one circulation inside the Hamiltonian: only the independent
+  re-derivation catches it;
+* forcing the Krawczyk inclusion to pass: no numerical check can catch it; that part rests on
+  code review.
 
-[filled in below after the final runs]
+## 5. Certificates (`data/cert_*.json`, `data/summary.txt`)
+
+Each box records its exact float endpoints `lo` and `hi`, the certified interval
+[m0 − h, m0 + h] ⊇ [lo, hi], and outward-rounded bounds for ω1, ω2, the ratio, A, B, C, D,
+D/ω1³ and J0.
+
+| file | interval | boxes | certified | refused | ratio ω1/ω2 | D | J0 |
+|---|---|---|---|---|---|---|---|
+| cert_collinear_ext.json | [−0.96, −0.95] | 6658 | 6658 | 0 | [14.748, 20.940] | > 0 in every box | [0.0301, 0.0377] |
+| cert_collinear.json | [−0.95, −0.85642] | 12542 | 12536 | 6 (the set E) | [1.0157, 14.765] | > 0, except < 0 on the 96 boxes between the D = 0 cluster and the 1:2 cluster | [0.0377, 0.1111] |
+| cert_kite.json | [−0.13378, −0.0001] | 983 | 983 | 0 | [1.00069, 1.06731] | > 0 in every box | [0.4889, 0.49999] |
+
+* The tiling is exact in all three files: consecutive `hi` equals the next `lo`, and the ends
+  match the interval. This was checked by `summarize.py` and independently by the referee in
+  exact rationals.
+* Wall time on 4 cores: 25 min for the main collinear file, 16 min for the extension, 2 min for
+  the kite.
+* A preliminary collinear run, made before the exact-tiling bookkeeping, left float gaps of
+  about 1e-16 between boxes (found by the referee). It is superseded and is not used.
+* The sign of D does not matter to Arnold's theorem; only D ≠ 0 does.
 
 ## 6. Rigorous versus numerical
 
@@ -254,7 +306,7 @@ reduced space does not apply.
 | the certified collinear branch is the Menezes-Roberts Group I solution | from the literature (their Thm 2.11: one solution per ordering) plus our enclosure of a collinear solution with that ordering |
 | each exceptional interval contains exactly one resonance or zero of D | numerical (floating-point bisection of sign changes) |
 | linear stability ranges (−1, m*), (m_K, 0); values of m*, m_K | numerical here (floating point); (−1, m*) is Menezes-Roberts's theorem |
-| stability on (−1, −0.96) and (−0.85642, m*) of the collinear family, (m_K, −0.13378) and (−0.0001, 0) of the kite | **not established**; numerically D ≠ 0 and no low-order resonance there, but the certificate was not run (near m → −1 the two close vortices force boxes below 1e-8) |
+| stability on (−1, −0.96) and (−0.85642, m*) of the collinear family, (m_K, −0.13378) and (−0.0001, 0) of the kite, and at the three points in E | **not established**. On the end intervals the floating-point computation shows D ≠ 0 and no low-order resonance, but no certificate was run: near m → −1 the two close vortices force boxes below 1e-8. At the resonances and at D = 0, Arnold's theorem does not decide; higher-order theorems (Markeev-type, for the 1:2 and 1:3 cases) would be needed. |
 | only Rhombus A is linearly stable among mixed-sign (1,1,m,m) | numerical (multistart survey), not a proof |
 | Biot-Savart integration agrees with A, B, C, D | numerical check of the algebra (Section 7) |
 
@@ -274,7 +326,50 @@ two normal-mode angles are measured, and the fit ∂H/∂τ1 = s1 ω1 + 2A τ1 +
 | −0.88 collinear (near 1:2) | 14.143 | 14.052 | 13.313 / 13.347 | 3.052 / 2.895 | 8.673 / 8.675 |
 | −0.05 kite | 478.63 | 476.42 | 1.603 / 1.559 | 11.835 / 11.696 | 93.016 / 92.830 |
 
-**Adversarial referee.** [filled in below]
+**Adversarial referee (independent subagent; full report `referee/VERDICT.md`, its code
+`referee/indep.py`).** Verdict: **"confirmed with corrections"**.
+
+What the referee did:
+* **(A) Independent normal form.** It re-derived the normal form with code that shares nothing
+  with this project:
+  * the equilibria come from the Kirchhoff condition;
+  * a different Jacobi tree and a different rotation gauge;
+  * Taylor coefficients by mpmath differentiation at 60 digits;
+  * a real-coordinate homological equation;
+  * the actions-only part by exact torus averaging.
+
+  ω1, ω2, the ratio, A, B, C, D, D/ω1³ and J0 agree to 10 significant digits at m = −0.9,
+  −0.87, −0.93 (collinear) and −0.05, −0.1 (kite). It confirmed that D is exactly one half of
+  Meyer-Hall-Offin's determinant, with the same sign and the same zero set.
+* **(B) Audit.** It judged valid:
+  * the rotation reduction and its symplecticity;
+  * the symmetric-subspace reductions;
+  * the centred-form rules, including the t²/2 interval;
+  * the parametric Krawczyk operator and the enclosures P and Q;
+  * the preconditioner;
+  * that every Arnold hypothesis is decided on balls;
+  * the scaling step.
+* **(C) Reruns.** `controls.py` passed. It re-verified sampled boxes of both final certificates,
+  including the neighbours of each refused cluster, and checked the exact tiling.
+* **(D) Mutation tests.** Results are in Section 4.
+* **(E) Prior art.** It re-read the sources and found no prior proof for either family.
+
+Its corrections, and what was done:
+1. Do not use the preliminary run, which had float gaps. Done: removed from the tree.
+2. Regenerate the kite file in the loss-free format. Done: the committed `cert_kite.json` was
+   produced by the final code.
+3. Assert that v0 lies inside p(0) + W. Done: added to `certify3.py` and checked on all
+   20,177 certified boxes (`data/consistency.log`).
+4. Document the argument for the enclosure of R. Done: in the `certify3.py` docstring and
+   Section 3.
+5. State the stability notion precisely and list the open points. Done: Section 3 and
+   Section 6.
+6. Put the Ohsawa quote in context: it concerns the (1,1,m,m) families. Done: Section 1. Cite
+   Kurakin-Ostrovskaya 2021. Done.
+
+The extension file `cert_collinear_ext.json` was finished after the referee stopped. Its
+tiling, D > 0 and consistency were checked here with the same scripts; the referee did not
+review it.
 
 ## 8. Reproduce
 
