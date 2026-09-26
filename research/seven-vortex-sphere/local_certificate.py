@@ -234,7 +234,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     F, T = model.taylor(4)
     if perturb:
         for m, c in perturb.items():
-            assert sum(m) >= 3
+            assert sum(m) >= 2
             F[m] = F.get(m, K(0)) + c
             if F[m].is_zero():
                 del F[m]
@@ -306,6 +306,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
             f[(0, 1)] = N[i][1]
         formsN.append(f)
     F3N = subst(Fk[3], formsN, 2)
+    res["_internal"] = {"Ncol": Ncol, "Ccol": Ccol}
     if F3N:
         log("[E3] cubic on the kernel is not zero: not a local minimum")
         res["reason"] = "cubic on kernel"
@@ -344,6 +345,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     if min(samples) <= 0:
         log("[R1] effective quartic is not positive definite (min %.4g): the test fails" % min(samples))
         res.update(reason="quartic not positive definite", q_min=min(samples))
+        res["_internal"]["q"] = q
         return res
     if any(m[0] % 2 or m[1] % 2 for m in q):
         res["reason"] = "quartic has odd terms; exact positivity test not implemented"
@@ -665,6 +667,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
         with open(out, "w") as fh:
             json.dump(res, fh, indent=1)
         log("wrote %s (%.0fs)" % (out, time.time() - tstart))
+    res["_internal"] = {"Ncol": Ncol, "Ccol": Ccol, "q": q}
     return res
 
 
