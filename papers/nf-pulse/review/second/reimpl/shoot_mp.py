@@ -156,6 +156,7 @@ def orbit(c, T=None, classify=False, amax=mpf('5e-3')):
     rest = [mpf(0), S0, S0, mpf(0)]
     t = mpf(0)
     exc = False
+    back = False
     while True:
         xn, h = tstep(x, k)
         if T is not None and t + h > T:
@@ -168,7 +169,9 @@ def orbit(c, T=None, classify=False, amax=mpf('5e-3')):
         x = xn; t += h
         if x[0] > mpf('0.5'):
             exc = True
-        if classify and exc and t > 20:
+        if exc and not back and max(abs(x[i] - rest[i]) for i in range(4)) < mpf('0.05'):
+            back = True   # returned near rest after the excursion
+        if classify and back:
             a = sum(w[i] * (x[i] - rest[i]) for i in range(4))
             if abs(a) > amax:
                 return (1 if a > 0 else -1), float(t)
