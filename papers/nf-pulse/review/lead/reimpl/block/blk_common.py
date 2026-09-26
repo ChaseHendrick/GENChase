@@ -163,11 +163,11 @@ def advance8(y, d, z, kap0, w, hmax=fmpq(1, 2), hcap=None):
     tube = [cen[i] + arb(0, eta[i]) for i in range(4)]
     return y1, d1, z1, h, tube
 
-def kappa_set(clo, chi, pad=fmpq(1, 2**330)):
+def kappa_set(clo, chi, pad=fmpq(1, 2**310)):
     """exact dyadic centre kap0 and half width w with [kap0 - w, kap0 + w] containing [1/chi, 1/clo]."""
     klo, khi = 1 / chi, 1 / clo
     m = (klo + khi) / 2
-    kap0 = fmpq(int((m * 2**330).floor()), 2**330)
+    kap0 = fmpq(int((m * 2**300).floor()), 2**300)       # exact at prec 320
     w = max(khi - kap0, kap0 - klo) + pad
     return kap0, w
 
@@ -259,5 +259,7 @@ def start_kappa_set(clo, chi, log=print, Lexp=150, rbexp=315, dexp=166):
     assert arb(delta) <= ra
     y0 = [arb(T0[i][0] * delta) for i in range(4)]
     d0 = [arb(T1[i][0] * delta) for i in range(4)]
-    z0 = [arb((sum(abs(Tb[i, j]) for j in range(1, 4)) * L * arb(delta)).upper()) for i in range(4)]
+    z0 = [arb((sum(abs(Tb[i, j]) for j in range(1, 4)) * L * arb(delta)
+               + y0[i].rad() + arb(w) * d0[i].rad()).upper()) for i in range(4)]
+    y0 = [arb(v.mid()) for v in y0]; d0 = [arb(v.mid()) for v in d0]   # exact centres
     return y0, d0, z0, kap0, w

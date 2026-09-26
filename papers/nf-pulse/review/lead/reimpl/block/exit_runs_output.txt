@@ -10,4 +10,4 @@
   c1: t=174.2500 a in [-0.001849505717 +/- 8.84e-14]  |b|_2 <= 0.004738
   c1: t=174.7500 a in [-0.003011269475 +/- 1.87e-13]  |b|_2 <= 0.004458
   c1: t=175.1250 a in [-0.004338821278 +/- 4.16e-13]  |b|_2 <= 0.004261
-  c1: at T' = 175.1250 (1401/8) the state is in K- inside N; all 41 step tubes on (T, T'] inside N.  Expected K-: YES   (939 steps, 45 s)
+  c1: at T' = 175.1250 (1401/8) the state is in K- inside N; all 41 step tubes on (T, T'] inside N.  Expected K-: YES   (939 steps, 42 s)
