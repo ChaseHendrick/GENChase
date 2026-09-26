@@ -413,9 +413,12 @@ def split(X, splits):
             rho0 = arb(P.R0[col].abs_upper())          # R0[col] = [-rho0, rho0]; pieces off_m rho0 + [-rho0/k, rho0/k]
             assert bool(P.R0[col].lower() >= -rho0) and k in (1, 2, 4, 8)
             # coverage: consecutive pieces touch and the outer ones reach -rho0 and rho0 (exact arithmetic)
-            offs = [arb(fmpq(2 * m + 1 - k, k)) * rho0 for m in range(k)]
-            assert offs[0] - rho0 / k <= -rho0 and offs[-1] + rho0 / k >= rho0
-            assert all(offs[m] + rho0 / k >= offs[m + 1] - rho0 / k for m in range(k - 1))
+            # in units of rho0 the pieces are (2m + 1 - k)/k + [-1/k, 1/k]: check exactly (rationals) that they
+            # start at -1, end at 1 and touch; the rounding of the shifted centres goes into R below
+            cq = [fmpq(2 * m + 1 - k, k) for m in range(k)]
+            assert cq[0] - fmpq(1, k) == -1 and cq[-1] + fmpq(1, k) == 1
+            assert all(cq[m] + fmpq(1, k) >= cq[m + 1] - fmpq(1, k) for m in range(k - 1))
+            offs = [arb(q) * rho0 for q in cq]
             for m in range(k):
                 off = offs[m]
                 xb, R = [], list(P.R)
