@@ -56,11 +56,13 @@ were chosen for illustration in [4]", i.e. Faye). His reference [4] reads "Siam 
 - Faye and Scheel, arXiv:1311.6508v1: Theorem 1 is for the nonlocal FitzHugh-Nagumo equation (their (1.4)), with
   linear recovery, "for every sufficiently small eps > 0", under (H1)-(H3); (H3) assumes a front and a back of equal
   speed with the back at "0 < v = v* < v_max". They note it applies to neural fields with linear adaptation (their
-  (1.6)). It does not treat synaptic depression, and Hastings (Sect. 4.3) explains why the back at the knee falls outside
-  such hypotheses.
+  (1.6)). It does not treat synaptic depression. Hastings (Sect. 4.3) discusses Faye and Scheel's hypothesis that the
+  jump down occurs above the knee for the Pinto-Ermentrout model; that the same hypothesis fails for Faye's model, where
+  the back is at the knee (Faye's Hypothesis 3.1), is our inference, not a statement of Hastings.
 
 So for Faye's parameter values, existence was known only for eps "sufficiently small", with no explicit bound (Faye:
-under an unverified hypothesis; Hastings: unconditionally). Hastings proposed a computer-assisted check at a fixed eps
+under his Hypotheses 2.1, 2.2 and 3.1, the last not verified rigorously for these values; Hastings: without Hypothesis
+3.1, under his Conditions 1-5). Hastings proposed a computer-assisted check at a fixed eps
 and did not carry it out. The result below is such a check, done by a different route from his Theorem 2: it does not
 verify his hypotheses, it closes the orbit with an isolating block at rest and a Wazewski-type argument in c, and it
 gives one pulse (the fast one), not two.
@@ -114,7 +116,13 @@ the Taylor recursion and its gradients, and the block.
    1/c1]. The tail (n > N) lies in an l^1 ball of radius K rho with K = 1/((N+1) mu_lo - ||A||_inf) (Neumann series)
    whenever G0 + Z(K rho) <= rho, with G0 the exact tail of the nonlinearity of the polynomial part and Z a
    Banach-algebra bound; this is checked in ball arithmetic. The 5D rest point has an extra eigenvalue 0 (the Y
-   direction), which does not resonate with n mu.
+   direction), which does not resonate with n mu, so every coefficient is determined; `validate` also asserts that
+   (n mu - A) a_n - N_n contains 0 for every n <= N, with N_n taken from the polynomial products used for the tail.
+   The series converges for |t| <= 1 uniformly in kappa, so c -> P_c(theta0) is continuous. It is the unstable manifold
+   of the 4D system: along the orbit through P_c(theta0), G = Y - S(u) satisfies G' = lambda (1 - Y - S(u)) u' G, whose
+   coefficient is integrable as xi -> -infinity (u' decays exponentially there), and G -> 0 backward, so G = 0: the
+   orbit lies on the invariant surface Y = S(u) and projects to the one-dimensional unstable manifold of rest in the 4D
+   system (unique, since the unstable eigenvalue is simple), on the branch where u increases.
 2. **Integration** (`lohner.py`): the C^0-Lohner interval Taylor integrator of `papers/nf-pulse/code/lohner.py`, with
    the Taylor recursion of this model and its forward-mode gradients (tested against finite differences in
    `test_jacobian.py`, and the whole integrator against mpmath's `odefun` on the original 4D system in `test_lohner.py`).
@@ -135,7 +143,8 @@ the Taylor recursion and its gradients, and the block.
    lambda_max) < 0: such boundary points are strict entrance points. (c) An orbit that stays in B for all later xi has
    L increasing and bounded, so the integral of m |y|^2 is finite, and with y' bounded, y -> 0 (Barbalat): it
    converges to x*.
-5. **Shooting** (`prove_pulse.py`). For c in I = [c1, c2] let x_c be the orbit through the enclosed manifold point.
+5. **Shooting** (`prove_pulse.py`). For c in I = [c1, c2] let x_c be the orbit through P_c(theta0), with sigma and
+   theta0 fixed in `config.py` and the same in all three runs (so the family of start points is continuous in c).
    Rigorous runs show: (i) x_c(T) is in int B for every c in I (one Lohner run with c as a sixth variable); (ii) the
    orbit at c1 stays in int B on [T, t1] (every step range checked) and reaches the open cone K(s1) = {L > 0, s1 y1 > 0};
    (iii) the orbit at c2 does the same and reaches K(s2), s2 = -s1. Let Omega_s = {c in I : x_c([T, t]) is in int B and

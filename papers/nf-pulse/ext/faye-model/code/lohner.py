@@ -268,13 +268,20 @@ def step(X, h, order):
     return LohnerSet(xbar2, C2, X.R0, B2, R2), W
 
 
+def _log_abs(x):
+    a = arb(x.abs_upper())
+    return float(a.log().mid()) if a > 0 else -1e300
+
+
 def choose_h(x, order, tol, hmax):
+    """Step-size heuristic (not part of the rigour: every step is validated).  Computed with logarithms, because at
+    high order the Taylor coefficients can overflow a double (the base version used plain floats)."""
     vals = taylor_vals(x, order)
-    m = 0.0
+    lm = -1e300
     for i in range(5):
-        m = max(m, abs(float(vals[i][order].mid())), abs(float(vals[i][order - 1].mid())) ** (order / (order - 1.0)))
-    m = max(m, 1e-300)
-    return min(hmax, (tol / m) ** (1.0 / order))
+        lm = max(lm, _log_abs(vals[i][order]), _log_abs(vals[i][order - 1]) * (order / (order - 1.0)))
+    lm = max(lm, -690.0)
+    return min(hmax, math.exp((math.log(tol) - lm) / order))
 
 
 def integrate(X, T_end, order=30, tol=1e-40, hmax=0.5, callback=None, t0=0.0, max_steps=100000):

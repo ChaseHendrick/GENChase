@@ -179,10 +179,19 @@ def validate(kappa, mu, sigma, N):
     Nw = qY * (-b2)
     Nq = qY * (-eps * kappa * beta)
     NY = (pY * pm * (1 - 2 * Y0) - pY * pY * pm) * (lam * kappa)
+    # consistency: for 2 <= n <= N the recursion must satisfy (n mu - A) a_n = N_n(abar), with N_n taken from the
+    # polynomial products below; every residual ball must contain 0
+    A_ = jac5(kappa, rest)
+    Ncoef = [[arb(0)] * (N + 1), [arb(0)] * (N + 1)] + [list(P.coeffs()) + [arb(0)] * (N + 1) for P in (Nw, Nq, NY)]
+    Ncoef = [Ncoef[0], Ncoef[1], Ncoef[2], Ncoef[3], Ncoef[4]]
+    for n in range(2, N + 1):
+        for i in range(5):
+            res_ = n * mu * a[n][i] - sum((A_[i][j] * a[n][j] for j in range(5)), arb(0)) - Ncoef[i][n]
+            if not res_.contains(0):
+                return False, a, None, {'reason': 'recursion inconsistent at n = %d, component %d' % (n, i)}
     G0 = arb(0)
     for P in (Nw, Nq, NY):
         co = P.coeffs()
-        # consistency: coefficients n <= N are those used in the recursion (checked in the self-test)
         for n in range(N + 1, len(co)):
             G0 += abs_up(co[n])
     norm = lambda seq: sum((abs_up(x) for x in seq), arb(0))

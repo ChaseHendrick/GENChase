@@ -29,7 +29,8 @@ python3 block_check_iv.py > $L/run_all_block_iv_$TAG.log 2>&1
 check "B: independent re-check of the block conditions in mpmath.iv" $L/run_all_block_iv_$TAG.log 'INDEPENDENT BLOCK CHECK CERTIFIED'
 
 python3 test_jacobian.py > $L/run_all_jacobian_$TAG.log 2>&1
-check "J: Taylor jet gradients against finite differences (a test, not part of the proof)" $L/run_all_jacobian_$TAG.log 'TEST PASS'
+check "J: Taylor jet and vector field against the recursion and finite differences (a test, not part of the proof)" $L/run_all_jacobian_$TAG.log 'TEST PASS'
+python3 test_lohner.py 1 > $L/run_all_lohner_$TAG.log 2>&1 &
 
 for w in interval c1 c2; do python3 prove_pulse.py $w > $L/final_${TAG}_$w.log 2>&1 & done; wait
 check "M: unstable manifold validated (all runs assert it)" $L/final_${TAG}_interval.log 'manifold validated'
@@ -46,6 +47,8 @@ python3 prove_pulse.py custom:$(python3 -c "import config as c; print(c.get()['c
 wait
 check "N: negative control, the orbit at c1 asked to reach the other cone, is refused" $L/negctrl_${TAG}_samebracket.log 'VERDICT FAIL'
 check "N: negative control, a speed far from the pulse speed, is refused" $L/negctrl_${TAG}_far.log 'VERDICT FAIL'
+wait
+check "I: integrator encloses an independent mpmath solution to xi = 1 and excludes one with b + 1e-20 (a test)" $L/run_all_lohner_$TAG.log 'TEST PASS'
 
 if [ $fails -gt 0 ]; then echo "$fails checks failed"; exit 1; fi
 echo "all checks passed"

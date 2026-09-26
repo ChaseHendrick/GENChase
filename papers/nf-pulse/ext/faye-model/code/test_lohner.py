@@ -18,8 +18,8 @@
 odefun on the ORIGINAL 4D system of Faye's eq. (2.8) with S(u) evaluated directly (no Y-embedding, no shared
 code).  Negative control: the same comparison against a solution with b perturbed by 1e-20 must fail, which
 shows the test can detect a wrong vector field.
-usage: FAYE_EPS=1/20 python3 test_lohner.py"""
-import time
+usage: FAYE_EPS=1/20 python3 test_lohner.py [xi_max, default 10]"""
+import time, sys
 from flint import arb, ctx, fmpq
 import config as cf
 ctx.prec = 256
@@ -58,7 +58,8 @@ if __name__ == '__main__':
     checks, badchecks = [], []
     t = 0.0
     t0 = time.time()
-    for Tc in (2, 4, 6, 8, 10):
+    TMAX = float(sys.argv[1]) if len(sys.argv) > 1 else 10
+    for Tc in [tc for tc in (1, 2, 4, 6, 8, 10) if tc <= TMAX]:
         X, tt, ns = lo.integrate(X, Tc, order=30, tol=1e-45, hmax=0.25, t0=t)
         t = float(tt.mid())
         hx = X.hull()

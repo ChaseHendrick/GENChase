@@ -21,7 +21,7 @@ usage: FAYE_EPS=1/20 python3 prove_pulse.py {interval|c1|c2|custom:<num>:<exp10>
 
  interval : integrate the box containing {(P_c(THETA0), 1/c) : c in [c1, c2]} from xi = 0 to xi = T_enter
             and check that the enclosure lies in the interior of the block B.
- c1 / c2  : integrate the thin orbit from P_c(1/4) to T_enter, check it is in int B there, continue
+ c1 / c2  : integrate the thin orbit from P_c(THETA0) to T_enter, check it is in int B there, continue
             while checking that the whole path (step ranges) stays in int B, until the enclosure lies in
             the cone K(SIDE_C1) (for c1) or K(SIDE_C2) (for c2).
 
@@ -35,6 +35,7 @@ ctx.prec = int(os.environ.get('NF_PREC', cf.get()['prec']))
 import fcore as nf, certify_rest as cr, manifold as mf, lohner as lo, block as bl
 
 THETA0 = fmpq(*[int(t) for t in os.environ.get('NF_THETA0', cf.get()['theta0']).split('/')])   # manifold parameter of the start point
+SIGMA = fmpq(*[int(t) for t in cf.get()['sigma'].split('/')])                    # manifold scaling (exact)
 NMAN = int(os.environ.get('NF_NMAN', cf.get()['nman']))                                          # manifold order
 
 
@@ -109,7 +110,7 @@ def main(which, T_enter):
         cc = arb(fmpq(int(num), 10 ** int(ex))); expect = int(sg)
     kappa = 1 / cc
     mu = mf.unstable_eig(kappa)
-    sigma = mf.choose_sigma((1 / cr.C1).union(1 / cr.C2), mu)    # exact rational 1/n
+    sigma = arb(SIGMA)                 # fixed in config.py: the same family P_c(theta0) in all runs
     ok, a, rr, minfo = mf.validate(kappa, mu, sigma, NMAN)
     assert ok, minfo
     x0 = mf.evaluate(a, rr, arb(THETA0))

@@ -85,6 +85,7 @@ def sym_hull(H):
 
 Ti = inv(T)
 rho = iv.mpf(1); r = iv.mpf(res['r_over_rho'])
+assert r.a > rho.b, 'the block lemma needs r > rho'
 ext = [abs(Ti[i][0]) * r + iv.sqrt(sum((Ti[i][j] ** 2 for j in range(1, 4)), iv.mpf(0))) * rho for i in range(4)]
 umin, umax = (u0 - ext[0]).a, (u0 + ext[0]).b
 qmin, qmax = (q0 - ext[3]).a, (q0 + ext[3]).b

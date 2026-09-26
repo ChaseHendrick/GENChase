@@ -96,6 +96,8 @@ def interval_pd(H):
 def check(T, Tinv, r, rho, kappa):
     """Certify (C) and (E) on B = {|y1| <= r, |y'| <= rho} for all kappa in the ball kappa."""
     lam, kap, beta, b, eps = fc.params()
+    if not (r > rho):                  # the block lemma needs r > rho (first-contact case |y1| = r)
+        return False, {'ok': False, 'reason': 'r > rho fails'}
     x = fc.rest_state()
     ext = extents(Tinv, r, rho)
     umin, umax = x[0] - ext[0], x[0] + ext[0]
