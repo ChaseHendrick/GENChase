@@ -9,8 +9,9 @@ At rest S'(U) = s = S'(0).  The rest operator L_inf is a Fourier multiplier; wit
     det(L_inf(k) - lam) = mu^2 + a(k) mu + eps,     a(k) = 1 - s/(1 + k^2)  in [1 - s, 1).
 Claim E: for every real k both roots mu are real and <= r(a(k)), r(a) = (-a + sqrt(a^2 - 4 eps))/2, and r(a) is
 increasing in a, so every root is < r(1) = -delta0 with delta0 = (1 - sqrt(1 - 4 eps))/2 = (1 - sqrt(3/5))/2.
-Hence for Re lam > -delta0 the symbol is invertible with |mu - root| >= Re lam + delta0 for both roots and all k, so
-L_inf - lam is invertible on X.  L - L_inf = (p, q) -> (w*((S'(U) - s) p), 0) is Hilbert-Schmidt (S'(U) - s decays
+Hence for Re lam > -delta0 the symbol is invertible with |mu - root| >= Re lam + delta0 for both roots and all k;
+since moreover |det| >= (|mu| - 1)^2 for large |k| (both roots lie in [-1, 0]) while the adjugate grows like |mu|,
+the inverse symbol is O(1/(1 + |k|)) uniformly in k, and L_inf - lam is invertible from X onto H^1 x H^1.  L - L_inf = (p, q) -> (w*((S'(U) - s) p), 0) is Hilbert-Schmidt (S'(U) - s decays
 exponentially and w^ = 1/(1+k^2) is square integrable), hence compact; so L - lam is Fredholm of index 0 for
 Re lam > -delta0 and the spectrum there is discrete eigenvalues of finite multiplicity (analytic Fredholm theorem;
 L - lam is invertible for large real lam).  The curves lam = root(k) - i c k fill the essential spectrum; their real

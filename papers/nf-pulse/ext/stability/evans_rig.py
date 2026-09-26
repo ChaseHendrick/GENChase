@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
-"""RIGOROUS enclosures of the Evans function D(lam) of the fast pulse, for lam in a complex ball, in ball arithmetic.
+"""RIGOROUS enclosures of the Evans function of the fast pulse on complex squares of lam, in ball arithmetic.
 
 Eigenvalue ODE (see evans_num.py):  phi' = A(xi, lam) phi,  A = A_c(lam) + sigma(xi) e4 e1^T,
     A_c = [[-k(lam+1), -k, k, 0], [eps k, -k lam, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]],   sigma = -S'(U) = -beta Y (1 - Y).
-A_inf = A_c - s e4 e1^T.  nu = the eigenvalue of A_inf with Re nu > 0 (unique for Re lam > -delta0); nu_j the others,
-v_j = (1, eps k/(nu_j + k lam), -s/(nu_j^2 - 1), -s nu_j/(nu_j^2 - 1)),  w_j = (1, -k/(nu_j + k lam), k nu_j/(nu_j^2 - 1),
-k/(nu_j^2 - 1)) (right and left eigenvectors), V = [v_j], V^-1 = rows w_j^T/(w_j^T v_j).  v = v_u, w = w_u/(w_u^T v_u).
-    D(lam) = psi^+(xi)^T phi^-(xi),  phi^- ~ e^{nu xi} v (xi -> -inf),  psi^+ ~ e^{-nu xi} w (xi -> +inf),  psi' = -A^T psi.
-Pieces (each an enclosure valid for every lam in the ball and every pulse of the class of pulse_enclosure.py):
- 1. nu_j by a complex Krawczyk test on the characteristic polynomial; Re nu_u > 0 > Re nu_j, four disjoint balls.
+A_inf = A_c - s e4 e1^T.  nu = the eigenvalue of A_inf with Re nu > 0 (unique and simple for Re lam > -delta0); nu_j
+the others.  v_j = (1, eps k/(nu_j + k lam), -s/(nu_j^2 - 1), -s nu_j/(nu_j^2 - 1)) and wt_j = (1, -k/(nu_j + k lam),
+k nu_j/(nu_j^2 - 1), k/(nu_j^2 - 1)) are right and left eigenvectors, V = [v_j], V^-1 = rows wt_j^T/(wt_j^T v_j).
+The function enclosed is
+    Dt(lam) = psi^+(xi)^T phi^-(xi),  phi^- ~ e^{nu xi} v (xi -> -inf),  psi^+ ~ e^{-nu xi} wt (xi -> +inf),  psi' = -A^T psi,
+i.e. the Evans function D (normalised by w^T v = 1) times the analytic, nonvanishing factor wt^T v.
+Pieces (each an enclosure valid for every lam in the square and every pulse of the class of pulse_enclosure.py):
+ 1. nu_j by a complex Krawczyk test (centred in nu and lam; the square is split when needed); Re nu > 0 > Re nu_j,
+    four disjoint balls.
  2. Left tail (xi <= XI_MINUS): with g = S'(U) - s, G_L = int_{-inf}^{XI_MINUS} |g| <= S2 C_U t_- / lam_lo, and
     phi^- e^{-nu xi} = v + om,  |om_i| <= K_i4 G_L |v1| (1 + K14 G_L e^{K14 G_L}),  K_ij = sum_l |V_il| |V^-1_lj|
     (bounds sup_{t >= 0} |(e^{(A_inf - nu) t})_ij| because Re(nu_l - nu) <= 0; Gronwall on the Volterra equation).
- 3. xi in [XI_MINUS, T_FAR]: phi~ = e^{-nu xi} phi^- solves phi~' = (A - nu) phi~; each step's transition matrix is
-    enclosed by its Taylor polynomial (pulse Taylor coefficients on the recorded node box) plus a Lagrange remainder
-    (pulse coefficients on the recorded a priori enclosure W, matrix a priori bound e^{N h} by Gronwall), and phi~ is
-    propagated in Lohner's form phi~ = pbar + B r with B unitary (Gram-Schmidt of midpoints).
+ 3. xi in [XI_MINUS, T_FAR]: phi^ = e^{-nu_c xi} phi^-, nu_c = nu(centre), solves phi^' = (A - nu_c) phi^.  Each step's
+    transition matrix Phi(lam) and its first two lam-derivatives are enclosed (Taylor polynomial on the recorded node
+    box plus a Lagrange remainder bounded by majorant recursions on the recorded a priori enclosure), and phi^ is
+    carried as a second-order Taylor model in d = lam - centre:  pbar + C1 d + C2 d^2 + B r  (B unitary, Lohner),
+    so that only third-order terms are wrapped.
  4. Right tail (xi >= T_FAR): the pulse stays in the block B with L <= 0, so |y'| decays at rate m (block margin),
-    |U| <= K_U |y'|, G_R <= S2 K_U eta0 / m, and psi^+ e^{nu xi} = w + om~, |om~_i| <= K_1i G_R |w4| (1 + K14 G_R e^{K14 G_R}).
- 5. D = (w + om~)^T phi~(T_FAR).
+    |U| <= K_U |y'|, G_R <= S2 K_U eta0 / m, and psi^+ e^{nu xi} = wt + om~, |om~_i| <= K_1i G_R |wt_4| (1 + K14 G_R e^{K14 G_R}).
+ 5. Dt(lam) = f(lam) (wt + om~)^T phi^(T_FAR) with f(lam) = exp(-(nu(lam) - nu_c)(T_FAR - XI_MINUS)), enclosed as
+    f(lam) (Dc + D1 d + D2 d^2).
 """
 import os, sys, math, pickle, json, time
 import _paths
@@ -87,7 +92,9 @@ def load(path=None):
     # (L increases along orbits in B and tends to 0), and |U| <= K_U |y'| <= K_U eta0 there.  In the smaller block
     # |U| <= u_s the certified entrance margin (block.check, same T) gives d|y'|/dxi <= -m |y'|.
     import block as bl
-    Tb, Tbinv = bl.setup()
+    # the block matrix T stored with the records (the one eta0 was computed in), not a fresh numpy eig
+    Tb = arb_mat([[deser(v) for v in row] for row in d['T']])
+    Tbinv = arb_mat([[deser(v) for v in row] for row in d['Tinv']])
     Ti = [[deser(v) for v in row] for row in d['Tinv']]
     K_U = aup(Ti[0][0]) + arb((Ti[0][1] ** 2 + Ti[0][2] ** 2 + Ti[0][3] ** 2).sqrt().upper())
     u_s = arb((K_U * deser(d['eta0'])).upper()) * 2
@@ -431,7 +438,10 @@ def tails(lam, k, s, eps, beta):
     GR = S2(K_U * eta0) * K_U * eta0 / mrate
     eR = K14 * GR * (K14 * GR).exp()
     omt = [arb(0, (K[0][i] * GR * aup(w[3]) * (1 + eR)).upper()) for i in range(4)]
-    return {'nu': nu, 'v': v, 'w': w, 'om': om, 'omt': omt, 'K14': K14, 'GL': GL, 'GR': GR, 'm': mrate}
+    # the same bound per unit |w_4|, for other normalisations of the left eigenvector
+    omt_unit = [arb((K[0][i] * GR * (1 + eR)).upper()) for i in range(4)]
+    return {'nu': nu, 'v': v, 'w': w, 'om': om, 'omt': omt, 'omt_unit': omt_unit, 'K14': K14, 'GL': GL, 'GR': GR,
+            'm': mrate}
 
 
 def evans(lam, order=EORDER, detail=False):
@@ -479,8 +489,6 @@ def evans(lam, order=EORDER, detail=False):
     Ml = acb_mat([[-k, 0, 0, 0], [0, -k, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
     dl = lam - lc
     dl2 = dl * dl
-    # om~ bound scales with |wt_4|: recompute it for the unnormalised wt
-    wscale = aup(wt_b[3]) / aup(tb['w'][3]).lower() if deriv else aup(wt_b[3]) / arb(aup(tb['w'][3]).lower())
     # initial vector v(lam) + om, v(lam) in v(lc) + v'(ball) d
     pbar = [midv(x) for x in v_c]
     C1 = [midv(x) for x in vp_c] if deriv else [acb(0)] * 4
@@ -524,7 +532,7 @@ def evans(lam, order=EORDER, detail=False):
                     max(float(Pb[a, b].rad()) for a in range(4) for b in range(4)), max(float(Pl[a, b].rad()) for a in range(4) for b in range(4)),
                     max(float(Pll[a, b].rad()) for a in range(4) for b in range(4)), max(float(aup(Pll[a, b]).mid()) for a in range(4) for b in range(4))), flush=True)
     Br = matvec(Bm, rv)
-    omt = [acb(arb(0, (o * wscale).upper()), arb(0, (o * wscale).upper())) for o in tb['omt']]
+    omt = [acb(arb(0, (o * aup(wt_b[3])).upper()), arb(0, (o * aup(wt_b[3])).upper())) for o in tb['omt_unit']]
     wR = [wt_b[i] + omt[i] for i in range(4)]          # wt(lam) + om~ on the ball (enters only B r and om~ p terms)
     Dc = sum((wt_c[i] * pbar[i] + wR[i] * Br[i] + omt[i] * (pbar[i] + (C1[i] * dl + C2[i] * dl2 if deriv else 0)) for i in range(4)), acb(0))
     if deriv:

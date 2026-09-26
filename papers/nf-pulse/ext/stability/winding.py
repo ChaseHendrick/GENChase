@@ -5,13 +5,14 @@
     R = { -1/20 <= Re lam <= 9/2, |Im lam| <= 38/5 }       (large_lambda.py excludes eigenvalues outside R).
 
 The boundary (split into an upper and a lower half path, run separately) is covered by segments [a, b]; for each
-segment evans_rig.evans encloses D(lam) in f(lam) (Dc + Dl (lam - lc)) on the complex square with centre lc = (a+b)/2
+segment evans_rig.evans encloses Dt(lam) in f(lam) (Dc + D1 d + D2 d^2), d = lam - lc, on the complex square with centre lc = (a+b)/2
 and half-width |b-a|/2; this gives an enclosure of D on the square and sharper enclosures of D(a) and D(b).  All three
 must lie in an open half plane through 0: Re(X conj(z)) > 0 with z the midpoint of the square's enclosure.  Then the
 continuous argument change of D along the segment is  arg(D(b) conj(z)) - arg(D(a) conj(z))  (principal arguments,
 both in the half plane).  Segments that fail are halved.  The sum over the boundary, divided by 2 pi,
-must be an interval containing exactly one integer: the winding number = number of eigenvalues in R with algebraic
-multiplicity (zeros of D counted with order).
+must be an interval containing exactly one integer: the winding number = number of zeros of Dt (equivalently of D)
+in R counted with their order.  Each piece records the sha256 of evans_rig.py, winding.py and the pulse records;
+combine refuses pieces that do not agree.
 usage: python3 winding.py <piece> [nproc]   (piece: upper, lower, or right_up, top, left_up, left_down, bottom, right_down)
        python3 winding.py combine
 """
@@ -97,8 +98,16 @@ def job(task):
                     'Dc_rad': info['Dc_rad']}, None, time.time() - t
 
 
+def fingerprint():
+    import hashlib
+    h = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
+    return {'evans_rig.py': h(os.path.join(_paths.HERE, 'evans_rig.py')), 'winding.py': h(os.path.join(_paths.HERE, 'winding.py')),
+            'pulse_records.pkl': h(_paths.DATA + '/pulse_records.pkl')}
+
+
 def main(which, nproc=4, seg0=fmpq(1, 50), min_len=fmpq(1, 4000)):
     t0 = time.time()
+    fp = fingerprint()
     er.load()
     ctx.prec = er.PREC
     corners = PATHS[which]
@@ -158,9 +167,11 @@ def main(which, nproc=4, seg0=fmpq(1, 50), min_len=fmpq(1, 4000)):
         nseg += 1
     out = {'path': which, 'corners': [[str(x) for x in c] for c in corners], 'segments': nseg, 'evaluations': nev,
            'arg_change': total.str(20), 'arg_change_mid_rad': [float(total.mid()), float(total.rad())],
+           'arg_change_exact': [list(total.mid().man_exp()), list(total.rad().man_exp())],
            'min |D| on the path (lower bound)': minabs.str(6), 'time_s': round(time.time() - t0),
            'speed_bracket': [er.DATA['info']['c_lo'], er.DATA['info']['c_hi']], 'evans_prec': er.PREC,
-           'evans_order': er.EORDER}
+           'evans_order': er.EORDER, 'sha256': fp}
+    assert fingerprint() == fp, 'code or records changed during the run'
     print(json.dumps(out, indent=1))
     json.dump(out, open(_paths.DATA + '/winding_%s.json' % which, 'w'), indent=1)
     with open(_paths.DATA + '/winding_%s_segments.txt' % which, 'w') as f:
@@ -181,20 +192,27 @@ def combine():
     tot = arb(0)
     parts = {}
     corners = []
+    fps = []
     for w in cover:
         d = json.load(open(_paths.DATA + '/winding_%s.json' % w))
-        m, r = d['arg_change_mid_rad']
-        tot += arb(m) + arb(0, arb(r) * 2 + arb(2) ** -40)     # widened: the json floats are rounded
+        (m, e), (rm, re) = d['arg_change_exact']
+        tot += arb(m) * arb(2) ** e + arb(0, arb(rm) * arb(2) ** re)
         parts[w] = d['arg_change']
         corners.append(d['corners'])
+        fps.append((d['sha256'], tuple(d['speed_bracket'])))
+    assert all(f == fps[0] for f in fps), 'pieces were computed with different code or records'
+    assert fps[0][0] == fingerprint(), 'pieces were computed with code or records other than the present ones'
     for c1, c2 in zip(corners, corners[1:] + corners[:1]):      # the pieces must join into a closed path
         assert c1[-1] == c2[0], (c1, c2)
     wind = tot / (2 * arb.pi())
-    lo, hi = math.ceil(float(wind.lower())), math.floor(float(wind.upper()))
-    res = {'pieces': cover, 'arg_changes': parts, 'total/(2 pi)': wind.str(15), 'winding_number': lo if lo == hi else None}
+    n0 = int(math.floor(float(wind.mid())))
+    cand = [n for n in range(n0 - 3, n0 + 4) if wind.overlaps(arb(n))]
+    unique = len(cand) == 1 and bool(abs(wind - cand[0]) < arb('0.5'))
+    res = {'pieces': cover, 'arg_changes': parts, 'total/(2 pi)': wind.str(15), 'winding_number': cand[0] if unique else None,
+           'sha256': fps[0][0], 'speed_bracket': list(fps[0][1])}
     print(json.dumps(res, indent=1))
     json.dump(res, open(_paths.DATA + '/winding.json', 'w'), indent=1)
-    print('WINDING NUMBER', res['winding_number'] if lo == hi else 'UNDETERMINED')
+    print('WINDING NUMBER', res['winding_number'] if unique else 'UNDETERMINED')
 
 
 if __name__ == '__main__':
