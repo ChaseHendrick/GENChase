@@ -13,8 +13,9 @@ horizontal position. Consequently (Smale-Birkhoff) the flow on each of these ene
 and has positive topological entropy, and (Kozlov's argument, written out in Section 4.5) every real-analytic
 function on the energy level that is invariant under the flow is constant. With the persistence of transversal
 homoclinic points in E, this also excludes any real-analytic first integral on the whole phase space that is
-functionally independent of the energy (Corollary 3), a statement that may already follow from Bolotin and
-Negrini (1997) if their parameter domain contains the equal case (Section 2; we could not read that paper).
+functionally independent of the energy (Corollary 3). Bolotin and Negrini (1997) prove analytic
+non-integrability of the double pendulum only under a parameter inequality that, as far as we could read it,
+fails at equal masses and lengths (Section 2).
 Rigorous: the fixed point, its hyperbolicity, the local unstable manifold and the transversal crossing, all by
 interval arithmetic with the CAPD library (C^0 and C^1 Lohner integrators, rigorous Poincare maps), together
 with the written lemmas below. Numerical: how the orbit and the crossing were found. Not attempted: meromorphic
@@ -41,18 +42,21 @@ and relevant hit is in the ledger. What the sources say, quoted:
   also lack a proof of transversality of the orbits".
 - Burov (PMM 1986), Ivanov I-IV (1999-2001), Tabanov (1999), Moauro and Negrini (PMM 1998): perturbative in a
   parameter (link geometry, mass ratio) that is not small in the equal case.
-- Unresolved: Bolotin and Negrini, "A variational criterion for nonintegrability", Russ. J. Math. Phys. 5 (1997)
-  415-436. zbMATH (Zbl 0951.37029): "the nonintegrability of a double pendulum in a certain domain of parameters
-  is proved"; Moauro and Negrini (1998, p. 892, translated): "for energy values close to the maximum of the
-  potential energy". Rabinowitz, TMNA 9 (1997) 41-76, Sect. 1, describes it as "a variational criterion for the
-  nonintegrability of (HS) when V is analytic". The full text was not reached, so we do not know whether the
-  equal case is in their domain. Their energies are near the top of the potential (E = 3 here), far from ours,
-  and their statement is non-integrability, not a horseshoe; but if their domain contains the equal case,
-  Corollary 3 below is not new.
+- Bolotin and Negrini, "A variational criterion for nonintegrability", Russ. J. Math. Phys. 5 (1997) 415-436
+  (Zbl 0951.37029). Full text not reached; Section 10 ("Nonintegrability of the double pendulum") was read in
+  Google Books search-within snippets of the journal volume (id as3yAAAAMAAJ, pp. 434-435, rechecked by us on
+  2026-09-26), log in [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md). Theorem 10.1 (OCR text): "The double pendulum is
+  a nonintegrable system in a neighborhood of Sh provided that 9m2 ( m1l2 + m2 ( 11 - 12 ) 2 ) ( ( m1 + m2 ) 11 +
+  m212 ) < 32m2 ( max { 11,12 } ) 3 . Of course , this condition is quite restrictive." S_h is the energy level
+  of the upright equilibrium (E = 3 here), and the preceding line derives the condition from "2 pi mu < 2d".
+  Read with the units balanced (9 pi^2 on the left, 32 m2^2 on the right; the OCR renders l1, l2 as 11, 12), the
+  condition at m1 = m2, l1 = l2 is 27 pi^2 < 32, false by a factor of about 8.3; it holds at equal lengths only
+  for m1/m2 below about 0.17. This reconstruction rests on OCR snippets, not the printed page. Their energy
+  (near the top of the potential) is also far from ours.
 
 Verdict: as far as the search reached, no proof of chaos (horseshoe, positive entropy, transversal homoclinic
-orbit) exists at the classical parameters, and no proof of non-integrability on a given energy level below the
-top of the potential. Global analytic non-integrability is open or proved depending on Bolotin-Negrini.
+orbit) exists at the classical parameters, and no proof of analytic non-integrability either: the one
+non-perturbative result, Bolotin-Negrini's Theorem 10.1, appears (from OCR snippets) to exclude the equal case.
 
 ## 3. Setting and statement
 
@@ -323,7 +327,7 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
   so a step contains at most one crossing, in one direction. Hence the departure phase ends right after the
   first downward crossing, and no upward crossing (a return) can be skipped. This is our reading of the code,
   not a documented guarantee.
-- Corollary 3 uses an unquantified persistence argument, and may be implied by Bolotin-Negrini (1997), unread.
+- Corollary 3 uses an unquantified persistence argument. Its novelty rests on our reading of Bolotin-Negrini's Theorem 10.1 from OCR snippets (Section 2); the printed page was not seen.
 - No explicit entropy bound: Smale-Birkhoff gives an iterate N but no value.
 - Meromorphic non-integrability (Morales-Ramis; Salnikov's monodromy computation made rigorous) was not
   attempted.
