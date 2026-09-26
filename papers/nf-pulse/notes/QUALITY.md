@@ -23,9 +23,12 @@ The bar every paper in this repository meets before it is published or preprinte
   (arXiv:1503.04057v2) and Dyson (arXiv:2511.17328v2, arXiv:1810.05142) read in the parts listed in RESEARCH.md.
   Burlakov, Oleynik and Ponosov, Mathematics 13 (2025) 701, read in full in the review. Read only through abstracts
   and zbMATH reviews: Zhang, J. Dyn. Differ. Equ. 17 (2005); Zhang, J. Differential Equations 197 (2004); Pinto,
-  Jackson and Wayne (2005); Sandstede (2007). See `review/lead/priorart/PRIORART.md`.
-- [ ] **5. Prior art.** RESEARCH.md, entry of 2026-09-26 (neural-field travelling pulse). The Zhang papers must be read
-  before any claim of priority.
+  Jackson and Wayne (2005); Sandstede (2007). Not reached at all: Enculescu, Physica D 196 (2004); Zhang, Math. Z.
+  255 (2006). Full texts of all six sought and not reached (`review/lead/priorart/PRIORART.md`); read them through a
+  library.
+- [ ] **5. Prior art.** RESEARCH.md, entries of 2026-09-26 (neural-field travelling pulse; and the second one, with
+  Burlakov, Oleynik and Ponosov (2025), now cited and distinguished in the README). The six papers in item 4 must be
+  read before any claim of priority.
 - [x] **6. Adversarial second reading.** `review/lead/VERIFY.md` (2026-09-26): mathematics, code audit with 32
   mutations, a partial independent reimplementation from the equations, and prior art, each by its own reader; no
   gap in the proof; every must-fix and should-fix applied in the same change. Not yet reviewed outside the project.

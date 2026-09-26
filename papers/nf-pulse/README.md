@@ -36,8 +36,10 @@ integrator, and closes it with an isolating block around rest and a shooting arg
   opposite sides (with its own validated integrator), and the speed to all quoted digits.
 - **Before this draft becomes a preprint:** a manuscript with the written proofs (drafts of every argument are in
   `review/lead/math/MATH.md`); a review by someone outside this project; and a reading of the full texts of Zhang,
-  J. Dyn. Differ. Equ. 17 (2005), Zhang, J. Differential Equations 197 (2004), and Pinto, Jackson and Wayne (2005),
-  so far read only through abstracts and reviews, before any claim of priority. See `notes/QUALITY.md`.
+  J. Dyn. Differ. Equ. 17 (2005), Zhang, J. Differential Equations 197 (2004), Pinto, Jackson and Wayne (2005) and
+  Sandstede (2007), so far read only through abstracts and reviews, and of Enculescu, Physica D 196 (2004), and
+  Zhang, Math. Z. 255 (2006), whose content is unknown. Until then the result is new only as far as we could
+  determine (RESEARCH.md, 2026-09-26). See `notes/QUALITY.md`.
 
 ## The model and the claim
 
