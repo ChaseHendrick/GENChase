@@ -1,0 +1,10 @@
+T = 6.3 C
+Lemma B on the ball K in [4.510770 +/- 3.01e-7], r = 1e-05: True (stable box [2.00e-11 +/- 3e-18], [1.00e-9 +/- 1e-16], [6.00e-11 +/- 3e-17])
+
+K1 = [4.51076970000 +/- 3e-16]: integrating the exit set until u < -60 mV
+  PROVED after 442 steps (59 s): t = [4.6179550 +/- 3.06e-8] ms, u in [-6e+1 +/- 6.31], max u upper bound so far 102.9847, max radius 1.54e+01
+
+K2 = [4.51076980000 +/- 3e-16]: integrating the exit set until u > 150 mV
+  PROVED after 335 steps (40 s): t = [4.5146375 +/- 2.98e-8] ms, u in [1.55e+2 +/- 0.724], max u upper bound so far 155.2142, max radius 6.59e+00
+
+ALL CHECKS PASSED

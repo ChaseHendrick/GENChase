@@ -277,8 +277,13 @@ Result (`data/prove_bracket.txt`, 128 bits, order 20):
   **reaches u < -60 mV** at t = 2.46501 ms after leaving the block (428 steps).
 - K2 = 10.4383549: **reaches u > +150 mV** at t = 2.47637 ms (461 steps).
 
+At 6.3 C (`python3 prove_bracket.py 1e-5 6.3`, `data/prove_bracket_6.3.txt`): with K1 = 4.5107697 the exit set
+reaches u < -60 mV at t = 4.61796 ms (442 steps), and with K2 = 4.5107698 it reaches u > +150 mV at t = 4.51464 ms
+(335 steps); the speeds are 12.313944 m/s to eight digits.
+
 So, rigorously, the firing branch of the unstable manifold escapes downward at K1 and upward at K2, as Hodgkin and
-Huxley observed at the two sides of their K. **This does not prove that a pulse exists** (Section 4).
+Huxley observed at the two sides of their K. (The "max u upper bound so far" printed by the program is taken over the
+sets at the ends of the steps, not over the steps themselves.) **This does not prove that a pulse exists** (Section 4).
 
 ## 4. Plan for the full proof
 
@@ -342,8 +347,7 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
   Lessard, van den Berg, Mireles James, Arioli and Koch), the authors of the singular-perturbation theory of nerve
   pulses (Hastings, Carpenter, Jones, Sandstede) and textbook authors who repeat the Keener-Sneyd sentence. Before any
   claim: read Hastings pp. 231-257, Carpenter 1977 and Foote and Chen 1981 (Section 1.5).
-- **Also worth doing on the way:** the rigorous speed bracket of 3.3 extends directly to 6.3 C (Lemma A already passes
-  there), and a rigorous proof that no pulse exists (no sign switch) at 36 C would need only the escape part.
+- **Also worth doing on the way:** a rigorous proof that no pulse exists (no sign switch) at 36 C would need only the escape part.
 
 ## 5. Independent check
 
@@ -362,6 +366,7 @@ python3 pulse_bvp.py 6.3             # -> data/pulse_bvp_6.3.txt
 python3 certify_rest_wave.py 18.5    # rigorous: Lemmas A and B (seconds) -> data/certify_rest_wave_18.5.txt
 python3 certify_rest_wave.py 6.3
 python3 prove_bracket.py 1e-5        # rigorous: the two bracketing orbits (about 2.5 minutes) -> data/prove_bracket.txt
+python3 prove_bracket.py 1e-5 6.3    # the same at 6.3 C -> data/prove_bracket_6.3.txt
 python3 sensitivity.py 18.5          # numerical: growth of dy/dK along the profile -> data/sensitivity_18.5.txt
 ```
 

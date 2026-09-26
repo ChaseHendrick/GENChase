@@ -10,7 +10,8 @@ reaches u > +150 mV. This is Hodgkin and Huxley's 1952 observation that the solu
 directions on the two sides of the speed, made rigorous. It is NOT a proof that the pulse exists: the closing
 step (an isolating block at rest reached by the orbits of every K in between) is not done here.
 
-Usage: python3 prove_bracket.py [r]     (r: exit face of the block, default 1e-5)
+Usage: python3 prove_bracket.py [r] [T]     (r: exit face of the block, default 1e-5; T = 18.5 or 6.3 C)
+At 6.3 C the bracket is K1 = 4.5107697, K2 = 4.5107698 (12.31394 m/s).
 """
 import sys
 import time
@@ -35,7 +36,7 @@ def exit_set(B):
     return L.LSet(xbar, Cm, R0, Bm, Rr)
 
 
-def run(K, phi, EL, B, target, p=20, tol=1e-32, tmax=6.0, log=100):
+def run(K, phi, EL, B, target, p=20, tol=1e-32, tmax=12.0, log=100):
     F = L.Field(K, phi, EL)
     X = exit_set(B)
     info = {}
@@ -64,8 +65,10 @@ def run(K, phi, EL, B, target, p=20, tol=1e-32, tmax=6.0, log=100):
 
 def main():
     r = float(sys.argv[1]) if len(sys.argv) > 1 else 1e-5
-    K1, K2 = arb('10.4383548'), arb('10.4383549')
-    phi = C.phi_of(18.5)
+    T = float(sys.argv[2]) if len(sys.argv) > 2 else 18.5
+    K1, K2 = (arb('10.4383548'), arb('10.4383549')) if T == 18.5 else (arb('4.5107697'), arb('4.5107698'))
+    phi = C.phi_of(T)
+    print('T = %s C' % T)
     y, EL = C.rest_state()
     Kb = K1.union(K2)
     sc = (r / 1e-4) ** 2
