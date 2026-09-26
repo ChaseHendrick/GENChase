@@ -73,5 +73,5 @@
  "max_u_at_step_ends_phase1": "[0.6825003615 +/- 3.40e-11]",
  "sup_u_lower_bound": "[0.6825003615 +/- 3.40e-11]",
  "verdict": "PASS",
- "time_s": 51
+ "time_s": 65
 }

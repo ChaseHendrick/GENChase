@@ -5,7 +5,13 @@ reviewed**; see "Check" below for the adversarial reading that was done.
 
 ## Outcome
 
-__OUTCOME__
+**Proved by computer, at Faye's own eps = 0.01, and also at eps = 1/20 and eps = 1/50; not independently reviewed.**
+For lambda = 20, kappa = 0.22, b = 4.5, beta = 5 (Faye's illustration values), a fast travelling pulse exists at eps =
+1/100, 1/50 and 1/20, with its speed enclosed in an interval of width 10^-144, 10^-88 and 10^-28 respectively. Every
+step is a ball-arithmetic computation; `sh code/run_all.sh <eps>` reruns each, with 14 checks including 6 negative
+controls and 2 tests. An independent adversarial check (Sect. 8) found no mathematical error at 1/20 and 1/50 and
+several minor issues, all fixed; __CHECK100__. Before any claim leaves this folder the proof needs outside review of its
+mathematics and code (Sect. 8).
 
 ## 1. The model, from the sources
 
@@ -158,7 +164,24 @@ the Taylor recursion and its gradients, and the block.
 
 ## 4. Theorem
 
-__THEOREM__
+**Theorem (computer-assisted; not independently reviewed).** In Faye's model (2.1)-(2.3) with tau = 1, lambda = 20,
+kappa = 11/50, b = 9/2 and beta = 5, let (u0, q0) be the homogeneous steady state (it is unique; u0 =
+0.0151017095592381945561..., q0 = 0.9244914522038090272194...). For each eps and interval [c1, c2] below there are a
+speed c in (c1, c2) and a smooth nonconstant profile (U, Q) with (U, Q)(xi) -> (u0, q0) as xi -> +-infinity such that
+u(x, t) = U(x + ct), q(x, t) = Q(x + ct) solves (2.1). The profile leaves rest on the branch of the unstable manifold
+on which U increases, and sup U exceeds the stated bound.
+
+| eps | c1 (c2 = c1 + 10^-n) | n | sup U > |
+|---|---|---|---|
+| 1/100 (Faye's value) | 0.331516307336865436625730534879459225272579301510008102579492382002165938803776928641803147054296415442903177208307894457102622838035779556072008 | 144 | 0.77145 |
+| 1/50 | 0.3123155710060636100917070892169975669710796369835436898185985170714422661677578484618711 | 88 | 0.68250 |
+| 1/20 | 0.2471826276516696269906434087 | 28 | 0.50435 |
+
+Scope: one parameter point of Faye's family and three fixed values of eps, one pulse each (the fast one). Nothing here
+concerns stability (Faye's Theorem 4.1), uniqueness, the slow pulse of Hastings's Theorem 1, or eps near 0 (which
+Faye and Hastings cover asymptotically). The bracket at eps = 1/100 contains the speed to 144 digits; the numerical
+value to 160 digits is 0.33151630733686543662573053487945922527257930151000810257949238200216593880377692864180314705
+42964154429031772083078944571026228380357795560720084463066305960565416 (numerical, `shoot_ms.py`).
 
 ## 5. What is rigorous and what is numerical
 
@@ -192,7 +215,37 @@ and 0.1. This is why the task's fallback value 0.1 is not available for this mod
 
 ## 6. Cost at eps = 0.01 and how it was met
 
-__COST__
+**Estimate first.** The expensive part is the slow return along the left branch, during which the fast unstable
+direction (eigenvalue about 4.2) keeps expanding. A floating-point estimate from the reduced slow flow q' = eps k (1 - q
+(1 + beta S(s_L(q)))) gave a return from the landing point (q about 0.35) to the block edge (q about 0.84) of about 59
+units of xi at eps = 0.01 (8 at eps = 0.05), and about 111 decimal digits of expansion on that stretch, plus the front
+and the knee. A plain bisection shooter (every shot from rest, about 500 halvings, each integrating to xi of about 75 at
+about 700 bits) was estimated at several hours, too slow. The floating-point block search did not find a block reaching further down
+the branch than q of about 0.84 at eps = 0.01 (not proved impossible; a block with one quadratic form has to handle the
+Jacobian over the whole q-range, and the margin of the slow direction is only about 0.034).
+
+**What it took (observed in the runs, numerical).** The c-sensitivity of the orbit grows about 1.85 decimal digits
+per unit of xi on the left branch (from the shooting stages); the rigorous enclosure picked up about 67 more digits
+than that through the front and the knee, so the local error of the integrator has to be far below the bracket width.
+
+| eps | bracket width | precision | Taylor order | local tol | T_enter | cone entry (c1, c2) | time per run (4 cores shared) |
+|---|---|---|---|---|---|---|---|
+| 1/20 | 1e-28 | 256 bits | 30 | 1e-45 | 12.5 | 14.23, 14.40 | about 5 s |
+| 1/50 | 1e-88 | 600 bits | 70 | 1e-140 | 30 | 46.91, 46.42 | about 1 min |
+| 1/100 | 1e-144 | 900 bits | 120 | 1e-240 | 74 | 76.61, 76.54 | about 5 min |
+
+The brackets come from a staged shooter (`shoot_ms.py`): bisection whose shots restart from a checkpoint by linear
+interpolation between the two end orbits, at reduced precision, with the end orbits recomputed from rest after each
+stage. Its first version interpolated the end states too, which compounds a second-order error from stage to stage;
+plain shots and the rigorous runs showed that its eps = 1/50 bracket was wrong beyond about 40 digits, and the fix
+(recompute the end orbits) was then confirmed by plain shots at both bracket ends. The eps = 1/100 search took 30
+minutes at 720 bits.
+
+Failed attempts, recorded because they show where the margins are: eps = 1/50 at 480 bits (the enclosure grew faster
+than the separation of the end orbits, so c1 and c2 were still indistinguishable when it blew up); eps = 1/100 at 800
+bits (enclosure lost near xi = 70); eps = 1/100 with a 150-digit bracket at 900 bits (projected to fail the same way,
+stopped); with a 144-digit bracket and T_enter = 78 (the end orbits had already left the block by 78). T_enter = 74
+works.
 
 ## 7. Negative controls and tests
 
@@ -205,19 +258,62 @@ with a control in which b is perturbed by 1e-20 and the enclosures must exclude 
 
 ## 8. Check (adversarial second reading)
 
-__CHECK__
+An independent subagent reviewed the work adversarially, working in a copy of the folder and with its own code.
+
+**Verdict (eps = 1/20 and 1/50): "minor issues. I found no mathematical error in the proof chain at eps = 1/20 and eps
+= 1/50."** What it did:
+
+- Reran `run_all.sh` at both eps from a copy: all checks passed; `test_lohner.py` passed.
+- Recomputed with its own code, none of the project's modules: the characteristic polynomial (sympy; the difference
+  from the stated p is exactly 0); u0, q0, q0 s and the eigenvalues at both eps (agree); the block conditions at both eps
+  from the stored T with exact rational arithmetic and its own bounds (all corners pass; at eps = 1/50 the worst
+  entrance margin is -0.00118, thin but certified); and a non-rigorous shooting on the original 4D system with S
+  evaluated directly: at eps = 1/20, speeds up to c1 escape into {v < 0, w < 0} and from c2 up into {v > 1, w > 0}, with
+  max u about 0.50436 against the rigorous lower bound 0.50435; at eps = 1/50 the sides agree at 50 digits.
+- Re-read Faye (author copy), Hastings (arXiv v2) and Faye-Scheel: the model, kernel, firing rate, parameters and the
+  theorems are quoted correctly.
+- Mutation tests at eps = 1/20: wrong b^2 in the recursion, a sign in the manifold nonlinearity, eps perturbed by
+  1e-12, a bracket moved off c*, a sign in the characteristic polynomial and in the eigenvector were all caught by the
+  proof steps; wrong gradients in the jet only by the Jacobian test (which is in `run_all.sh`).
+
+**Findings and what was done.**
+
+1. REPORT.md was an unfinished template. Completed.
+2. r > rho, which the first-contact step needs, was not enforced (a mutation to 0.99 passed). Now asserted in
+   `block.check` and `block_check_iv.py`.
+3. sigma was chosen per run from floating-point data; the three runs must use the same family P_c(theta0). It agreed in
+   every log, but by rounding luck. Now fixed per eps in `config.py`.
+4. A dropped Lagrange remainder in the integrator was caught only by `test_lohner.py`, which was not in `run_all.sh`;
+   `fcore.vfield` (used for the a priori enclosure) was not tested. Now `test_lohner.py 1` is in `run_all.sh` (a
+   dropped remainder fails it at xi = 1, checked), and `test_jacobian.py` compares vfield with the Taylor recursion.
+5. The claimed consistency check of the manifold recursion did not exist. Now `validate` asserts (n mu - A) a_n - N_n
+   contains 0 for all n <= N (a sign mutation in the recursion fails it at n = 3, checked).
+6. The embedding argument (why P lies on the 4D unstable manifold) and the continuity of c -> P_c(theta0) were not
+   written. Added in Sect. 3 (the G = Y - S(u) argument the reviewer suggested).
+7. "Hastings: unconditionally" was wrong; his Theorem 1 assumes his Conditions 1-5. Corrected.
+8. Wording about Hastings Sect. 4.3 and the source of c^* -> c^*_0 was loose. Corrected. (Also noted: the arXiv
+   metadata title of 1503.04057 is "Existence of Traveling Waves in a Neural Model"; the PDF's title is the one quoted.)
+9. The three-equilibria negative control is refused because monotonicity cannot be certified, not because three zeros
+   are counted: a weak control, now described as such in Sect. 7.
+
+Mutations that weaken a bound or remove a check (dropping -||A|| from K, setting G0 = 0, deleting the phase-2
+step-range check) cannot be caught by a pass/fail harness; the reviewer checked by reading that the unmutated code
+implements them correctly.
+
+__CHECK100SECTION__
 
 ## 9. Rerun
 
 From `papers/nf-pulse/ext/faye-model/code/` (Python 3.11, `python3 -m pip install -r ../../../code/requirements.txt`):
 
-    sh run_all.sh 1/20        # about 1 minute on 4 cores
-    sh run_all.sh 1/50        # about 3 minutes
-    sh run_all.sh 1/100       # __T100__
+    sh run_all.sh 1/20        # about 3 minutes on 4 cores (mostly the mpmath reference in the integrator test)
+    sh run_all.sh 1/50        # about 4 minutes
+    sh run_all.sh 1/100       # about 10 minutes (proof runs about 5 minutes each, in parallel)
     FAYE_EPS=1/20 python3 test_lohner.py    # about 8 minutes (mpmath reference solution)
 
 Each prints one line per check and exits with status 1 if a proof step fails or a negative control passes; full logs
-go to `data/logs/` (not tracked), certificates to `data/*.json`. The brackets, block shapes and integration settings
+go to `data/logs/` (not tracked), certificates to `data/*.json`, and the one-line summaries of the last runs are in
+`data/run_all_eps1_20.txt`, `data/run_all_eps1_50.txt` and `data/run_all_eps1_100.txt` (all checks passed). The brackets, block shapes and integration settings
 are in `code/config.py`. Numerical (not needed for the proof): `FAYE_EPS=1/50 python3 shoot_ms.py 480 0.3123155
 0.3123157 100 60` recomputes the eps = 1/50 bracket; `explore_block.py eps c` searches a block shape.
 
