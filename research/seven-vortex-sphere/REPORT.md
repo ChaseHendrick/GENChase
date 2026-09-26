@@ -279,7 +279,23 @@ N = 8: with KLT's degree-12 Hermite minorant it returns e* = -10.42801732 agains
 -10.42801778 (difference -4.6e-7, i.e. sharp within solver tolerance), reproducing their theorem
 numerically. For N = 7:
 
-RESULTS_SDP
+| minorant H | degree | extra constraint | solver status | bound e* | E(B) - e* |
+|---|---|---|---|---|---|
+| double contact at 0, cos 72, cos 144 | 8 | | optimal | -8.19098919 | 8.5e-3 |
+| double contact | 10 | | optimal_inaccurate | -8.18655291 | 4.1e-3 |
+| double contact | 12 | | optimal_inaccurate | -8.18479856 | 2.3e-3 |
+| double contact | 12 | Gram-determinant multiplier | optimal | -8.18437917 | 1.9e-3 |
+| double contact | 14 | | optimal_inaccurate | -8.18399900 | 1.5e-3 |
+| fourth-order contact at all three nodes | 14 | | optimal_inaccurate | -8.18399626 | 1.5e-3 |
+| fourth-order contact | 16, 16 + Gram, 18 | | did not finish within 40 min (no result) | | |
+
+In every completed case the bound stays below E(B) = -8.18247786 by about 1e-3 or more, while the
+same code is sharp to 5e-7 for N = 8. The double-contact rows are consistent with Proposition 5, which
+says they can never be sharp. At degree 14, fourth-order contact does not close the gap. These are
+floating-point SDP values (several flagged "optimal_inaccurate" by Clarabel, in a monomial basis that is
+poorly conditioned at high degree), so they are evidence, not proof, that the three-point method in this
+form, at these degrees, does not reach N = 7. Whether a higher degree, a better-conditioned basis
+(Gegenbauer/Chebyshev), or extra constraints could make it sharp is open.
 
 **7.4 Branch-and-bound (estimate).** `global_estimate.py` models an interval branch-and-bound in the
 11-dimensional quotient with centred-form bounds (box width h certified when the gap exceeds c2 h^2, c2 =
