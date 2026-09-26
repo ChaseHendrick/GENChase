@@ -1,0 +1,16 @@
+OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues
+OK    R: negative control theta = 0 (S'(0) = 5) is refused
+OK    M: unstable manifold validated for |t| <= 1 (c1)
+OK    M: unstable manifold validated for |t| <= 1 (c2)
+OK    M: unstable manifold validated for |t| <= 1 (interval)
+OK    M: negative control sigma x 8 is refused
+OK    B: block around rest certified (|U| <= 0.05)
+OK    B: negative control U up to 0.15 is refused
+OK    B: independent re-check of the block conditions in mpmath.iv
+OK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)
+OK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53
+OK    P: the orbit at c1 enters the cone K- inside the block
+OK    P: the orbit at c2 enters the cone K+ inside the block
+OK    N: negative control, the orbit at c1 asked to reach K+, is refused
+OK    N: negative control c = 1.1024, far from the pulse speed, is refused
+all checks passed

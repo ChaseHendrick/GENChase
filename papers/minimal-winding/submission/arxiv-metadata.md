@@ -1,8 +1,8 @@
 # arXiv submission metadata
 
 **Deferred (owner's decision, 2026-09-25).** arXiv asked this account for an endorsement to submit to
-physics.flu-dyn, so the paper is not going to arXiv for now; the Zenodo release v2.0.0,
-doi:10.5281/zenodo.22963796, is the preprint of record. Keep this file for when an endorsement arrives.
+physics.flu-dyn, so the paper is not going to arXiv for now; the Zenodo release v2.1.0,
+doi:10.5281/zenodo.22966989, is the preprint of record. Keep this file for when an endorsement arrives.
 
 Fill the arXiv form with the fields below.
 

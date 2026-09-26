@@ -5,6 +5,8 @@ has not been peer reviewed.
 
 ## v2.1.0 (2026-09-25)
 
+**DOI:** [10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989)
+
 The corrected paper after two further independent readings of the parts merged in from the α-model draft
 (Sections 4 to 8). No result changes; 38 pages. Changes since v2.0.0:
 
