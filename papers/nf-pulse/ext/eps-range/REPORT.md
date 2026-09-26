@@ -113,7 +113,45 @@ __TABLE__
 
 ## Where and why the method stops
 
-__LIMITS__
+All numbers in this section are numerical observations about the method, not theorems.
+
+**Width of the subintervals.** The certified widths (from `table.py --condensed` and `data/certs/`) shrink as eps
+decreases: mean width about 9e-5 on [0.080, 0.085), 1.0e-4 to 1.5e-4 on [0.085, 0.100), 2.1e-4 to 2.4e-4 on
+[0.100, 0.120), with the narrowest pieces 2.3e-5 to 5e-5. The cost is about 70 to 90 s per attempt on one core
+(35 s for the numerical bisection of kappa*, the rest for the chain), so the sweep of [0.08, 0.12] took about three
+hours on four cores including failed attempts.
+
+**What limits the width (measured on eps in [0.0998, 0.1002] and neighbours).** Every failure seen is at a
+covering check during the back of the pulse, where U falls from about 0.6 to below 0 (s = 11 to 18), or shortly
+after it. There, three things happen at once:
+- the u-direction barely expands: the face images exceed the u-size by factors 1.0 to 1.5 per unit of time, against
+  2 to 2.6 elsewhere;
+- the vector field F and the u-direction become nearly parallel (cos(F, v) = 0.986 at s = 11), so the time-shift
+  (phase) uncertainty and the u-coordinate are poorly separated;
+- the phase uncertainty (the slab extent along F) and the other slab sizes scale like w^2 (ratio 4.0 when w
+  doubles, measured at s = 10 for w = 1e-4, 2e-4, 4e-4), while the wrapping error of the enclosure grows faster,
+  so at some w the face images no longer clear the h-set.
+Cutting the sets into 2 x 2 or 4 x 4 pieces, longer or shorter segments (0.25 to 3) and smaller Taylor tolerances
+did not move this front bottleneck by more than one unit of time. A time rescaling quadratic in eps (to follow the
+second-order phase drift) and Poincare-type sections are the natural next steps; neither is implemented.
+
+**Below eps = 0.08** (single attempts, `probe_limits.sh`, `data/limits.txt`): eps = 0.07 certifies with width
+5e-5 (block entry at s = 89) but not 1e-4; eps = 0.06 fails at s = 18 with widths 1e-4 and 5e-5; eps = 0.05 fails at
+s = 8 with widths 1e-4, 5e-5 and 2.5e-5. The approach to the rest state is slower for small eps (the weakest stable
+eigenvalue is roughly proportional to eps), so the chain is longer (block entry at s = 71 to 75 near eps = 0.08
+against 50 to 54 near eps = 0.12) and the isolating block has to shrink (U-range 0.03 at eps = 0.05, against 0.05
+on [0.08, 0.12]). Extending the range downward is a matter of cost at eps = 0.07 and needs a better method at 0.05.
+
+**Above eps = 0.12**: eps = 0.13, 0.14 and 0.15 certify with width 2e-4 (block entry at s = 48, 44, 42); eps = 0.15
+fails with width 4e-4; eps = 0.17 fails at s = 5 with width 2e-4. **At eps of about 0.176 the method stops for a
+structural reason:** along the numerical pulse branch the two weaker stable eigenvalues of the rest state meet and
+become complex (the roots of p at c*(0.1775) are 0.9684, -0.3977 +- 0.0297 i, -1.1886), and the block of
+`../../code/block.py` is built on a real eigenbasis. The probes at eps = 0.19, 0.20, 0.21 and 0.215 stop there.
+Near eps = 0.176 the two real eigenvalues are close (at 0.175: -0.4304 and -0.3608), which makes the block
+coordinates ill conditioned; this is a likely reason for the failure at 0.17. Further up, the numerical
+continuation of the fast pulse loses its bracket between eps = 0.220 (c* = 0.8196, dropping steeply) and 0.225
+(`data/cstar_scan.txt`), consistent with a fold where the fast and slow pulses meet; near a fold kappa*(eps) has
+unbounded derivative and no window of this kind can follow it.
 
 ## Negative controls
 

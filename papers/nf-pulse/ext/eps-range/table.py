@@ -92,10 +92,30 @@ def f(q):
     return '%.6f' % (float(q.p) / float(q.q))
 
 
+def condensed(rows, step=fmpq(1, 200)):
+    """one line per bin of eps of length step: number of subintervals, smallest c1, largest c2, widest bracket."""
+    out = ['| eps bin | subintervals | smallest width | min c1(E_k) | max c2(E_k) | widest c2 - c1 |', '|---|---|---|---|---|---|']
+    bins = {}
+    for r in rows:
+        k = int(r['lo'] / step)
+        bins.setdefault(k, []).append(r)
+    for k in sorted(bins):
+        v = bins[k]
+        lo = f(step * k); hi = f(step * (k + 1))
+        widths = [float((x['hi'] - x['lo']).p) / float((x['hi'] - x['lo']).q) for x in v]
+        c1 = min((x['c1'] for x in v), key=lambda a: float(a.mid()))
+        c2 = max((x['c2'] for x in v), key=lambda a: float(a.mid()))
+        wd = max(float((x['c2'] - x['c1']).mid()) for x in v)
+        out.append('| [%s, %s) | %d | %.1e | %s | %s | %.1e |' % (lo, hi, len(v), min(widths), c1.str(10, radius=False),
+                                                              c2.str(10, radius=False), wd))
+    return '\n'.join(out)
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--from', dest='A', default=None); ap.add_argument('--to', dest='B', default=None)
     ap.add_argument('--md', default=None)
+    ap.add_argument('--condensed', action='store_true', help='also print one line per eps bin of length 0.005')
     a = ap.parse_args()
     rows = load()
     A = dec(a.A) if a.A else rows[0]['lo']
@@ -113,3 +133,5 @@ if __name__ == '__main__':
     print('\n'.join(lines[:6] + (['| ... |'] if len(lines) > 12 else []) + lines[-4:]))
     if a.md:
         open(a.md, 'w').write(head + '\n\n' + '\n'.join(lines) + '\n')
+    if a.condensed:
+        print(condensed([r for r in rows if A <= r['lo'] < B]))
