@@ -24,7 +24,10 @@ static IVector image(Ctx& c, const HSet& X, const HSet& Y, int shift, const IVec
   if (!liftable(c, zc + X.B * rrl)) throw std::runtime_error("piece outside the section domain");
   IMatrix Df = derivC1(c, zc, X.B, rrl, 1, rt);
   IMatrix J = Y.Bi * Df * X.B;
-  return Y.Bi * (imageC0(c, zc, 1, shift) - Y.c) + J * rrl;
+  IVector c0 = Y.Bi * (imageC0(c, zc, 1, shift) - Y.c);
+  if (getenv("DEBUG2")) { _Pragma("omp critical") fprintf(stderr, "centre image %s %s | J %s %s / %s %s | rrl %s %s\n", S(c0[0]).c_str(), S(c0[1]).c_str(),
+     S(J[0][0]).c_str(), S(J[0][1]).c_str(), S(J[1][0]).c_str(), S(J[1][1]).c_str(), S(rrl[0]).c_str(), S(rrl[1]).c_str()); }
+  return c0 + J * rrl;
 }
 static bool meets(const I& a, double lo, double hi) { return !(a.rightBound() < lo || a.leftBound() > hi); }
 
@@ -36,12 +39,14 @@ int main(int argc, char** argv) {
         h.B = IMatrix(2, 2); h.B[0][0] = v[2]; h.B[0][1] = v[3]; h.B[1][0] = v[4]; h.B[1][1] = v[5]; h.Bi = inv2(h.B); sets.push_back(h); }
       else if (k == "trans") { std::string a, b, s; ss >> a >> b >> s; trans.push_back({a, b, s}); }
       else { std::string v; while (ss >> v) cfg[k].push_back(v); } } }
-  int nth = argc > 2 ? atoi(argv[2]) : 4, npc = argc > 3 ? atoi(argv[3]) : 64; omp_set_num_threads(nth);
+  int nth = argc > 2 ? atoi(argv[2]) : 4, npc = argc > 3 ? atoi(argv[3]) : 64, maxdepth = argc > 4 ? atoi(argv[4]) : 6;
+  const char* only = getenv("ONLY"); omp_set_num_threads(nth); setvbuf(stdout, 0, _IONBF, 0);
   I E = Q("E"), g = I(1);
   std::vector<Ctx*> ctx; for (int i = 0; i < nth; ++i) ctx.push_back(new Ctx(true, E, g, 20));
   printf("classical double pendulum, E = %s; %zu h-sets, %zu covering relations to check (pieces per edge %d)\n", S(E).c_str(), sets.size(), trans.size(), npc);
   double Tmax = 0; int bad = 0;
   for (auto& t : trans) {
+    if (only && t[0] != only) continue;
     const HSet& X = sets[idx(t[0])]; const HSet& Y = sets[idx(t[1])]; int sh = atoi(t[2].c_str());
     // work items: edges (kind 0 left, 1 right), midline (2), whole set (3)
     struct W { int kind; double a0, a1, b0, b1; int depth; };
@@ -73,7 +78,7 @@ int main(int argc, char** argv) {
                                    else ymid = std::max(ymid, std::max(fabs(im[1].leftBound()), fabs(im[1].rightBound()))); }
           if (ok && p.kind == 3) { if (meets(im[0], -1, 1) && (im[1].contains(1.0) || im[1].contains(-1.0))) { ok = false; split = true; } }
           if (!ok) {
-            if (p.depth >= 14 || !split) ++fails;
+            if (p.depth >= maxdepth || !split) { ++fails; if (getenv("DEBUG")) fprintf(stderr, "  unresolved kind %d x [%g,%g] y [%g,%g]: image x %s y %s\n", p.kind, p.a0, p.a1, p.b0, p.b1, S(im[0]).c_str(), S(im[1]).c_str()); }
             else if (p.kind == 2) { double m = 0.5 * (p.a0 + p.a1); next.push_back({2, p.a0, m, 0, 0, p.depth + 1}); next.push_back({2, m, p.a1, 0, 0, p.depth + 1}); }
             else if (p.kind == 3) { double m = 0.5 * (p.a0 + p.a1), n = 0.5 * (p.b0 + p.b1);
               next.push_back({3, p.a0, m, p.b0, n, p.depth + 1}); next.push_back({3, m, p.a1, p.b0, n, p.depth + 1});

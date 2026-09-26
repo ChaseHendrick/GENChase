@@ -18,8 +18,11 @@ non-integrability of the double pendulum only under a parameter inequality that,
 fails at equal masses and lengths (Section 2).
 Rigorous: the fixed point, its hyperbolicity, the local unstable manifold and the transversal crossing, all by
 interval arithmetic with the CAPD library (C^0 and C^1 Lohner integrators, rigorous Poincare maps), together
-with the written lemmas below. Numerical: how the orbit and the crossing were found. Not attempted: meromorphic
-(Morales-Ramis) non-integrability, and an explicit lower bound on the entropy.
+with the written lemmas below. At E = 0 a separate computation (Theorem 2) verifies 24 covering relations
+between 23 pairwise disjoint h-sets along the homoclinic loop and gives an explicit bound: the topological
+entropy of the return map is at least 0.1016 per return, and that of the flow on the level at least 0.0138 per
+unit time. Numerical: how the orbit, the crossing and the h-sets were found. Meromorphic (Morales-Ramis)
+non-integrability: see Section 11.
 
 ## 2. Prior art (full ledger in [PRIOR-ART.md](PRIOR-ART.md))
 
@@ -111,6 +114,16 @@ a neighbourhood of M_E in phase space) that is invariant under the flow is const
 
 **Corollary 3 (analytic non-integrability).** There is no real-analytic first integral F on T*T^2 (or on any
 connected open set containing M_0) that is functionally independent of H.
+
+**Theorem 2 (explicit horseshoe at E = 0).** There are 23 pairwise disjoint compact h-sets N, M_0, ..., M_21 in
+Sigma_0 (N around p_0, M_0 ... M_21 along the homoclinic loop of Theorem 1) with covering relations, in the
+sense of Zgliczynski and Gidea, N =P=> N, N =P=> M_0, M_i =P=> M_{i+1} (0 <= i <= 20) and M_21 =P=> N. Hence P_0
+restricted to a compact invariant set is semiconjugate onto the subshift of finite type of this graph, and
+
+    h_top(P_0) >= log r > 0.1016086,  r > 1.1069502 the largest root of r^23 = r^22 + 1,
+
+and the flow on M_0 has topological entropy at least log r / 7.3553854 > 0.0138141 per unit time
+(7.3553854 bounds the return time on all the h-sets).
 
 What is rigorous: Theorem 1 is established by the interval computations of Section 5 together with Lemmas 1-3
 (written proofs in Section 4). Corollaries 1-3 follow from Theorem 1 by the classical theorems cited in Section
@@ -209,6 +222,38 @@ of maximal entropy of the shift,
 h(phi_1) = h(P^N)/(mean return time of P^N) >= log 2 / (N T_max) > 0, so the flow on M_E has positive
 topological entropy by the variational principle.
 
+### 4.4a Explicit horseshoe (Theorem 2)
+
+h-sets (Zgliczynski and Gidea, J. Differential Equations 202 (2004) 32-58, Definition 1; author copy read) are
+parallelograms X = c + B [-1, 1]^2, B = [alpha u, beta s], with the first coordinate nominally expanding. For one
+expanding direction, their Theorem 16 gives X =P=> Y (with degree +-1) if (76) the image of the midline
+{(x, 0)} lies in {|y| < 1} of Y's coordinates, (77) P(X) does not meet {|x| <= 1, |y| = 1}, and (78) or (79)
+the images of the left and right edges lie in {x < -1} and {x > 1} or the reverse. `code/horseshoe_check.cpp`
+verifies (76)-(78) for each relation on covers of the edges, the midline and the set (16 pieces per edge,
+bisected where needed), with the mean-value form Y's coordinates of P(zc) + (B_Y^{-1} DP(piece) B_X)(r - rc),
+where P(zc) is a validated C^0 enclosure and DP(piece) CAPD's validated C^1 enclosure over the piece; it also
+verifies that the 23 sets are pairwise disjoint on the cylinder and bounds the return time on all of them.
+
+From the relations: for every bi-infinite path in the graph there is an orbit that visits the interiors of the
+sets in that order (Zgliczynski-Gidea, Corollary 12, "Collorary 12" in the author copy). Let Lambda be the set
+of points whose full orbit stays in the union of the sets and moves along edges of the graph; it is compact and
+invariant because the sets are compact and disjoint, the itinerary map Lambda -> Sigma_A is continuous (the sets
+are disjoint) and onto (Corollary 12), and it conjugates P to the shift. A factor has no more entropy than the
+system, so h_top(P) >= h_top(P|Lambda) >= h_top(sigma_A) = log r, where r is the spectral radius of the graph:
+one loop of length 1 at N and one of length 23 through the M_i, so r^23 = r^22 + 1. The bound r > 1.106950245016
+is certified by evaluating r^23 - r^22 - 1 < 0 at that value in interval arithmetic. For the flow, Abramov's
+formula applied to the invariant measures of P|Lambda and the variational principle give
+h_top(phi_1) >= h_top(P|Lambda) / T_max.
+
+The sets were designed numerically (`code/horseshoe_design.cpp`): a pseudo-orbit along the homoclinic loop, built
+forward from z_0 = P^{-9}(q_0) for nine returns and completed by the reversibility (z_{18-i} = G z_i, closing
+to 1e-10), then continued along W^s towards p for three returns; the expanding directions u_i are pushed
+forward by DP, the contracting ones are s_i = DG u_{18-i}; the widths alpha_i are chosen so that each image
+overshoots the next set by a factor of about 3, and the thicknesses beta_i are three times the sampled image
+thickness but never below 1e-8, the width of a validated one-return enclosure near the symmetry line. Two
+earlier designs failed the check (a factor-2 overshoot, which made the first set 1e5 times taller than wide; and
+thicknesses below the enclosure width), which is recorded here because the check did its job.
+
 ### 4.5 No analytic integral on the level (Corollary 2; Kozlov's argument)
 
 Let F be real-analytic near M_E and invariant under the flow; g = F restricted to Sigma_E is real-analytic
@@ -267,6 +312,11 @@ Results ([data/E0.log](data/E0.log), [data/Ehalf.log](data/Ehalf.log), [data/Emi
 Robustness at E = 0 ([data/robustness_E0.log](data/robustness_E0.log)): Taylor order 12 and 30 instead of 20,
 and a finer cover (1500 boxes, 50 pieces), all pass with the same conclusions.
 
+Explicit horseshoe at E = 0 ([data/horseshoe_E0.log](data/horseshoe_E0.log), configuration
+[configs/horseshoe_E0.cfg](configs/horseshoe_E0.cfg)): all 24 covering relations verified, every edge image on
+the correct side, the largest midline value |y| = 0.503 (it must stay below 1), pairwise disjointness of the 23
+sets, return time at most 7.355385352; about 5 minutes on 4 cores.
+
 ## 6. Numerics (numerical, not part of the proof)
 
 - `code/explore.cpp`: Poincare sections at E = -1, -1/2, 0, 1/2.
@@ -286,6 +336,8 @@ and a finer cover (1500 boxes, 50 pieces), all pass with the same conclusions.
   still contains 0 at bisection depth 16 ([-5.4e-9, 1.0e-8]). The method does not certify a horseshoe there.
 - Mutations: moving the segment so that both edge images lie on one side of Fix(G) fails (C4); narrowing the
   cone to alpha = 1e-4, below the measured ratio 3.6e-4, fails (C1).
+- Covering relations that must not hold ([configs/control_horseshoe_wrong.cfg](configs/control_horseshoe_wrong.cfg)):
+  a skipped step M_0 => M_2, a backward step M_2 => M_1 and M_5 => M_5 all fail (edges not separated).
 
 ## 8. Independent adversarial check
 
@@ -328,7 +380,8 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
   first downward crossing, and no upward crossing (a return) can be skipped. This is our reading of the code,
   not a documented guarantee.
 - Corollary 3 uses an unquantified persistence argument. Its novelty rests on our reading of Bolotin-Negrini's Theorem 10.1 from OCR snippets (Section 2); the printed page was not seen.
-- No explicit entropy bound: Smale-Birkhoff gives an iterate N but no value.
+- The explicit entropy bound (Theorem 2) is proved at E = 0 only, and it is a lower bound from one loop, far below
+  the entropy one would estimate numerically.
 - Meromorphic non-integrability (Morales-Ramis; Salnikov's monodromy computation made rigorous) was not
   attempted.
 - Only three energies are proved; nothing is claimed for other E, although the orbit family and the crossing
@@ -336,7 +389,12 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
 
 ## 10. Rerun
 
-    sh research/double-pendulum/code/run_all.sh      # builds CAPD (pinned) and the programs, about 8 minutes on 4 cores
+    sh research/double-pendulum/code/run_all.sh      # builds CAPD (pinned) and the programs, about 15 minutes on 4 cores
 
-Prints PROVED for E0, Ehalf, Eminushalf and "fails, as it must" for the three controls; logs go to `data/`.
+Prints PROVED for E0, Ehalf, Eminushalf, "all covering relations VERIFIED" for the horseshoe, and "fails, as it
+must" for the four controls; logs go to `data/`. The h-set design is regenerated by
+
+    _bin/horseshoe_design 0 0 -1.462373092479858 0.95568530469114732 -0.29439021450684943 \
+        0.95568530469114776 0.29439021450684805 -1.8870e-5 -1.8838e-5 9 3 1e-5 2.5e-7 3 1e-8 > configs/horseshoe_E0.cfg
+
 Single runs: `_bin/prove configs/E0.cfg <threads>`. Requirements: g++, cmake, python3 with sympy.

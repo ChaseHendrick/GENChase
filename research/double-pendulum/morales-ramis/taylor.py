@@ -61,11 +61,13 @@ class Integrator:
         L = abs(complex(total.mid()))
         u = total / L if L > 0 else acb(1)
         s = 0.0
+        tcur = t0
         while s < L * (1 - 1e-15):
             xc, Xc = self.series(x, X, var)
             r = self.radius(xc)
             h = min(self.frac * r, hmax, L - s)
-            dt = u * h if L - s > h else (t1 - (t0 + u * s))
+            last = not (L - s > h * (1 + 1e-12))
+            dt = (t1 - tcur) if last else u * arb(h)
             x = [horner(c, dt) for c in xc]
             if var:
                 X = [[horner(Xc[i][j], dt) for j in range(4)] for i in range(4)]
@@ -73,10 +75,11 @@ class Integrator:
                 x = [v.mid() for v in x]
                 if var:
                     X = [[v.mid() for v in row] for row in X]
-            s += h
+            tcur = t1 if last else tcur + dt
+            s = L if last else s + h
             self.nsteps += 1
             if log is not None:
-                log.append((complex((t0 + u * s).mid()), r, [complex(v.mid()) for v in x]))
+                log.append((complex(tcur.mid()), r, [complex(v.mid()) for v in x]))
         return x, X
 
     def path(self, pts, x, X, var=True, hmax=0.1, log=None):

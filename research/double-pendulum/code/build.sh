@@ -15,6 +15,7 @@ if [ -z "$CAPD_CONFIG" ]; then
   CAPD_CONFIG="$CAPD_DIR/build/bin/capd-config"
 fi
 mkdir -p "$BIN"
-for p in explore scan manifold; do g++ -O2 -o "$BIN/$p" "$HERE/$p.cpp" $($CAPD_CONFIG --cflags --libs); done
+for p in explore scan manifold horseshoe_design; do g++ -O2 -o "$BIN/$p" "$HERE/$p.cpp" $($CAPD_CONFIG --cflags --libs); done
 g++ -O2 -fopenmp -o "$BIN/prove" "$HERE/prove.cpp" $($CAPD_CONFIG --cflags --libs)
+g++ -O2 -fopenmp -o "$BIN/horseshoe_check" "$HERE/horseshoe_check.cpp" $($CAPD_CONFIG --cflags --libs)
 echo "built into $BIN"
