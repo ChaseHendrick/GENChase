@@ -306,8 +306,10 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
 - **The long tail, and the precision it forces.** The pulse enters a block of radius 0.01 only about 17 ms after the
   upstroke, because the complex pair decays at only 0.485 /ms. Along the way any error in the unstable direction
   grows like e^(10.9 t). Double-precision shooting loses the pulse about 2 ms after the peak with a K error of 1e-14;
-  carrying it another 15 ms costs a factor of about e^(10.9 x 15) = 10^71. So the K interval must be about 10^-85 wide,
-  and so must the manifold's stable box; the integration needs about 350 to 400 bits and a per-step tolerance near
+  carrying it another 15 ms costs a factor of about e^(10.9 x 15) = 10^71. `sensitivity.py` integrates dy/dK along the
+  collocation profile from the exit face of Lemma B (u = 1e-5 mV): |dy/dK| is 1e16 at t = 2 ms, 2e82 at 16 ms and
+  7e91 at 18 ms (`data/sensitivity_18.5.txt`), so for the orbits to stay within 0.01 of the pulse until they enter the
+  block the K interval must be 10^-85 to 10^-90 wide, and the manifold's stable box comparably thin; the integration needs about 350 to 400 bits and a per-step tolerance near
   10^-90. A larger block (better weights; the crude bound fails at 0.03) or a smarter closing would cut this: each
   factor of 10 in r0 saves about 4.7 ms and 22 digits.
 - **Wrapping in the upstroke.** At 128 bits the rigorous radius grows about 250 times more than e^(lambda t) across
