@@ -3,32 +3,40 @@
 # SPDX-License-Identifier: Apache-2.0
 """Computer-assisted proof of the fast pulse for every recovery rate eps in a subinterval E = [e_lo, e_hi].
 
-usage: python3 chain.py <e_lo> <e_hi> <q0> <s1> <dk> [--tag TAG] [--swap] [--seg L]
+usage: python3 chain.py <e_lo> <e_hi> <c_guess> [--dk DK] [--seg L] [--afac F] [--out FILE]
+                        [--shift X] [--samecone S]          (the last two are negative controls)
 
   e_lo, e_hi   the subinterval, exact decimals (read as rationals)
-  q0, s1, dk   the speed window: for eps = e_m + w eps0 (e_m the midpoint, w the half width, |eps0| <= 1),
-               kappa = 1/c ranges over q0 + s1 eps0 + dk zeta0, |zeta0| <= 1 (q0, s1, dk are read as
-               decimals and rounded to exact dyadic numbers; the certificate records the exact values)
-  --swap       negative control: exchange the two ends of the speed window (must FAIL)
+  c_guess      a speed guess for the numerical bisection (pulse_num.kstar; not part of the proof)
+  --dk DK      half width of the kappa window (kappa = 1/c), see below
+  --shift X    negative control: move the kappa window by X*DK off the numerical pulse speed (must FAIL for |X| > 1)
+  --samecone S negative control: require both u-faces to end in K+ (S = 1) or K- (S = -1) (must FAIL)
 
-What is checked, in ball arithmetic (python-flint / Arb) for ALL eps in E at once:
+Notation.  eps = e_m + w eps0 with e_m, w the (exact, dyadic) rounded midpoint and half width of E; for eps in E,
+|eps0| <= 1 + delta (delta covers the rounding, recorded as eps0_range).  The kappa window is
+    kappa = q0 + s1 eps0 + dk zeta0,   |zeta0| <= 1,
+with q0 ~ kappa*(e_m) and s1 ~ w kappa*'(e_m) from the numerical pulse (pulse_num); q0, s1, dk are exact dyadics.
+
+What is checked, in ball arithmetic (python-flint / Arb), for ALL eps in E at once:
  R  s = S'(0) < 1; kappa > 0 and eps > 0 on the whole box, so (Descartes and the imaginary axis, see
     ../../code/certify_rest.py) the rest state has one unstable and three stable eigenvalues; the unstable
-    eigenvalue is enclosed for all (eps, kappa) in the box and is simple.
+    eigenvalue is enclosed for all (eps, kappa) in the box.
  M  the unstable manifold of ../../code/manifold.py is validated (tail bound) for all (eps, kappa) in the box.
  B  the isolating block of ../../code/block.py (cone and entrance conditions) holds for all (eps, kappa) in
-    the box; its coordinates are computed at the centre of the box.
- C  a chain of covering relations (Zgliczynski-Gidea type, one unstable direction) along the pulse:
-      stage 0: the curve zeta0 -> (P(1/4; eps, kappa(eps0, zeta0)), kappa) is mapped by the flow over
-               [0, t_1] into the slab of the h-set N_1(eps), and its two ends to opposite sides of it;
-      stage i: N_i(eps) is mapped over [t_i, t_{i+1}] into the slab of N_{i+1}(eps), its two u-faces
-               to opposite sides;
-      final:   N_m(eps) is mapped over [t_m, T] into the interior of the block, its two u-faces into the
-               cones K- and K+ inside the block.
-    N_i(eps) = { z_i + eps0 d_i + M_i (u, s) : |u| <= 1, |s_j| <= 1 } in (U, V, Q, P, kappa), with Y = S(U).
-    The sets are chosen by the program from the enclosures; every inclusion is then checked rigorously.
+    the box; its coordinates are computed at the centre; its U-range is the first of BLOCK_DU that certifies.
+ C  a chain of covering relations (one unstable direction) along the pulse, for the time-rescaled flow
+    z' = r(eps) F(z), r = 1 + b_i (eps - e_m) on the i-th segment (the same orbits; lohner7.py):
+      stage 0: the curve zeta0 -> (P(1/4; eps, kappa(eps0, zeta0)), kappa) is mapped over [0, s_1] into the
+               slab of the h-set N_1(eps), its two ends (zeta0 = -1, +1) to opposite sides of it;
+      stage i: N_i(eps) is mapped over [s_i, s_{i+1}] into the slab of N_{i+1}(eps), its two u-faces to
+               opposite sides;
+      final:   N_m(eps) is mapped over [s_m, T] into the interior of the block, its two u-faces into the
+               cones K- and K+ inside the block (one each).
+    N_i(eps) = { c_i + eps0 d_i + M_i (u, s) : |u| <= 1, |s_j| <= 1 } in (U, V, Q, P, kappa), Y = S(U); c_i, d_i,
+    M_i are exact numbers chosen by the program (from the numerical pulse and the enclosures); every inclusion
+    is then checked rigorously.  A segment that fails is retried with the set cut into k x k pieces (Multi).
 Consequence (see REPORT.md): for each eps in E there is kappa in the window whose orbit leaves rest along the
-unstable manifold and tends to rest: a travelling pulse with speed c = 1/kappa.
+unstable manifold (branch where U increases) and tends to rest: a travelling pulse with speed c = 1/kappa.
 """
 import sys, os, json, time, math, argparse
 HERE = os.path.dirname(os.path.abspath(__file__))

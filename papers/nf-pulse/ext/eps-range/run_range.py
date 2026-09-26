@@ -71,7 +71,7 @@ def attempt(lo, hi, tag):
 def worker(args):
     a, b, w0, wmin, tag, k = args
     log = os.path.join(HERE, 'data', 'range_%s_chunk%d.txt' % (tag, k))
-    x, w = a, w0
+    x, w, w_ok = a, w0, None
     with open(log, 'a') as f:
         while x < b - 1e-12:
             hi = min(b, x + w)
@@ -82,9 +82,13 @@ def worker(args):
             f.flush()
             if v == 'PASS':
                 x = hi
-                w = min(w * 1.25, 2 * w0)
+                w_ok = w
+                w = min(w * 1.15, 2 * w0)
+            elif w_ok is not None and w > 1.01 * w_ok:
+                w = w_ok                      # back to the last width that passed
             elif w / 2 >= wmin:
                 w = w / 2
+                w_ok = None
             else:
                 f.write('GAP %s %s\n' % (dec(x), dec(hi)))
                 x = hi
@@ -99,11 +103,15 @@ if __name__ == '__main__':
     ap.add_argument('--wmin', type=float, default=2.5e-5)
     ap.add_argument('--jobs', type=int, default=os.cpu_count())
     ap.add_argument('--tag', default='run')
+    ap.add_argument('--chunks', default=None, help='a1:b1,a2:b2,... explicit chunks (resume a sweep)')
     A = ap.parse_args()
     os.makedirs(os.path.join(HERE, 'data', 'certs'), exist_ok=True)
     n = A.jobs
     cuts = [A.a + (A.b - A.a) * i / n for i in range(n + 1)]
     cuts = [round(c, 6) for c in cuts]
-    with Pool(n) as p:
-        logs = p.map(worker, [(cuts[i], cuts[i + 1], A.w0, A.wmin, A.tag, i) for i in range(n)])
+    chunks = [(cuts[i], cuts[i + 1]) for i in range(n)]
+    if A.chunks:
+        chunks = [tuple(float(y) for y in c.split(':')) for c in A.chunks.split(',')]
+    with Pool(min(n, len(chunks))) as p:
+        logs = p.map(worker, [(c[0], c[1], A.w0, A.wmin, A.tag, i) for i, c in enumerate(chunks)])
     print('\n'.join(logs))
