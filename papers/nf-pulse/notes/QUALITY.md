@@ -21,3 +21,6 @@ The bar every paper in this repository meets before it is published or preprinte
 - [ ] **6. Adversarial second reading.** Not yet: the mathematics and the code both need an independent reading.
 - [ ] **7. Reproducible.** `code/run_all.sh` reruns the chain and its negative controls from this folder in under a
   minute and exits with status 1 if a check fails.
+  Referee reviews of 2026-09-26 (`review/VERIFY.md`, `review/second/REVIEW.md`) found two checks that could not
+  fail and an environment override that passed a failing block; fixed the same day (mpmath re-check and Jacobian
+  test with verdicts, `require` in place of `assert`, a cleared environment in `run_all.sh`).

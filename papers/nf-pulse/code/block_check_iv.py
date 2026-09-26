@@ -17,7 +17,7 @@
 """Independent re-check of the block certificate with mpmath's interval arithmetic (mpmath.iv), a
 different library from python-flint: same T (exact dyadic floats), inverse enclosed by interval
 Gauss-Jordan, cone condition by interval Cholesky, entrance condition by Gershgorin + Frobenius."""
-import json, mpmath
+import json, sys, mpmath
 from mpmath import iv
 iv.dps = 60
 res = json.load(open('../data/block_certificate.json'))
@@ -60,6 +60,7 @@ def chol_pd(H):
             L[i][j] = (H[i][j] - sum((L[i][k] * L[j][k] for k in range(j)), iv.mpf(0))) / L[j][j]
     return True
 
+all_ok = True
 for dU in ('0.05', '0.03'):
     ok = True; out = []
     for s in (dS(-iv.mpf(dU)), dS(iv.mpf(dU))):
@@ -75,3 +76,5 @@ for dU in ('0.05', '0.03'):
         ok &= pd and ent < 0
         out.append((pd, mpmath.nstr(ent, 8)))
     print('dU', dU, 'cone PD (interval Cholesky), entrance upper bounds:', out, '->', 'CERTIFIED' if ok else 'FAILED')
+    all_ok &= ok
+sys.exit(0 if all_ok else 1)

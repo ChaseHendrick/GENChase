@@ -6,6 +6,10 @@
 # Every step writes its full output to data/logs/; this script prints one line per check and exits with status 1
 # at the end if any proof step fails or any negative control passes.
 cd "$(dirname "$0")"
+# Run from a clean environment: an NF_* override (NF_DU, NF_PREC, ...) or python -O would change what is
+# proved, so every NF_* variable is cleared and python3 runs with -E (ignoring PYTHONOPTIMIZE and friends).
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
+python3() { command python3 -E "$@"; }
 mkdir -p ../data/logs
 L=../data/logs
 fails=0
@@ -25,10 +29,10 @@ python3 block.py > $L/run_all_block.log 2>&1
 check "B: block around rest certified (|U| <= 0.05)" $L/run_all_block.log '^dU 0.05 CERTIFIED'
 check "B: negative control U up to 0.15 is refused" $L/run_all_block.log 'fails as expected'
 python3 block_check_iv.py > $L/run_all_block_iv.log 2>&1
-check "B: independent re-check of the block conditions in mpmath.iv" $L/run_all_block_iv.log '^dU 0.05 cone PD'
+check "B: independent re-check of the block conditions in mpmath.iv" $L/run_all_block_iv.log '^dU 0.05 cone PD.*-> CERTIFIED$'
 
 python3 test_jacobian.py > $L/run_all_jacobian.log 2>&1
-check "J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)" $L/run_all_jacobian.log 'max |J_AD - J_FD|'
+check "J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)" $L/run_all_jacobian.log '^JACOBIAN OK'
 
 for w in interval c1 c2; do NF_TAG=_final python3 prove_pulse.py $w 53 > $L/final_$w.log 2>&1 & done; wait
 check "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53" $L/final_interval.log 'VERDICT PASS'

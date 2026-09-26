@@ -36,16 +36,25 @@ DU = arb(os.environ.get('NF_DU', '0.05'))           # U-range half width of the 
 R_OVER_RHO = arb(os.environ.get('NF_R_OVER_RHO', '4'))
 
 
+def require(cond, what):
+    """A hypothesis of the proof. Unlike assert, this is not removed by python -O or PYTHONOPTIMIZE."""
+    if not cond:
+        print('VERDICT FAIL: hypothesis not verified:', what, flush=True)
+        sys.exit(1)
+
+
 def block_data():
     T, Tinv = bl.setup()
     kappa = (1 / cr.C1).union(1 / cr.C2)
+    require(kappa.contains(1 / cr.C1) and kappa.contains(1 / cr.C2), 'block kappa ball covers 1/c1 and 1/c2')
     ok, info = bl.check(T, Tinv, (-DU, DU), kappa)
-    assert ok, info
+    require(ok, 'block conditions (C) and (E): %s' % info)
     rho = arb(1)
     while not (bl.u_range(Tinv, rho * R_OVER_RHO, rho) < DU):
         rho = rho * arb('0.95')
     rho = arb(rho.mid())
     r = rho * R_OVER_RHO
+    require(bl.u_range(Tinv, r, rho) < DU, 'U-range of the proof block after rounding rho')
     info['rho'] = rho.str(10)
     info['r'] = r.str(10)
     info['U_range'] = bl.u_range(Tinv, r, rho).str(10)
@@ -105,6 +114,7 @@ def main(which, T_enter):
     expect = None
     if which == 'interval':
         cc = cr.C1.union(cr.C2)
+        require(cc.contains(cr.C1) and cc.contains(cr.C2), 'interval run covers c1 and c2')
     elif which == 'c1':
         cc = cr.C1; expect = cr.SIDE_C1
     elif which == 'c2':
@@ -118,7 +128,7 @@ def main(which, T_enter):
     lam = cr.refine(co, arb('0.5'), arb('1.2'))
     sigma = arb(fmpq(1, 7))            # fixed exact-rational scaling (value from choose_sigma)
     ok, a, rr, minfo = mf.validate(kappa, lam, sigma, 80)
-    assert ok, minfo
+    require(ok, 'unstable manifold validated: %s' % minfo)
     x0 = mf.evaluate(a, rr, arb(fmpq(1, 4)))
     X = lo.LohnerSet.from_box(x0 + [kappa])
     T6m = T6(T)
@@ -171,7 +181,7 @@ def main(which, T_enter):
         json.dump(log, open('../data/proof_%s%s.json' % (which.replace(':', '_'), os.environ.get('NF_TAG', '')), 'w'), indent=1)
         print(which, 'VERDICT FAIL:', log['reason'], flush=True)
         return
-    assert float(t.mid()) == float(T_enter)
+    require(float(t.mid()) == float(T_enter), 'phase 1 reached T_enter')
     y = X.affine_image_hull(T6m, xstar + [arb(0), arb(0)])
     hx = X.hull()
     inB = in_int_B(y, rho, r)

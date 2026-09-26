@@ -16,6 +16,7 @@
 #
 """Check the forward-mode Jacobian of the Taylor map (lohner.taylor_jet) against central differences of
 the Taylor map itself, including the derivative with respect to kappa = 1/c."""
+import sys
 from flint import arb, ctx
 ctx.prec = 256
 import lohner as lo, nfcore as nf
@@ -35,5 +36,9 @@ for m in range(6):
         fd = (fp[i] - fm[i]) / (2 * d)
         worst = max(worst, abs(float((fd - J[i][m]).mid())))
 print('max |J_AD - J_FD| over 36 entries: %.2e  (FD truncation ~1e-60, so agreement to ~1e-50 means AD is right)' % worst)
+JAC_TOL = 1e-40       # central differences with step 1e-30 are accurate to ~1e-60; a wrong term shows as >1e-10
+print('JACOBIAN', 'OK' if worst < JAC_TOL else 'FAIL', '(threshold %.0e)' % JAC_TOL)
 # the kappa column explicitly
 print('dPhi/dkappa (AD):', [J[i][5].str(8) for i in range(5)])
+if not worst < JAC_TOL:
+    sys.exit(1)
