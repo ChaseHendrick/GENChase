@@ -386,3 +386,111 @@ Negative controls (results in `data/controls.log`):
   leaves undecided boxes around it. So the program does not hide degeneracy. This case is outside the
   theorem.
 
+## 8. N = 6
+
+(status below)
+
+## 9. Adversarial check (independent subagent, 2026-09-26)
+
+An independent subagent reviewed the work adversarially. It worked from a copy, with instructions
+to rerun everything, audit the mathematics, mutate the exclusion and Krawczyk steps, recount by its
+own method and re-open the prior-art sources.
+
+**Its verdict, verbatim:** "The computations reproduce and I found no mathematical error. The
+argument covers the whole search region, and every exclusion test is a correct consequence of (1).
+An independent numerical recount and the project's second program (bnbA) give the same answer. I
+consider Theorem 1 proved as stated, subject to the trust base the report lists (IEEE directed
+rounding, gcc `-frounding-math`, python-flint)."
+
+**What it checked:**
+- It reran bnb and classify.py: 100 boxes, 11 chart solutions, 5 classes, 354, Euler sum -6. The
+  three tests passed.
+- It reran bnbA at A = 2 (533 s on one core) and got the same answer.
+- It derived P_S and Q_S itself, and the constant |S|^2(|S|-1)/2 (via Lagrange's identity for the
+  conj term).
+- It audited:
+  - the chart and a priori bounds;
+  - the reduction E = 0 => (1);
+  - the Krawczyk logic (preconditioner, inflation, strict interior, contraction, recursion);
+  - the candidate set of the tight 1/w range, with 2,000,000 random rectangles and 0 failures;
+  - directed rounding;
+  - the symmetry logic and the formula 5!/|rotation group|;
+  - the Hessian eigenstructure;
+  - the congruence and Gershgorin inertia;
+  - the index-0 invariance argument.
+  All passed.
+- It ran a harness of 240,000 random boxes around true solutions. There were 0 wrongful exclusions.
+- Independent recount (numerical): its own damped Gauss-Newton solver from 100,000 random starts
+  gave 5 classes and exactly 354 labelled configurations. Numerical Morse indices were 3, 1, 2, 0, 0.
+  Nothing appeared beyond the five classes.
+- Mutations: the five built-in ones and eight of its own. All were detected, except one: excluding
+  the band 1.62 < x_1 < 1.65 removes class (d) only. classify.py then exited normally with 4 classes
+  and 234 labelled. The printed Euler sum (114, not -6) was the only sign of the problem.
+- Prior art: it verified the Aref, Faugere-Svartz, Hampton, Moczurad-Zgliczynski, Kim and Roberts
+  quotes. It found the Svartz-thesis sentence (section 2), the ∞ entry in Faugere-Svartz's Table 1,
+  and that Conjecture 3's range includes A = 2. Its three fresh searches found no rigorous N = 5 list
+  published after 2012.
+
+**Weak points it named, and what was done:**
+1. The arb stage re-checks the certified boxes, never the exclusions. So completeness rests on the C
+   exclusion code, and a bug that deletes one non-classical class is caught only by the Euler sum.
+   - Fixed: classify.py and classifyA.py now fail unless the Euler sum equals chi = -6.
+   - Also, completeness is established twice, by two programs whose exclusion code is independent
+     (bnb.c and bnbA.c share only the tested interval header).
+2. The run-completeness check was too weak.
+   - Fixed: every STAT line now records the chart (`root=chart` or `custom`), the mutation flag,
+     N, nsplit and the exponent. classify.py refuses mixed runs, control-box runs, mutated runs and
+     runs with an undecided box. It checks that the finished slices cover every initial piece of
+     the chart.
+3. The isolating intervals of the stability polynomial were not checked to be disjoint.
+   - Fixed: they are now checked, and certification is withheld otherwise.
+4. The arb Krawczyk could reject a valid bnb box (its Jacobian enclosure was looser).
+   - Fixed: on failure, classify.py retries with the Jacobian hull over 2^7 sub-boxes, as the
+     reviewer did by hand.
+5. Prior-art nuances. Added to section 2.
+
+## 10. Reproduce
+
+Requirements: gcc on x86-64, Python 3 with python-flint (0.9.0 used), numpy and mpmath. From
+`code/`:
+
+```
+sh run_all.sh quick     # build, tests, N = 3 and the N = 5 proof (about 2 minutes on 4 cores)
+sh run_all.sh           # also bnbA at A = 2, 3, 6.5, 7, 8 and the negative controls (about 1.5 h)
+```
+
+The individual steps:
+```
+gcc -O2 -frounding-math -fno-fast-math -fno-math-errno -std=gnu11 -o bnb bnb.c -lm
+for w in 0 1 2 3; do ./bnb 5 4096 $w 4 1e-11 --sym > ../data/run5sym/w$w.txt & done; wait
+python3 classify.py 5 ../data/run5sym/w*.txt --json=../data/n5_classes.json
+python3 describe.py ../data/n5_classes.json
+gcc ... -o bnbA bnbA.c -lm
+for w in 0 1 2 3; do ./bnbA 5 2 1024 $w 4 1e-11 --sym > ../data/runA2/w$w.txt & done; wait
+python3 classifyA.py 5 2 ../data/runA2/w*.txt
+python3 controls.py
+```
+
+The committed data (`data/`) are the outputs of `sh run_all.sh` on 2026-09-26. `run_all.log` is the
+full log.
+
+## 11. Limitations
+
+- The proof is computer-assisted. It is correct only if the following are correct:
+  - IEEE 754 arithmetic with directed rounding as compiled by GCC with `-frounding-math`, for
+    + - * / and sqrt; frexp and ldexp are also used by the exp/log code, which only bnbP needs;
+  - python-flint;
+  - the lemmas of section 4.
+  Mitigations: the tests of section 7 and two independent searches.
+- Nothing here has been checked by a person.
+- The N = 5 list is not new as a claim. Faugere and Svartz (2012) state that their exact method covers
+  N <= 7. What is new is the explicit certified list with indices and stability, by a second method,
+  and the resulting answer to Kim's Remark 1.5 for N = 5.
+- Hampton's Conjecture 3 is verified only at the five sampled exponents, not on intervals, and
+  nothing is proved about A5 and Ac.
+- The descriptions "isosceles trapezoid" and "isosceles triangle" rest on the exact reflection
+  symmetry proved by classify.py (one vortex on the axis, two swapped pairs) and on the convex hull
+  of the certified enclosures (describe.py; floating point at 40 digits on enclosures of radius
+  < 1e-73).
+- The per-tab ledger RESEARCH.md was not edited, because the task restricts changes to this folder.
+  Its "open problems in point-vortex dynamics" entry should point here when this is merged.

@@ -37,7 +37,10 @@ def run_search(extra, minw='1e-11', timeout=300, nw=4, env=None):
 
 
 def classify(files):
-    r = subprocess.run([PY, os.path.join(HERE, 'classify.py'), '5'] + files, capture_output=True, text=True)
+    # the controls check that the mathematics catches each mutation, so they
+    # switch off the one guard that refuses mutated runs by their metadata
+    env = dict(os.environ, CONTROL_ALLOW_MUTATION='1')
+    r = subprocess.run([PY, os.path.join(HERE, 'classify.py'), '5'] + files, capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
 
 
@@ -51,8 +54,9 @@ def verdict(files, txt, timed_out):
     code, out = classify(files)
     if code != 0:
         last = out.strip().split('\n')[-1]
-        return f'classification failed: {last}'
-    lines = [l for l in out.split('\n') if l.startswith('total labelled') or l.startswith('sum of') or l.startswith('classes')]
+        info = [l.strip() for l in out.split('\n') if l.startswith('exact ') or l.startswith('distinct solutions') or 'Krawczyk failed' in l]
+        return f'classification failed ({ncert} certified boxes; ' + '; '.join(info) + f'): {last}'
+    lines = [l for l in out.split('\n') if l.startswith('total labelled') or l.startswith('sum of') or l.startswith('classes') or l.startswith('Euler characteristic check')]
     return 'classification ran: ' + '; '.join(lines)
 
 

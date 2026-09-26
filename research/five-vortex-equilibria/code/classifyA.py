@@ -197,7 +197,8 @@ def check_complete(files):
                 assert key == ref, f'files from different runs: {key} vs {ref}'
                 assert int(d['unres']) == 0, 'undecided boxes'
                 assert d.get('root') == 'chart', 'not a search of the whole chart'
-                assert d.get('mutate') == '0', 'a mutated (control) run'
+                if os.environ.get('CONTROL_ALLOW_MUTATION') != '1':   # set only by controls.py
+                    assert d.get('mutate') == '0', 'a mutated (control) run'
                 assert int(d['N']) == N, 'wrong N'
                 runs.append((int(d['nworkers']), int(d['worker'])))
     assert runs, 'no STAT line: the run did not finish'
