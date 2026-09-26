@@ -58,7 +58,7 @@ def choose_h(x, order, tol, hmax=0.25):
     return min(hmax, (tol / max(m, 1e-300)) ** (1.0 / order) * 0.5)
 
 
-def kstar(eps_q, c_guess, nbits=130, prec=224):
+def kstar(eps_q, c_guess, nbits=126, prec=224):
     """kappa* at the rational eps_q (numerical): bracket by the escape classification of
     ../../code/shoot_hp.py (E_up = {Q > 1, P > 0} for c > c*, E_dn = {Q < 0, P < 0} for c < c*), then
     bisection for nbits bits.  Returns (kappa midpoint at NPREC bits, final bracket width in c)."""
@@ -72,7 +72,18 @@ def kstar(eps_q, c_guess, nbits=130, prec=224):
             break
         width *= 2
         assert width < 0.5, 'no bracket'
-    lo, hi, _, _ = sh.bisect(lo, hi, nbits)
+    # bisection; the working precision follows the bracket width (a shot at width 2^-k needs about k + 60 bits)
+    for it in range(nbits):
+        wbits = -math.log2(max(float((hi - lo).mid()), 1e-300))
+        ctx.prec = max(96, min(prec, 32 * math.ceil((wbits + 64) / 32)))
+        cm = mid((lo + hi) / 2)
+        sm = sh.shoot(cm)[0]
+        if sm == -1:
+            lo = cm
+        elif sm == 1:
+            hi = cm
+        else:
+            raise RuntimeError('no escape at c=%s' % cm)
     ctx.prec = NPREC
     c = mid((lo + hi) / 2)
     kap = mid(1 / c)
@@ -101,11 +112,11 @@ class Tracker:
         self.t = 0.0
         ctx.prec = old
 
-    def advance(self, s1, rho):
+    def advance(self, s1, rho, tol_bits=None):
         old = ctx.prec
         ctx.prec = NPREC
         L7.RHO[0], L7.RHO[1] = arb(rho[0]), arb(rho[1])
-        tol = 2.0 ** (-NPREC + 40)
+        tol = 2.0 ** (-(tol_bits or NPREC - 40))
         while self.t < s1:
             h = min(choose_h(self.x, self.order, tol), s1 - self.t)
             vals, grads = L7.taylor_jet(self.x, self.order)
@@ -116,6 +127,13 @@ class Tracker:
             self.tan = [[mid(sum((J[i][m] * tv[m] for m in range(7)), arb(0))) for i in range(7)] for tv in self.tan]
             self.t += h
         ctx.prec = old
+
+    def copy(self):
+        c = Tracker.__new__(Tracker)
+        c.order, c.t = self.order, self.t
+        c.x = list(self.x)
+        c.tan = [list(v) for v in self.tan]
+        return c
 
     def dkdeps(self, l):
         """kappa*'(eps) from the growth of the tangents along the unstable coordinate."""

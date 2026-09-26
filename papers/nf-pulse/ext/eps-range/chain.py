@@ -47,9 +47,13 @@ TOL = float(os.environ.get('NF_TOL', '1e-32'))
 SIGMA = fmpq(1, 7)                 # manifold scaling, as in ../../code/prove_pulse.py
 T0 = fmpq(1, 4)                    # manifold parameter of the initial point
 NMAN = 80                          # manifold order
-DU = arb('0.05')                   # block U half width, as in the original proof
+NSUB = int(os.environ.get('NF_NSUB', '12'))   # sub-boxes per side for the gradient of the initial point
+BLOCK_DU = ('0.05', '0.04', '0.03', '0.025', '0.02', '0.015', '0.01')   # U half widths tried (0.05 as in the original)
+BLOCK_D = ((1, 0.5, 0.25, 0.25), (1, 1, 1, 1), (1, 0.25, 0.25, 0.25), (1, 0.5, 0.5, 0.5), (1, 2, 1, 1))
 R_OVER_RHO = arb(4)
 PHASE = int(os.environ.get('NF_PHASE', '1'))           # 1: rescale time to follow the pulse phase in eps
+SPLITS = tuple(int(x) for x in os.environ.get('NF_SPLITS', '1,2,4').split(','))   # subdivisions tried per segment
+FLOWDIR = int(os.environ.get('NF_FLOWDIR', '1'))       # 1: the flow direction is a slab direction
 MARGIN = float(os.environ.get('NF_MARGIN', '1e-3'))   # relative slack of the slab
 EDGE_KEEP = float(os.environ.get('NF_EDGE_KEEP', '0.98'))   # new u-size as a fraction of the face image
 P5 = [0, 1, 2, 3, 5]               # (U, V, Q, P, kappa) inside the 7-state (U, V, Q, P, Y, kappa, eps)
@@ -101,9 +105,14 @@ class Box:
 # ---------------------------------------------------------------- rest state, manifold, block
 def setup(e_lo, e_hi, q0, s1, dk):
     E = arb(e_lo).union(arb(e_hi))
-    e_m = arb((e_lo + e_hi) / 2)
-    w2 = arb((e_hi - e_lo) / 2)
-    K_all = q0 + s1 * rball(arb(1)) + dk * rball(arb(1))
+    # eps = e_m + w2 eps0 with e_m, w2 exact dyadic numbers (the rounded midpoint and half width); for eps in E
+    # the parameter eps0 lies in R0e = [-(1 + delta), 1 + delta], delta covering the rounding
+    e_mq, w2q = arb((e_lo + e_hi) / 2), arb((e_hi - e_lo) / 2)
+    e_m, w2 = arb(e_mq.mid()), arb(w2q.mid())
+    delta = ub(((e_mq - e_m).abs_upper() + (w2q - w2).abs_upper()) / w2) + arb(2) ** -100
+    R0e = rball(1 + delta)
+    assert (e_m - w2 * (1 + delta)) < arb(e_lo) and (e_m + w2 * (1 + delta)) > arb(e_hi)
+    K_all = q0 + s1 * R0e + dk * rball(arb(1))
     rep = {}
     s = nf.dS(arb(0))
     rep['s=S\'(0)'] = s.str(20)
@@ -129,11 +138,23 @@ def setup(e_lo, e_hi, q0, s1, dk):
     assert np.all(np.abs(wv.imag) < 1e-12)
     idx = np.argsort(-wv.real)
     V = V[:, idx].real
-    Tf = np.diag((1, 0.5, 0.25, 0.25)) @ np.linalg.inv(V)
-    TB = bl.exact_matrix(Tf)
-    TBinv = TB.inv()
-    okb, binfo = bl.check(TB, TBinv, (-DU, DU), K_all)
+    Vinv = np.linalg.inv(V)
+    okb = False
+    for du in BLOCK_DU:                       # the first (largest) U-range and scaling that certify
+        for dsc in BLOCK_D:
+            Tf = np.diag(dsc) @ Vinv
+            TB = bl.exact_matrix(Tf)
+            TBinv = TB.inv()
+            DUa = arb(du)
+            okb, binfo = bl.check(TB, TBinv, (-DUa, DUa), K_all)
+            if okb:
+                break
+        if okb:
+            break
     assert okb, binfo
+    binfo['dU'] = du
+    binfo['d'] = list(dsc)
+    DU = DUa
     rho = arb(1)
     while not (bl.u_range(TBinv, rho * R_OVER_RHO, rho) < DU):
         rho = rho * arb('0.95')
@@ -143,7 +164,8 @@ def setup(e_lo, e_hi, q0, s1, dk):
     binfo['U_range'] = bl.u_range(TBinv, r, rho).str(10)
     binfo['T'] = Tf.tolist()
     rep['block'] = binfo
-    return dict(E=E, e_m=e_m, w2=w2, K_all=K_all, lam=lam, s=s, rr=rr, TB=TB, rho=rho, r=r, rep=rep)
+    rep['eps0_range'] = R0e.str(30)
+    return dict(E=E, e_m=e_m, w2=w2, R0e=R0e, scl=1 + delta, K_all=K_all, lam=lam, s=s, rr=rr, TB=TB, rho=rho, r=r, rep=rep)
 
 
 # ---------------------------------------------------------------- initial set on the unstable manifold
@@ -155,8 +177,22 @@ def initial_sets(S, q0, s1, dk):
     co_c = cr.charpoly_coeffs(q0, s, e_m)
     lam_c = cr.refine(co_c, arb('0.3'), arb('1.5'))
     Pc = ad.point(e_m, q0, lam_c, sig, NMAN, t0)
-    # gradient over the whole box
-    Pb = ad.point(E, K_all, lam, sig, NMAN, t0)
+    # gradient over the whole box, as the union of its enclosures over NSUB x NSUB sub-boxes of the
+    # (eps0, zeta0) square (the eigenvalue ball enters 1/(lam^2 - 1) independently of kappa, so one
+    # evaluation over the whole box overestimates the variation of the gradient by a large factor)
+    Jb = None
+    for ia in range(NSUB):
+        for ib in range(NSUB):
+            ea = arb(fmpq(2 * ia - NSUB, NSUB)).union(arb(fmpq(2 * ia + 2 - NSUB, NSUB)))
+            zb = arb(fmpq(2 * ib - NSUB, NSUB)).union(arb(fmpq(2 * ib + 2 - NSUB, NSUB)))
+            ea = ea * S['scl']                   # the sub-boxes cover R0e = [-(1 + delta), 1 + delta]
+            Es = e_m + w2 * ea
+            Ks = q0 + s1 * ea + dk * zb
+            cos = cr.charpoly_coeffs(Ks, s, Es)
+            lams = cr.refine(cos, arb('0.3'), arb('1.5'))
+            Ps = ad.point(Es, Ks, lams, sig, NMAN, t0)
+            g = [[p.g[0], p.g[1]] for p in Ps]
+            Jb = g if Jb is None else [[Jb[i][j].union(g[i][j]) for j in range(2)] for i in range(5)]
     tail = [ri * t0 ** (NMAN + 1) for ri in rr]
     # x(eps0, zeta0) = P(e_m + w2 eps0, q0 + s1 eps0 + dk zeta0):
     #   in P(centre) + J_eps (w2 eps0) + J_kap (s1 eps0 + dk zeta0) + tail, J over the box (mean value theorem)
@@ -164,29 +200,29 @@ def initial_sets(S, q0, s1, dk):
     xbar = []
     R = []
     for i in range(5):
-        je, jk = Pb[i].g
+        je, jk = Jb[i]
         ce = je * w2 + jk * s1            # column eps0 (exact coefficient enclosure)
         cz = jk * dk                      # column zeta0
         C[i, 0] = arb(ce.mid()); C[i, 1] = arb(cz.mid())
         xb = arb(Pc[i].v.mid())
         xbar.append(xb)
-        err = (Pc[i].v - xb) + (ce - C[i, 0]) * rball(arb(1)) + (cz - C[i, 1]) * rball(arb(1)) + rball(ub(tail[i]))
+        err = (Pc[i].v - xb) + (ce - C[i, 0]) * S['R0e'] + (cz - C[i, 1]) * rball(arb(1)) + rball(ub(tail[i]))
         R.append(err)
     xbar.append(q0); C[5, 0] = s1; C[5, 1] = dk; R.append(arb(0))
-    xbar.append(arb(e_m.mid())); C[6, 0] = arb(w2.mid()); C[6, 1] = arb(0)
-    R.append((e_m - arb(e_m.mid())) + (w2 - arb(w2.mid())) * rball(arb(1)))
+    xbar.append(e_m); C[6, 0] = w2; C[6, 1] = arb(0)          # exact: eps = e_m + w2 eps0
+    R.append(arb(0))
     B = arb_mat(7, 7)
     for i in range(7):
         B[i, i] = 1
-    full = L7.LohnerSet(xbar, C, [rball(arb(1))] * 2, B, R)
+    full = L7.LohnerSet(xbar, C, [S['R0e'], rball(arb(1))], B, R)
     edges = {}
     for sg in (-1, 1):
         xb = [xbar[i] + sg * C[i, 1] for i in range(7)]
         Ce = arb_mat(7, 1)
         for i in range(7):
             Ce[i, 0] = C[i, 0]
-        edges[sg] = L7.LohnerSet(xb, Ce, [rball(arb(1))], B, list(R))
-    return full, edges, {'u_col': 1, 'eps_col': 0, 's_cols': []}
+        edges[sg] = L7.LohnerSet(xb, Ce, [S['R0e']], B, list(R))
+    return full, edges, {'u_col': 1, 'eps_col': 0, 's_cols': [], 'face_eps_col': 0}
 
 
 # ---------------------------------------------------------------- h-sets
@@ -201,7 +237,7 @@ def coord_map(Minv, c5, d5, S):
     return A, shift
 
 
-def design(X, Xe, cols, S, a_fac, c5, d5):
+def design(X, Xe, cols, S, a_fac, c5, d5, free_a=False):
     """Choose N_{i+1} from the enclosure X of the image of N_i (and of its faces Xe[-1], Xe[+1]).
     c5, d5: centre and eps-shift (per unit eps0) of the new h-set, from the numerical pulse (pulse_num)."""
     C = X.C
@@ -211,12 +247,17 @@ def design(X, Xe, cols, S, a_fac, c5, d5):
     # three x-directions orthogonal to the x-part of v.  The x-part of v is the direction in which a
     # perturbation at fixed kappa grows; it must not lie in the slab directions.
     vx = v[:4] / np.linalg.norm(v[:4])
+    # the vector field at the centre: a time shift moves along it, so it is kept as a slab direction of its own
+    cx = [fl(z) for z in c5]
+    Fx = np.array([cx[4] * (cx[2] - cx[0] - cx[1]), fl(S['e_m']) * cx[4] * cx[0], cx[3], cx[2] - fl(nf.S(arb(cx[0])))])
+    Fo = Fx - np.dot(Fx, vx) * vx
+    use_F = FLOWDIR and np.linalg.norm(Fo) > 0.05 * np.linalg.norm(Fx)
     cand = [np.array([fl(C[i, j]) for i in range(4)]) for j in cols['s_cols']]
     Bm = X.B
     for j in range(7):
         cand.append(np.array([fl(Bm[i, j]) for i in range(4)]) * max(fl(ub(X.R[j])), 1e-300))
     cand.sort(key=lambda x: -np.linalg.norm(x))
-    xb = [vx]
+    xb = [vx] + ([Fo / np.linalg.norm(Fo)] if use_F else [])
     for cvec in cand + [np.eye(4)[k] for k in range(4)]:
         w = cvec.copy()
         for _ in range(2):
@@ -227,7 +268,10 @@ def design(X, Xe, cols, S, a_fac, c5, d5):
             xb.append(w / n)
         if len(xb) == 4:
             break
-    basis = [v, np.array([0, 0, 0, 0, 1.0])] + [np.append(q, 0.0) for q in xb[1:]]
+    if use_F:
+        basis = [v, np.array([0, 0, 0, 0, 1.0]), np.append(Fx, 0.0)] + [np.append(q, 0.0) for q in xb[2:]]
+    else:
+        basis = [v, np.array([0, 0, 0, 0, 1.0])] + [np.append(q, 0.0) for q in xb[1:]]
     Mt = np.array(basis).T                          # 5 x 5, columns v, q1..q4
     Mta = bl.exact_matrix(Mt)
     Mtinv = Mta.inv()
@@ -238,10 +282,19 @@ def design(X, Xe, cols, S, a_fac, c5, d5):
     em = Xe[-1].affine_image_hull(A, shift)[0]
     edge = min(fl(arb(ep.lower())), -fl(arb(em.upper())))
     if not edge > 0:
-        return None, {'fail': 'faces not on opposite sides', 'u+': ep.str(5), 'u-': em.str(5)}
-    a = min(EDGE_KEEP * edge, a_fac * max(b))
+        Xp = Xe[1]
+        AC, AB = A * Xp.C, A * Xp.B
+        contrib = ['%.1e' % fl(ub(AC[0, j])) for j in range(AC.ncols())]
+        rest = fl(ub(sum((AB[0, j] * Xp.R[j] for j in range(7)), arb(0))))
+        centre = sum((A[0, j] * (Xp.xbar[j] - shift[j]) for j in range(7)), arb(0))
+        return None, {'fail': 'faces not on opposite sides', 'u+': ep.str(5), 'u-': em.str(5),
+                      'u+ centre': centre.str(5), 'u+ columns': contrib, 'u+ box part': '%.1e' % rest}
+    # largest slab extent in (U,V,Q,P), the flow direction excluded (a time shift does not couple into u)
+    bphys = max(b[j] * np.linalg.norm(Mt[:4, j + 1]) for j in range(4) if not (use_F and j == 1))
+    a = EDGE_KEEP * edge if free_a else min(EDGE_KEEP * edge, a_fac * bphys / np.linalg.norm(Mt[:4, 0]))
     M = Mt @ np.diag([a] + b)
-    return {'c5': c5, 'd5': d5, 'M': M, 'a': a, 'b': b, 'edge_growth': edge}, None
+    return {'c5': c5, 'd5': d5, 'M': M, 'a': a, 'b': b, 'edge_growth': edge, 'cosFv': float(abs(np.dot(Fx, vx)) / np.linalg.norm(Fx)),
+            'u_face_centre': 0.5 * (fl(ep) + fl(em))}, None
 
 
 def verify_cover(X, Xe, H, S):
@@ -273,7 +326,7 @@ def hset_lohner(H, S):
     Yc = nf.S(Uc)
     dSc = nf.dS(Uc)
     # Y row: S(U) = S(Uc) + S'(Uc) dU + S''(xi)/2 dU^2
-    dUmax = sum((ub(Cm[0, k]) for k in range(6)), arb(0))
+    dUmax = sum((ub(Cm[0, k]) for k in range(5)), arb(0)) + ub(Cm[0, 5]) * S['scl']
     Urange = Uc + rball(dUmax)
     beta = arb(nf._BETA)
     Sr = nf.S(Urange)
@@ -281,19 +334,19 @@ def hset_lohner(H, S):
     for k in range(6):
         v = dSc * Cm[0, k]
         Cm[4, k] = arb(v.mid())
-    Yerr = (Yc - arb(Yc.mid())) + sum(((dSc * Cm[0, k] - Cm[4, k]) * rball(arb(1)) for k in range(6)), arb(0)) \
+    Yerr = (Yc - arb(Yc.mid())) + sum(((dSc * Cm[0, k] - Cm[4, k]) * rball(arb(1)) for k in range(5)), arb(0)) \
+        + (dSc * Cm[0, 5] - Cm[4, 5]) * S['R0e'] \
         + rball(ub(S2) * dUmax * dUmax / 2)
     for k in range(5):
         Cm[6, k] = arb(0)
-    Cm[6, 5] = arb(S['w2'].mid())
-    xbar = [c5[0], c5[1], c5[2], c5[3], arb(Yc.mid()), c5[4], arb(S['e_m'].mid())]
+    Cm[6, 5] = S['w2']
+    xbar = [c5[0], c5[1], c5[2], c5[3], arb(Yc.mid()), c5[4], S['e_m']]
     R = [arb(0)] * 7
     R[4] = Yerr
-    R[6] = (S['e_m'] - xbar[6]) + (S['w2'] - Cm[6, 5]) * rball(arb(1))
     B = arb_mat(7, 7)
     for i in range(7):
         B[i, i] = 1
-    full = L7.LohnerSet(xbar, Cm, [rball(arb(1))] * 6, B, R)
+    full = L7.LohnerSet(xbar, Cm, [rball(arb(1))] * 5 + [S['R0e']], B, R)
     edges = {}
     for sg in (-1, 1):
         xb = [xbar[i] + sg * Cm[i, 0] for i in range(7)]
@@ -301,8 +354,63 @@ def hset_lohner(H, S):
         for i in range(7):
             for k in range(5):
                 Ce[i, k] = Cm[i, k + 1]
-        edges[sg] = L7.LohnerSet(xb, Ce, [rball(arb(1))] * 5, B, list(R))
-    return full, edges, {'u_col': 0, 's_cols': [1, 2, 3, 4], 'eps_col': 5}
+        edges[sg] = L7.LohnerSet(xb, Ce, [rball(arb(1))] * 4 + [S['R0e']], B, list(R))
+    return full, edges, {'u_col': 0, 's_cols': [1, 2, 3, 4], 'eps_col': 5, 'face_eps_col': 4}
+
+
+
+# ---------------------------------------------------------------- subdivision
+class Multi:
+    """A finite union of Lohner sets.  Hulls of affine images are unions of the pieces' hulls, so every
+    inclusion checked for a Multi is checked for every piece.  Directions (C, B, R, xbar) are read from the
+    first piece; they only serve to choose sets."""
+
+    def __init__(self, pieces):
+        self.pieces = pieces
+        p = pieces[0]
+        self.xbar, self.C, self.R0, self.B, self.R = p.xbar, p.C, p.R0, p.B, p.R
+
+    def affine_image_hull(self, T, shift):
+        out = None
+        for p in self.pieces:
+            h = p.affine_image_hull(T, shift)
+            out = h if out is None else [a.union(b) for a, b in zip(out, h)]
+        return out
+
+    def hull(self):
+        out = None
+        for p in self.pieces:
+            h = p.hull()
+            out = h if out is None else [a.union(b) for a, b in zip(out, h)]
+        return out
+
+
+def split(X, splits):
+    """Cover X = {xbar + C r0 + B r} (with B = I) by pieces: every listed column j of C is cut into k equal
+    parts (k a power of 2, so the new columns are exact); r0_j in [-1, 1] is the union of the k intervals
+    off_m + [-1/k, 1/k], off_m = (2m + 1 - k)/k.  Rounding of the shifted centre goes into the box R."""
+    for i in range(7):
+        for j in range(7):
+            assert X.B[i, j] == (1 if i == j else 0)
+    pieces = [X]
+    for col, k in splits:
+        new = []
+        for P in pieces:
+            for m in range(k):
+                off = arb(fmpq(2 * m + 1 - k, k))
+                xb, R = [], list(P.R)
+                for i in range(7):
+                    v = P.xbar[i] + P.C[i, col] * off
+                    xm = arb(v.mid())
+                    xb.append(xm)
+                    R[i] = R[i] + (v - xm)
+                C = arb_mat(P.C.nrows(), P.C.ncols())
+                for i in range(P.C.nrows()):
+                    for j in range(P.C.ncols()):
+                        C[i, j] = P.C[i, j] * arb(fmpq(1, k)) if j == col else P.C[i, j]
+                new.append(L7.LohnerSet(xb, C, P.R0, P.B, R))
+        pieces = new
+    return pieces
 
 
 # ---------------------------------------------------------------- block entry
@@ -329,13 +437,19 @@ def in_K(y, sign):
     return bool(arb(v.lower()) > ynorm(y[1:]))
 
 
+SAME_CONE = 0    # negative control: +1 / -1 demands BOTH faces in K+ / K- (must fail: the ends must separate)
+
+
 def block_entry(X, Xe, S):
     y = yimage(X, S)
     yp, ym = yimage(Xe[1], S), yimage(Xe[-1], S)
     full_in = in_int_B(y, S)
     side = None
     if in_int_B(yp, S) and in_int_B(ym, S):
-        if in_K(yp, 1) and in_K(ym, -1):
+        if SAME_CONE:
+            if in_K(yp, SAME_CONE) and in_K(ym, SAME_CONE):
+                side = 'both faces in the same cone (negative control)'
+        elif in_K(yp, 1) and in_K(ym, -1):
             side = '+face->K+, -face->K-'
         elif in_K(yp, -1) and in_K(ym, 1):
             side = '+face->K-, -face->K+'
@@ -345,22 +459,22 @@ def block_entry(X, Xe, S):
 
 
 # ---------------------------------------------------------------- driver
-def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac=10.0, swap=False, verbose=True):
+def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac=10.0, shift=0.0, verbose=True):
     """e_lo, e_hi: fmpq.  kap_c: numerical kappa*(e_m) (arb), dkap: numerical kappa*'(e_m) (arb), dk: half width
     of the kappa window (float).  The window is kappa = q0 + s1 eps0 + dk zeta0 with q0 = kap_c, s1 = dkap w."""
     ctx.prec = PREC
     t_start = time.time()
     e_m_q = (e_lo + e_hi) / 2
     w2q = (e_hi - e_lo) / 2
-    q0 = kap_c                                   # exact (a 256-bit dyadic)
+    q0 = arb((kap_c + dyadic(shift * dk)).mid())  # exact (a dyadic); shift != 0: negative control (window off the pulse)
     s1 = dyadic(float((dkap * arb(w2q)).mid()))
     dkd = dyadic(dk)
-    if swap:          # negative control: reverse the speed window (its two ends exchange sides)
-        dkd = -dkd
     S = setup(e_lo, e_hi, q0, s1, dkd)
-    cert = {'eps': [str(e_lo), str(e_hi)], 'q0': q0.str(40, radius=False), 's1': s1.str(30, radius=False),
+    exact = lambda x: '%d*2^%d' % x.man_exp()
+    cert = {'eps': [str(e_lo), str(e_hi)], 'e_m_exact': exact(S['e_m']), 'w_exact': exact(S['w2']),
+            'q0_exact': exact(q0), 's1_exact': exact(s1), 'dk_exact': exact(dkd), 'q0': q0.str(40, radius=False), 's1': s1.str(30, radius=False),
             'dk': dkd.str(30, radius=False), 'kappa_window': 'kappa = q0 + s1 eps0 + dk zeta0, eps = e_m + w eps0',
-            'prec': PREC, 'order': ORDER, 'tol': TOL, 'seg': seg, 'swap': swap,
+            'prec': PREC, 'order': ORDER, 'tol': TOL, 'seg': seg, 'shift': shift, 'same_cone_control': SAME_CONE,
             'setup': S['rep'], 'stages': []}
     X, Xe, cols = initial_sets(S, q0, s1, dkd)
     tr = pn.Tracker(e_m_q, kap_c)
@@ -372,35 +486,54 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
     reason = ''
     while True:
         t1 = t + seg
-        try:
-            Xn, _, _ = L7.integrate(X, t, t1, order=ORDER, tol=TOL, rho=(b_rho, em_d))
-            Xen = {sg: L7.integrate(Xe[sg], t, t1, order=ORDER, tol=TOL, rho=(b_rho, em_d))[0] for sg in (-1, 1)}
-        except Exception as ex:
-            reason = 'integration failed on [%g, %g]: %r' % (t, t1, ex)
-            break
+        # numerical pulse at the end of the segment (centre and eps-shift of the next h-set)
         tr.advance(t1, (b_rho, em_d))
         ctx.prec = PREC
-        st = {'s': t1, 'rho_b': b_rho, 'rho_em': em_d}
-        if t1 >= t_block_min:
-            okB, binfo = block_entry(Xn, Xen, S)
-            st['block'] = binfo
-            if okB:
-                cert['stages'].append(st)
-                verdict = 'PASS'
-                cert['T'] = t1
-                break
         c5 = [arb(tr.x[i].mid()) for i in P5]
         ctx.prec = pn.NPREC                      # the pulse-family tangent is a difference of two large vectors
         d5 = [arb((arb(w2q) * (tr.tan[0][i] + dkap * tr.tan[1][i])).mid()) for i in P5]
         ctx.prec = PREC
-        H, err = design(Xn, Xen, cols, S, a_fac, c5, d5)
-        if H is None:
-            st['design'] = err
-            cert['stages'].append(st)
-            reason = 'covering fails at s=%g: %s' % (t1, err)
+        TBf = np.array(S['rep']['block']['T'])
+        yc = TBf @ (np.array([fl(v) for v in c5[:4]]) - np.array([fl(v) for v in nf.rest_state()[:4]]))
+        free_a = bool(np.linalg.norm(yc[1:]) < fl(S['rho']) and abs(yc[0]) < fl(S['r']) / 4)
+        done = False
+        for k in SPLITS:                         # retry a failing segment with the sets cut into k x k pieces
+            st = {'s': t1, 'rho_b': b_rho, 'rho_em': em_d, 'split': k}
+            try:
+                P0 = split(X, [(cols['u_col'], k), (cols['eps_col'], k)]) if k > 1 else [X]
+                Pe = {sg: (split(Xe[sg], [(cols['face_eps_col'], k)]) if k > 1 else [Xe[sg]]) for sg in (-1, 1)}
+                Xn = Multi([L7.integrate(p, t, t1, order=ORDER, tol=TOL, rho=(b_rho, em_d))[0] for p in P0])
+                Xen = {sg: Multi([L7.integrate(p, t, t1, order=ORDER, tol=TOL, rho=(b_rho, em_d))[0] for p in Pe[sg]])
+                       for sg in (-1, 1)}
+            except Exception as ex:
+                import traceback
+                reason = 'integration failed on [%g, %g]: %r %s' % (t, t1, ex, traceback.format_exc(limit=-2).replace(chr(10), ' | '))
+                continue
+            if t1 >= t_block_min:
+                okB, binfo = block_entry(Xn, Xen, S)
+                st['block'] = binfo
+                if okB:
+                    cert['stages'].append(st)
+                    verdict = 'PASS'
+                    cert['T'] = t1
+                    done = True
+                    break
+            H, err = design(Xn, Xen, cols, S, a_fac, c5, d5, free_a)
+            if H is None:
+                st['design'] = err
+                reason = 'covering fails at s=%g: %s' % (t1, err)
+                continue
+            okc, cinfo = verify_cover(Xn, Xen, H, S)
+            st['cover'] = cinfo
+            if okc:
+                break
+            reason = 'covering not verified at s=%g' % t1
+        if done:
             break
-        okc, cinfo = verify_cover(Xn, Xen, H, S)
-        st['cover'] = cinfo
+        if 'cover' not in st or not st['cover']['ok']:
+            cert['stages'].append(st)
+            break
+        reason = ''
         st['a'] = H['a']; st['b'] = H['b']; st['edge_growth'] = H['edge_growth']
         st['c5'] = [v.str(40, radius=False) for v in H['c5']]
         st['d5'] = [v.str(30, radius=False) for v in H['d5']]
@@ -408,24 +541,28 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
         st['|d5|'] = math.sqrt(sum(fl(v) ** 2 for v in H['d5'][:4]))
         cert['stages'].append(st)
         if verbose:
-            print('s=%5.1f |d|=%.2e a=%.2e b=%s edge=%.2e smax=%.4f ok=%s  (%.0fs)' % (
-                t1, st['|d5|'], H['a'], ' '.join('%.1e' % x for x in H['b']), H['edge_growth'], cinfo['s_max'], okc,
+            print('s=%5.1f k=%d cos(F,v)=%.3f uoff=%.1e |d|=%.2e a=%.2e b=%s edge=%.2e smax=%.4f ok=%s  (%.0fs)' % (
+                t1, st['split'], H['cosFv'], H['u_face_centre'], st['|d5|'], H['a'], ' '.join('%.1e' % x for x in H['b']), H['edge_growth'], cinfo['s_max'], okc,
                 time.time() - t_start), flush=True)
-        if not okc:
-            reason = 'covering not verified at s=%g' % t1
-            break
         if t1 >= tmax:
             reason = 'no block entry before s=%g' % tmax
             break
-        # time rescaling for the next segment: cancel the eps-phase drift (a choice, not part of the checks)
-        cx = [fl(v) for v in H['c5']]
-        F = np.array([cx[4] * (cx[2] - cx[0] - cx[1]), em_d * cx[4] * cx[0], cx[3], cx[2] - fl(nf.S(arb(cx[0])))])
-        alpha = float(np.dot([fl(v) for v in H['d5'][:4]], F) / np.dot(F, F))
-        drift = alpha - alpha_prev - b_rho * w2f * seg
-        b_rho = -(alpha + drift) / (w2f * seg) if PHASE else 0.0
-        b_rho = float(np.clip(b_rho, -0.25 / w2f, 0.25 / w2f))
-        alpha_prev = alpha
-        st['phase_alpha'] = alpha
+        # time rescaling for the next segment: choose b so that the numerical pulse-family tangent has no
+        # component along the flow at the end of the segment (a choice, not part of the checks)
+        if PHASE:
+            # rescaling by r = 1 + b (eps - e_m) moves the end point of the eps-tangent by exactly
+            # b w seg F(end) (the flow carries F to F), so alpha(b) = alpha(0) + b w seg: one trial suffices
+            tc = tr.copy()
+            tc.advance(t1 + seg, (0.0, em_d), tol_bits=120)
+            ctx.prec = pn.NPREC
+            dd = [fl(arb(w2q) * (tc.tan[0][i] + dkap * tc.tan[1][i])) for i in range(4)]
+            ctx.prec = PREC
+            xx = [fl(v) for v in tc.x[:6]]
+            Fv = np.array([xx[5] * (xx[2] - xx[0] - xx[1]), em_d * xx[5] * xx[0], xx[3], xx[2] - fl(nf.S(arb(xx[0])))])
+            a0 = float(np.dot(dd, Fv) / np.dot(Fv, Fv))
+            b_rho = -a0 / (w2f * seg)
+            b_rho = float(np.clip(b_rho, -0.25 / w2f, 0.25 / w2f))
+            st['phase_alpha_end0'] = a0
         X, Xe, cols = hset_lohner(H, S)
         t = t1
     cert['verdict'] = verdict
@@ -460,15 +597,42 @@ if __name__ == '__main__':
     ap.add_argument('--dk', type=float, default=None, help='half width of the kappa window (default: 2 w)')
     ap.add_argument('--seg', type=float, default=1.0)
     ap.add_argument('--afac', type=float, default=10.0)
-    ap.add_argument('--swap', action='store_true')
+    ap.add_argument('--shift', type=float, default=0.0, help='negative control: move the kappa window by shift*dk')
+    ap.add_argument('--samecone', type=int, default=0, help='negative control: +1/-1 requires both faces in K+/K-')
     ap.add_argument('--out', default=None)
     A = ap.parse_args()
     e_lo, e_hi = _dec(A.e_lo), _dec(A.e_hi)
     t0 = time.time()
-    kap, dkap, pinfo = pulse_data(e_lo, e_hi, A.c_guess)
+    cache_f = os.path.join(HERE, 'data', 'pulse_numerics.json')
+    key = str((e_lo + e_hi) / 2)
+    try:
+        cache = json.load(open(cache_f))
+    except Exception:
+        cache = {}
+    if key in cache:
+        ctx.prec = pn.NPREC
+        pinfo = cache[key]
+        kap, dkap = arb(arb(pinfo['kappa*_80']).mid()), arb(arb(pinfo["kappa*'_60"]).mid())
+        ctx.prec = PREC
+        pinfo['from_cache'] = True
+    else:
+        kap, dkap, pinfo = pulse_data(e_lo, e_hi, A.c_guess)
+        ctx.prec = pn.NPREC
+        pinfo['kappa*_80'] = kap.str(80, radius=False)
+        pinfo["kappa*'_60"] = dkap.str(60, radius=False)
+        ctx.prec = PREC
+        try:                                   # several runs may write at once: re-read, then replace atomically
+            cache = json.load(open(cache_f))
+        except Exception:
+            cache = {}
+        cache[key] = pinfo
+        tmp = cache_f + '.%d' % os.getpid()
+        json.dump(cache, open(tmp, 'w'), indent=1)
+        os.replace(tmp, cache_f)
     print('numerical pulse data', pinfo, '%.0fs' % (time.time() - t0), flush=True)
     dk = A.dk if A.dk is not None else 2 * float((e_hi - e_lo).p) / float((e_hi - e_lo).q)
-    cert = run(e_lo, e_hi, kap, dkap, dk, seg=A.seg, a_fac=A.afac, swap=A.swap)
+    SAME_CONE = A.samecone
+    cert = run(e_lo, e_hi, kap, dkap, dk, seg=A.seg, a_fac=A.afac, shift=A.shift)
     cert['numerical_pulse'] = pinfo
     print('VERDICT', cert['verdict'], cert['reason'], 'T=%s' % cert.get('T'), '%.0fs' % cert['time_s'])
     if A.out:
