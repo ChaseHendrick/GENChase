@@ -14,7 +14,7 @@ vortices placed symmetrically about its axis. With labels, modulo rotation and s
 24 + 30 + 60 + 120 + 120 = 354 of them. Each is a nondegenerate critical point of the Kirchhoff
 Hamiltonian on a level set of the angular impulse, modulo rotation. The Morse indices are 0, 0, 3,
 1 and 2, so the Morse polynomial is 54 + 120t + 120t^2 + 60t^3. The pentagon and the centred square
-are linearly stable (and, by Roberts 2013, nonlinearly stable). The other three are linearly
+are linearly stable (and, by Roberts 2013, Theorem 3.5, nonlinearly stable). The other three are linearly
 unstable, with exactly 3, 1 and 2 pairs of real eigenvalues.
 
 The proof is an interval branch-and-bound with Krawczyk existence and uniqueness, in the spirit of
@@ -31,7 +31,8 @@ vortices, but they print explicit real solutions only for N = 4 and N = 7 (secti
 added here:
 - the explicit, certified N = 5 list, with Morse indices and stability, by an independent method;
 - the answer to Kim's stability question (arXiv:2609.15090, Remark 1.5) for five vortices;
-- the vortex (A = 2) value of Hampton's Conjecture 3 (see section 8 for the exponent range).
+- Hampton's Conjecture 3 (a numerical conjecture) proved at the sampled exponents A = 2, 3, 6.5, 7
+  and 8, which cover all three of its regimes (section 6). It is not proved on the intervals.
 
 ## 2. Prior art
 
