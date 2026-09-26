@@ -14,7 +14,7 @@ def q(s):
     return fmpq(*map(int, s.split('/'))) if '/' in s else T.dec(s)
 
 
-rows = [json.load(open(f)) for f in glob.glob(os.path.join(HERE, 'data', 'certs', '*.json'))]
+rows = [T.read(f) for f in T.cert_files()]
 rows = [c for c in rows if c.get('verdict') == 'PASS' and 'q0_exact' in c]
 bad = 0
 for line in open(os.path.join(HERE, 'data', 'cstar_scan.txt')):

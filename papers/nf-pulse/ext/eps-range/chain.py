@@ -9,7 +9,8 @@ usage: python3 chain.py <e_lo> <e_hi> <c_guess> [--dk DK] [--seg L] [--afac F] [
   e_lo, e_hi   the subinterval, exact decimals (read as rationals)
   c_guess      a speed guess for the numerical bisection (pulse_num.kstar; not part of the proof)
   --dk DK      half width of the kappa window (kappa = 1/c), see below
-  --shift X    negative control: move the kappa window by X*DK off the numerical pulse speed (must FAIL for |X| > 1)
+  --shift X    negative control: move the kappa window by X*DK off the numerical pulse speed (expected to FAIL
+               for |X| > 1; an expectation, not a guarantee, since kappa*(eps) is curved)
   --samecone S negative control: require both u-faces to end in K+ (S = 1) or K- (S = -1) (must FAIL)
 
 Notation.  eps = e_m + w eps0 with e_m, w the (exact, dyadic) rounded midpoint and half width of E; for eps in E,

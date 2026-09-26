@@ -52,8 +52,9 @@ def dec(x):
 def attempt(lo, hi, tag):
     dk = (hi - lo) / 20.0
     out = os.path.join(HERE, 'data', 'certs', 'eps_%s_%s.json' % (dec(lo), dec(hi)))
-    if os.path.exists(out):
-        v = json.load(open(out)).get('verdict')
+    if os.path.exists(out) or os.path.exists(out + '.gz'):
+        import gzip
+        v = (json.load(open(out)) if os.path.exists(out) else json.load(gzip.open(out + '.gz', 'rt'))).get('verdict')
         return v, out, 0.0
     t0 = time.time()
     cmd = [sys.executable, os.path.join(HERE, 'chain.py'), dec(lo), dec(hi), '%.12f' % c_guess(0.5 * (lo + hi)),

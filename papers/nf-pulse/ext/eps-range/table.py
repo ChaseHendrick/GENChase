@@ -11,7 +11,7 @@ with e_m, w, q0, s1, dk the exact dyadic numbers recorded in the certificate.  T
 constant bracket c1(E_k) = 1/max kappa, c2(E_k) = 1/min kappa (outward rounded, ball arithmetic), and the
 width of the eps-dependent window at fixed eps, 1/(q - |dk|) - 1/(q + |dk|).
 """
-import os, sys, json, glob, argparse
+import os, sys, json, glob, gzip, argparse
 from flint import arb, fmpq, ctx
 ctx.prec = 256
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -36,10 +36,20 @@ def dec(s):
     return -q if neg else q
 
 
+def read(f):
+    """a certificate, plain (.json) or compressed (.json.gz)"""
+    return json.load(gzip.open(f, 'rt') if f.endswith('.gz') else open(f))
+
+
+def cert_files():
+    return sorted(glob.glob(os.path.join(HERE, 'data', 'certs', '*.json')) +
+                  glob.glob(os.path.join(HERE, 'data', 'certs', '*.json.gz')))
+
+
 def load():
     rows = []
-    for f in sorted(glob.glob(os.path.join(HERE, 'data', 'certs', '*.json'))):
-        c = json.load(open(f))
+    for f in cert_files():
+        c = read(f)
         if c.get('verdict') != 'PASS':
             continue
         # refuse negative-control runs and runs whose mutated checks were not all refused
