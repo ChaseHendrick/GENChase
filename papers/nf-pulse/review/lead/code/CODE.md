@@ -306,7 +306,7 @@ printed may differ between numpy builds; `data/block_certificate.json` stores T,
 
 ## How the findings were verified
 
-- Mutations: `python3 review/code/mutate.py <scratch>` and `python3 review/code/mutate.py --stress <scratch>`;
+- Mutations: `python3 review/lead/code/mutate.py <scratch>` and `python3 review/lead/code/mutate.py --stress <scratch>`;
   raw output in `mutation_results.txt`.
 - F5: containment test with an exact point 2^-280 outside a ball of radius 2^-300 at 256 bits.
 - F7: kappa contribution from the `y_at_T_radii` of `proof_interval_final.json` in the m00, m09 and m10
