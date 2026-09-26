@@ -8,9 +8,9 @@ reviewed**; see "Check" below for the adversarial reading that was done.
 **Proved by computer, at Faye's own eps = 0.01, and also at eps = 1/20 and eps = 1/50; not independently reviewed.**
 For lambda = 20, kappa = 0.22, b = 4.5, beta = 5 (Faye's illustration values), a fast travelling pulse exists at eps =
 1/100, 1/50 and 1/20, with its speed enclosed in an interval of width 10^-144, 10^-88 and 10^-28 respectively. Every
-step is a ball-arithmetic computation; `sh code/run_all.sh <eps>` reruns each, with 14 checks including 6 negative
-controls and 2 tests. An independent adversarial check (Sect. 8) found no mathematical error at 1/20 and 1/50 and
-several minor issues, all fixed; __CHECK100__. Before any claim leaves this folder the proof needs outside review of its
+step is a ball-arithmetic computation; `sh code/run_all.sh <eps>` reruns each, with 14 checks: 5 negative controls and 2 tests (one
+with its own negative control). An independent adversarial check (Sect. 8) found no mathematical error at 1/20 and 1/50 and
+several minor issues, all fixed; a follow-up check of eps = 1/100 and of the fixes found no mathematical error either. Before any claim leaves this folder the proof needs outside review of its
 mathematics and code (Sect. 8).
 
 ## 1. The model, from the sources
@@ -253,8 +253,8 @@ Each `run_all.sh` run includes: a rest-state control (lambda = 80, kappa = 1/10,
 floating-point scan, is refused: the uniqueness certificate cannot certify monotonicity near the extra zeros); a perturbed eigenvalue that must not enclose a root; the block scaled by 1.5 (refused: the cone or entrance
 condition fails at a corner); the orbit at c1 asked to reach the opposite cone (refused: wrong cone); a speed far from
 the pulse speed (refused: the orbit leaves before T_enter). Tests (not part of the proof): the Taylor jet gradients
-against central differences (`test_jacobian.py`); the integrator against mpmath's `odefun` on the original 4D system,
-with a control in which b is perturbed by 1e-20 and the enclosures must exclude that solution (`test_lohner.py`, passes).
+against central differences and the vector field against the Taylor recursion (`test_jacobian.py`); the integrator against mpmath's `odefun` on the original 4D system,
+with a control in which b is perturbed by 1e-20 and the enclosures must exclude that solution (`test_lohner.py`, passes; its xi <= 1 version runs inside `run_all.sh`).
 
 ## 8. Check (adversarial second reading)
 
@@ -269,7 +269,7 @@ An independent subagent reviewed the work adversarially, working in a copy of th
   from the stored T with exact rational arithmetic and its own bounds (all corners pass; at eps = 1/50 the worst
   entrance margin is -0.00118, thin but certified); and a non-rigorous shooting on the original 4D system with S
   evaluated directly: at eps = 1/20, speeds up to c1 escape into {v < 0, w < 0} and from c2 up into {v > 1, w > 0}, with
-  max u about 0.50436 against the rigorous lower bound 0.50435; at eps = 1/50 the sides agree at 50 digits.
+  max u about 0.50436 against the rigorous lower bound 0.50435; at eps = 1/50 the sides agree at 20 digits (first check) and at the full 88-digit bracket (follow-up).
 - Re-read Faye (author copy), Hastings (arXiv v2) and Faye-Scheel: the model, kernel, firing rate, parameters and the
   theorems are quoted correctly.
 - Mutation tests at eps = 1/20: wrong b^2 in the recursion, a sign in the manifold nonlinearity, eps perturbed by
@@ -300,15 +300,24 @@ Mutations that weaken a bound or remove a check (dropping -||A|| from K, setting
 step-range check) cannot be caught by a pass/fail harness; the reviewer checked by reading that the unmutated code
 implements them correctly.
 
-__CHECK100SECTION__
+**Follow-up verdict (eps = 1/100 and the fixes): "minor issues only; no mathematical error found."** The reviewer
+reran `run_all.sh 1/100` serially from a fresh copy (all 14 checks OK, 23 min); diffed every file and confirmed each fix
+(the r/rho = 0.99, vfield b^2 -> b, N_Y sign and dropped-remainder mutations are now all caught; the `choose_h` change
+only affects step selection, every step is still validated); recomputed the eigenvalues at eps = 1/100 (-5.30787511,
+-1.91949797, -0.0336863820, 4.21198846) and the block conditions from the stored T with its own exact-rational method
+(all four corners pass; entrance margins down to -0.00138, thin but certified); and ran its own non-rigorous integrator
+on the original 4D system at the full 144-digit bracket, at 240 and at 280 digits: c1 escapes into {v < 0, w < 0} and c2
+into {v > 1, w > 0} both times, with max u 0.771454 against the rigorous lower bound 0.7714525. Its remaining findings
+(unfilled placeholders, the count of negative controls, a misquote of its first check, test and timing descriptions)
+were fixed in this report.
 
 ## 9. Rerun
 
 From `papers/nf-pulse/ext/faye-model/code/` (Python 3.11, `python3 -m pip install -r ../../../code/requirements.txt`):
 
-    sh run_all.sh 1/20        # about 3 minutes on 4 cores (mostly the mpmath reference in the integrator test)
-    sh run_all.sh 1/50        # about 4 minutes
-    sh run_all.sh 1/100       # about 10 minutes (proof runs about 5 minutes each, in parallel)
+    sh run_all.sh 1/20        # about 3 minutes (mostly the mpmath reference in the integrator test)
+    sh run_all.sh 1/50        # about 4 minutes on 4 cores (about 5 serially)
+    sh run_all.sh 1/100       # about 10 minutes on 4 cores (about 23 serially)
     FAYE_EPS=1/20 python3 test_lohner.py    # about 8 minutes (mpmath reference solution)
 
 Each prints one line per check and exits with status 1 if a proof step fails or a negative control passes; full logs
