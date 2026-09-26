@@ -94,3 +94,47 @@ class EigSystem:
             Y.append((dS1 + self.s)*Um + Yhat)
             Nn.append(-(dS1*Um + Yhat))
         return z
+
+    def taylor_var(self, z0, N):
+        """Taylor coefficients (n = 0..N-1) of the fundamental matrix Phi of the variational equation
+        Phi' = Df(z(t)) Phi, Phi(0) = I, along the solution through z0 (ball: encloses every point of z0).
+        Phi[n][i][j] = d z_i^[n] / d z0_j, so sum_n h^n Phi[n] is the Jacobian of the Taylor polynomial."""
+        lam, w, beta = self.lam, self.w, self.beta
+        zc = self.taylor(z0, N)
+        U = [zc[0][n]+zc[1][n]+zc[2][n]+zc[3][n] for n in range(N+1)]
+        # rebuild Y series (same recursion) to get S'(U(t)) = beta Y (1 - Y)
+        U0 = U[0]
+        E0 = (-beta*(U0-self.theta)).exp(); Y0 = 1/(1+E0)
+        E = [E0]; Y = [Y0]
+        for m in range(1, N):
+            acc = arb(0)
+            for j in range(1, m+1):
+                acc += j*U[j]*E[m-j]
+            E.append(-beta*acc/m)
+            acc = arb(0)
+            for j in range(1, m+1):
+                acc += E[j]*Y[m-j]
+            Y.append(-acc*Y0)
+        def S2(u):
+            y = 1/(1+(-beta*(u-self.theta)).exp())
+            return beta*beta*y*(1-y)*(1-2*y)
+        dS1 = (S2(U0.union(arb(0)))*U0).intersection(beta*Y0*(1-Y0) - self.s)
+        Np = [-dS1]                         # N'(U(t)) series: N' = -(S'(U) - s)
+        for n in range(1, N):
+            acc = arb(0)
+            for a in range(0, n+1):
+                acc += Y[a]*Y[n-a]
+            Np.append(-beta*(Y[n] - acc))
+        Phi = [[[arb(1) if i == j else arb(0) for j in range(4)] for i in range(4)]]
+        PU = [[arb(1)]*4]                   # column sums of Phi (U-row of V is all ones)
+        for n in range(N-1):
+            G = []
+            for j in range(4):
+                acc = arb(0)
+                for a in range(0, n+1):
+                    acc += Np[a]*PU[n-a][j]
+                G.append(acc)
+            nxt = [[(lam[i]*Phi[n][i][j] + w[i]*G[j])/(n+1) for j in range(4)] for i in range(4)]
+            Phi.append(nxt)
+            PU.append([nxt[0][j]+nxt[1][j]+nxt[2][j]+nxt[3][j] for j in range(4)])
+        return Phi

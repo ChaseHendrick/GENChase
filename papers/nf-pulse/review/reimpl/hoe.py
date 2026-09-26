@@ -1,17 +1,19 @@
-"""Validated interval Taylor integrator with a HIGH-ORDER a priori ENCLOSURE (Nedialkov-Jackson style),
-no Lohner/QR, no Picard low-order enclosure.  Written for this review.
+"""Validated interval Taylor integrator with a HIGH-ORDER a priori ENCLOSURE (Nedialkov-Jackson style) and a
+mean-value (centred) form for the step, with no QR / Lohner coordinate change and no Picard low-order enclosure.
+Written for this review.
 
-One step from a box z_n (balls) with step h and order N:
-  1. coefficients a_i = z^[i](z_n), i < N, in ball arithmetic (enclose all points of z_n);
-  2. B0 = sum_{i<N} [0, h^i] a_i; trial box Bt = B0 inflated;
-  3. remainder coefficient R = z^[N](Bt) (N-th Taylor coefficient through any point of Bt);
-  4. B = B0 + [0, h^N] R.  If B is in the interior of Bt, then for every t in [0, h] the solution through
-     every point of z_n exists and stays in B (Taylor-Lagrange: while the orbit stays in Bt, x(t) is in B,
-     which is inside the interior of Bt, so it cannot reach the boundary of Bt first);
-  5. z_{n+1} = sum_{i<N} h^i a_i + h^N z^[N](B)   (Lagrange remainder componentwise, tau in (0,h)).
-The a priori set is validated by an order-N remainder, so a loose Bt still gives a tiny remainder.
+One step from a box Z (balls), step h, order N; T(y) = sum_{i<N} h^i z^[i](y) is the Taylor polynomial map.
+  1. B0 = sum_{i<N} [0, h]^i z^[i](Z);  trial box Bt = B0 inflated.
+  2. R = z^[N](Bt), the N-th Taylor coefficient through any point of Bt.
+  3. B = B0 + [0, h]^N R.  If B lies in the interior of Bt then every solution from Z exists on [0, h] and
+     stays in B (Taylor-Lagrange: while it stays in Bt it lies in B, inside int Bt, so it cannot reach the
+     boundary of Bt first).
+  4. phi_h(y) = T(y) + h^N z^[N](y(tau)), tau in (0, h) componentwise, so phi_h(y) in T(y) + h^N z^[N](B).
+  5. Mean value form: T(y) in T(m) + DT(Z) (Z - m), m = mid Z, DT(Z) = sum_{i<N} h^i Phi^[i](Z), where
+     Phi^[i] are the Taylor coefficients of the variational equation (derivatives of z^[i] in y).
+  Result: T(m) + DT(Z)(Z - m) + h^N z^[N](B).
 """
-from flint import arb, ctx
+from flint import arb, arb_mat, ctx
 
 def unit_interval():
     return arb(0).union(arb(1))
@@ -22,14 +24,11 @@ def horner(coefs, h):
         r = r*h + a
     return r
 
-def step(sys, zn, N, h):
-    coef = sys.taylor(zn, N)
+def enclosure(sys, Z, N, h):
+    """HOE: return (B, None) validated a priori box on [0,h], or (None, reason)."""
+    coef = sys.taylor(Z, N)
     I = unit_interval()
-    B0 = []
-    for i in range(4):
-        c = coef[i]
-        # sum_{j<N} [0,h^j] c_j : evaluate with t = h*[0,1]
-        B0.append(horner(c[:N], h*I))
+    B0 = [horner(coef[i][:N], h*I) for i in range(4)]
     for infl in (2, 8, 64):
         Bt = []
         for b in B0:
@@ -38,11 +37,37 @@ def step(sys, zn, N, h):
         R = sys.taylor(Bt, N)
         B = [B0[i] + (h*I)**N*R[i][N] for i in range(4)]
         if all(Bt[i].contains_interior(B[i]) for i in range(4)):
-            R2 = sys.taylor(B, N)
-            znew = [horner(coef[i][:N], h) + h**N*R2[i][N] for i in range(4)]
-            rem = max(abs(h**N*R2[i][N]).upper() for i in range(4))
-            return znew, B, rem
-    return None, None, None
+            return B
+    return None
+
+def target(Z, prec_margin=12):
+    scale = max(abs(z.mid()) for z in Z)
+    rad = max(z.rad() for z in Z)
+    return max(scale*arb(2)**(-ctx.prec+prec_margin), rad*arb('1e-3'))
+
+def step(sys, Z, N, h, tries=30):
+    """Validated step; shrinks h until the HOE is validated and the remainder is below target(Z).
+    Returns (Znew, B, rem, h)."""
+    tgt = target(Z)
+    for _ in range(tries):
+        B = enclosure(sys, Z, N, h)
+        if B is not None:
+            RB = sys.taylor(B, N)
+            rem = [h**N*RB[i][N] for i in range(4)]
+            rmax = max(abs(r).upper() for r in rem)
+            if rmax <= tgt:
+                break
+        h = arb((h*arb('0.7')).mid())
+    else:
+        raise RuntimeError('step failed')
+    m = [arb(z.mid()) for z in Z]
+    cm = sys.taylor(m, N)
+    Tm = [horner(cm[i][:N], h) for i in range(4)]
+    Phi = sys.taylor_var(Z, N)
+    DT = [[horner([Phi[n][i][j] for n in range(N)], h) for j in range(4)] for i in range(4)]
+    d = [Z[j] - m[j] for j in range(4)]
+    Znew = [Tm[i] + sum((DT[i][j]*d[j] for j in range(4)), arb(0)) + rem[i] for i in range(4)]
+    return Znew, B, rmax, h
 
 def choose_h(sys, zn, N, hmax, prec_margin=12):
     """Heuristic step: truncation term ~ max(2^-(prec - margin) * |z|, 1e-4 * current radius).
