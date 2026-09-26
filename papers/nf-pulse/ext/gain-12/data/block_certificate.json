@@ -1,0 +1,101 @@
+{
+ "params": "beta=12, theta=1/4, eps=3/20, gamma=0, w(x)=exp(-|x|)/2",
+ "c1": "[1.04753749779917111554998626000 +/- 3e-34]",
+ "c2": "[1.04753749779917111554998636000 +/- 3e-34]",
+ "dU=0.01": {
+  "smin": "[0.4860161645 +/- 2.51e-11]",
+  "smax": "[0.6039131172 +/- 2.82e-11]",
+  "cone_pd": true,
+  "entrance": [
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[-0.12154991 +/- 9.68e-11]"
+   },
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[-0.066404613 +/- 2.25e-10]"
+   }
+  ],
+  "entrance_ok": true,
+  "rho(r=4rho)": "[0.0035448395 +/- 4.41e-11]",
+  "U_range_bound": "[0.0095071181 +/- 4.35e-11]"
+ },
+ "dU=0.02": {
+  "smin": "[0.4352101610 +/- 1.15e-11]",
+  "smax": "[0.6717745900 +/- 2.09e-11]",
+  "cone_pd": true,
+  "entrance": [
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[-0.043690425 +/- 2.22e-10]"
+   },
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[0.088577634 +/- 2.88e-10]"
+   }
+  ],
+  "entrance_ok": true,
+  "rho(r=4rho)": "[0.0072688567 +/- 9.62e-12]",
+  "U_range_bound": "[0.019494783 +/- 3.37e-10]"
+ },
+ "negative_dU_0.05": {
+  "smin": "[0.3106751221 +/- 1.45e-11]",
+  "smax": "[0.9150599886 +/- 2.23e-11]",
+  "cone_pd": false,
+  "entrance": [
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[0.14715777 +/- 2.25e-9]"
+   },
+   {
+    "sylvester_pd": false,
+    "gershgorin+fro": "[0.64419360 +/- 1.61e-10]"
+   }
+  ],
+  "entrance_ok": false
+ },
+ "negative_U_to_0.15": {
+  "smin": "[0.3106751221 +/- 1.45e-11]",
+  "smax": "[2.134733288 +/- 2.39e-10]",
+  "cone_pd": false,
+  "entrance": [
+   {
+    "sylvester_pd": true,
+    "gershgorin+fro": "[0.14715777 +/- 2.25e-9]"
+   },
+   {
+    "sylvester_pd": false,
+    "gershgorin+fro": "[3.4296874 +/- 4.67e-8]"
+   }
+  ],
+  "entrance_ok": false
+ },
+ "negative_gain20_construction": "fails as expected (ZeroDivisionError: matrix is singular)",
+ "T": [
+  [
+   -0.2401806205235107,
+   0.26695773269051143,
+   0.7506148734004603,
+   0.8739594572385783
+  ],
+  [
+   -0.33298156461165923,
+   -0.22730539264150168,
+   0.4651701416872735,
+   -0.3326373085148894
+  ],
+  [
+   1.2964534759342663,
+   -0.6874766964628826,
+   0.5624143541331544,
+   -1.3207387204127718
+  ],
+  [
+   -1.319714103137696,
+   -5.189526539128158,
+   0.1263202429182771,
+   1.084021298131519
+  ]
+ ],
+ "block_dU": "0.02"
+}
