@@ -53,4 +53,30 @@ check('inertia of -H is (11, 4)', ball.inertia_gershgorin(Jn, Q) == (11, 4) and 
 Jw = J * 1
 for i in range(15): Jw[i, i] = Jw[i, i] + arb(0, 10)
 check('an uncertain Hessian returns no inertia', ball.inertia_gershgorin(Jw, Q) is None)
-print('ALL PASS' if all(results) else 'SOME FAILED')
+# 9. Gershgorin: a disc that straddles 0 with tight entries must give no inertia
+from flint import arb_mat
+A = arb_mat([[1, 0.01], [0.01, -0.001]])
+check('a disc straddling 0 returns no inertia', ball.inertia_gershgorin(A, np.eye(2)) is None)
+B = arb_mat([[1, 0.01], [0.01, -0.5]])
+check('separated discs give inertia (1, 1)', ball.inertia_gershgorin(B, np.eye(2)) == (1, 1))
+# 10. Krawczyk needs strict interior containment, not containment
+check('touching the boundary is not strict containment', not ball.strictly_inside(arb(0.5, 0.5), arb(0.5, 0.5)))
+check('strict containment is accepted', ball.strictly_inside(arb(0.5, 0.25), arb(0.5, 0.5)))
+# 11. the Jacobian DG agrees with central differences of G at every class (catches a wrong Hessian formula)
+worst = 0.0
+for c in cl:
+    zz = np.array([complex(a, b) for a, b in c['z']]); p = int(np.argmax(np.abs(zz))); zz = zz * np.exp(-1j * np.angle(zz[p]))
+    u0 = list(zz.real) + [zz[k].imag for k in range(N) if k != p]
+    J = ball.DG([ball.exact(v) for v in u0], N, p)
+    h = 1e-6
+    for k in range(len(u0)):
+        up_ = list(u0); dn_ = list(u0); up_[k] += h; dn_[k] -= h
+        gu = ball.G([ball.exact(v) for v in up_], N, p); gd = ball.G([ball.exact(v) for v in dn_], N, p)
+        for i in range(len(u0)):
+            fd = (float(gu[i].mid()) - float(gd[i].mid())) / (2 * h)
+            worst = max(worst, abs(fd - float(J[i, k].mid())))
+check(f'DG matches finite differences of G (max error {worst:.1e})', worst < 1e-6)
+ok = all(results)
+print('ALL PASS' if ok else 'SOME FAILED')
+import sys
+sys.exit(0 if ok else 1)

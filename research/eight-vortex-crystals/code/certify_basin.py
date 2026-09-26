@@ -37,7 +37,7 @@ def heptagon():
     return x, y
 
 
-def certify_rho(rho, verbose=False):
+def certify_rho(rho, verbose=False, return_matrix=False):
     x, y = heptagon()
     H = ball.hess_full(x, y)                       # 16 x 16, ordering (x_0..x_7, y_0..y_7)
     s = arb(2).sqrt() * arb(rho)
@@ -67,6 +67,8 @@ def certify_rho(rho, verbose=False):
     for a in range(n):
         for b in range(n - 1):
             Q[a, b] = cols[b][a]
+    if return_matrix:
+        return np.array([[float(M[a][b].mid()) for b in range(n)] for a in range(n)])
     Mm = arb_mat(n, n)
     for a in range(n):
         for b in range(n):
@@ -78,6 +80,57 @@ def certify_rho(rho, verbose=False):
     if verbose:
         print(f'rho={rho}: min eigenvalue (float) {w[0]:.5f}, certified inertia {inert}')
     return inert is not None and inert[0] == 0 and inert[1] == n - 1
+
+
+def audit(rho, samples=20000, seed=1):
+    """Floating-point guard (not part of the proof): rebuilds the quadratic form of the lemma from its
+    definition and checks (i) that the assembled matrix equals it, (ii) the pair remainder inequality
+    |g(u) - u^T D^2psi(d) u| <= gamma |u|^2 at |u| = sqrt(2) rho in 720 directions for every pair, and
+    (iii) Psi(v) >= v^T M v on random v in S with |v| <= rho. Any failure exits with status 1."""
+    import sys
+    rng = np.random.default_rng(seed)
+    z = np.array([0] + [2 * np.exp(2j * np.pi * k / 7) for k in range(7)])
+    M = certify_rho(rho, return_matrix=True)
+    s_true = np.sqrt(2) * rho
+    def gradf(w):
+        g = w.copy()
+        for i in range(N):
+            for j in range(N):
+                if i != j:
+                    g[i] -= 1 / np.conj(w[i] - w[j])
+        return g
+    def pairB(d):
+        dx, dy = d.real, d.imag; r4 = (dx * dx + dy * dy) ** 2
+        return np.array([[dx * dx - dy * dy, 2 * dx * dy], [2 * dx * dy, dy * dy - dx * dx]]) / r4
+    Jx = np.concatenate([-z.imag, z.real]); Jx /= np.linalg.norm(Jx)
+    bad = 0; worst_i = 0; worst_iii = np.inf
+    for _ in range(samples // 10):
+        v = rng.normal(size=16); v -= (v @ Jx) * Jx; v *= rho * rng.uniform(0.05, 1) / np.linalg.norm(v)
+        vz = v[:N] + 1j * v[N:]
+        q = v @ v
+        for i in range(N):
+            for j in range(i + 1, N):
+                u = vz[i] - vz[j]; uu = np.array([u.real, u.imag]); d = z[i] - z[j]
+                gam = s_true / (abs(d) - s_true) ** 3
+                q += uu @ pairB(d) @ uu - gam * (uu @ uu)
+        worst_i = max(worst_i, abs(q - v @ M @ v))
+        psi = np.real(np.vdot(vz, gradf(z + vz)))        # <grad f(x* + v), v> in real form
+        worst_iii = min(worst_iii, psi - v @ M @ v)
+    th = np.linspace(0, 2 * np.pi, 720, endpoint=False)
+    worst_ii = -np.inf
+    for i in range(N):
+        for j in range(i + 1, N):
+            d = z[i] - z[j]; gam = s_true / (abs(d) - s_true) ** 3
+            for t in th:
+                u = s_true * np.exp(1j * t)
+                g = np.real(np.conj(u) * (-(1 / np.conj(d + u)) + 1 / np.conj(d)))
+                uu = np.array([u.real, u.imag])
+                worst_ii = max(worst_ii, abs(g - uu @ pairB(d) @ uu) - gam * s_true ** 2)
+    print(f'audit: |assembled - definition| <= {worst_i:.1e}; max(|remainder| - gamma|u|^2) = {worst_ii:.2e}; '
+          f'min(Psi - v^T M v) = {worst_iii:.2e}')
+    if not (worst_i < 1e-9 and worst_ii <= 0 and worst_iii > -1e-12):
+        print('AUDIT FAIL'); sys.exit(1)
+    print('audit PASS')
 
 
 if __name__ == '__main__':
@@ -97,3 +150,5 @@ if __name__ == '__main__':
     # negative control: slightly above the bisection limit the certificate must fail
     assert not certify_rho(hi * 1.01)
     print('negative control passes: certificate fails at', round(hi * 1.01, 6))
+    audit(rho)
+

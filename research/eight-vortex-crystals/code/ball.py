@@ -135,8 +135,13 @@ def krawczyk(u, rad, N, p):
     dX = arb_mat([[X[k] - u[k]] for k in range(n)])
     Kv = arb_mat([[v] for v in u]) - Y * gt + (I - Y * J) * dX
     K = [Kv[k, 0] for k in range(n)]
-    ok = all(X[k].contains_interior(K[k]) for k in range(n))
+    ok = all(strictly_inside(K[k], X[k]) for k in range(n))
     return ok, X, K
+
+
+def strictly_inside(K, X):
+    """K is contained in the interior of X (the Krawczyk condition; mere containment is not enough)."""
+    return bool(X.contains_interior(K))
 
 
 def inertia_gershgorin(M, Q):

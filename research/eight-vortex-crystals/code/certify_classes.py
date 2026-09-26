@@ -55,7 +55,7 @@ def certify(zc, label, rad=RAD, refine=True):
     rec['Q_nonzero'] = bool(q > 0 or q < 0)
     I2 = sum((x[k] * x[k] + y[k] * y[k] for k in range(N)), arb(0))
     rec['sum_abs2_contains_28'] = bool(I2.contains(arb(28)))
-    rec['z_mid'] = [[x[k].mid().str(40, radius=False), y[k].mid().str(40, radius=False)] for k in range(N)]
+    rec['z_mid'] = [[x[k].mid().str(70, radius=False), y[k].mid().str(70, radius=False)] for k in range(N)]
     rec['box_radius'] = rad
     rec['_f'] = fv
     return rec
@@ -82,4 +82,10 @@ if __name__ == '__main__':
     print('Euler sum over the certified classes (numerical symmetry orders):', chi, 'target', math.factorial(N - 2))
     for r in out:
         del r['_f']
+    # the minimum's enclosure must contain the closed form f* = 14 - 28 log 2 - (7/2) log 7
+    fstar = 14 - 28 * arb(2).log() - arb(7) / 2 * arb(7).log()
+    fcheck = fs[0].overlaps(fstar) and out[0]['inertia']['neg'] == 0
+    print('class 1 f encloses the closed form f*:', fcheck)
+    ok_all = allok and not overl and fcheck
     json.dump(dict(all_ok=allok, overlapping_f=overl, euler_sum=chi, classes=out), open(dst, 'w'), indent=1)
+    sys.exit(0 if ok_all else 1)

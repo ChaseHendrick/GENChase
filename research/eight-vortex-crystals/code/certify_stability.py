@@ -82,6 +82,11 @@ def eigenpair_krawczyk(M, lam0, v0, rad=1e-30):
     dX = acb_mat([[X[k] - w[k]] for k in range(n)])
     K = acb_mat([[wi] for wi in w]) - Y * Fc + (Id - Y * J) * dX
     ok = all(X[k].real.contains_interior(K[k, 0].real) and X[k].imag.contains_interior(K[k, 0].imag) for k in range(n))
+    # realness: every entry of M is real, so conj(lam, v) is an eigenpair too; if conj(K) lies inside X,
+    # uniqueness of the zero in X forces lam = conj(lam)
+    real = ok and all(X[k].real.contains(K[k, 0].real) and X[k].imag.contains(-K[k, 0].imag) for k in range(n))
+    real = real and all(M[i, j].imag.contains(0) and M[i, j].imag.rad() == 0 for i in range(n) for j in range(n))
+    eigenpair_krawczyk.real = bool(real)
     return K[0, 0] if ok else None
 
 
@@ -101,8 +106,12 @@ if __name__ == '__main__':
         lam = spectrum_counts(H)
         unstable = lam is not None and lam.real > 0
         rec = dict(label=f'class {i + 1}', index=c['index'], eigenvalue=None if lam is None else lam.str(15),
-                   unstable=bool(unstable))
+                   unstable=bool(unstable), real=bool(lam is not None and eigenpair_krawczyk.real))
         out.append(rec)
         print(f"class {i + 1:2d} index {c['index']}: eigenvalue of largest real part {rec['eigenvalue']}  "
-              f"certified unstable: {unstable}")
+              f"certified unstable: {unstable}, real: {rec['real']}")
     json.dump(out, open(os.path.join(HERE, 'data/stability-N8.json'), 'w'), indent=1)
+    # the minimum (class 1) must receive no instability certificate; every other class must
+    good = (not out[0]['unstable']) and all(r['unstable'] and r['real'] for r in out[1:])
+    print('stability checks:', 'PASS' if good else 'FAIL')
+    sys.exit(0 if good else 1)

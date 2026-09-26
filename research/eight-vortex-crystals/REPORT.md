@@ -62,8 +62,9 @@ Exact identities used below (proved in `code/apriori.py`):
 There is a relative equilibrium z^c of eight identical point vortices with the following properties.
 
 1. In the normalization above and after a rotation that puts vortex 0 on the positive real axis, z^c lies
-   in the box of radius 1e-40 (every coordinate) about the centre listed below, and it is the only
-   critical point of f in that box with y_0 = 0.
+   in the box of radius 1e-40 (every coordinate) about the centre stored with 70 significant digits in
+   `data/certificates-N8.json` (class 14, `z_mid`), and it is the only critical point of f in that box with
+   y_0 = 0. The 20-digit table below is that centre rounded, so z^c is within 1e-19 of it.
 2. It is nondegenerate modulo rotation, and its Morse index is 4 (11 positive directions on the gauge slice).
 3. f(z^c) = -10.89223339198939119358574... (enclosure radius below 1e-23).
 4. The invariant Q = Im(m_3^2 conj(m_2)^3), m_q = sum (z_k - c)^q with c the centroid, satisfies
@@ -73,10 +74,10 @@ There is a relative equilibrium z^c of eight identical point vortices with the f
    centred at c has m_q = 0 unless n divides q). The symmetry group of z^c is trivial, and z^c and its mirror
    image conj(z^c) are two relative equilibria that are not related by any rotation, scaling, translation or
    relabelling. Its orbit under relabelling and reflection has 2 x 8! = 80640 labelled members.
-5. It is linearly unstable: the linearization about it has a real eigenvalue enclosed in
-   2.26628380450965 +- 1e-14 (Theorem 2, item 4).
+5. It is linearly unstable: the linearization about it has a real eigenvalue in a ball of radius below
+   1e-30 about 2.26628380450964... (Theorem 2, item 4).
 
-Centre of the box (first 20 digits; the full 40 digits are in `data/certificates-N8.json`, class 14):
+Centre of the box, rounded to 20 digits:
 
 | k | x_k | y_k |
 |---|---|---|
@@ -107,7 +108,7 @@ enclosures of f are pairwise disjoint, so the 19 are pairwise not congruent.
 
 | class | f (proved, 20 digits) | index (proved) | symmetry order, reflections (numerical) | unstable eigenvalue (proved) |
 |---|---|---|---|---|
-| 1 centred heptagon | -12.218806577372065231 | 0 | 14, 7 | none: all spectrum imaginary (numerical); stable, see Thm 3 |
+| 1 centred heptagon | -12.218806577372065231 | 0 | 14, 7 | none (spectrum imaginary, numerical); Lyapunov stable by Cabral and Schmidt (Sect. 7), a strict local minimum by Thm 3 |
 | 2 | -12.075050128258430508 | 1 | 4, 2 | 0.34669 |
 | 3 | -12.058639971997692589 | 1 | 4, 2 | 0.59929 |
 | 4 | -11.929749954681072870 | 2 | 2, 1 | 0.87867 |
@@ -130,14 +131,20 @@ enclosures of f are pairwise disjoint, so the 19 are pairwise not congruent.
 4. Instability (`code/certify_stability.py`). In the rotating frame the linearized vortex equations are
    c J H with c > 0, J the standard symplectic matrix and H the Hessian of f. For each of classes 2 to 19 a
    Krawczyk test in complex ball arithmetic on (JH - lambda) v = 0, v_j0 = 1, valid for every H in the
-   Hessian enclosure, encloses a real eigenvalue lambda > 0 (column above). This is consistent with Roberts
+   Hessian enclosure, encloses an eigenvalue lambda with Re lambda > 0 (column above). It is real: every
+   entry of JH is real, so (conj(lambda), conj(v)) is an eigenpair with the same normalization; the program
+   checks that the conjugate of the Krawczyk image lies in the box, so uniqueness in the box forces
+   lambda = conj(lambda). This is consistent with Roberts
    (2018), who states that for same-signed circulations a relative equilibrium is linearly stable if and
    only if it is a nondegenerate minimum of H at fixed I (quoted in Sect. 7); here it is checked directly.
 
 Consistency check (numerical, not a proof of completeness): with the numerical symmetry orders |G|, the
 alternating sum over classes of (-1)^index x 2 x 8!/|G| equals 720 = 6!, the Euler characteristic of the
 shape space (C^7 minus the diagonals, modulo C*, whose Poincare polynomial is prod_{k=2}^{7}(1 + kt)).
-Missing classes would have to come in cancelling pairs. The same check passes for N = 5 and 6
+That a Morse function's alternating count equals this Euler characteristic on the non-compact shape
+space uses the behaviour of -F at collisions (it tends to +infinity, and the shape space has no other
+end); this is the Morse-theoretic setting of Palmore (1982) and Roberts (2018), which we cite for it
+without re-deriving it here. Classes missing from the list would have to contribute a total of zero. The same check passes for N = 5 and 6
 (-6 and 24) and fails, as it should, for N = 4 and N = 7, where a class is degenerate
 (`data/survey-N7-degenerate-control.txt`: the regular heptagon's Hessian has extra zero eigenvalues).
 
@@ -158,9 +165,12 @@ g(u) = u.(grad psi(d + u) - grad psi(d)), psi = -log|.|. Because psi = -Re log, 
 hence |g(u) - u^T D^2psi(d) u| <= |u|^3/(|d| - |u|)^3 <= gamma |u|^2 for |u| <= s = sqrt(2) rho, with
 gamma_ij = s/(D_ij - s)^3; and |u_ij| <= sqrt(2) |v|. So the quantity is at least v^T (H* - L_gamma) v with
 L_gamma the gamma-weighted graph Laplacian (tensor I_2). Positive definiteness of H* - L_gamma on S is
-certified at rho = 0.1637 with an exact basis of S and the inertia routine; the certificate fails at 0.1654
-(negative control). The estimate is dimension-free but pessimistic: numerically the Hessian stays positive
-definite on S along every one of 400 sampled rays out to at least 0.415 (numerical, not proved).
+certified at rho = 0.1637 with a basis of S enclosed in balls and the inertia routine; the certificate
+fails at 0.1654 (negative control). A floating-point audit (not part of the proof) rebuilds the quadratic
+form from its definition, checks the pair remainder inequality in 720 directions per pair and samples
+Psi(v) >= v^T (H* - L_gamma) v; it guards the constants against coding errors (Sect. 6). The estimate is dimension-free but pessimistic: numerically the Hessian stays positive
+definite on S along every one of 400 sampled rays out to at least 0.415 (numerical, not proved;
+`code/convex_radius_numerical.py`).
 
 That x* is a nondegenerate local minimum, and Lyapunov stable, was known: Barry, Hall and Wayne restate
 the Cabral-Schmidt interval for the 1 + N configuration, which contains the equal-circulation case for
@@ -243,6 +253,14 @@ was reached in this session.
 9. The heptagon receives no instability certificate (`certify_stability.py`).
 10. The basin certificate fails just above its radius (`certify_basin.py`).
 11. The Euler check fails for N = 4 and 7, where a class is degenerate.
+12. A Gershgorin disc straddling 0 gives no inertia; separated discs give the right one.
+13. Touching the boundary is rejected as Krawczyk containment; strict interior containment is accepted.
+14. The Jacobian DG agrees with central differences of G at all 19 classes (error 4e-10).
+15. The heptagon's f enclosure contains the closed form f*.
+16. Mutation tests (`code/mutation_tests.py`): ten deliberate bugs (Hessian sign, gauge, Gershgorin
+    comparison, chirality formula, three basin constants, containment test, linearization sign, sign of
+    the logarithm in f) are each applied to a copy, and each makes `run_all.sh` exit with an error.
+    Every script exits nonzero on any failed check, so `run_all.sh` fails if any control fails.
 
 ## 7. Prior art (searched 2026-09-26)
 
@@ -260,14 +278,14 @@ Quotes checked against the texts (extracted in the scratchpad, not committed):
   our knowledge is based on numerical explorations." (The comparison sign is garbled in the PDF text layer.)
 - Faugere and Svartz, ISSAC 2012, 170-178 (HAL hal-00777791), abstract: "Moreover, we are able to compute all
   equilibria when N <= 7." Sect. 5: "For N = 8 the computation is still running but the most difficult part
-  is already done (it takes 12 days to compute the first Groebner basis)." Their system is conj(z_i) =
+  is already done (it takes 12 days to compute the first Gröbner basis)." Their system is conj(z_i) =
   sum_{j != i} 1/(z_i - z_j), the same relative equilibria. No N = 8 result was found in Svartz's 2014 thesis
   (tel-01147484) either (checked by the search agent; I did not re-read the thesis).
 - Moczurad and Zgliczynski, Celest. Mech. Dyn. Astron. 131 (2019) 37, arXiv:1812.07279 (Newtonian potential,
   not vortices), Sect. 1.2: "For this reason we were not able to obtain a rigorous listing of CCs for n = 8.
   Note that for n = 5 the computations were done in 24 seconds, for n = 6 it took about one hour to get the
-  result, while for n = 7 we needed almost a hundred hours". And: "For n = 8, 9, 10 we establish the existence
-  of some non-symmetric CCs previously found numerically". Theorem 1 here is the vortex analogue of that
+  result, while for n = 7 we needed almost a hundred hours". Introduction (before Sect. 1.1): "For n = 8, 9,
+  10 we establish the existence of some non-symmetric CCs previously found numerically". Theorem 1 here is the vortex analogue of that
   existence result, by the same method.
 - Kim, arXiv:2609.15090, "Classification of Stationary Configurations of Four Identical Point Vortices"
   (N = 4 only), Sect. 1.2: "Characterizing all stationary configurations yields important information about
@@ -314,17 +332,46 @@ census of 19; Moczurad-Zgliczynski Newtonian only). Re-search: no, unless a mont
 
 ## 8. Adversarial check
 
-(filled in below after the independent check)
+An independent subagent worked on a copy of this folder (2026-09-26): it reran everything, applied nine
+mutations, recomputed the chiral point with its own 50-digit mpmath code, re-derived the arguments and
+re-opened four sources. Its verdict, condensed:
+
+- **Reproduction:** all numbers in the report reproduced exactly.
+- **Independent recomputation:** gradient 7e-40 at the stored centre (5e-51 after Newton); Hessian
+  eigenvalues -1.4771, -1.2644, -0.6723, -0.3820, one 0, eleven positive (index 4); f and Q agree
+  (Q = 29270.3386447129); unstable eigenvalue 2.26628380450964; the heptagon spectrum and the identity
+  f = 14 - 14 log 8 + Phi/2 confirmed to 1e-49; 200,000 samples found no violation of the Theorem 3 bound.
+- **Mathematics:** the gauge argument, the chirality argument and the Theorem 3 proof were judged correct.
+- **Must-fix, both fixed:** (1) `run_all.sh` returned success when a control failed. Every script now
+  exits nonzero on a failed check. (2) The stored centre (40 significant digits) did not lie within 1e-40
+  of the true zero. It is now stored with 70 digits, and Theorem 1 states the box about that centre.
+- **Should-fix, all fixed:**
+  - Five of nine mutations survived: the Gershgorin comparison, strict containment, and three basin
+    constants. Controls 12 to 16 and the basin audit were added. All ten mutations in
+    `code/mutation_tests.py` are now caught.
+  - The Euler-characteristic identity on a non-compact space needed a source. Palmore and Roberts are
+    now cited.
+  - "Real eigenvalue" was not argued. It is now certified by the conjugation check.
+  - The Sect. 5 cost figures did not match the committed data. They were remeasured and the data files
+    replaced.
+  - The heptagon's table entry cited Theorem 3 for stability. It now cites Cabral and Schmidt.
+  - Quote locations and spellings were corrected.
+- **Prior art:** the quotes were verified verbatim. Fresh searches found no rigorous planar N = 8 result.
+- **Overall (the agent's words):** "The mathematics of Theorems 1 to 3 and Proposition 4 holds up ... The
+  problems are in the verification harness and in precision of wording, not in the theorems."
+
+The fixes were made after that reading and have not been re-read by a second independent agent.
 
 ## 9. Rerun
 
 ```
 pip install python-flint==0.9.0 numpy scipy      # Python 3.11
-sh research/eight-vortex-crystals/run_all.sh     # all rigorous results and controls, about 2 s
+sh research/eight-vortex-crystals/run_all.sh     # all rigorous results and controls, about 2 s; exits 1 on any failure
+python3 research/eight-vortex-crystals/code/mutation_tests.py   # ten mutations, each must be caught, about 30 s
 python3 research/eight-vortex-crystals/code/survey.py 8 4000 1   # the numerical survey, about 35 s
 cd research/eight-vortex-crystals/code/bnb && gcc -O2 -frounding-math -o bnb bnb.c -lm
 ./bnb knuth 200000 101                            # tree-size estimate (prototype, not a proof)
-BALL=0.1637 ./bnb near 0.03                       # cost near the minimizer
+sh near_runs.sh                                   # cost near the minimizer, up to 2 hours
 ```
 
 Rigor rests on FLINT/Arb (python-flint 0.9.0) ball arithmetic for every statement labelled proved. The C
