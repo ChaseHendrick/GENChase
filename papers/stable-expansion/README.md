@@ -2,11 +2,11 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft**, not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
+**Preprint**, not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the draft (PDF, 20 pages)](paper/stable-expansion.pdf)**
+**[Read the preprint (PDF, 20 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
@@ -43,8 +43,8 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
   out every estimate for any number of patches; the other patches act on a patch only through the strain of their
   field, and two slips of his arXiv version are corrected there.
 - **Numerical:** the direct integrations and the random sample of Section 6.
-- **Awaiting the owner's sign-off:** the record of the independent adversarial readings of every section and of the
-  programs (`notes/QUALITY.md`, item 6).
+- **Checked:** independent adversarial readings of every section and of the programs, signed off by the owner
+  (`notes/QUALITY.md`, item 6).
 - **Limitation:** the section, theorem and equation numbers of Zbarsky's paper cited here, and the two slips
   corrected in Appendix A, are those of arXiv:1912.10862v2; the published CMP version was not accessible for
   comparison.
@@ -84,7 +84,7 @@ Until the paper has a DOI of its own:
   author = {Hendrick, Chase},
   title  = {Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches},
   year   = {2026},
-  note   = {Draft}
+  note   = {Preprint}
 }
 ```
 

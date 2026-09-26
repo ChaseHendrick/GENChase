@@ -3,7 +3,7 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
-## v1.0.0 (2026-09-25)
+## v1.0.0 (2026-09-26)
 
 The first public release of the preprint *Stable Self-Similar Expansion of Four and Five Point Vortices and
 Confinement of Vortex Patches* (20 pages), with the programs that check its results and their output. It uses the

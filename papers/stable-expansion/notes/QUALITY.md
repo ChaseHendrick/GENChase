@@ -46,7 +46,7 @@ GENChase: the companion repository does not carry `notes/`.
   the owner's decision of 2026-09-25 its full text is not read).
 - [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
-- [ ] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
+- [x] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
   first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). A third independent reading of Section 5 and
   Appendix A (2026-09-26), briefed with the paper and Zbarsky's arXiv version and told to find errors, found no gap;
   its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
@@ -66,6 +66,6 @@ GENChase: the companion repository does not carry `notes/`.
   argument and the summation index, the signed P, the side conditions listed in full, the controls' wording, b'(0)
   cited where it is proved, and three program controls that mutation tests showed were missing (a positive control of
   the five-vortex recipe, one shared stable5 test that the negative control runs, and a Krawczyk run that must fail,
-  with the radii asserted); 70 checks. Left unchecked until the owner signs off on this record.
+  with the radii asserted); 70 checks. The owner signed off on this record on 2026-09-26.
 - [x] **7. Reproducible.** `verify_stable_expansion.py` (70 checks) and `survey_expansions.py`; `paper-check` passes;
   20 pages.
