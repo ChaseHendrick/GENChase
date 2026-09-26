@@ -31,6 +31,8 @@ vortices, but they print explicit real solutions only for N = 4 and N = 7 (secti
 added here:
 - the explicit, certified N = 5 list, with Morse indices and stability, by an independent method;
 - the answer to Kim's stability question (arXiv:2609.15090, Remark 1.5) for five vortices;
+- the same for six vortices (Theorem 2, section 8): exactly 8 classes, 3384 labelled; only the
+  hexagon and the centred pentagon are stable; three classes are missing from Aref's N = 6 list;
 - Hampton's Conjecture 3 (a numerical conjecture) proved at the sampled exponents A = 2, 3, 6.5, 7
   and 8, which cover all three of its regimes (section 6). It is not proved on the intervals.
 
@@ -392,7 +394,58 @@ Negative controls (results in `data/controls.log`):
   leaves undecided boxes around it. So the program does not hide degeneracy. This case is outside the
   theorem.
 
-## 8. N = 6
+## 8. N = 6 (same method, same checks)
+
+The same program bnb.c was run for N = 6 (chart dimension 9, symmetry-reduced by 5!·2). The run was
+split into 256 slices (`code/run6.sh`). All slices finished in 72 minutes on 4 cores, with no
+timeout and no undecided box. classify.py checked that the slices cover every initial piece of the
+chart, and then ran exactly as for N = 5 (`data/n6_classify.log`, `data/n6_classes.json`,
+`data/n6_describe.txt`).
+
+Results:
+- 70 certified boxes, 14 distinct chart solutions, 8 classes.
+
+**Theorem 2 (N = 6).** Up to translation, rotation, scaling and relabelling, six identical point
+vortices have exactly eight relative equilibria, all reflection symmetric:
+
+| class | description | labelled | rotation symmetry | Morse index | stability |
+|---|---|---|---|---|---|
+| regular hexagon | exact (identified) | 120 | 6 | 0 | linearly stable |
+| regular pentagon with a vortex at its centre | exact (identified) | 144 | 5 | 0 | linearly stable |
+| collinear, zeros of H_6 | exact (identified) | 360 | 2 | 4 | unstable (4 real pairs certified) |
+| two equilateral triangles on the same three spokes (Aref's "two nested equilateral triangles ... on the same three spokes") | numerical description of a certified solution | 240 | 3 | 3 | unstable |
+| three nested digons: four vortices on one axis, two on the perpendicular axis (Aref's "three nested digons") | as above | 360 | 2 | 2 | unstable |
+| isosceles triangle hull with three interior vortices (one on the axis, one symmetric pair) | as above | 720 | 1 | 3 | unstable |
+| convex pentagon hull, mirror symmetric, with one interior vortex on the axis | as above | 720 | 1 | 1 | unstable |
+| isosceles trapezoid hull with two interior vortices mirror symmetric, no vortex on the axis | as above | 720 | 1 | 2 | unstable |
+
+- The total is 3384.
+- The Morse polynomial of H on C_6 is 264 + 720t + 1080t^2 + 960t^3 + 360t^4.
+- The alternating sum is 264 - 720 + 1080 - 960 + 360 = 24 = chi(C_6) = (1-2)(1-3)(1-4)(1-5)
+  (asserted).
+- Every relative equilibrium is nondegenerate.
+- Stability: only the hexagon and the centred pentagon are stable, linearly and, by Roberts'
+  Theorem 3.5, nonlinearly. This is the N = 6 analogue of Kim's Remark 1.5.
+- For every other class, at least one real eigenvalue pair is certified. For the class with order-3
+  symmetry only 1 of its 3 real pairs is certified directly, because the symmetry makes the roots
+  multiple. Instability needs only one.
+- Aref (2007) lists five configurations for N = 6 and writes "We believe this is the complete list
+  of relative equilibria for N = 6 but a rigorous proof is not available". His list is the first
+  five rows of the table. The last three rows, with no rotation symmetry and 720 labelled copies
+  each, are missing from it.
+- As for N = 5, Faugere and Svartz's claim covers N = 6 implicitly, but no N = 6 list was found in
+  print.
+- The last class has a distance multiset with threefold multiplicities (for example √6 six times).
+  It is nevertheless certified to have no rotation symmetry about its centre of vorticity: its
+  moduli come in pairs.
+
+Caveats specific to N = 6:
+- Only the first program has been run to completion here. The independent recount with bnbA
+  (`code/run6A.sh`) was started and its status is in section 8.1.
+- The adversarial check (section 9) reviewed the N = 5 proof, not this run. The code is the same,
+  and the tests of section 7 cover N = 6 Jacobians and equations.
+
+### 8.1 Independent N = 6 recount
 
 (status below)
 
