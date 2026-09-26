@@ -1,0 +1,6 @@
+production t=20.0 contains mpmath: True   radius 1.42e-29  |mid-mpmath| 2.66e-39
+production t=30.0 contains mpmath: True   radius 1.47e-25  |mid-mpmath| 2.75e-35
+production t=40.0 contains mpmath: True   radius 7.65e-22  |mid-mpmath| 1.43e-31
+production t=45.0 contains mpmath: True   radius 5.59e-20  |mid-mpmath| 1.05e-29
+production t=50.0 contains mpmath: True   radius 4.11e-18  |mid-mpmath| 7.69e-28
+production t=55.0 contains mpmath: True   radius 3.01e-16  |mid-mpmath| 5.64e-26
