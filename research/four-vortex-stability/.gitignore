@@ -1,0 +1,4 @@
+__pycache__/
+data/*_table.json
+survey.json
+data/run_all.log

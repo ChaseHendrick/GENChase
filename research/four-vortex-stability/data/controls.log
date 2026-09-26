@@ -1,0 +1,16 @@
+collinear m=-0.85 (linearly unstable)    REFUSED   not linearly stable (e2 > 0 and e4 > 0 not certified)        ok
+kite m=-0.2 (linearly unstable)          REFUSED   not linearly stable (e2 > 0 and e4 > 0 not certified)        ok
+collinear box on 1:2 resonance           REFUSED   resonance of order <= 4 not excluded (monomial (0, 1, 0, 2)) ok
+collinear box on 1:3 resonance           REFUSED   resonance of order <= 4 not excluded (monomial (0, 1, 0, 3)) ok
+collinear box on D = 0                   REFUSED   Arnold determinant D != 0 not certified                      ok
+collinear box on m* (1:1)                REFUSED   not linearly stable (e2 > 0 and e4 > 0 not certified)        ok
+kite box on its end point (1:1)          REFUSED   not linearly stable (e2 > 0 and e4 > 0 not certified)        ok
+rhombus A g=-0.1 (Ohsawa: definite)      DEFINITE                                                               ok
+/home/user/GENChase/research/four-vortex-stability/bnf.py:196: RuntimeWarning: divide by zero encountered in divide
+  a, b = a / abs(kap) ** 0.5, b / abs(kap) ** 0.5 * np.sign(kap)
+/home/user/GENChase/research/four-vortex-stability/bnf.py:196: RuntimeWarning: invalid value encountered in divide
+  a, b = a / abs(kap) ** 0.5, b / abs(kap) ** 0.5 * np.sign(kap)
+rhombus A g=-0.3 (unstable)              REFUSED   not linearly stable (e2 > 0 and e4 > 0 not certified)        ok
+collinear m=-0.9 (inside)                CERTIFIED                                                              ok
+kite m=-0.05 (inside)                    CERTIFIED                                                              ok
+controls failing: 0

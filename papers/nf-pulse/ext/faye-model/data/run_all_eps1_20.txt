@@ -1,0 +1,16 @@
+eps = 1/20
+OK    R: unique rest state, q0 S'(u0) < 1, one unstable and three stable eigenvalues for every c > 0
+OK    R: negative control lam = 80, kap = 1/10 (three equilibria) is refused
+OK    R: negative control, a perturbed eigenvalue encloses no root
+OK    B: isolating block with cones around rest certified
+OK    B: negative control, the block scaled by 1.5 is refused
+OK    B: independent re-check of the block conditions in mpmath.iv
+OK    J: Taylor jet and vector field against the recursion and finite differences (a test, not part of the proof)
+OK    M: unstable manifold validated (all runs assert it)
+OK    P: every orbit with c in [c1, c2] is in the interior of the block at T_enter
+OK    P: the orbit at c1 enters its cone inside the block
+OK    P: the orbit at c2 enters the opposite cone inside the block
+OK    N: negative control, the orbit at c1 asked to reach the other cone, is refused
+OK    N: negative control, a speed far from the pulse speed, is refused
+OK    I: integrator encloses an independent mpmath solution to xi = 1 and excludes one with b + 1e-20 (a test)
+all checks passed

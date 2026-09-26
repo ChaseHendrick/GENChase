@@ -1,0 +1,5 @@
+== NEGATIVE CONTROL run: c in [1.1027477, 1.1027478], T = 170
+  moving-frame cone lemma over the kappa set: nu_a=[0.968761160451 +/- 1.34e-14] nu_s=[-0.124653122282 +/- 4.93e-13] offdiag<=[3.57e-13 +/- 2.91e-16] gamma<=[26.679 +/- 4.84e-5]
+  L=2^-150 r_b=2^-315 r_a=[2.1382e-50 +/- 1.18e-55]; C1 False, C2 False, a'>0 True
+  FAILED with: AssertionError('cone lemma conditions fail')
+RESULT: FAIL

@@ -1,0 +1,36 @@
+{
+ "main": {
+  "params": "lam=20, kap=11/50, beta=5, b=9/2, eps=1/100, J(x)=(b/2)exp(-b|x|), tau=1",
+  "R1_unique_equilibrium": {
+   "zeros_in_[0,1]": 1,
+   "pieces": 2000
+  },
+  "R1_rest": {
+   "u0=v0": "[0.0151017095592381945561125429894 +/- 2.21e-32]",
+   "w0": "0",
+   "q0": "[0.924491452203809027219437285053 +/- 1.11e-31]"
+  },
+  "R2_s": "[0.321366320557960624254465404122 +/- 1.11e-31]",
+  "R2_q0s": "[0.297100416382023824849844943765 +/- 9.31e-32]",
+  "R2_ok": true,
+  "R3_i_ii": "Descartes and imaginary axis, symbolic given q0 s < 1 (see docstring)",
+  "R3_iii_roots": [
+   "[-5.307875107456514795789665 +/- 1.65e-26]",
+   "[-1.919497966667287531550833 +/- 3.13e-25]",
+   "[-0.03368638203893107295680600 +/- 4.48e-27]",
+   "[4.211988459375026278787687 +/- 2.41e-25]"
+  ],
+  "R3_iii_count": {
+   "positive": 1,
+   "negative": 3
+  },
+  "R4_residual_contains_0": true,
+  "R4_residual_max": 2.7052221611479484e-142
+ },
+ "neg_lam80_kap0.1": {
+  "params": "lam=20, kap=11/50, beta=5, b=9/2, eps=1/100, J(x)=(b/2)exp(-b|x|), tau=1",
+  "R1_unique_equilibrium": {
+   "reason": "cannot certify monotonicity on piece 149"
+  }
+ }
+}

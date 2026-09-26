@@ -1,0 +1,3 @@
+probes 200000  estimated nodes 2.925e+10 +- 2.26e+10  mean depth 17.3  max depth 51
+probes 200000  estimated nodes 1.912e+10 +- 1.15e+10  mean depth 17.3  max depth 50
+probes 200000  estimated nodes 8.960e+10 +- 5.10e+10  mean depth 17.3  max depth 52

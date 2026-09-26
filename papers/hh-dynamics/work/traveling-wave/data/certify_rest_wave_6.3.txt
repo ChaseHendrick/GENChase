@@ -1,0 +1,22 @@
+T = 6.3 C, phi = [0.99999999999999998048 +/- 4.73e-21]
+E_l (zero resting current) = [10.59892096939167852219888 +/- 1.48e-24] mV
+rest: m = [0.052932485257249574965 +/- 1.12e-22], n = [0.31767691406069738999 +/- 9.41e-22], h = [0.59612075350846024184 +/- 4.91e-21]
+f(rest) encloses 0: True  radius 1.7371309949445976e-74
+
+Lemma A for every K in [4.510770 +/- 3.01e-7]:
+  P(a) < 0 < P(b), P' > 0 on [a, b] = [4.0597, 5.4129] and the Hurwitz inequalities of Q: True
+  lambda_u in [4.97407 +/- 1.17e-6]
+  Q = x^4 + a3 x^3 + a2 x^2 + a1 x + a0: a0..a3 = [0.096 +/- 3.24e-4], [1.0437 +/- 8.64e-5], [2.63683 +/- 8.13e-6], [4.987488 +/- 7.34e-7]
+  Hurwitz determinants D2 = [12.1075 +/- 9.17e-5], D3 = [10.2 +/- 0.0526]
+  so dim W^u(rest) = 1 and dim W^s(rest) = 4 for every K in the ball
+  negative control (bracket above lambda_u) rejected: True
+
+Lemma B, r = 0.0001, (s2, s3, s5) = ('[2.00e-9 +/- 1e-16]', '[1.00e-7 +/- 3e-14]', '[6.00e-9 +/- 3e-16]'):
+  inflow z2: bound [-4.8815e-9 +/- 6.04e-15] (needs < 0)
+  inflow z5: bound [-6.6019e-10 +/- 1.63e-15] (needs < 0)
+  inflow pair: bound [-1.5529e-15 +/- 2.59e-20] (needs < 0)
+  cone: Gershgorin lower bounds [9.9479 +/- 5.10e-5], [8.892 +/- 1.29e-4], [0.4205 +/- 9.05e-5], [0.42051 +/- 8.95e-6], [0.24111 +/- 7.35e-6] (need > 0)
+  max |E_ij| = 6.431e-05;  Lemma B holds: True
+  negative control (stable faces too thin) rejected: True
+
+ALL CHECKS PASSED

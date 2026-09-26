@@ -1,0 +1,3 @@
+# exhaustive search of the cube REF +- h (half-width h in each of 15 coordinates); boxes inside the Euclidean ball BALL about REF removed; 900 s limit per run
+BALL=0.1 h=0.03 nodes 912877  domain 0 value 0 grad 4469 kraw 0 min 451970 flagged 0
+BALL=0.1 

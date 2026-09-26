@@ -32,23 +32,20 @@ from flint import arb, arb_mat, ctx, fmpq
 ctx.prec = int(os.environ.get('NF_PREC', '256'))
 import nfcore as nf, certify_rest as cr, manifold as mf, lohner as lo, block as bl
 
-DU = arb(os.environ.get('NF_DU', '0.05'))           # U-range half width of the block
-R_OVER_RHO = arb(os.environ.get('NF_R_OVER_RHO', '4'))
+DU = arb(os.environ.get('NF_DU', bl.DU_PROOF))              # U-range half width of the block
+R_OVER_RHO = arb(os.environ.get('NF_R_OVER_RHO', bl.R_OVER_RHO_PROOF))
 
 
 def block_data():
     T, Tinv = bl.setup()
     kappa = (1 / cr.C1).union(1 / cr.C2)
+    nf.require(kappa.contains(1 / cr.C1) and kappa.contains(1 / cr.C2), 'block kappa ball does not cover 1/c1 and 1/c2')
     ok, info = bl.check(T, Tinv, (-DU, DU), kappa)
-    assert ok, info
-    rho = arb(1)
-    while not (bl.u_range(Tinv, rho * R_OVER_RHO, rho) < DU):
-        rho = rho * arb('0.95')
-    rho = arb(rho.mid())
-    r = rho * R_OVER_RHO
+    nf.require(ok, 'block conditions (C) and (E) fail: %s' % info)
+    rho, r, ur = bl.proof_block(T, Tinv, DU, R_OVER_RHO)
     info['rho'] = rho.str(10)
     info['r'] = r.str(10)
-    info['U_range'] = bl.u_range(Tinv, r, rho).str(10)
+    info['U_range'] = ur.str(10)
     return T, Tinv, rho, r, info
 
 
@@ -80,7 +77,7 @@ def step_range_y(Xh, W, h, order, T, xstar):
        x(t) in sum_{k<=p} x_k(Xh) t^k + [0, h^{p+1}] x_{p+1}(W)."""
     vals = lo.taylor_vals(Xh, order)
     valsW = lo.taylor_vals(W, order + 1)
-    hint = lo.ball(0, h)
+    hint = lo.ball(0, h)                  # h >= the step length; a larger h only enlarges the enclosure
     rem = [valsW[i][order + 1] * lo.ball(0, arb(h) ** (order + 1)) for i in range(4)]
     # polynomial coefficients of y(t)
     ycoef = []
@@ -105,6 +102,7 @@ def main(which, T_enter):
     expect = None
     if which == 'interval':
         cc = cr.C1.union(cr.C2)
+        nf.require(cc.contains(cr.C1) and cc.contains(cr.C2), 'interval run does not cover c1 and c2')
     elif which == 'c1':
         cc = cr.C1; expect = cr.SIDE_C1
     elif which == 'c2':
@@ -116,9 +114,9 @@ def main(which, T_enter):
     kappa = 1 / cc
     co = cr.charpoly_coeffs(kappa, s, nf.EPS)
     lam = cr.refine(co, arb('0.5'), arb('1.2'))
-    sigma = arb(fmpq(1, 7))            # fixed exact-rational scaling (value from choose_sigma)
+    sigma = arb(mf.SIGMA)              # fixed exact-rational scaling, the one manifold.py validates
     ok, a, rr, minfo = mf.validate(kappa, lam, sigma, 80)
-    assert ok, minfo
+    nf.require(ok, 'unstable manifold not validated: %s' % minfo)
     x0 = mf.evaluate(a, rr, arb(fmpq(1, 4)))
     X = lo.LohnerSet.from_box(x0 + [kappa])
     T6m = T6(T)
@@ -145,7 +143,7 @@ def main(which, T_enter):
                 y[0].str(5), float(ynorm2_upper(y[1:]).mid()), time.time() - t_start), flush=True)
         if state['phase'] == 'inside':
             # whole step range must stay in int B
-            h = float((t - tp).mid())
+            h = arb((t - tp).upper())          # an upper bound of the step length (exact here)
             yr = step_range_y(state['prevhull'], W, h, order, T, xstar)
             if not in_int_B(yr, rho, r):
                 state['phase'] = 'left_B_unverified'
@@ -171,7 +169,7 @@ def main(which, T_enter):
         json.dump(log, open('../data/proof_%s%s.json' % (which.replace(':', '_'), os.environ.get('NF_TAG', '')), 'w'), indent=1)
         print(which, 'VERDICT FAIL:', log['reason'], flush=True)
         return
-    assert float(t.mid()) == float(T_enter)
+    nf.require(bool(t == arb(T_enter)), 'phase 1 did not end at T_enter')
     y = X.affine_image_hull(T6m, xstar + [arb(0), arb(0)])
     hx = X.hull()
     inB = in_int_B(y, rho, r)

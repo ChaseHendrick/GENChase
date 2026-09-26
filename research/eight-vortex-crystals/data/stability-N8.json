@@ -1,0 +1,135 @@
+[
+ {
+  "label": "class 1",
+  "index": 0,
+  "eigenvalue": null,
+  "unstable": false,
+  "real": false
+ },
+ {
+  "label": "class 2",
+  "index": 1,
+  "eigenvalue": "[0.346694798910766 +/- 2.72e-16] + [+/- 1.44e-59]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 3",
+  "index": 1,
+  "eigenvalue": "[0.599289997239517 +/- 1.37e-17] + [+/- 1.25e-59]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 4",
+  "index": 2,
+  "eigenvalue": "[0.878672854897313 +/- 3.46e-16] + [+/- 9.27e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 5",
+  "index": 3,
+  "eigenvalue": "[0.792788909526479 +/- 2.65e-16] + [+/- 8.09e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 6",
+  "index": 2,
+  "eigenvalue": "[0.957447451149108 +/- 3.51e-17] + [+/- 7.99e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 7",
+  "index": 3,
+  "eigenvalue": "[0.808122035641769 +/- 4.01e-16] + [+/- 7.58e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 8",
+  "index": 2,
+  "eigenvalue": "[1.70976862054990 +/- 3.95e-15] + [+/- 6.04e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 9",
+  "index": 3,
+  "eigenvalue": "[1.36779811004023 +/- 3.22e-15] + [+/- 7.35e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 10",
+  "index": 3,
+  "eigenvalue": "[1.36398869080583 +/- 1.58e-15] + [+/- 7.08e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 11",
+  "index": 3,
+  "eigenvalue": "[1.98785126405756 +/- 3.84e-15] + [+/- 6.39e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 12",
+  "index": 4,
+  "eigenvalue": "[1.56492159287190 +/- 3.19e-15] + [+/- 6.40e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 13",
+  "index": 3,
+  "eigenvalue": "[2.56969220521256 +/- 2.44e-15] + [+/- 4.53e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 14",
+  "index": 4,
+  "eigenvalue": "[2.26628380450965 +/- 4.82e-15] + [+/- 6.74e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 15",
+  "index": 4,
+  "eigenvalue": "[3.32808548783104 +/- 1.31e-15] + [+/- 5.20e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 16",
+  "index": 4,
+  "eigenvalue": "[3.65933394869430 +/- 1.16e-15] + [+/- 4.53e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 17",
+  "index": 5,
+  "eigenvalue": "[3.38369213063597 +/- 1.23e-16] + [+/- 4.67e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 18",
+  "index": 5,
+  "eigenvalue": "[5.06598552365091 +/- 1.78e-15] + [+/- 5.68e-60]j",
+  "unstable": true,
+  "real": true
+ },
+ {
+  "label": "class 19",
+  "index": 6,
+  "eigenvalue": "[6.92820323027551 +/- 8.27e-16] + [+/- 4.85e-60]j",
+  "unstable": true,
+  "real": true
+ }
+]

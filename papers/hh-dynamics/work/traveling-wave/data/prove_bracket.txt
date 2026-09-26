@@ -1,0 +1,14 @@
+T = 18.5 C
+Lemma B on the ball K in [10.438355 +/- 2.01e-7], r = 1e-05: True (stable box [2.00e-11 +/- 3e-18], [1.00e-9 +/- 1e-16], [6.00e-11 +/- 3e-17])
+
+K1 = [10.4383548000 +/- 1e-15]: integrating the exit set until u < -60 mV
+  PROVED after 428 steps (62 s): t = [2.4650108 +/- 3.78e-8] ms, u in [-6e+1 +/- 3.47], u' in [-9e+2 +/- 65.5], max u upper bound at step ends 90.5840, max radius 2.35e+01
+
+K2 = [10.4383549000 +/- 3e-15]: integrating the exit set until u > 150 mV
+  PROVED after 461 steps (82 s): t = [2.4763688 +/- 1.51e-8] ms, u in [2e+2 +/- 47.4], u' in [3e+3 +/- 2.65e+2], max u upper bound at step ends 171.8587, max radius 1.33e+02
+
+K1 (negative control) = [10.4383548000 +/- 1e-15]: integrating the exit set until u > 150 mV
+  NOT PROVED after 983 steps (115 s): t = [2.5150606 +/- 1.67e-8] ms, u in [-1e+2 +/- 44.8], u' in [-2e+3 +/- 4.33e+2], max u upper bound at step ends 90.5840, max radius 1.69e+02
+  negative control passed (the wrong escape is not certified)
+
+ALL CHECKS PASSED

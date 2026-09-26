@@ -1,0 +1,5 @@
+c = 1.102747709734159249147867735746622; orbit escapes at t = 188.31; comparison uses t <= 158.17
+max U along the pulse (dense sampling, float) = 0.759716243810 at xi = 21.2615
+|Q_ode - (w*S(U) - S0)|: max over interior nodes = 5.55e-16, over all nodes = 1.01e-05
+|P_ode - d/dxi (w*S(U))|: max over interior nodes = 4.44e-16
+max |Q - S0| along the orbit = 0.9832

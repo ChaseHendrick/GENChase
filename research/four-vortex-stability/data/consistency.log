@@ -1,0 +1,3 @@
+data/cert_kite.json: 983 certified boxes checked, 0 not consistent []
+data/cert_collinear.json: 12536 certified boxes checked, 0 not consistent []
+data/cert_collinear_ext.json: 6658 certified boxes checked, 0 not consistent []

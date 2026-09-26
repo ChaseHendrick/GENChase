@@ -1,0 +1,22 @@
+Unit check: K = 10.47 /ms (Hodgkin and Huxley) gives theta = 18.7605 m/s
+E_l making the resting current zero: 10.5989209694 mV (printed: 10.613)
+
+T = 18.5 C, phi = 3^((T - 6.3)/10) = 3.820216
+  delta 1e-06 rtol 1e-12: K in [10.4383548291389, 10.4383548291390], switch -1 -> +1, speed 18.732160814 m/s
+  delta 1e-08 rtol 1e-12: K in [10.4383548291388, 10.4383548291389], switch -1 -> +1, speed 18.732160814 m/s
+  delta 1e-06 rtol 1e-10: K in [10.4383548290650, 10.4383548290651], switch -1 -> +1, speed 18.732160814 m/s
+  delta 1e-07 rtol 1e-13: K in [10.4383548291386, 10.4383548291387], switch -1 -> +1, speed 18.732160814 m/s
+  spread of K over these runs: 7.4e-11 (relative 7.1e-12)
+  eigenvalues of rest at this K: -16.304211+0.000000i, -0.485148+0.717547i, -0.485148-0.717547i, -0.462824+0.000000i, 10.892313+0.000000i
+  dim W^u = 1, dim W^s = 4
+  with the printed E_l = 10.613 (rest at u = 0.003621 mV): K = 10.4380510601, speed 18.731888 m/s
+
+T = 6.3 C, phi = 3^((T - 6.3)/10) = 1.000000
+  delta 1e-06 rtol 1e-12: K in [4.5107697267893, 4.5107697267894], switch -1 -> +1, speed 12.313944113 m/s
+  delta 1e-08 rtol 1e-12: K in [4.5107697267893, 4.5107697267894], switch -1 -> +1, speed 12.313944113 m/s
+  delta 1e-06 rtol 1e-10: K in [4.5107697267400, 4.5107697267401], switch -1 -> +1, speed 12.313944113 m/s
+  delta 1e-07 rtol 1e-13: K in [4.5107697267896, 4.5107697267897], switch -1 -> +1, speed 12.313944113 m/s
+  spread of K over these runs: 5.0e-11 (relative 1.1e-11)
+  eigenvalues of rest at this K: -4.446128+0.000000i, -0.210348+0.367239i, -0.210348-0.367239i, -0.120663+0.000000i, 4.974071+0.000000i
+  dim W^u = 1, dim W^s = 4
+  with the printed E_l = 10.613 (rest at u = 0.003621 mV): K = 4.5106324383, speed 12.313757 m/s

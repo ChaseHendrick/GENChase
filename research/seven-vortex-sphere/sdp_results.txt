@@ -1,0 +1,21 @@
+== 12 --n8
+contact order 2 at interior nodes; H degree 12 (5 conditions at -1); min(phi - H) on grid 0.000e+00; E(B) = -10.4280177815, E_H(B) = -10.4280177815
+status optimal; three-point bound e* = -10.42801732; bipyramid E(B) = -10.42801778; gap -4.608e-07
+== 12
+/home/user/GENChase/research/seven-vortex-sphere/three_point_sdp.py:210: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+status optimal_inaccurate; three-point bound e* = -8.18479856; bipyramid E(B) = -8.18247786; gap 2.321e-03
+== 12 --gram
+contact order 2 at interior nodes; H degree 12 (7 conditions at -1); min(phi - H) on grid 0.000e+00; E(B) = -8.1824778644, E_H(B) = -8.1824778644
+status optimal; three-point bound e* = -8.18437917; bipyramid E(B) = -8.18247786; gap 1.901e-03
+== 14
+/home/user/GENChase/research/seven-vortex-sphere/three_point_sdp.py:210: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+status optimal_inaccurate; three-point bound e* = -8.18399900; bipyramid E(B) = -8.18247786; gap 1.521e-03
+== 14 --contact4
+/home/user/GENChase/research/seven-vortex-sphere/three_point_sdp.py:210: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+status optimal_inaccurate; three-point bound e* = -8.18399626; bipyramid E(B) = -8.18247786; gap 1.518e-03
+== 16 --contact4
+contact order 4 at interior nodes; H degree 16 (5 conditions at -1); min(phi - H) on grid 0.000e+00; E(B) = -8.1824778644, E_H(B) = -8.1824778644
+== 16 --contact4 --gram
+contact order 4 at interior nodes; H degree 16 (5 conditions at -1); min(phi - H) on grid 0.000e+00; E(B) = -8.1824778644, E_H(B) = -8.1824778644
+== 18 --contact4
+contact order 4 at interior nodes; H degree 18 (7 conditions at -1); min(phi - H) on grid 0.000e+00; E(B) = -8.1824778644, E_H(B) = -8.1824778644

@@ -1,0 +1,1 @@
+STAT root=chart mutate=0 nworkers=256 nsplit=16384 sym=1 N=6 worker=13 boxes=261201 t0_chart=49466 t1_inertia=6030 t2_G=54445 t3_cluster=8548 t4_krawczyk_excl=12109 cert=0 unres=0

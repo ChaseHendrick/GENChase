@@ -29,7 +29,8 @@ def inv(M):
     # Gauss-Jordan without pivot search on a well-conditioned matrix (pivots checked nonzero)
     for c in range(n):
         p = A[c][c]
-        assert not (0 in p), 'pivot contains 0'
+        if 0 in p:
+            raise SystemExit('FAILED: pivot contains 0')
         A[c] = [x / p for x in A[c]]
         for r in range(n):
             if r != c:
@@ -60,6 +61,25 @@ def chol_pd(H):
             L[i][j] = (H[i][j] - sum((L[i][k] * L[j][k] for k in range(j)), iv.mpf(0))) / L[j][j]
     return True
 
+# The parameters are typed here independently of nfcore.py; stop if the two ever disagree.
+from fractions import Fraction
+import nfcore as nf, certify_rest as cr
+same = (Fraction(str(nf._BETA)) == 20 and Fraction(str(nf._THETA)) == Fraction(1, 4) and
+        Fraction(str(nf._EPS)) == Fraction(1, 10) and Fraction(str(nf._GAMMA)) == 0 and
+        cr.C1.mid().str(40, radius=False).startswith('1.1027477097341592491478677') and
+        cr.C2.mid().str(40, radius=False).startswith('1.1027477097341592491478678'))
+print('parameters agree with nfcore.py and certify_rest.py:', same)
+
+# U-range of the block the proof uses, B = {|y1| <= r, |y'| <= rho}: it must lie inside |U| < 0.05, where the
+# range of S' used below is valid, and r > rho.
+blk = res['dU=0.05']
+m, e = blk['rho_mantissa_exponent']
+rho = iv.mpf(m) * iv.mpf(2) ** e        # the exact rho of the proof (an enclosure of it at 60 digits)
+r = iv.mpf(blk['r_over_rho']) * rho
+ur = abs(Ti[0][0]) * r + iv.sqrt(sum((Ti[0][j] ** 2 for j in range(1, 4)), iv.mpf(0))) * rho
+urange_ok = bool(ur.b < iv.mpf('0.05').a) and bool(r.a > rho.b)
+print('block rho = %s, r = %s, U-range bound %s < 0.05 and r > rho: %s' % (blk['rho'], blk['r'], mpmath.nstr(ur.b, 10), urange_ok))
+
 for dU in ('0.05', '0.03'):
     ok = True; out = []
     for s in (dS(-iv.mpf(dU)), dS(iv.mpf(dU))):
@@ -74,4 +94,6 @@ for dU in ('0.05', '0.03'):
         ent = g + fro
         ok &= pd and ent < 0
         out.append((pd, mpmath.nstr(ent, 8)))
+    if dU == '0.05':
+        ok = ok and same and urange_ok
     print('dU', dU, 'cone PD (interval Cholesky), entrance upper bounds:', out, '->', 'CERTIFIED' if ok else 'FAILED')

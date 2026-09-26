@@ -1,0 +1,2 @@
+CERT 0x1.07a9adc1fecafp+1 0x1.07b7ad4ef4bdbp+1 -0x1.084a65aa02586p+0 -0x1.0719789e2caeap+0 0x1.c86d847343f0cp+0 0x1.c905d40b72874p+0 -0x1.084a65aa02588p+0 -0x1.0719789e2caeap+0 -0x1.c905d40b72874p+0 -0x1.c86d847343f0cp+0 -0x1.bddba73d586aap-2 -0x1.bc55c44fa35p-2 0x1.8160996bb84a3p-1 0x1.81b92726db57bp-1 -0x1.bddba73d586aap-2 -0x1.bc55c44fa34fep-2 -0x1.81b92726db57bp-1 -0x1.8160996bb84a5p-1
+STAT root=chart mutate=0 nworkers=256 nsplit=16384 sym=1 N=6 worker=58 boxes=4087478 t0_chart=620100 t1_inertia=89852 t2_G=982095 t3_cluster=144207 t4_krawczyk_excl=206730 cert=1 unres=0
