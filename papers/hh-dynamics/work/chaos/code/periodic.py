@@ -22,9 +22,23 @@ def primitive_codes(n):
     return out
 
 
-def shoot(S, code, tol=1e-15, maxit=40):
+def seeds(S, NA, NB, code, iters=3):
+    """Seed x_k on the centre curve of the strip its symbol names, at the height eta where the image of the
+    previous strip lands; refine the heights by mapping the seeds a few times."""
     n = len(code)
-    X = np.array([S.A if ch == 'A' else S.B for ch in code], float)
+    eta = {'A': 0.4, 'B': -0.55}
+    E = np.array([eta[code[k - 1]] for k in range(n)])
+    for _ in range(iters):
+        X = [S.x_of((NA if ch == 'A' else NB).chart(0.0, e, 0.0)) for ch, e in zip(code, E)]
+        for k in range(n):
+            c = S.c_of(pmap.P(X[k - 1], S.J, SEC, var=False, direction=DIR)[0])
+            E[k] = np.clip((NA if code[k] == 'A' else NB).inv(c)[1], -0.99, 0.99)
+    return np.array([S.x_of((NA if ch == 'A' else NB).chart(0.0, e, 0.0)) for ch, e in zip(code, E)])
+
+
+def shoot(S, code, tol=1e-15, maxit=40, X0=None):
+    n = len(code)
+    X = np.array([S.A if ch == 'A' else S.B for ch in code], float) if X0 is None else X0.copy()
     for it in range(maxit):
         F = np.zeros(3 * n)
         M = np.zeros((3 * n, 3 * n))

@@ -38,6 +38,13 @@ class Setup:
         w, V = orbits.eig_sorted(DPA)
         self.E = np.real(V) / np.linalg.norm(np.real(V), axis=0)
         self.Ei = np.linalg.inv(self.E)
+        # orientation: B at c1 > 0, c2 < 0 (the eigenvector signs are otherwise arbitrary)
+        cB = self.Ei @ (self.B - self.A)
+        self.E[:, 0] *= np.sign(cB[0])
+        self.E[:, 1] *= -np.sign(cB[1])
+        self.E[:, 2] *= np.sign(self.E[1, 2]) if self.E[1, 2] != 0 else 1.0
+        self.Ei = np.linalg.inv(self.E)
+        self.scale = abs(cB[0])             # c1 of B sets the width of the search window
 
     def x_of(self, c):
         return self.A + self.E @ c
@@ -55,8 +62,12 @@ class Setup:
             return cp, T, umax, self.Ei @ DP @ self.E
         return cp, T, umax
 
-    def firing_boundary(self, c2, lo=-1e-5, hi=2e-4, umax_fire=40.0):
+    def firing_boundary(self, c2, lo=None, hi=None, umax_fire=40.0):
         """c1 where the first return starts to contain a spike (bisection on umax)."""
+        lo = -0.4 * self.scale if lo is None else lo
+        hi = 8.0 * self.scale if hi is None else hi
+        if self.image([hi, c2, 0.0])[2] <= umax_fire:
+            raise ValueError('no firing boundary in the window')
         for _ in range(70):
             m = 0.5 * (lo + hi)
             if self.image([m, c2, 0.0])[2] > umax_fire:
@@ -68,7 +79,8 @@ class Setup:
     def zeros(self, c2):
         """The zeros z1 < z2 < z3 of c1' along the line c2 = const, left of the firing boundary."""
         cb = self.firing_boundary(c2)
-        cs = np.sort(np.r_[np.linspace(-1e-5, cb, 300)[:-1], cb - np.geomspace(1e-7, 1e-14, 40) * (cb + 1e-5)])
+        lo = -0.4 * self.scale
+        cs = np.sort(np.r_[np.linspace(lo, cb, 300)[:-1], cb - np.geomspace(1e-7, 1e-14, 40) * (cb - lo)])
         f = lambda c: self.image([c, c2, 0.0])[0][0]
         v = np.array([f(c) for c in cs])
         k = np.where(np.sign(v[1:]) != np.sign(v[:-1]))[0]

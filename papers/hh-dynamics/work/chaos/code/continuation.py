@@ -12,7 +12,7 @@ import numpy as np
 import hhc
 import pmap
 
-WX = 10.0       # weight of the gate coordinates in the arclength norm
+WX = float(__import__("os").environ.get("HH_WX", "10.0"))   # weight of the gate coordinates in the arclength norm
 
 
 def residual(z, s):
@@ -48,9 +48,9 @@ def corrector(zp, t, z0, ds, s, tol=1e-12, maxit=8):
     return None
 
 
-def run(z0, s, ds0, nmax, dsmax, dsmin=1e-9, Jstop=(5.0, 10.0), label='', save=None):
+def run(z0, s, ds0, nmax, dsmax, dsmin=1e-9, Jstop=(5.0, 10.0), label='', save=None, t0=None):
     F, DF, T, DP, umax, umin = residual(z0, s)
-    t = tangent(DF, np.array([0, 0, 0, -1.0]))
+    t = tangent(DF, np.array([0, 0, 0, -1.0]) if t0 is None else t0)
     rows = []
     z, ds = z0.copy(), ds0
     for k in range(nmax):
@@ -120,7 +120,14 @@ def seed(J0, a_lo=0.01, a_hi=3.0):
     return x, s, r, T, umax, umin
 
 
-if __name__ == '__main__':
+if __name__ == '__main__' and len(sys.argv) > 2 and sys.argv[2] == 'resume':
+    # python3 continuation.py N resume IN.npz OUT.npz : continue a saved branch for N more points
+    d = np.load(sys.argv[3])
+    s = float(d['s'])
+    rows, z, t = run(d['z'], s, 1e-4, int(sys.argv[1]), 0.05, label='s=%.4f' % s, save=sys.argv[4],
+                     t0=d['t'])
+    np.savez(sys.argv[4], rows=rows, cols=COLS, s=s, EL=hhc.EL0, z=z, t=t)
+elif __name__ == '__main__':
     J0 = float(sys.argv[2]) if len(sys.argv) > 2 else 9.5
     x, s, r, T, umax, umin = seed(J0)
     print('seed orbit at J=%.4f on u=%.6f: residual %.2e, T=%.6f, u in [%.4f, %.4f]' % (J0, s, np.abs(r).max(), T, umin, umax),
