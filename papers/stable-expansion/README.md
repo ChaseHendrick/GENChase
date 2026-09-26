@@ -43,9 +43,11 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
   out every estimate for any number of patches; the other patches act on a patch only through the strain of their
   field, and two slips of his arXiv version are corrected there.
 - **Numerical:** the direct integrations and the random sample of Section 6.
-- **Before this draft becomes a preprint:** an adversarial second reading of Lemma 1 and Theorems 1 and 2 with
-  their certificates; and a comparison with the published CMP version of Zbarsky's paper (the proof cites the
-  equation numbers of arXiv:1912.10862v2).
+- **Awaiting the owner's sign-off:** the record of the independent adversarial readings of every section and of the
+  programs (`notes/QUALITY.md`, item 6).
+- **Limitation:** the section, theorem and equation numbers of Zbarsky's paper cited here, and the two slips
+  corrected in Appendix A, are those of arXiv:1912.10862v2; the published CMP version was not accessible for
+  comparison.
 
 ## Contents
 
@@ -57,7 +59,7 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
-| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the stability test must refuse) and a positive three-vortex control, with their side conditions; direct integrations (binary64) | 56 in ball or exact arithmetic (3 of them regression tests of how the matrices are assembled), 7 in binary64 | seconds |
+| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the stability test must refuse) and a positive three-vortex control, with their side conditions; controls of the five-vortex trace recipe (on the four- and three-vortex matrices) and of the Krawczyk test (a box without the zero, where it must fail); direct integrations (binary64) | 62 in ball or exact arithmetic (5 of them regression tests, identities that hold for every configuration), 8 in binary64 | seconds |
 | [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 6 (numerical) | | 10 min |
 
 ## Reproduce

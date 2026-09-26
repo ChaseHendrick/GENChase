@@ -37,40 +37,60 @@ Im lam = -1, so both vanish exactly. With the other circulations fixed the first
 circulation, which is therefore exact at every zero (Gamma_4 = -4/5, Gamma_5 = 47/35); their enclosures, and the side
 conditions that sum_j Gamma_j z_j, sum_{j<k} Gamma_j Gamma_k and sum_j Gamma_j |z_j|^2 contain 0, are consistency checks.
 
+The side conditions are those of certify_pipeline.side_checks, evaluated on the tightened enclosure. In the words of
+the proof of the theorems in the paper:
+  all_Gamma_nonzero                the circulations are nonzero;
+  sum_Gamma_nonzero                the total circulation is nonzero;
+  pairwise_distances_positive      the vortices are distinct;
+  no_vortex_at_collision_point     the vortices are away from the origin;
+  sum_Gamma_z_contains_0           the first necessary condition, sum_j Gamma_j z_j = 0, is enclosed with 0;
+  S_contains_0                     the third, sum_{j<k} Gamma_j Gamma_k = 0, is enclosed with 0;
+  I_contains_0                     the second, sum_j Gamma_j |z_j|^2 = 0, is enclosed with 0;
+  lambda_j_contain_2P_minus_i      for each j the enclosure of the quotient lambda_j = w_j/conj(z_j) of the left side
+                                   of the gauge equation by conj(z_j) overlaps the enclosure of 2P - i;
+  P_positive                       P > 0. In the gauge P is signed, b = 2P, and |P| is the winding number.
+
 Sections:
   1. Existence: the four-vortex collapse with x4 = 8/25, Gamma_2 = 5/2, Gamma_3 = 1/9 fixed, by Newton and the
      Krawczyk test in ball arithmetic (FLINT/Arb through python-flint). The 8 unknowns are x1, x2, y2, x3, y3, y4,
      Gamma_4 and P; the zero is unique in the box of radius 10^-rmax (maximum norm) about the Newton point, and the
      side conditions and every later enclosure are evaluated on the tightened Krawczyk enclosure, which contains it.
+     The radii stated in the paper (10^-4, and below 10^-93 for the tightened enclosure) are checked.
   2. Lemma 1 on the certified enclosure: the invariant vectors of the symmetries (exact identities, checked to
      contain 0) and the tangent v of the family from the implicit function theorem (DE v = b' i zeta, v independent
      of i zeta).
   3. The stability number c: its enclosure, c > 1, and the pair 1 +- i omega.
   3b. Five vortices (x2 = 3/5, Gamma = (1, -3/7, -7/8, 9/7, 47/35), unknowns x1, y2, x3, y3, x4, y4, x5, y5, Gamma_5,
-     P): existence, Lemma 1, and the four remaining exponents from u = (k - 1)^2, the roots of u^2 - m1 u + m2 with
-     m1 = (tr((DE - I)^2) - 4 + 2 b^2)/2, p2 = (tr((DE - I)^4) - 4 - 2 b^4)/2 and m2 = (m1^2 - p2)/2.
+     P): existence (radii 10^-5 and below 10^-93), Lemma 1, and the four remaining exponents from u = (k - 1)^2, the
+     roots of u^2 - m1 u + m2 with m1 = (tr((DE - I)^2) - 4 + 2 b^2)/2, p2 = (tr((DE - I)^4) - 4 - 2 b^4)/2 and
+     m2 = (m1^2 - p2)/2. The test of the proof of Theorem 2 is the function stable5.
   3c. Theorem 3 (nonlinear stability): sum_{j<k} Gamma_j Gamma_k = 0 exactly, so the energy H is conserved by the
      similarity dynamics; grad H is a nonzero left null vector of DE; b and H are strictly monotone along the family.
-  4. Controls: a four-vortex collapse whose reversal is unstable (c < 0, certified); a five-vortex collapse whose
-     reversal is unstable, which the test of section 3b refuses (m1^2 - 4 m2 < 0, certified) and which has
-     |Re sqrt(u)| > 1 (certified), so two remaining exponents with negative real part; a three-vortex collapse, where
-     2N - 6 = 0 and tr((DE - I)^2) must equal the contribution of the six forced exponents (a positive control).
+  4. Controls: the Krawczyk test on a box that does not contain the zero must fail; a four-vortex collapse whose
+     reversal is unstable (c < 0, certified); the recipe of section 3b applied to the four-vortex matrix of section 1
+     (it must give m1 = 1 - c and m2 = 0); a five-vortex collapse whose reversal is unstable, which stable5 refuses
+     (m1^2 - 4 m2 < 0, certified) and which has |Re sqrt(u)| > 1 (certified), so two remaining exponents with negative
+     real part; a three-vortex collapse, where 2N - 6 = 0 and tr((DE - I)^2) must equal the contribution of the six
+     forced exponents, and the recipe of section 3b must give m1 = 0 and p2 = 0 (positive controls).
   5. Illustration in binary64 (not part of the proof): the eigenvalues at the midpoint, and direct integration of
      the expanding configuration, perturbed and not (against the family member with the same energy, as Theorem 3
-     predicts), and of the two unstable controls.
+     predicts), and of the two unstable controls (for the four-vortex one, the measured growth exponent against -k).
 
-Regression tests. Three checks hold for every configuration, whatever the positions: tr DE = 2N, Im tr(A conj A) = 0
-and tr((DE - I)^2) = 2 tr(A conj A) - 2N b^2. They test how the matrices are assembled, not the theorems, and the
-output labels them so.
+Regression tests. Five checks hold for every configuration, whatever the positions: tr DE = 2N, Im tr(A conj A) = 0,
+tr((DE - I)^2) = 2 tr(A conj A) - 2N b^2 (at the four-vortex collapse and at the unstable four-vortex control), and
+Vieta's formulas for the roots u1, u2 computed from m1 and m2. They test how DE is assembled from A, the trace formula
+and the formula for the roots, not the theorems, and the output labels them so.
 
 Needs python-flint, numpy and scipy (code/requirements.txt). Run: python3 code/verify_stable_expansion.py. Prints
 every check, counts them by kind (ball or exact arithmetic, regression tests among them, and binary64), and at the
 end exits with status 1 if any failed (at once if the first Krawczyk test fails); its output is
-data/verify-stable-expansion.txt.
+data/verify-stable-expansion.txt, written at exit whether or not the program ran to the end.
 """
+import atexit
 import json
 import os
 import sys
+from decimal import Context, Decimal, ROUND_CEILING
 from fractions import Fraction
 
 import numpy as np
@@ -84,8 +104,24 @@ import certify_ball_ad as V  # noqa: E402
 import certify_pipeline as CP  # noqa: E402
 
 DATA = os.path.join(os.path.dirname(HERE), 'data')
+REPORT = os.path.join(DATA, 'verify-stable-expansion.txt')
 OUT, FAILED = [], []
 NCHK = {'ball': 0, 'exact': 0, 'regression': 0, 'binary64': 0}
+FINISHED = []
+
+
+def write_report():
+    """Write the report at exit, also when the program stops early, so that data/ never keeps a stale report."""
+    if not FINISHED:
+        OUT.append('\nSTOPPED before the end (a failed first Krawczyk test or an error); the checks above are all that ran')
+    with open(REPORT, 'w') as fh:
+        fh.write('\n'.join(OUT) + '\n')
+
+
+if __name__ == '__main__':          # run as the program, not read by another script
+    if os.path.exists(REPORT):
+        os.remove(REPORT)
+    atexit.register(write_report)
 
 
 def say(s=''):
@@ -95,7 +131,7 @@ def say(s=''):
 
 def check(name, ok, detail='', kind='ball'):
     """kind: 'ball' (ball arithmetic), 'exact' (rational arithmetic), 'regression' (ball arithmetic, but an identity
-    that holds for every configuration: a test of how the matrices are assembled) or 'binary64'."""
+    that holds for every configuration: a test of how the program computes, not of the theorems) or 'binary64'."""
     NCHK[kind] += 1
     if kind == 'regression':
         name = 'regression test (holds for every configuration): ' + name
@@ -123,7 +159,21 @@ def certify(cfg, chart, fixed):
     return model, r
 
 
-def balls(full, N, names):
+def box(r):
+    """The box of a certify() result in which the zero is unique, as printed, or 'no box' when the radius scan found
+    none."""
+    return 'no box' if r.get('rmax') is None else 'the box of radius 1e-%d' % r['rmax']
+
+
+def square_fun(model, full, U):
+    """The equations of certify_pipeline.solve_square in the unknowns U, the other entries of full fixed."""
+    def fun(u, want_jac):
+        Ts = model.eqs(CP.full_from(full, U, u), U, order=1)
+        return [t.v for t in Ts], (V.jac_of(Ts) if want_jac else None)
+    return fun
+
+
+def balls(full, N):
     x, y, G, P = V.unpack_full(full, N)
     z = [acb(x[j], y[j]) for j in range(N)]
     return z, [arb(g) for g in G], P
@@ -177,7 +227,13 @@ def as_real(vec_c):
 
 
 def max_rad(K):
+    """The largest radius of the balls in K (the conversion of an arb radius to binary64 is exact here)."""
     return max(float(a.rad()) for a in K)
+
+
+def up(x):
+    """The positive number x printed with two significant digits, rounded up, so that the printed value bounds x."""
+    return '{:.1e}'.format(Context(prec=2, rounding=ROUND_CEILING).create_decimal(Decimal(x)))
 
 
 def five_numbers(M, b):
@@ -190,6 +246,22 @@ def five_numbers(M, b):
     p2 = (t4 - 4 - 2*b**4)/2                  # u1^2 + u2^2
     m2 = (m1*m1 - p2)/2                       # u1 u2
     return m1, m2, m1*m1 - 4*m2
+
+
+def roots5(m1, m2):
+    """The roots u1 <= u2 of u^2 - m1 u + m2, for a positive discriminant."""
+    d = (m1*m1 - 4*m2).sqrt()
+    return (m1 - d)/2, (m1 + d)/2
+
+
+def stable5(m1, m2):
+    """The test of the proof of Theorem 2: the discriminant m1^2 - 4 m2 of u^2 - m1 u + m2 is positive and its larger
+    root u2 is negative, so both roots u = (k - 1)^2 of the two remaining pairs are real and negative, and the four
+    remaining exponents are 1 +- i sqrt(-u1), 1 +- i sqrt(-u2), with real part 1. True proves this for every matrix in
+    the enclosures; False refuses (the first condition is checked first)."""
+    if not bool(m1*m1 - 4*m2 > 0):
+        return False
+    return bool(roots5(m1, m2)[1] < 0)
 
 
 def grad_H(z, G):
@@ -230,24 +302,28 @@ say('1. The four-vortex collapse (existence, Krawczyk)')
 N = 4
 cfg = load('start-four.json')
 model, r = certify(cfg, ['x4', 'G2', 'G3'], [fmpq(8, 25), fmpq(5, 2), fmpq(1, 9)])
-check('Krawczyk: a unique zero of the 8 equations in the 8 unknowns in the box of radius 1e-%s (maximum norm) about '
-      'the Newton point, with x4 = 8/25, Gamma_2 = 5/2, Gamma_3 = 1/9 fixed' % r.get('rmax'),
+check('Krawczyk: a unique zero of the 8 equations in the 8 unknowns in %s (maximum norm) about '
+      'the Newton point, with x4 = 8/25, Gamma_2 = 5/2, Gamma_3 = 1/9 fixed' % box(r),
       r['ok'], 'contraction %s' % r.get('contraction', arb(0)).str(3))
 if not r['ok']:
     sys.exit(1)
 full = r['full']
 names = model.names
-say('      unknowns %s; the tightened enclosure below contains the zero, has radius at most %.1e, and the side '
-    'conditions and every later enclosure are evaluated on it' % (', '.join(nm for nm, _ in r['enclosure']), max_rad(r['K'])))
+say('      unknowns %s; the tightened enclosure below contains the zero, has radius at most %s, and the side '
+    'conditions and every later enclosure are evaluated on it (printed to 15 digits, which widens the printed '
+    'radii)' % (', '.join(nm for nm, _ in r['enclosure']), up(max_rad(r['K']))))
 for nm, v in r['enclosure']:
     say('      %-3s %s' % (nm, v.str(15, radius=True)))
+check('the radii stated in the paper: the zero is unique in the box of radius 1e-4, and the tightened enclosure has '
+      'radius below 1e-93', r['rmax'] == 4 and max_rad(r['K']) < 1e-93,
+      'unique in %s, enclosure radius at most %s' % (box(r), up(max_rad(r['K']))))
 sc = r['side']
 for key in CP.GENUINE:
     check('side condition ' + key, bool(sc[key]))
 G4 = full[names.index('G4')]
 check('consistency: the enclosure of Gamma_4 contains -4/5, its exact value at every zero (sum_{j<k} Gamma_j Gamma_k = '
       '26/9 + (65/18) Gamma_4 vanishes there)', G4.contains(arb(-4)/5) and G4.rad() < 1e-30, G4.str(20, radius=True))
-z, G, P = balls(full, N, names)
+z, G, P = balls(full, N)
 b = 2*P
 say('      P = %s, the winding' % P.str(25, radius=True))
 
@@ -313,21 +389,24 @@ c_float = float(c.mid())
 # ------------------------------------------------------------------------------------------------ 3b. five vortices
 say('\n3b. Five vortices: existence, Lemma 1 and the four remaining exponents')
 cfg5 = load('start-five.json')
-m5, r5 = certify(cfg5, ['x2', 'G2', 'G3', 'G4'], [fmpq(3, 5), fmpq(-3, 7), fmpq(-7, 8), fmpq(9, 7)])
-check('Krawczyk: a unique zero of the 10 equations in the 10 unknowns in the box of radius 1e-%s (maximum norm) about '
-      'the Newton point, with x2 = 3/5, Gamma_2 = -3/7, Gamma_3 = -7/8, Gamma_4 = 9/7 fixed' % r5.get('rmax'), r5['ok'])
+mod5, r5 = certify(cfg5, ['x2', 'G2', 'G3', 'G4'], [fmpq(3, 5), fmpq(-3, 7), fmpq(-7, 8), fmpq(9, 7)])
+check('Krawczyk: a unique zero of the 10 equations in the 10 unknowns in %s (maximum norm) about '
+      'the Newton point, with x2 = 3/5, Gamma_2 = -3/7, Gamma_3 = -7/8, Gamma_4 = 9/7 fixed' % box(r5), r5['ok'])
 if r5['ok']:
-    say('      unknowns %s; tightened enclosure of radius at most %.1e, on which everything below is evaluated'
-        % (', '.join(nm for nm, _ in r5['enclosure']), max_rad(r5['K'])))
+    say('      unknowns %s; tightened enclosure of radius at most %s, on which everything below is evaluated'
+        % (', '.join(nm for nm, _ in r5['enclosure']), up(max_rad(r5['K']))))
+    check('five vortices: the radii stated in the paper: the zero is unique in the box of radius 1e-5, and the '
+          'tightened enclosure has radius below 1e-93', r5['rmax'] == 5 and max_rad(r5['K']) < 1e-93,
+          'unique in %s, enclosure radius at most %s' % (box(r5), up(max_rad(r5['K']))))
     for key in CP.GENUINE:
         check('five vortices: side condition ' + key, bool(r5['side'][key]))
     f5 = r5['full']
-    n5 = m5.names
+    n5 = mod5.names
     G5 = f5[n5.index('G5')]
     check('five vortices, consistency: the enclosure of Gamma_5 contains 47/35, its exact value at every zero '
           '(sum_{j<k} Gamma_j Gamma_k = -517/392 + (55/56) Gamma_5 vanishes there)', G5.contains(arb(47)/35),
           G5.str(20, radius=True))
-    z5, Gb5, P5 = balls(f5, 5, n5)
+    z5, Gb5, P5 = balls(f5, 5)
     b5 = 2*P5
     say('      P = %s, the winding' % P5.str(25, radius=True))
     M5 = DE_mat(z5, Gb5, b5)
@@ -341,7 +420,7 @@ if r5['ok']:
           and contains0([Mi15[i] - (ione5[i] + b5*one5[i]) for i in range(10)]))
     U5 = r5['U']
     ix2 = n5.index('x2')
-    J5 = V.jac_of(m5.eqs(f5, U5 + [ix2], order=1))
+    J5 = V.jac_of(mod5.eqs(f5, U5 + [ix2], order=1))
     vU5 = arb_mat([[J5[i, j] for j in range(len(U5))] for i in range(10)]).solve(arb_mat([[-J5[i, len(U5)]] for i in range(10)]))
     d5 = {n5[U5[q]]: vU5[q, 0] for q in range(len(U5))}
     d5['x2'] = arb(1)
@@ -351,12 +430,15 @@ if r5['ok']:
           d5['G5'].contains(0) and contains0([Mv5[i] - 2*d5['P']*izeta5[i] for i in range(10)])
           and not f5[n5.index('x1')].contains(0))
     m1, m2, disc = five_numbers(M5, b5)
-    say('      m1 = %s, m2 = %s' % (m1.str(12, radius=True), m2.str(12, radius=True)))
-    check('five vortices: the discriminant m1^2 - 4 m2 of u^2 - m1 u + m2 is positive, so u1 < u2 are real', bool(disc > 0),
-          disc.str(10, radius=True))
-    u1, u2 = (m1 - disc.sqrt())/2, (m1 + disc.sqrt())/2
-    check('five vortices: u2 < 0 < 1, so the four remaining exponents are 1 +- i sqrt(-u1) and 1 +- i sqrt(-u2): '
-          'real part 1', bool(u2 < 0), 'u1 = %s, u2 = %s' % (u1.str(10, radius=True), u2.str(10, radius=True)))
+    u1, u2 = roots5(m1, m2)
+    say('      m1 = %s, m2 = %s, discriminant m1^2 - 4 m2 = %s' % (m1.str(12, radius=True), m2.str(12, radius=True),
+                                                                 disc.str(10, radius=True)))
+    check('five vortices: the test of the proof of Theorem 2 (stable5) passes: the discriminant m1^2 - 4 m2 of '
+          'u^2 - m1 u + m2 is positive, so u1 < u2 are real, and u2 < 0 < 1, so the four remaining exponents are '
+          '1 +- i sqrt(-u1) and 1 +- i sqrt(-u2): real part 1', stable5(m1, m2),
+          'u1 = %s, u2 = %s' % (u1.str(10, radius=True), u2.str(10, radius=True)))
+    check('five vortices, Vieta: u1 + u2 contains m1 and u1 u2 contains m2 (a test of how the roots are computed)',
+          (u1 + u2 - m1).contains(0) and (u1*u2 - m2).contains(0), kind='regression')
     w1, w2 = (-u1).sqrt(), (-u2).sqrt()
     say('      exponents 1 +- i %s and 1 +- i %s' % (w1.str(10, radius=True), w2.str(10, radius=True)))
     check('five vortices: the four exponents on Re k = 1 are simple and differ from 1 +- i b (w1 != w2, both != b)',
@@ -372,57 +454,72 @@ if r5['ok']:
 
 # ------------------------------------------------------------------------------------------------ 4. controls
 say('\n4. Controls')
+# The Krawczyk test must fail on a box that does not contain the zero: radius 1e-6 about the point that differs from the
+# four-vortex zero of section 1 by 1e-3 in every unknown.
+xs = [a.mid() + arb('1e-3') for a in r['K']]
+okx = V.krawczyk(square_fun(model, full, r['U']), xs, arb('1e-6'))[0]
+check('Krawczyk negative control: the test fails, as it must, on the box of radius 1e-6 (maximum norm) about a point '
+      'that differs from the four-vortex zero by 1e-3 (to within 1e-93) in every unknown, a box without the zero', not okx)
 ctl = load('starts-controls.json')
 cu = ctl['unstable4']
-g2 = fmpq(round(cu['G'][1]*1000), 1000)
-g3 = fmpq(round(cu['G'][2]*1000), 1000)
-x4 = fmpq(round(cu['z'][3][0]*1000), 1000)
-m2, r2 = certify(cu, ['x4', 'G2', 'G3'], [x4, g2, g3])
+x4c, g2c, g3c = fmpq(149, 125), fmpq(-1003, 1000), fmpq(13, 10)
+modc4, r2 = certify(cu, ['x4', 'G2', 'G3'], [x4c, g2c, g3c])
 check('unstable control: Krawczyk certifies a four-vortex collapse with x4 = %s, Gamma_2 = %s, Gamma_3 = %s, unique '
-      'within 1e-%s' % (x4, g2, g3, r2.get('rmax')), r2['ok'])
+      'in %s' % (x4c, g2c, g3c, box(r2)), r2['ok'])
 if r2['ok']:
     check('unstable control: every side condition holds on the enclosure (so x_1 != 0, and with the Krawczyk test the '
           'hypotheses of Lemma 1)', all(bool(r2['side'][k_]) for k_ in CP.GENUINE))
-    G4c = r2['full'][m2.names.index('G4')]
+    G4c = r2['full'][modc4.names.index('G4')]
     check('unstable control, consistency: the enclosure of Gamma_4 contains 10069/12970, its exact value at every zero',
           G4c.contains(arb(fmpq(10069, 12970))), G4c.str(15, radius=True))
-    z2, Gc2, P2 = balls(r2['full'], 4, m2.names)
+    z2, Gc2, P2 = balls(r2['full'], 4)
     A2 = A_mat(z2, Gc2)
     tr2 = sum((A2[j][k]*A2[k][j].conjugate() for j in range(4) for k in range(4)), acb(0))
     c2 = 3 + 12*P2*P2 - tr2.real
     k2 = 1 - (1 - c2).sqrt()
-    check('unstable control: c < 0, so a real pair k < 0 < 2 < 2 - k and the reversed expansion is unstable',
-          bool(c2 < 0), 'c = %s, k = %s' % (c2.str(10, radius=True), k2.str(10, radius=True)))
+    check('unstable control: c < 0, so the test of section 3 (c > 1) refuses it: a real pair k < 0 < 2 < 2 - k, and '
+          'the reversed expansion is unstable', bool(c2 < 0), 'c = %s, k = %s' % (c2.str(10, radius=True),
+                                                                               k2.str(10, radius=True)))
+    B2 = [[x - (1 if i == j else 0) for j, x in enumerate(row)] for i, row in enumerate(DE_mat(z2, Gc2, 2*P2))]
+    u2c = (tr_power(B2, 2) - 4 + 8*P2*P2)/2
+    check('unstable control: (tr (DE - I)^2 - 4 + 2 b^2)/2 contains 1 - c, c computed again from the assembled DE',
+          (u2c - (1 - c2)).contains(0), u2c.str(12, radius=True), kind='regression')
+# The recipe of section 3b, run on the four-vortex matrix of section 1, where there is one remaining pair: it must give
+# m1 = 1 - c (that pair) and m2 = 0 (no second pair), the second by Lemma 1 at this zero, not for every configuration.
+m1f, m2f, _ = five_numbers(M, b)
+check('positive control of the recipe of section 3b on the four-vortex DE of section 1: m1 contains 1 - c and m2 '
+      'contains 0', (m1f - (1 - c)).contains(0) and m2f.contains(0),
+      'm1 - (1 - c) = %s, m2 = %s' % ((m1f - (1 - c)).str(5, radius=True), m2f.str(5, radius=True)))
 # a five-vortex collapse whose reversal is unstable: the stability test of section 3b must refuse it, and the refusal is
 # right. Its chart values are rationals with denominators below 1000 near a binary64 solution of a random search.
 cu5 = ctl['unstable5']
 fx5 = [fmpq(-289, 857), fmpq(-133, 849), fmpq(150, 839), fmpq(-61, 876)]
-m6, r6 = certify(cu5, ['x2', 'G2', 'G3', 'G4'], fx5)
+modc5, r6 = certify(cu5, ['x2', 'G2', 'G3', 'G4'], fx5)
 check('five-vortex unstable control: Krawczyk certifies a collapse with x2 = %s, Gamma_2 = %s, Gamma_3 = %s, Gamma_4 = %s'
-      % tuple(fx5) + ', unique within 1e-%s' % r6.get('rmax'), r6['ok'])
+      % tuple(fx5) + ', unique in %s' % box(r6), r6['ok'])
 if r6['ok']:
     check('five-vortex unstable control: every side condition holds on the enclosure (so x_1 != 0, and with the '
           'Krawczyk test the hypotheses of Lemma 1)', all(bool(r6['side'][k_]) for k_ in CP.GENUINE))
-    G5c = r6['full'][m6.names.index('G5')]
+    G5c = r6['full'][modc5.names.index('G5')]
     check('five-vortex unstable control, consistency: the enclosure of Gamma_5 contains 6868618/84905979, its exact value '
           'at every zero', G5c.contains(arb(fmpq(6868618, 84905979))), G5c.str(15, radius=True))
-    z6, Gc6, P6 = balls(r6['full'], 5, m6.names)
+    z6, Gc6, P6 = balls(r6['full'], 5)
     b6 = 2*P6
     m1c, m2c, discc = five_numbers(DE_mat(z6, Gc6, b6), b6)
     say('      m1 = %s, m2 = %s' % (m1c.str(12, radius=True), m2c.str(12, radius=True)))
-    check('five-vortex unstable control: the discriminant m1^2 - 4 m2 is negative, so the test of section 3b '
-          '(a positive discriminant and u2 < 0) refuses it', bool(discc < 0), discc.str(10, radius=True))
+    check('five-vortex unstable control: the test of section 3b (stable5) refuses it, at its first condition: the '
+          'discriminant m1^2 - 4 m2 is negative', not stable5(m1c, m2c) and bool(discc < 0), discc.str(10, radius=True))
     uc = acb(m1c, (-discc).sqrt())/2          # the roots are uc and conj(uc)
     wc = uc.sqrt()
     check('five-vortex unstable control: the refusal is right: |Re sqrt(u)| > 1 for the roots u, conj(u), so the '
           'remaining exponents 1 +- sqrt(u), 1 +- conj(sqrt(u)) include two with negative real part and the reversed '
-          'expansion is unstable', bool(abs(wc.real) > 1), 'sqrt(u) = %s + i %s' % (wc.real.str(10, radius=True),
-                                                                              wc.imag.str(10, radius=True)))
+          'expansion is unstable (a negative discriminant alone would not show this)', bool(abs(wc.real) > 1),
+          'sqrt(u) = %s + i %s' % (wc.real.str(10, radius=True), wc.imag.str(10, radius=True)))
 c3 = ctl['three']
-fx3 = [fmpq(round(c3['G'][1]*1000), 1000), fmpq(round(c3['z'][1][0]*1000), 1000)]
-m3, r3 = certify(c3, ['G2', 'x2'], fx3)
+fx3 = [fmpq(-238, 125), fmpq(9, 10)]
+modc3, r3 = certify(c3, ['G2', 'x2'], fx3)
 check('three-vortex control: Krawczyk certifies a collapse with Gamma_2 = %s, x2 = %s' % tuple(fx3)
-      + ', unique within 1e-%s' % r3.get('rmax'), r3['ok'])
+      + ', unique in %s' % box(r3), r3['ok'])
 if r3['ok']:
     # P is the signed winding in this gauge (lam = 2P - i); this triangle turns the other way, so P < 0. The collapse
     # condition is Im lam = -1, exact in the gauge; what matters here is P != 0.
@@ -431,12 +528,17 @@ if r3['ok']:
     check('three-vortex control: every side condition holds on the enclosure, with P != 0 in place of P > 0 (P is '
           'signed in this gauge, and this triangle turns the other way)',
           not bad3 and not P3b.contains(0), 'P = %s' % P3b.str(10, radius=True))
-    z3, G3c, P3 = balls(r3['full'], 3, m3.names)
+    z3, G3c, P3 = balls(r3['full'], 3)
     M3 = DE_mat(z3, G3c, 2*P3)
     B3 = [[M3[i][j] - (1 if i == j else 0) for j in range(6)] for i in range(6)]
     t23 = tr_power(B3, 2)
     check('three-vortex control (positive): 2N - 6 = 0, and tr (DE - I)^2 = 4 - 2 b^2, the six forced exponents alone',
           (t23 - 4 + 8*P3*P3).contains(0), (t23 - 4 + 8*P3*P3).str(5, radius=True))
+    m13, m23, _ = five_numbers(M3, 2*P3)
+    p23 = m13*m13 - 2*m23
+    check('positive control of the recipe of section 3b on the three-vortex DE: m1 and p2 contain 0 (no remaining '
+          'pair, so tr (DE - I)^4 = 4 + 2 b^4 as well)', m13.contains(0) and p23.contains(0),
+          'm1 = %s, p2 = %s' % (m13.str(5, radius=True), p23.str(5, radius=True)))
 
 # ------------------------------------------------------------------------------------------------ 5. illustration
 say('\n5. Illustration in binary64 (not part of the proof)')
@@ -568,10 +670,13 @@ if r2['ok']:
     Gu = np.array([float(g.mid()) for g in Gc2])
     rows = run(zu, -Gu, 1e-8, 3, 1e3)
     say('      unstable control expanding, perturbed 1e-8: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows))
+    gex, mk = growth_exponents(rows), float((-k2).mid())
     say('      its local growth exponents d ln(dev)/d ln(size) where 1e-7 <= dev <= 1e-2: %s (the certified exponent is '
-        '-k = %s)' % (', '.join('%.2f' % e for e in growth_exponents(rows)), '%.3f' % float((-k2).mid())))
+        '-k = %s)' % (', '.join('%.2f' % e for e in gex), '%.3f' % mk))
     check('binary64: in the unstable control a 1e-8 perturbation grows by at least 100 while the size grows',
           max(r_[1] for r_ in rows) > 1e-6, kind='binary64')
+    check('binary64: in the unstable control every measured local growth exponent lies within 0.2 of the certified -k',
+          len(gex) > 0 and all(abs(e - mk) < 0.2 for e in gex), kind='binary64')
 if r6['ok']:
     zu6 = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z6])
     Gu6 = np.array([float(g.mid()) for g in Gc6])
@@ -584,6 +689,5 @@ nball = NCHK['ball'] + NCHK['exact'] + NCHK['regression']
 say('\n%d checks: %d in ball or exact arithmetic (%d of them in exact rational arithmetic, %d regression tests that hold '
     'for every configuration), %d in binary64; %d failed' % (nball + NCHK['binary64'], nball, NCHK['exact'],
                                                            NCHK['regression'], NCHK['binary64'], len(FAILED)))
-with open(os.path.join(DATA, 'verify-stable-expansion.txt'), 'w') as fh:
-    fh.write('\n'.join(OUT) + '\n')
+FINISHED.append(True)       # the report is written at exit by write_report
 sys.exit(1 if FAILED else 0)

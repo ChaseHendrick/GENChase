@@ -41,9 +41,10 @@ carry over to four or more vortices, given sufficiently good stability.
   the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1), for Theorem 3
   the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the
   family, two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the
-  stability test must refuse) and a positive three-vortex control, and direct integrations; 63 checks, 56 in ball or
-  exact arithmetic (3 of them regression tests of how the matrices are assembled) and 7 in binary64, seconds. It
-  exits with status 1 if any check fails.
+  stability test must refuse) and a positive three-vortex control, controls of the five-vortex trace recipe and of
+  the Krawczyk test (a box without the zero, where it must fail), and direct integrations; 70 checks, 62 in ball or
+  exact arithmetic (5 of them regression tests, identities that hold for every configuration) and 8 in binary64,
+  seconds. It exits with status 1 if any check fails.
 - `code/survey_expansions.py`: the random sample of Section 6 (numerical), about 10 minutes.
 
 ### Files
