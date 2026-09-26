@@ -158,48 +158,52 @@ def run(deg=12, gram=False, verbose=True, npts=7, contact=2):
     monos = [(a, b, c) for a in range(deg + 1) for b in range(deg + 1 - a) for c in range(deg + 1 - a - b)]
     idx = {m: i for i, m in enumerate(monos)}
     nm = len(monos)
-    cons_expr = [0] * nm
-    # F_k terms
-    Q = Qk(deg // 2)
-    Fvars = []
-    for k in range(0, deg // 2):
-        size = deg // 2 + 1 - k
-        if size <= 0:
-            break
-        F = cp.Variable((size, size), PSD=True)
-        Fvars.append(F)
+    import scipy.sparse as sp
+    lin_terms = []   # (sparse nm x s^2 matrix, PSD variable)
+
+    def add_block(entry_poly, size, var):
+        rows, cols, vals = [], [], []
         for i in range(size):
             for j in range(size):
-                Sij = sym(pmul(pmul({(i, 0, 0): Fr(1)}, {(0, j, 0): Fr(1)}), Q[k]))
-                Rij = pscale(Sij, 6)
-                for w in range(3):
-                    Rij = padd(Rij, pscale(subst_uu1(Sij, w), Fr(6, NPTS - 2)))
-                if k == 0:
-                    Rij = padd(Rij, pscale(ONE, Fr(6, (NPTS - 1) * (NPTS - 2))))
-                for m, c in Rij.items():
-                    cons_expr[idx[m]] = cons_expr[idx[m]] + float(c) * F[i, j]
-    # SOS terms
+                for m, c in entry_poly(i, j).items():
+                    rows.append(idx[m])
+                    cols.append(i * size + j)
+                    vals.append(float(c))
+        Tm = sp.csr_matrix((vals, (rows, cols)), shape=(nm, size * size))
+        lin_terms.append((Tm, var))
+
+    Q = Qk(deg // 2)
+    for k in range(0, deg // 2):
+        size = deg // 2 + 1 - k
+        F = cp.Variable((size, size), PSD=True)
+
+        def Rentry(i, j, k=k):
+            Sij = sym(pmul(pmul({(i, 0, 0): Fr(1)}, {(0, j, 0): Fr(1)}), Q[k]))
+            Rij = pscale(Sij, 6)
+            for w in range(3):
+                Rij = padd(Rij, pscale(subst_uu1(Sij, w), Fr(6, NPTS - 2)))
+            if k == 0:
+                Rij = padd(Rij, pscale(ONE, Fr(6, (NPTS - 1) * (NPTS - 2))))
+            return Rij
+        add_block(Rentry, size, F)
+
     def sos_block(mult, d):
         basis = [(a, b, c) for a in range(d + 1) for b in range(d + 1 - a) for c in range(d + 1 - a - b)]
         X = cp.Variable((len(basis), len(basis)), PSD=True)
-        for i, m1 in enumerate(basis):
-            for j, m2 in enumerate(basis):
-                prod = pmul({m1: Fr(1)}, {m2: Fr(1)})
-                prod = pmul(prod, mult)
-                for m, c in prod.items():
-                    cons_expr[idx[m]] = cons_expr[idx[m]] + float(c) * X[i, j]
+        add_block(lambda i, j: pmul(pmul({basis[i]: Fr(1)}, {basis[j]: Fr(1)}), mult), len(basis), X)
         return X
-    blocks = [sos_block(ONE, deg // 2)]
+    sos_block(ONE, deg // 2)
     for x in (U, V, T):
-        blocks.append(sos_block(padd(ONE, pmul(x, x), -1), (deg - 2) // 2))
+        sos_block(padd(ONE, pmul(x, x), -1), (deg - 2) // 2)
     if gram:
         g = padd(padd(padd(padd(ONE, pscale(pmul(pmul(U, V), T), 2)), pmul(U, U), -1), pmul(V, V), -1), pmul(T, T), -1)
-        blocks.append(sos_block(g, (deg - 3) // 2))
+        sos_block(g, (deg - 3) // 2)
     e = cp.Variable()
-    constraints = []
-    for m in monos:
-        lhs = L.get(m, 0.0) - (e / (NPTS * (NPTS - 1) / 2) if m == (0, 0, 0) else 0)
-        constraints.append(cons_expr[idx[m]] == lhs)
+    rhs = np.array([L.get(m, 0.0) for m in monos])
+    e_col = np.zeros(nm)
+    e_col[idx[(0, 0, 0)]] = 1.0 / (NPTS * (NPTS - 1) / 2)
+    expr = sum(Tm @ cp.vec(X, order="C") for Tm, X in lin_terms) + e_col * e
+    constraints = [expr == rhs]
     prob = cp.Problem(cp.Maximize(e), constraints)
     for solver in ("CLARABEL", "SCS"):
         try:
