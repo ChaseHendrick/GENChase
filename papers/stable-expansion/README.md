@@ -6,7 +6,7 @@
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the draft (PDF, 18 pages)](paper/stable-expansion.pdf)**
+**[Read the draft (PDF, 19 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
@@ -44,9 +44,8 @@ in seventeen reverses into a linearly stable expansion.
   field, and two slips of his arXiv version are corrected there.
 - **Numerical:** the direct integrations and the random sample of Section 6.
 - **Before this draft becomes a preprint:** an adversarial second reading of Lemma 1 and Theorems 1 and 2 with
-  their certificates; a source that can be checked, or a proof, for the conservation of the pseudo-energy that the
-  appendix uses; and a comparison with the published CMP version of Zbarsky's paper (the proof cites the equation
-  numbers of arXiv:1912.10862v2).
+  their certificates; and a comparison with the published CMP version of Zbarsky's paper (the proof cites the
+  equation numbers of arXiv:1912.10862v2).
 
 ## Contents
 

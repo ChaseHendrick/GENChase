@@ -223,7 +223,7 @@ Differentiating the identity $\nabla H(\zeta)\cdot E(\zeta) = 0$, which expresse
 
 \section{Vortex patches}\label{sec:patches}
 
-We now replace the point vortices by patches of vorticity. The Euler equations $\partial_t\omega + u\cdot\nabla\omega = 0$, $u = K*\omega$, $K(x) = x^\perp/(2\pi|x|^2)$, move point vortices by \eqref{eq:bs}, and have a unique global weak solution for bounded, compactly supported initial vorticity \cite{yudovich1963}; a solution $\omega(t) = \sum_j\omega_j(t)$ is the sum of the parts transported from the initial pieces $\omega_j$. Let $\zeta^*$, $b^*$ and $\Gamma$ be as in Section~\ref{sec:nonlinear}, and put $Y = \zeta^*/\sqrt\pi$. With the origin of time moved to the point of emergence, $\rho^2 = t/\pi$, the expansion of Corollary~\ref{cor:physical} is $x^*(t) = \sqrt t\,e^{-i(b^*/2)\ln(t/\pi)}Y$, a motion of point vortices with circulations $-\Gamma$. Let $\mathcal V = \{z \in \C^N: \sum_j\Gamma_jz_j = 0\}$, which contains $Y$ and $iY$, and let $S_Y = \{z \in \mathcal V: \langle Y, z\rangle = |Y|^2\}$ with $\langle z, w\rangle = \sum_j\overline{z_j}w_j$, a real affine slice of dimension $2N - 4$ through $Y$, transverse to rotations and dilations. Every $x \in \mathcal V$ with $\langle Y, x\rangle \ne 0$ is $x = e^{i\beta}\gamma z$ with unique $\beta \in \R/2\pi\mathbb Z$, $\gamma > 0$ and $z \in S_Y$, namely
+We now replace the point vortices by patches of vorticity. The Euler equations $\partial_t\omega + u\cdot\nabla\omega = 0$, $u = K*\omega$, $K(x) = x^\perp/(2\pi|x|^2)$, move point vortices by \eqref{eq:bs}, and have a unique global weak solution for bounded, compactly supported initial vorticity (\cite{yudovich1963}; for the whole plane \cite[Theorems~1.6 and~3.3]{cs2024}); a solution $\omega(t) = \sum_j\omega_j(t)$ is the sum of the parts transported from the initial pieces $\omega_j$. Let $\zeta^*$, $b^*$ and $\Gamma$ be as in Section~\ref{sec:nonlinear}, and put $Y = \zeta^*/\sqrt\pi$. With the origin of time moved to the point of emergence, $\rho^2 = t/\pi$, the expansion of Corollary~\ref{cor:physical} is $x^*(t) = \sqrt t\,e^{-i(b^*/2)\ln(t/\pi)}Y$, a motion of point vortices with circulations $-\Gamma$. Let $\mathcal V = \{z \in \C^N: \sum_j\Gamma_jz_j = 0\}$, which contains $Y$ and $iY$, and let $S_Y = \{z \in \mathcal V: \langle Y, z\rangle = |Y|^2\}$ with $\langle z, w\rangle = \sum_j\overline{z_j}w_j$, a real affine slice of dimension $2N - 4$ through $Y$, transverse to rotations and dilations. Every $x \in \mathcal V$ with $\langle Y, x\rangle \ne 0$ is $x = e^{i\beta}\gamma z$ with unique $\beta \in \R/2\pi\mathbb Z$, $\gamma > 0$ and $z \in S_Y$, namely
 \begin{equation}\label{eq:slice}
   e^{i\beta}\gamma = \langle Y, x\rangle/|Y|^2,\qquad z = |Y|^2x/\langle Y, x\rangle,
 \end{equation}
@@ -313,7 +313,7 @@ Put $\Omega_j = \int\omega_j = -\Gamma_j \ne 0$ and $m_j = \int|\omega_j| = |\Om
 (B5) $\operatorname{supp}\omega_j \subseteq B(\bar x_j, \varepsilon t^{1/4+\varepsilon})$.
 Below, $C$ denotes constants that depend only on $Y$, $\Gamma$, $\varepsilon$, $M$, $r_{\mathrm{in}}$ and $n$, possibly different at each occurrence, and never on $\chi$, $R$, $t_0$ or $T_*$; $C_n$ records a dependence on $n$ where it matters. All statements hold for $t_0 \le t \le T_*$ and $t_0 \ge T$, with $T$ large enough, chosen last.
 
-The solution is Yudovich's \cite{yudovich1963}: $u$ is bounded, log-Lipschitz in $x$ and continuous in $(t, x)$; its flow $X(t, a)$, the position at time $t$ of the particle that is at $a$ at time $t_0$, is for each $t$ a measure-preserving homeomorphism of $\R^2$, and it is $C^1$ in $t$ with $\partial_tX = u(t, X)$; and each $\omega_j(t)$ is $\omega_j(t_0)$ transported by $X$. For every $\phi \in C^1(\R\times\R^2)$
+The solution is Yudovich's (\cite{yudovich1963}; for the whole plane \cite[Theorems~1.6 and~3.3]{cs2024} and \cite[Remark~2.4]{akln2015}): $u$ is bounded, log-Lipschitz in $x$ and continuous in $(t, x)$; its flow $X(t, a)$, the position at time $t$ of the particle that is at $a$ at time $t_0$, is for each $t$ a measure-preserving homeomorphism of $\R^2$, and it is $C^1$ in $t$ with $\partial_tX = u(t, X)$; and each $\omega_j(t)$ is $\omega_j(t_0)$ transported by $X$. For every $\phi \in C^1(\R\times\R^2)$
 \begin{equation}\label{eq:transport}
   \frac{d}{dt}\int\phi(t, x)\,|\omega_j(t, x)|\,dx = \int\bigl(\partial_t\phi + u\cdot\nabla\phi\bigr)|\omega_j|\,dx,
 \end{equation}
@@ -369,12 +369,48 @@ On $S_1 = \{r_x < r_y/2\}$, $|x - y| \ge r_y/2$ and $|\Phi| \le r_x^{n-1}r_y(4r_
 
 \subsection{Concentration and renormalization}
 
+\begin{lemma}[Conservation of the pseudo-energy]\label{lem:energy}
+For every $t \ge t_0$ the integral
+\[
+  \mathcal E(t) = \iint\log|x - y|\,\omega(t, x)\,\omega(t, y)\,dx\,dy
+\]
+converges absolutely, and $\mathcal E(t) = \mathcal E(t_0)$.
+\end{lemma}
+
+\begin{proof}
+We use only the properties of the solution stated before \eqref{eq:transport}; the log-Lipschitz bound enters only through the existence of the flow. Fix $T > t_0$, write $\omega_0 = \omega(t_0)$, $L(z) = \log|z|$, so that $\nabla L(z) = z/|z|^2$, and $U = \sup|u|$, and choose $R \ge 1$ with $\operatorname{supp}\omega_0 \subseteq B(0, R - U(T - t_0))$. For $t \in [t_0, T]$, $\omega(t) = \omega_0\circ X(t, \cdot)^{-1}$ with $X(t, \cdot)$ a measure-preserving homeomorphism, so $\|\omega(t)\|_{L^1} = \|\omega_0\|_{L^1}$ and $\|\omega(t)\|_{L^\infty} = \|\omega_0\|_{L^\infty}$, and $\operatorname{supp}\omega(t) \subseteq X(t, \operatorname{supp}\omega_0) \subseteq B(0, R)$ because $|\partial_tX| \le U$. Splitting the integrals at $|x - y| = 1$ gives, for $x \in B(0, R)$ in the first bound and every $x$ in the second,
+\begin{equation}\label{eq:energybounds}
+  \int\bigl|L(x - y)\bigr||\omega(t, y)|\,dy \le \frac\pi2\|\omega_0\|_{L^\infty} + \log(2R)\|\omega_0\|_{L^1},\qquad
+  \int\frac{|\omega(t, y)|}{|x - y|}\,dy \le 2\pi\|\omega_0\|_{L^\infty} + \|\omega_0\|_{L^1}.
+\end{equation}
+So $\mathcal E(t)$ converges absolutely, and so does
+\[
+  D(t) = \iint\nabla L(x - y)\cdot\bigl(u(t, x) - u(t, y)\bigr)\,\omega(t, x)\,\omega(t, y)\,dx\,dy,
+\]
+whose integrand is at most $2U|x - y|^{-1}|\omega(t, x)||\omega(t, y)|$.
+
+In these two integrals change the variables $x = X(t, a)$ and $y = X(t, b)$, one at a time (Fubini's theorem). With $\lambda_{ab}(t) = L\bigl(X(t, a) - X(t, b)\bigr)$ and
+\[
+  F(t, a, b) = \nabla L\bigl(X(t, a) - X(t, b)\bigr)\cdot\bigl(u(t, X(t, a)) - u(t, X(t, b))\bigr),
+\]
+this gives $\mathcal E(t) = \iint\lambda_{ab}(t)\,\omega_0(a)\omega_0(b)\,da\,db$ and $D(t) = \iint F(t, a, b)\,\omega_0(a)\omega_0(b)\,da\,db$, and, by \eqref{eq:energybounds}, $\iint|F(t, a, b)||\omega_0(a)||\omega_0(b)|\,da\,db \le 2U\|\omega_0\|_{L^1}(2\pi\|\omega_0\|_{L^\infty} + \|\omega_0\|_{L^1})$ for every $t \in [t_0, T]$. For $a \ne b$, $X(t, a) \ne X(t, b)$ because $X(t, \cdot)$ is injective, so $\lambda_{ab}$ is $C^1$ on $[t_0, T]$ with $\lambda_{ab}' = F(\cdot, a, b)$, since $\partial_tX = u(t, X)$. As $u$ is continuous and so is $X$ (each $X(t, \cdot)$ is, and $|\partial_tX| \le U$), $F$ is continuous off the null set $\{a = b\}$, and by the bound just proved it is integrable on $[t_0, t]\times\R^2\times\R^2$ for the measure $ds\,|\omega_0(a)||\omega_0(b)|\,da\,db$. Fubini's theorem therefore gives
+\[
+  \mathcal E(t) - \mathcal E(t_0) = \iint\Bigl(\int_{t_0}^tF(s, a, b)\,ds\Bigr)\omega_0(a)\omega_0(b)\,da\,db = \int_{t_0}^tD(s)\,ds.
+\]
+
+It remains to show that $D(s) = 0$. Fix $s$ and write $\omega = \omega(s)$ and $u = u(s)$. The parts of $D(s)$ with $u(x)$ and with $u(y)$ converge absolutely by themselves, and exchanging the names of $x$ and $y$, with $\nabla L(y - x) = -\nabla L(x - y)$, turns $\iint\nabla L(x - y)\cdot u(y)\,\omega(x)\omega(y)\,dx\,dy$ into $-\iint\nabla L(x - y)\cdot u(x)\,\omega(x)\omega(y)\,dx\,dy$. Hence, by Fubini's theorem,
+\[
+  D(s) = 2\int\omega(x)\,u(x)\cdot w(x)\,dx,\qquad w(x) = \int\nabla L(x - y)\,\omega(y)\,dy,
+\]
+where the integral defining $w(x)$ converges absolutely by \eqref{eq:energybounds}. Since $K(z) = z^\perp/(2\pi|z|^2) = \nabla L(z)^\perp/2\pi$, $u(x) = (K*\omega)(x) = w(x)^\perp/2\pi$, which is orthogonal to $w(x)$. So $D(s) = 0$, and $\mathcal E(t) = \mathcal E(t_0)$ for $t \in [t_0, T]$; $T$ was arbitrary.
+\end{proof}
+
 \begin{lemma}[Concentration]\label{lem:concentration}
 There is a constant $C_E$ such that $\iint|\omega_i(x)||\omega_i(y)|\log^+|x - y|\,dx\,dy \le C_E$ on $[t_0, T_*]$ for every $i$. Hence for every $\chi \in (0, 1)$ there is $R = R(\chi) \ge 1$, depending on $\chi$ and $C$, such that at every $t$ each patch has a point $\tilde x_i(t)$ with $\int_{|x - \tilde x_i| > R}|\omega_i|\,dx \le \chi^4m_i$.
 \end{lemma}
 
 \begin{proof}
-The pseudo-energy $\mathcal E = \iint\log|x - y|\,\omega(x)\omega(y)\,dx\,dy$ is conserved for bounded compactly supported vorticity \cite{mp1994}. Write $\mathcal E = \sum_i\mathcal E_{ii} + \sum_{i\ne j}\mathcal E_{ij}$ with $\mathcal E_{ij} = \iint\log|x - y|\,\omega_i(x)\omega_j(y)$. For $i \ne j$, $x \in \operatorname{supp}\omega_i$ and $y \in \operatorname{supp}\omega_j$, by (B5) and \eqref{eq:geom} $\log|x - y| = \log|\bar x_i - \bar x_j| + O(t^{-1/4+\varepsilon})$, and by (B1) $\log|\bar x_i - \bar x_j| = \tfrac12\log t + \log|Y_i - Y_j| + O(\varepsilon)$. So $\sum_{i\ne j}\mathcal E_{ij} = \tfrac12\log t\sum_{i\ne j}\Omega_i\Omega_j + O(1) = O(1)$, because $\sum_{i\ne j}\Omega_i\Omega_j = 2\sum_{i<j}\Gamma_i\Gamma_j = 0$, uniformly in $t \in [t_0, T_*]$. At $t_0$ also $\mathcal E_{ii} = O(1)$, since the supports have radius at most $2r_{\mathrm{in}}$ and the negative part is bounded as below. By conservation, $\sum_i\mathcal E_{ii}(t) = O(1)$. Now $\mathcal E_{ii} = P_i - Q_i$ with $P_i = \iint|\omega_i||\omega_i|\log^+|x - y| \ge 0$ and, by H\"older's inequality in $y$ with exponents $2 + \varepsilon$ and $(2+\varepsilon)/(1+\varepsilon)$,
+By Lemma~\ref{lem:energy}, the pseudo-energy $\mathcal E = \iint\log|x - y|\,\omega(x)\omega(y)\,dx\,dy$ takes the same value at every $t \in [t_0, T_*]$. Write $\mathcal E = \sum_i\mathcal E_{ii} + \sum_{i\ne j}\mathcal E_{ij}$ with $\mathcal E_{ij} = \iint\log|x - y|\,\omega_i(x)\omega_j(y)$. For $i \ne j$, $x \in \operatorname{supp}\omega_i$ and $y \in \operatorname{supp}\omega_j$, by (B5) and \eqref{eq:geom} $\log|x - y| = \log|\bar x_i - \bar x_j| + O(t^{-1/4+\varepsilon})$, and by (B1) $\log|\bar x_i - \bar x_j| = \tfrac12\log t + \log|Y_i - Y_j| + O(\varepsilon)$. So $\sum_{i\ne j}\mathcal E_{ij} = \tfrac12\log t\sum_{i\ne j}\Omega_i\Omega_j + O(1) = O(1)$, because $\sum_{i\ne j}\Omega_i\Omega_j = 2\sum_{i<j}\Gamma_i\Gamma_j = 0$, uniformly in $t \in [t_0, T_*]$. At $t_0$ also $\mathcal E_{ii} = O(1)$, since the supports have radius at most $2r_{\mathrm{in}}$ and the negative part is bounded as below. By conservation, $\sum_i\mathcal E_{ii}(t) = O(1)$. Now $\mathcal E_{ii} = P_i - Q_i$ with $P_i = \iint|\omega_i||\omega_i|\log^+|x - y| \ge 0$ and, by H\"older's inequality in $y$ with exponents $2 + \varepsilon$ and $(2+\varepsilon)/(1+\varepsilon)$,
 \[
   0 \le Q_i = \iint|\omega_i(x)||\omega_i(y)|\log^-|x - y| \le m_i\|\omega_i\|_{L^{2+\varepsilon}}\bigl\|\log^-|\cdot|\bigr\|_{L^{(2+\varepsilon)/(1+\varepsilon)}(B(0,1))} \le C.
 \]
@@ -464,9 +500,13 @@ Here $t_0 \le t \le T_* \le 2t_0$. At $t_0$ the support of $\omega_i$ lies withi
 
 \begin{thebibliography}{15}
 
+\bibitem{akln2015} D. M. Ambrose, J. P. Kelliher, M. C. Lopes Filho and H. J. Nussenzveig Lopes, Serfati solutions to the 2D Euler equations on exterior domains, \emph{J. Differential Equations} \textbf{259} (2015) 4509--4560; arXiv:1401.2655.
+
 \bibitem{aref2010} H. Aref, Self-similar motion of three point vortices, \emph{Phys. Fluids} \textbf{22} (2010) 057104.
 
 \bibitem{aulbach1984} B. Aulbach, \emph{Continuous and Discrete Dynamics near Manifolds of Equilibria}, Lecture Notes in Mathematics \textbf{1058}, Springer, Berlin (1984); doi:10.1007/BFb0071569.
+
+\bibitem{cs2024} G. Crippa and G. Stefani, An elementary proof of existence and uniqueness for the Euler flow in localized Yudovich spaces, \emph{Calc. Var. Partial Differential Equations} \textbf{63} (2024), no.~7, Paper No.~168; arXiv:2110.15648.
 
 \bibitem{dpmp2024} J. D\'avila, M. del Pino, M. Musso and S. Parmeshwar, An expanding self-similar vortex configuration for the 2D Euler equations, preprint, arXiv:2410.18220 (2024).
 
@@ -485,8 +525,6 @@ Here $t_0 \le t \le T_* \le 2t_0$. At $t_0$ the support of $\omega_i$ lies withi
 \bibitem{leu2026} X. Leoncini, P. El Kettani and E. Ugalde, Intrinsic dynamical shadowing of point vortices and finite time singularities, preprint, arXiv:2609.25989 (2026).
 
 \bibitem{lk2015} M. Lewkowicz and H. Kudela, Collapse of $n$ vortices, preprint, arXiv:1512.05116 (2015).
-
-\bibitem{mp1994} C. Marchioro and M. Pulvirenti, \emph{Mathematical Theory of Incompressible Nonviscous Fluids}, Appl. Math. Sci. \textbf{96}, Springer, New York, 1994.
 
 \bibitem{ns1979} E. A. Novikov and Yu. B. Sedov, Vortex collapse, \emph{Sov. Phys. JETP} \textbf{50} (1979) 297--301 [\emph{Zh. Eksp. Teor. Fiz.} \textbf{77} (1979) 588--597].
 
