@@ -28,10 +28,11 @@ GENChase: the companion repository does not carry `notes/`.
   long-time and short-time estimates) write out, for any number of patches, every estimate of Zbarsky's argument, with the other patches acting
   on a patch only through the strain of their field; two slips of his arXiv version are corrected there.
 - [x] **2. Rigorous computation.** Theorems 1 and 2 by the Krawczyk test in ball arithmetic (FLINT/Arb) with enclosures
-  of traces of powers of the Jacobian (`verify_stable_expansion.py`, 63 checks, 56 of them in ball or exact
+  of traces of powers of the Jacobian (`verify_stable_expansion.py`, 70 checks, 62 of them in ball or exact
   arithmetic, including two negative controls, an unstable four-vortex collapse and an unstable five-vortex collapse
-  that the stability test must refuse, and a positive three-vortex control); the exact vanishing of the sum of pairwise products of the circulations in
-  rational arithmetic.
+  that the stability test must refuse, a Krawczyk test on a box without the zero that must fail, a positive
+  three-vortex control, and positive controls of the five-vortex trace recipe on the four- and three-vortex
+  matrices); the exact vanishing of the sum of pairwise products of the circulations in rational arithmetic.
 - [x] **3. Every claim labelled.** The direct integrations and the random sample of Section 6 are labelled numerical
   in the paper and the README.
 - [x] **4. Sources read.** Zbarsky, arXiv:1912.10862v2, read in full for the appendix (the epsilon-dependent
@@ -45,11 +46,26 @@ GENChase: the companion repository does not carry `notes/`.
   the owner's decision of 2026-09-25 its full text is not read).
 - [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
-- [ ] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
+- [x] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
   first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). A third independent reading of Section 5 and
   Appendix A (2026-09-26), briefed with the paper and Zbarsky's arXiv version and told to find errors, found no gap;
   its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
   should-fix items (the C^1 regularity of the centres, the bootstrap at T_*, the count of turns, the chi conditions,
-  notation) are fixed. Still to be read and recorded: Lemma 1 and Theorems 1 and 2 with their certificates.
-- [x] **7. Reproducible.** `verify_stable_expansion.py` (63 checks) and `survey_expansions.py`; `paper-check` passes;
+  notation) are fixed. Lemma 1 and Theorems 1 and 2 with their certificates (2026-09-26): an independent reading,
+  briefed only with the paper and its programs and told to find errors, re-derived the steps and reran the programs;
+  verdict sound with fixes. Must-fix: the exact values Gamma_4 = -4/5 and Gamma_5 = 47/35 rested on enclosures
+  containing them (now proved exactly: at every zero the sum of pairwise products of the circulations vanishes, from
+  the gauge equation with factor 2P - i), and the proof did not say what the Krawczyk test certifies (now: the
+  unknowns, the maximum-norm boxes with uniqueness radii 1e-4 and 1e-5, and the tight enclosures on which every later
+  quantity is evaluated). Should-fix items applied: the eigenvalue -2 is a single 2x2 Jordan block; the five-vortex
+  trace recipe written out; checks that hold for every configuration labelled regression tests; notation; the
+  controls described exactly, with a new five-vortex negative control; the abstract's sample counts; program hygiene.
+  The fixes were then checked by three further independent readings (mathematics, program, text), each told to refute
+  them: no must-fix; the mathematics re-derived in SymPy and 80-digit mpmath, the Krawczyk radii reproduced by separate
+  code, the program's output byte-identical on rerun. Their should-fix items are applied: notation in the pairing
+  argument and the summation index, the signed P, the side conditions listed in full, the controls' wording, b'(0)
+  cited where it is proved, and three program controls that mutation tests showed were missing (a positive control of
+  the five-vortex recipe, one shared stable5 test that the negative control runs, and a Krawczyk run that must fail,
+  with the radii asserted); 70 checks. The owner signed off on this record on 2026-09-26.
+- [x] **7. Reproducible.** `verify_stable_expansion.py` (70 checks) and `survey_expansions.py`; `paper-check` passes;
   20 pages.
