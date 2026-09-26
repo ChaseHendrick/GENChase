@@ -6,7 +6,7 @@ the equations are the multiplier-free H_j of bnbA.c.
 
 Usage: python3 classifyA.py N A file [file ...] [--json=out.json]
 """
-import sys, json, itertools, math
+import sys, os, json, itertools, math
 from flint import arb, acb, arb_mat, ctx
 import numpy as np
 
@@ -176,6 +176,27 @@ def refine(v):
     return v
 
 
+
+def check_complete(files):
+    """every worker 0..n-1 of one run must have finished (STAT line) with no
+    undecided box; otherwise part of the domain was not searched"""
+    import re
+    seen = {}
+    nw = None
+    for fn in files:
+        for line in open(fn):
+            if line.startswith('STAT'):
+                d = dict(t.split('=', 1) for t in line.split()[1:] if '=' in t)
+                if nw is None:
+                    nw = int(d['nworkers'])
+                assert int(d['nworkers']) == nw, 'files from different runs'
+                assert int(d['unres']) == 0, 'undecided boxes'
+                seen[int(d['worker'])] = True
+    assert nw is not None and sorted(seen) == list(range(nw)), f'incomplete run: workers {sorted(seen)} of {nw}'
+    return nw
+
+if os.environ.get("EXPLORATORY_SKIP_COMPLETENESS") != "1":  # never set for the proof runs
+    check_complete(files)
 boxes = []
 for fn in files:
     for line in open(fn):

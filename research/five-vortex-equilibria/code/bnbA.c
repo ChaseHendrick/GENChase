@@ -466,7 +466,7 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IOLBF, 0);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) vol_total += bvol(&q[i]);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) run(q[i]);
-  printf("STAT A=[%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cert=%ld unres=%ld\n",
+  printf("STAT nworkers=%d nsplit=%d A=[%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cert=%ld unres=%ld\n", nworkers, nsplit,
          AI.lo, AI.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cert, st_unres);
   return 0;
 }

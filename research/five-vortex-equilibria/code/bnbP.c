@@ -211,6 +211,41 @@ static void evalE(const box *b, iv E[], iv J[][MAXD]) {
   }
 }
 
+/* dE/dA at the z-point of box m over the A-interval AI:
+ * d/dA d^{-A/2} = -(1/2) ln d d^{-A/2},  d/dA d^{1-A/2} = -(1/2) ln d d^{1-A/2},
+ * dH_j/dA = I sum_k w_jk dp_jk/dA - (dU'/dA) z_j. */
+static void evalEA(const box *b, iv dE[]) {
+  tables t; build(b, &t);
+  iv lnd[MAXN][MAXN];
+  for (int j = 0; j < N; j++) for (int k = j + 1; k < N; k++) lnd[j][k] = lnd[k][j] = iv_scale(iv_log(t.d[j][k]), -0.5);
+  iv dU = ivp(0.0);
+  for (int j = 0; j < N; j++) for (int k = j + 1; k < N; k++) dU = iv_add(dU, iv_mul(t.u[j][k], lnd[j][k]));
+  int r = 0;
+  for (int j = 1; j < N - 1; j++) {
+    civ s = czero();
+    for (int k = 0; k < N; k++) if (k != j) {
+      iv f = iv_mul(t.p[j][k], lnd[j][k]);
+      civ g = {iv_mul(t.w[j][k].re, f), iv_mul(t.w[j][k].im, f)};
+      s = cadd(s, g);
+    }
+    dE[r++] = iv_sub(iv_mul(t.I, s.re), iv_mul(dU, t.z[j].re));
+    dE[r++] = iv_sub(iv_mul(t.I, s.im), iv_mul(dU, t.z[j].im));
+  }
+}
+/* E at the z-point of m over the A-interval AI, in mean-value form in A */
+static void evalE_mid(const box *m, iv Em[]) {
+  iv save = AI; double am = iv_mid(AI);
+  if (iv_wid(AI) == 0) { evalE(m, Em, NULL); return; }
+  AI = ivp(am); iv E0[MAXD]; evalE(m, E0, NULL);
+  AI = save; iv dA[MAXD]; evalEA(m, dA);
+  iv direct[MAXD]; evalE(m, direct, NULL);
+  for (int q = 0; q < D; q++) {
+    iv mv = iv_add(E0[q], iv_mul(dA[q], iv_sub(AI, ivp(am))));
+    /* both enclose the range; keep the intersection */
+    Em[q] = ivr(fmax(mv.lo, direct[q].lo), fmin(mv.hi, direct[q].hi));
+  }
+}
+
 /* all set partitions into blocks of size >= 2 (encoded as block masks) */
 static int nparts; static int parts[256][MAXN]; static int partn[256];
 static void gen_parts(int used, int *cur, int nc) {
@@ -331,7 +366,7 @@ static int krawczyk(const box *X, box *K) {
   box m; double mv[MAXD]; m.a = X->a;
   for (int i = 0; i < D; i++) { mv[i] = iv_mid(X->x[i]); m.x[i] = ivp(mv[i]); }
   if (!boxpos(&m)) return 0;
-  iv Em[MAXD]; evalE(&m, Em, NULL);
+  iv Em[MAXD]; evalE_mid(&m, Em);
   double Jm[MAXD][MAXD], C[MAXD][MAXD];
   for (int i = 0; i < D; i++) for (int j = 0; j < D; j++) Jm[i][j] = iv_mid(J[i][j]);
   if (!finv(Jm, C)) return 0;
@@ -360,9 +395,25 @@ static double maxwid(const box *b, int *arg) {
   return w;
 }
 static int split_hint;
+/* recently certified boxes: a box inside one of them (z and A) holds no
+ * solution outside that certified box, so it needs no further work */
+#define NCACHE 256
+static box cache[NCACHE]; static int ncache, cpos;
+static long st_cached;
+static int in_cache(const box *b) {
+  for (int c = 0; c < ncache; c++) {
+    const box *x = &cache[c];
+    if (!(b->a.lo >= x->a.lo && b->a.hi <= x->a.hi)) continue;
+    int ok = 1;
+    for (int i = 0; i < D && ok; i++) if (!(b->x[i].lo >= x->x[i].lo && b->x[i].hi <= x->x[i].hi)) ok = 0;
+    if (ok) return 1;
+  }
+  return 0;
+}
 static int process(box *b) {
   st_boxes++; split_hint = -1;
   AI = b->a;
+  if (in_cache(b)) { st_cached++; return 1; }
   tables t; int ap = 0;
   int r = exclude_basic(b, &t, &ap);
   if (r == 1) { st_t0++; return 1; }
@@ -380,7 +431,7 @@ static int process(box *b) {
   box m; double mv[MAXD]; m.a = b->a;
   for (int i = 0; i < D; i++) { mv[i] = iv_mid(b->x[i]); m.x[i] = ivp(mv[i]); }
   if (!boxpos(&m)) return 0;
-  iv Em[MAXD]; evalE(&m, Em, NULL);
+  iv Em[MAXD]; evalE_mid(&m, Em);
   /* split A when the spread of E at the z-midpoint over the A-range
    * dominates the first-order spread over the z-box */
   { double wA = 0, wZ = 0;
@@ -424,7 +475,11 @@ static int process(box *b) {
       if (inside) {
         civ z[MAXN]; zfrom(&X2, z);
         iv g = iv_sub(ivp(1.0), z[N - 1].re);  /* z_N != 1: Re z_N < 1 */
-        if (g.lo > 0) { st_cert++; X2.a = b->a; print_box("CERT", &X2); return 1; }
+        if (g.lo > 0) {
+          st_cert++; X2.a = b->a; print_box("CERT", &X2);
+          cache[cpos] = X2; cpos = (cpos + 1) % NCACHE; if (ncache < NCACHE) ncache++;
+          return 1;
+        }
       }
     }
   }
@@ -493,7 +548,7 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IOLBF, 0);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) vol_total += bvol(&q[i]);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) run(q[i]);
-  printf("STAT joint A in [%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cert=%ld unres=%ld\n",
-         root.a.lo, root.a.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cert, st_unres);
+  printf("STAT nworkers=%d nsplit=%d joint A in [%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cached=%ld cert=%ld unres=%ld\n", nworkers, nsplit,
+         root.a.lo, root.a.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cached, st_cert, st_unres);
   return 0;
 }

@@ -1,0 +1,327 @@
+# Relative equilibria of five identical point vortices: a computer-assisted classification
+
+Status: research note, 2026-09-26. Not independently reviewed by a person. Everything called
+"proved" below rests on the interval computations in `code/` together with the stated
+mathematical lemmas; anything numerical is labelled as such.
+
+## 1. Result in one paragraph
+
+Up to translation, rotation, scaling and relabelling, five identical point vortices in the plane
+have exactly five relative equilibria: the regular pentagon, the square with a vortex at its
+centre, the collinear configuration at the zeros of the Hermite polynomial H_5, an isosceles
+trapezoid with the fifth vortex inside it on its axis, and an isosceles triangle with two interior
+vortices placed symmetrically about its axis. With labels, modulo rotation and scaling, there are
+24 + 30 + 60 + 120 + 120 = 354 of them. Each is a nondegenerate critical point of the Kirchhoff
+Hamiltonian on a level set of the angular impulse, modulo rotation. The Morse indices are 0, 0, 3,
+1 and 2, so the Morse polynomial is 54 + 120t + 120t^2 + 60t^3. The pentagon and the centred square
+are linearly stable (and, by Roberts 2013, nonlinearly stable). The other three are linearly
+unstable, with exactly 3, 1 and 2 pairs of real eigenvalues.
+
+The proof is an interval branch-and-bound with Krawczyk existence and uniqueness, in the spirit of
+Moczurad and Zgliczynski (2019), adapted to the logarithmic interaction, followed by an independent
+re-verification and classification in arb ball arithmetic. The search takes about 20 seconds on 4
+cores. A second, independent program recounts the same answer: it uses a different normalization,
+different equations, different collision tests and a Jacobian from automatic differentiation. At the
+Newtonian exponent A = 3 that second program also reproduces the five classes of Moczurad and
+Zgliczynski.
+
+What this is not: it is not the first proof that the list is complete. Faugere and Svartz (ISSAC
+2012) state that their exact Groebner-basis method computes all equilibria of N <= 7 identical
+vortices, but they print explicit real solutions only for N = 4 and N = 7 (section 2). What is
+added here:
+- the explicit, certified N = 5 list, with Morse indices and stability, by an independent method;
+- the answer to Kim's stability question (arXiv:2609.15090, Remark 1.5) for five vortices;
+- the vortex (A = 2) value of Hampton's Conjecture 3 (see section 8 for the exponent range).
+
+## 2. Prior art
+
+Searches were made on 2026-09-26 by a literature subagent and re-checked by the adversarial check
+(section 10). Downloaded texts were read in scratch; no PDF or copyrighted text is committed.
+
+### 2.1 Queries and sources
+
+| Source or query | Outcome |
+|---|---|
+| hal.science/hal-00777791/document (Faugere, Svartz, ISSAC 2012) | full text read |
+| HAL API `authFullName_s:"Jules Svartz"`; theses.hal.science/tel-01147484/document (Svartz, PhD, UPMC 2014) | full text read (the vortex chapter repeats the ISSAC paper) |
+| theses.fr API `q=Svartz` | NNT 2014PA066621 |
+| www-salsa.lip6.fr/~jcf/vortices/ (the data page Faugere-Svartz cite) | DNS failure |
+| www-polsys.lip6.fr/~jcf/ | connection reset |
+| arxiv.org/pdf/1812.07279 (Moczurad, Zgliczynski, CMDA 2019) | full text read |
+| arxiv.org/abs/2601.01165 (Moczurad, Zgliczynski 2026) | read; no mention of vortices |
+| arxiv.org/pdf/1810.13011 (Hampton, CMDA 2019) | full text read |
+| backend.orbit.dtu.dk/ws/files/4793688/Aref.pdf (Aref, J. Math. Phys. 48 (2007) 065401) | full text read |
+| arxiv.org/abs/2609.15090 (Kim, v2, 19 Sep 2026) | full text read |
+| arxiv.org/pdf/1301.6194 (Roberts, SIADS 2013) | full text read |
+| arxiv.org/pdf/1709.01242 (Roberts, Morse theory and relative equilibria in the planar n-vortex problem) | full text read |
+| arxiv.org/pdf/2306.10870 (Cleary, Page 2023, cites Faugere-Svartz) | read |
+| O'Neil, Trans. AMS 302 (1987), AMS PDF | HTTP 403, not read |
+| Semantic Scholar citations of DOI 10.1145/2442829.2442856 and of arXiv:1812.07279 | loaded; no later vortex classification among the citing papers |
+| Web search (snippets only): `Aref "In all likelihood this is the complete list"`; `relative equilibria five identical point vortices complete classification computer-assisted proof`; `interval arithmetic Krawczyk relative equilibria point vortices`; `five identical point vortices rigorous 2020..2026`; `vortex crystals Aref Newton Stremler N=5`; `O'Neil 1987 Stationary configurations of point vortices` | nothing that classifies N = 5 rigorously besides Faugere-Svartz |
+
+### 2.2 What each source says (exact quotes)
+
+- **Aref 2007**, Sect. IV, p. 065401-15: "For N = 5 we have the collinear configuration (vortices at
+  the roots of H5), the centered square, and the regular pentagon. In all likelihood this is the
+  complete list but a proof has not been given (so far as I am aware)." For N = 6: "We believe this
+  is the complete list of relative equilibria for N = 6 but a rigorous proof is not available."
+  Aref's N = 5 list is incomplete: it misses the two classes (d) and (e) of Theorem 1.
+- **Faugere and Svartz 2012** (identical vortices, logarithmic potential, lambda = 1, the same
+  equation (1) as here).
+  - From the abstract: "when N = 5, it takes several days to compute the Groebner basis and the
+    number of solutions is 2060. By contrast, applying the new algorithm to the same problem gives
+    rise to a system of 17 solutions that can be solved in less than 0.1 sec. Moreover, we are able
+    to compute all equilibria when N [<=] 7".
+  - Sect. 1: "We are sure to find all the solutions, so we give a certificate for the previous
+    numerical solutions. For N >= 5, it is completely new." And: "Since we are using only exact
+    computations, our algorithms gives computational proofs of the solutions of the vortex problem."
+  - Sect. 5.4 describes two ways to remove spurious solutions: a numerical check, and a lex
+    elimination after which "we isolate the real roots of this polynomial Pℜ using certificated
+    methods". The paper does not say which route produced its counts.
+  - Explicit real solutions are printed for N = 4 (Proposition 5: three) and for N = 7 (Sect. 5.7:
+    "using all the symmetries the problem admits 12 solutions"; Figure 4). The only N = 5 numbers
+    are the complex solution counts 2060 and 17 quoted above. No N = 5 or N = 6 list or real count
+    was found in the paper or the thesis.
+  - Their data page is unreachable (see the table).
+  - Assessment: Faugere-Svartz claim an exact, computer-algebra proof covering N = 5 and N = 6, and
+    the result proved here is consistent with that claim. Their N = 5 list itself is not in print.
+- **Moczurad and Zgliczynski 2019**, Newtonian central configurations, equal masses, n = 5, 6, 7,
+  interval arithmetic and Krawczyk. There is no mention of vortices. On other potentials they say
+  only that "in principle we can treat also other potentials which cannot be reduced to polynomial
+  equations" (Sect. 1.1).
+  - For n = 5 their report reads "The number of undecided cubes: 0" and "Number of different cc = 5".
+    These are classes modulo translation, scaling, rotation, reflection and permutation.
+  - Their method uses the normalization lambda = 1, a priori bounds, cluster tests that exclude
+    collisions, and Krawczyk on boxes below a diameter "bias" of 10^-2. The programs here follow the
+    same plan; the collision tests and charts are different.
+- **Hampton 2019**, convention: "U = sum m_i m_k / r^{A-2}", "Newtonian gravity is A = 3", and the
+  case "A = 2 by using the logarithmic potential" as a "simplified model of fluid vortices".
+  - Conjecture 3 (quoted from the text): "There are unique values A5 in (6.755, 6.756) and Ac in
+    (7.5636, 7.5638) such that for 2 <= A < A5, the Morse polynomial of f on C5 is M(t) = 54 + 120t
+    + 120t^2 + 60t^3 = P(t) + (1 + t)(53 + 58t + 36t^2)".
+  - On the vortex case N = 7: "In the vortex case (A = 2) there appear to be exactly 12 central
+    configurations", citing Faugere-Svartz.
+- **Kim 2026**, arXiv:2609.15090, Remark 1.5, verbatim: "(Conjecture on five-vortex system). It is
+  natural to expect that the two configurations that Mayer found on five magnets are the only
+  stable configurations in the five-vortex system. [...] There may be other relative equilibria of
+  the five-vortex system such as collinear configurations, but they are expected to be unstable
+  saddle points."
+  - Kim does not define "stable" formally. He works variationally: minimizers of the Hamiltonian at
+    fixed impulse, against "saddle points". He does not cite Faugere-Svartz or Moczurad-Zgliczynski.
+- **Roberts 2013** (SIADS; arXiv:1301.6194). Theorem 3.2: "If Γj > 0 ∀j, then a relative
+  equilibrium z0 is linearly stable if and only if it is a nondegenerate minimum of H subject to the
+  constraint I = I0." Theorem 3.5: "Suppose Γi > 0 ∀i. Then any linearly stable relative equilibrium
+  is also nonlinearly stable."
+- **Cleary and Page 2023**, citing Faugere-Svartz: "at N = 7, where it has been rigorously
+  established that there are exactly 12 REQ".
+
+Conclusion of the search: a complete, rigorous N = 5 list is claimed implicitly by Faugere-Svartz
+(2012) but has not been published explicitly. Aref's printed list is incomplete. Hampton's
+Conjecture 3, which predicts the counts at A = 2, is numerical. Kim's Remark 1.5 is open in print.
+
+## 3. The theorem
+
+Setting. For vortices of circulations Gamma_k = 1 the motion is
+d conj(z_j)/dt = (1/(2 pi i)) sum_{k != j} 1/(z_j - z_k).
+A relative equilibrium is a solution that moves rigidly: z_j(t) - c = e^{i omega t}(z_j(0) - c).
+For identical positive vortices omega > 0 necessarily, so after a translation (c = 0) and a scaling
+(2 pi omega = 1) a relative equilibrium is exactly a solution with distinct z_j of
+
+    (1)  G_j(z) := sum_{k != j} 1/(z_j - z_k) - conj(z_j) = 0,   j = 1, ..., N.
+
+- Summing (1) over j gives sum z_j = 0.
+- Multiplying (1) by z_j and summing gives I := sum |z_j|^2 = N(N-1)/2.
+- A translating rigid motion is impossible because the total circulation is not zero.
+- Equation (1) is the same as the Faugere-Svartz and Aref normalization.
+
+Let H = -sum_{j<k} log|z_j - z_k| (Kirchhoff, up to a constant factor). The relative equilibria are
+the critical points of H on the level set {I = const}, modulo rotation. That is, they are the
+critical points of H on the 6-dimensional shape space C_5 of Hampton. The Morse index below is the
+index of H there.
+
+**Theorem 1 (N = 5).** Up to translation, rotation, scaling and relabelling, there are exactly five
+relative equilibria of five identical point vortices. Each is reflection symmetric, so the same five
+classes are obtained whether or not reflections are allowed. With labels, the numbers of relative
+equilibria modulo rotation and scaling, and the Morse indices, are as in the table.
+
+| class | description | labelled copies | rotation symmetry | Morse index | linear stability |
+|---|---|---|---|---|---|
+| (a) | regular pentagon | 24 | order 5 | 0 | stable |
+| (b) | square with a vortex at its centre | 30 | order 4 | 0 | stable |
+| (c) | collinear, positions 0, ±sqrt((5 ± sqrt 10)/2), the zeros of H_5 | 60 | order 2 | 3 | unstable, 3 real pairs |
+| (d) | isosceles trapezoid with the fifth vortex inside, on its axis | 120 | none | 1 | unstable, 1 real pair |
+| (e) | isosceles triangle with two interior vortices symmetric about its axis | 120 | none | 2 | unstable, 2 real pairs |
+
+- The total is 354.
+- Every one is nondegenerate as a critical point of H on C_5.
+- The Morse polynomial of H on C_5 is 54 + 120t + 120t^2 + 60t^3.
+- (a) and (b) are nonlinearly (Lyapunov) stable modulo rotation, by Roberts' Theorem 3.5.
+- The coordinates of (d) and (e) are given with 30 digits in `data/n5_describe.txt` and
+  `data/n5_classes.json`, normalized by (1). Each coordinate is enclosed to radius below 1e-73.
+
+**Corollary (Kim's Remark 1.5 for N = 5).** The regular pentagon and the centred square are the
+only stable relative equilibria of five identical vortices, whether stability means linear
+stability, nonlinear stability, or a local minimum of H at fixed impulse. Every other relative
+equilibrium has a real pair of eigenvalues.
+
+Consistency (not part of the proof): H is proper and bounded below on C_5. It tends to +infinity at
+collisions, and C_5 is compact modulo collisions once scale is fixed. So the Morse inequalities give
+sum (-1)^index = chi(C_5) = (1-2)(1-3)(1-4) = -6. The count is 24 + 30 - 60 - 120 + 120 = -6.
+
+## 4. The proof
+
+### 4.1 Chart and a priori bounds (lemma, by hand)
+
+Relabel so that vortex 1 has the largest modulus, and rotate so that z_1 = x_1 > 0. Then:
+- From sum z_j = 0 and I = 10, we get I/N <= x_1^2 <= I (N-1)/N, that is x_1 in [sqrt 2, 2 sqrt 2].
+  The upper bound holds because x_1^2 = |sum_{j>=2} z_j|^2 <= (N-1)(I - x_1^2).
+- |z_j| <= x_1 for every j.
+- z_N = -(z_1 + ... + z_{N-1}).
+- Unknowns: v = (x_1, Re z_2, Im z_2, ..., Re z_{N-1}, Im z_{N-1}), dimension 2N-3 = 7.
+
+A second relabelling of vortices 2..N orders the real parts, Re z_2 <= ... <= Re z_N. A reflection
+(z -> conj z maps solutions of (1) to solutions and preserves the chart) then gives Im z_2 >= 0.
+
+So every relative equilibrium has a representative in the compact box region R (the "sym" chart).
+The unlabelled classes are exactly the orbits of the solutions in R.
+
+### 4.2 Exclusion tests (each is a consequence of (1))
+
+- T0: outside the chart. Some |z_j| > x_1, or the ordering fails.
+- T1: sum |z_j|^2 != N(N-1)/2.
+- T2: G_j != 0 for some j whose distances to the others are bounded below. The code uses the exact
+  range of 1/w over a rectangle; see `cinv_tight` in `bnb.c`.
+- T3: cluster identities, for every S with 2 <= |S| <= N-1 separated from its complement:
+  - P_S = sum_{j in S} sum_{k notin S} 1/(z_j - z_k) - sum_{j in S} conj(z_j) = 0;
+  - |S| sum_{j in S} (z_j - c_S) G_j = |S|^2(|S|-1)/2 + sum_{j in S} w_j sum_{k notin S} 1/(z_j - z_k)
+    - sum_{j<k in S} |z_j - z_k|^2 = 0, with w_j = sum_{k in S}(z_j - z_k).
+  - In the second identity the singular terms inside S sum exactly to the constant. So it stays
+    bounded near a collision inside S, and at a collision it equals that nonzero constant.
+  - These tests remove a neighbourhood of every collision. No lower bound on the minimal distance is
+    needed. This is the vortex analogue of the Moczurad-Zgliczynski cluster tests.
+- T4: mean-value form E(X) in E(m) + J(X)(X - m), and Krawczyk exclusion K(X) cap X = empty.
+
+### 4.3 Existence and uniqueness
+
+Square system:
+E = (Re G_2, Im G_2, ..., Re G_{N-1}, Im G_{N-1}), Re G_1 (7 equations, 7 unknowns).
+
+On the chart:
+- sum_j G_j = 0 and Im sum_j z_j G_j = 0 hold identically.
+- If E = 0, then G_1 = -G_N and Im((x_1 - z_N) G_1) = 0, so G_1 = 0 whenever Re z_N < x_1.
+- Hence E = 0 implies (1) on every box where Re z_N < x_1, and the program checks this on each
+  certified box.
+
+A box is certified when the Krawczyk image of an inflated box lies in its interior. The box then
+holds exactly one zero of E, hence exactly one solution of (1), and every Jacobian in J(X) is
+nonsingular.
+
+### 4.4 Second stage in arb (`code/classify.py`)
+
+For every certified box, in 256-bit ball arithmetic:
+- repeat the Krawczyk test;
+- refine the solution by Newton's method and enclose it to radius 2^-200 by a second Krawczyk test
+  inside the box;
+- merge boxes that hold the same solution. A tight enclosure inside another box's uniqueness box
+  means the same solution; disjoint enclosures mean different solutions; anything else is an error.
+
+Relabelling and reflection classes, and each class's rotation and reflection symmetries:
+- A relabelling p, followed by a rotation, maps solution s onto solution t exactly when the image of
+  s's tight enclosure lies in t's uniqueness box. It certainly does not when the enclosures are
+  disjoint. Anything else is an error.
+- This decides symmetries exactly. In particular the order-5 and order-4 rotation symmetries of (a)
+  and (b) are exact.
+- The labelled count of a class is 5!/|rotation symmetry group|.
+- The exact pentagon, the exact centred square and the collinear configuration at the zeros of H_5
+  are each shown to lie in a uniqueness box. The zeros of H_5 are real and satisfy (1) by
+  Stieltjes' relation; they are enclosed by arb. So these three classes are exactly the classical
+  configurations.
+
+### 4.5 Morse index and stability
+
+Let W = sum_{j<k} log|z_j - z_k| - I/2 on R^10. At a solution, the Hessian of W has:
+- eigenvalue -1 on the translations;
+- eigenvalue -2 on the scaling direction z;
+- eigenvalue 0 on the rotation direction iz.
+
+Its restriction to the orthogonal complement T is minus the Hessian of H on C_5. So the Morse index
+of H equals the number of positive eigenvalues of Hess W.
+
+To count them, shift the rotation zero to -1 with a rank-one term, then certify the inertia by a
+congruence with a floating eigenbasis and Gershgorin discs (Sylvester's law of inertia). This works
+because the discs cannot meet 0, so nondegeneracy is proved too.
+
+Linearization in the rotating frame: L = J Hess W, with J = blockdiag([[0,1],[-1,0]]).
+- Index 0: T is L-invariant and Hess W is definite on T, so the spectrum on T is purely imaginary and
+  semisimple (linear stability).
+- Other indices: the characteristic polynomial of L, divided by the exact factor mu^2 (mu^2 + 1), is
+  a polynomial P(mu^2) of degree 3. Certified sign changes of P locate its three real roots. The
+  count of positive roots is the number of real eigenvalue pairs: 3, 1 and 2 for (c), (d) and (e).
+  This is Roberts' theorem ("the Morse index is equal to the number of pairs of real eigenvalues",
+  arXiv:1709.01242), confirmed directly.
+
+### 4.6 What the proof trusts
+
+The proof trusts the following:
+- IEEE 754 double arithmetic with directed rounding (x86-64 SSE, GCC with `-frounding-math`), for
+  + - * / and sqrt only.
+- python-flint 0.9.0 (arb/FLINT).
+- The hand-derived Jacobians, which are tested against automatic differentiation.
+- The lemmas above.
+
+Checks on that trust base (section 7):
+- the interval operations against exact rationals;
+- both C Jacobians and equations against arb automatic differentiation at random points.
+
+One pitfall, found and fixed:
+- glibc's printf and strtod honour the current (upward) rounding mode. Decimal output of a lower
+  bound was therefore rounded up by one unit in the last place.
+- All box output is now exact hexadecimal (`%a`), and all hex input is parsed exactly.
+- The arb stage re-proves every box anyway.
+
+## 5. Independent recount and the Newtonian check (`code/bnbA.c`, `code/classifyA.py`)
+
+bnbA solves the central configuration problem for U = sum r^{2-A} (Hampton's exponent; A = 2 is the
+vortex case). It shares no search code with bnb.c, only the interval header.
+
+How it differs from bnb.c:
+- Chart: max modulus z_1 = 1, with rotation and scale fixed and lambda eliminated. The unknowns are
+  z_2, ..., z_{N-1} in the unit disc.
+- Equations: the multiplier-free H_j = I sum_k (z_j - z_k)|z_j - z_k|^{-A} - U' z_j.
+- Collisions are excluded by a partition identity over disjoint clusters. It also works for A > 2,
+  where cluster sums blow up.
+- Jacobian: the arb stage (classifyA.py) gets it by forward-mode automatic differentiation.
+
+Results:
+- **A = 2, N = 5:** 100 certified boxes, 11 distinct chart solutions, 5 classes, 354 labelled.
+  Morse indices 0, 0, 3, 1, 2; Euler sum -6. This is the same answer as bnb.c
+  (`data/n5_A2_classify.log`).
+- **A = 3 (Newtonian), N = 5:** 5 classes, 354 labelled, Morse polynomial 54 + 120t + 120t^2 + 60t^3.
+  This agrees with Moczurad-Zgliczynski ("Number of different cc = 5") and with Hampton's polynomial
+  (`data/n5_A3_classify.log`).
+- **N = 3 (both programs, A = 2 and 3):** the equilateral triangle (2 labelled) and the collinear
+  configuration (3 labelled), Euler sum -1.
+
+## 6. Further results
+
+(filled in below as the runs complete)
+
+## 7. Negative controls and tests
+
+(filled in below)
+
+## 8. Hampton's exponent family
+
+(filled in below)
+
+## 9. N = 6
+
+(filled in below)
+
+## 10. Adversarial check
+
+(filled in below)
+
+## 11. Reproduce
+
+(filled in below)
