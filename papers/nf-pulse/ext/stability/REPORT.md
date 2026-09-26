@@ -7,14 +7,18 @@ in `papers/nf-pulse/` (itself **not independently reviewed**). Everything below 
 
 **Partly proved.**
 
-- **Spectral stability.** The spectral statement (Theorem S below) is proved by computer, and the proof is not
-  independently reviewed. It covers every pulse in an explicit class; that class is nonempty and contains a pulse
-  whose speed lies in a bracket of width 10^-58.
+- **Spectral stability.** Not proved yet (see the correction below). The steps of Theorem S that are certified by
+  computer are E (the essential spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R) and P (the
+  pulse class and its enclosure); the winding-number step W, on which Part 2 of the proof rests, was not completed.
 - **Nonlinear stability.** Not proved here. The step from spectral to nonlinear stability rests on a published
   theorem (Sandstede 2007), whose full text I could not obtain, so its hypotheses are unchecked. Section 7 lists
   what remains.
 
-__WINDING_STATUS__
+**Correction made when this folder was merged (2026-09-26).** The session that wrote this report ended before
+`winding.py` finished. No winding certificate is in `data/`, the placeholders for the winding status, its section and
+the numerical section were never filled, and the adversarial check below says "the winding number (W) is not
+established yet". Theorem S needs W (Part 2 of the proof outline), so spectral stability is **not proved**; the
+statements E, L and P are certified, and `run_all.sh` will report W only when a run of `winding.py` completes.
 
 ## 2. Setting and notation
 
@@ -194,13 +198,13 @@ R = [-1/20, 9/2] x [-38/5, 38/5].
 
 ### W. Winding number (rigorous: `winding.py`)
 
-__WINDING_SECTION__
+Not completed: see the correction in Section 1.
 
 ### Numerical (not rigorous: `pulse_hp.py`, `evans_num.py`, `spectrum_num.py`)
 
 The double-precision Evans function uses a high-precision pulse at the 60-digit speed.
 
-__NUMERICAL_SECTION__
+Not written: the session ended before this section was filled.
 
 ## 5. Exact statements
 

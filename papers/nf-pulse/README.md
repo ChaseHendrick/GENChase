@@ -56,7 +56,7 @@ they rest on the same lemmas as the base proof, whose written proofs are still t
 | [`ext/gain-12/`](ext/gain-12/REPORT.md) | The fast pulse at Pinto and Ermentrout's own firing rate, (1 + tanh(6(u - 1/4)))/2, at eps = 3/20, speed about 1.04754, rest a saddle-focus | proved by computer; an in-repository adversarial check |
 | [`ext/eps-range/`](ext/eps-range/REPORT.md) | The fast pulse for every eps in [0.08, 0.13693], in 383 certified subintervals with a speed window that moves with eps; [0.05, 0.2] not reached | proved by computer; an in-repository adversarial check |
 | [`ext/faye-model/`](ext/faye-model/REPORT.md) | A fast pulse in Faye's (2013) neural field with synaptic depression at eps = 1/100 (Faye's own value), 1/50 and 1/20 | proved by computer; an in-repository adversarial check |
-| [`ext/stability/`](ext/stability/REPORT.md) | Spectral stability of the fast pulse (a class of pulses with speed in a bracket of width 10^-58) | spectral part proved by computer; nonlinear stability not proved (it rests on Sandstede (2007), not read) |
+| [`ext/stability/`](ext/stability/REPORT.md) | Toward spectral stability of the fast pulse (a class of pulses with speed in a bracket of width 10^-58) | not proved: the essential spectrum, the exclusion of large eigenvalues and the pulse enclosure are certified, but the winding-number step was not completed; nonlinear stability would further rest on Sandstede (2007), not read |
 
 ## The model and the claim
 
