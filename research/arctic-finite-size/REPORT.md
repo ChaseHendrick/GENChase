@@ -10,7 +10,7 @@ review.
 
 ## Summary
 
-1. **Prior art.** No published source was found that states the n^(-2/3) constant of the expected frozen area, or
+1. **Prior article review.** No published source was found that states the n^(-2/3) constant of the expected frozen area, or
    that computes the expected frozen area exactly at finite n. The pointwise ingredients are published:
    - the Airy scale of the boundary along the whole curve;
    - the remark that the negative Tracy-Widom mean moves the boundary.
@@ -57,7 +57,7 @@ review.
 - **Axis shortfall and radius.** The Aztec axis radius and the lozenge sector radius are not linear in the frozen
   counts. They were not computed exactly here (section 5).
 
-## 1. Prior art
+## 1. Prior article review
 
 Searches ran on 2026-09-26, in parallel with the first steps of the derivation. Nothing was written up as a result
 until the search had come back empty. A subagent read the named papers in full from arXiv PDFs. The
