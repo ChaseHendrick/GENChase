@@ -460,12 +460,14 @@ for (const name of ['MODULE_SPEC.md']) {
     const scope = JSON.parse(fs.readFileSync(scopePath, 'utf8'));
     const records = JSON.parse(fs.readFileSync(recordsPath, 'utf8'));
     const unvalidated = records.filter(r => r.status === 'unvalidated').length;
+    const paused = scope.paused !== false;          // the owner can open the catalog (paused: false); the ceiling stays recorded
     if (!Number.isInteger(scope.catalogCeiling) || scope.catalogCeiling < 1) fail('validation/scope.json needs an integer catalogCeiling');
-    else if (mods.length > scope.catalogCeiling && unvalidated * 2 >= mods.length) {
+    else if (paused && mods.length > scope.catalogCeiling && unvalidated * 2 >= mods.length) {
       fail('The catalog is paused at ' + scope.catalogCeiling + ' techniques while ' + unvalidated + ' of ' + mods.length +
         ' are unvalidated (validation/scope.json). Validate existing tabs until fewer than half are unvalidated, or propose the new one as a replacement.');
     }
-    notes.push('scope: ' + unvalidated + ' of ' + mods.length + ' unvalidated; ' + (unvalidated * 2 >= mods.length ? 'catalog paused at ' + scope.catalogCeiling : 'catalog open'));
+    notes.push('scope: ' + unvalidated + ' of ' + mods.length + ' unvalidated; ' + (!paused ? 'catalog open by the owner\'s decision (validation/scope.json)'
+      : unvalidated * 2 >= mods.length ? 'catalog paused at ' + scope.catalogCeiling : 'catalog open'));
   }
 }
 

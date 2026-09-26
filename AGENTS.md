@@ -23,9 +23,10 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
 - It is a real simulation (PDE, lattice, growth, tiling, dynamical system) that can reprint from a seed.
 - It should share the existing seed / palette / print / witness shell.
 - Someone needs to verify the plate is computed, not a still or a loop.
-- The catalog is not paused. While unvalidated records are at least half of the catalog, it may not grow
-  past the ceiling in `validation/scope.json`, and `tools/lint.js` fails if it does. Validate existing tabs
-  to lift the pause, or propose the new one as a replacement.
+- The catalog is open. By the owner's decision of 2026-09-26, `validation/scope.json` sets `paused` to false, so
+  new tabs may be added while most records are unvalidated; each still starts unvalidated, with its own record in
+  `validation/techniques.json`. With `paused` set back to true, the catalog may not grow past the ceiling in that
+  file while unvalidated records are at least half of it, and `tools/lint.js` fails if it does.
 
 ## Do not
 

@@ -9,8 +9,9 @@
   bars 15-16  eight plates, one beat each (the lift)
   bars 17-18  end card
 
-usage: python3 tools/trailer/assemble.py <clips dir> <montage dir> <score.wav> <out.mp4> [poster.jpg]
-The clip and montage folders hold <id>/0000.jpg ... and meta.json as capture.js writes them.
+usage: python3 tools/trailer/assemble.py <clips dir> <montage dir> <score.wav> <out.mp4> [poster.jpg] [stills dir ...]
+The clip and montage folders hold <id>/0000.jpg ... and meta.json as capture.js writes them; a stills folder holds
+<id>.jpg single frames (capture.js probe). The end card shows every distinct plate at most once.
 """
 import sys, os, json, glob, subprocess, math
 from functools import lru_cache
@@ -33,11 +34,13 @@ BOLD = lambda s: F('NimbusSans-Bold.otf', s)
 MONO = lambda s: F('NimbusMonoPS-Regular.otf', s)
 
 REPO = 'github.com/ChaseHendrick/GENChase'
+# every clip is a live simulation (runningDefault in techniques.json), recorded while it visibly evolves
 MAIN = ['fluid', 'dendrite', 'excitable', 'physarum', 'cyclic', 'schrodinger',
-        'vegetation', 'cgl', 'aztec', 'knotlight', 'fractal', 'cortex']
+        'vegetation', 'cgl', 'ising', 'tonertu', 'skyrmion', 'maxwell']
 TAGS = ['130 scientific simulations', 'Every plate reprints from its seed',
         'Measured against theory, with error bars', 'Print-ready at 300 ppi. The images are yours.']
-MONTAGE = ['attractors', 'tilings', 'apollonian', 'holomorphic', 'hodgkin-huxley', 'lozenge', 'ising', 'kpz']
+MONTAGE = ['life', 'chirikov', 'film', 'xy', 'causticsea', 'turing', 'swarm', 'snowflake']
+INTRO = 'plasma'
 
 
 def techniques():
@@ -136,10 +139,14 @@ def background():
     return bg
 
 
-def main(clips_dir, montage_dir, wav, out, poster=None):
+# stills that read as blank or near-blank at tile size (a dark field, a lone dot): left off the end card
+SKIP_STILLS = {'caustics', 'faraday', 'bec', 'reaction', 'phyllotaxis', 'lichtenberg', 'cahn', 'liesegang', 'convection'}
+
+
+def main(clips_dir, montage_dir, wav, out, poster=None, *stills_dirs):
     T = techniques()
     BG_IMG = background()
-    clips = {i: Clip(os.path.join(clips_dir, i)) for i in MAIN + ['attractors'] if os.path.isdir(os.path.join(clips_dir, i))}
+    clips = {i: Clip(os.path.join(clips_dir, i)) for i in MAIN + [INTRO] if os.path.isdir(os.path.join(clips_dir, i))}
     mont = {}
     for i in MONTAGE:
         for dd in (montage_dir, clips_dir):
@@ -173,7 +180,7 @@ def main(clips_dir, montage_dir, wav, out, poster=None):
 
     def intro_frame(f):
         fr = Image.new('RGB', (W, H), (0, 0, 0))
-        c = clips.get('attractors') or mont.get('attractors')
+        c = clips.get(INTRO) or mont.get(INTRO)
         im = c.at(f / (2 * BAR), (980, 980), 1.0, 1.08)
         a = min(1.0, f / 60) * (1 - 0.55 * min(1.0, max(0.0, (f - BAR) / 20)))
         fr.paste(Image.blend(Image.new('RGB', im.size, (0, 0, 0)), im, a), ((W - im.width) // 2, (H - im.height) // 2))
@@ -211,24 +218,44 @@ def main(clips_dir, montage_dir, wav, out, poster=None):
 
     tiles = None
 
+    def end_tiles():
+        """one tile per distinct plate: the clips, the montage, then any stills, never a plate twice."""
+        seen, out = set(), []
+        for i in main_ids + MONTAGE + [INTRO]:
+            c = clips.get(i) or mont.get(i)
+            if c and i not in seen:
+                seen.add(i)
+                out.append(c.frame(len(c.files) - 1, (220, 220), 1.0))
+        for d in stills_dirs:
+            for f in sorted(glob.glob(os.path.join(d, '*.jpg'))):
+                i = os.path.basename(f)[:-4]
+                if i in seen or i in SKIP_STILLS:
+                    continue
+                seen.add(i)
+                im = Image.open(f).convert('RGB')
+                im.thumbnail((220, 220))
+                out.append(im)
+        return out
+
     def end_frame(f):
         nonlocal tiles
         g = f - 16 * BAR
         if tiles is None:
-            ids = main_ids + MONTAGE
-            tiles = []
-            for i in ids:
-                c = clips.get(i) or mont.get(i)
-                tiles.append(c.frame(len(c.files) - 1, (240, 240), 1.0))
+            tiles = end_tiles()
         fr = Image.new('RGB', (W, H), BG)
-        cols, size, gap = 10, 180, 12
-        rows = 6
+        cols = 8
+        rows = min(5, len(tiles) // cols)                 # whole rows only, so no plate repeats
+        size, gap = 180, 14
         ox = (W - cols * (size + gap) + gap) // 2
         oy = (H - rows * (size + gap) + gap) // 2
-        for r in range(rows):
-            for cc in range(cols):
-                t_ = tiles[(r * cols + cc * 7) % len(tiles)].resize((size, size))
-                fr.paste(t_, (ox + cc * (size + gap), oy + r * (size + gap)))
+        for k in range(rows * cols):
+            r, cc = divmod(k, cols)
+            im = tiles[k]
+            t_ = Image.new('RGB', (size, size), BG)
+            sm = im.copy()
+            sm.thumbnail((size, size))
+            t_.paste(sm, ((size - sm.width) // 2, (size - sm.height) // 2))
+            fr.paste(t_, (ox + cc * (size + gap), oy + r * (size + gap)))
         fr = Image.blend(fr, Image.new('RGB', (W, H), BG), 0.78)
         lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(lay)
@@ -285,4 +312,4 @@ if __name__ == '__main__':
     a = sys.argv[1:]
     if len(a) < 4:
         raise SystemExit(__doc__)
-    main(*a[:5])
+    main(*a)

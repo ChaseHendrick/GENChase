@@ -244,7 +244,8 @@ impossible to miss on the tab itself, if it is not already.
 - Every tab in the strip carries a status glyph, the stage's science-report button names the status, and the
   module browser's evidence filter works without loading the inventory.
 - `validation/scope.json` sets a ceiling of 130; `tools/lint.js` fails a larger catalog while at least half of
-  it is unvalidated.
+  it is unvalidated. By the owner's decision of 2026-09-26 the pause is off (`paused: false`); the ceiling stays
+  recorded and returns with `paused: true`.
 
 Still open from these sections: seed ensembles run from the tools for the tabs whose error bar is pending,
 Wolff cluster updates for near-critical measurement runs, and `exportData()` for the remaining field and
