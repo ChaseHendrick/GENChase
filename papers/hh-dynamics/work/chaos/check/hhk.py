@@ -248,3 +248,20 @@ def newton_fp(g, J, El=EL, it=12, tol=1e-15, **kw):
             break
     x, info, M = P(g, J, El, var=True, **kw)
     return g, np.abs(x - g).max(), info, M
+
+
+@nb.njit(parallel=True, cache=True)
+def _batch(G, J, El, rtol, atol, hmax, tmax):
+    N = G.shape[0]
+    X = np.empty((N, 3)); info = np.empty((N, 5))
+    for k in nb.prange(N):
+        y0 = np.empty(4); y0[0] = USEC; y0[1:4] = G[k]
+        y, t, umax, fu, gap, st = ret(y0, J, El, rtol, atol, hmax, tmax, 1)
+        X[k] = y[1:4]
+        info[k, 0] = t; info[k, 1] = umax; info[k, 2] = fu; info[k, 3] = gap; info[k, 4] = st
+    return X, info
+
+
+def Pbatch(G, J, El=EL, rtol=1e-13, atol=1e-15, hmax=0.25, tmax=200.0):
+    """Vectorised return map. info columns: t, umax, du/dt at arrival, min |u - 4.5| at interior extrema, status."""
+    return _batch(np.ascontiguousarray(G, dtype=float), J, El, rtol, atol, hmax, tmax)

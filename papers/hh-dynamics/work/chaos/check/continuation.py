@@ -31,15 +31,21 @@ def tangent(K, tprev):
     return t
 
 
-X = np.r_[A, Js]
+import sys
+RESTART = len(sys.argv) > 1
+if RESTART:
+    q = json.load(open('continuation.json'))[-1]
+    X = np.r_[q['g'], q['J']]
+else:
+    X = np.r_[A, Js]
 r, K, M, info = jacobian(X)
 t = tangent(K, None)
-if t[3] > 0:
-    t = -t   # start toward lower J
-ds = 2e-3
+if (t[3] > 0) != RESTART:
+    t = -t   # start toward lower J (or higher J on restart)
+ds = 2e-4
 pts = []
 Jmax_stop = None
-nfold = 0
+nfold = 1 if RESTART else 0
 steps = 0
 while steps < 3000:
     steps += 1
@@ -52,7 +58,7 @@ while steps < 3000:
         JJ = np.vstack([K, t])
         dY = np.linalg.solve(JJ, -G)
         Y += dY
-        if np.abs(dY).max() < 1e-11 and np.abs(r).max() < 1e-10:
+        if np.abs(dY).max() < 1e-10 * max(1.0, np.abs(M).max() / 30):
             ok = True
             break
     if not ok:
@@ -72,14 +78,14 @@ while steps < 3000:
         nfold += 1
         print('fold between', pts[-2]['J'], pts[-1]['J'], flush=True)
     X, t = Y, tn
-    ds = min(ds * (1.3 if it < 3 else 0.7), 4e-3)
-    if steps % 20 == 0:
+    ds = min(ds * (1.3 if it < 4 else 1.0), 2e-3)
+    if steps % 5 == 0:
         print(steps, Y[3], mu, info['t'], flush=True)
     if nfold >= 2 and len(pts) > 20 and pts[-1]['J'] < pts[-20]['J'] - 1e-3:
         break
     if nfold >= 2 and len(pts) > 5:
         # a few points past the second fold
-        if sum(1 for p in pts[-8:] if p['tJ'] < 0) >= 6:
+        if sum(1 for p in pts[-8:] if p['tJ'] < 0) >= 6 and pts[-1]['J'] > 7.9:
             break
-json.dump(pts, open('continuation.json', 'w'), indent=0)
+json.dump(pts, open('continuation2.json' if RESTART else 'continuation.json', 'w'), indent=0)
 print('done', len(pts))
