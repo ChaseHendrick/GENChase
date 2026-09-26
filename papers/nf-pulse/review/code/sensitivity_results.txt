@@ -1,0 +1,6 @@
+baseline  SENSITIVITY PASS [True, True, True]
+M01_no_lagrange_remainder  SENSITIVITY FAIL [False, False, True]
+M02a_picard_accept_unchecked  SENSITIVITY PASS [True, True, True]
+M02b_picard_F_at_X_not_W  SENSITIVITY PASS [True, True, True]
+M02c_picard_no_inflation_tiny_W  SENSITIVITY FAIL [False, False, True]
+M03a_Binv_transpose  SENSITIVITY PASS [True, True, True]
