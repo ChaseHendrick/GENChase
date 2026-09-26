@@ -11,7 +11,7 @@ derivative 0) and taking the d2 field; then v'' is in Q whenever -Y R + C Q is i
 
 usage: python3 certify3.py FAMILY m_lo m_hi n_boxes [min_width] [out.json]
 """
-import sys, json, time
+import sys, json, time, math
 import numpy as np
 from flint import arb, acb, ctx
 from tps import Space, Ring, TPS
@@ -165,7 +165,8 @@ def certify_box(fam, m0, h):
         J2 = muc[0] + muc[1] * (vstar[0] * vstar[0] + vstar[1] * vstar[1]) + muc[2] * (vstar[2] * vstar[2] + vstar[3] * vstar[3])
         if not (J2 > 0 or J2 < 0):
             raise Refused('angular impulse J0 != 0 not certified', {})
-        rec['J0'] = str((J2 / 2).best())
+        _y = (J2 / 2).best()
+        rec['J0'] = '[%r, %r]' % (math.nextafter(float(_y.lower()), -math.inf), math.nextafter(float(_y.upper()), math.inf))
         # exact symplectic preconditioner L (floats + symplectic Gram-Schmidt in arb)
         Hf, _ = Hred_tps(fam.G(m0), [float(x) for x in vm], Space(4, 2), RF)
         from bnf import float_diagonaliser, symplectic_gram_schmidt
@@ -177,7 +178,10 @@ def certify_box(fam, m0, h):
             if not d.contains(0):
                 raise Refused('gradient does not enclose 0: inconsistency', {})
         info = normal_form(H.part(2), H.part(3), H.part(4), kind='cf2')
-        b = lambda x: x.best()
+        def b(x):
+            # explicit outward-rounded bounds (arb's str() drops the sign when rad > |mid|)
+            y = x.best()
+            return '[%r, %r]' % (math.nextafter(float(y.lower()), -math.inf), math.nextafter(float(y.upper()), math.inf))
         rec.update(w1=str(b(info['w'][0])), w2=str(b(info['w'][1])), signs=info['signs'],
                    A=str(b(info['A'].real)), B=str(b(info['B'].real)), C=str(b(info['C'].real)),
                    D=str(b(info['D'])), ratio=str(b(info['w'][0] / info['w'][1])),
@@ -199,30 +203,46 @@ def certify_box(fam, m0, h):
     return rec
 
 
+def certify_interval(fam, lo, hi):
+    """Certify the closed interval [lo, hi] (floats, exact): m0 = rounded midpoint, h rounded
+    up so that [m0 - h, m0 + h] (exact) contains [lo, hi]."""
+    import math
+    from fractions import Fraction as Fr
+    m0 = (lo + hi) / 2
+    he = max(Fr(m0) - Fr(lo), Fr(hi) - Fr(m0))
+    h = float(he)
+    while Fr(h) < he:
+        h = math.nextafter(h, math.inf)
+    r = certify_box(fam, m0, h)
+    r['lo'], r['hi'], r['m0'], r['h'] = lo, hi, m0, h
+    return r
+
+
 def _job(args):
-    famname, m0, h = args
-    return certify_box(families.get(famname), m0, h)
+    famname, lo, hi = args
+    return certify_interval(families.get(famname), lo, hi)
 
 
 def run(famname, mlo, mhi, n, min_width=1e-9, procs=4, out=None, log=True):
     import multiprocessing as mp
-    edges = list(np.linspace(mlo, mhi, n + 1))
-    todo = [((edges[i] + edges[i + 1]) / 2, (edges[i + 1] - edges[i]) / 2) for i in range(n)]
+    edges = [float(x) for x in np.linspace(mlo, mhi, n + 1)]
+    edges[0], edges[-1] = mlo, mhi
+    todo = [(edges[i], edges[i + 1]) for i in range(n)]
     done = []
     with mp.Pool(procs) as pool:
         while todo:
-            res = pool.map(_job, [(famname, m0, h) for m0, h in todo], chunksize=4)
+            res = pool.map(_job, [(famname, a, b) for a, b in todo], chunksize=4)
             todo = []
             for r in res:
-                a, b = r['m']
+                a, b = r['lo'], r['hi']
                 if r['status'] == 'REFUSED' and (b - a) / 2 >= min_width:
-                    h = (b - a) / 4
-                    todo += [(a + h, h), (b - h, h)]
+                    c = (a + b) / 2
+                    todo += [(a, c), (c, b)]
                 else:
                     done.append(r)
             if log:
                 print('  pass: %d boxes done, %d to split' % (len(done), len(todo)), flush=True)
-    done.sort(key=lambda r: r['m'][0])
+    done.sort(key=lambda r: r['lo'])
     if out:
         json.dump(dict(family=famname, m=[mlo, mhi], prec=ctx.prec, boxes=done), open(out, 'w'), indent=0)
     return done
