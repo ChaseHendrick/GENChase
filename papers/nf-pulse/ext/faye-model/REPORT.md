@@ -1,0 +1,228 @@
+# A travelling pulse in Faye's neural field with synaptic depression: a computer-assisted proof at fixed eps
+
+Extension of `papers/nf-pulse/` (the Pinto-Ermentrout proof) to the second model. Work in progress, **not independently
+reviewed**; see "Check" below for the adversarial reading that was done.
+
+## Outcome
+
+__OUTCOME__
+
+## 1. The model, from the sources
+
+**Faye**, "Existence and stability of traveling pulses in a neural field equation with synaptic depression", SIAM J.
+Appl. Dyn. Syst. 12(4) (2013) 2032-2067 (author copy `SynDepTPulseRevisedBis.pdf`, dated September 5, 2013, from the
+author's page at the Institut de Mathematiques de Toulouse). Quoted from Sect. 2:
+
+- Model (2.1): "tau du(x,t)/dt = -u(x,t) + int_R J(x - y) q(y,t) S(u(y,t)) dy,  (1/eps) dq(x,t)/dt = 1 - q(x,t) - beta
+  q(x,t) S(u(x,t))", with "We assume units of time t to be 10ms each and we set tau = 1 (10ms)."
+- Firing rate (2.2): "S(u) = 1/(1 + e^(-lambda(u - kappa)))" "with threshold kappa and gain lambda".
+- Kernel (2.3): "We take the excitatory weight function J to be a normalized exponential [26], J(x) = (b/2) e^(-b|x|)",
+  "where b > 0 is the effective range of excitatory distribution."
+- Parameters. Sect. 3.2: "For the simplicity of this paper, we always illustrate our results in the case of lambda =
+  20, kappa = 0.22, b = 4.5 and beta = 5 which are similar to the values used in Kilpatrick & Bressloff [26]." The
+  captions of Figs. 1, 6, 7 and 8 use these values with "eps = 0.01"; the text introducing Fig. 6(b) says "for eps =
+  0.005" while the Fig. 6 caption says "eps = 0.01" (an inconsistency in the source, noted, not resolved here). Sect. 2:
+  "1/eps typically ranges from 20 to 80 and thus eps ~ 0.01 - 0.05 can be consider as a small parameter".
+
+So the earlier notes are **confirmed**: lambda = 20, kappa = 0.22, b = 4.5, beta = 5, eps = 0.01 (Faye's figures).
+
+**Hastings**, "Existence of travelling pulses in a neural model", arXiv:1503.04057v2 (16 Aug 2015; Proc. Roy. Soc.
+Edinburgh A 147 (2017)). His (1.1)-(1.3) are the same model with tau = 1, "J(x) = (b/2) e^(-b|x|)" and "S(u) = 1/(1 +
+e^(lambda(kappa - u)))"; footnote 3 gives "lambda = 20, kappa = 0.22, beta = 5, b = 4.5" ("the same parameter values as
+were chosen for illustration in [4]", i.e. Faye). His reference [4] reads "Siam J. of Dynamical Systems 10(2013),
+147-160"; the paper is in volume 12, pages 2032-2067 (SIAM, and Faye's page), so that reference is garbled.
+
+**What is already proved for this model.**
+
+- Faye, Theorem 3.1: "Suppose that (lambda, kappa, b, beta) in Pi. Then there exists eps_1 > 0 such that for all 0 <
+  eps < eps_1, there exists c(eps) = c* + O(eps) for which problem (2.1) has a traveling pulse solution of the form
+  (u(x+ct), q(x+ct)) with lim_{xi -> +-infinity} (u, q) = (u0, q0)." Pi (Definition 3.1) is the set where Hypotheses
+  2.1, 2.2 and 3.1 hold. Hypothesis 3.1: "the wavespeed selected by the front is strictly greater than the wavespeed
+  selected by the back. Hence, the jump back must occur along the center direction at the knee." Theorem 4.1 adds
+  spectral stability for 0 < eps < eps_2. No value of eps_1 is given, and Hypothesis 3.1 is not verified rigorously
+  for lambda = 20, kappa = 0.22 (Hastings: "This condition can only be verified by numerical integration of the fast
+  system.").
+- Hastings, Theorem 1: "If Conditions 1- 5 are satisfied, and eps is positive and sufficiently small, then there are
+  at least two positive values of c, say c^* > c_*, such that (2.1) has a non-constant solution p satisfying lim_{t ->
+  -infinity} p(t) = lim_{t -> infinity} p(t) = p0." It drops Faye's Hypothesis 3.1 and covers his S. Theorem 2 gives
+  the same conclusion at a given eps from hypotheses on one solution of the fast system (2.2) at c = c1 and one of (2.1)
+  at (eps, c1). Remark 2 and footnote 4: "For the parameter values used by Faye, a standard ode solver suggests that
+  (eps, c1) = (.005, .34) satisfies the conditions in Theorem 2. If the conjecture in Remark 1 is true then it appears
+  that (eps, c1) = (.05, .2) would work." Sect. 1: "We believe [...] that it is feasible to check existence rigorously
+  for particular positive values of eps > 0, using precise numerical analysis based on interval arithmetic, but we have
+  not carried out such a check." Sect. 4.5 ("Can the hypotheses of Theorem 2 be checked rigorously for a specific (eps,
+  c1)?") outlines that check: a high-order expansion of the unstable manifold in interval arithmetic, then a rigorous
+  ODE solver.
+- Faye and Scheel, arXiv:1311.6508v1: Theorem 1 is for the nonlocal FitzHugh-Nagumo equation (their (1.4)), with
+  linear recovery, "for every sufficiently small eps > 0", under (H1)-(H3); (H3) assumes a front and a back of equal
+  speed with the back at "0 < v = v* < v_max". They note it applies to neural fields with linear adaptation (their
+  (1.6)). It does not treat synaptic depression, and Hastings (Sect. 4.3) explains why the back at the knee falls outside
+  such hypotheses.
+
+So for Faye's parameter values, existence was known only for eps "sufficiently small", with no explicit bound (Faye:
+under an unverified hypothesis; Hastings: unconditionally). Hastings proposed a computer-assisted check at a fixed eps
+and did not carry it out. The result below is such a check, done by a different route from his Theorem 2: it does not
+verify his hypotheses, it closes the orbit with an isolating block at rest and a Wazewski-type argument in c, and it
+gives one pulse (the fast one), not two.
+
+## 2. The wave ODE and the rest state
+
+With xi = x + c t (c > 0: the pulse moves to the left), v = J * (q S(u)), w = v' and k = 1/c, Faye's (2.8) is
+
+    u' = k (v - u),   v' = w,   w' = b^2 (v - q S(u)),   q' = eps k (1 - q - beta q S(u)).
+
+It is exact: (b^2 - d^2/dxi^2) (b/2) e^(-b|xi|) = b^2 delta, and a bounded solution of b^2 v - v'' = b^2 q S(u) is
+unique (the homogeneous solutions e^(+-b xi) are unbounded). So a solution homoclinic to rest is exactly a travelling
+pulse of the field equation. The programs add Y = S(u) (Y' = lambda Y (1 - Y) u'), which makes the field polynomial; the
+surface Y = S(u) is invariant.
+
+**Rest (certified, `certify_rest.py`).** Equilibria have v = u, w = 0, q = 1/(1 + beta S(u)), u = q S(u), i.e.
+F(u) = u (1 + beta S(u)) - S(u) = 0 with u in (0, 1). F has exactly one zero in [0, 1] (2000 pieces, each with a
+certified sign or certified F' > 0), so x* = (u0, u0, 0, q0) is unique: u0 = 0.0151017095592381945561125429894...,
+q0 = 0.924491452203809027219437285053... (balls of radius below 1e-31). With s = S'(u0), q0 s = 0.29710041638... < 1
+(certified), which is Hastings's h'(u0) > 0.
+
+**Dimension count.** The characteristic polynomial of the linearisation (derived symbolically; the code evaluates
+exactly these coefficients) is, with A = 1 + beta S(u0) = 1/q0,
+
+    p(mu) = mu^4 + k(1 + eps A) mu^3 + (eps k^2 A - b^2) mu^2 + b^2 k (q0 s - 1 - eps A) mu + b^2 eps k^2 (q0 s - A).
+
+For every c > 0: the signs of the coefficients are +, +, ?, -, - because q0 s < 1 < A, so there is exactly one
+positive root (Descartes); Im p(i w) = w (c1 - c3 w^2) with c1 < 0 < c3 vanishes only at w = 0, and p(0) < 0, so no
+root is on the imaginary axis and the number of roots with positive real part does not depend on c. At the certified
+brackets the four roots are real, simple and enclosed (one positive, three negative), so **for every c > 0 the rest
+state has a one-dimensional unstable and a three-dimensional stable manifold**, and the problem is to shoot in c alone
+(this agrees with Hastings's Lemma 3). The eigenvalues at the pulse speed are:
+
+| eps | eigenvalues at c* (enclosed, ball arithmetic) |
+|---|---|
+| 1/20 | -5.8270, -2.3697, -0.22642, 4.1587 |
+| 1/50 | -5.3907, -2.0102, -0.071552, 4.2013 |
+| 1/100 | -5.3079, -1.9195, -0.033686, 4.2120 |
+
+The small eigenvalue is the slow recovery of q (about -eps k (1 + beta S(u0))): it is what makes small eps expensive.
+
+## 3. The proof, adapted from `papers/nf-pulse/`
+
+The argument and most of the code are those of `papers/nf-pulse/`; what changed is the model, the manifold tail bound,
+the Taylor recursion and its gradients, and the block.
+
+1. **Unstable manifold** (`manifold.py`). Parametrisation method: P(t) = sum a_n t^n with mu t P'(t) = F(P(t)), in the
+   5D embedding, a_1 = sigma v (u-component of v is 1, so t > 0 is the branch on which u increases), (n mu - A) a_n =
+   N_n for n >= 2, with the three nonlinear terms -b^2 y_q y_Y, -eps k beta y_q y_Y and lambda k [(1 - 2 Y0) y_Y m -
+   y_Y^2 m], m = y_v - y_u. The coefficients are balls that enclose the exact ones for every kappa in the ball [1/c2,
+   1/c1]. The tail (n > N) lies in an l^1 ball of radius K rho with K = 1/((N+1) mu_lo - ||A||_inf) (Neumann series)
+   whenever G0 + Z(K rho) <= rho, with G0 the exact tail of the nonlinearity of the polynomial part and Z a
+   Banach-algebra bound; this is checked in ball arithmetic. The 5D rest point has an extra eigenvalue 0 (the Y
+   direction), which does not resonate with n mu.
+2. **Integration** (`lohner.py`): the C^0-Lohner interval Taylor integrator of `papers/nf-pulse/code/lohner.py`, with
+   the Taylor recursion of this model and its forward-mode gradients (tested against finite differences in
+   `test_jacobian.py`, and the whole integrator against mpmath's `odefun` on the original 4D system in `test_lohner.py`).
+3. **Block** (`block.py`). Around rest, coordinates y = T (x - x*), L = y1^2 - |y'|^2, B = {|y1| <= r, |y'| <= rho},
+   r > rho. The Jacobian of the 4D field depends on x only through a = q S'(u) and sg = S(u), affinely for fixed k. For
+   x in B, F(x) - F(x*) = Abar (x - x*) with Abar = DF(abar, sgbar), (abar, sgbar) in the rectangle of values over B.
+   Two conditions are certified at the four corners of that rectangle, for all kappa in its ball: (C) D M + M^T D > 0
+   (M = T Abar T^(-1), D = diag(1, -1, -1, -1), interval Sylvester) and (E) lambda_max(sym M22) + ||M21||_2 < 0 (a
+   bound t on lambda_max certified by t I - sym M22 > 0, plus the Frobenius norm). Both are convex in M, so the corners
+   suffice. `block_check_iv.py` re-checks both in mpmath's interval arithmetic with none of the model code (its own rest
+   state, its own inverse of T, interval Cholesky). The frame T is an eigenbasis of DF at a reference point chosen by a
+   floating-point search (`explore_block.py`), which only needs to produce something that then passes the checks; the
+   block is stretched along the slow direction so that it reaches down the left slow branch (q from 0.825 at eps = 1/20,
+   0.797 at 1/50, 0.843 at 1/100), which is what keeps the integration short.
+4. **Block lemma** (proved here; written out because the base folder has no written version). (a) By (C) and
+   convexity, dL/dxi = y^T (D M + M^T D) y >= m |y|^2 with m > 0 along orbits in B, so L increases strictly away from x*.
+   (b) By (E), at a point of B with |y'| = rho and |y1| <= rho (so L <= 0), d|y'|^2/dxi <= 2 rho^2 (||M21|| +
+   lambda_max) < 0: such boundary points are strict entrance points. (c) An orbit that stays in B for all later xi has
+   L increasing and bounded, so the integral of m |y|^2 is finite, and with y' bounded, y -> 0 (Barbalat): it
+   converges to x*.
+5. **Shooting** (`prove_pulse.py`). For c in I = [c1, c2] let x_c be the orbit through the enclosed manifold point.
+   Rigorous runs show: (i) x_c(T) is in int B for every c in I (one Lohner run with c as a sixth variable); (ii) the
+   orbit at c1 stays in int B on [T, t1] (every step range checked) and reaches the open cone K(s1) = {L > 0, s1 y1 > 0};
+   (iii) the orbit at c2 does the same and reaches K(s2), s2 = -s1. Let Omega_s = {c in I : x_c([T, t]) is in int B and
+   x_c(t) is in K(s) for some t >= T}. Each Omega_s is open (continuous dependence; int B and K(s) are open), they are
+   disjoint (once L > 0 in B, L stays positive, so y1 cannot change sign), and c1, c2 lie in different ones. I is
+   connected, so some c* in (c1, c2) is in neither. Its orbit never meets the boundary of B: at a first contact point,
+   either |y1| = r > rho >= |y'|, so L > 0 there and, just before, x_c* was in int B and in a cone (so c* in Omega),
+   or |y'| = rho with |y1| <= rho, which (b) forbids, or |y'| = rho with |y1| > rho, where again L > 0 (same
+   contradiction). So x_c* stays in B, tends to x* by (c), and came from x* along the unstable manifold: a homoclinic
+   orbit, hence a pulse.
+
+## 4. Theorem
+
+__THEOREM__
+
+## 5. What is rigorous and what is numerical
+
+**Rigorous (ball arithmetic in python-flint 0.9.0/Arb, every decision a certified inequality; not independently
+reviewed):** the rest state and its uniqueness, q0 s < 1, the eigenvalue count for every c > 0, the enclosure of the
+unstable eigenvalue and eigenvector, the manifold with its tail, the block conditions (also re-checked in mpmath.iv),
+the three integration runs and the cone entries, and the lower bound on sup u.
+
+**Numerical only, not proved:** the speeds to more digits than the brackets (from `shoot_hp.py` and `shoot_ms.py`);
+the values of c* at eps = 0.03, 0.07 and the absence of a pulse at eps = 0.1 (floating-point scan, see below); the slow
+pulse (a second sign switch at small c, e.g. near c = 0.0758 at eps = 0.05, 0.0258 at eps = 0.01, not studied); the
+front speed c0* = 0.35000 of Hastings's fast system (2.2) at q = q0 (floating-point shooting), which the fast pulse
+speeds approach as eps decreases, as Hastings (Sect. 2: "It will follow from the proofs of these results that as eps
+-> 0, c^* -> c^*_0") and Faye's c(eps) = c* + O(eps) lead one to expect;
+the block shapes (a floating-point search whose output is then certified); the cost estimates.
+
+Numerical scan of the fast pulse speed (float shooting in `c` from 0.005 to 1, classification by Hastings's
+Proposition 1 invariant regions; numerical only):
+
+| eps | fast pulse c* | slow pulse (second switch) |
+|---|---|---|
+| 0.01 | 0.33152 | 0.02584 |
+| 0.02 | 0.31232 | 0.03847 |
+| 0.03 | 0.29217 | 0.05009 |
+| 0.05 | 0.24718 | 0.07578 |
+| 0.07 | 0.18091 | 0.12157 |
+| 0.10 | none found | none found |
+
+At eps = 0.1 every sampled c in [0.005, 1] escapes upward, so the two pulse branches appear to meet between eps = 0.07
+and 0.1. This is why the task's fallback value 0.1 is not available for this model.
+
+## 6. Cost at eps = 0.01 and how it was met
+
+__COST__
+
+## 7. Negative controls and tests
+
+Each `run_all.sh` run includes: a rest-state control (lambda = 80, kappa = 1/10, which has three equilibria by a
+floating-point scan, is refused: the uniqueness certificate cannot certify monotonicity near the extra zeros); a perturbed eigenvalue that must not enclose a root; the block scaled by 1.5 (refused: the cone or entrance
+condition fails at a corner); the orbit at c1 asked to reach the opposite cone (refused: wrong cone); a speed far from
+the pulse speed (refused: the orbit leaves before T_enter). Tests (not part of the proof): the Taylor jet gradients
+against central differences (`test_jacobian.py`); the integrator against mpmath's `odefun` on the original 4D system,
+with a control in which b is perturbed by 1e-20 and the enclosures must exclude that solution (`test_lohner.py`, passes).
+
+## 8. Check (adversarial second reading)
+
+__CHECK__
+
+## 9. Rerun
+
+From `papers/nf-pulse/ext/faye-model/code/` (Python 3.11, `python3 -m pip install -r ../../../code/requirements.txt`):
+
+    sh run_all.sh 1/20        # about 1 minute on 4 cores
+    sh run_all.sh 1/50        # about 3 minutes
+    sh run_all.sh 1/100       # __T100__
+    FAYE_EPS=1/20 python3 test_lohner.py    # about 8 minutes (mpmath reference solution)
+
+Each prints one line per check and exits with status 1 if a proof step fails or a negative control passes; full logs
+go to `data/logs/` (not tracked), certificates to `data/*.json`. The brackets, block shapes and integration settings
+are in `code/config.py`. Numerical (not needed for the proof): `FAYE_EPS=1/50 python3 shoot_ms.py 480 0.3123155
+0.3123157 100 60` recomputes the eps = 1/50 bracket; `explore_block.py eps c` searches a block shape.
+
+## Files
+
+| File | Role |
+|---|---|
+| `code/fcore.py` | Model, exact rational parameters (eps from `FAYE_EPS`), rest state, Taylor recursion |
+| `code/certify_rest.py` | Rest state, uniqueness, q0 s < 1, eigenvalue count, eigenvector residual; controls |
+| `code/manifold.py` | Unstable manifold to order N with a validated tail |
+| `code/lohner.py` | The C^0-Lohner integrator of the base folder with this model's Taylor jet |
+| `code/block.py`, `code/block_check_iv.py` | Block certificate, and its independent mpmath.iv re-check |
+| `code/prove_pulse.py` | The three proof runs and the negative controls |
+| `code/config.py` | Per-eps brackets, block shapes and settings |
+| `code/run_all.sh` | The whole chain with its controls |
+| `code/test_jacobian.py`, `code/test_lohner.py` | Tests |
+| `code/shoot_hp.py`, `code/shoot_ms.py`, `code/orbit_hp.py`, `code/explore_block.py` | Numerical only |
