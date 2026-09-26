@@ -35,11 +35,11 @@ MONO = lambda s: F('NimbusMonoPS-Regular.otf', s)
 
 REPO = 'github.com/ChaseHendrick/GENChase'
 # every clip is a live simulation (runningDefault in techniques.json), recorded while it visibly evolves
-MAIN = ['fluid', 'dendrite', 'excitable', 'physarum', 'cyclic', 'schrodinger',
+MAIN = ['fluid', 'dendrite', 'excitable', 'physarum', 'cyclic', 'xy',
         'vegetation', 'cgl', 'ising', 'tonertu', 'skyrmion', 'maxwell']
 TAGS = ['130 scientific simulations', 'Every plate reprints from its seed',
         'Measured against theory, with error bars', 'Print-ready at 300 ppi. The images are yours.']
-MONTAGE = ['life', 'chirikov', 'film', 'xy', 'causticsea', 'turing', 'swarm', 'snowflake']
+MONTAGE = ['life', 'chirikov', 'film', 'cyclicca', 'causticsea', 'turing', 'swarm', 'ks']
 INTRO = 'plasma'
 
 
@@ -48,11 +48,28 @@ def techniques():
     return {t['id']: t for t in d['techniques']}
 
 
+def moving_prefix(files, settled=1.0, tail=2):
+    """the number of leading frames before the plate settles: a plate that finishes (a dendrite that stops growing,
+    a packet that has arrived) would otherwise sit still for the rest of its bar, so the frames that already look
+    like the last one are dropped and the moving part is stretched over the bar. A frame counts as settled when the
+    mean absolute difference between its 128 px thumbnail and the last frame's is below settled; slow but steady
+    motion never settles and keeps every frame."""
+    from PIL import ImageChops, ImageStat
+    small = lambda f: Image.open(f).convert('L').resize((128, 128))
+    last = small(files[-1])
+    k = len(files) - 1
+    while k > 0 and ImageStat.Stat(ImageChops.difference(small(files[k - 1]), last)).mean[0] < settled:
+        k -= 1
+    return max(8, min(len(files), k + 1 + tail))
+
+
 class Clip:
-    def __init__(self, folder):
+    def __init__(self, folder, trim=True):
         self.files = sorted(glob.glob(os.path.join(folder, '*.jpg')))
         if not self.files:
             raise SystemExit('no frames in ' + folder)
+        if trim:
+            self.files = self.files[:moving_prefix(self.files)]
 
     @lru_cache(maxsize=64)
     def frame(self, k, box, zoom):
@@ -65,10 +82,19 @@ class Clip:
         return im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
 
     def at(self, u, box, z0=1.0, z1=1.04):
-        """the plate at clip progress u in [0, 1]: frames in order, a slow push-in."""
-        k = min(len(self.files) - 1, int(u * len(self.files)))
+        """the plate at clip progress u in [0, 1]: frames in order, cross-faded between neighbours so a time-lapse
+        of a few frames still moves smoothly, and a slow push-in."""
+        pos = u * (len(self.files) - 1)
+        k = min(len(self.files) - 1, int(pos))
+        a = pos - k
         z = round(z0 + (z1 - z0) * u, 3)
-        return self.frame(k, box, z)
+        im = self.frame(k, box, z)
+        if a > 0.02 and k + 1 < len(self.files):
+            nxt = self.frame(k + 1, box, z)
+            if nxt.size == im.size:
+                im = Image.blend(im, nxt, round(a, 2))
+        return im
+
 
 
 def shadowed(base, im, xy, radius=28, alpha=150):

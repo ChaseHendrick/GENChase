@@ -20,11 +20,10 @@ pip install imageio-ffmpeg        # a static ffmpeg with libx264 and AAC
 O=/tmp/trailer
 C=tools/trailer/capture.js
 TRAILER_WARM_MS=3000 node $C record $O/clips 40 fluid/trailer excitable/trailer physarum/trailer cyclic/trailer \
-  vegetation/trailer cgl/trailer ising/trailer tonertu/trailer skyrmion/trailer maxwell/trailer plasma/trailer
-TRAILER_WARM_MS=800 node $C record $O/clips 40 dendrite/trailer schrodinger/trailer     # caught while still growing
-TRAILER_WARM_MS=3000 node $C record $O/montage 14 life/trailer chirikov/trailer film/trailer xy/trailer \
-  causticsea/trailer turing/trailer swarm/trailer
-TRAILER_WARM_MS=800 node $C record $O/montage 14 snowflake/trailer
+  vegetation/trailer cgl/trailer ising/trailer tonertu/trailer skyrmion/trailer maxwell/trailer plasma/trailer xy/trailer
+TRAILER_WARM_MS=200 TRAILER_GAP_MS=0 node $C record $O/clips 40 dendrite/trailer     # caught while still growing
+TRAILER_WARM_MS=3000 node $C record $O/montage 14 life/trailer chirikov/trailer film/trailer cyclicca/trailer \
+  causticsea/trailer turing/trailer swarm/trailer ks/trailer
 node $C probe $O/stills <more ids>/trailer ...                                    # single frames for the end card
 python3 tools/trailer/music.py $O/score.wav
 python3 tools/trailer/assemble.py $O/clips $O/montage $O/score.wav docs/trailer/genchase-trailer.mp4 \
