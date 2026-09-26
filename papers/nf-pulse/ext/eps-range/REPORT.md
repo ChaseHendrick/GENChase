@@ -182,6 +182,11 @@ Findings and what was done:
     since the difference is k mu (mu^2 - (1 - s)) + eps k^2 (mu^2 - 1) >= 0. Not changed here (outside this folder).
 12. (remark) `--shift X` failing for |X| > 1 is an expectation, not a guarantee, because kappa*(eps) is curved.
 
+One of the fixes was itself wrong at first: the coverage assertion of `split` (finding 2) compared rounded balls,
+which cannot certify an equality, so from 04:45 to 05:48 UTC every attempt that needed a subdivision failed with an
+`AssertionError`. That only made valid attempts FAIL (42 of them; their certificates were deleted and the attempts
+repeated); it could not make anything PASS. The assertion now checks the coverage in exact rationals.
+
 Certificates written before the fixes (they have no `negative_checks` and no `code_sha256_16`) come from code that
 differs from the present one only in these safeguards and in the split offsets of finding 3. The reviewer's rerun
 of one of them reproduced it exactly; __OLDRERUN__
