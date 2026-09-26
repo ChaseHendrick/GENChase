@@ -1,4 +1,4 @@
-# Prior-art kill report — classical two-ring / polygon product floors
+# Prior-article kill report — classical two-ring / polygon product floors
 
 > **Update (same day, later):** Koiller 1985 full text was obtained and read. See [`koiller1985-read-2026-09-23.md`](koiller1985-read-2026-09-23.md). Verdict: does **not** kill optimized floors. Any “Koiller unread” claim below is stale.
 
@@ -149,4 +149,4 @@ From [`unequal-mu-half-draft-2026-09-23.md`](unequal-mu-half-draft-2026-09-23.md
 
 ## File path
 
-This report: **`/workspace/GENChase/identities/sources/prior-art-kill-2026-09-23.md`**
+This report: **`/workspace/GENChase/identities/sources/prior-article-kill-2026-09-23.md`**

@@ -21,7 +21,7 @@ A folder-based studio of seeded scientific simulations. The shared engine loads 
 - IDENTITIES.md: derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
 - identities/ORIGINALITY-FOLLOWUP.md: the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
 - identities/NOVELTY-AUDIT.md: evidence and limits for all five candidates.
-- RESEARCH.md: what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
+- RESEARCH.md: what was searched, what was not. Read before a prior-article search. Do not re-run a search marked skip.
 
 ## Recipe hash
 

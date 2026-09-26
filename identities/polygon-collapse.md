@@ -184,7 +184,7 @@ $$
 
 Equality at $\cos(5\theta_*)=12\sqrt{2}/127$. Float64 verify: `tools/verify-new-formula-candidate.js`. **Proved candidate; priority unconfirmed.** This is a specialization of candidate 5, not a separate discovery. Draft: [`sources/new-formula-candidate-2026-09-23.md`](sources/new-formula-candidate-2026-09-23.md).
 
-## Prior art and status
+## Prior articles and status
 
 Koiller et al. (1985), §11, Proposition 12, already treat collapse of two regular $n$-gons. Aref (1982) is foundational, and O'Neil (2007) explicitly identifies two-ring collapse as known before studying triple rings. The general family, the virial condition, and logarithmic spirals belong to that literature.
 

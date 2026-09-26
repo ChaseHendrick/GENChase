@@ -13,7 +13,7 @@ The bar every paper in this repository meets before it is published or preprinte
 - [ ] **4. Sources read.** Hodgkin and Huxley (1952): eq. (26), the rate equations and Table 3 read from the scanned
   paper (the constants from the rendered page). Guckenheimer and Oliva (2002) read in full. Still to read: Hassard
   (1978) and Rinzel and Miller (1980) on the Hopf points; Kuznetsov's book for the l1 formula, eq. (3.20).
-- [ ] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 (neuroscience scout) and 2026-09-26 (the 1952 constants).
+- [ ] **5. Prior article review.** RESEARCH.md, entries of 2026-09-25 (neuroscience scout) and 2026-09-26 (the 1952 constants).
   To do: whether the criticality of the two Hopf points has been proved before.
 - [ ] **6. Adversarial second reading.** Not yet.
 - [ ] **7. Reproducible.** The program runs from this folder with `code/requirements.txt`.

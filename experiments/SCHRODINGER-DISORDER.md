@@ -74,7 +74,7 @@ node tools/schrodinger-disorder.js > experiments/results/schrodinger-disorder.js
 
 [The artifact](results/schrodinger-disorder.json) saves all seeds, field-generation definitions/hashes, source and harness hashes, every trial's time series, paired differences, uncertainty, numerical checks and rejected controls. `summary` states whether the frozen bounded hypothesis passed or failed. No production module or scientific-validation inventory is changed by this experiment.
 
-## Prior art and interpretation
+## Prior articles and interpretation
 
 [Miniatura et al. (2008)](https://arxiv.org/pdf/0807.3698) already treat expanding matter waves in two-dimensional spatially correlated disorder, including variance and finite-size effects. [Piraud et al. (2013)](https://www.cpht.polytechnique.fr/cpht/uquantmat/publications/papers/piraud2013njp15_075007.pdf) explicitly connect transport to disorder statistics. This filtered finite-lattice model does not reproduce their continuum optical-speckle calculations.
 
@@ -87,5 +87,5 @@ localization speckle`, after reading the project ledger. The Miniatura introduct
 correlation/variance discussion and finite-size section were read; the Piraud
 abstract and opening context were read, not its full 47-page derivation. The 2020
 article's introduction and classical-trapping distinction were read. These primary
-sources establish that the broad idea is prior art; no exact-protocol originality
+sources establish that the broad idea is in prior articles; no exact-protocol originality
 claim follows from the search.

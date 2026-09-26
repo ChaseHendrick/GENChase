@@ -25,7 +25,7 @@ W. L. Oberkampf and C. J. Roy, *Verification and Validation in Scientific Comput
   - The evidence contract in [validation/README.md](../validation/README.md). Every numerical
     entry needs a benchmark, a failure control, a command and a results file.
   - Negative controls that must fail.
-  - A prior-art ledger ([RESEARCH.md](../RESEARCH.md)) and a novelty audit that reports zero
+  - A prior-article ledger ([RESEARCH.md](../RESEARCH.md)) and a novelty audit that reports zero
     confirmed novel findings rather than overstating.
   - Versioned recipes with `legacy` defaults, so old links reprint at the values they were made at.
   - A real print path: PDF with an embedded ICC profile, bleed and crop marks, TIFF, and SVG for

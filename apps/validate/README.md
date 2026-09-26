@@ -62,7 +62,7 @@ The adapter reads `RESEARCH.md` before doing the derivation, then scans availabl
 
 The offline comparison uses text matching and the existing polygon-family derivation. It does not follow external citations, extract binary PDFs or establish mathematical equivalence through a proof. Its classifications are only **matches known source**, **not found in sources checked**, or **search incomplete**. Priority remains **unconfirmed** in every case.
 
-**Online prior-art** is optional. Opening the panel only shows suggested queries; following a query link opens an external search page and uses the network. No automatic online search or model call occurs. A human must inspect sources and record what was actually checked before making any originality claim.
+**Online prior-article search** is optional. Opening the panel only shows suggested queries; following a query link opens an external search page and uses the network. No automatic online search or model call occurs. A human must inspect sources and record what was actually checked before making any originality claim.
 
 ## Art modes
 

@@ -48,7 +48,7 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
 
 Nothing is published or preprinted (a companion release, a Zenodo DOI, arXiv, a journal) until the paper meets the
 quality bar, and its record says so. The record is `papers/<id>/notes/QUALITY.md`: the bar's seven items at the top
-(complete proofs, rigorous computation, every claim labelled, sources read, prior art, adversarial second reading,
+(complete proofs, rigorous computation, every claim labelled, sources read, prior article review, adversarial second reading,
 reproducible), then one line per item, checked only with its evidence. `notes/` stays in GENChase; the companion does
 not carry it. `node tools/paper-check.js` refuses the status `ready` or later while any item is open, renamed,
 missing or checked without evidence, and its self-test plants each of those mistakes. A proof that adapts another
