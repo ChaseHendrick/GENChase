@@ -37,8 +37,9 @@ Certified conditions (interval matrices; kappa ranges over the whole ball [1/c2,
 lam_max(sym At_22) + ||At_21||_2 is a convex function of s):
  (C) cone:      H(s,k) = D At + At^T D  is positive definite  (Sylvester, interval leading minors),
                 D = diag(1, -1, -1, -1);
- (E) entrance:  lam_max(sym At_22) + ||At_21||_2 < 0, bounded above by Gershgorin (rows of sym At_22)
-                and ||At_21||_2 <= Frobenius norm.
+ (E) entrance:  lam_max(sym At_22) + ||At_21||_2 < 0, certified as positive definiteness (interval
+                Sylvester minors) of -sym(At_22) - f I with f an upper bound of ||At_21||_F >= ||At_21||_2.
+                (The Gershgorin bound of the gain-20 code is only reported; it fails at |U| <= 0.02.)
 Block B = { |y1| <= r, |y'|_2 <= rho }, r > rho, whose U-range lies in I_U.
 Consequences (block lemma, see REPORT.md): dL/dxi = y^T H(s~) y > 0 on B minus x*; the cones
 K+ = {L > 0, y1 > 0} and K- = {L > 0, y1 < 0} are forward invariant while the orbit is in B; every

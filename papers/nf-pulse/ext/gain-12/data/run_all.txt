@@ -19,4 +19,6 @@ OK    P: the orbit at c2 enters the cone K+ inside the block
 OK    N: negative control, the orbit at c1 asked to reach K+, is refused
 OK    N: negative control c = 1.040, far from the pulse speed, is refused
 OK    N: negative control, the escape-classifier bracket (a multi-pulse, 1.1e-11 away) is refused
+OK    D: containment decisions refuse straddling enclosures; step ranges and the U-range are right
+OK    N: integrator with its remainder dropped fails to contain the mpmath solution (with it, contains)
 all checks passed

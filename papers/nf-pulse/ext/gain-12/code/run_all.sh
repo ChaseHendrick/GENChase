@@ -33,6 +33,7 @@ python3 block_check_iv.py > $L/run_all_block_iv.log 2>&1
 check "B: independent re-check of the block conditions in mpmath.iv" $L/run_all_block_iv.log '^dU 0.02 .*CERTIFIED'
 check "B: independent re-check refuses |U| <= 0.05" $L/run_all_block_iv.log '^dU 0.05 .*FAILED'
 
+python3 test_lohner2.py neg > $L/run_all_lohner_neg.log 2>&1 &
 python3 test_jacobian.py > $L/run_all_jacobian.log 2>&1
 check "J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)" $L/run_all_jacobian.log 'max |J_AD - J_FD|'
 
@@ -48,6 +49,12 @@ wait
 check "N: negative control, the orbit at c1 asked to reach K+, is refused" $L/negctrl_samebracket.log 'VERDICT FAIL'
 check "N: negative control c = 1.040, far from the pulse speed, is refused" $L/negctrl_far_c.log 'VERDICT FAIL'
 check "N: negative control, the escape-classifier bracket (a multi-pulse, 1.1e-11 away) is refused" $L/negctrl_escape_bracket.log 'VERDICT FAIL'
+
+wait
+python3 test_decisions.py > $L/run_all_decisions.log 2>&1
+check "D: containment decisions refuse straddling enclosures; step ranges and the U-range are right" $L/run_all_decisions.log 'ALL DECISION CONTROLS PASS'
+awk '/remainder included/{s=1} /remainder DROPPED/{s=2} s==1 && /contains mpmath: False/{bad=1} s==2 && /contains mpmath: False/{miss=1} END{if(!bad && miss) print "LOHNER NEG OK"}' $L/run_all_lohner_neg.log > $L/run_all_lohner_neg_verdict.log
+check "N: integrator with its remainder dropped fails to contain the mpmath solution (with it, contains)" $L/run_all_lohner_neg_verdict.log 'LOHNER NEG OK'
 
 if [ $fails -gt 0 ]; then echo "$fails checks failed"; exit 1; fi
 echo "all checks passed"
