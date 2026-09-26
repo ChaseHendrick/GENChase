@@ -29,7 +29,7 @@ not a proof) or **literature** (with the source and whether it was read first ha
   digits. It is **not** yet an existence proof: the closing step is missing.
 - **Feasibility of the full proof.** The closing step needs the orbits of a whole K interval tracked until they are
   inside an isolating block at rest, about 17 ms after the upstroke at 18.5 C. The unstable eigenvalue is about
-  10.9 /ms, so the K interval must be about 10^-80 wide and the integration run at roughly 350 to 400 bits. The pieces
+  10.9 /ms, so the K interval must be about 10^-85 wide and the integration run at roughly 350 to 400 bits. The pieces
   exist (Lemma B's block works up to radius 0.01; the integrator works); the cost is compute and care, not a new idea.
   Our honest estimate: 2 to 4 more working days, a 60 to 70 per cent chance of success along this direct route, with
   a covering-relation (multiple shooting) route as the fallback if the direct one wraps too much. A proof would, as far
@@ -228,8 +228,8 @@ failure of propagation (33.5 to 33.7 C, secondhand, Section 1.7). The fast speed
 then falls, as in Muratov's Fig. 4.
 
 **The lower switch is not a slow pulse.** At the lower switch (18.5, 25, 30 and 32 C) the orbit does not return to
-rest: after one small excursion it settles on an oscillation of amplitude about 25 to 32 mV and period 2.6 to 3.3 ms
-and stays there for 10 to 35 ms before it runs away (closest approach to rest afterwards: 0.02 to 0.07 in scaled
+rest: after one small excursion it settles on an oscillation with peaks of 26 to 32 mV and a period of 2.5 to 3.3 ms
+and stays there for 6 to 25 ms before it runs away (closest approach to rest afterwards: 0.02 to 0.07 in scaled
 units). That is the signature of a connection from rest to a periodic orbit (a wave train), which also costs one
 condition. So **no slow pulse was found**; Huxley's "wave, or even a series of waves, of just threshold amplitude" may
 be this object or may be a slow pulse that the escape classification does not separate. Finding it would need
@@ -314,7 +314,7 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
   the steep upstroke (u' reaches 400 mV/ms), because the remainder is evaluated over the whole a priori box. Smaller
   steps there (or a time-subdivided remainder) fix it; it is a cost, not a barrier.
 - **Stiffness and the fast m.** Not an obstacle at the 1952 rates: the fastest eigenvalue is -16.3 /ms at rest and
-  about -30 /ms in the spike, a stiffness ratio of 30 to 60, and explicit Taylor steps are limited by the radius of
+  no faster than -26.6 /ms anywhere along the numerical profile, against local rates of order 1 to 25 /ms, and explicit Taylor steps are limited by the radius of
   analyticity (about 0.1 ms) rather than by stability. This is the opposite of the singular limits of Hastings and
   Carpenter, where m is infinitely fast.
 - **A high-precision numerical speed first.** The interval [K1, K2] of width 1e-85 must contain the true speed, so K*
