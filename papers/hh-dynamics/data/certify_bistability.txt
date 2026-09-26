@@ -1,0 +1,75 @@
+
+====================================================================================================
+STAGE 0  set-up
+====================================================================================================
+  python-flint 0.9.0 (Arb ball arithmetic), working precision 96 bits, Taylor order 20, remainder tolerance 1e-18 (relative to scales [100, 1, 1, 1, 10])
+  trust base: python-flint 0.9.0 on FLINT 3.6.0 (Arb ball arithmetic, 96 bits): arb/acb field operations, abs, comparisons, union/intersection, arb.exp, arb.hypgeom_1f1 (Taylor coefficients of Psi), arb_mat products and arb_mat.inv (Lohner frames B^-1), arb_mat.charpoly (Routh-Hurwitz), acb_mat products and acb_mat.inv (Gershgorin eigenbasis S^-1); Python 3.11.15 integers and fractions (outward decimal printing).  numpy, scipy and mpmath only propose candidates, frames, eigenvector matrices and reference values and are not trusted.
+  model: HH 1952 eqs (12),(13),(20),(21),(23),(24),(26), Table 3; g_Na=120, g_K=36, g_l=0.3, E_Na=115, E_K=-12, C=1, 6.3 C; J = 8
+  E_l is carried as a fifth state variable with dE_l/dt = 0, so a ball of E_l values is a set
+  direction of the Lohner method rather than a re-wrapped parameter.
+  sections: stable orbit {u = 20, du/dt > 0} (one constant, ball_stable.SEC_LEVEL), unstable orbit {u = 5, du/dt > 0};
+  every Poincare map refuses an initial set that is not exactly on its section.
+
+====================================================================================================
+STAGE 1  self-tests of the rigorous integrator and of the certificate code; negative controls
+====================================================================================================
+  [PASS] exact: x'=x^2, x(0)=1/2, x(1)=1 in [1.00000000000000000000000000 +/- 4.48e-27]
+  [PASS] NEG wrong field q=1.001 excludes exact x(1)=1 (encl [1.0010 +/- 1.01e-6])
+  [PASS] NEG remainder set to 0 (p=3, h=0.1) misses exact x(1)=1 (encl [0.99978 +/- 3.69e-6])
+  [PASS] control: same p=3, h=0.1 run with the rigorous remainder contains 1 (encl [1.0000 +/- 7.40e-5])
+  [PASS] NEG a priori test refuses every box [0.5,10^k], k=1..6, for a step beyond blow-up
+  [PASS] NEG integrator refuses a step h=1.2 across the blow-up of x(0)=1
+  [PASS] NEG a priori test refuses a box that misses the motion (y in [-0.05,0.05])
+  [PASS] exact: u'=-Psi(u) through u=0, u(0)=3: Ein(u(10)) = Ein(3)-10 inside the image of the enclosure [-3.17173883107 +/- 9.49e-13]
+  [PASS] NEG wrong field u'=-1.001 Psi(u): exact value excluded
+  [PASS] exact Poincare map (a=-0.3): return time [6.28318530718 +/- 4.14e-13] contains 2pi; P, DP contain the exact values
+  [PASS] exact Poincare map (a=0.1): return time [6.28318530718 +/- 4.14e-13] contains 2pi; P, DP contain the exact values
+  [PASS] Krawczyk proves the periodic orbit (a=-0.3), period in [6.283185307 +/- 1.80e-10] (2pi), Gershgorin discs contain exp(-4pi), exp(2pi a)
+  [PASS] NEG Krawczyk fails on a box (x=1+1e-6 +- 1e-9) that misses the orbit (a=-0.3)
+  [PASS] Krawczyk proves the periodic orbit (a=0.1), period in [6.283185307 +/- 1.80e-10] (2pi), Gershgorin discs contain exp(-4pi), exp(2pi a)
+  [PASS] NEG Krawczyk fails on a box (x=1+1e-6 +- 1e-9) that misses the orbit (a=0.1)
+  [PASS] NEG wrong field (x' + 0.001 x^2): exact return point excluded
+  [PASS] exact over a wide set: x'=x^2, x0 in [0.4,0.5], t=0.5: the enclosure [0.49166, 0.66963] contains the exact image [1/2, 2/3] and is less than 1.5 times as wide
+  [PASS] exact over a wide set: the D phi enclosure [1.55029, 1.77958] contains the exact range [1/0.8^2, 1/0.75^2] (and is less than 6 times as wide)
+  [PASS] exact C^1, low order (p=3, h=0.1): x'=x^2, x(0)=1/2: D phi_1 = 1/(1-x0)^2 = 4 lies in the enclosure [4.00 +/- 1.53e-3]
+  [PASS] a priori enclosure over a step: for x0 in [0.4,0.5] and s in [0,0.1], Y = [0.39160, 0.52961] contains the exact range [0.4, 0.5/0.95] of phi_s(x0)
+  [PASS] a priori enclosure of the variational equation: x'=x^2, x0=1, p=2, h=1/4: YV = [0.06500, 2.75708] contains D phi_s = 1/(1-s)^2 for s in [0, 1/4], i.e. [1, 16/9] (a 5%-inflated Taylor range is refused)
+  [PASS] exact Poincare map over a wide box (twist, x0 in [1.19, 1.21]): return time [4.12429, 4.13177] and z-image [0.78627, 0.78923] contain T and z0 e^{aT} at both ends (the return time varies by [0.00555 +/- 4.54e-6] across the box)
+  [PASS] exact derivative of the twist Poincare map at x0 = 1.2: DP_zx = [-0.10938756 +/- 4.59e-9] contains a z0 e^{aT} dT/dx0 = [-0.10938756 +/- 4.21e-9], and DP_xx, DP_xz, DP_zz contain their exact values
+  [PASS] NEG Poincare map refuses an initial set on y = 0.001 with the section at y = 0
+  [PASS] multiplier code: the Gershgorin discs of the interval matrix [[2, e], [e, 1]], |e| <= 0.1, contain the eigenvalues (3 +- sqrt(1 + 4 e^2))/2 of its members e = 0, +-0.1
+  [PASS] NEG multiplier code: an interval matrix with an eigenvalue anywhere in [0.95, 1.05] passes neither the "all |mu| < 1" test nor the "one multiplier > 1" test
+  [PASS] multiplier code: diag-dominant matrices with eigenvalues (0.5, -0.2) and (3, 0.2) pass the stable and the unstable test; eigenvalues (-3, 0.2) fail the unstable test (the multiplier is < -1)
+  [PASS] contraction code: sup ||M||_inf over the interval matrix [[1/2, -1/2, [-1/4, 1/4]], [0, 1/4, 0], [0, 0, -1/8]] is 5/4; the bound [1.25000000047 +/- 4.34e-12] is >= 5/4 and < 5/4 + 1e-6
+  [PASS] mean value consistency of the HH Poincare map (stable orbit, section u = 20, |z1 - z2| ~ 2e-10): P(z1) - P(z2) meets DP(Z)(z1 - z2) in every component, and the prediction is sharp (its radius is at most 0.7% of the difference; required < 10%)
+  [PASS] mean value consistency of the HH Poincare map (unstable orbit, section u = 5, |z1 - z2| ~ 2e-12): P(z1) - P(z2) meets DP(Z)(z1 - z2) in every component, and the prediction is sharp (its radius is at most 0.8% of the difference; required < 10%)
+  [PASS] HH upstroke u=20, t=0.5 ms: mpmath (dps=30, 10s) reference inside the enclosure (max radius 1.4e-17, 0.6s)
+  [PASS] NEG wrong field (g_Na = 120.0001): mpmath reference excluded
+  [PASS] NEG remainder set to 0 (p=6, h=0.02): mpmath reference excluded
+  [PASS] control: the same p=6, h=0.02 run with the rigorous remainder contains it
+  [PASS] HH near the peak, t=0.5 ms: mpmath (dps=30, 8s) reference inside the enclosure (max radius 5.1e-17, 0.5s)
+  [PASS] HH recovery u=0, t=0.5 ms: mpmath (dps=30, 1s) reference inside the enclosure (max radius 4.0e-19, 0.1s)
+  stage 1 time 42.6 s
+
+====================================================================================================
+STAGE 2  non-rigorous numerics (float64 / scipy DOP853, rtol 1e-12; mpmath)
+====================================================================================================
+  zero-current leak potential E_l* (I_ion = 0 at u = 0, J = 0) = 10.59892096939167852219888
+  I_ss(u) strictly increasing on a grid of [-12, 250] (step 1e-3): True (min increment 3.145e-04); I_ss(-12) = -6.8069, I_ss(250) = 9418.0
+    for u <= -12 every current term is negative, for u >= 115 every term is >= 0 and the leak exceeds 31, so each J in [0, I_ss(250)] has exactly one equilibrium (numerically)
+  rest state at J = 0: u = 3.620669e-03 mV
+  E_l = 10.613  (10.6130000000): Hopf point J = 9.775438, u_eq = 5.345856, eigenvalues 1.1e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.613  (10.6130000000): Hopf point J = 154.522434, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = E_l*    (10.5989209694): Hopf point J = 9.779662, u_eq = 5.345856, eigenvalues -2.8e-17 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = E_l*    (10.5989209694): Hopf point J = 154.526657, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.599  (10.5990000000): Hopf point J = 9.779638, u_eq = 5.345856, eigenvalues -2.8e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.599  (10.5990000000): Hopf point J = 154.526634, u_eq = 21.941908, eigenvalues 6.9e-17 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.59   (10.5900000000): Hopf point J = 9.782338, u_eq = 5.345856, eigenvalues 2.1e-17 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.59   (10.5900000000): Hopf point J = 154.529334, u_eq = 21.941908, eigenvalues 6.9e-17 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.62   (10.6200000000): Hopf point J = 9.773338, u_eq = 5.345856, eigenvalues -9.1e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.62   (10.6200000000): Hopf point J = 154.520334, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+    (the Hopf currents depend on E_l; a result at J = 8 is stated with its E_l)
+  J = 8: equilibrium [4.6466240169 0.0900658896 0.3906353695 0.4304534782], eigenvalues [-4.690303+0.j       -0.034465+0.566844j -0.034465-0.566844j
+ -0.135021+0.j      ]
+  stable orbit (section u = 20, u increasing): z = (m,n,h) = [0.24052906069702 0.42490470823005 0.39231037641667], period 16.007712803838 ms, u in [-10.1403, 95.9574], multipliers [ 7.089678e-02 -1.341272e-12  1.593009e-12]
+  an unstable orbit (candidate located by bisecting perturbations of the rest state between return to rest and a spike, delta u = 3.806769951380; section u = 5, u increasing): z = [0.09004142752266 0.37950318996291 0.43754826309113], period 14.343600948169 ms, u in [-0.6715, 11.0341], multipliers [1.030288e+01 8.540279e-13 1.968322e-01]
