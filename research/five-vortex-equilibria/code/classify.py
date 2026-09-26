@@ -253,6 +253,57 @@ for i, u in enumerate(uniq):
 
 print(f'classes modulo rotation, scaling, relabelling and reflection: {len(classes)}')
 
+# exact identification of the classical configurations: each exact solution
+# of (1) is mapped into the chart and shown to lie in the uniqueness box of a
+# certified solution, which is therefore that exact configuration.
+def exact_known():
+    from flint import fmpz_poly, arb as A_
+    I = arb(N * (N - 1)) / 2
+    out = {}
+    pi = arb.pi()
+    r = (I / N).sqrt()
+    out['regular %d-gon' % N] = [acb(r * (2 * pi * k / N).cos(), r * (2 * pi * k / N).sin()) for k in range(N)]
+    r = (I / (N - 1)).sqrt()
+    out['centred regular %d-gon' % (N - 1)] = [acb(0)] + [acb(r * (2 * pi * k / (N - 1)).cos(), r * (2 * pi * k / (N - 1)).sin()) for k in range(N - 1)]
+    # Hermite H_N (physicists'): H_{n+1} = 2x H_n - 2n H_{n-1}; its zeros x_j
+    # satisfy sum_{k != j} 1/(x_j - x_k) = x_j (Stieltjes), i.e. (1) on the line.
+    x = fmpz_poly([0, 1])
+    h0, h1 = fmpz_poly([1]), fmpz_poly([0, 2])
+    for n in range(1, N):
+        h0, h1 = h1, 2 * x * h1 - 2 * n * h0
+    roots = h1.complex_roots()
+    zs = []
+    for rt, mult in roots:
+        assert mult == 1
+        zs.append(acb(rt.real))   # the zeros of H_N are real
+    out['collinear (zeros of H_%d)' % N] = zs
+    return out
+
+known = exact_known()
+known_class = {}
+for name, zex in known.items():
+    # it must be an exact solution of (1): check the enclosure of G contains 0
+    for g in G_all(zex):
+        assert g.real.contains(0) and g.imag.contains(0)
+    hit = None
+    for c, members in enumerate(classes):
+        for i in members:
+            for p in perms:
+                # max-modulus vortex first, as in the chart
+                try:
+                    if maps_to(zex, p, False, uniq[i]) or maps_to(zex, p, True, uniq[i]):
+                        hit = c
+                        break
+                except RuntimeError:
+                    continue
+            if hit is not None:
+                break
+        if hit is not None:
+            break
+    known_class[hit] = name
+    print(f'exact {name}: {"is class %d" % hit if hit is not None else "NOT FOUND"}')
+    assert hit is not None
+
 # symmetry groups: rotations (orientation preserving) and reflections
 results = []
 for c, members in enumerate(classes):
@@ -265,7 +316,8 @@ for c, members in enumerate(classes):
     labelled = math.factorial(N) // len(rot_sym)   # labelled classes mod rotation (and scaling)
     if chiral:
         labelled *= 2   # the mirror class is distinct and has the same count
-    results.append({'class': c, 'members': members, 'rot_sym_order': len(rot_sym),
+    results.append({'ref_sym_perms': [list(p) for p in ref_sym], 'rot_sym_perms': [list(p) for p in rot_sym],
+                    'class': c, 'name': known_class.get(c, 'not a classical configuration'), 'members': members, 'rot_sym_order': len(rot_sym),
                     'ref_sym_count': len(ref_sym), 'chiral': chiral, 'labelled': labelled})
 
 # ------------------------------------------------------ stage 3: Morse index
@@ -415,7 +467,11 @@ for r in results:
     r['morse_index'] = idx
     st = stability(z, idx)
     r['stability'] = {k: st[k] for k in ('real_pairs_certified', 'imag_pairs_certified', 'deg')}
-    r['linearly_stable_certified'] = st['imag_pairs_certified'] == st['deg']
+    # index 0: Hess W is negative definite on the reduced space T, and T is
+    # invariant under L = Jsym Hess W (Jsym is orthogonal and preserves the
+    # span of the translations, z and iz), so L|T = Jsym|T S|T with S|T
+    # definite: purely imaginary, semisimple spectrum (linear stability).
+    r['linearly_stable_certified'] = (idx == 0) or st['imag_pairs_certified'] == st['deg']
     r['unstable_certified'] = st['real_pairs_certified'] > 0
     total_labelled += r['labelled']
     euler += (-1) ** idx * r['labelled']
@@ -428,10 +484,11 @@ for r in results:
 
 print()
 for r in results:
-    print(f"class {r['class']}: labelled copies mod rotation = {r['labelled']}, rotation-symmetry order = {r['rot_sym_order']}, "
+    print(f"class {r['class']} [{r['name']}]: labelled copies mod rotation = {r['labelled']}, rotation-symmetry order = {r['rot_sym_order']}, "
           f"mirror-symmetric = {not r['chiral']}, Morse index = {r['morse_index']}, "
           f"real eigenvalue pairs certified = {r['stability']['real_pairs_certified']}, "
-          f"imaginary pairs certified = {r['stability']['imag_pairs_certified']} of {r['stability']['deg']}")
+          f"imaginary pairs certified = {r['stability']['imag_pairs_certified']} of {r['stability']['deg']}, "
+          f"{'LINEARLY STABLE' if r['linearly_stable_certified'] else ('UNSTABLE' if r['unstable_certified'] else 'stability undecided')}")
     print('   z ~', ' '.join(f"({a:+.6f},{b:+.6f})" for a, b in r['z_approx']))
 print()
 print(f'total labelled relative equilibria modulo rotation and scaling: {total_labelled}')

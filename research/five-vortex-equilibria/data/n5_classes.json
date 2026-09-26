@@ -4,7 +4,68 @@
  "distinct_chart_solutions": 11,
  "classes": [
   {
+   "ref_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     4,
+     3
+    ],
+    [
+     1,
+     0,
+     2,
+     3,
+     4
+    ],
+    [
+     3,
+     4,
+     2,
+     0,
+     1
+    ],
+    [
+     4,
+     3,
+     2,
+     1,
+     0
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     0,
+     2,
+     4,
+     3
+    ],
+    [
+     3,
+     4,
+     2,
+     1,
+     0
+    ],
+    [
+     4,
+     3,
+     2,
+     0,
+     1
+    ]
+   ],
    "class": 0,
+   "name": "centred regular 4-gon",
    "members": [
     0,
     1,
@@ -23,7 +84,7 @@
     "imag_pairs_certified": 1,
     "deg": 3
    },
-   "linearly_stable_certified": false,
+   "linearly_stable_certified": true,
    "unstable_certified": false,
    "pair_distances": [
     1.5811388300841898,
@@ -84,7 +145,40 @@
    "max_radius_enclosure": 9.370530931364087e-75
   },
   {
+   "ref_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     0,
+     4,
+     3,
+     2
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     0,
+     4,
+     3,
+     2
+    ]
+   ],
    "class": 1,
+   "name": "collinear (zeros of H_5)",
    "members": [
     2
    ],
@@ -159,7 +253,82 @@
    "max_radius_enclosure": 8.501301032868451e-76
   },
   {
+   "ref_sym_perms": [
+    [
+     0,
+     2,
+     1,
+     4,
+     3
+    ],
+    [
+     1,
+     0,
+     4,
+     3,
+     2
+    ],
+    [
+     2,
+     3,
+     0,
+     1,
+     4
+    ],
+    [
+     3,
+     4,
+     2,
+     0,
+     1
+    ],
+    [
+     4,
+     1,
+     3,
+     2,
+     0
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     4,
+     0,
+     2,
+     3
+    ],
+    [
+     2,
+     0,
+     3,
+     4,
+     1
+    ],
+    [
+     3,
+     2,
+     4,
+     1,
+     0
+    ],
+    [
+     4,
+     3,
+     1,
+     0,
+     2
+    ]
+   ],
    "class": 2,
+   "name": "regular 5-gon",
    "members": [
     5,
     8
@@ -174,7 +343,7 @@
     "imag_pairs_certified": 1,
     "deg": 3
    },
-   "linearly_stable_certified": false,
+   "linearly_stable_certified": true,
    "unstable_certified": false,
    "pair_distances": [
     1.6625077511098136,
@@ -235,7 +404,26 @@
    "max_radius_enclosure": 4.390702383784756e-75
   },
   {
+   "ref_sym_perms": [
+    [
+     2,
+     3,
+     0,
+     1,
+     4
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ]
+   ],
    "class": 3,
+   "name": "not a classical configuration",
    "members": [
     9
    ],
@@ -310,7 +498,26 @@
    "max_radius_enclosure": 1.2841799289542148e-74
   },
   {
+   "ref_sym_perms": [
+    [
+     1,
+     0,
+     4,
+     3,
+     2
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ]
+   ],
    "class": 4,
+   "name": "not a classical configuration",
    "members": [
     10
    ],

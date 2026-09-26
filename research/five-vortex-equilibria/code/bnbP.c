@@ -1,3 +1,13 @@
+/* bnbP: bnbA with the exponent A as an extra coordinate of every box
+ * (joint branch-and-bound over (z, A), A in [a, b]).  On each box the
+ * exponent is the box's A-interval; a certified box satisfies the
+ * parametric Krawczyk condition K(X, A-range) in int X, so for every A in
+ * the range the box holds exactly one solution, and the Jacobian of the
+ * square system is nonsingular there.  Usage: bnbP N a b nsplit worker
+ * nworkers [minwidth] [--sym].  Output boxes list the z-coordinates and then
+ * the A-interval.
+ *
+ * Derived from bnbA.c: */
 /* Interval branch-and-bound for the planar central configurations of N equal
  * masses with the homogeneous potential of exponent A (Hampton's convention:
  * U = sum r^{2-A}, force ~ r^{1-A}; A = 2 is the point-vortex case, with the
@@ -57,7 +67,7 @@ static int use_sym = 0, mutate = 0;
 static long st_boxes, st_t0, st_t2, st_t3, st_t4, st_cert, st_unres;
 static double vol_total, vol_done; static long next_report = 1L << 20;
 
-typedef struct { iv x[MAXD]; } box;
+typedef struct { iv x[MAXD]; iv a; } box;
 
 /* sqrt enclosure: upper bound from the upward rounded sqrt, lower bound by
  * stepping down until the square (rounded up) does not exceed x. */
@@ -314,10 +324,11 @@ static int finv(double M[][MAXD], double C[][MAXD]) {
 static int boxpos(const box *b) { tables t; build(b, &t); return allpos(&t); }
 
 static int krawczyk(const box *X, box *K) {
+  AI = X->a;
   if (!boxpos(X)) return 0;
   iv J[MAXD][MAXD], Ev[MAXD];
   evalE(X, Ev, J);
-  box m; double mv[MAXD];
+  box m; double mv[MAXD]; m.a = X->a;
   for (int i = 0; i < D; i++) { mv[i] = iv_mid(X->x[i]); m.x[i] = ivp(mv[i]); }
   if (!boxpos(&m)) return 0;
   iv Em[MAXD]; evalE(&m, Em, NULL);
@@ -340,7 +351,7 @@ static int krawczyk(const box *X, box *K) {
 static void print_box(const char *tag, const box *b) {
   printf("%s", tag);
   for (int i = 0; i < D; i++) printf(" %a %a", b->x[i].lo, b->x[i].hi);
-  printf("\n");
+  printf(" %a %a\n", b->a.lo, b->a.hi);
 }
 static double maxwid(const box *b, int *arg) {
   double w = -1; int a = 0;
@@ -351,6 +362,7 @@ static double maxwid(const box *b, int *arg) {
 static int split_hint;
 static int process(box *b) {
   st_boxes++; split_hint = -1;
+  AI = b->a;
   tables t; int ap = 0;
   int r = exclude_basic(b, &t, &ap);
   if (r == 1) { st_t0++; return 1; }
@@ -365,10 +377,19 @@ static int process(box *b) {
     for (int q = 0; q < D; q++) m = fmax(m, fmax(fabs(J[q][c].lo), fabs(J[q][c].hi)));
     if (m * iv_wid(b->x[c]) > best) { best = m * iv_wid(b->x[c]); split_hint = c; }
   }
-  box m; double mv[MAXD];
+  box m; double mv[MAXD]; m.a = b->a;
   for (int i = 0; i < D; i++) { mv[i] = iv_mid(b->x[i]); m.x[i] = ivp(mv[i]); }
   if (!boxpos(&m)) return 0;
   iv Em[MAXD]; evalE(&m, Em, NULL);
+  /* split A when the spread of E at the z-midpoint over the A-range
+   * dominates the first-order spread over the z-box */
+  { double wA = 0, wZ = 0;
+    for (int q = 0; q < D; q++) {
+      wA = fmax(wA, iv_wid(Em[q]));
+      double t = 0; for (int c = 0; c < D; c++) t += fmax(fabs(J[q][c].lo), fabs(J[q][c].hi)) * iv_wid(b->x[c]);
+      wZ = fmax(wZ, t);
+    }
+    if (wA > 0.5 * wZ && iv_wid(b->a) > 1e-9) split_hint = D; }
   for (int q = 0; q < D; q++) {
     iv s = Em[q];
     for (int c = 0; c < D; c++) s = iv_add(s, iv_mul(J[q][c], iv_sub(b->x[c], ivp(mv[c]))));
@@ -376,26 +397,34 @@ static int process(box *b) {
   }
   box K;
   if (!krawczyk(b, &K)) return 0;
-  box nb;
+  box nb; nb.a = b->a;
   for (int i = 0; i < D; i++) {
     double lo = fmax(b->x[i].lo, K.x[i].lo), hi = fmin(b->x[i].hi, K.x[i].hi);
     if (lo > hi) { st_t4++; return 1; }
     nb.x[i] = ivr(lo, hi);
   }
   if (maxwid(&nb, NULL) <= KTHRESH) {
-    box X2;
+    box X2; X2.a = nb.a;
+    /* centred on the Krawczyk image K (the Newton point), radius twice its
+     * radius: with an A-range, the spread of E(m) over A keeps K about as
+     * wide as the box, so centring on the contracted box (which can be
+     * pinned at the chart boundary) would never succeed */
     for (int i = 0; i < D; i++) {
-      double c = iv_mid(nb.x[i]), rr = iv_wid(nb.x[i]) + 1e-13 * (1.0 + fabs(c));
+      double c = iv_mid(K.x[i]), rr = iv_wid(K.x[i]) + 1e-13 * (1.0 + fabs(c));
       X2.x[i] = ivr(-(-c + rr), c + rr);
     }
     box K2;
     if (krawczyk(&X2, &K2)) {
       int inside = 1;
       for (int i = 0; i < D; i++) if (!(K2.x[i].lo > X2.x[i].lo && K2.x[i].hi < X2.x[i].hi)) { inside = 0; break; }
+      if (getenv("BNB_TRACE") && maxwid(b, NULL) < 1e-4) {
+        fprintf(stderr, "TRACE A=[%.9g,%.9g] inside=%d", b->a.lo, b->a.hi, inside);
+        for (int i = 0; i < D; i++) fprintf(stderr, " X[%.12g,%.12g] K[%.12g,%.12g]", X2.x[i].lo, X2.x[i].hi, K2.x[i].lo, K2.x[i].hi);
+        fprintf(stderr, "\n"); }
       if (inside) {
         civ z[MAXN]; zfrom(&X2, z);
         iv g = iv_sub(ivp(1.0), z[N - 1].re);  /* z_N != 1: Re z_N < 1 */
-        if (g.lo > 0) { st_cert++; print_box("CERT", &X2); return 1; }
+        if (g.lo > 0) { st_cert++; X2.a = b->a; print_box("CERT", &X2); return 1; }
       }
     }
   }
@@ -408,7 +437,7 @@ static void push(const box *b) {
   if (sp == cap) { cap = cap ? 2 * cap : 1 << 16; stack = realloc(stack, cap * sizeof(box)); }
   stack[sp++] = *b;
 }
-static double bvol(const box *b) { double v = 1; for (int i = 0; i < D; i++) v *= iv_wid(b->x[i]); return v; }
+static double bvol(const box *b) { double v = iv_wid(b->a); for (int i = 0; i < D; i++) v *= iv_wid(b->x[i]); return v; }
 static void run(box root) {
   push(&root);
   while (sp > 0) {
@@ -420,26 +449,23 @@ static void run(box root) {
     double v0 = bvol(&b);
     if (process(&b)) { vol_done += v0; continue; }
     int a; double w = maxwid(&b, &a);
-    if (split_hint >= 0 && iv_wid(b.x[split_hint]) > 0.05 * w) a = split_hint;
-    if (w < MINW) { st_unres++; vol_done += v0; print_box("UNRES", &b); continue; }
-    double c = iv_mid(b.x[a]);
-    box l = b, r = b; l.x[a].hi = c; r.x[a].lo = c;
+    if (split_hint >= 0 && split_hint < D && iv_wid(b.x[split_hint]) > 0.05 * w) a = split_hint;
+    if (w < MINW && iv_wid(b.a) < MINW) { st_unres++; vol_done += v0; print_box("UNRES", &b); continue; }
+    box l = b, r = b;
+    if (split_hint == D || (w < MINW)) { double c = iv_mid(b.a); l.a.hi = c; r.a.lo = c; }
+    else { double c = iv_mid(b.x[a]); l.x[a].hi = c; r.x[a].lo = c; }
     push(&r); push(&l);
   }
 }
 
 int main(int argc, char **argv) {
-  if (argc < 6) { fprintf(stderr, "usage: bnbA N A nsplit worker nworkers [minwidth] [--sym]\n"); return 2; }
+  if (argc < 7) { fprintf(stderr, "usage: bnbP N a b nsplit worker nworkers [minwidth] [--sym]\n"); return 2; }
   iv_init();
   N = atoi(argv[1]); D = 2 * N - 4;
-  if (strchr(argv[2], ':')) {  /* parametric: A in [a, b] (exp/log arithmetic) */
-    char *p = argv[2]; AI.lo = strtod(p, &p); AI.hi = strtod(p + 1, NULL);
-    if (!(AI.lo >= 2 && AI.hi >= AI.lo)) { fprintf(stderr, "need 2 <= a <= b\n"); return 2; }
-    param = 1; A = iv_mid(AI); A2 = -1;
-  } else {
-    A = atof(argv[2]); A2 = (int)(2 * A + 0.5); AI = ivp(A);
-    if (fabs(A2 - 2 * A) > 1e-12 || A < 2) { fprintf(stderr, "A must be a multiple of 1/2, >= 2 (or give a:b)\n"); return 2; }
-  }
+  AI.lo = strtod(argv[2], NULL); AI.hi = strtod(argv[3], NULL);
+  if (!(AI.lo >= 2 && AI.hi >= AI.lo)) { fprintf(stderr, "need 2 <= a <= b\n"); return 2; }
+  param = 1; A = iv_mid(AI); A2 = -1;
+  argv++; argc--;
   int nsplit = atoi(argv[3]), worker = atoi(argv[4]), nworkers = atoi(argv[5]);
   if (argc > 6) MINW = atof(argv[6]);
   for (int i = 7; i < argc; i++) {
@@ -454,6 +480,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < D; i++) { for (int j = 0; j < D; j++) printf("J %d %d %a %a\n", i, j, J[i][j].lo, J[i][j].hi); }
     return 0; }
   box root; for (int i = 0; i < D; i++) root.x[i] = ivr(-1.0, 1.0);
+  root.a = AI;
   box *q = malloc(sizeof(box) * 4 * (nsplit + 4)); long nq = 1; q[0] = root;
   while (nq < nsplit) {
     long m = nq; box *q2 = malloc(sizeof(box) * (2 * m + 4)); long n2 = 0;
@@ -466,7 +493,7 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IOLBF, 0);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) vol_total += bvol(&q[i]);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) run(q[i]);
-  printf("STAT A=[%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cert=%ld unres=%ld\n",
-         AI.lo, AI.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cert, st_unres);
+  printf("STAT joint A in [%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cert=%ld unres=%ld\n",
+         root.a.lo, root.a.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cert, st_unres);
   return 0;
 }
