@@ -373,12 +373,17 @@ Negative controls (results in `data/controls.log`):
 - C1: a small box around the exact pentagon is certified. Boxes around non-solutions are excluded,
   with no certified and no undecided box.
 - C2: each mutated exclusion test (`--mutate=1..4`: wrong inertia constant, shifted G_j, cluster
-  constant 0, shifted mean-value test) loses true solutions. The classification then fails:
-  classical solutions are missing, or the Euler assertion fails.
-- C3: `--mutate=5` drops the contraction term of the Krawczyk operator. Its false certificates are
-  rejected by the independent arb re-verification.
-- C4: without the cluster identities (`--no-cluster`) the collision set cannot be excluded, and the
-  search leaves undecided boxes.
+  constant 0, shifted mean-value test) excludes the true solutions. There are 0 certified boxes,
+  and the classification fails because the exact pentagon is not found.
+  - The controls switch off only the guard that refuses mutated runs by their metadata, so the
+    failure is substantive.
+- C3: `--mutate=5` drops the contraction term of the Krawczyk operator. The broken operator then
+  "excludes" boxes that contain solutions, so no box is certified and the classification fails.
+  A false-certification mutation (no inflation, non-strict interior test) was run by the adversarial
+  check: it left 96 undecided boxes and was refused.
+- C4: without the cluster identities (`--no-cluster`, minimum width 1e-5) the collision set cannot be
+  excluded, and the search leaves 2612 undecided boxes.
+- Reference (unmutated, same driver): 5 classes, 354, Euler check passed.
 - The perturbed potential changes the count where it should (section 6): the count is 354 for
   A < A5 and 594 for A = 7 and A = 8. The Euler sum is -6 in both regimes.
 - N = 4 contains a degenerate relative equilibrium: the equilateral triangle with a vortex at its
