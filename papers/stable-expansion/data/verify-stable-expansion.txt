@@ -1,5 +1,6 @@
 1. The four-vortex collapse (existence, Krawczyk)
-OK    Krawczyk: a unique zero in the box, with x4 = 8/25, Gamma_2 = 5/2, Gamma_3 = 1/9 fixed   [contraction [1.63e-37 +/- 3.74e-40], unique within 1e-4]
+OK    Krawczyk: a unique zero of the 8 equations in the 8 unknowns in the box of radius 1e-4 (maximum norm) about the Newton point, with x4 = 8/25, Gamma_2 = 5/2, Gamma_3 = 1/9 fixed   [contraction [1.63e-37 +/- 3.74e-40]]
+      unknowns x1, x2, y2, x3, y3, y4, G4, P; the tightened enclosure below contains the zero, has radius at most 1.0e-94, and the side conditions and every later enclosure are evaluated on it
       x1  [-0.476265117692921 +/- 3.60e-16]
       x2  [0.300303091091152 +/- 1.63e-16]
       y2  [0.316128874385513 +/- 1.54e-16]
@@ -17,27 +18,28 @@ OK    side condition S_contains_0
 OK    side condition I_contains_0
 OK    side condition lambda_j_contain_2P_minus_i
 OK    side condition P_positive
-OK    Gamma_4 = -4/5 (forced by sum_{j<k} Gamma_j Gamma_k = 0 with Gamma = (1, 5/2, 1/9, Gamma_4))   [[-0.80000000000000000000 +/- 3e-25]]
-OK    P > sqrt(3)/2 (the winding; Lemma 1 needs no condition on b)   [[2.525846474134490910727064 +/- 3.14e-25]]
+OK    consistency: the enclosure of Gamma_4 contains -4/5, its exact value at every zero (sum_{j<k} Gamma_j Gamma_k = 26/9 + (65/18) Gamma_4 vanishes there)   [[-0.80000000000000000000 +/- 3e-25]]
+      P = [2.525846474134490910727064 +/- 3.14e-25], the winding
 
-2. Lemma 1 on the certified box
+2. Lemma 1 on the certified enclosure
 OK    rotation: DE (i zeta) contains 0 (eigenvalue 0)
 OK    scaling: DE zeta - 2 (1 - i b) zeta contains 0 (with the rotation, eigenvalues 2 and 0)
 OK    translation: DE 1 = 1 - b (i 1) and DE (i 1) = (i 1) + b 1 (eigenvalues 1 +- i b)
-OK    the family keeps the circulations: d Gamma_4/d x4 contains 0   [[+/- 1.75e-92]]
+OK    consistency: the family keeps the circulations, d Gamma_4/d x4 contains 0 (Gamma_4 = -4/5 at every zero)   [[+/- 1.75e-92]]
 OK    the family tangent v satisfies DE v = b' (i zeta) (so DE^2 v = 0: a second vector at eigenvalue 0)   [b' = [0.94234865 +/- 2.15e-9]]
 OK    v is independent of i zeta: Im v_1 = 0 while Im(i zeta_1) = x_1 != 0, and v has x4-component 1
-OK    trace consistency: tr DE = 2N = 8 = 0 + 0 + 2 + 2 + (1 + i b) + (1 - i b) + k + (2 - k)   [[8.000000000 +/- 3e-14]]
+OK    regression test (holds for every configuration): tr DE = 2N = 8 (= 0 + 0 + 2 + 2 + (1 + i b) + (1 - i b) + k + (2 - k))   [[8.000000000 +/- 3e-14]]
 
 3. The stability number c = k(2 - k) of the remaining pair
-OK    Im tr(A conj A) contains 0 (the trace of DE^2 is real)
+OK    regression test (holds for every configuration): Im tr(A conj A) contains 0 (the trace of a commutator)
 OK    c = 3 + 3 b^2 - tr(A conj A) > 1, so the pair is 1 +- i omega with omega = sqrt(c - 1) real   [[20.8814511933587 +/- 1.37e-14]]
       omega = [4.45886209624818 +/- 3.11e-15]
 OK    the pair 1 +- i omega is simple and differs from the translations 1 +- i b: omega != b and omega > 0   [omega = [4.4588621 +/- 3.76e-9], b = [5.0516929 +/- 4.83e-8]]
-OK    second enclosure: (k - 1)^2 = (tr (DE - I)^2 - 4 + 2 b^2)/2 = 1 - c   [[-19.8814511934 +/- 4.14e-11]]
+OK    regression test (holds for every configuration): (tr (DE - I)^2 - 4 + 2 b^2)/2 contains 1 - c: tr((DE - I)^2) = 2 tr(A conj A) - 2N b^2, so this is c again, computed from the assembled DE   [[-19.8814511934 +/- 4.14e-11]]
 
 3b. Five vortices: existence, Lemma 1 and the four remaining exponents
-OK    Krawczyk: a unique zero in the box, with x2 = 3/5, Gamma_2 = -3/7, Gamma_3 = -7/8, Gamma_4 = 9/7 fixed   [unique within 1e-5]
+OK    Krawczyk: a unique zero of the 10 equations in the 10 unknowns in the box of radius 1e-5 (maximum norm) about the Newton point, with x2 = 3/5, Gamma_2 = -3/7, Gamma_3 = -7/8, Gamma_4 = 9/7 fixed
+      unknowns x1, y2, x3, y3, x4, y4, x5, y5, G5, P; tightened enclosure of radius at most 3.7e-94, on which everything below is evaluated
 OK    five vortices: side condition all_Gamma_nonzero
 OK    five vortices: side condition sum_Gamma_nonzero
 OK    five vortices: side condition pairwise_distances_positive
@@ -47,11 +49,12 @@ OK    five vortices: side condition S_contains_0
 OK    five vortices: side condition I_contains_0
 OK    five vortices: side condition lambda_j_contain_2P_minus_i
 OK    five vortices: side condition P_positive
-OK    five vortices: Gamma_5 = 47/35 (forced by sum_{j<k} Gamma_j Gamma_k = 0)   [[1.3428571428571428571 +/- 4.29e-20]]
-OK    five vortices: P > 0   [[2.402347035417138410455931 +/- 3.88e-25]]
+OK    five vortices, consistency: the enclosure of Gamma_5 contains 47/35, its exact value at every zero (sum_{j<k} Gamma_j Gamma_k = -517/392 + (55/56) Gamma_5 vanishes there)   [[1.3428571428571428571 +/- 4.29e-20]]
+      P = [2.402347035417138410455931 +/- 3.88e-25], the winding
 OK    five vortices: rotation, scaling and translation vectors as in Lemma 1 (exact identities contain 0)
 OK    five vortices: the family tangent keeps the circulations and satisfies DE v = b' (i zeta), v independent of i zeta
-OK    five vortices: the discriminant of u^2 - s u + p is positive, so u1 < u2 are real   [[3.105190743 +/- 1.02e-10]]
+      m1 = [-22.0960813800 +/- 2.45e-11], m2 = [121.282905402 +/- 4.42e-10]
+OK    five vortices: the discriminant m1^2 - 4 m2 of u^2 - m1 u + m2 is positive, so u1 < u2 are real   [[3.105190743 +/- 1.02e-10]]
 OK    five vortices: u2 < 0 < 1, so the four remaining exponents are 1 +- i sqrt(-u1) and 1 +- i sqrt(-u2): real part 1   [u1 = [-11.92911826 +/- 7.89e-10], u2 = [-10.16696312 +/- 7.65e-10]]
       exponents 1 +- i [3.453855565 +/- 4.48e-10] and 1 +- i [3.188567565 +/- 4.19e-10]
 OK    five vortices: the four exponents on Re k = 1 are simple and differ from 1 +- i b (w1 != w2, both != b)   [b = [4.8046941 +/- 2.92e-8]]
@@ -65,12 +68,19 @@ OK    five vortices: grad H != 0 and grad H^T DE contains 0 (grad H . E = 0 iden
 OK    five vortices: along the family b' != 0 and dH/dx2 != 0, so H is strictly monotone along it near zeta*   [b' = [-9.679584081 +/- 1.43e-10], dH/dx2 = [0.2322290983 +/- 7.77e-12]]
 
 4. Controls
-OK    unstable control: Krawczyk certifies a four-vortex collapse with x4 = 149/125, Gamma_2 = -1003/1000, Gamma_3 = 13/10
-OK    unstable control: every side condition holds on the box
-OK    unstable control: c < 0, so a real pair k < 0 < 2 < 2 - k and the reversed expansion is unstable   [[-47.73460073 +/- 4.50e-9]]
-OK    three-vortex control: Krawczyk certifies a collapse
-OK    three-vortex control: every side condition holds on the box (P signed: P != 0 instead of P > 0)   [P = [-1.343479654 +/- 3.11e-10]]
-OK    three-vortex control: 2N - 6 = 0, and tr (DE - I)^2 = 4 - 2 b^2, the six symmetric exponents alone   [[+/- 6.69e-92]]
+OK    unstable control: Krawczyk certifies a four-vortex collapse with x4 = 149/125, Gamma_2 = -1003/1000, Gamma_3 = 13/10, unique within 1e-5
+OK    unstable control: every side condition holds on the enclosure (so x_1 != 0, and with the Krawczyk test the hypotheses of Lemma 1)
+OK    unstable control, consistency: the enclosure of Gamma_4 contains 10069/12970, its exact value at every zero   [[0.776329992289900 +/- 2.32e-16]]
+OK    unstable control: c < 0, so a real pair k < 0 < 2 < 2 - k and the reversed expansion is unstable   [c = [-47.73460073 +/- 4.50e-9], k = [-5.981017170 +/- 1.67e-10]]
+OK    five-vortex unstable control: Krawczyk certifies a collapse with x2 = -289/857, Gamma_2 = -133/849, Gamma_3 = 150/839, Gamma_4 = -61/876, unique within 1e-6
+OK    five-vortex unstable control: every side condition holds on the enclosure (so x_1 != 0, and with the Krawczyk test the hypotheses of Lemma 1)
+OK    five-vortex unstable control, consistency: the enclosure of Gamma_5 contains 6868618/84905979, its exact value at every zero   [[0.0808967528658965 +/- 2.31e-17]]
+      m1 = [13.6408066388 +/- 1.19e-11], m2 = [1903.03647960 +/- 1.06e-9]
+OK    five-vortex unstable control: the discriminant m1^2 - 4 m2 is negative, so the test of section 3b (a positive discriminant and u2 < 0) refuses it   [[-7426.074313 +/- 3.54e-7]]
+OK    five-vortex unstable control: the refusal is right: |Re sqrt(u)| > 1 for the roots u, conj(u), so the remaining exponents 1 +- sqrt(u), 1 +- conj(sqrt(u)) include two with negative real part and the reversed expansion is unstable   [sqrt(u) = [5.022161370 +/- 3.44e-10] + i [4.289720447 +/- 3.56e-10]]
+OK    three-vortex control: Krawczyk certifies a collapse with Gamma_2 = -238/125, x2 = 9/10, unique within 1e-4
+OK    three-vortex control: every side condition holds on the enclosure, with P != 0 in place of P > 0 (P is signed in this gauge, and this triangle turns the other way)   [P = [-1.343479654 +/- 3.11e-10]]
+OK    three-vortex control (positive): 2N - 6 = 0, and tr (DE - I)^2 = 4 - 2 b^2, the six forced exponents alone   [[+/- 6.69e-92]]
 
 5. Illustration in binary64 (not part of the proof)
       eigenvalues of DE: -0.000000+0.000000i, 0.000000+0.000000i, 1.000000-4.458862i, 1.000000+4.458862i, 1.000000-5.051693i, 1.000000+5.051693i, 2.000000+0.000000i, 2.000000+0.000000i
@@ -84,6 +94,9 @@ OK    binary64 (Theorem 3), four vortices: the shape deviation from the family m
       five vortices expanding, perturbed 1e-4, against the member with the same energy (least-squares residual 9e-16): size x1.15 dev 6.0e-03 (from zeta* 3.6e-04); size x5.7 dev 1.1e-03 (from zeta* 6.7e-03); size x56 dev 1.3e-04 (from zeta* 5.9e-03); size x560 dev 2.6e-05 (from zeta* 5.8e-03); size x5.6e+03 dev 2.9e-06 (from zeta* 5.8e-03); size x5.6e+04 dev 2.6e-07 (from zeta* 5.8e-03); size x5.6e+05 dev 3.4e-08 (from zeta* 5.8e-03); size x5.6e+06 dev 1.5e-09 (from zeta* 5.8e-03); size x5.6e+07 dev 2.4e-10 (from zeta* 5.8e-03); size x5.6e+08 dev 5.5e-12 (from zeta* 5.8e-03); largest change of H 3.8e-14
 OK    binary64 (Theorem 3), five vortices: the shape deviation from the family member with the same energy H decays like 1/size (size x deviation stays below 3e-02 from 5-fold to 5e8-fold growth) while the deviation from zeta* levels off, and H is conserved to 1e-12   [size x deviation from 5-fold growth on: 3.07e-03 to 2.12e-02]
       unstable control expanding, perturbed 1e-8: size x1 dev 1.5e-08; size x1.01 dev 1.5e-08; size x1.04 dev 1.6e-08; size x1.2 dev 2.6e-08; size x1.81 dev 2.3e-07; size x3.59 dev 1.3e-05; size x7.9 dev 1.5e-03; size x16.4 dev 3.1e-01
+      its local growth exponents d ln(dev)/d ln(size) where 1e-7 <= dev <= 1e-2: 5.92, 5.99 (the certified exponent is -k = 5.981)
 OK    binary64: in the unstable control a 1e-8 perturbation grows by at least 100 while the size grows
+      five-vortex unstable control expanding, perturbed 1e-8: size x1 dev 2.3e-08; size x1.01 dev 2.4e-08; size x1.04 dev 3.4e-08; size x1.2 dev 1.3e-07; size x1.81 dev 6.4e-07; size x3.59 dev 1.2e-05; size x7.9 dev 2.3e-04; size x17.8 dev 4.0e-03
+OK    binary64: in the five-vortex unstable control a 1e-8 perturbation grows by at least 100 while the size grows
 
-58 checks, 0 failed
+63 checks: 56 in ball or exact arithmetic (2 of them in exact rational arithmetic, 3 regression tests that hold for every configuration), 7 in binary64; 0 failed

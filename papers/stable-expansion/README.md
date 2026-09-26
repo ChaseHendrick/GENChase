@@ -6,7 +6,7 @@
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the draft (PDF, 19 pages)](paper/stable-expansion.pdf)**
+**[Read the draft (PDF, 20 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
@@ -28,8 +28,8 @@ for the two configurations: vortex patches placed at the vortices stay within di
 \varepsilon}$ of their centres of vorticity for all time, and the centres stay within a bounded distance of an exactly
 self-similar expansion of a single member of the family. The proof carries his argument over to any number of
 patches, with every estimate written out. Linear
-stability is an open condition; in a random sample about one four-vortex collapse in seven and one five-vortex collapse
-in seventeen reverses into a linearly stable expansion.
+stability is an open condition; in a naive random search, $52$ of $342$ converged four-vortex collapses and $32$ of
+$543$ converged five-vortex collapses, not checked for duplicates, reverse into linearly stable expansions.
 
 ## Status of the results
 
@@ -52,12 +52,12 @@ in seventeen reverses into a linearly stable expansion.
 | Folder | What is in it |
 |---|---|
 | [`paper/`](paper/) | The manuscript: [`stable-expansion.tex`](paper/stable-expansion.tex) (LaTeX, the only source) and its build [`stable-expansion.pdf`](paper/stable-expansion.pdf) |
-| [`code/`](code/) | The programs below, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the minimal-winding paper (unchanged), and [`requirements.txt`](code/requirements.txt) |
+| [`code/`](code/) | The programs below, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the minimal-winding paper (their code unchanged), and [`requirements.txt`](code/requirements.txt) |
 | [`data/`](data/) | The binary64 starting points of the certified configurations and the controls, and the output of the programs |
 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
-| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 58 | seconds |
+| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the stability test must refuse) and a positive three-vortex control, with their side conditions; direct integrations (binary64) | 56 in ball or exact arithmetic (3 of them regression tests of how the matrices are assembled), 7 in binary64 | seconds |
 | [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 6 (numerical) | | 10 min |
 
 ## Reproduce

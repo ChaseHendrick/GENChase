@@ -6,7 +6,7 @@ peer reviewed.
 ## v1.0.0 (2026-09-25)
 
 The first public release of the preprint *Stable Self-Similar Expansion of Four and Five Point Vortices and
-Confinement of Vortex Patches* (12 pages), with the programs that check its results and their output. It uses the
+Confinement of Vortex Patches* (20 pages), with the programs that check its results and their output. It uses the
 certification modules of *Minimal Winding in the Self-Similar Collapse of Point Vortices* (programs and data:
 doi:10.5281/zenodo.22963796).
 
@@ -32,23 +32,25 @@ carry over to four or more vortices, given sufficiently good stability.
   needs three vortices, his confinement theorem holds for the two configurations: patches stay within distance
   ε t^(1/4 + ε) of their centres of vorticity for all time, and the centres stay within a bounded distance of an
   exactly self-similar expansion. Appendix A writes out every estimate of his argument for any number of patches.
-- **Numerical:** direct integrations, and a random sample in which about one four-vortex collapse in seven and one
-  five-vortex collapse in seventeen reverses into a linearly stable expansion.
+- **Numerical:** direct integrations, and a naive random search in which 52 of 342 converged four-vortex collapses
+  and 32 of 543 converged five-vortex collapses, not checked for duplicates, reverse into linearly stable expansions.
 
 ### Checked by computer
 
 - `code/verify_stable_expansion.py`: Theorems 1 and 2 (existence by the Krawczyk test, the hypotheses of Lemma 1 on
-  the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1), for Theorem 3 the
-  exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the
-  family, an unstable four-vortex control and a three-vortex control, and direct integrations; 58 checks, seconds. It
-  stops with an error if any check fails.
+  the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1), for Theorem 3
+  the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the
+  family, two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the
+  stability test must refuse) and a positive three-vortex control, and direct integrations; 63 checks, 56 in ball or
+  exact arithmetic (3 of them regression tests of how the matrices are assembled) and 7 in binary64, seconds. It
+  exits with status 1 if any check fails.
 - `code/survey_expansions.py`: the random sample of Section 6 (numerical), about 10 minutes.
 
 ### Files
 
 - `paper/stable-expansion.pdf`: the paper. `paper/stable-expansion.tex` is its LaTeX source.
 - `code/`: the two programs, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the
-  minimal-winding paper (unchanged), and `requirements.txt`.
+  minimal-winding paper (their code unchanged), and `requirements.txt`.
 - `data/`: the binary64 starting points of the certified configurations and the controls, and the output of the
   programs.
 

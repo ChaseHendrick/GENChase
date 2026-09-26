@@ -28,8 +28,9 @@ GENChase: the companion repository does not carry `notes/`.
   long-time and short-time estimates) write out, for any number of patches, every estimate of Zbarsky's argument, with the other patches acting
   on a patch only through the strain of their field; two slips of his arXiv version are corrected there.
 - [x] **2. Rigorous computation.** Theorems 1 and 2 by the Krawczyk test in ball arithmetic (FLINT/Arb) with enclosures
-  of traces of powers of the Jacobian (`verify_stable_expansion.py`, 58 checks, including an unstable four-vortex
-  control and a three-vortex control); the exact vanishing of the sum of pairwise products of the circulations in
+  of traces of powers of the Jacobian (`verify_stable_expansion.py`, 63 checks, 56 of them in ball or exact
+  arithmetic, including two negative controls, an unstable four-vortex collapse and an unstable five-vortex collapse
+  that the stability test must refuse, and a positive three-vortex control); the exact vanishing of the sum of pairwise products of the circulations in
   rational arithmetic.
 - [x] **3. Every claim labelled.** The direct integrations and the random sample of Section 6 are labelled numerical
   in the paper and the README.
@@ -50,5 +51,5 @@ GENChase: the companion repository does not carry `notes/`.
   its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
   should-fix items (the C^1 regularity of the centres, the bootstrap at T_*, the count of turns, the chi conditions,
   notation) are fixed. Still to be read and recorded: Lemma 1 and Theorems 1 and 2 with their certificates.
-- [x] **7. Reproducible.** `verify_stable_expansion.py` (58 checks) and `survey_expansions.py`; `paper-check` passes;
-  19 pages.
+- [x] **7. Reproducible.** `verify_stable_expansion.py` (63 checks) and `survey_expansions.py`; `paper-check` passes;
+  20 pages.
