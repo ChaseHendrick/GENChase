@@ -47,7 +47,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Package and test extracted offline studio
         run: |
-          python3 tools/package-release.py --version v0.0.0
+          python3 tools/package-release.py --version 0.0.0
           node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
           python3 tools/release-assets.py --check
 
@@ -87,6 +87,7 @@ jobs:
           # A merged submission makes the ledger stale until the volunteer-results workflow refreshes it.
           node tools/compute-ledger.js --check || echo '::warning::COMPUTE.md is behind the recorded jobs; the volunteer-results workflow refreshes it after merge.'
           python3 tools/cahn-scaling.py --controls
+          python3 tools/release-notes.py --self-test
           node tools/build.js --check
           node tools/science.js
           node tools/geometry-science.js

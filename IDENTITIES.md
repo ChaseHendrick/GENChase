@@ -215,7 +215,7 @@ GitHub's "Cite this repository" button uses the same record via [`CITATION.cff`]
 - X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, Physics of Fluids 12, 1911 (2000).
 - Y. Kimura, Chaos and collapse of a system of point vortices, Fluid Dyn. Res. 3, 98 (1988). Two-page conference note on complex-time singularities. Not a coefficient table and not these closed forms.
 
-Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Reinaud and Dritschel, Leoncini, Kuznetsov and Zaslavsky, and Kimura 1987–1990 are logged in [`RESEARCH.md`](RESEARCH.md). The named Tacchi thesis is not in theses.fr, HAL, or arXiv.
+Prior-article searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Reinaud and Dritschel, Leoncini, Kuznetsov and Zaslavsky, and Kimura 1987–1990 are logged in [`RESEARCH.md`](RESEARCH.md). The named Tacchi thesis is not in theses.fr, HAL, or arXiv.
 
 ---
 

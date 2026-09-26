@@ -1,0 +1,441 @@
+
+====================================================================================================
+STAGE 0  set-up
+====================================================================================================
+  python-flint 0.9.0 (Arb ball arithmetic), working precision 96 bits, Taylor order 20, remainder tolerance 1e-18 (relative to scales [100, 1, 1, 1, 10])
+  trust base: python-flint 0.9.0 on FLINT 3.6.0 (Arb ball arithmetic, 96 bits): arb/acb field operations, abs, comparisons, union/intersection, arb.exp, arb.hypgeom_1f1 (Taylor coefficients of Psi), arb_mat products and arb_mat.inv (Lohner frames B^-1), arb_mat.charpoly (Routh-Hurwitz), acb_mat products and acb_mat.inv (Gershgorin eigenbasis S^-1); Python 3.11.15 integers and fractions (outward decimal printing).  numpy, scipy and mpmath only propose candidates, frames, eigenvector matrices and reference values and are not trusted.
+  model: HH 1952 eqs (12),(13),(20),(21),(23),(24),(26), Table 3; g_Na=120, g_K=36, g_l=0.3, E_Na=115, E_K=-12, C=1, 6.3 C; J = 8
+  E_l is carried as a fifth state variable with dE_l/dt = 0, so a ball of E_l values is a set
+  direction of the Lohner method rather than a re-wrapped parameter.
+  sections: stable orbit {u = 20, du/dt > 0} (one constant, ball_stable.SEC_LEVEL), unstable orbit {u = 5, du/dt > 0};
+  every Poincare map refuses an initial set that is not exactly on its section.
+
+====================================================================================================
+STAGE 1  self-tests of the rigorous integrator and of the certificate code; negative controls
+====================================================================================================
+  [PASS] exact: x'=x^2, x(0)=1/2, x(1)=1 in [1.00000000000000000000000000 +/- 4.48e-27]
+  [PASS] NEG wrong field q=1.001 excludes exact x(1)=1 (encl [1.0010 +/- 1.01e-6])
+  [PASS] NEG remainder set to 0 (p=3, h=0.1) misses exact x(1)=1 (encl [0.99978 +/- 3.69e-6])
+  [PASS] control: same p=3, h=0.1 run with the rigorous remainder contains 1 (encl [1.0000 +/- 7.40e-5])
+  [PASS] NEG a priori test refuses every box [0.5,10^k], k=1..6, for a step beyond blow-up
+  [PASS] NEG integrator refuses a step h=1.2 across the blow-up of x(0)=1
+  [PASS] NEG a priori test refuses a box that misses the motion (y in [-0.05,0.05])
+  [PASS] exact: u'=-Psi(u) through u=0, u(0)=3: Ein(u(10)) = Ein(3)-10 inside the image of the enclosure [-3.17173883107 +/- 9.49e-13]
+  [PASS] NEG wrong field u'=-1.001 Psi(u): exact value excluded
+  [PASS] exact Poincare map (a=-0.3): return time [6.28318530718 +/- 4.14e-13] contains 2pi; P, DP contain the exact values
+  [PASS] exact Poincare map (a=0.1): return time [6.28318530718 +/- 4.14e-13] contains 2pi; P, DP contain the exact values
+  [PASS] Krawczyk proves the periodic orbit (a=-0.3), period in [6.283185307 +/- 1.80e-10] (2pi), Gershgorin discs contain exp(-4pi), exp(2pi a)
+  [PASS] NEG Krawczyk fails on a box (x=1+1e-6 +- 1e-9) that misses the orbit (a=-0.3)
+  [PASS] Krawczyk proves the periodic orbit (a=0.1), period in [6.283185307 +/- 1.80e-10] (2pi), Gershgorin discs contain exp(-4pi), exp(2pi a)
+  [PASS] NEG Krawczyk fails on a box (x=1+1e-6 +- 1e-9) that misses the orbit (a=0.1)
+  [PASS] NEG wrong field (x' + 0.001 x^2): exact return point excluded
+  [PASS] exact over a wide set: x'=x^2, x0 in [0.4,0.5], t=0.5: the enclosure [0.49166, 0.66963] contains the exact image [1/2, 2/3] and is less than 1.5 times as wide
+  [PASS] exact over a wide set: the D phi enclosure [1.55029, 1.77958] contains the exact range [1/0.8^2, 1/0.75^2] (and is less than 6 times as wide)
+  [PASS] exact C^1, low order (p=3, h=0.1): x'=x^2, x(0)=1/2: D phi_1 = 1/(1-x0)^2 = 4 lies in the enclosure [4.00 +/- 1.53e-3]
+  [PASS] a priori enclosure over a step: for x0 in [0.4,0.5] and s in [0,0.1], Y = [0.39160, 0.52961] contains the exact range [0.4, 0.5/0.95] of phi_s(x0)
+  [PASS] a priori enclosure of the variational equation: x'=x^2, x0=1, p=2, h=1/4: YV = [0.06500, 2.75708] contains D phi_s = 1/(1-s)^2 for s in [0, 1/4], i.e. [1, 16/9] (a 5%-inflated Taylor range is refused)
+  [PASS] exact Poincare map over a wide box (twist, x0 in [1.19, 1.21]): return time [4.12429, 4.13177] and z-image [0.78627, 0.78923] contain T and z0 e^{aT} at both ends (the return time varies by [0.00555 +/- 4.54e-6] across the box)
+  [PASS] exact derivative of the twist Poincare map at x0 = 1.2: DP_zx = [-0.10938756 +/- 4.59e-9] contains a z0 e^{aT} dT/dx0 = [-0.10938756 +/- 4.21e-9], and DP_xx, DP_xz, DP_zz contain their exact values
+  [PASS] NEG Poincare map refuses an initial set on y = 0.001 with the section at y = 0
+  [PASS] multiplier code: the Gershgorin discs of the interval matrix [[2, e], [e, 1]], |e| <= 0.1, contain the eigenvalues (3 +- sqrt(1 + 4 e^2))/2 of its members e = 0, +-0.1
+  [PASS] NEG multiplier code: an interval matrix with an eigenvalue anywhere in [0.95, 1.05] passes neither the "all |mu| < 1" test nor the "one multiplier > 1" test
+  [PASS] multiplier code: diag-dominant matrices with eigenvalues (0.5, -0.2) and (3, 0.2) pass the stable and the unstable test; eigenvalues (-3, 0.2) fail the unstable test (the multiplier is < -1)
+  [PASS] contraction code: sup ||M||_inf over the interval matrix [[1/2, -1/2, [-1/4, 1/4]], [0, 1/4, 0], [0, 0, -1/8]] is 5/4; the bound [1.25000000047 +/- 4.34e-12] is >= 5/4 and < 5/4 + 1e-6
+  [PASS] mean value consistency of the HH Poincare map (stable orbit, section u = 20, |z1 - z2| ~ 2e-10): P(z1) - P(z2) meets DP(Z)(z1 - z2) in every component, and the prediction is sharp (its radius is at most 0.7% of the difference; required < 10%)
+  [PASS] mean value consistency of the HH Poincare map (unstable orbit, section u = 5, |z1 - z2| ~ 2e-12): P(z1) - P(z2) meets DP(Z)(z1 - z2) in every component, and the prediction is sharp (its radius is at most 0.8% of the difference; required < 10%)
+  [PASS] HH upstroke u=20, t=0.5 ms: mpmath (dps=30, 10s) reference inside the enclosure (max radius 1.4e-17, 0.6s)
+  [PASS] NEG wrong field (g_Na = 120.0001): mpmath reference excluded
+  [PASS] NEG remainder set to 0 (p=6, h=0.02): mpmath reference excluded
+  [PASS] control: the same p=6, h=0.02 run with the rigorous remainder contains it
+  [PASS] HH near the peak, t=0.5 ms: mpmath (dps=30, 8s) reference inside the enclosure (max radius 5.1e-17, 0.5s)
+  [PASS] HH recovery u=0, t=0.5 ms: mpmath (dps=30, 1s) reference inside the enclosure (max radius 4.0e-19, 0.1s)
+  stage 1 time 42.6 s
+
+====================================================================================================
+STAGE 2  non-rigorous numerics (float64 / scipy DOP853, rtol 1e-12; mpmath)
+====================================================================================================
+  zero-current leak potential E_l* (I_ion = 0 at u = 0, J = 0) = 10.59892096939167852219888
+  I_ss(u) strictly increasing on a grid of [-12, 250] (step 1e-3): True (min increment 3.145e-04); I_ss(-12) = -6.8069, I_ss(250) = 9418.0
+    for u <= -12 every current term is negative, for u >= 115 every term is >= 0 and the leak exceeds 31, so each J in [0, I_ss(250)] has exactly one equilibrium (numerically)
+  rest state at J = 0: u = 3.620669e-03 mV
+  E_l = 10.613  (10.6130000000): Hopf point J = 9.775438, u_eq = 5.345856, eigenvalues 1.1e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.613  (10.6130000000): Hopf point J = 154.522434, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = E_l*    (10.5989209694): Hopf point J = 9.779662, u_eq = 5.345856, eigenvalues -2.8e-17 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = E_l*    (10.5989209694): Hopf point J = 154.526657, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.599  (10.5990000000): Hopf point J = 9.779638, u_eq = 5.345856, eigenvalues -2.8e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.599  (10.5990000000): Hopf point J = 154.526634, u_eq = 21.941908, eigenvalues 6.9e-17 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.59   (10.5900000000): Hopf point J = 9.782338, u_eq = 5.345856, eigenvalues 2.1e-17 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.59   (10.5900000000): Hopf point J = 154.529334, u_eq = 21.941908, eigenvalues 6.9e-17 +- 1.062922i (2pi/omega = 5.9112 ms)
+  E_l = 10.62   (10.6200000000): Hopf point J = 9.773338, u_eq = 5.345856, eigenvalues -9.1e-16 +- 0.586234i (2pi/omega = 10.7179 ms)
+  E_l = 10.62   (10.6200000000): Hopf point J = 154.520334, u_eq = 21.941908, eigenvalues 7.4e-16 +- 1.062922i (2pi/omega = 5.9112 ms)
+    (the Hopf currents depend on E_l; a result at J = 8 is stated with its E_l)
+  J = 8: equilibrium [4.6466240169 0.0900658896 0.3906353695 0.4304534782], eigenvalues [-4.690303+0.j       -0.034465+0.566844j -0.034465-0.566844j
+ -0.135021+0.j      ]
+  stable orbit (section u = 20, u increasing): z = (m,n,h) = [0.24052906069702 0.42490470823005 0.39231037641667], period 16.007712803838 ms, u in [-10.1403, 95.9574], multipliers [ 7.089678e-02 -1.341272e-12  1.593009e-12]
+  an unstable orbit (candidate located by bisecting perturbations of the rest state between return to rest and a spike, delta u = 3.806769951380; section u = 5, u increasing): z = [0.09004142752266 0.37950318996291 0.43754826309113], period 14.343600948169 ms, u in [-0.6715, 11.0341], multipliers [1.030288e+01 8.540279e-13 1.968322e-01]
+  E_l = 10.613 : fold of limit cycles (nontrivial multiplier = 1 along the branch parametrised by the period): J_LPC = 6.260321, period 19.8952 ms
+    branch: T = 19.6000  J = 6.26490647  multiplier-1 = -0.3926
+    branch: T = 19.7500  J = 6.26137681  multiplier-1 = -0.2229
+    branch: T = 19.8500  J = 6.26042032  multiplier-1 = -0.0769
+    branch: T = 19.9500  J = 6.26046161  multiplier-1 = +0.1035
+    branch: T = 20.0500  J = 6.26140539  multiplier-1 = +0.3271
+  E_l = E_l*   : fold of limit cycles (nontrivial multiplier = 1 along the branch parametrised by the period): J_LPC = 6.264545, period 19.8952 ms
+    branch: T = 19.6000  J = 6.26913018  multiplier-1 = -0.3926
+    branch: T = 19.7500  J = 6.26560052  multiplier-1 = -0.2229
+    branch: T = 19.8500  J = 6.26464403  multiplier-1 = -0.0769
+    branch: T = 19.9500  J = 6.26468532  multiplier-1 = +0.1035
+    branch: T = 20.0500  J = 6.26562910  multiplier-1 = +0.3271
+  unstable branch towards the Hopf point: J = 8.50, period 12.6126, u in [1.0971, 9.2098] (amplitude 8.1128), unstable multiplier 2.7102
+  unstable branch towards the Hopf point: J = 9.00, period 11.6921, u in [2.3522, 8.0754] (amplitude 5.7233), unstable multiplier 1.5594
+  unstable branch towards the Hopf point: J = 9.50, period 11.0248, u in [3.7036, 6.8886] (amplitude 3.1849), unstable multiplier 1.1324
+  unstable branch towards the Hopf point: J = 9.70, period 10.7986, u in [4.5171, 6.1469] (amplitude 1.6298), unstable multiplier 1.0318
+  unstable branch towards the Hopf point: J = 9.75, period 10.7448, u in [4.8705, 5.8119] (amplitude 0.9414), unstable multiplier 1.0104
+    this unstable orbit shrinks towards the equilibrium as J -> 9.7754 from below and has a multiplier > 1: the first Hopf bifurcation is subcritical (numerical evidence here; proved by l1 > 0 in papers/hh-dynamics/code/certify_equilibria_hopf.py)
+  E_l = 10.613 : bistability window (numerical) 6.2603 < J < 9.7754
+  E_l = E_l*   : bistability window (numerical) 6.2645 < J < 9.7797
+  numerics time 483.4s
+  [PASS] E_l = 10.613: numerical bistability window contains J = 8 (6.2603 < J < 9.7754)
+  [PASS] E_l = E_l*: numerical bistability window contains J = 8 (6.2645 < J < 9.7797)
+  [PASS] E_l = 10.613: first Hopf current 9.775438 > J = 8 (numerical)
+  [PASS] E_l = E_l*: first Hopf current 9.779662 > J = 8 (numerical)
+  [PASS] E_l = 10.599: first Hopf current 9.779638 > J = 8 (numerical)
+  [PASS] E_l = 10.59: first Hopf current 9.782338 > J = 8 (numerical)
+  [PASS] E_l = 10.62: first Hopf current 9.773338 > J = 8 (numerical)
+
+====================================================================================================
+STAGE 3  equilibrium at J = 8 (proof)
+====================================================================================================
+  E_l ball [10.59, 10.62] = [10.6 +/- 0.0201] (contains 10.613, 10.599 and E_l*)
+    interval Newton on F(u) = I_ss(u) - J: U = [4.65 +/- 9.11e-3], F'(U) = [2.4 +/- 0.0294], N(U) = [4.65 +/- 6.27e-3], N(U) in int U: True
+    after 4 more interval Newton steps: u* in [4.65 +/- 6.25e-3]
+    for u >= 115: I_Na, I_K >= 0 and I_l >= 0.3 (115 - E) so F >= 0.3 (115 - E) - J = [23.32 +/- 6.01e-3] > 0: True
+    for u <= -12: I_Na < 0, I_K <= 0, and I_l < 0 because E > -12 (E in [10.6 +/- 0.0201]: True); J >= 0 (True), so F < 0: True
+    F' > 0 on W = [3.646624, 5.646624] (64 pieces) and U inside W: True, so the zero in U is the only zero in W
+    F has no zero on [-12, 115] outside W (70 interval evaluations): True
+    characteristic polynomial s^4 + a1 s^3 + a2 s^2 + a3 s + a4 of the Jacobian (enclosed):
+      a1 = [4.89 +/- 5.20e-3], a2 = [1.3 +/- 0.0247], a3 = [1.60 +/- 9.17e-3], a4 = [0.20 +/- 7.04e-3]
+      Hurwitz: a1 > 0, a3 > 0, a4 > 0, a1 a2 - a3 = [4.7 +/- 0.0838] > 0, (a1 a2 - a3) a3 - a1^2 a4 = [3e+0 +/- 0.594] > 0: True
+  [PASS] equilibrium exists, is unique and is asymptotically stable (Routh-Hurwitz) for every E_l in [10.59, 10.62]
+    eigenvalue enclosures (Gershgorin discs of S^-1 A S, S = numerical eigenvectors; centres rounded, radii include the rounding): -4.690211+0.000000i (radius 6.9e-03); -0.034513+0.566815i (radius 8.4e-03); -0.034513-0.566815i (radius 8.4e-03); -0.135017+0.000000i (radius 6.1e-05)
+  [PASS] all eigenvalue discs lie in Re < 0 (independent confirmation of stability)
+  [PASS] the eigenvalue discs are pairwise disjoint (decided in ball arithmetic), so each holds exactly one eigenvalue of every Jacobian in the enclosure
+    equilibrium box: u=[4.65 +/- 6.25e-3], m=[0.0901 +/- 6.47e-5], n=[0.3906 +/- 8.05e-5], h=[0.430 +/- 5.89e-4], E=[10.6 +/- 0.0201]
+  [PASS] E_l = 10.613 (Hodgkin-Huxley): equilibrium u* in [4.64662401687398 +/- 4.77e-15], Routh-Hurwitz holds
+      eigenvalues: -4.6903034462+0.0000000000i (radius 9.2e-12), -0.0344645606+0.5668442403i (radius 4.3e-11), -0.0344645606-0.5668442403i (radius 4.3e-11), -0.1350214820+0.0000000000i (radius 3.3e-11)
+  [PASS] E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] (exact zero-current value): equilibrium u* in [4.64487161052993 +/- 4.87e-15], Routh-Hurwitz holds
+      eigenvalues: -4.6901402003+0.0000000000i (radius 4.5e-11), -0.0345491070+0.5667922207i (radius 5.8e-11), -0.0345491070-0.5667922207i (radius 5.8e-11), -0.1350132585+0.0000000000i (radius 2.5e-11)
+  [PASS] E_l = 10.599 (Guckenheimer-Oliva): equilibrium u* in [4.64488144868202 +/- 2.83e-15], Routh-Hurwitz holds
+      eigenvalues: -4.6901411164+0.0000000000i (radius 1.8e-11), -0.0345486324+0.5667925128i (radius 4.6e-11), -0.0345486324-0.5667925128i (radius 4.6e-11), -0.1350133047+0.0000000000i (radius 1.5e-11)
+  stage 3 time 0.1 s
+
+====================================================================================================
+STAGE 4  periodic orbits at J = 8 (proofs)
+====================================================================================================
+  stable orbit:   section {u = 20, du/dt > 0}, coordinates (m, n, h)
+  unstable orbit: section {u = 5,  du/dt > 0}, coordinates (m, n, h)
+
+  --- E_l = 10.613 (Hodgkin-Huxley)
+  float64 candidates at E_l = 10.613: stable [0.240529060697 0.42490470823  0.392310376417], unstable [0.090041427523 0.379503189963 0.437548263091]
+  stable orbit:
+    Newton 0: |P(z)-z| = 3.403e-14, step 3.400e-14 (5.7s)
+    Newton 1: |P(z)-z| = 5.551e-17, step 5.512e-17 (5.0s)
+    C^0 run: P(zbar) - zbar = [0. 0. 0.], radius 1.37e-16 (303 steps, 4.3s)
+    C^1 run over Z (radius [1.00e-15 1.00e-15 1.21e-15]): DP radius 1.10e-09, return time [16.0077128038376 +/- 4.40e-14] (303 steps, 5.5s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (stable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.2405290606970255 +/- 8.02e-17]
+      n = [0.4249047082300503 +/- 7.80e-17]
+      h = [0.392310376416666 +/- 2.56e-16]
+    period (first return time over the Krawczyk box) T in [16.0077128038376 +/- 4.40e-14] ms
+    multiplier disc 1: |mu - 0.070896780693| <= 2.25e-09, so 0.07089677844 <= |mu| <= 0.07089678294
+    multiplier disc 2: contains 0 (centre about 1.6e-12, radius about 1.3e-09), so |mu| <= 1.260525473e-09
+    multiplier disc 3: contains 0 (centre about 1.7e-18, radius about 4.0e-09), so |mu| <= 3.969838792e-09
+    u along the orbit: stays in [-10.154729, 96.045119] mV, attains u <= -10.139662 and u >= 95.953532
+    first return certified (1 downward passes of the section, no other upward crossing), 303 steps
+  [PASS] all nontrivial Floquet multipliers of the stable orbit lie in |mu| < 1
+  unstable orbit:
+    Newton 0: |P(z)-z| = 1.055e-14, step 7.669e-15 (1.8s)
+    Newton 1: |P(z)-z| = 1.110e-16, step 3.360e-17 (1.8s)
+    C^0 run: P(zbar) - zbar = [-5.551e-17 -1.665e-16 -4.441e-16], radius 2.99e-16 (112 steps, 1.5s)
+    C^1 run over Z (radius [2.03e-15 3.29e-15 2.13e-14]): DP radius 1.29e-04, return time [14.343600948 +/- 3.16e-10] (112 steps, 1.8s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (unstable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.090041427522653 +/- 5.10e-16]
+      n = [0.379503189962905 +/- 5.26e-16]
+      h = [0.43754826309114 +/- 5.68e-15]
+    period (first return time over the Krawczyk box) T in [14.343600948 +/- 3.16e-10] ms
+    multiplier disc 1: |mu - 10.302882821224| <= 2.01e-04, so 10.30268246 <= |mu| <= 10.30308318
+    multiplier disc 2: |mu - 0.196832229136| <= 2.72e-04, so 0.1965602694 <= |mu| <= 0.1971041889
+    multiplier disc 3: contains 0 (centre about 1.0e-17, radius about 1.6e-04), so |mu| <= 0.0001564768327
+    u along the orbit: stays in [-0.709090, 11.045813] mV, attains u <= -0.668885 and u >= 11.031565
+    first return certified (1 downward passes of the section, no other upward crossing), 112 steps
+  [PASS] exactly one Floquet multiplier of the second orbit is real and > 1, the other two lie in |mu| < 1
+  [PASS] multiplier discs used by Theorem B are isolated (ball arithmetic): disc 1 of the stable orbit is disjoint from its discs 2, 3, and the three discs of the unstable orbit are pairwise disjoint, so each of these discs holds exactly one multiplier
+  [PASS] the orbits are distinct: the stable orbit reaches u >= 95.953532, the unstable orbit stays in u <= 11.045813
+  [PASS] neither orbit is the equilibrium: u* in [4.646624017 +/- 1.27e-10] differs from the section levels u = 20 and u = 5
+  time for this E_l: 33.0 s
+
+  --- E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] (exact zero-current value)
+  float64 candidates at E_l = 10.5989209693917: stable [0.240532571244 0.424903077345 0.392314496435], unstable [0.090039718889 0.37946676035  0.437559233698]
+  stable orbit:
+    Newton 0: |P(z)-z| = 5.104e-14, step 5.109e-14 (5.2s)
+    Newton 1: |P(z)-z| = 0.000e+00, step 0.000e+00 (5.2s)
+    C^0 run: P(zbar) - zbar = [0. 0. 0.], radius 1.39e-16 (303 steps, 4.1s)
+    C^1 run over Z (radius [1.00e-15 1.00e-15 1.22e-15]): DP radius 1.11e-09, return time [16.0115042980605 +/- 6.25e-14] (303 steps, 5.2s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (stable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.2405325712435079 +/- 8.05e-17]
+      n = [0.4249030773450643 +/- 6.70e-17]
+      h = [0.392314496434800 +/- 3.56e-16]
+    period (first return time over the Krawczyk box) T in [16.0115042980605 +/- 6.25e-14] ms
+    multiplier disc 1: |mu - 0.070904264160| <= 2.26e-09, so 0.07090426190 <= |mu| <= 0.07090426642
+    multiplier disc 2: contains 0 (centre about 1.6e-12, radius about 1.3e-09), so |mu| <= 1.264441493e-09
+    multiplier disc 3: contains 0 (centre about 2.6e-18, radius about 4.0e-09), so |mu| <= 3.981371362e-09
+    u along the orbit: stays in [-10.155227, 96.045295] mV, attains u <= -10.140157 and u >= 95.953707
+    first return certified (1 downward passes of the section, no other upward crossing), 303 steps
+  [PASS] all nontrivial Floquet multipliers of the stable orbit lie in |mu| < 1
+  unstable orbit:
+    Newton 0: |P(z)-z| = 5.161e-14, step 5.258e-14 (1.9s)
+    Newton 1: |P(z)-z| = 1.665e-16, step 6.142e-17 (1.9s)
+    C^0 run: P(zbar) - zbar = [0.000e+00 0.000e+00 5.551e-17], radius 3.18e-16 (112 steps, 1.5s)
+    C^1 run over Z (radius [1.00e-15 1.64e-15 1.08e-14]): DP radius 7.90e-05, return time [14.3694497469 +/- 8.09e-11] (112 steps, 1.9s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (unstable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.090039718889430 +/- 2.05e-16]
+      n = [0.379466760350386 +/- 5.50e-16]
+      h = [0.43755923369796 +/- 2.76e-15]
+    period (first return time over the Krawczyk box) T in [14.3694497469 +/- 8.09e-11] ms
+    multiplier disc 1: |mu - 10.529914391684| <= 1.28e-04, so 10.52978728 <= |mu| <= 10.53004150
+    multiplier disc 2: |mu - 0.197175610648| <= 1.78e-04, so 0.1969985404 <= |mu| <= 0.1973526809
+    multiplier disc 3: contains 0 (centre about 2.8e-17, radius about 9.5e-05), so |mu| <= 9.488444869e-05
+    u along the orbit: stays in [-0.728187, 11.073821] mV, attains u <= -0.687050 and u >= 11.060184
+    first return certified (1 downward passes of the section, no other upward crossing), 112 steps
+  [PASS] exactly one Floquet multiplier of the second orbit is real and > 1, the other two lie in |mu| < 1
+  [PASS] multiplier discs used by Theorem B are isolated (ball arithmetic): disc 1 of the stable orbit is disjoint from its discs 2, 3, and the three discs of the unstable orbit are pairwise disjoint, so each of these discs holds exactly one multiplier
+  [PASS] the orbits are distinct: the stable orbit reaches u >= 95.953707, the unstable orbit stays in u <= 11.073821
+  [PASS] neither orbit is the equilibrium: u* in [4.644871611 +/- 4.71e-10] differs from the section levels u = 20 and u = 5
+  time for this E_l: 42.4 s
+
+  --- E_l = 10.599 (Guckenheimer-Oliva)
+  float64 candidates at E_l = 10.599: stable [0.240532551473 0.42490308639  0.392314473509], unstable [0.090039728499 0.379466965115 0.437559174679]
+  stable orbit:
+    Newton 0: |P(z)-z| = 2.776e-14, step 2.774e-14 (5.8s)
+    Newton 1: |P(z)-z| = 0.000e+00, step 0.000e+00 (6.1s)
+    C^0 run: P(zbar) - zbar = [0. 0. 0.], radius 1.39e-16 (303 steps, 5.0s)
+    C^1 run over Z (radius [1.00e-15 1.00e-15 1.22e-15]): DP radius 1.11e-09, return time [16.0114829989433 +/- 6.50e-14] (303 steps, 5.8s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (stable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.2405325514734029 +/- 5.09e-17]
+      n = [0.4249030863903386 +/- 7.35e-17]
+      h = [0.392314473508585 +/- 5.06e-16]
+    period (first return time over the Krawczyk box) T in [16.0114829989433 +/- 6.50e-14] ms
+    multiplier disc 1: |mu - 0.070904221789| <= 2.26e-09, so 0.07090421953 <= |mu| <= 0.07090422404
+    multiplier disc 2: contains 0 (centre about 1.6e-12, radius about 1.3e-09), so |mu| <= 1.264437122e-09
+    multiplier disc 3: contains 0 (centre about 8.7e-19, radius about 4.0e-09), so |mu| <= 3.981329790e-09
+    u along the orbit: stays in [-10.155224, 96.045294] mV, attains u <= -10.140154 and u >= 95.953706
+    first return certified (1 downward passes of the section, no other upward crossing), 303 steps
+  [PASS] all nontrivial Floquet multipliers of the stable orbit lie in |mu| < 1
+  unstable orbit:
+    Newton 0: |P(z)-z| = 6.595e-14, step 6.697e-14 (1.9s)
+    Newton 1: |P(z)-z| = 3.886e-16, step 1.095e-17 (2.0s)
+    C^0 run: P(zbar) - zbar = [4.163e-17 1.665e-16 3.886e-16], radius 3.18e-16 (112 steps, 1.6s)
+    C^1 run over Z (radius [1.94e-15 3.27e-15 2.13e-14]): DP radius 1.56e-04, return time [14.369303339 +/- 5.10e-10] (112 steps, 2.4s); Krawczyk K in int Z: True
+  [PASS] Krawczyk: unique fixed point of the first-return map in Z (unstable orbit)
+    fixed point on the section: (m, n, h) in
+      m = [0.090039728499330 +/- 4.63e-16]
+      n = [0.379466965114592 +/- 2.56e-16]
+      h = [0.43755917467915 +/- 5.61e-15]
+    period (first return time over the Krawczyk box) T in [14.369303339 +/- 5.10e-10] ms
+    multiplier disc 1: |mu - 10.528613988159| <= 2.52e-04, so 10.52836245 <= |mu| <= 10.52886553
+    multiplier disc 2: |mu - 0.197173615332| <= 3.51e-04, so 0.1968232086 <= |mu| <= 0.1975240221
+    multiplier disc 3: contains 0 (centre about 2.1e-17, radius about 1.9e-04), so |mu| <= 0.0001878120580
+    u along the orbit: stays in [-0.728092, 11.073666] mV, attains u <= -0.686961 and u >= 11.060026
+    first return certified (1 downward passes of the section, no other upward crossing), 112 steps
+  [PASS] exactly one Floquet multiplier of the second orbit is real and > 1, the other two lie in |mu| < 1
+  [PASS] multiplier discs used by Theorem B are isolated (ball arithmetic): disc 1 of the stable orbit is disjoint from its discs 2, 3, and the three discs of the unstable orbit are pairwise disjoint, so each of these discs holds exactly one multiplier
+  [PASS] the orbits are distinct: the stable orbit reaches u >= 95.953706, the unstable orbit stays in u <= 11.073666
+  [PASS] neither orbit is the equilibrium: u* in [4.644881449 +/- 3.18e-10] differs from the section levels u = 20 and u = 5
+  time for this E_l: 48.9 s
+
+====================================================================================================
+STAGE 4b  the stable orbit for EVERY E_l in [10.59, 10.62] (proof, 60 pieces, 4 processes)
+====================================================================================================
+  on each piece: a box Z on {u = 20, du/dt > 0} with P_E(Z) in int Z and sup ||DP_E||_inf < 1 over
+  Z x piece, so P_E is a contraction of Z: unique attracting fixed point, all |mu| < 1
+  predictor for the box centres: dz*/dE_l = [-0.000249  0.000117 -0.000295] (from the E_l = 10.613 run)
+    E_l in [10.5900, 10.5905]: P(Z) in int Z True, sup||DP||_inf <= 0.5439, T in [16.013772481, 16.013912063], box radius ~4.6e-07, 136s
+    E_l in [10.5905, 10.5910]: P(Z) in int Z True, sup||DP||_inf <= 0.5439, T in [16.013637609, 16.013777183], box radius ~4.6e-07, 133s
+    E_l in [10.5910, 10.5915]: P(Z) in int Z True, sup||DP||_inf <= 0.5440, T in [16.013502744, 16.013642311], box radius ~4.6e-07, 135s
+    E_l in [10.5915, 10.5920]: P(Z) in int Z True, sup||DP||_inf <= 0.5440, T in [16.013367887, 16.013507446], box radius ~4.6e-07, 134s
+    E_l in [10.5920, 10.5925]: P(Z) in int Z True, sup||DP||_inf <= 0.5440, T in [16.013233036, 16.013372589], box radius ~4.6e-07, 162s
+    E_l in [10.5925, 10.5930]: P(Z) in int Z True, sup||DP||_inf <= 0.5440, T in [16.013098193, 16.013237738], box radius ~4.6e-07, 161s
+    E_l in [10.5930, 10.5935]: P(Z) in int Z True, sup||DP||_inf <= 0.5441, T in [16.012963358, 16.013102895], box radius ~4.6e-07, 159s
+    E_l in [10.5935, 10.5940]: P(Z) in int Z True, sup||DP||_inf <= 0.5441, T in [16.012828529, 16.012968060], box radius ~4.6e-07, 159s
+    E_l in [10.5940, 10.5945]: P(Z) in int Z True, sup||DP||_inf <= 0.5441, T in [16.012693708, 16.012833231], box radius ~4.6e-07, 128s
+    E_l in [10.5945, 10.5950]: P(Z) in int Z True, sup||DP||_inf <= 0.5442, T in [16.012558895, 16.012698410], box radius ~4.6e-07, 129s
+    E_l in [10.5950, 10.5955]: P(Z) in int Z True, sup||DP||_inf <= 0.5442, T in [16.012424088, 16.012563597], box radius ~4.6e-07, 129s
+    E_l in [10.5955, 10.5960]: P(Z) in int Z True, sup||DP||_inf <= 0.5442, T in [16.012289289, 16.012428790], box radius ~4.6e-07, 131s
+    E_l in [10.5960, 10.5965]: P(Z) in int Z True, sup||DP||_inf <= 0.5443, T in [16.012154497, 16.012293991], box radius ~4.6e-07, 129s
+    E_l in [10.5965, 10.5970]: P(Z) in int Z True, sup||DP||_inf <= 0.5443, T in [16.012019712, 16.012159199], box radius ~4.6e-07, 130s
+    E_l in [10.5970, 10.5975]: P(Z) in int Z True, sup||DP||_inf <= 0.5443, T in [16.011884935, 16.012024415], box radius ~4.6e-07, 128s
+    E_l in [10.5975, 10.5980]: P(Z) in int Z True, sup||DP||_inf <= 0.5444, T in [16.011750165, 16.011889637], box radius ~4.6e-07, 131s
+    E_l in [10.5980, 10.5985]: P(Z) in int Z True, sup||DP||_inf <= 0.5444, T in [16.011615402, 16.011754867], box radius ~4.6e-07, 119s
+    E_l in [10.5985, 10.5990]: P(Z) in int Z True, sup||DP||_inf <= 0.5444, T in [16.011480647, 16.011620105], box radius ~4.6e-07, 121s
+    E_l in [10.5990, 10.5995]: P(Z) in int Z True, sup||DP||_inf <= 0.5445, T in [16.011345899, 16.011485349], box radius ~4.6e-07, 116s
+    E_l in [10.5995, 10.6000]: P(Z) in int Z True, sup||DP||_inf <= 0.5445, T in [16.011211158, 16.011350601], box radius ~4.6e-07, 120s
+    E_l in [10.6000, 10.6005]: P(Z) in int Z True, sup||DP||_inf <= 0.5446, T in [16.011076424, 16.011215860], box radius ~4.6e-07, 122s
+    E_l in [10.6005, 10.6010]: P(Z) in int Z True, sup||DP||_inf <= 0.5446, T in [16.010941698, 16.011081127], box radius ~4.6e-07, 120s
+    E_l in [10.6010, 10.6015]: P(Z) in int Z True, sup||DP||_inf <= 0.5413, T in [16.010806997, 16.010946383], box radius ~4.6e-07, 123s
+    E_l in [10.6015, 10.6020]: P(Z) in int Z True, sup||DP||_inf <= 0.5414, T in [16.010672285, 16.010811664], box radius ~4.6e-07, 121s
+    E_l in [10.6020, 10.6025]: P(Z) in int Z True, sup||DP||_inf <= 0.5414, T in [16.010537581, 16.010676952], box radius ~4.6e-07, 118s
+    E_l in [10.6025, 10.6030]: P(Z) in int Z True, sup||DP||_inf <= 0.5414, T in [16.010402884, 16.010542248], box radius ~4.6e-07, 117s
+    E_l in [10.6030, 10.6035]: P(Z) in int Z True, sup||DP||_inf <= 0.5414, T in [16.010268194, 16.010407551], box radius ~4.6e-07, 118s
+    E_l in [10.6035, 10.6040]: P(Z) in int Z True, sup||DP||_inf <= 0.5415, T in [16.010133512, 16.010272861], box radius ~4.6e-07, 117s
+    E_l in [10.6040, 10.6045]: P(Z) in int Z True, sup||DP||_inf <= 0.5415, T in [16.009998836, 16.010138178], box radius ~4.6e-07, 134s
+    E_l in [10.6045, 10.6050]: P(Z) in int Z True, sup||DP||_inf <= 0.5415, T in [16.009864168, 16.010003503], box radius ~4.6e-07, 135s
+    E_l in [10.6050, 10.6055]: P(Z) in int Z True, sup||DP||_inf <= 0.5416, T in [16.009729508, 16.009868835], box radius ~4.6e-07, 135s
+    E_l in [10.6055, 10.6060]: P(Z) in int Z True, sup||DP||_inf <= 0.5416, T in [16.009594854, 16.009734174], box radius ~4.6e-07, 134s
+    E_l in [10.6060, 10.6065]: P(Z) in int Z True, sup||DP||_inf <= 0.5416, T in [16.009460208, 16.009599521], box radius ~4.6e-07, 233s
+    E_l in [10.6065, 10.6070]: P(Z) in int Z True, sup||DP||_inf <= 0.5417, T in [16.009325569, 16.009464874], box radius ~4.6e-07, 231s
+    E_l in [10.6070, 10.6075]: P(Z) in int Z True, sup||DP||_inf <= 0.5417, T in [16.009190938, 16.009330236], box radius ~4.6e-07, 227s
+    E_l in [10.6075, 10.6080]: P(Z) in int Z True, sup||DP||_inf <= 0.5417, T in [16.009056313, 16.009195604], box radius ~4.6e-07, 225s
+    E_l in [10.6080, 10.6085]: P(Z) in int Z True, sup||DP||_inf <= 0.5418, T in [16.008921696, 16.009060980], box radius ~4.6e-07, 55s
+    E_l in [10.6085, 10.6090]: P(Z) in int Z True, sup||DP||_inf <= 0.5418, T in [16.008787087, 16.008926362], box radius ~4.6e-07, 59s
+    E_l in [10.6090, 10.6095]: P(Z) in int Z True, sup||DP||_inf <= 0.5418, T in [16.008652484, 16.008791753], box radius ~4.6e-07, 58s
+    E_l in [10.6095, 10.6100]: P(Z) in int Z True, sup||DP||_inf <= 0.5419, T in [16.008517889, 16.008657150], box radius ~4.6e-07, 57s
+    E_l in [10.6100, 10.6105]: P(Z) in int Z True, sup||DP||_inf <= 0.5419, T in [16.008383301, 16.008522555], box radius ~4.6e-07, 50s
+    E_l in [10.6105, 10.6110]: P(Z) in int Z True, sup||DP||_inf <= 0.5419, T in [16.008248720, 16.008387967], box radius ~4.6e-07, 52s
+    E_l in [10.6110, 10.6115]: P(Z) in int Z True, sup||DP||_inf <= 0.5420, T in [16.008114147, 16.008253386], box radius ~4.6e-07, 54s
+    E_l in [10.6115, 10.6120]: P(Z) in int Z True, sup||DP||_inf <= 0.5420, T in [16.007979580, 16.008118813], box radius ~4.6e-07, 51s
+    E_l in [10.6120, 10.6125]: P(Z) in int Z True, sup||DP||_inf <= 0.5421, T in [16.007845022, 16.007984247], box radius ~4.6e-07, 60s
+    E_l in [10.6125, 10.6130]: P(Z) in int Z True, sup||DP||_inf <= 0.5421, T in [16.007710470, 16.007849688], box radius ~4.6e-07, 62s
+    E_l in [10.6130, 10.6135]: P(Z) in int Z True, sup||DP||_inf <= 0.5421, T in [16.007575925, 16.007715136], box radius ~4.6e-07, 59s
+    E_l in [10.6135, 10.6140]: P(Z) in int Z True, sup||DP||_inf <= 0.5422, T in [16.007441388, 16.007580592], box radius ~4.6e-07, 60s
+    E_l in [10.6140, 10.6145]: P(Z) in int Z True, sup||DP||_inf <= 0.5422, T in [16.007306858, 16.007446054], box radius ~4.6e-07, 60s
+    E_l in [10.6145, 10.6150]: P(Z) in int Z True, sup||DP||_inf <= 0.5422, T in [16.007172336, 16.007311525], box radius ~4.6e-07, 60s
+    E_l in [10.6150, 10.6155]: P(Z) in int Z True, sup||DP||_inf <= 0.5423, T in [16.007037820, 16.007177002], box radius ~4.6e-07, 62s
+    E_l in [10.6155, 10.6160]: P(Z) in int Z True, sup||DP||_inf <= 0.5423, T in [16.006903312, 16.007042487], box radius ~4.6e-07, 61s
+    E_l in [10.6160, 10.6165]: P(Z) in int Z True, sup||DP||_inf <= 0.5424, T in [16.006768812, 16.006907979], box radius ~4.6e-07, 62s
+    E_l in [10.6165, 10.6170]: P(Z) in int Z True, sup||DP||_inf <= 0.5424, T in [16.006634318, 16.006773478], box radius ~4.6e-07, 61s
+    E_l in [10.6170, 10.6175]: P(Z) in int Z True, sup||DP||_inf <= 0.5425, T in [16.006499832, 16.006638984], box radius ~4.6e-07, 61s
+    E_l in [10.6175, 10.6180]: P(Z) in int Z True, sup||DP||_inf <= 0.5425, T in [16.006365353, 16.006504498], box radius ~4.6e-07, 60s
+    E_l in [10.6180, 10.6185]: P(Z) in int Z True, sup||DP||_inf <= 0.5425, T in [16.006230881, 16.006370019], box radius ~4.6e-07, 59s
+    E_l in [10.6185, 10.6190]: P(Z) in int Z True, sup||DP||_inf <= 0.5426, T in [16.006096416, 16.006235547], box radius ~4.6e-07, 57s
+    E_l in [10.6190, 10.6195]: P(Z) in int Z True, sup||DP||_inf <= 0.5426, T in [16.005961959, 16.006101083], box radius ~4.6e-07, 55s
+    E_l in [10.6195, 10.6200]: P(Z) in int Z True, sup||DP||_inf <= 0.5427, T in [16.005827509, 16.005966625], box radius ~4.6e-07, 54s
+  [PASS] the pieces cover [10.59, 10.62] without gaps (60 pieces)
+  [PASS] every piece: P_E(Z) in int Z and sup ||DP_E||_inf < 1 (max 0.5446)
+  over the whole ball: period in [16.005827509, 16.013912063] ms, multipliers |mu| <= 0.5446, u reaches >= 95.953
+  stage 4b time 1624.2 s (wall)
+
+====================================================================================================
+STAGE 5  negative controls for the certificates (each must fail)
+====================================================================================================
+    K vs Z: max |mid K - zbar| / radius(Z) = 9.99, K in int Z: False
+  [PASS] NEG stable orbit, candidate shifted by 10 box radii in m: Krawczyk must fail
+    K vs Z: max |mid K - zbar| / radius(Z) = 8.3e+05, K in int Z: False
+  [PASS] NEG stable orbit, candidate shifted by 1e-9 in h: Krawczyk must fail
+    K vs Z: max |mid K - zbar| / radius(Z) = 10, K in int Z: False
+  [PASS] NEG unstable orbit, candidate shifted by 10 box radii in m: Krawczyk must fail
+    K vs Z: max |mid K - zbar| / radius(Z) = 4.69e+04, K in int Z: False
+  [PASS] NEG unstable orbit, candidate shifted by 1e-9 in h: Krawczyk must fail
+    K vs Z: max |mid K - zbar| / radius(Z) = 4.49e+10, K in int Z: False
+  [PASS] NEG stable orbit box of J = 8 tested with the vector field at J = 8.05: Krawczyk must fail
+  [PASS] NEG the multiplier test "one real multiplier > 1, the others in |mu| < 1", run on the stable orbit's DP(Z), fails
+  [PASS] NEG the multiplier test "all |mu| < 1", run on the unstable orbit's DP(Z), fails
+  [PASS] NEG the stable orbit's initial set on u = 20 with the crossing detected on u = 19.999 (a map between two sections, whose fixed point is not a periodic orbit) is refused before integration
+  [PASS] NEG Theorem A at J = 20 (between the Hopf points), E_l in [10.59, 10.62]: the equilibrium is enclosed and unique, and Routh-Hurwitz fails decisively (the last Hurwitz determinant is certainly < 0) -- u* in [8.41 +/- 4.37e-3], a1 a2 - a3 = [-4e+0 +/- 0.316], (a1 a2 - a3) a3 - a1^2 a4 = [-1.8e+1 +/- 0.853]
+  [PASS] NEG Theorem C, piece E_l in [10.59, 10.5905] with the box radius 0.3 (instead of 3) times the defect of its centre, so that the fixed points z*(E_l) of the piece are not all in the box: P(Z) in int Z fails -- P(Z) vs Z: [0.240535 +/- 4.12e-7] vs [0.2405347 +/- 9.09e-8]; [0.4249021 +/- 6.56e-8] vs [0.4249021 +/- 3.05e-8]; [0.392317 +/- 1.21e-7] vs [0.3923170 +/- 4.15e-8]
+  [PASS] NEG Theorem C test on the unstable orbit (section u = 5, E_l = 10.613, box radius 1e-13): the contraction test fails decisively, every member of DP(Z) has ||DP||_inf >= 37.997 > 1
+
+====================================================================================================
+STAGE 6  high-precision refinement (NOT a proof: Newton on midpoints of the Taylor code at 160 bits, order 28, remainder tolerance 1e-36; E_l = 10.613)
+====================================================================================================
+    stable orbit, iteration 0: |P(z) - z| = 1.122e-17, radius of P(z) 2.3e-32, 657 steps, 26.0s
+    stable orbit, iteration 1: |P(z) - z| = 7.027e-35, radius of P(z) 1.7e-34, 657 steps, 26.6s
+    stable orbit, iteration 2: |P(z) - z| = 1.369e-35, radius of P(z) 1.7e-33, 657 steps, 26.3s
+    stable orbit (E_l = 10.613, not a proof): section point m, n, h =
+      m = [0.2405290606970255483252652775930384907590 +/- 2.13e-41]
+      n = [0.4249047082300503423715041228886258475926 +/- 3.23e-41]
+      h = [0.3923103764166658949628696103922154213262 +/- 2.81e-41]
+      return time from this point = [16.0077128038375799923780268247664 +/- 3.74e-32]
+      nontrivial multipliers (eigenvalues of mid DP; DP radius 1.9e-16): [0.0708967806927187287611854812971 +/- 4.41e-32], [1.60099130022138206927764945484e-12 +/- 7.12e-43], [2.30361801160814633703215227708e-18 +/- 1.43e-48]
+    unstable orbit, iteration 0: |P(z) - z| = 4.290e-16, radius of P(z) 7.0e-33, 244 steps, 9.6s
+    unstable orbit, iteration 1: |P(z) - z| = 1.378e-28, radius of P(z) 8.5e-33, 244 steps, 9.3s
+    unstable orbit, iteration 2: |P(z) - z| = 1.320e-34, radius of P(z) 1.6e-32, 244 steps, 9.2s
+    unstable orbit (E_l = 10.613, not a proof): section point m, n, h =
+      m = [0.09004142752265339936589763040830898967800 +/- 7.77e-43]
+      n = [0.3795031899629053446099090246718951353392 +/- 4.81e-41]
+      h = [0.4375482630911354888901463087321931233425 +/- 4.07e-41]
+      return time from this point = [14.343600948172706928749083170682 +/- 8.31e-31]
+      nontrivial multipliers (eigenvalues of mid DP; DP radius 1.2e-12): [10.3028828212211696095711137196 +/- 1.39e-29], [0.196832229136317448335588787372 +/- 3.84e-31], [2.73420564110492902375919131900e-18 +/- 4.98e-48]
+
+====================================================================================================
+STAGE 7  summary
+====================================================================================================
+  [PASS] every decimal bound printed in stages 3-7 (333 of them) re-read as an exact rational lies on the correct side of the Arb ball it stands for (lower bounds rounded down, upper bounds up, disc radii enlarged by the rounding of the centre)
+  All results are for the applied current J = 8 uA/cm^2 and the stated leak reversal potential E_l.
+  E_l enters the equations only through J + 0.3 E_l (du/dt = (J + 0.3 E_l) - I_Na - I_K - 0.3 u), so
+  (J = 8, E_l) is the same system as (J = 8 + 0.3 (E_l - 10.613), E_l = 10.613): the E_l ball
+  [10.59, 10.62] at J = 8 is the current interval J in [7.9931, 8.0021] at E_l = 10.613 (exact), and every
+  bifurcation current shifts by exactly -0.3 (E_l - 10.613).
+  Printed bounds are rounded outward from their Arb balls (lower bounds down, upper bounds up; a disc
+  |mu - c| <= r has r >= |c - centre| + radius); intervals written [x +/- r] are Arb's own enclosures.
+  Trust base: python-flint 0.9.0 on FLINT 3.6.0 (Arb ball arithmetic, 96 bits): arb/acb field operations, abs, comparisons, union/intersection, arb.exp, arb.hypgeom_1f1 (Taylor coefficients of Psi), arb_mat products and arb_mat.inv (Lohner frames B^-1), arb_mat.charpoly (Routh-Hurwitz), acb_mat products and acb_mat.inv (Gershgorin eigenbasis S^-1); Python 3.11.15 integers and fractions (outward decimal printing).  numpy, scipy and mpmath only propose candidates, frames, eigenvector matrices and reference values and are not trusted.
+
+  PROVED (computer-assisted, Arb ball arithmetic):
+  Theorem A (equilibrium).  For J = 8 and every E_l in [10.59, 10.62] the HH system has exactly one
+    equilibrium; it lies in the box [4.65 +/- 6.25e-3], [0.0901 +/- 6.47e-5], [0.3906 +/- 8.05e-5], [0.430 +/- 5.89e-4] and is
+    locally asymptotically stable (Routh-Hurwitz with enclosed coefficients).
+  Theorem B (E_l = 10.613 (Hodgkin-Huxley)).  For J = 8:
+    (i) there is a periodic orbit through {u = 20, du/dt > 0} at (m,n,h) in [0.24052906069703 +/- 4.49e-15], [0.42490470823005 +/- 3.79e-16], [0.39231037641667 +/- 4.26e-15]
+        with minimal period T_s in [16.007712803838 +/- 4.44e-13] ms whose nontrivial Floquet multipliers satisfy
+        |mu_1 - 0.070896780693| <= 2.25e-09, |mu_2|, |mu_3| <= 3.97e-09: orbitally asymptotically stable;
+    (ii) there is a periodic orbit through {u = 5, du/dt > 0} at (m,n,h) in [0.090041427522653 +/- 5.10e-16], [0.37950318996291 +/- 4.84e-15], [0.43754826309114 +/- 5.68e-15]
+        with minimal period T_u in [14.343600948 +/- 3.16e-10] ms and multipliers mu_1 real in [10.30268246, 10.30308318] (> 1),
+        |mu_2 - 0.1968322291| <= 2.72e-04, |mu_3| <= 1.57e-04: unstable (saddle type);
+    (iii) with Theorem A: at J = 8 and this E_l a locally asymptotically stable equilibrium, an orbitally
+        asymptotically stable periodic orbit and an unstable periodic orbit of saddle type coexist.
+  Theorem B (E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] (exact zero-current value)).  For J = 8:
+    (i) there is a periodic orbit through {u = 20, du/dt > 0} at (m,n,h) in [0.24053257124351 +/- 2.09e-15], [0.42490307734506 +/- 4.31e-15], [0.39231449643480 +/- 3.56e-16]
+        with minimal period T_s in [16.011504298061 +/- 4.86e-13] ms whose nontrivial Floquet multipliers satisfy
+        |mu_1 - 0.070904264160| <= 2.26e-09, |mu_2|, |mu_3| <= 3.99e-09: orbitally asymptotically stable;
+    (ii) there is a periodic orbit through {u = 5, du/dt > 0} at (m,n,h) in [0.090039718889430 +/- 2.05e-16], [0.37946676035039 +/- 3.84e-15], [0.43755923369796 +/- 2.76e-15]
+        with minimal period T_u in [14.3694497469 +/- 8.09e-11] ms and multipliers mu_1 real in [10.52978728, 10.53004150] (> 1),
+        |mu_2 - 0.1971756106| <= 1.78e-04, |mu_3| <= 9.49e-05: unstable (saddle type);
+    (iii) with Theorem A: at J = 8 and this E_l a locally asymptotically stable equilibrium, an orbitally
+        asymptotically stable periodic orbit and an unstable periodic orbit of saddle type coexist.
+  Theorem B (E_l = 10.599 (Guckenheimer-Oliva)).  For J = 8:
+    (i) there is a periodic orbit through {u = 20, du/dt > 0} at (m,n,h) in [0.24053255147340 +/- 2.96e-15], [0.42490308639034 +/- 1.48e-15], [0.39231447350858 +/- 4.80e-15]
+        with minimal period T_s in [16.011482998943 +/- 2.84e-13] ms whose nontrivial Floquet multipliers satisfy
+        |mu_1 - 0.070904221789| <= 2.26e-09, |mu_2|, |mu_3| <= 3.99e-09: orbitally asymptotically stable;
+    (ii) there is a periodic orbit through {u = 5, du/dt > 0} at (m,n,h) in [0.090039728499330 +/- 4.63e-16], [0.37946696511459 +/- 2.13e-15], [0.43755917467915 +/- 5.62e-15]
+        with minimal period T_u in [14.369303339 +/- 5.10e-10] ms and multipliers mu_1 real in [10.52836245, 10.52886553] (> 1),
+        |mu_2 - 0.1971736153| <= 3.51e-04, |mu_3| <= 1.88e-04: unstable (saddle type);
+    (iii) with Theorem A: at J = 8 and this E_l a locally asymptotically stable equilibrium, an orbitally
+        asymptotically stable periodic orbit and an unstable periodic orbit of saddle type coexist.
+  Theorem C (whole ball).  For J = 8 and every E_l in [10.59, 10.62] there is a periodic orbit through
+    {u = 20, du/dt > 0} with minimal period in [16.005827509, 16.013912063] ms, reaching u >= 95.953 mV (a spike), whose
+    nontrivial Floquet multipliers satisfy |mu| <= 0.5446: orbitally asymptotically stable.
+  Bistability.  By Theorems A and C, for J = 8 and every E_l in [10.59, 10.62] a locally asymptotically
+    stable equilibrium and an orbitally asymptotically stable periodic orbit coexist.  This is the whole
+    claim: it is not claimed that there are no other attractors, nor anything about the basins, nor that
+    the unstable orbit of Theorem B(ii) lies on the boundary between the basins.
+
+  CITED, NOT RE-PROVED HERE (papers/hh-dynamics/code/certify_equilibria_hopf.py, 256-bit Arb, report
+    papers/hh-dynamics/data/certify_equilibria_hopf.txt, 27 checks, 0 failed): for every E_l in [10.59, 10.62],
+    exactly one equilibrium for every J in [0, 200], and exactly two Hopf points along this branch: the
+    first subcritical (first Lyapunov coefficient l1 > 0), at J_H1 = [9.7754379953931263325 +/- 1.37e-20]
+    for E_l = 10.613 and J_H1 in [9.78 +/- 6.67e-3] over the ball; the second supercritical (l1 < 0), at
+    J_H2 = [154.52243366580800086 +/- 2.57e-18] for E_l = 10.613.  (Theorem A re-proves the uniqueness
+    at J = 8 independently.)
+  NUMERICAL ONLY (not proved): the Hopf currents as computed here (by E_l) 10.613: 9.775438, 154.522434; E_l*: 9.779662, 154.526657; 10.599: 9.779638, 154.526634; 10.59: 9.782338, 154.529334; 10.62: 9.773338, 154.520334;
+    the fold of cycles 10.613: 6.260321; E_l*: 6.264545; the bistability window (J_LPC, J_H1) as an interval of J;
+    uniqueness of the equilibrium for J > 200; an unstable orbit for E_l other than the three values
+    of Theorem B.
+  NOT PROVED: an unstable orbit over the whole E_l ball (the C^1 enclosure is too wide over boxes of the
+    size the E_l spread requires); uniqueness of any of these orbits beyond its box Z (Krawczyk and the
+    contraction give uniqueness only within Z); anything about periodic orbits at J other than 8.
+
+  84 checks passed: 30 proof checks, 24 negative controls, 23 self-tests, 7 numerical-only checks;
+  total run time 2442.3 s (40.7 min)

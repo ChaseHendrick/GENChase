@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
-// Prior-art snippets are source material, never instructions or a priority verdict.
+// Prior-article snippets are source material, never instructions or a priority verdict.
 function restrained(text) {
   return String(text).replace(/new law|first discovery|never been theorized|novel\s*["']?\s*:\s*true/gi, '[unsupported priority wording omitted]');
 }
@@ -12,7 +12,7 @@ function literature(root, n) {
     const absolute = path.join(root, relative), st = fs.lstatSync(absolute);
     if (st.isSymbolicLink()) { skipped.push(relative + ': symbolic link'); return; }
     if (st.isDirectory()) {
-      if (relative === 'identities/candidates') return; // A candidate cannot cite itself as prior art.
+      if (relative === 'identities/candidates') return; // A candidate cannot cite itself as a prior article.
       for (const name of fs.readdirSync(absolute).sort()) add(relative + '/' + name);
     } else if (/\.(md|txt|bib|typ)$/i.test(relative)) sources.push({ file: relative, text: fs.readFileSync(absolute, 'utf8') });
     else skipped.push(relative + ': binary or unsupported format');

@@ -21,26 +21,29 @@ paper's programs and data get their DOI from the paper's own public repository i
 
 Already done in the repository: `.zenodo.json` describes the software (upload type software,
 Apache-2.0), the identities note has its own metadata in `identities/zenodo.json`, and
-`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (v0.7.1,
+`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (0.7.1,
 2026-09-25) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
 `.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
 
 1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `ChaseHendrick/GENChase`.
 2. **Switch on the repository** in Zenodo's GitHub settings page (under your account menu). Zenodo
-   archives only releases published after the switch is on; v0.6.2 and earlier are not archived.
+   archives only releases published after the switch is on; 0.6.2 and earlier are not archived.
    The integration works with public repositories only, so a release made while the repository is
    private is not archived ([COMMITMENTS.md](COMMITMENTS.md) lists the other costs of going private).
-3. **Prepare the release in a pull request.** In `CITATION.cff`, set `version` to the tag you are
-   about to create and `date-released` to the release day. Move the `## Unreleased` entries of
-   `CHANGELOG.md` under `## vX.Y.Z`: that section becomes the public release notes, and the release
+3. **Prepare the release in a pull request.** Versions are written without a leading v, as
+   `X.Y.Z` (owner's decision, 2026-09-26); the releases made before then keep their tags, which do
+   (`v0.7.1`), and no tag is ever renamed. In `CITATION.cff`, set `version` to the version you are
+   about to release and `date-released` to the release day. Move the `## Unreleased` entries of
+   `CHANGELOG.md` under `## X.Y.Z`: that section becomes the public release notes, and the release
    stops if it is missing or empty. Reread the description in
    `.zenodo.json`. Run `node tools/build.js --check`, `node tools/science.js` and
    `node tools/lint.js`; the release workflow runs all three and stops if any fails. Merge.
 4. **Make the release.** Run the "Publish offline studio" workflow (Actions, run on `main`, version
-   `vX.Y.Z`). It needs a green `check` run on that commit, makes the tag and publishes the release.
+   `X.Y.Z`). It needs a green `check` run on that commit, makes the tag `X.Y.Z` and publishes the
+   release; it refuses a version with a leading v, and one already tagged under either spelling.
    To rewrite the notes of releases that already exist from the current CHANGELOG, run the same
-   workflow with **notes only** ticked and a version, or `all`; nothing is built and no tag or file
-   changes.
+   workflow with **notes only** ticked and a version, or `all`; a version such as `0.7.1` finds its
+   old tag `v0.7.1`, and nothing is built and no tag or file changes.
 5. **Copy the DOIs.** Zenodo's GitHub page lists the new record. It shows a DOI for this version and
    a concept DOI that always resolves to the latest version. Check that the record's title, type
    (Software), license and description are the ones in `.zenodo.json`.

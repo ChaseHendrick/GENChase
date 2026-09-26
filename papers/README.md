@@ -7,7 +7,7 @@ reproduce and how to cite, and two working folders that stay in this repository,
 
 | Paper | Status | Public repository |
 |---|---|---|
-| [Minimal Winding in the Self-Similar Collapse of Point Vortices](minimal-winding/) | published with its code and data (v2.0.0, doi:10.5281/zenodo.22963796); journal submission next, arXiv deferred until an endorsement; not yet peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
+| [Minimal Winding in the Self-Similar Collapse of Point Vortices](minimal-winding/) | published with its code and data (release 2.0.0, doi:10.5281/zenodo.22963796); journal submission next, arXiv deferred until an endorsement; not yet peer reviewed | [ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding) |
 | [Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit](collapse-without-rotation/) | draft, with its programs and data; cites the minimal-winding paper as its companion | ChaseHendrick/collapse-without-rotation (not yet created) |
 | [Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches](stable-expansion/) | draft, with its programs and data; computer-assisted | ChaseHendrick/stable-expansion (not yet created) |
 

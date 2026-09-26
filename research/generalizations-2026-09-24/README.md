@@ -45,7 +45,7 @@ The run was stopped before these reached a checker. Treat every item as a lead o
 
 The three-ring family was explored only for 2-gons in any depth (the row above); n = 3 and n = 4 had a short random search.
 
-## Prior art
+## Prior article review
 
 All of this is from web search, reference lists and the papers already read. Nothing here is
 a claim of originality.

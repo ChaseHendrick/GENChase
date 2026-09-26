@@ -35,7 +35,7 @@ const count = require('./count.js');
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
       research: 'RESEARCH.md',
-      addATab: 'Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-art search.',
+      addATab: 'Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-article search.',
     },
     techniques: mods,
   }, null, 2) + '\n');
@@ -91,7 +91,7 @@ A folder-based studio of seeded scientific simulations. The shared engine loads 
 - IDENTITIES.md: derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
 - identities/ORIGINALITY-FOLLOWUP.md: the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
 - identities/NOVELTY-AUDIT.md: evidence and limits for all five candidates.
-- RESEARCH.md: what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
+- RESEARCH.md: what was searched, what was not. Read before a prior-article search. Do not re-run a search marked skip.
 
 ## Recipe hash
 

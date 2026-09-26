@@ -16,7 +16,7 @@ The bar every paper in this repository meets before it is published or preprinte
 - [ ] **4. Sources read.** Pinto and Ermentrout (2001), Faye and Scheel (arXiv:1311.6508), Faye (2013), Hastings
   (arXiv:1503.04057v2) and Dyson (arXiv:2511.17328v2, arXiv:1810.05142) read in the parts listed in RESEARCH.md.
   Not read: Zhang, J. Dyn. Differ. Equ. 17 (2005), and Zhang (2004); Pinto, Jackson and Wayne (2005).
-- [ ] **5. Prior art.** RESEARCH.md, entry of 2026-09-26 (neural-field travelling pulse). The Zhang papers must be read
+- [ ] **5. Prior article review.** RESEARCH.md, entry of 2026-09-26 (neural-field travelling pulse). The Zhang papers must be read
   before any claim of priority.
 - [ ] **6. Adversarial second reading.** Not yet: the mathematics and the code both need an independent reading.
 - [ ] **7. Reproducible.** `code/run_all.sh` reruns the chain and its negative controls from this folder in under a
