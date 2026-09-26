@@ -10,6 +10,8 @@ in `papers/nf-pulse/`.
 - **Spectral stability.** Not proved yet (see the correction below). The steps of Theorem S that are certified by
   computer are E (the essential spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R) and P (the
   pulse class and its enclosure); the winding-number step W, on which Part 2 of the proof rests, was not completed.
+  Part 3 (lambda = 0 has multiplicity one) now has its computational inputs certified and its algebra checked by
+  machine (`simple_zero.py`, `part3_symbolic.py`); only its standard analysis remains a written argument.
 - **Nonlinear stability.** Not proved here. The step from spectral to nonlinear stability rests on a published
   theorem (Sandstede 2007), whose full text I could not obtain, so its hypotheses are unchecked. Section 7 lists
   what remains.
@@ -231,18 +233,30 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
     order.
   - D(0) = 0 by translation invariance: (U', V', Q', P') solves the ODE at lambda = 0 and decays at both ends.
   - Hence 0 is the only eigenvalue in R, and D'(0) is nonzero.
-- **Part 3** is a written argument, standard and not machine checked. The independent check flagged it as
-  needed (Section 8, finding 1).
-  - **Geometric multiplicity 1.** The solutions decaying at -infinity form the one-dimensional space spanned by
-    phi^-.
-  - **No Jordan chain.** A generalized eigenvector P1 with L P1 = P0 = (U', V') is, in ODE form, a solution decaying
-    at both ends of phi1' = A(xi, 0) phi1 + (d A/d lambda) phi0, where phi0 = phi^-(., 0).
-  - Since D(0) = 0, psi0 = psi^+(., 0) is bounded on all of R. It is orthogonal to phi^- and to the stable space at
-    +infinity, and it decays at both ends.
-  - Integrating (psi0^T phi1)' = psi0^T (dA/dlambda) phi0 over R gives the integral of psi0^T (dA/dlambda) phi0 = 0.
-  - Differentiating D(lambda) = psi^+(xi, lambda)^T phi^-(xi, lambda) in lambda (the standard computation) gives D'(0)
-    equal to that same integral. D'(0) is nonzero, so no Jordan chain exists.
-  - Numerically D'(0) = 0.2501 (normalization w^T v = 1); the independent check found the same.
+- **Part 3.** The independent check flagged it as needed (Section 8, finding 1). Its two computational inputs are
+  certified (`simple_zero.py`), its algebra is checked exactly (`part3_symbolic.py`, SymPy), and the analysis that
+  joins them is written, standard and not machine checked. Each step says which.
+  - **Geometric multiplicity 1.** *Certified:* at lambda = 0 the rest matrix A_inf(0) has exactly one eigenvalue with
+    positive real part, nu = 0.968761160579..., and three with negative real part, in four disjoint Krawczyk balls.
+    *Written:* since A(xi, 0) tends to A_inf(0) exponentially as xi -> -infinity, the solutions that decay at
+    -infinity form the one-dimensional space spanned by phi^-.
+  - **No Jordan chain.** *Exact (SymPy):* a generalized eigenvector P1 with L P1 = P0 = (U', V') is, in ODE form, a
+    solution of phi1' = A(xi, 0) phi1 + (dA/dlambda) phi0, where dA/dlambda = diag(-kappa, -kappa, 0, 0) and
+    phi0 = (U', V', Q', P') solves the variational equation. *Written:* phi1 decays at both ends.
+  - *Written:* since D(0) = 0, psi0 = psi^+(., 0) is bounded on all of R. It is orthogonal to phi^- and to the stable
+    space at +infinity, and it decays at both ends.
+  - *Exact (SymPy):* (psi0^T phi1)' = psi0^T (dA/dlambda) phi0. *Written:* the boundary terms vanish, so integrating
+    over R gives the integral of psi0^T (dA/dlambda) phi0 = 0.
+  - *Exact (SymPy):* the two halves of the lambda-derivative of D(lambda) = psi^+(xi, lambda)^T phi^-(xi, lambda) at 0
+    have derivatives in xi equal to +psi0^T (dA/dlambda) phi0 and -psi0^T (dA/dlambda) phi0. *Written:* they vanish at
+    -infinity and +infinity respectively, so D'(0) equals that same integral (for any normalisation of psi^+ and
+    phi^-, in particular for Dt).
+  - *Certified, independently of W:* Dt'(0) lies in [-16.3820, -14.0497] + [-1.1611, 1.1611]i, so it is nonzero, and
+    D'(0) = Dt'(0) / (wt^T v)(0) lies in [0.230893, 0.269221] + [-0.019081, 0.019081]i (normalization w^T v = 1;
+    (wt^T v)(0) = -60.8493463...). This is Cauchy's formula on the circle |lambda| = 1/25, split into 128 arcs, each
+    covered by an `evans_rig.py` enclosure; the mean-value integral over the same arcs encloses Dt(0) in a ball about
+    0 of radius 0.021, as it must. So no Jordan chain exists, and 0 is a simple zero of D without using W.
+  - Numerically D'(0) = 0.2501, inside the certified interval; the independent check found the same.
 
 ## 6. What is rigorous and what is numerical
 
@@ -254,7 +268,10 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
 | Pulse enclosures on [-16, 120] and the tail constants | Rigorous: `pulse_enclosure.py`, the base `manifold.py`, `lohner.py` and `block.py` |
 | Enclosures of Dt on squares and points | Rigorous: `evans_rig.py` |
 | Winding number of Dt on the boundary of R | Rigorous: `winding.py` |
-| Algebraic simplicity of 0 given D'(0) nonzero | Written argument (Section 5), not machine checked |
+| Rest eigenvalues at lambda = 0: one with Re > 0, three with Re < 0 | Rigorous: `simple_zero.py` (and inside every `evans_rig.py` enclosure) |
+| D'(0) nonzero, in [0.2308, 0.2693]: 0 is a simple zero of D, independently of W | Rigorous: `simple_zero.py`, a Cauchy integral on 128 arcs of the circle \|lambda\| = 1/25 |
+| The algebra of Part 3: the ODE forms of the eigenvalue and Jordan-chain equations, dA/dlambda, and the two integration identities | Exact: `part3_symbolic.py` (SymPy, with two negative controls) |
+| The analysis of Part 3: decaying solutions and L^2 eigenfunctions, the limits at +-infinity, and the decay of psi0 when D(0) = 0 | Written argument (Section 5), standard, not machine checked |
 | Relation between eigenvalues and zeros of D; analyticity of D | Standard Evans-function facts for the ODE form, used as known and not re-proved here |
 | High-precision pulse table, double-precision Evans function, numerical winding numbers, D'(0) = 0.2501, and the checker's Fourier discretization | Numerical only |
 
@@ -362,6 +379,8 @@ python3 large_lambda.py                                   # L (rigorous)
 sh thin_runs.sh                                           # P: base prove_pulse.py on c_lo and c_hi, T_B = 110 (1 minute)
 python3 pulse_enclosure.py 1.1027477097341592491478677357466217332550533837818208789272 \
         1.1027477097341592491478677357466217332550533837818208789273 110 120      # P: records (15 s)
+python3 simple_zero.py 128 4                              # Z: rest eigenvalues at 0 and D'(0) nonzero (rigorous, 4 minutes)
+python3 part3_symbolic.py                                 # the algebra of Part 3 (exact, SymPy, seconds)
 for p in left_up right_up top left_down bottom right_down; do python3 winding.py $p 4; done
 python3 winding.py combine                                # W (rigorous)
 python3 pulse_hp.py 120 && python3 evans_num.py && python3 spectrum_num.py 4       # numerical only
