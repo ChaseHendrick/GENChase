@@ -39,6 +39,7 @@ R_OVER_RHO = arb(os.environ.get('NF_R_OVER_RHO', bl.R_OVER_RHO_PROOF))
 def block_data():
     T, Tinv = bl.setup()
     kappa = (1 / cr.C1).union(1 / cr.C2)
+    nf.require(kappa.contains(1 / cr.C1) and kappa.contains(1 / cr.C2), 'block kappa ball does not cover 1/c1 and 1/c2')
     ok, info = bl.check(T, Tinv, (-DU, DU), kappa)
     nf.require(ok, 'block conditions (C) and (E) fail: %s' % info)
     rho, r, ur = bl.proof_block(T, Tinv, DU, R_OVER_RHO)
@@ -101,6 +102,7 @@ def main(which, T_enter):
     expect = None
     if which == 'interval':
         cc = cr.C1.union(cr.C2)
+        nf.require(cc.contains(cr.C1) and cc.contains(cr.C2), 'interval run does not cover c1 and c2')
     elif which == 'c1':
         cc = cr.C1; expect = cr.SIDE_C1
     elif which == 'c2':

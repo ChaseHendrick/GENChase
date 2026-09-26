@@ -66,6 +66,8 @@ def setup(d=(1, 0.5, 0.25, 0.25)):
     w, V = np.linalg.eig(Af)
     idx = np.argsort(-w.real)
     V = V[:, idx].real
+    if V[0, 0] < 0:                       # orient y1 so that K+ is the side where U > 0 on every LAPACK
+        V[:, 0] = -V[:, 0]
     Tf = np.diag(d) @ np.linalg.inv(V)
     T = exact_matrix(Tf)                  # exact dyadic entries: T is what it is, no error
     Tinv = T.inv()                        # enclosure of the exact inverse
