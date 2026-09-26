@@ -1,8 +1,10 @@
 # Submitting a formula
 
-GENChase currently accepts new formulas through contributed source modules. There is no general
-formula-entry box in the studio. Existing controls change the parameters of installed techniques;
-Settings JSON restores those parameters. The displayed `equation` is explanatory text, not executable
+Three tabs run formulas typed in the studio: Attractors (a custom ODE), Flow Field (a custom velocity field) and
+Turing Patterns (custom reaction terms). They use the shared expression language of `src/shared/expr.js`, which
+parses the text and never runs it as code, and a typed formula is outside the tab's validation record. Any other new
+formula enters through a contributed source module. Elsewhere, controls change the parameters of installed
+techniques; Settings JSON restores those parameters. The displayed `equation` is explanatory text, not executable
 input. Adding an equation label does not implement or validate it.
 
 For a new simulation, follow [CONTRIBUTING.md](../CONTRIBUTING.md) and the

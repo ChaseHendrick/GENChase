@@ -5,22 +5,24 @@ in `papers/nf-pulse/`.
 
 ## 1. Outcome
 
-**Partly proved.**
+**Spectral stability proved (computer-assisted) for the class of pulses P; nonlinear stability not proved.**
 
-- **Spectral stability.** Not proved yet (see the correction below). The steps of Theorem S that are certified by
-  computer are E (the essential spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R) and P (the
-  pulse class and its enclosure); the winding-number step W, on which Part 2 of the proof rests, was not completed.
-  Part 3 (lambda = 0 has multiplicity one) now has its computational inputs certified and its algebra checked by
-  machine (`simple_zero.py`, `part3_symbolic.py`); only its standard analysis remains a written argument.
+- **Spectral stability.** For every pulse of the class, the spectrum of the linearization in Re lambda >= -1/20 is
+  exactly {0}, and 0 is algebraically simple. The essential spectrum lies in Re lambda <= -0.1127... This is
+  spectral stability with a gap of at least 1/20 (Theorem S, Section 5). Certified by computer: E (the essential
+  spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R), P (the pulse class and its enclosure), W
+  (the winding number of the Evans function on the boundary of R is 1) and Z (lambda = 0 is a simple zero, with
+  D'(0) in [0.2308, 0.2693], by a Cauchy integral independent of W). The algebra of Part 3 is checked in SymPy.
+  Written, standard and not machine checked: the analysis of Part 3 and the Evans-function facts listed in
+  Section 6.
 - **Nonlinear stability.** Not proved here. The step from spectral to nonlinear stability rests on a published
   theorem (Sandstede 2007), whose full text I could not obtain, so its hypotheses are unchecked. Section 7 lists
   what remains.
 
-**Correction made when this folder was merged (2026-09-26).** The session that wrote this report ended before
-`winding.py` finished. No winding certificate is in `data/`, the placeholders for the winding status, its section and
-the numerical section were never filled, and the adversarial check below says "the winding number (W) is not
-established yet". Theorem S needs W (Part 2 of the proof outline), so spectral stability is **not proved**; the
-statements E, L and P are certified, and `run_all.sh` will report W only when a run of `winding.py` completes.
+**History (2026-09-26).** When this folder was first merged, the winding run had not finished, and this section
+said spectral stability was not proved. The session finished the six winding pieces and combined them later that day
+(Section 4.W); a local rerun of four of the pieces, on pulse records that differ only in a timing field, gave the
+same intervals. The adversarial check in Section 8 predates W and did not rerun it.
 
 ## 2. Setting and notation
 
@@ -200,13 +202,47 @@ R = [-1/20, 9/2] x [-38/5, 38/5].
 
 ### W. Winding number (rigorous: `winding.py`)
 
-Not completed: see the correction in Section 1.
+- **Contour.** The boundary of R is split into six pieces: right upper, top, left upper, left lower, bottom, right
+  lower. Each piece is covered by segments of length 1/50, 1976 segments in all.
+- **Per segment.** Dt is enclosed on the segment's square. With thin enclosures at its two ends, it must lie in an
+  open half plane through 0; that then gives the argument change along the segment exactly (up to the enclosure
+  width). No segment had to be split.
+- **Argument changes** (radians, midpoint +/- radius), from `data/winding_*.json`:
+
+| Piece | Segments | Argument change | Lower bound for abs(Dt) on the piece | Time (4 cores) |
+|---|---|---|---|---|
+| right upper, Re = 9/2, Im 0 to 38/5 | 380 | 1.8844 +/- 0.0976 | 403.3 | 1835 s |
+| top, Im = 38/5 | 228 | 0.9762 +/- 0.0505 | 820.3 | 1102 s |
+| left upper, Re = -1/20, Im 38/5 to 0 | 380 | 0.2809 +/- 0.3761 | 0.2756 | 1258 s |
+| left lower | 380 | 0.2809 +/- 0.3761 | 0.2756 | 969 s |
+| bottom | 228 | 0.9762 +/- 0.0505 | 820.3 | 1057 s |
+| right lower | 380 | 1.8844 +/- 0.0976 | 403.3 | 1412 s |
+
+- **Total.** The argument change divided by 2 pi lies in **[0.8331, 1.1669]**, so **the winding number is 1**
+  (`data/winding.json`).
+- **Symmetry as a check.** The lower pieces were computed independently of the upper ones. They agree with them to
+  about 10^-10, as the symmetry Dt(conj lambda) = conj Dt(lambda) requires.
+- **Provenance.** All six pieces carry the same sha256 of `evans_rig.py`, `winding.py` and `data/pulse_records.pkl`
+  (recorded in `data/winding.json`), and `combine` verifies them against the present files.
+- **Statement W.** Dt has exactly one zero in R counted with order. Since Dt(0) = 0 (translation), that zero is
+  lambda = 0, and Dt'(0) is nonzero.
 
 ### Numerical (not rigorous: `pulse_hp.py`, `evans_num.py`, `spectrum_num.py`)
 
 The double-precision Evans function uses a high-precision pulse at the 60-digit speed.
 
-Not written: the session ended before this section was filled.
+The double-precision Evans function (`data/spectrum_num.json`) is normalized with w^T v = 1.
+
+- **Winding number on the boundary of R: 1.** 629 points; min |D| = 0.01187, at lambda = -1/20.
+- **Winding number on the wider box** [-0.11, 9/2] x [-38/5, 38/5]: also 1. So, numerically, 0 is the only
+  eigenvalue with Re lambda > -0.11 in that box.
+- **At lambda = 0:** D(0) = 1.8e-13 and D'(0) = 0.25005.
+- **Matching point.** D does not depend on the matching point: at lambda = 0.5 + i, the values at xi = 18.5 and at
+  xi = 40 agree to 10^-9.
+- **Near the imaginary axis.** For Re lambda in {-0.1, -0.05, 0} and 0.05 < Im lambda <= 8, the smallest |D| is
+  about 0.02, at Im lambda = 0.075, close to the zero at the origin. There is no sign of another eigenvalue.
+- **Checker's discretization.** The independent Fourier-spectral discretization (Section 8) agrees: 0 is the only
+  eigenvalue with Re lambda > -0.1127.
 
 ## 5. Exact statements
 

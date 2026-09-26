@@ -1,0 +1,43 @@
+{
+ "path": "right_up",
+ "corners": [
+  [
+   "9/2",
+   "0"
+  ],
+  [
+   "9/2",
+   "38/5"
+  ]
+ ],
+ "segments": 380,
+ "evaluations": 761,
+ "arg_change": "[2e+0 +/- 0.214]",
+ "arg_change_mid_rad": [
+  1.8844394269526674,
+  0.09761031402740628
+ ],
+ "arg_change_exact": [
+  [
+   1035981530887,
+   -39
+  ],
+  [
+   838466213,
+   -33
+  ]
+ ],
+ "min |D| on the path (lower bound)": "[403.279 +/- 4.05e-4]",
+ "time_s": 1835,
+ "speed_bracket": [
+  "1.102747709734159249147867735746621733255053383781820878927200000000000",
+  "1.102747709734159249147867735746621733255053383781820878927300000000000"
+ ],
+ "evans_prec": 128,
+ "evans_order": 32,
+ "sha256": {
+  "evans_rig.py": "0057267d1af278627808bded255c4ced95e95b3d829c3ddcd26fbe771ee10a0e",
+  "winding.py": "93b17f170e546f2e8a17f0a98c18e835b3dc0b9d0aaf04baee8b568c418502d5",
+  "pulse_records.pkl": "7e2bdbbdc8fa4e31f62a8e64dc6f74d5d8cbbe7323c40cc3a438ee3dedfabd0c"
+ }
+}

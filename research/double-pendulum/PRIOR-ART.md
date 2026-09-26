@@ -352,3 +352,13 @@ zbMATH reviews read (exact text):
    access; try a library copy or the authors) and checked for whether m1 = m2, l1 = l2 is inside the domain.
    Also unread: Bolotin 1995 NATO ASI chapter "Variational criteria for nonintegrability and chaos in Hamiltonian
    systems" (Springer, 10.1007/978-1-4899-0964-0_14), Burov-Nechaev 2002, Sumbatov 1982, Ivanov I-IV full texts.
+
+## Update 2026-09-26 (later): Bolotin and Negrini 1997, Section 10
+
+Read through Google Books search-within snippets of Russ. J. Math. Phys. vol. 5 (id as3yAAAAMAAJ), pp. 434-435;
+full log and reconstruction in [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md). Theorem 10.1 proves non-integrability
+near the energy level of the upright equilibrium under an explicit inequality which, read with balanced units,
+fails at m1 = m2, l1 = l2 by a factor of about 8.3 (27 pi^2 against 32). The Bolotin chapter "Variational criteria
+for nonintegrability and chaos in Hamiltonian systems" is in Seimenis (ed.), NATO ASI B 331 (1994), pp. 173-179,
+DOI 10.1007/978-1-4899-0964-0_14 (not the 1999 Simo volume); its visible pages do not mention the double pendulum.
+Verdict updated: the equal case appears not to be covered; this rests on OCR snippets, not the printed page.

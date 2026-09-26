@@ -55,9 +55,12 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   computation, a data analysis, or a note or manuscript about one) may be drafted in this repository with its programs
   and results, a manuscript in `papers/<id>/` (listed in `papers/papers.json` with status "draft" and its own
   `notes/QUALITY.md`) and anything else in `research/<id>/`.
-  This does not cover a commitment's private record (`*.commitment.json`), copyrighted texts such as the papers a
-  study read, or raw data whose terms do not allow redistribution: commit the programs, the derived numbers and a
-  statement of where the data come from. By the owner's decision of the same day, for now, these drafts carry no label
+  This does not cover a commitment's private record (`*.commitment.json`), the full texts of the papers a study read
+  (except as below), or raw data whose terms do not allow redistribution: commit the programs, the derived numbers and a
+  statement of where the data come from. By the owner's decision of the same day, a note may quote the papers it cites
+  as far as its argument needs (theorem statements, key passages, derivation steps), with the source and page, and a
+  paper under an open licence (CC BY or similar) may be saved with its licence; the full text or PDF of a paper that is
+  not openly licensed stays out of the repository. By the owner's decision of the same day, for now, these drafts carry no label
   saying that nobody outside the project has reviewed them; their quality records and review files still state what
   was and was not checked, and no text may claim an outside review that has not taken place.
 
