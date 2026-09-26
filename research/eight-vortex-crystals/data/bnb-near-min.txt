@@ -1,0 +1,1 @@
+h=0.045 nodes 864637  domain 0 value 0 grad 7271 kraw 0 min 425048 flagged 0
