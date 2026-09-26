@@ -1,0 +1,14 @@
+order 8, remainder included:
+   t= 2.0 contains mpmath: True   radius 2.31e-10  |mid-mpmath| 3.86e-13
+   t= 4.0 contains mpmath: True   radius 3.17e-09  |mid-mpmath| 1.80e-12
+   t= 6.0 contains mpmath: True   radius 2.19e-08  |mid-mpmath| 1.12e-11
+   t= 8.0 contains mpmath: True   radius 1.51e-07  |mid-mpmath| 6.98e-11
+   t=10.0 contains mpmath: True   radius 4.75e-07  |mid-mpmath| 1.59e-10
+   t=12.0 contains mpmath: True   radius 2.99e-06  |mid-mpmath| 9.77e-10
+order 8, remainder DROPPED:
+   t= 2.0 contains mpmath: False  radius 7.89e-76  |mid-mpmath| 1.27e-12
+   t= 4.0 contains mpmath: False  radius 5.17e-75  |mid-mpmath| 6.28e-12
+   t= 6.0 contains mpmath: False  radius 3.20e-74  |mid-mpmath| 4.03e-11
+   t= 8.0 contains mpmath: False  radius 2.14e-73  |mid-mpmath| 2.55e-10
+   t=10.0 contains mpmath: False  radius 5.99e-73  |mid-mpmath| 6.09e-10
+   t=12.0 contains mpmath: False  radius 3.75e-72  |mid-mpmath| 3.79e-09

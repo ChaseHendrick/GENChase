@@ -1,0 +1,45 @@
+class 0 [centred regular 4-gon], Morse index 0, 30 labelled copies
+   mirror axis: vortices on it = 3, pairs swapped = 1 (residual 0.0e+00)
+   convex hull: 4 vertices, 1 interior
+     z =                  0.0    -1.58113883008419 i   |z| = 1.58113883008  (hull)
+     z =     1.58113883008419                  0.0 i   |z| = 1.58113883008  (hull)
+     z =    -1.58113883008419                  0.0 i   |z| = 1.58113883008  (hull)
+     z =                  0.0     1.58113883008419 i   |z| = 1.58113883008  (hull)
+     z =                  0.0                  0.0 i   |z| = 0.0  (interior)
+   pair distances: 1.581139 1.581139 1.581139 1.581139 2.236068 2.236068 2.236068 2.236068 3.162278 3.162278
+class 1 [collinear (zeros of H_5)], Morse index 3, 60 labelled copies
+   mirror axis: vortices on it = 5, pairs swapped = 0 (residual 0.0e+00)
+   convex hull: 2 vertices, 3 interior
+     z =     2.02018287045609                  0.0 i   |z| = 2.02018287046  (hull)
+     z =    -2.02018287045609                  0.0 i   |z| = 2.02018287046  (hull)
+     z =   -0.958572464613819                  0.0 i   |z| = 0.958572464614  (interior)
+     z =    0.958572464613819                  0.0 i   |z| = 0.958572464614  (interior)
+     z =                  0.0                  0.0 i   |z| = 0.0  (interior)
+   pair distances: 0.958572 0.958572 1.061610 1.061610 1.917145 2.020183 2.020183 2.978755 2.978755 4.040366
+class 2 [regular 5-gon], Morse index 0, 24 labelled copies
+   mirror axis: vortices on it = 1, pairs swapped = 2 (residual 0.0e+00)
+   convex hull: 5 vertices, 0 interior
+     z =      1.4142135623731                  0.0 i   |z| = 1.41421356237  (hull)
+     z =    -1.14412280563537   -0.831253875554907 i   |z| = 1.41421356237  (hull)
+     z =    -1.14412280563537    0.831253875554907 i   |z| = 1.41421356237  (hull)
+     z =    0.437016024448821    -1.34499702392791 i   |z| = 1.41421356237  (hull)
+     z =    0.437016024448821     1.34499702392791 i   |z| = 1.41421356237  (hull)
+   pair distances: 1.662508 1.662508 1.662508 1.662508 1.662508 2.689994 2.689994 2.689994 2.689994 2.689994
+class 3 [not a classical configuration], Morse index 1, 120 labelled copies
+   mirror axis: vortices on it = 1, pairs swapped = 2 (residual 3.7e-30)
+   convex hull: 4 vertices, 1 interior
+     z =     0.96112252219705     1.32152964962233 i   |z| = 1.6340737797  (hull)
+     z =     0.96112252219705    -1.32152964962233 i   |z| = 1.6340737797  (hull)
+     z =    -1.14604835722205   -0.973643115563346 i   |z| = 1.50379777682  (hull)
+     z =    -1.14604835722205    0.973643115563346 i   |z| = 1.50379777682  (hull)
+     z =    0.369851670050008 -1.49700546002159e-32 i   |z| = 0.36985167005  (interior)
+   pair distances: 1.447771 1.447771 1.801648 1.801648 1.947286 2.135695 2.135695 2.643059 3.115764 3.115764
+class 4 [not a classical configuration], Morse index 2, 120 labelled copies
+   mirror axis: vortices on it = 1, pairs swapped = 2 (residual 2.8e-30)
+   convex hull: 3 vertices, 2 interior
+     z =    0.531323709893589     1.75547638566124 i   |z| = 1.83412164954  (hull)
+     z =    0.531323709893589    -1.75547638566124 i   |z| = 1.83412164954  (hull)
+     z =    -1.55827646942354 1.16608290956809e-30 i   |z| = 1.55827646942  (hull)
+     z =     0.24781452481818    0.600394002635161 i   |z| = 0.649526748572  (interior)
+     z =     0.24781452481818   -0.600394002635161 i   |z| = 0.649526748572  (interior)
+   pair distances: 1.189367 1.189367 1.200788 1.903270 1.903270 2.372868 2.372868 2.729126 2.729126 3.510953

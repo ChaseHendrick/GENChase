@@ -1,0 +1,26 @@
+params beta=20, theta=1/4, eps=3/20, gamma=0, w(x)=exp(-|x|)/2 prec 256
+  step   0  bracket width 5.000e-11  d_min after first excursion 9.583e-04  decided at xi = 30.2
+  step   4  bracket width 3.125e-12  d_min after first excursion 3.836e-04  decided at xi = 32.9
+  step   8  bracket width 1.953e-13  d_min after first excursion 5.994e-05  decided at xi = 34.6
+  step  12  bracket width 1.221e-14  d_min after first excursion 5.496e-05  decided at xi = 38.5
+  step  16  bracket width 7.629e-16  d_min after first excursion 2.589e-05  decided at xi = 37.0
+  step  20  bracket width 4.768e-17  d_min after first excursion 3.276e-06  decided at xi = 42.8
+  step  24  bracket width 2.980e-18  d_min after first excursion 2.168e-06  decided at xi = 47.5
+  step  28  bracket width 1.863e-19  d_min after first excursion 2.991e-07  decided at xi = 52.9
+  step  32  bracket width 1.164e-20  d_min after first excursion 3.496e-07  decided at xi = 48.9
+  step  36  bracket width 7.276e-22  d_min after first excursion 1.122e-07  decided at xi = 55.6
+  step  40  bracket width 4.547e-23  d_min after first excursion 5.892e-08  decided at xi = 53.7
+  step  44  bracket width 2.842e-24  d_min after first excursion 1.777e-08  decided at xi = 56.9
+  step  48  bracket width 1.776e-25  d_min after first excursion 5.088e-09  decided at xi = 60.2
+  step  52  bracket width 1.110e-26  d_min after first excursion 1.853e-09  decided at xi = 62.9
+  step  56  bracket width 6.939e-28  d_min after first excursion 6.195e-10  decided at xi = 65.7
+  step  60  bracket width 4.337e-29  d_min after first excursion 2.350e-10  decided at xi = 68.2
+  step  64  bracket width 2.711e-30  d_min after first excursion 4.276e-11  decided at xi = 76.1
+  step  68  bracket width 1.694e-31  d_min after first excursion 1.726e-11  decided at xi = 74.8
+  step  72  bracket width 1.059e-32  d_min after first excursion 2.068e-12  decided at xi = 83.5
+  step  76  bracket width 6.617e-34  d_min after first excursion 1.480e-12  decided at xi = 84.2
+  step  80  bracket width 4.136e-35  d_min after first excursion 4.069e-13  decided at xi = 83.4
+  step  84  bracket width 2.585e-36  d_min after first excursion 4.466e-14  decided at xi = 91.6
+  step  88  bracket width 1.616e-37  d_min after first excursion 1.539e-14  decided at xi = 94.5
+  step  89  bracket width 8.078e-38  d_min after first excursion 1.872e-14  decided at xi = 89.5
+bracket 0.493298887973628566980006220341752419857740948631586903340950 0.493298887973628566980006220341752419938520305326218512215111 signs 1 -1 time 69.2s

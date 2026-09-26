@@ -1,0 +1,509 @@
+{
+ "baseline": {
+  "name": "baseline",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "no change",
+  "file": null
+ },
+ "M01_no_lagrange_remainder": {
+  "name": "M01_no_lagrange_remainder",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.0,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "drop the Lagrange remainder of the Lohner step",
+  "file": "lohner.py"
+ },
+ "M02a_picard_accept_unchecked": {
+  "name": "M02a_picard_accept_unchecked",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.0,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "a priori enclosure accepted without the Picard test",
+  "file": "lohner.py"
+ },
+ "M02b_picard_F_at_X_not_W": {
+  "name": "M02b_picard_F_at_X_not_W",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 11.6,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "Picard test with F evaluated on the initial box instead of the candidate W",
+  "file": "lohner.py"
+ },
+ "M02c_picard_no_inflation_tiny_W": {
+  "name": "M02c_picard_no_inflation_tiny_W",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.2,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "a priori enclosure replaced by the midpoint of the Taylor guess, no test",
+  "file": "lohner.py"
+ },
+ "M03a_Binv_transpose": {
+  "name": "M03a_Binv_transpose",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.6,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "B^{-1} replaced by B^T (assumes exact orthogonality)",
+  "file": "lohner.py"
+ },
+ "M03b_no_QR_parallelepiped": {
+  "name": "M03b_no_QR_parallelepiped",
+  "rc": 1,
+  "n_ok": 11,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block",
+   "N: negative control, the orbit at c1 asked to reach K+, is refused"
+  ],
+  "time_s": 9.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n4 checks failed\n",
+  "what": "no QR: B = mid(J B) itself, inverse still rigorous (sound by design)",
+  "file": "lohner.py"
+ },
+ "M03c_no_QR_and_transpose": {
+  "name": "M03c_no_QR_and_transpose",
+  "rc": 1,
+  "n_ok": 10,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block",
+   "N: negative control, the orbit at c1 asked to reach K+, is refused",
+   "N: negative control c = 1.1024, far from the pulse speed, is refused"
+  ],
+  "time_s": 1.9,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nFAIL  N: negative control c = 1.1024, far from the pulse speed, is refused\n5 checks failed\n",
+  "what": "non-orthogonal B with B^T as inverse",
+  "file": "lohner.py"
+ },
+ "M03d_B_fixed_identity_inverse": {
+  "name": "M03d_B_fixed_identity_inverse",
+  "rc": 1,
+  "n_ok": 10,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block",
+   "N: negative control, the orbit at c1 asked to reach K+, is refused",
+   "N: negative control c = 1.1024, far from the pulse speed, is refused"
+  ],
+  "time_s": 5.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nFAIL  N: negative control c = 1.1024, far from the pulse speed, is refused\n5 checks failed\n",
+  "what": "B^{-1} replaced by the identity",
+  "file": "lohner.py"
+ },
+ "M04_drop_dkappa_jacobian": {
+  "name": "M04_drop_dkappa_jacobian",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "drop the d/dkappa term of U' in the Jacobian (kappa column)",
+  "file": "lohner.py"
+ },
+ "M05_drop_dkappa_V": {
+  "name": "M05_drop_dkappa_V",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.0,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "drop the d/dkappa term of V' in the Jacobian",
+  "file": "lohner.py"
+ },
+ "M06_jacobian_at_xbar_not_hull": {
+  "name": "M06_jacobian_at_xbar_not_hull",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.9,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "mean-value Jacobian evaluated at the point xbar instead of over the hull",
+  "file": "lohner.py"
+ },
+ "M07_remainder_at_point": {
+  "name": "M07_remainder_at_point",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "Lagrange remainder coefficient evaluated at xbar instead of over W",
+  "file": "lohner.py"
+ },
+ "M08_drop_C_residual": {
+  "name": "M08_drop_C_residual",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.9,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "drop the (J C - mid(J C)) R0 term",
+  "file": "lohner.py"
+ },
+ "M09_hull_interior_always": {
+  "name": "M09_hull_interior_always",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 11.9,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "hull_contains_interior always True (Picard test vacuous)",
+  "file": "lohner.py"
+ },
+ "M10_cone_C_always": {
+  "name": "M10_cone_C_always",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.3,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "condition (C) not enforced",
+  "file": "block.py"
+ },
+ "M11_cone_C_only_one_s": {
+  "name": "M11_cone_C_only_one_s",
+  "rc": 1,
+  "n_ok": 14,
+  "fails": [
+   "B: negative control U up to 0.15 is refused"
+  ],
+  "time_s": 12.8,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nFAIL  B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n1 checks failed\n",
+  "what": "(C) and (E) checked at s = smin only",
+  "file": "block.py"
+ },
+ "M12_entrance_E_always": {
+  "name": "M12_entrance_E_always",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.8,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "condition (E) not enforced",
+  "file": "block.py"
+ },
+ "M13_entrance_E_weakened": {
+  "name": "M13_entrance_E_weakened",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.9,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "(E) without the off-diagonal ||A21|| term",
+  "file": "block.py"
+ },
+ "M14_block_urange_x3": {
+  "name": "M14_block_urange_x3",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.3,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "block B allowed a U-range three times the one (C),(E) were certified on",
+  "file": "prove_pulse.py"
+ },
+ "M15_block_DU_check_wider_s": {
+  "name": "M15_block_DU_check_wider_s",
+  "rc": 1,
+  "n_ok": 10,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block",
+   "N: negative control, the orbit at c1 asked to reach K+, is refused",
+   "N: negative control c = 1.1024, far from the pulse speed, is refused"
+  ],
+  "time_s": 1.2,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nFAIL  N: negative control c = 1.1024, far from the pulse speed, is refused\n5 checks failed\n",
+  "what": "block with |U| <= 0.15 (S' > 1 inside), should be refused",
+  "file": "prove_pulse.py"
+ },
+ "M16_flip_cone_sides": {
+  "name": "M16_flip_cone_sides",
+  "rc": 1,
+  "n_ok": 13,
+  "fails": [
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 13.8,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n2 checks failed\n",
+  "what": "expected cones swapped (K+ for c1, K- for c2)",
+  "file": "certify_rest.py"
+ },
+ "M17_in_K_nonstrict_upper": {
+  "name": "M17_in_K_nonstrict_upper",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "cone test on the most favourable point of the enclosure",
+  "file": "prove_pulse.py"
+ },
+ "M18_skip_between_steps_check": {
+  "name": "M18_skip_between_steps_check",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "phase 2 path check (between grid points) removed",
+  "file": "prove_pulse.py"
+ },
+ "M19_between_steps_no_remainder": {
+  "name": "M19_between_steps_no_remainder",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 14.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "phase 2 path enclosure without its remainder",
+  "file": "prove_pulse.py"
+ },
+ "M20_in_int_B_rho_x2": {
+  "name": "M20_in_int_B_rho_x2",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 14.3,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "interior-of-B test with rho doubled",
+  "file": "prove_pulse.py"
+ },
+ "M21_in_int_B_rho_x0p8": {
+  "name": "M21_in_int_B_rho_x0p8",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 13.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "interior-of-B test with rho x 0.8 (stricter; should fail if margin is thin)",
+  "file": "prove_pulse.py"
+ },
+ "M22_c2_eq_c1_plus_1e-26": {
+  "name": "M22_c2_eq_c1_plus_1e-26",
+  "rc": 1,
+  "n_ok": 14,
+  "fails": [
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 13.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n1 checks failed\n",
+  "what": "c2 = c1 + 1e-26, below c* (both ends on the K- side)",
+  "file": "certify_rest.py"
+ },
+ "M23_c2_eq_c1_plus_3e-26": {
+  "name": "M23_c2_eq_c1_plus_3e-26",
+  "rc": 1,
+  "n_ok": 14,
+  "fails": [
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 13.8,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n1 checks failed\n",
+  "what": "c2 = c1 + 3e-26, just below the numerical c* = c1 + 3.6e-26",
+  "file": "certify_rest.py"
+ },
+ "M24_c1_eq_c1_plus_4e-26": {
+  "name": "M24_c1_eq_c1_plus_4e-26",
+  "rc": 1,
+  "n_ok": 14,
+  "fails": [
+   "P: the orbit at c1 enters the cone K- inside the block"
+  ],
+  "time_s": 12.1,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n1 checks failed\n",
+  "what": "c1 moved just above c* (both ends on the K+ side)",
+  "file": "certify_rest.py"
+ },
+ "M25_theta_plus_1e-20": {
+  "name": "M25_theta_plus_1e-20",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 16.2,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "theta perturbed by 1e-20 in nfcore only",
+  "file": "nfcore.py"
+ },
+ "M26_eps_plus_1e-20": {
+  "name": "M26_eps_plus_1e-20",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 14.7,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "eps perturbed by 1e-20 in nfcore only",
+  "file": "nfcore.py"
+ },
+ "M27_beta_plus_1e-20": {
+  "name": "M27_beta_plus_1e-20",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 13.0,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "beta perturbed by 1e-20 in nfcore only",
+  "file": "nfcore.py"
+ },
+ "M28_both_c_plus_1e-20": {
+  "name": "M28_both_c_plus_1e-20",
+  "rc": 1,
+  "n_ok": 13,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block"
+  ],
+  "time_s": 13.5,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n2 checks failed\n",
+  "what": "c1 moved up by 1e-20 (c1 > c2 then)",
+  "file": "certify_rest.py"
+ },
+ "M29_eps_float_0p1": {
+  "name": "M29_eps_float_0p1",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 16.4,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "eps from the double 0.1 (= 0.1 + 5.55e-18)",
+  "file": "nfcore.py"
+ },
+ "M30_manifold_no_tail": {
+  "name": "M30_manifold_no_tail",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.7,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "unstable manifold tail bound dropped at evaluation",
+  "file": "manifold.py"
+ },
+ "M31_manifold_validate_always": {
+  "name": "M31_manifold_validate_always",
+  "rc": 1,
+  "n_ok": 14,
+  "fails": [
+   "M: negative control sigma x 8 is refused"
+  ],
+  "time_s": 13.4,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nFAIL  M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n1 checks failed\n",
+  "what": "tail fixed-point inequality not enforced",
+  "file": "manifold.py"
+ },
+ "M32_manifold_wrong_eigvec": {
+  "name": "M32_manifold_wrong_eigvec",
+  "rc": 1,
+  "n_ok": 11,
+  "fails": [
+   "R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues",
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 11.0,
+  "stdout": "FAIL  R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n4 checks failed\n",
+  "what": "eigenvector perturbed by 1e-3 in one component",
+  "file": "certify_rest.py"
+ },
+ "M33_manifold_t_1": {
+  "name": "M33_manifold_t_1",
+  "rc": 1,
+  "n_ok": 11,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block",
+   "N: negative control, the orbit at c1 asked to reach K+, is refused"
+  ],
+  "time_s": 10.2,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n4 checks failed\n",
+  "what": "manifold evaluated at t = 3/2, outside the validated |t| <= 1",
+  "file": "prove_pulse.py"
+ },
+ "M34_iv_check_fails": {
+  "name": "M34_iv_check_fails",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 12.4,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "independent block re-check made to FAIL (does run_all notice?)",
+  "file": "block_check_iv.py"
+ },
+ "M36_rest_s_ge_1_theta": {
+  "name": "M36_rest_s_ge_1_theta",
+  "rc": 0,
+  "n_ok": 15,
+  "fails": [],
+  "time_s": 13.3,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nOK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nOK    P: the orbit at c1 enters the cone K- inside the block\nOK    P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\nall checks passed\n",
+  "what": "R2 s < 1 not enforced",
+  "file": "certify_rest.py"
+ },
+ "M37_jacobian_test_broken": {
+  "name": "M37_jacobian_test_broken",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 12.6,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "wrong Jacobian (dQ row doubled): caught by test J? by the proof?",
+  "file": "lohner.py"
+ },
+ "M38_negctrl_wrong_field": {
+  "name": "M38_negctrl_wrong_field",
+  "rc": 1,
+  "n_ok": 12,
+  "fails": [
+   "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
+   "P: the orbit at c1 enters the cone K- inside the block",
+   "P: the orbit at c2 enters the cone K+ inside the block"
+  ],
+  "time_s": 12.0,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
+  "what": "Taylor recursion inconsistent with vfield (P' = Q - 1.0000000001 Y)",
+  "file": "nfcore.py"
+ }
+}

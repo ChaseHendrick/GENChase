@@ -1,0 +1,16 @@
+0.049975 0.050025 VERDICT FAIL covering fails at s=8: {'fail': 'faces not on opposite sides', 'u+': '[+/- 7.21e-7]', 'u-': '[+/- 7.19e-7]', 'u+ centre': '[1.5271e-7 +/- 2.50e-12]
+0.049950 0.050050 VERDICT FAIL covering fails at s=8: {'fail': 'faces not on opposite sides', 'u+': '[+/- 2.51e-6]', 'u-': '[+/- 2.50e-6]', 'u+ centre': '[1.8999e-7 +/- 3.61e-12]
+0.049988 0.050013 VERDICT FAIL covering fails at s=8: {'fail': 'faces not on opposite sides', 'u+': '[+/- 2.31e-7]', 'u-': '[+/- 2.31e-7]', 'u+ centre': '[9.0007e-8 +/- 1.04e-14]
+0.059950 0.060050 VERDICT FAIL covering fails at s=18: {'fail': 'faces not on opposite sides', 'u+': '[+/- 3.84e-6]', 'u-': '[+/- 3.84e-6]', 'u+ centre': '[6.6959e-7 +/- 3.25e-13
+0.059975 0.060025 VERDICT FAIL covering fails at s=18: {'fail': 'faces not on opposite sides', 'u+': '[+/- 8.42e-7]', 'u-': '[+/- 8.41e-7]', 'u+ centre': '[2.3881e-7 +/- 3.46e-12
+0.069950 0.070050 VERDICT FAIL covering fails at s=16: {'fail': 'faces not on opposite sides', 'u+': '[+/- 3.59e-6]', 'u-': '[+/- 3.59e-6]', 'u+ centre': '[8.5056e-7 +/- 3.92e-12
+0.069975 0.070025 VERDICT PASS  T=89.0 39s
+0.149800 0.150200 VERDICT FAIL covering fails at s=7: {'fail': 'faces not on opposite sides', 'u+': '[+/- 4.33e-6]', 'u-': '[+/- 4.34e-6]', 'u+ centre': '[1.0372e-6 +/- 4.38e-11]
+0.149900 0.150100 VERDICT PASS  T=42.0 32s
+0.129900 0.130100 VERDICT PASS  T=48.0 32s
+0.139900 0.140100 VERDICT PASS  T=44.0 32s
+0.169900 0.170100 VERDICT FAIL covering fails at s=5: {'fail': 'faces not on opposite sides', 'u+': '[+/- 1.20e-6]', 'u-': '[+/- 1.35e-6]', 'u+ centre': '[2.3451e-7 +/- 4.43e-12]
+0.189900 0.190100 
+0.199950 0.200050 
+0.209950 0.210050 
+0.214975 0.215025 

@@ -1,0 +1,113 @@
+\documentclass[11pt]{amsart}
+\usepackage{amssymb,amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title[The pentagonal bipyramid is a strict local minimum]{The pentagonal bipyramid is a strict local minimum of the logarithmic energy of seven points on the sphere}
+\author{Draft: not reviewed}
+\date{26 September 2026 (draft)}
+
+\begin{document}
+\begin{abstract}
+The Hessian of the logarithmic energy of seven points on the unit sphere is degenerate at the
+pentagonal bipyramid: besides the three rotations it has a two-dimensional kernel, so second
+derivatives decide neither local minimality nor the stability of the corresponding equilibrium of
+seven identical point vortices (Constantineau, Garc\'{\i}a-Azpeitia, Garc\'{\i}a-Naranjo and Lessard,
+Remark~6.3). We show by a computer-assisted proof that the bipyramid is nevertheless a strict local
+minimum modulo rotations, with an explicit neighbourhood, and hence a Lyapunov stable equilibrium
+modulo rotations. After the nondegenerate directions are eliminated, the energy on the degenerate plane
+grows exactly like one tenth of the fourth power of the displacement. We also show that a
+three-point certificate of the type used by Kryvonos, Liehr and Taylor for eight points cannot prove
+global optimality for seven points unless its minorant has fourth-order contact at the inner product $0$.
+\end{abstract}
+\maketitle
+
+\section{Statement}
+For $X=(x_0,\dots,x_6)\in(S^2)^7$ let $E(X)=-\sum_{i<j}\log|x_i-x_j|$. Let $B$ be the labelled
+bipyramid: $b_0=(0,0,1)$, $b_1=(0,0,-1)$, $b_{2+k}=(\cos\frac{2\pi k}{5},\sin\frac{2\pi k}{5},0)$. Then
+$E(B)=-6\log 2-\frac52\log 5$.
+
+\begin{theorem}\label{thm:local}
+If $g\in SO(3)$ and $|x_i-g b_i|\le 7.2\cdot 10^{-5}$ for all $i$, and $X$ is not a rotation of $B$, then $E(X)>E(B)$.
+\end{theorem}
+
+\begin{theorem}\label{thm:stab}
+The bipyramid is an equilibrium of seven identical point vortices on the sphere, and it is Lyapunov
+stable modulo rotations: for every $\varepsilon>0$ there is $\delta>0$ with
+$\operatorname{dist}(X(0),SO(3)B)<\delta\Rightarrow\operatorname{dist}(X(t),SO(3)B)<\varepsilon$ for all $t$.
+\end{theorem}
+
+Theorem~\ref{thm:stab} follows from Theorem~\ref{thm:local} because the Hamiltonian
+$H=-\sum_{i<j}\log|x_i-x_j|^2=2E$ is conserved and the orbit $SO(3)B$ is compact: a strict minimum on a
+punctured neighbourhood of a compact invariant set makes its small sublevel sets invariant neighbourhoods.
+
+\section{Chart}
+Rotate $x_0$ to the north pole and project the other points stereographically from it,
+$z=(X+iY)/(1-Z)$. Then
+\[
+E=F(z):=-\sum_{1\le i<j\le 6}\log|z_i-z_j|+3\sum_{i=1}^6\log(1+|z_i|^2)-21\log 2,
+\]
+with $B$ at $z_S=0$, $z_k=\omega^k$ ($\omega=e^{2\pi i/5}$). Coordinates $w\in\mathbb R^{11}$:
+$z_S=x+iy$, $z_k=\omega^k(1+u_k+iv_k)$, $v_0=0$. All data at $w=0$ lie in $K=\mathbb Q(\sin\frac{2\pi}5)$.
+
+\section{The degenerate expansion (exact)}
+In exact arithmetic in $K$: $\nabla F(0)=0$; the Hessian $H$ has rank $9$; with $N$ a basis of $\ker H$
+and $C$ a basis of $\operatorname{range}H$ (exact, $C^TN=0$), $A=C^THC\succ 0.2659\,I$; the cubic vanishes
+on $\ker H$; with $b(\xi)=C^T\nabla F_3(N\xi)$ and $\eta^*(\xi)=-A^{-1}b(\xi)$,
+\[
+q(\xi)=F_4(N\xi)-\tfrac12 b(\xi)^TA^{-1}b(\xi)=\tfrac1{10}|N\xi|^4 .
+\]
+The kernel moves only the pentagon, in latitude, in the wavenumber-two pattern
+$u_k=a\cos\frac{4\pi k}5+b\sin\frac{4\pi k}5$.
+
+\section{Proof of Theorem~\ref{thm:local}}
+Put $G(\xi,\zeta)=F(N\xi+C(\eta^*(\xi)+\zeta))-F(0)$. Rigorous ball arithmetic gives, for
+$|\xi|\le 10^{-3}$: $G(\xi,0)\ge 0.0994|\xi|^4$ (power series along rays, enclosed over arcs by a
+mean-value form, plus a Cauchy tail on the disc $|r|\le 0.12$);
+$|\nabla_\zeta G(\xi,0)|\le 2.979|\xi|^3$ (same method); and, on a box containing the domain with
+$|\zeta|\le 2\cdot10^{-3}$, $\lambda_{\min}(C^T\nabla^2F\,C)\ge\mu=0.0664$ (third-derivative enclosure and
+Weyl's inequality). Taylor's theorem in $\zeta$ and $2.979\,X^3Y\le\frac{\mu}{4}Y^2+\frac{2.979^2}{\mu}X^6$ give
+\[
+G(\xi,\zeta)\ge 0.0166\,|\zeta|^2+0.0992\,|\xi|^4 ,
+\]
+which is positive unless $\xi=\zeta=0$. The chart ball $|w|\le 6.6\cdot10^{-4}$ lies in the domain, and a
+configuration within $7.2\cdot10^{-5}$ of a rotated $B$ has a rotation in that ball (explicit rotation and
+stereographic estimates). The programs and all constants are in the accompanying folder.
+
+\section{An obstruction for the global problem}
+\begin{proposition}
+Let $H\le\phi$ on $[-1,1)$, $\phi(t)=-\frac12\log(2-2t)$, with $H(0)=\phi(0)$ and $(\phi-H)''(0)>0$.
+Then $\inf_Y\sum_{i<j}H(y_i\cdot y_j)<E(B)$.
+\end{proposition}
+\begin{proof}
+Along $w(s)=sN\xi_0$ the energy satisfies $E(Y(s))-E(B)=O(s^4)$, while each pole--pentagon inner product
+is $\pm u_k(s)+O(s^2)$ with $u_k(s)=s(N\xi_0)_{u_k}\not\equiv0$. Hence
+$\sum_{i<j}H(y_i\cdot y_j)\le E(Y(s))-c\,s^2+O(s^3)<E(B)$ for small $s\neq0$.
+\end{proof}
+Kryvonos, Liehr and Taylor's minorants have exactly double contact at interior nodes; for seven points a
+sharp certificate would need contact of order four at $t=0$.
+
+\begin{remark}
+Global optimality of the bipyramid remains open. By Armentano et al., it would follow from showing that
+some minimizer contains an antipodal pair.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{CGGL} K.~Constantineau, C.~Garc\'{\i}a-Azpeitia, L.~C.~Garc\'{\i}a-Naranjo, J.-P.~Lessard,
+\emph{Determination of stable branches of relative equilibria of the $N$-vortex problem on the sphere},
+arXiv:2309.04320.
+\bibitem{KLT} L.~Kryvonos, L.~Liehr, M.~A.~Taylor, \emph{Energy minimization for eight points on the sphere},
+arXiv:2609.22077.
+\bibitem{ABCFVV} D.~Armentano, L.~Bentancur, F.~Carrasco, M.~Fiori, M.~Vald\'es, M.~Velasco,
+\emph{Characterization of logarithmic Fekete critical configurations of at most six points in all dimensions},
+arXiv:2502.10152.
+\bibitem{CW} H.~Cohn, J.~Woo, \emph{Three-point bounds for energy minimization}, J. Amer. Math. Soc. 25 (2012).
+\bibitem{B} C.~Beltr\'an, \emph{On Smale's 7th problem} (Spanish), Gac. R. Soc. Mat. Esp. 23 (2020).
+\bibitem{Arb} F.~Johansson, \emph{Arb: efficient arbitrary-precision midpoint-radius interval arithmetic},
+IEEE Trans. Comput. 66 (2017).
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,78 @@
+{
+ "rest": [
+  "0",
+  "[0.00669285092428485555936198038133 +/- 4.82e-33]",
+  "[0.00669285092428485555936198038133 +/- 4.82e-33]",
+  "0"
+ ],
+ "S0": "[0.00669285092428485555936198038133 +/- 4.82e-33]",
+ "s=S_prime(0)": "[0.132961133415803098279970690083 +/- 1.16e-31]",
+ "s<1": true,
+ "c1": {
+  "kappa": "[0.906825732824302336303239884960 +/- 5.48e-32]",
+  "eigenvalues": [
+   "[-1.167823871645100102751750108918109120287 +/- 1.23e-40]",
+   "[-0.5831098891991617530913050121372727217427 +/- 7.21e-42]",
+   "[-0.1246531325593622675155499603476375296035 +/- 2.34e-41]",
+   "[0.9687611605793217870553651964429646695679 +/- 2.10e-41]"
+  ],
+  "unstable_positive": true,
+  "stable_negative": [
+   true,
+   true,
+   true
+  ],
+  "all_real": true,
+  "eigenvalue_radius": [
+   1.8135953991436122e-76,
+   1.6408720280417233e-76,
+   3.314129688165051e-76,
+   5.613509567245836e-77
+  ]
+ },
+ "c2": {
+  "kappa": "[0.906825732824302336303239802727 +/- 2.37e-31]",
+  "eigenvalues": [
+   "[-1.167823871645100102751750076474587158315 +/- 3.44e-41]",
+   "[-0.5831098891991617530913049750508699261114 +/- 2.00e-41]",
+   "[-0.1246531325593622675155499489614944179305 +/- 4.66e-41]",
+   "[0.9687611605793217870553651977601877715250 +/- 4.25e-41]"
+  ],
+  "unstable_positive": true,
+  "stable_negative": [
+   true,
+   true,
+   true
+  ],
+  "all_real": true,
+  "eigenvalue_radius": [
+   1.7272337135926677e-76,
+   1.6408720280417233e-76,
+   8.366288300616637e-77,
+   3.92945669771553e-76
+  ]
+ },
+ "[c1,c2]": {
+  "kappa": "[0.9068257328243023363032398 +/- 8.50e-26]",
+  "eigenvalues": [
+   "[-1.16782387164510010275175 +/- 1.15e-24]",
+   "[-0.583109889199161753091305 +/- 4.99e-25]",
+   "[-0.1246531325593622675155500 +/- 7.53e-26]",
+   "[0.9687611605793217870553652 +/- 3.89e-26]"
+  ],
+  "unstable_positive": true,
+  "stable_negative": [
+   true,
+   true,
+   true
+  ],
+  "all_real": true,
+  "eigenvalue_radius": [
+   9.926167390695675e-25,
+   4.9630836953478375e-25,
+   3.1019273047775736e-26,
+   3.618915185697286e-26
+  ]
+ },
+ "all_c_argument": "p(l) = l^4 + k l^3 + (eps k^2 - 1) l^2 + k (s-1) l - eps k^2, k = 1/c > 0, 0 < s < 1 (certified). Descartes: coefficient signs +,+,?,-,- have exactly one sign change whatever the sign of eps k^2 - 1, so exactly one positive real root. Imaginary axis: p(i w) = (eps k^2 - w^2)(-w^2 - 1) + i k w (s - 1 - w^2); the imaginary part vanishes only at w = 0 (since s < 1), where p(0) = -eps k^2 != 0. So no root on the imaginary axis for any k > 0. Roots of a monic quartic move continuously with k, so the number of roots with Re > 0 is constant on (0, inf); it is 1 at c in [c1, c2] (certified above: one positive and three negative real roots). Hence for every c > 0: exactly one eigenvalue with Re > 0 (real, simple) and three with Re < 0. Real-ness of the three stable ones is certified only on [c1, c2]."
+}

@@ -1,0 +1,19 @@
+eps=0.1 theta=0.25 beta=20, 4000 speeds in [0.02, 1.4]
+escape       switch +1 -> -1 at c = 0.377528814423
+    below: upward theta-crossings 6, gaps 13.77 14.32 14.32 14.11 8.83, least distance to rest after the first excursion 4.91e-02
+    above: upward theta-crossings 5, gaps 13.77 14.32 14.32 14.35, least distance to rest after the first excursion 4.88e-02
+escape       switch -1 -> +1 at c = 1.102747709734
+    below: upward theta-crossings 1, gaps , least distance to rest after the first excursion 8.26e-02
+    above: upward theta-crossings 2, gaps 37.92, least distance to rest after the first excursion 7.61e-02
+first-return switch +2 -> +1 at c = 0.181284829438
+    below: U never falls back below theta (no return); escape +1 at xi = 26.7
+    above: upward theta-crossings 2, gaps 2.21, least distance to rest after the first excursion 9.66e-01
+first-return switch +1 -> -1 at c = 0.377531935069
+    below: upward theta-crossings 2, gaps 38.09, least distance to rest after the first excursion 8.15e-05
+    above: upward theta-crossings 1, gaps , least distance to rest after the first excursion 9.58e-05
+first-return switch -1 -> +1 at c = 1.102747709734
+    below: upward theta-crossings 1, gaps , least distance to rest after the first excursion 8.26e-02
+    above: upward theta-crossings 2, gaps 37.92, least distance to rest after the first excursion 7.61e-02
+first-return switch +1 -> +2 at c = 1.102961223192
+    below: upward theta-crossings 2, gaps 12.73, least distance to rest after the first excursion 1.16e+00
+    above: U never falls back below theta (no return); escape +1 at xi = 36.3

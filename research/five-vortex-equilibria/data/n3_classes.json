@@ -1,0 +1,174 @@
+{
+ "N": 3,
+ "boxes": 3,
+ "distinct_chart_solutions": 2,
+ "classes": [
+  {
+   "ref_sym_perms": [
+    [
+     0,
+     1,
+     2
+    ],
+    [
+     1,
+     0,
+     2
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2
+    ],
+    [
+     1,
+     0,
+     2
+    ]
+   ],
+   "class": 0,
+   "name": "collinear (zeros of H_3)",
+   "members": [
+    0
+   ],
+   "rot_sym_order": 2,
+   "ref_sym_count": 2,
+   "chiral": false,
+   "labelled": 3,
+   "morse_index": 1,
+   "stability": {
+    "real_pairs_certified": 1,
+    "imag_pairs_certified": 0,
+    "deg": 1
+   },
+   "linearly_stable_certified": false,
+   "unstable_certified": true,
+   "pair_distances": [
+    1.224744871391589,
+    1.224744871391589,
+    2.449489742783178
+   ],
+   "z_approx": [
+    [
+     1.224744871391589,
+     0.0
+    ],
+    [
+     -1.224744871391589,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "z_digits": [
+    [
+     "1.22474487139158904909864203735",
+     "0"
+    ],
+    [
+     "-1.22474487139158904909864203735",
+     "0e-118"
+    ],
+    [
+     "0e-75",
+     "0e-118"
+    ]
+   ],
+   "max_radius_enclosure": 1.9863187856881738e-76
+  },
+  {
+   "ref_sym_perms": [
+    [
+     0,
+     2,
+     1
+    ],
+    [
+     1,
+     0,
+     2
+    ],
+    [
+     2,
+     1,
+     0
+    ]
+   ],
+   "rot_sym_perms": [
+    [
+     0,
+     1,
+     2
+    ],
+    [
+     1,
+     2,
+     0
+    ],
+    [
+     2,
+     0,
+     1
+    ]
+   ],
+   "class": 1,
+   "name": "regular 3-gon",
+   "members": [
+    1
+   ],
+   "rot_sym_order": 3,
+   "ref_sym_count": 3,
+   "chiral": false,
+   "labelled": 2,
+   "morse_index": 0,
+   "stability": {
+    "real_pairs_certified": 0,
+    "imag_pairs_certified": 1,
+    "deg": 1
+   },
+   "linearly_stable_certified": true,
+   "unstable_certified": false,
+   "pair_distances": [
+    1.7320508075688772,
+    1.7320508075688772,
+    1.7320508075688772
+   ],
+   "z_approx": [
+    [
+     1.0,
+     0.0
+    ],
+    [
+     -0.5,
+     0.8660254037844386
+    ],
+    [
+     -0.5,
+     -0.8660254037844386
+    ]
+   ],
+   "z_digits": [
+    [
+     "1.00000000000000000000000000000",
+     "0"
+    ],
+    [
+     "-0.500000000000000000000000000000",
+     "0.866025403784438646763723170753"
+    ],
+    [
+     "-0.500000000000000000000000000000",
+     "-0.866025403784438646763723170753"
+    ]
+   ],
+   "max_radius_enclosure": 3.922327139994486e-76
+  }
+ ],
+ "total_labelled": 5,
+ "euler_sum": -1,
+ "euler_characteristic": -1
+}

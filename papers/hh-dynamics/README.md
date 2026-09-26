@@ -33,7 +33,15 @@ not prove.
   without an error, the certificates lacked negative controls that run their own code, and the summary needed
   corrections (it said "the unstable orbit", which is unique only within its box). All 13 mutations now stop the
   program. The fixes have not had a second reading, and no person has reviewed the proofs.
-- **In progress:** the chaos question; the propagated action potential.
+- **In progress, in `work/`:**
+  - [`work/chaos/`](work/chaos/REPORT.md): Guckenheimer and Oliva's chaotic orbits relocated numerically (their
+    periodic points are fixed points of the return map crossed with u increasing, not decreasing), with a horseshoe
+    candidate that avoids their multiplier of 2.8e7 and a plan and cost estimate for a computer-assisted proof.
+    Numerical evidence, not a proof.
+  - [`work/traveling-wave/`](work/traveling-wave/REPORT.md): the propagated action potential at Hodgkin and Huxley's
+    own constants. No existence proof was found in the literature reached. The first rigorous stage is done: the
+    shooting in the speed switches between 18.7321608 and 18.7321609 m/s at 18.5 C (numerically 18.7322 m/s; Hodgkin
+    and Huxley computed 18.8 m/s by hand). The closing step, which would prove the pulse, is not done.
 - Nothing here is numerical evidence presented as proof: the program prints what it proves, and its only
   non-rigorous parts are self-tests and an independent cross-check in mpmath.
 

@@ -1,0 +1,125 @@
+== seven+points+sphere+energy (all)
+  results: 10
+   2609.23161 An Eternal Irradiance Camera
+   2502.10152 Characterization of Logarithmic Fekete Critical Configurations of at Most Six Points in All Dimensions
+   2403.02149 The SPHERE view of the Chamaeleon I star-forming region
+   2202.03908 Minima of shear viscosity and thermal conductivity coefficients of classical fluids
+   1806.09196 Compactification of 6d minimal SCFTs on Riemann surfaces
+   1504.02544 Log-optimal configurations on the sphere
+   1109.4295 Gravity Sources in a Quantum Milne Universe
+   0711.4092 Computational assesment of the entropy of solvation of small-sized hydrophobic entities
+== pentagonal+bipyramid (all)
+  results: 16
+   2608.17350 A 15/31 Counterexample Family to the Albertson-Berman Conjecture
+   2605.20582 Gold Bipyramids as a Promising Alternative to Gold Nanorods for Analytical and Biomedical Applications
+   2604.03019 Maximizing the magnetic anisotropy of Dy complexes by fine tuning organic ligands: A systematic multireference
+   2602.23230 Efficient training of generative models from multireference simulations and its application to the design of D
+   2509.15504 Machine-Learning Potentials for Efficient Simulations of Anisotropic Colloids
+   2507.14781 Size-Dependent Lattice Pseudosymmetry for Frustrated Decahedral Nanoparticles
+   2504.21170 The Relevance of Non-axiality and Low-lying Excited States for Slow Magnetic Relaxation in Pentagonal-bipyrami
+   2411.01199 The Geometry behind the Glass Transition and Frictional Jamming in Systems of Two-Dimensional Hard Disks
+   2410.13811 Pentagonal bipyramids lead to the smallest flexible embedded polyhedron
+   2312.11156 Dilute gel networks vs. clumpy gels in colloid-polymer mixtures
+   2108.07583 Crystal polymorph selection mechanism of hard spheres hidden in the fluid
+   2103.03199 Data mining, dashboard and statistical analysis: a powerful framework for the chemical design of molecular nan
+   2007.03881 Direct observation of 3D atomic packing in monatomic amorphous materials
+   1911.00802 The Devil is in the details: Pentagonal bipyramids and dynamic arrest
+   0905.3393 The role of weak charging in metastable colloidal clusters
+== bipyramid+vortices (all)
+  results: 0
+== Kryvonos (author)
+  results: 7
+   2609.22077 Energy minimization for eight points on the sphere
+   2604.14326 Energy, Polarization, and Separation of Greedy Sequences for Riesz and Green Kernels
+   2402.11096 On a problem of E. Meckes for the unitary eigenvalue process on an arc
+   2312.07754 Open problems on polynomials, their zero distribution and related questions: 2023
+   2210.09567 Almost optimal polynomial approximation on convex sets in $\mathbb{C}$
+   2111.10923 Weighted Minkowski's Existence Theorem and Projection Bodies
+   2102.01848 Polynomial approximation of piecewise analytic functions on quasi-smooth arcs
+== Liehr (author)
+  results: 25
+   2609.28341 Phase retrieval from a uniformly discrete point set
+   2609.27846 Derivatives of Theta Functions and a Problem of Lyubarskii and Nes
+   2609.24739 Counterexamples to Grad's conjecture
+   2609.22077 Energy minimization for eight points on the sphere
+   2609.20805 Universal completeness of exponentials
+   2608.12280 Grothendieck's theorem for Bessel sequences
+   2608.07396 Banach lattices and phase retrieval: A case study for the use of AI in mathematics
+   2608.04992 Gabor Frames of Totally Positive Functions: A Complete Characterization
+   2607.08656 Cantor measures with odd base do not admit Fourier frames
+   2606.26052 On the existence problem of regular Gabor frames
+   2605.29984 Compactly supported Gabor orthonormal bases
+   2602.14724 Cheeger's isoperimetric problem for Gaussian mixtures
+   2601.00403 Nonlinear determination and phase retrieval under unimodular constraints
+   2502.17977 Ultimate Sensitivity in X-ray Diffraction: Angular Moments vs. Shot Noise
+   2409.17563 Translation-based completeness on compact intervals
+   2308.05722 Arithmetic progressions and holomorphic phase retrieval
+   2308.00385 Phase retrieval in Fock space and perturbation of Liouville sets
+   2306.06551 An Efficient and Accurate Memristive Memory for Array-based Spiking Neural Networks
+   2211.05687 From completeness of discrete translates to phaseless sampling of the short-time Fourier transform
+   2209.11127 Phaseless sampling on square-root lattices
+   2207.10620 Multi-window STFT phase retrieval: lattice uniqueness
+   2207.05628 Non-uniqueness theory in sampled STFT phase retrieval
+   2111.02227 On foundational discretization barriers in STFT phase retrieval
+   2109.02494 Stable Gabor phase retrieval in Gaussian shift-invariant spaces via biorthogonality
+   2008.07238 Injectivity of Gabor phase retrieval from lattice measurements
+== Garcia-Naranjo (author)
+  results: 25
+   2607.19148 Lagrange points of the restricted three-body problem in spaces of constant curvature
+   2510.20006 Abelian instances of nonabelian symplectic reduction
+   2409.08072 Affine generalizations of the nonholonomic problem of a convex body rolling without slipping on the plane
+   2404.14156 Invariant measures as obstructions to attractors in dynamical systems and their role in nonholonomic mechanics
+   2309.11597 Almost-Poisson brackets for nonholonomic systems with gyroscopic terms and Hamiltonisation
+   2309.04320 Determination of stable branches of relative equilibria of the $N$-vortex problem on the sphere
+   2011.12243 Platonic solids and symmetric solutions of the $N$-vortex problem on the sphere
+   2009.13455 Some remarks about the centre of mass of two particles in spaces of constant curvature
+   2008.07222 Structure preserving discretization of time-reparametrized Hamiltonian systems with application to nonholonomi
+   1906.01070 Attracting and repelling 2-body problems on a family of surfaces of constant curvature
+   1906.00261 Integrability of the $n$-dimensional axially symmetric Chaplygin sphere
+   1901.11092 Hamiltonisation, measure preservation and first integrals of the multi-dimensional rubber Routh sphere
+   1812.01422 The geometry of nonholonomic Chaplygin systems revisited
+   1805.06393 Generalisation of Chaplygin's Reducing Multiplier Theorem with an application to multi-dimensional nonholonomi
+   1804.09090 Integrability and dynamics of the n-dimensional symmetric Veselova top
+   1708.04610 Reduction and relative equilibria for the 2-body problem in spaces of constant curvature
+   1612.08012 Validation, comparison, and combination of algorithms for automatic detection of pulmonary nodules in computed
+   1611.08626 Moving energies as first integrals of nonholonomic systems with affine constraints
+   1610.05618 Gauge momenta as Casimir functions of nonholonomic systems
+   1606.08331 A shortcut to the Kovalevskaya curve
+   1605.02666 The geometric discretisation of the Suslov problem: a case study of consistency for nonholonomic integrators
+   1508.06564 The dynamics of an articulated $n$-trailer vehicle
+   1505.01452 Classification and stability of relative equilibria for the two-body problem in the hyperbolic space of dimens
+   1411.7976 Quasi-periodicity in relative quasi-periodic tori
+   1406.7105 Poisson structures on smooth 4-manifolds
+== Lessard+vortex (all)
+  results: 0
+== Fekete+seven+points (all)
+  results: 2
+   2609.07969 Geometric Function Atlas: certified computing for geometric function theory in Python
+   2502.10152 Characterization of Logarithmic Fekete Critical Configurations of at Most Six Points in All Dimensions
+== logarithmic+energy+sphere+minimizer (all)
+  results: 25
+   2609.22077 Energy minimization for eight points on the sphere
+   2607.21783 Quantum-Corrected Thermodynamics, Dirac Perturbations, Geodesic Structure, and Topological Phases of Black Hol
+   2606.05140 Phase transitions for the noisy transformer model in arbitrary dimension
+   2606.01001 Axisymmetric membrane shapes in the Willmore and Helfrich models: first integrals and a hyperbolic formulation
+   2602.22559 Quantum corrected thermodynamics and horizon quantization of the Reissner--Nordström black hole
+   2602.11856 Random points on $\mathbb{S}^3$ with small logarithmic energy
+   2506.01660 An improved lower bound for the logarithmic energy on $\mathbb S^2$
+   2502.10152 Characterization of Logarithmic Fekete Critical Configurations of at Most Six Points in All Dimensions
+   2407.14060 Barrow's non-linear charged Anti-de Sitter black hole and stability
+   2304.02898 Fluctuations in the logarithmic energy for zeros of random polynomials on the sphere
+   2205.13208 Barrow black holes and the minimal length
+   2002.01721 Interparticle Correlations in the Simple Cubic Lattice of Ferroparticles: Theory and Computer Simulations
+   1912.05521 A sharp Bombieri inequality, logarithmic energy and well conditioned polynomials
+   1911.01640 Quantum Holographic Entanglement Entropy to All Orders in $1/N$ Expansion
+   1909.09909 Log-optimal (d+2)-configurations in d-dimensions
+   1907.04814 Discrepancy of minimal Riesz energy points
+   1905.04185 On the Index of Willmore spheres
+   1809.09416 The Diamond ensemble: a constructive set of points with small logarithmic energy
+   1803.11018 Energy of the Coulomb gas on the sphere at low temperature
+   1706.09346 Logarithmic and Riesz Equilibrium for Multiple Sources on the Sphere --- the Exceptional Case
+   1511.02535 Energy and discrepancy of rotationally invariant determinantal point processes in high dimensional spheres
+   1504.02544 Log-optimal configurations on the sphere
+   1411.3386 The dynamics of localized spot patterns for reaction-diffusion systems on the sphere
+   1404.4485 Renormalized Energy and Asymptotic Expansion of Optimal Logarithmic Energy on the Sphere
+   1310.2765 Riesz external field problems on the hypersphere and optimal point separation

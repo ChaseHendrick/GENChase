@@ -1,0 +1,73 @@
+Jacobi check (should be ~1e-15): 4.577566798522237e-16 1.7798229048217483e-15
+pairs m=-0.050  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['1.54334', '1.64977']  shape=(-0.500,0.000) (0.500,0.000) (-0.000,0.885) (-0.000,-0.885)
+pairs m=-0.150  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['1.10924', '1.50813']  shape=(-0.500,0.000) (0.500,0.000) (0.000,0.923) (-0.000,-0.923)
+pairs m=-0.250  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['0.42320', '1.39103']  shape=(-0.500,0.000) (0.500,0.000) (0.000,0.959) (0.000,-0.959)
+pairs m=-0.350  found  7 classes, linearly stable 0
+pairs m=-0.450  found  6 classes, linearly stable 0
+pairs m=-0.490  found  6 classes, linearly stable 0
+pairs m=-0.520  found  4 classes, linearly stable 0
+pairs m=-0.560  found  5 classes, linearly stable 0
+pairs m=-0.580  found  5 classes, linearly stable 0
+pairs m=-0.590  found  5 classes, linearly stable 0
+pairs m=-0.600  found  4 classes, linearly stable 0
+pairs m=-0.650  found  4 classes, linearly stable 0
+pairs m=-0.700  found  4 classes, linearly stable 0
+pairs m=-0.800  found  4 classes, linearly stable 0
+pairs m=-0.860  found  4 classes, linearly stable 0
+pairs m=-0.900  found  4 classes, linearly stable 0
+pairs m=-0.950  found  3 classes, linearly stable 0
+three m=-0.050  found  7 classes, linearly stable 2
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['2.69429', '2.86402']  shape=(-0.500,-0.314) (0.500,-0.314) (0.000,0.582) (-0.000,-0.917)
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.07409', '3.07409']  shape=(-0.500,-0.289) (0.500,-0.289) (-0.000,0.577) (0.000,0.000)
+three m=-0.150  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.21714', '3.21714']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (0.000,0.000)
+three m=-0.250  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.35410', '3.35410']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (-0.000,-0.000)
+three m=-0.350  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.48569', '3.48569']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (0.000,0.000)
+three m=-0.450  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.61248', '3.61248']  shape=(-0.500,-0.289) (0.500,-0.289) (-0.000,0.577) (-0.000,0.000)
+three m=-0.490  found  7 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.66197', '3.66197']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (0.000,-0.000)
+three m=-0.520  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.69865', '3.69865']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (-0.000,-0.000)
+three m=-0.560  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.74700', '3.74700']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (0.000,0.000)
+three m=-0.580  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.77094', '3.77094']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (0.000,0.000)
+three m=-0.590  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.78286', '3.78286']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (-0.000,-0.000)
+three m=-0.600  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.79473', '3.79473']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (-0.000,-0.000)
+three m=-0.650  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.85357', '3.85357']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (0.000,-0.000)
+three m=-0.700  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['3.91152', '3.91152']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (-0.000,0.000)
+three m=-0.800  found  5 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.02492', '4.02492']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (0.000,-0.000)
+three m=-0.860  found  5 classes, linearly stable 2
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.09145', '4.09145']  shape=(-0.500,0.289) (0.500,0.289) (0.000,-0.577) (0.000,0.000)
+    collinear=True  hess signs=[-1, -1, 1, 1]  freqs=['0.82799', '1.20015']  shape=(-0.553,0.000) (0.447,0.000) (2.269,-0.000) (2.515,-0.000)
+three m=-0.900  found  5 classes, linearly stable 2
+    collinear=True  hess signs=[-1, -1, 1, 1]  freqs=['3.76364', '16.12825']  shape=(-0.829,0.000) (0.171,0.000) (-0.149,-0.000) (-0.896,0.000)
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.13521', '4.13521']  shape=(-0.500,-0.289) (0.500,-0.289) (-0.000,0.577) (-0.000,0.000)
+three m=-0.950  found  5 classes, linearly stable 2
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.18927', '4.18927']  shape=(-0.500,-0.289) (0.500,-0.289) (-0.000,0.577) (-0.000,-0.000)
+    collinear=True  hess signs=[-1, -1, 1, 1]  freqs=['0.12951', '1.91061']  shape=(-0.514,-0.000) (0.486,-0.000) (3.437,0.000) (3.589,0.000)
+three m=-1.200  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.44972', '4.44972']  shape=(-0.500,-0.289) (0.500,-0.289) (0.000,0.577) (0.000,-0.000)
+three m=-1.500  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['4.74342', '4.74342']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (0.000,-0.000)
+three m=-2.000  found  2 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['5.19615', '5.19615']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (-0.000,0.000)
+three m=-2.500  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, 1, 1]  freqs=['5.61249', '5.61249']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (-0.000,0.000)
+three m=-3.500  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['6.36396', '6.36396']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (-0.000,-0.000)
+three m=-5.000  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['7.34847', '7.34847']  shape=(-0.500,-0.289) (0.500,-0.289) (-0.000,0.577) (-0.000,-0.000)
+three m=-10.000  found  3 classes, linearly stable 1
+    collinear=False  hess signs=[-1, -1, -1, -1]  freqs=['9.94987', '9.94987']  shape=(-0.500,0.289) (0.500,0.289) (-0.000,-0.577) (-0.000,-0.000)

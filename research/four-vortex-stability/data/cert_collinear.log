@@ -1,0 +1,21 @@
+  pass: 7516 boxes done, 3684 to split
+  pass: 9969 boxes done, 2462 to split
+  pass: 12412 boxes done, 38 to split
+  pass: 12434 boxes done, 32 to split
+  pass: 12454 boxes done, 24 to split
+  pass: 12472 boxes done, 12 to split
+  pass: 12478 boxes done, 12 to split
+  pass: 12484 boxes done, 12 to split
+  pass: 12490 boxes done, 12 to split
+  pass: 12496 boxes done, 12 to split
+  pass: 12503 boxes done, 10 to split
+  pass: 12507 boxes done, 12 to split
+  pass: 12513 boxes done, 12 to split
+  pass: 12519 boxes done, 12 to split
+  pass: 12525 boxes done, 12 to split
+  pass: 12532 boxes done, 10 to split
+  pass: 12542 boxes done, 0 to split
+{'CERTIFIED': 12536, 'REFUSED': 6} time 1513 s
+  refused [-0.883959270935, -0.883959270782] width 1.53e-10: resonance of order <= 4 not excluded (monomial (0, 1, 0, 3))
+  refused [-0.868997008209, -0.868997008057] width 1.53e-10: Arnold determinant D != 0 not certified
+  refused [-0.868387759552, -0.868387758942] width 6.10e-10: Arnold determinant D != 0 not certified; resonance of order <= 4 not excluded (monomial (0, 1, 0, 2))

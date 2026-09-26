@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-GENChase/29b36426-6619-5f0a-82b4-b585556585c6/scratchpad/check/indep/edges.py", line 15, in <module>
+    o = img(x)
+        ^^^^^^
+  File "/tmp/claude-0/-home-user-GENChase/29b36426-6619-5f0a-82b4-b585556585c6/scratchpad/check/indep/edges.py", line 9, in img
+    out, T, xc = ftilde(z_of(x), nret=9, shift=1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-GENChase/29b36426-6619-5f0a-82b4-b585556585c6/scratchpad/check/indep/common.py", line 23, in ftilde
+    xc, T = return_map(x0, nret, h=h)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-GENChase/29b36426-6619-5f0a-82b4-b585556585c6/scratchpad/check/indep/dparb.py", line 176, in return_map
+    raise RuntimeError('step size underflow')
+RuntimeError: step size underflow

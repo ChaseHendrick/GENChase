@@ -1,0 +1,45 @@
+T_blk (exact dyadic, U-row = 1):
+   [1.0, 1.0, 1.0, 1.0]
+   [0.09360673917625043, -0.7274792973152553, -0.1555154096374063, -0.07765089880778574]
+   [2.1619058902845034, 0.13505974624371941, 0.20146149552487871, -0.3654659986372986]
+   [2.0943704593352876, -0.016835620451952187, -0.11747419033340946, 0.42679991748325297]
+A at s = S'(0), kappa = 1/c1 (should be near diag(lambda_u, lambda_slow, lambda_2, lambda_3)):
+   [' 9.688e-01', '-3.994e-19', '-5.216e-19', '-6.022e-19']
+   ['-6.906e-19', '-1.247e-01', ' 2.152e-19', ' 9.154e-19']
+   [' 6.585e-19', ' 2.714e-19', '-5.831e-01', '-4.932e-19']
+   ['-2.296e-20', '-1.135e-19', '-3.442e-21', '-1.168e+00']
+
+MAIN CHECK: r = 1/80, mu = 1/10, mu2 = 1/2, margins m1 = 1/10, m2 = 1/50, m3 = 1/5
+  vertex s=0.067605 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.067605 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  r = 1/80  Umax = 0.034151  s in [0.067605, 0.259822]  ->  ALL HOLD
+
+NEGATIVE CONTROLS (each must FAIL):
+ (n1) block too large, r = 1/20 (s reaches the range where the cone condition breaks):
+  vertex s=0.008763 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.008763 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=1.700233 kappa=1/c2: (P1) M1 - 1/10 I PD: False; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: False
+  vertex s=1.700233 kappa=1/c1: (P1) M1 - 1/10 I PD: False; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: False
+  r = 1/20  Umax = 0.136603  s in [0.008763, 1.700233]  ->  FAILS
+ (n2) r = 1/30:
+  vertex s=0.021757 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.021757 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.767591 kappa=1/c2: (P1) M1 - 1/10 I PD: False; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  vertex s=0.767591 kappa=1/c1: (P1) M1 - 1/10 I PD: False; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  r = 1/30  Umax = 0.091068  s in [0.021757, 0.767591]  ->  FAILS
+ (n3) the PD test is not vacuous: margin m1 = 1 in (P1) (above lambda_min, about 0.22):
+  vertex s=0.067605 kappa=1/c2: (P1) M1 - 1 I PD: False; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.067605 kappa=1/c1: (P1) M1 - 1 I PD: False; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c2: (P1) M1 - 1 I PD: False; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c1: (P1) M1 - 1 I PD: False; (P2) -H2 - 1/50 I PD: True; (P3) H3 - 1/5 I PD: True
+  r = 1/80  Umax = 0.034151  s in [0.067605, 0.259822]  ->  FAILS
+ (n4) mu = 3/10 in (P2) (larger than 2|lambda_slow| = 0.249, so the slow direction breaks):
+  vertex s=0.067605 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  vertex s=0.067605 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c2: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  vertex s=0.259822 kappa=1/c1: (P1) M1 - 1/10 I PD: True; (P2) -H2 - 1/50 I PD: False; (P3) H3 - 1/5 I PD: True
+  r = 1/80  Umax = 0.034151  s in [0.067605, 0.259822]  ->  FAILS
+
+RESULT: main check PASSES; negative controls all fail as they should   (0.0 s)

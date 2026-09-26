@@ -1,0 +1,28 @@
+== exit runs, block r = 1/80, common time T = 170
+  c1: t=170.2500 a in [-2.365692273e-5 +/- 6.71e-17]  |b|_2 <= 0.007744
+  c1: t=170.7500 a in [-4.901389576e-5 +/- 1.83e-15]  |b|_2 <= 0.007283
+  c1: t=171.2500 a in [-8.908466716e-5 +/- 3.54e-15]  |b|_2 <= 0.006849
+  c1: t=171.7500 a in [-0.0001532032295 +/- 3.28e-14]  |b|_2 <= 0.006440
+  c1: t=172.2500 a in [-0.0002565296055 +/- 1.31e-14]  |b|_2 <= 0.006056
+  c1: t=172.7500 a in [-0.0004236958257 +/- 3.48e-14]  |b|_2 <= 0.005695
+  c1: t=173.2500 a in [-0.0006947348615 +/- 4.02e-14]  |b|_2 <= 0.005356
+  c1: t=173.7500 a in [-0.001134726793 +/- 1.81e-14]  |b|_2 <= 0.005037
+  c1: t=174.2500 a in [-0.001849505717 +/- 8.84e-14]  |b|_2 <= 0.004738
+  c1: t=174.7500 a in [-0.003011269475 +/- 1.87e-13]  |b|_2 <= 0.004458
+  c1: t=175.1250 a in [-0.004338821278 +/- 4.16e-13]  |b|_2 <= 0.004261
+  c1: at T' = 175.1250 (1401/8) the state is in K- inside N; all 41 step tubes on (T, T'] inside N.  Expected K-: YES   (939 steps, 43 s)
+  c2: t=170.2500 a in [8.245496378e-5 +/- 4.58e-15]  |b|_2 <= 0.007743
+  c2: t=170.7500 a in [0.0001235944904 +/- 4.04e-14]  |b|_2 <= 0.007282
+  c2: t=171.2500 a in [0.0001916574259 +/- 1.15e-14]  |b|_2 <= 0.006848
+  c2: t=171.7500 a in [0.0003033616123 +/- 1.41e-14]  |b|_2 <= 0.006439
+  c2: t=172.2500 a in [0.0004858866866 +/- 3.53e-14]  |b|_2 <= 0.006054
+  c2: t=172.7500 a in [0.0007834016127 +/- 4.33e-15]  |b|_2 <= 0.005691
+  c2: t=173.2500 a in [0.001267653290 +/- 1.98e-13]  |b|_2 <= 0.005349
+  c2: t=173.7500 a in [0.002055123426 +/- 2.45e-13]  |b|_2 <= 0.005028
+  c2: t=174.2500 a in [0.003334776343 +/- 3.46e-13]  |b|_2 <= 0.004724
+  c2: t=174.6250 a in [0.004795480778 +/- 4.34e-13]  |b|_2 <= 0.004508
+  c2: at T' = 174.6250 (1397/8) the state is in K+ inside N; all 37 step tubes on (T, T'] inside N.  Expected K+: YES   (935 steps, 41 s)
+  re-running the whole-interval run to T for the consistency check ...
+  c1: point enclosure at T contained in the kappa-set enclosure: True  (point radius 1.4e-19, set radius 4.2e-08)
+  c2: point enclosure at T contained in the kappa-set enclosure: True  (point radius 1.4e-19, set radius 4.2e-08)
+RESULT: c1 -> K- : True;  c2 -> K+ : True;  whole interval inside N at T: True   (126 s)
