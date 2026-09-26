@@ -22,6 +22,12 @@ def exact(s):
     return arb(int(m)) * arb(2) ** int(e)
 
 
+def exactq(s):
+    m, e = s.split('*2^')
+    m, e = int(m), int(e)
+    return fmpq(m * 2 ** e) if e >= 0 else fmpq(m, 2 ** (-e))
+
+
 def dec(s):
     neg = s.startswith('-')
     s = s.lstrip('-')
@@ -36,9 +42,21 @@ def load():
         c = json.load(open(f))
         if c.get('verdict') != 'PASS':
             continue
+        # refuse negative-control runs and runs whose mutated checks were not all refused
+        if c.get('shift', 0) != 0 or c.get('same_cone_control', 0) != 0 or c.get('swap', False):
+            continue
+        ng = c.get('negative_checks')
+        if ng is not None and not (ng['slab_refused'] == ng['stages'] == ng['face_refused'] and ng['block_refused']):
+            continue
         e_lo, e_hi = fmpq(*[int(x) for x in c['eps'][0].split('/')]) if '/' in c['eps'][0] else dec(c['eps'][0]), \
             fmpq(*[int(x) for x in c['eps'][1].split('/')]) if '/' in c['eps'][1] else dec(c['eps'][1])
         q0, s1, dk = exact(c['q0_exact']), exact(c['s1_exact']), exact(c['dk_exact'])
+        # recompute, exactly, the eps0 of the ends of E from the recorded dyadic centre and half width: it must lie
+        # in [-(1 + 2^-102), 1 + 2^-102], inside the eps0 range covered even by a 4-piece split of the older code
+        e_m, w = exactq(c['e_m_exact']), exactq(c['w_exact'])
+        for e_end in (e_lo, e_hi):
+            z = (e_end - e_m) / w
+            assert abs(z) <= 1 + fmpq(1, 2 ** 102), (f, 'eps0 of an end of E outside the covered range')
         r0 = arb(c['setup']['eps0_range'])
         emax = arb(r0.abs_upper())
         kmax = q0 + abs(s1) * emax + abs(dk)
@@ -83,7 +101,7 @@ if __name__ == '__main__':
     A = dec(a.A) if a.A else rows[0]['lo']
     B = dec(a.B) if a.B else rows[-1]['hi']
     gaps = cover(rows, A, B)
-    lines = ['| E_k | c1(E_k) | c2(E_k) | window width at fixed eps | block U-range | T | stages | max split |',
+    lines = ['| E_k | c1(E_k) | c2(E_k) | window width at fixed eps (approx.) | block U-range | T | stages | max split |',
              '|---|---|---|---|---|---|---|---|']
     for r in rows:
         lines.append('| [%s, %s] | %s | %s | %.2e | %s | %s | %d | %d |' % (

@@ -120,6 +120,11 @@ def setup(e_lo, e_hi, q0, s1, dk):
     delta = ub(((e_mq - e_m).abs_upper() + (w2q - w2).abs_upper()) / w2) + arb(2) ** -100
     R0e = rball(1 + delta)
     assert (e_m - w2 * (1 + delta)) < arb(e_lo) and (e_m + w2 * (1 + delta)) > arb(e_hi)
+    # the eps0 of both ends of E lie in R0e, and also in the range covered after a split into k <= 4 pieces
+    # (older certificates split with offsets that cover [-(1 + delta/k), 1 + delta/k] only; see REPORT.md)
+    for e_end in (e_lo, e_hi):
+        z = (arb(e_end) - e_m) / w2
+        assert R0e.contains(z) and bool(abs(z) < 1 + delta / 4), 'eps0 range does not cover E'
     K_all = q0 + s1 * R0e + dk * rball(arb(1))
     rep = {}
     s = nf.dS(arb(0))
@@ -133,7 +138,7 @@ def setup(e_lo, e_hi, q0, s1, dk):
     assert lam > 0
     rep['lambda_u'] = lam.str(15)
     # manifold tail over the whole box
-    nf._EPS = E
+    nf._EPS = E                       # manifold.validate and block.check read eps through nfcore.params()
     ok, a, rr, minfo = mf.validate(K_all, lam, arb(SIGMA), NMAN)
     assert ok, minfo
     rep['manifold'] = {k: minfo[k] for k in ('rho', 'r', 'ok')}
@@ -148,6 +153,7 @@ def setup(e_lo, e_hi, q0, s1, dk):
     V = V[:, idx].real
     Vinv = np.linalg.inv(V)
     okb = False
+    assert nf.params()[2].contains(E) and E.contains(nf.params()[2])
     for du in BLOCK_DU:                       # the first (largest) U-range and scaling that certify
         for dsc in BLOCK_D:
             Tf = np.diag(dsc) @ Vinv
@@ -404,8 +410,14 @@ def split(X, splits):
     for col, k in splits:
         new = []
         for P in pieces:
+            rho0 = arb(P.R0[col].abs_upper())          # R0[col] = [-rho0, rho0]; pieces off_m rho0 + [-rho0/k, rho0/k]
+            assert bool(P.R0[col].lower() >= -rho0) and k in (1, 2, 4, 8)
+            # coverage: consecutive pieces touch and the outer ones reach -rho0 and rho0 (exact arithmetic)
+            offs = [arb(fmpq(2 * m + 1 - k, k)) * rho0 for m in range(k)]
+            assert offs[0] - rho0 / k <= -rho0 and offs[-1] + rho0 / k >= rho0
+            assert all(offs[m] + rho0 / k >= offs[m + 1] - rho0 / k for m in range(k - 1))
             for m in range(k):
-                off = arb(fmpq(2 * m + 1 - k, k))
+                off = offs[m]
                 xb, R = [], list(P.R)
                 for i in range(7):
                     v = P.xbar[i] + P.C[i, col] * off
@@ -445,6 +457,7 @@ def in_K(y, sign):
     return bool(arb(v.lower()) > ynorm(y[1:]))
 
 
+NEG = {}
 SAME_CONE = 0    # negative control: +1 / -1 demands BOTH faces in K+ / K- (must fail: the ends must separate)
 
 
@@ -479,12 +492,17 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
     dkd = dyadic(dk)
     S = setup(e_lo, e_hi, q0, s1, dkd)
     exact = lambda x: '%d*2^%d' % x.man_exp()
+    import hashlib
+    code = {os.path.relpath(f, HERE): hashlib.sha256(open(f, 'rb').read()).hexdigest()[:16] for f in
+            [os.path.join(HERE, n) for n in ('chain.py', 'lohner7.py', 'manifold_ad.py', 'pulse_num.py')] +
+            [os.path.join(HERE, '..', '..', 'code', n) for n in ('nfcore.py', 'lohner.py', 'certify_rest.py', 'manifold.py', 'block.py', 'shoot_hp.py')]}
     cert = {'eps': [str(e_lo), str(e_hi)], 'e_m_exact': exact(S['e_m']), 'w_exact': exact(S['w2']),
             'q0_exact': exact(q0), 's1_exact': exact(s1), 'dk_exact': exact(dkd), 'q0': q0.str(40, radius=False), 's1': s1.str(30, radius=False),
             'dk': dkd.str(30, radius=False), 'kappa_window': 'kappa = q0 + s1 eps0 + dk zeta0, eps = e_m + w eps0',
-            'prec': PREC, 'order': ORDER, 'tol': TOL, 'seg': seg, 'shift': shift, 'same_cone_control': SAME_CONE,
+            'code_sha256_16': code, 'prec': PREC, 'order': ORDER, 'tol': TOL, 'seg': seg, 'shift': shift, 'same_cone_control': SAME_CONE,
             'setup': S['rep'], 'stages': []}
     X, Xe, cols = initial_sets(S, q0, s1, dkd)
+    NEG.update({'stages': 0, 'slab_refused': 0, 'face_refused': 0, 'block_refused': False})
     tr = pn.Tracker(e_m_q, kap_c)
     t = 0.0
     em_d = float(S['e_m'].mid())      # r(eps) = 1 + b (eps - em_d), b chosen per segment
@@ -521,6 +539,9 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
                 okB, binfo = block_entry(Xn, Xen, S)
                 st['block'] = binfo
                 if okB:
+                    # negative control of block_entry: a block with rho a hundred times smaller is refused
+                    S2 = dict(S); S2['rho'] = S['rho'] / 100
+                    NEG['block_refused'] = not block_entry(Xn, Xen, S2)[0]
                     cert['stages'].append(st)
                     verdict = 'PASS'
                     cert['T'] = t1
@@ -534,6 +555,13 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
             okc, cinfo = verify_cover(Xn, Xen, H, S)
             st['cover'] = cinfo
             if okc:
+                # negative controls of the rigorous checks themselves: a slab 2 per cent too thin and a u-size
+                # 2 per cent beyond the face images must both be refused by verify_cover
+                Hs = dict(H); Hs['M'] = H['M'] @ np.diag([1.0, 0.98, 0.98, 0.98, 0.98])
+                Hf = dict(H); Hf['M'] = H['M'] @ np.diag([1.02 * H['edge_growth'] / H['a'], 1.0, 1.0, 1.0, 1.0])
+                NEG['slab_refused'] += not verify_cover(Xn, Xen, Hs, S)[0]
+                NEG['face_refused'] += not verify_cover(Xn, Xen, Hf, S)[0]
+                NEG['stages'] += 1
                 break
             reason = 'covering not verified at s=%g' % t1
         if done:
@@ -545,6 +573,8 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
         st['a'] = H['a']; st['b'] = H['b']; st['edge_growth'] = H['edge_growth']
         st['c5'] = [v.str(40, radius=False) for v in H['c5']]
         st['d5'] = [v.str(30, radius=False) for v in H['d5']]
+        st['c5_exact'] = ['%d*2^%d' % v.man_exp() for v in H['c5']]
+        st['d5_exact'] = ['%d*2^%d' % v.man_exp() for v in H['d5']]
         st['M'] = H['M'].tolist()
         st['|d5|'] = math.sqrt(sum(fl(v) ** 2 for v in H['d5'][:4]))
         cert['stages'].append(st)
@@ -575,6 +605,10 @@ def run(e_lo, e_hi, kap_c, dkap, dk, seg=1.0, tmax=200.0, t_block_min=8.0, a_fac
         t = t1
     cert['verdict'] = verdict
     cert['reason'] = reason
+    cert['negative_checks'] = dict(NEG)
+    if verdict == 'PASS' and not (NEG['slab_refused'] == NEG['stages'] == NEG['face_refused'] and NEG['block_refused']):
+        cert['verdict'] = 'FAIL'
+        cert['reason'] = 'a mutated check was not refused: %s' % NEG
     cert['time_s'] = round(time.time() - t_start, 1)
     return cert
 
