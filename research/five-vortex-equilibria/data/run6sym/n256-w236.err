@@ -1,0 +1,12 @@
+progress boxes=1048576 volume_done=0.281778 cert=0 unres=0
+progress boxes=2097152 volume_done=0.281900 cert=0 unres=0
+progress boxes=3145728 volume_done=0.296884 cert=0 unres=0
+progress boxes=4194304 volume_done=0.296885 cert=0 unres=0
+progress boxes=5242880 volume_done=0.296885 cert=0 unres=0
+progress boxes=6291456 volume_done=0.296908 cert=0 unres=0
+progress boxes=7340032 volume_done=0.297029 cert=0 unres=0
+progress boxes=8388608 volume_done=0.297372 cert=0 unres=0
+progress boxes=9437184 volume_done=0.297395 cert=1 unres=0
+progress boxes=10485760 volume_done=0.300782 cert=1 unres=0
+progress boxes=11534336 volume_done=0.300783 cert=1 unres=0
+progress boxes=12582912 volume_done=0.344025 cert=1 unres=0

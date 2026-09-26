@@ -1,0 +1,7 @@
+progress boxes=1048576 volume_done=0.063122 cert=0 unres=0
+progress boxes=2097152 volume_done=0.063181 cert=0 unres=0
+progress boxes=3145728 volume_done=0.063183 cert=0 unres=0
+progress boxes=4194304 volume_done=0.063417 cert=0 unres=0
+progress boxes=5242880 volume_done=0.063425 cert=0 unres=0
+progress boxes=6291456 volume_done=0.063425 cert=1 unres=0
+progress boxes=7340032 volume_done=0.067201 cert=1 unres=0

@@ -12,3 +12,6 @@ progress boxes=11534336 volume_done=0.270845 cert=1 unres=0
 progress boxes=12582912 volume_done=0.270854 cert=1 unres=0
 progress boxes=13631488 volume_done=0.270966 cert=1 unres=0
 progress boxes=14680064 volume_done=0.270967 cert=1 unres=0
+progress boxes=15728640 volume_done=0.270969 cert=2 unres=0
+progress boxes=16777216 volume_done=0.271071 cert=2 unres=0
+progress boxes=17825792 volume_done=0.271313 cert=2 unres=0
