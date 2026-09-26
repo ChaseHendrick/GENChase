@@ -354,8 +354,8 @@ C is the Tracy-Widom GUE mean E[TW2] = -1.7710868074116 times the edge scale of 
 along the lines. The scale comes from the Hahn recurrence, and the one-line laws check it numerically
 (`check_scale.py`).
 
-Fitted to the exact values, which run to side 768 and to k = 128 or larger, C is -0.87415 ± 0.00032 on the regular
-family and -0.34031 ± 0.00015 on 3:5:6. Both agree with the derived constants. The measured -0.81 to -0.79 at sides
+Fitted to the exact values, which run to side 1,024 and to k = 192, C is -0.87415 ± 0.00027 on the regular family
+and -0.34031 ± 0.00013 on 3:5:6. Both agree with the derived constants. The measured -0.81 to -0.79 at sides
 12 to 48 is the exact curve at those sizes: the exact deviation times n^(2/3) runs from -0.817 at 12 to a minimum of
 -0.781 near side 80, and only then turns back toward -0.874.
 

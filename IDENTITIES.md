@@ -92,7 +92,7 @@ and the coefficient is $-0.8741792723\ldots$. For the $3k\times5k\times6k$ hexag
 
 - **Proved:** two identities, holding tiling by tiling, write the frozen area as a sum over Johansson's particle lines of the extreme particle (Aztec) or of the top hole (hexagon). The one-line laws are Johansson's Krawtchouk and Hahn ensembles.
 - **Heuristic:** the expansion. It uses Johansson's edge scale (PTRF 123 (2002), eq. 2.72, proof sketched) and its Hahn analogue, the convergence of the mean of the extreme particle, and uniformity near the tangency points.
-- **Checked:** the expected areas were computed exactly at finite $n$ as sums of Fredholm determinants, to orders in the thousands. Fits give $C=1.57477\pm0.00003$, $-0.87415\pm0.00032$ and $-0.34031\pm0.00015$.
+- **Checked:** the expected areas were computed exactly at finite $n$ as sums of Fredholm determinants, to orders in the thousands. Fits give $C=1.57476\pm0.00002$, $-0.87415\pm0.00027$ and $-0.34031\pm0.00013$.
 
 The studio's aztec and lozenge tabs agree with the exact finite-$n$ values at every measured size. The chi-square is 7.97 on 7 for `aztec` and 5.17 on 11 for `lozenge`.
 

@@ -5,9 +5,9 @@ model's, not the data's. Three families of powers p are fitted, over every windo
   M1  p = 1, 2, 3, 4, 5            (integer powers of n^(-1/3) only)
   M2  p = 1, 2, 5/2, 3, 4          (adds n^(-5/6))
   M3  p = 1, 2, 5/2, 3, 7/2, 4     (adds n^(-7/6))
-The half-integer powers are motivated by the lines near the tangency points: about sqrt(n) lines lie
-in the crossover where the Airy scale is below a lattice spacing, each off by O(1), which is O(sqrt n)
-in area, n^(-3/2) in the fraction and n^(-5/6) in y. That motivation is heuristic; the fits decide.
+The half-integer powers are an empirical choice: M1 drifts with the window and M2/M3 do not. A possible
+origin (about sqrt(n) crossover lines near the tangency points, each off by O(1)) is disputed by the
+adversarial check, which estimates O(n^(2/3)) there; see REPORT.md.
 The estimate is the median of M3 over the windows; its uncertainty is the larger of the half range of
 M3 over the windows and the distance between the M3 and M2 medians. d1 (the n^(-1) term of q, which
 carries the O(n) term of the area) is fitted with C fixed at the prediction, in M3.

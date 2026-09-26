@@ -299,9 +299,9 @@ Here E[TW2] = -1.7710868074116 is the mean of the Tracy-Widom GUE law. C is the 
 scale of the Krawtchouk top particle, integrated over the lines. That scale is Johansson's PTRF 123 (2002) eq. (2.72),
 and at the axis it equals his 2^(-5/6).
 
-Fitted to the exact values at orders up to 1,280 or more, C is 1.57477 ± 0.00003, against 1.574751. The next term
-is d = -1.7856 ± 0.0003, and fits need an n^(-3/2) term besides the integer powers of n^(-1/3). Convergence is slow:
-the exact deviation times n^(2/3) is still only 1.45 at order 1,280. So at the orders the tab offers, the plate sits
+Fitted to the exact values at orders up to 2,560, C is 1.57476 ± 0.00002, against 1.574751. The next term
+is d = -1.7855 ± 0.0003, and fits need an n^(-3/2) term besides the integer powers of n^(-1/3). Convergence is slow:
+the exact deviation times n^(2/3) is still only 1.47 at order 2,560. So at the orders the tab offers, the plate sits
 well inside the n^(-2/3) regime but not at its constant.
 
 What is proved and what is heuristic:
