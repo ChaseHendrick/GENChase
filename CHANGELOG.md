@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **A neural-field travelling pulse, drafted (owner's decision, 2026-09-26).** `papers/nf-pulse/` holds a computer-assisted proof, in ball arithmetic, of a fast travelling pulse in the Pinto-Ermentrout neural field with a logistic firing rate (gain 20, threshold 1/4) at the fixed recovery rate 1/10, with the speed enclosed in an interval of width 1e-25 about 1.1027477097.... `code/run_all.sh` runs the rest-state, unstable-manifold, block and integration certificates and five negative controls in under a minute and exits with status 1 if a check fails. Not independently reviewed; RESEARCH.md records the prior-art search, and two papers by Zhang remain to be read before any claim of priority.
+
 - **Paper 1's corrected version has its DOI.** Release v2.1.0 of `ChaseHendrick/minimal-winding` is archived on Zenodo as a preprint with its abstract, doi:10.5281/zenodo.22966989. The data availability paragraph, README, `RELEASES.md`, `papers.json`, the submission files and the root README now name it; papers 2 and 3 keep citing v2.0.0, the programs they used.
 
 - **Paper 2 has its DOI.** Release v1.0.0 of `ChaseHendrick/collapse-without-rotation` is archived on Zenodo as a preprint with its abstract, doi:10.5281/zenodo.22969841. The DOI is in the paper's data availability paragraph, its README (header and citation), its `RELEASES.md`, `papers.json` (`codeDoi`), and paper 3's reference to it.

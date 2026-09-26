@@ -43,7 +43,9 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   repository with status "draft", and so, by the owner's decision of the same day, is `papers/stable-expansion/`
   (stable self-similar expansion of four and five vortices). By the owner's decision of 2026-09-26,
   `papers/hh-dynamics/` (computer-assisted results on the Hodgkin-Huxley equations at the 1952 parameters) is drafted
-  here too, programs and results included, before it has a manuscript.
+  here too, programs and results included, before it has a manuscript; by the owner's decision of the same day, so is
+  `papers/nf-pulse/` (a computer-assisted proof of a travelling pulse in a neural field with a smooth firing rate),
+  labelled as not independently reviewed until it has been.
 
 ## Verify before you commit
 
