@@ -441,15 +441,22 @@ vortices have exactly eight relative equilibria, all reflection symmetric:
   0.788, each twice) rule out orders 3 and higher, and z -> -z does not map it to itself.
 
 Caveats specific to N = 6:
-- Only the first program has been run to completion here. The independent recount with bnbA
-  (`code/run6A.sh`) was started and its status is in section 8.1.
+- Only the first program has been run to completion here. The bnbA recount was too slow (section
+  8.1).
 - The adversarial check (section 9, second round) reran the classification on the committed N = 6
   data, checked every row of the table, and recounted numerically with its own solver: 8 classes
   and 3384 labelled, with the same indices (numerical).
 
-### 8.1 Independent N = 6 recount
+### 8.1 Independent N = 6 recount (not done)
 
-(status below)
+The second program was started on N = 6 (`code/run6A.sh`: bnbA, A = 2, 256 slices). Only 2 slices
+finished in 23 minutes on 4 cores, which projects to days, so it was stopped. Its partial output is
+not committed.
+
+Theorem 2 therefore rests on one search program (bnb.c) plus the arb stage. The only independent
+count is the reviewer's numerical multistart, which is consistent but not a proof. A faster second
+program, or a longer run, is the obvious next step before calling N = 6 settled with the same
+redundancy as N = 5.
 
 ## 9. Adversarial check (independent subagent, 2026-09-26)
 
