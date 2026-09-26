@@ -32,8 +32,8 @@ python3 classify.py 5 ../data/run5sym/w*.txt --json=../data/n5_classes.json | te
 python3 describe.py ../data/n5_classes.json | tee ../data/n5_describe.txt
 [ "$1" = quick ] && exit 0
 
-# independent recount (A = 2) and Hampton's family at A = 3, 6.5, 7
-for A in 2 3 6.5 7; do
+# independent recount (A = 2) and Hampton's family at A = 3, 6.5, 7, 8
+for A in 2 3 6.5 7 8; do
   search runA$A ./bnbA 5 $A 1024
   python3 classifyA.py 5 $A ../data/runA$A/w*.txt --json=../data/n5_A${A}_classes.json | tee ../data/n5_A${A}_classify.log
 done

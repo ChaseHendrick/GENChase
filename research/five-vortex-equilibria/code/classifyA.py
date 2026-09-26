@@ -178,22 +178,36 @@ def refine(v):
 
 
 def check_complete(files):
-    """every worker 0..n-1 of one run must have finished (STAT line) with no
-    undecided box; otherwise part of the domain was not searched"""
-    import re
-    seen = {}
-    nw = None
+    """The runs must together cover the whole chart.  A run with nworkers = n
+    and worker = w searches the initial pieces i with i = w (mod n).  Files may
+    mix granularities (a slow slice re-run as finer slices) provided every
+    n divides the largest one, L, and the residues covered mod L are all of
+    0..L-1.  Every file must be a finished run (STAT line) of the whole chart
+    (not a control box, not a mutation) with the same N, nsplit, chart and
+    exponent, and with no undecided box."""
+    ref = None
+    runs = []
     for fn in files:
         for line in open(fn):
             if line.startswith('STAT'):
                 d = dict(t.split('=', 1) for t in line.split()[1:] if '=' in t)
-                if nw is None:
-                    nw = int(d['nworkers'])
-                assert int(d['nworkers']) == nw, 'files from different runs'
+                key = {k: d.get(k) for k in ('nsplit', 'N', 'sym', 'A', 'root', 'mutate')}
+                if ref is None:
+                    ref = key
+                assert key == ref, f'files from different runs: {key} vs {ref}'
                 assert int(d['unres']) == 0, 'undecided boxes'
-                seen[int(d['worker'])] = True
-    assert nw is not None and sorted(seen) == list(range(nw)), f'incomplete run: workers {sorted(seen)} of {nw}'
-    return nw
+                assert d.get('root') == 'chart', 'not a search of the whole chart'
+                assert d.get('mutate') == '0', 'a mutated (control) run'
+                assert int(d['N']) == N, 'wrong N'
+                runs.append((int(d['nworkers']), int(d['worker'])))
+    assert runs, 'no STAT line: the run did not finish'
+    L = max(n for n, _ in runs)
+    assert all(L % n == 0 for n, _ in runs), 'incompatible granularities'
+    covered = set()
+    for n, w in runs:
+        covered.update(range(w % n, L, n))
+    assert covered == set(range(L)), f'incomplete run: {L - len(covered)} residues mod {L} not searched'
+    return L
 
 if os.environ.get("EXPLORATORY_SKIP_COMPLETENESS") != "1":  # never set for the proof runs
     check_complete(files)
@@ -354,6 +368,8 @@ chi = 1
 for k in range(2, N):
     chi *= 1 - k
 print(f'classes: {len(classes)}; labelled total {tot}; sum (-1)^index = {eul}; Euler characteristic {chi}')
+assert eul == chi, 'Euler characteristic check FAILED'
+print('Euler characteristic check passed')
 print('Morse polynomial:', ' + '.join(f"{sum(r['labelled'] for r in res if r['morse_index'] == i)} t^{i}" for i in range(2 * N - 3)))
 if jsonout:
     json.dump({'N': N, 'A': args[1], 'boxes': len(boxes), 'distinct': len(uniq), 'classes': res,

@@ -83,8 +83,17 @@ Searches were made on 2026-09-26 by a literature subagent and re-checked by the 
     are the complex solution counts 2060 and 17 quoted above. No N = 5 or N = 6 list or real count
     was found in the paper or the thesis.
   - Their data page is unreachable (see the table).
-  - Assessment: Faugere-Svartz claim an exact, computer-algebra proof covering N = 5 and N = 6, and
-    the result proved here is consistent with that claim. Their N = 5 list itself is not in print.
+  - Their Table 1 marks the direct N = 5 Groebner computation as not finished (∞, stopped after
+    five days). That does not match the abstract's "several days ... 2060", as the adversarial check
+    noticed.
+  - **Svartz's thesis** (tel-01147484, French summary, PDF p. 24), verified on the downloaded PDF:
+    "il est possible de résoudre ces équations et d'obtenir toutes les solutions du problème des
+    tourbillons jusqu'à N = 7. [...] Avant cette approche, le problème n'était résoluble que jusqu'à
+    N = 5." ("these equations can be solved and all solutions of the vortex problem obtained up to
+    N = 7. Before this approach, the problem was solvable only up to N = 5.") So the thesis treats
+    N = 5 as already solvable before 2012, without citing an explicit N = 5 list; none was found.
+  - Assessment: Faugere and Svartz claim an exact computer-algebra proof that covers N = 5 and N = 6,
+    and the result proved here is consistent with it. Their N = 5 list is not in print.
 - **Moczurad and Zgliczynski 2019**, Newtonian central configurations, equal masses, n = 5, 6, 7,
   interval arithmetic and Krawczyk. There is no mention of vortices. On other potentials they say
   only that "in principle we can treat also other potentials which cannot be reduced to polynomial
@@ -96,12 +105,15 @@ Searches were made on 2026-09-26 by a literature subagent and re-checked by the 
     same plan; the collision tests and charts are different.
 - **Hampton 2019**, convention: "U = sum m_i m_k / r^{A-2}", "Newtonian gravity is A = 3", and the
   case "A = 2 by using the logarithmic potential" as a "simplified model of fluid vortices".
-  - Conjecture 3 (quoted from the text): "There are unique values A5 in (6.755, 6.756) and Ac in
+  - Conjecture 3 (quoted from the text; its range "2 <= A < A5" includes the vortex case A = 2): "There are unique values A5 in (6.755, 6.756) and Ac in
     (7.5636, 7.5638) such that for 2 <= A < A5, the Morse polynomial of f on C5 is M(t) = 54 + 120t
-    + 120t^2 + 60t^3 = P(t) + (1 + t)(53 + 58t + 36t^2)".
+    + 120t^2 + 60t^3 = P(t) + (1 + t)(53 + 58t + 36t^2)" and "for A5 < A < Ac: M(t) = 150 + 240t
+    + 144t^2 + 60t^3" and "for Ac < A: M(t) = 120 + 240t + 174t^2 + 60t^3".
   - On the vortex case N = 7: "In the vortex case (A = 2) there appear to be exactly 12 central
     configurations", citing Faugere-Svartz.
-- **Kim 2026**, arXiv:2609.15090, Remark 1.5, verbatim: "(Conjecture on five-vortex system). It is
+- **Kim 2026**, arXiv:2609.15090, Remark 1.5, verbatim (the "[...]" omits two sentences citing
+  Kurakin-Yudovich for the pentagon and Cabral-Schmidt for the centred square): "(Conjecture on
+  five-vortex system). It is
   natural to expect that the two configurations that Mayer found on five magnets are the only
   stable configurations in the five-vortex system. [...] There may be other relative equilibria of
   the five-vortex system such as collinear configurations, but they are expected to be unstable
@@ -302,26 +314,75 @@ Results:
 - **N = 3 (both programs, A = 2 and 3):** the equilateral triangle (2 labelled) and the collinear
   configuration (3 labelled), Euler sum -1.
 
-## 6. Further results
+## 6. Hampton's exponent family (Conjecture 3 at sample exponents)
 
-(filled in below as the runs complete)
+bnbA and classifyA.py were run for N = 5 at A = 2, 3, 6.5, 7 and 8. These are multiples of 1/2, so
+r^{-A} needs only correctly rounded square roots. Every run is a complete certified search. Each
+result below is proved in the same sense as Theorem 1, for that exponent only.
 
-## 7. Negative controls and tests
+| A | classes | labelled | Morse polynomial | Hampton's Conjecture 3 predicts |
+|---|---|---|---|---|
+| 2 (vortices) | 5 | 354 | 54 + 120t + 120t^2 + 60t^3 | 54 + 120t + 120t^2 + 60t^3 (2 <= A < A5) |
+| 3 (Newton) | 5 | 354 | 54 + 120t + 120t^2 + 60t^3 | same |
+| 6.5 | 5 | 354 | 54 + 120t + 120t^2 + 60t^3 | same |
+| 7 | 7 | 594 | 150 + 240t + 144t^2 + 60t^3 | 150 + 240t + 144t^2 + 60t^3 (A5 < A < Ac) |
+| 8 | 7 | 594 | 120 + 240t + 174t^2 + 60t^3 | 120 + 240t + 174t^2 + 60t^3 (Ac < A) |
 
-(filled in below)
+How the configurations change with A:
+- At A = 7 the regular pentagon has index 2 instead of 0. Two new classes of 120 appear, with
+  indices 0 and 1, consistent with a bifurcation from the pentagon at A5.
+- At A = 8 the centred square has index 2 instead of 0. One of the index-0 classes has become index 2,
+  consistent with Hampton's second bifurcation at Ac.
+- In every case the Euler sum is -6 (asserted).
 
-## 8. Hampton's exponent family
+What this does and does not prove about Conjecture 3:
+- It proves the conjectured Morse polynomial at the five sampled exponents. The sample includes both
+  sides of A5 and of Ac.
+- It does not prove the conjecture on the intervals.
+- It says nothing about the values of A5 and Ac.
 
-(filled in below)
+**Towards the intervals (not finished).** `code/bnbP.c` treats A as an extra coordinate of every box.
+- It uses rigorous interval exp and log (`code/ivelem.h`, tested against arb).
+- It uses a parametric Krawczyk test: one certified box holds exactly one solution for every A in its
+  A-range, and the Jacobian is nonsingular there.
+- At a solution, the Jacobian of the square system H_2..H_{N-1} is an invertible linear image of the
+  Hessian of the scale-invariant potential on the shape space. The linear map is complex with
+  determinant N/(1 - conj z_N) != 0. So a complete joint search over [2, A*] with no undecided box
+  would prove that the count and every Morse index are constant on [2, A*]. That is Conjecture 3's
+  first polynomial on [2, A*] for any A* < A5 reached.
+- For N = 3 the joint search certifies all of A in [2, 7] in half a second: the equilateral triangle
+  and the collinear configuration only, a classical fact.
+- For N = 5, a trial on A in [2, 2.25] had not finished after 30 minutes on 3 cores. Interval
+  evaluation over an A-range loses too much to cancellation, even with mean-value forms in A.
+- The interval version of Conjecture 3 therefore remains open here. A faster formulation is the
+  obvious next step.
 
-## 9. N = 6
+## 7. Negative controls and tests (`code/controls.py`, `code/tests/`)
 
-(filled in below)
+Tests of the trust base:
+- `tests/test_ival.py`: 200,000 random interval operations (+, -, *, square, reciprocal, with signs
+  and magnitudes from 2^-60 to 2^60) against exact rational arithmetic. 0 failures.
+- `tests/test_ivelem.py`: 20,000 interval log, exp and power evaluations against arb. 0 failures;
+  the excess width is at most 2e-13 relative.
+- `tests/test_jacobians.py`: at random points, the C enclosures of E and of the hand-derived
+  Jacobian, for bnb.c (N = 3..6) and bnbA.c (N = 3..6, A = 2, 2.5, 3, 6.5, 7), must contain the exact
+  values from arb automatic differentiation. 0 mismatches.
+  - This test found the printf/strtod rounding pitfall described in 4.6.
 
-## 10. Adversarial check
+Negative controls (results in `data/controls.log`):
+- C1: a small box around the exact pentagon is certified. Boxes around non-solutions are excluded,
+  with no certified and no undecided box.
+- C2: each mutated exclusion test (`--mutate=1..4`: wrong inertia constant, shifted G_j, cluster
+  constant 0, shifted mean-value test) loses true solutions. The classification then fails:
+  classical solutions are missing, or the Euler assertion fails.
+- C3: `--mutate=5` drops the contraction term of the Krawczyk operator. Its false certificates are
+  rejected by the independent arb re-verification.
+- C4: without the cluster identities (`--no-cluster`) the collision set cannot be excluded, and the
+  search leaves undecided boxes.
+- The perturbed potential changes the count where it should (section 6): the count is 354 for
+  A < A5 and 594 for A = 7 and A = 8. The Euler sum is -6 in both regimes.
+- N = 4 contains a degenerate relative equilibrium: the equilateral triangle with a vortex at its
+  centre. Hess W has an extra double zero there (numerical). bnb correctly fails to certify it and
+  leaves undecided boxes around it. So the program does not hide degeneracy. This case is outside the
+  theorem.
 
-(filled in below)
-
-## 11. Reproduce
-
-(filled in below)

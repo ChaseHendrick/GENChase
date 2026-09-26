@@ -99,9 +99,27 @@ def float_inverse(M):
     import numpy as np
     return np.linalg.inv(np.array(M, dtype=float))
 
-def krawczyk(X):
+def J_hull(X, levels):
+    """Jacobian enclosure over X as the union of the enclosures over the
+    sub-boxes obtained by halving every coordinate `levels` times (a box
+    whose enclosure is too loose in one piece can still verify)."""
+    subs = [[]]
+    for x in X:
+        lo, hi = x.lower(), x.upper()
+        k = 2 ** levels
+        cuts = [lo + (hi - lo) * i / k for i in range(k + 1)]
+        pieces = [cuts[i].union(cuts[i + 1]) for i in range(k)]
+        subs = [s + [p] for s in subs for p in pieces]
+    Jh = None
+    for sb in subs:
+        J = J_of(sb)
+        Jh = J if Jh is None else [[p.union(q) for p, q in zip(r1, r2)] for r1, r2 in zip(Jh, J)]
+    return Jh
+
+
+def krawczyk(X, levels=0):
     """X: list of arb balls.  Returns K(X) as list of arb."""
-    J = J_of(X)
+    J = J_of(X) if levels == 0 else J_hull(X, levels)
     m = [arb(x.mid()) for x in X]
     Em = E_of(m)
     Jm = [[mid_f(J[i][j]) for j in range(D)] for i in range(D)]
@@ -145,22 +163,36 @@ def newton_refine(v, iters=60):
 # ------------------------------------------------------------ stage 1: boxes
 
 def check_complete(files):
-    """every worker 0..n-1 of one run must have finished (STAT line) with no
-    undecided box; otherwise part of the domain was not searched"""
-    import re
-    seen = {}
-    nw = None
+    """The runs must together cover the whole chart.  A run with nworkers = n
+    and worker = w searches the initial pieces i with i = w (mod n).  Files may
+    mix granularities (a slow slice re-run as finer slices) provided every
+    n divides the largest one, L, and the residues covered mod L are all of
+    0..L-1.  Every file must be a finished run (STAT line) of the whole chart
+    (not a control box, not a mutation) with the same N, nsplit, chart and
+    exponent, and with no undecided box."""
+    ref = None
+    runs = []
     for fn in files:
         for line in open(fn):
             if line.startswith('STAT'):
                 d = dict(t.split('=', 1) for t in line.split()[1:] if '=' in t)
-                if nw is None:
-                    nw = int(d['nworkers'])
-                assert int(d['nworkers']) == nw, 'files from different runs'
+                key = {k: d.get(k) for k in ('nsplit', 'N', 'sym', 'A', 'root', 'mutate')}
+                if ref is None:
+                    ref = key
+                assert key == ref, f'files from different runs: {key} vs {ref}'
                 assert int(d['unres']) == 0, 'undecided boxes'
-                seen[int(d['worker'])] = True
-    assert nw is not None and sorted(seen) == list(range(nw)), f'incomplete run: workers {sorted(seen)} of {nw}'
-    return nw
+                assert d.get('root') == 'chart', 'not a search of the whole chart'
+                assert d.get('mutate') == '0', 'a mutated (control) run'
+                assert int(d['N']) == N, 'wrong N'
+                runs.append((int(d['nworkers']), int(d['worker'])))
+    assert runs, 'no STAT line: the run did not finish'
+    L = max(n for n, _ in runs)
+    assert all(L % n == 0 for n, _ in runs), 'incompatible granularities'
+    covered = set()
+    for n, w in runs:
+        covered.update(range(w % n, L, n))
+    assert covered == set(range(L)), f'incomplete run: {L - len(covered)} residues mod {L} not searched'
+    return L
 
 if os.environ.get("EXPLORATORY_SKIP_COMPLETENESS") != "1":  # never set for the proof runs
     check_complete(files)
@@ -178,6 +210,8 @@ sols = []   # each: dict with 'box' (lohi), 'tight' (list arb), 'z' (acb list)
 for bi, lohi in enumerate(boxes):
     X = [ball_from_interval(lo, hi) for lo, hi in lohi]
     K = krawczyk(X)
+    if not strictly_inside(K, lohi):
+        K = krawczyk(X, levels=1)   # Jacobian hull over 2^D sub-boxes
     assert strictly_inside(K, lohi), f'arb Krawczyk failed on box {bi}'
     z = zfrom(X)
     assert (X[0] - z[N - 1].real) > 0, 'reduction condition Re z_N < x_1 fails'
@@ -466,8 +500,14 @@ def stability(z, index):
     rts = np.roots(Pm[::-1])
     real_rts = sorted(r.real for r in rts if abs(r.imag) < 1e-8 * max(1, abs(r)))
     certified_pos, certified_neg = 0, 0
+    eps_of = lambda r: 1e-6 * max(1.0, abs(r))
+    for r1, r2 in zip(real_rts, real_rts[1:]):
+        # the isolating intervals must be disjoint, or two sign changes could
+        # belong to the same root
+        if not r1 + eps_of(r1) < r2 - eps_of(r2):
+            return {'real_pairs_certified': 0, 'imag_pairs_certified': 0, 'deg': len(P) - 1, 'P_roots_float': real_rts}
     for r in real_rts:
-        eps = 1e-6 * max(1.0, abs(r))
+        eps = eps_of(r)
         a, b = arb(r - eps), arb(r + eps)
         va, vb = Peval(a), Peval(b)
         if (va > 0 and vb < 0) or (va < 0 and vb > 0):
@@ -518,6 +558,11 @@ chi = 1
 for k in range(2, N):
     chi *= (1 - k)
 print(f'Euler characteristic of the shape space, prod_(k=2)^(N-1) (1-k): {chi}')
+# Morse theory (H proper and bounded below on the shape space, every critical
+# point nondegenerate) forces sum (-1)^index = chi.  Not needed by the proof;
+# a safety net that catches an exclusion bug removing a whole class.
+assert euler == chi, 'Euler characteristic check FAILED: some class is missing or wrong'
+print('Euler characteristic check passed')
 print('Morse polynomial:', ' + '.join(f"{sum(r['labelled'] for r in results if r['morse_index'] == i)} t^{i}" for i in range(2 * N - 3)))
 if jsonout:
     json.dump({'N': N, 'boxes': len(boxes), 'distinct_chart_solutions': len(uniq), 'classes': results,

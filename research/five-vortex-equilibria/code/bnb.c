@@ -468,7 +468,7 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IOLBF, 0);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) vol_total += bvol(&q[i]);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) run(q[i]);
-  printf("STAT nworkers=%d nsplit=%d sym=%d N=%d worker=%d boxes=%ld t0_chart=%ld t1_inertia=%ld t2_G=%ld t3_cluster=%ld t4_krawczyk_excl=%ld cert=%ld unres=%ld\n", nworkers, nsplit,
+  printf("STAT root=%s mutate=%d nworkers=%d nsplit=%d sym=%d N=%d worker=%d boxes=%ld t0_chart=%ld t1_inertia=%ld t2_G=%ld t3_cluster=%ld t4_krawczyk_excl=%ld cert=%ld unres=%ld\n", getenv("BNB_ROOT") ? "custom" : "chart", mutate, nworkers, nsplit,
          use_sym, N, worker, st_boxes, st_t0, st_t1, st_t2, st_t3, st_t4, st_cert, st_unres);
   return 0;
 }

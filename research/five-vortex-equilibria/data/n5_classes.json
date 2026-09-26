@@ -81,7 +81,7 @@
    "morse_index": 0,
    "stability": {
     "real_pairs_certified": 0,
-    "imag_pairs_certified": 1,
+    "imag_pairs_certified": 0,
     "deg": 3
    },
    "linearly_stable_certified": true,

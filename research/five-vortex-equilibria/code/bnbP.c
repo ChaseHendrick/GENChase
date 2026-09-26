@@ -280,6 +280,39 @@ static int exclude_basic(const box *b, tables *t, int *ap) {
       if (mutate == 2) h.re = iv_add(h.re, ivp(0.25));
       if (!iv_has0(h.re) || !iv_has0(h.im)) return 2;
     }
+    /* mean-value form in A: H_j(X, A) in H_j(X, A_mid) + dH_j/dA(X, [A]) (A - A_mid),
+     * dH_j/dA = I sum_k w_jk p_jk (-(1/2) ln d_jk) - (dU'/dA) z_j */
+    if (iv_wid(AI) > 0) {
+      iv save = AI; double am = iv_mid(AI);
+      iv lnd[MAXN][MAXN];
+      for (int j = 0; j < N; j++) for (int k = j + 1; k < N; k++) lnd[j][k] = lnd[k][j] = iv_scale(iv_log(t->d[j][k]), -0.5);
+      iv dU = ivp(0.0);
+      for (int j = 0; j < N; j++) for (int k = j + 1; k < N; k++) dU = iv_add(dU, iv_mul(t->u[j][k], lnd[j][k]));
+      civ dH[MAXN];
+      for (int j = 0; j < N; j++) {
+        civ sum = czero();
+        for (int k = 0; k < N; k++) if (k != j) {
+          iv f = iv_mul(t->p[j][k], lnd[j][k]);
+          civ g = {iv_mul(t->w[j][k].re, f), iv_mul(t->w[j][k].im, f)};
+          sum = cadd(sum, g);
+        }
+        dH[j].re = iv_sub(iv_mul(t->I, sum.re), iv_mul(dU, t->z[j].re));
+        dH[j].im = iv_sub(iv_mul(t->I, sum.im), iv_mul(dU, t->z[j].im));
+      }
+      AI = ivp(am);
+      tables tm; build(b, &tm);
+      iv Um = Uprime(&tm);
+      iv dA = iv_sub(save, ivp(am));
+      int excl = 0;
+      for (int j = 0; j < N && !excl; j++) {
+        civ h0 = Hj(&tm, j, Um);
+        iv hr = iv_add(h0.re, iv_mul(dH[j].re, dA)), hi = iv_add(h0.im, iv_mul(dH[j].im, dA));
+        if (mutate == 2) hr = iv_add(hr, ivp(0.25));
+        if (!iv_has0(hr) || !iv_has0(hi)) excl = 1;
+      }
+      AI = save;
+      if (excl) return 2;
+    }
   }
   /* T3: partition identities */
   for (int pi = 0; pi < nparts; pi++) {
@@ -548,7 +581,7 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IOLBF, 0);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) vol_total += bvol(&q[i]);
   for (long i = 0; i < nq; i++) if (i % nworkers == worker) run(q[i]);
-  printf("STAT nworkers=%d nsplit=%d joint A in [%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cached=%ld cert=%ld unres=%ld\n", nworkers, nsplit,
+  printf("STAT root=%s mutate=%d nworkers=%d nsplit=%d joint A in [%a,%a] sym=%d N=%d worker=%d partitions=%d boxes=%ld t0_chart=%ld t2_H=%ld t3_partition=%ld t4_mv_krawczyk=%ld cached=%ld cert=%ld unres=%ld\n", getenv("BNB_ROOT") ? "custom" : "chart", mutate, nworkers, nsplit,
          root.a.lo, root.a.hi, use_sym, N, worker, nparts, st_boxes, st_t0, st_t2, st_t3, st_t4, st_cached, st_cert, st_unres);
   return 0;
 }
