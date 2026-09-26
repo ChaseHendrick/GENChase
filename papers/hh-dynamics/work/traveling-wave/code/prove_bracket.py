@@ -5,8 +5,8 @@
 
 For K1 = 10.4383548 and K2 = 10.4383549 /ms at 18.5 C (speeds 18.73216 m/s to 5 digits), the branch of the unstable
 manifold of rest that leaves the block of Lemma B through z1 = +r (the branch that fires) is integrated by the
-Lohner integrator from the whole exit set of Lemma B. Claim: at K1 it reaches u < -60 mV after the spike, at K2 it
-reaches u > +150 mV. This is Hodgkin and Huxley's 1952 observation that the solution "diverges" in opposite
+Lohner integrator from the whole exit set of Lemma B. Claim: at K1 it reaches u < -60 mV with u' < 0 after the spike, at
+K2 it reaches u > +150 mV with u' > 0. Negative control: at K1 the upward target is not certified. This is Hodgkin and Huxley's 1952 observation that the solution "diverges" in opposite
 directions on the two sides of the speed, made rigorous. It is NOT a proof that the pulse exists: the closing
 step (an isolating block at rest reached by the orbits of every K in between) is not done here.
 
@@ -46,10 +46,13 @@ def run(K, phi, EL, B, target, p=20, tol=1e-32, tmax=12.0, log=100):
         wid = max(float(arb(x.rad()).mid()) for x in X.hull())
         info['t'], info['u'], info['wid'] = t, u, wid
         info['umax'] = max(info.get('umax', -1e9), float(u.upper()))
-        if target < 0 and u < target:
+        w = X.hull()[1]
+        info['w'] = w
+        # success: u past the target AND u' of the same sign, for every point of the set
+        if target < 0 and u < target and w < 0:
             info['ok'] = True
             return True
-        if target > 0 and u > target:
+        if target > 0 and u > target and w > 0:
             info['ok'] = True
             return True
         if float(u.rad()) > 20 or wid > 5000:
@@ -78,13 +81,16 @@ def main():
     if not B['ok']:
         return False
     ok = True
-    for K, target, name in ((K1, -60, 'K1'), (K2, 150, 'K2')):
+    runs = ((K1, -60, 'K1', True), (K2, 150, 'K2', True), (K1, 150, 'K1 (negative control)', False))
+    for K, target, name, expect in runs:
         print('\n%s = %s: integrating the exit set until u %s %d mV' % (name, K.str(12), '<' if target < 0 else '>', target))
         info = run(K, phi, EL, B, target)
-        print('  %s after %d steps (%.0f s): t = %s ms, u in %s, max u upper bound so far %.4f, max radius %.2e'
-              % ('PROVED' if info['ok'] else 'FAILED', info['steps'], info['secs'], info['t'].str(8),
-                 info['u'].str(8), info['umax'], info['wid']))
-        ok = ok and info['ok']
+        print('  %s after %d steps (%.0f s): t = %s ms, u in %s, u\' in %s, max u upper bound at step ends %.4f, '
+              'max radius %.2e' % ('PROVED' if info['ok'] else 'NOT PROVED', info['steps'], info['secs'],
+                                   info['t'].str(8), info['u'].str(8), info['w'].str(5), info['umax'], info['wid']))
+        if not expect:
+            print('  negative control %s' % ('passed (the wrong escape is not certified)' if not info['ok'] else 'FAILED'))
+        ok = ok and (info['ok'] == expect)
     print('\nALL CHECKS PASSED' if ok else '\nSOME CHECK FAILED')
     return ok
 

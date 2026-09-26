@@ -9,8 +9,7 @@ away from 0, or as 1 / G(x) with G(x) = (e^x - 1)/x = sum_n x^n/(n+1)!, whose Ta
 G_k(x0) = sum_{n>=k} C(n, k) x0^(n-k) / (n+1)!, composed with s. With RIGOROUS = True the G_k carry a bound of the
 tail n > N (|x0| <= 1/2: term ratio at most 1/2), so every coefficient is an enclosure.
 
-This module is used both by the high-precision numerical shooting (hp_shoot.py, which keeps only midpoints) and by
-the rigorous stage (which keeps the balls).
+This module is used by the rigorous integrator (lohner_hh.py), which keeps the balls.
 """
 from flint import arb, arb_series, ctx, fmpq
 

@@ -21,8 +21,8 @@ and over the K ball, written A = Lam + E with Lam = diag(l1, l2, [[a, -b], [b, a
      (Gershgorin on its lower bounds).
 Since f(y*) = 0 and B is convex, z' = A(z) z with A(z) = int_0^1 T Df(y* + T^-1 tau z) T^-1 dtau in the interval
 matrix, so (C) gives d/dt L(z) = z^T (D A(z) + A(z)^T D) z > 0 for z != 0, L = z1^2 - |z'|^2. The branch of W^u(y*)
-tangent to +T^-1 e1 has L > 0 near y* (it is tangent to e1) and lies in the interior of B for all early times; while
-in B, L increases, so z1 never vanishes and the orbit cannot converge to y* (L(y*) = 0) nor stay in B forever (an
+with z1 > 0 lies in the interior of B for all early times; there L increases strictly and tends to 0 as t -> -infinity
+(the orbit tends to y*), so L > 0 on it; while in B, L keeps increasing, so z1 never vanishes and the orbit cannot converge to y* (L(y*) = 0) nor stay in B forever (an
 omega-limit set in B would carry an orbit with constant L, which (C) allows only at y*). It cannot leave through a
 stable face (F). Hence it leaves B through the face z1 = +r at a point with |z2| <= s2, |(z3, z4)| <= s3, |z5| <= s5.
 This exit set is what prove_bracket.py integrates.

@@ -24,9 +24,11 @@ not a proof) or **literature** (with the source and whether it was read first ha
   positive real part, simple and real, enclosed, and four with negative real part. (B) A block lemma encloses the
   point where the branch of the unstable manifold leaves a small neighbourhood of rest. (C) A validated Lohner
   integrator carries that branch through the upstroke, the spike and the repolarization: **at K1 = 10.4383548 it
-  reaches u < -60 mV, at K2 = 10.4383549 it reaches u > +150 mV.** This is Hodgkin and Huxley's 1952 bracketing
-  ("V goes off towards either +infinity or -infinity") made rigorous, with the speed pinned to 18.73216 m/s to seven
-  digits. It is **not** yet an existence proof: the closing step is missing.
+  reaches u < -60 mV with u' < 0, at K2 = 10.4383549 it reaches u > +150 mV with u' > 0** (the same at 6.3 C with
+  K1 = 4.5107697, K2 = 4.5107698). This is the rigorous version of the first half of Hodgkin and Huxley's 1952
+  bracketing ("V goes off towards either +infinity or -infinity"): it proves that the shooting switches between
+  18.7321608 and 18.7321609 m/s, not that anything goes to infinity and not that a pulse with that speed exists.
+  The closing step is missing.
 - **Feasibility of the full proof.** The closing step needs the orbits of a whole K interval tracked until they are
   inside an isolating block at rest, about 17 ms after the upstroke at 18.5 C. The unstable eigenvalue is about
   10.9 /ms, so the K interval must be about 10^-85 wide and the integration run at roughly 350 to 400 bits. The pieces
@@ -34,7 +36,9 @@ not a proof) or **literature** (with the source and whether it was read first ha
   Our honest estimate: 2 to 4 more working days, a 60 to 70 per cent chance of success along this direct route, with
   a covering-relation (multiple shooting) route as the fallback if the direct one wraps too much. A proof would, as far
   as we can tell, be the first for the unmodified Hodgkin-Huxley pulse.
-- **Independent check.** See Section 5.
+- **Independent check.** An independent subagent re-read the sources, reproduced the speeds to every printed digit
+  with its own code, and found the rigorous code sound for what it literally proves; its corrections are applied
+  (Section 5).
 
 ## 1. Prior art
 
@@ -57,13 +61,15 @@ preview); pp. 231-257, with the hypotheses and the theorem, were not reachable.
 So Hastings proved existence for a class of HH-type systems with n and h slowed by a small epsilon, under hypotheses
 that he did not verify for the HH functions. Secondary descriptions agree (Ikeda, Mimura and Tsujikawa 1989: Hastings
 and Carpenter "introduce artificial small parameters"; Turner 2005: such a result "seems out of reach for the full
-Hodgkin-Huxley model"; both secondhand through citation contexts).
+Hodgkin-Huxley model"; Ikeda et al. checked first hand in the publisher's preview by the independent checker,
+Turner still secondhand: the checker could not find the sentence in the preview).
 
 ### 1.2 Carpenter 1977
 
 G. A. Carpenter, "A geometric approach to singular perturbation problems with applications to nerve impulse
 equations", J. Differential Equations 23 (1977) 335-367, doi:10.1016/0022-0396(77)90116-4, zbMATH 0341.35007,
-MR442379. **Not read** (publisher 403, no open copy, no review text reachable). Her own description, read first hand
+MR442379. **Not read** (publisher 403 from this sandbox; the checker found that Crossref lists it under Elsevier's
+open-archive licence, so it should be freely readable in a browser and must be read before any claim). Her own description, read first hand
 in Carpenter, SIAM J. Appl. Math. 36 (1979) 334-372, p. 336 (self-report):
 
 - "The model defined in Section 2 contains three positive parameters, epsilon, delta, and theta. epsilon is the order of
@@ -223,16 +229,21 @@ everything is about 2.3 times slower.
 | 32 | 6.1608, 14.39 m/s | 15.7289, 22.99 m/s |
 | 34, 36, 38 | none | none |
 
-The two switches approach each other and disappear between 32 and 34 C, which is where the literature puts the
-failure of propagation (33.5 to 33.7 C, secondhand, Section 1.7). The fast speed rises to about 23.4 m/s near 30 C and
+The two switches approach each other and disappear between 32 and 34 C. The literature on the failure temperature
+is not consistent (Section 1.7): 33.5 to 33.7 C is secondhand, attributed to Huxley 1959, while Huxley's own Nobel
+caption says the computed conduction failed slightly above 28.9 C; we have not read Huxley 1959. The fast speed rises to about 23.4 m/s near 30 C and
 then falls, as in Muratov's Fig. 4.
 
 **The lower switch is not a slow pulse.** At the lower switch (18.5, 25, 30 and 32 C) the orbit does not return to
 rest: after one small excursion it settles on an oscillation with peaks of 26 to 32 mV and a period of 2.5 to 3.3 ms
 and stays there for 6 to 25 ms before it runs away (closest approach to rest afterwards: 0.02 to 0.07 in scaled
 units). That is the signature of a connection from rest to a periodic orbit (a wave train), which also costs one
-condition. So **no slow pulse was found**; Huxley's "wave, or even a series of waves, of just threshold amplitude" may
-be this object or may be a slow pulse that the escape classification does not separate. Finding it would need
+condition. So **no slow pulse was found by this scan**. The literature says one exists numerically: Ikeda, Mimura and
+Tsujikawa (Japan J. Appl. Math. 6 (1989), p. 2, read by the checker in the publisher's preview): "Huxley [16], [17],
+Cooley and Dodge [5] and Miller and Rinzel [22] numerically show that (1.1) has two 1-pulse traveling wave solutions
+with different velocities, and that the fast traveling wave solution is stable, while the slow one is unstable." Our
+escape-sign scan is not designed to see a slow pulse whose two sides escape the same way, so this is a limit of the
+scan, not evidence against the slow pulse. Finding it would need
 continuation of the fast pulse around the fold near 33 C, which we have not done.
 
 ## 3. Rigorous first stage
@@ -259,7 +270,7 @@ hull of T Df T^-1 over B. Then (argument in the docstring) the branch of W^u(y*)
 the face z1 = +r at a point with |z2| <= s2, |(z3, z4)| <= s3, |z5| <= s5. Verified with r = 1e-4,
 (s2, s3, s5) = (2e-9, 1e-7, 6e-9), and with r = 1e-5 and the s scaled by 1/100 (used in 3.3); negative control: faces
 100 times thinner are rejected. The same check passes with r = s = 0.01 (a round block, the size a closing block
-could have) and fails at 0.03 with these crude bounds.
+could have) and fails at 0.02 with these crude bounds (the checker's run; 0.03 fails too).
 
 ### 3.3 The bracketing orbits (`prove_bracket.py`, `lohner_hh.py`, `hhjet.py`)
 
@@ -268,21 +279,27 @@ Taylor coefficients of the flow and their derivatives with respect to the initia
 truncated power series of dual numbers, with Psi(x) = x/(e^x - 1) near x = 0 evaluated as 1/G(x),
 G(x) = (e^x - 1)/x = sum x^n/(n+1)!, whose Taylor coefficients carry a rigorous tail bound, so no ball containing 0 is
 ever divided by. Tests: the jet's Jacobian matches finite differences, and the gradients of the fifth Taylor
-coefficient match 200-bit central differences to 1e-36 relative; an integration of the upstroke matches scipy to 7
-digits with a rigorous radius of 1e-6.
+coefficient match 200-bit central differences to 7e-37 relative; the series of 1/G near u = 25 is continuous; a
+Lohner integration of the upstroke to t = 1 ms contains scipy's DOP853 solution (`test_jet.py`,
+`data/test_jet.txt`).
 
-Result (`data/prove_bracket.txt`, 128 bits, order 20):
+Result (`data/prove_bracket.txt`, 128 bits, order 20; the success test is on the enclosure at the end of a step,
+for both u and u'):
 
 - K1 = 10.4383548: the whole exit set of Lemma B (r = 1e-5) is carried through the spike (u up to 90.58 mV) and
-  **reaches u < -60 mV** at t = 2.46501 ms after leaving the block (428 steps).
-- K2 = 10.4383549: **reaches u > +150 mV** at t = 2.47637 ms (461 steps).
+  **reaches u < -60 mV with u' < 0** (u' in [-900 +- 66] mV/ms) at t = 2.46501 ms after leaving the block (428 steps).
+- K2 = 10.4383549: **reaches u > +150 mV with u' > 0** at t = 2.47637 ms (461 steps).
+- Negative control: at K1, the upward target (u > 150, u' > 0) is not certified; the set is carried until it is too
+  wide (983 steps) and the program reports that as expected.
 
 At 6.3 C (`python3 prove_bracket.py 1e-5 6.3`, `data/prove_bracket_6.3.txt`): with K1 = 4.5107697 the exit set
 reaches u < -60 mV at t = 4.61796 ms (442 steps), and with K2 = 4.5107698 it reaches u > +150 mV at t = 4.51464 ms
-(335 steps); the speeds are 12.313944 m/s to eight digits.
+(335 steps), both with u' of the same sign, and the negative control again fails as it should. So the shooting
+switches between 12.3139441 and 12.3139442 m/s.
 
-So, rigorously, the firing branch of the unstable manifold escapes downward at K1 and upward at K2, as Hodgkin and
-Huxley observed at the two sides of their K. (The "max u upper bound so far" printed by the program is taken over the
+So, rigorously, the firing branch of the unstable manifold crosses u = -60 mV going down at K1 and u = +150 mV going
+up at K2, the two behaviours Hodgkin and Huxley observed at the two sides of their K. Whether it then goes to
+infinity is not checked (and is not needed for the plan of Section 4). (The "max u upper bound so far" printed by the program is taken over the
 sets at the ends of the steps, not over the steps themselves.) **This does not prove that a pulse exists** (Section 4).
 
 ## 4. Plan for the full proof
@@ -315,7 +332,7 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
   collocation profile from the exit face of Lemma B (u = 1e-5 mV): |dy/dK| is 1e16 at t = 2 ms, 2e82 at 16 ms and
   7e91 at 18 ms (`data/sensitivity_18.5.txt`), so for the orbits to stay within 0.01 of the pulse until they enter the
   block the K interval must be 10^-85 to 10^-90 wide, and the manifold's stable box comparably thin; the integration needs about 350 to 400 bits and a per-step tolerance near
-  10^-90. A larger block (better weights; the crude bound fails at 0.03) or a smarter closing would cut this: each
+  10^-90. A larger block (better weights; the crude bound fails at 0.02) or a smarter closing would cut this: each
   factor of 10 in r0 saves about 4.7 ms and 22 digits.
 - **Wrapping in the upstroke.** At 128 bits the rigorous radius grows about 250 times more than e^(lambda t) across
   the steep upstroke (u' reaches 400 mV/ms), because the remainder is evaluated over the whole a priori box. Smaller
@@ -347,12 +364,38 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
   Lessard, van den Berg, Mireles James, Arioli and Koch), the authors of the singular-perturbation theory of nerve
   pulses (Hastings, Carpenter, Jones, Sandstede) and textbook authors who repeat the Keener-Sneyd sentence. Before any
   claim: read Hastings pp. 231-257, Carpenter 1977 and Foote and Chen 1981 (Section 1.5).
-- **Also worth doing on the way:** a rigorous proof that no pulse exists (no sign switch) at 36 C would need only the escape part.
 
 ## 5. Independent check
 
-Pending: an independent subagent re-opens every cited source, checks each quotation and each statement of what
-Hastings and Carpenter proved, and recomputes the speed with its own code. Its verdict will be recorded here.
+An independent subagent (2026-09-26), with no access to our reasoning beyond this report and the code, re-opened the
+sources, recomputed the speed with code written from scratch, and reviewed the rigorous programs. Its verdict, in
+summary:
+
+- **Sources.** Verified word for word: Hastings p. 230 (both quotations); Carpenter 1979 p. 336 (both); Hodgkin and
+  Huxley 1952 pp. 519-528 (the rate functions, eq. (31), the "+infinity or -infinity" sentence, phi, K = 10.47,
+  a = 238 mu, R_2 = 35.4, 18.8 and 21.2 m/s, 18.5 C, C_M = 1.0, the Table 3 footnote); Huxley's Nobel lecture (the
+  slow-wave passage, the Fig. 16 caption); Arioli and Koch (FitzHugh-Nagumo only, epsilon = 1/100, gamma = 5,
+  a = 1/10, 0.470336270); Muratov (the "order of magnitude" sentence, "T ~ 30", Fig. 4); the Cooley-Dodge and
+  Miller-Rinzel abstracts. Upgraded to first hand: the Ikeda-Mimura-Tsujikawa "artificial small parameters" sentence.
+  Not verified: the Turner sentence (not in the preview). Still unreached: Hastings pp. 231-257, Carpenter 1977 (but
+  open-archive), Foote and Chen 1981, Huxley 1959.
+- **Speed, recomputed** with its own fixed-step RK4 at two step sizes and scipy's Radau, bisecting K on the escape
+  direction: K = 10.4383548291 (18.7321608 m/s) at 18.5 C, 4.5107697268 (12.3139441 m/s) at 6.3 C, and 10.43805106
+  (18.731888 m/s) with the printed E_l; the same eigenvalues of rest; K = 10.47 gives 18.7605 m/s. Its own scan at
+  18.5 C finds the same two switches, and the same oscillation (about 31.6 mV, period 3.26 ms) at the lower one.
+- **Rigorous code.** Both certification programs pass when rerun and reproduce the committed output. Lemma A, the
+  block argument of Lemma B and the Lohner step are sound, including Psi near 0.
+- **Corrections it asked for, all applied:** (1) "escapes" said more than was checked; the program now also certifies
+  the sign of u', and the report no longer says "to infinity"; (2) "speed pinned to seven digits" pinned a switch of
+  the shooting, not the speed of a proved pulse; reworded; (3) a claim that a scan without a sign switch at 36 C would
+  prove non-existence was wrong (a pulse need not produce a sign switch, and a scan does not cover every K); removed;
+  (4) the failure temperature was attributed too firmly; reworded; (5) the literature's numerical slow pulse was not
+  cited; added (Section 2.4); (6) the jet tests cited here were not in the folder; added as `test_jet.py`, and a dead
+  reference to a missing program was removed; (7) `prove_bracket.py` had no negative control; added; (8) the Lemma B
+  docstring gave the wrong reason for L > 0 near rest (it is that L increases strictly in B and tends to 0 backward);
+  fixed; (9) Lemma B fails at 0.02, not only 0.03; corrected.
+- **Overall (its words, condensed):** the sources are accurate, the numbers are independently reproduced, and the
+  rigorous first stage is sound for what it literally proves.
 
 ## 6. Rerun
 
@@ -367,6 +410,7 @@ python3 certify_rest_wave.py 18.5    # rigorous: Lemmas A and B (seconds) -> dat
 python3 certify_rest_wave.py 6.3
 python3 prove_bracket.py 1e-5        # rigorous: the two bracketing orbits (about 2.5 minutes) -> data/prove_bracket.txt
 python3 prove_bracket.py 1e-5 6.3    # the same at 6.3 C -> data/prove_bracket_6.3.txt
+python3 test_jet.py                  # tests of the jet, Psi near 0 and the integrator -> data/test_jet.txt
 python3 sensitivity.py 18.5          # numerical: growth of dy/dK along the profile -> data/sensitivity_18.5.txt
 ```
 
@@ -385,7 +429,8 @@ The rigorous programs exit with status 0 only if every check, including the nega
 | `code/hhjet.py` | rigorous | the same with derivatives in the initial point (dual numbers) |
 | `code/lohner_hh.py` | rigorous | C^0 Lohner integrator |
 | `code/certify_rest_wave.py` | rigorous | Lemma A (eigenvalues) and Lemma B (exit of the unstable manifold) |
-| `code/prove_bracket.py` | rigorous | the two bracketing orbits |
+| `code/prove_bracket.py` | rigorous | the two bracketing orbits, with a negative control |
+| `code/test_jet.py` | tests | the jet against finite differences, Psi near 0, the integrator against scipy |
 | `prior-art-log.md` | literature | the full search log and quotations |
 
 A line for RESEARCH.md (not added here, since this work is confined to this folder): "2026-09-26, Hodgkin-Huxley
