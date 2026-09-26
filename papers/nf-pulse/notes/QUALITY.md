@@ -30,7 +30,8 @@ The bar every paper in this repository meets before it is published or preprinte
   Burlakov, Oleynik and Ponosov (2025), now cited and distinguished in the README). The six papers in item 4 must be
   read before any claim of priority.
 - [x] **6. Adversarial second reading.** `review/lead/VERIFY.md` (2026-09-26): mathematics, code audit with 32
-  mutations, a partial independent reimplementation from the equations, and prior art, each by its own reader; no
+  mutations, an independent reimplementation from the equations (including its own block and shooting argument,
+  `review/lead/reimpl/block/`), and prior art, each by its own reader; no
   gap in the proof; every must-fix and should-fix applied in the same change. Not yet reviewed outside the project.
 - [ ] **7. Reproducible.** `code/run_all.sh` reruns the chain, the integrator tests and the negative controls from this folder in about
   two minutes and exits with status 1 if a check fails.

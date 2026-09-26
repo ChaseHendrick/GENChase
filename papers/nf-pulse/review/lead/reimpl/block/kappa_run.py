@@ -2,10 +2,12 @@
 # from the start set on the a>0 branch of the unstable manifold to the common time T; then the
 # enclosure of the block coordinates (a, b) at T, and the verdict "inside the interior of N for all c".
 #
-# Run:   python3 kappa_run.py                  (c in [c1, c2], T = 168;   about 1-2 minutes)
+# Run:   python3 kappa_run.py                  (c in [c1, c2], T = 170; about 40 s)
 #        python3 kappa_run.py T                (another landing time T, an integer)
 #        python3 kappa_run.py T lo hi          (NEGATIVE CONTROL: c in [lo, hi] given as decimals,
-#                                               e.g. 168 1.1027477 1.1027478; must fail)
+#                                               e.g. 170 1.1027477 1.1027478; must fail)
+#        python3 kappa_run.py T lo hi Lexp     (same, with cone slope L = 2^-Lexp in the start set, so that a
+#                                               wider set passes the start lemma and fails later, at T)
 #
 # Method (BLOCK.md section 3): for every kappa in [kap0 - w, kap0 + w] the solution from the start
 # set satisfies |x_kappa(t) - y(t) - (kappa - kap0) d(t)| <= z(t); y, d are exact centres for the
@@ -17,9 +19,9 @@ import sys, time
 from flint import arb, fmpq
 import blk_common as B
 
-def run(clo, chi, T, R=fmpq(1, 80), log=print, logfrom=140):
+def run(clo, chi, T, R=fmpq(1, 80), log=print, logfrom=140, Lexp=150):
     t0 = time.time()
-    y, d, z, kap0, w = B.start_kappa_set(clo, chi, log)
+    y, d, z, kap0, w = B.start_kappa_set(clo, chi, log, Lexp=Lexp, rbexp=Lexp + 165)
     Tb, Tib_q, _ = B.block_matrix(1 / arb(B.C1))
     Tib = B.VI.arb_mat(Tib_q)
     log(f"  kappa set: centre kap0 = {arb(kap0).str(35)}, half width w = {arb(w).str(5)}")
@@ -46,7 +48,7 @@ def run(clo, chi, T, R=fmpq(1, 80), log=print, logfrom=140):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    T = fmpq(int(args[0])) if args else fmpq(168)
+    T = fmpq(int(args[0])) if args else fmpq(170)
     if len(args) >= 3:
         from fractions import Fraction
         lo = Fraction(args[1]); hi = Fraction(args[2])
@@ -56,7 +58,7 @@ if __name__ == "__main__":
         clo, chi = B.C1, B.C2
         print(f"== c in [c1, c2] = [{B.C1}, {B.C2}], T = {T}")
     try:
-        ok, _ = run(clo, chi, T)
+        ok, _ = run(clo, chi, T, Lexp=int(args[3]) if len(args) >= 4 else 150)
     except (RuntimeError, AssertionError) as e:
         print("  FAILED with:", repr(e)); ok = False
     print("RESULT:", "PASS" if ok else "FAIL")

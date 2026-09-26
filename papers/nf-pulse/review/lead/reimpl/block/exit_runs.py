@@ -5,9 +5,10 @@
 # Also a consistency check of the whole-interval run: the c1 point enclosure at T must be contained in
 # the kappa-set enclosure y + (kappa_c1 - kap0) d +- z.
 #
-# Run:   python3 exit_runs.py                 (c1 and c2, T = 170; about 3 minutes)
+# Run:   python3 exit_runs.py                 (c1 and c2, T = 170; about 2 minutes)
 #        python3 exit_runs.py neg             (NEGATIVE CONTROL: c = c1 + 30e-27 < c* in the role of c2,
-#                                              and c = c1 + 40e-27 > c* in the role of c1; both must fail)
+#                                              and c = c1 + 40e-27 > c* in the role of c1; both must fail;
+#                                              about 90 s)
 import sys, time
 from flint import arb, fmpq
 import blk_common as B

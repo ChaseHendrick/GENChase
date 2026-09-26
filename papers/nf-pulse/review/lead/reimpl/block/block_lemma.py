@@ -71,7 +71,8 @@ def check(r, mu=fmpq(1, 10), mu2=fmpq(1, 2), margins=(fmpq(1, 10), fmpq(1, 50), 
             M1, H2, H3 = matrices(B.A_exact(T, Ti, s, k), mu, mu2)
             ok1 = pd(M1 - m1 * I4); ok2 = pd(-H2 - m2 * I4); ok3 = pd(H3 - m3 * I4)
             if verbose:
-                print(f"  vertex s={float(s):.6f} kappa={float(k):.17f}: (P1) M1 - {m1} I PD: {ok1};"
+                kn = "1/c2" if k == B.kappa_range()[0] else ("1/c1" if k == B.kappa_range()[1] else str(k))
+                print(f"  vertex s={float(s):.6f} kappa={kn}: (P1) M1 - {m1} I PD: {ok1};"
                       f" (P2) -H2 - {m2} I PD: {ok2}; (P3) H3 - {m3} I PD: {ok3}")
             allok &= ok1 and ok2 and ok3
     if verbose:

@@ -17,7 +17,8 @@ This verdict does not use or assess it.
 ## Verdict
 
 **No gap was found in the proof as it is run by `sh code/run_all.sh` in a clean environment. The existence
-theorem is confirmed by reading; it was not independently recomputed.** In detail:
+theorem is confirmed by reading, and (after a second round, below) independently recomputed with a separately
+designed block and integrator.** In detail:
 
 - **Confirmed by reading (math check):** the reduction to the wave ODE, the invariance of Y = S(U) on the
   orbit used, the eigenvalue count at rest for every c > 0, the unstable-manifold series and its tail bound,
@@ -33,8 +34,8 @@ theorem is confirmed by reading; it was not independently recomputed.** In detai
   for all c in [c1, c2]; the orbit at c1 leaves with U < -1 and the orbit at c2 with U > +1, which are
   opposite sides, as claimed. A validated bisection narrows the switch to an interval of width 1.5e-32
   that contains the claimed speed. A 60-digit shooting agrees with all 33 quoted digits.
-  **Not recomputed:** the isolating block, the whole-interval run and the Wazewski step. So the existence
-  statement itself is **unconfirmed** by independent computation.
+  In the first round the isolating block, the whole-interval run and the Wazewski step were not recomputed;
+  the second round (`reimpl/block/BLOCK.md`, section "Independent existence step" below) did them.
 - **Prior art:** the specific result (logistic S, kernel e^{-|x|}/2, eps = 1/10, gamma = 0, computer-assisted)
   looks new as far as reached. However, the README's framing must change (P1), and priority remains
   **unconfirmed** until the full texts of the Zhang papers and Pinto, Jackson and Wayne are read (P3).
@@ -154,10 +155,41 @@ Its results, as reported:
 1. Fix C1 and C2, and make every check in `run_all.sh` able to fail (C3).
 2. Add unit tests of the rigorous components to `run_all.sh` (C4).
 3. Write the proofs of F1 to F5 into the paper (MATH.md has drafts), and correct the wording of F1, F2, F6 and F9.
-4. Rebuild the block and the Wazewski step independently. Only the ends of the interval were recomputed.
+4. ~~Rebuild the block and the Wazewski step independently.~~ Done in the second round (`reimpl/block/`).
 5. Cite Burlakov, Oleynik and Ponosov (2025) and Pinto, Jackson and Wayne (2005), and restate the novelty (P1, P2).
 6. Read the full texts listed in P3. The draft RESEARCH.md entry is in `priorart/PRIORART.md` and has not been
    applied.
+
+## Independent existence step (second round)
+
+A separate agent, which read only the equations and the first-round reimplementation (not `code/`, `data/`, or the
+math and code reviews), built its own existence argument. Report: [`reimpl/block/BLOCK.md`](reimpl/block/BLOCK.md).
+
+- **Block (confirmed, exact rational arithmetic, `block_lemma.py`).** Its own eigenvector matrix; N = {|a| <= 1/80,
+  |b|_2 <= 1/80}, L = a^2 - |b|^2. With the mean value theorem, s in [0.0676, 0.2598] over N, and for all kappa in
+  [1/c2, 1/c1]: the cone condition dL/dxi >= |z|^2/10, strict inflow on the b-faces and strict outflow on the
+  a-faces (so, unlike the original B, N is an isolating block). The conditions are affine in (s, kappa) and the
+  smallest eigenvalue is concave, so the four corners suffice; there the matrices are exact rationals, checked by
+  Sylvester minors. An orbit that stays in N tends to rest (proof in BLOCK.md, via Barbalat's lemma).
+- **All speeds at once (confirmed, `kappa_run.py`, 40 s; rerun by the merging session with the same result).** From a
+  manifold point in an eigenframe that moves with kappa, every c in [c1, c2] is in the interior of N at xi = 170:
+  a in [+/- 6.87e-5], |b|_2 <= 0.0079853 < 1/80.
+- **Ends (confirmed, `exit_runs.py`, about 2 min).** With every step from xi = 170 checked to stay in N: c1 reaches
+  the cone a < -|b| at xi = 175.125 and so leaves through a = -r; c2 reaches a > |b| at xi = 174.625 and leaves
+  through a = +r.
+- **Shooting.** Exit through a = +-r is strict, so the two exit sets are open and disjoint; c1 and c2 lie in different
+  ones, so some c in (c1, c2) stays in N, and its orbit is homoclinic to rest. Continuity of the manifold point in c
+  is argued from the unstable manifold theorem with parameters, not computed.
+- **Negative controls (all fail as they must).** Larger blocks (r = 1/20, 1/30), a margin set too high, a bad
+  multiplier, speeds on the wrong side of c* at either end, a speed range 1000 times wider, and a speed shifted by
+  5e-27 that the integrator tells apart.
+- **Findings.** S2 (should-fix): keep "not reviewed outside this project" until a person has read one of the two
+  proofs. N3 (nit): a write-up of the whole-interval run should say how the speed spread is kept from being
+  multiplied by the overestimate of the error bound.
+
+Together with the reduction proved in `math/MATH.md` (a homoclinic orbit of the wave ODE gives a pulse), this makes
+the theorem confirmed by two independent computations. Both still rest on python-flint (Arb) being correct, and
+neither has been read by a person.
 
 ## Fixes applied (2026-09-26, same branch, at the owner's request)
 

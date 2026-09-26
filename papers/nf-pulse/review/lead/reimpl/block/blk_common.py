@@ -191,7 +191,8 @@ def tube_block(Tib, tube):
     return [zc[i, 0] for i in range(4)]
 
 def bnorm_upper(zb):
-    return (sum(abs(zb[i])**2 for i in range(1, 4))).sqrt()
+    """an arb ball whose every element is >= |b|_2 for all b in the enclosure (use as an upper bound)"""
+    return (sum(arb(abs(zb[i]).upper())**2 for i in range(1, 4))).sqrt()
 
 # ---------------------------------------------------------------- start set for a kappa SET
 # The start set of vi_integrate.start_set uses one eigenvector matrix for every kappa; over a kappa

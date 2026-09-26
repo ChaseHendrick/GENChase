@@ -31,9 +31,11 @@ integrator, and closes it with an isolating block around rest and a shooting arg
 - **Numerical, not proved:** the speed to 55 digits from high-precision shooting, the profile in the figure, and the
   observation that a second, slow pulse was not found (the second switch of the shooting, near c = 0.3775, looks like
   a wave train).
-- **Checked independently, in part:** a separate program written from the equations alone (`review/lead/reimpl/`)
-  confirms the rest state and its eigenvalues for all c in [c1, c2], that the orbits at c1 and c2 leave rest on
-  opposite sides (with its own validated integrator), and the speed to all quoted digits.
+- **Recomputed independently:** separate programs written from the equations alone (`review/lead/reimpl/`) confirm
+  the rest state and its eigenvalues for all c in [c1, c2] and the speed to all quoted digits, and prove the
+  existence step again with their own isolating block (exact rational arithmetic), their own validated integrator
+  and their own shooting argument (`review/lead/reimpl/block/BLOCK.md`). Neither computation has been read by a
+  person.
 - **Before this draft becomes a preprint:** a manuscript with the written proofs (drafts of every argument are in
   `review/lead/math/MATH.md`); a review by someone outside this project; and a reading of the full texts of Zhang,
   J. Dyn. Differ. Equ. 17 (2005), Zhang, J. Differential Equations 197 (2004), Pinto, Jackson and Wayne (2005) and
