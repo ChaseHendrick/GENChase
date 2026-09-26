@@ -6,7 +6,7 @@
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the draft (PDF, 12 pages)](paper/stable-expansion.pdf)**
+**[Read the draft (PDF, 18 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
@@ -26,7 +26,8 @@ estimate of the same kind holds for approximate solutions whose error is small a
 With this estimate in place of the one step of Zbarsky's proof that needs three vortices, his confinement theorem holds
 for the two configurations: vortex patches placed at the vortices stay within distance $\varepsilon t^{1/4 +
 \varepsilon}$ of their centres of vorticity for all time, and the centres stay within a bounded distance of an exactly
-self-similar expansion of a single member of the family. That proof adapts his estimates for single patches. Linear
+self-similar expansion of a single member of the family. The proof carries his argument over to any number of
+patches, with every estimate written out. Linear
 stability is an open condition; in a random sample about one four-vortex collapse in seven and one five-vortex collapse
 in seventeen reverses into a linearly stable expansion.
 
@@ -37,14 +38,15 @@ in seventeen reverses into a linearly stable expansion.
   traces of powers of the Jacobian); Theorem 3, Corollary 2 and Proposition 1 (nonlinear stability, its sharp rate,
   the limit fixed by the energy, and the forced version), from those certificates and the certified monotonicity of the
   energy along the family.
-- **Proved by adapting a published proof:** Theorem 4 (confinement of vortex patches), which follows Zbarsky,
-  Commun. Math. Phys. 388 (2021) 707-733, with Proposition 1 in place of the one step that needs three vortices. It
-  relies on his estimates for single patches, followed and adapted but not rederived in full.
+- **Proved:** Theorem 4 (confinement of vortex patches), which follows the argument of Zbarsky, Commun. Math.
+  Phys. 388 (2021) 707-733, with Proposition 1 in place of the one step that needs three vortices. Appendix A writes
+  out every estimate for any number of patches; the other patches act on a patch only through the strain of their
+  field, and two slips of his arXiv version are corrected there.
 - **Numerical:** the direct integrations and the random sample of Section 6.
-- **Pending before this draft can advance:** a check of Theorem 4 by a specialist in vortex patches, possibly with an
-  appendix restating Zbarsky's single-patch estimates for N patches; a comparison with the published CMP version of his
-  paper (the proof cites the equation numbers of arXiv:1912.10862v2); and the full text of Kallyadan and Shukla,
-  Phys. Rev. Fluids 7 (2022) 114701 (only its abstract has been seen).
+- **Before this draft becomes a preprint:** an adversarial second reading of Lemma 1 and Theorems 1 and 2 with
+  their certificates; a source that can be checked, or a proof, for the conservation of the pseudo-energy that the
+  appendix uses; and a comparison with the published CMP version of Zbarsky's paper (the proof cites the equation
+  numbers of arXiv:1912.10862v2).
 
 ## Contents
 

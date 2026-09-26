@@ -23,23 +23,28 @@ GENChase: the companion repository does not carry `notes/`.
 
 ## Record (2026-09-25)
 
-- [ ] **1. Complete proofs.** Lemma 1, Theorems 1 and 2, Corollary 1, Theorem 3, Corollary 2 and Proposition 1 are
-  proved in the paper. Theorem 4 is not yet: its proof follows Zbarsky's proof for three patches and adapts his
-  single-patch estimates (3)-(5), (14), (30)-(31) and (33)-(35) to N patches without writing them out. To do: an
-  appendix that states which properties of the field of the other patches the single-patch argument uses, proves the
-  estimates for any such field, and checks those properties for N patches.
+- [x] **1. Complete proofs.** Lemma 1, Theorems 1 and 2, Corollary 1, Theorem 3, Corollary 2 and Proposition 1 are
+  proved in the paper. Theorem 4 is proved in full in Appendix A (2026-09-26): Lemmas A.1 to A.5 and Propositions A.1
+  and A.2 write out, for any number of patches, every estimate of Zbarsky's argument, with the other patches acting
+  on a patch only through the strain of their field; two slips of his arXiv version are corrected there.
 - [x] **2. Rigorous computation.** Theorems 1 and 2 by the Krawczyk test in ball arithmetic (FLINT/Arb) with enclosures
   of traces of powers of the Jacobian (`verify_stable_expansion.py`, 58 checks, including an unstable four-vortex
   control and a three-vortex control); the exact vanishing of the sum of pairwise products of the circulations in
   rational arithmetic.
 - [x] **3. Every claim labelled.** The direct integrations and the random sample of Section 6 are labelled numerical
   in the paper and the README.
-- [ ] **4. Sources read.** Zbarsky, arXiv:1912.10862v2, is a source the proof of Theorem 4 depends on; it is to be read
-  again in full while the appendix is written. Kallyadan and Shukla (2022) is background only (abstract read).
+- [ ] **4. Sources read.** Zbarsky, arXiv:1912.10862v2, read in full for the appendix (the epsilon-dependent
+  estimates from the rendered PDF, since the text extraction drops every epsilon). Kallyadan and Shukla (2022) is
+  background only (abstract read; by the owner's decision of 2026-09-25 its full text is not read). Open: the appendix
+  uses the conservation of the pseudo-energy for Yudovich solutions, cited to Marchioro and Pulvirenti (1994) without a
+  checked location; a source that can be read, or a proof in the paper, closes the item.
 - [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
 - [ ] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
-  first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). Still to be read and recorded: Lemma 1,
-  Theorems 1 and 2 with their certificates, and the appendix for Theorem 4.
+  first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). A third independent reading of Section 5 and
+  Appendix A (2026-09-26), briefed with the paper and Zbarsky's arXiv version and told to find errors, found no gap;
+  its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
+  should-fix items (the C^1 regularity of the centres, the bootstrap at T_*, the count of turns, the chi conditions,
+  notation) are fixed. Still to be read and recorded: Lemma 1 and Theorems 1 and 2 with their certificates.
 - [x] **7. Reproducible.** `verify_stable_expansion.py` (58 checks) and `survey_expansions.py`; `paper-check` passes;
-  12 pages.
+  18 pages.
