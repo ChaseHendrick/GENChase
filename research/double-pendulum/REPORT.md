@@ -1,7 +1,7 @@
 # The classical double pendulum is chaotic: a computer-assisted proof of a transversal homoclinic orbit
 
 Status: computer-assisted proof, run and rerun in this repository on 2026-09-26; not independently reviewed
-by a human. Section 7 records the adversarial check by an independent agent. Nothing here is published.
+by a human. Section 8 records the adversarial check by an independent agent. Nothing here is published.
 
 ## 1. Result in one paragraph
 
@@ -156,7 +156,7 @@ cover of N0 by sub-boxes: for every z in N0 and |t| <= alpha, M = A^{-1} Df(z) A
 **Lemma 1 (hyperbolicity).** Df(p) has a real eigenvalue lambda_u with |lambda_u| >= mu and another,
 lambda_s, with |lambda_s| < 1. Proof: by (C1) Df(p) maps the closed interval of slopes [-alpha, alpha] into
 its interior, so it has a fixed slope (intermediate value theorem): an eigenvector v in C_u with
-|lambda_u| |v_x| = |(Df v)_x| >= mu |v_x|, v_x != 0. Then |lambda_s| = |det Df(p)| / |lambda_u| < 1 by (C3).
+|lambda_u| |v_x| = |(Df v)_x| >= mu |v_x|, v_x != 0. Then |lambda_s| = |det Df(p)| / |lambda_u| < 1 by (C3). (P preserves dt2 ^ dp2, so det = 1 exactly; the computed enclosure of det makes the lemma independent of that fact.)
 
 **Lemma 2 (graph of W^u).** There is a C^1 function w: [-a, a] -> (-b, b) with |w'| <= alpha and
 w(x_p) = y_p whose graph lies in W^u(p). Proof: by the stable manifold theorem (Dyatlov, arXiv:1805.11660, Sect. 4.1, Theorem 4;
@@ -229,7 +229,7 @@ argument is written out here.
 The fixed point p_E and the local manifolds depend continuously (in C^1 on compact pieces) on E, since P_E
 depends analytically on E and p_E is hyperbolic; a transversal intersection persists under C^1-small
 perturbation. So Theorem 1 at E = 0 gives a transversal homoclinic orbit for every E in some interval
-(-eps, eps), eps > 0 not computed. If F is a real-analytic integral on a connected open set U containing M_0,
+(-eps, eps), eps > 0 not computed. If F is a real-analytic integral on a connected open set U containing M_0 (then M_E is contained in U for E near 0, because H is proper and M_0 compact),
 Corollary 2 makes F constant on each M_E, |E| < eps, so F = phi(H) on H^{-1}(-eps, eps), dF ^ dH = 0 on an open
 set, and by analyticity on all of U.
 
@@ -285,7 +285,32 @@ and a finer cover (1500 boxes, 50 pieces), all pass with the same conclusions.
 
 ## 8. Independent adversarial check
 
-(to be filled in by the check)
+An independent agent reran everything from a copy and tried to break it; its full verdict and its independent
+code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dparb.py`, `mvint.py`, `kraw3.py`,
+`otherE.py`, `edges_nr.py` with their outputs). Verdict: **confirmed, with minor caveats**.
+
+- Rerun: field check OK, the three energies PROVED, the three controls fail; logs identical up to line order.
+- 22 mutations of the model and configuration: gravity x2.01 and x(1 + 1e-7), the coupling sign, the other square
+  root branch of the lift, the opposite crossing direction and a wrong shift all fail stage 1; a sign error in the
+  lift derivative fails stage 2; k = 8 or a wrong target line fail stage 3; alpha = 0.1 fails stage 2. Gravity
+  x(1 + 1e-14) passes, legitimately (the fixed point moves by about 1e-14, inside the 1e-9 box).
+- Mutations of the checking code: removing the hit test is caught; weakening mutations pass, as they must. The
+  stage-3 derivative chain is load-bearing and not self-checking: dropping a factor or reversing the order still
+  prints PROVED with a different slope interval. The shipped chain was checked by reading and by the independent
+  slope below; a factor-count assertion has since been added to `prove.cpp`.
+- Independent recomputation (own Python and Arb code, not CAPD). Rigorous at E = 0: Krawczyk on a box of radius
+  1e-17 succeeds, symmetric under G, trace -3.808656368 +- 8e-10, det 1 +- 1.2e-9, lambda_u = -3.52496566; the
+  fixed point lies inside CAPD's enclosure. At E = +-1/2, rigorous evaluation at a single point (not a full
+  Krawczyk) agrees on trace, return time and multiplier. Numerical at high precision, E = 0: the edge images after
+  9 returns are t2 = +1.52049688e-3 and -3.11657765e-3 (inside CAPD's intervals); the crossing is at
+  x = -1.88595114e-5, p2 = 0.822148, slope -1.3362021, inside the certified [-6.21, -0.524].
+- Prior art: the quotes of Section 2 verified verbatim against the open copies; Bolotin-Negrini (1997) and
+  Bolotin's 1995 chapter were not reachable for the checker either; five further searches found no proof.
+- Mathematics: reversibility, Krawczyk, Lemmas 1-3, Smale-Birkhoff with Abramov and the Kozlov argument hold.
+  Fixed after the check: Corollary 3 now states why M_E stays in U (H is proper); the note that det = 1 exactly;
+  the section reference in Section 1; stage-2 inequalities that were compared in doubles are now decided in
+  interval arithmetic (worst case over the enclosure of p), and the last piece of the segment cover ends exactly
+  at x2. The three proofs and three controls were rerun after these changes with the same outcomes.
 
 ## 9. Limitations
 

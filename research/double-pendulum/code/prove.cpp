@@ -172,7 +172,8 @@ int main(int argc, char** argv) {
   IVector pl = Ai * (pe - p0);  // p in local coordinates
   printf("stage 2: N0 = p0 + A([-%g,%g] x [-%g,%g]), alpha = %g, grid %d x %d, p local = (%s, %s)\n", a, a, b, b, alpha, nx, ny, S(pl[0]).c_str(), S(pl[1]).c_str());
   REQUIRE(pl[0].leftBound() > -a && pl[0].rightBound() < a && pl[1].leftBound() > -b && pl[1].rightBound() < b, "p not in N0");
-  REQUIRE(fabs(pl[1].rightBound()) + alpha * (a + fabs(pl[0].rightBound())) < b && fabs(pl[1].leftBound()) + alpha * (a + fabs(pl[0].leftBound())) < b, "graph of slope alpha through p leaves N0");
+  { I worst = abs(pl[1]) + I(alpha) * (I(a) + abs(pl[0]));   // worst case over the enclosure of p, outward rounded
+    REQUIRE(worst.rightBound() < b, "graph of slope alpha through p leaves N0"); }
   double muMin = 1e300, coneMax = 0; int bad2 = 0, npos = 0, nneg = 0;
   #pragma omp parallel for schedule(dynamic) reduction(min:muMin) reduction(max:coneMax) reduction(+:bad2,npos,nneg)
   for (int idx = 0; idx < nx * ny; ++idx) {
@@ -196,9 +197,11 @@ int main(int argc, char** argv) {
         if (u.leftBound() > 0) ++npos; else if (u.rightBound() < 0) ++nneg; else { ++bad2; continue; }
         double au = std::min(fabs(u.leftBound()), fabs(u.rightBound()));
         muMin = std::min(muMin, au);
-        double cm = std::max(fabs(w.leftBound()), fabs(w.rightBound())) / au;
+        double cm = std::max(fabs(w.leftBound()), fabs(w.rightBound())) / au;   // reported only
         coneMax = std::max(coneMax, cm);
-        if (!(au > 1 && cm < alpha)) ++bad2;
+        // decided in interval arithmetic: alpha |u| - |w| > 0 and |u| > 1
+        I margin = I(alpha) * abs(u) - abs(w);
+        if (!(abs(u).leftBound() > 1 && margin.leftBound() > 0)) ++bad2;
       }
       IVector img = Ai * (imageC0(c, zc, per, shift) - p0) + M * rrl;
       if (!(img[0].rightBound() < -a || img[0].leftBound() > a))
@@ -243,14 +246,17 @@ int main(int argc, char** argv) {
     C0HOTripletonSet s0(x, C, r0);
     std::vector<IVector> Y;
     for (int i = 0; i < k * per; ++i) { I t; IVector y = (*c.pm)(s0, t); IVector z2(2); z2[0] = y[1]; z2[1] = y[3]; Y.push_back(z2); }
-    // derivative chain
+    // derivative chain: D f~^k(z) = D f(f^{k-1} z) ... D f(f z) D f(z), applied right to left; the factors are
+    // D f over Z (i = 0) and over the enclosures Y_0 .. Y_{k-2} of f(Z) .. f^{k-1}(Z): k factors in all.
+    int nfactors = 0;
     d = Dir{false, I(-alpha, alpha)};
     d = applyDir(A, d);
-    d = applyDir(derivC1(c, zc, A, rrl, 1), d);           // D f at Z (w.r.t. z)
+    d = applyDir(derivC1(c, zc, A, rrl, 1), d); ++nfactors;   // D f at Z (w.r.t. z)
     for (int i = 0; i + 1 < k * per && d.ok; ++i) {
       IVector cc(2); for (int q = 0; q < 2; ++q) cc[q] = I(Y[i][q].mid().leftBound());
-      d = applyDir(derivC1(c, cc, Id, Y[i] - cc, 1), d);
+      d = applyDir(derivC1(c, cc, Id, Y[i] - cc, 1), d); ++nfactors;
     }
+    if (d.ok && nfactors != k * per) throw std::runtime_error("derivative chain has the wrong number of factors");
     return Y.back() + twoPi(I(shift * k));
   };
   Dir dd;
@@ -265,7 +271,7 @@ int main(int argc, char** argv) {
   printf("  target line t2 = %ld*pi: edges on opposite sides: %s\n", mstar, sep ? "yes" : "NO");
   REQUIRE(sep, "edges not separated by m*pi");
   struct Piece { double xa, xb; int d; };
-  std::vector<Piece> work; for (int i = 0; i < nseg; ++i) work.push_back({x1 + (x2 - x1) * i / nseg, x1 + (x2 - x1) * (i + 1) / nseg, 0});
+  std::vector<Piece> work; for (int i = 0; i < nseg; ++i) work.push_back({x1 + (x2 - x1) * i / nseg, i + 1 == nseg ? x2 : x1 + (x2 - x1) * (i + 1) / nseg, 0});
   long nchecked = 0, nhit = 0; int bad3 = 0; double slopeLo = 1e300, slopeHi = -1e300; bool anyVert = false;
   std::vector<std::string> hitlog;
   while (!work.empty() && bad3 == 0) {
