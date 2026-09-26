@@ -158,3 +158,22 @@ Its results, as reported:
 5. Cite Burlakov, Oleynik and Ponosov (2025) and Pinto, Jackson and Wayne (2005), and restate the novelty (P1, P2).
 6. Read the full texts listed in P3. The draft RESEARCH.md entry is in `priorart/PRIORART.md` and has not been
    applied.
+
+## Fixes applied (2026-09-26, same branch, at the owner's request)
+
+| Finding | Fix | Where |
+|---|---|---|
+| C1 (must-fix) | Every rigorous gate is now `nfcore.require()`, which raises `CertificateError` and is not removed by `python -O`; `run_all.sh` refuses to run with `PYTHONOPTIMIZE` set. Checked: `PYTHONOPTIMIZE=1 NF_DU=0.15 sh code/run_all.sh` now stops with FAIL, and `NF_DU=0.15 python3 -O prove_pulse.py c1 53` stops with `CertificateError`. | `nfcore.py`, `prove_pulse.py`, `block.py`, `manifold.py`, `certify_rest.py`, `run_all.sh` |
+| C2 | `run_all.sh` unsets every `NF_*` variable; the driver requires r > rho and the U-range of B inside (-DU, DU); two new negative controls (a block reaching U = 0.15, and r < rho) must be refused by the driver. | `block.proof_block`, `run_all.sh` |
+| C3 | The Jacobian test prints `JACOBIAN PASS` or `FAIL` (threshold 1e-45); `run_all.sh` greps the verdict of the mpmath.iv re-check, not the text printed in both cases. | `test_jacobian.py`, `run_all.sh` |
+| C4 | `test_lohner.py`, `test_lohner2.py neg` (remainder dropped must be detected) and `test_stress.py` (the review's low-order stress test, speed point and speed interval) now run in `run_all.sh` with verdicts and exit status. The a priori and QR-inverse mutations are still not detectable by any test; the code audit read those parts as sound. | `run_all.sh`, `test_*.py` |
+| F3, C8 | `block.py` now certifies the block the proof uses (r = 4 rho, same construction as the driver, `block.proof_block`) and stores rho exactly (mantissa and exponent); `block_check_iv.py` re-checks that block's U-range and r > rho and stops if its own parameters differ from `nfcore.py` and `certify_rest.py`. | `block.py`, `block_check_iv.py`, `prove_pulse.py` |
+| C5 | One exact sigma, `manifold.SIGMA = 1/7`, for the M checks and the driver; `manifold.py` requires that `choose_sigma` still agrees. | `manifold.py`, `prove_pulse.py` |
+| C7 | The between-steps check uses an exact upper bound of the step length, not a float. | `prove_pulse.py` |
+| F6 | Docstring now gives the right reason for checking s only at its two ends. | `block.py` |
+| F1, F2, F4, F5, F7, F9, N1, P1, P2, R1 | README: openness stated with the path condition; B not called isolating and the cones not called forward invariant; continuity of the manifold point in c; the line of equilibria and why the orbit is on Y = S(U); U > 0.7596 as a proved lower bound; "gives a pulse" instead of "exactly a pulse"; the eigenvalue count argument completed; Pinto, Jackson and Wayne (2005) and Burlakov, Oleynik and Ponosov (2025) cited and distinguished; status wording keeps "not reviewed outside this project". | `README.md`, `notes/QUALITY.md` |
+| F8 | The two new driver negative controls test the block; the c = 1.1024 control stays as a test of the shooting. | `run_all.sh` |
+| Reimplementation files | Copied into `reimpl/` at the owner's request. | `reimpl/` |
+
+`sh code/run_all.sh` after these fixes: 20 checks (9 proof steps, 4 integrator tests, 7 negative controls), all OK,
+about 1 min 50 s on four cores. The proof's numbers did not change (same block, same manifold, same verdicts).

@@ -88,7 +88,7 @@ def zbound(mu0, kappa, s, eps):
     For mu >= 2: p(mu) >= (mu^2 - 1) mu^2 >= (3/4) mu^4 (all other terms of p are >= 0 there), so
     |z_U| <= 4k/(3 mu^4); |z_Y| <= 1/mu + s|z_U|; |z_Q| <= |z_Y|/(mu^2-1) <= (4/3)|z_Y|/mu^2;
     |z_P| = mu |z_Q| <= (4/3)|z_Y|/mu; |z_V| = eps k |z_U|/mu; each bound is decreasing in mu."""
-    assert mu0 >= 2
+    nf.require(bool(mu0 >= 2), 'zbound needs mu0 >= 2')
     k = abs_up(kappa)
     zU = 4 * k / (3 * mu0 ** 4)
     zY = 1 / mu0 + abs_up(s) * zU
@@ -159,6 +159,9 @@ def evaluate(a, r, t):
     return out
 
 
+SIGMA = fmpq(1, 7)      # the scaling the proof uses (prove_pulse.py); choose_sigma below gives 1/7 too
+
+
 def choose_sigma(kappa, lam, N=40):
     a, s, Y0 = coefficients(arb(kappa.mid()), arb(lam.mid()), arb(1), N)
     nrm = [max(abs(float(ai.mid())) for ai in an) for an in a]
@@ -176,8 +179,10 @@ if __name__ == '__main__':
         kappa = 1 / cc
         co = cr.charpoly_coeffs(kappa, s, eps)
         lam = cr.refine(co, arb('0.5'), arb('1.2'))
-        assert cr.peval(co, arb(lam.lower())) < 0 and cr.peval(co, arb(lam.upper())) > 0
-        sigma = choose_sigma(kappa, lam)
+        nf.require(bool(cr.peval(co, arb(lam.lower())) < 0) and bool(cr.peval(co, arb(lam.upper())) > 0),
+                   'the unstable eigenvalue is not bracketed')
+        sigma = arb(SIGMA)
+        nf.require(choose_sigma(kappa, lam).mid() == sigma.mid(), 'choose_sigma no longer gives the proof\'s sigma')
         t0 = time.time()
         ok, a, r, info = validate(kappa, lam, sigma, 80)
         t = arb(fmpq(1, 4))
@@ -192,7 +197,7 @@ if __name__ == '__main__':
     kappa = 1 / cr.C1
     co = cr.charpoly_coeffs(kappa, s, eps)
     lam = cr.refine(co, arb('0.5'), arb('1.2'))
-    sigma = choose_sigma(kappa, lam) * 8
+    sigma = arb(SIGMA) * 8
     ok, a, r, info = validate(kappa, lam, sigma, 80)
     print('NEGATIVE CONTROL (sigma x8, radius of convergence exceeded): validated =', ok)
     results['negative_sigma_x8'] = info

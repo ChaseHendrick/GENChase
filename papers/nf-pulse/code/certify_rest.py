@@ -122,7 +122,7 @@ def certify(theta=None, c_lo=C1, c_hi=C2, verbose=True):
     if theta is not None:
         th = arb(theta)
     rep = {}
-    assert gam == 0
+    nf.require(bool(gam == 0), 'certify assumes gamma = 0')
     # R1
     S0 = nf.S(arb(0), beta, th)
     rep['R1_rest'] = {'U0': '0', 'V0=Q0=S(0)': S0.str(40), 'P0': '0'}

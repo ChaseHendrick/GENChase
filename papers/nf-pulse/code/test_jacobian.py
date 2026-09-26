@@ -35,5 +35,6 @@ for m in range(6):
         fd = (fp[i] - fm[i]) / (2 * d)
         worst = max(worst, abs(float((fd - J[i][m]).mid())))
 print('max |J_AD - J_FD| over 36 entries: %.2e  (FD truncation ~1e-60, so agreement to ~1e-50 means AD is right)' % worst)
+print('JACOBIAN', 'PASS' if worst < 1e-45 else 'FAIL')
 # the kappa column explicitly
 print('dPhi/dkappa (AD):', [J[i][5].str(8) for i in range(5)])
