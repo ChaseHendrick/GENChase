@@ -116,39 +116,57 @@ def expected_min(Phi, M):
     return N - em
 
 
-def expected_max_jacobi(diag, off, M, tol=1e-30, W0=64):
-    """E[max particle] of the M-point ensemble with the given Jacobi matrix, computing only the
-    eigenvectors of the top W sites and doubling W until the gap probability has fallen below tol
-    inside the window (so every omitted term 1 - D_t equals 1 to within tol)."""
+def expected_max_jacobi(diag, off, M, tol=1e-30, W0=64, skip=1e-32):
+    """E[max particle] of the M-point ensemble with the given Jacobi matrix.
+
+    Only the eigenvectors of the sites in a window [lo, hi] are computed. hi sits above the largest
+    zero of p_M (the top eigenvalue of the leading M x M Jacobi block) by an Airy-tail margin and is
+    raised until K(hi, hi) < skip; sites above hi are empty to within skip, so their factors
+    1 - K(x, x) in the gap probability are 1 to that accuracy. lo doubles downward until the gap
+    probability has fallen below tol inside the window, so every omitted term 1 - D_t is 1 to tol."""
     N = len(diag) - 1
     if M == 0:
         return 0.0
-    W = min(N + 1, W0)
+    if M > N:
+        return float(N)
+    from scipy.linalg import eigvalsh_tridiagonal
+    zmax = eigvalsh_tridiagonal(diag[:M], off[:M - 1], select='i', select_range=(M - 1, M - 1))[0] if M > 1 else diag[0]
+    margin = 20 + 20 * (N + 1) ** (1 / 3)
+    hi = int(min(N, np.ceil(zmax + margin)))
+    W = W0
     while True:
-        lo = N + 1 - W
-        lam, V = eigh_tridiagonal(diag, off, select='i', select_range=(lo, N))
-        err = np.max(np.abs(lam - np.arange(lo, N + 1)))
+        lo = max(0, hi + 1 - W)
+        lam, V = eigh_tridiagonal(diag, off, select='i', select_range=(lo, hi))
+        err = np.max(np.abs(lam - np.arange(lo, hi + 1)))
         assert err < 1e-6 * max(1, N), 'Jacobi eigenvalues are not the support points: %g' % err
+        kd = np.einsum('kx,kx->x', V[:M, :], V[:M, :])
+        if hi < N and kd[-1] > skip:
+            hi = min(N, hi + int(margin))       # the window's top is not empty yet: raise it
+            continue
         Phi = np.zeros((M, N + 1))
-        Phi[:, lo:] = V[:M, :]
-        D = top_gap_probabilities_window(Phi, lo, tol)
+        Phi[:, lo:hi + 1] = V[:M, :]
+        above = np.nonzero(kd > skip)[0]
+        top = lo + int(above[-1]) if len(above) else lo
+        D = top_gap_probabilities_window(Phi, lo, tol, top)
         if D[lo] < tol or lo == 0:
             break
-        W = min(N + 1, 2 * W)
+        W = 2 * W
     return float(np.sum(1.0 - D[1:N + 1]))
 
 
-def top_gap_probabilities_window(Phi, lo, tol):
-    """As top_gap_probabilities, using only the columns lo..N of Phi; D[t] = 0 for t < lo unless
-    the recursion reaches them."""
+def top_gap_probabilities_window(Phi, lo, tol, top=None):
+    """As top_gap_probabilities, using only the columns lo..top of Phi (sites above top are taken
+    as empty, D = 1 there); D[t] = 0 for t < lo unless the recursion reaches them."""
     N = Phi.shape[1] - 1
+    if top is None:
+        top = N
     D = np.zeros(N + 2)
-    D[N + 1] = 1.0
+    D[top + 1:] = 1.0
     F = Phi
     det = 1.0
     cols = []
     Lmat = np.zeros((0, 0))
-    for t in range(N, lo - 1, -1):
+    for t in range(top, lo - 1, -1):
         f = F[:, t]
         y = _forward(Lmat, -(F[:, cols].T @ f)) if cols else np.zeros(0)
         piv = (1.0 - f @ f) - y @ y
