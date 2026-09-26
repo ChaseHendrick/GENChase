@@ -117,12 +117,90 @@ __LIMITS__
 
 ## Negative controls
 
-__NEGCTRL__
+- **Inside every proof run** (certificates written after the adversarial check): at each stage, the rigorous
+  covering test is re-run with the slab of the next h-set made 2 per cent thinner and with its u-size made 2 per
+  cent longer than the face images allow; both must be refused, and at the final stage the block test is re-run
+  with rho divided by 100 and must be refused. A certificate is PASS only if all of them were refused
+  (`negative_checks` in the JSON; `run_checks.sh` checks it for the rerun).
+- **Speed window off the pulse** (`--shift 3` and `--shift -3`, eps in [0.0998, 0.1002]): the kappa window is moved
+  by three half widths; both runs FAIL at s = 1, the two ends of the curve of initial points no longer separate.
+- **Both ends in the same cone** (`--samecone 1` and `--samecone -1`, the analogue of the swapped brackets of the
+  original): no block entry is accepted and the runs FAIL.
+- **Mutation tests of the adversarial check** (below): errors in the eps-derivative of the integrator, a flipped
+  face test and a slab 1 per cent too thin are refused. Two unsound changes were not detected before the fixes
+  (a narrowed eps0 range, a subdivision leaving gaps); both are now guarded by rigorous assertions (`setup`,
+  `split`) and by `table.py`, which recomputes the eps0 range of every certificate from its exact numbers.
 
 ## Adversarial check
 
-__CHECK__
+An independent subagent reviewed the work adversarially on a copy of the folder (it changed nothing in the
+repository and used at most two processes, while the sweep ran). **Its verdict: "sound with caveats".** It found
+no error that invalidates a stored PASS certificate; it found missing safeguards, which are now fixed.
+
+What it did:
+- Reran from scratch in a copy, with the numerical cache and all certificates deleted: `chain.py 0.0998 0.1002
+  1.1027477 --dk 2e-5` gives PASS (58 stages, one 2 x 2 split at s = 12, block entry at s = 58 with y1 in
+  [+/- 9.07e-3] against r = 0.0291 and |y'| = 0.00345 against rho = 0.00727). It reran the stored certificate
+  `eps_0.080000_0.080100.json` with the driver's arguments: PASS, identical in the exact dyadic data (q0, s1, dk,
+  e_m, w), the kappa box, the eigenvalue enclosure, the entrance margins, the block matrix, the 75 stages and the
+  final block record.
+- Recomputed decisive numbers independently: the block conditions of the rerun certificate in mpmath interval
+  arithmetic (another library; cone matrix positive definite by interval Cholesky at both ends of S', entrance
+  bounds -0.05787 and -0.04673, U-range bound 0.0486589 < 0.05: certified); the initial set against the original
+  `manifold.py` (15 samples of (eps0, zeta0), all enclosed); stage 0 with the original 6D integrator at sample
+  points (u = +-1.32 at the two ends, max |s| <= 0.24, in agreement with the chain).
+- Mutation tests: dropping the eps-derivative in the Taylor jet, flipping a face inequality, a slab 1 per cent too
+  thin, or evaluating the Lohner Jacobian at the centre only all make the proof FAIL. Dropping the Lagrange
+  remainder was caught only by a test; halving the eps0 range and a subdivision with gaps passed silently; removing
+  the second-order remainder of Y = S(U) passed silently (the remainder is small at the sizes used).
+
+Findings and what was done:
+1. (major, safeguard) The eps0 range was never checked against E. Fixed: `setup` asserts in ball arithmetic that
+   the eps0 of both ends of E lie in the range used (and in the range a 4-piece split covers); `table.py`
+   recomputes it exactly from the recorded dyadic centre and half width for every certificate.
+2. (major, safeguard) Nothing checked that `split` covers the set. Fixed: `split` asserts the coverage exactly.
+3. (minor) After a split in the eps column the pieces covered [-(1 + delta/k), 1 + delta/k], not the full range
+   [-(1 + delta), 1 + delta]. E itself stayed covered, since delta includes a padding of 2^-100 against a needed
+   rounding of about 1e-36; `table.py` now checks this margin for every certificate. The code now scales the
+   offsets so that the pieces cover the full range.
+4. (minor) The negative controls failed for side reasons and did not exercise the rigorous tests. Fixed: in-run
+   negative checks (above) and controls that require the specific failure reason.
+5. (minor) The first integrator test only checked overlap. Fixed: it now requires the enclosure to contain a
+   320-bit reference solution, and a new test checks that the Lohner set of an h-set contains sample points with
+   Y = S(U) exactly, at the corners where the second-order remainder matters.
+6. (minor) `table.py` did not exclude negative-control runs, and certificates carried no code version. Fixed: both
+   (certificates written after the fix carry sha256 prefixes of the programs).
+7. (minor) Centres and eps-shifts of the h-sets were stored only as decimals. Fixed: also as exact dyadics.
+8. (minor) The "window width at fixed eps" column is a floating-point midpoint. Now labelled approximate; the
+   brackets c1, c2 are outward rounded.
+9. (minor) This report cited a log file for the original sensitivity; now it cites
+   `../../data/proof_interval_final.json`, and the limit of a single long run is marked as a heuristic estimate.
+10. (remark) `nfcore._EPS` is global state; the order of calls is safe. An assertion now checks it before the
+    manifold and block certification.
+11. (remark, original code) the comment in `../../code/manifold.py` `zbound` ("all other terms of p are >= 0") is
+    false, since k (s - 1) mu and -eps k^2 are negative; the bound p(mu) >= (mu^2 - 1) mu^2 still holds for mu >= 1,
+    since the difference is k mu (mu^2 - (1 - s)) + eps k^2 (mu^2 - 1) >= 0. Not changed here (outside this folder).
+12. (remark) `--shift X` failing for |X| > 1 is an expectation, not a guarantee, because kappa*(eps) is curved.
+
+Certificates written before the fixes (they have no `negative_checks` and no `code_sha256_16`) come from code that
+differs from the present one only in these safeguards and in the split offsets of finding 3. The reviewer's rerun
+of one of them reproduced it exactly; __OLDRERUN__
 
 ## Reproduce
 
-__COMMANDS__
+From this folder (python-flint 0.9.0, mpmath, numpy as in `../../code/requirements.txt`):
+
+```
+sh run_checks.sh                                   # about 3 minutes: tests, one subinterval proof from scratch,
+                                                   # its in-run negative checks, the negative controls, the table
+python3 chain.py 0.0998 0.1002 1.1027477 --dk 2e-5 --out cert.json      # one subinterval (about 1.5 minutes)
+python3 run_range.py 0.08 0.12 --w0 1.5e-4 --tag X # the whole sweep (hours on four cores); resumable: attempts whose
+                                                   # certificate exists in data/certs/ are not recomputed
+python3 table.py --from 0.08 --to 0.12 --md data/speed_table.md          # coverage and speed table
+```
+
+`chain.py` takes the numerical kappa* from `data/pulse_numerics.json` when present; delete that file to recompute
+it by bisection (about 35 s per subinterval). The certificate of every attempt, PASS or FAIL, is kept in
+`data/certs/`; `table.py` uses only PASS certificates that are not negative-control runs and, for the certificates
+written after the safeguards of the adversarial check were added, only those whose in-run negative checks were
+all refused.

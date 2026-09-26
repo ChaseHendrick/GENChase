@@ -112,6 +112,6 @@ if __name__ == '__main__':
     chunks = [(cuts[i], cuts[i + 1]) for i in range(n)]
     if A.chunks:
         chunks = [tuple(float(y) for y in c.split(':')) for c in A.chunks.split(',')]
-    with Pool(min(n, len(chunks))) as p:
-        logs = p.map(worker, [(c[0], c[1], A.w0, A.wmin, A.tag, i) for i, c in enumerate(chunks)])
+    with Pool(min(A.jobs, len(chunks))) as p:        # chunks are handed out one at a time as workers free up
+        logs = list(p.imap_unordered(worker, [(c[0], c[1], A.w0, A.wmin, A.tag, i) for i, c in enumerate(chunks)], 1))
     print('\n'.join(logs))
