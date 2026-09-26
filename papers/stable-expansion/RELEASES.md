@@ -5,6 +5,8 @@ peer reviewed.
 
 ## v1.0.0 (2026-09-26)
 
+**DOI:** [10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173)
+
 The first public release of the preprint *Stable Self-Similar Expansion of Four and Five Point Vortices and
 Confinement of Vortex Patches* (20 pages), with the programs that check its results and their output. It uses the
 certification modules of *Minimal Winding in the Self-Similar Collapse of Point Vortices* (programs and data:
