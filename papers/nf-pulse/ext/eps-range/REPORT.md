@@ -277,7 +277,9 @@ Findings and what was done:
 11. (remark, original code) the comment in `../../code/manifold.py` `zbound` ("all other terms of p are >= 0") is
     false, since k (s - 1) mu and -eps k^2 are negative; the bound p(mu) >= (mu^2 - 1) mu^2 still holds for mu >= 1,
     since the difference is k mu (mu^2 - (1 - s)) + eps k^2 (mu^2 - 1) >= 0. Not changed here (outside this folder).
-12. (remark) `--shift X` failing for |X| > 1 is an expectation, not a guarantee, because kappa*(eps) is curved.
+12. (remark) `--shift X` failing for |X| > 1 is an expectation, not a guarantee, because kappa*(eps) is curved. (The
+    docstring of `chain.py` still says "must FAIL"; it is left as is so that the file keeps the hash recorded in the
+    certificates.)
 
 One of the fixes was itself wrong at first: the coverage assertion of `split` (finding 2) compared rounded balls,
 which cannot certify an equality, so from 04:45 to 05:48 UTC every attempt that needed a subdivision failed with an
