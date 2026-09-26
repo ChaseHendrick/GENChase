@@ -123,7 +123,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [chladni](src/modules/chladni.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
 | [track](src/modules/track.js) | unvalidated | None registered | Not scientifically validated | none |
 | [knotlight](src/modules/knotlight.js) | unvalidated | None registered | Not scientifically validated | none |
-| [causticsea](src/modules/causticsea.js) | unvalidated | None registered | Not scientifically validated | none |
+| [causticsea](src/modules/causticsea.js) | unvalidated | [causticsea-science.js](tools/causticsea-science.js) | Not scientifically validated | none |
 | [kp](src/modules/kp.js) | unvalidated | None registered | Not scientifically validated | none |
 | [gerstner](src/modules/gerstner.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
 | [eight](src/modules/eight.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded | none |
@@ -465,6 +465,13 @@ No record has an outside review yet; every review so far was done inside the pro
 - Square membrane-style cosine modes only within this domain. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, and mixed modes are excluded.
 - No Float16 claim, physical experimental agreement, or universal hardware claim.
 - Broader settings require additional independent evidence.
+
+### causticsea
+
+- From recipe v6 the linear part is the Swift–Hohenberg −(∇² + k₀²)² of the displayed equation. Recipes older than v6 keep the operator they were made with, −∇²(∇² + k₀²), whose fastest-growing lattice wavelength is 14.26 cells at Wavelength 10 and whose uniform mode grows for every r > 0 (tools/causticsea-science.js); for them the status line compares with that operator's fastest-growing wavelength. With the Swift–Hohenberg operator the default and Fold lock plates agree with the preferred wavelength (1.2σ and 0.7σ); the strongly driven and strongly fed-back presets do not (7.6σ to 11.9σ), because the nonlinear pattern selects its own wavelength: replica runs of plain Swift–Hohenberg move from 10.05–10.12 at r = 0.05 to 10.62–10.68 at r = 0.5 (Wavelength 10), and the caustic feedback shifts it further.
+- The wavelength is the power-weighted mean of the 5-point Laplacian symbol with the field mean removed, converted to the wavelength of an axis mode with the same symbol. Its error bar is the spatial sampling error of one snapshot (delta method, τ_int along rows and columns), not the run-to-run scatter, which replica runs found comparable.
+- Catalog equation and citation are review targets, not verified paper equivalence.
+- No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.
 
 ### gerstner
 
