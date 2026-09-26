@@ -211,7 +211,7 @@ and settle whether the Burlakov-Oleynik-Ponosov argument is complete.
 ## Proposed RESEARCH.md entry
 
 ```
-### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `papers/nf-pulse/review/prior-art/PRIOR-ART.md`)
+### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `papers/nf-pulse/review/second/prior-art/PRIOR-ART.md`)
 
 - Why: the entry of the same day could not reach Zhang (2004, 2005) or Pinto, Jackson and Wayne (2005), and priority for `papers/nf-pulse/` waited on them.
 - Read, not the full texts (ScienceDirect 403, Springer client challenge, SIAM and World Scientific closed, ResearchGate 403, Sandstede's page captcha): zbMATH 1054.45005 review of Zhang, JDE 197 (2004) 162-196 (scalar, w constant, "H is the Heaviside step function"); zbMATH 1082.45009 review of Zhang, "Traveling waves of a singularly perturbed system of integral-differential equations arising from neuronal networks", JDDE 17 (2005) 489-522 (Heaviside, "the case eps = 0 and 0 < eps << 1"); abstract of Pinto-Jackson-Wayne, SIADS 4 (2005) 954-984 ("A Heaviside step function governs the activation", no assumption on the recovery rate); abstract of Sandstede, IJBC 17 (2007) 2693-2704 (spectral implies nonlinear stability). zbMATH reviews of eight further Zhang neural-field papers: all Heaviside where stated; six reviews unavailable (Math. Z. 255, JJIAM 27, Physica D 239, DCDS 34, DCDS-B 16, JMN 3), not read.

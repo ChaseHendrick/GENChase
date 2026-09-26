@@ -127,7 +127,7 @@ def main_bisect():
     c1 = mp.mpf('1.1027477097341592491478677'); c2 = c1 + mp.mpf(10)**-25
     res = dict(dps=DPS, lo=mp.nstr(lo, 80), hi=mp.nstr(hi, 80), sign_lo=slo, sign_hi=shi,
                width=mp.nstr(hi-lo, 5), readme_prefix=str(ref),
-               readme_in_bracket_prefix=str(lo <= ref <= hi),
+               readme_digits_are_prefix_of_bracket=bool(mp.nstr(lo, 75, strip_zeros=False).startswith(str(ref)) and mp.nstr(hi, 75, strip_zeros=False).startswith(str(ref))),
                bracket_inside_c1c2=bool(c1 <= lo and hi <= c2),
                seconds=time.time()-t0)
     s_lo = mp.nstr(lo, 75, strip_zeros=False); s_hi = mp.nstr(hi, 75, strip_zeros=False)
