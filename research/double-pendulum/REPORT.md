@@ -116,7 +116,7 @@ points for E near 0; it is not quantified.
 Why these energies are representative. E = 0 is a textbook initial condition (both arms horizontal at rest),
 sits in the middle of the band -1 < E < 1 where the lower arm flips and the upper arm does not, and a
 Poincare section of 60 random orbits of 400 returns each shows no visible island at plot resolution
-(numerical, `code/explore.cpp`); E = -1/2 still shows large islands, E = 1/2 none. The same family of
+(numerical, `code/explore.cpp`); E = -1/2 still shows a visible island, E = 1/2 none. The same family of
 symmetric orbits carries the proof at all three energies, which indicates that the mechanism is not special to
 one energy.
 
