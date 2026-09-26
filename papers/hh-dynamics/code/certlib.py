@@ -2,7 +2,7 @@
 on the multipliers, and the equilibrium (interval Newton + Routh-Hurwitz)."""
 import numpy as np
 from flint import arb, acb, arb_mat, acb_mat
-from lohner import (LSet, Integrator, poincare, col, colvals, ident, to_np, from_np)
+from hh_lohner import (LSet, Integrator, poincare, col, colvals, ident, to_np, from_np)
 
 
 # ------------------------------------------------------------------ section sets ----------

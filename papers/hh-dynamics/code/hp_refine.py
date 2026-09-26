@@ -3,7 +3,7 @@ Newton iteration on the midpoints of thin C^1 runs at high working precision."""
 import time
 import numpy as np
 from flint import arb, arb_mat, acb_mat, ctx
-from lohner import Integrator, poincare, col, ident
+from hh_lohner import Integrator, poincare, col, ident
 from certlib import section_set
 from hh_arb import HH
 

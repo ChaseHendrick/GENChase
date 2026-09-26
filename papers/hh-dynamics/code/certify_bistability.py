@@ -46,7 +46,7 @@ ctx.prec = PREC
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-from lohner import Section, Integrator, poincare, col, to_np, SectionMismatch       # noqa: E402
+from hh_lohner import Section, Integrator, poincare, col, to_np, SectionMismatch       # noqa: E402
 from certlib import (certify_orbit, certify_equilibrium, section_set, krawczyk,     # noqa: E402
                      multiplier_test, CertificateFailure)
 from hh_arb import HH                                                                # noqa: E402

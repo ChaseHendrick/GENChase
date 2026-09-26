@@ -19,7 +19,7 @@ import time
 import numpy as np
 from flint import arb, arb_mat, ctx
 
-from lohner import Integrator, Section, poincare
+from hh_lohner import Integrator, Section, poincare
 from certlib import section_set, infnorm_upper, infnorm_lower
 from hh_arb import HH
 from outward import lo_frac, hi_frac

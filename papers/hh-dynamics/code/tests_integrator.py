@@ -7,9 +7,9 @@ unsound or wrong computation is detected (the enclosure fails to verify or misse
 import time
 import numpy as np
 from flint import arb, acb, arb_mat, ctx
-from lohner import (Integrator, LSet, EnclosureFailure, PoincareFailure, Section, poincare, col,
+from hh_lohner import (Integrator, LSet, EnclosureFailure, PoincareFailure, Section, poincare, col,
                     colvals, apriori_ok, ybase, zero_to, to_np)
-from lohner import SectionMismatch
+from hh_lohner import SectionMismatch
 from certlib import (section_set, krawczyk, gershgorin_eigenbasis, disc_modulus_bounds, multiplier_test,
                      infnorm_upper)
 from testsys import HopfZ, Quad, PsiDecay, Ein, TwistZ
