@@ -686,7 +686,9 @@ void main(){
   // orientation; older recipes keep the local radius-3 test they were made with.
   // v5 (2026-09-25): vegetation's step ceiling combines water diffusion and advection; older recipes keep the
   // separate-limit ceiling wherever their step was stable, and take the combined one where it was not.
-  const RECIPE_V = 5;
+  // v6 (2026-09-26): causticsea's linear operator is the Swift-Hohenberg (lap + q)^2 its label states; older recipes
+  // keep the -lap(lap + q) they were made with.
+  const RECIPE_V = 6;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },

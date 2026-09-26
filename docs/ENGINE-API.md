@@ -2,7 +2,7 @@
 
 The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
 `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
-`Studio.recipeVersion` is **5**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+`Studio.recipeVersion` is **6**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
 tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
 v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
 Version 4 (2026-09-24) makes the lozenge tab's frozen test the rim-connected one (a rhombus is frozen when rhombi
@@ -13,6 +13,10 @@ advection. Recipes older than v5 get `ceiling: 'v4'` through `legacy: { 5: { cei
 the step the separate limits gave them wherever that step was stable, and so reprint, and take the combined
 ceiling where it was past the explicit bound, where the plate was a growing grid-scale checkerboard
 ([validation/PDE-ORDER.md](../validation/PDE-ORDER.md)).
+Version 6 (2026-09-26) gives the causticsea tab the Swift–Hohenberg operator −(∇² + k₀²)² its label states; it had
+coded −∇²(∇² + k₀²), whose fastest-growing wavelength is about 1.4 times the Wavelength setting and whose uniform
+mode grows for every r > 0 ([validation/COMPARISON-AUDIT.md](../validation/COMPARISON-AUDIT.md)). Recipes older
+than v6 keep the old operator through `legacy: { 6: { operator: 'pre6' } }` and reprint as they were made.
 
 ## Compatibility boundary
 
