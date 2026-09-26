@@ -119,6 +119,13 @@ M = {
     'K = zbound(mu0, kappa, s, eps)', 'K = [k / 10**6 for k in zbound(mu0, kappa, s, eps)]')],
  'mf_G0_zero': [('manifold.py',
     '        G0 += abs_up(gco[n])', '        G0 += 0')],
+ # ---- own: block centred on a wrong rest state (semantic error the harness cannot see)
+ 'pp_xstar_shift_1e-4': [('prove_pulse.py',
+    '    xstar = nf.rest_state()\n',
+    "    xstar = nf.rest_state(); xstar[1] = xstar[1] + arb('1e-4')\n")],
+ 'pp_xstar_shift_1e-3': [('prove_pulse.py',
+    '    xstar = nf.rest_state()\n',
+    "    xstar = nf.rest_state(); xstar[1] = xstar[1] + arb('1e-3')\n")],
 }
 
 
