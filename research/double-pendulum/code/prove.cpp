@@ -278,10 +278,13 @@ int main(int argc, char** argv) {
         img = piece(c, P.xa, P.xb, d);
         hit = !(img[0].rightBound() < mpi.leftBound() || img[0].leftBound() > mpi.rightBound());
         if (hit) ok = d.ok && !d.s.contains(0.0);
-      } catch (std::exception& e) { ok = false; hit = true; }
+      } catch (std::exception& e) { ok = false; hit = true; if (getenv("DEBUG")) fprintf(stderr, "stage3 exception: %.200s\n", e.what()); }
       #pragma omp critical
       {
         ++nchecked;
+        if (!ok && P.d >= maxdepth) {
+          char buf[600]; snprintf(buf, 600, "    UNRESOLVED piece x in [%.15g, %.15g] (depth %d): image t2 %s, p2 %s, direction %s: %s %s", P.xa, P.xb, P.d,
+                                  S(img[0]).c_str(), S(img[1]).c_str(), d.ok ? "defined" : "undetermined", d.vert ? "dt2/dp2 in" : "dp2/dt2 in", S(d.s).c_str()); hitlog.push_back(buf); }
         if (hit && ok) { ++nhit;
           if (d.vert) anyVert = true; else { slopeLo = std::min(slopeLo, d.s.leftBound()); slopeHi = std::max(slopeHi, d.s.rightBound()); }
           char buf[600]; snprintf(buf, 600, "    piece x in [%.15g, %.15g] (depth %d): image t2 %s, p2 %s, %s %s", P.xa, P.xb, P.d,

@@ -7,7 +7,7 @@
 #include <cmath>
 #include <vector>
 using namespace capd;
-double E, g = 1; bool coupled = true;
+double E, g = 1; bool coupled = !getenv("UNCOUPLED");
 DMap* vf; DOdeSolver* solver; DCoordinateSection* sec; DPoincareMap* pm;
 void ret(double& t2, double& p2, double Df[2][2]) {
   DVector x(4); x[0] = 0; x[1] = t2; x[3] = p2; x[2] = lift_p1<double>(coupled, E, g, t2, p2);
@@ -30,7 +30,7 @@ void fmap(int per, double& t2, double& p2, double M[2][2]) {
 int main(int argc, char** argv) {
   E = atof(argv[1]); double z1 = atof(argv[2]), z2 = atof(argv[3]); int per = atoi(argv[4]), K = atoi(argv[5]), ns = atoi(argv[6]);
   double s0 = atof(argv[7]); int br = argc > 8 ? atoi(argv[8]) : 1; int dump = argc > 9 ? atoi(argv[9]) : 0;
-  vf = new DMap(DP_FIELD); vf->setParameter("g", g);
+  vf = new DMap(coupled ? DP_FIELD : UNCOUPLED_FIELD); vf->setParameter("g", g);
   solver = new DOdeSolver(*vf, 20); sec = new DCoordinateSection(4, 0);
   pm = new DPoincareMap(*solver, *sec, poincare::MinusPlus);
   double M[2][2], a = z1, b = z2; fmap(per, a, b, M);
