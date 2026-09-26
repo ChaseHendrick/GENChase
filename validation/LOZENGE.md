@@ -286,3 +286,93 @@ the 3:5:6 family from 12·20·24 to 24·40·48; seven print recipes. Within it, 
 by a stated finite-size amount and agrees only after extrapolation, the bars are calibrated to the band and
 mostly wide, the n^(1/3) scale is assumed, and the print evidence covers one renderer. Lopsided boxes such as
 48·48·8 and every other shape are outside the domain.
+
+## Exact finite-size reference (2026-09-26)
+
+The free area no longer needs an extrapolation to be checked: its expectation is now computed exactly for any box, as
+sums of gap probabilities of Hahn kernels, in [`research/arctic-finite-size/`](../research/arctic-finite-size/REPORT.md)
+(no module change, no new Monte Carlo; the numbers compared are those in `results/lozenge-science.json`).
+
+**Why it is exact.** The frozen rhombi are the extreme level sets of the plane partition and of its two side views
+(section "Changed after this review"). On line m of Johansson's non-intersecting walks (PTRF 123 (2002),
+arXiv:math/0011250, sec. 4.1) the walks packed against the top wall are exactly the levels k > h(a - m, 0), so
+
+    sum_{m=1}^{a} (gamma_m - Z_m) = #{(i, k) : q(i, k) = 0}
+
+holds tiling by tiling, with Z_m the top hole on line m. The holes on each line carry the Hahn law of his Theorem 4.1.
+By the complement symmetry, and permuting the box for the other two views,
+
+    E[free] = 1 - 2 (F(a, c, b) + F(b, a, c) + F(a, b, c)) / (ab + bc + ca),   F(a, b, c) = sum_{m=1}^{a} E[gamma_m - Z_m].
+
+These were checked as follows:
+
+- The identity was checked on all 54,223 plane partitions of six boxes. The hole law was checked line by line, and
+  the three counts were checked exactly, on nine boxes including a < b (`check_hahn_small.py`).
+- The floating-point pipeline equals an independent exact-rational computation at 2·2·2 to 12·12·12, 3·5·6, 6·10·12
+  and 12·20·24 to 3e-16 (`verify_rational.py`).
+
+**The tab against it.** The free area over the 2,720 plates of the limit-shape run, as the mean ± the standard error
+over seeds, against the exact expectation for the same box:
+
+| hexagon | seeds | tab (Monte Carlo) | exact | z |
+|---|---|---|---|---|
+| 12·12·12 | 400 | 0.7516 ± 0.0010 | 0.751050 | +0.51 |
+| 16·16·16 | 400 | 0.7799 ± 0.0009 | 0.780027 | -0.12 |
+| 20·20·20 | 300 | 0.7991 ± 0.0009 | 0.798522 | +0.71 |
+| 24·24·24 | 300 | 0.8119 ± 0.0007 | 0.811495 | +0.59 |
+| 32·32·32 | 200 | 0.8277 ± 0.0008 | 0.828713 | -1.26 |
+| 40·40·40 | 120 | 0.8392 ± 0.0009 | 0.839787 | -0.64 |
+| 48·48·48 | 100 | 0.8473 ± 0.0009 | 0.847603 | -0.33 |
+| 12·20·24 | 300 | 0.7605 ± 0.0011 | 0.761329 | -0.71 |
+| 15·25·30 | 300 | 0.7786 ± 0.0010 | 0.779168 | -0.52 |
+| 18·30·36 | 200 | 0.7929 ± 0.0011 | 0.791711 | +1.07 |
+| 24·40·48 | 100 | 0.8082 ± 0.0014 | 0.808405 | -0.13 |
+
+The chi-square is 5.17 on 11 degrees of freedom (p = 0.92), and the largest deviation is 1.26 sigma. **The tab agrees
+with the exact finite-size expectation on every box measured.** The reading "about 7 of its own error bars low" is
+therefore the finite-size shift and nothing else.
+
+That shift is now known exactly, so the extrapolated comparison in the table above is superseded. Its form is also
+biased at these sizes. Fitted to the exact values, the three-parameter model gives:
+
+- Regular hexagons, sides 12 to 48: 0.90360, which is 0.0033 below pi/(2 sqrt 3).
+- The 3:5:6 family, k = 4 to 8: 0.88187, which is 0.0032 below 0.88504.
+
+So its agreement with the limit at -1.2 and -0.6 sigma was partly the Monte Carlo scatter offsetting a model bias
+of about half an error bar.
+
+**The finite-size law.** The research folder also derives
+
+    free(n) = limit + C n^(-2/3) + d n^(-1) + ...,
+
+with the following constants:
+
+- **Regular hexagon:** C = 2 E[TW2] (3^(4/3)/8) B(5/3, 5/6) 2F1(1/2, 5/3; 5/2; -3) = -0.874179272286...
+- **3:5:6 family (n = k):** C = -0.340324241801016, by quadrature.
+
+C is the Tracy-Widom GUE mean E[TW2] = -1.7710868074116 times the edge scale of the top hole on each line, integrated
+along the lines. The scale comes from the Hahn recurrence, and the one-line laws check it numerically
+(`check_scale.py`).
+
+Fitted to the exact values, which run to side 1,024 and to k = 192, C is -0.87415 ± 0.00027 on the regular family
+and -0.34031 ± 0.00013 on 3:5:6. Both agree with the derived constants. The measured -0.81 to -0.79 at sides
+12 to 48 is the exact curve at those sizes: the exact deviation times n^(2/3) runs from -0.817 at 12 to a minimum of
+-0.781 near side 80, and only then turns back toward -0.874.
+
+What is proved and what is heuristic:
+
+- **Proved:** the identity and the Hahn law.
+- **Heuristic:** the expansion. The constant rests on the edge scale, the mean of the edge limit, and uniformity near
+  the tangency points; it is checked against the exact values, not proved.
+
+**Not covered.** The printed radius is a sector average of square roots of sector areas. It is not a linear function
+of the frozen counts, so its expectation was not computed exactly. The radius comparisons above stand as they were.
+The n^(1/3) scale noted as "assumed by analogy" is now derived for these lines and checked against the exact one-line
+laws. The 11·11·11 and 48·48·8 hint shapes can be computed with the same code; they were not part of this comparison.
+
+**Proposed module change (not made).** Print the free area against the exact expectation for the box on screen,
+instead of against the ellipse with a finite-size note. The expectation takes 2a + b small tridiagonal
+eigenproblems (one per line) and Cholesky factorizations of at most about a hundred sites, for sides up to about 64. That is
+milliseconds in plain JavaScript, with no table. The comparison would keep the tab's own free-area bar and basis
+`sampled`, and the ellipse would stay in the hint as the limit. Every plate would then carry a check that can miss;
+today the status line says only that the plate reads low for a finite-size reason.

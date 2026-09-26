@@ -237,3 +237,90 @@ checked, so the record is now "validated within stated limits" for its domain: e
 to 5, the arctic statistics and the bar calibration at orders 40 to 320, and the five print recipes. The bar is
 not calibrated below order 40 (the UI starts at 8), the extrapolation depends on the stated form, and the print
 evidence covers one renderer.
+
+## Exact finite-order reference (2026-09-26)
+
+The polar fraction no longer needs an extrapolation to be checked. Its expectation at every order is now computed
+exactly, as a sum of gap probabilities, in [`research/arctic-finite-size/`](../research/arctic-finite-size/REPORT.md).
+Nothing in `src/` changed and no new Monte Carlo run was made; the numbers compared below are the ones already in
+`results/aztec-science.json`.
+
+**How it is exact.** The north polar region (NPR) is the part of the tiling above the top DR path (Johansson,
+Ann. Probab. 33 (2005), arXiv:math/0306216, sec. 1). Red particles sit on the white square of every S and W domino
+(same source). The area above that path, counted along the white anti-diagonals, gives an identity that holds tiling
+by tiling:
+
+    |NPR| = 2 x (sum over the n white anti-diagonals of the index of the first red particle).
+
+The red particles on the r-th anti-diagonal form the Krawtchouk ensemble: r points on {0..n} with weight C(n, x)
+(Johansson (2005), eq. 2.6). By the four-fold symmetry, the expected polar fraction is therefore
+
+    q(n) = (4 / (n (n+1))) sum_{r=1}^{n} (n - E[max of the r-point Krawtchouk ensemble]),
+
+where every expectation is a sum of Fredholm determinants det(I - K) of the Krawtchouk kernel.
+
+Several checks back the computation:
+
+- The identity and each line's law were checked exactly on all 2^{n(n+1)/2} tilings of orders 1 to 5
+  (`check_small.py`).
+- The floating-point pipeline equals an independent exact-rational computation (integer Bareiss determinants of
+  moment matrices) at orders 4 to 40, to 3e-16 (`verify_rational.py`).
+- Order 5 gives 2339/3840 both by enumeration and by the kernel.
+
+Every computed value is an expectation with no sampling error; the floating-point error is about 1e-12.
+
+**The tab against it.** The polar fraction measured on 2,350 plates, as the mean ± the standard error over seeds,
+against the exact expectation:
+
+| order | seeds | tab (Monte Carlo) | exact | z |
+|---|---|---|---|---|
+| 40 | 400 | 0.3256 ± 0.0009 | 0.326740 | -1.22 |
+| 57 | 400 | 0.3050 ± 0.0007 | 0.304254 | +1.08 |
+| 80 | 400 | 0.2872 ± 0.0006 | 0.286922 | +0.47 |
+| 113 | 400 | 0.2729 ± 0.0004 | 0.272679 | +0.61 |
+| 160 | 300 | 0.2620 ± 0.0004 | 0.261150 | +2.06 |
+| 226 | 250 | 0.2518 ± 0.0003 | 0.251954 | -0.31 |
+| 320 | 200 | 0.2443 ± 0.0003 | 0.244516 | -0.61 |
+
+The chi-square is 7.97 on 7 degrees of freedom (p = 0.34), and the largest deviation is 2.06 sigma, at order 160.
+**The tab agrees with the exact finite-order expectation at every order measured.** It replaces the statement above
+that the tab "agrees with the limit after extrapolation". That agreement depended on the assumed finite-size form,
+and the form turns out to be biased at these orders. Fitted to the exact values at the same seven orders, the tool's
+model `q_inf + A n^(-2/3) + B n^(-1)` gives q_inf = 0.21529, which is 0.0007 above 1 - pi/4, and A = 1.43. That bias
+is about half the Monte Carlo error bar of the extrapolation (0.0013), which is why the spread between the two
+variants in section 3 and in the 2026-09-24 note was of that size. Nothing was wrong with the sampler. The
+deviation times n^(2/3), 1.30 to 1.39 at orders 40 to 320, equals the exact 1.31 to 1.40 within the error bars.
+
+**The finite-size law.** The research folder also derives the leading correction:
+
+    q(n) = 1 - pi/4 + C n^(-2/3) + d n^(-1) + ...,   C = -E[TW2] 2^(-2/3) Gamma(5/6)^2 / Gamma(5/3) = 1.574751290306...
+
+Here E[TW2] = -1.7710868074116 is the mean of the Tracy-Widom GUE law. C is the Tracy-Widom mean times the edge
+scale of the Krawtchouk top particle, integrated over the lines. That scale is Johansson's PTRF 123 (2002) eq. (2.72),
+and at the axis it equals his 2^(-5/6).
+
+Fitted to the exact values at orders up to 2,560, C is 1.57476 ± 0.00002, against 1.574751. The next term
+is d = -1.7855 ± 0.0003, and fits need an n^(-3/2) term besides the integer powers of n^(-1/3). Convergence is slow:
+the exact deviation times n^(2/3) is still only 1.47 at order 2,560. So at the orders the tab offers, the plate sits
+well inside the n^(-2/3) regime but not at its constant.
+
+What is proved and what is heuristic:
+
+- **Proved:** the identity and the one-line law.
+- **Heuristic:** the expansion itself, that is, the mean of the edge limit, uniformity along the lines and near the
+  tangency points, and the form of the remainder.
+
+The expansion is checked against the exact values, not proved.
+
+**Not covered.** The axis radius is a joint event on neighboring lines. It would need the extended Krawtchouk kernel,
+so it was not computed exactly here. Its comparison is unchanged from section 3 and the 2026-09-24 note.
+
+**Proposed module change (not made).** Print the polar fraction against the exact expectation at the plate's order
+rather than against 1 - pi/4 with a finite-size note. The printed line would read "polar fraction <value> ± <bar>
+against <exact> at order n", with the existing per-plate sector bar and the basis `sampled`.
+
+The expectations for orders 8 to 320 are 313 numbers. They can be tabulated from
+`research/arctic-finite-size/aztec_exact.py`, or the module can compute them itself: an (n+1)-point tridiagonal
+eigenproblem per line and a small Cholesky factorization, a few seconds at order 320 in single-threaded numpy. The limit and the
+constant C would stay in the hint. That turns the status line's comparison from a known finite-size miss into a
+check that can fail on every plate.

@@ -1,7 +1,7 @@
 # Identities
 
 > [!IMPORTANT]
-> **Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+> **Confirmed novel findings among the six candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five vortex entries are not independent findings. The sixth, from random tilings, has no plate yet and rests on a heuristic expansion checked against exact numbers.
 
 Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. The first formula specializes Gröbli’s 1877 spiral coefficient; historical priority of the optimized minima remains unconfirmed. Handwritten, not generated. Last updated 2026-09-20.
 
@@ -70,6 +70,43 @@ $$
 $$
 
 The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, uniquely attained at $\cos(4\theta)=9/55$, or $\theta\approx20.145493^\circ$. This is one generalization, not a separate discovery for every polygon order. **Proved mathematics; historical priority remains unresolved.** The two-ring family for arbitrary $n$ is classical. Read the [full theorem, square formula, proof, and tests](identities/polygon-collapse.md). The existing `#double-triangle-bound` tab now includes **Square minimum** and a vertex-count control; its original triangle default remains.
+
+## Candidate sixth result: finite-size constant of the arctic regions
+
+Recorded 2026-09-26. For a uniformly random domino tiling of the Aztec diamond of order $n$, the expected fraction of the diamond covered by the four polar regions (dominoes joined to the boundary through dominoes of their own type) is
+
+$$
+q(n)=1-\frac{\pi}{4}+C\,n^{-2/3}+O(n^{-1}),\qquad
+C=-\mathbb{E}[\mathrm{TW}_2]\,2^{-2/3}\,\frac{\Gamma(5/6)^2}{\Gamma(5/3)}=1.5747512903\ldots,
+$$
+
+with $\mathbb{E}[\mathrm{TW}_2]=-1.7710868074\ldots$ the mean of the Tracy-Widom GUE law. For uniformly random lozenge tilings of the regular hexagon of side $n$, the expected free (non-frozen) fraction is
+
+$$
+\frac{\pi}{2\sqrt3}+2\,\mathbb{E}[\mathrm{TW}_2]\,\frac{3^{4/3}}{8}\,B\!\left(\tfrac53,\tfrac56\right){}_2F_1\!\left(\tfrac12,\tfrac53;\tfrac52;-3\right)n^{-2/3}+O(n^{-1}),
+$$
+
+and the coefficient is $-0.8741792723\ldots$. For the $3k\times5k\times6k$ hexagon it is $-0.3403242418\ldots$ per $k^{-2/3}$, by quadrature. Each constant is the Tracy-Widom mean times the edge fluctuation scale integrated along the arctic curve. The frozen region is larger than its limit, because the mean is negative.
+
+**Status: heuristic expansion, exact ingredients, checked numerically.**
+
+- **Proved:** two identities, holding tiling by tiling, write the frozen area as a sum over Johansson's particle lines of the extreme particle (Aztec) or of the top hole (hexagon). The one-line laws are Johansson's Krawtchouk and Hahn ensembles.
+- **Heuristic:** the expansion. It uses Johansson's edge scale (PTRF 123 (2002), eq. 2.72, proof sketched) and its Hahn analogue, the convergence of the mean of the extreme particle, and uniformity near the tangency points.
+- **Checked:** the expected areas were computed exactly at finite $n$ as sums of Fredholm determinants, to orders in the thousands. Fits give $C=1.57476\pm0.00002$, $-0.87415\pm0.00027$ and $-0.34031\pm0.00013$.
+
+The studio's aztec and lozenge tabs agree with the exact finite-$n$ values at every measured size. The chi-square is 7.97 on 7 for `aztec` and 5.17 on 11 for `lozenge`.
+
+**No plate yet.** The status lines still compare with the limit. The proposed module change is in validation/AZTEC.md and validation/LOZENGE.md; until it lands, this is not a catalog row.
+
+**Attribution and originality.** The search is in [`RESEARCH.md`](RESEARCH.md) (2026-09-26). No source found states the constant or an exact finite-$n$ expected frozen area. The ingredients are published:
+
+- Johansson (Ann. Probab. 33 (2005); PTRF 123 (2002)): the particle lines, the one-line laws, and the edge scale.
+- Prähofer and Spohn (J. Phys. A 57 (2024) 025001, arXiv:2305.09502): the per-point mean shift, "The Tracy-Widom distribution has a negative mean", and $\Gamma_{\mathrm{Aztec}}$.
+- Aggarwal and Huang (arXiv:2108.12874) and Petrov (arXiv:1202.3901): the local scale on polygons.
+- Tracy and Widom, and Bornemann for the numerical value of $\mathbb{E}[\mathrm{TW}_2]$.
+- Jockusch, Propp and Shor, and Cohn, Larsen and Propp: the limits themselves.
+
+The contribution claimed is only the integration into an explicit constant and the exact finite-$n$ check, with priority unconfirmed. Read the [derivation, tables and checks](research/arctic-finite-size/REPORT.md).
 
 ## Dates recorded in GENChase
 
