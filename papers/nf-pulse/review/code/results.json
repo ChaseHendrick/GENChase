@@ -395,25 +395,14 @@
  "M29_eps_float_0p1": {
   "name": "M29_eps_float_0p1",
   "rc": 1,
-  "n_ok": 1,
+  "n_ok": 12,
   "fails": [
-   "R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues",
-   "R: negative control theta = 0 (S'(0) = 5) is refused",
-   "M: unstable manifold validated for |t| <= 1 (c1)",
-   "M: unstable manifold validated for |t| <= 1 (c2)",
-   "M: unstable manifold validated for |t| <= 1 (interval)",
-   "M: negative control sigma x 8 is refused",
-   "B: block around rest certified (|U| <= 0.05)",
-   "B: negative control U up to 0.15 is refused",
-   "J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)",
    "P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53",
    "P: the orbit at c1 enters the cone K- inside the block",
-   "P: the orbit at c2 enters the cone K+ inside the block",
-   "N: negative control, the orbit at c1 asked to reach K+, is refused",
-   "N: negative control c = 1.1024, far from the pulse speed, is refused"
+   "P: the orbit at c2 enters the cone K+ inside the block"
   ],
-  "time_s": 0.6,
-  "stdout": "FAIL  R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nFAIL  R: negative control theta = 0 (S'(0) = 5) is refused\nFAIL  M: unstable manifold validated for |t| <= 1 (c1)\nFAIL  M: unstable manifold validated for |t| <= 1 (c2)\nFAIL  M: unstable manifold validated for |t| <= 1 (interval)\nFAIL  M: negative control sigma x 8 is refused\nFAIL  B: block around rest certified (|U| <= 0.05)\nFAIL  B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nFAIL  J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nFAIL  N: negative control, the orbit at c1 asked to reach K+, is refused\nFAIL  N: negative control c = 1.1024, far from the pulse speed, is refused\n14 checks failed\n",
+  "time_s": 16.4,
+  "stdout": "OK    R: rest state unique, s = S'(0) < 1, one unstable and three stable eigenvalues\nOK    R: negative control theta = 0 (S'(0) = 5) is refused\nOK    M: unstable manifold validated for |t| <= 1 (c1)\nOK    M: unstable manifold validated for |t| <= 1 (c2)\nOK    M: unstable manifold validated for |t| <= 1 (interval)\nOK    M: negative control sigma x 8 is refused\nOK    B: block around rest certified (|U| <= 0.05)\nOK    B: negative control U up to 0.15 is refused\nOK    B: independent re-check of the block conditions in mpmath.iv\nOK    J: Jacobian with d/dkappa against finite differences (a test, not part of the proof)\nFAIL  P: every orbit with c in [c1, c2] is in the interior of the block at xi = 53\nFAIL  P: the orbit at c1 enters the cone K- inside the block\nFAIL  P: the orbit at c2 enters the cone K+ inside the block\nOK    N: negative control, the orbit at c1 asked to reach K+, is refused\nOK    N: negative control c = 1.1024, far from the pulse speed, is refused\n3 checks failed\n",
   "what": "eps from the double 0.1 (= 0.1 + 5.55e-18)",
   "file": "nfcore.py"
  },

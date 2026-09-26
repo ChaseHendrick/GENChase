@@ -10,9 +10,7 @@ e=K*d*d; z=[d]+[arb(0,e.upper())]*3
 t=arb(0); t0=time.time(); last=-1
 while float(t.mid())<Tend:
     h=hoe.choose_h(S,z,N,1)
-    zn,B,rem=hoe.step(S,z,N,h)
-    while zn is None:
-        h=h/2; zn,B,rem=hoe.step(S,z,N,h)
+    zn,B,rem,h=hoe.step(S,z,N,h)
     z=zn; t=t+h
     if int(float(t.mid()))//5!=last:
         last=int(float(t.mid()))//5
