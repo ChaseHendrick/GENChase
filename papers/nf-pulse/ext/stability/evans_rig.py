@@ -258,43 +258,71 @@ def mat_bound(M):
     return max((sum((aup(M[i, j]) for j in range(4)), arb(0)) for i in range(4)), key=lambda x: float(x.mid()))
 
 
-def step_matrices(M, Ml, sig_n, sig_W, h, order, deriv=True):
-    """Enclosures over [0, h] of the transition matrix Phi of Phi' = (M + sigma e4 e1^T) Phi and (if deriv) of its
-    lam-derivative Phi_l, Phi_l' = (M + sigma e4 e1^T) Phi_l + Ml Phi, Phi_l(0) = 0 (Ml = dM/dlam).
-    Taylor polynomial at the node plus Lagrange remainder of the joint system on the a priori enclosures
-    |Phi_ij(t)| <= e^{N t},  |Phi_l,ij(t)| <= t N_l e^{N t}  (Gronwall, N >= ||M + sigma e4 e1^T||_inf on W)."""
+E1ROW = None
+E4COL = None
+
+
+def step_matrices(M, Ml, sig_n, sig_W, h, order, nder=1):
+    """Enclosures over [0, h] of the transition matrix Phi of Phi' = (M + sigma e4 e1^T) Phi and of its first nder
+    (0, 1 or 2) lam-derivatives, M = M(lam) affine in lam with Ml = dM/dlam:
+        Phi_l' = A Phi_l + Ml Phi,   Phi_ll' = A Phi_ll + 2 Ml Phi_l,   Phi_l(0) = Phi_ll(0) = 0,   A = M + sigma e4 e1^T.
+    Taylor polynomial at the node (pulse coefficients sig_n on the node box) plus the Lagrange remainder of the joint
+    system, bounded entrywise by majorant recursions (N0 = ||M||_inf, Nl = ||Ml||_inf, N = N0 + |sig_W,0|):
+        m_{k+1} = (N0 m_k + sum_j |sig_W,j| m_{k-j})/(k+1),                 m_0 = e^{N h}
+        q_{k+1} = (Nl m_k + N0 q_k + sum_j |sig_W,j| q_{k-j})/(k+1),         q_0 = h Nl e^{N h}
+        u_{k+1} = (2 Nl q_k + N0 u_k + sum_j |sig_W,j| u_{k-j})/(k+1),       u_0 = h^2 Nl^2 e^{N h}
+    (m_0, q_0, u_0 bound the solutions on [0, h] by Gronwall; sig_W are the pulse coefficients on the a priori
+    enclosure W; every entry of the (p+1)-th Taylor coefficient at any point of [0, h] is bounded by the majorant)."""
+    global E1ROW, E4COL
+    if E1ROW is None:
+        E1ROW = acb_mat([[1, 0, 0, 0]])
+        E4COL = acb_mat([[0], [0], [0], [1]])
     hA = arb(h)
-    P = [eye4()]
-    Q = [zero4()]
+    sigc = [acb(x) for x in sig_n]
+    series = [[eye4()]] + [[zero4()] for _ in range(nder)]
+    rows = [[E1ROW * s_[0]] for s_ in series]
     for kk in range(order):
-        P.append(add_row4(M * P[kk], conv_row(P, sig_n, kk)) * acb(fmpq(1, kk + 1)))
-        if deriv:
-            Q.append(add_row4(Ml * P[kk] + M * Q[kk], conv_row(Q, sig_n, kk)) * acb(fmpq(1, kk + 1)))
-    Phi = horner_mat(P, hA)
-    Phil = horner_mat(Q, hA) if deriv else None
-    # remainder
-    Mw = add_row4(M, [sig_W[0], 0, 0, 0])
-    N = mat_bound(Mw)
-    R = arb(((N * hA).exp()).upper())
-    WP = acb_mat([[acb(arb(0, R), arb(0, R)) for j in range(4)] for i in range(4)])
-    PW = [WP]
-    if deriv:
-        Rl = arb((hA * mat_bound(Ml) * (N * hA).exp()).upper())
-        WQ = acb_mat([[acb(arb(0, Rl), arb(0, Rl)) for j in range(4)] for i in range(4)])
-        QW = [WQ]
+        inv = acb(fmpq(1, kk + 1))
+        new = []
+        for d in range(nder + 1):
+            S = rows[d][kk] * sigc[0]
+            for jj in range(1, kk + 1):
+                S += rows[d][kk - jj] * sigc[jj]
+            t = M * series[d][kk] + E4COL * S
+            if d >= 1:
+                t = t + (Ml * series[d - 1][kk]) * acb(d)
+            new.append(t * inv)
+        for d in range(nder + 1):
+            series[d].append(new[d])
+            rows[d].append(E1ROW * new[d])
+    mats = [horner_mat(sr, hA) for sr in series]
+    N0 = mat_bound(M)
+    sw = [aup(x) for x in sig_W]
+    N = N0 + sw[0]
+    eN = (N * hA).exp()
+    Nl = mat_bound(Ml) if nder else arb(0)
+    maj = [[arb(eN.upper())]]
+    if nder >= 1:
+        maj.append([arb((hA * Nl * eN).upper())])
+    if nder >= 2:
+        maj.append([arb((hA * hA * Nl * Nl * eN).upper())])
     for kk in range(order + 1):
-        PW.append(add_row4(M * PW[kk], conv_row(PW, sig_W, kk)) * acb(fmpq(1, kk + 1)))
-        if deriv:
-            QW.append(add_row4(Ml * PW[kk] + M * QW[kk], conv_row(QW, sig_W, kk)) * acb(fmpq(1, kk + 1)))
-    fac = acb(hA ** (order + 1))
-    rem = PW[order + 1] * fac
-    remsz = max(float(aup(rem[a, b]).mid()) for a in range(4) for b in range(4))
-    Phi = Phi + rem
-    if deriv:
-        reml = QW[order + 1] * fac
-        remsz = max(remsz, max(float(aup(reml[a, b]).mid()) for a in range(4) for b in range(4)))
-        Phil = Phil + reml
-    return Phi, Phil, remsz
+        for d in range(nder + 1):
+            acc = N0 * maj[d][kk]
+            if d >= 1:
+                acc += d * Nl * maj[d - 1][kk]
+            for jj in range(kk + 1):
+                acc += sw[jj] * maj[d][kk - jj]
+            maj[d].append(acc / (kk + 1))
+    fac = hA ** (order + 1)
+    remsz = 0.0
+    out = []
+    for d in range(nder + 1):
+        rm = arb((maj[d][order + 1] * fac).upper())
+        remsz = max(remsz, float(rm))
+        E = acb(arb(0, rm), arb(0, rm))
+        out.append(mats[d] + acb_mat([[E] * 4 for _ in range(4)]))
+    return out, remsz
 
 
 SUBCACHE = {}
@@ -323,8 +351,8 @@ def subnode_sigmas(n_st, st, m):
 
 
 def substeps(n_st, st, Mc, M, Ml, order, deriv):
-    """[(Phi at the centre, Phi on the ball, Phi_lam on the ball)] for the step, subdivided (2, 4, ... 32 parts) until
-    every remainder is below PHI_TOL."""
+    """[(Phi, Phi_l at the centre), (Phi, Phi_l, Phi_ll on the ball)] for the step, subdivided (2, 4, ... 32 parts)
+    until every remainder is below PHI_TOL."""
     t0, h, sig_n, sig_W, hull, W = st
     m = 1
     while True:
@@ -335,14 +363,14 @@ def substeps(n_st, st, Mc, M, Ml, order, deriv):
             parts = [(hs, sg) for sg in sigs]
         out = []
         for hh, sg in parts:
-            Pc, _, r1 = step_matrices(Mc, None, sg, sig_W, hh, order, deriv=False)
+            thin, r1 = step_matrices(Mc, Ml, sg, sig_W, hh, order, nder=1)
             if deriv:
-                Pb, Pl, r2 = step_matrices(M, Ml, sg, sig_W, hh, order, deriv=True)
+                ball, r2 = step_matrices(M, Ml, sg, sig_W, hh, order, nder=2)
             else:
-                Pb, Pl, r2 = Pc, None, 0.0
+                ball, r2 = [thin[0], thin[1], zero4()], 0.0
             if max(r1, r2) >= PHI_TOL and m < 32:
                 break
-            out.append((Pc, Pb, Pl))
+            out.append((thin, ball))
         else:
             return out
         m *= 2
@@ -407,9 +435,13 @@ def tails(lam, k, s, eps, beta):
 
 
 def evans(lam, order=EORDER, detail=False):
-    """lam: acb ball (a square, centre lc, half-width rho).  Returns (Dc, Dl, info) with
-        D(l) in Dc + Dl (l - lc)  for every l in the ball  (Dc, Dl acb enclosures),
-    or (None, None, info) if a test fails."""
+    """lam: acb square with centre lc.  Returns (coefs, None, info) where coefs = (Dc, D1, D2) and, for every lam' in
+    the square and every pulse of the class,
+        Dt(lam') in f(lam') (Dc + D1 d + D2 d^2),   d = lam' - lc,   f(lam') = exp(-(nu(lam') - nu_c) (T_FAR - XI_MINUS)).
+    Dt = D * (wt^T v) is the Evans function with the unnormalised left eigenvector wt = (1, -k/(nu + k lam),
+    k nu/(nu^2 - 1), k/(nu^2 - 1)); wt^T v is analytic and nonzero off the essential spectrum (nu is a simple
+    eigenvalue), so Dt has the zeros of D and the same winding number on any contour.  Returns (None, None, info)
+    when a test fails."""
     ctx.prec = PREC
     Dd = DATA
     k = Dd['kappa']
@@ -419,48 +451,58 @@ def evans(lam, order=EORDER, detail=False):
     lc = midv(lam)
     deriv = not (lam.real.rad() == 0 and lam.imag.rad() == 0)
     tb = tails(lam, k, s, eps, beta)
-    tc = tails(lc, k, s, eps, beta)
+    tc = tails(lc, k, s, eps, beta) if deriv else tb
     if tb is None or tc is None:
         return None, None, {'fail': 'eigenstructure'}
     nu_b, nu_c = tb['nu'], tc['nu']
     assert nu_b.overlaps(nu_c)
-    # dnu/dlam on the ball: -p_lam / p_nu
-    p_nu = dcharpoly(nu_b, lam, k, s, eps)
-    p_lam = dlam_charpoly(nu_b, lam, k, s, eps)
-    dnu = -p_lam / p_nu
+
+    def vecs(l, nu):
+        """v, wt and their lam-derivatives (dnu = -p_lam/p_nu) at (l, nu)."""
+        dnu = -dlam_charpoly(nu, l, k, s, eps) / dcharpoly(nu, l, k, s, eps)
+        e1 = nu + k * l
+        e2 = nu * nu - 1
+        v = [acb(1), eps * k / e1, -s / e2, -s * nu / e2]
+        vp = [acb(0), -eps * k * (dnu + k) / (e1 * e1), 2 * s * nu * dnu / (e2 * e2), s * dnu * (nu * nu + 1) / (e2 * e2)]
+        wt = [acb(1), -k / e1, k * nu / e2, k / e2]
+        wp = [acb(0), k * (dnu + k) / (e1 * e1), -k * dnu * (nu * nu + 1) / (e2 * e2), -2 * k * nu * dnu / (e2 * e2)]
+        return v, vp, wt, wp
+    v_c, vp_c, wt_c, wp_c = vecs(lc, nu_c)
+    v_b, vp_b, wt_b, wp_b = vecs(lam, nu_b)
 
     def Amat(l, nu):
         return acb_mat([[-k * (l + 1) - nu, -k, k, 0], [eps * k, -k * l - nu, 0, 0], [0, 0, -nu, 1], [0, 0, 1, -nu]])
-    # the ODE is shifted by the fixed number nu_c = nu(lc) (a thin ball), not by nu(lam): phi^ = e^{-nu_c xi} phi.
-    # Then D(lam) = f(lam) (w + om~)^T Phi^(T_FAR, XI_MINUS) (v + om),  f(lam) = exp(-(nu(lam) - nu_c)(T_FAR - XI_MINUS)).
+    # the ODE is shifted by the fixed number nu_c = nu(lc): phi^ = e^{-nu_c xi} phi, and
+    # Dt(lam) = f(lam) (wt + om~)^T Phi^(T_FAR, XI_MINUS) (v + om).
     Mc = Amat(lc, nu_c)
     M = Amat(lam, nu_c)
     Ml = acb_mat([[-k, 0, 0, 0], [0, -k, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
-    # initial vector: v(lam) + om on the ball (its lam-dependence is carried in r, first order in rho)
-    dl = lam - lc                                     # the ball of lam - lc
-    # initial vector v(lam) + om:  v(lam) in v(lc) + v'(lam-ball) (lam - lc);  C0 = mid v', the rest goes to r
-    vc = tc['v']
-    if deriv:
-        nu = nu_b
-        e1 = nu + k * lam
-        e2 = nu * nu - 1
-        vp = [acb(0), -eps * k * (dnu + k) / (e1 * e1), 2 * s * nu * dnu / (e2 * e2), s * dnu * (nu * nu + 1) / (e2 * e2)]
-    else:
-        vp = [acb(0)] * 4
-    C = [midv(x) for x in vp]
-    pbar = [midv(x) for x in vc]
+    dl = lam - lc
+    dl2 = dl * dl
+    # om~ bound scales with |wt_4|: recompute it for the unnormalised wt
+    wscale = aup(wt_b[3]) / aup(tb['w'][3]).lower() if deriv else aup(wt_b[3]) / arb(aup(tb['w'][3]).lower())
+    # initial vector v(lam) + om, v(lam) in v(lc) + v'(ball) d
+    pbar = [midv(x) for x in v_c]
+    C1 = [midv(x) for x in vp_c] if deriv else [acb(0)] * 4
+    C2 = [acb(0)] * 4
     Bm = eye4()
-    rv = [(vc[i] - pbar[i]) + (vp[i] - C[i]) * dl + acb(tb['om'][i], tb['om'][i]) for i in range(4)]
+    rv = [(v_c[i] - pbar[i]) + ((vp_b[i] - C1[i]) * dl if deriv else 0) + acb(tb['om'][i], tb['om'][i]) for i in range(4)]
+    half = acb(fmpq(1, 2))
     for n_st, st in enumerate(Dd['steps']):
-        for (Pc, Pb, Pl) in substeps(n_st, st, Mc, M, Ml, order, deriv):
-            y = matvec(Pc, pbar)                          # Phi(lc) pbar
+        for (thin, ball) in substeps(n_st, st, Mc, M, Ml, order, deriv):
+            Pc, Plc = thin
+            Pb, Pl, Pll = ball
+            y = matvec(Pc, pbar)
             pnew = [midv(yi) for yi in y]
             if deriv:
-                G = [a + b for a, b in zip(matvec(Pl, pbar), matvec(Pb, C))]   # d/dlam part, on the ball
-                Cn = [midv(g) for g in G]
+                G1 = [a + b for a, b in zip(matvec(Plc, pbar), matvec(Pc, C1))]
+                G2 = [a * half + b + c for a, b, c in zip(matvec(Pll, pbar), matvec(Pl, C1), matvec(Pb, C2))]
+                C1n = [midv(g) for g in G1]
+                C2n = [midv(g) for g in G2]
+                inj = [(y[i] - pnew[i]) + (G1[i] - C1n[i]) * dl + (G2[i] - C2n[i]) * dl2 for i in range(4)]
             else:
-                G = [acb(0)] * 4
-                Cn = [acb(0)] * 4
+                C1n, C2n = C1, C2
+                inj = [y[i] - pnew[i] for i in range(4)]
             Cb = Pb * Bm
             mC = acb_mat([[midv(Cb[i, j]) for j in range(4)] for i in range(4)])
             keys = []
@@ -470,42 +512,47 @@ def evans(lam, order=EORDER, detail=False):
             oc = sorted(range(4), key=lambda j: -keys[j])
             Bn = gram_schmidt(acb_mat([[mC[i, j] for j in oc] for i in range(4)]))
             Bi = Bn.inv()
-            err = [(y[i] - pnew[i]) + (G[i] - Cn[i]) * dl for i in range(4)]
-            t1 = matvec(Bi, err)
+            t1 = matvec(Bi, inj)
             t2 = matvec(Bi * Cb, rv)
             rv = [t1[i] + t2[i] for i in range(4)]
-            pbar, C, Bm = pnew, Cn, Bn
+            pbar, C1, C2, Bm = pnew, C1n, C2n, Bn
             if detail and n_st % 40 == 0:
-                print('   inj: y-width %.2e  (G-C)dl %.2e  |G| width %.2e  Bi*Cb*rv %.2e' % (max(float(aup(y[i]-pnew[i]).mid()) for i in range(4)), max(float(aup((G[i]-Cn[i])*dl).mid()) for i in range(4)), max(max(float(g.real.rad()),float(g.imag.rad())) for g in G), max(float(aup(x).mid()) for x in t2)))
-            if detail and n_st % 40 == 0:
-                print('  xi=%.2f |pbar|=%.3e |C|=%.3e |rv|=%.3e |t1|=%.3e wPb=%.2e wPl=%.2e' % (float(st[0].mid()), max(float(aup(x).mid()) for x in pbar),
-                      max(float(aup(x).mid()) for x in C), max(float(aup(x).mid()) for x in rv), max(float(aup(x).mid()) for x in t1),
-                      max(float(Pb[a, b].rad()) for a in range(4) for b in range(4)), max(float(Pl[a, b].rad()) if Pl is not None else 0 for a in range(4) for b in range(4))), flush=True)
-    phiT0 = [pbar[i] + sum((Bm[i, j] * rv[j] for j in range(4)), acb(0)) for i in range(4)]
-    wR = [tb['w'][i] + acb(tb['omt'][i], tb['omt'][i]) for i in range(4)]
-    Dc = sum((wR[i] * phiT0[i] for i in range(4)), acb(0))
-    Dl = sum((wR[i] * C[i] for i in range(4)), acb(0))
+                mx = lambda vv: max(float(aup(x).mid()) for x in vv)
+                wd = lambda vv: max(max(float(x.real.rad()), float(x.imag.rad())) for x in vv)
+                print('  xi=%.2f |p|=%.2e |C1|=%.2e |C2|=%.2e |r|=%.2e inj=%.2e wG1=%.2e wG2=%.2e wPb=%.2e wPl=%.2e wPll=%.2e |Pll|=%.2e' % (
+                    float(st[0].mid()), mx(pbar), mx(C1), mx(C2), mx(rv), mx(inj), wd(G1) if deriv else 0, wd(G2) if deriv else 0,
+                    max(float(Pb[a, b].rad()) for a in range(4) for b in range(4)), max(float(Pl[a, b].rad()) for a in range(4) for b in range(4)),
+                    max(float(Pll[a, b].rad()) for a in range(4) for b in range(4)), max(float(aup(Pll[a, b]).mid()) for a in range(4) for b in range(4))), flush=True)
+    Br = matvec(Bm, rv)
+    omt = [acb(arb(0, (o * wscale).upper()), arb(0, (o * wscale).upper())) for o in tb['omt']]
+    wR = [wt_b[i] + omt[i] for i in range(4)]          # wt(lam) + om~ on the ball (enters only B r and om~ p terms)
+    Dc = sum((wt_c[i] * pbar[i] + wR[i] * Br[i] + omt[i] * (pbar[i] + (C1[i] * dl + C2[i] * dl2 if deriv else 0)) for i in range(4)), acb(0))
+    if deriv:
+        D1 = sum((wt_c[i] * C1[i] + wp_b[i] * pbar[i] for i in range(4)), acb(0))
+        D2 = sum((wt_c[i] * C2[i] + wp_b[i] * C1[i] + wp_b[i] * C2[i] * dl for i in range(4)), acb(0))
+    else:
+        D1 = D2 = acb(0)
     Lspan = arb(DATA['info']['T_far']) - arb(DATA['info']['xi_minus'])
     f_ball = (-(nu_b - nu_c) * Lspan).exp()
-    D_ball = f_ball * (Dc + Dl * dl)
+    D_ball = f_ball * (Dc + D1 * dl + D2 * dl2)
     out = {'nu': nu_b.str(10), 'K14': tb['K14'].str(5), 'G_L': tb['GL'].str(5), 'G_R': tb['GR'].str(5),
-           'm': tb['m'].str(6), 'Dc': Dc.str(12), 'Dl': Dl.str(8),
-           'Dc_rad': max(float(Dc.real.rad()), float(Dc.imag.rad())), 'D_ball': D_ball.str(8)}
-    out['nu_c'] = nu_c
-    out['Lspan'] = Lspan
-    out['f_ball'] = f_ball
-    out['D_ball_obj'] = D_ball
-    return Dc, Dl, out
+           'm': tb['m'].str(6), 'Dc': Dc.str(12), 'D1': D1.str(8), 'D2': D2.str(6),
+           'Dc_rad': max(float(Dc.real.rad()), float(Dc.imag.rad())), 'D_ball': D_ball.str(8),
+           'nu_c': nu_c, 'Lspan': Lspan, 'f_ball': f_ball, 'D_ball_obj': D_ball, 'coefs': (Dc, D1, D2), 'lc': lc}
+    return (Dc, D1, D2), None, out
 
 
-def D_at(lam_pt, Dc, Dl, lc, out):
-    """enclosure of D at a thin point lam_pt of the ball: f(lam_pt) (Dc + Dl (lam_pt - lc)); nu(lam_pt) by Krawczyk."""
+def D_at(lam_pt, coefs, lc, out):
+    """enclosure of Dt at a thin point of the square: f(lam_pt) (Dc + D1 d + D2 d^2); nu(lam_pt) by Krawczyk."""
     k = DATA['kappa']
     s = nf.dS(arb(0))
     eps = arb(fmpq(1, 10))
-    nu = krawczyk(acb(complex(ref_roots(lam_pt, k, s)[0]).real, complex(ref_roots(lam_pt, k, s)[0]).imag), lam_pt, k, s, eps)
+    z = complex(ref_roots(lam_pt, k, s)[0])
+    nu = krawczyk(acb(z.real, z.imag), lam_pt, k, s, eps)
     f = (-(nu - out['nu_c']) * out['Lspan']).exp()
-    return f * (Dc + Dl * (lam_pt - lc))
+    Dc, D1, D2 = coefs
+    d = lam_pt - lc
+    return f * (Dc + D1 * d + D2 * d * d)
 
 
 if __name__ == '__main__':
@@ -514,5 +561,5 @@ if __name__ == '__main__':
     for z, r in [((0, 0), 0), ((0.5, 0), 0), ((-0.05, 0), 0), ((0, 1), 0), ((-0.05, 0.01), 0.005), ((0.5, 3), 0.005)]:
         t = time.time()
         lam = acb(arb(z[0], r), arb(z[1], r))
-        Dc, Dl, info = evans(lam)
+        co, _, info = evans(lam)
         print(z, r, {k: v for k, v in info.items() if isinstance(v, (str, float))}, '%.1fs' % (time.time() - t), flush=True)

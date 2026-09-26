@@ -4,14 +4,16 @@
 """RIGOROUS winding number of the Evans function on the boundary of the box
     R = { -1/20 <= Re lam <= 9/2, |Im lam| <= 38/5 }       (large_lambda.py excludes eigenvalues outside R).
 
-The boundary is covered by segments [a, b]; for each segment the Evans function is enclosed on the complex ball
-(square) with centre (a+b)/2 and half-width |b-a|/2 (evans_rig.evans), and must lie in an open half plane through 0:
-Re(D * conj(z_i)) > 0 for the point z_i = midpoint of the enclosure.  Then the continuous argument change of D along
-the segment is  arg(D(b) conj(z_i)) - arg(D(a) conj(z_i))  (principal arguments, both in the half plane), computed
-from thin enclosures of D(a) and D(b).  Segments that fail are halved.  The sum over the boundary, divided by 2 pi,
+The boundary (split into an upper and a lower half path, run separately) is covered by segments [a, b]; for each
+segment evans_rig.evans encloses D(lam) in f(lam) (Dc + Dl (lam - lc)) on the complex square with centre lc = (a+b)/2
+and half-width |b-a|/2; this gives an enclosure of D on the square and sharper enclosures of D(a) and D(b).  All three
+must lie in an open half plane through 0: Re(X conj(z)) > 0 with z the midpoint of the square's enclosure.  Then the
+continuous argument change of D along the segment is  arg(D(b) conj(z)) - arg(D(a) conj(z))  (principal arguments,
+both in the half plane).  Segments that fail are halved.  The sum over the boundary, divided by 2 pi,
 must be an interval containing exactly one integer: the winding number = number of eigenvalues in R with algebraic
 multiplicity (zeros of D counted with order).
-usage: python3 winding.py [nproc] [initial segment length]
+usage: python3 winding.py <piece> [nproc]   (piece: upper, lower, or right_up, top, left_up, left_down, bottom, right_down)
+       python3 winding.py combine
 """
 import sys, os, json, time, math
 from multiprocessing import Pool
@@ -20,7 +22,14 @@ import evans_rig as er
 from flint import arb, acb, fmpq, ctx
 
 DELTA, R0, OM = fmpq(-1, 20), fmpq(9, 2), fmpq(38, 5)
-CORNERS = [(R0, fmpq(0)), (R0, OM), (DELTA, OM), (DELTA, -OM), (R0, -OM), (R0, fmpq(0))]
+PATHS = {'upper': [(R0, fmpq(0)), (R0, OM), (DELTA, OM), (DELTA, fmpq(0))],
+         'lower': [(DELTA, fmpq(0)), (DELTA, -OM), (R0, -OM), (R0, fmpq(0))],
+         # the same boundary in six pieces (each run well under an hour on 4 cores)
+         'right_up': [(R0, fmpq(0)), (R0, OM)], 'top': [(R0, OM), (DELTA, OM)], 'left_up': [(DELTA, OM), (DELTA, fmpq(0))],
+         'left_down': [(DELTA, fmpq(0)), (DELTA, -OM)], 'bottom': [(DELTA, -OM), (R0, -OM)],
+         'right_down': [(R0, -OM), (R0, fmpq(0))]}
+COVERS = [('upper', 'lower'), ('right_up', 'top', 'left_up', 'left_down', 'bottom', 'right_down'),
+          ('upper', 'left_down', 'bottom', 'right_down'), ('right_up', 'top', 'left_up', 'lower')]
 
 
 def ball_of(a, b):
@@ -28,27 +37,15 @@ def ball_of(a, b):
     ci = (a[1] + b[1]) / 2
     r = max(abs(b[0] - a[0]), abs(b[1] - a[1])) / 2
     rad = arb(arb(r).upper())
-    return acb(arb(cr_) + arb(0, rad), arb(ci) + arb(0, rad))
+    return acb(arb(cr_) + arb(0, rad), arb(ci) + arb(0, rad)), acb(arb(cr_), arb(ci))
 
 
 def point(a):
     return acb(arb(a[0]), arb(a[1]))
 
 
-def job(task):
-    kind, a, b = task
-    ctx.prec = er.PREC
-    lam = ball_of(a, b) if kind == 'seg' else point(a)
-    t = time.time()
-    try:
-        D, info = er.evans(lam)
-    except ArithmeticError as e:
-        return task, None, str(e), time.time() - t
-    if D is None:
-        return task, None, info, time.time() - t
-    if not (D.real.is_finite() and D.imag.is_finite()):
-        return task, None, 'non-finite enclosure', time.time() - t
-    return task, (D.real.mid().man_exp(), D.real.rad().man_exp(), D.imag.mid().man_exp(), D.imag.rad().man_exp()), info, time.time() - t
+def pack(z):
+    return (z.real.mid().man_exp(), z.real.rad().man_exp(), z.imag.mid().man_exp(), z.imag.rad().man_exp())
 
 
 def unpack(t):
@@ -58,112 +55,150 @@ def unpack(t):
     return acb(ball(rm, re, rrm, rre), ball(im, ie, irm, ire))
 
 
-def main(nproc=4, seg0=fmpq(2, 5), min_len=fmpq(1, 2000), outname='winding'):
+def finite(z):
+    return z.real.is_finite() and z.imag.is_finite()
+
+
+def node_job(a):
+    """thin enclosure of D(a)."""
+    ctx.prec = er.PREC
+    try:
+        Dc, Dl, info = er.evans(point(a))
+    except (ArithmeticError, AssertionError) as e:
+        return a, None
+    if Dc is None or not finite(info["D_ball_obj"]):
+        return a, None
+    return a, pack(info['D_ball_obj'])
+
+
+def job(task):
+    """Evans enclosure on the segment square; accepted when it and the thin enclosures of D(a), D(b) lie in the open
+    half plane Re(X conj(z)) > 0, z = midpoint of the square's enclosure."""
+    a, b, Da_p, Db_p = task
+    ctx.prec = er.PREC
+    lam, lc = ball_of(a, b)
+    t = time.time()
+    try:
+        Dc, Dl, info = er.evans(lam)
+        if Dc is None:
+            return (a, b), None, str(info), time.time() - t
+        Db_ = info['D_ball_obj']
+    except (ArithmeticError, AssertionError) as e:
+        return (a, b), None, 'error: %s' % e, time.time() - t
+    Da, Dbb = unpack(Da_p), unpack(Db_p)
+    if not finite(Db_):
+        return (a, b), None, 'non-finite', time.time() - t
+    z = acb(Db_.real.mid(), Db_.imag.mid())
+    ok = all(bool((X * z.conjugate()).real > 0) for X in (Db_, Da, Dbb))
+    if not ok:
+        return (a, b), None, 'not in a half plane: %s' % Db_.str(5), time.time() - t
+    darg = (Dbb * z.conjugate()).arg() - (Da * z.conjugate()).arg()
+    return (a, b), {'D': pack(Db_), 'Da': Da_p, 'Db': Db_p, 'darg': (darg.mid().man_exp(), darg.rad().man_exp()),
+                    'Dc_rad': info['Dc_rad']}, None, time.time() - t
+
+
+def main(which, nproc=4, seg0=fmpq(1, 50), min_len=fmpq(1, 4000)):
     t0 = time.time()
     er.load()
     ctx.prec = er.PREC
+    corners = PATHS[which]
     segs = []
-    for (a, b) in zip(CORNERS[:-1], CORNERS[1:]):
+    for (a, b) in zip(corners[:-1], corners[1:]):
         L = max(abs(b[0] - a[0]), abs(b[1] - a[1]))
         n = int(math.ceil(float(L / seg0)))
         for i in range(n):
             p = (a[0] + (b[0] - a[0]) * fmpq(i, n), a[1] + (b[1] - a[1]) * fmpq(i, n))
             q = (a[0] + (b[0] - a[0]) * fmpq(i + 1, n), a[1] + (b[1] - a[1]) * fmpq(i + 1, n))
             segs.append((p, q))
+    accepted = {}
     nodes = {}
-    accepted = {}        # (a, b) -> D enclosure (packed)
     pending = list(segs)
     rounds = 0
-    stats = {'evaluations': 0, 'splits': 0}
+    nev = 0
     with Pool(nproc) as pool:
         while pending:
             rounds += 1
-            tasks = [('seg', a, b) for a, b in pending]
-            for a, b in pending:
-                for p in (a, b):
-                    if p not in nodes:
-                        nodes[p] = None
-                        tasks.append(('pt', p, p))
-            res = pool.map(job, tasks, chunksize=1)
-            stats['evaluations'] += len(res)
+            need = sorted({p for ab in pending for p in ab if p not in nodes}, key=lambda p: (p[0], p[1]))
+            for p, D in pool.map(node_job, need, chunksize=1):
+                if D is None:
+                    raise RuntimeError('thin evaluation failed at %s' % (p,))
+                nodes[p] = D
+            res = pool.map(job, [(a, b, nodes[a], nodes[b]) for a, b in pending], chunksize=1)
+            nev += len(res) + len(need)
             newpend = []
-            for task, D, info, dt in res:
-                if task[0] == 'pt':
-                    if D is None:
-                        raise RuntimeError('thin evaluation failed at %s: %s' % (task[1], info))
-                    nodes[task[1]] = D
-                    continue
-                a, b = task[1], task[2]
-                good = False
-                if D is not None:
-                    Dz = unpack(D)
-                    z = acb(Dz.real.mid(), Dz.imag.mid())
-                    good = bool((Dz * z.conjugate()).real > 0)
-                if good:
-                    accepted[(a, b)] = D
+            for task, r, why, dt in res:
+                a, b = task
+                if r is not None:
+                    accepted[(a, b)] = r
                 else:
                     if max(abs(b[0] - a[0]), abs(b[1] - a[1])) <= min_len:
-                        raise RuntimeError('segment too short, still failing: %s %s %s' % (a, b, info))
+                        raise RuntimeError('segment too short, still failing: %s %s %s' % (a, b, why))
                     m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
                     newpend += [(a, m), (m, b)]
-                    stats['splits'] += 1
             pending = newpend
-            print('round %d: %d accepted, %d pending, %.0fs' % (rounds, len(accepted), len(pending), time.time() - t0), flush=True)
-    # assemble the boundary in order and sum the argument changes
-    order = sorted(accepted.keys(), key=lambda ab: boundary_pos(ab[0]))
+            print('%s round %d: %d accepted, %d pending, %.0fs' % (which, rounds, len(accepted), len(pending), time.time() - t0), flush=True)
+    # chain the segments along the path and sum the argument changes
+    nxt = {a: (a, b) for (a, b) in accepted}
+    pos = corners[0]
     total = arb(0)
     minabs = None
-    maxang = 0.0
-    pos = CORNERS[0]
-    for (a, b) in order:
-        assert a == pos, (a, pos)
-        pos = b
-        Dz = unpack(accepted[(a, b)])
-        z = acb(Dz.real.mid(), Dz.imag.mid())
-        Da, Db = unpack(nodes[a]), unpack(nodes[b])
-        assert Dz.contains(Da) or Dz.overlaps(Da)
-        A = (Da * z.conjugate())
-        B = (Db * z.conjugate())
-        assert bool(A.real > 0) and bool(B.real > 0)
-        total += B.arg() - A.arg()
-        lo = arb(Dz.abs_lower())
+    nseg = 0
+    lines = []
+    while pos != corners[-1]:
+        a, b = nxt[pos]
+        r = accepted[(a, b)]
+        m, e = r['darg'][0]
+        rm, re = r['darg'][1]
+        total += arb(m) * arb(2) ** e + arb(0, arb(rm) * arb(2) ** re)
+        D = unpack(r['D'])
+        lo = arb(D.abs_lower())
         minabs = lo if minabs is None else minabs.min(lo)
-        maxang = max(maxang, float(((Dz * z.conjugate()).arg()).rad()))
-    assert pos == CORNERS[-1]
-    wind = total / (2 * arb.pi())
-    lo, hi = math.ceil(float(wind.lower())), math.floor(float(wind.upper()))
-    unique = (lo == hi)
-    out = {'box': 'Re lam in [-1/20, 9/2], |Im lam| <= 38/5', 'segments': len(order), 'nodes': len(nodes),
-           'evaluations': stats['evaluations'], 'splits': stats['splits'],
-           'total_arg_change/(2 pi)': wind.str(15), 'winding_number': lo if unique else None,
-           'min |D| on boundary (lower bound)': minabs.str(6), 'time_s': round(time.time() - t0),
-           'pulse_records': er.DATA['info']['c_lo'] + ' .. ' + er.DATA['info']['c_hi'],
-           'evans_prec': er.PREC, 'evans_order': er.EORDER}
+        lines.append('%s %s %s %s | %s | %s' % (a[0], a[1], b[0], b[1], D.str(6), unpack(r['Da']).str(8)))
+        pos = b
+        nseg += 1
+    out = {'path': which, 'corners': [[str(x) for x in c] for c in corners], 'segments': nseg, 'evaluations': nev,
+           'arg_change': total.str(20), 'arg_change_mid_rad': [float(total.mid()), float(total.rad())],
+           'min |D| on the path (lower bound)': minabs.str(6), 'time_s': round(time.time() - t0),
+           'speed_bracket': [er.DATA['info']['c_lo'], er.DATA['info']['c_hi']], 'evans_prec': er.PREC,
+           'evans_order': er.EORDER}
     print(json.dumps(out, indent=1))
-    json.dump(out, open(_paths.DATA + '/%s.json' % outname, 'w'), indent=1)
-    with open(_paths.DATA + '/%s_segments.txt' % outname, 'w') as f:
-        f.write('# a_re a_im b_re b_im | D on the segment ball\n')
-        for (a, b) in order:
-            f.write('%s %s %s %s | %s\n' % (a[0], a[1], b[0], b[1], unpack(accepted[(a, b)]).str(8)))
-    print('WINDING NUMBER', out['winding_number'] if unique else 'UNDETERMINED')
+    json.dump(out, open(_paths.DATA + '/winding_%s.json' % which, 'w'), indent=1)
+    with open(_paths.DATA + '/winding_%s_segments.txt' % which, 'w') as f:
+        f.write('# a_re a_im b_re b_im | D on the segment ball | D(a)\n')
+        f.write('\n'.join(lines) + '\n')
     return out
 
 
-def boundary_pos(p):
-    """position of a boundary point along the counterclockwise path CORNERS (for sorting)."""
-    s = 0.0
-    for (a, b) in zip(CORNERS[:-1], CORNERS[1:]):
-        L = float(max(abs(b[0] - a[0]), abs(b[1] - a[1])))
-        on = (a[0] == b[0] == p[0] and min(a[1], b[1]) <= p[1] <= max(a[1], b[1])) or \
-             (a[1] == b[1] == p[1] and min(a[0], b[0]) <= p[0] <= max(a[0], b[0]))
-        if on:
-            d = float(max(abs(p[0] - a[0]), abs(p[1] - a[1])))
-            if not (d == L and p == CORNERS[-1] and s + d < 1e-9):
-                return s + d
-        s += L
-    raise ValueError(p)
+def combine():
+    """winding number from half or side paths that together form the counterclockwise boundary of the box
+    (the first complete cover in COVERS whose results exist is used)."""
+    import os
+    for cover in COVERS:
+        if all(os.path.exists(_paths.DATA + '/winding_%s.json' % w) for w in cover):
+            break
+    else:
+        raise SystemExit('no complete set of winding_*.json files')
+    tot = arb(0)
+    parts = {}
+    corners = []
+    for w in cover:
+        d = json.load(open(_paths.DATA + '/winding_%s.json' % w))
+        m, r = d['arg_change_mid_rad']
+        tot += arb(m) + arb(0, arb(r) * 2 + arb(2) ** -40)     # widened: the json floats are rounded
+        parts[w] = d['arg_change']
+        corners.append(d['corners'])
+    for c1, c2 in zip(corners, corners[1:] + corners[:1]):      # the pieces must join into a closed path
+        assert c1[-1] == c2[0], (c1, c2)
+    wind = tot / (2 * arb.pi())
+    lo, hi = math.ceil(float(wind.lower())), math.floor(float(wind.upper()))
+    res = {'pieces': cover, 'arg_changes': parts, 'total/(2 pi)': wind.str(15), 'winding_number': lo if lo == hi else None}
+    print(json.dumps(res, indent=1))
+    json.dump(res, open(_paths.DATA + '/winding.json', 'w'), indent=1)
+    print('WINDING NUMBER', res['winding_number'] if lo == hi else 'UNDETERMINED')
 
 
 if __name__ == '__main__':
-    nproc = int(sys.argv[1]) if len(sys.argv) > 1 else 4
-    main(nproc)
+    if sys.argv[1] == 'combine':
+        combine()
+    else:
+        main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 4)
