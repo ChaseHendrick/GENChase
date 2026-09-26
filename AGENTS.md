@@ -45,7 +45,12 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   `papers/hh-dynamics/` (computer-assisted results on the Hodgkin-Huxley equations at the 1952 parameters) is drafted
   here too, programs and results included, before it has a manuscript; by the owner's decision of the same day, so is
   `papers/nf-pulse/` (a computer-assisted proof of a travelling pulse in a neural field with a smooth firing rate),
-  labelled as not independently reviewed until it has been.
+  labelled as not independently reviewed until it has been. By the owner's decision of the same day, the same holds for
+  `research/arctic-finite-size/` (exact finite-size frozen areas and the n^(-2/3) constants of Aztec diamond and lozenge
+  tilings), `research/double-pendulum/` (a computer-assisted proof of a transversal homoclinic orbit in the equal double
+  pendulum) and the point-vortex studies `research/seven-vortex-sphere/`, `research/eight-vortex-crystals/`,
+  `research/five-vortex-equilibria/` and `research/four-vortex-stability/`: each is drafted here with its programs and
+  results, labelled as not independently reviewed until it has been.
 
 ## Verify before you commit
 
