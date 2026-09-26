@@ -575,6 +575,7 @@ full log.
 - The N = 5 list is not new as a claim. Faugere and Svartz (2012) state that their exact method covers
   N <= 7. What is new is the explicit certified list with indices and stability, by a second method,
   and the resulting answer to Kim's Remark 1.5 for N = 5.
+- Theorem 2 (N = 6) has one search program behind it, not two (section 8.1).
 - Hampton's Conjecture 3 is verified only at the five sampled exponents, not on intervals, and
   nothing is proved about A5 and Ac.
 - The descriptions "isosceles trapezoid" and "isosceles triangle" rest on the exact reflection
