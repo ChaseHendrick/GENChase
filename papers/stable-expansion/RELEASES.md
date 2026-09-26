@@ -50,7 +50,8 @@ carry over to four or more vortices, given sufficiently good stability.
 
 - `paper/stable-expansion.pdf`: the paper. `paper/stable-expansion.tex` is its LaTeX source.
 - `code/`: the two programs, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the
-  minimal-winding paper (their code unchanged), and `requirements.txt`.
+  minimal-winding paper (identical copies; their docstrings refer to `certify_collapses.py`, the
+  minimal-winding program they were written for), and `requirements.txt`.
 - `data/`: the binary64 starting points of the certified configurations and the controls, and the output of the
   programs.
 

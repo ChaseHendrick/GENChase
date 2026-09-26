@@ -52,7 +52,7 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
 | Folder | What is in it |
 |---|---|
 | [`paper/`](paper/) | The manuscript: [`stable-expansion.tex`](paper/stable-expansion.tex) (LaTeX, the only source) and its build [`stable-expansion.pdf`](paper/stable-expansion.pdf) |
-| [`code/`](code/) | The programs below, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the minimal-winding paper (their code unchanged), and [`requirements.txt`](code/requirements.txt) |
+| [`code/`](code/) | The programs below, the certification modules `certify_ball_ad.py` and `certify_pipeline.py` of the minimal-winding paper (identical copies; their docstrings refer to `certify_collapses.py`, the minimal-winding program they were written for), and [`requirements.txt`](code/requirements.txt) |
 | [`data/`](data/) | The binary64 starting points of the certified configurations and the controls, and the output of the programs |
 
 | Program | What it checks | Checks | Time |

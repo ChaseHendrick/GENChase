@@ -13,9 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Ball arithmetic kernel of the programs of the minimal-winding paper (certify_collapses.py there,
-https://github.com/ChaseHendrick/minimal-winding), copied here with its code unchanged: every rigorous step of
-those programs, and of verify_stable_expansion.py, goes through this file and the Arb library underneath it.
+"""Ball arithmetic kernel of certify_collapses.py: every rigorous step of that program goes through
+this file and the Arb library underneath it.
 
   * T         second-order forward-mode automatic differentiation over Arb balls (value, gradient,
               Hessian). Each derivative that enters a Krawczyk operator or a Hessian test is the

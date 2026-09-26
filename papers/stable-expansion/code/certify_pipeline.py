@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""The two certification pipelines of the minimal-winding paper's programs (certify_collapses.py there,
-https://github.com/ChaseHendrick/minimal-winding) and the rigorous side conditions, copied here with their code
-unchanged.
+"""The two certification pipelines of certify_collapses.py and the rigorous side conditions.
 
   * solve_square / existence: Newton, then Krawczyk, for 2N equations in 2N unknowns, the other
     coordinates held at exact rationals (or tiny balls around them). A success proves a unique zero in
