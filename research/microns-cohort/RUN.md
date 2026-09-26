@@ -60,6 +60,21 @@ python3 boot.py new1822 0 200 --data new1822 --configs N1,N3 --fams dt,iv --nmea
 python3 analyze_heldout.py               # work/heldout_result.json, work/heldout_table.csv
 ```
 
+`held/` is the folder holding the CAVE exports described below. Held-out replicates 0 and 100 were run before
+deviation 7, with the earlier chain settings (the `boot.py` defaults, refit tolerance 1e-8); the command above reruns
+all 200 with the later settings, so those two replicates will not match `data/boot_replicates_new1822.csv.gz` exactly.
+
+## Second check (laminar controls, depth resolution, composition)
+
+```
+for s in L6 L12 Lsh; do python3 calib_x.py $s 0 100; done         # work/calibx_<s>_0.csv (L12 was run as 0-19 and 20-99)
+for n in 6 12 24; do python3 n3bins.py main $n 1000 dt; done       # work/n3bins_main_dt_<n>.json
+python3 n3bins.py new1822 12 200 dt
+python3 boot_nbin.py 6 main_n3_6 0 1000 --data main --configs N3 --fams dt --nmeas 2     # work/boot_main_n3_6.jsonl
+python3 boot_nbin.py 12 main_n3_12 0 1000 --data main --configs N3 --fams dt --nmeas 2   # work/boot_main_n3_12.jsonl
+python3 check2_summary.py                # every number the second check added, from data/
+```
+
 ### Edge columns
 
 - Required:
