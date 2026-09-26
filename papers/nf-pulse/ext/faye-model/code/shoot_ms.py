@@ -89,18 +89,21 @@ def main(prec, c_lo, c_hi, digits, order):
     ca, cb = arb(c_lo), arb(c_hi)
     # plain bisection (every shot from the rest state) to relative width 1e-20: the interpolation below has a
     # second-order error, which is harmless only once the bracket is narrow
-    sa = classify_from(start_state(ca), 1 / ca, order, tol_exp)
-    sb = classify_from(start_state(cb), 1 / cb, order, tol_exp)
+    ctx.prec = 160                     # 1e-20 needs no more
+    sa = classify_from(start_state(ca), 1 / ca, SORDER, -140)
+    sb = classify_from(start_state(cb), 1 / cb, SORDER, -140)
     assert sa != sb and sa != 0 and sb != 0, (sa, sb)
     while (cb - ca) > arb('1e-20') * cb:
         cm = mid((ca + cb) / 2)
-        sm = classify_from(start_state(cm), 1 / cm, order, tol_exp)
+        sm = classify_from(start_state(cm), 1 / cm, SORDER, -140)
         if sm == 0:
             raise RuntimeError('unclassified shot at c = %s' % cm.str(30))
         if sm == sa:
             ca = cm
         else:
             cb = cm
+    ctx.prec = prec
+    ca, cb = arb(ca), arb(cb)
     print('plain bisection to width 1e-20 done (%.0fs)' % (time.time() - t0), flush=True)
     xa, xb = start_state(ca), start_state(cb)
     tc = arb(0)
