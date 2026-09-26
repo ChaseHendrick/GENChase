@@ -56,8 +56,30 @@ def ipow(x, e):
     return r
 
 
+class CertificationError(Exception):
+    pass
+
+
+def require(cond, msg):
+    """A proof step: never an assert (asserts vanish under python -O)."""
+    if not cond:
+        raise CertificationError(msg)
+
+
 def up(x):
+    require(x.is_finite(), "non-finite ball where an upper bound is needed")
     return arb(x.upper())
+
+
+def umax(*xs):
+    """Largest of several upper bounds.  Each ball is first replaced by its (exact) upper endpoint, so
+    the comparison is always decidable and a nan can never be silently dropped (referee issue D1/D2)."""
+    ups = [up(x) for x in xs]
+    best = ups[0]
+    for u in ups[1:]:
+        if u > best:
+            best = u
+    return best
 
 
 def lo(x):
@@ -92,7 +114,7 @@ def inverse(M):
     n = len(M)
     aug = [M[i][:] + [K(1 if i == j else 0) for j in range(n)] for i in range(n)]
     R, piv = rref(aug)
-    assert piv[:n] == list(range(n)), "singular"
+    require(piv[:n] == list(range(n)), "singular")
     return [row[n:] for row in R]
 
 
@@ -276,10 +298,10 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     Cm = [[Ccol[a][i] for a in range(9)] for i in range(n)]
     for i in range(n):
         for a in range(2):
-            assert sum((H[i][j] * N[j][a] for j in range(n)), K(0)).is_zero()
+            require(sum((H[i][j] * N[j][a] for j in range(n)), K(0)).is_zero(), "H N != 0")
     for a in range(2):
         for b_ in range(9):
-            assert dot(Ncol[a], Ccol[b_]).is_zero()
+            require(dot(Ncol[a], Ccol[b_]).is_zero(), "C^T N != 0")
     HC = [[sum((H[i][j] * Ccol[b_][j] for j in range(n)), K(0)) for i in range(n)] for b_ in range(9)]
     Am = [[dot(Ccol[a], HC[b_]) for b_ in range(9)] for a in range(9)]
     pivots, pd = ldl_positive(Am)
@@ -390,7 +412,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     for a, b in arcs:
         t = arb((a + b) / 2, ((b - a) / 2).upper() * 1.000001)   # covers [a, b]
         e = [ev2(etastar[k], t.cos(), t.sin()) for k in range(9)]
-        hmax = max(hmax, up(sum((x * x for x in e), arb(0)).sqrt()))
+        hmax = umax(hmax, up(sum((ipow(up(abs(x)), 2) for x in e), arb(0)).sqrt()))
     nrowN = [up((ipow(NA[i][0], 2) + ipow(NA[i][1], 2)).sqrt()) for i in range(n)]
     nrowC = [up(sum((ipow(CA[i][a], 2) for a in range(9)), arb(0)).sqrt()) for i in range(n)]
     log("      |eta*(xi)| <= %.5f |xi|^2" % float(hmax.mid()))
@@ -491,7 +513,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     arc_series = []
     for a, b in arcs:
         t0 = arb(((a + b) / 2).mid())                           # exact expansion point (a dyadic)
-        hw = up(max(abs(t0 - a), abs(b - t0)))                  # [a, b] is inside [t0 - hw, t0 + hw]
+        hw = umax(abs(t0 - a), abs(b - t0))                  # [a, b] is inside [t0 - hw, t0 + hw]
         co_m, g_m = ray_series(t0, False)                        # coefficients at t0
         co_d, g_d = ray_series(arb(t0, hw), True)                # t-derivatives over the whole arc
         span = arb(0, hw)
@@ -502,11 +524,18 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     checks = {"phi_0_to_3": arb(0), "phi_4_minus_q": arb(0), "g_0_to_2": arb(0)}
     for _, _, _, co, gco, qv in arc_series:     # sanity checks at thin midpoints
         for j in range(4):
-            checks["phi_0_to_3"] = max(checks["phi_0_to_3"], up(abs(co[j])))
-        checks["phi_4_minus_q"] = max(checks["phi_4_minus_q"], up(abs(co[4] - qv)))
+            require(0 in co[j], "enclosure of a_%d does not contain 0" % j)
+            checks["phi_0_to_3"] = umax(checks["phi_0_to_3"], abs(co[j]))
+        require(0 in co[4] - qv, "enclosure of a_4 does not contain q(u)")
+        checks["phi_4_minus_q"] = umax(checks["phi_4_minus_q"], abs(co[4] - qv))
         for gk in gco:
             for j in range(3):
-                checks["g_0_to_2"] = max(checks["g_0_to_2"], up(abs(gk[j])))
+                require(0 in gk[j], "enclosure of g_%d does not contain 0" % j)
+                checks["g_0_to_2"] = umax(checks["g_0_to_2"], abs(gk[j]))
+    # the identities a_0..a_3 = 0, a_4 = q, g_0..g_2 = 0 are used from the exact algebra; the enclosures
+    # computed independently from the log terms must agree to high precision (referee issue D3)
+    for k in checks:
+        require(checks[k] < arb("1e-50"), "consistency check %s failed: %s" % (k, checks[k]))
 
     def ray_bounds(rho1, Rr):
         omega = [nrowN[i] * Rr + nrowC[i] * hmax * ipow(Rr, 2) for i in range(n)]
@@ -521,15 +550,16 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
             s = arb(0)
             for j in range(5, J + 1):
                 s += abs(co[j]) * ipow(rho1, j - 4)
-            worst_phi = max(worst_phi, up(s))
+            worst_phi = umax(worst_phi, s)
             gsq = arb(0)
             for k in range(9):
                 sa = arb(0)
                 for j in range(3, J + 1):
                     sa += abs(gco[k][j]) * ipow(rho1, j - 3)
                 sa += tailG[k] / ipow(rho1, 3)
+                sa = up(sa)                  # nonnegative upper bound before squaring (referee D1)
                 gsq += sa * sa
-            worst_g = max(worst_g, up(gsq.sqrt()))
+            worst_g = umax(worst_g, gsq.sqrt())
         kappa1 = lo(kappa0 - worst_phi - tailF / ipow(rho1, 4))
         return dict(kappa1=kappa1, gamma=worst_g, M=M, tailF=tailF)
 
@@ -643,7 +673,7 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
     a_, b_, c_ = float((hmax * fx * fx).mid()), float(fe.mid()), -float(rho2.mid())
     root = (-b_ + math.sqrt(b_ * b_ - 4 * a_ * c_)) / (2 * a_)
     rw = arb(float("%.3g" % (min(float((rho1 / fx).mid()), root) * 0.99)))
-    assert up(fx * rw) <= rho1 and up(fe * rw + hmax * ipow(fx * rw, 2)) <= rho2
+    require(up(fx * rw) <= rho1 and up(fe * rw + hmax * ipow(fx * rw, 2)) <= rho2, "chart ball not in domain")
     log("PROVED: every chart point w != 0 with |w|_2 <= %s has F(w) > F(0)" % rw)
     res = {
         "ok": True,
@@ -673,4 +703,6 @@ def main(out="certificate.json", J=16, perturb=None, quiet=False):
 
 if __name__ == "__main__":
     r = main()
+    # for the unperturbed energy the exact identity q = |N xi|^4 / 10 must hold (Proposition 4)
+    require(r.get("q_equals_tenth_of_N_xi_to_the_4_exactly") is True, "exact identity q = |N xi|^4/10 failed")
     sys.exit(0 if r.get("ok") else 1)

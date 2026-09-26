@@ -85,6 +85,11 @@ degenerate equal-strength N = 7 equilibrium was found in the text.
 
 ### 2.2 Queries (2026-09-26), all recorded
 
+Additional source found by the independent check (Section 8): Amore, Figueroa, Ramos, "Exploring the
+energy landscape of the logarithmic potential: local minima and stationary states", arXiv:2512.12416
+(J. Stat. Phys. 2026): numerical only, up to N = 160, with Hessians checked only for nonnegative
+eigenvalues, and nothing specific about the degeneracy at N = 7.
+
 Web search: "pentagonal bipyramid 7 points logarithmic energy sphere local minimum proof";
 "Kryvonos Liehr Taylor square antiprism logarithmic energy 8 points Lean"; "seven points sphere
 logarithmic energy critical configurations antipodal pair global minimizer"; "\"pentagonal bipyramid\"
@@ -127,7 +132,7 @@ Let T_4 F be the exact degree-4 Taylor polynomial of F at 0 (`model.py`, series 
 - E2. The Hessian H (11 x 11, entries in K) has rank 9. The kernel basis N (two columns) and a basis
   C (nine columns) of range(H) = ker(H)^perp are obtained by exact Gram-Schmidt, each column scaled by a
   rational close to 1/norm; H N = 0 and C^T N = 0 are checked exactly. A = C^T H C satisfies
-  A - lam0 I > 0 with lam0 = 11154279477/41943040000 ~ 0.265939 (exact LDL^T in K, all pivots > 0).
+  A - lam0 I > 0 with lam0 = 11154279477/41943040000 = 0.26593875... (exact LDL^T in K, all pivots > 0).
 - E3. The cubic F_3(N xi) vanishes identically in xi.
 - E4. With b_a(xi) = D F_3(N xi)[C e_a] (quadratic in xi) and eta*(xi) = -A^{-1} b(xi), the effective
   quartic q(xi) = F_4(N xi) - (1/2) b(xi)^T A^{-1} b(xi) is computed exactly. It has only the monomials
@@ -146,16 +151,16 @@ G(xi, zeta) = F(N xi + C(eta*(xi) + zeta)) - F(0).
 - R2 (reduced energy along rays). For a unit vector u, phi_u(r) = G(r u, 0) is analytic in r. Its Taylor
   coefficients a_0..a_3 vanish and a_4 = q(u), by E1-E4 (the r^4 coefficient is F_4(Nu) + D F_3(Nu)[C
   eta*(u)] + (1/2) eta*(u)^T A eta*(u) = q(u)); the computed enclosures at the 96 arc midpoints contain
-  these values with radius below 3e-74. The coefficients a_5..a_16 are enclosed over 96 arcs covering the
+  these values with radius below 3e-74; the program now *requires* each enclosure to contain the exact value (and all three residuals to be below 1e-50), so an error in the Taylor model or in the Schur sign stops the proof instead of passing silently. The coefficients a_5..a_16 are enclosed over 96 arcs covering the
   circle by a mean-value form (value at the arc centre plus an Arb enclosure of the t-derivative over
   the arc, computed with dual-number power series). The tail j >= 17 is bounded by Cauchy's estimate
   on the complex disc \|r\| <= R = 0.12: there \|w_i(ru)\| <= omega_i := \|N_i\| R + \|C_i\| h R^2 with
-  h = 1.2015 >= sup \|eta*(u)\|, every term obeys \|P(w)\| <= sum \|coef\| omega^alpha < 1 and
+  h = 1.20152 >= sup \|eta*(u)\|, every term obeys \|P(w)\| <= sum \|coef\| omega^alpha < 1 and
   \|log(1+P)\| <= -log(1 - \|P\|), giving \|phi_u\| <= M = 3.364. Result: phi_u(r) >= kappa1 r^4 with
   kappa1 = 0.09940 for 0 <= r <= rho_xi = 0.001.
 - R3 (gradient along the reduced curve). g1(xi) = C^T grad F(w(xi)) has Taylor coefficients 0 in degrees
   0, 1, 2 (exactly: grad F(0) = 0, C^T H N = 0, and b + A eta* = 0), and the same method gives
-  \|g1(xi)\| <= gamma \|xi\|^3 with gamma = 2.8104 for \|xi\| <= rho_xi.
+  \|g1(xi)\| <= gamma \|xi\|^3 with gamma = 2.97814 for \|xi\| <= rho_xi.
 - R4 (convexity across). On the box \|w_i\| <= beta_i := \|N_i\| rho_xi + \|C_i\| (h rho_xi^2 + rho_zeta),
   rho_zeta = 0.002, which contains every w = N xi + C(eta*(xi) + theta zeta), the third derivatives of each
   term (closed form for log(1+P), P quadratic) are enclosed, giving \|Hess F(w) - H\|_2 <= \|D\|_2 by the
@@ -164,14 +169,14 @@ G(xi, zeta) = F(N xi + C(eta*(xi) + zeta)) - F(0).
 
 **Theorem 1 (strict local minimum in the chart; proved).** For \|xi\| <= 0.001 and \|zeta\| <= 0.002,
 
-    F(N xi + C(eta*(xi) + zeta)) - F(0) >= 0.01661 |zeta|^2 + 0.09928 |xi|^4.
+    F(N xi + C(eta*(xi) + zeta)) - F(0) >= 0.01661 |zeta|^2 + 0.09927 |xi|^4.
 
 Consequently F(w) > F(0) for every chart point 0 < \|w\|_2 <= 6.6e-4.
 
 *Proof.* Taylor's theorem in zeta with Lagrange remainder along the segment (inside the box of R4):
 G(xi, zeta) = G(xi, 0) + g1(xi).zeta + (1/2) zeta^T [C^T Hess F(.) C] zeta >= kappa1 X^4 - gamma X^3 Y +
 (mu/2) Y^2 with X = \|xi\|, Y = \|zeta\| (R2, R3, R4). By AM-GM, gamma X^3 Y <= (mu/4) Y^2 + (gamma^2/mu) X^6,
-so G >= (mu/4) Y^2 + (kappa1 - gamma^2 rho_xi^2/mu) X^4, and kappa1 - gamma^2 rho_xi^2/mu >= 0.09928. The
+so G >= (mu/4) Y^2 + (kappa1 - gamma^2 rho_xi^2/mu) X^4, and kappa1 - gamma^2 rho_xi^2/mu >= 0.09927. The
 map (xi, zeta) -> w is a bijection (w = M(xi, eta) with M = [N C] invertible, zeta = eta - eta*(xi));
 with the exact inverse, \|xi\| <= 1.41422 \|w\| and \|zeta\| <= 3.00000 \|w\| + h (1.41422 \|w\|)^2, so
 \|w\| <= 6.6e-4 lies in the domain; w != 0 gives (xi, zeta) != 0 and hence G > 0. QED.
@@ -180,7 +185,7 @@ with the exact inverse, \|xi\| <= 1.41422 \|w\| and \|zeta\| <= 3.00000 \|w\| + 
 g in SO(3), \|x_i - g b_i\| <= 7.2e-5 for all i, and X is not a rotation of B, then E(X) > E(B).
 
 *Proof* (`orbit_radius.py`). WLOG g = id. The rotation about the axis x_0 x N taking x_0 to N moves
-every unit vector by at most \|x_0 - N\| <= delta; then x_1 (the pentagon vertex b_{2}) is within d = 2
+every unit vector by at most \|x_0 - N\| <= delta; then x_2 (the pentagon vertex b_2 = (1,0,0)) is within d = 2
 delta of (1,0,0), so its azimuth phi satisfies \|phi\| <= arcsin d and the rotation about the z-axis by
 -phi moves every point by at most 2 sin(\|phi\|/2). Now every point is within d' = 2 delta + 2 sin(arcsin(2
 delta)/2) of B, x_0 = N and v_0 = 0, so X is in the chart. By the identity \|p - p'\| =
@@ -291,7 +296,41 @@ the degenerate plane.
 
 ## 8. Independent adversarial check
 
-CHECK_VERDICT
+An independent subagent, without access to this conversation's reasoning, was asked to break the proof:
+re-derive the degenerate expansion in a different parametrization, rerun everything from a copy, mutate the
+code, audit every inequality, and re-open the sources. Its verdicts, in its own words, abridged:
+
+- Theorem 1: "sound with fixable gaps"; Corollary 2: "sound"; Proposition 4: "sound, confirmed
+  independently to 25 digits"; Theorem 3: "sound, standard Lyapunov argument given Cor. 2";
+  Proposition 5: "sound".
+- Independent derivation (exponential-map tangent coordinates in R^3, 14 variables, mpmath at 60 digits,
+  rotations removed by a linear slice): intrinsic Hessian with 5 zeros (\|ev\| < 1.3e-60), the others
+  0.75, 0.75, 2.25, 2.25, 3.0 (x5); null space = pure latitude displacements of the pentagon, wavenumber 2;
+  cubic on the kernel < 1.8e-60; Schur-reduced quartic = 0.1 to 25 digits in every direction (F_4 alone
+  0.325, Schur correction -0.225); direct Newton minimisation over the complement gives (E_min - E(B))/t^4
+  = 0.0999226, 0.0999807, 0.0999952, 0.0999992 at t = 0.02, 0.01, 0.005, 0.002. In the chart it found the
+  smallest complement eigenvalue 0.26593903 (orthonormal complement). 400 random points of the Theorem 1
+  domain evaluated in mpmath: min of G / (0.01661\|zeta\|^2 + 0.09928\|xi\|^4) = 1.0073, no counterexample.
+- Rerun from a copy: all outputs matched this report.
+
+**Issues it found, and what was done:**
+
+| Issue | Severity | Fix |
+|---|---|---|
+| D1: in R3 a ball that straddled 0 was squared, its square root was nan, and Python's `max` silently kept the previous value (6352 arc evaluations affected), so the printed gamma = 2.8104 was not a proved bound | major (rigor) | `umax`: every ball is replaced by its exact upper endpoint before comparison and must be finite; `sa` is made a nonnegative upper bound before squaring. Proved gamma is now 2.97814 (the checker's independent fix gives the same number); xi^4 coefficient 0.09928 -> 0.09927; chart radius 6.6e-4 and delta0 = 7.2e-5 unchanged. |
+| D2: the arc half-width used `max` on overlapping balls, so the cover of the circle was not provable by about 1e-59 rad | minor (rigor) | half-width = `umax` of the exact upper endpoints |
+| D3: the Arb consistency checks a_0..a_3 = 0, a_4 = q, g_0..g_2 = 0 were only printed; a mutated Schur sign or scaled quartic Taylor coefficients "PROVED" silently | medium (design) | now enforced (`require`), and the exact identity q = \|N xi\|^4/10 is required in the main run; both mutations re-tested and now stop with "enclosure of a_4 does not contain q(u)" |
+| D4: `hmax` used the same max-of-sqrt pattern (not triggered) | low | same fix |
+| D5: proof steps used `assert` (removed by `python -O`) | low | replaced by `require` / explicit exceptions |
+| D6: cosmetic errors in this report (h rounded down, lam0 rounded up, x_1 for x_2) | cosmetic | corrected |
+
+Its mutation table: 23 mutations; caught before the fixes: field coefficient 2.9 and 3.1 (E1), a kernel cubic
+(E3), J = 4 and a single arc (no admissible radius). Silently accepted: the one-sided bounds (M/10, lam0 x3,
+fx/100, h/100, dropping the mean-value term or third-derivative terms, gamma = 0, and so on). These are upper or
+lower bounds that no internal test can exercise in the favourable direction; the checker re-derived each by
+hand and found them correct apart from D1 and D2. The Taylor/Schur mutations are now caught (D3).
+Prior-art quotes were verified verbatim against the PDFs; one nuance: Proposition 6.2 of Constantineau et al.
+states positive definiteness of Q1, and the stability conclusion follows it in the text.
 
 ## 9. Reproduce
 

@@ -29,9 +29,11 @@ def Lambda(delta):
         e = dp * (2 * (1 + (1 + e) * (1 + e))).sqrt() / 2
     estar = arb(e.upper()) * arb("1.000001")
     g = dp * (2 * (1 + (1 + estar) * (1 + estar))).sqrt() / 2
-    assert g < estar
+    if not g < estar:
+        raise RuntimeError('fixed-point bound not verified')
     # g'(e) < 1 on [0, e*] (so e <= g(e) implies e <= e*):  g'(e) = d' (1+e) / sqrt(2 (1 + (1+e)^2)) <= d'
-    assert dp < 1
+    if not dp < 1:
+        raise RuntimeError('contraction bound not verified')
     return (eS * eS + 5 * estar * estar).sqrt()
 
 
