@@ -1,0 +1,200 @@
+{
+ "segment": "ugates",
+ "J": 7.861806449482496,
+ "EL": 10.598920969391678,
+ "U_AP": 50.0,
+ "TMAX": 1000.0,
+ "info": {
+  "c2": -0.002,
+  "zeros_c1": [
+   5.8354068888413905e-06,
+   2.3418577809279944e-05,
+   2.3762616518280655e-05
+  ],
+  "firing_boundary_c1": 2.3762726518534336e-05,
+  "gates": [
+   0.08504859691066714,
+   0.3767323451587172,
+   0.43528310145982524
+  ],
+  "u_range": [
+   4.498,
+   4.502
+  ]
+ },
+ "levels": [
+  {
+   "N": 100,
+   "switches": 1,
+   "AP": 50,
+   "REST": 51,
+   "UNDEC": 0,
+   "runs": 2,
+   "shortest_runs": [
+    50,
+    51
+   ],
+   "non_monotone": false
+  },
+  {
+   "N": 1000,
+   "switches": 3,
+   "AP": 494,
+   "REST": 507,
+   "UNDEC": 0,
+   "runs": 4,
+   "shortest_runs": [
+    6,
+    222,
+    272,
+    501
+   ],
+   "non_monotone": true
+  },
+  {
+   "N": 10000,
+   "switches": 5,
+   "AP": 4941,
+   "REST": 5060,
+   "UNDEC": 0,
+   "runs": 6,
+   "shortest_runs": [
+    1,
+    56,
+    98,
+    2215,
+    2628,
+    5003
+   ],
+   "non_monotone": true
+  },
+  {
+   "N": 100000,
+   "switches": 9,
+   "AP": 49407,
+   "REST": 50594,
+   "UNDEC": 0,
+   "runs": 10,
+   "shortest_runs": [
+    1,
+    1,
+    10,
+    16,
+    31,
+    560,
+    954,
+    22143,
+    26263,
+    50022
+   ],
+   "non_monotone": true
+  },
+  {
+   "N": 1000000,
+   "switches": 11,
+   "AP": 494076,
+   "REST": 505925,
+   "UNDEC": 0,
+   "runs": 12,
+   "shortest_runs": [
+    1,
+    2,
+    9,
+    10,
+    98,
+    163,
+    302,
+    5596,
+    9542,
+    221426
+   ],
+   "non_monotone": true
+  }
+ ],
+ "box_counts": [
+  {
+   "cells": 10,
+   "delta": 0.1,
+   "mixed_cells": 2
+  },
+  {
+   "cells": 100,
+   "delta": 0.01,
+   "mixed_cells": 3
+  },
+  {
+   "cells": 1000,
+   "delta": 0.001,
+   "mixed_cells": 4
+  },
+  {
+   "cells": 10000,
+   "delta": 0.0001,
+   "mixed_cells": 7
+  },
+  {
+   "cells": 100000,
+   "delta": 1e-05,
+   "mixed_cells": 10
+  },
+  {
+   "cells": 1000000,
+   "delta": 1e-06,
+   "mixed_cells": 11
+  }
+ ],
+ "robustness": {
+  "points_checked": 21,
+  "disagreements_rtol_1e-12": 0
+ },
+ "finest_runs_head": [
+  [
+   "R",
+   500218
+  ],
+  [
+   "A",
+   9
+  ],
+  [
+   "R",
+   1
+  ],
+  [
+   "A",
+   302
+  ],
+  [
+   "R",
+   2
+  ],
+  [
+   "A",
+   9542
+  ],
+  [
+   "R",
+   98
+  ],
+  [
+   "A",
+   262634
+  ],
+  [
+   "R",
+   10
+  ],
+  [
+   "A",
+   163
+  ],
+  [
+   "R",
+   5596
+  ],
+  [
+   "A",
+   221426
+  ]
+ ]
+}

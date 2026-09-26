@@ -1,0 +1,177 @@
+{
+ "J": 7.861806449482496,
+ "EL": 10.598920969391678,
+ "U_AP": 50.0,
+ "TMAX": 1000.0,
+ "segment": "rest",
+ "du_star_bisection": [
+  3.846513609773929,
+  3.8465136097739294
+ ],
+ "uniform_counts": [
+  {
+   "N": 100,
+   "switches": 1,
+   "AP": 50,
+   "REST": 51,
+   "UNDEC": 0
+  },
+  {
+   "N": 1000,
+   "switches": 1,
+   "AP": 500,
+   "REST": 501,
+   "UNDEC": 0
+  },
+  {
+   "N": 10000,
+   "switches": 1,
+   "AP": 5000,
+   "REST": 5001,
+   "UNDEC": 0
+  }
+ ],
+ "refine": [
+  {
+   "level": 0,
+   "width": 0.0001,
+   "switch_intervals": 1
+  },
+  {
+   "level": 1,
+   "width": 1e-05,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 2,
+   "width": 1.0000000000000002e-06,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 3,
+   "width": 1.0000000000000002e-07,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 4,
+   "width": 1.0000000000000002e-08,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 5,
+   "width": 1.0000000000000003e-09,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 6,
+   "width": 1.0000000000000003e-10,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 7,
+   "width": 1.0000000000000003e-11,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 8,
+   "width": 1.0000000000000002e-12,
+   "switch_intervals": 1,
+   "undecided": 0
+  },
+  {
+   "level": 9,
+   "width": 1.0000000000000002e-13,
+   "switch_intervals": 5,
+   "undecided": 0
+  },
+  {
+   "level": 10,
+   "width": 1.0000000000000002e-14,
+   "switch_intervals": 5,
+   "undecided": 0
+  }
+ ],
+ "box_dimension_descriptive": null,
+ "uncertainty_window": [
+  0.4999,
+  0.5002
+ ],
+ "uncertainty": [
+  {
+   "eps": 0.1,
+   "n": 1000,
+   "uncertain": 128,
+   "f": 0.128,
+   "se": 0.010564847372300274
+  },
+  {
+   "eps": 0.01,
+   "n": 1000,
+   "uncertain": 17,
+   "f": 0.017,
+   "se": 0.004087909000944126
+  },
+  {
+   "eps": 0.001,
+   "n": 1000,
+   "uncertain": 5,
+   "f": 0.005,
+   "se": 0.0022304708023195463
+  },
+  {
+   "eps": 0.0001,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  },
+  {
+   "eps": 1e-05,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  },
+  {
+   "eps": 1e-06,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  },
+  {
+   "eps": 1e-07,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  },
+  {
+   "eps": 1e-08,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  },
+  {
+   "eps": 1e-09,
+   "n": 1000,
+   "uncertain": 0,
+   "f": 0.0,
+   "se": 0.001
+  }
+ ],
+ "alpha": {
+  "value": 0.7041199826559248,
+  "bootstrap_sd": 0.11605746992572051,
+  "points_used": 3,
+  "method": "slope of log f(eps) on log eps; parametric binomial bootstrap (seeded) over the counts"
+ }
+}

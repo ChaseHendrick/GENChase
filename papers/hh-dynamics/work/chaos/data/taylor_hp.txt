@@ -1,0 +1,7 @@
+High-precision Taylor check (python-flint arb_series, 256 bits, order 36, Picard coefficients, step min(2, radius/4) with last-term size below 1e-45).
+Section u = 4.5, u increasing. NUMERICAL: the remainder is controlled by the last coefficient, not enclosed.
+A at J = 7.861806449482496 (E_l exact): |P(x) - x| = 1.030e-14 (components ['3.84e-16', '1.97e-15', '1.03e-14']), T = [15.850307654550394030 +/- 6.57e-20], steps 172, h in [0.0324, 0.389], radius estimate in [1.04, 7.81]
+B at J = 7.861806449482496 (E_l exact): |P(x) - x| = 2.549e-12 (components ['-2.44e-14', '-2.44e-13', '-2.55e-12']), T = [17.802115357747389412 +/- 1.82e-19], steps 193, h in [0.0263, 0.5], radius estimate in [0.841, 8.39]
+AB (two returns), first point: |P(x) - x| = 3.212e-10 (components ['-2.17e-12', '-2.73e-11', '-3.21e-10']), T = [34.523101967412863976 +/- 2.21e-19], steps 377, h in [0.00769, 0.5], radius estimate in [0.246, 8.5]
+G&O p1 as printed, I = 7.8617827403, E_l = 10.599: |P(x) - x| = 1.975e-09 (components ['7.17e-11', '-7.81e-10', '-1.97e-09']), T = [15.850313495728546944 +/- 3.44e-19], steps 179, h in [0.00118, 0.221], radius estimate in [0.0377, 7.06]
+G&O p2 as printed, I = 7.8617827403, E_l = 10.599: |P(x) - x| = 7.525e-08 (components ['8.80e-10', '-1.03e-09', '-7.53e-08']), T = [22.655189364107724108 +/- 4.42e-19], steps 241, h in [0.0169, 0.5], radius estimate in [0.54, 9.67]
