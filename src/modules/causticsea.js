@@ -17,6 +17,8 @@
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Sea', 'r', 'Drive r', LIVE, 0.05, 1.2, 0.05, f2, { hint: 'Swift–Hohenberg reduced drive. Below ~0.1 the flat state wins.' }),
     RANGE('Sea', 'waves', 'Wavelength', GEOM, 6, 18, 1, v => v + ''),
+    { group: 'Sea', key: 'operator', label: 'Operator', type: 'seg', kind: GEOM, options: [['sh', 'Swift–Hohenberg'], ['pre6', 'Before v6']],
+      hint: 'Swift–Hohenberg is −(∇²+k₀²)², whose preferred wavelength is the Wavelength setting. Before v6 is the operator recipes made before recipe v6 used, −∇²(∇²+k₀²), which grows fastest near 1.4 times that wavelength and lets the uniform mode grow; old links keep it so they reprint.' },
     RANGE('Loop', 'eta', 'Write η', LIVE, 0, 1.4, 0.05, f2, { hint: 'Feedback of the caustic into the sea. 0 is open-loop SH + a caustic. η > 0 is the closed loop.' }),
     RANGE('Loop', 's', 'Distance s', LIVE, 0.08, 1.4, 0.02, f2, { hint: 'Propagation after the phase screen. Larger s folds the light harder.' }),
     { group: 'Seed', key: 'init', label: 'Seed', type: 'seg', kind: GEOM, options: [['noise', 'Noise'], ['roll', 'Rolls'], ['spot', 'Spot']] },
@@ -28,7 +30,7 @@
 
   const DEFAULTS = {
     grid: 128, aspect: '1:1',
-    r: 0.55, waves: 10, eta: 0.55, s: 0.55,
+    r: 0.55, waves: 10, operator: 'sh', eta: 0.55, s: 0.55,
     init: 'noise', warmup: 520, running: true,
     view: 'lock', exposure: 1.1,
   };
@@ -62,6 +64,8 @@
     credit: 'The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.',
     blurb: 'A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. That loop is the photothermal / LIPSS family, not a private invention: Rudenko et al. already run Swift–Hohenberg on laser-written surfaces. What the plate adds is the open-loop control on the same sea, so corr(h, I) can be watched going from near 0 to locked when η is raised. The status line is that number.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Seed'],
+    // Recipes older than v6 were made with the operator -lap(lap + q), not Swift-Hohenberg; they keep it, so they reprint.
+    legacy: { 6: { operator: 'pre6' } },
     hints: {
       Sea: 'r is how hard the pattern is driven. Wavelength is the Swift–Hohenberg k₀ in cells.',
       Loop: 'η = 0 is the control: the same sea, the same caustic, no writing. η > 0 is the closed loop. s is how far the light has travelled after the surface.',
@@ -147,7 +151,7 @@
       }
 
       function advance(s, nsteps) {
-        const r = s.r, eta = s.eta;
+        const r = s.r, eta = s.eta, sh = s.operator !== 'pre6';
         const q = 2 - 2 * Math.cos((Math.PI * 2) / Math.max(4, s.waves));
         const dt = 0.012;
         for (let it = 0; it < nsteps; it++) {
@@ -156,7 +160,8 @@
           for (let y = 0; y < H; y++) {
             for (let x = 0; x < W; x++) {
               const i = idx(x, y);
-              const bi = lap4(lin, x, y);
+              // (lap + q)^2 h = lap(lin) + q lin with lin = lap h + q h. Recipes before v6 omitted q lin.
+              const bi = lap4(lin, x, y) + (sh ? q * lin[i] : 0);
               const fb = eta * (II[i] - 1);
               let nxt = hh[i] + dt * (-bi + r * hh[i] - hh[i] * hh[i] * hh[i] + fb);
               if (nxt > 4) nxt = 4;
@@ -202,7 +207,10 @@
           const dQdLam = 2 * Math.sin(2 * Math.PI / lam) * 2 * Math.PI / (lam * lam);
           lamStat = { se: (fz.se / (B / N)) / dQdLam, reliable: fz.reliable, tau: Math.max(fz.tauX, fz.tauY) };
         } else { lam = 0; lamStat = null; }
-        lamTh = s.waves;
+        // The preferred wavelength: the Wavelength setting for Swift-Hohenberg; for the pre-v6 operator -lap(lap + q),
+        // whose growth r + Q (q - Q) peaks at Q = q/2, the axis wavelength with symbol q/2.
+        const qs = 2 - 2 * Math.cos((Math.PI * 2) / Math.max(4, s.waves));
+        lamTh = s.operator === 'pre6' ? 2 * Math.PI / Math.acos(1 - qs / 4) : s.waves;
       }
 
       function paint(s) {
@@ -250,7 +258,7 @@
           U.stats.compare({ label: 'corr(h, I)', measured: corr, basis: 'sampled', digits: 3,
             pending: 'one snapshot; the η = 0 control is not computed' }) +
           (lam && lamStat
-            ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'preferred wavelength', units: 'cells', basis: 'sampled',
+            ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: s.operator === 'pre6' ? 'fastest-growing wavelength (pre-v6 operator)' : 'preferred wavelength', units: 'cells', basis: 'sampled',
                 uncertainty: lamStat.reliable && lamStat.se > 0 ? lamStat.se : undefined,
                 method: 'Laplacian-symbol mean, delta method, τ_int along rows and columns',
                 pending: lamStat.reliable ? 'zero spread in the field' : 'the field spans fewer than 40 correlation lengths' })

@@ -5,9 +5,10 @@
 // 1. The estimator (power-weighted mean of the 5-point Laplacian symbol, as in measure()) recovers the lattice
 //    wavelength of periodic stripes at every orientation; the row zero-crossing estimator it replaced reads
 //    lambda / |cos theta| and is the negative control.
-// 2. The linear part the module codes, -lap4(lap4(h) + q h), has the symbol Q (q - Q), so a mode of symbol Q
-//    grows at r + Q (q - Q); the Swift-Hohenberg -(lap + q)^2 of the displayed equation gives r - (q - Q)^2.
-//    This twin evaluates both on single modes and records where each peaks.
+// 2. Recipes from v6 on use the Swift-Hohenberg -(lap + q)^2 of the displayed equation, growth r - (q - Q)^2.
+//    Recipes before v6 keep the operator the module coded until then, -lap4(lap4(h) + q h), with symbol
+//    Q (q - Q), so a mode of symbol Q grows at r + Q (q - Q). This twin evaluates both on single modes and
+//    records where each peaks.
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
@@ -18,7 +19,8 @@ const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 assert(source.includes('a[i] = -c * lap4(hh, x, y); b[i] = c * c; A += a[i]; B += b[i];'));
 assert(source.includes('lam = 2 * Math.PI / Math.acos(1 - Q / 2);'));
 assert(source.includes('for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) lin[idx(x, y)] = lap4(hh, x, y) + q * hh[idx(x, y)];'));
-assert(source.includes('const bi = lap4(lin, x, y);'));
+assert(source.includes('const bi = lap4(lin, x, y) + (sh ? q * lin[i] : 0);'));
+assert(source.includes("legacy: { 6: { operator: 'pre6' } },"));
 
 const W = 128, H = 128;
 const at = (h, x, y) => h[((y + H) % H) * W + ((x + W) % W)];
@@ -57,7 +59,7 @@ assert(tilted.rowCrossingOverEuclid > 1.35, 'row crossings must read high at 45 
 
 // Operators: growth of a single mode with symbol Q under each linear part, with q for 'waves' = 10.
 const q = 2 - 2 * Math.cos(2 * Math.PI / 10);
-const coded = Q => -(Q * Q - q * Q);      // -lap4(lap4 h + q h): symbol -(Q^2 - q Q)
+const coded = Q => -(Q * Q - q * Q);      // pre-v6: -lap4(lap4 h + q h), symbol -(Q^2 - q Q)
 const swiftHohenberg = Q => -((q - Q) ** 2); // -(lap + q)^2
 let best = { coded: [0, -Infinity], sh: [0, -Infinity] };
 for (let i = 0; i <= 8000; i++) {
@@ -68,8 +70,8 @@ for (let i = 0; i <= 8000; i++) {
 const lamOf = Q => 2 * Math.PI / Math.acos(1 - Q / 2);
 const operators = {
   waves: 10, q: +q.toFixed(6),
-  coded: { form: '-lap(lap + q)', peakSymbol: best.coded[0], peakLambda: +lamOf(best.coded[0]).toFixed(3), growthAtQ0: coded(0), note: 'the uniform mode (Q = 0) has growth r, unstable for every r > 0' },
-  swiftHohenberg: { form: '-(lap + q)^2', peakSymbol: best.sh[0], peakLambda: +lamOf(best.sh[0]).toFixed(3), growthAtQ0: -(q * q) },
+  coded: { form: '-lap(lap + q), recipes before v6', peakSymbol: best.coded[0], peakLambda: +lamOf(best.coded[0]).toFixed(3), growthAtQ0: coded(0), note: 'the uniform mode (Q = 0) has growth r, unstable for every r > 0' },
+  swiftHohenberg: { form: '-(lap + q)^2, recipes from v6', peakSymbol: best.sh[0], peakLambda: +lamOf(best.sh[0]).toFixed(3), growthAtQ0: -(q * q) },
 };
 assert(Math.abs(operators.coded.peakLambda - 14.26) < 0.05 && Math.abs(operators.swiftHohenberg.peakLambda - 10) < 0.05);
 

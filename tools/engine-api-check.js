@@ -9,11 +9,11 @@ const {chromium}=require('playwright');
  await page.waitForFunction(()=>Studio.ready);await page.evaluate(()=>Studio.ready);
  const result=await page.evaluate(async()=>{
   const check=(ok,msg)=>{if(!ok)throw Error(msg);};
-  check(Studio.apiVersion===1&&Studio.recipeVersion===5,'versions');
+  check(Studio.apiVersion===1&&Studio.recipeVersion===6,'versions');
   check(Object.getOwnPropertyDescriptor(Studio,'apiVersion').writable===false,'immutable version');
   check(Studio.getWitness()===null,'legacy is unknown');
   for(const id of ['missing','__proto__','constructor','toString'])check(Studio.getRecipe(id)===null&&Studio.getWitness(id)===null,'unknown module lookup '+id);
-  const recipe=Studio.getRecipe();check(recipe.v===5&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
+  const recipe=Studio.getRecipe();check(recipe.v===6&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
   const rng=Studio.util.makeRng('engine-api-v1'),random=Array.from({length:6},()=>rng());
   check(Studio.util.svgEsc('a<b & "c"')==='a&lt;b &amp; &quot;c&quot;','svg escape');
   const inches=document.getElementById('export-inches'),dpi=document.getElementById('export-dpi');inches.value='12';inches.dispatchEvent(new Event('change'));dpi.value='300';dpi.dispatchEvent(new Event('change'));

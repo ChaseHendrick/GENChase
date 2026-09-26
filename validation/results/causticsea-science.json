@@ -1,7 +1,7 @@
 {
   "test": "tools/causticsea-science.js",
   "command": "node tools/causticsea-science.js --write",
-  "sourceSha256": "d7cdc63cd603c9e6575dee4e7779a0c8f519179c141d7a8321455f261abb89d3",
+  "sourceSha256": "fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458",
   "stripes": [
     {
       "angleDeg": 0,
@@ -62,14 +62,14 @@
     "waves": 10,
     "q": 0.381966,
     "coded": {
-      "form": "-lap(lap + q)",
+      "form": "-lap(lap + q), recipes before v6",
       "peakSymbol": 0.191,
       "peakLambda": 14.261,
       "growthAtQ0": 0,
       "note": "the uniform mode (Q = 0) has growth r, unstable for every r > 0"
     },
     "swiftHohenberg": {
-      "form": "-(lap + q)^2",
+      "form": "-(lap + q)^2, recipes from v6",
       "peakSymbol": 0.382,
       "peakLambda": 10,
       "growthAtQ0": -0.1458980337503154
