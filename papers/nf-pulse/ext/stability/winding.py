@@ -28,7 +28,8 @@ PATHS = {'upper': [(R0, fmpq(0)), (R0, OM), (DELTA, OM), (DELTA, fmpq(0))],
          # the same boundary in six pieces (each run well under an hour on 4 cores)
          'right_up': [(R0, fmpq(0)), (R0, OM)], 'top': [(R0, OM), (DELTA, OM)], 'left_up': [(DELTA, OM), (DELTA, fmpq(0))],
          'left_down': [(DELTA, fmpq(0)), (DELTA, -OM)], 'bottom': [(DELTA, -OM), (R0, -OM)],
-         'right_down': [(R0, -OM), (R0, fmpq(0))]}
+         'right_down': [(R0, -OM), (R0, fmpq(0))],
+         'test': [(R0, fmpq(0)), (R0, fmpq(1, 25))]}          # a two-segment smoke test of the whole pipeline
 COVERS = [('upper', 'lower'), ('right_up', 'top', 'left_up', 'left_down', 'bottom', 'right_down'),
           ('upper', 'left_down', 'bottom', 'right_down'), ('right_up', 'top', 'left_up', 'lower')]
 
@@ -167,7 +168,7 @@ def main(which, nproc=4, seg0=fmpq(1, 50), min_len=fmpq(1, 4000)):
         nseg += 1
     out = {'path': which, 'corners': [[str(x) for x in c] for c in corners], 'segments': nseg, 'evaluations': nev,
            'arg_change': total.str(20), 'arg_change_mid_rad': [float(total.mid()), float(total.rad())],
-           'arg_change_exact': [list(total.mid().man_exp()), list(total.rad().man_exp())],
+           'arg_change_exact': [[int(x) for x in total.mid().man_exp()], [int(x) for x in total.rad().man_exp()]],
            'min |D| on the path (lower bound)': minabs.str(6), 'time_s': round(time.time() - t0),
            'speed_bracket': [er.DATA['info']['c_lo'], er.DATA['info']['c_hi']], 'evans_prec': er.PREC,
            'evans_order': er.EORDER, 'sha256': fp}
