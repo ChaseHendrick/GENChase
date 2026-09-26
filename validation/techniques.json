@@ -3633,11 +3633,13 @@
   {
     "id": "causticsea",
     "source": "src/modules/causticsea.js",
-    "sourceSha256": "bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f",
+    "sourceSha256": "d7cdc63cd603c9e6575dee4e7779a0c8f519179c141d7a8321455f261abb89d3",
     "reference": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
     "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
     "status": "unvalidated",
     "limitations": [
+      "The coded linear part is −∇²(∇² + k₀²), not the Swift–Hohenberg −(∇² + k₀²)² of the displayed equation: at Wavelength 10 its fastest-growing lattice wavelength is 14.26 cells, not 10, and the uniform mode grows for every r > 0 (tools/causticsea-science.js). The printed wavelength therefore disagrees with the preferred wavelength on every preset; that is a model discrepancy, not a measurement error.",
+      "The wavelength is the power-weighted mean of the 5-point Laplacian symbol with the field mean removed, converted to the wavelength of an axis mode with the same symbol. Its error bar is the spatial sampling error of one snapshot (delta method, τ_int along rows and columns), not the run-to-run scatter, which replica runs found comparable.",
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
     ],
@@ -3646,7 +3648,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/causticsea-science.js",
+        "command": "node tools/causticsea-science.js --write",
+        "results": "validation/results/causticsea-science.json",
+        "scope": "Float64 twin of the wavelength estimator in measure() and of the coded linear operator.",
+        "criteria": "The estimator returns the lattice wavelength of periodic stripes at 0 to 76 degrees to 1e-9 relative; the coded operator's growth peaks at lattice wavelength 14.26 at Wavelength 10, the Swift–Hohenberg operator's at 10.",
+        "benchmark": "Exact single-mode fields on the 128 × 128 torus; the closed-form lattice symbols (2 − 2 cos kx) + (2 − 2 cos ky).",
+        "failureControl": "The replaced row zero-crossing estimator must read high at 45 degrees; it reads 1.43 times the true wavelength, close to 1/cos 45° = 1.41.",
+        "limitations": "Tests the estimator and the linear operator, not the nonlinear dynamics or the caustic loop."
+      }
+    ],
     "print": []
   },
   {

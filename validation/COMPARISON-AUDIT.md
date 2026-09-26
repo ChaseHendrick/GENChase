@@ -41,7 +41,8 @@ resampled with the plate's seed so the error bar reprints with it.
 | `timecrystal` | period-doubled order m₂ | τ_int across periods |
 | `rmt` | unfolded spacing coefficient of variation against the Wigner surmise | bootstrap over independent spectra (rows) |
 | `kpz` | fitted growth exponent β against the class value | moving-block bootstrap over the log-spaced samples of one run |
-| `causticsea`, `faraday` | measured wavelength | τ_int across rows |
+| `faraday` | measured wavelength | τ_int across rows |
+| `causticsea` | measured wavelength: the power-weighted mean of the 5-point Laplacian symbol, orientation independent | delta method for the ratio of two field means, τ_int along rows and columns (`fieldMean`) |
 | `darkroom` | dark-window hits | interleaved ray groups, where the tracer allows it |
 
 Tabs that already printed an error bar (`lozenge`, `growdomain`, the `rotor` ladder) now print it through
@@ -111,7 +112,7 @@ With honest uncertainties several tabs now print a clear miss. These are reporte
 
 | Tab | What prints | Likely reason, where known |
 |---|---|---|
-| `causticsea` | measured wavelength 14 to 23σ above the preferred Swift–Hohenberg wavelength on every preset | not diagnosed |
+| `causticsea` | wavelength 3.6σ (default) to 19σ (open loop) above the preferred wavelength, 8.3σ below it on Locked rolls | diagnosed (2026-09-26): the row zero-crossing estimator read λ/\|cos θ\| for oblique stripes, now replaced; what remains is the model: the coded linear part is −∇²(∇² + k₀²), not the Swift–Hohenberg −(∇² + k₀²)² it displays, so its fastest-growing wavelength is 14.26 at Wavelength 10 and the uniform mode grows for every r > 0 (`tools/causticsea-science.js`); replica runs with the Swift–Hohenberg operator settle at 10.05 to 10.15 |
 | `darkroom` | the "tokarsky" room's dark window lit, 7 to 33σ above 0 | the room is not Tokarsky's construction (above) |
 | `faraday` | wavelength 12 to 17σ from the printed linear estimate (Noise presets), 2 to 4 times off on the others | the estimate formula (above) |
 | `kpz` | ballistic Rings and Wide presets 4.6 to 5.3σ below β = 1/3 | the slow crossover the tab's hint already documents |

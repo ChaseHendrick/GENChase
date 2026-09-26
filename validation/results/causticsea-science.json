@@ -1,0 +1,79 @@
+{
+  "test": "tools/causticsea-science.js",
+  "command": "node tools/causticsea-science.js --write",
+  "sourceSha256": "d7cdc63cd603c9e6575dee4e7779a0c8f519179c141d7a8321455f261abb89d3",
+  "stripes": [
+    {
+      "angleDeg": 0,
+      "euclideanLambda": 9.8462,
+      "latticeLambda": 9.8462,
+      "estimator": 9.846154,
+      "rowCrossing": 9.8462,
+      "rowCrossingOverEuclid": 1,
+      "inverseCos": 1
+    },
+    {
+      "angleDeg": 14.04,
+      "euclideanLambda": 10.3482,
+      "latticeLambda": 10.3298,
+      "estimator": 10.329845,
+      "rowCrossing": 10.7536,
+      "rowCrossingOverEuclid": 1.0392,
+      "inverseCos": 1.0308
+    },
+    {
+      "angleDeg": 28.61,
+      "euclideanLambda": 10.2155,
+      "latticeLambda": 10.1565,
+      "estimator": 10.156478,
+      "rowCrossing": 11.7403,
+      "rowCrossingOverEuclid": 1.1493,
+      "inverseCos": 1.1391
+    },
+    {
+      "angleDeg": 45,
+      "euclideanLambda": 10.0566,
+      "latticeLambda": 9.972,
+      "estimator": 9.971996,
+      "rowCrossing": 14.3399,
+      "rowCrossingOverEuclid": 1.4259,
+      "inverseCos": 1.4142
+    },
+    {
+      "angleDeg": 61.39,
+      "euclideanLambda": 10.2155,
+      "latticeLambda": 10.1565,
+      "estimator": 10.156478,
+      "rowCrossing": 21.5152,
+      "rowCrossingOverEuclid": 2.1061,
+      "inverseCos": 2.0883
+    },
+    {
+      "angleDeg": 75.96,
+      "euclideanLambda": 10.3482,
+      "latticeLambda": 10.3298,
+      "estimator": 10.329845,
+      "rowCrossing": 43.2,
+      "rowCrossingOverEuclid": 4.1746,
+      "inverseCos": 4.1231
+    }
+  ],
+  "operators": {
+    "waves": 10,
+    "q": 0.381966,
+    "coded": {
+      "form": "-lap(lap + q)",
+      "peakSymbol": 0.191,
+      "peakLambda": 14.261,
+      "growthAtQ0": 0,
+      "note": "the uniform mode (Q = 0) has growth r, unstable for every r > 0"
+    },
+    "swiftHohenberg": {
+      "form": "-(lap + q)^2",
+      "peakSymbol": 0.382,
+      "peakLambda": 10,
+      "growthAtQ0": -0.1458980337503154
+    }
+  },
+  "passed": true
+}

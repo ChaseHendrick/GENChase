@@ -180,20 +180,28 @@
           num += a * b; dh += a * a; dI += b * b;
         }
         corr = num / Math.sqrt((dh * dI) || 1e-12);
-        // Zero-crossing wavelength on every row that crosses at least twice. Neighboring rows of one
-        // field are correlated, so the mean's error bar comes from tau_int over the row sequence.
-        const rows = [];
-        for (let y = 0; y < H; y++) {
-          let crossings = 0, last = hh[idx(0, y)];
-          for (let x = 1; x < W; x++) {
-            const v = hh[idx(x, y)];
-            if ((last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
-            last = v;
-          }
-          if (crossings > 1) rows.push(2 * W / crossings);
+        // Wavelength from the power-weighted mean of the 5-point Laplacian symbol,
+        // Q = <h' (-lap h)> / <h'^2> with h' = h - <h>: the lattice wavenumber of the pattern whatever the
+        // orientation of its stripes. A mode of symbol Q has the wavelength 2 pi / acos(1 - Q/2) of an axis
+        // mode with the same symbol, and the preferred mode of (lap + q)^2 has Q = q, so lambda = waves.
+        // (Zero crossings along rows, used before, measure lambda / |cos theta| for stripes at angle theta
+        // to the rows and read high.) Error bar: delta method for the ratio of two field means, with the
+        // standard error of z = a - Q b from tau_int along rows and columns (U.stats.fieldMean).
+        const a = new Float64Array(N), b = new Float64Array(N);
+        let A = 0, B = 0;
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+          const i = idx(x, y), c = hh[i] - mh;
+          a[i] = -c * lap4(hh, x, y); b[i] = c * c; A += a[i]; B += b[i];
         }
-        lamStat = rows.length ? U.stats.seriesMean(rows) : null;
-        lam = lamStat ? lamStat.mean : 0;
+        const Q = B > 0 ? A / B : NaN;
+        if (Q > 0 && Q < 4) {
+          const z = new Float64Array(N);
+          for (let i = 0; i < N; i++) z[i] = a[i] - Q * b[i];
+          const fz = U.stats.fieldMean(z, W, H);
+          lam = 2 * Math.PI / Math.acos(1 - Q / 2);
+          const dQdLam = 2 * Math.sin(2 * Math.PI / lam) * 2 * Math.PI / (lam * lam);
+          lamStat = { se: (fz.se / (B / N)) / dQdLam, reliable: fz.reliable, tau: Math.max(fz.tauX, fz.tauY) };
+        } else { lam = 0; lamStat = null; }
         lamTh = s.waves;
       }
 
@@ -238,14 +246,14 @@
       function status() {
         const s = host.getState();
         const loop = (s.eta > 0.08) && (corr > 0.12);
-        const n = lamStat ? lamStat.n : 0;
         host.setStatus(
           U.stats.compare({ label: 'corr(h, I)', measured: corr, basis: 'sampled', digits: 3,
             pending: 'one snapshot; the η = 0 control is not computed' }) +
-          (lam
+          (lam && lamStat
             ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'preferred wavelength', units: 'cells', basis: 'sampled',
-                uncertainty: lamStat.se, method: 'τ_int over ' + n + ' rows',
-                pending: lamStat.se === 0 ? 'every row gives the same crossing count' : 'too few rows to estimate τ_int' })
+                uncertainty: lamStat.reliable && lamStat.se > 0 ? lamStat.se : undefined,
+                method: 'Laplacian-symbol mean, delta method, τ_int along rows and columns',
+                pending: lamStat.reliable ? 'zero spread in the field' : 'the field spans fewer than 40 correlation lengths' })
             : '<span>λ <b>—</b></span>') +
           '<span>' + (s.eta < 0.05 ? 'open loop' : (loop ? 'fold lock' : 'writing')) + '</span>'
         );
