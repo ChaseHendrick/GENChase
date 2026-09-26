@@ -11,7 +11,7 @@ authors:
 # Software DOI: when Zenodo archives a release (docs/PUBLISHING.md), add the concept DOI,
 # which resolves to the latest version, on the next line and delete this comment:
 # doi: 10.5281/zenodo.<number from the Zenodo record>
-version: "v0.7.1"
+version: "0.7.1"
 date-released: "2026-09-25"
 repository-code: "https://github.com/ChaseHendrick/GENChase"
 url: "https://github.com/ChaseHendrick/GENChase"

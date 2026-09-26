@@ -5,11 +5,14 @@
 # GH_TOKEN   a fine-grained token with Contents and Administration read and write on the companion
 #            repositories (docs/PUBLISHING-PAPERS.md, section 1). Without it nothing happens.
 # PAPER      publish only this paper id (optional).
-# RELEASE    also publish a release with this tag (v1.0.0 and so on) in PAPER's companion; Zenodo
-#            archives it and gives it a DOI, if Zenodo is switched on for that repository. Its notes
-#            are the section "## <tag>" of papers/<id>/RELEASES.md, and a tag without one is refused
-#            before anything is published. For a release that already exists, the run brings its
-#            notes up to date; the tag and its files are never replaced.
+# RELEASE    also publish a release with this tag in PAPER's companion, the version written without a
+#            leading v (1.0.0 and so on; owner's decision, 2026-09-26); Zenodo archives it and gives it a
+#            DOI, if Zenodo is switched on for that repository. Its notes are the section "## <version>"
+#            of papers/<id>/RELEASES.md, and a tag without one is refused before anything is published.
+#            For a release that already exists, the run brings its notes up to date; the tag and its
+#            files are never replaced. A release made before 2026-09-26 keeps its tag with the v:
+#            RELEASE=v2.1.0 updates its notes from "## 2.1.0". A new tag with a leading v is refused, and
+#            so is a plain tag whose version the companion already has under its v tag.
 #
 # Direct edits are kept. The branch genchase-sync holds exactly what this repository published, one
 # commit per change, and each run merges it into the companion's default branch. Edits the owner makes
@@ -27,23 +30,39 @@ if [ -z "${GH_TOKEN:-}" ]; then
   echo "::notice::The PAPERS_TOKEN secret is not set, so no paper is published (docs/PUBLISHING-PAPERS.md, section 1)."
   exit 0
 fi
-case "${RELEASE:-}" in
-  '') ;;
-  v[0-9]*.[0-9]*.[0-9]*) [ -n "${PAPER:-}" ] || { echo "::error::A release needs the paper id too."; exit 1; } ;;
-  *) echo "::error::The release tag must look like v1.0.0."; exit 1 ;;
-esac
+if [ -n "${RELEASE:-}" ]; then
+  echo "$RELEASE" | grep -Eqx 'v?[0-9]+\.[0-9]+\.[0-9]+' || { echo "::error::The release tag must look like 1.0.0."; exit 1; }
+  [ -n "${PAPER:-}" ] || { echo "::error::A release needs the paper id too."; exit 1; }
+fi
 
-# The section of papers/<id>/RELEASES.md headed "## <tag>" (the heading may carry a date after the tag).
+# The section of papers/<id>/RELEASES.md headed "## <version>", the version without a leading v (the
+# heading may carry a date after it).
 notes_for() {
-  awk -v tag="$2" '/^## / { if (found) exit; if ($2 == tag) { found = 1; next } } found' "$ROOT/papers/$1/RELEASES.md" 2>/dev/null || true
+  awk -v want="${2#v}" '/^## / { if (found) exit; if ($2 == want) { found = 1; next } } found' "$ROOT/papers/$1/RELEASES.md" 2>/dev/null || true
 }
 if [ -n "${RELEASE:-}" ] && [ -z "$(notes_for "$PAPER" "$RELEASE" | tr -d '[:space:]')" ]; then
-  echo "::error::papers/$PAPER/RELEASES.md has no notes under '## $RELEASE'. Write what the release contains there, merge, and run again."
+  echo "::error::papers/$PAPER/RELEASES.md has no notes under '## ${RELEASE#v}'. Write what the release contains there, merge, and run again."
   exit 1
 fi
 list=$(node "$ROOT/tools/paper-sync.js" --list ${PAPER:+--paper "$PAPER"})
 [ -n "$list" ] || { echo "No paper is marked ready in papers/papers.json, so there is nothing to publish."; exit 0; }
 [ "$REMOTE" != https://github.com ] || gh auth setup-git
+
+# Versions are written without a leading v since 2026-09-26 (owner's decision), and the releases made
+# before then keep their v tags. A tag with the v is taken only when the companion has it, to update that
+# release's notes; a plain tag is refused when the companion has the same version under its v tag, so
+# no version is released twice. Tags are never renamed.
+if [ -n "${RELEASE:-}" ]; then
+  repo=$(echo "$list" | awk -v id="$PAPER" '$1 == id { print $2 }')
+  tags=$(GIT_TERMINAL_PROMPT=0 git ls-remote --tags "$REMOTE/$repo.git" 2>/dev/null | sed 's|.*refs/tags/||' || true)
+  case $RELEASE in
+    v*) echo "$tags" | grep -qxF "$RELEASE" ||
+          { echo "::error::Write a new release without a leading v: ${RELEASE#v}, not $RELEASE. Only a release made before 2026-09-26 keeps its v tag."; exit 1; } ;;
+    *) if echo "$tags" | grep -qxF "v$RELEASE"; then
+          echo "::error::$repo already has $RELEASE as v$RELEASE. Run with RELEASE=v$RELEASE to update its notes; a tag is never renamed."; exit 1
+        fi ;;
+  esac
+fi
 
 warn() { echo "::warning::$1"; }
 

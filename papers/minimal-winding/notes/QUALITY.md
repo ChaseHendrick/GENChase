@@ -59,5 +59,5 @@ GENChase: the companion repository does not carry `notes/`.
   in certify_collapses.py part 5 (94 checks), the side ratio at Gamma = 0.49 solved exactly (0.7514840918), the
   subdivision count (336 leaves, 733 boxes), stale labels in verify_general_mu.py, and no run time in
   sqg60-certificate.json.
-- [x] **7. Reproducible.** The programs in `code/` run from the companion (release v2.0.0,
+- [x] **7. Reproducible.** The programs in `code/` run from the companion (release 2.0.0,
   doi:10.5281/zenodo.22963796); `paper-check` and `paper-sync --check` pass.

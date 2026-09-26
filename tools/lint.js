@@ -308,6 +308,33 @@ if (researchMd) {
   }
 }
 
+/* ---- 7d. versions are written without a leading v ---- */
+// Owner's decision, 2026-09-26: 0.8.0, not v0.8.0. The tags made before then keep their v, and the release
+// tools map them to these headings (tools/release-notes.py, tools/paper-publish.sh).
+{
+  const plainVersion = /^\d+\.\d+\.\d+$/;
+  const cffVersion = /^version:\s*"?([^"\n]*)"?\s*$/m.exec(citation);
+  if (citation && (!cffVersion || !plainVersion.test(cffVersion[1]))) {
+    fail('CITATION.cff version is "' + (cffVersion ? cffVersion[1] : '') + '"; write it as MAJOR.MINOR.PATCH without a leading v, for example 0.8.0');
+  }
+  const headings = [['CHANGELOG.md', path.join(root, 'CHANGELOG.md')]];
+  const papersDir = path.join(root, 'papers');
+  if (fs.existsSync(papersDir)) {
+    for (const id of fs.readdirSync(papersDir).sort()) {
+      const f = path.join(papersDir, id, 'RELEASES.md');
+      if (fs.existsSync(f)) headings.push(['papers/' + id + '/RELEASES.md', f]);
+    }
+  }
+  for (const [label, f] of headings) {
+    if (!fs.existsSync(f)) continue;
+    for (const m of fs.readFileSync(f, 'utf8').matchAll(/^## (\S+)/gm)) {
+      if (m[1] !== 'Unreleased' && !plainVersion.test(m[1])) {
+        fail(label + ' has the heading "## ' + m[1] + '"; write the version without a leading v, for example ## 0.8.0');
+      }
+    }
+  }
+}
+
 /* ---- 7c. the social card caption is the catalog, not a leftover sixty-six ---- */
 // og.jpg is what GitHub and the Open Graph tags show. The number lives in a JPEG COM
 // comment so this check does not need OCR. Rewrite the card and the comment together.

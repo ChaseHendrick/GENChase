@@ -47,7 +47,7 @@ GENChase: the companion repository does not carry `notes/`.
 - [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
 - [x] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
-  first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). A third independent reading of Section 5 and
+  first version of Theorem 4), and their fixes are in (CHANGELOG 0.7.0). A third independent reading of Section 5 and
   Appendix A (2026-09-26), briefed with the paper and Zbarsky's arXiv version and told to find errors, found no gap;
   its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
   should-fix items (the C^1 regularity of the centres, the bootstrap at T_*, the count of turns, the chi conditions,

@@ -3,12 +3,12 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
-## v2.1.0 (2026-09-25)
+## 2.1.0 (2026-09-25)
 
 **DOI:** [10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989)
 
 The corrected paper after two further independent readings of the parts merged in from the α-model draft
-(Sections 4 to 8). No result changes; 38 pages. Changes since v2.0.0:
+(Sections 4 to 8). No result changes; 38 pages. Changes since 2.0.0:
 
 - **Two misstatements fixed.** Lemma 6 is stated for collapses, since its formula P = |S|/(8A) uses the sign of
   Re κ, and Corollary 2 now shows that no vortex starts at the collision point, which its path-length bound needs.
@@ -25,11 +25,11 @@ The corrected paper after two further independent readings of the parts merged i
   `sqg60-certificate.json` no longer records a run time, so a rerun reproduces it exactly; stale section and
   equation labels in `verify_general_mu.py` are corrected.
 
-## v2.0.0 (2026-09-25)
+## 2.0.0 (2026-09-25)
 
 **DOI:** [10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)
 
-The paper becomes *Minimal Winding in the Self-Similar Collapse of Point Vortices*: the alpha-model draft is merged in, and it grows from 14 to 36 pages. A major version because the title, scope and files changed. Changes since v1.0.0:
+The paper becomes *Minimal Winding in the Self-Similar Collapse of Point Vortices*: the alpha-model draft is merged in, and it grows from 14 to 36 pages. A major version because the title, scope and files changed. Changes since 1.0.0:
 
 - **A new title and one paper instead of two.** The paper is now *Minimal Winding in the Self-Similar
   Collapse of Point Vortices*. The separate draft on the α-models (*A sharp winding bound for the
@@ -91,7 +91,7 @@ The paper becomes *Minimal Winding in the Self-Similar Collapse of Point Vortice
 - Every program carries the full Apache License 2.0 notice and an SPDX tag, and a `NOTICE` file names the
   work and its copyright holder.
 
-## v1.0.0 (2026-09-25)
+## 1.0.0 (2026-09-25)
 
 The first public release of the preprint *Minimal winding in the self-similar collapse of three point
 vortices and of two concentric vortex polygons* (14 pages), with the programs that check every result and

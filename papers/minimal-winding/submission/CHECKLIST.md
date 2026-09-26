@@ -3,8 +3,8 @@
 The paper is *Minimal Winding in the Self-Similar Collapse of Point Vortices*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
 (the manuscript and its only source, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); the Typst copy was dropped on 2026-09-25).
 The target is *Regular and Chaotic Dynamics*. By the owner's decision (2026-09-25) arXiv is deferred until
-the owner has an endorsement, which arXiv asked for at the first attempt; the Zenodo release v2.1.0 of the
-companion, doi:10.5281/zenodo.22966989, is the preprint of record (v2.0.0, doi:10.5281/zenodo.22963796, before it). Checked 2026-09-24 from the repository
+the owner has an endorsement, which arXiv asked for at the first attempt; the Zenodo release 2.1.0 of the
+companion, doi:10.5281/zenodo.22966989, is the preprint of record (release 2.0.0, doi:10.5281/zenodo.22963796, before it). Checked 2026-09-24 from the repository
 alone; no journal page was consulted.
 
 By the owner's decision (2026-09-25) the second draft, on the α-models, is merged into this paper
@@ -58,7 +58,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this
    repository records those policies.
-2. **Done 2026-09-25.** The code DOI of release v2.0.0, 10.5281/zenodo.22963796, is in the data
+2. **Done 2026-09-25.** The code DOI of release 2.0.0, 10.5281/zenodo.22963796, is in the data
    availability paragraph and in `papers.json` (`codeDoi`), and the PDF is rebuilt.
 3. Deferred (owner's decision, 2026-09-25): the arXiv upload, with `sh tools/arxiv-bundle.sh
    minimal-winding` and the fields in arxiv-metadata.md, once an endorsement exists; then record the

@@ -51,26 +51,31 @@ a deployment, rerun the Pages workflow on `main`. Keep Settings > Pages > Source
 set to **GitHub Actions**. Do not replace the studio root with the start page:
 that would break saved recipe links.
 
-Releases use `vMAJOR.MINOR.PATCH`, starting at `v0.4.1`. Patch numbers identify
+Releases use `MAJOR.MINOR.PATCH`, starting at `0.4.1`, written without a leading v
+(`0.8.0`, not `v0.8.0`; owner's decision, 2026-09-26). The releases made before that
+decision keep their tags, `v0.4.1` to `v0.7.1`; a tag is never renamed, and a link
+to one of those releases uses its real tag. Patch numbers identify
 fixes, and minor numbers identify new features. During the initial `0.x` series,
 minor releases may also change compatibility; their notes must explain this.
 A future `1.0.0` will mark the declared stable software interface. These software
 versions are independent of recipe/API versions and scientific validation status.
 Dates belong in [CHANGELOG.md](../CHANGELOG.md) and release notes, not version names.
-`v0.4.1` is the first public release in this series. The earlier calendar-named
-release is withdrawn when v0.4.1 is published; the latest download link follows
+`0.4.1` is the first public release in this series. The earlier calendar-named
+release is withdrawn when 0.4.1 is published; the latest download link follows
 the numbered release.
 
-The release workflow is manually dispatched with a version such as `v0.4.1`.
+The release workflow is manually dispatched with a version such as `0.8.0`.
 It checks the selected main commit, creates the deterministic offline ZIP and a
 SHA-256 checksum, tests the extracted bundle in Chromium, and publishes assets
-on a GitHub Release. It refuses an existing tag so older releases stay immutable.
+on a GitHub Release. It refuses a version written with a leading v, and a version
+already tagged under either spelling (`0.7.1` or `v0.7.1`), so older releases stay
+immutable.
 Release notes identify the exact commit and link its scientific evidence.
 
 Build a local preview without publishing:
 
 ```sh
-python3 tools/package-release.py --version v0.4.1
+python3 tools/package-release.py --version 0.4.1
 node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
 ```
 

@@ -5,7 +5,9 @@
 //
 // Cases: the first publish; a run with nothing new; an owner's direct edit surviving a later update
 // from here; a conflicting edit that stops the run and pushes nothing; tools/paper-pull.sh bringing
-// the owner's edit back; and the run after that publishing cleanly. npm test runs this.
+// the owner's edit back; the run after that publishing cleanly; a release that needs its notes; and the
+// version rule: a new release is written without a leading v, while a release made before 2026-09-26
+// keeps its v tag. npm test runs this.
 'use strict';
 const fs = require('fs');
 const os = require('os');
@@ -103,14 +105,34 @@ try {
   const mainBefore = remoteHead('main');
   write(path.join(SRC, 'papers', 't', 'README.md'), read(path.join(SRC, 'papers', 't', 'README.md')) + '\nA change that must not be pushed.\n');
   commitSrc('a change waiting for a release');
-  r = run('paper-publish.sh', [], { RELEASE: 'v1.0.0', PAPER: 't' });
-  ok(r.status !== 0 && /RELEASES\.md has no notes under '## v1\.0\.0'/.test(r.stdout + r.stderr), 'a release without notes is refused', r.stdout + r.stderr);
+  r = run('paper-publish.sh', [], { RELEASE: '1.0.0', PAPER: 't' });
+  ok(r.status !== 0 && /RELEASES\.md has no notes under '## 1\.0\.0'/.test(r.stdout + r.stderr), 'a release without notes is refused', r.stdout + r.stderr);
   ok(remoteHead('main') === mainBefore, 'a refused release pushes nothing');
-  write(path.join(SRC, 'papers', 't', 'RELEASES.md'), '# Releases\n\n## Unreleased\n\n- next\n\n## v1.0.0 (2026-01-01)\n\nThe first release.\n');
+  write(path.join(SRC, 'papers', 't', 'RELEASES.md'), '# Releases\n\n## Unreleased\n\n- next\n\n## 1.1.0 (2026-10-01)\n\nA new release.\n\n' +
+    '## 1.0.0 (2026-09-26)\n\nThe first release written without a v.\n\n## 0.9.0 (2026-09-25)\n\nA release made before 2026-09-26, tagged v0.9.0.\n');
   commitSrc('release notes');
-  r = run('paper-publish.sh', [], { RELEASE: 'v1.0.0', PAPER: 't' });
-  ok(r.status === 0 && remoteHead('main') !== mainBefore, 'a release with notes publishes', r.stdout + r.stderr);
-  ok(/## v1\.0\.0/.test(remoteFile('main', 'RELEASES.md')), 'RELEASES.md reaches the companion');
+
+  // 9. Versions are written without a leading v (owner's decision, 2026-09-26): a new tag with the v is
+  // refused before anything is pushed, even with notes, and a plain one publishes.
+  r = run('paper-publish.sh', [], { RELEASE: 'v1.1.0', PAPER: 't' });
+  ok(r.status !== 0 && /without a leading v: 1\.1\.0, not v1\.1\.0/.test(r.stdout + r.stderr), 'a new release tagged with a leading v is refused', r.stdout + r.stderr);
+  ok(remoteHead('main') === mainBefore, 'a release refused for its v pushes nothing');
+  r = run('paper-publish.sh', [], { RELEASE: '1.0.0', PAPER: 't' });
+  ok(r.status === 0 && remoteHead('main') !== mainBefore, 'a release written 1.0.0 with notes publishes', r.stdout + r.stderr);
+  ok(/## 1\.0\.0/.test(remoteFile('main', 'RELEASES.md')), 'RELEASES.md reaches the companion');
+
+  // 10. A release made before 2026-09-26 keeps its v tag: that tag is taken, to bring its notes up to date
+  // from the section written without the v, and the same version under a new plain tag is refused.
+  git(OWNER, 'pull', '-q', 'origin', 'main'); git(OWNER, 'tag', 'v0.9.0'); git(OWNER, 'push', '-q', 'origin', 'v0.9.0');
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't' });
+  ok(r.status === 0, 'the existing tag v0.9.0 is taken, with its notes under "## 0.9.0"', r.stdout + r.stderr);
+  const beforeTwin = remoteHead('main');
+  write(path.join(SRC, 'papers', 't', 'README.md'), read(path.join(SRC, 'papers', 't', 'README.md')) + '\nAnother change that must not be pushed.\n');
+  commitSrc('a change waiting for a release');
+  r = run('paper-publish.sh', [], { RELEASE: '0.9.0', PAPER: 't' });
+  ok(r.status !== 0 && /already has 0\.9\.0 as v0\.9\.0/.test(r.stdout + r.stderr), 'a plain tag for a version released under its v tag is refused', r.stdout + r.stderr);
+  ok(remoteHead('main') === beforeTwin, 'a release refused as a twin pushes nothing');
+  ok(git(BARE, 'tag', '--list').split('\n').join(' ') === 'v0.9.0', 'no tag is made, moved or renamed', git(BARE, 'tag', '--list'));
 } catch (e) {
   failures++; console.log('FAIL ' + (e.stack || e.message) + (e.stderr ? '\n' + e.stderr : ''));
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }

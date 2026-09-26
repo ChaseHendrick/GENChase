@@ -23,7 +23,7 @@ on:
         required: false
         default: ''
       release:
-        description: Also make this release in the paper's companion, for a Zenodo DOI (for example v1.0.0)
+        description: Also make this release in the paper's companion, for a Zenodo DOI (for example 1.0.0, without a leading v; an older release keeps its v tag)
         required: false
         default: ''
 
