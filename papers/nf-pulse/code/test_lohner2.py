@@ -59,12 +59,18 @@ if __name__ == '__main__':
     sol = mp_solution(x0mid, cr.C1.mid().str(70, radius=False), 60)
     if mode == 'neg':
         times = [2, 4, 6, 8, 10, 12]
+        verdict = {}
         for drop in (False, True):
             t0 = time.time()
             r = run(8, 1e-12, drop, times, sol, box, kappa)
             print('order 8, remainder %s:' % ('DROPPED' if drop else 'included'))
             for Tc, ins, rad, dev in r:
                 print('   t=%4.1f contains mpmath: %-5s  radius %.2e  |mid-mpmath| %.2e' % (Tc, ins, rad, dev), flush=True)
+            verdict[drop] = [ins for Tc, ins, rad, dev in r]
+        # with the remainder every enclosure must contain the reference; without it, the test must notice
+        ok = len(verdict[False]) == len(times) and all(verdict[False]) and not all(verdict[True])
+        print('REMAINDER TEST', 'PASS' if ok else 'FAIL')
+        sys.exit(0 if ok else 1)
     else:
         times = [20, 30, 40, 50, 53, 58]
         r = run(30, 1e-45, False, times, sol, box, kappa)

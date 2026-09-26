@@ -1,0 +1,5 @@
+  c1: vi_integrate enclosure at T, U = [-0.00779111320340471 +/- 8.24e-19]; kappa-set enclosure at this kappa, U = [-0.0077911 +/- 2.33e-8]; overlap in all components: True
+  c2: vi_integrate enclosure at T, U = [-0.00770832474533986 +/- 3.21e-18]; kappa-set enclosure at this kappa, U = [-0.0077083 +/- 3.48e-8]; overlap in all components: True
+  c1 + 5e-27 (control): vi_integrate enclosure at T, U = [-0.00778697374138758 +/- 3.44e-18]; kappa-set enclosure at this kappa, U = [-0.0077870 +/- 3.67e-8]; overlap in all components: True
+  control: the c1+5e-27 point compared with the set enclosure evaluated at kappa(c1): overlap False (must be False)
+RESULT: PASS (85 s)

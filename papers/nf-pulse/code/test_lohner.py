@@ -27,7 +27,7 @@ def manifold_point(c):
     kappa = 1 / c
     s = nf.dS(arb(0)); co = cr.charpoly_coeffs(kappa, s, nf.EPS); lam = cr.refine(co, arb('0.5'), arb('1.2'))
     ok, a, r, info = mf.validate(kappa, lam, mf.choose_sigma(kappa, lam), 80)
-    assert ok
+    nf.require(ok, info)
     return mf.evaluate(a, r, arb(fmpq(1, 4))), kappa
 
 def mp_solution(x0, c, T):
@@ -68,4 +68,7 @@ if __name__ == '__main__':
         X, tt, ns = lo.integrate(X, Tc, order=30, tol=1e-45, hmax=0.25, callback=cb, t0=t)
         t = float(tt.mid())
         print('   reached t=%.3f steps %d elapsed %.1fs' % (t, ns, time.time() - t0), flush=True)
-    print('ALL CONTAIN:', all(ch[1] for ch in checks))
+    ok = len(checks) == 6 and all(ch[1] for ch in checks)
+    print('ALL CONTAIN:', ok)
+    print('INTEGRATOR TEST', 'PASS' if ok else 'FAIL')
+    sys.exit(0 if ok else 1)

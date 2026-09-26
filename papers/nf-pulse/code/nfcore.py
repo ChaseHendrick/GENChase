@@ -54,6 +54,16 @@ def __getattr__(name):          # module-level lazy constants (PEP 562)
         return arb(globals()['_' + name])
     raise AttributeError(name)
 
+class CertificateError(Exception):
+    """A condition that a rigorous statement depends on does not hold."""
+
+
+def require(cond, msg=''):
+    """Check a condition the proof depends on. Unlike assert, this is not removed by python -O."""
+    if not cond:
+        raise CertificateError(msg)
+
+
 PARAMS_TXT = "beta=20, theta=1/4, eps=1/10, gamma=0, w(x)=exp(-|x|)/2"
 
 
@@ -75,7 +85,7 @@ def dS(u, beta=None, theta=None):
 
 def rest_state():
     """gamma = 0: the only equilibrium is U = 0, V = Q = Y = S(0), P = 0 (exact)."""
-    assert _GAMMA == 0
+    require(_GAMMA == 0, 'rest_state assumes gamma = 0')
     s0 = S(arb(0))
     return [arb(0), s0, s0, arb(0), s0]
 
