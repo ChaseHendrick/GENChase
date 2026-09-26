@@ -30,11 +30,12 @@ Everything printed as PASS is a rigorous (ball-arithmetic) statement.
 """
 import sys, time, json, math, os
 from flint import arb, arb_mat, ctx, fmpq
-ctx.prec = int(os.environ.get('NF_PREC', '256'))
+import config as cf
+ctx.prec = int(os.environ.get('NF_PREC', cf.get()['prec']))
 import fcore as nf, certify_rest as cr, manifold as mf, lohner as lo, block as bl
 
-THETA0 = fmpq(*[int(t) for t in os.environ.get('NF_THETA0', '1/2').split('/')])   # manifold parameter of the start point
-NMAN = int(os.environ.get('NF_NMAN', '80'))                                          # manifold order
+THETA0 = fmpq(*[int(t) for t in os.environ.get('NF_THETA0', cf.get()['theta0']).split('/')])   # manifold parameter of the start point
+NMAN = int(os.environ.get('NF_NMAN', cf.get()['nman']))                                          # manifold order
 
 
 def block_data():
@@ -91,7 +92,7 @@ def step_range_y(Xh, W, h, order, T, xstar):
 
 
 def main(which, T_enter):
-    ctx.prec = int(os.environ.get('NF_PREC', '256'))    # (imports above reset it to 256)
+    ctx.prec = int(os.environ.get('NF_PREC', cf.get()['prec']))    # (imports above may reset it)
     t_start = time.time()
     T, Tinv, rho, r, binfo = block_data()
     xstar = nf.rest_state()
@@ -118,8 +119,8 @@ def main(which, T_enter):
            'x0_radius': [float(v.rad()) for v in x0], 'events': []}
     print(which, 'block', binfo, flush=True)
     print(which, 'manifold validated, x0 radii', log['x0_radius'], flush=True)
-    order = int(os.environ.get('NF_ORDER', '30'))
-    tol = float(os.environ.get('NF_TOL', '1e-45'))
+    order = int(os.environ.get('NF_ORDER', cf.get()['order']))
+    tol = float(os.environ.get('NF_TOL', cf.get()['tol']))
     state = {'phase': 'approach', 'maxU': None, 'steps': 0}
 
     def cb(tp, t, Xn, W):
@@ -174,7 +175,10 @@ def main(which, T_enter):
     log['x_at_T'] = [v.str(15) for v in hx]
     log['maxrad_at_T'] = max(float(v.rad()) for v in hx[:5])
     log['in_int_B_at_T'] = inB
-    log['maxU_upper_phase1'] = state['maxU'].str(10)
+    # enclosure of the largest u over the step end points of phase 1; its lower end is a rigorous lower bound
+    # for sup u along every orbit of the set (its upper end is not an upper bound for sup u between steps)
+    log['max_u_at_step_ends_phase1'] = state['maxU'].str(10)
+    log['sup_u_lower_bound'] = arb(state['maxU'].lower()).str(10)
     print(which, 'AT T=%s: in int B: %s ; y=%s ; |y\'|<=%s (rho=%s, r=%s)' % (
         T_enter, inB, [v.str(6) for v in y], ynorm2_upper(y[1:]).str(6), rho.str(6), r.str(6)), flush=True)
     if which == 'interval' or not inB:
@@ -201,5 +205,5 @@ def main(which, T_enter):
 
 if __name__ == '__main__':
     which = sys.argv[1]
-    T_enter = float(sys.argv[2]) if len(sys.argv) > 2 else 12.5
+    T_enter = float(sys.argv[2]) if len(sys.argv) > 2 else cf.get()['T_enter']
     main(which, T_enter)

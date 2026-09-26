@@ -19,8 +19,8 @@
 x = (u, v, w, q), F(x) = (k (v - u), w, b^2 (v - q S(u)), eps k (1 - q - beta q S(u))).  The Jacobian
     DF(x) = [[-k, k, 0, 0], [0, 0, 1, 0], [-b^2 a, b^2, 0, -b^2 sg], [-eps k beta a, 0, 0, -eps k (1 + beta sg)]]
 depends on x only through a = q S'(u) and sg = S(u), and for fixed k it is affine in (a, sg).
-Coordinates y = T (x - x*), T = diag(d) Vinv, Vinv an approximate inverse eigenvector matrix at a reference
-speed, stored exactly (dyadic).  L(y) = y1^2 - |y'|^2, y' = (y2, y3, y4).  Block B = {|y1| <= r, |y'|_2 <= rho}.
+Coordinates y = T (x - x*), T = diag(d) Vinv, Vinv an approximate inverse eigenvector matrix of DF at a reference
+point and speed (config.py), stored exactly (dyadic).  L(y) = y1^2 - |y'|^2, y' = (y2, y3, y4).  Block B = {|y1| <= r, |y'|_2 <= rho}.
 
 For x in B, F(x) - F(x*) = Abar (x - x*) with Abar the mean of DF on the segment [x*, x], so Abar = DF(abar, sgbar)
 with (abar, sgbar) in the rectangle R = [amin, amax] x [smin, smax] of values over B (u-range below the
@@ -38,11 +38,7 @@ import numpy as np
 from flint import arb, arb_mat, ctx, fmpq
 import fcore as fc
 
-# block shapes (weights d on the eigen-coordinates ordered unstable, fast stable, fast stable, slow, and r/rho),
-# found by a floating-point search (explore_block.py); what matters is only that the checks below pass.
-SHAPES = {
-    '1/20': {'c_ref': 0.24718262765, 'd': [159.0, 10.0, 150.0, 340.0], 'r_over_rho': 1.17},
-}
+import config as cf
 
 
 def exact_matrix(Mf):
@@ -57,14 +53,15 @@ def DF4(k, a, sg):
 
 
 def setup(shape):
-    """T = diag(d) Vinv from float eigenvectors at c_ref (exact dyadic entries), and a ball enclosure of T^{-1}."""
+    """T = diag(d) Vinv from float eigenvectors of DF(a_ref, s_ref) at c_ref (default: the rest state), stored with
+    exact dyadic entries, and a ball enclosure of T^{-1}."""
     lam, kap, beta, b, eps = [float(z.mid()) for z in fc.params()]
     x = fc.rest_state()
     u0, q0 = float(x[0].mid()), float(x[3].mid())
     Sf = lambda u: 1 / (1 + np.exp(-lam * (u - kap)))
     k = 1 / shape['c_ref']
-    a0 = q0 * lam * Sf(u0) * (1 - Sf(u0))
-    s0 = Sf(u0)
+    a0 = q0 * lam * Sf(u0) * (1 - Sf(u0)) if shape.get('a_ref') is None else shape['a_ref']
+    s0 = Sf(u0) if shape.get('s_ref') is None else shape['s_ref']
     Af = np.array([[-k, k, 0, 0], [0, 0, 1, 0], [-b * b * a0, b * b, 0, -b * b * s0],
                    [-eps * k * beta * a0, 0, 0, -eps * k * (1 + beta * s0)]])
     w, V = np.linalg.eig(Af)
@@ -143,7 +140,7 @@ def check(T, Tinv, r, rho, kappa):
 
 
 def block_for(eps_txt, kappa, rho=None):
-    shape = SHAPES[eps_txt]
+    shape = cf.get(eps_txt)['block']
     T, Tinv = setup(shape)
     rho = arb(1) if rho is None else rho
     r = rho * arb(shape['r_over_rho'])
@@ -153,8 +150,9 @@ def block_for(eps_txt, kappa, rho=None):
 
 if __name__ == '__main__':
     import sys
-    ctx.prec = 256
+    ctx.prec = cf.get()['prec']
     import certify_rest as cr
+    ctx.prec = cf.get()['prec']
     kappa = (1 / cr.C1).union(1 / cr.C2)
     ok, info, T, Tinv, r, rho = block_for(fc.eps_txt(), kappa)
     print('eps', fc.eps_txt(), 'block', 'CERTIFIED' if ok else 'FAILED', json.dumps(info))
@@ -162,5 +160,5 @@ if __name__ == '__main__':
     ok2, info2 = check(T, Tinv, r * arb('1.5'), rho * arb('1.5'), kappa)
     print('NEGATIVE CONTROL block x1.5:', 'CERTIFIED (BAD)' if ok2 else 'fails as expected', json.dumps(info2))
     json.dump({'eps': fc.eps_txt(), 'main': info, 'negative_x1.5': info2, 'T': [[float(T[i, j].mid()) for j in range(4)] for i in range(4)],
-               'r': r.str(10), 'rho': rho.str(10)},
+               'r_over_rho': cf.get()['block']['r_over_rho'], 'c1': cf.get()['c1'], 'c2': cf.get()['c2']},
               open('../data/block_certificate_eps%s.json' % fc.eps_txt().replace('/', '_'), 'w'), indent=1)

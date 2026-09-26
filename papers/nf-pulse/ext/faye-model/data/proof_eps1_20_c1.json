@@ -70,7 +70,8 @@
  ],
  "maxrad_at_T": 2.370878413038291e-08,
  "in_int_B_at_T": true,
- "maxU_upper_phase1": "[0.5043512190 +/- 4.85e-11]",
+ "max_u_at_step_ends_phase1": "[0.5043512190 +/- 4.85e-11]",
+ "sup_u_lower_bound": "[0.5043512190 +/- 4.85e-11]",
  "phase2": "in_K",
  "t_K": "[14.22635651 +/- 3.66e-9]",
  "y_at_tK": [
@@ -87,5 +88,5 @@
  ],
  "|y'|_at_tK": "[0.4708698085 +/- 4.10e-11]",
  "verdict": "PASS",
- "time_s": 3
+ "time_s": 4
 }

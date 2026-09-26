@@ -35,16 +35,11 @@ from flint import arb, ctx, fmpq
 import fcore as fc
 import manifold as mf
 
-ctx.prec = 256
-
-# brackets for the fast pulse speed, from the (non-rigorous) high-precision shooting in shoot_hp.py
-BRACKETS = {
-    # eps = 1/20: c* = 0.24718262765166962699064340876911105905212035458668780...  (shoot_hp.py, prec 256)
-    '1/20': (fmpq(2471826276516696269906434087, 10 ** 28), fmpq(2471826276516696269906434088, 10 ** 28), -1, +1),
-}
-_b = BRACKETS[fc.eps_txt()]
-C1, C2 = arb(_b[0]), arb(_b[1])
-SIDE_C1, SIDE_C2 = _b[2], _b[3]
+import config as cf
+ctx.prec = cf.get()['prec']
+_cfg = cf.get()
+C1, C2 = arb(cf.dec(_cfg['c1'])), arb(cf.dec(_cfg['c2']))     # bracket from numerical shooting (config.py)
+SIDE_C1, SIDE_C2 = _cfg['side_c1'], _cfg['side_c2']
 
 
 def unique_equilibrium(beta=None, lam=None, kap=None, pieces=2000):
