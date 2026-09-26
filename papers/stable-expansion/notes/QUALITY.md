@@ -14,8 +14,8 @@ GENChase: the companion repository does not carry `notes/`.
    the README, and numerical results are never stated as theorems.
 4. Sources read: every source that a proof step depends on is read in full; background citations are recorded in
    RESEARCH.md with how far each was read.
-5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
-   reached.
+5. Prior article review: the prior-article searches are logged in RESEARCH.md, and every novelty statement stays
+   within what they reached.
 6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
    only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
@@ -44,10 +44,10 @@ GENChase: the companion repository does not carry `notes/`.
   measure-preserving flow. Marchioro and Pulvirenti (1994), unread, is no longer cited. Yudovich (1963) treats bounded
   domains and is cited for the theory's origin only. Kallyadan and Shukla (2022) is background only (abstract read; by
   the owner's decision of 2026-09-25 its full text is not read).
-- [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
+- [x] **5. Prior article review.** RESEARCH.md, entries of 2026-09-25 ("prior article review for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
 - [x] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
-  first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). A third independent reading of Section 5 and
+  first version of Theorem 4), and their fixes are in (CHANGELOG 0.7.0). A third independent reading of Section 5 and
   Appendix A (2026-09-26), briefed with the paper and Zbarsky's arXiv version and told to find errors, found no gap;
   its must-fix items (a constant in the geometric bound, one slip wrongly attributed to Zbarsky, a LaTeX error) and its
   should-fix items (the C^1 regularity of the centres, the bootstrap at T_*, the count of turns, the chi conditions,

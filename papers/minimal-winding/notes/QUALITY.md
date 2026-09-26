@@ -14,8 +14,8 @@ GENChase: the companion repository does not carry `notes/`.
    the README, and numerical results are never stated as theorems.
 4. Sources read: every source that a proof step depends on is read in full; background citations are recorded in
    RESEARCH.md with how far each was read.
-5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
-   reached.
+5. Prior article review: the prior-article searches are logged in RESEARCH.md, and every novelty statement stays
+   within what they reached.
 6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
    only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
@@ -35,7 +35,7 @@ GENChase: the companion repository does not carry `notes/`.
   ones (N = 7 to 12, 33, 61 and 603, the two-arm family and its extrapolation), and the README does too.
 - [x] **4. Sources read.** The proofs are self-contained apart from standard tools (resultants, the Krawczyk test);
   the works credited in the Discussion are background, and RESEARCH.md records how far each was read.
-- [x] **5. Prior art.** RESEARCH.md: the final prior-art search of the pre-submission review (28 queries), the
+- [x] **5. Prior article review.** RESEARCH.md: the final prior-article search of the pre-submission review (28 queries), the
   generalizations entry O and the owner-supplied full texts. The paper's novelty statements say "we have not found".
   Open: O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126 (four-vortex collapse configurations at a fixed rate) is
   unread (paywalled); it bears on the four-vortex minimum of Theorem 4 only.
@@ -59,5 +59,5 @@ GENChase: the companion repository does not carry `notes/`.
   in certify_collapses.py part 5 (94 checks), the side ratio at Gamma = 0.49 solved exactly (0.7514840918), the
   subdivision count (336 leaves, 733 boxes), stale labels in verify_general_mu.py, and no run time in
   sqg60-certificate.json.
-- [x] **7. Reproducible.** The programs in `code/` run from the companion (release v2.0.0,
+- [x] **7. Reproducible.** The programs in `code/` run from the companion (release 2.0.0,
   doi:10.5281/zenodo.22963796); `paper-check` and `paper-sync --check` pass.

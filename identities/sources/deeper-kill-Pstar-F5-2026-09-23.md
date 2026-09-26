@@ -5,7 +5,7 @@
 **Rules:** Legal OA + already-purchased only. No Sci-Hub. **No** `IDENTITIES.md` edit. **No** PDF commit. **No** novelty claim.
 
 Related prior notes (not superseded on body-reads of K–A–O):  
-`prior-art-kill-2026-09-23.md`, `oa/deeper-kill-oa-2026-09-23.md`, `unequal-mu-half-Pstar-closed-2026-09-23.md`, `koiller1985-read-2026-09-23.md`, `aref1982-read-2026-09-23.md`, `oneil2007-read-2026-09-23.md`.
+`prior-article-kill-2026-09-23.md`, `oa/deeper-kill-oa-2026-09-23.md`, `unequal-mu-half-Pstar-closed-2026-09-23.md`, `koiller1985-read-2026-09-23.md`, `aref1982-read-2026-09-23.md`, `oneil2007-read-2026-09-23.md`.
 
 ---
 

@@ -11,8 +11,12 @@ import zipfile
 ROOT = Path(__file__).resolve().parent.parent
 
 def validate_version(version):
-    if not re.fullmatch(r'v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
-        raise ValueError('Use a numbered release such as v0.4.1 (no date or leading zeros)')
+    # Versions are written without a leading v (owner's decision, 2026-09-26). The releases made before
+    # then keep their v tags, but this builds a new release, so it takes the plain form only.
+    if re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+', version):
+        raise ValueError('Write the version without a leading v: ' + version[1:] + ', not ' + version)
+    if not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
+        raise ValueError('Use a numbered release such as 0.8.0 (no leading v, date or leading zeros)')
 
 
 def package(output, version):

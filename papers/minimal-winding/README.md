@@ -92,7 +92,7 @@ Until the paper is published in a journal:
 }
 ```
 
-Release v2.1.0, with the programs and data of this version, is archived at
+Release 2.1.0, with the programs and data of this version, is archived at
 [doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989).
 
 ## License

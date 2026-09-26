@@ -4,6 +4,10 @@ Session work of 2026-09-26 on branch `claude/arctic-finite-size`. The folder hol
 this report. Beyond it, only `validation/AZTEC.md`, `validation/LOZENGE.md`, `RESEARCH.md` and `IDENTITIES.md`
 changed. No module in `src/` changed.
 
+**Status: not independently reviewed.** Drafted here by the owner's decision of 2026-09-26 (AGENTS.md). The
+adversarial check in section 6 is a second computation by another agent in the same session, not an independent
+review.
+
 ## Summary
 
 1. **Prior art.** No published source was found that states the n^(-2/3) constant of the expected frozen area, or

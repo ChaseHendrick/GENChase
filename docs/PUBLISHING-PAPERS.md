@@ -48,7 +48,7 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
 
 Nothing is published or preprinted (a companion release, a Zenodo DOI, arXiv, a journal) until the paper meets the
 quality bar, and its record says so. The record is `papers/<id>/notes/QUALITY.md`: the bar's seven items at the top
-(complete proofs, rigorous computation, every claim labelled, sources read, prior art, adversarial second reading,
+(complete proofs, rigorous computation, every claim labelled, sources read, prior article review, adversarial second reading,
 reproducible), then one line per item, checked only with its evidence. `notes/` stays in GENChase; the companion does
 not carry it. `node tools/paper-check.js` refuses the status `ready` or later while any item is open, renamed,
 missing or checked without evidence, and its self-test plants each of those mistakes. A proof that adapts another
@@ -93,16 +93,19 @@ Then:
    branch and deleting or moving tags. A monthly run renews the lock. You can still edit the
    companion yourself (below).
 3. On Zenodo's GitHub page, switch the companion **on**.
-4. Write the release notes in `papers/<id>/RELEASES.md` under `## v1.0.0` (a date may follow the
-   tag): what the paper shows, how it was checked, the files, how to reproduce, the licenses. Merge.
-   Then Actions, **publish papers**, Run workflow, with the paper id and the release tag. The run
-   refuses a tag without notes before it publishes anything. Run again with an existing tag to bring
-   that release's notes up to date; the tag and its files never change, and Zenodo keeps the
-   description it archived. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+4. Write the release notes in `papers/<id>/RELEASES.md` under `## 1.0.0` (a date may follow the
+   version): what the paper shows, how it was checked, the files, how to reproduce, the licenses. Merge.
+   Then Actions, **publish papers**, Run workflow, with the paper id and the release tag, the version
+   written without a leading v (`1.0.0`; owner's decision, 2026-09-26). The run refuses a tag without
+   notes before it publishes anything, and a new tag with a leading v. Run again with an existing tag
+   to bring that release's notes up to date; the tag and its files never change, and Zenodo keeps the
+   description it archived. A release made before 2026-09-26 keeps its tag with the v (for example
+   `v2.1.0` of minimal-winding): run with that tag, and its notes come from `## 2.1.0`; the same
+   version under a plain tag is refused, so it is never released twice. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
    it names exactly the programs you used; the concept DOI always points to the newest release.
 5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
    source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
-   the workflow updates the companion. Make a `v1.0.1` release if you want the archived copy to carry
+   the workflow updates the companion. Make a `1.0.1` release if you want the archived copy to carry
    the DOI in its own PDF too.
 
 ### Editing a paper after it is public
@@ -123,12 +126,13 @@ Edit it in either place.
   result for you to review and merge. Do the same when the workflow reports a conflict: keep the
   version you want in `papers/<id>/`, merge, and the next run publishes it.
 - **A new version of record:** a change to a paper already on arXiv is a replacement there (v2, v1
-  stays visible), and a new release of the companion (for example `v1.1.0`) gives Zenodo a new
+  stays visible), and a new release of the companion (for example `1.1.0`) gives Zenodo a new
   version DOI. The concept DOI always resolves to the newest.
 
 `node tools/paper-publish-check.js` (part of `npm test`) runs both scripts end to end against local
 repositories: the first publish, a direct edit that survives an update, a conflict that pushes
-nothing, and the pull back.
+nothing, the pull back, a release refused without notes, and the version rule (a new tag with a
+leading v refused, an old v tag taken for its notes, a plain twin of an old v tag refused).
 
 ## 2. arXiv (deferred until an endorsement)
 

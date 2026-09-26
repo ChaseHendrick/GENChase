@@ -65,7 +65,7 @@ studio.
 # State of the field
 
 A survey of comparable public projects made on 24 September 2026 and recorded in the
-repository's prior-art ledger (`RESEARCH.md`) found no public tool that combines per-technique
+repository's prior-article ledger (`RESEARCH.md`) found no public tool that combines per-technique
 numerical validation records, per-model citations, seeded recipe links and physical-size print
 or SVG export. That negative rests mostly on search snippets, because many hosts could not be
 reached, and it is weaker than a page-by-page comparison. The closest in scientific rigor is

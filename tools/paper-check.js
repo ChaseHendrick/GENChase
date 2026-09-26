@@ -32,7 +32,7 @@ const norm = s => s.replace(/\$\\?([A-Za-z]+)\$/g, '$1').replace(/\\\\(\[[^\]]*\
 // keeps those nodes in compressed object streams, so Flate streams are inflated and searched too.
 // The quality bar (papers/<id>/notes/QUALITY.md): seven items, each checked with its evidence before a paper is
 // "ready" or later, which is when it goes public as its own repository and gets a DOI.
-const BAR = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior art', 'Adversarial second reading', 'Reproducible'];
+const BAR = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior article review', 'Adversarial second reading', 'Reproducible'];
 
 function quality(root, p) {
   const file = ['papers', p.id, 'notes', 'QUALITY.md'].join('/');
@@ -243,7 +243,9 @@ function selfTest() {
     expect(false, 'ready without a quality record', p => { p.status = 'ready'; });
     expect(true, 'ready with every item of the bar checked', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([])); });
     expect(false, 'ready with an open item', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([6])); });
-    expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior art', 'Prior work')); });
+    expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior work')); });
+    // Item 5 was "Prior art" until the owner renamed it (2026-09-26): GENChase is also an art studio.
+    expect(false, 'ready with item 5 under its old name', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior art')); });
     expect(false, 'ready with an item missing', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).split('\n').filter(l => !l.includes('**7.')).join('\n')); });
     expect(false, 'ready with a checked item and no evidence', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Evidence 4.', '')); });
     expect(true, 'a draft may have open items', p => { p.status = 'draft'; w('papers/t/notes/QUALITY.md', record([1, 6])); });

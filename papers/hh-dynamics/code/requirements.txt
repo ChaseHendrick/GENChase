@@ -1,4 +1,8 @@
 # Python 3.11. The versions the programs were last run with; newer ones should give the same results.
+# python-flint (Arb ball arithmetic) is the only trusted library; numpy, scipy and mpmath only propose
+# candidates and reference values in certify_bistability.py.
 mpmath==1.3.0
 sympy==1.14.0
 python-flint==0.9.0
+numpy==2.4.6
+scipy==1.17.1

@@ -1,4 +1,4 @@
-# Prior-art notes, 2026-09-25 (second search): weak clusters, alpha-model zero winding, sheet continuum, N > 3 stability
+# Prior-article notes, 2026-09-25 (second search): weak clusters, alpha-model zero winding, sheet continuum, N > 3 stability
 
 Read-only; nothing written into /home/user/GENChase. PDFs in pdf/, text in txt/, raw arXiv search output s1-s5.txt.
 Labels: [READ] full text or the named section read here; [API] Crossref/zbMATH record; [SNIP] search snippet

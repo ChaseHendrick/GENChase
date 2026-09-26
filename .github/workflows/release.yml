@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Release version, for example v0.4.1 (with notes only, "all" rewrites every release that has a CHANGELOG section)
+        description: Release version without a leading v, for example 0.8.0 (with notes only, 0.7.1 also finds its old tag v0.7.1, and "all" rewrites every release that has a CHANGELOG section)
         required: true
         type: string
       notes_only:
@@ -37,6 +37,13 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
           python3 tools/package-release.py --version "$RELEASE_VERSION" --check-version
+          # Versions are written without a leading v since 2026-09-26 and the releases before then keep their
+          # v tags, so a version is new only if neither spelling is a tag yet.
+          for tag in "$RELEASE_VERSION" "v$RELEASE_VERSION"; do
+            if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" >/dev/null 2>&1; then
+              echo "::error::The tag $tag already exists, so $RELEASE_VERSION is released. Choose the next version."; exit 1
+            fi
+          done
           gh api "repos/$GITHUB_REPOSITORY/actions/workflows/check.yml/runs?head_sha=$GITHUB_SHA&event=push&status=completed&per_page=20" > /tmp/check-runs.json
           python3 -c 'import json,os; runs=json.load(open("/tmp/check-runs.json"))["workflow_runs"]; assert any(r["head_sha"]==os.environ["GITHUB_SHA"] and r["conclusion"]=="success" for r in runs), "This main commit needs a successful check workflow before publication"'
 
@@ -84,14 +91,18 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
           PAGES_URL: ${{ vars.PAGES == 'on' && 'https://chasehendrick.github.io/GENChase/start.html' || '' }}
         run: |
-          if [ "$RELEASE_VERSION" = all ]; then versions=$(gh release list --limit 100 --json tagName --jq '.[].tagName'); else versions=$RELEASE_VERSION; fi
-          for v in $versions; do
-            if ! grep -q "^## $v\( \|$\)" CHANGELOG.md; then echo "::warning::CHANGELOG.md has no section for $v, so its notes stay as they are."; continue; fi
-            sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$v" --jq .sha)
-            date=$(gh release view "$v" --json publishedAt --jq '.publishedAt[0:10]')
-            pdfs=$(gh release view "$v" --json assets --jq '[.assets[].name | select(endswith(".pdf"))] | length')
+          if [ "$RELEASE_VERSION" = all ]; then tags=$(gh release list --limit 100 --json tagName --jq '.[].tagName'); else tags=$RELEASE_VERSION; fi
+          for tag in $tags; do
+            # The releases made before 2026-09-26 keep their tags with a leading v (v0.7.1), while CHANGELOG.md
+            # writes every version without one (## 0.7.1), so a version given plain finds its old tag.
+            if ! gh release view "$tag" >/dev/null 2>&1 && gh release view "v${tag#v}" >/dev/null 2>&1; then tag=v${tag#v}; fi
+            version=${tag#v}
+            if ! grep -q "^## v\{0,1\}$version\( \|$\)" CHANGELOG.md; then echo "::warning::CHANGELOG.md has no section for $version, so the notes of $tag stay as they are."; continue; fi
+            sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$tag" --jq .sha)
+            date=$(gh release view "$tag" --json publishedAt --jq '.publishedAt[0:10]')
+            pdfs=$(gh release view "$tag" --json assets --jq '[.assets[].name | select(endswith(".pdf"))] | length')
             flag=; [ "$pdfs" -gt 0 ] || flag=--no-papers
-            python3 tools/release-notes.py --version "$v" --sha "$sha" --repo "$GITHUB_REPOSITORY" --date "$date" $flag ${PAGES_URL:+--pages-url "$PAGES_URL"} --output /tmp/notes.md
-            gh release edit "$v" --notes-file /tmp/notes.md
-            echo "Rewrote the notes of $v from CHANGELOG.md."
+            python3 tools/release-notes.py --existing --version "$tag" --sha "$sha" --repo "$GITHUB_REPOSITORY" --date "$date" $flag ${PAGES_URL:+--pages-url "$PAGES_URL"} --output /tmp/notes.md
+            gh release edit "$tag" --notes-file /tmp/notes.md
+            echo "Rewrote the notes of $tag from the section $version of CHANGELOG.md."
           done

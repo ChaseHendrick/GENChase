@@ -1,6 +1,6 @@
-name: Prior art
+name: Prior article
 description: A search, a nearest neighbor, or a claim that something has not been done.
-title: "[prior-art] "
+title: "[prior-article] "
 labels: []
 body:
   - type: markdown

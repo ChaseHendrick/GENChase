@@ -4,7 +4,7 @@ You can help without writing code: [make art and share a recipe](https://chasehe
 
 Fork the repository, edit the engine or one module, run the build and catalog update, run `npm test`, then open a pull request. Start with `src/shared/engine.js` for shared behavior or a file in `src/modules/` for a technique. [Draft contributor tasks](docs/CONTRIBUTOR-TASKS.md) offer small starting points.
 
-Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `index.html`, `src/module-manifest.json` and `dist/studio.html` are generated. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
+Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `index.html`, `src/module-manifest.json` and `dist/studio.html` are generated. If the work is a prior-article search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
 
 ## What belongs here
 
@@ -68,7 +68,7 @@ Checklist, as it applies:
 - [ ] a tab that prints: `node tools/export.js <id> 8 300`
 - [ ] a new tab: `node tools/index.js` (writes `TECHNIQUES.md`, `techniques.json`, `llms.txt`)
 - [ ] a new tab: a `familiarity` bucket, a credit line, no `Math.random`, a row in `RESEARCH.md`
-- [ ] a prior-art search or a "never been done" claim: the query and the conclusion in `RESEARCH.md`
+- [ ] a prior-article search or a "never been done" claim: the query and the conclusion in `RESEARCH.md`
 - [ ] a moved default: a `legacy:` declaration, and `node tools/recipe.js`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
 

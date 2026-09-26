@@ -14,8 +14,8 @@ GENChase: the companion repository does not carry `notes/`.
    the README, and numerical results are never stated as theorems.
 4. Sources read: every source that a proof step depends on is read in full; background citations are recorded in
    RESEARCH.md with how far each was read.
-5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
-   reached.
+5. Prior article review: the prior-article searches are logged in RESEARCH.md, and every novelty statement stays
+   within what they reached.
 6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
    only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
@@ -41,8 +41,8 @@ GENChase: the companion repository does not carry `notes/`.
   standard results (implicit function theorem, Hurwitz's theorem). O'Neil, Theor. Comput. Fluid Dyn. 24 (2010), read
   in full (Section 6, numerical); Aref et al., Vortex crystals (2003), Sects. II, VIII and IX read; O'Neil,
   Nonlinearity 26 (2013), abstract only, cited as background. RESEARCH.md records each.
-- [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the follow-up paper on collapse without
-  rotation", "sharpness of sqrt(3)/2 for every number of weak vortices"), and `prior-art-2026-09-25.md` in this
+- [x] **5. Prior article review.** RESEARCH.md, entries of 2026-09-25 ("prior article review for the follow-up paper on collapse
+  without rotation", "sharpness of sqrt(3)/2 for every number of weak vortices"), and `prior-articles-2026-09-25.md` in this
   folder. The paper claims no priority for translating configurations or for collapsing vortex sheets, and credits
   O'Neil for both.
 - [x] **6. Adversarial second reading.** The weak-cluster theorem (`referee-weak-clusters-2026-09-25.md` in this

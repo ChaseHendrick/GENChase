@@ -20,7 +20,7 @@
     "contract": "tools/modules/CONTRACT.md",
     "agents": "AGENTS.md",
     "research": "RESEARCH.md",
-    "addATab": "Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-art search."
+    "addATab": "Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-article search."
   },
   "techniques": [
     {

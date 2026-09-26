@@ -1,4 +1,4 @@
-# Outside-family prior-art hunt — P⋆ and F₅
+# Outside-family prior-article hunt — P⋆ and F₅
 
 **Date.** 2026-09-23 (America/New_York).  
 **Repo.** ChaseHendrick/GENChase.  
@@ -14,7 +14,7 @@
 **Excluded by design (already body-scored DOES NOT KILL):** Aref 1982, O’Neil 2007, Koiller 1985. This note does **not** re-read those.
 
 Related in-repo context (not re-derived here):  
-[`prior-art-kill-2026-09-23.md`](prior-art-kill-2026-09-23.md), PR #126 tip.
+[`prior-article-kill-2026-09-23.md`](prior-article-kill-2026-09-23.md), PR #126 tip.
 
 ---
 
