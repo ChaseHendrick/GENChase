@@ -1,7 +1,7 @@
 """Task 2 (RIGOROUS): validated integration of the unstable-manifold branch at a POINT speed c.
 
 Usage: python3 prove_ends.py <c-spec> [prec=600] [N=40] [dexp=40] [Tmax=175] [out.json]
-  c-spec: c1 | c2 | c1+<decimal offset> e.g. c1+5e-26 | a plain decimal speed.
+  c-spec: c1 | c2 | c1c2 (whole interval) | c1+<decimal offset> e.g. c1+5e-26 | a plain decimal speed.
 
 Chain (all in ball arithmetic, python-flint arb):
   1. eigen-decomposition of the rest Jacobian at c (eigsys.EigSystem; bracketed real roots of the quartic);
@@ -22,6 +22,7 @@ import manifold_cone
 def parse_c(spec):
     if spec == 'c1': return M.c1()
     if spec == 'c2': return M.c2()
+    if spec == 'c1c2': return M.c_interval()      # the whole speed interval as one ball
     if spec.startswith('c1+'): return M.c1() + arb(spec[3:])
     if spec.startswith('c1-'): return M.c1() - arb(spec[3:])
     if spec.startswith('c2+'): return M.c2() + arb(spec[3:])
@@ -47,6 +48,7 @@ def run(spec, prec=600, N=40, dexp=40, Tmax=175, snap_every=5.0, verbose=True):
     ev = {}; snaps = [dict(t=0.0, z=[x.str(60, radius=True) for x in z])]
     next_snap = snap_every
     closest = None
+    umax_lo = arb(-10); umax_hi = arb(-10)   # max U over the first pulse: lower bound (grid), upper bound (a priori boxes)
     nsteps = 0
     while float(t.mid()) < Tmax:
         h = hoe.choose_h(S, z, N, 1)
@@ -59,6 +61,8 @@ def run(spec, prec=600, N=40, dexp=40, Tmax=175, snap_every=5.0, verbose=True):
         # the a priori box B also encloses U over the whole step: use it for the event tests on U
         UB = B[0]+B[1]+B[2]+B[3]
         tt = float(t.mid())
+        if 'returned' not in ev:
+            umax_lo = umax_lo.max(arb(U.lower())); umax_hi = umax_hi.max(arb(UB.upper()))
         if 'fired' not in ev and U > arb('0.5'):
             ev['fired'] = dict(xi=tt, U=U.str(10))
         if 'fired' in ev and 'returned' not in ev and U < arb('-0.1'):
@@ -84,6 +88,7 @@ def run(spec, prec=600, N=40, dexp=40, Tmax=175, snap_every=5.0, verbose=True):
         if 'left' in ev and tt > ev['left']['xi'] + 10:
             break
     ev['closest_after_return'] = dict(xi=closest[0], max_abs_z_upper=arb(closest[1]).str(8), z=closest[2], U=closest[3]) if closest else None
+    ev['max_U_first_pulse'] = dict(lower=umax_lo.str(12), upper=umax_hi.str(12))
     res = dict(c=spec, c_ball=c.str(40, radius=True), prec=prec, order=N, delta='1e-%d' % dexp,
                manifold_cone=cone, eigenvalues=[l.str(30) for l in S.lam], w=[x.str(20) for x in S.w],
                events=ev, final=dict(xi=float(t.mid()), z=[x.str(20, radius=True) for x in z],

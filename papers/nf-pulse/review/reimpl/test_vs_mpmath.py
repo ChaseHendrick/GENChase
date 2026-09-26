@@ -1,6 +1,7 @@
 """Consistency test (not a proof): the rigorous boxes of prove_ends.py must contain an independent
 high-precision mpmath solution (x-coordinates, own Taylor integrator in shoot_mp.py) started at the point
-a = delta, b = 0, which lies in the initial box.  Usage: python3 test_vs_mpmath.py prove_c1.json"""
+a = delta, b = 0, which lies in the initial box.  Usage: python3 test_vs_mpmath.py prove_c1.json [dc]
+With dc (negative control) the mpmath speed is shifted by dc and containment must FAIL."""
 import sys, json
 import mpmath as mp
 mp.mp.dps = 110
@@ -17,6 +18,8 @@ res = json.load(open(sys.argv[1]))
 c_arb = parse_c(res['c'])
 Sy = EigSystem(c_arb)
 c = mp.mpf(c_arb.mid().str(110, radius=False))
+if len(sys.argv) > 2:   # negative control: perturb the speed of the mpmath solution
+    c += mp.mpf(sys.argv[2])
 k = 1/c
 delta = mp.mpf(res['delta'])
 # independent eigenvector in mpmath: same closed form, but computed in mpmath
