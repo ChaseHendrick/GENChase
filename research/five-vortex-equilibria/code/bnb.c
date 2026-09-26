@@ -281,7 +281,7 @@ static int krawczyk(const box *X, box *K) {
     for (int j = 0; j < D; j++) {
       iv mij = ivp(i == j ? 1.0 : 0.0);
       for (int k = 0; k < D; k++) mij = iv_sub(mij, iv_mul(ivp(C[i][k]), J[k][j]));
-      s = iv_add(s, iv_mul(mij, iv_sub(X->x[j], ivp(mv[j]))));
+      if (mutate != 5) s = iv_add(s, iv_mul(mij, iv_sub(X->x[j], ivp(mv[j]))));
     }
     K->x[i] = s;
   }
@@ -290,7 +290,7 @@ static int krawczyk(const box *X, box *K) {
 
 static void print_box(const char *tag, const box *b) {
   printf("%s", tag);
-  for (int i = 0; i < D; i++) printf(" %.17g %.17g", b->x[i].lo, b->x[i].hi);
+  for (int i = 0; i < D; i++) printf(" %a %a", b->x[i].lo, b->x[i].hi);
   printf("\n");
 }
 
@@ -421,6 +421,15 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--sym")) use_sym = 1;
   }
   if (N < 3 || N > MAXN) return 2;
+  if (getenv("BNB_PT")) { /* print E and J at a point (tests/test_jacobians.py) */
+    box b; char *p = getenv("BNB_PT");
+    for (int i = 0; i < D; i++) { double v = strtod(p, &p); b.x[i] = ivp(v); }
+    iv E[MAXD], J[MAXD][MAXD];
+    if (!evalE(&b, E, J)) return 1;
+    for (int i = 0; i < D; i++) printf("E %a %a\n", E[i].lo, E[i].hi);
+    for (int i = 0; i < D; i++) { for (int j = 0; j < D; j++) printf("J %d %d %a %a\n", i, j, J[i][j].lo, J[i][j].hi); }
+    return 0;
+  }
   if (getenv("BNB_BOX")) { /* debug one box: x1lo x1hi a2lo a2hi ... */
     box b; char *p = getenv("BNB_BOX");
     for (int i = 0; i < D; i++) { b.x[i].lo = strtod(p, &p); b.x[i].hi = strtod(p, &p); }
@@ -437,6 +446,10 @@ int main(int argc, char **argv) {
   box root;
   root.x[0] = ivr(x1lo, x1hi);
   for (int i = 1; i < D; i++) root.x[i] = ivr(-x1hi, x1hi);
+  if (getenv("BNB_ROOT")) { /* search a given box instead of the chart (controls) */
+    char *p = getenv("BNB_ROOT");
+    for (int i = 0; i < D; i++) { root.x[i].lo = strtod(p, &p); root.x[i].hi = strtod(p, &p); }
+  }
   /* breadth-first initial split into >= nsplit boxes */
   box *q = malloc(sizeof(box) * 4 * (nsplit + 4)); long nq = 1; q[0] = root;
   while (nq < nsplit) {

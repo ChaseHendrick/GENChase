@@ -147,7 +147,7 @@ boxes = []
 for fn in files:
     for line in open(fn):
         if line.startswith('CERT'):
-            t = [float(x) for x in line.split()[1:]]
+            t = [float.fromhex(x) if 'x' in x else float(x) for x in line.split()[1:]]
             boxes.append([(t[2 * i], t[2 * i + 1]) for i in range(D)])
         if line.startswith('UNRES'):
             raise SystemExit('unresolved box in ' + fn + ': the search did not complete')
