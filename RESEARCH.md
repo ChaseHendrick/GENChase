@@ -652,11 +652,11 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `growdomain` | Growing Domain | unseen | unseen (editorial) | never searched |
 | `spinice` | Spin Ice | rare | science only | never searched |
 | `vegetation` | Vegetation Bands | common | science only | never searched |
-| `aztec` | Arctic Circle | occasional | science only | never searched |
+| `aztec` | Arctic Circle | occasional | science only | finite-size constant searched 2026-09-26; implementation never searched |
 | `skin` | Skin Effect | occasional | science only | never searched |
 | `rmt` | Random Matrices | unseen | software search | skip unless new source |
 | `stealth` | Stealthy Points | rare | science only | never searched |
-| `lozenge` | Lozenge Tilings | unseen | unseen (editorial) | never searched |
+| `lozenge` | Lozenge Tilings | unseen | unseen (editorial) | finite-size constant searched 2026-09-26; implementation never searched |
 | `arago` | Arago Spot | occasional | science only | never searched |
 | `ust` | Spanning Trees | rare | science only | never searched |
 | `cppn` | Neural Patterns | common | science only | never searched |
@@ -805,7 +805,7 @@ The statements are in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate them he
 
 **`growdomain` (Growing Domain).** Crampin, Gaffney, Maini 1999 Turing on a growing domain. Familiarity "unseen" is editorial. No dedicated implementation search logged. Re-search: NO search yet; do not treat unseen as a negative result.
 
-**`lozenge` (Lozenge Tilings).** Propp-Wilson CFTP lozenge tilings, Cohn-Kenyon-Propp limit shape. Familiarity "unseen" is editorial. Aztec (arctic circle) is a sibling tab and was not separately searched either. Re-search: NO search yet; do not treat unseen as a negative result.
+**`lozenge` (Lozenge Tilings).** Propp-Wilson CFTP lozenge tilings, Cohn-Kenyon-Propp limit shape. Familiarity "unseen" is editorial. Aztec (arctic circle) is a sibling tab and was not separately searched either. The 2026-09-26 search below was for the finite-size constant of the frozen area, not for implementations. Re-search: NO implementation search yet; do not treat unseen as a negative result.
 
 **`aubry` (Aubry–André).** Aubry-Andre 1980 localization without disorder. Familiarity "unseen" is editorial. No dedicated implementation search logged. Re-search: NO search yet; do not treat unseen as a negative result.
 
@@ -1904,4 +1904,36 @@ Re-search: reopen when visualpde.com, simunauts.vercel.app, apps.apple.com or so
 - Queries: 'Aztec diamond expected area frozen polar regions finite size correction n^{4/3} Tracy-Widom mean' (opened Debin, de Kemmeter and Ruelle, arXiv:2301.00600, full text: n = 500, 100,000 samples, the 2^(-5/6) n^(1/3) edge scale; no mean shift or frozen-area correction discussed; Johansson, arXiv:math/0306216, listed, not reopened); 'rotor-router aggregation outradius minus inradius bounded conjecture simulation largest number of particles Friedrich Levine' (snippets only: the rim conjecture tested to at least 4e9 particles; the rotor tab caps at 5e4); 'computer-assisted proof Klausmeier vegetation traveling stripe rigorous numerics existence fixed parameters' (snippets only: Carter and Doelman prove existence in a singular-perturbation regime; nothing found at fixed parameters).
 - Result: nothing outside the vortex, Hodgkin-Huxley and neural-field work is close to a significant result. Every disagreement beyond an error bar has a documented or likely cause (SLE discretization, lozenge lattice effects at small depth, the module bugs listed in COMPARISON-AUDIT.md); the causticsea wavelength excess is likely an estimator bias (zero crossings counted along rows measure lambda/|cos theta| for oblique stripes). The best minor candidate is the explicit n^(-2/3) finite-size constant of the arctic regions (Aztec and lozenge) from the Tracy-Widom mean and the edge scale along the arctic curve, which would make those tabs' validation exact; no source found calls it open, and aztec, lozenge and rotor remain "never searched" in the per-tab table.
 - Re-search: no, unless a week passes.
+
+### 2026-09-26  finite-size constant of the arctic regions, Aztec diamond and hexagons  (session agent; `research/arctic-finite-size/`)
+
+- Why: the entry above named it the best minor candidate. The question is whether anyone has published the n^(-2/3) correction to the expected frozen (polar) area, or the n^(4/3) term of the area in absolute units, for uniform domino tilings of the Aztec diamond or lozenge tilings of an a x b x c hexagon, or an exact finite-n expected frozen area.
+- Queries (web, verbatim):
+  - 'Aztec diamond expected area polar regions finite-size correction n^{-2/3} Tracy-Widom mean'
+  - '"arctic circle" domino tilings "expected" frozen area finite n correction'
+  - '"Aztec diamond" "finite-size" arctic curve Tracy-Widom mean shift simulation'
+  - 'Prähofer Spohn "Domain wall fluctuations of the six-vertex model at the ice point" journal'
+  - 'lozenge tilings hexagon expected area frozen regions finite size correction Tracy-Widom mean'
+  - '"Aztec diamond" "temperate region" OR "disordered region" expected area exact finite n Krawtchouk Fredholm determinant'
+  - '"Tracy-Widom" "mean" correction arctic boundary tilings "n^{1/3}" expected position frozen boundary shift inward'
+  - 'Gorin "Lectures on random lozenge tilings" edge Airy "curvature" frozen boundary fluctuation scale'
+  - '"arctic circle" Aztec diamond simulation "area" polar regions n^{4/3} OR "n^{-2/3}" subleading'
+  - 'Ferrari Frings "Finite time corrections in KPZ growth models" arXiv'
+  - 'boxed plane partitions hexagon "Tracy-Widom" frozen boundary fluctuations Baik Kriecherbauer McLaughlin Miller hexagon scaling constant'
+  - '"random tiling" OR "domino tiling" "expected" "frozen region" area asymptotic expansion "Tracy-Widom" "-1.77"'
+  - '"polar regions" OR "frozen regions" "expected area" Aztec diamond OR "plane partitions" asymptotics correction'
+- Read in full text (arXiv PDF):
+  - Johansson, arXiv:math/0306216, and Johansson, arXiv:math/0011250. The latter gives the Krawtchouk edge scale on every line, eq. (2.72), proof sketched; the Hahn law, Theorem 4.1; and the hexagon polar zone, sec. 4.2.
+  - Prähofer and Spohn, arXiv:2305.09502, J. Phys. A 57 (2024) 025001. The closest item: eq. (7) and the remark "The Tracy-Widom distribution has a negative mean. Therefore Eq. (7) indicates that the actual first level line is slightly above the macroscopic edge profile"; Gamma_Aztec(x), eq. (24); the per-tile probability, eq. (28). They do not integrate it to a frozen area.
+  - Lyberg, Korepin and Viti, arXiv:2303.14669; Allegra, Dubail, Stéphan and Viti, arXiv:1512.02872; Stéphan, arXiv:1901.02770 and arXiv:2003.06339.
+  - Petrov, arXiv:1202.3901 (Theorem 8.1); Aggarwal and Huang, arXiv:2108.12874 (Theorem 2.10, the scale from slope and curvature).
+  - Chhita, Johansson and Young, arXiv:1212.5414 (Theorem 2.7).
+  - Jockusch, Propp and Shor, arXiv:math/9801068; Cohn, Elkies and Propp, arXiv:math/0008243; Cohn, Larsen and Propp, arXiv:math/9801059.
+  - Ferrari and Spohn, arXiv:cond-mat/0605406: no closed scale along the curve.
+  - Debin, de Kemmeter and Ruelle, arXiv:2301.00600: eq. (9) says only that the mean shift is of order n^(1/3).
+- Grepped: Duse and Metcalfe, arXiv:1412.6653 and arXiv:1507.00467; Borodin and Ferrari, arXiv:0804.3035.
+- Not reached: Gorin's lecture notes (2021); Baik, Kriecherbauer, McLaughlin and Miller (2007); Ferrari and Frings, arXiv:1104.2129 (abstract only); citation lists of Prähofer and Spohn and of Aggarwal and Huang.
+- Result: not found. The pointwise ingredients are published: the Airy scale along the curve (Johansson 2002, eq. 2.72; Prähofer and Spohn; Aggarwal and Huang; Petrov) and the observation that the TW mean shifts the line (Prähofer and Spohn). No source found integrates them into the n^(-2/3) constant of the expected frozen area, and none computes the expected frozen area exactly at finite n.
+- Derived and checked in `research/arctic-finite-size/REPORT.md`: C = -E[TW2] 2^(-2/3) Gamma(5/6)^2/Gamma(5/3) = 1.5747513 for the Aztec polar fraction; -0.8741793 (a closed form with 2F1(1/2, 5/3; 5/2; -3)) and -0.3403242 for the free fraction of the regular and 3:5:6 hexagons. The expansion is heuristic; exact finite-n values to order 2560 (Aztec) and side 768 (regular) fit the constants to 2e-5 and 3e-5. Logged in IDENTITIES.md as a candidate with unconfirmed priority.
+- Re-search: no, unless a week passes. Before any claim, check the citation lists of Prähofer and Spohn (2023) and Aggarwal and Huang (2021), and Gorin's book, for an expected-area computation.
 
