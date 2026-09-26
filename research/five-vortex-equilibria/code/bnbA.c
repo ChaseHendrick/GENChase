@@ -441,6 +441,7 @@ int main(int argc, char **argv) {
     if (fabs(A2 - 2 * A) > 1e-12 || A < 2) { fprintf(stderr, "A must be a multiple of 1/2, >= 2 (or give a:b)\n"); return 2; }
   }
   int nsplit = atoi(argv[3]), worker = atoi(argv[4]), nworkers = atoi(argv[5]);
+  if (worker < 0 || worker >= nworkers) { fprintf(stderr, "need 0 <= worker < nworkers\n"); return 2; }
   if (argc > 6) MINW = atof(argv[6]);
   for (int i = 7; i < argc; i++) {
     if (!strcmp(argv[i], "--sym")) use_sym = 1;

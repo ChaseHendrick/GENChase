@@ -436,14 +436,16 @@ vortices have exactly eight relative equilibria, all reflection symmetric:
 - As for N = 5, Faugere and Svartz's claim covers N = 6 implicitly, but no N = 6 list was found in
   print.
 - The last class has a distance multiset with threefold multiplicities (for example √6 six times).
-  It is nevertheless certified to have no rotation symmetry about its centre of vorticity: its
-  moduli come in pairs.
+  It is nevertheless certified to have no rotation symmetry about its centre of vorticity:
+  classify.py's exact rotation-group test gives order 1. Informally, its moduli (2.008, 1.687 and
+  0.788, each twice) rule out orders 3 and higher, and z -> -z does not map it to itself.
 
 Caveats specific to N = 6:
 - Only the first program has been run to completion here. The independent recount with bnbA
   (`code/run6A.sh`) was started and its status is in section 8.1.
-- The adversarial check (section 9) reviewed the N = 5 proof, not this run. The code is the same,
-  and the tests of section 7 cover N = 6 Jacobians and equations.
+- The adversarial check (section 9, second round) reran the classification on the committed N = 6
+  data, checked every row of the table, and recounted numerically with its own solver: 8 classes
+  and 3384 labelled, with the same indices (numerical).
 
 ### 8.1 Independent N = 6 recount
 
@@ -507,6 +509,27 @@ rounding, gcc `-frounding-math`, python-flint)."
    - Fixed: on failure, classify.py retries with the Jacobian hull over 2^7 sub-boxes, as the
      reviewer did by hand.
 5. Prior-art nuances. Added to section 2.
+
+**Second round (the fixes and N = 6).**
+
+Verdict on Theorem 2, verbatim: "reproduced, and I believe it is proved to the same standard as
+Theorem 1". Its own multistart (150,000 starts, numerical) found the same 8 classes, 3384 labelled
+copies and Morse indices 4, 3, 3, 2, 2, 1, 0, 0.
+
+On the fixes: "sound, with one real hole". A slice with worker >= nworkers searches nothing but was
+counted as covering its residue. The reviewer demonstrated this on N = 5; only the Euler assertion
+caught it.
+- Fixed: bnb, bnbA and bnbP refuse such a worker index, and check_complete asserts
+  0 <= worker < nworkers.
+
+Smaller points:
+- The exploratory skip of the completeness check was silent.
+  - Fixed: every classification now prints "completeness check passed" or a warning, and the
+    committed logs show the former.
+- An undecided stability was not asserted.
+  - Fixed: it is now asserted.
+- The class-7 sentence of section 8 was incomplete.
+  - Fixed.
 
 ## 10. Reproduce
 

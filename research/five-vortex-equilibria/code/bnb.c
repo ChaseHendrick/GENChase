@@ -413,6 +413,7 @@ int main(int argc, char **argv) {
   iv_init();
   N = atoi(argv[1]); D = 2 * N - 3;
   int nsplit = atoi(argv[2]), worker = atoi(argv[3]), nworkers = atoi(argv[4]);
+  if (worker < 0 || worker >= nworkers) { fprintf(stderr, "need 0 <= worker < nworkers\n"); return 2; }
   if (argc > 5) MINW = atof(argv[5]);
   for (int i = 6; i < argc; i++) {
     if (!strcmp(argv[i], "--no-cluster")) use_cluster = 0;

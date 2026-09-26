@@ -200,6 +200,7 @@ def check_complete(files):
                 if os.environ.get('CONTROL_ALLOW_MUTATION') != '1':   # set only by controls.py
                     assert d.get('mutate') == '0', 'a mutated (control) run'
                 assert int(d['N']) == N, 'wrong N'
+                assert 0 <= int(d['worker']) < int(d['nworkers']), 'worker index out of range (searches nothing)'
                 runs.append((int(d['nworkers']), int(d['worker'])))
     assert runs, 'no STAT line: the run did not finish'
     L = max(n for n, _ in runs)
@@ -212,6 +213,11 @@ def check_complete(files):
 
 if os.environ.get("EXPLORATORY_SKIP_COMPLETENESS") != "1":  # never set for the proof runs
     check_complete(files)
+    print('completeness check passed: the runs cover the whole chart')
+else:
+    print('WARNING: completeness check SKIPPED (exploratory run, not a proof)')
+if os.environ.get('CONTROL_ALLOW_MUTATION') == '1':
+    print('WARNING: mutated runs allowed (negative control, not a proof)')
 boxes = []
 for fn in files:
     for line in open(fn):

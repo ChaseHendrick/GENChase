@@ -1,0 +1,1 @@
+STAT root=chart mutate=0 nworkers=256 nsplit=4096 A=[0x1p+1,0x1p+1] sym=1 N=6 worker=0 partitions=202 boxes=9154880 t0_chart=765721 t2_H=2225574 t3_partition=1447170 t4_mv_krawczyk=138983 cert=0 unres=0
