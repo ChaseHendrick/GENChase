@@ -10,10 +10,12 @@ holds the verification programs and their output as the results are proved.
 The space-clamped Hodgkin-Huxley equations with Hodgkin and Huxley's own constants are the canonical model of the
 action potential, and their bifurcation structure is usually quoted from numerical computations. We prove parts of it
 with computer assistance in ball arithmetic. For every applied current between 0 and 200 uA/cm2 there is exactly one
-equilibrium; it loses stability at exactly two Hopf bifurcations, a subcritical one at J = 9.7754... uA/cm2 and a
-supercritical one at J = 154.52... uA/cm2, and between them it has exactly two eigenvalues with positive real part.
-Every statement holds for the leak potential 10.613 mV printed by Hodgkin and Huxley and for 10.5989..., the value
-that makes the resting current exactly zero as their Table 3 says it should. Planned: the coexistence of rest and
+equilibrium. It is asymptotically stable below a subcritical Hopf bifurcation and above a supercritical one, and
+between them it has exactly two eigenvalues with positive real part; no eigenvalue lies on the imaginary axis at any
+other current in that range. With the leak potential 10.613 mV printed by Hodgkin and Huxley the Hopf points are at
+J = 9.7754... and 154.5224... uA/cm2; with 10.5989..., the value that makes the resting current exactly zero as their
+Table 3 says it should, both move up by 0.3 times the difference, to 9.7797... and 154.5267... uA/cm2. The
+qualitative statements hold for every leak potential in [10.59, 10.62]. Planned: the coexistence of rest and
 repetitive firing between the fold of limit cycles and the lower Hopf point, and the chaos that Guckenheimer and
 Oliva (2002) found numerically near J = 7.86 and did not prove.
 

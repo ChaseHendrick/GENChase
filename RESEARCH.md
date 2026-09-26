@@ -1869,7 +1869,7 @@ Re-search: reopen when visualpde.com, simunauts.vercel.app, apps.apple.com or so
 
 - Read: Hodgkin and Huxley, J. Physiol. 117 (1952) 500-544, eq. (26), eqs. (12), (13), (20), (21), (23), (24) and Table 3 (column 2 read from the rendered page of a scanned copy; PMC and the publisher refused the download). Table 3: C_M = 1.0, V_Na = -115, V_K = +12, V_l = -10.613 with the footnote "Exact value chosen to make the total ionic current zero at the resting potential (V = 0)", g_Na = 120, g_K = 36, g_l = 0.3.
 - Finding: with the printed rate functions, the value that makes the resting current zero is 10.5989209693917... (magnitude), not 10.613; Guckenheimer and Oliva's 10.599 is this value. With 10.613 the resting current is -0.00422 uA/cm2. We have not seen this noted elsewhere, but did not search for it.
-- Result: `papers/hh-dynamics/` treats E_l as the interval [10.59, 10.62], so its statements hold for both values.
+- Result: `papers/hh-dynamics/` treats E_l as the interval [10.59, 10.62], so its qualitative statements hold for both values; the Hopf currents shift with E_l by 0.3 times the difference (9.7754... and 154.5224... at 10.613; 9.7797... and 154.5267... at 10.5989...), a correction from the independent reading of 2026-09-26.
 - Re-search: no.
 
 ### 2026-09-26  conservation of the pseudo-energy for vortex patches (stable-expansion, Appendix A)
