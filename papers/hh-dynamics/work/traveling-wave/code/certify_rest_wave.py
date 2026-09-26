@@ -178,7 +178,7 @@ def main():
     print('  Hurwitz determinants D2 = %s, D3 = %s' % (A['D2'].str(8), A['D3'].str(8)))
     print('  so dim W^u(rest) = 1 and dim W^s(rest) = 4 for every K in the ball')
     # negative control: a bracket that does not contain lambda_u must fail
-    bad = lemma_A(K, phi, EL, a * 1.2, b * 2)
+    bad = lemma_A(K, phi, EL, b, 2 * b)
     print('  negative control (bracket above lambda_u) rejected:', not bad['ok'])
     r = 1e-4
     B = lemma_B(K, phi, EL, r, (2e-9, 1e-7, 6e-9))
@@ -189,7 +189,6 @@ def main():
     print('  max |E_ij| = %.3e;  Lemma B holds: %s' % (B['Emax'], B['ok']))
     badB = lemma_B(K, phi, EL, r, (2e-11, 1e-9, 6e-11))
     print('  negative control (stable faces too thin) rejected:', not badB['ok'])
-    np.save('../data/T_%s.npy' % T, B['T'])
     ok = A['ok'] and B['ok'] and (not bad['ok']) and (not badB['ok'])
     print('\nALL CHECKS PASSED' if ok else '\nSOME CHECK FAILED')
     return ok

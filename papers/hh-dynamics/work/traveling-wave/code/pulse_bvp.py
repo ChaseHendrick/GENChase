@@ -124,7 +124,7 @@ def profile(sol, geom, n=4001):
 if __name__ == '__main__':
     T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
     W = H.Wave(T)
-    lo, hi, _, _ = H.bisect_K(W, 5, 30, tol=1e-12)
+    lo, hi, _, _ = H.bisect_K(W, 3, 30, tol=1e-12)
     g = shoot_guess(W, lo)
     sol, geom = pulse(W, lo, guess=g)
     print('T', T, 'status', sol.status, sol.message, 'K', sol.p[0], 'shooting K', lo, 'nodes', sol.x.size)
