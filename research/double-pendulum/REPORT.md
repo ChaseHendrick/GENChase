@@ -441,3 +441,24 @@ computation (arXiv:1303.4904) with validated complex-time integration.
   found give none. Our rigorous periodic orbit gives one certified non-resonant element (trace -3.8087, real
   period); a second, non-commuting element would have to come from a singularity of another type (five
   singular points near Im t = 2 did not close within 8 turns and were not resolved). Open.
+
+## 12. Update 2026-09-27: the manuscript, an interval of energies, and a rounding fix
+
+- The manuscript is `papers/double-pendulum/` (draft; its quality record is `papers/double-pendulum/notes/QUALITY.md`).
+  Its folder carries its own copy of the programs, the configurations and the reports (as `.txt`; the `*.log` files of
+  `data/` here are ignored by git).
+- Theorem 2 of the manuscript, computer-assisted: `prove` with the energy an interval, E in [-1e-10, 1e-10]
+  (`papers/double-pendulum/configs/E0_interval.cfg`, report `data/E0_interval.txt` there), passes all three stages
+  (y_E in [-1.46237309262, -1.46237309234], mu = 3.52384, crossing slope in [-20.744, -0.4104]). So Corollary 3 no
+  longer needs the unquantified persistence argument of Section 4.6. The same run with E in [-1e-9, 1e-9] fails stage 1
+  with the 1e-9 box.
+- Rounding fix in `code/horseshoe_check.cpp`: the entropy and return-time bounds were printed with `%.9f`, which rounds
+  to nearest, so the line "h_top(P) >= log r > 0.101608707" of Section 8 was rounded up (log r = 0.1016087069...,
+  r = 1.10695024501688...), and the return-time bound 7.355385352 could be rounded down by up to 5e-10. The program now
+  prints lower bounds rounded down and upper bounds rounded up; the statement of Theorem 2 above (log r > 0.1016086)
+  was already safe. The manuscript proves the bound with the explicit positive eigenvector v_N = 1,
+  v_{M_i} = r^-(22-i) of the graph, and states log r > 0.1016087 and at least 0.0138141 per unit time for the flow.
+- `code/run_all.sh` now creates `data/` before writing to it.
+- Bolotin and Negrini: further snippets and the pages the owner should obtain are in the update of
+  [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md); Szuminski and Kapitaniak read in full and the search for newer work are in
+  the update of [PRIOR-ART.md](PRIOR-ART.md).

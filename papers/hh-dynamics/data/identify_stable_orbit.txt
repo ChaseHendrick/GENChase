@@ -1,0 +1,115 @@
+Hodgkin-Huxley, J = 8: the stable orbit of Theorem 5(a) is the orbit Gamma(E_l) of Theorem 4
+  python-flint 0.9.0 on FLINT 3.6.0, 96 bits, Taylor order 20, remainder tolerance 1e-18 (scales [100, 1, 1, 1, 10]); Python 3.11.15
+  section {u = 20, du/dt > 0}, coordinates (m, n, h); E_l carried as a fifth state variable
+  check kinds: proof, control (must be refused), crosscheck (agreement with data/certify_bistability.txt)
+
+1. The fixed points of Theorem 5(a) (as stage 4 of certify_bistability.py computes them)
+  E_l = 10.613 (37 s):
+  [PASS] [proof] Krawczyk: K in int Z, so P has exactly one fixed point in Z, and it lies in K (every E_l in the ball) -- Z radius [1.00e-15 1.00e-15 1.21e-15]
+  [PASS] [proof] the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l ball)
+    Krawczyk box Z: centre m, n, h (float64: shortest decimal, then exact hex) = 0.24052906069702554, 0.42490470823005033, 0.3923103764166659
+          0x1.ec9a800b7359dp-3, 0x1.b31a38470ed60p-2, 0x1.91b9cfb25d36ep-2
+    radii (float64: shortest decimal, then exact hex) = 1e-15, 1e-15, 1.205213096353011e-15
+          0x1.203af9ee75616p-50, 0x1.203af9ee75616p-50, 0x1.5b6107b946805p-50
+    the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.203af9f000000p-50, 0x1.203af9f000000p-50, 0x1.5b6107c000000p-50
+    the fixed point lies in K:
+      m = [0.2405290606970255 +/- 8.02e-17]
+      n = [0.4249047082300503 +/- 7.80e-17]
+      h = [0.392310376416666 +/- 2.56e-16]
+  [PASS] [crosscheck] the enclosure K is the one printed by stage 4 of the committed run
+  E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] (42 s):
+  [PASS] [proof] Krawczyk: K in int Z, so P has exactly one fixed point in Z, and it lies in K (every E_l in the ball) -- Z radius [1.00e-15 1.00e-15 1.22e-15]
+  [PASS] [proof] the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l ball)
+    Krawczyk box Z: centre m, n, h (float64: shortest decimal, then exact hex) = 0.24053257124350794, 0.4249030773450643, 0.3923144964348002
+          0x1.ec9c5738e8c4dp-3, 0x1.b319cad4aad02p-2, 0x1.91bae42fbc988p-2
+    radii (float64: shortest decimal, then exact hex) = 1e-15, 1e-15, 1.2203050552023752e-15
+          0x1.203af9ee75616p-50, 0x1.203af9ee75616p-50, 0x1.5fba9ec429606p-50
+    the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.203af9f000000p-50, 0x1.203af9f000000p-50, 0x1.5fba9ec800000p-50
+    the fixed point lies in K:
+      m = [0.2405325712435079 +/- 8.05e-17]
+      n = [0.4249030773450643 +/- 6.70e-17]
+      h = [0.392314496434800 +/- 3.56e-16]
+  [PASS] [crosscheck] the enclosure K is the one printed by stage 4 of the committed run
+  E_l = 10.599 (45 s):
+  [PASS] [proof] Krawczyk: K in int Z, so P has exactly one fixed point in Z, and it lies in K (every E_l in the ball) -- Z radius [1.00e-15 1.00e-15 1.22e-15]
+  [PASS] [proof] the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l ball)
+    Krawczyk box Z: centre m, n, h (float64: shortest decimal, then exact hex) = 0.2405325514734029, 0.4249030863903386, 0.39231447350858467
+          0x1.ec9c54919d160p-3, 0x1.b319cb701059ap-2, 0x1.91bae2a5de089p-2
+    radii (float64: shortest decimal, then exact hex) = 1e-15, 1e-15, 1.2202219726790113e-15
+          0x1.203af9ee75616p-50, 0x1.203af9ee75616p-50, 0x1.5fb47d61bb23bp-50
+    the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.203af9f000000p-50, 0x1.203af9f000000p-50, 0x1.5fb47d6800000p-50
+    the fixed point lies in K:
+      m = [0.2405325514734029 +/- 5.09e-17]
+      n = [0.4249030863903386 +/- 7.35e-17]
+      h = [0.392314473508585 +/- 5.06e-16]
+  [PASS] [crosscheck] the enclosure K is the one printed by stage 4 of the committed run
+  stage-4b predictor: zbar(10.613) = [0.24052906069702554, 0.42490470823005033, 0.3923103764166659], dz*/dE_l = [-0.000249  0.000117 -0.000295]
+  [PASS] [crosscheck] the predictor is the one printed by stage 4b of the committed run
+
+2. The boxes of Theorem 4 on the pieces that contain the three values (ball_stable.prove_piece, as stage 4b)
+  pieces: [10.5985, 10.5990], [10.5990, 10.5995], [10.6125, 10.6130], [10.6130, 10.6135]
+  4 pieces with 2 worker processes, 119 s (wall)
+
+    E_l in [10.5985, 10.5990]: P(Z) in int Z True, runs cover Z x piece True, sup||DP||_inf <= 0.5444, T in [16.011480647, 16.011620105], box radius ~4.6e-07
+      box centre m, n, h (float64: shortest decimal, then exact hex) = 0.24053261398475748, 0.424903057750861, 0.39231454617501793
+          0x1.ec9c5cf57cc69p-3, 0x1.b319c9840a988p-2, 0x1.91bae78644630p-2
+      box radii (float64: shortest decimal, then exact hex) = 4.612286954863709e-07, 2.2905982277610093e-07, 3.9909177113051086e-07
+          0x1.ef3d941480000p-22, 0x1.ebe6f82400000p-23, 0x1.ac8582bf00000p-22
+      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.ef3d941800000p-22, 0x1.ebe6f82800000p-23, 0x1.ac8582c000000p-22
+  [PASS] [proof] piece [10.5985, 10.5990]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated a set containing Z x piece), so P_E has exactly one fixed point in Z
+  [PASS] [crosscheck] the line of this piece is the one printed by stage 4b of the committed run
+
+    E_l in [10.5990, 10.5995]: P(Z) in int Z True, runs cover Z x piece True, sup||DP||_inf <= 0.5445, T in [16.011345899, 16.011485349], box radius ~4.6e-07
+      box centre m, n, h (float64: shortest decimal, then exact hex) = 0.2405324889103734, 0.42490311498328254, 0.392314401110979
+          0x1.ec9c4c2bf6dbdp-3, 0x1.b319cd5b49729p-2, 0x1.91baddca15ff1p-2
+      box radii (float64: shortest decimal, then exact hex) = 4.612258690805948e-07, 2.2912107028316697e-07, 3.991617541498904e-07
+          0x1.ef3ccd3080000p-22, 0x1.ec08a3f600000p-23, 0x1.ac98bf5d00000p-22
+      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.ef3ccd3800000p-22, 0x1.ec08a3f800000p-23, 0x1.ac98bf6000000p-22
+  [PASS] [proof] piece [10.5990, 10.5995]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated a set containing Z x piece), so P_E has exactly one fixed point in Z
+  [PASS] [crosscheck] the line of this piece is the one printed by stage 4b of the committed run
+
+    E_l in [10.6125, 10.6130]: P(Z) in int Z True, runs cover Z x piece True, sup||DP||_inf <= 0.5421, T in [16.007710470, 16.007849688], box radius ~4.6e-07
+      box centre m, n, h (float64: shortest decimal, then exact hex) = 0.24052912283329245, 0.4249046789290631, 0.3923104502022588
+          0x1.ec9a88626fbc1p-3, 0x1.b31a364fabbb3p-2, 0x1.91b9d4a5fdaf1p-2
+      box radii (float64: shortest decimal, then exact hex) = 4.5558233727205355e-07, 2.307508006338388e-07, 4.022776167178499e-07
+          0x1.e92d84f180000p-22, 0x1.ef88981e00000p-23, 0x1.aff13ab300000p-22
+      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.e92d84f800000p-22, 0x1.ef88982000000p-23, 0x1.aff13ab800000p-22
+  [PASS] [proof] piece [10.6125, 10.6130]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated a set containing Z x piece), so P_E has exactly one fixed point in Z
+  [PASS] [crosscheck] the line of this piece is the one printed by stage 4b of the committed run
+
+    E_l in [10.6130, 10.6135]: P(Z) in int Z True, runs cover Z x piece True, sup||DP||_inf <= 0.5421, T in [16.007575925, 16.007715136], box radius ~4.6e-07
+      box centre m, n, h (float64: shortest decimal, then exact hex) = 0.2405289985679651, 0.42490473754334646, 0.39231030260854216
+          0x1.ec9a77b4b65b2p-3, 0x1.b31a3a3ea8136p-2, 0x1.91b9cabe59a74p-2
+      box radii (float64: shortest decimal, then exact hex) = 4.5556610966945854e-07, 2.3082121380912923e-07, 4.0238134974002193e-07
+          0x1.e9290f0700000p-22, 0x1.efaf4de400000p-23, 0x1.b00dbe4300000p-22
+      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb's radius format, are exactly (hex) 0x1.e9290f0800000p-22, 0x1.efaf4de800000p-23, 0x1.b00dbe4800000p-22
+  [PASS] [proof] piece [10.6130, 10.6135]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated a set containing Z x piece), so P_E has exactly one fixed point in Z
+  [PASS] [crosscheck] the line of this piece is the one printed by stage 4b of the committed run
+
+3. K of Theorem 5(a) in the interior of the box of every piece that contains the value
+  [PASS] [proof] E_l = 10.613 lies in the piece [10.6125, 10.6130], and K lies in the interior of its box (centre of K about 0.18 box radii from the centre of the box)
+  [PASS] [proof] E_l = 10.613 lies in the piece [10.6130, 10.6135], and K lies in the interior of its box (centre of K about 0.18 box radii from the centre of the box)
+  [PASS] [proof] E_l = 10.613 lies in 2 piece(s) of the list
+  [PASS] [proof] E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] lies in the piece [10.5985, 10.5990], and K lies in the interior of its box (centre of K about 0.12 box radii from the centre of the box)
+  [PASS] [proof] E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26] lies in 1 piece(s) of the list
+  [PASS] [proof] E_l = 10.599 lies in the piece [10.5985, 10.5990], and K lies in the interior of its box (centre of K about 0.18 box radii from the centre of the box)
+  [PASS] [proof] E_l = 10.599 lies in the piece [10.5990, 10.5995], and K lies in the interior of its box (centre of K about 0.18 box radii from the centre of the box)
+  [PASS] [proof] E_l = 10.599 lies in 2 piece(s) of the list
+
+4. Negative controls (each must be refused)
+  [PASS] [control] NEG E_l = 10.613: K tested against the box of the piece [10.5985, 10.5990], which does not contain E_l (centre of K about 10.4 box radii away): the inclusion must fail
+  [PASS] [control] NEG E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26]: K tested against the box of the piece [10.6125, 10.6130], which does not contain E_l (centre of K about 10.1 box radii away): the inclusion must fail
+  [PASS] [control] NEG E_l = 10.599: K tested against the box of the piece [10.6125, 10.6130], which does not contain E_l (centre of K about 10 box radii away): the inclusion must fail
+  [PASS] [control] NEG E_l = 10.613: K tested against the box of its own piece [10.6125, 10.6130] with the radii shrunk to 0.1 (centre of K about 0.18 box radii from the centre of the box): the inclusion must fail
+  [PASS] [control] NEG E_l = E_l* = [10.5989209693916785221988785 +/- 6.21e-26]: K tested against the box of its own piece [10.5985, 10.5990] with the radii shrunk to 0.1 (centre of K about 0.12 box radii from the centre of the box): the inclusion must fail
+  [PASS] [control] NEG E_l = 10.599: K tested against the box of its own piece [10.5985, 10.5990] with the radii shrunk to 0.1 (centre of K about 0.18 box radii from the centre of the box): the inclusion must fail
+
+  [PASS] [proof] every decimal bound printed with outward rounding (12 of them) re-read as an exact rational lies on the correct side of its ball
+
+  RESULT (computer-assisted).  At J = 8 and E_l = 10.613, every E_l in the ball of E_l* above, and E_l =
+  10.599, the fixed point of Theorem 5(a) on {u = 20, du/dt > 0} lies in the box of Theorem 4 of every piece
+  that contains E_l, in which P_E has exactly one fixed point: the stable orbit Gamma_s of Theorem 5(a) is
+  the orbit Gamma(E_l) of Theorem 4.  The boxes are printed above.
+
+33 checks passed: 19 proof checks, 6 negative controls, 8 cross-checks
+run time 244.1 s

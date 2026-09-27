@@ -1,7 +1,7 @@
 # Independent reimplementation: nf-pulse
 
-Written from the equations only. Nothing in `papers/nf-pulse/code/` was read, imported or copied
-(only `papers/nf-pulse/README.md` was read, for the claim). The report is `../REIMPL.md`.
+Written from the equations only. Nothing in `code/` was read, imported or copied
+(only `README.md` was read, for the claim). The report is `../REIMPL.md`.
 
 Requirements: python-flint 0.9.0 (arb), mpmath 1.3.0. No other packages.
 

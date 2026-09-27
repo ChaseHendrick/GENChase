@@ -62,7 +62,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics. The first specializes Gröbli’s 1877 spiral coefficient and is the ratio of the rates in Kimura (1987), Eq. (4.4); priority of the optimized minima remains unconfirmed. See identities/NOVELTY-AUDIT.md and identities/ORIGINALITY-FOLLOWUP.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
+Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics and proved in the paper Minimal Winding in the Self-Similar Collapse of Point Vortices (papers/minimal-winding). The first specializes Gröbli’s 1877 spiral coefficient and is the ratio of the rates in Kimura (1987), Eq. (4.4); priority of the optimized minima remains unconfirmed. See identities/NOVELTY-AUDIT.md and identities/ORIGINALITY-FOLLOWUP.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
@@ -91,6 +91,7 @@ A folder-based studio of seeded scientific simulations. The shared engine loads 
 - IDENTITIES.md: derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
 - identities/ORIGINALITY-FOLLOWUP.md: the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
 - identities/NOVELTY-AUDIT.md: evidence and limits for all five candidates.
+- papers/minimal-winding/: the paper that proves the vortex-collapse formulas of IDENTITIES.md, with the classical credits.
 - RESEARCH.md: what was searched, what was not. Read before a prior-article search. Do not re-run a search marked skip.
 
 ## Recipe hash

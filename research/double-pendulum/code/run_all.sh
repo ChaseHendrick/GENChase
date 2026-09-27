@@ -5,6 +5,7 @@ set -e
 HERE=$(cd "$(dirname "$0")" && pwd); ROOT=$HERE/..
 sh "$HERE/build.sh"
 BIN=${BIN:-$ROOT/_bin}; NT=${NT:-$(nproc)}
+mkdir -p "$ROOT/data"
 python3 "$HERE/check_field.py" > "$ROOT/data/check_field.log" 2>&1; tail -1 "$ROOT/data/check_field.log"
 status=0
 for c in E0 Ehalf Eminushalf; do

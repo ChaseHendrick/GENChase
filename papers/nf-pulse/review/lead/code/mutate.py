@@ -6,9 +6,9 @@
 #
 # HOW TO RUN (from anywhere; never runs anything inside the repository tree):
 #
-#     python3 papers/nf-pulse/review/lead/code/mutate.py <scratch_dir> [mutation_id ...]
+#     python3 review/lead/code/mutate.py <scratch_dir> [mutation_id ...]
 #
-# For each mutation it copies papers/nf-pulse (without __pycache__ and without review/) to
+# For each mutation it copies the paper's folder (without __pycache__ and without review/) to
 # <scratch_dir>/<mutation_id>/, applies ONE patch by exact string replacement (each old string must occur
 # exactly once, or the mutation is reported as BADPATCH), runs `sh code/run_all.sh` in the copy with a
 # 900 s timeout, and records which of the 15 checks print FAIL.  The table is printed and written to
@@ -28,7 +28,7 @@
 import os, re, shutil, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.normpath(os.path.join(HERE, '..', '..', '..'))       # papers/nf-pulse
+SRC = os.path.normpath(os.path.join(HERE, '..', '..', '..'))       # the paper's folder
 
 LABELS = ['R', 'R-neg', 'M-c1', 'M-c2', 'M-int', 'M-neg', 'B', 'B-neg', 'B-iv', 'J',
           'P-int', 'P-c1', 'P-c2', 'N-same', 'N-far']

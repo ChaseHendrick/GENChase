@@ -98,6 +98,13 @@ def worker(args):
 
 
 if __name__ == '__main__':
+    # As the check scripts of this paper's folder do: refuse python -O and PYTHONOPTIMIZE, which would remove the
+    # assertions that chain.py still uses as gates, and clear every NF_* variable, which would change parameters,
+    # blocks, precision, order or tolerances of the programs that chain.py imports.
+    if not __debug__ or os.environ.get('PYTHONOPTIMIZE'):
+        raise SystemExit('refusing to run under python -O or with PYTHONOPTIMIZE set')
+    for v in [k for k in os.environ if k.startswith('NF_')]:
+        del os.environ[v]
     ap = argparse.ArgumentParser()
     ap.add_argument('a', type=float); ap.add_argument('b', type=float)
     ap.add_argument('--w0', type=float, default=4e-4)

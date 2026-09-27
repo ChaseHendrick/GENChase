@@ -1,0 +1,66 @@
+{
+  "test": "tools/talbot-print-state.js",
+  "command": "node tools/talbot-print-state.js --write",
+  "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+  "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+  "phase": "TAU*n*u - PI*n*n*z",
+  "inches": 8,
+  "dpi": 300,
+  "aspect": 1.15,
+  "expected": {
+    "width": 2087,
+    "height": 2400,
+    "wIn": 6.9565217391304355,
+    "hIn": 8
+  },
+  "png": {
+    "width": 2087,
+    "height": 2400,
+    "bytes": 9370382,
+    "note": "2,087 × 2,400 px, 8.9 MB. Rendered at print pixels with 2× supersampling. If the download button does nothing, right-click the image and save it."
+  },
+  "screen": {
+    "before": {
+      "width": 283,
+      "height": 326
+    },
+    "after": {
+      "width": 199,
+      "height": 229
+    }
+  },
+  "regenerate": {
+    "equal": true,
+    "changedBytes": 0,
+    "maxDelta": 0,
+    "width": 283,
+    "height": 326
+  },
+  "afterExport": {
+    "fixedChanged": 0,
+    "fixedMax": 0,
+    "screenComparable": false,
+    "screenChangedBytes": null,
+    "recipeUnchanged": true
+  },
+  "parametersUnchanged": true,
+  "status": "slits 8 z ≤ 1.5 d2/λ seed talbot-1836",
+  "injected": {
+    "width": 240,
+    "height": 276,
+    "paramsSame": true,
+    "reinjectChanged": 0,
+    "reinjectMaxDelta": 0,
+    "corruptChanged": 64738,
+    "corruptPixels": 66240,
+    "corruptMaxDelta": 255,
+    "corruptMeanDelta": 60.65042270531401,
+    "corruptFraction": 0.9773248792270531
+  },
+  "environment": {
+    "node": "v22.23.3",
+    "chromium": "153.0.8010.12",
+    "platform": "linux"
+  },
+  "passed": true
+}

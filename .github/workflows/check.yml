@@ -164,6 +164,14 @@ jobs:
           python3 tools/release-notes.py --self-test
           node tools/build.js --check
           node tools/science.js
+          node tools/ssh-science.js
+          node tools/exceptional-science.js
+          node tools/meissner-science.js
+          node tools/arago-science.js
+          node tools/skin-science.js
+          node tools/talbot-science.js
+          node tools/spinice-science.js
+          node tools/hofstadter-science.js
           node tools/aubry-science.js
           node tools/geometry-science.js
           node tools/breather-science.js
@@ -176,6 +184,7 @@ jobs:
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
           node tools/print-smoothing-check.js
+          node tools/sharp-sampling-check.js
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
           node tools/three-vortex-custom-check.js
@@ -220,9 +229,24 @@ jobs:
       - name: Reuleaux geometry and actual print preservation
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/reuleaux-science.js
+      - name: SSH export preserves the mode field
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/ssh-print-state.js
+      - name: Meissner export preserves the Jacobi field
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/meissner-print-state.js
       - name: PDE print exports preserve numerical state
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/pde-print-state.js
+      - name: Exceptional-point dimer print preserves state
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/exceptional-print-state.js
+      - name: Hatano-Nelson open-chain print preserves mode weights
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/skin-print-state.js
+      - name: Hofstadter Chern paint and print path
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/hofstadter-print-state.js
       - name: Seed box, hash, shortcuts, dock, formula chooser
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
@@ -241,6 +265,9 @@ jobs:
       - name: Provenance in every export, research data and the status badge
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/provenance-check.js
+      - name: Talbot carpet export preserves the plate
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/talbot-print-state.js
       - name: Fisher-KPP data export metadata
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/fisher-kpp-metadata-check.js

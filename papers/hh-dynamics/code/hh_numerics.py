@@ -201,7 +201,7 @@ def run(log=print, J=8.0):
             ' %.4f), unstable multiplier %.4f' % (Jn, T, a, b, b - a, m))
     log('    this unstable orbit shrinks towards the equilibrium as J -> %.4f from below and has a multiplier > 1:'
         ' the first Hopf bifurcation is subcritical (numerical evidence here; proved by l1 > 0 in'
-        ' papers/hh-dynamics/code/certify_equilibria_hopf.py)' % hp[0][0])
+        ' code/certify_equilibria_hopf.py)' % hp[0][0])
     res['unstable_branch'] = br
     for nm in res['fold_by_EL']:
         log('  E_l = %-7s: bistability window (numerical) %.4f < J < %.4f' % (

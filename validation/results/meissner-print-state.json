@@ -1,0 +1,54 @@
+{
+  "pass": true,
+  "date": "2026-09-27",
+  "source": "src/modules/meissner.js",
+  "sourceSha256": "18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7",
+  "command": "node tools/meissner-print-state.js --write",
+  "scope": "Actual meissner exportPNG at 2400x2400 (8 in, 300 ppi) for the default recipe and the Expelled preset. Float32 field words, centre metric, Bessel reference, cells and settings preserved. Deterministic regenerate. Wrong width and a post-export field mutation rejected.",
+  "criteria": "Zero changed field words. Exact 2400x2400 PNG larger than 1000 bytes. Luminance spread above 12/255 on a 64px downsample. Wrong width and post-export mutation fail the same predicate.",
+  "rows": [
+    {
+      "fixture": "default",
+      "cells": [
+        160,
+        160
+      ],
+      "center": 0.8351196755739126,
+      "bessel": 0.04387181394343033,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 108370,
+        "changedWords": 0,
+        "nonblank": true
+      },
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    },
+    {
+      "fixture": "expel",
+      "cells": [
+        160,
+        160
+      ],
+      "center": 0.7087246222134312,
+      "bessel": 0.009407969797034689,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 110753,
+        "changedWords": 0,
+        "nonblank": true
+      },
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    }
+  ],
+  "limitations": "State preservation and dimensions only. The default plate is not the converged London solution; that claim is tools/meissner-science.js. No calibrated color and no claim about every slider."
+}

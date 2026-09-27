@@ -22,6 +22,10 @@ Parameters: beta = 12, theta = 1/4, eps = 3/20, gamma = 0, c in [c1, c2] from br
 import json, mpmath
 from mpmath import iv
 import bracket as br
+# Refuse python -O (or PYTHONOPTIMIZE): it removes assert statements, and some programs of this folder still use
+# assertions as gates of a proof.  Without -O this test does nothing.
+if not __debug__:
+    raise SystemExit('refusing to run under python -O (PYTHONOPTIMIZE): assertions are gates of the proofs here')
 iv.dps = 60
 res = json.load(open('../data/block_certificate.json'))
 Tf = res['T']

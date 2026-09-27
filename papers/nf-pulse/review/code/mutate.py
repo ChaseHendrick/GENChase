@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Mutation driver for the nf-pulse certificate chain (code review, 2026-09-26).
 
-For each mutation: copy papers/nf-pulse (code/ and data/ only) to <scratch>/mut/<name>/nf-pulse, apply ONE
+For each mutation: copy the paper's folder (code/ and data/ only) to <scratch>/mut/<name>/nf-pulse, apply ONE
 textual edit (each `old` must occur exactly once in its file), run code/run_all.sh in the copy and record
 which of the 15 checks print FAIL.  The real folder is never touched.
 
@@ -17,7 +17,7 @@ Writes results.json and results.md next to this file.
 import json, os, re, shutil, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.abspath(os.path.join(HERE, '..', '..'))                 # papers/nf-pulse
+SRC = os.path.abspath(os.path.join(HERE, '..', '..'))                 # the paper's folder
 SCRATCH = os.environ.get('MUT_DIR', '/tmp/claude-0/-home-user-GENChase/6b4e32ba-2c25-5f83-9afb-b1a263f75129/scratchpad/mut')
 
 SERIAL = ('for w in interval c1 c2; do NF_TAG=_final python3 prove_pulse.py $w 53 > $L/final_$w.log 2>&1 & done; wait',

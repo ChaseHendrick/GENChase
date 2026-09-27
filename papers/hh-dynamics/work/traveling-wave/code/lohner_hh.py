@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """A C^0 Lohner-type interval Taylor integrator for the Hodgkin-Huxley wave ODE, in python-flint ball arithmetic.
 
-Adapted from papers/nf-pulse/code/lohner.py (same set representation and step), with the Taylor jets of hhjet.py.
+Adapted from code/lohner.py of the author's nf-pulse paper (same set representation and step), with the Taylor jets of hhjet.py.
 
 Set:  X = xbar + C r0 + B r,  r0 in R0, r in R  (xbar a point, C 5 x m, B 5 x 5 nearly orthogonal, R0 and R boxes).
 One step of length h, order p:

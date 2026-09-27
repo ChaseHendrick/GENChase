@@ -1,5 +1,7 @@
 # Polygon collapse: a sharp bound for every order
 
+> **2026-09-27.** This candidate is proved, with the classical credits, as Proposition 2 of the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* ([`papers/minimal-winding/`](../papers/minimal-winding/), release 2.2.0). The large-order asymptotic sketched below now has a full proof there (Section 5): F_n = (1/4) e^√(n/2) (1 + 29/(12√(2n)) + 265/(576n) + O(n^(−3/2))).
+
 See the [audit of all five candidates](NOVELTY-AUDIT.md): historical priority is unconfirmed for the earlier three results as well. The general polygon bound includes the parallelogram and double-triangle cases.
 
 **Candidate fifth result, derived with AI assistance on 2026-09-20. The formula and its minimum are proved; historical novelty is unconfirmed.** This generalizes the [double-triangle result](double-triangle.md). The underlying two-ring collapse for arbitrary polygon order was already established by Koiller et al. (1985), §11. The prospective contribution is the simplified product and its explicit sharp minimum, not a new collapse family.

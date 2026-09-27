@@ -1,10 +1,10 @@
 # Code review of the nf-pulse certificate chain (adversarial, 2026-09-26)
 
-Scope: `papers/nf-pulse/code/` (nfcore.py, lohner.py, certify_rest.py, manifold.py, block.py, block_check_iv.py,
+Scope: `code/` (nfcore.py, lohner.py, certify_rest.py, manifold.py, block.py, block_check_iv.py,
 prove_pulse.py, run_all.sh) and how `run_all.sh` turns their output into its 15 OK/FAIL lines. Method: a line-by-line
 reading, then 39 single-edit mutations each run through the whole `run_all.sh` in a scratch copy, then a separate,
 more sensitive containment test of the integrator run on the integrator mutations. Nothing outside
-`papers/nf-pulse/review/` was modified; every run was made in a copy under the session scratchpad.
+`review/` was modified; every run was made in a copy under the session scratchpad.
 
 Scripts and raw results (all in `review/code/`):
 

@@ -1,0 +1,15 @@
+system: coupled double pendulum, g = [1, 1], E = [0, 0], f = P^1 shifted by 1*2pi in t2
+stage 1 (Krawczyk): B = ([-1.0000000000000001e-09, 1.0000000000000001e-09], [-1.462373093479858, -1.4623730914798578])
+  K = ([-1.7898326464478453e-12, 1.7898490340875881e-12], [-1.4623730924803009, -1.4623730924794167])  K in int B: yes
+  G(K) in B (so the fixed point is G-symmetric, t2 = 0): yes
+  over B: trace Df in [-3.8086824279981935, -3.8086303088277877], det Df in [0.99991236126472849, 1.0000876387969653], return time of f in [2.9534890074349835, 2.9534890133549041]
+stage 2: N0 = p0 + A([-2.5e-05,2.5e-05] x [-4e-08,4e-08]), alpha = 0.001, grid 1000 x 1, p local = ([-1.6857632146822439e-12, 1.688788799120556e-12], [-1.6887802253569673e-12, 1.6857717884458407e-12])
+  min over N0 of |(M(1,t))_x| = 3.52385 (mu), sign -, max |(M(1,t))_y|/|(M(1,t))_x| = 0.000364323 (< alpha = 0.001), failures 0
+stage 3: R = [-1.887e-05, -1.8862e-05] x [-1.8871690469014162e-08, 1.887168746057725e-08] (local), k = 9 (f~^k = P^9)
+  image of edge x = x1: t2 in [0.0015190638462811989, 0.0015219298770077216]
+  image of edge x = x2: t2 in [0.00035927158554471816, 0.00036215101382452985]
+  target line t2 = 1*pi: edges on opposite sides: NO
+FAIL: edges not separated by m*pi
+  pieces checked 32, pieces whose image may meet t2 = m*pi: 0, unresolved 0
+FAIL: transversality at the crossing
+RESULT: FAIL (2)

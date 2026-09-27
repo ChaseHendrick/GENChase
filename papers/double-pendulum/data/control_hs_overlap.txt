@@ -1,0 +1,7 @@
+classical double pendulum, E = [0, 0]; 3 h-sets, 1 covering relations to check (pieces per edge 16)
+  M1   => M2   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  NOT DISJOINT: M1 M1o
+pairwise disjointness of the 3 h-sets on the cylinder: FAIL
+transition graph from the 1 verified relations: min_i (A v)_i / v_i >= (no bound) for a positive v, so the spectral radius is at least that: NO
+  no entropy bound
+RESULT: FAIL
