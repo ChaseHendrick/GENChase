@@ -213,3 +213,83 @@ witnesses" unless it is read as one audited primary kernel plus an independent c
 7. HH stability (in progress on hh-stability).
 8. tstrip, then rounded constants, then the bistability interval.
 9. Edges (fold enclosures); a second integrator; the profile-as-shape method; meromorphic search.
+
+# Part 3: reductions, classical numbers, basins, reuse (Grok's fourth and fifth lists, 2026-09-27)
+
+## Corrections first
+
+- **"The spike is born at the Hopf."** At the 1952 parameters, the Hopf point hh-dynamics encloses (J_H1 in
+  [9.7796379953931263, 9.7796379953931264]) is subcritical. Its small cycles are unstable, and that branch turns
+  at a fold of cycles (numerically near J = 6.26 in hh-dynamics) into the stable large spike branch. So the
+  continuation to prove runs from the Hopf point along the unstable branch, through the fold, to the stable spike
+  at J = 8. Through the fold it must be parametrized by arclength, not by J. If the box breaks, the story changes,
+  as Grok says.
+- **"Area preservation turns three energies into an interval."** Area preservation is not what is missing. The
+  modern Smale-Birkhoff theorem (for example Katok and Hasselblatt, Thm 6.5.5) needs no genericity or
+  non-resonance, and it gives a horseshoe for an iterate from any transversal homoclinic point. So `thm:interval`
+  already gives a horseshoe for every E in its interval, once that theorem is read in full: the owner has only a
+  preview of the book.
+  - What the modern theorem does not give is our explicit entropy bounds; those stay at the three energies.
+  - The interval itself is only 2e-10 wide, and widening it is computation.
+- **"The pulse integrator is only C^0."** Check this before relying on it. The interval run carries d(zeta_1)/dK,
+  and the stability plan integrates the eigenvalue system alongside the pulse, which needs only a C^0 enclosure of
+  the pulse. Taylor models (Berz and Makino) or a C^1 Lohner method (as in CAPD) are worth it only where wrapping
+  limits a proof.
+- **"Most measured kernels do not reduce to ODEs."** Kernels that are sums of exponentials, which have rational
+  Fourier transforms, including differences of exponentials ("Mexican hats"), reduce to larger ODE systems. That is
+  a cheap first generalization. Gaussian and other general kernels need the function-space ("profile as a shape")
+  method.
+
+## Items ranked by value for cost
+
+1. **The reduction lemmas, checked line by line (agree strongly, cheap).**
+   - HH: the code's field equals eq. (31) and Table 3 of the 1952 paper, under the stated change of signs and with
+     the printed E_l. test_field.py and review-1's independent transcription (agreement to 4e-45) are the
+     computational half. The written lemma with page references is the other half.
+   - nf-pulse: Proposition `prop:reduction` (the ODE orbit is a pulse of the integral equation) against the model's
+     source. One earlier reimplementation review marked that step "unconfirmed" (review/lead/reimpl/block/BLOCK.md);
+     close it explicitly.
+   - Put both in the hypothesis ledger (Part 2, item 2).
+2. **Classical numbers by inclusion (agree, cheap).**
+   - For each published value we lean on (Labouriau's Hopf points, Hassard's coefficients, Hodgkin and Huxley's
+     computed speed), the certificate states "contains" or "excludes". Test against the value's own rounding
+     interval: a printed 9.78 means [9.775, 9.785].
+   - Replace every "consistent with" with the verdict.
+3. **Certificates checked on every change; long flights only on release; the certificate hash printed in the PDF
+   (agree, part of Part 1, item 3).**
+4. **"Who falls into the spike": an inner basin and a threshold interval (agree, new, medium cost, high value).**
+   - Clamp a current, then step the voltage from rest. Prove that every initial voltage below a in the step decays
+     to rest, and every one above b fires into the proved stable spike. For the spike side, integrate the initial
+     boxes into a contracting neighborhood of the stable cycle; for the rest side, into the rest state's block.
+   - That encloses the voltage threshold in [a, b]. This is the part a physiologist can compare with a current
+     clamp. Refine it later to the saddle-cycle stable manifold, which is the true threshold.
+5. **One small public proof (agree).**
+   - Candidate: the Hopf points of hh-dynamics as a short standalone note, with its certificate and a checker
+     that runs in minutes.
+   - The pendulum at one energy is second.
+   - This is what a stranger will actually rerun.
+6. **The pendulum horseshoe on the energy interval via Katok-Hasselblatt 6.5.5 (cheap once the theorem is read in
+   full).** Needs the owner's copy of the pages.
+7. **Shared lemmas written once (agree, medium).**
+   - One methods note, cited by all the papers: Krawczyk and interval Newton, cone conditions and inertia, the
+     Poincare map, return-map-to-flow entropy (the pendulum's Lemma 7), and the covering-relation lemmas.
+8. **Hopf-to-spike continuation through the fold (agree, high cost).** Pseudo-arclength validated continuation of
+   periodic orbits. It merges with the "edges" item (Part 2, item 8): the fold enclosure is on this same path.
+9. **Kernel generality.** Sums of exponentials first (cheap); general kernels with the profile-as-shape method
+   (long).
+10. **Taylor models / C^1 tubes:** only where wrapping limits a proof.
+11. **The gap between the grid and the continuum (disagree with a full bound for now).**
+    - A rigorous a posteriori bound for a float32 GPU grid against the proved wave is a research project in its own
+      right.
+    - Honest and cheap instead: a plate that uses certified parameters prints its measured distance to the certified
+      profile through `compare()` with basis "deterministic". It never claims the pixels are proved.
+
+## Last point
+
+Grok's closing sentence is right: more digits, more sample points and more models make the pile larger without
+making any claim stronger. What makes the claims stronger:
+- independent witnesses;
+- checkable certificates;
+- stated windows and edges;
+- verified reductions;
+- statements a physiologist or a stranger can use.
