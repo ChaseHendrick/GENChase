@@ -616,7 +616,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-130 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+131 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -752,6 +752,7 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `hodgkin-huxley` | Hodgkin-Huxley Membranes | occasional | science only | never searched |
 | `direct-gravity` | Direct Gravity | common | science only | never searched |
 | `volume-wave` | Wave volume | occasional | science only | never searched |
+| `phase` | Phase portraits | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 

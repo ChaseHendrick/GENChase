@@ -1139,7 +1139,7 @@
   {
     "id": "pendulum",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
     "equation": "L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π",
     "status": "unvalidated",
@@ -2454,18 +2454,41 @@
   {
     "id": "holomorphic",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
-    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom map mode iterates a map f(z, c) the viewer types, written into the shader only through the complex mode of src/shared/expr.js. A user-defined map is not validated: the status line says so and prints no comparison with theory, and the stage badge and export provenance report the mode as unvalidated through evidence(). Its smooth count assumes a map of degree 2 near infinity, so the bands are approximate for other maps, and its distance estimate uses a central-difference derivative of the typed map in 32-bit floats. The built-in maps compile the unchanged shader."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
+    ],
+    "numerical": [],
+    "print": []
+  },
+  {
+    "id": "phase",
+    "source": "src/modules/dynamics.js",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
+    "status": "unvalidated",
+    "limitations": [
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.",
+      "The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 equally spaced samples on the circle, a step bisected where its principal phase change exceeds pi/2 (at most 24 levels and 400,000 evaluations). The printed integer is the winding number about 0 of the sampled closed polygon f(z_k). It equals the number of zeros minus poles inside, with multiplicity, only when f is meromorphic inside and on the circle and no sampling step hides a whole turn of the phase, which the refinement makes likely and cannot prove; a zero or pole within about the sample spacing 2 pi r / 4096 of the circle can be missed.",
+      "No count is printed when f is undefined or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f|, or when refinement does not resolve a step. For an essential singularity or a branch point inside the circle the printed number is a winding number, not a count of zeros and poles, and the status line does not detect those cases.",
+      "The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources."
+    ],
+    "remaining": [
+      "Register a numerical test of the winding computation against functions with known zeros and poles, including zeros close to the circle and circles through a zero or across a cut, with failure controls and a results artifact.",
+      "Compare the GPU phase and modulus with the double-precision values exportData() writes, at the print path's resolution.",
+      "Review the styles against Wegert and Semmler (2011) and Wegert (2012)."
     ],
     "numerical": [],
     "print": []
@@ -3222,7 +3245,7 @@
   {
     "id": "orbitals",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
     "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
     "status": "unvalidated",

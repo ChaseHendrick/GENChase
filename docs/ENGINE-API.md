@@ -141,14 +141,21 @@ default is left out of every hash that does not change it, so older links reprin
 | Sanitizing | The shell keeps a text value only when it is a string no longer than `maxLength` that `validate` accepts, and otherwise uses the default, so a hand-edited link or settings file cannot crash a plate. A `validate` that throws counts as a refusal. |
 | Editing | The control checks every keystroke and commits on Enter or blur only when the text is valid, so the plate and the recipe keep the last valid value. The problem, its column and the typed text are shown with `textContent`, never as HTML. Escape restores the committed value. |
 | `activeOnly: true` | Leaves the control out of the caption's parameter list while its `dimUnless(state)` is false, so a formula that does not apply is not printed under a plate. |
-| `Studio.util.expr` | The expression language, `src/shared/expr.js`: `parse`, `compile`, `check`, `toGLSL`, `tokenize`, `ExprError`, `FUNCTIONS`, `CONSTANTS`, `LIMITS`. Text is parsed into a tree and compiled to closures; nothing is evaluated as code. |
+| `Studio.util.expr` | The expression language, `src/shared/expr.js`: `parse`, `compile`, `check`, `toGLSL`, `tokenize`, `ExprError`, `FUNCTIONS`, `CONSTANTS`, `LIMITS`, and its complex mode (2026-09-26): `parseComplex`, `compileComplex`, `checkComplex`, `toGLSLComplex`, `COMPLEX_GLSL`, `COMPLEX_FUNCTIONS`, `COMPLEX_CONSTANTS`, `COMPLEX_LIMITS`. Text is parsed into a tree and compiled to closures; nothing is evaluated as code. |
 
 The grammar, limits and error positions are documented at the top of `src/shared/expr.js`.
 `compile(text, { vars, params })` returns `fn(env)`, where `env` holds the variables and then
 the parameters in the order the spec lists them. `toGLSL` writes the same tree with every
 operation parenthesized, `^` as `pow()` and `atan2(y, x)` as `atan(y, x)`, and refuses output
-containing any token outside its whitelist. `node tools/expr-check.js` (in `npm test`) checks
-agreement with `Math`, hostile inputs, the GLSL output and precedence negative controls;
+containing any token outside its whitelist. The complex mode reads the same grammar, limits and
+errors over complex numbers, with the constant `i`, principal branches (arg in (-pi, pi]) and the
+real-only functions refused by name; `compileComplex(text, spec)` returns `fn(env, out?)` giving
+`[re, im]`, where `env` is the flat array `[re0, im0, re1, im1, ...]` of the variables and then the
+parameters, and `toGLSLComplex` writes a `vec2` expression over the fixed helper prelude
+`COMPLEX_GLSL`. `node tools/expr-check.js` (in `npm test`) checks
+agreement with `Math`, hostile inputs, the GLSL output and precedence negative controls, and for the
+complex mode agreement with an independent reference built from exp and log, the branches at named
+points, hostile inputs, exact GLSL, a GLSL round trip and function and precedence mutants;
 `tools/lint.js` fails any `eval(`, `new Function` or string timer in `src/`. A plate built
 from a typed formula is user-defined and not validated; a module must say so on its status
 line and print no comparison with theory in that mode.

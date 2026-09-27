@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="130 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="131 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="130 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="131 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 130 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 131 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -1640,7 +1640,7 @@ shall not be misrepresented as the original profile.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 130 sciences share one control surface,
+      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 131 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1782,7 +1782,7 @@ shall not be misrepresented as the original profile.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 130 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 131 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
         Start a launcher in run/ to serve the folder on your own computer. No package installation,
@@ -3053,7 +3053,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "pendulum",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
     "equation": "L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π",
     "status": "unvalidated",
@@ -4368,18 +4368,41 @@ shall not be misrepresented as the original profile.
   {
     "id": "holomorphic",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
-    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom map mode iterates a map f(z, c) the viewer types, written into the shader only through the complex mode of src/shared/expr.js. A user-defined map is not validated: the status line says so and prints no comparison with theory, and the stage badge and export provenance report the mode as unvalidated through evidence(). Its smooth count assumes a map of degree 2 near infinity, so the bands are approximate for other maps, and its distance estimate uses a central-difference derivative of the typed map in 32-bit floats. The built-in maps compile the unchanged shader."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
+    ],
+    "numerical": [],
+    "print": []
+  },
+  {
+    "id": "phase",
+    "source": "src/modules/dynamics.js",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
+    "status": "unvalidated",
+    "limitations": [
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.",
+      "The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 equally spaced samples on the circle, a step bisected where its principal phase change exceeds pi/2 (at most 24 levels and 400,000 evaluations). The printed integer is the winding number about 0 of the sampled closed polygon f(z_k). It equals the number of zeros minus poles inside, with multiplicity, only when f is meromorphic inside and on the circle and no sampling step hides a whole turn of the phase, which the refinement makes likely and cannot prove; a zero or pole within about the sample spacing 2 pi r / 4096 of the circle can be missed.",
+      "No count is printed when f is undefined or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f|, or when refinement does not resolve a step. For an essential singularity or a branch point inside the circle the printed number is a winding number, not a count of zeros and poles, and the status line does not detect those cases.",
+      "The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources."
+    ],
+    "remaining": [
+      "Register a numerical test of the winding computation against functions with known zeros and poles, including zeros close to the circle and circles through a zero or across a cut, with failure controls and a results artifact.",
+      "Compare the GPU phase and modulus with the double-precision values exportData() writes, at the print path's resolution.",
+      "Review the styles against Wegert and Semmler (2011) and Wegert (2012)."
     ],
     "numerical": [],
     "print": []
@@ -5136,7 +5159,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "orbitals",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
     "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
     "status": "unvalidated",
@@ -6707,7 +6730,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"c1a845a567f0","fingerprint":"c1a845a567f0fc75c982841b7daa362bdc9e40b936dbc91fd46e801c62218f1c","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/expr.js":"e64489f7b418fd9e55a1aa47cbafb1bd34ca5b07ef06bcbac9f39358bb8bf839","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"e998adb1a512dec7ee5cc2d65a9b8de6c10ad99b1855a847ad59a867e90c6f3a","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"49d4dec82389","fingerprint":"49d4dec8238975ff7e3c44700c9a106d030ebb5daaf05d4cb3b89ab8974b974f","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/expr.js":"817d9354c12df378314589983eb40955cef1fac3a93f4590a4a4b5a6076480a2","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"c5f4218377e93f6aac6adb3f3e5eb61d5bee564a4f6e4a6d49e8a56051f47870","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd","src/modules/rdx.js":"f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","phase":"src/modules/dynamics.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","phase":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -7013,7 +7036,28 @@ shall not be misrepresented as the original profile.
    parameters, the constants pi and e, and the functions in FUNCTIONS; any other name is an error, and
    the names constructor, __proto__ and prototype are always errors. Only ASCII letters, digits, _ . +
    - * / ^ ( ) , space and tab are accepted. Text is at most 256 characters and nests at most 32 deep.
-   Every error carries a message and a 0-based character position, so the UI can point at it. */
+   Every error carries a message and a 0-based character position, so the UI can point at it.
+
+   Complex mode (parseComplex, compileComplex, checkComplex, toGLSLComplex) reads the same grammar with
+   the same tokenizer, limits, errors and reserved names, over complex numbers. Its constants are i, pi
+   and e, and its functions are sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg (one
+   argument) and pow (two); re, im, abs and arg return a complex number with zero imaginary part. The
+   real-only functions (atan2, min, floor and the rest) are refused by name, and i, pi, e and the
+   function names may not be caller names. Branches are the principal ones:
+     arg z   in (-pi, pi]; the cut is the negative real axis, and a point on it takes +pi (a signed zero
+             imaginary part counts as +0, so log(-1) = i pi and sqrt(-4) = 2i);
+     log z   = ln|z| + i arg z;   log 0 = -infinity + 0i;
+     sqrt z  = the root with Re >= 0 (Im >= 0 on the cut);
+     pow(z, w) and z^w = exp(w log z), with 0^0 = 1, 0^w = 0 for Re w > 0 and NaN for other w != 0;
+     z^n and pow(z, n) for a literal integer n from 0 to 32 are n repeated multiplications (z^0 = 1),
+             which is exact for integer powers and has no branch;
+     a / 0 is NaN (the point at infinity is not a value here).
+   tan and tanh use (sin 2x + i sinh 2y) / (cos 2x + cosh 2y) and its mirror, and return +-i (tan) or
+   +-1 (tanh) once the imaginary (real) part passes 20, where the difference is below double rounding.
+   compileComplex(text, { vars, params }) -> fn(env, out?), where env is a flat array of the variables
+   and then the parameters as [re0, im0, re1, im1, ...]; it returns [re, im] (in out when given).
+   toGLSLComplex writes the tree over vec2 using the helper functions in COMPLEX_GLSL, a fixed prelude a
+   shader must include once. The GPU evaluates in 32-bit floats and may take either side of a cut. */
 (function (root) {
   'use strict';
 
@@ -7093,18 +7137,22 @@ shall not be misrepresented as the original profile.
   }
 
   // The caller's names, in environment order: variables first, then parameters.
-  function nameTable(spec) {
+  function nameTable(spec, lang) {
+    const L = lang || REAL;
     const list = [].concat((spec && spec.vars) || [], (spec && spec.params) || []);
     const map = new Map();
     list.forEach((n, i) => {
       if (typeof n !== 'string' || !NAME_RE.test(n) || n.length > MAX_NAME || RESERVED.has(n) ||
-        FUNCTIONS.has(n) || CONSTANTS.has(n) || map.has(n)) throw new TypeError('invalid whitelist name: ' + String(n));
+        L.functions.has(n) || L.constants.has(n) || (L.realOnly && L.realOnly.has(n)) || map.has(n)) throw new TypeError('invalid whitelist name: ' + String(n));
       map.set(n, i);
     });
     return map;
   }
 
   const made = new WeakSet();          // syntax trees this file built; nothing else is compiled
+  // A language: its function and constant tables and the set of trees its parser built. Complex mode
+  // (below) is the second one; the real language is the one every existing caller uses.
+  const REAL = { functions: FUNCTIONS, constants: CONSTANTS, made, realOnly: null };
   function freeze(node) {
     if (node.a) freeze(node.a);
     if (node.b) freeze(node.b);
@@ -7113,8 +7161,10 @@ shall not be misrepresented as the original profile.
   }
   const describe = tok => tok.t === 'num' ? 'number' : tok.t === 'name' ? 'name ' + quote(tok.v) : tok.t === 'end' ? 'end' : '"' + tok.t + '"';
 
-  function parse(text, spec) {
-    const names = nameTable(spec);
+  function parse(text, spec) { return parseIn(REAL, text, spec); }
+  function parseIn(L, text, spec) {
+    const FN = L.functions, CONST = L.constants;
+    const names = nameTable(spec, L);
     const toks = tokenize(text);
     if (toks.length === 1) fail('empty', 0);
     const allowed = [...names.keys()];
@@ -7170,8 +7220,8 @@ shall not be misrepresented as the original profile.
       if (tok.t === 'name') {
         const name = tok.v;
         if (RESERVED.has(name)) fail(quote(name) + ' is a reserved name', tok.pos);
-        if (FUNCTIONS.has(name)) {
-          const arity = FUNCTIONS.get(name)[0];
+        if (FN.has(name)) {
+          const arity = FN.get(name)[0];
           const open = peek();
           if (open.t !== '(') fail(name + ' is a function: write ' + name + '(...)', tok.pos);
           k++; enter(open.pos);
@@ -7181,10 +7231,11 @@ shall not be misrepresented as the original profile.
           if (args.length !== arity) fail(name + ' takes ' + arity + (arity === 1 ? ' argument' : ' arguments'), tok.pos);
           return { type: 'call', name, args, pos: tok.pos };
         }
-        const known = CONSTANTS.has(name) || names.has(name);
+        if (L.realOnly && L.realOnly.has(name)) fail(quote(name) + ' is not available for complex numbers', tok.pos);
+        const known = CONST.has(name) || names.has(name);
         if (!known) fail('unknown name ' + quote(name) + (allowed.length ? '; use ' + allowed.join(', ') : ''), tok.pos);
         if (peek().t === '(') fail(quote(name) + ' is not a function', tok.pos);
-        if (CONSTANTS.has(name)) return { type: 'const', name, v: CONSTANTS.get(name), pos: tok.pos };
+        if (CONST.has(name)) return { type: 'const', name, v: CONST.get(name), pos: tok.pos };
         return { type: 'var', name, index: names.get(name), pos: tok.pos };
       }
       if (tok.t === 'end') fail('ends too early', tok.pos);
@@ -7192,15 +7243,16 @@ shall not be misrepresented as the original profile.
     }
     const ast = expr();
     if (peek().t !== 'end') fail('expected an operator, found ' + describe(peek()), peek().pos);
-    made.add(freeze(ast));
+    L.made.add(freeze(ast));
     return ast;
   }
 
   // A tree this file built, or text to parse. Anything else, including a look-alike object, is
   // refused by the tokenizer as "expected text".
-  function treeOf(source, spec) {
-    if (source && typeof source === 'object' && made.has(source)) return source;
-    return parse(source, spec);
+  function treeOf(source, spec, lang) {
+    const L = lang || REAL;
+    if (source && typeof source === 'object' && L.made.has(source)) return source;
+    return parseIn(L, source, spec);
   }
 
   /* ---- evaluation: the tree becomes nested closures over an environment array ---- */
@@ -7293,11 +7345,231 @@ shall not be misrepresented as the original profile.
     return out;
   }
 
+  /* ==== complex mode ==== */
+  // Every helper writes its result into o, a Float64Array(2) the caller owns, reading the operands
+  // first so that o may alias one of them, and returns o.
+  const hypot = Math.hypot;
+  const argOf = (x, y) => Math.atan2(y + 0, x);     // y + 0 turns -0 into +0: arg is in (-pi, pi]
+  const put = (o, re, im) => { o[0] = re; o[1] = im; return o; };
+  const cMul = (o, a, b) => put(o, a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]);
+  // Scaled by the larger part of the divisor so that neither |b|^2 nor a * conj(b) overflows early.
+  function cDiv(o, a, b) {
+    const s = Math.max(Math.abs(b[0]), Math.abs(b[1]));
+    const pr = a[0] / s, pi_ = a[1] / s, qr = b[0] / s, qi = b[1] / s, d = qr * qr + qi * qi;
+    return put(o, (pr * qr + pi_ * qi) / d, (pi_ * qr - pr * qi) / d);
+  }
+  function cExp(o, a) {
+    const m = Math.exp(a[0]);
+    return a[1] === 0 ? put(o, m, 0) : put(o, m * Math.cos(a[1]), m * Math.sin(a[1]));
+  }
+  const cLog = (o, a) => put(o, Math.log(hypot(a[0], a[1])), argOf(a[0], a[1]));
+  const cSin = (o, a) => put(o, Math.sin(a[0]) * Math.cosh(a[1]), Math.cos(a[0]) * Math.sinh(a[1]));
+  const cCos = (o, a) => put(o, Math.cos(a[0]) * Math.cosh(a[1]), -Math.sin(a[0]) * Math.sinh(a[1]));
+  const cSinh = (o, a) => put(o, Math.sinh(a[0]) * Math.cos(a[1]), Math.cosh(a[0]) * Math.sin(a[1]));
+  const cCosh = (o, a) => put(o, Math.cosh(a[0]) * Math.cos(a[1]), Math.sinh(a[0]) * Math.sin(a[1]));
+  function cTan(o, a) {
+    const x = a[0], y = a[1];
+    if (Math.abs(y) > 20) return put(o, 0, Math.sign(y));
+    const d = Math.cos(2 * x) + Math.cosh(2 * y);
+    return put(o, Math.sin(2 * x) / d, Math.sinh(2 * y) / d);
+  }
+  function cTanh(o, a) {
+    const x = a[0], y = a[1];
+    if (Math.abs(x) > 20) return put(o, Math.sign(x), 0);
+    const d = Math.cosh(2 * x) + Math.cos(2 * y);
+    return put(o, Math.sinh(2 * x) / d, Math.sin(2 * y) / d);
+  }
+  // The principal root without cancellation: t = sqrt((|z| + |x|) / 2) is the larger part.
+  function cSqrt(o, a) {
+    const x = a[0], y = a[1], r = hypot(x, y);
+    if (r === 0) return put(o, 0, 0);
+    const t = Math.sqrt(0.5 * (r + Math.abs(x)));
+    return x >= 0 ? put(o, t, 0.5 * y / t) : put(o, 0.5 * Math.abs(y) / t, y < 0 ? -t : t);
+  }
+  function cPow(o, a, b) {
+    if (a[0] === 0 && a[1] === 0) {
+      if (b[0] === 0 && b[1] === 0) return put(o, 1, 0);
+      return b[0] > 0 ? put(o, 0, 0) : put(o, NaN, NaN);
+    }
+    const lr = Math.log(hypot(a[0], a[1])), li = argOf(a[0], a[1]);
+    return cExp(o, put(o, b[0] * lr - b[1] * li, b[0] * li + b[1] * lr));
+  }
+  // n repeated multiplications, starting from 1: z^0 = 1 for every z.
+  function cPowi(o, a, n) {
+    const x = a[0], y = a[1];
+    let re = 1, im = 0;
+    for (let k = 0; k < n; k++) { const t = re * x - im * y; im = re * y + im * x; re = t; }
+    return put(o, re, im);
+  }
+  const MAX_INT_POW = 32;
+  // The exponent of z^n or pow(z, n) when it is a literal integer 0..32, otherwise null.
+  const intPower = node => node.type === 'num' && Number.isInteger(node.v) && node.v >= 0 && node.v <= MAX_INT_POW ? node.v : null;
+
+  // name -> [arity, implementation (o, a[, b]) -> o, GLSL helper in COMPLEX_GLSL]
+  const CFUNCTIONS = new Map([
+    ['sin', [1, cSin, 'csin']], ['cos', [1, cCos, 'ccos']], ['tan', [1, cTan, 'ctan']],
+    ['sinh', [1, cSinh, 'csinh']], ['cosh', [1, cCosh, 'ccosh']], ['tanh', [1, cTanh, 'ctanh']],
+    ['exp', [1, cExp, 'cexp']], ['log', [1, cLog, 'clog']], ['sqrt', [1, cSqrt, 'csqrt']],
+    ['conj', [1, (o, a) => put(o, a[0], -a[1]), 'conj']],
+    ['re', [1, (o, a) => put(o, a[0], 0), 'cre']], ['im', [1, (o, a) => put(o, a[1], 0), 'cim']],
+    ['abs', [1, (o, a) => put(o, hypot(a[0], a[1]), 0), 'cabs']], ['arg', [1, (o, a) => put(o, argOf(a[0], a[1]), 0), 'carg']],
+    ['pow', [2, cPow, 'cpow']],
+  ]);
+  const CCONSTANTS = new Map([['i', Object.freeze([0, 1])], ['pi', Object.freeze([Math.PI, 0])], ['e', Object.freeze([Math.E, 0])]]);
+  const REAL_ONLY = new Set([...FUNCTIONS.keys()].filter(n => !CFUNCTIONS.has(n)));
+  const COMPLEX = { functions: CFUNCTIONS, constants: CCONSTANTS, made: new WeakSet(), realOnly: REAL_ONLY };
+
+  // Each node owns a two-slot buffer and a closure that fills it and returns it; a parent reads its
+  // children's buffers and writes only its own, so one compiled function allocates nothing per call.
+  function buildC(node) {
+    const o = new Float64Array(2);
+    switch (node.type) {
+      case 'num': o[0] = node.v; return () => o;
+      case 'const': o[0] = node.v[0]; o[1] = node.v[1]; return () => o;
+      case 'var': { const k = 2 * node.index; return env => put(o, env[k], env[k + 1]); }
+      case 'neg': { const a = buildC(node.a); return env => { const A = a(env); return put(o, -A[0], -A[1]); }; }
+      case 'bin': {
+        const a = buildC(node.a);
+        if (node.op === '^') {
+          const n = intPower(node.b);
+          if (n !== null) return env => cPowi(o, a(env), n);
+          const b = buildC(node.b);
+          return env => { const A = a(env); return cPow(o, A, b(env)); };
+        }
+        const b = buildC(node.b);
+        switch (node.op) {
+          case '+': return env => { const A = a(env), B = b(env); return put(o, A[0] + B[0], A[1] + B[1]); };
+          case '-': return env => { const A = a(env), B = b(env); return put(o, A[0] - B[0], A[1] - B[1]); };
+          case '*': return env => { const A = a(env); return cMul(o, A, b(env)); };
+          case '/': return env => { const A = a(env); return cDiv(o, A, b(env)); };
+        }
+        break;
+      }
+      case 'call': {
+        const f = CFUNCTIONS.get(node.name)[1];
+        const a = buildC(node.args[0]);
+        if (node.args.length === 1) return env => f(o, a(env));
+        if (node.name === 'pow') { const n = intPower(node.args[1]); if (n !== null) return env => cPowi(o, a(env), n); }
+        const b = buildC(node.args[1]);
+        return env => { const A = a(env); return f(o, A, b(env)); };
+      }
+    }
+    throw new TypeError('malformed tree');
+  }
+  function parseComplex(text, spec) { return parseIn(COMPLEX, text, spec); }
+  // compileComplex(text or tree, { vars, params }) -> fn(env, out?) returning [re, im]; env is the flat
+  // array [re0, im0, re1, im1, ...] of the variables and then the parameters in spec order.
+  function compileComplex(source, spec) {
+    const root = buildC(treeOf(source, spec, COMPLEX));
+    return (env, out) => {
+      const r = root(env);
+      if (!out) return [r[0], r[1]];
+      out[0] = r[0]; out[1] = r[1];
+      return out;
+    };
+  }
+
+  // The helpers toGLSLComplex writes, over vec2 = (re, im). A shader includes this once, before the
+  // function that holds the expression. Principal branches as above; atan(0, 0) and a division by zero
+  // are left to the GPU.
+  const COMPLEX_GLSL = `vec2 cmul(vec2 a, vec2 b){ return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+vec2 cdiv(vec2 a, vec2 b){ float s = max(abs(b.x), abs(b.y)); vec2 p = a / s, q = b / s; return vec2(p.x * q.x + p.y * q.y, p.y * q.x - p.x * q.y) / dot(q, q); }
+vec2 cexp(vec2 z){ float m = exp(z.x); return z.y == 0.0 ? vec2(m, 0.0) : m * vec2(cos(z.y), sin(z.y)); }
+vec2 clog(vec2 z){ return vec2(log(length(z)), atan(z.y, z.x)); }
+vec2 csin(vec2 z){ return vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y)); }
+vec2 ccos(vec2 z){ return vec2(cos(z.x) * cosh(z.y), -sin(z.x) * sinh(z.y)); }
+vec2 csinh(vec2 z){ return vec2(sinh(z.x) * cos(z.y), cosh(z.x) * sin(z.y)); }
+vec2 ccosh(vec2 z){ return vec2(cosh(z.x) * cos(z.y), sinh(z.x) * sin(z.y)); }
+vec2 ctan(vec2 z){ if (abs(z.y) > 20.0) return vec2(0.0, sign(z.y)); float d = cos(2.0 * z.x) + cosh(2.0 * z.y); return vec2(sin(2.0 * z.x), sinh(2.0 * z.y)) / d; }
+vec2 ctanh(vec2 z){ if (abs(z.x) > 20.0) return vec2(sign(z.x), 0.0); float d = cosh(2.0 * z.x) + cos(2.0 * z.y); return vec2(sinh(2.0 * z.x), sin(2.0 * z.y)) / d; }
+vec2 csqrt(vec2 z){ float r = length(z); if (r == 0.0) return vec2(0.0); float t = sqrt(0.5 * (r + abs(z.x))); return z.x >= 0.0 ? vec2(t, 0.5 * z.y / t) : vec2(0.5 * abs(z.y) / t, z.y < 0.0 ? -t : t); }
+vec2 cpow(vec2 z, vec2 w){ if (z.x == 0.0 && z.y == 0.0) return (w.x == 0.0 && w.y == 0.0) ? vec2(1.0, 0.0) : (w.x > 0.0 ? vec2(0.0) : vec2(uintBitsToFloat(0x7fc00000u))); vec2 l = clog(z); return cexp(vec2(w.x * l.x - w.y * l.y, w.x * l.y + w.y * l.x)); }
+vec2 cpowi(vec2 z, float n){ vec2 r = vec2(1.0, 0.0); for (int k = 0; k < ${MAX_INT_POW}; k++) { if (float(k) >= n) break; r = cmul(r, z); } return r; }
+vec2 conj(vec2 z){ return vec2(z.x, -z.y); }
+vec2 cre(vec2 z){ return vec2(z.x, 0.0); }
+vec2 cim(vec2 z){ return vec2(z.y, 0.0); }
+vec2 cabs(vec2 z){ return vec2(length(z), 0.0); }
+vec2 carg(vec2 z){ return vec2(atan(z.y, z.x), 0.0); }
+`;
+  const CGLSL_NAMES = new Set(['vec2', 'cmul', 'cdiv', 'cpowi', ...[...CFUNCTIONS.values()].map(f => f[2])]);
+  function emitC(node, rename) {
+    switch (node.type) {
+      case 'num': return 'vec2(' + glslFloat(node.v, node.pos) + ', 0.0)';
+      case 'const': return 'vec2(' + glslFloat(node.v[0], node.pos) + ', ' + glslFloat(node.v[1], node.pos) + ')';
+      case 'var': return rename.has(node.name) ? rename.get(node.name) : node.name;
+      case 'neg': return '(-' + emitC(node.a, rename) + ')';
+      case 'bin': {
+        const a = emitC(node.a, rename);
+        if (node.op === '^') {
+          const n = intPower(node.b);
+          return n !== null ? 'cpowi(' + a + ', ' + glslFloat(n, node.b.pos) + ')' : 'cpow(' + a + ', ' + emitC(node.b, rename) + ')';
+        }
+        const b = emitC(node.b, rename);
+        if (node.op === '*') return 'cmul(' + a + ', ' + b + ')';
+        if (node.op === '/') return 'cdiv(' + a + ', ' + b + ')';
+        return '(' + a + ' ' + node.op + ' ' + b + ')';
+      }
+      case 'call': {
+        if (node.name === 'pow') {
+          const n = intPower(node.args[1]);
+          if (n !== null) return 'cpowi(' + emitC(node.args[0], rename) + ', ' + glslFloat(n, node.args[1].pos) + ')';
+        }
+        return CFUNCTIONS.get(node.name)[2] + '(' + node.args.map(n => emitC(n, rename)).join(', ') + ')';
+      }
+    }
+    throw new TypeError('malformed tree');
+  }
+  const CGLSL_TOKEN = /\s*(?:(\d+\.\d*(?:e[+-]?\d+)?|\d+e[+-]?\d+)|([A-Za-z_][A-Za-z0-9_]*(?:\.[xyzw]{1,4})?)|([-+(),]))/y;
+  // toGLSLComplex(text or tree, spec, { rename: { c: 'u_c' } }) -> a GLSL vec2 expression. Numbers become
+  // vec2(v, 0.0), i becomes vec2(0.0, 1.0), + and - stay vector operators, and everything else calls a
+  // COMPLEX_GLSL helper. The output is re-scanned and refused unless every token is a float literal,
+  // + - ( ) or a comma, vec2, a helper from COMPLEX_GLSL or one of the caller's names.
+  function toGLSLComplex(source, spec, opts) {
+    const names = nameTable(spec, COMPLEX);
+    const tree = treeOf(source, spec, COMPLEX);
+    const rename = new Map();
+    const given = opts && opts.rename;
+    if (given) {
+      for (const key of Object.keys(given)) {
+        if (!names.has(key)) throw new TypeError('rename names an unknown variable: ' + key);
+        const to = given[key];
+        if (typeof to !== 'string' || !/^[A-Za-z_][A-Za-z0-9_]*(\.[xyzw]{1,4})?$/.test(to) || /^gl_/.test(to) || CGLSL_NAMES.has(to)) throw new TypeError('invalid GLSL name for ' + key);
+        rename.set(key, to);
+      }
+    }
+    const out = emitC(tree, rename);
+    const idents = new Set([...CGLSL_NAMES, ...names.keys(), ...rename.values()]);
+    let at = 0;
+    while (at < out.length) {
+      CGLSL_TOKEN.lastIndex = at;
+      const m = CGLSL_TOKEN.exec(out);
+      if (!m || (m[2] && !idents.has(m[2]))) throw new Error('GLSL emitter produced a token outside the whitelist at ' + at);
+      at = CGLSL_TOKEN.lastIndex;
+    }
+    return out;
+  }
+  // null when the text is a valid complex formula for this spec, otherwise { message, pos }. With
+  // { glsl: true } it also refuses text the GPU could not take (a literal outside the float range).
+  function checkComplex(text, spec, opts) {
+    try {
+      const tree = parseComplex(text, spec);
+      if (opts && opts.glsl) toGLSLComplex(tree, spec);
+      return null;
+    } catch (err) {
+      if (err instanceof ExprError) return { message: err.message, pos: err.pos };
+      throw err;
+    }
+  }
+
   const api = Object.freeze({
     parse, compile, check, toGLSL, tokenize, ExprError,
     FUNCTIONS: Object.freeze([...FUNCTIONS.keys()]),
     CONSTANTS: Object.freeze([...CONSTANTS.keys()]),
     LIMITS: Object.freeze({ maxLength: MAX_LENGTH, maxDepth: MAX_DEPTH, maxName: MAX_NAME }),
+    parseComplex, compileComplex, checkComplex, toGLSLComplex, COMPLEX_GLSL,
+    COMPLEX_FUNCTIONS: Object.freeze([...CFUNCTIONS.keys()]),
+    COMPLEX_CONSTANTS: Object.freeze([...CCONSTANTS.keys()]),
+    COMPLEX_LIMITS: Object.freeze({ maxIntPower: MAX_INT_POW }),
   });
   root.GenChaseExpr = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
@@ -8288,6 +8560,7 @@ void main(){
     crapper: 'occasional',
     hasimoto: 'occasional',
     lump: 'occasional',
+    phase: 'occasional',
     // rare
     cortex: 'rare',
     liesegang: 'rare',
@@ -27909,7 +28182,7 @@ uniform vec2 u_res, u_off;
     // Siegel disk: c = lambda/2 - lambda^2/4 with lambda = exp(2 pi i theta), theta the golden mean
     siegel: [Math.cos(TAU * GOLD) / 2 - Math.cos(2 * TAU * GOLD) / 4, Math.sin(TAU * GOLD) / 2 - Math.sin(2 * TAU * GOLD) / 4],
   };
-  const SETS = { mandel: 0, julia: 1, newton: 2, newtonr: 2, ship: 3 };
+  const SETS = { mandel: 0, julia: 1, newton: 2, newtonr: 2, ship: 3, custom: 4 };
   const COLORS = { smooth: 0, distance: 1, point: 2, cross: 3 };
 
   const HOLO_FS = HEAD + `
@@ -28020,7 +28293,72 @@ void main(){
     if (s.juliaSet === 'custom') return [s.cRe, s.cIm];
     return JULIA_C[s.juliaSet] || JULIA_C.rabbit;
   }
-  const SET_NAMES = { mandel: 'Mandelbrot', julia: 'Julia', newton: 'Newton zⁿ − 1', newtonr: 'Newton, seeded roots', ship: 'Burning Ship' };
+  const SET_NAMES = { mandel: 'Mandelbrot', julia: 'Julia', newton: 'Newton zⁿ − 1', newtonr: 'Newton, seeded roots', ship: 'Burning Ship', custom: 'Custom map' };
+
+  /* Custom map: z <- f(z, c) typed by the viewer in z and c, parsed by the complex mode of the shared expression
+     language (src/shared/expr.js) and written into the shader only through U.expr.toGLSLComplex; nothing typed is
+     evaluated as code. The shader is HOLO_FS with three splices: the complex helpers and the map in place of its
+     cmul (the helpers define the same cmul), an escape loop for the map, and shade() calling that loop. HOLO_FS
+     itself is untouched, so the built-in maps compile exactly the program they always did. In the parameter plane
+     c is the pixel and the orbit starts at z0 (a critical point of the map, 0 for z^d + c); in the dynamical
+     plane c is fixed and z0 is the pixel. The orbit escapes when |z| > R. The smooth count assumes a map of
+     degree 2 near infinity, so its bands are continuous for quadratic maps and approximate otherwise, and the
+     distance estimate takes the derivative of the typed map by central differences. */
+  const MAP_SPEC = { vars: ['z', 'c'] };
+  const MAP_DEFAULT = 'z^2 + c';
+  const isCustomMap = s => s.set === 'custom';
+  const checkMap = v => U.expr.checkComplex(v, MAP_SPEC, { glsl: true });
+  const mapText = s => (typeof s.zmap === 'string' && !checkMap(s.zmap)) ? s.zmap : MAP_DEFAULT;
+  const escRadius = s => Math.pow(2, s.escape);
+  const fmtR = r => r < 999.5 ? String(Math.round(r * 100) / 100) : r.toExponential(2).replace('e+', 'e');
+  const HOLO_CMUL = 'vec2 cmul(vec2 a, vec2 b){ return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }\n';
+  const HOLO_CUSTOM = `// z <- f(z, c), the typed map; see holoCustomFS. The derivative for the distance estimate is a central
+// difference in z (and in c on the parameter plane), step 1% of max(1, |z|) and of max(1, |c|).
+float escapeCustom(vec2 p){
+  bool dyn = u_plane == 1;
+  vec2 z = dyn ? p : u_z0;
+  vec2 c = dyn ? u_c : p;
+  vec2 dz = dyn ? vec2(1.0, 0.0) : vec2(0.0);
+  float trap = 1e9, R2 = u_esc * u_esc; int n = 0; bool fled = false;
+  for (int k = 0; k < 4000; k++) {
+    if (k >= u_iters) break;
+    if (u_color == 1) {
+      float h = 0.01 * max(1.0, length(z));
+      vec2 dn = cmul((fmap(z + vec2(h, 0.0), c) - fmap(z - vec2(h, 0.0), c)) / (2.0 * h), dz);
+      if (!dyn) { float hc = 0.01 * max(1.0, length(c)); dn += (fmap(z, c + vec2(hc, 0.0)) - fmap(z, c - vec2(hc, 0.0))) / (2.0 * hc); }
+      dz = dn;
+    }
+    z = fmap(z, c);
+    trap = min(trap, trapDist(z));
+    n = k + 1;
+    if (dot(z, z) > R2) { fled = true; break; }
+  }
+  if (!fled) return -1.0;
+  float r = min(length(z), 1e30), lr = log(r);
+  if (u_color == 1) {
+    float d = r * lr / max(length(dz), 1e-30);
+    float px = d / u_scale;
+    if (px < 0.5) return 0.0;
+    return clamp((log2(px) + 1.0) / 10.0 * u_cycles + u_shift, 0.0, 1.0);
+  }
+  if (u_color >= 2) return tri(trap * u_cycles * 0.5 + u_shift);
+  float mu = float(n) + 1.0 - log2(max(lr / log(u_esc), 1.0));
+  return tri(mu * u_cycles / 64.0 + u_shift);
+}
+`;
+  // Replace the one occurrence of anchor in src; a missing or repeated anchor is a programming error.
+  function splice(src, anchor, text) {
+    const at = src.indexOf(anchor);
+    if (at < 0 || src.indexOf(anchor, at + 1) >= 0) throw new Error('holomorphic shader: anchor not found once');
+    return src.slice(0, at) + text + src.slice(at + anchor.length);
+  }
+  function holoCustomFS(text) {
+    const map = U.expr.toGLSLComplex(text, MAP_SPEC);
+    let src = splice(HOLO_FS, HOLO_CMUL, U.expr.COMPLEX_GLSL +
+      'uniform vec2 u_z0;\nuniform float u_esc;\nuniform int u_plane;\nvec2 fmap(vec2 z, vec2 c){ return ' + map + '; }\n');
+    src = splice(src, '// Newton basins', HOLO_CUSTOM + '// Newton basins');
+    return splice(src, '  float t = escape(p);', '  float t = escapeCustom(p);');
+  }
 
   /* ==================== Double pendulum flip time ==================== */
   const SENT = 30000.0;   // omega1 channel value marking a cell that has flipped (fits half floats too)
@@ -28241,14 +28579,20 @@ void main(){
     tab: 'Holomorphic',
     subtitle: 'escape-time and Newton basins in the complex plane · 1918',
     order: 63,
-    equation: 'z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)',
-    credit: "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-    blurb: 'Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton\'s method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Zoom is clamped where 32-bit floats run out of digits.',
+    equation: 'z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)',
+    credit: "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    blurb: 'Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton\'s method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Custom map iterates a map you type in z and c, with the pixel as the parameter c or as the starting point z₀, and escapes at a radius you choose. Zoom is clamped where 32-bit floats run out of digits.',
     schema: [
-      { group: 'Set', key: 'set', label: 'Map', type: 'seg', kind: GEOM, wrap: true, options: [['mandel', 'Mandelbrot'], ['julia', 'Julia'], ['newton', 'Newton zⁿ−1'], ['newtonr', 'Newton seeded'], ['ship', 'Burning Ship']] },
+      { group: 'Set', key: 'set', label: 'Map', type: 'seg', kind: GEOM, wrap: true, options: [['mandel', 'Mandelbrot'], ['julia', 'Julia'], ['newton', 'Newton zⁿ−1'], ['newtonr', 'Newton seeded'], ['ship', 'Burning Ship'], ['custom', 'Custom map']] },
+      { group: 'Set', key: 'zmap', label: 'f(z, c) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkMap, dimUnless: isCustomMap, activeOnly: true,
+        hint: 'Custom map: z ← f(z, c) in the complex numbers z and c. Operators + - * / ^, functions sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg pow, constants i, pi and e; log, sqrt and powers take the principal branch. Smooth count bands assume a map of degree 2, so they are approximate for other maps, and Distance uses a finite-difference derivative. A user-defined map is not validated.' },
+      { group: 'Set', key: 'plane', label: 'Pixel is', type: 'seg', kind: GEOM, options: [['param', 'c (parameter plane)'], ['dyn', 'z₀ (dynamical plane)']], dimUnless: isCustomMap, activeOnly: true },
+      RANGE('Set', 'z0Re', 'Start Re z₀', GEOM, -4, 4, 0.001, f3, { dimUnless: s => isCustomMap(s) && s.plane === 'param', activeOnly: true, hint: 'On the parameter plane the orbit starts at z₀. Start it at a critical point of the map: 0 for z^d + c, π/2 for c·sin(z).' }),
+      RANGE('Set', 'z0Im', 'Start Im z₀', GEOM, -4, 4, 0.001, f3, { dimUnless: s => isCustomMap(s) && s.plane === 'param', activeOnly: true }),
+      RANGE('Set', 'escape', 'Escape radius R', GEOM, 1, 20, 0.1, v => fmtR(Math.pow(2, v)), { dimUnless: isCustomMap, activeOnly: true, hint: 'An orbit has escaped once |z| > R. The slider is logarithmic, from 2 to about 10^6. Transcendental maps want a large R.' }),
       { group: 'Set', key: 'juliaSet', label: 'Julia constant', type: 'seg', kind: GEOM, wrap: true, options: [['rabbit', 'Douady rabbit'], ['dendrite', 'Dendrite'], ['sanmarco', 'San Marco'], ['siegel', 'Siegel disk'], ['custom', 'Custom']], dimUnless: s => s.set === 'julia' },
-      RANGE('Set', 'cRe', 'Re c', GEOM, -2, 1, 0.001, f3, { dimUnless: s => s.set === 'julia' && s.juliaSet === 'custom' }),
-      RANGE('Set', 'cIm', 'Im c', GEOM, -1.5, 1.5, 0.001, f3, { dimUnless: s => s.set === 'julia' && s.juliaSet === 'custom' }),
+      RANGE('Set', 'cRe', 'Re c', GEOM, -2, 1, 0.001, f3, { dimUnless: s => (s.set === 'julia' && s.juliaSet === 'custom') || (isCustomMap(s) && s.plane === 'dyn') }),
+      RANGE('Set', 'cIm', 'Im c', GEOM, -1.5, 1.5, 0.001, f3, { dimUnless: s => (s.set === 'julia' && s.juliaSet === 'custom') || (isCustomMap(s) && s.plane === 'dyn') }),
       RANGE('Set', 'degree', 'Polynomial degree n', GEOM, 3, 8, 1, String, { dimUnless: s => s.set === 'newton' || s.set === 'newtonr' }),
       RANGE('Set', 'relax', 'Relaxation a', GEOM, 0.5, 1.6, 0.01, f2, { dimUnless: s => s.set === 'newton' || s.set === 'newtonr', hint: 'a = 1 is plain Newton. Below 1 the basins swell and smooth out; above 1 the boundaries fold into new filigree.' }),
       RANGE('Set', 'iters', 'Iterations', GEOM, 20, 2000, 10, String),
@@ -28267,7 +28611,8 @@ void main(){
       { group: 'Quality', key: 'aa', label: 'Supersample 2×2', type: 'toggle', kind: PAINT, hint: 'Four samples per pixel on screen and in print. Four times the work.' },
     ],
     defaults: {
-      set: 'mandel', juliaSet: 'rabbit', cRe: -0.8, cIm: 0.156, degree: 3, relax: 1, iters: 300,
+      set: 'mandel', zmap: MAP_DEFAULT, plane: 'param', z0Re: 0, z0Im: 0, escape: 2,
+      juliaSet: 'rabbit', cRe: -0.8, cIm: 0.156, degree: 3, relax: 1, iters: 300,
       cx: -0.745, cy: 0.186, zoom: 1.6, rot: 0, aspect: '1:1',
       color: 'smooth', cycles: 1.2, shift: 0, trapX: 0, trapY: 0, interior: false, gamma: 1,
       aa: false, seed: 'julia-1918',
@@ -28280,9 +28625,11 @@ void main(){
       siegel: pre('Siegel disk', { set: 'julia', juliaSet: 'siegel', cx: 0, cy: 0, zoom: 0.1, rot: 0, iters: 400, color: 'point', trapX: 0, trapY: 0, cycles: 2, shift: 0, interior: true }, Pal.verdigris),
       newton: pre('Newton z⁵ − 1', { set: 'newton', degree: 5, relax: 1, cx: 0, cy: 0, zoom: 0.15, rot: 0, iters: 60, color: 'smooth', cycles: 1, shift: 0 }, Pal.tram),
       ship: pre('Burning Ship', { set: 'ship', cx: -1.755, cy: 0.028, zoom: 1.5, rot: 0, iters: 300, color: 'smooth', cycles: 1.6, shift: 0.2, interior: false }, Pal.ember),
+      cubic: pre('Cubic z³ + c', { set: 'custom', zmap: 'z^3 + c', plane: 'param', z0Re: 0, z0Im: 0, escape: 10, cx: 0, cy: 0, zoom: 0.08, rot: 90, iters: 300, color: 'cross', trapX: 0, trapY: 0, cycles: 2, shift: 0, interior: false }, Pal.xray),
+      sine: pre('Sine family c·sin z', { set: 'custom', zmap: 'c*sin(z)', plane: 'dyn', cRe: 1, cIm: 0.3, escape: 6, cx: 0, cy: 0, zoom: 0, rot: 0, iters: 200, color: 'smooth', cycles: 1.5, shift: 0, interior: true }, Pal.ember),
     },
     hints: {
-      Set: 'Julia constants are the classic four; San Marco sits on the real axis at the period-doubling point, the Siegel disk uses c for the golden-mean rotation number. Seeded Newton draws its roots from the seed.',
+      Set: 'Julia constants are the classic four; San Marco sits on the real axis at the period-doubling point, the Siegel disk uses c for the golden-mean rotation number. Seeded Newton draws its roots from the seed. Custom map iterates a map you type, with c or z₀ as the pixel.',
       View: 'Zoom is log10 of the magnification. It is clamped where a 32-bit float can no longer separate neighboring pixels, about 10^4 near the main cardioid.',
       Color: 'Smooth count bands the escape time; Distance draws the set boundary; the traps color by the closest approach of the orbit to a point or to the axes through it.',
     },
@@ -28321,6 +28668,18 @@ void main(){
       let pass;
       try { pass = new G.Pass(gl, HOLO_FS); } catch (err) { console.error(err); return start.dead('Shader compilation failed on this GPU'); }
       let ramp = null, pal = null, rampKey = '';
+      // The custom map's program, rebuilt when the text changes; null when this GPU could not compile it.
+      const custom = { key: null, pass: null };
+      function customPass(s) {
+        const text = mapText(s);
+        if (custom.key !== text) {
+          if (custom.pass) gl.deleteProgram(custom.pass.prog);
+          custom.pass = null; custom.key = text;
+          try { custom.pass = new G.Pass(gl, holoCustomFS(text)); } catch (err) { console.error(err); }
+        }
+        return custom.pass;
+      }
+      const passFor = s => isCustomMap(s) ? customPass(s) : pass;
       function ensureRamp(s) {
         const key = s.bg + '|' + s.palette.join(',');
         if (ramp && rampKey === key) return;
@@ -28334,23 +28693,322 @@ void main(){
         const zoom = Math.pow(10, s.zoom), a = s.rot * PI / 180;
         return {
           u_res: [w, h], u_off: [ox, oy], u_center: [s.cx, s.cy], u_rot: [Math.cos(a), Math.sin(a)],
-          u_scale: HOLO_SPAN / (zoom * w), u_c: holoC(s), u_trap: [s.trapX, s.trapY],
+          u_scale: HOLO_SPAN / (zoom * w), u_c: isCustomMap(s) ? [s.cRe, s.cIm] : holoC(s), u_trap: [s.trapX, s.trapY],
           u_cycles: s.cycles, u_shift: s.shift, u_relax: s.relax, u_gamma: s.gamma,
           u_roots: holoRoots(s), u_nroots: { int: Math.round(s.degree) },
           u_set: { int: SETS[s.set] || 0 }, u_iters: { int: Math.round(s.iters) }, u_color: { int: COLORS[s.color] || 0 },
           u_aa: { int: s.aa ? 1 : 0 }, u_interior: { int: s.interior ? 1 : 0 },
           u_bg: hex01(s.bg), u_ramp: ramp, u_pal: pal,
+          u_z0: [s.z0Re, s.z0Im], u_esc: escRadius(s), u_plane: { int: s.plane === 'dyn' ? 1 : 0 },
         };
+      }
+      // A custom map says it is user-defined and makes no claim; the typed map appears only as escaped text in
+      // a tooltip.
+      function mapSpan(s) {
+        const where = s.plane === 'dyn' ? 'z₀ = pixel, c = ' + f3(s.cRe) + (s.cIm < 0 ? ' − ' : ' + ') + f3(Math.abs(s.cIm)) + 'i'
+          : 'c = pixel, z₀ = ' + f3(s.z0Re) + (s.z0Im < 0 ? ' − ' : ' + ') + f3(Math.abs(s.z0Im)) + 'i';
+        return '<span title="' + U.escapeHtml('f(z, c) = ' + mapText(s)) + '"><b>Custom map</b> · ' + where + ' · user-defined, not validated</span>';
       }
       function draw() {
         const s = host.getState();
-        pass.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
-        gl.finish();
+        const p = passFor(s);
         const limit = holoZoomLimit(s.cx, s.cy);
+        if (!p) {
+          const bg = hex01(s.bg);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.clearColor(bg[0], bg[1], bg[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+          host.setStatus('<span><b>Custom map</b> · this map did not compile on this GPU</span>');
+          return;
+        }
+        p.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
+        gl.finish();
         host.setStatus(
-          '<span><b>' + SET_NAMES[s.set] + '</b>' + (s.set === 'julia' ? ' c = ' + holoC(s).map(f3).join(' + ') + 'i' : '') + '</span>' +
+          (isCustomMap(s) ? mapSpan(s) : '<span><b>' + SET_NAMES[s.set] + '</b>' + (s.set === 'julia' ? ' c = ' + holoC(s).map(f3).join(' + ') + 'i' : '') + '</span>') +
           '<span>zoom <b>10^' + f2(s.zoom) + '</b>' + (s.zoom >= limit - 0.005 ? ' · float32 limit' : '') + '</span>' +
-          '<span>' + s.iters + ' iters' + (s.aa ? ' · 2×2 AA' : '') + '</span><span>' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+          '<span>' + s.iters + ' iters' + (isCustomMap(s) ? ' · R = ' + fmtR(escRadius(s)) : '') + (s.aa ? ' · 2×2 AA' : '') + '</span><span>' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { draw(); },
+        repaint() { draw(); },
+        resize() { draw(); },
+        pause() {}, resume() { draw(); },
+        // The custom map is typed by the viewer, so this tab's validation record does not cover it; the stage badge
+        // and the export provenance say so while it is on (the engine only ever lowers the tab's status).
+        evidence() { return isCustomMap(host.getState()) ? { status: 'unvalidated', why: 'Custom map: f(z, c) is typed by the user and is not covered by this tab\'s validation record' } : null; },
+        async exportPNG(w, h) {
+          const s = host.getState();
+          const p = passFor(s);
+          if (!p) throw new Error('this custom map did not compile on this GPU');
+          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { p.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
+          draw();
+          return blob;
+        },
+      };
+    },
+  });
+
+  /* ==================== Phase portraits ==================== */
+  /* A typed complex function f(z), in z and the complex parameters a and b, parsed by the complex mode of the shared
+     expression language and written into the shader only through U.expr.toGLSLComplex. Each pixel is a point z; its
+     hue is arg f(z) through a cyclic ramp (the palette run round and back to its first color, or the hue wheel with
+     red on the positive reals), and the enhanced styles shade log|f| and arg f with sawtooth ramps whose jumps are
+     the level lines of the modulus and the phase (Wegert and Semmler 2011). The spacing is 2 pi / k in both log|f|
+     and arg f, so where f' is not zero the two families of lines cut the plane into small squares: the conformal
+     grid. The witness is the argument principle, computed on the CPU in double precision along a circle the
+     viewer places. */
+  const PHASE_SPAN = 6;            // width of the plane shown at zoom 1
+  const F_SPEC = { vars: ['z'], params: ['a', 'b'] };
+  const F_GLSL = { rename: { a: 'u_a', b: 'u_b' } };
+  const F_DEFAULT = '(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)';
+  const checkF = v => U.expr.checkComplex(v, F_SPEC, { glsl: true });
+  const fText = s => (typeof s.fz === 'string' && !checkF(s.fz)) ? s.fz : F_DEFAULT;
+  const STYLES = { phase: 0, modulus: 1, grid: 2, lines: 3 };
+  const cplx = (re, im) => f2(re) + (im < 0 ? ' − ' : ' + ') + f2(Math.abs(im)) + 'i';
+  const signed = n => (n < 0 ? '−' : '') + Math.abs(n);
+  function phaseFS(fz) {
+    return HEAD + `
+uniform vec2 u_center, u_rot, u_a, u_b, u_ccen;
+uniform float u_scale, u_shift, u_gamma, u_lines, u_shade, u_crad, u_lw;
+uniform int u_style, u_hue, u_aa, u_ring;
+uniform vec3 u_bg, u_ink;
+uniform sampler2D u_pal;
+${U.expr.COMPLEX_GLSL}vec2 fz(vec2 z){ return ${fz}; }
+const float TAU_ = 6.283185307179586;
+// the hue wheel at full saturation and value: red at t = 0, then yellow, green, cyan, blue, magenta
+vec3 wheel(float t){ return clamp(abs(fract(t + vec3(0.0, 2.0, 1.0) / 3.0) * 6.0 - 3.0) - 1.0, 0.0, 1.0); }
+vec3 cyc(float t){ return texture(u_pal, vec2(0.002 + 0.996 * t, 0.5)).rgb; }
+vec3 shade(vec2 px){
+  vec2 d = (px - u_res * 0.5) * u_scale;
+  vec2 z = u_center + vec2(u_rot.x * d.x - u_rot.y * d.y, u_rot.y * d.x + u_rot.x * d.y);
+  vec2 w = fz(z);
+  bool bad = any(isnan(w)) || any(isinf(w));
+  float ph = atan(w.y, w.x) / TAU_;                     // arg f in turns
+  vec3 col = u_hue == 1 ? wheel(fract(ph + u_shift)) : cyc(fract(ph + u_shift));
+  float lm = clamp(log(length(w)), -80.0, 80.0);       // log|f|
+  float q = u_lines / TAU_;                            // lines per unit of log|f|, and per radian of arg f
+  // |grad log|f|| = |grad arg f| away from zeros and poles (Cauchy-Riemann), in units per pixel
+  float g = max(fwidth(lm), 1e-6);
+  float sm = fract(lm * q), sp = fract(ph * u_lines);
+  if (u_style == 1) col *= 1.0 - u_shade + u_shade * sm;
+  else if (u_style == 2) col *= (1.0 - u_shade + u_shade * sm) * (1.0 - u_shade + u_shade * sp);
+  else if (u_style == 3) {
+    float dm = abs(fract(lm * q + 0.5) - 0.5) / (q * g);           // pixels to the nearest modulus line
+    float dp = abs(fract(ph * u_lines + 0.5) - 0.5) / (q * g);     // pixels to the nearest phase line
+    float line = 1.0 - smoothstep(0.5 * u_lw - 0.5, 0.5 * u_lw + 0.5, min(dm, dp));
+    col = mix(col, u_ink, line * u_shade);
+  }
+  if (u_ring == 1) {
+    float rd = abs(length(z - u_ccen) - u_crad) / u_scale;        // pixels from the circle
+    col = mix(col, vec3(0.04), 1.0 - smoothstep(1.3 * u_lw, 1.3 * u_lw + 1.0, rd));
+    col = mix(col, vec3(1.0), 1.0 - smoothstep(0.45 * u_lw, 0.45 * u_lw + 1.0, rd));
+  }
+  return bad ? u_bg : col;
+}
+void main(){
+  vec2 px = gl_FragCoord.xy + u_off;
+  vec3 col;
+  if (u_aa == 1) col = 0.25 * (shade(px + vec2(-0.25, -0.25)) + shade(px + vec2(0.25, -0.25)) + shade(px + vec2(-0.25, 0.25)) + shade(px + vec2(0.25, 0.25)));
+  else col = shade(px);
+  col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
+  ${DITHER}
+  outColor = vec4(col, 1.0);
+}`;
+  }
+
+  /* The argument principle on the CPU. For f meromorphic inside and on the circle |z - c0| = r, with no zero or pole
+     on it, the winding number of f(circle) about 0 is the number of zeros minus the number of poles inside, each
+     counted with its multiplicity. f is evaluated in double precision through U.expr.compileComplex at 4096 equally
+     spaced points, counterclockwise from angle 0; a step whose principal phase change exceeds pi/2 is bisected (at
+     most 24 times, 400,000 evaluations in all) until no step does. The sum of the principal phase changes is 2 pi
+     times an integer whatever the sampling, because it telescopes; that integer is the winding number when no step
+     hides a whole turn, which the refinement makes likely and cannot prove. No count is reported when f is undefined
+     or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f| (a zero on or at the circle), when
+     a step still turns by more than pi/2 after refinement (a zero, a pole or a branch cut on the circle), or when the
+     budget runs out. An essential singularity or a branch point inside is outside the theorem: a number is still
+     printed if the checks pass, and it is the winding number, not a count of zeros and poles. */
+  const WIND_N = 4096, WIND_DEPTH = 24, WIND_BUDGET = 400000, WIND_FLOOR = 1e-9;
+  const WIND_WHY = {
+    nonfinite: 'f is undefined or infinite on the circle',
+    small: '|f| nearly vanishes on the circle',
+    fast: 'the phase turns faster than the sampling can follow',
+    budget: 'the sampling budget ran out',
+    error: 'the count could not be completed',
+  };
+  function windingNumber(F, s) {
+    const env = new Float64Array([0, 0, s.aRe, s.aIm, s.bRe, s.bIm]), out = [0, 0];
+    const cx = s.ccx, cy = s.ccy, r = s.cr;
+    let evals = 0, refined = 0, lo = Infinity, hi = 0, bad = null;
+    const phase = th => {
+      env[0] = cx + r * Math.cos(th); env[1] = cy + r * Math.sin(th);
+      F(env, out); evals++;
+      const m = Math.hypot(out[0], out[1]);
+      if (!Number.isFinite(m)) { bad = bad || 'nonfinite'; return 0; }
+      if (m < lo) lo = m;
+      if (m > hi) hi = m;
+      return Math.atan2(out[1], out[0]);
+    };
+    const wrap = d => d - TAU * Math.round(d / TAU);
+    const seg = (t0, a0, t1, a1, depth) => {
+      const d = wrap(a1 - a0);
+      if (Math.abs(d) <= PI / 2 || bad) return d;
+      if (evals >= WIND_BUDGET) { bad = 'budget'; return d; }
+      if (depth >= WIND_DEPTH) { bad = 'fast'; return d; }
+      refined++;
+      const tm = 0.5 * (t0 + t1), am = phase(tm);
+      return seg(t0, a0, tm, am, depth + 1) + seg(tm, am, t1, a1, depth + 1);
+    };
+    const first = phase(0);
+    let total = 0, prev = first;
+    for (let k = 1; k <= WIND_N && !bad; k++) {
+      const cur = k === WIND_N ? first : phase(TAU * k / WIND_N);
+      total += seg(TAU * (k - 1) / WIND_N, prev, TAU * k / WIND_N, cur, 0);
+      prev = cur;
+    }
+    if (!bad && !(lo > WIND_FLOOR * hi)) bad = 'small';
+    const turns = total / TAU, n = Math.round(turns);
+    // telescoping makes turns a whole number up to rounding; anything else is a bug, and says so
+    if (!bad && Math.abs(turns - n) > 1e-6) throw new Error('argument principle: phase sum is not a whole number of turns');
+    return { n: bad ? null : n, why: bad, evals, refined, minMod: lo, maxMod: hi };
+  }
+  const PAL_PHASE = { bg: '#141217', colors: ['#D1495B', '#EDAE49', '#E8DAB2', '#00798C', '#30638E', '#6B4E71'] };
+
+  /* ---------- Phase Portraits ---------- */
+  Studio.register({
+    id: 'phase',
+    name: 'Phase portraits',
+    tab: 'Phase',
+    subtitle: 'domain coloring and enhanced phase portraits of complex functions · 2011',
+    order: 40.5,
+    equation: 'color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle',
+    credit: "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    blurb: 'Type a function f(z) and every pixel z takes the color of the phase of f(z), the angle of the complex number it lands on, so the whole function is visible at once. A zero is a point where every color meets, running once round the wheel for each order of the zero; a pole is the same with the colors running the other way. The shading styles add the level lines of |f| and of the phase, which cross at right angles wherever the function is conformal and tile the plane with little squares. The circle is a check you can move: the studio walks f once round it in double precision and counts how often the phase turns, which by the argument principle is the number of zeros minus the number of poles inside. Nothing is sampled on a grid, so a print recomputes every pixel at its own size.',
+    schema: [
+      { group: 'Function', key: 'fz', label: 'f(z) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkF,
+        hint: 'f of the complex variable z and the parameters a and b below. Operators + - * / ^, functions sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg pow, constants i, pi and e; log, sqrt and powers take the principal branch, so their cuts show as seams in the colors. A user-defined function is not validated.' },
+      RANGE('Function', 'aRe', 'Re a', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'aIm', 'Im a', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'bRe', 'Re b', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'bIm', 'Im b', GEOM, -3, 3, 0.001, f3),
+      RANGE('Circle', 'ccx', 'Center Re', GEOM, -10, 10, 0.01, f2),
+      RANGE('Circle', 'ccy', 'Center Im', GEOM, -10, 10, 0.01, f2),
+      RANGE('Circle', 'cr', 'Radius', GEOM, 0.01, 10, 0.01, f2),
+      { group: 'Circle', key: 'ring', label: 'Draw the circle', type: 'toggle', kind: PAINT },
+      RANGE('View', 'cx', 'Center Re', GEOM, -10, 10, 0.001, f3),
+      RANGE('View', 'cy', 'Center Im', GEOM, -10, 10, 0.001, f3),
+      RANGE('View', 'zoom', 'Zoom (log10)', GEOM, -1, 4, 0.01, v => '10^' + v.toFixed(2)),
+      RANGE('View', 'rot', 'Rotation', GEOM, 0, 360, 1, deg),
+      ASPECT_FIELD,
+      { group: 'Color', key: 'style', label: 'Style', type: 'seg', kind: PAINT, wrap: true, options: [['phase', 'Phase'], ['modulus', 'Modulus'], ['grid', 'Conformal grid'], ['lines', 'Contour lines']] },
+      { group: 'Color', key: 'hue', label: 'Hues', type: 'seg', kind: PAINT, options: [['palette', 'Palette, cyclic'], ['wheel', 'Hue wheel']] },
+      RANGE('Color', 'lines', 'Lines per turn', PAINT, 2, 48, 1, String, { dimUnless: s => s.style !== 'phase', hint: 'k phase lines round each zero, and modulus lines 2π/k apart in log|f|, so the two families make squares.' }),
+      RANGE('Color', 'shade', 'Line strength', PAINT, 0, 1, 0.01, f2, { dimUnless: s => s.style !== 'phase' }),
+      RANGE('Color', 'shift', 'Hue shift', PAINT, 0, 1, 0.01, f2),
+      RANGE('Color', 'gamma', 'Gamma', PAINT, 0.5, 2, 0.02, f2),
+      { group: 'Quality', key: 'aa', label: 'Supersample 2×2', type: 'toggle', kind: PAINT, hint: 'Four samples per pixel on screen and in print. Four times the work.' },
+    ],
+    defaults: {
+      fz: F_DEFAULT, aRe: 1, aIm: 0, bRe: 0, bIm: 1,
+      ccx: 1, ccy: 0.5, cr: 1.5, ring: true,
+      cx: 0.5, cy: 0, zoom: 0, rot: 0, aspect: '1:1',
+      style: 'grid', hue: 'palette', lines: 12, shade: 0.35, shift: 0, gamma: 1, aa: false, seed: 'wegert-2011',
+    },
+    presets: {
+      rational: pre('Rational function', { fz: F_DEFAULT, ccx: 1, ccy: 0.5, cr: 1.5, ring: true, cx: 0.5, cy: 0, zoom: 0, rot: 0, style: 'grid', hue: 'palette', lines: 12, shade: 0.35, shift: 0, gamma: 1 }, PAL_PHASE),
+      wheel: pre('Hue wheel', { fz: '(z^3 - 1)/(z^3 + 1)', ccx: 1, ccy: 0, cr: 0.5, ring: true, cx: 0, cy: 0, zoom: 0.1, rot: 0, style: 'phase', hue: 'wheel', lines: 12, shade: 0.35, shift: 0, gamma: 1 }, Pal.graphite),
+      blaschke: pre('Blaschke product', { fz: 'z*(z - a)/(1 - conj(a)*z)*(z - b)/(1 - conj(b)*z)', aRe: 0.5, aIm: 0.3, bRe: -0.4, bIm: -0.5, ccx: 0, ccy: 0, cr: 1, ring: true, cx: 0, cy: 0, zoom: 0.4, rot: 0, style: 'modulus', hue: 'palette', lines: 16, shade: 0.45, shift: 0.1, gamma: 1 }, Pal.risograph),
+      tan: pre('Zeros and poles of tan z', { fz: 'tan(z)', ccx: 0, ccy: 0, cr: 2, ring: true, cx: 0, cy: 0, zoom: -0.2, rot: 0, style: 'lines', hue: 'palette', lines: 12, shade: 0.75, shift: 0, gamma: 1 }, Pal.tram),
+      essential: pre('Essential singularity exp(1/z)', { fz: 'exp(1/z)', ccx: 0, ccy: 0, cr: 0.3, ring: false, cx: 0, cy: 0, zoom: 0.5, rot: 0, style: 'grid', hue: 'palette', lines: 8, shade: 0.4, shift: 0, gamma: 1 }, Pal.verdigris),
+      quintic: pre('Quintic z⁵ + a z + b', { fz: 'z^5 + a*z + b', aRe: -1, aIm: 0.5, bRe: 0.3, bIm: -0.2, ccx: 0, ccy: 0, cr: 1, ring: true, cx: 0, cy: 0, zoom: 0.3, rot: 0, style: 'grid', hue: 'wheel', lines: 20, shade: 0.3, shift: 0, gamma: 1.1 }, Pal.nightshade),
+    },
+    hints: {
+      Function: 'The function is evaluated afresh at every pixel, on the GPU in 32-bit floats; the count on the status line uses 64-bit floats on the CPU.',
+      Circle: 'The status line gives the number of turns f makes round 0 as z goes once round this circle: zeros minus poles inside, with multiplicity, when f is meromorphic there. No count is given when the circle runs through or next to a zero or a pole, or across a branch cut.',
+      Color: 'Phase colors by arg f alone. Modulus adds a sawtooth in log|f|, whose jumps are the lines |f| = constant; the conformal grid adds a sawtooth in arg f as well; contour lines draws both families as lines.',
+    },
+    closedGroups: ['Quality'],
+    palette: true, defaultPalette: PAL_PHASE, paletteLabel: 'Phase colors (cyclic)',
+    headline: 'zoom', headlineLabel: 'zoom',
+    surprise(rng) {
+      const f = rng.pick(['(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)', 'z^5 + a*z + b', '(z - a)*(z - b)/(z^3 - 1)', 'sin(z)/z', 'exp(1/z)', 'tan(z)',
+        'z^3 - a*z + b', '1/(1 + z^2) + a/(z - b)', 'sinh(z)^2 - a', 'z*(z - a)/(1 - conj(a)*z)', 'cos(z^2) - a', 'z^4 - 1 + a/z']);
+      const zoom = rng.range(-0.3, 0.6), half = PHASE_SPAN / Math.pow(10, zoom) / 2;
+      return {
+        fz: f, aRe: rng.range(-1.5, 1.5), aIm: rng.range(-1.5, 1.5), bRe: rng.range(-1.5, 1.5), bIm: rng.range(-1.5, 1.5),
+        cx: rng.range(-0.5, 0.5), cy: rng.range(-0.5, 0.5), zoom, rot: rng() < 0.2 ? rng.int(0, 359) : 0,
+        ccx: rng.range(-0.4, 0.4) * half, ccy: rng.range(-0.4, 0.4) * half, cr: rng.range(0.25, 0.6) * half, ring: rng() < 0.7,
+        style: rng.pick(['phase', 'modulus', 'grid', 'grid', 'lines']), hue: rng() < 0.7 ? 'palette' : 'wheel',
+        lines: rng.int(6, 24), shade: rng.range(0.2, 0.6), shift: rng.range(0, 1), gamma: rng.range(0.85, 1.15), aa: false,
+      };
+    },
+    create(host) {
+      const start = glStart(host);
+      if (!start.gl) return start.dead;
+      const gl = start.gl;
+      let pal = null, palKey = '';
+      const prog = { key: null, pass: null };
+      let wind = null, windKey = '';
+      // The program for the typed function, rebuilt when the text changes; null when this GPU could not compile it.
+      function passFor(s) {
+        const text = fText(s);
+        if (prog.key !== text) {
+          if (prog.pass) gl.deleteProgram(prog.pass.prog);
+          prog.pass = null; prog.key = text;
+          try { prog.pass = new G.Pass(gl, phaseFS(U.expr.toGLSLComplex(text, F_SPEC, F_GLSL))); } catch (err) { console.error(err); }
+        }
+        return prog.pass;
+      }
+      function ensurePal(s) {
+        const key = s.bg + '|' + s.palette.join(',');
+        if (pal && palKey === key) return;
+        if (pal) pal.dispose();
+        // the palette run round and back to its first color, so arg f = pi and -pi get the same color
+        pal = G.rampTexture(gl, s.palette.concat([s.palette[0]]), null); palKey = key;
+      }
+      function witness(s) {
+        const key = [fText(s), s.aRe, s.aIm, s.bRe, s.bIm, s.ccx, s.ccy, s.cr].join('|');
+        if (wind && windKey === key) return wind;
+        windKey = key;
+        try { wind = windingNumber(U.expr.compileComplex(fText(s), F_SPEC), s); }
+        catch (err) { console.error(err); wind = { n: null, why: 'error', evals: 0, refined: 0 }; }
+        return wind;
+      }
+      function uniforms(s, w, h, ox, oy) {
+        ensurePal(s);
+        const zoom = Math.pow(10, s.zoom), a = s.rot * PI / 180;
+        return {
+          u_res: [w, h], u_off: [ox, oy], u_center: [s.cx, s.cy], u_rot: [Math.cos(a), Math.sin(a)],
+          u_scale: PHASE_SPAN / (zoom * w), u_a: [s.aRe, s.aIm], u_b: [s.bRe, s.bIm],
+          u_ccen: [s.ccx, s.ccy], u_crad: s.cr, u_ring: { int: s.ring ? 1 : 0 }, u_lw: Math.max(1, w / 700),
+          u_shift: s.shift, u_gamma: s.gamma, u_lines: Math.round(s.lines), u_shade: s.shade,
+          u_style: { int: STYLES[s.style] || 0 }, u_hue: { int: s.hue === 'wheel' ? 1 : 0 }, u_aa: { int: s.aa ? 1 : 0 },
+          u_bg: hex01(s.bg), u_ink: hex01(U.inkFor(s.bg)), u_pal: pal,
+        };
+      }
+      // The typed function is shown only as escaped text in a tooltip; the count is a measurement with no reference
+      // printed beside it.
+      function status(s) {
+        const W = witness(s);
+        const circle = '|z − (' + cplx(s.ccx, s.ccy) + ')| = ' + f2(s.cr);
+        host.setStatus(
+          '<span title="' + U.escapeHtml('f(z) = ' + fText(s) + ', a = ' + cplx(s.aRe, s.aIm) + ', b = ' + cplx(s.bRe, s.bIm)) + '">f typed · user-defined, not validated</span>' +
+          (W.n !== null
+            ? '<span>zeros − poles inside ' + circle + ': <b>' + signed(W.n) + '</b></span>'
+            : '<span>zeros − poles inside ' + circle + ': <b>not counted</b>, ' + WIND_WHY[W.why] + '</span>') +
+          '<span>argument principle, ' + W.evals.toLocaleString() + ' samples of f</span>' +
+          '<span>zoom 10^' + f2(s.zoom) + ' · ' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+      }
+      function draw() {
+        const s = host.getState();
+        const p = passFor(s);
+        if (!p) {
+          const bg = hex01(s.bg);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.clearColor(bg[0], bg[1], bg[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+          host.setStatus('<span>f typed · this function did not compile on this GPU</span>');
+          return;
+        }
+        p.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
+        gl.finish();
+        status(s);
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -28360,9 +29018,44 @@ void main(){
         pause() {}, resume() { draw(); },
         async exportPNG(w, h) {
           const s = host.getState();
-          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { pass.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
+          const p = passFor(s);
+          if (!p) throw new Error('this function did not compile on this GPU');
+          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { p.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
           draw();
           return blob;
+        },
+        // f on a grid of the plate's own frame, in double precision on the CPU (the plate itself is 32-bit, on the
+        // GPU), with the points z and the argument-principle count.
+        async exportData() {
+          const s = host.getState(), F = U.expr.compileComplex(fText(s), F_SPEC);
+          const W = Math.max(8, Math.min(512, host.canvas.width)), H = Math.max(8, Math.round(W * (ASPECTS[s.aspect] || 1)));
+          const n = W * H, fr = new Float64Array(n), fi = new Float64Array(n), zr = new Float64Array(n), zi = new Float64Array(n);
+          const scale = PHASE_SPAN / (Math.pow(10, s.zoom) * W), a = s.rot * PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+          const env = new Float64Array([0, 0, s.aRe, s.aIm, s.bRe, s.bIm]), out = [0, 0];
+          for (let y = 0; y < H; y++) {
+            const dy = (H - y - 0.5 - H / 2) * scale;             // row 0 is the top of the plate
+            for (let x = 0; x < W; x++) {
+              const dx = (x + 0.5 - W / 2) * scale, k = y * W + x;
+              env[0] = zr[k] = s.cx + ca * dx - sa * dy; env[1] = zi[k] = s.cy + sa * dx + ca * dy;
+              F(env, out); fr[k] = out[0]; fi[k] = out[1];
+            }
+            if (y % 64 === 63) await yieldNow();
+          }
+          const wn = witness(s);
+          return {
+            arrays: {
+              f_re: { data: fr, shape: [H, W], description: 'Re f(z) at the pixel centres, double precision' },
+              f_im: { data: fi, shape: [H, W], description: 'Im f(z) at the pixel centres, double precision' },
+              z_re: { data: zr, shape: [H, W], description: 'Re z, the point each pixel stands for' },
+              z_im: { data: zi, shape: [H, W], description: 'Im z, the point each pixel stands for' },
+            },
+            meta: {
+              tab: 'phase', grid: [W, H], units: 'dimensionless (the complex plane)', function: fText(s),
+              a: [s.aRe, s.aIm], b: [s.bRe, s.bIm], center: [s.cx, s.cy], pixelSpacing: scale, rotationDegrees: s.rot,
+              argumentPrinciple: { circleCenter: [s.ccx, s.ccy], radius: s.cr, zerosMinusPoles: wn.n, refused: wn.why ? WIND_WHY[wn.why] : null, samples: wn.evals, bisections: wn.refined },
+              note: 'NaN where f is undefined. The winding count is a double-precision sampled computation, not interval arithmetic.',
+            },
+          };
         },
       };
     },

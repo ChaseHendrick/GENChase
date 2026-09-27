@@ -588,6 +588,31 @@
       "headline": "iters"
     },
     {
+      "id": "phase",
+      "source": "src/modules/dynamics.js",
+      "name": "Phase portraits",
+      "tab": "Phase",
+      "subtitle": "domain coloring and enhanced phase portraits of complex functions · 2011",
+      "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
+      "credit": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "Type a function f(z) and every pixel z takes the color of the phase of f(z), the angle of the complex number it lands on, so the whole function is visible at once. A zero is a point where every color meets, running once round the wheel for each order of the zero; a pole is the same with the colors running the other way. The shading styles add the level lines of |f| and of the phase, which cross at right angles wherever the function is conformal and tile the plane with little squares. The circle is a check you can move: the studio walks f once round it in double precision and counts how often the phase turns, which by the argument principle is the number of zeros minus the number of poles inside. Nothing is sampled on a grid, so a print recomputes every pixel at its own size.",
+      "order": 40.5,
+      "seed": "wegert-2011",
+      "presets": [
+        "rational",
+        "wheel",
+        "blaschke",
+        "tan",
+        "essential",
+        "quintic"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "zoom"
+    },
+    {
       "id": "lens",
       "source": "src/modules/lens.js",
       "name": "Gravitational Lens",
@@ -1916,9 +1941,9 @@
       "name": "Holomorphic dynamics",
       "tab": "Holomorphic",
       "subtitle": "escape-time and Newton basins in the complex plane · 1918",
-      "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
-      "credit": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-      "blurb": "Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton's method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Zoom is clamped where 32-bit floats run out of digits.",
+      "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
+      "credit": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton's method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Custom map iterates a map you type in z and c, with the pixel as the parameter c or as the starting point z₀, and escapes at a radius you choose. Zoom is clamped where 32-bit floats run out of digits.",
       "order": 63,
       "seed": "julia-1918",
       "presets": [
@@ -1928,7 +1953,9 @@
         "dendrite",
         "siegel",
         "newton",
-        "ship"
+        "ship",
+        "cubic",
+        "sine"
       ],
       "vectors": false,
       "familiarity": "ubiquitous",

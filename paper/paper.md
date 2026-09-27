@@ -28,7 +28,7 @@ validation counts are in VALIDATION.md. `node tools/index.js` keeps the catalog 
 
 # Summary
 
-GENChase is a browser studio of 130 techniques, each a seeded simulation of a published model:
+GENChase is a browser studio of 131 techniques, each a seeded simulation of a published model:
 partial differential equations such as Cahn–Hilliard phase separation [@cahn1958], lattice
 models such as the Ising model [@onsager1944; @metropolis1953], membrane and population models
 from neuroscience [@hodgkin1952; @montbrio2015], point-vortex collapse
@@ -123,7 +123,7 @@ when a technique's source changes after its record was written, and generates `V
 It checks structure only: it does not run the commands or judge their adequacy, which is the
 reviewer's job. `node tools/verify.js --print <id>` runs the recorded tests for a technique.
 
-On 24 September 2026, of the 130 techniques, 48 were validated within stated limits, 3 partially
+On 24 September 2026, of the 130 tabs then in the catalog, 48 were validated within stated limits, 3 partially
 validated and 79 unvalidated. For example, the Cahn–Hilliard GPU passes agree with an
 independent double-precision CPU stencil to a maximum field error of $9.99 \times 10^{-8}$
 against an acceptance bound of $5 \times 10^{-7}$ in 16 noise-free float32 cases; the

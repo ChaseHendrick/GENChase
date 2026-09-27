@@ -8,7 +8,7 @@ Open the browser studio immediately, or unzip the offline bundle and double-clic
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+A folder-based studio with one shared engine and 131 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
 
 <p align="center">
   <a href="docs/trailer/genchase-trailer.mp4"><img src="docs/trailer/poster.jpg" width="80%" alt="GENChase trailer: 45 seconds of real simulations from the studio, with an original score" /></a><br />
@@ -188,15 +188,20 @@ Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.
 
 ## For people (and agents) adding to it
 
-**Typing your own formula:** three tabs run equations you type:
+**Typing your own formula:** five tabs run equations you type:
 - **Attractors**, System *Custom ODE*: dx/dt, dy/dt and dz/dt in x, y, z with coefficients a to d.
 - **Flow Field**, Field *Custom field*: the velocity u(x, y, t) and v(x, y, t) that the strokes follow.
 - **Turing Patterns**, Kinetics *Custom reaction*: the reaction terms f(u, v) and g(u, v) with parameters a to d
   and diffusivities Du and Dv, run on the GPU with a time step bounded from a sample of the field.
+- **Holomorphic dynamics**, Map *Custom map*: a complex map f(z, c), iterated with the pixel as the parameter c or
+  as the starting point z₀, to an escape radius you choose.
+- **Phase portraits**: a complex function f(z) with complex parameters a and b, drawn as a phase portrait; the status
+  line counts the zeros minus the poles inside a circle you place, by the argument principle.
 
 The formulas use a small expression language ([`src/shared/expr.js`](src/shared/expr.js): + - * / ^, sin, cos,
-exp, log, sqrt and similar, pi and e). It is parsed, never run as code, so a typed formula travels safely inside a
-share link. A typed formula is outside the tab's validation record, and the status line says so.
+exp, log, sqrt and similar, pi and e; the two complex tabs add i, conj, re, im, abs and arg, with principal
+branches). It is parsed, never run as code, so a typed formula travels safely inside a share link. A typed formula is
+outside the tab's validation record, and the status line says so.
 
 **Adding a new simulation:** contribute a source module. The [formula submission guide](validation/FORMULA-SUBMISSIONS.md)
 explains how to state assumptions, supply an independent benchmark and record measured errors and failure controls.

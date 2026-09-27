@@ -571,6 +571,7 @@ void main(){
     crapper: 'occasional',
     hasimoto: 'occasional',
     lump: 'occasional',
+    phase: 'occasional',
     // rare
     cortex: 'rare',
     liesegang: 'rare',

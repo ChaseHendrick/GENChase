@@ -130,7 +130,14 @@ exportData()       -> Promise<{ arrays: { name: { data, shape, units?, descripti
 
 `U.expr` is the expression language: `check(text, { vars, params })` returns `null` or `{ message, pos }`,
 `compile(text, spec)` returns `fn(env)` with the variables then the parameters in spec order, and
-`toGLSL(text, spec, { rename })` writes whitelisted GLSL.
+`toGLSL(text, spec, { rename })` writes whitelisted GLSL. Its complex mode reads the same grammar over complex
+numbers, with the constant `i`, the functions `sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg pow` and
+principal branches (documented at the top of `src/shared/expr.js`): `checkComplex(text, spec, { glsl: true })`
+also refuses a literal the GPU cannot hold, `compileComplex(text, spec)` returns `fn(env, out?)` → `[re, im]` with
+`env` the flat pairs `[re0, im0, re1, im1, ...]` in spec order, and `toGLSLComplex(text, spec, { rename })` writes a
+`vec2` expression over the helpers in `U.expr.COMPLEX_GLSL`, which the shader includes once (it defines `cmul`, so
+do not define another). Holomorphic dynamics' Custom map and Phase portraits are the users: each compiles its
+program when the text changes and keeps it until the text changes again.
 
 `U.stats` is the uncertainty harness (`src/shared/stats.js`): `compare(record)` builds a status-line comparison span; `seriesMean(x)` and `tauInt(x)` for a correlated time series; `fieldMean(values, W, H)` for one correlated field; `blocking`, `blockBootstrap(x, stat, { seed })`, `slopeBootstrap(xs, ys, { seed })`, `sampleMean`, `ensemble`, `hill(values, k)`. Seed every resampling with `s.seed + '/<tag>'`.
 
