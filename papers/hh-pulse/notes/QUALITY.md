@@ -30,14 +30,19 @@ The bar every paper in this repository meets before it is published or preprinte
   Table 3 (the equations and constants), in a scan of the paper; Teschl, Ordinary Differential Equations and Dynamical
   Systems (AMS GSM 140, 2012), the statements cited (Corollary 2.15, Theorem 6.1, Lemmas 6.3, 6.5, 6.6, Theorems 9.4,
   9.5, and the Routh-Hurwitz statement of p. 72 for the unused check), read on 2026-09-27 in the author's preliminary
-  version, which he makes available with the publisher's permission. Sources that bear only on priority or comparison
-  and on no proof step: Carpenter (1977), read in full; Hastings (1976), pp. 229-230 only; Foote and Chen (1981), not
+  version, which he makes available with the publisher's permission. Sources credited for the methods and the software
+  (Lohner 1988, Wazewski 1947, Conley 1975 and 1978, Zgliczynski 2009, Johansson 2017, FLINT, python-flint, mpmath;
+  and Carpenter 1976, listed next to Carpenter 1977; added on 2026-09-27 after review-1, S1; the papers' bibliographic
+  data checked in Crossref or zbMATH Open, the software versions read from the installed packages) are not
+  premises of any proof step, and the reference list says which were not read. Sources that bear only on earlier work
+  or comparison and on no proof step: Carpenter (1977), read in full; Hastings (1976), pp. 229-230 only; Foote and Chen (1981), not
   read; Arioli and Koch (2015), read in the parts cited; Ikeda, Mimura and Tsujikawa (1987, 1989), abstracts; Huxley
   (1959), not read (cited only for what is not claimed). The manuscript says so in Section 1 and in the reference list.
 - [x] **5. Prior article review.** Evidence: RESEARCH.md entries of 2026-09-25, 2026-09-26 and 2026-09-27 and
-  `papers/hh-dynamics/work/traveling-wave/prior-art-log.md` (A)-(J), summarized in Appendix C of the manuscript; the
-  priority statement is conditional and names what was not read (Hastings 1976 beyond pp. 229-230, Foote and Chen
-  1981) and that zbMATH Open has no review of either.
+  `papers/hh-dynamics/work/traveling-wave/prior-art-log.md` (A)-(J), summarized in Appendix C of the manuscript. After
+  review-1 (S2) the statement is only that the searches found no earlier proof, and the manuscript names the two
+  papers that could not be obtained (Hastings 1976 beyond pp. 229-230, Foote and Chen 1981; the owner tried to obtain
+  both) and that zbMATH Open has no review of either.
 - [ ] **6. Adversarial second reading.** Open. So far only checks inside the session that produced the proof: the
   tests, the independent block program, the consistency of the rigorous and numerical values, the full rerun of item
   7, and a rereading of the proof by the same agent. An independent reviewer told to find errors, briefed only with

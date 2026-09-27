@@ -114,9 +114,9 @@ the system of Section 2 has a pulse, and max u > 102.98 mV along it. The corresp
     (12.313756720162298508179797283771499327244899734708115548799408270,
      12.313756720162298508179797283771499327244899734708115548799408655) m/s.
 
-In both theorems the pulse leaves rest along a branch of the one-dimensional unstable manifold of y* (the branch
-through the exit set of Lemma 1; numerically it is the branch on which u increases) and returns to y* inside the block
-B0 of Section 4.
+In both theorems the pulse leaves rest along a branch of the one-dimensional unstable manifold of y*, the branch
+through the exit set E of Lemma 1, on which u > u* where it leaves the box B (the programs check u - u* > 0 on all of
+E), and returns to y* inside the block B0 of Section 4.
 
 **Remark 1 (the zero-current leak potential).** [Computer-assisted.] With E_l = 10.5989209693916785... (the value
 that makes the resting current zero at u = 0, so that u* = 0) Theorem 1 holds with K2 - K1 = 3e-45 and the speed in
@@ -125,9 +125,9 @@ The printed E_l moves the speed by 2.7e-4 m/s.
 
 **Remark 2 (numerical, not proved).** High-precision multiple shooting gives K* = 10.43805106010112369227648623831857
 912185866977197832623... at 18.5 C and K* = 4.510632438270851021041743858428880704114494313023448979211400... at
-6.3 C (printed E_l), which Theorems 1 and 2 confirm to 45 and 61 digits. Hodgkin and Huxley's K = 10.47 /ms is 0.3
-per cent higher; their 18.8 m/s is our 18.73 rounded after a hand integration. The measured speed in that fibre was
-21.2 m/s.
+6.3 C (printed E_l), each inside the interval [K1, K2] of its theorem. Hodgkin and Huxley's K = 10.47 /ms is 0.3 per
+cent higher; with the same fibre constants it gives 18.76 m/s, which they report as 18.8 m/s. The measured speed in
+that fibre was 21.2 m/s.
 
 **Not claimed.** Uniqueness of the pulse or of K*; stability; other temperatures; the slow pulse that Huxley (1959)
 and later authors found numerically.
@@ -165,7 +165,8 @@ an exact binary matrix that approximately diagonalizes Df(y*) (unstable, fast re
 
 with r_B = 1e-25 (18.5 C) or 1e-32 (6.3 C) and s_j of order r_B^2 (the values are in the configuration files).
 Checked in ball arithmetic over B x [K1, K2]: (i) D A + A^T D is positive definite for every A in an interval matrix
-enclosing T_B Df(y, K) T_B^-1, D = diag(1, -1, -1, -1, -1) (Lemma B.2); (ii) the stable faces are strictly inflowing:
+enclosing T_B Df(y, K) T_B^-1, D = diag(1, -1, -1, -1, -1) (Gershgorin's bound, Lemma B.5); (ii) the stable faces
+are strictly inflowing:
 z2 z2' < 0 where |z2| = s2, z3 z3' + z4 z4' < 0 where z3^2 + z4^2 = s3^2, and z5 z5' < 0 where |z5| = s5, at every
 point of B; (iii) z1' > 0 on the exit face E = B intersected with {z1 = r_B}.
 
@@ -200,7 +201,9 @@ faces, so x_K(t_e) is on a face |z1| = r_B, and since z1 > 0, p(K) = x_K(t_e) is
 
 (b) Let q be in E, with its backward orbit in B. By Teschl's Lemma 6.3, q is backward complete; by Lemmas 6.5 and 6.6
 its alpha-limit set is nonempty, compact, invariant and in B, and L is constant on it, so as in (a) it is {y*}. So the
-backward orbit tends to y*, L decreases to 0 along it in backward time, hence L > 0 and z1 > 0 on it, and by Teschl's
+backward orbit tends to y*: otherwise there are times t_n -> -infinity at which it stays at distance at least some
+epsilon > 0 from y*, and since B is compact a subsequence converges to a point of the alpha-limit set other than y*.
+Then L decreases to 0 along it in backward time, hence L > 0 and z1 > 0 on it, and by Teschl's
 Theorem 9.5 it eventually lies on the local unstable manifold, on the branch with z1 > 0: q is on Gamma_K. A point of
 Gamma_K after p(K) has a backward orbit through points just after p(K), where z1 > r_B by (iii), so outside B. A point
 of Gamma_K in E before p(K) would, by (iii), be followed at once by points with z1 > r_B, outside B, before t_e,
@@ -215,7 +218,9 @@ lies in B. By (b), q = p(K). QED
 
 **(H3) The closing block** (`block0.py`). In zeta = M (y - y*), M = diag(10, 7, 1, 1, 40) T (T an exact binary
 approximate inverse eigenbasis), let B0 = {|zeta_1| <= r, |zeta_s|_2 <= rho}, zeta_s = (zeta_2, ..., zeta_5), with
-rho = 0.8, r = 0.84 (18.5 C) and rho = 0.6, r = 0.63 (6.3 C). Checked on a cover of B0 by cells (Lemma B.3), with
+rho = 0.8, r = 0.84 (18.5 C) and rho = 0.6, r = 0.63 (6.3 C), as binary floating-point numbers that the programs use
+exactly: rho = 0.8000000000000000444..., r = 0.8 x 1.05 rounded to 0.8400000000000000799..., and rho =
+0.5999999999999999778..., r = 0.6300000000000000044.... Checked on a cover of B0 by cells (Lemma B.3), with
 interval Cholesky factorizations (Lemma B.2), for every K in the interval: (C) D A + A^T D is positive definite for
 every A in an interval matrix enclosing M Df(x) M^-1 over the cell; (E) on the cells that meet B0 and
 {|zeta_1| <= rho}, -sym(A_ss) - mu I is positive definite, where mu is an upper bound of the Euclidean norm of the
@@ -234,7 +239,9 @@ Then dL/dt = zeta^T (D A-bar + A-bar^T D) zeta > 0 for zeta != 0. At a boundary 
 A-bar_s1 zeta_1) <= (lambda_max(sym A-bar_ss) + |A-bar_s1|_2) rho^2 < 0, so the orbit is outside B0 just before and
 inside just after. While the orbit is in B0, L > 0 persists and zeta_1 cannot vanish, so it keeps its sign. An orbit
 that stays in B0 for t >= t_0 has, by Teschl's Lemmas 6.3, 6.5 and 6.6, a nonempty invariant omega-limit set in B0 on
-which L is constant, hence {y*}. The face |zeta_1| = r is not used. QED
+which L is constant, hence {y*}; and the orbit tends to y*, since otherwise times t_n -> infinity at which it stays
+at distance at least some epsilon > 0 from y* would have, B0 being compact, a subsequence converging to a point of
+the omega-limit set other than y*. The face |zeta_1| = r is not used. QED
 
 **(H4) The interval run** (`hh_prove_pulse.py interval`). A Lohner-type integrator in the six variables (y, K), K' = 0
 (`lohner6.py`; Taylor jets of order 40 with derivatives in the initial point, `hhjet6.py`), carries a set containing
@@ -292,20 +299,34 @@ Table: the same at 6.3 C (printed E_l).
 | negative controls in setup | as at 18.5 C: all rejected | seconds |
 
 The model control multiplies alpha_m by a factor that is 1 at the enclosed rest value u*, so that rest and its
-linearization, and with them (H1) to (H3), are unchanged, while the pulse speed moves by far more than the width of the
-K interval. At 6.3 C the numerical centre has to be computed with a local error budget 1e-8 times tighter than at
+linearization are unchanged: the stage checks (H2) again under the perturbation, and (H1) follows as before. (H3) is
+not checked again; on B0, where |u - u*| is of order 1 mV, the factor changes the field by about 1e-12. The control only
+has to fail, and the perturbation moves the pulse speed by far more than the width of the K interval. At 6.3 C the numerical centre has to be computed with a local error budget 1e-8 times tighter than at
 18.5 C: the budget is written for the growth rate at 18.5 C, and with the looser one K* was off by about 5e-59, which
 the interval run detected (zeta_1 = -86 at T_enter, outside B0).
 
 **Independent re-check of (H3).** `hh_block_check_iv.py` is a separate program: mpmath interval arithmetic at 113 bits,
-the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test, and its
-own enclosure of the rest state by bisection. It confirms (C) and (E) at both temperatures and rejects the enlarged
-block.
+the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test, phi from
+the decimal temperature, and its own enclosure of the rest state by bisection, which it checks to lie within the
+window where Lemma B.1 shows that the zero is unique. It confirms (C) and (E) at both temperatures and rejects the
+enlarged block with the same depth limit as the check itself.
 
-**Tests** (`test_lohner6.py`). The six-variable jets agree with an independent Picard implementation and with central
-differences in K. Lohner enclosures through the upstroke, at orders 30 and 8, contain a high-precision reference
-solution computed with a different step sequence; at order 8 with the remainder term dropped the enclosure misses
-it, as it must.
+**Tests.** `test_field.py` compares the vector field of the programs with an independent transcription of the 1952
+equations in Hodgkin and Huxley's own sign convention, at 64 states at both temperatures and both leak potentials,
+including the removable singularities at u = 10 and u = 25 and states next to them; the largest relative difference
+is 5.2e-60, and the same transcription with V_K = -12 is caught. `test_lohner6.py`: the six-variable jets agree with
+an independent Picard implementation and with central differences in K; Lohner enclosures through the upstroke, at
+orders 30 and 8, contain a high-precision reference solution computed with the same jets and a different step
+sequence (so this tests the enclosures, not the field); at order 8 with the remainder term dropped the enclosure
+misses it, as it must. `test_temperature.py` checks that phi is computed from the decimal temperature, so that phi = 1
+at 6.3 C; the binary number nearest 6.3, 6.29999999999999982 C, gives phi = 1 - 1.95e-17, and the test rejects it.
+
+**The harness.** Every certificate records the sha256 of the configuration, of the closing block and of the eight
+programs the proof runs, the python-flint version, and the phi and E_l balls. The summary recomputes all of these, and
+each verdict from the certificate's own fields, and refuses a certificate that does not match, whose K is not the
+configuration's, or whose negative control failed for a reason other than its stated one. A summary control plants
+thirteen kinds of stale, foreign or self-contradictory certificate in a copy of the data and requires the summary to
+refuse each, and to accept the unaltered copy.
 
 **Consistency.** The numerical values predict zeta_1(K1) = -0.3046 and zeta_1(K2) = 0.3406 at T_enter (18.5 C, zero-
 current E_l); the rigorous enclosures are -0.30474 and 0.34075.
@@ -318,7 +339,8 @@ epsilon > 0"; Theorem 4.2 (p. 357) restores m as a fast variable "for all small 
 (pp. 357-358) shows that the pulse is lost when epsilon or delta is too large. Her method, isolating blocks and a
 Wazewski-type shooting in the speed around a singular orbit, is the same kind of topological argument as ours, applied
 where the small parameters make the orbit computable by hand; ours applies it to a validated numerical orbit at
-epsilon = delta = 1. Hastings's theorem (pp. 229-230, read) needs n and h slowed by a small epsilon and hypotheses he
+epsilon = delta = 1. zbMATH lists her lecture notes "Nerve impulse equations" (Carpenter 1976) next to the 1977 paper;
+we have not read them. Hastings's theorem (pp. 229-230, read) needs n and h slowed by a small epsilon and hypotheses he
 did not verify for the 1952 functions.
 
 ## 7. Reproducibility
@@ -348,13 +370,20 @@ operations and exp is Psi; near 0 it is 1/G with G(x) = (e^x - 1)/x = sum_n x^n/
 a ball x0 with |x0| <= 1/2 are summed to n = 400, with the tail bounded by twice the first omitted term (for
 n >= 2k + 2 the ratio of consecutive terms of the k-th coefficient is at most 2|x0|/(n + 2) <= 1/2).
 
-**Lemma A.1 (a priori enclosure).** Let W be a box with [X] + [0, h] F(W) contained in int W. Then for every x0 in X
-the solution exists on [0, h] and lies in W there.
+**Lemma A.1 (a priori enclosure).** Since K' = 0, the K component of a solution is constant, and the statement is
+about the five moving components y. Let W = W_y x W_K be a box in R^5 x R whose K component W_K contains the K
+component of [X], let F_y(W) be an interval enclosure of f(y, K) over W, and suppose that [X]_y + [0, h] F_y(W) is
+contained in the interior of W_y, where [X]_y is the hull of the y components of X. Then for every (y0, K) in X the
+solution of y' = f(y, K), y(0) = y0, exists on [0, h] and lies in W_y there.
 
-*Proof.* Let tau be the supremum of the t in [0, h] such that the solution exists on [0, t] and lies in W there.
-For t < tau, x(t) = x0 + integral_0^t f(x(s)) ds lies in x0 + t F(W) (F(W) is a box, hence convex), a subset of the
-compact set [X] + [0, h] F(W), which lies in int W. By Teschl's Corollary 2.15 the solution extends beyond tau, and by
-continuity it stays in int W a little longer; so tau = h, and the solution lies in W on [0, h]. QED
+*Proof.* Fix (y0, K) in X; then K is in W_K. Let tau be the supremum of the t in [0, h] such that the solution exists on
+[0, t] and lies in W_y there. For t < tau, y(t) = y0 + integral_0^t f(y(s), K) ds lies in y0 + t F_y(W) (F_y(W) is a
+box, hence convex), a subset of the compact set [X]_y + [0, h] F_y(W), which lies in int W_y. By Teschl's Corollary
+2.15 the solution extends beyond tau, and by continuity it stays in int W_y a little longer; so tau = h, and the
+solution lies in W_y on [0, h]. QED
+
+In the six variables the solution (y(t), K) then lies in W on [0, h]; the program checks the inclusion for the five
+moving components only (for the endpoint runs, where K is a point, a six-dimensional interior would be empty).
 
 **Lemma A.2 (Lagrange remainder).** Under Lemma A.1, for t in [0, h] and each component i,
 x_i(t) - sum_{k <= p} x_{i,k}(x0) t^k lies in t^(p+1) [x_{i,p+1}](W') for any box W' that contains the solution on
@@ -376,8 +405,11 @@ C' = mid([J] C), B' an invertible point matrix, [B'^-1] an enclosure of its inve
 
 the solution at time h from every x0 in X lies in X' = xbar' + C' r0 + B' r', r0 in R0, r' in R'.
 
-*Proof.* For each component, the mean value theorem on the segment from xbar to x0, which lies in the convex hull of X
-and so in [X], gives Phi_i(x0) = Phi_i(xbar) + grad Phi_i(xi_i) (x0 - xbar) with grad Phi_i(xi_i) in the i-th row of
+*Proof.* The point xbar lies in X, and so the segment from xbar to x0 lies in the convex hull of X and in [X]: the
+boxes R0 and R contain 0 at every step. R0 is symmetric about 0 by construction and does not change; the initial R
+contains 0 by construction; and if R contains 0, so does R', since y - xbar' contains 0 (xbar' = mid(y)),
+([J] C - C') R0 contains 0 (R0 does), and ([B'^-1] [J] B) R contains 0 (R does). For each component, the mean value
+theorem on that segment gives Phi_i(x0) = Phi_i(xbar) + grad Phi_i(xi_i) (x0 - xbar) with grad Phi_i(xi_i) in the i-th row of
 [J]. So x(h) = Phi(x0) + rem with rem in Rem, and x(h) - xbar' - C' r0 = (Phi(xbar) + rem - xbar') + (J C - C') r0
 + J B r for a matrix J in [J]. Multiplying by B'^-1 and enclosing each term gives r' = B'^-1 (x(h) - xbar' - C' r0)
 in R'. QED
@@ -415,8 +447,8 @@ of H, produces pivots whose intervals are positive, then every such S is positiv
 in the corresponding interval (inclusion isotonicity), so each pivot is positive and the recursion does not break
 down. It produces a real lower-triangular L with positive diagonal and S = L L^T, so S is positive definite. QED
 
-In (H2)(i) and (H3)(C), S = D A + A^T D for A in the interval matrix of the region, and the interval entries of H are
-evaluated from those of A, so they contain the entries of S.
+In (H3)(C), S = D A + A^T D for A in the interval matrix of the region, and the interval entries of H are evaluated
+from those of A, so they contain the entries of S. (H2)(i) uses Lemma B.5 instead.
 
 **Lemma B.3 (covers).** `block0.cover_check` starts from the box {|zeta_1| <= r, |zeta_j| <= rho, j = 2..5}, which
 contains B0 (for the entrance check, from the same box with |zeta_1| <= rho), and bisects coordinates in a fixed cycle.
@@ -430,6 +462,17 @@ the quotient Q for every K and every root in [a, b], and the remainder encloses 
 the quartic Q/q_4 = x^4 + a3 x^3 + a2 x^2 + a1 x + a0, namely a3, a2, a1, a0 > 0, a3 a2 - a1 > 0 and
 a3 a2 a1 - a1^2 - a3^2 a0 > 0 (Teschl 2012, p. 72, eq. (3.45), which states the criterion with a reference to
 Gantmacher), are checked on those enclosures. The proof does not use this check; Lemma 0 gives (H1).
+
+**Lemma B.5 (Gershgorin's bound).** Let H be an interval matrix whose entries contain those of every symmetric matrix
+S in a set. If, for every i, the lower end of H_ii exceeds the sum over j != i of the upper bounds of |H_ij|, then every
+such S is positive definite.
+
+*Proof.* Let S v = lambda v with v real and nonzero (S is symmetric), and let i be an index with |v_i| maximal. Then
+(lambda - S_ii) v_i = sum_{j != i} S_ij v_j, so lambda >= S_ii - sum_{j != i} |S_ij| |v_j| / |v_i| >=
+S_ii - sum_{j != i} |S_ij| > 0. QED
+
+`certify_rest_wave.lemma_B` applies Lemma B.5 to H = D A + A^T D, with the entries of H evaluated from the interval
+matrix A that encloses T_B Df(y, K) T_B^-1 over B x [K1, K2] (for (H2)(i)).
 
 ## Appendix C. The prior-article search
 
@@ -446,22 +489,35 @@ Result: no proof, with or without a computer, of the existence of the pulse of t
 computer-assisted travelling-wave result for Hodgkin-Huxley or any conductance-based model. Every existence proof
 found (Hastings 1976; Carpenter 1977; Ikeda, Mimura and Tsujikawa 1987 and 1989, from their abstracts) uses artificial
 small parameters. Not read: Hastings (1976) beyond pp. 229-230, Foote and Chen (1981), Huxley (1959), and the
-MathSciNet reviews (not reachable); Google Scholar was not reachable. This is why the priority statement of Section 1
-is conditional.
+MathSciNet reviews (not reachable); Google Scholar was not reachable. Hastings (1976) beyond pp. 229-230 and Foote and
+Chen (1981) could not be obtained. These are the limits of the statement on earlier work in Section 1: we found no
+earlier proof, within them.
 
 ## References
 
 - Arioli, G., Koch, H. Existence and stability of traveling pulse solutions of the FitzHugh-Nagumo equation. Nonlinear
   Anal. 113 (2015) 51-70. doi:10.1016/j.na.2014.09.023. (Read in the parts cited; not used by the proof.)
+- Carpenter, G. A. Nerve impulse equations. In: Structural Stability, the Theory of Catastrophes, and Applications in
+  the Sciences, Lecture Notes in Math. 525, Springer, 1976, 58-76. doi:10.1007/BFb0077843. Zbl 0364.92015. (Listed by
+  zbMATH next to the 1977 paper; not read; not used by the proof.)
 - Carpenter, G. A. A geometric approach to singular perturbation problems with applications to nerve impulse
   equations. J. Differential Equations 23 (1977) 335-367. doi:10.1016/0022-0396(77)90116-4. (Read in full; not used
   by the proof.)
-- Czechowski, A., Zgliczynski, P. SIAM J. Appl. Dyn. Syst. 15 (2016) 1615-1655; arXiv:1502.02451. Periodic orbits of
-  the FitzHugh-Nagumo equations for an explicit range of the small parameter. (Found in the search; not read.)
+- Conley, C. On traveling wave solutions of nonlinear diffusion equations. In: Dynamical Systems, Theory and
+  Applications (J. Moser, ed.), Lecture Notes in Physics 38, Springer, 1975, 498-510. doi:10.1007/3-540-07171-7_13.
+  (Credited for the method; not read; not used by the proof.)
+- Conley, C. Isolated Invariant Sets and the Morse Index. CBMS Regional Conference Series in Mathematics 38, American
+  Mathematical Society, 1978. Zbl 0397.34056. (Credited for the method; not read; not used by the proof.)
+- Czechowski, A., Zgliczynski, P. Existence of periodic solutions of the FitzHugh-Nagumo equations for an explicit
+  range of the small parameter. SIAM J. Appl. Dyn. Syst. 15 (2016) 1615-1655. doi:10.1137/15M1007707;
+  arXiv:1502.02451. (Found in the search; not read.)
+- FLINT team. FLINT: Fast Library for Number Theory, version 3.6.0 (which contains Arb), https://flintlib.org; used
+  through python-flint 0.9.0, https://github.com/flintlib/python-flint. (The software of the computations.)
 - Foote, J. R., Chen, K.-H. Traveling wave properties of the Hodgkin-Huxley equations. Chinese J. Math. 9 (1981)
-  1-23. Zbl 0472.35048. (Not read; bears only on the priority statement.)
+  1-23. Zbl 0472.35048. (Could not be obtained; bears only on the paragraph on earlier work.)
 - Hastings, S. P. On travelling wave solutions of the Hodgkin-Huxley equations. Arch. Rational Mech. Anal. 60 (1976)
-  229-257. doi:10.1007/BF01789258. (Read: pp. 229-230; bears only on the priority statement.)
+  229-257. doi:10.1007/BF01789258. (Read: pp. 229-230; the rest could not be obtained; bears only on the paragraph on
+  earlier work.)
 - Hodgkin, A. L., Huxley, A. F. A quantitative description of membrane current and its application to conduction and
   excitation in nerve. J. Physiol. 117 (1952) 500-544. (Read: pp. 519-528 and Table 3.)
 - Huxley, A. F. Ion movements during nerve activity. Ann. N.Y. Acad. Sci. 81 (1959) 221-246.
@@ -469,7 +525,18 @@ is conditional.
 - Ikeda, H., Mimura, M., Tsujikawa, T. Slow traveling wave solutions to the Hodgkin-Huxley equations. In: Recent
   Topics in Nonlinear PDE III, Lecture Notes Numer. Appl. Anal. 9 (1987) 1-73; and Japan J. Appl. Math. 6 (1989)
   1-66, doi:10.1007/BF03167914. (Abstracts read; not used by the proof.)
+- Johansson, F. Arb: efficient arbitrary-precision midpoint-radius interval arithmetic. IEEE Trans. Comput. 66 (2017)
+  1281-1292. doi:10.1109/TC.2017.2690633. (The ball arithmetic the computations use.)
+- Lohner, R. J. Einschliessung der Loesung gewoehnlicher Anfangs- und Randwertaufgaben und Anwendungen. Dissertation,
+  Universitaet Karlsruhe, 1988. Zbl 0663.65074. (Credited for the method; not read; not used by the proof.)
+- mpmath development team. mpmath: a Python library for arbitrary-precision floating-point arithmetic, version 1.3.0,
+  https://mpmath.org. (The interval arithmetic of the independent block check.)
 - Teschl, G. Ordinary Differential Equations and Dynamical Systems. Graduate Studies in Mathematics 140, American
   Mathematical Society, 2012. (Read in the author's freely available preliminary version, whose page numbers are
   given: Corollary 2.15, p. 52; the Routh-Hurwitz criterion, p. 72; Theorem 6.1, p. 189; Lemmas 6.3 and 6.5, p. 193;
   Lemma 6.6, p. 194; Theorems 9.4 and 9.5, p. 259.)
+- Wazewski, T. Sur un principe topologique de l'examen de l'allure asymptotique des integrales des equations
+  differentielles ordinaires. Ann. Soc. Polon. Math. 20 (1947) 279-313 (zbMATH gives 1948: Zbl 0032.35001). (Credited
+  for the method; not read; not used by the proof.)
+- Zgliczynski, P. Covering relations, cone conditions and the stable manifold theorem. J. Differential Equations 246
+  (2009) 1774-1819. doi:10.1016/j.jde.2008.12.019. (Credited for the method; not read; not used by the proof.)

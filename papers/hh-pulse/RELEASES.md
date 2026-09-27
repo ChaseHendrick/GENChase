@@ -27,17 +27,21 @@ parameters.
   into an isolating block around rest with a cone condition (Lemma 2); a Wazewski-type shooting argument in the speed
   closes the proof. Every lemma is proved in the text, with standard facts on ordinary differential equations cited
   from Teschl's textbook.
-- **Priority** is stated conditionally: Hastings (1976) beyond pp. 229-230 and Foote and Chen (1981) were not read.
+- **Earlier work:** the searches found no earlier existence proof for the unmodified equations; Hastings (1976)
+  beyond pp. 229-230 and Foote and Chen (1981) could not be obtained, and the paper says so.
 
 ### Checked by computer
 
-- `code/run.sh all` reruns everything from scratch: `test_lohner6.py` (the jets and the integrator against an
-  independent reference, and a control that must miss), and for each of the three proofs the numerical centre
-  (`hp_pulse.py`), the closing block (`block0.py`), the stages of `hh_prove_pulse.py` (the setup with its negative
-  controls, the interval run, the two endpoint runs, a shifted speed interval and a perturbed rate function that must
-  fail), the independent re-check of the block in mpmath interval arithmetic (`hh_block_check_iv.py`) and the summary,
-  whose exit status is 0 only if every check passed and every control failed. About 1 hour of CPU for 18.5 C, 3 hours
-  for 6.3 C and 1 hour for the zero-current variant, at 256 bits.
+- `code/run.sh all` reruns everything from scratch: the tests (`test_temperature.py`, phi from the decimal
+  temperature; `test_field.py`, the vector field against an independent transcription of the 1952 equations;
+  `test_lohner6.py`, the jets, and the integrator's enclosures against a high-precision solution computed with the
+  same jets; each with a control that must fail), and for each of the three proofs, after deleting everything an
+  earlier run of it wrote, the numerical centre (`hp_pulse.py`), the closing block (`block0.py`), the stages of
+  `hh_prove_pulse.py` (the setup with its negative controls, the interval run, the two endpoint runs, a shifted speed
+  interval and a perturbed rate function that must fail), the independent re-check of the block in mpmath interval
+  arithmetic (`hh_block_check_iv.py`), the summary, which checks the hashes and the consistency of every certificate,
+  and a control that plants stale certificates the summary must refuse. Its exit status is 0 only if every check
+  passed and every control failed for its stated reason.
 
 ### Files
 
