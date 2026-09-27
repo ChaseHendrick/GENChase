@@ -615,3 +615,104 @@ A line for RESEARCH.md (not added here, since this work is confined to this fold
 propagated action potential at the 1952 parameters: open as far as reached (Hastings 1976 p. 230 and Carpenter 1979
 p. 336 self-report: artificial small parameters); see papers/hh-dynamics/work/traveling-wave/REPORT.md. Re-search: no,
 except to read Hastings pp. 231-257, Carpenter 1977 and Foote-Chen 1981."
+
+## 8. Plans (2026-09-27): a temperature interval, and stability
+
+These are plans with estimates; nothing in this section is proved.
+
+### 8.1 A branch of pulses for every T in an interval (plan and cost; not run)
+
+**What the present method needs.** The proof tunes K to about 45 digits (18.5 C) or 61 digits (6.3 C), because
+d zeta_1/dK at T_enter is 2.2e44 (18.5 C) and 1.7e60 (6.3 C). Carrying T as an interval parameter in the same C^0
+Lohner scheme would put the T-variation of the orbit (of order |T - T_c| mV per C) into a set that the scheme
+represents only to first order, so the second-order error (|Delta T| |dy/dT|)^2 |D^2 f| is amplified like
+d zeta_1 / dK: a T-piece would have to be about 1e-23 C wide at 18.5 C. Following the curve K*(T) with a polynomial
+K_c(T) does not help at first order, for the same reason. **Estimate: infeasible** (about 1e24 pieces).
+
+**Routes that could work, with costs.**
+- (a) Taylor models in T (the state carried as a polynomial of degree d in T - T_c with a remainder), with
+  K = K_c(T) + s. Covering [6.3, 18.5] with pieces of 0.1 to 1 C needs d of about 40 to 50 (error
+  (w/R_T)^(d+1) <= 1e-46, R_T of order 10 C, the distance to the fold near 33 C). The jets and the Lohner linear algebra
+  then work on polynomials of 50 terms instead of numbers: about 10^3 times the cost of one run, **about two weeks of
+  CPU per piece in this Python code**, and 12 to 120 pieces. Not feasible here; conceivable in C++ (CAPD's Taylor
+  models, or a C port of the jets).
+- (b) Covering relations (Zgliczynski and Gidea) along the orbit with h-sets whose centres move linearly with T,
+  and the block B0 at the end. The K precision is then needed only up to the first h-set after the spike, and the
+  T-width of a piece is limited by the second-order T-variation of the orbit against the h-set size (about 1e-3):
+  |Delta T| of about 0.01 to 0.03 C, so 400 to 1200 pieces for [6.3, 18.5]. Each piece is a chain of about 100
+  covering checks at 128 bits, estimated at 2 to 10 CPU minutes, so **15 to 200 CPU hours**, after about a week of new
+  code (h-sets from the numerical monodromy, cone conditions for the entry directions, the argument with the block).
+  Chance of success in that time: about 50 per cent (the spike, where several directions expand at once, is the risk).
+- (c) Cheap and already possible: the present proof at a grid of temperatures (each piece is one run, 1x to 2x the
+  18.5 C cost). It gives pulses at each grid temperature, not a branch.
+
+Per the owner's rule (run only if a piece costs at most about twice the 18.5 C run), none of (a) or (b) was run.
+Recommendation: (c) now for a few temperatures if wanted; (b) as a separate project.
+
+### 8.2 Spectral stability of the pulse (plan and cost; not run)
+
+**Target (computer-assisted).** The linearization L of the cable equation about the pulse, in the moving frame, has
+no spectrum in Re lambda >= 0 except the eigenvalue 0, which is algebraically simple, and the essential spectrum lies
+in Re lambda <= -delta for an explicit delta > 0. Nonlinear (orbital, exponential) stability would then be a remark
+citing Evans III for the criterion and resting on Evans I, unread, for the passage from the linear to the nonlinear
+system.
+
+**What Evans III says (read from the owner's scan, pp. 577-580).** Evans, "Nerve axon equations: III Stability of
+the nerve impulse", Indiana Univ. Math. J. 22 (1972/73) 577-593. The system is (1): W^0_t = W^0_xx + f^0(W),
+W^i_t = f^i(W), i = 1..n, "where f^0, ..., f^n are twice continuously differentiable functions", with rest at W = 0 and
+a pulse phi(x - vt) (scaled to v = 1). "We make the critical assumption" (p. 579) that the linearization about rest,
+W_t = diag(1, 0, ..., 0) W_yy + W_y + A W, is exponentially stable in the sup norm. Theorem 1 (p. 579): the
+linearization (3) about phi is exponentially stable at d phi/dy if and only if every lambda != 0 for which the
+eigenvalue equation (4) has a bounded solution has Re lambda < 0, and (6) (the generalized-eigenvector equation at
+lambda = 0) has no bounded solution. Theorem 2 (p. 580): (6) has a bounded solution if and only if
+int phi^0'(y) gamma^0(y) dy = 0, gamma the bounded solution of the adjoint equation (5) at lambda = 0. Paper I [3] is
+cited (p. 577) for the passage from exponential stability of the linearization to stability of the impulse under small
+perturbations (convergence to a translate). **Check against HH:** the cable equation with the gates is of the form
+(1) after scaling x by sqrt(a / (2 R_2 C_M)) (n = 3, only V diffuses); the 1952 rate functions are real analytic
+(Psi has a removable singularity), so f is C^infinity; rest is moved to W = 0 by a shift. The "critical assumption"
+is the essential-spectrum condition: every eigenvalue of A - k^2 e_1 e_1^T (A the Jacobian of the space-clamped
+equations at rest, J = 0) has Re <= -delta for all real k. This is a finite check (Routh-Hurwitz with coefficients
+polynomial in k^2, plus the limit k -> infinity), which ball arithmetic can do in seconds.
+
+**The method precedent (Arioli and Koch, Nonlinear Anal. 113 (2015) 51-70; the owner's copy of the preprint,
+read in the parts cited).** Evans function Delta(z) = v_z(y)^T u_z(y), with u_z the solution on the one-dimensional
+side and v_z the adjoint solution, analytic, with zeros exactly at the eigenvalues, counted with multiplicity (their
+Theorem 4.6, from Evans IV); the essential spectrum excluded from a half-plane H_omega by the spectrum of the
+linearization at rest; large eigenvalues excluded by estimates (their Propositions 4.1 and 4.2); the count in a
+rectangle R minus a small disk D by the argument principle, with a computer-assisted check that Delta has a simple zero
+at 0 in D and takes no values in [0, infinity) on the boundary of R \ D (their Lemma 4.7); and linear stability to
+nonlinear stability by their Lemma 3.1, "proved in [4]" (Evans I) and re-proved by them. **What carries over:** the
+whole structure (Evans function, argument principle, the essential spectrum from rest, linear to nonlinear through
+Evans I or their Lemma 3.1). In HH the one-dimensional side is the unstable one (W^u of rest), the mirror image of
+FitzHugh-Nagumo in their scaling, which is immaterial. **What does not:** their pulse is enclosed for all y by
+analytic parametrizations of the manifolds at both ends, glued by a validated integration; our pulse is enclosed only
+up to T_enter and is known afterwards only to stay in B0 and tend to rest. Their field is polynomial in two
+components; ours has three gates and exponential rates, and the eigenvalue problem is five-dimensional.
+
+**Plan.**
+1. (E) Essential spectrum: Routh-Hurwitz in ball arithmetic for all k^2 in [0, infinity) (about a day with the
+   written argument; seconds of CPU).
+2. (L) No eigenvalues with Re lambda >= 0 and |lambda| > R: an energy estimate for the eigenvalue problem, as in
+   `papers/nf-pulse/ext/stability/large_lambda.py` (about a day).
+3. (T) The tail: a rigorous enclosure of the pulse after T_enter. It lies in B0 intersected with {L <= 0}, and by the
+   entrance condition its stable part decays at a certified exponential rate. That bounds Df(pulse) - Df(rest)
+   by C e^{-c (y - T_enter)}, but only with a relative uncertainty of order one. The Evans function needs better. So
+   either (T1) a validated parametrization of the four-dimensional local stable manifold of rest, over a ball large
+   enough to contain the pulse at T_enter (order about 10 in four variables, about 10^4 coefficients per component);
+   or (T2) a complexified cone condition on B0 for the lambda-dependent linear system. (T2) confines the stable
+   subspace to a cone for every lambda in the region, which suffices to exclude eigenvalues wherever the
+   unstable-side solution u^-(T_enter; lambda) lies strictly in the unstable cone, but not near lambda = 0.
+   **This is the main risk.**
+4. (W) The count: u^-(T_enter; lambda) from the stored enclosures of the interval run (the pulse for all K in
+   [K1, K2]) with the variational equation integrated alongside, lambda carried as a small complex ball, on a contour
+   of about 50 to 200 cells (Taylor in lambda to reduce the count); the adjoint from the tail by (T1) or (T2); the
+   argument principle, or Arioli and Koch's device of showing that Delta avoids a ray.
+5. (Z) Simplicity of 0: by Evans III Theorem 2, int phi^0' gamma^0 != 0, equivalently (a standard Melnikov
+   computation, to be written) the derivative of the splitting with respect to the speed is non-zero. The interval
+   run already carries d zeta_1/dK; its rigorous enclosure (about 2.2e44, bounded away from 0) would give it.
+
+**Cost.** Development 6 to 10 working days (T1 or T2 is half of it); CPU 1 to 3 days in this Python code (step 4
+dominates: each lambda cell is one or two integrations of the pulse with a 10-dimensional linear system alongside,
+20 to 60 minutes each). Chance of success along T2 in that time: about 40 per cent; T1 is more certain but slower.
+Sources the owner is asked to obtain: Evans I and IV (for the linear-to-nonlinear step and the Evans function
+theorem); Evans III is in hand. No long run until the owner has seen this plan.

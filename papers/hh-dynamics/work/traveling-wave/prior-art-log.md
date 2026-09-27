@@ -302,3 +302,24 @@ unmodified equations at the 1952 rate functions and constants (epsilon = delta =
 hypotheses for those functions. This confirms, now first hand, the self-report of Carpenter (1979) quoted in (B), and
 it does not anticipate the computer-assisted result of the closing step. Remaining unread before a claim of priority:
 Hastings 1976 pp. 231-257, Foote and Chen 1981, Huxley 1959, Du and Hassard 2001.
+
+---
+
+## (J) Hastings 1976 and Foote-Chen 1981 through zbMATH Open, 2026-09-27
+
+The owner could not obtain Hastings 1976 (beyond the two preview pages), Foote and Chen 1981, or Evans I. What the free
+records say:
+
+- **Hastings 1976**, Zbl 0374.35004 (zbMATH Open, API record read): MSC 35B25 (singular perturbations), 35A05, 35K45;
+  **no review** (the record has no editorial contribution). MathSciNet MR402302: not reachable. What is known of its
+  content is from pp. 229-230 (PRIMARY, Springer preview, Section (A)): n and h multiplied by a small epsilon, the
+  results "for epsilon sufficiently small", and "it is not clear that our results apply to the original
+  HODGKIN-HUXLEY system". Pp. 231-257 remain unread.
+- **Foote and Chen 1981**, "Traveling wave properties of the Hodgkin-Huxley equations", Chinese J. Math. 9 (1981)
+  1-23, Zbl 0472.35048 (API record read): MSC 35K60, 35K15, 92Cxx; **no review**, no abstract, no DOI or online copy
+  found. Semantic Scholar was rate limited (HTTP 429) and was not retried. Its content is unknown.
+
+**Consequence for priority.** The claim that the closing step is the first existence proof for the unmodified 1952
+equations stays conditional: Hastings 1976 was read on pp. 229-230 only (its body not at all, and no review exists),
+Foote and Chen 1981 not at all (title and classification only), Carpenter 1977 in full. No proof step depends on these
+unread sources.
