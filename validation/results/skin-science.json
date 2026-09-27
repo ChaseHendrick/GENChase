@@ -1,0 +1,723 @@
+{
+  "pass": true,
+  "source": "src/modules/skin.js",
+  "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
+  "harness": "tools/science-harness.js",
+  "command": "node tools/skin-science.js --write",
+  "solver": "Implicit-shift QL (Wilkinson) on the unit off-diagonal Hermitian chain similar to open Hatano-Nelson, then psi = exp(g j) phi. Residuals are measured by applying the nonsymmetric open chain, not the sine formula.",
+  "definition": {
+    "matrix": "(H v)_i = exp(g) v_{i-1} + exp(-g) v_{i+1}, zero diagonal, open ends. Site label j = i+1.",
+    "spectrum": "E_n = 2 cos(pi n / (N+1)), n = 1..N, independent of g.",
+    "rightEigenvector": "psi_j proportional to exp(g j) sin(pi n j / (N+1)), j = 1..N.",
+    "probabilityLength": "1/(2|g|) from the median log ratio of |psi|^2 on sine-conjugate sites j and N+1-j. This is the probability scale, not the amplitude scale 1/|g|.",
+    "meanRightDistance": "sum_j (N-j) |psi_j|^2 with j starting at 1. Reported, not used as the 1/(2|g|) test, because the sine boundary node shifts it by about half a site.",
+    "rightTenth": "Mean over modes of the probability on sites j >= floor(0.9 N). Left tenth uses the same site count at j = 0.",
+    "pilesOnRight": "right tenth > 0.45 and right tenth > left tenth."
+  },
+  "tolerances": {
+    "eigenvalueMaxAbs": 1e-8,
+    "eigenvectorMaxAbs": 0.000001,
+    "residualMaxAbs": 1e-8,
+    "ampMaxAbs": 0.000001,
+    "probabilityLengthRelative": 0.01
+  },
+  "maxEvalError": 2.831068712794149e-15,
+  "maxEvecError": 2.08305594995295e-14,
+  "maxResidual": 5.218048215738236e-15,
+  "maxAmpError": 2.6400191921460703e-8,
+  "spectrumCases": [
+    {
+      "N": 12,
+      "g": 0,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.6653345369377348e-15,
+      "residual": 1.1102230246251565e-15
+    },
+    {
+      "N": 12,
+      "g": 0.02,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.6653345369377348e-15,
+      "residual": 9.992007221626409e-16
+    },
+    {
+      "N": 12,
+      "g": 0.05,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.7763568394002505e-15,
+      "residual": 1.2212453270876722e-15
+    },
+    {
+      "N": 12,
+      "g": 0.08,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.7763568394002505e-15,
+      "residual": 1.3322676295501878e-15
+    },
+    {
+      "N": 12,
+      "g": 0.12,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.887379141862766e-15,
+      "residual": 1.4432899320127035e-15
+    },
+    {
+      "N": 12,
+      "g": 0.15,
+      "sweeps": 27,
+      "evalError": 1.7763568394002505e-15,
+      "evecError": 1.942890293094024e-15,
+      "residual": 1.6653345369377348e-15
+    },
+    {
+      "N": 24,
+      "g": 0,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.7409684804903236e-14,
+      "residual": 1.9984014443252818e-15
+    },
+    {
+      "N": 24,
+      "g": 0.02,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.709743457922741e-14,
+      "residual": 2.0539125955565396e-15
+    },
+    {
+      "N": 24,
+      "g": 0.05,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.5709655798445965e-14,
+      "residual": 2.6645352591003757e-15
+    },
+    {
+      "N": 24,
+      "g": 0.08,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.3686968225457008e-14,
+      "residual": 3.164135620181696e-15
+    },
+    {
+      "N": 24,
+      "g": 0.12,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.3128387266192476e-14,
+      "residual": 3.774758283725532e-15
+    },
+    {
+      "N": 24,
+      "g": 0.15,
+      "sweeps": 54,
+      "evalError": 2.3314683517128287e-15,
+      "evecError": 1.2240208846492351e-14,
+      "residual": 4.107825191113079e-15
+    },
+    {
+      "N": 32,
+      "g": 0,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 2.08305594995295e-14,
+      "residual": 2.1094237467877974e-15
+    },
+    {
+      "N": 32,
+      "g": 0.02,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 2.0497492592141953e-14,
+      "residual": 2.275957200481571e-15
+    },
+    {
+      "N": 32,
+      "g": 0.05,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 1.7680301667155618e-14,
+      "residual": 2.609024107869118e-15
+    },
+    {
+      "N": 32,
+      "g": 0.08,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 1.3586354263850353e-14,
+      "residual": 3.219646771412954e-15
+    },
+    {
+      "N": 32,
+      "g": 0.12,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 1.2462253451417382e-14,
+      "residual": 3.9968028886505635e-15
+    },
+    {
+      "N": 32,
+      "g": 0.15,
+      "sweeps": 68,
+      "evalError": 1.6792123247455493e-15,
+      "evecError": 1.5765166949677223e-14,
+      "residual": 4.6629367034256575e-15
+    },
+    {
+      "N": 48,
+      "g": 0,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.4960255256823984e-14,
+      "residual": 2.942091015256665e-15
+    },
+    {
+      "N": 48,
+      "g": 0.02,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.404432126150823e-14,
+      "residual": 3.83026943495679e-15
+    },
+    {
+      "N": 48,
+      "g": 0.05,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.329492071988625e-14,
+      "residual": 4.496403249731884e-15
+    },
+    {
+      "N": 48,
+      "g": 0.08,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.454392162258955e-14,
+      "residual": 4.551914400963142e-15
+    },
+    {
+      "N": 48,
+      "g": 0.12,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.7513768213461844e-14,
+      "residual": 4.3298697960381105e-15
+    },
+    {
+      "N": 48,
+      "g": 0.15,
+      "sweeps": 104,
+      "evalError": 2.831068712794149e-15,
+      "evecError": 1.9317880628477724e-14,
+      "residual": 5.218048215738236e-15
+    }
+  ],
+  "lengths": [
+    {
+      "N": 48,
+      "g": 0.03,
+      "target": 16.666666666666668,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.03000000000000399,
+          "xiProbability": 16.66666666666445,
+          "target": 16.666666666666668,
+          "relativeError": 1.3301360013429075e-13,
+          "meanRightDistance": 18.918949673769898,
+          "pairs": 22
+        },
+        {
+          "n": 2,
+          "gHat": 0.029999999999996883,
+          "xiProbability": 16.666666666668398,
+          "target": 16.666666666666668,
+          "relativeError": 1.0381029369455063e-13,
+          "meanRightDistance": 14.661549715466428,
+          "pairs": 22
+        },
+        {
+          "n": 3,
+          "gHat": 0.030000000000002202,
+          "xiProbability": 16.666666666665442,
+          "target": 16.666666666666668,
+          "relativeError": 7.354117315117037e-14,
+          "meanRightDistance": 13.723384322062902,
+          "pairs": 22
+        },
+        {
+          "n": 6,
+          "gHat": 0.029999999999998746,
+          "xiProbability": 16.666666666667364,
+          "target": 16.666666666666668,
+          "relativeError": 4.177991286269389e-14,
+          "meanRightDistance": 13.13346560042426,
+          "pairs": 22
+        }
+      ],
+      "wrongSignRejected": true
+    },
+    {
+      "N": 48,
+      "g": 0.08,
+      "target": 6.25,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.080000000000004,
+          "xiProbability": 6.249999999999687,
+          "target": 6.25,
+          "relativeError": 5.0022208597511053e-14,
+          "meanRightDistance": 12.84214011178647,
+          "pairs": 22
+        },
+        {
+          "n": 2,
+          "gHat": 0.07999999999999688,
+          "xiProbability": 6.250000000000244,
+          "target": 6.25,
+          "relativeError": 3.907985046680551e-14,
+          "meanRightDistance": 8.733103637712189,
+          "pairs": 22
+        },
+        {
+          "n": 3,
+          "gHat": 0.0800000000000022,
+          "xiProbability": 6.249999999999829,
+          "target": 6.25,
+          "relativeError": 2.7426949600339866e-14,
+          "meanRightDistance": 7.074473548916789,
+          "pairs": 22
+        },
+        {
+          "n": 6,
+          "gHat": 0.07999999999999875,
+          "xiProbability": 6.250000000000098,
+          "target": 6.25,
+          "relativeError": 1.5631940186722205e-14,
+          "meanRightDistance": 5.749770923182523,
+          "pairs": 22
+        }
+      ],
+      "wrongSignRejected": true
+    },
+    {
+      "N": 48,
+      "g": 0.12,
+      "target": 4.166666666666667,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.12000000000000398,
+          "xiProbability": 4.166666666666528,
+          "target": 4.166666666666667,
+          "relativeError": 3.3253400033572687e-14,
+          "meanRightDistance": 9.649309704923594,
+          "pairs": 22
+        },
+        {
+          "n": 2,
+          "gHat": 0.11999999999999687,
+          "xiProbability": 4.166666666666775,
+          "target": 4.166666666666667,
+          "relativeError": 2.6005864128819665e-14,
+          "meanRightDistance": 7.05738053878214,
+          "pairs": 22
+        },
+        {
+          "n": 3,
+          "gHat": 0.1200000000000022,
+          "xiProbability": 4.166666666666591,
+          "target": 4.166666666666667,
+          "relativeError": 1.8332002582610582e-14,
+          "meanRightDistance": 5.501639251312159,
+          "pairs": 22
+        },
+        {
+          "n": 6,
+          "gHat": 0.11999999999999872,
+          "xiProbability": 4.166666666666711,
+          "target": 4.166666666666667,
+          "relativeError": 1.0658141036401503e-14,
+          "meanRightDistance": 3.9067156468231214,
+          "pairs": 22
+        }
+      ],
+      "wrongSignRejected": true
+    },
+    {
+      "N": 64,
+      "g": 0.03,
+      "target": 16.666666666666668,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.03000000000000919,
+          "xiProbability": 16.666666666661563,
+          "target": 16.666666666666668,
+          "relativeError": 3.063149733861792e-13,
+          "meanRightDistance": 23.594469273115593,
+          "pairs": 30
+        },
+        {
+          "n": 2,
+          "gHat": 0.03000000000000091,
+          "xiProbability": 16.66666666666616,
+          "target": 16.666666666666668,
+          "relativeError": 3.04822833641083e-14,
+          "meanRightDistance": 17.252324068348877,
+          "pairs": 30
+        },
+        {
+          "n": 3,
+          "gHat": 0.030000000000000332,
+          "xiProbability": 16.666666666666483,
+          "target": 16.666666666666668,
+          "relativeError": 1.1084466677857562e-14,
+          "meanRightDistance": 15.69216804028353,
+          "pairs": 30
+        },
+        {
+          "n": 8,
+          "gHat": 0.02999999999999695,
+          "xiProbability": 16.666666666668362,
+          "target": 16.666666666666668,
+          "relativeError": 1.0167866548727033e-13,
+          "meanRightDistance": 14.523531868512682,
+          "pairs": 30
+        }
+      ],
+      "wrongSignRejected": true
+    },
+    {
+      "N": 64,
+      "g": 0.08,
+      "target": 6.25,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.08000000000000919,
+          "xiProbability": 6.249999999999282,
+          "target": 6.25,
+          "relativeError": 1.148237060988322e-13,
+          "meanRightDistance": 14.405610391139657,
+          "pairs": 30
+        },
+        {
+          "n": 2,
+          "gHat": 0.08000000000000092,
+          "xiProbability": 6.249999999999928,
+          "target": 6.25,
+          "relativeError": 1.1510792319313624e-14,
+          "meanRightDistance": 10.32943916305116,
+          "pairs": 30
+        },
+        {
+          "n": 3,
+          "gHat": 0.08000000000000035,
+          "xiProbability": 6.2499999999999725,
+          "target": 6.25,
+          "relativeError": 4.405364961712621e-15,
+          "meanRightDistance": 8.165354023287845,
+          "pairs": 30
+        },
+        {
+          "n": 8,
+          "gHat": 0.07999999999999693,
+          "xiProbability": 6.25000000000024,
+          "target": 6.25,
+          "relativeError": 3.836930773104541e-14,
+          "meanRightDistance": 5.762040932351896,
+          "pairs": 30
+        }
+      ],
+      "wrongSignRejected": true
+    },
+    {
+      "N": 64,
+      "g": 0.12,
+      "target": 4.166666666666667,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.12000000000000918,
+          "xiProbability": 4.166666666666348,
+          "target": 4.166666666666667,
+          "relativeError": 7.652545264136279e-14,
+          "meanRightDistance": 10.33707483144141,
+          "pairs": 30
+        },
+        {
+          "n": 2,
+          "gHat": 0.12000000000000091,
+          "xiProbability": 4.166666666666635,
+          "target": 4.166666666666667,
+          "relativeError": 7.673861546209081e-15,
+          "meanRightDistance": 8.220866574051799,
+          "pairs": 30
+        },
+        {
+          "n": 3,
+          "gHat": 0.12000000000000033,
+          "xiProbability": 4.166666666666655,
+          "target": 4.166666666666667,
+          "relativeError": 2.7711166694643904e-15,
+          "meanRightDistance": 6.554585545511311,
+          "pairs": 30
+        },
+        {
+          "n": 8,
+          "gHat": 0.11999999999999696,
+          "xiProbability": 4.166666666666773,
+          "target": 4.166666666666667,
+          "relativeError": 2.5366375666635575e-14,
+          "meanRightDistance": 3.9002394454029656,
+          "pairs": 30
+        }
+      ],
+      "wrongSignRejected": true
+    }
+  ],
+  "moduleCases": [
+    {
+      "grid": 48,
+      "g": 0,
+      "ampError": 2.930446940663245e-9,
+      "skinW": 0.10416666790357947,
+      "ipr": 0.03061224604817325,
+      "rightTenth": 0.10416666790357947,
+      "leftTenth": 0.10416666790357947,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 48,
+      "g": 0.02,
+      "ampError": 5.905958722074445e-9,
+      "skinW": 0.21153416755017437,
+      "ipr": 0.0394053155905515,
+      "rightTenth": 0.21153416755017437,
+      "leftTenth": 0.037882851236645365,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 48,
+      "g": 0.08,
+      "ampError": 1.3646088981023041e-8,
+      "skinW": 0.5340460959196207,
+      "ipr": 0.11107276615515936,
+      "rightTenth": 0.5340460959196207,
+      "leftTenth": 0.0005528673426577294,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 48,
+      "g": 0.12,
+      "ampError": 2.6400191921460703e-8,
+      "skinW": 0.6711270897576469,
+      "ipr": 0.15896305015244028,
+      "rightTenth": 0.6711270897576469,
+      "leftTenth": 0.000022617811561209678,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 48,
+      "g": 0.15,
+      "ampError": 2.1431851737752083e-8,
+      "skinW": 0.7443276689737104,
+      "ipr": 0.19201397374842843,
+      "rightTenth": 0.7443276689737104,
+      "leftTenth": 0.000001936891130436639,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 64,
+      "g": 0,
+      "ampError": 1.485129592221357e-9,
+      "skinW": 0.10937499968713382,
+      "ipr": 0.02307692293003271,
+      "rightTenth": 0.10937499968713382,
+      "leftTenth": 0.10937499968713382,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 64,
+      "g": 0.02,
+      "ampError": 6.207009628500515e-9,
+      "skinW": 0.26332074405672756,
+      "ipr": 0.034362092304957396,
+      "rightTenth": 0.26332074405672756,
+      "leftTenth": 0.026939575501614854,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 64,
+      "g": 0.08,
+      "ampError": 1.6668674551745255e-8,
+      "skinW": 0.6550069169143171,
+      "ipr": 0.11058127300221973,
+      "rightTenth": 0.6550069169143171,
+      "leftTenth": 0.00007266530076555089,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 64,
+      "g": 0.12,
+      "ampError": 2.4579656421330753e-8,
+      "skinW": 0.7883669616012412,
+      "ipr": 0.15837931120325316,
+      "rightTenth": 0.7883669616012412,
+      "leftTenth": 9.415482823084062e-7,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 64,
+      "g": 0.15,
+      "ampError": 1.9443019194653743e-8,
+      "skinW": 0.8515551549858174,
+      "ipr": 0.19132117499077567,
+      "rightTenth": 0.8515551549858174,
+      "leftTenth": 3.442629870818682e-8,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 96,
+      "g": 0,
+      "ampError": 1.4304328936620703e-9,
+      "skinW": 0.10416666585570056,
+      "ipr": 0.01546391724753031,
+      "rightTenth": 0.10416666585570056,
+      "leftTenth": 0.10416666585570056,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 96,
+      "g": 0.02,
+      "ampError": 6.168801247596889e-9,
+      "skinW": 0.3346194778988168,
+      "ipr": 0.030771512273285614,
+      "rightTenth": 0.3346194778988168,
+      "leftTenth": 0.01073445898693611,
+      "pilesOnRight": false
+    },
+    {
+      "grid": 96,
+      "g": 0.08,
+      "ampError": 1.479720684871566e-8,
+      "skinW": 0.7798650098170583,
+      "ipr": 0.11016157876514364,
+      "rightTenth": 0.7798650098170583,
+      "leftTenth": 8.469737599768254e-7,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 96,
+      "g": 0.12,
+      "ampError": 1.9295989805989677e-8,
+      "skinW": 0.8905892409431241,
+      "ipr": 0.15779783506420864,
+      "rightTenth": 0.8905892409431241,
+      "leftTenth": 1.049631965386966e-9,
+      "pilesOnRight": true
+    },
+    {
+      "grid": 96,
+      "g": 0.15,
+      "ampError": 2.269584942204972e-8,
+      "skinW": 0.9343463574678026,
+      "ipr": 0.19062852111326337,
+      "rightTenth": 0.9343463574678026,
+      "leftTenth": 6.718383168022999e-12,
+      "pilesOnRight": true
+    }
+  ],
+  "pileUp": {
+    "g": 0.08,
+    "N": 96,
+    "plus": {
+      "right": 0.7798650098170583,
+      "left": 8.469737599768254e-7,
+      "cut": 86,
+      "leftN": 10
+    },
+    "minus": {
+      "right": 8.469737625177616e-7,
+      "left": 0.7798650085348223,
+      "cut": 86,
+      "leftN": 10
+    },
+    "zero": {
+      "right": 0.10416666585570056,
+      "left": 0.10416666585570056,
+      "cut": 86,
+      "leftN": 10
+    },
+    "plusPilesOnRight": true,
+    "minusPilesOnRight": false,
+    "zeroPilesOnRight": false,
+    "exampleN64g008": {
+      "N": 64,
+      "g": 0.08,
+      "target": 6.25,
+      "modes": [
+        {
+          "n": 1,
+          "gHat": 0.08000000000000919,
+          "xiProbability": 6.249999999999282,
+          "target": 6.25,
+          "relativeError": 1.148237060988322e-13,
+          "meanRightDistance": 14.405610391139657,
+          "pairs": 30
+        },
+        {
+          "n": 2,
+          "gHat": 0.08000000000000092,
+          "xiProbability": 6.249999999999928,
+          "target": 6.25,
+          "relativeError": 1.1510792319313624e-14,
+          "meanRightDistance": 10.32943916305116,
+          "pairs": 30
+        },
+        {
+          "n": 3,
+          "gHat": 0.08000000000000035,
+          "xiProbability": 6.2499999999999725,
+          "target": 6.25,
+          "relativeError": 4.405364961712621e-15,
+          "meanRightDistance": 8.165354023287845,
+          "pairs": 30
+        },
+        {
+          "n": 8,
+          "gHat": 0.07999999999999693,
+          "xiProbability": 6.25000000000024,
+          "target": 6.25,
+          "relativeError": 3.836930773104541e-14,
+          "meanRightDistance": 5.762040932351896,
+          "pairs": 30
+        }
+      ],
+      "wrongSignRejected": true
+    }
+  },
+  "failureControls": {
+    "negativeGFailsRightPile": true,
+    "zeroGFailsRightPile": true,
+    "positiveGPassesRightPile": true,
+    "flippedEnvelopeAmpError": 0.27368894546326694,
+    "flippedEnvelopeMatchesED": false,
+    "wrongSignLengthRejected": true
+  },
+  "limitations": [
+    "Open chain with on-site disorder below 0.04 only. The disordered and periodic paths use subspace iteration with Gram-Schmidt and are not eigenpairs of H.",
+    "Finite N. Eigenvalue and eigenvector tolerances above are for N <= 48; the tab comparison also covers grids 64 and 96 at the listed g.",
+    "No laboratory measurement. The similarity that skins the chain is not unitary, so the right eigenvectors are not an orthonormal energy basis.",
+    "Sheets with more rows than sites draw the sine formula past n = N. Those rows are not eigenvectors and are outside this comparison (aspect 1:1 keeps one row per mode)."
+  ]
+}

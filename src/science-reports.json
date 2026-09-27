@@ -835,18 +835,48 @@
     "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Evidence is the open chain with on-site disorder below 0.04, where the plate is the closed form and not a diagonalization. Disordered and periodic paths use subspace iteration with Gram-Schmidt and are not right eigenvectors. They are excluded.",
+      "Finite N only. Eigenvalues must match 2 cos(pi n/(N+1)) to 1e-8 and sign-aligned right eigenvectors must match the closed form to 1e-6, both checked for N <= 48. The tab's Float32 densities match that ED reference to 1e-6 on grids 48, 64 and 96. No infinite-volume or laboratory claim.",
+      "The probability length tested here is 1/(2|g|), from the log slope of |psi|^2 on sine-conjugate sites, not the amplitude length 1/|g| and not the mean distance from the right end. That mean is shifted by the boundary node (14.41 sites for N=64, g=0.08, mode 1, against a probability length of 6.25).",
+      "Aspect 4:5 at grid 96 draws 120 rows on 96 sites. Rows past n = N are not eigenpairs. The eigenvector comparison uses aspect 1:1. The print check is state preservation on that one 4:5 sheet, not a pixel proof of the spectrum."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "A right-eigenvector treatment of on-site disorder and of periodic ends is still open. The Gram-Schmidt path is not validated."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/skin-science.js",
+        "command": "node tools/skin-science.js --write",
+        "results": "validation/results/skin-science.json",
+        "scope": "Open Hatano-Nelson chain, zero diagonal, disorder 0. Implicit-shift QL of the similar Hermitian hopping chain, mapped back by diag(e^{g j}), with residuals from the nonsymmetric action (Hv)_j = e^{g} v_{j-1} + e^{-g} v_{j+1}. Spectrum for N in {12, 24, 32, 48} and g in {0, 0.02, 0.05, 0.08, 0.12, 0.15}. Tab densities via tools/science-harness.js on grids 48, 64, 96 at aspect 1:1 for g in {0, 0.02, 0.08, 0.12, 0.15}. Probability length 1/(2|g|) at N in {48, 64} and g in {0.03, 0.08, 0.12}.",
+        "criteria": "Max abs eigenvalue error < 1e-8 (measured 2.83e-15). Sign-aligned eigenvector max abs error < 1e-6 (measured 2.08e-14). Nonsymmetric residual < 1e-8 (measured 5.22e-15). Tab amp versus ED |psi|^2 max abs error < 1e-6 (measured 2.64e-8). Probability length within 1 percent of 1/(2|g|) (largest relative error about 3e-13; N=64, g=0.08 gives 6.25 sites). g=0.08 on grid 96 piles on the right (right tenth 0.780, left tenth 8.5e-7).",
+        "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
+        "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
+        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. Sheets with more rows than sites are outside the eigenvector comparison."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/skin-print-state.js",
+        "command": "node tools/skin-print-state.js --write",
+        "results": "validation/results/skin-print-state.json",
+        "scope": "One open clean fixture: grid 96, aspect 4:5 (96 by 120), g=0.08, disorder 0, bc open, log view. Actual exportPNG at longest edge 2400, which is 1920 by 2400.",
+        "criteria": "Zero changed or nonfinite Float32 amp words across export; skin weight, IPR, cells, buffer size and settings unchanged; deterministic regenerate; PNG dimensions exact and blob > 1000 bytes; luminance spread > 12/255. Measured skin weight 0.773, 118079 bytes, luminance spread 226, 0 changed words.",
+        "benchmark": "Exact Float32 readback of amp before and after the real exportPNG path, plus the declared 2400 longest-edge plate.",
+        "failureControl": "A width one pixel short of the request, and a post-export mutation of amp[0] plus the skin weight, are both rejected by the same acceptance predicate the real export passes (the mutation changes 1 word and the skin weight).",
+        "limitations": "State preservation and declared dimensions for this one fixture. The 4:5 sheet has 24 rows past n=N, which are not eigenpairs. Does not validate disordered or periodic paths, calibrated color, or every control."
+      }
+    ],
+    "reviewed": "2026-09-27",
+    "results": "validation/results/skin-science.json",
+    "domain": {
+      "parameters": "Open chain, disorder 0, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixture grid 96, aspect 4:5, g=0.08, disorder 0, open ends, log view.",
+      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries and disorder at or above 0.04 are outside the domain. Exports must preserve amp.",
+      "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Print field 96 by 120, exported at 1920 by 2400 pixels (longest edge 2400).",
+      "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json."
+    }
   },
   {
     "id": "rmt",
