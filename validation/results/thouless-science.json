@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-27",
+  "passed": true,
+  "label": "Independent Rice-Mele solver. Not the studio plate. The plate does not compute delta P.",
+  "source": "src/modules/thouless.js",
+  "sourceSha256": "d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae",
+  "harness": "tools/thouless-science.js",
+  "command": "node tools/thouless-science.js --write",
+  "precision": "Float64",
+  "model": {
+    "hamiltonian": "H(k) = (v + w cos k) sigma_x + (w sin k) sigma_y + delta sigma_z",
+    "gapClosing": "v = w and delta = 0",
+    "nCells": 16,
+    "sites": 32,
+    "kPoints": 32,
+    "fhsTimeSteps": 32,
+    "curvatureK": 96,
+    "curvaturePhi": 96,
+    "period": 40,
+    "passSteps": 80,
+    "passDt": 0.5,
+    "failPeriod": 4,
+    "failSteps": 80,
+    "failDt": 0.05,
+    "failRefinedSteps": 160,
+    "failRefinedDt": 0.025,
+    "quantumTolerance": 0.02,
+    "integerFailMinimum": 0.15
+  },
+  "blochResidual": 2.2675972367300928e-15,
+  "enclosing": {
+    "parameters": "v = 1 + 0.5 cos phi, w = 1 - 0.5 cos phi, delta = 0.8 sin phi",
+    "planeWinding": 1.000000000000002,
+    "gap": 1.6,
+    "gapAtPhi": 1.5707963267948966,
+    "fhsChern": 0.9999999999999976,
+    "fhsChernCoarse": 1.0000000000000007,
+    "maxPlaquette": 0.03126477014675494,
+    "minLink": 0.989304391475604,
+    "curvatureChern": 0.9999999999322114,
+    "reversedChern": -0.9999999999999976,
+    "chernOnePredicate": true,
+    "com": 1.0004747433428651,
+    "bondCurrent": 0.999024509895378,
+    "comMinModulus": 0.9023007021228429,
+    "comMaxSampleJump": 0.0020793841420929196,
+    "integerPredicate": true
+  },
+  "trivial": {
+    "parameters": "v = 1.5 + 0.2 cos phi, w = 0.5 - 0.2 cos phi, delta = 0.4 sin phi",
+    "planeWinding": -1.1138498518254666e-17,
+    "gap": 1.2000000000000002,
+    "fhsChern": -1.0324033560761839e-16,
+    "fhsChernCoarse": -1.4287647983136892e-17,
+    "curvatureChern": 8.505404333053755e-11,
+    "maxPlaquette": 0.01357885570569736,
+    "chernOnePredicate": false,
+    "com": -0.00019762576734968766,
+    "bondCurrent": -0.000372308145244026,
+    "integerPredicate": true
+  },
+  "fast": {
+    "period": 4,
+    "dt": 0.05,
+    "nSteps": 80,
+    "com": 0.8273740426614274,
+    "bondCurrent": 0.7661872873907338,
+    "comMinModulus": 0.3949223423474253,
+    "comMaxSampleJump": 0.02091230744680782,
+    "integerPredicate": false,
+    "distanceToInteger": 0.17262595733857256,
+    "refinedDt": 0.025,
+    "refinedSteps": 160,
+    "refinedCom": 0.8272344247786635,
+    "refinedDistanceToInteger": 0.1727655752213365,
+    "note": "Same enclosing loop as the slow cycle. The period is 4 instead of 40, so the schedule is diabatic. Delta t = 0.05 fails the integer predicate, and delta t = 0.025 does not restore it."
+  },
+  "frozen": {
+    "deltaP": 0,
+    "current": 9.919013310363825e-16
+  },
+  "droppedImaginaryOverlap": {
+    "chern": 0,
+    "agreesWithEnclosing": false
+  },
+  "plate": {
+    "computesDeltaP": false,
+    "note": "src/modules/thouless.js is not executed. Its status line says pumping is not measured. The cartoon density and the unused 1-or-0 metric are not this Chern number."
+  }
+}

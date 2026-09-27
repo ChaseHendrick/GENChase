@@ -117,7 +117,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [boy](src/modules/boy.js) | unvalidated | None registered | Not scientifically validated | none |
 | [pearls](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
 | [ising](src/modules/lattice.js) | validated within stated limits | [ising-science.js](tools/ising-science.js) | Limited evidence recorded | none |
-| [thouless](src/modules/thouless.js) | unvalidated | None registered | Not scientifically validated | none |
+| [thouless](src/modules/thouless.js) | unvalidated | [thouless-science.js](tools/thouless-science.js) | Not scientifically validated | none |
 | [convection](src/modules/wavesflow.js) | validated within stated limits | [convection-science.js](tools/convection-science.js), [convection-coupled-science.js](tools/convection-coupled-science.js) | Limited evidence recorded | none |
 | [reuleaux](src/modules/reuleaux.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [reuleaux-science.js](tools/reuleaux-science.js) | Limited evidence recorded | none |
 | [apollonian](src/modules/apollonian.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
@@ -519,6 +519,13 @@ No record has an outside review yet; every review so far was done inside the pro
 - Since recipe v3 (2026-09-24) each seed's Metropolis numbers come from its own keyed stream (siteHashKeyed); tools/ising-science.js shows two seeds whose shared-stream windows coincide run identical chains on the shared stream (site agreement 1.0000) and independent ones on the keyed stream (0.5046). Recipes older than v3 keep the shared stream through legacy, where seeds read windows of one hash sequence; the tool still allocates disjoint windows.
 - Nonzero or patterned fields, non-square aspects, coarsening dynamics, critical exponents, the rgba16f fallback and the Magnetization, Domain walls and Bond energy views are not validated.
 - Since 2026-09-24 the status line compares \|m\| with Yang only for a cold (ordered) start at h = 0 below 0.95 T_c; a hot or split start below T_c coarsens and can sit in a stripe state, so it prints \|m\| with its error bar and a note instead of a comparison.
+
+### thouless
+
+- Status is unvalidated. The plate does not compute ΔP. src/modules/thouless.js draws a cartoon density. Its pol() drops the imaginary part of the overlap, so that sum is not a Berry phase, and the status line only names the chosen cycle. An unused metric is hardcoded to 1 or 0. Neither is the Thouless pump.
+- tools/thouless-science.js never executes src/modules/thouless.js. The numerical evidence is an independent Rice-Mele solver, recorded in validation/THOULESS.md. It does not check pixels. A test that does not run the module does not validate the plate.
+- The plate's trivial setting is not the solver's trivial cycle. The cartoon trivial loop still encircles the Rice-Mele degeneracy, as noted in validation/COMPARISON-AUDIT.md. This review did not repaint it.
+- The solver was checked only for a 16-cell ring, a 32 by 32 (k, phi) mesh, the enclosing and offset cycles in validation/THOULESS.md, and the two schedules there. No disorder, interactions, or laboratory pump.
 
 ### convection
 

@@ -5582,15 +5582,27 @@ shall not be misrepresented as the original profile.
     "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Status is unvalidated. The plate does not compute ΔP. src/modules/thouless.js draws a cartoon density. Its pol() drops the imaginary part of the overlap, so that sum is not a Berry phase, and the status line only names the chosen cycle. An unused metric is hardcoded to 1 or 0. Neither is the Thouless pump.",
+      "tools/thouless-science.js never executes src/modules/thouless.js. The numerical evidence is an independent Rice-Mele solver, recorded in validation/THOULESS.md. It does not check pixels. A test that does not run the module does not validate the plate.",
+      "The plate's trivial setting is not the solver's trivial cycle. The cartoon trivial loop still encircles the Rice-Mele degeneracy, as noted in validation/COMPARISON-AUDIT.md. This review did not repaint it.",
+      "The solver was checked only for a 16-cell ring, a 32 by 32 (k, phi) mesh, the enclosing and offset cycles in validation/THOULESS.md, and the two schedules there. No disorder, interactions, or laboratory pump."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Promoting the status needs a plate that computes the pump. The cartoon stays illustrative until then, and this record does not validate it.",
+      "Do not treat the plate's trivial switch as a Chern measurement until the drawn loop is the one that misses the origin."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/thouless-science.js",
+        "command": "node tools/thouless-science.js --write",
+        "results": "validation/results/thouless-science.json",
+        "scope": "Independent Float64 Rice-Mele Hamiltonian, not the studio plate. Fukui-Hatsugai-Suzuki Chern number of the occupied band on a 32 by 32 (k, phi) mesh, occupied-band Berry curvature on a 96 by 96 mesh, and the Resta center of mass of the filled band on a periodic ring of 16 unit cells. Enclosing cycle, offset cycle, reversed cycle, frozen Hamiltonian, and one diabatic schedule.",
+        "criteria": "Enclosing Fukui-Hatsugai-Suzuki Chern number within 1e-8 of +1 on both 32 by 32 and 16 by 16 meshes; curvature integral within 1e-4 of that integer; Bloch residual of the real-space matrix below 1e-9. Slow schedule (period 40, step 0.5) center of mass and bond current each within 0.02 of +1. Offset cycle Chern number within 1e-8 of 0 and must fail a predicate that requires absolute Chern number 1. Fast schedule (period 4, step 0.05) center of mass at least 0.15 from every integer, and step 0.025 must not restore an integer. Dropping the imaginary part of the spinor must miss +1. A frozen Hamiltonian must pump less than 1e-6.",
+        "benchmark": "Occupied band of H(k) = (v + w cos k) sigma_x + (w sin k) sigma_y + delta sigma_z. The lattice Chern number is the Fukui-Hatsugai-Suzuki sum, checked against the skyrmion integral of the d vector (lower band) and against the winding of (v - w, delta) about the gap closing at the origin. The pumped charge is the many-body Resta center of mass, checked against the integrated bond current. The bulk gap is twice the minimum of |d|.",
+        "failureControl": "The offset cycle winds zero times and its Chern number is 0, so the absolute-value-1 predicate fails. The period-4 schedule has center of mass 0.827 at step 0.05 and 0.827 at step 0.025, so the integer predicate fails and halving the step does not repair it. Reversing phi sends the Chern number from +1 to -1. Zeroing the imaginary part of the spinor, the plate's overlap, returns Chern number 0. Holding the Hamiltonian fixed returns a center of mass of 0.",
+        "limitations": "Not the plate. The plate does not compute ΔP. No print comparison. The fast center of mass (0.827) and bond current (0.766) differ by 0.061 because the Resta modulus falls to 0.395; both miss every integer. The slow ring charge is 1.00047, not a mathematical 1."
+      }
+    ],
     "print": []
   },
   {
