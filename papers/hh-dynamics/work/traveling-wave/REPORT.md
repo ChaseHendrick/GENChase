@@ -6,7 +6,7 @@ not a proof) or **literature** (with the source and whether it was read first ha
 
 ## 0. Summary
 
-- **Question.** Is there a proof, with or without a computer, that the travelling-wave equation of Hodgkin and Huxley
+- **Question.** Is there a proof, with or without a computer, that the traveling-wave equation of Hodgkin and Huxley
   (J. Physiol. 117 (1952), eq. (31)) has a pulse, a homoclinic orbit to rest, at their own 1952 rate functions and
   constants? **As far as we could reach, no.** Hastings (1976) and Carpenter (1977) proved existence for systems with
   artificial small parameters (n and h slowed by a factor epsilon, and for Carpenter m sped up by 1/delta), under

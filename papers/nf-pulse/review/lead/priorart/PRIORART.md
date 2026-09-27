@@ -1,9 +1,9 @@
-# Prior-art check: travelling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
+# Prior-art check: traveling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
 
 Date: 2026-09-26. Scope: the claim in `README.md` (computer-assisted proof of a fast pulse of
 u_t = -u - v + w*S(u), v_t = eps(u - gamma v), w = e^{-|x|}/2, logistic S with beta = 20, theta = 1/4, at
 eps = 1/10, gamma = 0). Starting point: RESEARCH.md entries of 2026-09-25 (neuroscience scout) and 2026-09-26
-(neural-field travelling pulse), whose searches are not repeated here.
+(neural-field traveling pulse), whose searches are not repeated here.
 
 Quotes are short excerpts for citation. No PDF or full text is stored in the repository; downloads went to the
 session scratchpad only. The query scripts are in `scripts/` (header comment in each). The Unpaywall script reads
@@ -14,7 +14,7 @@ the address Unpaywall requires from the environment variable `UNPAYWALL_EMAIL`.
 - **New closest prior work, not in the ledger: Burlakov, Oleynik and Ponosov, Mathematics 13 (2025) 701,
   doi:10.3390/math13050701 (CC BY, read in full).** It studies the same model (their eq. (3), with v's decay
   written sigma), allows a fixed eps (they state eps < (sigma + 4)^-1 suffices; eps = 1/10, sigma = 0 is inside),
-  and its Theorem 3 states existence of travelling pulses for a family of continuous firing rates that tends to
+  and its Theorem 3 states existence of traveling pulses for a family of continuous firing rates that tends to
   the Heaviside function, **conditional on** nondegeneracy conditions (17), (18), (19), (21) of a Heaviside pulse
   at the same parameters. It does not verify those conditions for any concrete kernel (its Figure 3 is numerical),
   it assumes a C^1 kernel (e^{-|x|}/2 is not C^1 at 0), its function-space setting appears to need f(U) to be

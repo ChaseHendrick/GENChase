@@ -74,12 +74,12 @@ The quotes below are copied from the copies I read. Page numbers are those of th
     rates" (checked in the arXiv PDF on 2026-09-27).
 - **Habib, S. and Veltz, R., "Theoretical / numerical study of modulated traveling waves in inhibition stabilized
   networks", arXiv:2412.03613v1 (4 Dec 2024).** Found in the third prior-article pass (2026-09-27). Theorem 1 (printed
-  p. 7): if ker A = span{d v-bar} and the other eigenvalues lie in {Re < w}, w < 0, the travelling wave is
+  p. 7): if ker A = span{d v-bar} and the other eigenvalues lie in {Re < w}, w < 0, the traveling wave is
   "exponentially and asymptotically orbitally stable in L2". Its model (eqs. (1)-(2), printed p. 3) is a
   two-population Wilson-Cowan field du/dt = -L0 u + L0 S(W u - theta), with S of class C^{r+1}, r >= 2, increasing with
   bounded derivatives (Hypothesis 1), and kernels in W^{1,1} (Hypothesis 3). The firing rate acts on the convolution,
   not inside it, and there is no linear recovery variable, so the theorem does not apply to the Pinto-Ermentrout field
-  as stated; it is the nearest proved principle of linearized stability for neural-field travelling waves we found. It
+  as stated; it is the nearest proved principle of linearized stability for neural-field traveling waves we found. It
   calls the principle "conjectured in [Fay18]" and does not cite Sandstede (2007).
   - Reading it is the first item of Section 7.
 - **Faye, G., "Existence and stability of traveling pulses in a neural field equation with synaptic depression",

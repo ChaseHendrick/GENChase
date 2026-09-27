@@ -1,4 +1,4 @@
-# Quality record: Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability
+# Quality record: Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability
 
 The bar every paper in this repository meets before it is published or preprinted; see
 `papers/minimal-winding/notes/QUALITY.md` for the full wording of the seven items. `node tools/paper-check.js` refuses
@@ -66,7 +66,7 @@ stays in GENChase.
   Zworski, Mathematical Theory of Scattering Resonances, the authors' posted version: Appendix C.1 to C.3 with the
   proofs of Theorems C.4, C.5, C.8 and C.9 (the Fredholm and meromorphy step of Proposition 5.1); the complex Krawczyk
   test is proved in Section 6, after Rump, Acta Numer. 19 (2010), Theorem 13.3, read. Coddington and Levinson and Reed
-  and Simon, which the project had not read, are no longer cited. Faye (2013), whose travelling-wave system Section 4.8
+  and Simon, which the project had not read, are no longer cited. Faye (2013), whose traveling-wave system Section 4.8
   uses and rederives, and Pinto and Ermentrout (2001), whose model and figures the theorems take, were read in full
   (entries of 2026-09-26). Every background citation is recorded in the same entry with how far it was read, from
   read in full to not read (bibliographic data checked against Crossref); Enculescu (2004) is unread and Sandstede

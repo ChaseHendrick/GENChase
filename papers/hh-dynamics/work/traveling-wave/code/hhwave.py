@@ -7,7 +7,7 @@ Hodgkin and Huxley, J. Physiol. 117 (1952) 500-544, Part II, eq. (30) with K = 2
 
     d^2V/dt^2 = K (dV/dt + I_ion / C),
 
-a travelling wave V(x, t) = V(t - x/theta) of the cable equation (a / 2 R2) V_xx = C V_t + I_ion. The equation is
+a traveling wave V(x, t) = V(t - x/theta) of the cable equation (a / 2 R2) V_xx = C V_t + I_ion. The equation is
 invariant under V -> -V with I_ion -> -I_ion, so we use the modern depolarization u = -V (mV) and
 
     u'' = K (u' + I(u, m, n, h)),   I = 120 m^3 h (u - 115) + 36 n^4 (u + 12) + 0.3 (u - E_l),

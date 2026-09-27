@@ -22,7 +22,7 @@ decay called gamma here and their kernel w(x) = exp(-|x|/b)/(2b) at b = 1):
     u_t = -u - v + (w * S(u)),      v_t = eps (u - gamma v),
     w(x) = exp(-|x|)/2,             S(u) = 1/(1 + exp(-beta (u - theta))).
 
-Travelling waves u = U(xi), v = V(xi), xi = x + c t (c > 0: the pulse moves to the left).  With
+Traveling waves u = U(xi), v = V(xi), xi = x + c t (c > 0: the pulse moves to the left).  With
 Q = w * S(U) one has Q - Q'' = S(U) because (1 - d^2/dxi^2) exp(-|xi|)/2 = delta, and the bounded
 solution of that equation is unique.  With P = Q' and kappa = 1/c the wave ODE is
 

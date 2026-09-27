@@ -730,7 +730,7 @@ void main(){
       cusp: pre('Cusps', { s: 0.55, modes: 5, k0: 2.4, rough: 1.1 }, Pal.thermal),
       fine: pre('Fine ripple', { s: 0.18, modes: 16, k0: 8, samples: 400 }, Pal.bioluminescent),
     },
-    hints: { Screen: 's is how far the light has travelled after the height. Modes and k₀ are the weather on the surface.' },
+    hints: { Screen: 's is how far the light has traveled after the height. Modes and k₀ are the weather on the surface.' },
     palette: true, defaultPalette: 'glacier', paletteLabel: 'Intensity',
     headline: 's', headlineLabel: 'distance s',
     sanitize(s){ s.samples = U.clamp(Math.round(Number(s.samples)/20)*20, 160, 560); },

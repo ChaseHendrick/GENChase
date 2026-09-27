@@ -36,7 +36,7 @@ What is checked, in ball arithmetic (python-flint / Arb), for ALL eps in E at on
     M_i are exact numbers chosen by the program (from the numerical pulse and the enclosures); every inclusion
     is then checked rigorously.  A segment that fails is retried with the set cut into k x k pieces (Multi).
 Consequence (see REPORT.md): for each eps in E there is kappa in the window whose orbit leaves rest along the
-unstable manifold (branch where U increases) and tends to rest: a travelling pulse with speed c = 1/kappa.
+unstable manifold (branch where U increases) and tends to rest: a traveling pulse with speed c = 1/kappa.
 """
 import sys, os, json, time, math, argparse
 HERE = os.path.dirname(os.path.abspath(__file__))

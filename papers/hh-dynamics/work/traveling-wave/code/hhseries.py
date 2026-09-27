@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
-"""Taylor series of the Hodgkin-Huxley travelling-wave field in python-flint (arb_series).
+"""Taylor series of the Hodgkin-Huxley traveling-wave field in python-flint (arb_series).
 
 The field is that of hhwave.py: y = (u, w, m, n, h), u' = w, w' = K (w + I), x' = phi (alpha_x (1 - x) - beta_x x).
 Psi(x) = x / (e^x - 1) is evaluated on a series x(t) = x0 + s(t) either as x / (e^x - 1) when the constant term is

@@ -365,7 +365,7 @@ function control(technique, name, mutant, value, tolerance, detected, extra) {
       {
         const kap = (u3 - u1) / Math.SQRT2, P = xi => u1 + (u3 - u1) / (1 + Math.exp(kap * xi)), d = 1e-3;
         let r = 0; for (let xi = -8; xi <= 8; xi += 0.05) { const up = (P(xi + d) - P(xi - d)) / (2 * d), upp = (P(xi + d) - 2 * P(xi) + P(xi - d)) / (d * d), u = P(xi); r = Math.max(r, Math.abs(upp + cExact * up + u - u ** 3 - v0)); }
-        check('excitable', 'reference self-check: exact Nagumo profile satisfies the travelling-wave ODE (Float64, no GPU)', r, 1e-5, r < 1e-5);
+        check('excitable', 'reference self-check: exact Nagumo profile satisfies the traveling-wave ODE (Float64, no GPU)', r, 1e-5, r < 1e-5);
       }
       const Lx = 40, Tf = 16, snapsT = [4, 6, 8, 10, 12, 14, 16];
       const front = async (scale, mutants) => {

@@ -19,7 +19,7 @@ this review from the equations.
 | c2: same with K+ = {a > \|b\|}, by xi = 174.625, leaves through a = +r | **confirmed (rigorous, same proviso)** | `exit_runs.py` |
 | Wazewski / connectedness: some c in (c1, c2) has an orbit that stays in N for xi >= T and tends to rest, i.e. a homoclinic orbit of the wave ODE | **confirmed, conditional on** the standard parametric unstable manifold theorem (continuity of the start point in c, section 4) and on the correctness of python-flint/Arb and of this code, which nobody else has read | section 4 |
 | Negative controls (block too large, wrong speeds, too wide a speed set, test integrator against the earlier one) | **all behave as required** | section 5 |
-| A bounded homoclinic orbit of the ODE is a travelling pulse of the integro-differential equation | **unconfirmed** here (not in scope; REIMPL.md section 5 checked it numerically only) | |
+| A bounded homoclinic orbit of the ODE is a traveling pulse of the integro-differential equation | **unconfirmed** here (not in scope; REIMPL.md section 5 checked it numerically only) | |
 
 Nothing found contradicts the paper's claim. Findings are in section 7.
 

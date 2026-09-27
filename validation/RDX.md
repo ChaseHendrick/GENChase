@@ -38,7 +38,7 @@ Nothing is read back from the shader to build a reference.
   φ_t = D∇²φ − αφ, solved exactly by a Fourier mode on the lattice (stencil symbol) and in the continuum.
 - **Nagumo front.** FitzHugh-Nagumo with ε = 0 and D_v = 0 freezes v at v0, so u obeys the bistable
   equation u_t = u_xx − (u − u1)(u − u2)(u − u3), whose front moves at c = (u1 + u3 − 2u2)/√2. The harness
-  checks that the closed-form profile solves the travelling-wave equation before using it.
+  checks that the closed-form profile solves the traveling-wave equation before using it.
 - **May-Leonard.** With S = u + v + w, P = uvw and Q = uv + vw + wu, the kinetics give
   S' = S(1 − S) + (2 − a − b)Q and d ln(P/S³)/dt = (2 − a − b)(S² − 3Q)/S. Both identities are checked at
   random points. For a + b = 2, S is logistic and P/S³ is conserved. The interior fixed point x* = 1/(1 + a + b)

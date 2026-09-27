@@ -6,7 +6,7 @@ This folder changes nothing outside itself.
 
 ## Outcome
 
-**Proved by computer (ball arithmetic), not yet reviewed:** the fast travelling pulse exists at logistic gain 12,
+**Proved by computer (ball arithmetic), not yet reviewed:** the fast traveling pulse exists at logistic gain 12,
 which is Pinto and Ermentrout's (1 + tanh(6(u - theta)))/2, with theta = 1/4, eps = 3/20, feedback decay 0 and the
 kernel e^(-|x|)/2. The speed is enclosed in an interval of width 10^-25. At this point the rest state is a
 saddle-focus (a complex pair of stable eigenvalues), so the isolating block of the base proof in `code/` had to be
@@ -150,7 +150,7 @@ so there is xi2 with x_c([45, xi2]) in the interior of B and y_c(xi2) in the ope
 of the manifold point and of the flow keeps both for nearby c. c1 is in A- and c2 in A+, and [c1, c2] is connected, so
 some c is in neither. By (e) its orbit stays in B for all xi >= 45 and tends to x*; as xi -> -infinity it tends to x*
 along the unstable manifold. It is nonconstant (it leaves along the unstable eigenvector with U increasing, sigma > 0).
-The reduction from this homoclinic orbit of the wave ODE to a travelling pulse is that of `README.md`
+The reduction from this homoclinic orbit of the wave ODE to a traveling pulse is that of `README.md`
 (a bounded Q is unique); the 5D polynomial embedding Y = S(U) used by the integrator is exact on the invariant surface,
 on which the unstable manifold lies.
 

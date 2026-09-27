@@ -1,6 +1,6 @@
 # Adversarial reading of the mathematics: nf-pulse (2026-09-26)
 
-Scope: the computer-assisted proof in `code/` of a fast travelling pulse of the Pinto-Ermentrout
+Scope: the computer-assisted proof in `code/` of a fast traveling pulse of the Pinto-Ermentrout
 field at beta = 20, theta = 1/4, eps = 1/10, gamma = 0, with c in (c1, c1 + 1e-25). I read `README.md`,
 `notes/QUALITY.md` and every file in `code/`. I ran `run_all.sh` on a copy under the scratch directory (all 15 lines
 OK, 8 s) and nothing in `code/` or `data/` was modified. The review scripts in this folder:
@@ -48,7 +48,7 @@ Since 0 < S < 1 and w is in L^1, w * S(U) is bounded and C^2, and (1 - d^2/dxi^2
 continuous f (because (1 - d^2) e^{-|xi|}/2 = delta). From Q' = P, P' = Q - S(U) we get Q - Q'' = S(U), hence
 h - h'' = 0, h = a e^{xi} + b e^{-xi}, and boundedness forces h = 0. So Q = w * S(U), and U' = kappa (Q - U - V),
 V' = eps kappa (U - gamma V) with kappa = 1/c are exactly c U' = -U - V + w * S(U), c V' = eps (U - gamma V):
-(U, V) is a travelling wave. A homoclinic orbit is bounded, so it gives a pulse.
+(U, V) is a traveling wave. A homoclinic orbit is bounded, so it gives a pulse.
 
 (2) **Rest.** Equilibria of the 4D system with gamma = 0: V' = eps kappa U = 0 gives U = 0; Q' = P = 0;
 P' = Q - S(U) = 0 gives Q = S(0); U' = kappa (Q - U - V) = 0 gives V = Q - U = S(0). So x* = (0, S(0), S(0), 0) is the

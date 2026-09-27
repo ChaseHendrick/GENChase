@@ -7,7 +7,7 @@ folder; the programs of the fast-pulse proof in `../../code/` are imported and r
 
 **Proved by computer (ball arithmetic)**, at two parameter points: the original point
 of the fast-pulse proof (eps = 1/10) and the point of Pinto and Ermentrout's Figs. 7 and 8 (eps = 3/20). At
-eps = 1/10 this gives a second travelling pulse besides the fast pulse already proved in `../../`.
+eps = 1/10 this gives a second traveling pulse besides the fast pulse already proved in `../../`.
 
 The rigour is exactly that of the fast-pulse proof: every numerical decision is made in python-flint `arb` ball
 arithmetic, and the mathematical lemmas it rests on (the isolating block lemma, the Wazewski-type shooting
@@ -29,7 +29,7 @@ and a nonconstant smooth profile (U, V) with (U, V) -> (0, S(0)) as xi -> +-infi
 u = U(x + ct), v = V(x + ct) solves the equations. The orbit leaves rest on the branch of the one-dimensional
 unstable manifold where U increases, and max U >= 0.35232 (rigorous lower bound; numerically max U = 0.3523).
 Since (c1, c2) is disjoint from the speed interval of the fast pulse, (1.1027477097341592491478677, + 10^-25), this
-parameter point has at least two travelling pulses.
+parameter point has at least two traveling pulses.
 
 (b) eps = 3/20. The same holds with c1 = 0.4932988879736285669800062, c2 = c1 + 10^-25, and max U >= 0.38983
 (numerically 0.3899). Here the two stable eigenvalues of the rest state nearest the imaginary axis are complex
@@ -37,7 +37,7 @@ parameter point has at least two travelling pulses.
 (c about 1.0343608707) was not proved here; `../eps-range/` proves it by computer (added 2026-09-27): its certificate
 `data/probes/eps_0.149900_0.150100.json.gz` covers eps in [0.1499, 0.1501] and gives the speed window
 [1.0343501717, 1.0343715699] at eps = 3/20, disjoint from the slow pulse's. So this point, too, has at least two
-travelling pulses (the corollary in Section 3 of `../../paper/nf-pulse.tex`).
+traveling pulses (the corollary in Section 3 of `../../paper/nf-pulse.tex`).
 
 Scope: existence only. Nothing here concerns stability (Pinto and Ermentrout expect the slow pulse to be unstable),
 uniqueness, or other parameter values.

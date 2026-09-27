@@ -25,7 +25,7 @@ The wave field is F_kappa(x) = (kappa (Q - U - V), eps kappa U, P, Q - S(U)).
 
 ## 1. The reduction
 
-**Travelling-wave substitution.** Put u(x, t) = U(x + ct), v(x, t) = V(x + ct). Since w is even,
+**Traveling-wave substitution.** Put u(x, t) = U(x + ct), v(x, t) = V(x + ct). Since w is even,
 (w * S(u(., t)))(x) = integral w(x - y) S(U(y + ct)) dy = integral w(xi - eta) S(U(eta)) d eta = (w * S(U))(xi) with
 xi = x + ct. Then u_t = c U' and v_t = c V', so the PDE becomes c U' = -U - V + w * S(U), c V' = eps (U - gamma V).
 With kappa = 1/c and Q = w * S(U) this is U' = kappa (Q - U - V), V' = eps kappa (U - gamma V). Correct.
@@ -37,7 +37,7 @@ on R only when a = b = 0. Proved.
 
 **Homoclinic orbit gives a pulse.** Let (U, V, Q, P)(xi) solve the 4D wave ODE on R and tend to x* as
 xi -> +-infinity. Then Q is continuous with limits, hence bounded, and Q - Q'' = Q - P' = S(U) with S(U) bounded
-continuous. By uniqueness Q = w * S(U). Substituting back, (U, V) solves the travelling-wave form of the integral
+continuous. By uniqueness Q = w * S(U). Substituting back, (U, V) solves the traveling-wave form of the integral
 equation, and u(x, t) = U(x + ct), v(x, t) = V(x + ct) is a classical (C^1 in t, continuous in x) solution of the PDE,
 with (u, v) -> (0, S0) as x -> +-infinity at each fixed t. Nonconstant because the orbit is on the unstable manifold
 with a_1 != 0. Proved. (The README's "a homoclinic orbit of this system is **exactly** a pulse" also claims the converse;

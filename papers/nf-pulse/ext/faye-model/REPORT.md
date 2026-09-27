@@ -1,4 +1,4 @@
-# A travelling pulse in Faye's neural field with synaptic depression: a computer-assisted proof at fixed eps
+# A traveling pulse in Faye's neural field with synaptic depression: a computer-assisted proof at fixed eps
 
 Extension of the base proof in `code/` (the Pinto-Ermentrout proof) to the second model. Work in progress, **not independently
 reviewed**; see "Check" below for the adversarial reading that was done.
@@ -6,7 +6,7 @@ reviewed**; see "Check" below for the adversarial reading that was done.
 ## Outcome
 
 **Proved by computer, at Faye's own eps = 0.01, and also at eps = 1/20 and eps = 1/50.**
-For lambda = 20, kappa = 0.22, b = 4.5, beta = 5 (Faye's illustration values), a fast travelling pulse exists at eps =
+For lambda = 20, kappa = 0.22, b = 4.5, beta = 5 (Faye's illustration values), a fast traveling pulse exists at eps =
 1/100, 1/50 and 1/20, with its speed enclosed in an interval of width 10^-144, 10^-88 and 10^-28 respectively. Every
 step is a ball-arithmetic computation; `sh code/run_all.sh <eps>` reruns each, with 14 checks: 5 negative controls and 2 tests (one
 with its own negative control). An independent adversarial check (Sect. 8) found no mathematical error at 1/20 and 1/50 and
@@ -80,7 +80,7 @@ With xi = x + c t (c > 0: the pulse moves to the left), v = J * (q S(u)), w = v'
     u' = k (v - u),   v' = w,   w' = b^2 (v - q S(u)),   q' = eps k (1 - q - beta q S(u)).
 
 It is exact: (b^2 - d^2/dxi^2) (b/2) e^(-b|xi|) = b^2 delta, and a bounded solution of b^2 v - v'' = b^2 q S(u) is
-unique (the homogeneous solutions e^(+-b xi) are unbounded). So a solution homoclinic to rest is exactly a travelling
+unique (the homogeneous solutions e^(+-b xi) are unbounded). So a solution homoclinic to rest is exactly a traveling
 pulse of the field equation. The programs add Y = S(u) (Y' = lambda Y (1 - Y) u'), which makes the field polynomial; the
 surface Y = S(u) is invariant.
 

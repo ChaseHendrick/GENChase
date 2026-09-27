@@ -1,4 +1,4 @@
-# Referee report: "Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability" (papers/nf-pulse/paper/nf-pulse.tex)
+# Referee report: "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability" (papers/nf-pulse/paper/nf-pulse.tex)
 
 **This is an in-project reading by an independent agent (Claude), made on 2026-09-27. It is not an outside review.** I was asked to find errors and did not edit any files. I wrote these findings before opening `papers/nf-pulse/review/` or `papers/nf-pulse/notes/`, and I did not read either.
 
@@ -7,7 +7,7 @@
 ## Summary
 
 Within what I could check, the mathematics holds up. I read every written proof in Sections 2 to 4 line by line:
-- the travelling-wave reduction and Green's function lemma;
+- the traveling-wave reduction and Green's function lemma;
 - the rest state and root count;
 - the polynomial embedding and invariance of Y = S(U);
 - the parameterization with its tail lemma and resolvent bounds;
@@ -100,7 +100,7 @@ An independent floating-point Evans computation, written by me, reproduces the s
   - `winding.py`: segment squares, half-plane test, chaining, closure, fingerprint.
   - `simple_zero.py`: arc squares, the e^{−it} ball, convexity.
 - **Numbers.** Theorem 1: roots, G0 and ρ, block margins, y at 53, t_K = 58.375/57.75, sup U. Theorems 3 and 4: t_K and sup U. Faye: u0, q0 and bracket digit counts. The ε-range table and the windows at 1/10 and 3/20. The winding pieces and the Cauchy-integral outputs. The SHA-256 prefixes in Section 7 match the files.
-- **Literature.** Hastings arXiv:1503.04057v2: the p. 2 quotes, footnote 4 on p. 6, and the parameters λ = 20, κ = 0.22, β = 5, b = 4.5. Habib–Veltz arXiv:2412.03613v1: eqs. (1)–(2) on printed p. 3 with the rate outside the convolution, Theorem 1 on p. 7, "conjectured" on p. 2. Two web searches found no earlier computer-assisted proof of a travelling pulse in a neural field.
+- **Literature.** Hastings arXiv:1503.04057v2: the p. 2 quotes, footnote 4 on p. 6, and the parameters λ = 20, κ = 0.22, β = 5, b = 4.5. Habib–Veltz arXiv:2412.03613v1: eqs. (1)–(2) on printed p. 3 with the rate outside the convolution, Theorem 1 on p. 7, "conjectured" on p. 2. Two web searches found no earlier computer-assisted proof of a traveling pulse in a neural field.
 
 ## What was not checked
 

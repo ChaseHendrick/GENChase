@@ -100,7 +100,7 @@ Baseline: after `pip install -r code/requirements.txt` (Python 3.11), `sh code/r
 
 - **The existence conclusion is not reproduced by independent code.** Only the mathematics was checked, by two readers. The isolating block, the relative invariance of the cones, and the interior-of-B claim at xi = 53 for the whole speed interval were not reproduced.
 - **The content of Zhang 2005 beyond its first two pages, and of Zhang JDE 2004 beyond its abstract.**
-- **Pinto and Ermentrout's sign convention for the travelling direction.** It does not matter, by the reflection in item 14.
+- **Pinto and Ermentrout's sign convention for the traveling direction.** It does not matter, by the reflection in item 14.
 - **The correctness of Arb (python-flint 0.9.0), which every rigorous step relies on.**
 
 ## Recommended next steps before the README says "reviewed"

@@ -2,7 +2,7 @@
 
 Date: 2026-09-26. Checker: a session agent working as prior-art reviewer, with no part in the proof.
 
-Claim being checked (from `README.md`): a computer-assisted proof of a fast travelling pulse of
+Claim being checked (from `README.md`): a computer-assisted proof of a fast traveling pulse of
 u_t = -u - v + w * S(u), v_t = eps (u - gamma v), w = e^(-|x|)/2, logistic S with beta = 20, theta = 1/4,
 eps = 1/10 (fixed, not small), gamma = 0.
 
@@ -102,14 +102,14 @@ was not checked. That does not bear on existence.
 2. **Computer-assisted work on nonlocal or neural models.** Web: '"computer-assisted proof" "neural field"
    traveling wave OR pulse' returned only neural-field papers already in the ledger and arXiv:2405.12446 (transverse
    heteroclinics by the parameterization method; examples are Lorenz and a four-body problem; the PDF text never
-   mentions neural models). Web: rigorous or computer-assisted travelling waves for nonlocal integro-differential
+   mentions neural models). Web: rigorous or computer-assisted traveling waves for nonlocal integro-differential
    equations (Lessard, van den Berg, Arioli, Zgliczynski) returned parabolic integrators, Swift-Hohenberg, the
    suspension bridge, a nonlocal Turing instability (J. Dyn. Differ. Equ. 2026, doi:10.1007/s10884-026-10488-0,
    by title and snippet) and Arioli and Koch on FitzHugh-Nagumo. No neural-field pulse. arXiv abstract search
    (search page; the export API returned 406): "computer-assisted traveling pulse", "computer-assisted proof
    homoclinic traveling wave", "computer-assisted proof nonlocal traveling pulse", "traveling pulse sigmoidal firing
    rate": no results. "rigorous numerics neural field": 69 results, none relevant.
-3. **Smooth firing rate pulse existence.** Web: existence of a travelling pulse in a neural field with a smooth sigmoid
+3. **Smooth firing rate pulse existence.** Web: existence of a traveling pulse in a neural field with a smooth sigmoid
    and linear adaptation, 2024 to 2026; and Lv and Wang with sigmoid. Only Dyson (2019-2025, Heaviside or
    compactly switched sigmoids with small eps) and modelling papers. PubMed '"neural field"[tiab] AND (pulse OR
    travelling/traveling wave) AND (existence OR proof OR rigorous)': 4 hits (Xin, Li and Wang, J. Math. Biol.
@@ -138,7 +138,7 @@ Theorem 1 and its hypotheses on the nonlinearity. That is the one remaining chec
 - Why: README.md of the paper's folder lists Zhang, J. Dyn. Differ. Equ. 17 (2005), and Zhang (2004) as unreached and Pinto, Jackson and Wayne (2005) as unread.
 - Read: Zhang, JDDE 17 (2005) 489-522, pp. 489-490 only (Springer preview): "two integral terms", every displayed model has H(u - theta); Zhang, Acta Math. Appl. Sinica 20 (2004) 283-308, pp. 283-284: stability of the fast pulse, Heaviside class; abstracts of Zhang, JDE 197 (2004) 162-196 (existence "by fixed point theorems"), Zhang, DIE 16 (2003) 513-536 (stability), Pinto, Jackson and Wayne, SIADS 4 (2005) ("A Heaviside step function governs the activation of each neuron"; recovery rate not assumed small) and Sandstede, IJBC 17 (2007) (spectral implies nonlinear stability). Secondary: Faye 2013, author copy, p. 2, groups PJW, Sandstede and Zhang 2003/2005/2007 as Heaviside; Hao and Vaillancourt, AMAS 31 (2015), p. 767: Zhang's JDE model is u_t = f(u, w) + alpha K * H(u - theta), and his Theorem 1 conditions "cannot ensure the existence"; Guo, SIADS 11 (2012) (Semantic Scholar contexts): Zhang's fronts are for "zero gain (Heaviside gain function)".
 - Not reached: Zhang 2005 beyond p. 490; Zhang JDE 2004, DIE 2003, PJW and Sandstede full texts (paywalls, bot challenges; the CORE copy of the JDE paper is a dead record).
-- New searches: Semantic Scholar citers of Faye and Scheel (44) and Pinto and Ermentrout (328), keyword scan; web '"computer-assisted proof" "neural field"'; web and arXiv on computer-assisted travelling pulses in nonlocal equations; web on smooth-sigmoid pulse existence 2024-2026; PubMed "neural field" with pulse or travelling wave and existence, proof or rigorous (4 hits). Nothing relevant beyond Dyson (Heaviside, or a compactly switched sigmoid with small eps).
+- New searches: Semantic Scholar citers of Faye and Scheel (44) and Pinto and Ermentrout (328), keyword scan; web '"computer-assisted proof" "neural field"'; web and arXiv on computer-assisted traveling pulses in nonlocal equations; web on smooth-sigmoid pulse existence 2024-2026; PubMed "neural field" with pulse or traveling wave and existence, proof or rigorous (4 hits). Nothing relevant beyond Dyson (Heaviside, or a compactly switched sigmoid with small eps).
 - Result: as far as reached, no existence proof of a pulse with a smooth firing rate at fixed, non-small eps; nothing at beta = 20, theta = 1/4, eps = 0.1. The Zhang 2005 theorems and Zhang JDE 2004 Theorem 1 remain unread in the original; every secondary source reached places them in the Heaviside case.
 - Re-search: no, unless a week passes; read Zhang 2005 (Sect. 2 onward) and Zhang JDE 2004 (Theorem 1) with library access before any claim of priority.
 ```
@@ -158,7 +158,7 @@ of Pinto and Ermentrout (2001) and Faye (2013), Burlakov et al. (2025, CC BY), a
 - **Pinto, Jackson and Wayne (2005)**: Heaviside rate, fixed eps, a fast and a slow pulse (abstract, p. 954; Dyson,
   arXiv:2511.17328v2, pp. 7-8). The fixed-eps precedent for the Heaviside rate; cited beside the priority statement.
 - **Habib and Veltz, arXiv:2412.03613v1 (4 Dec 2024), new, read in full:** Theorem 1 (printed p. 7), a principle of
-  linearized stability (exponential orbital stability in L^2) for travelling waves of a two-population Wilson-Cowan
+  linearized stability (exponential orbital stability in L^2) for traveling waves of a two-population Wilson-Cowan
   field u_t = -L0 u + L0 S(W u - theta) (eqs. (1)-(2), printed p. 3), S of class C^{r+1}, r >= 2 (Hypothesis 1), W^{1,1}
   kernels (Hypothesis 3). Not the Pinto-Ermentrout form; cited where nonlinear stability is discussed. It calls the
   principle "conjectured in [Fay18]" (printed pp. 2 and 7) and cites Sandstede only for the 2002 handbook chapter.

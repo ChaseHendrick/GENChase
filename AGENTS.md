@@ -45,7 +45,7 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   (stable self-similar expansion of four and five vortices). By the owner's decision of 2026-09-26,
   `papers/hh-dynamics/` (computer-assisted results on the Hodgkin-Huxley equations at the 1952 parameters) is drafted
   here too, programs and results included, before it has a manuscript; by the owner's decision of the same day, so is
-  `papers/nf-pulse/` (a computer-assisted proof of a travelling pulse in a neural field with a smooth firing rate).
+  `papers/nf-pulse/` (a computer-assisted proof of a traveling pulse in a neural field with a smooth firing rate).
   By the owner's decision of the same day, the same holds for
   `research/arctic-finite-size/` (exact finite-size frozen areas and the n^(-2/3) constants of Aztec diamond and lozenge
   tilings), `research/double-pendulum/` (a computer-assisted proof of a transversal homoclinic orbit in the equal double

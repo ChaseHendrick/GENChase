@@ -1,12 +1,12 @@
-# Prior-art check: a travelling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
+# Prior-art check: a traveling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
 
-Date: 2026-09-26. Scope: the claim in `README.md`, a computer-assisted proof of a fast travelling pulse of
+Date: 2026-09-26. Scope: the claim in `README.md`, a computer-assisted proof of a fast traveling pulse of
 
     u_t = -u - v + w * S(u),   v_t = eps (u - gamma v),   w(x) = e^(-|x|)/2,
     S(u) = 1/(1 + e^(-beta (u - theta))),   beta = 20, theta = 1/4, eps = 1/10, gamma = 0,
 
 with the speed enclosed in [1.1027477097341592491478677, + 1e-25]. This report adds to the ledger entry
-"neural-field travelling pulse with a smooth sigmoid at fixed eps" of the same date, which did not reach the Zhang
+"neural-field traveling pulse with a smooth sigmoid at fixed eps" of the same date, which did not reach the Zhang
 papers or Pinto, Jackson and Wayne. No PDF or full text was saved in the repository; downloads went to
 `/tmp/claude-0/` only.
 
@@ -26,7 +26,7 @@ papers or Pinto, Jackson and Wayne. No PDF or full text was saved in the reposit
   example in the paper, and the argument has points that need checking (below). The README's framing, which rests
   on Hastings's remark that he knew of no existence proof "which covers all reasonable smooth functions S", must
   cite this paper and say what it does and does not cover.
-- No computer-assisted or rigorous-numerics proof of any travelling wave of a neural field was found. The
+- No computer-assisted or rigorous-numerics proof of any traveling wave of a neural field was found. The
   computer-assisted proofs of pulses found are for FitzHugh-Nagumo (Arioli and Koch; Matsue; Czechowski and
   Zgliczynski), where eps is small or in (0, eps0].
 - Verdict: **the computer-assisted proof at one explicit smooth sigmoid, one explicit (non-C^1) kernel and
@@ -192,7 +192,7 @@ session; neither search is counted.
 
 ## Conclusion
 
-As far as reached, no earlier work proves, by computer or otherwise, a travelling pulse of the Pinto-Ermentrout
+As far as reached, no earlier work proves, by computer or otherwise, a traveling pulse of the Pinto-Ermentrout
 field for the logistic with gain 20 and threshold 1/4, the kernel e^(-|x|)/2 and eps = 1/10, and no earlier work
 encloses such a pulse's speed. The four named papers are Heaviside results (Zhang 2004, Zhang 2005, Pinto-Jackson-
 Wayne) or a stability implication (Sandstede), on the evidence of abstracts, two zbMATH reviews and later
