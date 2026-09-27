@@ -1235,7 +1235,7 @@
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
+    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
     "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
     "status": "validated within stated limits",
@@ -3392,7 +3392,7 @@
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
+    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
     "status": "validated within stated limits",
