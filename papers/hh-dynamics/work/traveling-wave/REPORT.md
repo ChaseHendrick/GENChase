@@ -519,6 +519,30 @@ written. What it does not say: nothing on uniqueness of the pulse or of K*, on s
 inside this project (the tests, the independent block program and the adversarial rereading in Section 5); no one
 outside the project has reviewed them.
 
+### 4.6 The same proof with the printed leak potential, E_l = 10.613 mV (2026-09-27)
+
+Hodgkin and Huxley print V_l = -10.613 mV (Table 3; in their convention depolarization is negative, so in ours
+E_l = +10.613). With that value the resting current is not zero at u = 0, and rest is the nearby equilibrium. With
+the environment variable `HH_EL=10.613`, `certify_rest_wave.rest_state` takes E_l = 10.613 exactly and encloses the
+equilibrium by an interval Newton step (existence and uniqueness within 1e-3 mV of the float value):
+**u* = 0.0036206688079425688368876905420... mV**, enclosed to about 1e-73, with m, n, h at their steady-state
+values there. Every program is otherwise unchanged; the data files carry the tag `18.5_El10.613`, and
+`block_check_iv.py` finds the same rest state by its own bisection. The chain ran one stage at a time:
+
+- numerical centre K* = 10.43805106010112369227648623831857912185866977197832623... (Newton converged to 1e-66);
+- `setup`: Lemmas A and B, transversality and the block (1232 and 5916 cells) pass, with their negative controls;
+- `interval`: at T_enter = 13.625 ms, zeta_1 in [-0.341, 0.341], |zeta_s| <= 0.63603: in int B0 (597 s);
+- `K1`, `K2`: into K- and K+ with the paths in int B0 (570 s, 561 s);
+- `neg-shift` and `neg-model`: fail, as they must (566 s, 389 s); `block_check_iv.py`: passes (935 and 4241 cells) and
+  rejects the enlarged block.
+
+**Theorem (computer-assisted), printed leak potential.** As the theorem of 4.5, with E_l = 10.613 mV and rest the
+equilibrium u* above: for some K* in (K1, K2), K1 = 10.438051060101123692276486238318579121858669770478..., K2 = K1 +
+3e-45, the travelling-wave system has a pulse, an orbit homoclinic to that rest state, with speed in
+(18.731888247880483540468313433296243876955750772, 18.731888247880483540468313433296243876955750776) m/s. The
+speed differs from the zero-current case (18.7321608...) by 2.7e-4 m/s, and Hodgkin and Huxley's hand value is
+18.8 m/s. The same limits apply as in 4.5, and the same review status.
+
 ## 5. Independent check
 
 An independent subagent (2026-09-26), with no access to our reasoning beyond this report and the code, re-opened the
