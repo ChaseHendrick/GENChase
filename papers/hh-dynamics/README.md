@@ -4,8 +4,9 @@
 
 **Draft manuscript** (drafted in this repository by the owner's decision of 2026-09-26):
 [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex), built as [`paper/hh-dynamics.pdf`](paper/hh-dynamics.pdf). Its quality
-record is not complete: the written proofs have not had a second reading, and some sources are unread (see
-"Status of the results").
+record is not complete: some sources are unread and there is no companion repository yet (see "Status of the
+results" and [`notes/QUALITY.md`](notes/QUALITY.md)). Three in-project readings of the manuscript and its programs, by
+separate agents, were made on 2026-09-27; their reports and the responses are in `notes/referee-2026-09-27-*.md`.
 
 ## Abstract
 
@@ -13,9 +14,10 @@ The space-clamped Hodgkin-Huxley equations with Hodgkin and Huxley's constants a
 potential, and their bifurcations are known from numerical computation. We prove several of them with computer
 assistance in ball arithmetic, for every leak reversal potential E_l in [10.59, 10.62] mV, an interval that contains
 the value 10.613 printed by Hodgkin and Huxley and the value 10.5989... that makes the resting current zero, as their
-Table 3 says it should. For every applied current J in [0, 200] uA/cm2 there is exactly one equilibrium. It is
-asymptotically stable except for J between two Hopf points, where it has exactly two eigenvalues with positive real
-part, and no eigenvalue lies on the imaginary axis at any other current in that range. At E_l = 10.613 the Hopf
+Table 3 says it should. For every applied current J in [0, 200] uA/cm2 there is exactly one equilibrium. There are
+two Hopf points J_H1 < J_H2 in this range: the equilibrium is asymptotically stable for J < J_H1 and for J > J_H2, it
+has exactly two eigenvalues with positive real part for J_H1 < J < J_H2, and no eigenvalue lies on the imaginary axis
+at any current of the range other than J_H1 and J_H2. At E_l = 10.613 the Hopf
 points lie at J = 9.7754... and 154.5224... uA/cm2 (at the zero-current value 10.5989..., at 9.7796... and
 154.5266...); both move by exactly 0.3 (10.613 - E_l). The eigenvalues cross the imaginary axis transversally, and
 the first Lyapunov coefficient is positive at the lower Hopf point and negative at the upper one: the lower Hopf
@@ -38,35 +40,59 @@ control; never used in a proof).
     eigenvalues in Re > 0 in between; at J_Hi a simple pair crosses transversally; J_H1 and J_H2 enclosed to 1e-12
     at E_l = 10.613, 10.5989... and 10.599; first Lyapunov coefficient l1 > 0 at J_H1 and l1 < 0 at J_H2.
   - Proposition 2.3: the zero-current leak potential 10.5989209693916785221988785... as an interval.
+  - Remark 3.1: the same checks give exactly one equilibrium for every J in [0, 4089.4815) and its stability for every
+    J in (J_H2, 4089.4815).
 - **Computer-assisted, with a cited theorem** (Kuznetsov's statement of the Andronov-Hopf theorem, Scholarpedia
-  1(10):1858): Corollary 3, the lower Hopf bifurcation is subcritical and the upper one supercritical (local).
+  1(10):1858; Theorem H of the manuscript): Corollary 3, the lower Hopf bifurcation is subcritical and the upper one
+  supercritical (local).
 - **Computer-assisted** (`code/certify_bistability.py`, 84 checks: 30 proof checks, 24 negative controls, 23
   self-tests, 7 numerical-only checks; about 40 minutes on four cores):
   - Theorem 4: at J = 8 and for every E_l in [10.59, 10.62], an orbitally asymptotically stable periodic orbit
     through {u = 20, du/dt > 0} with minimal period in [16.005827509, 16.013912063] ms, reaching u >= 95.953 mV,
     with nontrivial Floquet multipliers |mu| <= 0.5446.
-  - Theorem 5: at E_l = 10.613, 10.5989... (as a ball) and 10.599, the stable orbit with its period in an interval of width below 1e-12 ms, and a
-    periodic orbit of saddle type through {u = 5, du/dt > 0} with a real multiplier in [10.30, 10.54].
+  - Theorem 5: at E_l = 10.613, 10.599 and every E_l in a ball of radius below 1e-25 about 10.5989..., the stable
+    orbit with its period enclosed in a ball of radius below 1e-13 ms, and a periodic orbit of saddle type through
+    {u = 5, du/dt > 0} with a real multiplier in [10.30, 10.54]. Each section point is unique only in its Krawczyk
+    box (radius about 1e-15 for the stable orbit, 1e-14 to 2e-14 for the saddle); the printed intervals are
+    enclosures, not boxes of uniqueness.
   - Corollary 6: bistability at J = 8 for every E_l in [10.59, 10.62], equivalently for E_l = 10.613 and every J in
     [7.9931, 8.0021]. Nothing is claimed about other attractors, the basins, or whether the saddle-type orbit lies
     on the boundary between them; the orbits are unique only within their boxes.
+- **Computer-assisted** (`code/identify_stable_orbit.py`, 27 checks: 16 proof checks, 3 negative controls, 8
+  cross-checks; about 6 to 8 minutes with two worker processes on a shared machine): Corollary 7, at E_l = 10.613, 10.5989... (the ball) and
+  10.599 the stable orbit of Theorem 5 is the orbit of Theorem 4: its section point lies in the interior of the
+  stage-4b box of every piece of the E_l interval that contains the value. The program recomputes those boxes with the
+  function and arguments of stage 4b (its lines agree with the committed ones) and prints them exactly.
 - **Proved** (no computation): the lemmas of the manuscript's Sections 2, 4 and 5 (the Jacobian and its
   characteristic polynomial, the quartic lemma, linearized stability, the enclosures of Psi, the l1 of the test
   system, the validated integration and Poincare-map lemmas, Gershgorin's discs, orbital asymptotic stability and
-  the saddle-type instability).
+  the saddle-type instability, and the consequence of Rump's form of the Krawczyk test that the manuscript uses).
+- **Cited** (published theorems used as stated, hypotheses checked in the text): Theorem H, the Andronov-Hopf theorem
+  with the first Lyapunov coefficient (Kuznetsov, Scholarpedia); Theorem K, Rump's Theorem 13.3 (Acta Numer. 2010).
 - **Numerical only** (manuscript, Section 8): the fold of cycles near J = 6.26, so the bistable range (J_LPC, J_H1)
-  as an interval of J; uniqueness of the equilibrium for J > 200; unstable orbits between J = 8.5 and 9.75, whose
-  amplitudes agree with the size of l1 predicted by the Hopf normal form; high-precision values of the orbits.
-- **Prior articles:** Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its
-  first page has been read, so no priority is claimed for the Hopf enclosures or the signs of l1. The searches and
-  what they did not reach are in RESEARCH.md (2026-09-25 to 2026-09-27) and in the manuscript's Section 10.
-- **Checks made within the project**, by separate AI agent sessions, not by anyone outside it: an independent reading
-  of `certify_bistability.py` (the model against the 1952 equations and 13 deliberate mutations of the code; 10 of
-  the 13 first passed unnoticed, and all now stop the program; its mutation list and harness are not in this folder,
-  and the fixes have not had a second reading). The changes of 2026-09-27 to `certify_equilibria_hopf.py` (typed
-  checks, tests of the l1 formula on systems with known l1, new negative controls, outward-rounded prints) and the
-  written proofs of the manuscript have not been read by a second reader.
-- **Runs:** `certify_equilibria_hopf.py` was rerun on 2026-09-27 (38 checks passed). `data/certify_bistability.txt` is
+  as an interval of J; uniqueness of the equilibrium beyond J = 4089; unstable orbits between J = 8.5 and 9.75, and
+  stable small orbits just below J_H2 (`code/numerics_h2.py`, `data/numerics_h2.txt`), whose amplitudes agree with
+  the sizes of l1 at the two Hopf points predicted by the normal form; high-precision values of the orbits.
+- **Prior articles:** Guckenheimer and Labouriau (1993, p. 941) state the unique equilibrium for every current,
+  without proof; Labouriau (1985, 1989) and Hassard and Shiau (1989, 1991, 1996) studied the degenerate Hopf
+  bifurcations of the model (abstracts read). Du and Hassard (2001) computed Hopf coefficients of the model in interval
+  arithmetic; only its first page has been read, so no priority is claimed for Theorem 2 or Corollary 3 (the location
+  of the Hopf points, the exclusion of other crossings, their criticality). The novelty claimed is limited to the
+  unique equilibrium on a range of currents, a stable periodic orbit of large amplitude away from the Hopf points, and
+  bistability. The searches and what they did not reach are in RESEARCH.md (2026-09-25 to 2026-09-27) and in the
+  manuscript's Section 10.
+- **Checks made within the project**, by separate AI agent sessions: an independent reading of
+  `certify_bistability.py` on 2026-09-26 (the model against the 1952 equations and 13 deliberate mutations; 10 first
+  passed unnoticed, and all now stop the program; its mutation list is not in this folder). On 2026-09-27 three
+  readings of the manuscript and its programs, by separate agents told to look for errors: its mathematics (every
+  written proof), its computations (reruns from copies, independent recomputations of the numbers, 15 new mutations,
+  of which 5 passed every check: gaps in the controls, not errors in the results) and its claims and literature. Their
+  reports and the response to each finding are in `notes/referee-2026-09-27-analysis.md`,
+  `notes/referee-2026-09-27-computation.md` and `notes/referee-2026-09-27-claims-literature.md`; every must-fix
+  finding was fixed. The fixes and the parts added in response (the Krawczyk lemma, Remark 3.1, Corollary 7 and
+  `code/identify_stable_orbit.py`, the numerics below J_H2) have not been read again.
+- **Runs:** `certify_equilibria_hopf.py` was rerun on 2026-09-27 (38 checks passed); `identify_stable_orbit.py` and
+  `numerics_h2.py` were run on the same day. `data/certify_bistability.txt` is
   the full run of 2026-09-26; every stage except 4b was rerun on 2026-09-27 in one process (82 checks passed, and the
   output agrees line for line apart from run times and the parts that stage 4b prints:
   `data/certify_bistability_no_ball_2026-09-27.txt`).
@@ -102,22 +128,26 @@ every J in [7.9931, 8.0021].
 | [`certify_equilibria_hopf.py`](code/certify_equilibria_hopf.py) | Theorems 1 and 2 and Proposition 2.3: exactly one equilibrium for every J in [0, 200]; the Routh-Hurwitz signs along the branch; exactly two Hopf points, both simple, with transversal crossing; the first Lyapunov coefficients, enclosed away from 0; tests of the l1 formula on systems with known l1, negative controls and an independent SymPy/mpmath cross-check |
 | [`hh_ball.py`](code/hh_ball.py) | The model in ball arithmetic: truncated power series over complex balls, and x/(e^x - 1) through its Bernoulli series near 0 with a rigorous tail, so that no ball containing 0 is ever divided by |
 | [`certify_bistability.py`](code/certify_bistability.py) | Theorems 4 and 5 and the equilibrium part of Corollary 6 (stages 0 to 7: integrator self-tests and negative controls, numerics, the equilibrium, Krawczyk proofs of the periodic orbits with enclosed periods and Floquet multipliers, the stable orbit over the whole E_l interval, negative controls of the certificates, a high-precision refinement, the summary; its Theorems A, B and C are the manuscript's Corollary 6, Theorem 5 and Theorem 4) |
+| [`identify_stable_orbit.py`](code/identify_stable_orbit.py) | Corollary 7: the stable orbit of Theorem 5 is the orbit of Theorem 4 at the three values (the stage-4b boxes of the pieces that contain them, recomputed and printed exactly, and the Krawczyk sets of Theorem 5 inside them) |
 | [`hh_lohner.py`](code/hh_lohner.py), [`certlib.py`](code/certlib.py), [`ball_stable.py`](code/ball_stable.py), [`outward.py`](code/outward.py), [`hh_arb.py`](code/hh_arb.py) | The C^0/C^1 Lohner Taylor integrator and Poincare maps (refusing an initial set off its section), the Krawczyk and multiplier certificates, the stable orbit over the E_l interval, outward decimal rounding, and the model in Arb |
 | [`tests_integrator.py`](code/tests_integrator.py), [`testsys.py`](code/testsys.py) | Exact test systems and negative controls for the integrator and the certificate code |
-| [`hh_numerics.py`](code/hh_numerics.py), [`hh_float.py`](code/hh_float.py), [`shoot_float.py`](code/shoot_float.py), [`hp_refine.py`](code/hp_refine.py) | Numerical only: candidates, the fold of cycles and a high-precision refinement (not trusted) |
+| [`hh_numerics.py`](code/hh_numerics.py), [`hh_float.py`](code/hh_float.py), [`shoot_float.py`](code/shoot_float.py), [`hp_refine.py`](code/hp_refine.py), [`numerics_h2.py`](code/numerics_h2.py) | Numerical only: candidates, the fold of cycles, a high-precision refinement and the small cycles below J_H2 (not trusted) |
 | [`make_numbers.py`](code/make_numbers.py), [`make_figures.py`](code/make_figures.py) | The numbers and tables of the manuscript, rounded outward from the reports in exact rational arithmetic, and its figures |
 
 ```
 python3 -m pip install -r code/requirements.txt
 python3 code/certify_equilibria_hopf.py
 python3 code/certify_bistability.py
+python3 code/identify_stable_orbit.py
+python3 code/numerics_h2.py
 python3 code/make_numbers.py
 python3 code/make_figures.py
 sh ../../tools/paper-build.sh hh-dynamics
 ```
 
-The outputs are in `data/certify_equilibria_hopf.txt` and `data/certify_bistability.txt`; the rerun of 2026-09-27 without
-stage 4b is `data/certify_bistability_no_ball_2026-09-27.txt`. The only trusted library is
+The outputs are in `data/certify_equilibria_hopf.txt`, `data/certify_bistability.txt`,
+`data/identify_stable_orbit.txt` and `data/numerics_h2.txt`; the rerun of 2026-09-27 without stage 4b is
+`data/certify_bistability_no_ball_2026-09-27.txt`. The only trusted library is
 python-flint (FLINT/Arb); numpy, scipy, SymPy and mpmath only propose candidates and reference values.
 
 ## License

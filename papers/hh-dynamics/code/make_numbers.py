@@ -3,8 +3,8 @@
 
     python3 code/make_numbers.py          (from papers/hh-dynamics/, or from anywhere)
 
-Every number of the manuscript that a program prints is taken from data/certify_equilibria_hopf.txt or
-data/certify_bistability.txt here, never typed by hand.  The rules:
+Every number of the manuscript that a program prints is taken from data/certify_equilibria_hopf.txt,
+data/certify_bistability.txt, data/identify_stable_orbit.txt or data/numerics_h2.txt here, never typed by hand.  The rules:
 
   * an Arb ball printed as [m +/- r] is read as the exact rational interval [m - r, m + r] (Arb prints a decimal
     ball that contains its ball), and every interval is re-rounded OUTWARD to the number of decimals shown: the
@@ -35,6 +35,8 @@ PAPER = os.path.join(ROOT, 'paper')
 
 HOPF = open(os.path.join(DATA, 'certify_equilibria_hopf.txt')).read()
 BIST = open(os.path.join(DATA, 'certify_bistability.txt')).read()
+IDENT = open(os.path.join(DATA, 'identify_stable_orbit.txt')).read()
+NUMH2 = open(os.path.join(DATA, 'numerics_h2.txt')).read()
 
 NUM = r'-?[0-9]+(?:\.[0-9]+)?(?:e[+-]?[0-9]+)?'
 BALL = r'\[(' + NUM + r') \+/- (' + NUM + r')\]'
@@ -273,8 +275,11 @@ EVALS = (('HH', r'10\.613 \(Hodgkin-Huxley\)'), ('Star', r'E_l\* = \[[^\]]*\] \(
 for tag, en in EVALS:
     m = one(r'E_l = ' + en + r': equilibrium u\* in ' + BALL, s3)
     mac('uStar' + tag, iv(*ball_iv(*m.groups()), 12))
+# the ball about E_l* on which Theorem 5 is proved is the program's internal ball; the report prints Arb's decimal
+# enclosure of it, which is larger.  A domain of validity must not be rounded outward, so the printed ball is copied
+# as printed and the manuscript says that it contains the ball of the proof.
 m = one(r'E_l = E_l\* = ' + BALL + r' \(exact zero-current value\): equilibrium', s3)
-mac('ELstarBi', iv(*ball_iv(*m.groups()), 24))
+mac('ELstarBiPrinted', '[%s \\pm %s]' % (m.group(1), sci_tex(m.group(2))))
 
 # stage 4: the orbits at the three values (step counts, extremes, box radii)
 s4 = block(BIST, 'STAGE 4 ', 'STAGE 4b ')
@@ -413,6 +418,37 @@ mac('HpSmu', m[0].group(2)[:22])
 mac('HpUmuOne', m[1].group(2)[:22])
 mac('HpUmuTwo', m[1].group(3)[:22])
 
+# ================================================================== the identification of the stable orbits (Corollary 7)
+if re.search(r'\[FAIL\]', IDENT) or 'STOPPED' in IDENT:
+    raise SystemExit('the identification report contains a failed check')
+m = one(r'(\d+) checks passed: (\d+) proof checks, (\d+) negative controls, (\d+) cross-checks', IDENT)
+for k, v in zip(('IdChecks', 'IdProof', 'IdControls', 'IdCross'), m.groups()):
+    mac(k, v)
+assert sum(int(x) for x in m.groups()[1:]) == int(m.group(1))
+mac('IdTime', '%d' % round(float(one(r'run time ([0-9.]+) s', IDENT).group(1))))
+mac('IdLedger', one(r'printed with outward rounding \((\d+) of them\)', IDENT).group(1))
+offs = every(r'K lies in the interior of its box \(centre of K about ([0-9.]+) box radii from the centre of the box\)',
+             IDENT, 5)
+mac('IdOffMax', max((Fr(x.group(1)), x.group(1)) for x in offs)[1])
+ctl = every(r'centre of K about ([0-9.]+) box radii away\): the inclusion must fail', IDENT, 3)
+mac('IdCtlMin', min((Fr(x.group(1)), x.group(1)) for x in ctl)[1])
+idp = every(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, sup\|\|DP\|\|_inf <= ([0-9.]+), T in \[([0-9.]+), '
+            r'([0-9.]+)\], box radius ~(' + NUM + ')', IDENT, 4)
+mac('IdPieces', ', '.join('$[%s, %s]$' % x.group(1, 2) for x in idp))
+for x in idp:                                  # the same lines as stage 4b of the committed run
+    if x.group(0) not in BIST:
+        raise SystemExit('identification piece line not in the committed stage 4b: ' + x.group(0))
+
+# ================================================================== the small cycles below J_H2 (numerical)
+h2 = every(r'J_H2 - J = ([0-9.]+) \(J = ([0-9.]+)\).*?\n.*?\n    Newton on .*?period ([0-9.]+) ms, nontrivial multipliers '
+           r'([0-9.]+), ([0-9.]+), ([0-9.]+)\n    peak-to-peak u ([0-9.]+) mV, .*?= ([0-9.]+)', NUMH2, 3, re.S)
+for x, nm in zip(h2, ('A', 'B', 'C')):
+    mac('HtwoDelta' + nm, '%g' % float(x.group(1)))
+    mac('HtwoRatio' + nm, '%.2f' % float(x.group(8)))
+mac('HtwoMuMax', '%.3f' % max(float(x.group(4)) for x in h2))
+(d1, r1), (d2, r2) = sorted((Fr(x.group(1)), Fr(x.group(7)) ** 2 / Fr(x.group(1))) for x in h2)[:2]
+mac('HtwoExtrap', '%.2f' % float(r1 - (r2 - r1) / (d2 - d1) * d1))
+
 # ================================================================== the amplitude table (numerical)
 ROWS = {}
 JH1 = Fr(MAC['JHOneHHlong'].strip('[]').split(', ')[0])
@@ -439,7 +475,8 @@ ROWS['TabUnstableRows'] = [r'%s & $%s$ & $%s$ & $|\mu_2 - %s| \le %s$ & $%s$ \\'
 # ================================================================== SHA-256 of the programs and reports
 FILES = ['code/certify_equilibria_hopf.py', 'code/hh_ball.py', 'code/certify_bistability.py', 'code/hh_arb.py',
          'code/hh_lohner.py', 'code/certlib.py', 'code/ball_stable.py', 'code/outward.py', 'code/tests_integrator.py',
-         'code/testsys.py', 'data/certify_equilibria_hopf.txt', 'data/certify_bistability.txt']
+         'code/testsys.py', 'code/shoot_float.py', 'code/identify_stable_orbit.py', 'data/certify_equilibria_hopf.txt',
+         'data/certify_bistability.txt', 'data/identify_stable_orbit.txt']
 ROWS['TabFilesRows'] = [r'\texttt{%s} & \texttt{%s} \\' % (
     fn.replace('_', r'\_'), hashlib.sha256(open(os.path.join(ROOT, fn), 'rb').read()).hexdigest()[:16]) for fn in FILES]
 
@@ -478,6 +515,8 @@ if reruns:
             r'checks;', RR)
     skip = ('time for this E_l', 'stage 1 time', 'stage 3 time', 'numerics time', 'total run time', 'checks passed',
             'Newton 0', 'Newton 1', 'Newton 2', 'Newton 3', 'Newton 4', 'Newton 5', 'iteration')
+    SKIPPED = ('the run times, the lines of the floating-point Newton steps (stage 4) and of the Newton iterations of '
+               'stage 6, and the count of checks')
     ALL = ['0', '1', '2', '3', '4', '5', '6', '7']
     a = [_untimed(x) for x in _stages(BIST, ALL) if x.strip() and not any(k in x for k in skip)]
     b = [_untimed(x) for x in _stages(RR, ALL) if x.strip() and not any(k in x for k in skip)]
@@ -495,10 +534,10 @@ if reruns:
         for x in only_rerun:
             print('rerun line not in the committed output: ' + x)
     else:
-        diff_note = (', and each of its %d lines other than run times is identical to a line of '
-                     'the committed output, except the %d that differ because stage 4b was skipped (it printed and '
-                     're-read %s bounds instead of %s, and its summary states the bistability at the three values only)'
-                     % (len(b), len(expected), nled, MAC['BiLedger']))
+        diff_note = ('. Leaving out %s, each of its %d remaining lines occurs in the committed output, except the %d '
+                     'that differ because stage 4b was skipped (it printed and re-read %s bounds instead of %s, and its '
+                     'summary states the bistability at the three values only)'
+                     % (SKIPPED, len(b), len(expected), nled, MAC['BiLedger']))
     RERUN_TEXT = (r'on %s it passed all %s of its checks (%s proof checks, %s negative controls, %s self-tests and %s '
                   r'numerical-only checks; the %d proof checks of stage 4b were not run)%s. Its output is '
                   r'\texttt{data/%s}.' % (date, m.group(1), m.group(2), m.group(3), m.group(4), m.group(5),
@@ -511,7 +550,7 @@ else:
 TEX = os.path.join(PAPER, 'hh-dynamics.tex')
 BEGIN = '% BEGIN generated by code/make_numbers.py'
 END = '% END generated by code/make_numbers.py'
-out = [BEGIN + ' from data/certify_equilibria_hopf.txt and data/certify_bistability.txt; do not edit by hand.',
+out = [BEGIN + ' from the reports in data/; do not edit by hand.',
        '% Intervals are rounded outward from the printed balls; rerun the programs, then python3 code/make_numbers.py.']
 for k in sorted(MAC):
     v = MAC[k]
