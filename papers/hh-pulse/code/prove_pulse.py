@@ -4,45 +4,58 @@
 """Rigorous (ball arithmetic): computer-assisted existence proof of the propagated action potential of Hodgkin and
 Huxley (J. Physiol. 117 (1952), eq. (31)) at their 1952 rate functions and constants, as an orbit homoclinic to rest
 of the travelling-wave ODE (hhwave.py conventions: u = -V, w = u', t in ms, phi = 3^((T - 6.3)/10) for the decimal
-temperature T as typed, E_l the leak potential that makes the resting current zero).
+temperature T as typed). E_l is the leak potential that makes the resting current zero, with rest at u = 0, or, with
+HH_EL=10.613, Hodgkin and Huxley's printed value, with rest at the enclosed equilibrium u* (certify_rest_wave.py).
 
 The argument (written out in the manuscript, Section 4) has these computed hypotheses, each checked here:
- (A) Lemma A of certify_rest_wave.py for every K in [K1, K2]: rest has one eigenvalue with positive real part (simple,
-     real) and four with negative real part.
- (B) Lemma B of certify_rest_wave.py at the radius r_B, in coordinates z = T_B (y - y*) that diagonalize Df(y*) to
-     about 1e-70 (a rigorous eigen-decomposition at the working precision, then exact dyadic midpoints): for every K
-     in [K1, K2] the branch of the unstable manifold with z1 > 0 leaves the box through the face z1 = r_B inside the
-     exit set E = { y* + T_B^-1 (r_B e1 + z') : |z'_2| <= s2, |(z'_3, z'_4)| <= s3, |z'_5| <= s5 }; and
-     (B') the crossing is transversal: z1' > 0 on E for every K in the ball, so the exit point p(K) depends
-     continuously on K.
- (C) The closing block B0 of block0.py (cone and entrance conditions), for every K in [K1, K2].
- (D) The interval run: the Lohner set containing { (y, K) : y in E, K in [K1, K2] }, integrated from t = 0 to
+ (H2) Lemma B of certify_rest_wave.py at the radius r_B, in coordinates z = T_B (y - y*) that diagonalize Df(y*) to
+     about 1e-70 (a rigorous eigen-decomposition at the working precision, then exact dyadic midpoints), for every K
+     in [K1, K2]: (i) the cone condition on the box B (Gershgorin on the interval matrix D A + A^T D), (ii) the stable
+     faces are inflowing, and (iii) z1' > 0 on the exit set E = { y* + T_B^-1 (r_B e1 + z') : |z'_2| <= s2,
+     |(z'_3, z'_4)| <= s3, |z'_5| <= s5 }. Also checked: u > u* on all of E, so the branch of the unstable manifold
+     that leaves B through E does so with u above its rest value.
+ (H1) follows from (H2)(i) (Lemma 0 of the manuscript); the characteristic polynomial check of certify_rest_wave.lemma_A
+     (one simple real unstable eigenvalue, the other four in Re < 0) runs as an independent check that the proof does
+     not use.
+ (H3) The closing block B0 of block0.py (cone and entrance conditions), for every K in [K1, K2].
+ (H4) The interval run: the Lohner set containing { (y, K) : y in E, K in [K1, K2] }, integrated from t = 0 to
      t = T_enter, lies in the interior of B0 at t = T_enter.
- (E) The endpoint runs: for K = K1 (resp. K2) the set E is integrated to T_enter, lies in int B0 there, and is then
+ (H5) The endpoint runs: for K = K1 (resp. K2) the set E is integrated to T_enter, lies in int B0 there, and is then
      integrated further with enclosures of the whole path over every step, which stay in int B0, until the set lies
      in K- = {L > 0, zeta_1 < 0} (resp. K+ = {L > 0, zeta_1 > 0}).
 Conclusion: some K* in (K1, K2) has an orbit that leaves rest along the branch z1 > 0 of W^u and stays in B0 for all
 t >= T_enter, hence tends to rest: a homoclinic orbit, the pulse, with speed theta = sqrt(K* a / (2 R_2 C_M)).
 
-Negative controls (each must fail): the interval run for a K interval that does not contain the pulse speed (shifted
-by 40 half-widths), and for the model with alpha_m multiplied by 1 + 1e-12 at the true interval; Lemma B with faces
-100 times too thin; the block with a radius 1.5 times too large (block0.py).
+Negative controls (each must fail, for its stated reason): the interval run for a K interval that does not contain the
+pulse speed (shifted by 40 half-widths; it must reach T_enter outside int B0), and for the model with alpha_m
+multiplied by 1 + 1e-12 (u - u*)^2 at the true interval (the whole set must escape below u = -60 mV); Lemma B with
+faces 100 times too thin; the block with a radius 1.5 times too large (block0.py).
 
-Stages (run separately, each writes data/pulse_proof_<T>_<stage>.json and checkpoints to data/ckpt/):
-  python3 prove_pulse.py <T> setup      # config from data/hp_pulse_<T>.json, then (A), (B), (B'), (C)
-  python3 prove_pulse.py <T> interval   # (D)
-  python3 prove_pulse.py <T> K1         # (E) at K1
-  python3 prove_pulse.py <T> K2         # (E) at K2
+Stages (run separately; each writes data/pulse_proof_<tag>_<stage>.json and checkpoints to data/ckpt/):
+  python3 prove_pulse.py <T> config <delta> <r_B> <T_enter> <tol_final> <tol_min>   # from data/hp_pulse_<tag>.json
+  python3 prove_pulse.py <T> setup      # (H2), (H3), the check of (H1), and their negative controls
+  python3 prove_pulse.py <T> interval   # (H4)
+  python3 prove_pulse.py <T> K1         # (H5) at K1
+  python3 prove_pulse.py <T> K2         # (H5) at K2
   python3 prove_pulse.py <T> neg-shift  # negative control: shifted K interval
   python3 prove_pulse.py <T> neg-model  # negative control: perturbed alpha_m
-  python3 prove_pulse.py <T> summary    # collects the verdicts; exit status 0 iff everything is as expected
+  python3 prove_pulse.py <T> summary    # checks every certificate; exit status 0 iff everything is as expected
+  python3 prove_pulse.py <T> summary-control   # the summary must reject planted stale or wrong certificates
+T is a decimal string (18.5, 6.3), never read as a float. Every certificate records its provenance: the sha256 of the
+configuration, of the closing block and of the programs (PROGRAMS), the python-flint version and the phi and E_l balls;
+the summary recomputes them and refuses a certificate that does not match, or whose K is not the configuration's.
+Exit status of a stage: 0 if it passed, 1 if it wrote the verdict FAIL, 2 on any error (no certificate is written).
 """
 import hashlib
 import json
 import math
 import os
+import shutil
 import sys
+import tempfile
 import time
+import traceback
+import flint
 from flint import arb, acb_mat, arb_mat, ctx
 import certify_rest_wave as C
 import hhjet6
@@ -52,7 +65,18 @@ import block0
 PREC = 256
 ORDER = 40
 DATA = '../data'
+HERE = os.path.dirname(os.path.abspath(__file__))
+# the programs whose code the certificates depend on (their sha256 goes into every certificate)
+PROGRAMS = ('prove_pulse.py', 'certify_rest_wave.py', 'lohner6.py', 'hhjet6.py', 'hhjet.py', 'hhseries.py',
+            'block0.py', 'hhwave.py')
+STAGES = ('setup', 'interval', 'K1', 'K2', 'neg-shift', 'neg-model')
+# what each negative control must fail with: the stated reason, as recorded in the certificate's 'fail' field
+NEG_REASON = {'neg-shift': 'outside_int_B0_at_T_enter', 'neg-model': 'escaped_below_-60'}
 ctx.prec = PREC            # the imports above set other precisions; every stage below also sets it
+
+
+class CheckFailed(Exception):
+    pass
 
 
 def ball(lo, hi):
@@ -60,16 +84,43 @@ def ball(lo, hi):
 
 
 def require(cond, msg):
+    """A failed check is an error (exit status 2), never a FAIL verdict: no certificate is written."""
     if not cond:
-        raise SystemExit('CHECK FAILED: ' + msg)
+        raise CheckFailed(msg)
 
 
-def cfg_path(T):
-    return '%s/pulse_proof_%s_config.json' % (DATA, C.tag(T))
+def cfg_path(T, data=DATA):
+    return '%s/pulse_proof_%s_config.json' % (data, C.tag(T))
 
 
-def out_path(T, stage):
-    return '%s/pulse_proof_%s_%s.json' % (DATA, C.tag(T), stage)
+def out_path(T, stage, data=DATA):
+    return '%s/pulse_proof_%s_%s.json' % (data, C.tag(T), stage)
+
+
+def block_path(T, data=DATA):
+    return '%s/closing_block_%s.json' % (data, C.tag(T))
+
+
+def sha256_file(path):
+    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+
+
+def code_sha256():
+    """One hash of the programs in PROGRAMS (each file's name and sha256, in that order)."""
+    return hashlib.sha256(''.join('%s %s\n' % (f, sha256_file(os.path.join(HERE, f))) for f in PROGRAMS)
+                          .encode()).hexdigest()
+
+
+def provenance(T, data=DATA):
+    """What a certificate was computed from; the summary requires every certificate's copy to equal the current one."""
+    old = ctx.prec
+    ctx.prec = PREC
+    phi = C.phi_of(T)
+    _, EL = C.rest_state()
+    out = {'config_sha256': sha256_file(cfg_path(T, data)), 'block_sha256': sha256_file(block_path(T, data)),
+           'code_sha256': code_sha256(), 'python_flint': flint.__version__, 'phi': phi.str(50), 'E_l': EL.str(50)}
+    ctx.prec = old
+    return out
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -103,6 +154,20 @@ def deser(s):
 
 def cfg_hash(cfg, extra=''):
     return hashlib.sha256((json.dumps(cfg, sort_keys=True) + extra).encode()).hexdigest()[:16]
+
+
+def kpart(K1, K2, stage):
+    """The K ball (or point) a stage integrates, from the configuration's K1 and K2."""
+    if stage in ('interval', 'neg-model'):
+        return K1.union(K2)
+    if stage == 'neg-shift':
+        d = K2 - K1
+        return (K2 + 19 * d).union(K2 + 20 * d)
+    if stage == 'K1':
+        return K1
+    if stage == 'K2':
+        return K2
+    raise CheckFailed('unknown stage ' + stage)
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -147,6 +212,8 @@ class Setup:
         self.cfg = json.load(open(cfg_path(T)))
         self.T = T
         self.phi = C.phi_of(T)
+        require(self.cfg.get('T_decimal') == T and self.cfg.get('phi') == self.phi.str(50),
+                'the configuration was made for another temperature or phi')
         self.ystar, self.EL = C.rest_state()
         self.K1, self.K2 = deser(self.cfg['K1']), deser(self.cfg['K2'])
         self.Kball = self.K1.union(self.K2)
@@ -250,6 +317,10 @@ def stage_setup(T):
     z1dot = sum((S.TB[0, i] * f[i] for i in range(5)), arb(0))
     say("(B') z1' on the exit set: %s (needs > 0): %s" % (z1dot.str(8), bool(z1dot > 0)))
     out['B_transversal'] = bool(z1dot > 0)
+    # the exit set lies where u > u*: the branch that leaves B through E does so with u above its rest value
+    du = Ebox[0] - S.ystar[0]
+    say("(B'') u - u* on the exit set: %s (needs > 0): %s" % (du.str(8), bool(du > 0)))
+    out['B_exit_u_above_rest'] = bool(du > 0)
     # (C) the closing block for every K in the ball, and its negative control
     ctx.prec = 128
     res = block0.run(T, S.Kball, S.M, S.Minv, float(S.rho.mid()), float(S.r.mid()), log=lambda s: None)
@@ -259,8 +330,9 @@ def stage_setup(T):
         '1.5) rejected: %s' % (S.rho.str(10), S.r.str(10), res['cone']['ok'], res['cone']['cells'],
                                 res['entrance']['ok'], res['entrance']['cells'], not neg['ok']))
     out['C'] = bool(res['ok']) and not neg['ok']
-    out['ok'] = all(out[k] for k in ('A', 'B', 'B_transversal', 'C'))
+    out['ok'] = all(out[k] for k in ('A', 'B', 'B_transversal', 'B_exit_u_above_rest', 'C'))
     out['lines'] = lines
+    out['provenance'] = provenance(T)
     json.dump(out, open(out_path(T, 'setup'), 'w'), indent=1)
     say('SETUP ' + ('PASSED' if out['ok'] else 'FAILED'))
     return out['ok']
@@ -289,24 +361,18 @@ def run_stage(T, stage):
         perturb_model('1e-12')
     S = Setup(T)
     cfg = S.cfg
-    lam = float(arb(json.load(open(out_path(T, 'setup')))['lambda_u']).mid())
+    prov = provenance(T)
+    setup = json.load(open(out_path(T, 'setup')))
+    require(setup.get('ok') is True and setup.get('provenance') == prov,
+            'the setup certificate is missing, failed, or was made from another configuration, block or program')
+    lam = float(arb(setup['lambda_u']).mid())
     B = S.lemma_B()
     require(B['ok'], 'Lemma B')
-    if stage in ('interval', 'neg-model'):
-        Kpart, expect = S.Kball, None
-    elif stage == 'neg-shift':
-        d = S.K2 - S.K1
-        Kpart, expect = (S.K2 + 19 * d).union(S.K2 + 20 * d), None
-    elif stage == 'K1':
-        Kpart, expect = S.K1, None
-    elif stage == 'K2':
-        Kpart, expect = S.K2, None
-    else:
-        raise SystemExit('unknown stage')
+    Kpart = kpart(S.K1, S.K2, stage)
     F = L.Field(S.phi, S.EL)
     ck = '%s/ckpt/pulse_%s_%s.json' % (DATA, C.tag(T), stage)
     os.makedirs(os.path.dirname(ck), exist_ok=True)
-    h = cfg_hash(cfg, stage)
+    h = cfg_hash(cfg, stage + prov['code_sha256'] + prov['block_sha256'])      # a checkpoint of other code is ignored
     state = {'phase': 'approach', 'steps': 0, 'umax_lower': -1e9, 'umax_upper_steps': -1e9}
     t0 = 0.0
     X = S.exit_set(Kpart, B)
@@ -324,7 +390,10 @@ def run_stage(T, stage):
     def cb(tp, t, Xh, Xn, W, hh):
         state['steps'] += 1
         hx = Xn.hull()
-        state['umax_lower'] = max(state['umax_lower'], float(hx[0].lower()))
+        ul = float(hx[0].lower())
+        if arb(ul) > hx[0].lower():                  # float() rounds to nearest: step down to a lower bound
+            ul = math.nextafter(ul, -math.inf)
+        state['umax_lower'] = max(state['umax_lower'], ul)
         state['umax_upper_steps'] = max(state['umax_upper_steps'], float(hx[0].upper()))
         wid = max(float(arb(x.rad()).mid()) for x in hx[:5])
         if state['steps'] % 25 == 0:
@@ -366,9 +435,11 @@ def run_stage(T, stage):
         X, t, ns = L.integrate(F, X, S.T_enter, ORDER, tolf, hmax=0.25, t0=t0, callback=cb)
         if state['phase'] == 'blew_up':
             log['verdict'] = 'FAIL'
+            log['fail'] = 'blew_up'
             log['reason'] = 'the set blew up at t = %s' % t.str(8)
         elif state['phase'] == 'escaped':
             log['verdict'] = 'FAIL'
+            log['fail'] = 'escaped_below_-60' if state['escape'].startswith('u <') else 'escaped_above_150'
             log['reason'] = 'the whole set escaped (%s) at t = %s, before T_enter' % (state['escape'], t.str(8))
         else:
             require(bool(t == arb(S.T_enter)), 'did not reach T_enter exactly')
@@ -387,6 +458,8 @@ def run_stage(T, stage):
                 t0 = float(t.mid())
             else:
                 log['verdict'] = 'PASS' if inB else 'FAIL'
+                if not inB:
+                    log['fail'] = 'outside_int_B0_at_T_enter'
     if state['phase'] in ('inside',):
         # short steps after T_enter: zeta_1 grows by about exp(lambda_u h) per step, which must not carry the set past
         # |zeta_1| = r between two checks of the cone (the path check would then fail, safely but uselessly)
@@ -401,30 +474,77 @@ def run_stage(T, stage):
     elif state['phase'] in ('in_cone', 'left_int_B0', 'wrong_cone'):
         log['phase2'] = state['phase']
         log['verdict'] = 'PASS' if state['phase'] == 'in_cone' else 'FAIL'
+    require('verdict' in log, 'the stage ended in phase %s without a verdict' % state['phase'])
+    if log['verdict'] == 'FAIL' and 'fail' not in log:
+        log['fail'] = state['phase']
+    log['provenance'] = prov
     log['secs'] = round(time.time() - t_start)
     json.dump(log, open(out_path(T, stage), 'w'), indent=1)
     print('%s VERDICT %s (%d s)' % (stage, log['verdict'], log['secs']), flush=True)
     return log['verdict'] == 'PASS'
 
 
-def stage_summary(T):
-    expect = {'setup': True, 'interval': True, 'K1': True, 'K2': True, 'neg-shift': False, 'neg-model': False}
+def check_certificates(T, data=DATA):
+    """Every certificate of the proof, checked against the current configuration, closing block, programs, phi and E_l.
+    Returns (ok, lines)."""
+    ctx.prec = PREC
     ok = True
     lines = []
-    for st, e in expect.items():
-        p = out_path(T, st)
+    try:
+        prov = provenance(T, data)
+        cfg = json.load(open(cfg_path(T, data)))
+    except (OSError, ValueError) as e:
+        return False, ['configuration or closing block unreadable: %s' % e]
+    # phi must enclose 3^((T - 6.3)/10) for the decimal temperature (computed here again at twice the precision)
+    ctx.prec = 2 * PREC
+    phi_exact = arb(3) ** ((arb(C.temperature(T)) - arb('6.3')) / 10)
+    ctx.prec = PREC
+    phi_ok = cfg.get('T_decimal') == T and cfg.get('phi') == prov['phi'] and bool(arb(prov['phi']).contains(phi_exact))
+    ok = ok and phi_ok
+    lines.append('%-10s %s' % ('phi', ('encloses 3^((%s - 6.3)/10): %s' % (T, prov['phi'][:40])) if phi_ok
+                              else 'DOES NOT MATCH the decimal temperature %s' % T))
+    K1, K2 = deser(cfg['K1']), deser(cfg['K2'])
+    for st in STAGES:
+        p = out_path(T, st, data)
         if not os.path.exists(p):
             lines.append('%-10s MISSING' % st)
             ok = False
             continue
         d = json.load(open(p))
-        v = d['ok'] if st == 'setup' else d['verdict'] == 'PASS'
-        good = (v == e)
+        why = []
+        if d.get('provenance') != prov:
+            got = d.get('provenance') or {}
+            why.append('made from another ' + (', '.join(k for k in prov if got.get(k) != prov[k]) or 'record'))
+        if d.get('stage') != st or d.get('T') != float(T) or d.get('prec') != PREC:
+            why.append('stage, temperature or precision differ')
+        if st == 'setup':
+            if (d.get('K1'), d.get('K2')) != (cfg['K1_dec'], cfg['K2_dec']):
+                why.append('K1, K2 differ from the configuration')
+            passed = d.get('ok') is True
+        else:
+            if d.get('K') != kpart(K1, K2, st).str(70) or d.get('order') != ORDER:
+                why.append('K or order differ from the configuration')
+            passed = d.get('verdict') == 'PASS'
+        if st in NEG_REASON:
+            good = d.get('verdict') == 'FAIL' and d.get('fail') == NEG_REASON[st]
+            what = 'failed (%s), a negative control' % d.get('fail') if not passed else 'passed, a negative control'
+        else:
+            good = passed
+            what = 'passed' if passed else 'failed'
+        good = good and not why
         ok = ok and good
-        lines.append('%-10s %s (%s)' % (st, 'as expected' if good else 'NOT AS EXPECTED',
-                                        ('passed' if v else 'failed') + (', a negative control' if not e else '')))
+        lines.append('%-10s %s (%s)%s' % (st, 'as expected' if good else 'NOT AS EXPECTED', what,
+                                          ('; STALE OR FOREIGN: ' + '; '.join(why)) if why else ''))
+    lines.append('certificates made from config %s, closing block %s, programs %s, python-flint %s (sha256, first 16)'
+                 % (prov['config_sha256'][:16], prov['block_sha256'][:16], prov['code_sha256'][:16],
+                    prov['python_flint']))
+    return ok, lines
+
+
+def stage_summary(T, data=DATA, write=True):
+    ok, lines = check_certificates(T, data)
     ctx.prec = PREC
-    cfg = json.load(open(cfg_path(T)))
+    cfg = json.load(open(cfg_path(T, data)))
     K1, K2 = deser(cfg['K1']), deser(cfg['K2'])
 
     def theta(K):
@@ -440,24 +560,107 @@ def stage_summary(T):
     q = Decimal(1).scaleb(-d)
     lo = Decimal((t1.lower() - arb(10) ** -d).str(d + 10, radius=False)).quantize(q, rounding=ROUND_FLOOR)
     hi = Decimal((t2.upper() + arb(10) ** -d).str(d + 10, radius=False)).quantize(q, rounding=ROUND_CEILING)
-    assert arb(str(lo)) < t1 and arb(str(hi)) > t2
+    require(bool(arb(str(lo)) < t1) and bool(arb(str(hi)) > t2), 'the decimal speed bounds are not outward')
     lines.append('speed theta in (%s, %s) m/s for a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2' % (lo, hi))
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
-    print('\n'.join(lines))
-    open('%s/pulse_proof_%s_summary.txt' % (DATA, C.tag(T)), 'w').write('\n'.join(lines) + '\n')
+    if write:
+        print('\n'.join(lines))
+        open('%s/pulse_proof_%s_summary.txt' % (data, C.tag(T)), 'w').write('\n'.join(lines) + '\n')
     return ok
 
 
-if __name__ == '__main__':
-    T = C.temperature(sys.argv[1])       # a decimal string: phi = 3^((T - 6.3)/10) is computed from it exactly
-    stage = sys.argv[2]
+def stage_summary_control(T):
+    """A negative control for the harness itself: copies of the certificates with one planted defect each (the kind a
+    crashed or skipped rerun would leave behind) must each be refused by the summary, and the unaltered copy must
+    pass. Writes data/pulse_proof_<tag>_summary_control.txt; exit status 0 iff every case behaves as expected."""
+    names = [cfg_path(T), block_path(T)] + [out_path(T, st) for st in STAGES]
+
+    def edit(path, f):
+        d = json.load(open(path))
+        f(d)
+        json.dump(d, open(path, 'w'), indent=1)
+
+    def cert(data, st):
+        return out_path(T, st, data)
+
+    def set_prov(key, val):
+        return lambda d: d['provenance'].__setitem__(key, val)
+
+    cases = [
+        ('unaltered copy', True, lambda data: None),
+        ('K1 certificate missing (the stage crashed)', False, lambda data: os.remove(cert(data, 'K1'))),
+        ('K2 certificate made by other programs', False,
+         lambda data: edit(cert(data, 'K2'), set_prov('code_sha256', '0' * 64))),
+        ('interval certificate made from another configuration', False,
+         lambda data: edit(cert(data, 'interval'), set_prov('config_sha256', '0' * 64))),
+        ('K1 certificate made with another closing block', False,
+         lambda data: edit(cert(data, 'K1'), set_prov('block_sha256', '0' * 64))),
+        ('setup certificate with the phi of the binary number 6.3', False,
+         lambda data: edit(cert(data, 'setup'), set_prov('phi', (arb(3) ** ((arb(6.3) - arb('6.3')) / 10)).str(50)))),
+        ('K2 certificate for another K', False,
+         lambda data: edit(cert(data, 'K2'), lambda d: d.__setitem__('K', kpart(*[deser(json.load(open(
+             cfg_path(T, data)))[k]) for k in ('K1', 'K2')], 'K1').str(70)))),
+        ('configuration changed after the stages ran', False,
+         lambda data: edit(cfg_path(T, data), lambda d: d.__setitem__('K_numerical', d['K_numerical'] + '1'))),
+        ('closing block changed after the stages ran', False,
+         lambda data: edit(block_path(T, data), lambda d: d.__setitem__('K_ref', d['K_ref'] + '1'))),
+        ('neg-model failed for another reason (the set blew up)', False,
+         lambda data: edit(cert(data, 'neg-model'), lambda d: d.__setitem__('fail', 'blew_up'))),
+        ('neg-shift passed', False,
+         lambda data: edit(cert(data, 'neg-shift'), lambda d: (d.__setitem__('verdict', 'PASS'), d.pop('fail', None)))),
+    ]
+    lines = ['summary control at T = %s C (%s): each planted defect must make the summary fail' % (T, C.tag(T))]
+    allok = True
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, want, plant in cases:
+            data = os.path.join(tmp, 'data')
+            shutil.rmtree(data, ignore_errors=True)
+            os.makedirs(data)
+            for f in names:
+                shutil.copy(f, data)
+            plant(data)
+            try:
+                got, why = check_certificates(T, data)
+            except (OSError, ValueError, KeyError, CheckFailed) as e:
+                got, why = False, ['error: %s' % e]
+            good = got == want
+            allok = allok and good
+            bad = [w for w in why if 'NOT AS EXPECTED' in w or 'MISSING' in w or 'DOES NOT' in w or 'error' in w]
+            lines.append('%-55s summary %s: %s%s' % (name, 'passes' if got else 'fails',
+                                                      'as expected' if good else 'NOT AS EXPECTED',
+                                                      (' (' + bad[0].strip()[:90] + ')') if bad else ''))
+    lines.append('ALL CHECKS PASSED' if allok else 'SOME CHECK FAILED')
+    print('\n'.join(lines))
+    open('%s/pulse_proof_%s_summary_control.txt' % (DATA, C.tag(T)), 'w').write('\n'.join(lines) + '\n')
+    return allok
+
+
+def main(argv):
+    T = C.temperature(argv[1])            # a decimal string: phi is computed from it exactly
+    stage = argv[2]
     if stage == 'config':
         # python3 prove_pulse.py T config delta r_B T_enter tol_final tol_min
-        make_config(T, sys.argv[3], sys.argv[4], float(sys.argv[5]), float(sys.argv[6]), float(sys.argv[7]))
-        sys.exit(0)
+        make_config(T, argv[3], argv[4], float(argv[5]), float(argv[6]), float(argv[7]))
+        return 0
     if stage == 'setup':
-        sys.exit(0 if stage_setup(T) else 1)
+        return 0 if stage_setup(T) else 1
     if stage == 'summary':
-        sys.exit(0 if stage_summary(T) else 1)
-    ok = run_stage(T, stage)
-    sys.exit(0 if ok else 1)
+        return 0 if stage_summary(T) else 1
+    if stage == 'summary-control':
+        return 0 if stage_summary_control(T) else 1
+    if stage not in STAGES:
+        raise CheckFailed('unknown stage ' + stage)
+    return 0 if run_stage(T, stage) else 1
+
+
+if __name__ == '__main__':
+    try:
+        status = main(sys.argv)
+    except CheckFailed as e:
+        print('CHECK FAILED: %s' % e, flush=True)
+        status = 2
+    except Exception:
+        traceback.print_exc()
+        print('ERROR (exit status 2)', flush=True)
+        status = 2
+    sys.exit(status)

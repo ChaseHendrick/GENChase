@@ -37,7 +37,8 @@ def g_coeffs(x0, L, N=NTERMS):
             s += binom * xp / fact[n + 1]
         # tail: term_n = C(n,k) r^(n-k)/(n+1)!; ratio term_{n+1}/term_n = (n+1) r / ((n+1-k)(n+2)) <= 1/2 for n >= N
         # when N >= 2k + 2 and r <= 1/2. Bound the tail by twice the first omitted term.
-        assert N >= 2 * k + 2
+        if not N >= 2 * k + 2:                     # the tail bound below needs it (not an assert: python -O)
+            raise ArithmeticError('Psi series: N = %d < 2k + 2 = %d' % (N, 2 * k + 2))
         bN = arb(1)
         for j in range(k):
             bN = bN * (N + 1 - j) / (j + 1)
