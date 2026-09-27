@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.0 (2026-09-27)
 
+**DOI:** [10.5281/zenodo.22996260](https://doi.org/10.5281/zenodo.22996260)
+
 The first public release of the preprint *Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952
 Parameters: Computer-Assisted Proofs* (30 pages), with the programs that prove its results and their output.
 
