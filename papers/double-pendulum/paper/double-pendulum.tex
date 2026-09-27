@@ -1,0 +1,514 @@
+% The manuscript; double-pendulum.pdf beside it is this file built with pdflatex, run three times
+% (sh tools/paper-build.sh double-pendulum in the GENChase repository).
+% Status: DRAFT (2026-09-27).
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+  pdftitle={Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof},
+  pdfauthor={Chase Hendrick}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+
+\setlength{\emergencystretch}{2em}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\htop}{h_{\mathrm{top}}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\tf}{\tilde f}
+
+\title{Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof}
+\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
+\date{\small Preprint of 27 September 2026. Not peer reviewed.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The planar double pendulum with two equal point masses on two equal massless rods is the standard example of chaos in classical mechanics, but, as far as we could find, neither its chaos nor its non-integrability has been proved at these parameters: the known proofs need a small parameter (a weak coupling, a small mass ratio, a special link geometry), and the one variational criterion that needs none has been applied only under a parameter condition that, in the text available to us, the equal case does not satisfy. We give a computer-assisted proof. At each of the energies $E = -1/2$, $0$ and $1/2$, in units in which the lower rest state has $E = -3$ and $E = 0$ is the energy of releasing both arms from rest in the horizontal position, the flow on the energy level has a hyperbolic periodic orbit with a transversal homoclinic orbit, and the same holds simultaneously for every energy in $[-10^{-10}, 10^{-10}]$. Consequently every real-analytic function on such a level that is invariant under the flow is constant, and the double pendulum has no real-analytic first integral functionally independent of the energy on any connected open set that contains the level $E = 0$. At each of these three energies, explicit covering relations between h-sets give a topological horseshoe (a compact invariant set of the return map that is semiconjugate to a subshift of finite type) with explicit bounds; at $E = 0$ the Poincar\'e return map has a compact invariant set on which its topological entropy exceeds $0.1016$, and the topological entropy of the flow on the level exceeds $0.0138$ per unit time. The proofs combine interval arithmetic (the CAPD library), the time-reversal symmetry of the pendulum, cone conditions for the local unstable manifold and covering relations; the programs and their output accompany the paper. Meromorphic non-integrability in the sense of Morales-Ruiz and Ramis remains open.
+
+\medskip
+\noindent\textbf{Keywords:} double pendulum; transversal homoclinic orbit; topological horseshoe; topological entropy; non-integrability; computer-assisted proof; interval arithmetic.\\
+\textbf{MSC 2020:} 37J30, 37C29, 37B10, 37N05, 65G20.
+\end{abstract}
+
+\section{Introduction}
+
+Two equal point masses $m$ hang from two equal massless rods of length $l$, the first rod from a fixed pivot and the second from the first mass, and swing in a vertical plane under gravity $g$. With the angles $\theta_1, \theta_2$ of the rods from the downward vertical, the Lagrangian is
+\begin{equation}\label{eq:lag}
+  L = ml^2\Bigl(\dot\theta_1^2 + \tfrac12\dot\theta_2^2 + \dot\theta_1\dot\theta_2\cos(\theta_1 - \theta_2)\Bigr) + mgl\,(2\cos\theta_1 + \cos\theta_2).
+\end{equation}
+This is the double pendulum of textbooks and of countless demonstrations, and its chaotic motion is documented numerically and experimentally in detail \cite{rs1984, sgwy1992, so2006, kbkb2023}. A proof has been missing. The rigorous results we found are of two kinds. The perturbative ones need a small parameter that is not small in the equal case: Burov \cite{burov1986} proves, by the splitting of separatrices, that a physical two-link pendulum has no additional analytic integral when a length in the geometry of the second link is small; Dullin \cite{dullin1994} applies Melnikov's method in the limit of weak coupling, which requires a coupling parameter $\varepsilon \ll 1$, while the mathematical double pendulum with equal masses and lengths corresponds to $\varepsilon = 1/2$ in his normalization (his Sect.~2), and ``it can naturally give results close to an integrable case only'' (his conclusion, p.~13 of the author's preprint, which we read; the published text was not available to us); Ivanov conjectures non-integrability for all non-degenerate masses, lengths and energies \cite[p.~105]{ivanov1}, computes homoclinic invariants with a floating-point Runge--Kutta method at three parameter points with mass ratio $m_2/m_1 = 0.01$ \cite{ivanov1}, and proves transversal homoclinic intersections asymptotically in the limit of a small mass ratio, with the length ratio or the energy near zero or infinity \cite{ivanov2, ivanov3}, and, for the reduced system obtained in the limit $m_2/m_1 \to 0$, within explicit distances, between $4\cdot10^{-7}$ and $5\cdot10^{-3}$, of the four vertices of its compactified parameter square of length ratio and energy \cite[Main Theorem, p.~54]{ivanov4}; the equal pendulum, with $m_2/m_1 = 1$, is not the reduced system, and none of these statements applies to it; Moauro and Negrini \cite{mn1998} prove transversal homoclinic points and a Bernoulli shift at large energies for a small mass ratio. The one non-perturbative result is Bolotin and Negrini's variational criterion \cite{bn1997}, applied in its Section~10 to the double pendulum near the energy level of the upright equilibrium under an explicit condition on the masses and lengths. In the text of that section available to us, which consists of search snippets only (Sect.~\ref{sec:discussion}), the condition from which the theorem is derived fails at equal masses and lengths by a factor of about $2.9$, and the authors call it ``quite restrictive''. We also searched the computer-assisted-proof literature (arXiv, zbMATH Open, the publication lists of the authors of the CAPD library and its pages of applications; the queries and their results are recorded in the project's prior-article ledger, available on request): the pendulum results there that we found, by title and abstract, concern the forced damped single pendulum, for example \cite{wz2009}, and we found no computer-assisted proof for the double pendulum. On the algebraic side, Stachowiak and Szumi\'nski \cite{ss2015} prove meromorphic non-integrability of restricted double pendula and write that for the classical one ``there is no closed mathematical proof confirming its non-integrability'' \cite[p.~1 of arXiv:1511.01850]{ss2015}; Salnikov \cite{salnikov2013} computed monodromy matrices numerically at equal masses and lengths; Szumi\'nski and Kapitaniak \cite{sk2025} prove non-integrability of a variable-length double pendulum, a system with three degrees of freedom, and write that ``a non-integrability proof for the classical double pendulum is still missing'' \cite[p.~3 of arXiv:2602.21123]{sk2025}. Kaheman, Bramburger, Kutz and Brunton \cite{kbkb2023}, who build a theory of transport on hypotheses about hyperbolic periodic orbits and their homoclinic connections, note that ``the double pendulum lacks such proofs'' and that they ``lack a proof of transversality of the orbits'' \cite[Sect.~5.2, p.~27 of arXiv:2209.10132]{kbkb2023}.
+
+We prove the following, at the physical parameters $m_1 = m_2$, $l_1 = l_2$ and without any small parameter. In units $m = l = g = 1$, with the energy $H$ normalized so that the lower rest state has $H = -3$:
+
+\begin{itemize}
+\item At each of the energies $E = -1/2, 0, 1/2$, the flow on the energy level $M_E = \{H = E\}$ has a hyperbolic periodic orbit, along which the upper arm makes one oscillation and the lower arm one full turn per period, whose stable and unstable manifolds intersect transversally (Theorem~\ref{thm:main}, computer-assisted). The same holds for every $E$ in $[-10^{-10}, 10^{-10}]$ at once (Theorem~\ref{thm:interval}, computer-assisted).
+\item Hence every real-analytic function on each of these levels that is invariant under the flow is constant (Corollary~\ref{cor:level}); and there is no real-analytic first integral on any connected open set containing $M_0$ that is functionally independent of the energy (Corollary~\ref{cor:global}).
+\item At each of the three energies an explicit chain of covering relations gives a topological horseshoe (a compact invariant set semiconjugate to a subshift of finite type; hyperbolicity is not claimed) and quantitative chaos (Theorem~\ref{thm:horseshoe}, computer-assisted, and Corollary~\ref{cor:horseshoe}); at $E = 0$ the return map has a compact invariant set with topological entropy above $0.1016$, and the flow on $M_0$ has topological entropy above $0.0138$ per unit time.
+\end{itemize}
+
+The energy $E = 0$ is the energy of the textbook initial condition, both arms released from rest in the horizontal position; it lies in the middle of the band $-1 < E < 1$ in which the lower arm can turn over and the upper arm cannot.
+
+The proof is computer-assisted in the now standard way of rigorous numerics for dynamical systems: every inequality it needs is checked in interval arithmetic with outward rounding, and the flow is enclosed by the rigorous Taylor (Lohner-type) integrators and Poincar\'e maps of the CAPD library \cite{capd2021}. The part that is written out, rather than computed, uses three ingredients. The time reversal $(\theta, p) \mapsto (-\theta, p)$ of the pendulum reduces the homoclinic problem to finding a single point where the unstable manifold of a symmetric periodic orbit crosses the symmetry line of the section, as in Devaney's theory of reversible systems \cite{devaney1976}. Cone conditions, in the spirit of Zgliczy\'nski's geometric treatment of the stable manifold theorem \cite{z2009}, control the local unstable manifold as a graph with a certified slope bound; they avoid computing derivatives over several returns, which the interval enclosures of this vector field overestimate strongly. And the covering relations of Zgliczy\'nski and Gidea \cite{zg2004}, which have been used for computer-assisted proofs of symbolic dynamics in the restricted three-body problem \cite{wz2003} and in many systems since, give the explicit horseshoe. For the analytic non-integrability we write out Kozlov's argument \cite[Ch.~V, \S2]{kozlov1983}, which turns an intersection of separatrices that do not coincide into the absence of an analytic integral.
+
+Section~\ref{sec:setting} sets up the energy levels, the Poincar\'e section and the reversibility. Section~\ref{sec:results} states the results. Section~\ref{sec:proof} proves Theorems~\ref{thm:main} and~\ref{thm:interval}: the lemmas are proved in full, and the computation that verifies their hypotheses is described with its output. Section~\ref{sec:cor} proves the corollaries, Section~\ref{sec:hs} the explicit horseshoe, and Section~\ref{sec:controls} reports negative controls and an independent cross-check. Section~\ref{sec:discussion} discusses what is and is not shown, including the reading of Bolotin and Negrini's condition. Every statement is labelled: \emph{proved} (a written proof), \emph{computer-assisted} (a written proof whose hypotheses are verified in interval arithmetic by a program that accompanies the paper), or \emph{numerical} (floating-point computation without error control, used only to find the objects and to illustrate).
+
+\section{The system, the section and the symmetry}\label{sec:setting}
+
+In units $m = l = g = 1$ (time in units of $\sqrt{l/g}$, energy in units of $mgl$), the Legendre transform of \eqref{eq:lag} gives, with $c = \cos(\theta_1 - \theta_2)$ and $D = 2 - c^2 = 1 + \sin^2(\theta_1 - \theta_2)$,
+\begin{equation}\label{eq:ham}
+  H(\theta_1, \theta_2, p_1, p_2) = \frac{p_1^2 + 2p_2^2 - 2c\,p_1p_2}{2D} - 2\cos\theta_1 - \cos\theta_2 ,
+\end{equation}
+on the phase space $T^*\mathbb{T}^2 = \mathbb{T}^2 \times \R^2$. The kinetic energy is $\frac12 p^{\mathsf T}\mathcal M^{-1}p$ with the mass matrix $\mathcal M = \bigl(\begin{smallmatrix} 2 & c\\ c & 1\end{smallmatrix}\bigr)$, which is positive definite. The equations of motion are Hamilton's equations of \eqref{eq:ham}; the program \texttt{check\_field.py} derives them from \eqref{eq:lag} with SymPy and verifies that the vector field given to the rigorous integrator is identical to them (exactly, by reduction of the difference modulo $\cos^2 + \sin^2 = 1$). The lower rest state $\theta = p = 0$ has $H = -3$, and releasing both arms from rest in the horizontal position gives $H = 0$.
+
+\begin{lemma}[proved]\label{lem:levels}
+Let $-1 < E < 1$. Then $E$ is a regular value of $H$, and $M_E = H^{-1}(E)$ is a compact connected real-analytic $3$-manifold. The set
+\[
+  \Sigma_E = \{x \in M_E : \theta_1 = 0,\ \dot\theta_1 > 0\}
+\]
+is a real-analytic surface in $M_E$ transversal to the flow, and $(\theta_2, p_2)$ are coordinates on it: $\Sigma_E$ is the graph of
+\begin{equation}\label{eq:lift}
+  p_1 = \ell_E(\theta_2, p_2) = \cos\theta_2\, p_2 + \sqrt{(1 + \sin^2\theta_2)\bigl(2(E + 2 + \cos\theta_2) - p_2^2\bigr)}
+\end{equation}
+over the open annulus $A_E = \{(\theta_2, p_2) \in \mathbb{T}^1 \times \R : p_2^2 < 2(E + 2 + \cos\theta_2)\}$.
+\end{lemma}
+
+\begin{proof}
+A critical point of $H$ has $\partial H/\partial p = \mathcal M^{-1}p = 0$, so $p = 0$, and then $(2\sin\theta_1, \sin\theta_2) = 0$; the four critical points $\theta_1, \theta_2 \in \{0, \pi\}$ have the values $-3, -1, 1, 3$, so every $E \in (-1, 1)$ is regular. $H \ge -3 + \tfrac12\lambda|p|^2$ (the kinetic energy is $\tfrac12 p^{\mathsf T}\mathcal M^{-1}p$) with $\lambda > 0$ the smallest eigenvalue of $\mathcal M^{-1}$ over the compact torus, so $H$ is proper and $M_E$ is compact. The projection of $M_E$ to the configuration torus is $\{V \le E\}$ with $V = -2\cos\theta_1 - \cos\theta_2$, and its fibres are ellipses over $\{V < E\}$ and points over $\{V = E\}$, all connected. For fixed $\theta_2$, $V \le E$ means $-2\cos\theta_1 \le E + \cos\theta_2$; since $-2 < E + \cos\theta_2 < 2$ for $-1 < E < 1$, this is an interval $|\theta_1| \le \vartheta(\theta_2) < \pi$ of positive length around $\theta_1 = 0$, with $\vartheta$ continuous. So $\{V \le E\}$ is a closed annulus around the circle $\theta_1 = 0$, connected, and $M_E$, which maps onto it by a closed map with connected fibres, is connected. On $\theta_1 = 0$ we have $c = \cos\theta_2$, $D = 1 + \sin^2\theta_2$ and $p_1^2 + 2p_2^2 - 2cp_1p_2 = (p_1 - cp_2)^2 + Dp_2^2$, so $H = E$ reads $(p_1 - cp_2)^2 = D(2(E + 2 + \cos\theta_2) - p_2^2)$, while $\dot\theta_1 = \partial H/\partial p_1 = (p_1 - cp_2)/D$. The branch $\dot\theta_1 > 0$ is \eqref{eq:lift}, defined and analytic exactly on $A_E$, where $E + 2 + \cos\theta_2 \ge E + 1 > 0$. Transversality is $\dot\theta_1 > 0$.
+\end{proof}
+
+\paragraph{The return map.} Let $P = P_E$ be the first-return map of the flow to $\Sigma_E$: $P(z)$ is the first point after $z$ at which the orbit of $z$ crosses $\theta_1 = 0$ upwards. Where the orbit of $z$ reaches this point after crossing $\theta_1 = 0$ only transversally, $P$ and the return time $\tau$ are real-analytic near $z$ by the implicit function theorem; the rigorous Poincar\'e maps of CAPD verify this transversality on every set on which they are evaluated (Sect.~\ref{sec:computation}). $P$ preserves the area form $d\theta_2 \wedge dp_2$ (the restriction of $\sum dp_i \wedge d\theta_i$ to $\{\theta_1 = 0\}$); the proofs below do not use this fact. The computation works in the lift $\theta_2 \in \R$, where we write $P$ again for the lifted map, obtained by integrating the flow with $\theta_2$ not reduced modulo $2\pi$, and use
+\[
+  \tf = T \circ P,\qquad T(\theta_2, p_2) = (\theta_2 + 2\pi, p_2),
+\]
+which commutes with $P$ because the vector field is $2\pi$-periodic in $\theta_2$. A fixed point of $\tf$ is a fixed point of $P$ on the cylinder at which the lower arm makes one full turn backwards per return.
+
+\begin{lemma}[reversibility, proved]\label{lem:rev}
+Let $G(\theta_2, p_2) = (-\theta_2, p_2)$. If $P(x) = y$, then $P(Gy) = Gx$. Consequently $G \circ P \circ G = P^{-1}$ and $G \circ \tf \circ G = \tf^{-1}$ where defined, $\Fix(G) = \{\theta_2 \in \pi\Z\}$ on the cylinder, and if $Gp = p$ is a fixed point of $P$, then $G(W^u(p)) = W^s(p)$.
+\end{lemma}
+
+\begin{proof}
+The involution $R(\theta, p) = (-\theta, p)$ preserves $H$ ($c$ and $D$ are even in the angles) and reverses the symplectic form, so $R \circ \phi_t = \phi_{-t} \circ R$ for the flow $\phi_t$. On $\{\theta_1 = 0\}$ it acts as $(0, \theta_2, p_1, p_2) \mapsto (0, -\theta_2, p_1, p_2)$, and $\ell_E$ is even in $\theta_2$, so $R$ maps $\Sigma_E$ to itself and is $G$ in the coordinates $(\theta_2, p_2)$. Let $y = \phi_\tau(x)$ with $\tau$ the return time. Then $\phi_s(Ry) = R\phi_{\tau - s}(x)$, whose $\theta_1$ is $-\theta_1(\phi_{\tau - s}x)$ with time derivative $\dot\theta_1(\phi_{\tau-s}x)$; an upward crossing of $\theta_1 = 0$ by $\phi_s(Ry)$ at $0 < s < \tau$ would be an upward crossing by the orbit of $x$ at time $\tau - s \in (0, \tau)$, which does not exist. At $s = \tau$ the point is $Rx \in \Sigma_E$. So $P(Gy) = Gx$, that is $P \circ G \circ P = G$. In the lift the same argument applies to the lifted flow; with $GTG = T^{-1}$ and $TP = PT$ this gives $G\tf G = T^{-1}P^{-1} = \tf^{-1}$. If $y \in W^u(p)$, then $P^{-n}(y) \to p$, and $P^n(Gy) = GP^{-n}(y) \to Gp = p$, so $Gy \in W^s(p)$; the converse inclusion is the same argument.
+\end{proof}
+
+A fixed point with $Gp = p$ is called symmetric. For a fixed point $p$ (of $P$, or of $\tf$ in the lift), the unstable set $W^u(p)$ is the set of points $z$ whose backward iterates $P^{-n}(z)$, $n \ge 0$, are all defined and converge to $p$, and the stable set $W^s(p)$ the set of points $z$ with $P^n(z) \to p$. The proofs use no global structure of these sets. Near $p$, Lemma~\ref{lem:graph} proves that $W^u(p)$ contains a $C^1$ arc through $p$, the local unstable manifold $W^u_{\mathrm{loc}}(p)$; when $p$ is symmetric, $W^s_{\mathrm{loc}}(p) = G(W^u_{\mathrm{loc}}(p)) \subset W^s(p)$ by Lemma~\ref{lem:rev}. We say that $W^u(p)$ and $W^s(p)$ intersect transversally at $q$ if there are $C^1$ arcs through $q$, one contained in $W^u(p)$ and one in $W^s(p)$, with linearly independent tangents at $q$; this is the property that Kozlov's argument in Sect.~\ref{sec:kozlov} uses.
+
+\section{Results}\label{sec:results}
+
+\begin{theorem}[computer-assisted]\label{thm:main}
+For each $E \in \{-1/2, 0, 1/2\}$, exactly, the return map $P_E$ has a fixed point $p_E = (0, y_E)$ on $\Fix(G)$, with $\tf(p_E) = p_E$ in the lift and
+\begin{center}\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$E$ & $y_E$ & return time $T_E$ & $\operatorname{tr} DP_E(p_E)$ \\
+\midrule
+$-1/2$ & $[-1.244860970920, -1.244860970917]$ & $[3.7047745436, 3.7047745487]$ & $[-3.23158, -3.23150]$ \\
+$0$ & $[-1.462373092481, -1.462373092479]$ & $[2.9534890074, 2.9534890134]$ & $[-3.80869, -3.80863]$ \\
+$1/2$ & $[-1.627044959204, -1.627044959202]$ & $[2.5643622220, 2.5643622277]$ & $[-3.33283, -3.33277]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+$p_E$ is hyperbolic: $DP_E(p_E)$ has a real eigenvalue of modulus greater than $2.8834$, $3.5238$ and $2.9987$ respectively, and one of modulus less than $1$. Its unstable and stable manifolds intersect transversally at a point $q_E \in \Fix(G)$, $q_E \ne p_E$. Equivalently, on the energy level $M_E$ the periodic orbit $\gamma_E$ through $p_E$, of period $T_E$, is hyperbolic and has a transversal homoclinic orbit: its two-dimensional stable and unstable manifolds in $M_E$ intersect transversally along the orbit of $q_E$.
+\end{theorem}
+
+At $E = 0$, $q_0 = (0 \bmod 2\pi,\ p_2)$ with $p_2 \in [0.82204913, 0.82225155]$, and $q_0 = P_0^9(z)$ for a point $z$ of the local unstable manifold at distance about $1.9 \cdot 10^{-5}$ from $p_0$; at $E = 1/2$ and $E = -1/2$ the crossing is reached after $11$ returns (Table~\ref{tab:comp}).
+
+\begin{theorem}[computer-assisted]\label{thm:interval}
+For every $E \in [-10^{-10}, 10^{-10}]$ the conclusions of Theorem~\ref{thm:main} hold: $P_E$ has a symmetric hyperbolic fixed point $p_E = (0, y_E)$ with $y_E \in [-1.46237309262, -1.46237309234]$, $\operatorname{tr}DP_E(p_E) \in [-3.80869, -3.80862]$, an eigenvalue of modulus greater than $3.5238$ and return time in $[2.9534890068, 2.9534890140]$, whose stable and unstable manifolds intersect transversally at a point $q_E \in \Fix(G)$, $q_E \ne p_E$, with $p_2(q_E) \in [0.8220043, 0.8222964]$.
+\end{theorem}
+
+\begin{theorem}[computer-assisted]\label{thm:horseshoe}
+Let $E \in \{-1/2, 0, 1/2\}$, and let $m = 22$ if $E = 0$ and $m = 26$ if $E = \pm1/2$. There are $m + 1$ pairwise disjoint compact sets $N, M_0, \ldots, M_{m-1}$ in $\Sigma_E$ ($N$ around $p_E$, the $M_i$ along the homoclinic loop of $q_E$) and a compact $P_E$-invariant set $\Lambda_E$ contained in their union such that the itinerary map is a continuous surjection from $\Lambda_E$ onto the subshift of finite type of the graph with the edges $N \to N$, $N \to M_0$, $M_i \to M_{i+1}$ ($0 \le i \le m - 2$) and $M_{m-1} \to N$, which semiconjugates $P_E|_{\Lambda_E}$ to the shift (a topological horseshoe: hyperbolicity of $\Lambda_E$ and a conjugacy are not claimed). Moreover $\htop(P_E|_{\Lambda_E}) \ge \log r_m$, with $r_m > 1$ the positive root of $r^{m+1} = r^m + 1$, and the topological entropy of the flow on $M_E$ is at least $\log r_m/\tau_E$, where $\tau_E$ bounds the return time on all the sets:
+\begin{center}\small
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$E$ & $r_m$ & $\htop(P_E|_{\Lambda_E}) >$ & $\tau_E$ & entropy of the flow per unit time $>$ \\
+\midrule
+$-1/2$ & $1.0948327079\ldots$ & $0.0906015$ & $4.2498259$ & $0.0213188$ \\
+$0$ & $1.1069502450\ldots$ & $0.1016087$ & $7.3553854$ & $0.0138141$ \\
+$1/2$ & $1.0948327079\ldots$ & $0.0906015$ & $6.9706776$ & $0.0129975$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{corollary}[proved from Theorem~\ref{thm:horseshoe}]\label{cor:horseshoe}
+At each $E \in \{-1/2, 0, 1/2\}$ the return map $P_E$ has a compact invariant set on which it is semiconjugate to a subshift of finite type of positive entropy (a topological horseshoe), and the flow on $M_E$ has positive topological entropy, with the lower bounds of Theorem~\ref{thm:horseshoe}.
+\end{corollary}
+
+\begin{corollary}[proved from Theorems~\ref{thm:main} and~\ref{thm:interval}]\label{cor:level}
+For each energy $E$ of Theorems~\ref{thm:main} and~\ref{thm:interval}, every real-analytic function on $M_E$, or on a neighbourhood of $M_E$ in phase space, that is invariant under the flow is constant on $M_E$.
+\end{corollary}
+
+\begin{corollary}[proved from Theorem~\ref{thm:interval}]\label{cor:global}
+Let $U \subset T^*\mathbb{T}^2$ be a connected open set containing $M_0$, and let $F$ be a real-analytic first integral of the double pendulum on $U$. Then $dF \wedge dH = 0$ on $U$: $F$ is functionally dependent on $H$. In particular the double pendulum has no real-analytic first integral on $T^*\mathbb{T}^2$ functionally independent of the energy.
+\end{corollary}
+
+On the interval of Theorem~\ref{thm:interval} we prove no horseshoe. The Smale--Birkhoff homoclinic theorem in its later forms, which need no non-resonance condition, would give a horseshoe and positive topological entropy at every energy of that interval from Theorem~\ref{thm:interval}; we have not read those statements and do not use them (Remark~\ref{rem:smale}). The horseshoes of Theorem~\ref{thm:horseshoe} are proved directly, with explicit bounds, at the three energies.
+
+\section{Proof of Theorems~\ref{thm:main} and~\ref{thm:interval}}\label{sec:proof}
+
+Fix $E$ (or the interval of energies; see Sect.~\ref{sec:interval}) and write $f = \tf$ for the lifted, shifted return map, a real-analytic map on an open subset of $\R^2$. The proof has three steps: a fixed point (Lemma~\ref{lem:kraw}), its hyperbolicity and a certified piece of its unstable manifold (Lemmas~\ref{lem:hyp} and~\ref{lem:graph}), and a transversal crossing of that manifold with the symmetry line (Lemma~\ref{lem:cross}). Each lemma is proved here; its hypotheses are inequalities between computable quantities, verified by the programs \texttt{prove.cpp} and \texttt{cones.cpp} as described in Sect.~\ref{sec:computation}.
+
+\subsection{The fixed point}
+
+\begin{lemma}[Krawczyk; proved]\label{lem:kraw}
+Let $F: U \to \R^2$ be $C^1$ on an open set $U \subset \R^2$, $B = p_0 + [-\rho, \rho]^2 \subset U$, $C$ a real $2 \times 2$ matrix and $[DF(B)]$ an interval matrix containing $DF(z)$ for all $z \in B$. If
+\[
+  K = p_0 - C\,F(p_0) + \bigl(I - C[DF(B)]\bigr)[-\rho, \rho]^2 ,
+\]
+evaluated in interval arithmetic, lies in the interior of $B$, then $F$ has exactly one zero in $B$, and it lies in $K$.
+\end{lemma}
+
+\begin{proof}
+Write $[M] = I - C[DF(B)]$. The $i$-th component of $[M][-\rho, \rho]^2$ is $\sum_j [M]_{ij}[-\rho, \rho] = [-s_i, s_i]$ with $s_i = \rho\sum_j\max|[M]_{ij}|$, so $K \subset \operatorname{int}B$ forces $s_i < \rho$, that is $\|I - CJ\|_\infty < 1$ for every matrix $J$ with entries in $[DF(B)]$. Then $CJ$ is invertible for every such $J$, in particular $C$ is invertible. For $z \in B$ let $J_z = \int_0^1 DF(p_0 + s(z - p_0))\,ds$; its entries lie in those of $[DF(B)]$ because intervals are convex. The map $N(z) = z - CF(z)$ satisfies $N(z) = p_0 - CF(p_0) + (I - CJ_z)(z - p_0) \in K \subset B$, so by Brouwer's theorem $N$ has a fixed point $z^* \in K$, and $F(z^*) = 0$ because $C$ is invertible. If $F(z_1) = F(z_2)$ with $z_1, z_2 \in B$, then $0 = J(z_1 - z_2)$ with $J = \int_0^1 DF(z_2 + s(z_1 - z_2))\,ds$, whose entries again lie in $[DF(B)]$; $CJ$ is invertible, so $z_1 = z_2$.
+\end{proof}
+
+We apply the lemma to $F = f - \mathrm{id}$, with $B$ a box of radius $\rho = 10^{-9}$ around a numerical approximation $p_0$ on the line $\theta_2 = 0$ and $C$ the floating-point inverse of the midpoint of $[DF(B)]$. The program checks $K \subset \operatorname{int} B$ and, in addition, $G(K) \subset B$. The latter makes the fixed point $p$ symmetric: by Lemma~\ref{lem:rev}, $f(Gp) = G f^{-1}(p) = Gp$, so $Gp$ is a fixed point of $f$ in $B$, and uniqueness gives $Gp = p$, that is $p \in \{\theta_2 = 0\}$.
+
+\subsection{Cone conditions, hyperbolicity and the local unstable manifold}
+
+Fix a real $2\times 2$ matrix $A = [v_u\ v_s]$ whose columns are numerical approximations of the eigenvectors of $Df(p_0)$ ($v_s = Gv_u$ up to sign), and local coordinates $\zeta = (x, y)$, $z = p_0 + A\zeta$, in which we write $\hat f(\zeta) = A^{-1}(f(p_0 + A\zeta) - p_0)$ and $\zeta_p = (x_p, y_p)$ for the fixed point. Let $N_0 = [-a, a] \times [-b, b]$ and $\alpha > 0$, and consider the cone $C_u = \{(v_x, v_y) : |v_y| \le \alpha|v_x|\}$. The conditions are:
+\begin{itemize}
+\item[(C1)] there are $\mu > 1$ and a sign $\sigma \in \{\pm 1\}$ such that for all $\zeta \in N_0$ and $|t| \le \alpha$, the vector $(u, w) = D\hat f(\zeta)(1, t)$ satisfies $\sigma u \ge \mu$ and $|w| < \alpha|u|$;
+\item[(C2)] for all $\zeta \in N_0$: if $|\hat f(\zeta)_x| \le a$, then $|\hat f(\zeta)_y| < b$;
+\item[(C3)] $|\det Df(z)| < \mu$ for $z \in B$, and $\zeta_p \in \operatorname{int}N_0$.
+\end{itemize}
+
+\begin{lemma}[hyperbolicity; proved]\label{lem:hyp}
+Under (C1) and (C3), $Df(p)$ has a real eigenvalue $\lambda_u$ with $|\lambda_u| \ge \mu$ and an eigenvector in $\operatorname{int}C_u$, and a second eigenvalue $\lambda_s$ with $|\lambda_s| < 1$. So $p$ is a hyperbolic fixed point.
+\end{lemma}
+
+\begin{proof}
+By (C1) the linear map $M = D\hat f(\zeta_p)$ sends every line of slope $t \in [-\alpha, \alpha]$ to a line of slope $w/u \in (-\alpha, \alpha)$; the continuous map $t \mapsto w/u$ of $[-\alpha, \alpha]$ into itself has a fixed point $t^*$, and $v = (1, t^*)$ is an eigenvector, $Mv = uv$, with $|u| \ge \mu$ and $|t^*| < \alpha$. The other eigenvalue has modulus $|\det M|/|u| < 1$ by (C3); $\det M = \det Df(p)$. (For this area-preserving map $\det Df = 1$ exactly; the lemma does not use it.)
+\end{proof}
+
+For the local unstable manifold we need one more condition, a bound on the derivative over the whole box:
+\begin{itemize}
+\item[(C4)] there is an interval matrix $[M]$ containing $D\hat f(\zeta)$ for every $\zeta \in N_0$ such that, with $m_{11} = \min|[M]_{11}|$, $m_{12} = \max|[M]_{12}|$ and $\delta_M = \max|\det[M]|$ (the maximum of $|\det M|$ over the real matrices $M$ with entries in those of $[M]$), the number $\mu_h = m_{11} - \alpha m_{12}$ satisfies
+\[
+  \mu_h > 1, \qquad \kappa = \frac{\delta_M}{\mu_h} < 1, \qquad \vartheta = \frac{\delta_M}{\mu_h^2} < 1, \qquad |x_p| < a\,\frac{\mu_h - 1}{\mu_h + 1} .
+\]
+\end{itemize}
+Here $\mu_h$ bounds the expansion of secants in $C_u$, $\kappa$ the vertical contraction of the graph transform below, and $\vartheta$ the contraction of slopes; the last inequality says that $p$ is central enough in $N_0$ for graphs through it to be stretched across the box. For our area-preserving map $\det Df = 1$, so $\delta_M$ is close to $1$ and (C4) says that $|[M]_{11}|$ stays well above $1$; the proof does not use area preservation.
+
+\begin{lemma}[the graph transform and the local unstable manifold; proved]\label{lem:graph}
+Assume that $\hat f$ is $C^1$ on a neighbourhood of $N_0$ and that (C1)--(C4) hold. Let $\mathcal L$ be the set of functions $h: [-a, a] \to [-b, b]$ with $|h(x) - h(x')| \le \alpha|x - x'|$, with the distance $\|h_1 - h_2\| = \max|h_1 - h_2|$. For $h \in \mathcal L$ write $\operatorname{gr}h = \{(x, h(x)) : |x| \le a\} \subset N_0$ and $\varphi_h(x) = \hat f(x, h(x))_x$.
+\begin{itemize}
+\item[(a)] If $h \in \mathcal L$ and $\varphi_h([-a, a]) \supset [-a, a]$, then $|\varphi_h(x) - \varphi_h(x')| \ge \mu|x - x'|$, $\varphi_h$ is a homeomorphism onto its image, and $\hat f(\operatorname{gr}h) \cap ([-a, a] \times \R)$ is the graph of a function $\mathcal H h \in \mathcal L$ with $|\mathcal H h| < b$. If $h$ is $C^1$, so is $\mathcal H h$.
+\item[(b)] If $\mathcal H h_1$ and $\mathcal H h_2$ are defined, then $\|\mathcal H h_1 - \mathcal H h_2\| \le \kappa\|h_1 - h_2\|$, and $|\varphi_{h_1}^{-1}(\tilde x) - \varphi_{h_2}^{-1}(\tilde x)| \le c_M\|h_1 - h_2\|$ for $|\tilde x| \le a$, with $c_M = m_{12}/(m_{11} - \alpha m_{12})$.
+\item[(c)] Let $w \in \mathcal L$ with $\mathcal H w = w$, and let $h_n \in \mathcal L$, $n \ge 0$, be $C^1$ functions with $h_{n+1} = \mathcal H h_n$. Then $w$ is $C^1$, and $h_n \to w$ and $h_n' \to w'$ uniformly on $[-a, a]$.
+\item[(d)] There is exactly one $w \in \mathcal L$ with $w(x_p) = y_p$ and $\mathcal H w = w$. It is $C^1$ with $|w'| < \alpha$, and $\operatorname{gr}w \subset \hat f(\operatorname{gr}w)$. For $\zeta \in \operatorname{gr}w$ and $n \ge 0$ the point $\hat f^{-n}(\zeta)$ is defined, lies in $\operatorname{gr}w$ and satisfies $|\hat f^{-n}(\zeta)_x - x_p| \le \mu^{-n}|\zeta_x - x_p|$; so $\hat f^{-n}(\zeta) \to \zeta_p$, and $p_0 + A\operatorname{gr}w \subset W^u(p)$.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+(The first hypothesis is verified by the computation: stage 2 encloses the first return of every point of $N_0$, so $\hat f$ is real-analytic on a neighbourhood of $N_0$.) The set $N_0$ is convex. For $\zeta, \zeta' \in N_0$ let $M(\zeta, \zeta') = \int_0^1 D\hat f(\zeta' + s(\zeta - \zeta'))\,ds$; then $\hat f(\zeta) - \hat f(\zeta') = M(\zeta, \zeta')(\zeta - \zeta')$, and the entries of $M(\zeta, \zeta')$ lie in those of $[M]$ because intervals are convex, so $|M_{11}| \ge m_{11}$, $|M_{12}| \le m_{12}$ and $|\det M| \le \delta_M$. If $\zeta - \zeta' = \ell(1, t)$ with $\ell \ne 0$ and $|t| \le \alpha$, then $M(\zeta, \zeta')(1, t) = \int_0^1 (u_s, w_s)\,ds$, where $(u_s, w_s) = D\hat f(\zeta' + s(\zeta - \zeta'))(1, t)$ satisfies $\sigma u_s \ge \mu$ and $|w_s| < \alpha\sigma u_s$ by (C1). Integrating,
+\begin{equation}\label{eq:secant}
+  \hat f(\zeta) - \hat f(\zeta') = \ell(\bar u, \bar w), \qquad \sigma\bar u \ge \mu, \quad |\bar w| < \alpha|\bar u| :
+\end{equation}
+a secant in the cone $C_u$ is mapped to a secant in $C_u$, and its $x$-component is multiplied by a factor of modulus at least $\mu$ and sign $\sigma$. The same factor $\bar u = M_{11} + M_{12}t$ also has modulus at least $m_{11} - \alpha m_{12} = \mu_h$, since $M = M(\zeta, \zeta')$ has its entries in $[M]$.
+
+(a) For $x \ne x'$ in $[-a, a]$ the secant from $(x, h(x))$ to $(x', h(x'))$ lies in $C_u$, so by \eqref{eq:secant} $\sigma(\varphi_h(x') - \varphi_h(x))$ has the sign of $x' - x$ and modulus at least $\mu|x' - x|$, and the image secant has slope of modulus less than $\alpha$. So $\varphi_h$ is continuous and strictly monotone, and $\hat f(\operatorname{gr}h)$ is the graph, over the interval $\varphi_h([-a, a]) \supset [-a, a]$, of a function with Lipschitz constant at most $\alpha$. Each point of its part over $[-a, a]$ is $\hat f(\zeta)$ with $\zeta \in N_0$ and $|\hat f(\zeta)_x| \le a$, so its $y$-coordinate has modulus less than $b$ by (C2). If $h$ is $C^1$, the curve $x \mapsto \hat f(x, h(x))$ is $C^1$ with tangent $D\hat f(\xi)(1, h'(x))$, $\xi = (x, h(x))$, whose first component is non-zero by (C1); so $\varphi_h$ is a $C^1$ diffeomorphism onto its image and
+\begin{equation}\label{eq:slope}
+  (\mathcal H h)'(\varphi_h(x)) = S(\xi, h'(x)), \qquad S(\zeta, t) = \frac{w}{u} \ \text{ for } (u, w) = D\hat f(\zeta)(1, t).
+\end{equation}
+By (C1), $|S| < \alpha$ on $N_0 \times [-\alpha, \alpha]$, and $S$ is continuous there. Moreover $\partial S/\partial t = \det D\hat f(\zeta)/u^2$ with $|u| = |D\hat f(\zeta)_{11} + D\hat f(\zeta)_{12}t| \ge m_{11} - \alpha m_{12}$, so by the mean value theorem
+\begin{equation}\label{eq:slopecontr}
+  |S(\zeta, t) - S(\zeta, t')| \le \vartheta|t - t'| \qquad (\zeta \in N_0,\ |t|, |t'| \le \alpha).
+\end{equation}
+
+(b) Let $|\tilde x| \le a$, $x_i = \varphi_{h_i}^{-1}(\tilde x)$, $\xi_i = (x_i, h_i(x_i))$, $d = \|h_1 - h_2\|$, and $(\Delta_x, \Delta_y) = \xi_1 - \xi_2$, $M = M(\xi_1, \xi_2)$. Then $M(\Delta_x, \Delta_y) = \hat f(\xi_1) - \hat f(\xi_2) = (0, \mathcal H h_1(\tilde x) - \mathcal H h_2(\tilde x))$. The first row gives $M_{11}\Delta_x = -M_{12}\Delta_y$, so $|\Delta_x| \le (m_{12}/m_{11})|\Delta_y|$; and $|\Delta_y| \le |h_1(x_1) - h_2(x_1)| + |h_2(x_1) - h_2(x_2)| \le d + \alpha|\Delta_x|$. Hence $|\Delta_y| \le d\,m_{11}/(m_{11} - \alpha m_{12})$ and $|\Delta_x| \le c_M d$. Substituting $\Delta_x = -M_{12}\Delta_y/M_{11}$ into the second row gives $\mathcal H h_1(\tilde x) - \mathcal H h_2(\tilde x) = (\det M/M_{11})\Delta_y$, of modulus at most $(\delta_M/m_{11})\,d\,m_{11}/(m_{11} - \alpha m_{12}) = \kappa d$.
+
+(c) By (b), $d_n = \|h_n - w\| \le \kappa^n d_0 \to 0$. For $|\tilde x| \le a$ let $x^* = \varphi_w^{-1}(\tilde x)$, $\xi^* = (x^*, w(x^*))$, $x_n = \varphi_{h_n}^{-1}(\tilde x)$ and $\xi_n = (x_n, h_n(x_n))$. By (b), $|x_n - x^*| \le c_M d_n$ and $|h_n(x_n) - w(x^*)| \le d_n + \alpha c_M d_n$, so $\xi_n \to \xi^*$ uniformly in $\tilde x$. On the complete space of continuous functions $s: [-a, a] \to [-\alpha, \alpha]$ with the maximum distance, the map $(Ts)(\tilde x) = S(\xi^*, s(x^*))$ is defined ($x^*$ and $\xi^*$ depend continuously on $\tilde x$, and $|S| < \alpha$) and is a contraction with constant $\vartheta$ by \eqref{eq:slopecontr}; let $s^*$ be its fixed point. By \eqref{eq:slope}, $h_{n+1}'(\tilde x) = S(\xi_n, h_n'(x_n))$, and by \eqref{eq:slopecontr}
+\[
+  |h_{n+1}'(\tilde x) - s^*(\tilde x)| \le \vartheta|h_n'(x_n) - s^*(x_n)| + \vartheta|s^*(x_n) - s^*(x^*)| + |S(\xi_n, s^*(x^*)) - S(\xi^*, s^*(x^*))| .
+\]
+The last two terms tend to $0$ uniformly in $\tilde x$, because $s^*$ is uniformly continuous on $[-a, a]$, $S$ is uniformly continuous on the compact set $N_0 \times [-\alpha, \alpha]$, and $x_n \to x^*$, $\xi_n \to \xi^*$ uniformly. So $e_n = \|h_n' - s^*\|$ satisfies $e_{n+1} \le \vartheta e_n + \epsilon_n$ with $\epsilon_n \to 0$, and $e_n \to 0$. A uniform limit of $C^1$ functions whose derivatives converge uniformly is $C^1$, with the limit of the derivatives as its derivative: $w$ is $C^1$ and $h_n' \to s^* = w'$.
+
+(d) Let $\mathcal L_p = \{h \in \mathcal L : h(x_p) = y_p\}$. It is closed in the complete space of continuous functions on $[-a, a]$ with the maximum distance, and not empty: $\zeta_p \in \operatorname{int}N_0$ by (C3), so the constant $y_p$ lies in $\mathcal L_p$. For $h \in \mathcal L_p$, $\varphi_h(x_p) = x_p$ because $\hat f(\zeta_p) = \zeta_p$; by \eqref{eq:secant}, $\varphi_h(a)$ and $\varphi_h(-a)$ lie on opposite sides of $x_p$ at distance at least $\mu_h(a - |x_p|)$, which exceeds $a + |x_p|$ by the last condition in (C4). So $\varphi_h([-a, a]) \supset [-a, a]$, $\mathcal H h$ is defined by (a), and $\mathcal H h(x_p) = y_p$. Thus $\mathcal H$ maps $\mathcal L_p$ into itself, is a contraction by (b), and has exactly one fixed point $w$ in $\mathcal L_p$. The iterates of the constant $y_p$ under $\Gamma$ are $C^1$ by (a), so $w$ is $C^1$ by (c), and $|w'| < \alpha$ by \eqref{eq:slope}. $\mathcal H w = w$ says that $\operatorname{gr}w \subset \hat f(\operatorname{gr}w)$: each $\zeta \in \operatorname{gr}w$ is $\hat f(\zeta_1)$ with $\zeta_1 = (x_1, w(x_1))$, $x_1 = \varphi_w^{-1}(\zeta_x)$, and $|x_1 - x_p| \le \mu^{-1}|\zeta_x - x_p|$ by (a) and $\varphi_w(x_p) = x_p$. The map $\hat f$ is injective, since $P$ is the first-return map of a flow, so $\zeta_1 = \hat f^{-1}(\zeta)$; by induction $\hat f^{-n}(\zeta) \in \operatorname{gr}w$ with $|\hat f^{-n}(\zeta)_x - x_p| \le \mu^{-n}|\zeta_x - x_p|$, and $\hat f^{-n}(\zeta) \to \zeta_p$ because $|w(x) - y_p| \le \alpha|x - x_p|$.
+\end{proof}
+
+We call the $C^1$ arc $W^u_{\mathrm{loc}}(p) = \{p_0 + A(x, w(x)) : |x| \le a\}$ the local unstable manifold of $p$; by (d), $f^{-1}(W^u_{\mathrm{loc}}(p)) \subset W^u_{\mathrm{loc}}(p)$. Lemma~\ref{lem:graph} is the stable manifold theorem (for diffeomorphisms of a manifold see, e.g., \cite[Sect.~4.1, Thm.~4]{dyatlov2018}) for this map, proved by the graph transform with constants certified by (C1)--(C4), so that no statement for maps of a whole manifold has to be applied to a map defined only near $p$. Zgliczy\'nski \cite{z2009} treats the stable manifold theorem with covering relations and cone conditions; we do not use his statements.
+
+\subsection{The symmetric transversal crossing}
+
+Let $[x_1, x_2] \subset [-a, a]$ with $x_p \notin [x_1, x_2]$, let $\bar\rho \ge \max\{|x - x_p| : x \in [x_1, x_2]\}$, and let $\mathcal R = [x_1, x_2] \times Y_{\mathcal R}$, $Y_{\mathcal R} = [y_p - \alpha\bar\rho, y_p + \alpha\bar\rho]$, which contains the graph of $w$ over $[x_1, x_2]$ by Lemma~\ref{lem:graph} and the mean value theorem. For $k \ge 1$ and an integer $m$ consider:
+\begin{itemize}
+\item[(C5)] the $\theta_2$-components of $f^k$ on the two edges $\{x_1\} \times Y_{\mathcal R}$ and $\{x_2\} \times Y_{\mathcal R}$ of $\mathcal R$ (mapped by $\zeta \mapsto p_0 + A\zeta$) lie strictly on opposite sides of $m\pi$;
+\item[(C6)] $\mathcal R$ is covered by pieces $Z$ such that, for every piece whose image $f^k(Z)$ may meet the line $\theta_2 = m\pi$, every vector $Df^k(p_0 + A\zeta)A(1, t)$ with $\zeta \in Z$ and $|t| \le \alpha$ has both components non-zero.
+\end{itemize}
+
+\begin{lemma}[symmetric transversal homoclinic point; proved]\label{lem:cross}
+Under the hypotheses of Lemma~\ref{lem:graph} and (C5)--(C6), $W^u(p)$ and $W^s(p)$ (for the return map on the cylinder) intersect transversally at a point $q \in \Fix(G)$, $q \ne p$.
+\end{lemma}
+
+\begin{proof}
+The arc $\Gamma = \{p_0 + A(x, w(x)) : x_1 \le x \le x_2\} \subset W^u(p)$ runs from one edge of $\mathcal R$ to the other, and $f^k(\Gamma)$ is a continuous arc in the lift whose $\theta_2$ changes sides of $m\pi$ by (C5). So there is $x^* \in (x_1, x_2)$ with $q = f^k(z)$, $z = p_0 + A(x^*, w(x^*))$, on the line $\theta_2 = m\pi$; on the cylinder $q \in \Fix(G)$. $q$ is in $W^u(p)$, and $q = Gq \in G(W^u(p)) = W^s(p)$ by Lemma~\ref{lem:rev}. $q \ne p$ on the cylinder: $P^k$ is injective, $P^k(p) = p$, and $z \ne p$ because $x^* \ne x_p$ and both points lie in a box of size far below $2\pi$. The tangent of $W^u(p)$ at $q$ is $v = Df^k(z)A(1, w'(x^*))$, and $|w'(x^*)| \le \alpha$; the piece of (C6) that contains $(x^*, w(x^*))$ has an image that meets the line, so both components of $v = (v_1, v_2)$ are non-zero. So $f^k(\Gamma) \subset W^u(p)$ is a $C^1$ arc through $q$ with tangent $v$ ($f^k$ is a diffeomorphism near $\Gamma$, and $\Gamma$ is $C^1$ by Lemma~\ref{lem:graph}), and $G(f^k(\Gamma)) \subset W^s(p)$ (Lemma~\ref{lem:rev}) is a $C^1$ arc through $Gq = q$ with tangent $DG\,v = (-v_1, v_2)$. Then $\det[v, DG\,v] = 2v_1v_2 \ne 0$: the intersection is transversal in the sense of Sect.~\ref{sec:setting}. For the flow, $W^{u}(\gamma)$ and $W^s(\gamma)$ are the flow-saturations of $W^u(p)$ and $W^s(p)$, so their tangent planes at $q$ are spanned by the vector field and the two section tangents, and they intersect transversally in $M_E$ along the orbit of $q$.
+\end{proof}
+
+\subsection{The computation}\label{sec:computation}
+
+The program \texttt{prove.cpp} (with the header \texttt{rig.h}) verifies $K \subset \operatorname{int}B$ and $G(K) \subset B$ (stage 1), (C1)--(C3) (stage 2) and (C5)--(C6) (stage 3), in interval arithmetic in double precision with outward rounding, using CAPD \cite{capd2021} at a fixed commit (03dc5628 of \url{https://github.com/CAPDGroup/CAPD}). It reports \texttt{FAIL} and exits with a non-zero status if any check fails.
+
+\emph{Enclosures of the return map.} A point or a small box of $(\theta_2, p_2)$ is lifted to phase space by \eqref{eq:lift} and integrated by CAPD's rigorous Taylor method of order $20$ with a Lohner-type representation of sets. CAPD's Poincar\'e map for the section $\theta_1 = 0$ with crossing direction ``minus to plus'' returns an enclosure of the first upward crossing and of the return time; its $C^1$ version also returns an enclosure of the derivative of the four-dimensional Poincar\'e map, including the correction for the variation of the return time. The derivative of $f$ in $(\theta_2, p_2)$ is $\Pi\,DP_4\,L$, with $\Pi$ the projection onto $(\theta_2, p_2)$ and $L$ the Jacobian of the lift, $\partial\ell_E/\partial(\theta_2, p_2)$ enclosed over the set. Every set passed to the $C^1$ computation contains the centre point used by the mean-value form, so that $f(\zeta) \in f(\zeta_c) + [Df(Z)](\zeta - \zeta_c)$ is valid on every piece $Z$. A set whose first return cannot be enclosed (for example because the flow is not provably transversal to the section on a step enclosure on which the section function takes the value $0$) makes the program fail on that set.
+
+\emph{Stage 2.} $N_0$ is covered by a grid of sub-boxes that overlap by a relative $10^{-6}$. On each sub-box the program encloses $D\hat f = A^{-1}[Df]A$ and checks (C1) for the whole interval $t \in [-\alpha, \alpha]$ (with the sign of $u$ the same on every sub-box), and (C2) by the mean-value enclosure of $\hat f$ on the sub-box. (C3) is checked with the enclosure of $\zeta_p$ from stage 1. Stage 2 also checks $|y_p| + \alpha(a + |x_p|) < b$, which the proofs do not use.
+
+\emph{Stage 3.} $[x_1, x_2]$ is covered by pieces, bisected where the check does not resolve. For a piece $Z$, the images $f^i(Z)$, $1 \le i \le k$, are enclosed by carrying one Lohner set through $k$ successive returns, $Y_i \ni f^i(Z)$. The tangent directions in (C6) are propagated through the chain rule $Df^k(z) = Df(f^{k-1}z)\cdots Df(fz)\,Df(z)$ with one-return derivative enclosures over $Z, Y_1, \ldots, Y_{k-1}$, never with a derivative enclosure over several returns: a set of lines $\{(1, s) : s \in S\}$ is mapped by an interval matrix to the hull of the interval quotients of its image over $16$ sub-intervals of $S$, a valid enclosure as long as the first components stay away from $0$ (otherwise the inverse slope is used). This choice is forced by a diagnostic measurement, not part of the proof and not recorded in \texttt{data/}: over one return the width of CAPD's derivative enclosure is about $5 \cdot 10^{4}$ times the width of the initial box, and products of interval matrices over several returns overestimate further; the local box $N_0$ is therefore thin ($a = 2.5\cdot10^{-5}$, $b = 4\cdot10^{-8}$ at $E = 0$). The program asserts that the chain has exactly $k$ factors.
+
+\emph{Condition (C4).} The program \texttt{cones.cpp} covers $N_0$ by $100$ sub-boxes of full height that overlap by a relative $10^{-6}$, encloses $A^{-1}[Df]A$ on each with the same one-return $C^1$ computation, and takes for $[M]$ the interval hull of these enclosures; $m_{11}$, $m_{12}$, $\delta_M$, $\mu_h$ and the four inequalities of (C4) are evaluated in interval arithmetic, with the enclosure of $\zeta_p$ from a repetition of stage 1 in which, unlike \texttt{prove.cpp} (which compares $K$ with the outward rounding of $B$), $K$ and $G(K)$ are compared with inward-rounded bounds of $B$, as Lemma~\ref{lem:kraw} requires. It takes about ten seconds per energy on two threads; the reports are \texttt{data/cones\_*.txt}. At the three energies and on the interval, $|x_p| \le 1.99\cdot10^{-12}$, $1.69\cdot10^{-12}$, $1.87\cdot10^{-12}$ and $5.36\cdot10^{-10}$, against $a(\mu_h - 1)/(\mu_h + 1) \ge 8.71\cdot10^{-6}$, $1.39\cdot10^{-5}$, $6.49\cdot10^{-6}$ and $1.39\cdot10^{-5}$.
+
+\emph{Output.} Table~\ref{tab:comp} lists the configuration and the verified quantities; the full reports are \texttt{data/E0.txt}, \texttt{data/Ehalf.txt} and \texttt{data/Eminushalf.txt}. At every energy the local unstable manifold is followed on the branch through $-v_u$, and the crossing is with the line $\theta_2 = 0$ (in the lift, after the shift, $m = 0$). The crossing points differ in kind: $p_2 \approx 0.82$ at $E = 0$ and $1/2$, and $p_2 \approx -1.466$ at $E = -1/2$, where the proof uses another symmetric homoclinic point (Sect.~\ref{sec:discussion}).
+
+\begin{table}[ht]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $E = -1/2$ & $E = 0$ & $E = 1/2$ \\
+\midrule
+$N_0$: $a$, $b$; grid & $1.8\cdot10^{-5}$, $3\cdot10^{-8}$; $800$ & $2.5\cdot10^{-5}$, $4\cdot10^{-8}$; $1000$ & $1.3\cdot10^{-5}$, $2\cdot10^{-8}$; $600$ \\
+cone $\alpha$; $\mu$ & $10^{-3}$; $2.88344$ & $10^{-3}$; $3.52384$ & $10^{-3}$; $2.99874$ \\
+largest $|w|/|u|$ on $N_0$ & $6.04\cdot10^{-4}$ & $3.65\cdot10^{-4}$ & $3.04\cdot10^{-4}$ \\
+(C4): $\kappa$; $\vartheta$ & $0.3547$; $0.1233$ & $0.2878$; $0.0818$ & $0.3351$; $0.1118$ \\
+$[x_1, x_2]$ & $[-1.4256, -1.4240]\cdot10^{-5}$ & $[-1.8870, -1.8838]\cdot10^{-5}$ & $[-1.0330, -1.0312]\cdot10^{-5}$ \\
+$k$ & $11$ & $9$ & $11$ \\
+$\theta_2$ of $f^k$(edge $x_1$) & $[-8.050, -7.878]\cdot10^{-4}$ & $[1.519, 1.522]\cdot10^{-3}$ & $[3.693, 3.707]\cdot10^{-3}$ \\
+$\theta_2$ of $f^k$(edge $x_2$) & $[8.915, 9.087]\cdot10^{-4}$ & $[-3.119, -3.115]\cdot10^{-3}$ & $[-5.347, -5.333]\cdot10^{-3}$ \\
+pieces checked; meeting the line & $80$; $9$ & $34$; $2$ & $66$; $1$ \\
+slope $dp_2/d\theta_2$ there & $[-8.2916, -0.0936]$ & $[-6.2138, -0.5237]$ & $[-21.416, -0.2789]$ \\
+$p_2$ at the crossing & $[-1.4657285, -1.4656772]$ & $[0.8220491, 0.8222516]$ & $[0.8244028, 0.8245038]$ \\
+\bottomrule
+\end{tabular}
+\caption{Theorem~\ref{thm:main}: configuration and verified quantities (computer-assisted; the numbers are rounded outward from \texttt{data/*.txt}; $\mu$ is the six-digit value printed by \texttt{prove.cpp}, which rounds to nearest, lowered by one unit in its last digit, hence a lower bound for the $\mu$ verified in (C1); the largest $|w|/|u|$ is a floating-point figure reported for information, not a bound; $\kappa$ and $\vartheta$ are rounded up).}\label{tab:comp}
+\end{table}
+
+\subsection{Proof of Theorem~\ref{thm:main}}
+
+At each energy, stage 1 gives the fixed point $p$ in the enclosure listed in the theorem, on $\Fix(G)$, with the trace and return time enclosed over $B$; Lemma~\ref{lem:hyp} gives hyperbolicity with $|\lambda_u| \ge \mu$; Lemmas~\ref{lem:graph} and~\ref{lem:cross} give the transversal homoclinic point $q_E \in \Fix(G)$. The fixed point of $\tf$ is a fixed point of $P$ on the cylinder, and in one return $\theta_2$ decreases by exactly $2\pi$ (the lower arm turns once) while $\theta_1$ makes one oscillation, from $0$ back to $0$, without reaching $\pm\pi$ (the upper arm cannot turn over: $V(\pm\pi, \theta_2) = 2 - \cos\theta_2 \ge 1 > E$). \qed
+
+\subsection{An interval of energies: proof of Theorem~\ref{thm:interval}}\label{sec:interval}
+
+The energy enters the computation only through the lift \eqref{eq:lift}. The configuration \texttt{E0\_interval.cfg} is that of $E = 0$ with $E$ replaced by the interval $[-10^{-10}, 10^{-10}]$ (its endpoints are enclosed as $\pm1/10^{10}$ in interval arithmetic). Every enclosure is then valid simultaneously for all $E$ in the interval, and so is every verified inequality: the Krawczyk operator encloses $K_E$ for each $E$, so each $F_E$ has a unique zero in $B$, symmetric by the same argument, and stages 2 and 3 verify (C1)--(C3), (C5) and (C6) for each $E$; \texttt{cones.cpp} verifies (C4) for each $E$ in the same way. Lemmas~\ref{lem:kraw}--\ref{lem:cross} applied at each $E$ give the theorem. The report is \texttt{data/E0\_interval.txt}: stage 1 gives $K$ with $\theta_2$-component in $[-5.81, 5.81]\cdot10^{-10}$ and $p_2$-component in $[-1.46237309262, -1.46237309234]$, inside $B$ ($\rho = 10^{-9}$), and $G(K) \subset B$; stage 2 gives $\mu \ge 3.52383$ (the printed $3.52384$ lowered by one unit) and the largest cone ratio about $3.66\cdot10^{-4}$ on the same $N_0$ as at $E = 0$; stage 3, on the same segment with $k = 9$, gives edge images with $\theta_2 \in [1.5069, 1.5341]\cdot10^{-3}$ and $[-3.1300, -3.1031]\cdot10^{-3}$, and on the $14$ of $74$ pieces whose image may meet the line (after bisection to depth $4$) the slope $dp_2/d\theta_2 \in [-20.744, -0.4104]$; and \texttt{data/cones\_E0\_interval.txt} gives $\kappa \le 0.2879$ and $\vartheta \le 0.0818$. The same computation with the interval $[-10^{-9}, 10^{-9}]$ fails stage 1 with the same box $B$ (the $\theta_2$-component of $K$ is then $[-5.79, 5.79]\cdot10^{-9}$, ten times wider; \texttt{data/stage1\_interval\_1e-9.txt}, from the repetition of stage 1 in \texttt{cones.cpp}); a wider interval of energies needs a larger box or a cover of the interval by several runs. \qed
+
+\section{Proofs of the corollaries}\label{sec:cor}
+
+\subsection{Entropy of the flow from a section}
+
+Topological entropy is taken in Bowen's form. For a continuous map $g$ of a compact metric space $(Y, d)$, a set $E \subset Y$ is $(n, \epsilon)$-separated if any two distinct $x, y \in E$ have $d(g^jx, g^jy) \ge \epsilon$ for some $0 \le j < n$; with $s_n(g, \epsilon)$ the largest cardinality of such a set, $\htop(g) = \lim_{\epsilon \to 0}\limsup_{n}\frac1n\log s_n(g, \epsilon)$ \cite[Sect.~7.2]{walters1982}. For a continuous flow $\phi$ on a compact metric space, $E$ is $(T, \delta)$-separated if any two distinct $x, y \in E$ have $d(\phi_sx, \phi_sy) \ge \delta$ for some $s \in [0, T]$; with $M_T(\phi, \delta)$ the largest cardinality, $h(\phi) = \lim_{\delta \to 0}\limsup_{T \to \infty}\frac1T\log M_T(\phi, \delta)$ \cite[p.~185]{bw1972}. (Strict or non-strict inequalities give the same limits.) On $M_E$ we use any metric compatible with its topology, for instance the one induced by $(\theta, p) \mapsto (\cos\theta_1, \sin\theta_1, \cos\theta_2, \sin\theta_2, p_1, p_2) \in \R^6$, and on $\Lambda \subset \Sigma_E \subset M_E$ its restriction; topological entropy on a compact space does not depend on this choice.
+
+\begin{lemma}[flow entropy from a section; proved]\label{lem:flowent}
+Let $\Lambda \subset \Sigma_E$ be compact with $P(\Lambda) = \Lambda$, $P$ continuous and injective on $\Lambda$ and the return time $\tau$ continuous on $\Lambda$, and let $\tau_{\max} = \max_\Lambda\tau$ and $K = \{\phi_s(z) : z \in \Lambda,\ 0 \le s \le \tau(z)\}$. Then $K$ is compact and invariant under the flow, and
+\[
+  \htop(\phi_1|_K) \ \ge\ h(\phi|_K) \ \ge\ \htop(P|_\Lambda)/\tau_{\max} .
+\]
+In particular $\htop(\phi_1) \ge \htop(P|_\Lambda)/\tau_{\max}$ for the time-one map of the flow on $M_E$.
+\end{lemma}
+
+\begin{proof}
+$K$ is the image of the compact set $\{(z, s) : z \in \Lambda, 0 \le s \le \tau(z)\}$ under $(z, s) \mapsto \phi_s(z)$, hence compact. Since $\phi_{\tau(z)}(z) = P(z) \in \Lambda$ and every point of $\Lambda$ is $P$ of a point of $\Lambda$, the orbit of each point of $K$ runs through the segments $\{\phi_s(P^jz)\}$, $j \in \Z$, and stays in $K$. For $z \in \Lambda$ let $t_j(z) = \sum_{0 \le i < j}\tau(P^iz)$ be its $j$-th return time; its forward orbit meets $\Sigma_E$ exactly at these times, because $P$ is the first-return map. $\tau$ is continuous and positive on the compact set $\Lambda$, so $\tau_{\min} = \min_\Lambda\tau > 0$ (there is no equilibrium on $M_E$: the critical values of $H$ are $-3, -1, 1, 3$, Lemma~\ref{lem:levels}). Fix $0 < \eta < \tau_{\min}/2$.
+
+(a) The map $\Psi(z, \rho) = \phi_\rho(z)$ on $\Lambda \times [-\eta, \eta]$ is injective: if $\phi_\rho(z) = \phi_{\rho'}(z')$ with $\rho > \rho'$, then $z' = \phi_{\rho - \rho'}(z) \in \Sigma_E$ with $0 < \rho - \rho' < \tau_{\min} \le \tau(z)$, an earlier return; so $\rho = \rho'$ and $z = z'$. Its image lies in $K$ (for $\rho < 0$ write $z = P(z_{-1})$, $z_{-1} \in \Lambda$, and $\phi_\rho(z) = \phi_{\tau(z_{-1}) + \rho}(z_{-1})$). Being a continuous injection of a compact space, $\Psi$ is a homeomorphism onto its image $K_\eta$, and $\Psi^{-1}$ is uniformly continuous: for every $\epsilon > 0$ there is $\delta_1(\epsilon) > 0$ such that $d(\Psi(z, \rho), \Psi(z', \rho')) < \delta_1(\epsilon)$ implies $d(z, z') < \epsilon$.
+
+(b) The set $K' = \{\phi_s(z) : z \in \Lambda,\ \eta \le s \le \tau(z) - \eta\}$ is compact and disjoint from $\Lambda$ (a point of $\Lambda \subset \Sigma_E$ equal to $\phi_s(z)$ with $0 < s < \tau(z)$ would be an earlier return), so $\delta_2 = \operatorname{dist}(\Lambda, K') > 0$. Every point of $K$ lies in $K_\eta \cup K'$ (for $\tau(z) - \eta < s \le \tau(z)$, $\phi_s(z) = \phi_{s - \tau(z)}(Pz)$). Hence a point $k \in K$ with $\operatorname{dist}(k, \Lambda) < \delta_2$ is $\Psi(z, \rho)$ with $z \in \Lambda$ and $|\rho| < \eta$ (if $|\rho| = \eta$ then $k \in K'$ as well).
+
+(c) Let $\epsilon > 0$, $\delta = \min(\delta_1(\epsilon), \delta_2)$, and $x, y \in \Lambda$ with $d(\phi_sx, \phi_sy) < \delta$ for all $s \in [0, T]$. We show by induction on $j$ that for every $j$ with $t_j(x) \le T$: $|t_j(y) - t_j(x)| < \eta$ and $d(P^jx, P^jy) < \epsilon$. For $j = 0$ this holds since $d(x, y) < \delta \le \delta_1(\epsilon) \le \epsilon$ (we may take $\delta_1(\epsilon) \le \epsilon$). Suppose it holds for $j$, and let $u = t_{j+1}(x) \le T$. Since $\phi_u(x) = P^{j+1}x \in \Lambda$ and $d(\phi_uy, \phi_ux) < \delta_2$, (b) gives $\phi_u(y) = \Psi(z'', \sigma)$ with $z'' \in \Lambda$, $|\sigma| < \eta$; then $z'' = \phi_{u - \sigma}(y) \in \Sigma_E$ is a return of $y$, $z'' = P^iy$ with $t_i(y) = u - \sigma$. First, $i > j$: $t_i(y) > t_j(x) + \tau_{\min} - \eta > t_j(x) + \eta > t_j(y)$. Second, $i = j + 1$: otherwise the return $s^* = t_{j+1}(y)$ satisfies $t_j(y) + \tau_{\min} \le s^* \le t_i(y) - \tau_{\min} < u \le T$, so $d(\phi_{s^*}x, \phi_{s^*}y) < \delta_2$ with $\phi_{s^*}(y) = P^{j+1}y \in \Lambda$, and by (b) $\phi_{s^*}(x) = \Psi(z''', \rho)$, $|\rho| < \eta$, $z''' \in \Lambda$: a return of $x$ at the time $s^* - \rho$, which lies strictly between $t_j(x)$ and $t_{j+1}(x)$ (it is $> t_j(x) - \eta + \tau_{\min} - \eta > t_j(x)$ and $< u - \sigma - \tau_{\min} + \eta < u$, since $2\eta < \tau_{\min}$), impossible for consecutive returns. So $t_{j+1}(y) = u - \sigma$, and $d(\Psi(P^{j+1}x, 0), \Psi(P^{j+1}y, \sigma)) = d(\phi_ux, \phi_uy) < \delta_1(\epsilon)$ gives $d(P^{j+1}x, P^{j+1}y) < \epsilon$.
+
+(d) Since $t_j(x) \le j\tau_{\max}$, (c) with $T = (n - 1)\tau_{\max}$ shows: if $x, y \in \Lambda$ have $d(P^jx, P^jy) \ge \epsilon$ for some $j < n$, then $d(\phi_sx, \phi_sy) \ge \delta$ for some $s \in [0, (n-1)\tau_{\max}]$. So an $(n, \epsilon)$-separated set of $P|_\Lambda$ is $((n-1)\tau_{\max}, \delta)$-separated for the flow on $K$, and $M_{(n-1)\tau_{\max}}(\phi|_K, \delta) \ge s_n(P|_\Lambda, \epsilon)$. Hence $\limsup_T\frac1T\log M_T(\phi|_K, \delta) \ge \frac{1}{\tau_{\max}}\limsup_n\frac1n\log s_n(P|_\Lambda, \epsilon)$ (as $n/(n-1) \to 1$). The left side is non-increasing in $\delta$ and tends to $h(\phi|_K)$, so $h(\phi|_K) \ge \frac{1}{\tau_{\max}}\limsup_n\frac1n\log s_n(P|_\Lambda, \epsilon)$ for every $\epsilon > 0$, and letting $\epsilon \to 0$ gives $h(\phi|_K) \ge \htop(P|_\Lambda)/\tau_{\max}$.
+
+(e) By uniform continuity of $(k, \theta) \mapsto \phi_\theta(k)$ on the compact set $K \times [0, 1]$, for every $\delta > 0$ there is $\delta' > 0$ such that $d(a, b) < \delta'$ implies $d(\phi_\theta a, \phi_\theta b) < \delta$ for all $\theta \in [0, 1]$. If $d(\phi_sx, \phi_sy) \ge \delta$ with $s = k + \theta$, $k$ an integer, $0 \le k \le T$, $\theta \in [0, 1)$, then $d(\phi_kx, \phi_ky) \ge \delta'$. So a $(T, \delta)$-separated set of the flow is $(\lfloor T\rfloor + 1, \delta')$-separated for $\phi_1$, $s_{\lfloor T \rfloor + 1}(\phi_1|_K, \delta') \ge M_T(\phi|_K, \delta)$, and $\htop(\phi_1|_K) \ge h(\phi|_K)$. Finally a separated set of $\phi_1|_K$ is separated for $\phi_1$ on $M_E \supset K$.
+\end{proof}
+
+\begin{remark}
+With Abramov's formula for a flow under a roof function \cite{abramov1959} (stated in \cite[Sect.~2]{kt2021}) and the variational principle one obtains the bound with $\tau_{\max}$ replaced by the mean return time of an invariant measure of $P|_\Lambda$ with entropy at least $\log r$ (a lift of the Parry measure through the factor map onto $\Sigma_A$; a measure of maximal entropy is not known to exist, since $\Lambda$ is not shown to be expansive), which is at least as good; the proofs here do not use it.
+\end{remark}
+
+\subsection{Topological horseshoes and entropy: proof of Corollary~\ref{cor:horseshoe}}
+
+Theorem~\ref{thm:horseshoe} (proved in Sect.~\ref{sec:hs} from the covering relations, Proposition~\ref{prop:sft} and Lemma~\ref{lem:flowent}) gives, at each of the three energies, the compact invariant set, the semiconjugacy onto a subshift of finite type with $\log r_m > 0$, and the bound for the flow. \qed
+
+\begin{remark}[Smale's theorem and its later forms]\label{rem:smale}
+Smale's homoclinic theorem \cite[Thm.~B, p.~64]{smale1965} reads: ``If $D(M)$ denotes the space of diffeomorphisms of $M$ with the $C^r$ topology, $r > 0$, there is a subset $D_0$ which is the countable intersection of open dense sets of $D$ with the following property. If $x \in M$ is a homoclinic point of $T \in D_0$, then there is a Cantor set $\Omega \subset M$, $x \in \Omega$, and $p$ such that $T^p\Omega = \Omega$ and $T^p$ restricted to $\Omega$ is equivalent to a shift automorphism of symbolic dynamics.'' It is stated for a residual set $D_0$ of diffeomorphisms of a compact manifold, and Smale's proof (Sect.~9, p.~78) first assumes, ``without loss of generality'', that the periodic points satisfy ``Sternberg's non-degeneracy condition'', so that ``in the neighborhood of a point of $M$ of period $p$, there will exist local coordinates in which $T^p$ is linear''. For an area-preserving map this condition fails at every hyperbolic periodic point ($\lambda_1\lambda_2 = 1$ gives the resonances $\lambda_1 = \lambda_1^{k+1}\lambda_2^{k}$, $k \ge 1$), so Smale's own 1965 proof does not apply to our return map as written. Later proofs of the Smale--Birkhoff homoclinic theorem do without the linearization and apply to any $C^1$ diffeomorphism near a transversal homoclinic orbit, with no non-resonance condition, and locally, so that a map defined only on an open set is no obstacle: for example \cite[Thm.~6.5.5]{kh1995}, \cite[Ch.~2]{pt1993} and, for planar maps, \cite{moser1973}. We have not read these statements here and do not use them. With Theorems~\ref{thm:main} and~\ref{thm:interval} they would give a hyperbolic horseshoe for an iterate of the return map, and positive topological entropy, at the three energies and at every energy of $[-10^{-10}, 10^{-10}]$. The paper's route is the direct one: the covering relations of Theorem~\ref{thm:horseshoe} give topological horseshoes with explicit entropy bounds at the three energies, from what is written out and computed here.
+\end{remark}
+
+\subsection{No analytic integral on the level: proof of Corollary~\ref{cor:level}}\label{sec:kozlov}
+
+We first prove the local $\lambda$-lemma that the argument needs, from the same cone conditions. Let $\hat G = A^{-1}DG\,A$. Since $G$ is linear and $Gp_0 = p_0$ ($p_0$ lies on $\theta_2 = 0$), $G(p_0 + A\zeta) = p_0 + A\hat G\zeta$, and $W^s_{\mathrm{loc}}(p) = G(W^u_{\mathrm{loc}}(p))$ is $\hat G(\operatorname{gr}w)$ in local coordinates.
+
+\begin{lemma}[a local $\lambda$-lemma; proved]\label{lem:lambda}
+Assume the hypotheses of Lemma~\ref{lem:graph}, with $p$ symmetric and $p_0 \in \Fix(G)$. Let $D'$ be a $C^1$ arc through a point $s \in W^s_{\mathrm{loc}}(p)$, transversal there to $W^s_{\mathrm{loc}}(p)$. Then for every $\varepsilon > 0$ there is $n_0$ such that for every $n \ge n_0$ the image $f^n(D')$ contains an arc $\{p_0 + A(x, h_n(x)) : |x| \le a\}$ with $h_n$ of class $C^1$, $\max|h_n - w| < \varepsilon$ and $\max|h_n' - w'| < \varepsilon$.
+\end{lemma}
+
+\begin{proof}
+We work in local coordinates, $W = \operatorname{gr}w$, $W^s = \hat G(W)$, $s = \hat G\zeta^s$ with $\zeta^s \in W$, and $e = a(\mu_h - 1)/(\mu_h + 1)$.
+
+\emph{Step 1: the orbit of $s$.} By Lemma~\ref{lem:rev}, $\hat f(\hat G\zeta') = \hat G\hat f^{-1}(\zeta')$ whenever $\hat f^{-1}(\zeta')$ is defined; so, by Lemma~\ref{lem:graph}(d), $s_n = \hat f^n(s) = \hat G\hat f^{-n}(\zeta^s)$ is defined for all $n \ge 0$, $\hat f^n$ is a diffeomorphism near $s$ that maps $W^s$ near $s$ into $W^s$, and $s_n \to \hat G\zeta_p = \zeta_p$. By (C3) and (C4), $\zeta_p \in \operatorname{int}N_0$ and $|x_p| < e$, so there are a neighbourhood $U$ of $\zeta_p$ with $U \subset \operatorname{int}N_0 \cap \{|x| < e\}$ and an $n_1$ with $s_n \in U$ for all $n \ge n_1$. Replacing $D'$ and $s$ by a sub-arc of $\hat f^{n_1}(D')$ and $s_{n_1}$ (still transversal to $W^s$ there), we may assume $s_n \in U$ for all $n \ge 0$.
+
+\emph{Step 2: the tangent enters the cone.} Let $v \ne 0$ be tangent to $D'$ at $s$ and $v^s = \hat G(1, w'(\zeta^s_x))$, tangent to $W^s$ at $s$. Choose $v^u \in C_u$ not parallel to $v^s$; as $v$ is not parallel to $v^s$, $v = c\,v^u + c'v^s$ with $c \ne 0$. First, $D\hat f^n(s)v^s = \hat G\,D\hat f^{-n}(\zeta^s)(1, w'(\zeta^s_x))$ is $\hat G$ applied to a tangent vector of $W$ whose $x$-component has modulus at most $\mu^{-n}$ (by Lemma~\ref{lem:graph}(a), $\varphi_w^{-1}$ has Lipschitz constant $\mu^{-1}$), so $|D\hat f^n(s)v^s| \le C\mu^{-n}$ for a constant $C$. Second, by (C1) at $s_0, \ldots, s_{n-1} \in N_0$, $D\hat f^n(s)v^u = (X_n, Y_n)$ with $|X_n| \ge \mu^n|v^u_x|$, $v^u_x \ne 0$, and $|Y_n| \le \beta|X_n|$ for $n \ge 1$, where $\beta < \alpha$ is the largest ratio $|w|/|u|$ in (C1) over $\zeta \in N_0$ and $|t| \le \alpha$ (it is attained, by continuity and compactness, and is less than $\alpha$ by (C1)). So $D\hat f^n(s)v = c(X_n, Y_n) + O(\mu^{-n})$ has slope of modulus at most $(\beta|c||X_n| + C'\mu^{-n})/(|c||X_n| - C'\mu^{-n}) \to \beta < \alpha$, and for some $n_2$ it lies in the interior of $C_u$. Replacing $D'$ and $s$ by a sub-arc of $\hat f^{n_2}(D')$ and $s_{n_2}$, we may assume that the tangent of $D'$ at $s$ lies in the interior of $C_u$.
+
+\emph{Step 3: growth to full width.} By continuity of the tangent, a sub-arc $D_0 \subset D' \cap N_0$ through $s$ is the graph of a $C^1$ function with slopes in $[-\alpha, \alpha]$ over an interval $J_0 \subset [-a, a]$ with $s_x$ in its interior. Suppose that $D_n \subset \hat f^n(D')$ is such a graph over $J_n \subset [-a, a]$, contained in $N_0$ and through $s_n$. The argument of Lemma~\ref{lem:graph}(a), with $J_n$ in place of $[-a, a]$, shows that $\hat f(D_n)$ is the graph of a $C^1$ function with slopes in $(-\alpha, \alpha)$ over an interval $\varphi(J_n)$ that contains $(s_{n+1})_x$, and that each end of $\varphi(J_n)$ is the image of an end of $J_n$ and at least $\mu_h$ times as far from $(s_{n+1})_x$ as that end is from $(s_n)_x$. Let $D_{n+1}$ be its part over $J_{n+1} = \varphi(J_n) \cap [-a, a]$; $D_{n+1} \subset N_0$ by (C2), and $s_{n+1} \in D_{n+1}$. If an end of $J_n$ is an end of $[-a, a]$, it is at distance at least $a - |(s_n)_x| > a - e$ from $(s_n)_x$, so its image is at distance greater than $\mu_h(a - e) = a + e > a + |(s_{n+1})_x|$ from $(s_{n+1})_x$, and lies outside $[-a, a]$. So an end of $J_{n+1}$ that lies inside $(-a, a)$ is the image of an end of $J_n$ inside $(-a, a)$, and its distance from $(s_{n+1})_x$ is at least $\mu_h$ times that of the latter from $(s_n)_x$. These distances are at most $2a$ and $\mu_h > 1$, so after finitely many steps $J_n = [-a, a]$, and from then on $D_n = \operatorname{gr}h_n$ with $h_n \in \mathcal L$ of class $C^1$ and $h_{n+1} = \mathcal H h_n$. By Lemma~\ref{lem:graph}(c), with the fixed point $w$ of (d), $h_n \to w$ and $h_n' \to w'$ uniformly.
+\end{proof}
+
+This is the case of Palis's $\lambda$-lemma \cite[Lemma~1.1, p.~387]{palis1969} that the argument needs. Palis states it for diffeomorphisms of a compact manifold; $f$ is defined only on an open subset of the plane, so we prove the local case from the certified cone conditions instead of applying his statement.
+
+The proof is Kozlov's argument \cite[Ch.~V, \S2, proof of Thm.~3]{kozlov1983}, written out for our setting. Let $F$ be real-analytic near $M_E$ and invariant under the flow, and let $g = F|_{\Sigma_E}$, a real-analytic function of $(\theta_2, p_2)$ on $A_E$ (Lemma~\ref{lem:levels}) with $g \circ P = g$ where $P$ is defined; as $g$ is $2\pi$-periodic in $\theta_2$, also $g \circ f = g$ in the lift. Let $c = g(p)$. If $z' \in W^u(p)$, then $g(z') = g(P^{-n}z') \to g(p)$, so $g = c$ on $W^u(p)$, and likewise on $W^s(p)$.
+
+Let $z \in W^u_{\mathrm{loc}}(p)$ be the point of Lemma~\ref{lem:cross} with $f^k(z) = q$. As $Gq = q$ in the lift ($m = 0$, Sect.~\ref{sec:computation}), Lemma~\ref{lem:rev} gives $f^k(q) = Gf^{-k}(q) = Gz$, so $f^{2k}$ is defined at $z$ and, its domain being open, on a short sub-arc $\Gamma' \subset W^u_{\mathrm{loc}}(p)$ around $z$. Let $D = f^k(\Gamma')$, a compact $C^1$ arc in $W^u(p)$ through $q$ that does not contain $p$. By Lemma~\ref{lem:cross}, $D$ is transversal at $q$ to the arc $G(D) \subset W^s(p)$, and by Lemma~\ref{lem:rev} $f^k$ maps $G(D)$ onto $G(f^{-k}(D)) = G(\Gamma') \subset W^s_{\mathrm{loc}}(p)$. So $D' = f^k(D)$ is a $C^1$ arc through $f^k(q) = Gz \in W^s_{\mathrm{loc}}(p)$, transversal there to $W^s_{\mathrm{loc}}(p)$. In the local coordinates of Lemma~\ref{lem:graph}, fix $x^\flat \ne x_p$ in $(-a, a)$ and, for $x$ in a small interval $I$ around $x^\flat$ not containing $x_p$, the vertical segments $\sigma_x = \{(x, y) : |y - w(x)| \le \epsilon\}$, which are real-analytic arcs crossing the graph of $w$ transversally at $(x, w(x))$. By Lemma~\ref{lem:lambda}, applied to $D'$, for all large $n$ the image $f^{k+n}(D)$ contains an arc $D_n$, the graph of $h_n$ over $[-a, a]$, and $h_n \to w$ uniformly. So $D_n$ meets $\sigma_x$ at a point $z_n(x) \to (x, w(x))$. Moreover $z_n(x) \ne (x, w(x))$ for large $n$: otherwise $f^{-(k+n)}(x, w(x)) \in D$ for infinitely many $n$, while $f^{-(k+n)}(x, w(x)) \to p$ by Lemma~\ref{lem:graph}(d), and $p$ is not in the compact arc $D$. Hence the $z_n(x)$ take infinitely many values, all different from $(x, w(x))$ for large $n$, and they converge to it. Since $z_n(x) \in W^u(p)$, $g(z_n(x)) = c$. So the real-analytic function $y \mapsto g(x, y) - c$ on the segment $\sigma_x$ has zeros accumulating at $w(x)$ and vanishes identically. Hence $g = c$ on the open set $\bigcup_{x \in I}\sigma_x$, $F = c$ on its flow-box, which is open in $M_E$, and $F = c$ on $M_E$ because $M_E$ is a connected real-analytic manifold (Lemma~\ref{lem:levels}). \qed
+
+\subsection{No global analytic integral: proof of Corollary~\ref{cor:global}}
+
+$H$ is proper and $M_0 \subset U$ is compact, so there is $\delta > 0$ with $M_E \subset U$ for $|E| < \delta$. Let $I = (-\min(\delta, 10^{-10}), \min(\delta, 10^{-10}))$. By Theorem~\ref{thm:interval} and Corollary~\ref{cor:level}, $F$ is constant on each $M_E$, $E \in I$. So on the open set $H^{-1}(I)$ the differential of $F$ vanishes on the tangent spaces of the level sets, $dF = \varphi\,dH$ there (with $dH \ne 0$ by Lemma~\ref{lem:levels}), and $dF \wedge dH = 0$ on $H^{-1}(I)$. The $2$-form $dF \wedge dH$ is real-analytic on the connected set $U$ and vanishes on a non-empty open subset, hence everywhere. \qed
+
+\begin{remark}
+Theorem~\ref{thm:interval} replaces the standard persistence argument (a transversal homoclinic point of an analytic family persists for nearby parameters) by a computation, so that Corollary~\ref{cor:global} rests only on what is verified.
+\end{remark}
+
+\section{Explicit topological horseshoes}\label{sec:hs}
+
+\subsection{Covering relations}
+
+We use the covering relations of Zgliczy\'nski and Gidea \cite{zg2004} with one expanding direction. An h-set in $\R^2$ here is a parallelogram $X = c_X + B_X[-1, 1]^2$ with an invertible matrix $B_X$ whose first column spans the nominally expanding direction; its normalized coordinates are $(x, y) = B_X^{-1}(z - c_X)$, its left and right edges are $X^{le} = \{x = -1\}$ and $X^{re} = \{x = 1\}$, $X^+ = \{|x| \le 1, |y| = 1\}$, and $S(X)^l = \{x < -1\}$, $S(X)^r = \{x > 1\}$. For a continuous map $h$ on $X$, \cite[Thm.~16]{zg2004} states: if for some $|q_0| \le 1$
+\begin{enumerate}
+\item[(i)] $h(\{(x, q_0) : |x| \le 1\}) \subset \operatorname{int}(S(Y)^l \cup Y \cup S(Y)^r)$ (their (76)),
+\item[(ii)] $h(X) \cap Y^+ = \emptyset$ (their (77)), and
+\item[(iii)] either $h(X^{le}) \subset S(Y)^l$ and $h(X^{re}) \subset S(Y)^r$, or $h(X^{le}) \subset S(Y)^r$ and $h(X^{re}) \subset S(Y)^l$ (their (78), (79)),
+\end{enumerate}
+then $X$ $h$-covers $Y$ with degree $\pm1$ (their Definition~6), written $X \overset{h}{\Longrightarrow} Y$. Their Theorem~9 states that for a closed chain $X_0 \overset{h_1}{\Longrightarrow} X_1 \Rightarrow \cdots \overset{h_k}{\Longrightarrow} X_k = X_0$ of such relations there is $x \in \operatorname{int}X_0$ with $h_i \circ \cdots \circ h_1(x) \in \operatorname{int}X_i$ for $1 \le i \le k$ and $h_k \circ \cdots \circ h_1(x) = x$.
+
+\subsection{From covering relations to entropy}
+
+\begin{proposition}[proved]\label{prop:sft}
+Let $X_1, \ldots, X_n$ be h-sets in the lift whose projections to the cylinder are pairwise disjoint, and let $\mathcal G$ be a strongly connected directed graph on $\{1, \ldots, n\}$ with adjacency matrix $A$, such that for every edge $i \to j$ there is an integer $k_{ij}$ with $X_i \overset{h_{ij}}{\Longrightarrow} X_j$ for $h_{ij} = T^{k_{ij}} \circ P$, where $P$ is continuous and injective on a neighbourhood of each $X_i$. Let $\Lambda$ be the set of points of $\bigcup_i \pi(X_i)$, with $\pi$ the projection to the cylinder, that have a full $P$-orbit in $\bigcup_i\pi(X_i)$ visiting the sets along edges of $\mathcal G$. Then $\Lambda$ is compact and $P$-invariant, $P|_\Lambda$ is a homeomorphism, the itinerary map $\iota: \Lambda \to \Sigma_A$ is a continuous surjection with $\iota \circ P = s \circ \iota$ ($s$ the shift), and if $Av \ge rv$ for some $r > 0$ and a vector $v > 0$, then $\htop(P|_\Lambda) \ge \log r$.
+\end{proposition}
+
+\begin{proof}
+Write $X_i$ also for $\pi(X_i)$ and let $\delta > 0$ be the smallest distance between two of these compact, pairwise disjoint sets. \emph{Periodic orbits.} For a closed path $i_0 \to i_1 \to \cdots \to i_k = i_0$ in $\mathcal G$, Theorem~9 of \cite{zg2004} applied to the relations $X_{i_{j-1}} \Rightarrow X_{i_j}$ gives a point whose $h$-orbit, hence (projected) whose $P$-orbit, is periodic and visits the sets in this order. \emph{Every bi-infinite path is realized.} Let $(s_j)_{j \in \Z}$ be a path. Since $\mathcal G$ is strongly connected, for each $n$ the segment $s_{-n}, \ldots, s_n$ is part of a closed path, which gives a periodic orbit and points $z^{(n)}_j \in X_{s_j}$, $|j| \le n$, with $P(z^{(n)}_j) = z^{(n)}_{j+1}$. By compactness and a diagonal argument, a subsequence has $z^{(n)}_j \to z_j \in X_{s_j}$ for every $j$, and by continuity $P(z_j) = z_{j+1}$. So $z_0 \in \Lambda$ with itinerary $(s_j)$. \emph{Compactness and continuity.} Full orbits in $\bigcup X_i$ are unique given their point at time $0$, by injectivity. If $z^{(n)} \in \Lambda$ converge to $z$, the same diagonal argument applied to their orbits (whose itineraries converge coordinatewise along a subsequence, the symbols being finitely many) gives a full orbit of $z$ along edges of $\mathcal G$; so $\Lambda$ is closed, hence compact. $P(\Lambda) = \Lambda$, and $P|_\Lambda$ is a continuous bijection of a compact space, a homeomorphism. $\iota$ is continuous because each $X_i \cap \Lambda$ is open and closed in $\Lambda$, and it is onto by the previous step. \emph{Entropy.} Since $A \ge 0$, $A^{n-1}v \ge r^{n-1}v$, so the number of paths with $n$ vertices is $\mathbf 1^{\mathsf T}A^{n-1}\mathbf 1 \ge \mathbf 1^{\mathsf T}A^{n-1}v/\max v \ge r^{n-1}\,\mathbf 1^{\mathsf T}v/\max v \ge r^{n-1}$. For each such path choose a point of $\Lambda$ whose itinerary begins with it. Two of these points with different paths are, at some time $j < n$, in different sets, at distance at least $\delta$: they are $(n, \delta)$-separated. By Bowen's definition of topological entropy through separated sets \cite[Sect.~7.2]{walters1982}, $\htop(P|_\Lambda) \ge \limsup_n \frac1n\log r^{n-1} = \log r$.
+\end{proof}
+
+\subsection{The computation and the proof of Theorem~\ref{thm:horseshoe}}
+
+The h-sets (configurations \texttt{horseshoe\_E0.cfg}, \texttt{horseshoe\_Ehalf.cfg}, \texttt{horseshoe\_Eminushalf.cfg}) were designed numerically by \texttt{horseshoe\_\allowbreak design.cpp}. At $E = 0$: a pseudo-orbit along the homoclinic loop, built forward from the point $P^{-9}(q_0)$ of the local unstable manifold for nine returns and completed by the reversibility, $z_{18-i} = Gz_i$, then continued along the stable manifold towards $p_0$ for three returns; expanding directions pushed forward by $DP$ and contracting directions $s_i = DG\,u_{18-i}$; widths chosen so that each image overshoots the next set by a factor of about $3$, and thicknesses three times the sampled image thickness but not below $10^{-8}$. None of this design is part of the proof. The set $N$ is a parallelogram of half-sizes $10^{-5}$ along $v_u$ and $2.5\cdot10^{-7}$ along $v_s$ around $p_0$. At $E = \pm1/2$ the same construction starts from $P^{-11}(q_E)$ (eleven returns, the $k$ of Table~\ref{tab:comp}), which gives $27$ sets; $N$ has half-sizes $5.5\cdot10^{-6}$ and $2.6\cdot10^{-7}$ at $E = 1/2$, and $7.5\cdot10^{-6}$ and $4\cdot10^{-7}$ at $E = -1/2$. At $E = -1/2$, where $|\lambda_u| = 2.885$ is below $3$, the factor-$3$ margins would make the widths grow backwards and the thicknesses grow forwards along the chain, so the design uses an overshoot factor $2.8$ and a thickness factor $2$. The design commands are in \texttt{code/designs.sh}, which regenerates the three configurations into a temporary folder and compares them with the committed files (byte for byte on the machine used here); \texttt{code/run\_all.sh} checks the committed files, so a different floating-point platform cannot change what is verified. A first design at $E = 1/2$ with thickness $1.3\cdot10^{-7}$ for $N$ failed the last relation, and a first design at $E = -1/2$ with the factor-$3$ margins failed the last relation and the disjointness of $M_0$ and $M_{25}$; they are not used.
+
+The program \texttt{horseshoe\_check.cpp} verifies, for each relation $N \Rightarrow N$, $N \Rightarrow M_0$, $M_i \Rightarrow M_{i+1}$ ($0 \le i \le m-2$) and $M_{m-1} \Rightarrow N$ ($24$ relations at $E = 0$, $28$ at $E = \pm1/2$), with the map $T^{k} \circ P$ for the integer $k$ in the configuration: condition (i) with $q_0 = 0$, in the stronger form that the image of the midline has $|y| < 1$ in the normalized coordinates of the target; condition (ii) on a cover of the whole set; and condition (iii). Each covering uses $16$ pieces per edge and per midline and $64$ pieces for the set, bisected up to depth $4$ where the check does not resolve, and the mean-value form of Sect.~\ref{sec:computation} with CAPD's $C^0$ enclosure at a centre point and $C^1$ enclosure over the piece; every piece must have an enclosed first return, which also makes $P$ defined and continuous on every set. The program also verifies that the sets are pairwise disjoint on the cylinder, bounds the return time over all of them, builds the graph from the relations it has verified (not from the configuration), and checks $Av \ge r_cv$ for a numerical Perron vector $v > 0$, with $r_c$ the lower bound of $\min_i (Av)_i/v_i$ evaluated in interval arithmetic. Bounds are printed rounded in the safe direction. The reports are \texttt{data/horseshoe\_E0.txt}, \texttt{data/horseshoe\_Ehalf.txt} and \texttt{data/horseshoe\_Eminushalf.txt}: at each energy every relation covers, the sets are pairwise disjoint, and all the checks pass (at $E = 0$ the largest value of $|y|$ on a midline image is $0.503$, for $M_{21} \Rightarrow N$). The return-time bounds printed are $7.355385354$, $6.970677596$ and $4.249825826$; the runs took about $12$, $12$ and $13$ minutes on two threads.
+
+\begin{proof}[Proof of Theorem~\ref{thm:horseshoe}]
+At each energy the verified relations are covering relations by \cite[Thm.~16]{zg2004}; the graph is strongly connected (every vertex lies on the loop $N \to M_0 \to \cdots \to M_{m-1} \to N$), and the sets are pairwise disjoint on the cylinder. Let $r = r_m > 1$ be the positive root of $r^{m+1} = r^m + 1$ (there is exactly one, by Descartes' rule of signs): $r_{22} = 1.10695024501688\ldots$, $\log r_{22} = 0.1016087069\ldots$, and $r_{26} = 1.09483270790531\ldots$, $\log r_{26} = 0.0906015734\ldots$. The vector $v$ with $v_N = 1$ and $v_{M_i} = r^{-(m - i)}$ ($0 \le i \le m - 1$) is positive and satisfies $Av = rv$ exactly: $(Av)_{M_i} = v_{M_{i+1}} = rv_{M_i}$ for $i \le m - 2$, $(Av)_{M_{m-1}} = v_N = rv_{M_{m-1}}$, and $(Av)_N = v_N + v_{M_0} = 1 + r^{-m} = r$. Proposition~\ref{prop:sft} gives $\Lambda_E$, the semiconjugacy and $\htop(P_E|_{\Lambda_E}) \ge \log r_m$. (The program's bounds $r_c$, computed from the relations it verified, agree: $r_c \ge 1.106950245015$ at $E = 0$ and $r_c \ge 1.094832707903$ at $E = \pm1/2$.) For the flow: $\Lambda_E$ is compact, $P_E(\Lambda_E) = \Lambda_E$ and $P_E|_{\Lambda_E}$ is continuous and injective (Proposition~\ref{prop:sft}); $\tau$ is continuous on the sets, on which every piece has an enclosed transversal first return; and $\max_{\Lambda_E}\tau \le \tau_E$, because the program's return-time bound is the largest upper end of CAPD's return-time enclosures over pieces that cover every one of the sets (each set is the source of a verified relation). Lemma~\ref{lem:flowent} gives $\htop(\phi_1) \ge \log r_m/\tau_E$, which is $> 0.0138141$, $> 0.0129975$ and $> 0.0213188$ at $E = 0$, $1/2$ and $-1/2$.
+\end{proof}
+
+\section{Controls and cross-checks}\label{sec:controls}
+
+\paragraph{Negative controls (computer-assisted runs that must fail, and do).} \texttt{run\_all.sh} runs nine controls; their reports are in \texttt{data/}. The first four are coarse: they show that a check is evaluated and can fail, not that it fails for the reason it is meant to test. The five near-miss controls perturb one quantity just past what the corresponding condition allows, and \texttt{run\_all.sh} checks in each report that the failure is the intended one and, where stated, the only one.
+\begin{itemize}
+\item \emph{The integrable limit} (coarse, but meaningful for (C6)). Two uncoupled pendulums, $H_0 = p_1^2/4 + p_2^2/2 - 2\cos\theta_1 - \cos\theta_2$, at $E = 0$ (\texttt{control\_uncoupled\_E0}). Stages 1 and 2 pass: the upright lower pendulum, $\theta_2 = \pi$, $p_2 = 0$, is a hyperbolic fixed point of the return map (trace about $848.1$). Stage 3 fails, as it must: the unstable manifold is the separatrix $p_2 = 2|\cos(\theta_2/2)|$, which meets $\Fix(G)$ at $\theta_2 = 2\pi$ with a horizontal tangent, the $-1$ eigendirection of $DG$, where it coincides with the stable manifold; the certified slope interval still contains $0$ after $16$ bisections. The method does not certify a transversal crossing in an integrable system.
+\item \emph{Mutations of the configuration} (coarse). Moving the segment $[x_1, x_2]$ so that both edge images lie on the same side of the line fails (C5) (\texttt{control\_mut\_segment}); narrowing the cone to $\alpha = 10^{-4}$, below the largest ratio $|w|/|u| \approx 2.92\cdot10^{-4}$ measured with that cone, fails (C1) (\texttt{control\_mut\_alpha}).
+\item \emph{Covering relations that must not hold} (coarse). A skipped step $M_0 \Rightarrow M_2$, a backward step $M_2 \Rightarrow M_1$ and $M_5 \Rightarrow M_5$ all fail (\texttt{control\_horseshoe\_wrong}); their images land far from their targets, so they would fail whatever the details of conditions (i)--(iii).
+\item \emph{Near-miss covering relations}, from the true relation $M_1 \Rightarrow M_2$ at $E = 0$. With the contracting column of the target shrunk tenfold, below the thickness of the image, only condition (ii) fails: the edges are still mapped across and the midline stays inside, but $24$ pieces of the image meet $Y^+$ (\texttt{control\_hs\_thin}). With the expanding column of the target enlarged tenfold, beyond the stretch of the image, only condition (iii) fails (\texttt{control\_hs\_wide}). With a third h-set that overlaps $M_1$ (moved by half its expanding column), the relation still holds and only the disjointness test fails (\texttt{control\_hs\_overlap}).
+\item \emph{Near misses of (C4).} With the columns of $A$ exchanged and $N_0$ a square of half-side $b$, so that graphs are taken over the stable direction on a box small enough for $[M]_{11}$ to exclude $0$, (C4) fails for the real reason: $\mu_h \ge 0.2831$, about $|\lambda_s|$, and $\kappa \le 3.54$, vertical expansion instead of contraction (\texttt{control\_cones\_swap}). With $N_0$ centred at $p_0 + 0.6a\,v_u$, so that $|x_p| \approx 0.6a = 1.5\cdot10^{-5}$, only the last inequality of (C4) fails, against $a(\mu_h - 1)/(\mu_h + 1) \ge 1.394\cdot10^{-5}$ (\texttt{control\_cones\_shift}).
+\end{itemize}
+
+\paragraph{An independent cross-check of the fixed point (computer-assisted).} The folder \texttt{code/crosscheck} contains a rigorous Taylor integrator in ball arithmetic (Arb, through python-flint), with Hamilton's equations derived again from \eqref{eq:ham} by SymPy, validated step enclosures with Lagrange remainders, rigorous detection of the upward crossings of $\theta_1 = 0$ and the variational equation, written without CAPD. At $E = 0$ it verifies the Krawczyk condition on a box of radius $10^{-17}$ (\texttt{kraw3.py}): the fixed point is on $\Fix(G)$, lies inside the enclosure of Theorem~\ref{thm:main}, has trace $-3.808656368 \pm 8.3\cdot10^{-10}$, determinant $1 \pm 1.2\cdot10^{-9}$ and $\lambda_u = -3.52496566 \pm 2.5\cdot10^{-9}$. At $E = \pm1/2$ it encloses, at the configured points, the return time, trace and multiplier (\texttt{otherE.py}), in agreement with Theorem~\ref{thm:main}; these are point evaluations, not a second proof.
+
+\paragraph{Numerical cross-check of the crossing (numerical).} With the same integrator used at high precision without error control (\texttt{edges\_nr.py}), the images after $9$ returns of the two edge points at $E = 0$ have $\theta_2 = 1.52049688\cdot10^{-3}$ and $-3.11657765\cdot10^{-3}$ (inside the certified intervals of Table~\ref{tab:comp}), the crossing is at $x = -1.88595114\cdot10^{-5}$ with $p_2 = 0.822148135$, and the slope of $W^u(p_0)$ there is $dp_2/d\theta_2 = -1.336202144$, inside the certified $[-6.2138, -0.5237]$.
+
+\paragraph{How the orbit was found (numerical).} \texttt{scan.cpp} finds symmetric periodic orbits by shooting along $\Fix(G)$; the orbit used is, at each energy, the symmetric fixed point of $P$ with the smallest multiplier found. \texttt{manifold.cpp} samples a fundamental domain of $W^u(p)$, iterates it and reports its crossings of $\Fix(G)$ with their slopes; at $E = 0$ the first crossing appears after $11$ returns from a distance $10^{-6}$, and the proof uses the same crossing two returns later on a fundamental domain farther out. Poincar\'e sections (\texttt{explore.cpp}) of $60$ random orbits of $400$ returns show a visible island at $E = -1/2$ and none at plot resolution at $E = 0$ and $E = 1/2$ (an exploration whose plots are not recorded).
+
+\section{Discussion}\label{sec:discussion}
+
+\paragraph{What is proved.} At the three energies and on an interval of energies around $0$, the classical double pendulum with equal masses and lengths has a hyperbolic periodic orbit with a transversal homoclinic orbit; hence no non-constant analytic invariant function on these levels, and no real-analytic first integral independent of the energy on any connected open set containing $M_0$. At $E = -1/2$, $0$ and $1/2$ it has topological horseshoes and positive topological entropy, with explicit bounds from covering relations; on the interval of energies no horseshoe is proved here (Remark~\ref{rem:smale}). The bounds are lower bounds from a single loop and are presumably far below the entropy of the flow, which we have not estimated numerically; nothing is claimed about the measure of the chaotic set, about energies other than those stated, or about ergodicity.
+
+\paragraph{Relation to Bolotin and Negrini.} Bolotin and Negrini \cite{bn1997} prove a variational criterion for non-integrability of analytic Lagrangian systems with two degrees of freedom on a torus or a cylinder, and apply it in their Section~10 to the double pendulum with arbitrary masses and lengths, near the energy level $h = \max V$ of the upright equilibrium ($E = 3$ in our units, far above our energies). We know this paper only from search snippets: we have not seen the printed paper, and read parts of its Sections~3 and~10 in the search-within snippets of the journal volume that are openly available. The following rests on that text, and the printed paper has to be read before the novelty stated here can be relied on. Their Theorem~10.1 is derived from the condition $2\pi\mu < 2d$ (p.~435), with $\mu^2 = 2g(m_1l_1^2 + m_2(l_1 - l_2)^2)((m_1 + m_2)l_1 + m_2l_2)$ (p.~434) and $2d = \frac{16}{3}m_2\sqrt g\,(\max\{l_1, l_2\})^{3/2}$ (p.~435); at $m_1 = m_2 = m$, $l_1 = l_2 = l$ it reads $2\pi\sqrt6 < 16/3$ in units of $m\sqrt g\,l^{3/2}$, that is $15.39 < 5.33$, false by a factor of about $2.9$. Squared, the condition is $9\pi^2(m_1l_1^2 + m_2(l_1 - l_2)^2)((m_1 + m_2)l_1 + m_2l_2) < 32m_2^2(\max\{l_1, l_2\})^3$, which at equal lengths requires $m_1/m_2 < 0.166$. Their Section~3 also asserts, in the setting of their criterion, that the double pendulum of their Section~10 has positive topological entropy (p.~420). So, on the reading available to us, neither their non-integrability nor their chaos covers the equal case, although their abstract criterion might, with sharper estimates, which they mention (``We can perform the estimates more carefully and obtain a better condition'', p.~435). The statement of Theorem~10.1 as rendered in the snippets begins with ``9m2'' where the derivation requires $9\pi^2$; if the printed statement differs from its derivation, only the printed page can tell, and our claim that global analytic non-integrability (Corollary~\ref{cor:global}) and chaos in the equal double pendulum had not been proved is conditional on this reading. The novelty of the results on the levels $-1/2 \le E \le 1/2$ (Theorems~\ref{thm:main}--\ref{thm:horseshoe}, Corollaries~\ref{cor:horseshoe} and~\ref{cor:level}) does not depend on it, since their results concern energies near $E = 3$.
+
+\paragraph{Relation to Ivanov's conjecture.} Ivanov \cite[p.~105]{ivanov1} conjectured that the double pendulum is non-integrable on every energy level for all non-degenerate masses, lengths and energies, and planned to cover the parameter space by numerically verified neighbourhoods together with asymptotic results near its boundary \cite{ivanov1, ivanov3, ivanov4}. At equal masses and lengths, Corollaries~\ref{cor:level} and~\ref{cor:global} give the real-analytic form of that statement on the levels treated here, with every computation in interval arithmetic.
+
+\paragraph{What is not proved.} Meromorphic (Liouville) non-integrability in the sense of Morales-Ruiz and Ramis \cite{mr1999} is not proved here: it concerns complex-analytic integrals on a neighbourhood of a complex phase curve and needs a particular solution along which the differential Galois group of the variational equation has a non-abelian identity component, which, as Stachowiak and Szumi\'nski \cite{ss2015} and Szumi\'nski and Kapitaniak \cite{sk2025} explain, is the obstacle for the classical double pendulum; Salnikov's numerical monodromy computation \cite{salnikov2013} has not, as far as we know, been made rigorous. Our Corollary~\ref{cor:global} concerns real-analytic integrals and is of a different nature. Only the stated energies are covered. The symmetric periodic orbit was followed numerically between $E = -1/2$ and $1/2$ (an exploration not recorded in \texttt{data/}), but the symmetric homoclinic point is not the same one at all three energies: at $E = 0$ and $1/2$ the crossing of Table~\ref{tab:comp} has $p_2 \approx 0.822$ and $0.824$, while at $E = -1/2$ it has $p_2 \approx -1.466$ and the edge images come in the opposite order, so at $E = -1/2$ the proof uses a different intersection of the same half of $W^u(p)$ with $\Fix(G)$, not the continuation of the points used at the other two energies. A proof on the whole band would need a cover of the energy interval by small intervals, each verified as in Sect.~\ref{sec:interval}, and a choice of homoclinic point along it.
+
+\paragraph{What the proof trusts.} The proof trusts CAPD's rigorous integrator and Poincar\'e map, the compiler and the floating-point rounding of the machine. Our sets start on the section, where CAPD's documentation says only that the initial point ``does not need to be on Poincare section''. That no upward crossing is skipped follows from three facts in the source at the pinned commit. In \texttt{integrateUntilSectionCrossing} (\texttt{PoincareMap\_templateMembers.h}), the set is first stepped until the section function $\theta_1$ is negative on the whole of its enclosure at a step end (the departure loop), then until it is not, and the crossing is computed in that step. (a) After every step, \texttt{checkTransversability} evaluates $\theta_1$ on the step enclosure (an enclosure of all trajectories over the step) and, if the result contains $0$, requires $\dot\theta_1$ to be single-signed on it, and fails otherwise. (b) The step enclosure contains the box hull of the set at the start of the step (\texttt{HighOrderEnclosure}: a Taylor polynomial in $t \in [0, h]$ whose constant term is that hull, plus a remainder term that contains $0$). (c) The sign tested at a step end is $\theta_1$ on the box hull of the set (\texttt{CoordinateSection::evalAt}). Suppose a point makes an upward crossing at a time $s$ in step $k$ of the departure loop. It starts on the section with $\dot\theta_1 > 0$, so it crossed downward at some $s' < s$, in step $i \le k$. If $i = k$, $\dot\theta_1$ takes both signs on the step enclosure, which meets the section, against (a). Otherwise, at each step end $t_j$, $i \le j < k$, the loop went on, so by (c) the range of $\theta_1$ on the hull has a non-negative upper end; it also contains the point's $\theta_1(t_j) \le 0$, so it contains $0$; by (b) so does $\theta_1$ on the next step enclosure, and by (a) $\dot\theta_1$ is single-signed on it. Consecutive step enclosures both contain the point's state at their common step end, so the signs agree, and from $\dot\theta_1 < 0$ on step $i$ it follows that $\dot\theta_1 < 0$ on step $k$, which contains the upward crossing: a contradiction. After the departure loop, a point that crosses upward in a step has $\dot\theta_1 > 0$ on it by (a), so $\theta_1 > 0$ at its end, and the loop stops there. So the crossing CAPD returns is, for every point of the set, the first upward crossing after time $0$. This rests on our reading of the three facts in the code, not on a documented guarantee; the fixed point at $E = 0$ is also confirmed by the independent Arb computation of Sect.~\ref{sec:controls}.
+
+{\raggedright\noindent\textbf{Data availability.} The programs, their configurations and their output accompany this manuscript in the folders \texttt{code/}, \texttt{configs/} and \texttt{data/}: \texttt{code/run\_all.sh} builds CAPD at the pinned commit and the programs, and reruns the field check, Theorems~\ref{thm:main}--\ref{thm:horseshoe} on the committed configurations and the controls (about 85 minutes on two threads of a shared machine, CAPD already built); \texttt{code/designs.sh} regenerates the h-set designs and compares them with the committed configurations; \texttt{code/crosscheck} holds the independent Arb computation.\par}
+
+\begin{thebibliography}{30}
+
+\bibitem{abramov1959} L. M. Abramov, On the entropy of a flow, \emph{Dokl. Akad. Nauk SSSR} \textbf{128} (1959) 873--875.
+
+\bibitem{bn1997} S. V. Bolotin and P. Negrini, A variational criterion for nonintegrability, \emph{Russ. J. Math. Phys.} \textbf{5} (1997) 415--436.
+
+\bibitem{bw1972} R. Bowen and P. Walters, Expansive one-parameter flows, \emph{J. Differential Equations} \textbf{12} (1972) 180--193; doi:10.1016/0022-0396(72)90013-7.
+
+\bibitem{burov1986} A. A. Burov, On the non-existence of a supplementary integral in the problem of a heavy two-link plane pendulum, \emph{J. Appl. Math. Mech.} \textbf{50} (1986) 123--125 [\emph{Prikl. Mat. Mekh.} \textbf{50} (1986) 168--171].
+
+\bibitem{capd2021} T. Kapela, M. Mrozek, D. Wilczak and P. Zgliczy\'nski, CAPD::DynSys: a flexible C++ toolbox for rigorous numerical analysis of dynamical systems, \emph{Commun. Nonlinear Sci. Numer. Simul.} \textbf{101} (2021) 105578; arXiv:2010.07097.
+
+\bibitem{devaney1976} R. L. Devaney, Reversible diffeomorphisms and flows, \emph{Trans. Amer. Math. Soc.} \textbf{218} (1976) 89--113.
+
+\bibitem{dullin1994} H. R. Dullin, Melnikov's method applied to the double pendulum, \emph{Z. Phys. B} \textbf{93} (1994) 521--528.
+
+\bibitem{dyatlov2018} S. Dyatlov, Notes on hyperbolic dynamics, preprint, arXiv:1805.11660 (2018).
+
+\bibitem{ivanov1} A. V. Ivanov, Study of the double mathematical pendulum. I. Numerical investigation of homoclinic transversal intersections, \emph{Regul. Chaotic Dyn.} \textbf{4} (1999), no.~1, 104--116; doi:10.1070/RD1999v004n01ABEH000102.
+
+\bibitem{ivanov2} A. V. Ivanov, Study of the double mathematical pendulum. II. Investigation of exponentially small homoclinic intersections, \emph{J. Phys. A} \textbf{34} (2001) 11011--11031; doi:10.1088/0305-4470/34/49/318.
+
+\bibitem{ivanov3} A. V. Ivanov, Study of the double mathematical pendulum. III. Melnikov's method applied to the system in the limit of small ratio of pendulum masses, \emph{Regul. Chaotic Dyn.} \textbf{5} (2000), no.~3, 329--343; doi:10.1070/RD2000v005n03ABEH000152.
+
+\bibitem{ivanov4} A. V. Ivanov, Study of the double mathematical pendulum. IV. Quantitative bounds on values of the system parameters when the homoclinic transversal intersections exist, \emph{Regul. Chaotic Dyn.} \textbf{6} (2001), no.~1, 53--94; doi:10.1070/RD2001v006n01ABEH000166.
+
+\bibitem{kbkb2023} K. Kaheman, J. J. Bramburger, J. N. Kutz and S. L. Brunton, Saddle transport and chaos in the double pendulum, \emph{Nonlinear Dyn.} \textbf{111} (2023) 7199--7233; arXiv:2209.10132.
+
+\bibitem{kh1995} A. Katok and B. Hasselblatt, \emph{Introduction to the Modern Theory of Dynamical Systems}, Cambridge University Press, Cambridge, 1995 (not read here).
+
+\bibitem{kozlov1983} V. V. Kozlov, Integrability and non-integrability in Hamiltonian mechanics, \emph{Russian Math. Surveys} \textbf{38}:1 (1983) 1--76.
+
+\bibitem{kt2021} K. Kucherenko and D. J. Thompson, Measures of maximal entropy on subsystems of topological suspension semiflows, \emph{Studia Math.} \textbf{260} (2021) 229--240; arXiv:1909.07317.
+
+\bibitem{mn1998} G. Moauro and P. Negrini, Chaotic trajectories of a double mathematical pendulum, \emph{J. Appl. Math. Mech.} \textbf{62} (1998) 827--830 [\emph{Prikl. Mat. Mekh.} \textbf{62} (1998) 892--895].
+
+\bibitem{moser1973} J. Moser, \emph{Stable and Random Motions in Dynamical Systems}, Princeton University Press, Princeton, 1973 (not read here).
+
+\bibitem{mr1999} J. J. Morales-Ruiz, \emph{Differential Galois Theory and Non-Integrability of Hamiltonian Systems}, Progress in Mathematics \textbf{179}, Birkh\"auser, Basel (1999).
+
+\bibitem{palis1969} J. Palis, On Morse--Smale dynamical systems, \emph{Topology} \textbf{8} (1969) 385--404; doi:10.1016/0040-9383(69)90024-X.
+
+\bibitem{pt1993} J. Palis and F. Takens, \emph{Hyperbolicity and Sensitive Chaotic Dynamics at Homoclinic Bifurcations}, Cambridge University Press, Cambridge, 1993 (not read here).
+
+\bibitem{rs1984} P. H. Richter and H.-J. Scholz, Chaos in classical mechanics: the double pendulum, in: \emph{Stochastic Phenomena and Chaotic Behaviour in Complex Systems}, Springer Ser. Synergetics \textbf{21}, Springer, Berlin (1984) 86--97.
+
+\bibitem{salnikov2013} V. Salnikov, Integrability of the double pendulum -- the Ramis' question, preprint, arXiv:1303.4904 (2013).
+
+\bibitem{sgwy1992} T. Shinbrot, C. Grebogi, J. Wisdom and J. A. Yorke, Chaos in a double pendulum, \emph{Amer. J. Phys.} \textbf{60} (1992) 491--499.
+
+\bibitem{smale1965} S. Smale, Diffeomorphisms with many periodic points, in: \emph{Differential and Combinatorial Topology} (S. S. Cairns, ed.), Princeton University Press (1965) 63--80.
+
+\bibitem{so2006} T. Stachowiak and T. Okada, A numerical analysis of chaos in the double pendulum, \emph{Chaos Solitons Fractals} \textbf{29} (2006) 417--422.
+
+\bibitem{ss2015} T. Stachowiak and W. Szumi\'nski, Non-integrability of restricted double pendula, \emph{Phys. Lett. A} \textbf{379} (2015) 3017--3024; arXiv:1511.01850.
+
+\bibitem{sk2025} W. Szumi\'nski and T. Kapitaniak, Dynamics and non-integrability of the variable-length double pendulum: exploring chaos and periodicity via the Lyapunov refined maps, \emph{J. Sound Vib.} \textbf{611} (2025) 119099; arXiv:2602.21123 (posted on 24 February 2026, after the journal publication, with this journal reference).
+
+\bibitem{walters1982} P. Walters, \emph{An Introduction to Ergodic Theory}, Graduate Texts in Mathematics \textbf{79}, Springer, New York (1982).
+
+\bibitem{wz2003} D. Wilczak and P. Zgliczy\'nski, Heteroclinic connections between periodic orbits in planar restricted circular three-body problem -- a computer assisted proof, \emph{Comm. Math. Phys.} \textbf{234} (2003) 37--75.
+
+\bibitem{wz2009} D. Wilczak and P. Zgliczy\'nski, Computer assisted proof of the existence of homoclinic tangency for the H\'enon map and for the forced damped pendulum, \emph{SIAM J. Appl. Dyn. Syst.} \textbf{8} (2009) 1632--1663 (title and abstract read).
+
+\bibitem{z2009} P. Zgliczy\'nski, Covering relations, cone conditions and the stable manifold theorem, \emph{J. Differential Equations} \textbf{246} (2009) 1774--1819.
+
+\bibitem{zg2004} P. Zgliczy\'nski and M. Gidea, Covering relations for multidimensional dynamical systems, \emph{J. Differential Equations} \textbf{202} (2004) 32--58.
+
+\end{thebibliography}
+
+\end{document}

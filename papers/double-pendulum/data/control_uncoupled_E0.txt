@@ -1,0 +1,15 @@
+system: UNCOUPLED control, g = [1, 1], E = [0, 0], f = P^1 shifted by 0*2pi in t2
+stage 1 (Krawczyk): B = ([3.141592652589793, 3.1415926545897932], [-1.0000000000000001e-09, 1.0000000000000001e-09])
+  K = ([3.141592653588587, 3.1415926535910002], [-1.205468406559699e-12, 1.2061872440916185e-12])  K in int B: yes
+  G(K) in B (so the fixed point is G-symmetric, t2 = pi): yes
+  over B: trace Df in [848.10360966135386, 848.10360966155076], det Df in [0.99999991653021425, 1.0000000834988896], return time of f in [6.7430014192503398, 6.7430014192504286]
+stage 2: N0 = p0 + A([-2e-05,2e-05] x [-4e-08,4e-08]), alpha = 0.001, grid 400 x 1, p local = ([-1.705269108341532e-12, 1.7064054402183972e-12], [-1.7058971453250056e-12, 1.7057774032349238e-12])
+  min over N0 of |(M(1,t))_x| = 848.087 (mu), sign +, max |(M(1,t))_y|/|(M(1,t))_x| = 9.0373e-06 (< alpha = 0.001), failures 0
+stage 3: R = [7.8e-06, 7.9e-06] x [-7.9017076024144373e-09, 7.9017074826723459e-09] (local), k = 2 (f~^k = P^2)
+  image of edge x = x1: t2 in [6.2666816198833137, 6.2666816206642855]
+  image of edge x = x2: t2 in [6.2921594539620465, 6.2921594547331665]
+  target line t2 = 2*pi: edges on opposite sides: yes
+    UNRESOLVED piece x in [7.86463136672974e-06, 7.86463141441346e-06] (depth 16): image t2 [6.2831852958442438, 6.2831853086651135], p2 [1.9999999999999591, 2.0000000000000409], direction defined: dp2/dt2 in [-5.3729216120072373e-09, 1.0297935679943535e-08]
+  pieces checked 64, pieces whose image may meet t2 = m*pi: 0, unresolved 1
+FAIL: transversality at the crossing
+RESULT: FAIL (1)

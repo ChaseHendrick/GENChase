@@ -1,0 +1,18 @@
+cones: coupled double pendulum, E = [-1.0000000000000001e-09, 1.0000000000000001e-09], N0 = centre + A([-2.5e-05, 2.5e-05] x [-4e-08, 4e-08]), alpha = 0.001, 100 sub-boxes
+stage 1 (Krawczyk, K compared with inward-rounded bounds of B, rho = 1e-09):
+  K = ([-5.7863536836489967e-09, 5.786353901150475e-09], [-1.4623730938370501, -1.4623730911226673])
+  K in int B: NO; G(K) in int B: NO
+FAIL: Krawczyk: K not in int B
+FAIL: G(K) not in int B
+  zeta_p in ([-5.3324199405409507e-09, 5.3324226942187529e-09], [-5.3324225804253044e-09, 5.3324200543344257e-09])
+hull of A^-1 Df A over N0:
+  M11 in [-3.528911776447512, -3.5210186237102792]
+  M12 in [-0.0036109276153464265, 0.0036118658002006754]
+  M21 in [-0.003831566540447251, 0.0038306410664959989]
+  M22 in [-0.28720748481213165, -0.28017487029034283]
+  m11 >= 3.52101862, m12 <= 0.0036118658, m21 <= 0.00383156654, |det| <= delta = 1.01354371
+  mu_h = m11 - alpha m12 >= 3.52101501 (lower bound, rounded down)
+  kappa = delta / mu_h <= 0.28785555
+  theta = delta / mu_h^2 <= 0.0817535709
+  |x_p| <= 5.33242e-09, a (mu_h - 1)/(mu_h + 1) >= 1.39405e-05: yes
+RESULT: FAIL (2)
