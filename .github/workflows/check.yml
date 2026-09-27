@@ -164,6 +164,7 @@ jobs:
           python3 tools/release-notes.py --self-test
           node tools/build.js --check
           node tools/science.js
+          node tools/ssh-science.js
           node tools/exceptional-science.js
           node tools/geometry-science.js
           node tools/breather-science.js
@@ -176,6 +177,7 @@ jobs:
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
           node tools/print-smoothing-check.js
+          node tools/sharp-sampling-check.js
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
           node tools/three-vortex-custom-check.js
@@ -220,6 +222,9 @@ jobs:
       - name: Reuleaux geometry and actual print preservation
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/reuleaux-science.js
+      - name: SSH export preserves the mode field
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/ssh-print-state.js
       - name: PDE print exports preserve numerical state
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/pde-print-state.js
