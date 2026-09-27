@@ -18,8 +18,9 @@ faster than n^-(1+2/d), reported exponents of 1.49, 1.65 and 3.43 for stimulus s
 ranks 11-500 (ranks 5-30 for 32 grating directions in their Methods, 11-30 in their deposited code), and concluded
 that the code is about as high-dimensional as smoothness allows. That a finite window of ranks cannot measure an
 asymptotic exponent is elementary and partly anticipated; this note makes it quantitative for these stimulus sets.
-For codes built on bounded eigenfunctions, as on a torus, a known kernel-matrix bound implies that the finite-sample
-spectrum is continuous in the variance of the tail and blind to its rate of decay, so no estimator continuous in that
+For codes built on bounded eigenfunctions, as on a torus, a bound adapted from known kernel-matrix bounds shows that
+the head of the spectrum fixes the finite-sample spectrum up to a constant times the variance of the tail, whatever the
+tail's rate of decay, so no estimator continuous in that
 spectrum can tell a continuously differentiable code from one with infinite expected squared gradient. We place
 noise-free codes of fixed smoothness (Matern tuning) on the stimulus coordinates of all ten 8D and 4D stimulus sets.
 Codes exactly at the differentiability border give ranks 11-500 exponents from 0.255 to 1.628 at d = 8 and from
@@ -29,7 +30,7 @@ in the unwhitened coordinates at 2,800 stimuli, but not over ranks 101-500, not 
 always with fewer stimuli. For 32 directions a non-differentiable code reaches 3.5012 over ranks 5-30 and 3.4306
 over ranks 11-30. The tail exponent of the eigenmoment method of Pospisil and Pillow depends on the unresolved tail:
 spectra that share a broken power law with tail exponent 1.25 up to rank 500 give tail exponents from 1.138 to 1.394,
-and the eigenmoment misfit flags none of 20 simulated data sets of any of them with diagonal weights (95% upper
+and the eigenmoment misfit flags none of 20 simulated data sets of any variant with diagonal weights (95% upper
 bound 0.168 on the flag probability) and at most 5 of 20 with full whitening (upper bound 0.491), depending on the
 reference distribution. The reported exponents are consistent with the bound but cannot show that the code
 satisfies it or lies close to it.
@@ -48,9 +49,11 @@ satisfies it or lies close to it.
   eigendecomposition are in single precision, and `code/precision_check.py` measures the effect (far below the
   printed precision). Every number in the text is a macro written by `code/make_numbers.py` from `out/`, and the
   worded claims that rest on them ("every set", "none", "three of six", the flag counts) are asserted there.
-- **Not done:** no exponent is fitted to any recording. The only neural data used are the per-neuron signal and noise
-  variances of one natural-image recording, which calibrate the simulator, and that recording's cvPCA spectrum at
-  ranks 11, 100 and 500, with which the cvPCA side result compares simulated spectra (both computed by
+- **Not done:** no exponent fitted to any recording enters the note (`code/stage1/calib.py` prints window slopes of
+  the calibration recording's spectra, which are not used). The only neural data used are the per-neuron signal and
+  noise variances and the noise spectrum of one natural-image recording, which calibrate the simulator (the variance
+  of its shared noise mode is set close to the recording's largest noise eigenvalue), and that recording's cvPCA
+  spectrum at ranks 11, 100 and 500, with which the cvPCA side result compares simulated spectra (all computed by
   `code/stage1/calib.py`). The comparison with the shape of the recorded spectra is not made.
 
 ## Contents

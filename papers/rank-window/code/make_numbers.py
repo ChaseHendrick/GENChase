@@ -79,6 +79,11 @@ for tag, d in (('Eight', 8), ('Four', 4)):
     put(f'Reach{tag}', WORDS[len(reach)])
     put(f'ReachAll{tag}', 'all' if len(reach) == len(setsd) else WORDS[len(reach)] + ' of the')
     put(f'ReachMid{tag}', str(sum(max(r['w11_500'] for r in W if r['set'] == s_ and r['nu'] == 0.75) >= rep for s_ in setsd)))
+    # worded (third report, M4): in the Matern family, codes strictly below the border (nu = 0.75) stay below the
+    # reported exponent in every set and at every length scale computed (infinitely many neurons)
+    mid_max = max(r['w11_500'] for r in W if r['d'] == d and r['nu'] == 0.75)
+    assert mid_max < rep, 'nu = 0.75 reaches the reported exponent'
+    put(f'MidMax{tag}', f3(mid_max))
     # crossing: largest ell with the border code below the bound in every set, smallest ell above in every set
     sets = sorted({r['set'] for r in W if r['d'] == d})
     below = [e for e in ELLS if all(x < 1 + 2 / d for x in sel(d, 1.0, e))]
@@ -445,8 +450,9 @@ put('MemeFlagMaxN', str(cmax[0])); put('MemeFlagMaxLo', f'{cp(cmax[0])[0]:.3f}')
 assert [c_ for c_ in allc if c_[0] == cmax[0]] == [(cmax[0], 'tail500_0.8', 'loo')], 'the largest count: exponent 0.8, leave one out'
 assert max(var_counts['loo']) == flagn['tail500_0.8']['loo'] and max(var_counts['fo']) == flagn['tail500_0.8']['fo'], 'exponent 0.8 most often'
 assert cmax[0] / NSIM == float(mac['MemeFlagAnyMax'])
-# the base itself is flagged in one of 20 under the first-fold and leave-one-out references
-assert flagn['base']['fo'] == 1 and flagn['base']['loo'] == 1
+# the base itself is flagged in one of 20 under every reference except the pooled full-whitening one, where it is
+# flagged in none
+assert flagn['base'] == dict(diag=1, full=0, ff=1, fo=1, loo=1)
 put('MemeFlagBaseWord', 'one')
 # third report S8: the simulated alpha2 of the correctly specified base against its exact-moment value
 for how, t, S_h in (('diag', 'Diag', SD_), ('full', 'Full', SF_)):

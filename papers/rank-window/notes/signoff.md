@@ -30,4 +30,11 @@ not an outside review and not an independent one.
   point already handled by the evidence sentence that follows it, and it was not applied; see the Response section of
   `review-3.md`.)
 
-This sign-off does not cover the fixes made after `review-3.md`; their reread is pending (`QUALITY.md`, item 6).
+## After the third reading (2026-09-27)
+
+The fixes for `review-3.md` were read again by an independent agent; all ten confirmed findings landed. I fixed the
+six residual points that reading found, added the sentence on M4 that its skeptics suggested and the wording of M5
+part (a), reran `code/make_numbers.py` (which asserts the new worded claims), rebuilt the PDF and ran
+`tools/paper-check.js` and `tools/lint.js`. With those, I sign off on the note as a draft: its proved results are
+correct, its numbers are generated and asserted, and its claims now match what the programs compute. Items 4 and 7
+of `QUALITY.md` stay open.

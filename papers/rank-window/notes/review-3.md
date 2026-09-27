@@ -633,3 +633,14 @@ for the next revision.
 - `node tools/paper-check.js`: exit 0; `OK rank-window [draft]`, "the quality bar is not met (open: item 4, 6, 7)",
   `note.pdf: 16 pages`.
 - `node tools/lint.js`: `PASS`.
+
+### Addendum to the response (lead reader, 2026-09-27)
+
+After an independent reread of these fixes, six residual points were fixed: the remaining "no exponent is fitted"
+statements (calib.py prints window slopes that the note does not use), the calibration of the simulator's shared noise
+mode, the Braun wording in the introduction, abstract and README, the single-precision reference spectrum of
+`run_sim.py` in the Precision paragraph, "any variant" and the base-flag sentence in Results, and the dangling "it".
+M4: the Discussion now says that in the Matern family codes below the border stay below the reported exponents (at
+most the `MidMax` macros, asserted in `make_numbers.py`), which only border codes reach. M5 part (a): "blind to its
+rate of decay" is replaced by "up to a constant times the variance of the tail, whatever the tail's rate of decay";
+parts (b) and (c) stay as the skeptics judged them.

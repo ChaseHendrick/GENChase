@@ -50,19 +50,25 @@ GENChase: the companion repository does not carry `notes/`.
 - [x] **5. Prior article review.** RESEARCH.md, entry of 2026-09-26 (finite rank windows and the eigenspectrum
   smoothness bound). The note says its central point is elementary and partly anticipated (Stringer's SI Example 3,
   Pospisil and Pillow, Davidovich and Roudi) and lists what it adds.
-- [ ] **6. Adversarial second reading.** Three in-project readings by independent referees told to find errors
+- [x] **6. Adversarial second reading.** Three in-project readings by independent referees told to find errors
   (`review-1.md`: major revision, five must-fix items; `review-2.md`: minor revision, two must-fix items;
   `review-3.md`, 2026-09-27, by an independent agent that had not seen the earlier reports: minor revision, five
   must-fix items). The fixes of the first two are applied. For the third, every finding was checked by one or two
   further independent agents (skeptics) before it was applied: must-fix M1 (a false statement that no recorded
   spectrum is computed), M2 (the grating window of the deposited code; both windows now reported) and M3 (Clopper-Pearson
   intervals for every flag rate; the abstract's "rarely or not at all" replaced by counts and bounds) were confirmed and
-  are fixed, with should-fix S1, S2, S3, S5, S8, S9 and S10; M4, M5, S4, S6 and S7 were judged already handled or
-  overstated by the skeptics and are not applied, with the reasons in the Response section of `review-3.md`. Status:
-  fixes applied; reread pending. The item stays open because two of the third report's must-fix findings were not
-  applied (on the skeptics' reasons, which the reread should judge) and because the applied fixes have not yet been
-  read again. The session's lead reader signed off on Section 2 and the review-2 fixes before the third reading and
-  missed M1, M2 and M4 (`signoff.md`). No one outside the project has read the note.
+  are fixed, with should-fix S1, S2, S3, S5, S8, S9 and S10. M4 and M5 did not survive their skeptics (both skeptics
+  judged M4 already handled by the evidence sentence that follows it; they split on M5, whose parts (b) and (c) one
+  of them showed wrong), and S4, S6 and S7 were judged handled; the reasons are in the Response section of
+  `review-3.md`. An independent agent then read the fixes again: all ten landed, with six residual points (a
+  remaining "no exponent" statement and an undisclosed calibration constant, the Braun wording in the introduction and
+  abstract, a single-precision step not listed, two wording slips in Results, and this record's wording on M5).
+  The lead reader fixed those six, added the one clarifying sentence the M4 skeptics suggested (codes below the
+  border stay below the reported exponents in the Matern family, asserted in `make_numbers.py`) and the wording of
+  M5 part (a) that one skeptic confirmed ("whatever the tail's rate of decay" for "blind to its rate of decay"); those
+  last fixes were checked by the lead reader, not by a further independent reading. The lead reader's earlier
+  sign-off missed M1, M2 and M4 (`signoff.md`). All readings were in-project; no one outside the project has read
+  the note.
 - [ ] **7. Reproducible.** The programs rerun every number from the downloaded inputs (README), and
   `make_numbers.py` reproduces `paper/numbers.tex`, the tables and `out/numbers.json` byte for byte from `out/` alone.
   Open until a full rerun from the downloaded inputs has been done from this folder.
