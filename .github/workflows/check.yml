@@ -172,6 +172,7 @@ jobs:
           node tools/talbot-science.js
           node tools/spinice-science.js
           node tools/hofstadter-science.js
+          node tools/aubry-science.js
           node tools/geometry-science.js
           node tools/breather-science.js
           node tools/peakon-science.js
@@ -270,6 +271,9 @@ jobs:
       - name: Fisher-KPP data export metadata
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/fisher-kpp-metadata-check.js
+      - name: Aubry-Andre print state
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/aubry-print-state.js
 
   volunteer-ui:
     name: volunteer and navigation (${{ matrix.browser }})

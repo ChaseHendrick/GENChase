@@ -67,7 +67,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [ssh](src/modules/ssh.js) | validated within stated limits | [ssh-science.js](tools/ssh-science.js) | Limited evidence recorded | none |
 | [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
 | [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js), [half-float-check.js](tools/half-float-check.js) | Limited evidence recorded | none |
-| [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated | none |
+| [aubry](src/modules/aubry.js) | unvalidated | [aubry-science.js](tools/aubry-science.js) | Limited evidence recorded | none |
 | [cahn](src/modules/pde.js) | validated within stated limits | [pde-science.js](tools/pde-science.js), [pde-convergence.js](tools/pde-convergence.js), [pde-stability.js](tools/pde-stability.js), [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
 | [ohta](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
 | [hopf](src/modules/hopf.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
@@ -315,6 +315,14 @@ No record has an outside review yet; every review so far was done inside the pro
 - No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.
 - Float16 fallback, measured, not validated: the state is stored as the deviation from the mean composition c0. At the default recipe the fluctuations then grow as in float32 (standard deviation equal to float32's to three figures at 1000 steps), where the plain fallback shrank them to 0.80 of it (validation/HALF-FLOAT.md). Phase-separated states far from c0 get no finer float16 spacing than before; other recipes are not measured.
 - Broader settings require additional independent evidence.
+
+### aubry
+
+- Status is unvalidated. tools/aubry-science.js hashes src/modules/aubry.js and never executes it. The evidence is an independent transfer-matrix Lyapunov exponent of the textbook almost Mathieu operator, recorded in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.
+- The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation, its ground-state claim, and the status-line IPR are outside the measurement. The print check preserves a field whose correctness is untested.
+- Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.
+- At λ = 1 the exponent is reported and is not asserted to equal 0 at these lengths.
+- The λ = 1 self-dual correction matches the potential the plate uses. That label fix is not a validation of the relaxation.
 
 ### cahn
 
