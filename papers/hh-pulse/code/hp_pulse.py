@@ -18,7 +18,7 @@ Usage: python3 hp_pulse.py [T] [t_end] [tolerance scale, default 1]
 Each iteration is saved to data/logs/hp_pulse_<T>_state_<scale>.json, and a run resumes from that file. A run stops
 after 12 iterations; if |dK| has not fallen below 1e-60 by then it exits with status 3 and writes no output, and the
 same command resumes it. A run with a scale below 1 (1e-8 at 6.3 C, where the tolerance schedule written for the
-growth at 18.5 C is too loose: see REPORT 4.7) starts from the converged state of the scale-1 run with new step
+growth at 18.5 C is too loose: see the manuscript, Section 5) starts from the converged state of the scale-1 run with new step
 sequences, keeps the scale-1 output as data/hp_pulse_<T>_tol1.json and writes its own to data/hp_pulse_<T>.json.
 """
 import json
@@ -209,6 +209,7 @@ def main():
     state_file = '../data/logs/hp_pulse_%s_state_%s.json' % (C.tag(T), TOLSCALE)
     import os
     seed_file = '../data/logs/hp_pulse_%s_state_%s.json' % (C.tag(T), 1.0)
+    os.makedirs('../data/logs', exist_ok=True)
     if os.path.exists(state_file):
         st = json.load(open(state_file))
         K = arb(st['K'])

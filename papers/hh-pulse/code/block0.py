@@ -17,7 +17,7 @@ interval matrix is positive definite); (E) by bounding |A_s1|_2 by the Frobenius
 -sym(A_ss) - mu I is positive definite the same way. B0 is covered by cells (boxes in zeta, intersected with the
 4-ball only when they meet it, tested rigorously); a cell that fails is bisected, up to a depth limit.
 
-Why these suffice (the argument of papers/nf-pulse/code/block.py, adapted). Since f(y*) = 0 and B0 is convex and
+Why these suffice. Since f(y*) = 0 and B0 is convex and
 contains 0, zeta' = A-bar zeta with A-bar = int_0^1 M Df(y* + s M^-1 zeta) M^-1 ds, an average of matrices A(x) over x
 on the segment [y*, y], which lies in B0 (and in { |zeta_1| <= rho } when |zeta_1| <= rho). The smallest eigenvalue
 of D A + A^T D is a concave function of A, and lambda_max(sym A_ss) + |A_s1|_2 a convex one, so the bounds of (C) and

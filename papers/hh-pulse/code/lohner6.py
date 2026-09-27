@@ -2,8 +2,7 @@
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
 """A C^0 Lohner-type interval Taylor integrator for the Hodgkin-Huxley wave ODE with the speed parameter K carried as
-a sixth state variable (K' = 0), in python-flint ball arithmetic. Adapted from lohner_hh.py (itself from
-papers/nf-pulse/code/lohner.py); the jets come from hhjet6.py.
+a sixth state variable (K' = 0), in python-flint ball arithmetic. The jets come from hhjet6.py.
 
 Set:  X = xbar + C r0 + B r,  r0 in R0, r in R  (xbar a point of R^6, C 6 x m, B 6 x 6 nearly orthogonal, R0 and R
 boxes). One step of length h and order p:

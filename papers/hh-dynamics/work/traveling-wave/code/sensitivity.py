@@ -7,6 +7,9 @@ Along the collocation profile y(t) of pulse_bvp.py, integrate S' = Df(y(t)) S + 
 (from the time where u first reaches U_START = 1e-5 mV, the exit face of Lemma B with r = 1e-5, with S = 0 there,
 since the exit point is fixed by the construction up to the K-dependence of the eigenvector) and print |S_u(t)| (mV per unit of K) and the distance of the profile from rest. The K-width that the
 closing step can afford at time t is about (block radius) / |S(t)|."""
+import os as _os, sys as _sys
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import sys
 import numpy as np
 from scipy.integrate import solve_ivp

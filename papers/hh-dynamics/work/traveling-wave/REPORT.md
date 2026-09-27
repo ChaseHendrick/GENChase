@@ -614,6 +614,14 @@ summary:
 
 ## 6. Rerun
 
+**Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
+`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `prove_pulse.py`,
+`block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
+inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
+repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
+other programs stay here and import the moved modules from there. Files named below without a folder are in one of
+the two places.
+
 ```
 cd papers/hh-dynamics/work/traveling-wave/code
 python3 -m pip install python-flint==0.9.0 numpy scipy
@@ -647,6 +655,14 @@ python3 block_check_iv.py 18.5       # independent re-check of (H3) in mpmath in
 The rigorous programs exit with status 0 only if every check, including the negative controls, passes.
 
 ## 7. Files
+
+**Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
+`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `prove_pulse.py`,
+`block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
+inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
+repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
+other programs stay here and import the moved modules from there. Files named below without a folder are in one of
+the two places.
 
 | File | Kind | What it does |
 |---|---|---|

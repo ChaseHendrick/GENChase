@@ -6,7 +6,7 @@ Huxley (J. Physiol. 117 (1952), eq. (31)) at their 1952 rate functions and const
 of the travelling-wave ODE (hhwave.py conventions: u = -V, w = u', t in ms, phi = 3^((T - 6.3)/10), E_l the leak
 potential that makes the resting current zero).
 
-The argument (written out in REPORT.md, Section 4) has these computed hypotheses, each checked here:
+The argument (written out in the manuscript, Section 4) has these computed hypotheses, each checked here:
  (A) Lemma A of certify_rest_wave.py for every K in [K1, K2]: rest has one eigenvalue with positive real part (simple,
      real) and four with negative real part.
  (B) Lemma B of certify_rest_wave.py at the radius r_B, in coordinates z = T_B (y - y*) that diagonalize Df(y*) to
@@ -335,7 +335,7 @@ def run_stage(T, stage):
         if wid > 1e3 or not all(x.is_finite() for x in hx):
             state['phase'] = 'blew_up'
             return True
-        if hx[0] < -60 or hx[0] > 150:        # the whole set has escaped, as in prove_bracket.py
+        if hx[0] < -60 or hx[0] > 150:        # the whole set has escaped
             state['phase'] = 'escaped'
             state['escape'] = 'u < -60 mV' if hx[0] < -60 else 'u > 150 mV'
             state['t_escape'] = float(t.mid())

@@ -42,7 +42,7 @@ not prove.
     own constants. **Proved by computer at 18.5 C (2026-09-27):** the travelling-wave equation (their eq. (31)), with
     the 1952 rate functions and constants and the leak potential that makes the resting current zero, has a pulse, an
     orbit homoclinic to rest, with speed in (18.732160814388902113775385154028169368017733735, ...739) m/s (Hodgkin
-    and Huxley computed 18.8 m/s by hand; `code/prove_pulse.py`, about 70 minutes at 256 bits, with negative
+    and Huxley computed 18.8 m/s by hand; `prove_pulse.py`, now in `papers/hh-pulse/code/`, about 70 minutes at 256 bits, with negative
     controls). The method: a closing block at rest with a cone condition in weighted eigen-coordinates, a validated
     Lohner integrator carrying a speed interval of width 3e-45 through the spike into the block, and a Wazewski-type
     shooting argument (REPORT, Sections 4.4 and 4.5). No existence proof for the unmodified equations was found in
