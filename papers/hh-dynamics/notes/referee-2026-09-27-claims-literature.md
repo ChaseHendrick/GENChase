@@ -39,7 +39,7 @@ Fix: restrict the claim to the large-amplitude spike train away from the Hopf po
 
 SHOULD-FIX
 (2) Guckenheimer and Worfolk, Section 5 (p. 23 of arXiv chao-dyn/9304010) says: "When V̄K has the HH value of 12 mV, f is monotonic and (HH) has a unique equilibrium for each value of I". The manuscript cites that section but does not mention this sentence.
-- Hastings's p. 230 remark is about his travelling-wave system (3)-(4), which has no applied current, so it covers J = 0 only.
+- Hastings's p. 230 remark is about his traveling-wave system (3)-(4), which has no applied current, so it covers J = 0 only.
 - Guckenheimer and Worfolk also list V̄L = 10.599 among "the HH values".
 - Fix: cite this sentence and characterize it as an assertion from symbolic and numerical work; state that Hastings's remark is for zero applied current.
 (3) Cite Labouriau, SIAM J. Math. Anal. 16 (1985) 1121-1133 and 20 (1989) 1-12 (Hopf branches of the clamped HH equations shown to join; invariants computed), and Hassard and Shiau. RESEARCH.md lists them but the "What is known" paragraph omits them.
@@ -73,7 +73,7 @@ MINOR
 (18) Section 10 says "The model of both programs was compared..." and mentions a prior inventory, review and outline. No record of any of these is in the folder.
 (19) The E_l* enclosure behind Proposition 2.3 is printed under a [selftest] line, not a [proof] check.
 (20) Step 1 of the proof of Lemma 5.12 takes the continuity of tau from Lemma 5.6. For a general periodic orbit, cite the implicit function theorem instead.
-(21) cz2016 proves periodic travelling waves (wave trains) of the FitzHugh-Nagumo PDE; the text should say so.
+(21) cz2016 proves periodic traveling waves (wave trains) of the FitzHugh-Nagumo PDE; the text should say so.
 (22) The README says the period interval of Theorem 5 is narrower than 1e-12 ms. That is true of the Arb ball, but the printed interval is 1e-11 wide.
 
 WHAT WAS CHECKED
@@ -149,7 +149,7 @@ them (RESEARCH.md, 2026-09-27, the entry written after the readings).
   with the same sentence in Guckenheimer and Worfolk, p. 23, and says that they give no proof and that their
   computations of equilibria and local bifurcations are symbolic (Macsyma, Mathematica, Maple) and their global ones
   numerical. Hastings's remark is now quoted with its "(3)-(4)" restored, and the text says that his system (3)-(4)
-  is the travelling-wave system, whose equilibria are those of the space-clamped system at zero applied current.
+  is the traveling-wave system, whose equilibria are those of the space-clamped system at zero applied current.
   Section 2.2 adds Guckenheimer and Labouriau (p. 939) and Guckenheimer and Worfolk (p. 23) to the users of 10.599,
   with the caution one skeptic gave: they print V_L = 10.599 mV beside V_Na = -115 mV, although in that sign
   convention Table 3 prints V_l = -10.613.
@@ -231,8 +231,8 @@ them (RESEARCH.md, 2026-09-27, the entry written after the readings).
   The program is unchanged: the ball is a computed enclosure, not an inequality to be checked.
 - **(20) Fixed** (the analysis reading's S1): Lemmas 5.8, 5.12 and 5.13 are stated for the local return map, and Step 1
   of Lemma 5.12 takes the continuity of the return time from the implicit function theorem.
-- **(21) Fixed.** "Computer-assisted proofs exist for the travelling pulse of the FitzHugh-Nagumo equations, for their
-  periodic travelling waves, and for Hopf bubbles and degenerate Hopf bifurcations".
+- **(21) Fixed.** "Computer-assisted proofs exist for the traveling pulse of the FitzHugh-Nagumo equations, for their
+  periodic traveling waves, and for Hopf bubbles and degenerate Hopf bifurcations".
 - **(22) Fixed.** The README says "the stable orbit with its period enclosed in a ball of radius below 1e-13 ms".
 
 ### Commands after the revision (tails)

@@ -1,4 +1,4 @@
-# Referee report: "Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability" (papers/nf-pulse/paper/nf-pulse.tex, 33 pp.)
+# Referee report: "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability" (papers/nf-pulse/paper/nf-pulse.tex, 33 pp.)
 
 **Status of this report.** This is an in-project reading by an independent agent on 2026-09-27. It is not an outside review. By instruction I did not read `papers/nf-pulse/review/` or `papers/nf-pulse/notes/`. I edited no repository files; all reruns were done in scratch copies.
 

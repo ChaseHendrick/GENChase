@@ -9,20 +9,20 @@ peer reviewed.
 
 **DOI:** to be assigned by Zenodo when the release is made.
 
-The first public release of the preprint *Travelling Pulses in a Neural Field with a Smooth Firing Rate:
+The first public release of the preprint *Traveling Pulses in a Neural Field with a Smooth Firing Rate:
 Computer-Assisted Existence and Spectral Stability* (39 pages), with the programs that prove its results and their
 output.
 
 ### What the paper shows
 
 Pinto and Ermentrout's neural field u_t = -u - v + w * S(u), v_t = eps (u - gamma v), with the kernel e^(-|x|)/2 and
-the logistic firing rate S(u) = 1/(1 + e^(-beta (u - theta))), has travelling pulses. For a Heaviside rate, Pinto, Jackson
+the logistic firing rate S(u) = 1/(1 + e^(-beta (u - theta))), has traveling pulses. For a Heaviside rate, Pinto, Jackson
 and Wayne treat them without assuming slow recovery; for smooth rates, the existence results we found need eps
 sufficiently small or rest on conditions not verified for any example. The paper proves pulses at explicit parameters, with eps not small, by
 computer-assisted proofs in ball arithmetic.
 
 - **Fast pulse** (Theorem 1, computer-assisted). For beta = 20, theta = 1/4, gamma = 0 and eps = 1/10 there is a
-  travelling pulse with speed in (c1, c1 + 10^-25), c1 = 1.1027477097341592491478677.
+  traveling pulse with speed in (c1, c1 + 10^-25), c1 = 1.1027477097341592491478677.
 - **A range of eps** (Theorem 2, computer-assisted). A fast pulse exists for every eps in [0.08, 0.13693] and in five
   further short intervals, one of which contains 3/20, with a speed window at each eps: 386 certificates of covering
   relations with one unstable direction.

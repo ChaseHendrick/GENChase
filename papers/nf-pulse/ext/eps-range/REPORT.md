@@ -129,7 +129,7 @@ the sets A+ and A- of zeta whose orbit from x(zeta) enters K+ (respectively K-) 
 cones are open, the orbits start in the interior of B, and a boundary point of B with L <= 0 is a strict entrance
 point), disjoint (the cones are forward invariant inside B) and nonempty, so some zeta* in (a_m, b_m) is in
 neither; its orbit never leaves B and tends to the rest state, and backward in time it tends to the rest state
-along the unstable manifold. With c = 1/kappa(zeta*) this homoclinic orbit is a travelling pulse, by the reduction
+along the unstable manifold. With c = 1/kappa(zeta*) this homoclinic orbit is a traveling pulse, by the reduction
 of the original README (a bounded Q = w * S(U) is unique). The time rescaling does not change orbits, only the
 times at which they are compared.
 

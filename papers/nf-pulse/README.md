@@ -1,4 +1,4 @@
-# Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability
+# Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
@@ -10,12 +10,12 @@ records the reruns of 2026-09-27, and Section 9 of the manuscript lists what has
 
 ## Abstract
 
-Neural field equations describe the activity of a sheet of cortex as a continuum, and their travelling pulses model
+Neural field equations describe the activity of a sheet of cortex as a continuum, and their traveling pulses model
 waves of activity such as those seen in disinhibited cortical slices. Pinto and Ermentrout (2001) analysed their model
 mainly with a Heaviside firing rate. For a Heaviside rate, Pinto, Jackson and Wayne (2005) prove pulses without
 assuming slow recovery. For a smooth rate, the existence results we found either require the recovery rate eps to be
 sufficiently small (Faye and Scheel; Dyson, arXiv:1810.05142; for synaptic depression, Faye 2013 and Hastings 2017) or
-are conditional: Burlakov, Oleynik and Ponosov (2025) prove travelling waves at a fixed recovery rate for continuous
+are conditional: Burlakov, Oleynik and Ponosov (2025) prove traveling waves at a fixed recovery rate for continuous
 rates close to a Heaviside, provided a Heaviside pulse satisfies conditions verified for no example, and Hastings's
 Theorem 2 rests on properties of two solutions (one of the fast system, one of the full system) checked only
 numerically. We give computer-assisted proofs, in ball arithmetic, at explicit parameters, with eps not small for the

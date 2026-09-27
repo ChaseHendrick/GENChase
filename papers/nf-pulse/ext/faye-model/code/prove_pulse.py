@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Computer-assisted existence proof driver for the fast travelling pulse of Faye's model.
+"""Computer-assisted existence proof driver for the fast traveling pulse of Faye's model.
 Adapted from code/prove_pulse.py (same argument; the model, manifold and block modules differ).
 
 usage: FAYE_EPS=1/20 python3 prove_pulse.py {interval|c1|c2|custom:<num>:<exp10>:<sign>} [T_enter]

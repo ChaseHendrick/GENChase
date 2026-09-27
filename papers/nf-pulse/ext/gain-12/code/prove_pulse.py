@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Computer-assisted existence proof driver for the fast travelling pulse (gain-12 extension:
+"""Computer-assisted existence proof driver for the fast traveling pulse (gain-12 extension:
 beta = 12, theta = 1/4, eps = 3/20, gamma = 0; block from the Lyapunov-form construction of block.py).
 
 usage: python3 prove_pulse.py {interval|c1|c2} [T_enter]

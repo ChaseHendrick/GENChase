@@ -56,7 +56,7 @@ Severity: must-fix, should-fix, nit. Status: confirmed (reproduced or proved), u
 - **P1. The literature framing omits the closest prior work.** Burlakov, Oleynik and Ponosov,
   *Mathematics* 13 (2025) 701, doi:10.3390/math13050701 (open access, read in full; existence checked on
   Crossref). It treats the same Pinto-Ermentrout model and allows a fixed eps with
-  0 < eps < (sigma + 4)^-1, which includes eps = 1/10. Its Theorem 3 gives travelling waves for continuous
+  0 < eps < (sigma + 4)^-1, which includes eps = 1/10. Its Theorem 3 gives traveling waves for continuous
   rates that approach a Heaviside, conditional on a Heaviside pulse meeting their conditions (17) to (19)
   and (21). The prior-art check reads it as not covering this theorem, for these reasons: it assumes a C^1
   kernel (e^{-|x|}/2 is not C^1 at 0); by that check's reading, its Lemma 5 needs integrability that a

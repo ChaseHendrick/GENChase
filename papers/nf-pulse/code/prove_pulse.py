@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Computer-assisted existence proof driver for the fast travelling pulse.
+"""Computer-assisted existence proof driver for the fast traveling pulse.
 
 usage: python3 prove_pulse.py {interval|c1|c2} [T_enter]
 

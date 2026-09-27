@@ -1,6 +1,6 @@
 """Independent reimplementation: shared model definitions (ball arithmetic, python-flint arb).
 
-Written without reading ../../../code. Model (Pinto-Ermentrout travelling wave, gamma = 0):
+Written without reading ../../../code. Model (Pinto-Ermentrout traveling wave, gamma = 0):
     U' = kappa (Q - U - V),  V' = eps kappa U,  Q' = P,  P' = Q - S(U),
     S(u) = 1/(1 + exp(-beta (u - theta))),  beta = 20, theta = 1/4, eps = 1/10, kappa = 1/c.
 State order: (U, V, Q, P).  Rest: (0, S(0), S(0), 0).

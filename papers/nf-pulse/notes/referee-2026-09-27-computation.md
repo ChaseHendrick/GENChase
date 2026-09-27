@@ -1,4 +1,4 @@
-**Referee report on `papers/nf-pulse/paper/nf-pulse.tex`, "Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability"**
+**Referee report on `papers/nf-pulse/paper/nf-pulse.tex`, "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability"**
 
 This report is an in-project reading by an independent agent (Claude), dated 2026-09-27. It is **not an outside review**. Before writing the findings I did not open `papers/nf-pulse/review/` or `papers/nf-pulse/notes/`. One exception to note: `node tools/paper-check.js` printed a one-line status that it takes from `notes/QUALITY.md`. I did not edit any file in the repository. Every rerun used a copy of the folder at `/tmp/claude-0/-home-user-GENChase/ac7d9e0e-5b9b-52ee-8f9a-025178f1bd06/scratchpad/nf`.
 
@@ -134,7 +134,7 @@ I also re-derived the key algebra myself:
 **Sources.**
 - Quotations checked in the primary sources: Hastings arXiv:1503.04057v2 (p. 2 and footnote 4 on p. 6), Dyson arXiv:2511.17328v2 (abstract, pp. 7–8 and 26), Habib–Veltz arXiv:2412.03613v1 (Theorem 1, p. 7, and the "conjectured" remark, p. 2), Faye–Scheel arXiv:1311.6508v1 (Theorem 1 and p. 3). All accurate.
 - The Faye-model parameters in Hastings's footnote 3 (λ = 20, κ = 0.22, β = 5, b = 4.5) match the paper.
-- Two web searches found no earlier computer-assisted proof of a travelling pulse in a neural field. This is not exhaustive.
+- Two web searches found no earlier computer-assisted proof of a traveling pulse in a neural field. This is not exhaustive.
 
 ## What was not checked
 

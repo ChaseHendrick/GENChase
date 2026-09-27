@@ -24,9 +24,9 @@ Model (Faye, SIAM J. Appl. Dyn. Syst. 12 (2013) 2032-2067, eqs. (2.1)-(2.3), tau
 Faye's illustration values (his Figs. 1, 6-8; Hastings, Proc. Roy. Soc. Edinburgh A 147 (2017), footnote 3):
 lam = 20, kap = 0.22, b = 4.5, beta = 5; Faye's figures use eps = 0.01 (Fig. 6(b): 0.005).
 
-Travelling waves u = u(xi), q = q(xi), xi = x + c t.  With v = J * (q S(u)) one has b^2 v - v'' = b^2 q S(u)
+Traveling waves u = u(xi), q = q(xi), xi = x + c t.  With v = J * (q S(u)) one has b^2 v - v'' = b^2 q S(u)
 (Faye (2.7)); the bounded solution of that equation is unique, so a bounded solution of the ODE below is a
-travelling wave of the field equation.  With w = v' and k = 1/c (Faye (2.8)):
+traveling wave of the field equation.  With w = v' and k = 1/c (Faye (2.8)):
 
     u' = k (v - u),   v' = w,   w' = b^2 (v - q S(u)),   q' = eps k (1 - q - beta q S(u)).
 

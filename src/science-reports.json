@@ -122,7 +122,7 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
     "equation": "xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(|r₀(cosθ,sinθ)−xᵢ|²+λ²)",
     "status": "validated within stated limits",
@@ -170,7 +170,7 @@
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -189,7 +189,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -208,7 +208,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -750,7 +750,7 @@
       {
         "test": "tools/rdx-science.js",
         "scope": "Actual rdx.js Klausmeier step shader in WebGL2 float32 (SwiftShader): independent Float64 update including the rainfall gradient and upwind water flux, the uniform states, the flat-ground Turing onset in D_w, the sloped differential-flow instability and a pure water advection-diffusion-loss mode.",
-        "criteria": "Update within 2e-5; vegetated state n = (a + sqrt(a^2 - 4m^2))/2m held within 1e-5 relative, cover collapses to (a, 0) for a < 2m; critical mode sign correct and within 5% at 0.95 and 1.05 D_w,c; sloped fastest mode complex rate within 1% of the exact discrete rate, growing and travelling uphill; observed order 0.8 to 1.25 (formal 1, upwind) with Richardson limit within 1% of the continuum; water mode within 2e-5 of the exact discrete factor with order 0.8 to 1.25.",
+        "criteria": "Update within 2e-5; vegetated state n = (a + sqrt(a^2 - 4m^2))/2m held within 1e-5 relative, cover collapses to (a, 0) for a < 2m; critical mode sign correct and within 5% at 0.95 and 1.05 D_w,c; sloped fastest mode complex rate within 1% of the exact discrete rate, growing and traveling uphill; observed order 0.8 to 1.25 (formal 1, upwind) with Richardson limit within 1% of the continuum; water mode within 2e-5 of the exact discrete factor with order 0.8 to 1.25.",
         "limitations": "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference.",
         "benchmark": "Uniform states and linearization of the Klausmeier equations derived by hand; continuum advection symbol i k v, upwind lattice symbol v (e^{ikh} - 1)/h, and the semi-implicit one-step map.",
         "failureControl": "Plant uptake sign flip, water advected the wrong way, water diffusion 5% high and a broken stencil; each must fail.",
@@ -1385,7 +1385,7 @@
         "scope": "Actual rdx.js step shader (Barkley and FitzHugh-Nagumo) in WebGL2 float32 (SwiftShader), periodic 5- and 9-point stencils: independent Float64 update, pure-diffusion Fourier modes, the bistable front obtained with eps = 0 and D_v = 0, and the Barkley upstroke kinetics.",
         "criteria": "Update within 2e-5 over 10 steps; diffusion modes within 2e-5 of the exact discrete factor and observed order 2 +/- 0.25 against the continuum; front speed within 0.5% of the exact value at h = 1/16 with observed order 1.7 to 2.3; Barkley upstroke Euler order 0.85 to 1.2 against RK4.",
         "limitations": "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding).",
-        "benchmark": "Exact travelling-front speed c = (u1 + u3 - 2 u2)/sqrt 2 of u_t = u_xx + u - u^3 - v0 (the FHN u equation with v frozen), with the exact profile verified numerically in the harness; exact heat and decay modes; Float64 RK4 kinetics.",
+        "benchmark": "Exact traveling-front speed c = (u1 + u3 - 2 u2)/sqrt 2 of u_t = u_xx + u - u^3 - v0 (the FHN u equation with v frozen), with the exact profile verified numerically in the harness; exact heat and decay modes; Float64 RK4 kinetics.",
         "failureControl": "Reaction sign flip, recovery coupling sign flip, activator diffusion 10% high, recovery diffusion 5% high, 5-point centre weight -3.9 and a sign-flipped Barkley threshold; each must fail its criterion.",
         "command": "node tools/rdx-science.js --write",
         "results": "validation/results/rdx-science.json"
@@ -2098,7 +2098,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -2155,7 +2155,7 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
     "status": "validated within stated limits",
@@ -2959,7 +2959,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -3172,7 +3172,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "partially validated",
@@ -3271,7 +3271,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -3339,7 +3339,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -3461,7 +3461,7 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d²/λ and as a half-period image at z_T/2 = d²/λ. Depth on this plate is in units of d²/λ, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
     "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z)|²,   z in d²/λ, revival at 2,   z_T = 2 d²/λ",
     "status": "validated within stated limits",
@@ -3578,7 +3578,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "sourceSha256": "a3a8fcfd420329534b186cc98edf69cf8bc949d7c127687ceeea1e3fc1e63466",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",
@@ -3944,7 +3944,7 @@
   {
     "id": "causticsea",
     "source": "src/modules/causticsea.js",
-    "sourceSha256": "fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458",
+    "sourceSha256": "abc48f1c2e319fdb8a9489d7a9a556c010f1f574fc2ab34b182dfb6adc342894",
     "reference": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
     "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
     "status": "unvalidated",
@@ -4203,7 +4203,7 @@
   {
     "id": "crapper",
     "source": "src/modules/crapper.js",
-    "sourceSha256": "463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92",
+    "sourceSha256": "3dd3a629e07e3a075c331d902cf66739062db65bf431c1fa622914963e087616",
     "reference": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
     "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
     "status": "unvalidated",

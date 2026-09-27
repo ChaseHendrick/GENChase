@@ -68,7 +68,7 @@
     legacy: { 6: { operator: 'pre6' } },
     hints: {
       Sea: 'r is how hard the pattern is driven. Wavelength is the Swift–Hohenberg k₀ in cells.',
-      Loop: 'η = 0 is the control: the same sea, the same caustic, no writing. η > 0 is the closed loop. s is how far the light has travelled after the surface.',
+      Loop: 'η = 0 is the control: the same sea, the same caustic, no writing. η > 0 is the closed loop. s is how far the light has traveled after the surface.',
     },
     palette: true, defaultPalette: 'nightshade', surprise, sanitize,
     create(host) {

@@ -424,7 +424,7 @@
     // Optional lab-frame orbits: a particle labelled (φ0, ψ0) in the wave frame
     // rides a streamline. In the lab frame we add the wave speed, so the path
     // is the image of φ = φ0 + τ over a period, shifted back by c τ. For a
-    // travelling wave that is the closed orbit around the Lagrangian centre.
+    // traveling wave that is the closed orbit around the Lagrangian centre.
     const orbitW = Math.max(1.0, Smin * (wood ? 0.0026 : 0.0022));
     function drawOrbit(phi, psi, tone) {
       const n = 72;
