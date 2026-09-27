@@ -10,8 +10,21 @@ Raw results: [`sharpness-sweep-8in-300ppi.jsonl`](sharpness-sweep-8in-300ppi.jso
 
 **Mosaic prints.** Those twelve tabs export by drawing a W × H field buffer (for example 160 × 200) to the print size with `imageSmoothingEnabled = false`, so the sheet is a grid of flat squares (12 px at 8 in, 300 ppi). For analytic fields (rogue, airy, soliton, breather, and others to classify) the honest fix is to evaluate the field at print resolution in `exportPNG`. For true lattices, where each cell is a physical site (kitaev, ssh, the time-crystal chain), the squares are honest; the better print is vector rectangles through `exportSVG`, per AGENTS.md.
 
+## 1b. Rerun, 2026-09-27, every pixel
 
-<details><summary>Per-tab sweep results (edge, acuity, verdict, grid)</summary>
+`tools/sharp.js` now samples stride 1. Raw results: [`sharpness-sweep-2026-09-27-8in-300ppi.jsonl`](sharpness-sweep-2026-09-27-8in-300ppi.jsonl), one line per tab, all 134 ids in `dist/studio.html`. Verdicts: 60 sharp, 17 ok, 56 SOFT, 1 timed out (pendulum; a second try also returned `state: timeout` inside the tool's 240 s export wait). Same rule as the tool: soft when edge is below 0.15, or when edge is below 0.5 and acuity is below 0.10.
+
+The even-offset file above is not replaced. It is the measurement of the blind spot.
+
+What the stride change did, against that file:
+
+- Featureless mosaics that are now sharp: timecrystal (edge 2), skin (1.38), ssh (2.11), kitaev (1.39), loschmidt (1.56). Their old edge was 0.
+- The other old edge-0 analytic plates stay SOFT. They now have a small edge (rogue 0.06, fput 0.12, soliton 0.14, breather 0.07, tennis 0.03, airy 0.13, thouless 0.10) except where contrast is at or below 0.5, which forces edge to 0 by the formula in `sharp.js` (veselago, reuleaux, apollonian, hasimoto, and the three vortex-lock plates). That is low contrast, not a missed block edge: their mad(1) is above 0.
+- physarum3d finished SOFT (it had timed out). fractal finished sharp (it had timed out).
+- Four tabs were not in the 130: phase sharp, neural-field SOFT, fisher-kpp sharp, cattaneo sharp.
+- Nearby threshold crossings, not the sampler: cahn ok to SOFT (0.41/0.12 to 0.36/0.099), plasma ok to SOFT, swift SOFT to ok, scars SOFT to ok.
+
+<details><summary>Per-tab sweep results, 2026-09-24 even-offset sampler (edge, acuity, verdict, grid)</summary>
 
 | tab | edge | acuity | verdict | field grid | size |
 |---|---|---|---|---|---|
