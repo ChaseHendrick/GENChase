@@ -28,6 +28,7 @@ stable face (F). Hence it leaves B through the face z1 = +r at a point with |z2|
 This exit set is what prove_bracket.py integrates.
 """
 import json
+import os
 import sys
 import numpy as np
 from flint import arb, arb_mat, arb_poly, ctx
@@ -44,13 +45,65 @@ def phi_of(T):
     return arb(3) ** ((arb(T) - arb('6.3')) / 10)
 
 
+# The leak potential. Default: the value that makes the resting current zero, so that rest is at u = 0. With the
+# environment variable HH_EL set (e.g. HH_EL=10.613, Hodgkin and Huxley's printed V_l = -10.613 mV in their sign
+# convention), E_l is that decimal number and rest is the nearby equilibrium, enclosed by an interval Newton method.
+HH_EL = os.environ.get('HH_EL')
+
+
+def tag(T):
+    """File-name tag of a run: the temperature, and the leak potential when it is not the zero-current value."""
+    return '%s' % T + ('_El%s' % HH_EL if HH_EL else '')
+
+
+def _gates_inf(U):
+    """m_inf, n_inf, h_inf at U (an arb or an arb_series)."""
+    from hhseries import psi_series
+    if isinstance(U, arb):
+        x1, x2 = (25 - U) / 10, (10 - U) / 10
+        am, an = x1 / (x1.exp() - 1), x2 / (x2.exp() - 1) / 10
+    else:
+        am, an = psi_series((25 - U) / 10, ctx.cap), psi_series((10 - U) / 10, ctx.cap) / 10
+    bm, bn = (U * (-arb(1) / 18)).exp() * 4, (U * (-arb(1) / 80)).exp() / 8
+    ah, bh = (U * (-arb(1) / 20)).exp() * (arb(7) / 100), 1 / (((30 - U) / 10).exp() + 1)
+    return am / (am + bm), an / (an + bn), ah / (ah + bh)
+
+
+def _iss(U, EL):
+    m, n, h = _gates_inf(U)
+    return m ** 3 * h * (U - 115) * 120 + n ** 4 * (U + 12) * 36 + (U - EL) * (arb(3) / 10)
+
+
 def rest_state():
-    am, bm = arb('2.5') / (arb('2.5').exp() - 1), arb(4)
-    an, bn = arb(1) / 10 / (arb(1).exp() - 1), arb(1) / 8
-    ah, bh = arb(7) / 100, 1 / (arb(3).exp() + 1)
-    m, n, h = am / (am + bm), an / (an + bn), ah / (ah + bh)
-    EL = (36 * n ** 4 * 12 - 120 * m ** 3 * h * 115) / (arb(3) / 10)
-    return [arb(0), arb(0), m, n, h], EL
+    if not HH_EL:
+        am, bm = arb('2.5') / (arb('2.5').exp() - 1), arb(4)
+        an, bn = arb(1) / 10 / (arb(1).exp() - 1), arb(1) / 8
+        ah, bh = arb(7) / 100, 1 / (arb(3).exp() + 1)
+        m, n, h = am / (am + bm), an / (an + bn), ah / (ah + bh)
+        EL = (36 * n ** 4 * 12 - 120 * m ** 3 * h * 115) / (arb(3) / 10)
+        return [arb(0), arb(0), m, n, h], EL
+    from flint import arb_series
+    EL = arb(HH_EL)
+    # interval Newton for g(u) = I(u, m_inf(u), n_inf(u), h_inf(u)) = 0 on U = [-1, 1]: if
+    # N(U) = mid(U) - g(mid(U)) / g'(U) lies in the interior of U, g has exactly one zero in U and it lies in N(U)
+    import hhwave
+    U = arb(hhwave.Wave(18.5, EL=float(HH_EL)).urest) + arb(0, '1e-3')   # float start (rest does not depend on T)
+    old = ctx.cap
+    for it in range(60):
+        ctx.cap = 2
+        dg = _iss(arb_series([U, 1]), EL).coeffs()[1]
+        ctx.cap = old
+        mU = arb(U.mid())
+        N = mU - _iss(mU, EL) / dg
+        if it == 0 and not (N.lower() > U.lower() and N.upper() < U.upper()):
+            raise ArithmeticError('interval Newton for the rest state did not contract')
+        N = N.intersection(U)          # later steps: the zero stays in N and in U
+        if N.rad() >= U.rad() * 0.5:
+            U = N
+            break
+        U = N
+    m, n, h = _gates_inf(U)
+    return [U, arb(0), m, n, h], EL
 
 
 def jac(y, K, phi, EL):

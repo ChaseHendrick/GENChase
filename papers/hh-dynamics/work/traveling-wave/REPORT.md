@@ -420,8 +420,19 @@ branch of the unstable manifold along which u increases, and u exceeds a proved 
   with an enclosure of the whole path over every step (`lohner6.step_range`) inside int B0, until the set lies in K-
   (for one endpoint) and in K+ (for the other).
 
-**Argument.** For K in [K1, K2] let x_K(t) be the solution with x_K(0) = p(K); it lies on W^u(y*), so x_K(t) -> y* as
-t -> -infinity, and K -> x_K(t) is continuous uniformly on compact time intervals (by H2' and continuous dependence).
+**Argument.** *The exit point.* Fix K in [K1, K2]. In z = T_B (y - y*) the unstable eigenvector is e1 up to about
+1e-70 (T_B inverts a rigorously enclosed eigenbasis to that accuracy, and the eigenvector moves by about 1e-45 over
+the K interval), while the box B of Lemma B has aspect ratio s/r_B of at least 2e-26; so the branch of W^u(y*) tangent
+to +e1 lies, near y*, in the interior of B, where L = z1^2 - |z'|^2 > 0. Lemma B's cone condition makes L strictly
+increasing while the orbit is in B, and its inflow conditions forbid leaving through a stable face; the orbit cannot
+stay in B (an omega-limit set in B would lie in a level set of L, which the cone condition allows only at y*, where
+L = 0 < L(orbit)), so it leaves through the face z1 = r_B, which is the exit set E. On that whole face z1' > 0 (H2'),
+so the first exit is transversal; call the exit point p(K). *Continuity.* By the local unstable manifold theorem with
+parameters there is delta in (0, r_B) such that the point q(K) of the branch with z1 = delta depends continuously on K;
+the time from q(K) to the transversal first exit through z1 = r_B then depends continuously on K (implicit function
+theorem; before the exit the orbit is in the interior of B, since it cannot touch a stable face from inside), and so
+does p(K). *The shooting.* For K in [K1, K2] let x_K(t) be the solution with x_K(0) = p(K); it lies on W^u(y*), so
+x_K(t) -> y* as t -> -infinity, and K -> x_K(t) is continuous uniformly on compact time intervals.
 Let S+ (S-) be the set of K for which there is t >= T_enter with x_K([T_enter, t]) in int B0 and x_K(t) in K+ (K-).
 Both sets are open in [K1, K2] (conditions on a compact time interval, with open targets), disjoint (by H3 a cone
 cannot be left while the orbit is in B0) and non-empty (H5). As [K1, K2] is connected, some K* is in neither. Its

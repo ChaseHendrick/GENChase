@@ -160,8 +160,10 @@ def main():
     t_end = float(sys.argv[2]) if len(sys.argv) > 2 else 10.0
     phi = C.phi_of(T)
     y, EL = C.rest_state()
-    d = np.load('../data/pulse_%s.npz' % T)
+    d = np.load('../data/pulse_%s.npz' % T)                  # the zero-current profile, as the initial guess
     tp, Yp, K0 = d['t'], d['Y'], float(d['K'])
+    import hhwave
+    shift = hhwave.Wave(T, EL=float(C.HH_EL)).rest - hhwave.Wave(T).rest if C.HH_EL else np.zeros(5)
     K = arb(K0)
     sigma0 = arb(SIGMA0)
     # start time in profile time: u_prof = sigma0 (log-linear interpolation on the early exponential part)
@@ -179,9 +181,9 @@ def main():
     nodes.append(t_end)
     taus = [nodes[i + 1] - nodes[i] for i in range(len(nodes) - 1)]
     Nn = len(taus)                                   # pieces; unknown states Y_1..Y_{Nn-1}... see below
-    spl = [CubicSpline(tp, Yp[i]) for i in range(5)]
+    spl = [CubicSpline(tp, Yp[i] + shift[i]) for i in range(5)]
     Y = [[arb(float(spl[i](nodes[j]))) for i in range(5)] for j in range(1, Nn)]
-    log = open('../data/hp_pulse_%s.log' % T, 'w')
+    log = open('../data/hp_pulse_%s.log' % C.tag(T), 'w')
 
     def say(*a):
         s = ' '.join(str(x) for x in a)
@@ -199,7 +201,7 @@ def main():
     rhist = []
     stepseq = [[] for _ in range(Nn)]
     TOLSCALE = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
-    state_file = '../data/logs/hp_pulse_%s_state_%s.json' % (T, TOLSCALE)
+    state_file = '../data/logs/hp_pulse_%s_state_%s.json' % (C.tag(T), TOLSCALE)
     import os
     if os.path.exists(state_file):
         st = json.load(open(state_file))
@@ -273,7 +275,7 @@ def main():
            'p0': [c.str(70, radius=False) for c in p0], 'lambda_u': lam.str(40, radius=False)}
     out['tol_scale'] = TOLSCALE
     out['steps_per_piece'] = [len(q) for q in stepseq]
-    json.dump(out, open('../data/hp_pulse_%s%s.json' % (T, '' if TOLSCALE == 1.0 else '_tol%g' % TOLSCALE), 'w'),
+    json.dump(out, open('../data/hp_pulse_%s%s.json' % (C.tag(T), '' if TOLSCALE == 1.0 else '_tol%g' % TOLSCALE), 'w'),
               indent=1)
     say('K* = %s' % K.str(60, radius=False))
 

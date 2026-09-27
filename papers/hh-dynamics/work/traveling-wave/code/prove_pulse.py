@@ -65,11 +65,11 @@ def require(cond, msg):
 
 
 def cfg_path(T):
-    return '%s/pulse_proof_%s_config.json' % (DATA, T)
+    return '%s/pulse_proof_%s_config.json' % (DATA, C.tag(T))
 
 
 def out_path(T, stage):
-    return '%s/pulse_proof_%s_%s.json' % (DATA, T, stage)
+    return '%s/pulse_proof_%s_%s.json' % (DATA, C.tag(T), stage)
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ def out_path(T, stage):
 
 def make_config(T, delta, r_B, T_enter, tol_final, tol_min):
     ctx.prec = PREC
-    hp = json.load(open('%s/hp_pulse_%s.json' % (DATA, T)))
+    hp = json.load(open('%s/hp_pulse_%s.json' % (DATA, C.tag(T))))
     Ks = arb(hp['K'])
     # K1, K2: exact dyadic numbers (midpoints) at distance about delta from the numerical K*
     K1 = arb((Ks - arb(delta)).mid())
@@ -301,7 +301,7 @@ def run_stage(T, stage):
     else:
         raise SystemExit('unknown stage')
     F = L.Field(S.phi, S.EL)
-    ck = '%s/ckpt/pulse_%s_%s.json' % (DATA, T, stage)
+    ck = '%s/ckpt/pulse_%s_%s.json' % (DATA, C.tag(T), stage)
     os.makedirs(os.path.dirname(ck), exist_ok=True)
     h = cfg_hash(cfg, stage)
     state = {'phase': 'approach', 'steps': 0, 'umax_lower': -1e9, 'umax_upper_steps': -1e9}
@@ -433,7 +433,7 @@ def stage_summary(T):
         theta(K1).str(55, radius=False), theta(K2).str(55, radius=False)))
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
     print('\n'.join(lines))
-    open('%s/pulse_proof_%s_summary.txt' % (DATA, T), 'w').write('\n'.join(lines) + '\n')
+    open('%s/pulse_proof_%s_summary.txt' % (DATA, C.tag(T)), 'w').write('\n'.join(lines) + '\n')
     return ok
 
 

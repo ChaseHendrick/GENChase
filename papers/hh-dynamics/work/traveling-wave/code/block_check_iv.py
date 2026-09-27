@@ -21,12 +21,14 @@ Jacobian of f = (w, K (w + I), phi (a_x (1 - x) - b_x x) for x = m, n, h), I = 1
   psi(x) = x/(e^x - 1), psi'(x) = (e^x - 1 - x e^x)/(e^x - 1)^2 (x stays in [0.8, 2.7] on the block: no singularity).
 """
 import json
+import os
 import sys
 import time
 from fractions import Fraction
 from mpmath import iv, mp
 
 iv.prec = 113
+mp.prec = 113
 
 
 def I(lo, hi=None):
@@ -84,10 +86,42 @@ def jac(y, K, phi):
             [phi * (dah * (1 - h) - dbh * h), z, z, z, -phi * (ah + bh)]]
 
 
+HH_EL = os.environ.get('HH_EL')
+
+
+def gates(u):
+    am, _, bm, _, an, _, bn, _, ah, _, bh, _ = rates(u)
+    return am / (am + bm), an / (an + bn), ah / (ah + bh)
+
+
 def rest():
-    am, _, bm, _, an, _, bn, _, ah, _, bh, _ = rates(iv.mpf(0))
-    m, n, h = am / (am + bm), an / (an + bn), ah / (ah + bh)
-    return [iv.mpf(0), iv.mpf(0), m, n, h]
+    """Rest: u = 0 for the zero-current leak potential; with HH_EL set, the zero of the steady-state current
+    g(u) = I(u, m_inf, n_inf, h_inf) enclosed by bisection with interval evaluations of g (own code, no derivatives):
+    g(a) < 0 < g(b) at the ends of the final interval, so it contains a zero; it lies within 1e-3 of the float rest
+    state, where certify_rest_wave.rest_state proves by an interval Newton step that the zero is unique."""
+    if not HH_EL:
+        m, n, h = gates(iv.mpf(0))
+        return [iv.mpf(0), iv.mpf(0), m, n, h]
+    EL = iv.mpf(HH_EL)
+
+    def g(u):
+        m, n, h = gates(u)
+        return 120 * m ** 3 * h * (u - 115) + 36 * n ** 4 * (u + 12) + iv.mpf('0.3') * (u - EL)
+    a, b = mp.mpf('-0.5'), mp.mpf('0.5')
+    if not (g(iv.mpf(a)).b < 0 < g(iv.mpf(b)).a):
+        raise ArithmeticError('no sign change for the rest state')
+    for _ in range(300):
+        c = (a + b) / 2
+        gc = g(iv.mpf(c))
+        if gc.b < 0:
+            a = c
+        elif gc.a > 0:
+            b = c
+        else:
+            break
+    u = iv.mpf([a, b])
+    m, n, h = gates(u)
+    return [u, iv.mpf(0), m, n, h]
 
 
 def matmul(A, B):
@@ -160,8 +194,9 @@ def check(Mi, Mii, ystar, K, phi, rho, r, which, maxdepth=24):
 
 def main():
     T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
-    blk = json.load(open('../data/closing_block_%s.json' % T))
-    cfg = json.load(open('../data/pulse_proof_%s_config.json' % T))
+    tg = '%s' % T + ('_El%s' % HH_EL if HH_EL else '')
+    blk = json.load(open('../data/closing_block_%s.json' % tg))
+    cfg = json.load(open('../data/pulse_proof_%s_config.json' % tg))
     Tm = [[Fraction(float.fromhex(v)) for v in row] for row in blk['T_hex']]
     Mq = [[blk['weights'][i] * Tm[i][j] for j in range(5)] for i in range(5)]
     Mqi = rational_inverse(Mq)
@@ -189,7 +224,7 @@ def main():
     ok = okC and okE and not (b1 and b2)
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
     print('\n'.join(lines))
-    open('../data/block_check_iv_%s.txt' % T, 'w').write('\n'.join(lines) + '\n')
+    open('../data/block_check_iv_%s.txt' % tg, 'w').write('\n'.join(lines) + '\n')
     return ok
 
 

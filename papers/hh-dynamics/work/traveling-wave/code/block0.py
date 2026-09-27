@@ -72,7 +72,7 @@ def make_T(T, phi, EL, Kf):
 
 
 def block_file(T):
-    return '../data/closing_block_%s.json' % T
+    return '../data/closing_block_%s.json' % C.tag(T)
 
 
 def load_block(T):
@@ -250,7 +250,7 @@ def main():
     T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
     import os
     ctx.prec = 128
-    hp = '../data/hp_pulse_%s.json' % T
+    hp = '../data/hp_pulse_%s.json' % C.tag(T)
     if os.path.exists(hp):
         Ks = arb(json.load(open(hp))['K'])
         Kf = float(Ks.mid())
@@ -272,7 +272,7 @@ def main():
     ok = res['ok'] and not neg['ok']
     out.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
     print('\n'.join(out))
-    open('../data/block0_%s.txt' % T, 'w').write('\n'.join(out) + '\n')
+    open('../data/block0_%s.txt' % C.tag(T), 'w').write('\n'.join(out) + '\n')
     return ok
 
 
