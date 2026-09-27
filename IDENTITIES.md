@@ -13,7 +13,7 @@ An entry here is something found and proved on a plate: a closed form, a unique 
 
 The search ledger is [`RESEARCH.md`](RESEARCH.md). The plates are `#three-vortex-bound`, `#parallelogram-lock`, and `#quincunx-lock`.
 
-**Name:** Three-vortex collapse bound. The former personal name has been retired because the formula specializes Gröbli’s published work.
+**Name:** Equal-pair three-vortex collapse (renamed on 2026-09-27 from "Three-vortex collapse bound", because √2 is the minimum for this family only, while the bound over every three-vortex collapse is √3/2; the former personal name was retired earlier because the formula specializes Gröbli’s published work).
 
 ## What a miss is (not a broken site)
 
@@ -44,7 +44,7 @@ Existing names identify this project's writeups and plates; they do not establis
 
 | Name | Tab | 🔵 Mathematical statement | 🟠 Conditions that invalidate the check |
 |---|---|---|---|
-| Three-vortex collapse bound | `three-vortex-bound` | \|ω₀\| t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
+| Equal-pair three-vortex collapse | `three-vortex-bound` | \|ω₀\| t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
 | Parallelogram lock | `parallelogram-lock` | \|ω₀\| t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
 | Quincunx lock | `quincunx-lock` | \|ω₀\| t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
@@ -128,7 +128,7 @@ The identities note of 2026-09-21 ([`identities/note.pdf`](identities/note.pdf),
 
 ---
 
-## Three-vortex collapse bound
+## Equal-pair three-vortex collapse
 
 
 An explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance.
@@ -141,7 +141,7 @@ In 1877 Gröbli found that if you place those three just right, they do not wand
 
 Kimura, in 1987, wrote two separate formulas for exactly this family: how fast the triangle is spinning (call that ω, omega) and how fast it shrinks, which fixes how long until the crash (call that t_c). Aref gave such formulas for every collapsing triangle in 2010. Multiply the size of the spin by the time to the crash and you get a single score. That score is also the tightness of the spiral they trace as they shrink: a small score is a tight spiral that finishes soon; a large score is a looser, slower collapse.
 
-**Three-vortex collapse bound is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. The floor √2 belongs to this equal-strength family. When the two whirlpools that spin the same way have different strengths the floor is lower, and over every three-vortex collapse the score stays above √3/2 (about 0.866); that bound, and √2 as its equal-strength end, are proved in the minimal-winding paper (Corollary 1 and Remark 2). Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
+**The equal-pair three-vortex collapse bound is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. The floor √2 belongs to this equal-strength family. When the two whirlpools that spin the same way have different strengths the floor is lower, and over every three-vortex collapse the score stays above √3/2 (about 0.866); that bound, and √2 as its equal-strength end, are proved in the minimal-winding paper (Corollary 1 and Remark 2). Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
 
 The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: the [explicit comparison](identities/ORIGINALITY-FOLLOWUP.md) recovers this very formula from Gröbli’s 1877 coefficient, and it is the ratio of the two rates Kimura gives for this family (1987, Eq. (4.4)). Novikov–Sedov used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
 
@@ -199,7 +199,7 @@ t_c=\frac{\pi}{3}\Bigl(4u+\frac{1}{u}\Bigr),\qquad
 2\pi\omega_0=\frac{3(2u^2+1)}{4u^2+1}.
 $$
 
-These are Kimura's rates (J. Phys. Soc. Jpn. 56 (1987), Eq. (4.4), for Γ = (2, 2, −1)), rescaled to this family and written in the variable u: with his normalization of the circulations, κ = (A + iB)/(4π) for Γ = (1, 1, −1/2) (Table 1 of the minimal-winding paper), so the two agree only after time is rescaled; Aref's τ and Ω (2010) specialize to them. Their product is Three-vortex collapse bound and does not depend on the length unit. The collapse time at this length has a unique minimum 4π/3 at u = 1/2. That fastest collapse is Kimura's Eq. (4.6), and it appears again in Leoncini, Kuznetsov and Zaslavsky, Physics of Fluids 12, 1911 (2000), Fig. 18. It is not a second identity and it is not claimed here.
+These are Kimura's rates (J. Phys. Soc. Jpn. 56 (1987), Eq. (4.4), for Γ = (2, 2, −1)), rescaled to this family and written in the variable u: with his normalization of the circulations, κ = (A + iB)/(4π) for Γ = (1, 1, −1/2) (Table 1 of the minimal-winding paper), so the two agree only after time is rescaled; Aref's τ and Ω (2010) specialize to them. Their product is the equal-pair winding (u + 1/(2u)) and does not depend on the length unit. The collapse time at this length has a unique minimum 4π/3 at u = 1/2. That fastest collapse is Kimura's Eq. (4.6), and it appears again in Leoncini, Kuznetsov and Zaslavsky, Physics of Fluids 12, 1911 (2000), Fig. 18. It is not a second identity and it is not claimed here.
 
 ### Visualization
 
@@ -213,7 +213,7 @@ Octant should read 1, 0, and 0. The Broken configuration moves off the circle, s
 
 ### Attribution and originality
 
-Three-vortex collapse bound is the project's name for this formula and sharp bound. Its formula is an explicit specialization and reparameterization of Gröbli's 1877 spiral coefficient (§10, equations 8, 9, 11 and 12); see the [comparison with the original scan](identities/ORIGINALITY-FOLLOWUP.md) and Remark 2 of the minimal-winding paper. Kimura (1987, Sect. 4) gives the two rates in exactly this parametrization, for Γ = (2, 2, −1), in his Eq. (4.4), and their ratio is the formula above. Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
+Equal-pair three-vortex collapse (formerly Three-vortex collapse bound) is the project's name for this formula and sharp bound. Its formula is an explicit specialization and reparameterization of Gröbli's 1877 spiral coefficient (§10, equations 8, 9, 11 and 12); see the [comparison with the original scan](identities/ORIGINALITY-FOLLOWUP.md) and Remark 2 of the minimal-winding paper. Kimura (1987, Sect. 4) gives the two rates in exactly this parametrization, for Γ = (2, 2, −1), in his Eq. (4.4), and their ratio is the formula above. Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
 
 The explicit minimum and equality triangle were derived here and recorded on 2026-09-19. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model.
 
@@ -389,7 +389,7 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 Cite the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* (Chase Hendrick, 2026; the example after Proposition 3) and the classical sources: Novikov and Sedov (1979) for the family and its rates, and Gotoda (2020 preprint, eq. 3.13 and Fig. 3(b)) for the rates in closed form and this configuration.
 
-A different five-vortex slice of the same Novikov–Sedov family, with circulation ratio 3 and radius ratio $\sqrt{3}$ (Proposition 3 of the minimal-winding paper at central circulation $1/2$), recovers the three-vortex product $|\omega_0| t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically; the paper records that the constants $\kappa$ agree as well. That is Three-vortex collapse bound on five vortices, not a third identity, and it is not claimed here.
+A different five-vortex slice of the same Novikov–Sedov family, with circulation ratio 3 and radius ratio $\sqrt{3}$ (Proposition 3 of the minimal-winding paper at central circulation $1/2$), recovers the three-vortex product $|\omega_0| t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically; the paper records that the constants $\kappa$ agree as well. That is the equal-pair three-vortex formula on five vortices, not a third identity, and it is not claimed here.
 
 References:
 
