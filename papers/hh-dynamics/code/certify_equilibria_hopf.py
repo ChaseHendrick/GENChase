@@ -36,8 +36,9 @@ recomputation).  Only the proof checks are steps of the proofs.
 Floating point is used only to choose subdivision points and the midpoints of Newton steps; every conclusion is a
 ball-arithmetic inequality.  Every decimal bound printed in square brackets [lo, hi] (and every bound printed with
 <= or >=) is rounded outward from its ball by outward.py and re-checked as an exact rational at the end; a ball
-printed as [m +/- r] is Arb's own enclosure.  The program prints every check and stops with an error if one fails;
-it writes its report to data/certify_equilibria_hopf.txt.
+printed as [m +/- r] is Arb's own enclosure.  The program prints every check and stops at the first failed check, or at
+an exception, with a line that says so and a nonzero exit status; it writes its report (up to that point, if it stops)
+to data/certify_equilibria_hopf.txt.
 """
 import os, sys, time
 import mpmath as mp
@@ -61,12 +62,39 @@ def say(s=''):
     LINES.append(s)
 
 
+def write_report():
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, 'w') as f:
+        f.write('\n'.join(LINES) + '\n')
+
+
+def stop(why):
+    say()
+    say('STOPPED: %s, after %.1f s; no result of this run stands' % (why, time.time() - T0))
+    write_report()
+    sys.exit(1)
+
+
+def _excepthook(tp, val, tb):
+    """An exception stops the program like a failed check: the report says so and the exit status is nonzero."""
+    try:
+        say()
+        say('STOPPED: exception %s: %s, after %.1f s; no result of this run stands' % (tp.__name__, val, time.time() - T0))
+        write_report()
+    finally:
+        sys.__excepthook__(tp, val, tb)
+
+
+sys.excepthook = _excepthook
+
+
 def check(name, ok, detail='', kind='proof'):
     assert kind in KINDS
     COUNT[kind] += 1
     say(('OK    ' if ok else 'FAIL  ') + '[' + kind + '] ' + name + (('   [' + detail + ']') if detail else ''))
     if not ok:
         FAILED.append(name)
+        stop('check failed (%s)' % name)
 
 
 def lo(x):
@@ -455,6 +483,41 @@ def mpmath_l1(u_mid):
     return mp.re(term) / (2 * om), om
 
 
+def mpmath_transversality(u_mid, om_mid):
+    """Independent, non-rigorous cross-check of Theorem 2(d): d lambda/du and dJss/du by central differences at
+    u_H +- 1e-12, of the eigenvalue near i omega of the Jacobian (exact symbolic derivatives with SymPy, eigenvalues in
+    mpmath at 50 digits) and of Jss (mpmath).  It shares nothing with the series arithmetic of hh_ball.py.  The leak
+    term is written 0.3 u without E_l and J: both enter the vector field additively, so neither d lambda/du nor
+    dJss/du depends on them."""
+    import sympy as sp
+    uu, mm, nn, hh = sp.symbols('u m n h')
+    Psi = lambda x: x / (sp.exp(x) - 1)
+    am, bm = Psi((25 - uu) / 10), 4 * sp.exp(-uu / 18)
+    an, bn = sp.Rational(1, 10) * Psi((10 - uu) / 10), sp.Rational(1, 8) * sp.exp(-uu / 80)
+    ah, bh = sp.Rational(7, 100) * sp.exp(-uu / 20), 1 / (sp.exp((30 - uu) / 10) + 1)
+    F = [-120 * mm ** 3 * hh * (uu - 115) - 36 * nn ** 4 * (uu + 12) - sp.Rational(3, 10) * uu,
+         am * (1 - mm) - bm * mm, an * (1 - nn) - bn * nn, ah * (1 - hh) - bh * hh]
+    X = [uu, mm, nn, hh]
+    fJ = sp.lambdify(X, sp.Matrix(F).jacobian(X), 'mpmath')
+    fr = sp.lambdify(uu, [am, bm, an, bn, ah, bh], 'mpmath')
+    mp.mp.dps = 50
+
+    def steady(u):
+        r = fr(u)
+        return [u, r[0] / (r[0] + r[1]), r[2] / (r[2] + r[3]), r[4] / (r[4] + r[5])]
+
+    def eig_near(u):
+        ev = mp.eig(mp.matrix(fJ(*steady(u))), left=False, right=False)
+        return min(ev, key=lambda z: abs(z - 1j * om_mid))
+
+    def jss(u):
+        u, m, n, h = steady(u)
+        return 120 * m ** 3 * h * (u - 115) + 36 * n ** 4 * (u + 12) + mp.mpf('0.3') * u
+
+    u0, dh = mp.mpf(u_mid), mp.mpf('1e-12')
+    return (eig_near(u0 + dh) - eig_near(u0 - dh)) / (2 * dh), (jss(u0 + dh) - jss(u0 - dh)) / (2 * dh)
+
+
 E_VALUES = (('10.613 (Hodgkin and Huxley)', EL_PRINTED), ('E_l* (zero resting current)', EL_STAR),
             ('10.599 (Guckenheimer and Oliva)', arb(10599) / 1000), ('10.59', arb(1059) / 100),
             ('10.62', arb(1062) / 100))
@@ -489,6 +552,14 @@ for i, UH in enumerate(HOPF):
           'same sign in J)' % tag, lo(dl.real) > 0 or hi(dl.real) < 0,
           'Re d lambda/du in %s, dJss/du in %s, Re d lambda/dJ in %s'
           % (O.iv_g(dl.real, 10), O.iv_g(dJ, 10), O.iv_g(dl.real / dJ, 10)))
+    fd_l, fd_J = mpmath_transversality(UH.mid().str(45, radius=False), float(om.mid()))
+    rel_l = abs(mp.re(fd_l) - mp.mpf(dl.real.mid().str(40, radius=False))) / abs(mp.re(fd_l))
+    rel_J = abs(fd_J - mp.mpf(dJ.mid().str(40, radius=False))) / abs(fd_J)
+    check('%s: independent cross-check of the transversality (central differences of the eigenvalue near i omega of '
+          'the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du' % tag,
+          rel_l < mp.mpf('1e-10') and rel_J < mp.mpf('1e-10'),
+          'finite differences: Re d lambda/du = %s, dJss/du = %s; relative differences %s, %s'
+          % (mp.nstr(mp.re(fd_l), 12), mp.nstr(fd_J, 12), mp.nstr(rel_l, 2), mp.nstr(rel_J, 2)), kind='crosscheck')
     # eigenvectors: the Jacobian is an arrow matrix, so A q = i omega q and w^T A = i omega w^T have closed forms
     a11, a1m, a1n, a1h = g['a11'], g['a1m'], g['a1n'], g['a1h']
     am1, an1, ah1 = g['am1'], g['an1'], g['ah1']
@@ -563,9 +634,7 @@ say('%d checks, %d failed: %d proof checks, %d consistency checks, %d negative c
     '%d cross-checks' % (total, len(FAILED), COUNT['proof'], COUNT['consistency'], COUNT['control'],
                          COUNT['selftest'], COUNT['crosscheck']))
 say('run time %.1f s' % (time.time() - T0))
-os.makedirs(os.path.dirname(OUT), exist_ok=True)
-with open(OUT, 'w') as f:
-    f.write('\n'.join(LINES) + '\n')
+write_report()
 print('report written to %s' % os.path.relpath(OUT))
 if FAILED:
     sys.exit('FAILED: ' + '; '.join(FAILED))

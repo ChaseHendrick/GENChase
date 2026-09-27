@@ -16,7 +16,8 @@ dz*/dE_l), re-proves on each P_E(Z_4) in int Z_4 and sup ||DP_E||_inf < 1 (the t
 centre and the radius of each box, and checks that K of Theorem 5(a) lies in the interior of Z_4 for every piece that
 contains the value.  Since the fixed point of Theorem 5(a) lies in K, it is then the unique fixed point of P_E in Z_4:
 Gamma_s = Gamma(E_l).  Negative controls: K of one value is tested against the box of a piece that does not contain
-that value, and must be refused.
+that value, and must be refused; and K is tested against the box of its own piece with the radii shrunk to 0.1, which
+must be refused too, so that the inclusion test is shown not to be loose.
 
 Check kinds: proof (a step of a proof), control (a negative control that must fail), crosscheck (agreement with the
 committed output data/certify_bistability.txt; not a step of the proof: the boxes used are the ones printed here).
@@ -77,6 +78,20 @@ class Log:
 log = Log(OUT)
 
 
+def _excepthook(tp, val, tb):
+    """An exception stops the program like a failed check: the report says so and the exit status is nonzero."""
+    try:
+        log('')
+        log('STOPPED: exception %s: %s, after %.1f s; no result of this run stands' % (tp.__name__, val,
+                                                                                      time.time() - T_START))
+        log.write()
+    finally:
+        sys.__excepthook__(tp, val, tb)
+
+
+sys.excepthook = _excepthook
+
+
 def check(name, ok, detail='', kind='proof'):
     assert kind in KINDS
     N_CHECKS[kind] += 1
@@ -98,9 +113,22 @@ def zero_current_EL_ball():
 
 def piece_line(r):
     """The line of stage 4b for a piece, without its run time."""
-    return ('E_l in [%s, %s]: P(Z) in int Z %s, sup||DP||_inf <= %s, T in [%s, %s], box radius ~%.1e'
-            % (r['lo'], r['hi'], r['inside'], O.hi(r['norm_hi'], 4), O.lo(r['tau_lo'], 9), O.hi(r['tau_hi'], 9),
-               max(r['zr'])))
+    return ('E_l in [%s, %s]: P(Z) in int Z %s, runs cover Z x piece %s, sup||DP||_inf <= %s, T in [%s, %s], box '
+            'radius ~%.1e' % (r['lo'], r['hi'], r['inside'], r['covers'], O.hi(r['norm_hi'], 4), O.lo(r['tau_lo'], 9),
+                              O.hi(r['tau_hi'], 9), max(r['zr'])))
+
+
+def arb_half_widths(radii):
+    """The half-widths of the Arb balls arb(0, r) that the proofs use (r rounded up to Arb's radius format), as exact
+    float64 hex strings; the conversion is checked to be exact."""
+    out = []
+    for r in radii:
+        h = arb(0, r).rad()
+        f = float(h)
+        if O._exact(arb(f)) != O._exact(h):
+            raise ValueError('half-width not exactly representable in float64')
+        out.append(f.hex())
+    return ', '.join(out)
 
 
 def in_piece(E, lo, hi):
@@ -139,11 +167,15 @@ def main():
         log('  E_l = %s (%.0f s):' % (name, time.time() - t0))
         check('Krawczyk: K in int Z, so P has exactly one fixed point in Z, and it lies in K (every E_l in the ball)',
               rs['krawczyk'], 'Z radius %s' % np.array2string(np.array(rs['zrad']), precision=2))
+        check('the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l '
+              'ball)', rs['covers'])
         log('    Krawczyk box Z: centre m, n, h (float64: shortest decimal, then exact hex) = %s'
             % ', '.join(repr(float(v)) for v in rs['zbar']))
         log('          %s' % ', '.join(float(v).hex() for v in rs['zbar']))
         log('    radii (float64: shortest decimal, then exact hex) = %s' % ', '.join(repr(float(v)) for v in rs['zrad']))
         log('          %s' % ', '.join(float(v).hex() for v in rs['zrad']))
+        log('    the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb\'s radius '
+            'format, are exactly (hex) %s' % arb_half_widths(rs['zrad']))
         log('    the fixed point lies in K:')
         lines = ['      %s = %s' % (nm, rs['K'][i, 0].str(17, radius=True)) for nm, i in zip('mnh', range(3))]
         for s in lines:
@@ -195,8 +227,11 @@ def main():
         log('          %s' % ', '.join(float(v).hex() for v in r['zb']))
         log('      box radii (float64: shortest decimal, then exact hex) = %s' % ', '.join(repr(float(v)) for v in r['zr']))
         log('          %s' % ', '.join(float(v).hex() for v in r['zr']))
-        check('piece [%s, %s]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece, so P_E has '
-              'exactly one fixed point in Z' % (r['lo'], r['hi']), r['ok'] and r['inside'])
+        log('      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb\'s radius '
+            'format, are exactly (hex) %s' % arb_half_widths(r['zr']))
+        check('piece [%s, %s]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated '
+              'a set containing Z x piece), so P_E has exactly one fixed point in Z' % (r['lo'], r['hi']),
+              r['ok'] and r['inside'] and r['covers'])
         check('the line of this piece is the one printed by stage 4b of the committed run', ('    ' + ln + ', ') in
               committed, kind='crosscheck')
 
@@ -222,6 +257,16 @@ def main():
         check('NEG E_l = %s: K tested against the box of the piece [%s, %s], which does not contain E_l (centre of '
               'K about %.3g box radii away): the inclusion must fail' % (name, r['lo'], r['hi'], off),
               (not in_piece(E, r['lo'], r['hi'])) and not k_in_box(rs['K'], r), kind='control')
+
+    # the inclusion test is not loose: K against the box of its own piece shrunk to 0.1 of its radii must fail, since
+    # the centre of K lies more than 0.1 box radii from the centre of the box
+    for name, (E, rs) in certs.items():
+        r = [x for x in res if in_piece(E, x['lo'], x['hi'])][0]
+        shrunk = dict(r, zr=[0.1 * v for v in r['zr']])
+        off = max(abs(float(rs['K'][i, 0].mid()) - r['zb'][i]) / r['zr'][i] for i in range(3))
+        check('NEG E_l = %s: K tested against the box of its own piece [%s, %s] with the radii shrunk to 0.1 (centre of K '
+              'about %.2f box radii from the centre of the box): the inclusion must fail' % (name, r['lo'], r['hi'], off),
+              not k_in_box(rs['K'], shrunk), kind='control')
 
     # ------------------------------------------------------------------ 5. summary
     log('')
