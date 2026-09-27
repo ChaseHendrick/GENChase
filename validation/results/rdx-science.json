@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "date": "2026-09-25",
+  "date": "2026-09-27",
   "source": {
     "path": "src/modules/rdx.js",
-    "sha256": "c37f7640366435cf9720e3cb11ed403baeac6c23b19b50d60dff5b94857ac930"
+    "sha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b"
   },
   "harness": {
     "path": "tools/rdx-science.js",
-    "sha256": "26ca9eba04f6d0014837a7dfeacfd28f99ec8438c65a5cc1de6cb1e36255b08e"
+    "sha256": "d7d7d76ea7412580361b085707874a92b6c50577ef1cf09da9a14da0f82ddc1a"
   },
   "backend": "141.0.7390.37",
   "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
@@ -1996,7 +1996,7 @@
     },
     {
       "technique": "excitable",
-      "name": "reference self-check: exact Nagumo profile satisfies the travelling-wave ODE (Float64, no GPU)",
+      "name": "reference self-check: exact Nagumo profile satisfies the traveling-wave ODE (Float64, no GPU)",
       "value": 1.0512641851478932e-7,
       "tolerance": 0.00001,
       "pass": true
