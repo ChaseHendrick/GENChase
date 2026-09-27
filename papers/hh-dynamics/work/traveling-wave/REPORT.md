@@ -28,17 +28,27 @@ not a proof) or **literature** (with the source and whether it was read first ha
   K1 = 4.5107697, K2 = 4.5107698). This is the rigorous version of the first half of Hodgkin and Huxley's 1952
   bracketing ("V goes off towards either +infinity or -infinity"): it proves that the shooting switches between
   18.7321608 and 18.7321609 m/s, not that anything goes to infinity and not that a pulse with that speed exists.
-  The closing step is missing.
-- **Feasibility of the full proof.** The closing step needs the orbits of a whole K interval tracked until they are
+  The closing step was missing on 2026-09-26; it is done at 18.5 C (next item but one).
+- **Feasibility of the full proof (as estimated on 2026-09-26; superseded by 4.4 and 4.5).** The closing step needs the orbits of a whole K interval tracked until they are
   inside an isolating block at rest, about 17 ms after the upstroke at 18.5 C. The unstable eigenvalue is about
   10.9 /ms, so the K interval must be about 10^-85 wide and the integration run at roughly 350 to 400 bits. The pieces
   exist (Lemma B's block works up to radius 0.01; the integrator works); the cost is compute and care, not a new idea.
   Our honest estimate: 2 to 4 more working days, a 60 to 70 per cent chance of success along this direct route, with
   a covering-relation (multiple shooting) route as the fallback if the direct one wraps too much. A proof would, as far
   as we can tell, be the first for the unmodified Hodgkin-Huxley pulse.
-- **Independent check.** An independent subagent re-read the sources, reproduced the speeds to every printed digit
-  with its own code, and found the rigorous code sound for what it literally proves; its corrections are applied
-  (Section 5).
+- **The closing step at 18.5 C (2026-09-27): proved by computer** (Sections 4.4 and 4.5). A closing block at rest with
+  a cone condition, of radius 0.8 in weighted eigen-coordinates (the pulse is inside it about 8 ms after the
+  upstroke), Lemma B at r_B = 1e-25, and a six-variable Lohner integrator carrying the whole interval [K1, K2] of
+  width 3e-45 through the spike into the block, with the two endpoint orbits then entering opposite cones: a
+  Wazewski-type argument gives **a pulse of the unmodified 1952 equations at 18.5 C, with speed
+  theta in (18.732160814388902113775385154028169368017733735, ...739) m/s** (the proof pins K* to 45 digits). About 70 minutes
+  of CPU at 256 bits; negative controls (a K interval without the pulse; alpha_m perturbed by 1e-12 u^2) fail as
+  they must. Checked inside the project only: tests, an independent program for the block conditions, and an
+  adversarial rereading; no outside review. As far as the searches of Section 1 reached, this is the first proof
+  for the unmodified equations; Hastings 1976 pp. 231-257 and Foote and Chen 1981 are still unread.
+- **Independent check (2026-09-26, of the first stage).** An independent subagent re-read the sources, reproduced the
+  speeds to every printed digit with its own code, and found the rigorous code sound for what it literally proves;
+  its corrections are applied (Section 5).
 
 ## 1. Prior art
 
@@ -436,6 +446,68 @@ but moves the pulse speed by far more than the interval).
 `nice -n 19` and a timeout, checkpointing the Lohner set to `data/ckpt/` every two minutes; K* to about 55 digits from
 `hp_pulse.py` (numerical: multiple shooting in high precision, Newton's method, to centre the interval).
 
+### 4.5 Result at 18.5 C (2026-09-27): the closing step, computed
+
+All stages of `prove_pulse.py` at 18.5 C were run on 2026-09-27 at 256 bits (auxiliary precision 128 bits for the
+Jacobian, the a priori box and the remainder), Taylor order 40, under `nice -n 19` with at most two processes; the
+certificates are `data/pulse_proof_18.5_<stage>.json` and the summary `data/pulse_proof_18.5_summary.txt`.
+
+- **Numerical centre (not rigorous).** `hp_pulse.py` (multiple shooting, 49 pieces, Newton and chord steps, 256 bits)
+  gives K* = 10.43835482913857076889312845037160196105110729610623800432...; a rerun with a tolerance 10^6 times
+  smaller agrees to 58 digits. Along that orbit, at T_enter the unstable coordinate of the pulse is
+  zeta_1 = 0.0180 and d zeta_1 / dK = 2.15e44 (both numerical).
+- **The interval.** K1 and K2 are exact binary fractions (their mantissas and exponents are in
+  `data/pulse_proof_18.5_config.json`) at distance 1.5e-45 below and above K*:
+  K1 = 10.43835482913857076889312845037160196105110729460623800432..., K2 = K1 + 3.000000000e-45 (to 10 digits).
+  The corresponding speeds are 18.73216081438890211377538515402816936801773373587... and ...73385676 m/s
+  (theta = sqrt(K a / (2 R_2 C_M)) in ball arithmetic).
+- **(H1)-(H3), `setup`:** Lemma A for every K in [K1, K2]: lambda_u in [10.8923126906997954237335336624 +/- 3.3e-29],
+  the other four eigenvalues in Re < 0 (Hurwitz determinants D2 = 415.82, D3 = 6494.2); Lemma B at r_B = 1e-25 with
+  stable box (2e-51, 1e-49, 6e-51): inflow bounds -2.1e-50, -2.5e-51, -3.7e-99, cone bounds >= 0.9256; transversality
+  z1' in [1.0892313e-24 +/- 3.1e-32] > 0 on the exit set; the block B0 (rho = 0.8, r = 0.84, weights (10, 7, 1, 1, 40)):
+  cone condition on 1225 cells and entrance condition on 5875 cells. Negative controls rejected: a bracket above
+  lambda_u, stable faces 100 times thinner, the block with radius x 1.5. Seconds of CPU.
+- **(H4), `interval`:** 863 steps to T_enter = 13.625 ms after the exit from the Lemma B box (about 8 ms after the
+  upstroke passes 50 mV); at T_enter the enclosure satisfies zeta_1 in [-0.343, 0.343] and |zeta_s| <= 0.63619 < 0.8:
+  inside int B0. 1225 s. (The upstroke is carried with enclosure radii of 1e-42 at the peak.) Along the way
+  u > 90.58 mV for the whole set at some step end, so the pulse's peak exceeds 90.58 mV.
+- **(H5), `K1`:** at T_enter, zeta_1 = -0.30474 +/- 9e-6 and |zeta_s| <= 0.63516: in int B0; eight more steps of
+  2^-7 ms, each with its whole path enclosed in int B0, bring the set into K- at t = 13.6875 ms
+  (zeta_1 = -0.6201 +/- 3e-5 against |zeta_s| <= 0.6175). 1223 s.
+- **(H5), `K2`:** at T_enter, zeta_1 = 0.34075 +/- 9e-6 and |zeta_s| <= 0.63552; the set enters K+ at t = 13.6875 ms
+  (zeta_1 = 0.6518 +/- 5e-5 against |zeta_s| <= 0.6181), the path in int B0 throughout. 980 s.
+- **Negative controls of the integration:** `neg-shift`, the interval K2 + [19, 20] (K2 - K1), of the same width and
+  disjoint from [K1, K2], is at zeta_1 about 13 at T_enter, outside B0: the run fails, as it must (981 s).
+  `neg-model`, alpha_m multiplied by 1 + 1e-12 u^2 (rest and its linearization unchanged, so (H1)-(H2) still hold),
+  at the true [K1, K2]: the whole set escapes below u = -60 mV at t = 6.7252 ms, about one millisecond after the spike,
+  so the run fails, as it must (628 s).
+- **Consistency of the rigorous and numerical computations:** the numerical values predict zeta_1(K1) = 0.0180 -
+  0.3226 = -0.3046 and zeta_1(K2) = 0.3406 at T_enter; the rigorous enclosures are -0.30474 and 0.34075.
+- **Independent re-check of (H3):** `block_check_iv.py`, written separately (mpmath interval arithmetic at 113 bits,
+  the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test), confirms
+  the cone condition (933 cells) and the entrance condition (4220 cells) on B0 for K in an interval containing
+  [K1, K2], and rejects the block enlarged 1.5 times (`data/block_check_iv_18.5.txt`).
+- **Tests** (`test_lohner6.py`, `data/test_lohner6.txt`): the six-variable jets agree with `hhjet.py` and with
+  central differences in K; Lohner enclosures through the upstroke at orders 30 and 8 contain an independent
+  high-precision solution (at order 30 the two agree to all 20 printed digits); at order 8 with the remainder term
+  dropped the enclosure misses it by 1.5e-7, as it must.
+
+**Theorem (computer-assisted; proved by the programs above, whose logic is stated in 4.4 and in their docstrings).**
+Let T = 18.5 C, phi = 3^1.22, the 1952 rate functions and constants, and E_l the leak potential that makes the
+resting current zero. For some K* in (K1, K2), with K1, K2 as above (K2 - K1 = 3e-45), the travelling-wave system
+u'' = K* (u' + I(u, m, n, h)), x' = phi (alpha_x(u)(1 - x) - beta_x(u) x) has a non-constant solution defined for all
+t that tends to rest as t -> +infinity and as t -> -infinity; it leaves rest on the branch of the unstable manifold
+along which u increases, and max u > 90.58 mV. Equivalently, eq. (31) of Hodgkin and Huxley (1952) has a propagated
+action potential, with speed theta = sqrt(K* a / (2 R_2 C_M)) in (18.732160814388902113775385154028169368017733735,
+18.732160814388902113775385154028169368017733739) m/s for their a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2.
+
+What the theorem rests on besides the computations: the local unstable manifold theorem with parameters, continuous
+dependence on initial data and parameters, and the correctness of python-flint (Arb) 0.9.0 and of the programs as
+written. What it does not say: nothing on uniqueness of the pulse or of K*, on stability, on the printed E_l = 10.613
+(whose K* differs by 3e-5 relative), or on the slow pulse. The programs and this section have been checked only
+inside this project (the tests, the independent block program and the adversarial rereading in Section 5); no one
+outside the project has reviewed them.
+
 ## 5. Independent check
 
 An independent subagent (2026-09-26), with no access to our reasoning beyond this report and the code, re-opened the
@@ -483,6 +555,21 @@ python3 prove_bracket.py 1e-5        # rigorous: the two bracketing orbits (abou
 python3 prove_bracket.py 1e-5 6.3    # the same at 6.3 C -> data/prove_bracket_6.3.txt
 python3 test_jet.py                  # tests of the jet, Psi near 0 and the integrator -> data/test_jet.txt
 python3 sensitivity.py 18.5          # numerical: growth of dy/dK along the profile -> data/sensitivity_18.5.txt
+
+# the closing step (Section 4.4): about 1.5 hours of CPU in all at 18.5 C, two processes at a time
+python3 test_lohner6.py              # tests of the six-variable jets and integrator, with a negative control
+python3 hp_pulse.py 18.5 10.5        # numerical: K* to about 58 digits (about 15 minutes) -> data/hp_pulse_18.5.json
+python3 hp_pulse.py 18.5 10.5 1e-6   # the same with a tolerance 1e6 times smaller (discretization check)
+python3 block0.py 18.5               # the closing block: creates data/closing_block_18.5.json if absent, checks it
+python3 prove_pulse.py 18.5 config 1.5e-45 1e-25 13.625 1e-16 1e-70   # K1, K2, r_B, T_enter, tolerances
+python3 prove_pulse.py 18.5 setup    # rigorous: (H1), (H2), (H2'), (H3) and their negative controls
+python3 prove_pulse.py 18.5 interval # rigorous: (H4)
+python3 prove_pulse.py 18.5 K1       # rigorous: (H5) at K1
+python3 prove_pulse.py 18.5 K2       # rigorous: (H5) at K2
+python3 prove_pulse.py 18.5 neg-shift   # negative control: a K interval without the pulse must fail
+python3 prove_pulse.py 18.5 neg-model   # negative control: alpha_m (1 + 1e-12 u^2) must fail
+python3 prove_pulse.py 18.5 summary  # collects the verdicts -> data/pulse_proof_18.5_summary.txt
+python3 block_check_iv.py 18.5       # independent re-check of (H3) in mpmath interval arithmetic
 ```
 
 The rigorous programs exit with status 0 only if every check, including the negative controls, passes.
@@ -502,6 +589,15 @@ The rigorous programs exit with status 0 only if every check, including the nega
 | `code/certify_rest_wave.py` | rigorous | Lemma A (eigenvalues) and Lemma B (exit of the unstable manifold) |
 | `code/prove_bracket.py` | rigorous | the two bracketing orbits, with a negative control |
 | `code/test_jet.py` | tests | the jet against finite differences, Psi near 0, the integrator against scipy |
+| `code/hhjet6.py` | rigorous | jets in the six variables (y, K), K' = 0, with growing Picard truncation |
+| `code/lohner6.py` | rigorous | C^0 Lohner integrator in (y, K); refined a priori box, remainder over subintervals, path enclosures |
+| `code/block0.py` | rigorous | the closing block B0 (cone and entrance conditions on a cover by cells, interval Cholesky) |
+| `code/block_check_iv.py` | rigorous | an independent re-check of B0 (mpmath.iv, hand-derived Jacobian, rational M^-1) |
+| `code/prove_pulse.py` | rigorous | the closing step: stages setup, interval, K1, K2, the negative controls and the summary |
+| `code/hp_pulse.py` | numerical | K* in high precision by multiple shooting (to centre [K1, K2]) |
+| `code/test_lohner6.py` | tests | jets against hhjet.py and finite differences; an enclosure against an independent solution |
+| `data/closing_block_18.5.json` | data | the block: T (exact hex floats), weights, rho, r |
+| `data/pulse_proof_18.5_*.json`, `*_summary.txt` | certificates | the configuration and the verdict of every stage |
 | `prior-art-log.md` | literature | the full search log and quotations |
 
 A line for RESEARCH.md (not added here, since this work is confined to this folder): "2026-09-26, Hodgkin-Huxley

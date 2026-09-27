@@ -1,0 +1,9 @@
+setup      as expected (passed)
+interval   as expected (passed)
+K1         as expected (passed)
+K2         as expected (passed)
+neg-shift  as expected (failed, a negative control)
+neg-model  as expected (failed, a negative control)
+K1 = 10.438354829138570768893128450371601961051107294606238004324 /ms, K2 = 10.438354829138570768893128450371601961051107297606238004324 /ms (K2 - K1 = [3.0000e-45 +/- 3e-54])
+speed theta in (18.73216081438890211377538515402816936801773373587576924, 18.73216081438890211377538515402816936801773373856759584) m/s for a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2
+ALL CHECKS PASSED

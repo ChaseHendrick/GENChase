@@ -95,40 +95,61 @@ def p_of_sigma(a, sigma):
     return [sum((a[k][i] * sigma ** k for k in range(len(a))), arb(0)) for i in range(5)]
 
 
-def flow(x, K, tau, phi, EL, tol, want_jac=True, hmax=0.2, steps=None):
-    """Integrate (x, K) for time tau (a float, exact dyadic sum of steps not required: the last step is cut).
-    Returns the end state and, if want_jac, the 5 x 6 Jacobian d x(tau) / d (x0, K). If steps is a list that is
-    not empty, those step lengths are used (a fixed discretization, so that Newton's method solves one fixed discrete
-    problem); if it is an empty list, the adaptive step lengths are appended to it."""
+def dyadic_step(h):
+    """h rounded down to 12 significant bits (an exact binary fraction with a short expansion)."""
+    e = math.floor(math.log2(h))
+    return math.floor(h / 2.0 ** (e - 12)) * 2.0 ** (e - 12)
+
+
+def flow(x, K, tau, phi, EL, tol, want_jac=True, hmax=0.2, steps=None, order=None):
+    """Integrate (x, K) for time tau (a float) with Taylor steps of order `order` (default P_ORD), keeping the time
+    exactly: every step but the last has a 12-bit dyadic length, the elapsed time is summed exactly in arb, and the
+    last step is tau minus that sum, so the flow is evaluated at time tau exactly (up to the working precision).
+    Returns the end state and, if want_jac, the 5 x 6 Jacobian d x(tau) / d (x0, K). If steps is a list that is not
+    empty, those step lengths are used (a fixed discretization, so that Newton's method solves one fixed discrete
+    problem; the list stores the dyadic lengths and the last one is recomputed as tau minus the sum); if it is an
+    empty list, the adaptive step lengths are appended to it."""
+    p = order or P_ORD
     xs = [mid(c) for c in x] + [K]
     Phi = arb_mat([[1 if i == j else 0 for j in range(6)] for i in range(6)])
-    t = 0.0
-    fixed = list(steps) if steps else None
+    t = arb(0)
+    tauA = arb(tau)
+    fixed = list(steps[:-1]) if steps else None
     record = steps is not None and not steps
-    while (t < tau - 1e-15) if fixed is None else fixed:
-        if want_jac:
-            vals, g = hhjet6.jet(xs, phi, EL, P_ORD)
-        else:
-            vals = hhjet6.values(xs, phi, EL, P_ORD)
-        m = 1e-300
-        for i in range(5):
-            m = max(m, abs(float(vals[i][P_ORD].mid())), abs(float(vals[i][P_ORD - 1].mid())) ** (P_ORD / (P_ORD - 1.0)))
-        tl = tol(t) if callable(tol) else tol
+    while True:
         if fixed is not None:
-            h = fixed.pop(0)
+            if fixed:
+                hA = arb(fixed.pop(0))
+                last = False
+            else:
+                hA, last = tauA - t, True
+        if want_jac:
+            vals, g = hhjet6.jet(xs, phi, EL, p)
         else:
-            h = min(hmax, (tl / m) ** (1.0 / P_ORD), tau - t)
+            vals = hhjet6.values(xs, phi, EL, p)
+        if fixed is None:
+            m = 1e-300
+            for i in range(5):
+                m = max(m, abs(float(vals[i][p].mid())), abs(float(vals[i][p - 1].mid())) ** (p / (p - 1.0)))
+            tf = float(t.mid())
+            tl = tol(tf) if callable(tol) else tol
+            h = dyadic_step(min(hmax, (tl / m) ** (1.0 / p)))
+            if t + arb(h) >= tauA:
+                hA, last = tauA - t, True
+            else:
+                hA, last = arb(h), False
             if record:
-                steps.append(h)
-        hA = arb(h)
+                steps.append(float(hA.mid()))
         if want_jac:
             J = arb_mat(6, 6)
             for i in range(6):
                 for j in range(6):
-                    J[i, j] = mid(sum((g[i][k][j] * hA ** k for k in range(P_ORD + 1)), arb(0)))
+                    J[i, j] = mid(sum((g[i][k][j] * hA ** k for k in range(p + 1)), arb(0)))
             Phi = J * Phi
-        xs = [mid(sum((vals[i][k] * hA ** k for k in range(P_ORD + 1)), arb(0))) for i in range(5)] + [K]
-        t += h
+        xs = [mid(sum((vals[i][k] * hA ** k for k in range(p + 1)), arb(0))) for i in range(5)] + [K]
+        t = t + hA
+        if last:
+            break
     if want_jac:
         return xs[:5], arb_mat([[mid(Phi[i, j]) for j in range(6)] for i in range(5)])
     return xs[:5], None

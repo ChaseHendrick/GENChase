@@ -5,11 +5,12 @@
 
 1. hhjet6.jet agrees with hhjet.jet (a different Picard scheme) on values and gradients, at five points including
    u near 10 and 25 (the Psi-near-0 branch), and its K-derivatives agree with central differences in K.
-2. A Lohner enclosure over 1.5 ms through the upstroke (from a small box at u = 1e-3 mV, K a small ball) contains a
-   reference solution computed independently: hp_pulse.flow (plain Taylor steps, a different step sequence, 1e-6 times
-   the tolerance) from the box centre at the ball centre.
-3. Negative control: the same run with the Lagrange remainder replaced by 0 and a coarse tolerance must NOT contain the
-   reference solution (so test 2 is not vacuous).
+2. Lohner enclosures over 1.5 ms through the upstroke (from a small box at u = 1e-3 mV, K a small ball), at order 30
+   with tolerance 1e-40 and at order 8 with tolerance 1e-10 (where the remainder term does real work), contain a
+   reference solution computed independently: hp_pulse.flow (plain Taylor steps of order 40, a different step
+   sequence, tolerance 1e-60, exact time) from the box centre at the ball centre.
+3. Negative control: the order-8 run with the Lagrange remainder replaced by 0 must NOT contain the reference solution
+   (so test 2 is not vacuous).
 """
 import sys
 import time
@@ -44,9 +45,9 @@ def test_jets(phi, EL, y):
     return ok
 
 
-def run_enclosure(phi, EL, y, drop_remainder, tol):
+def run_enclosure(phi, EL, y, drop_remainder, tol, p):
     x0 = [arb('1e-3'), arb('1.0892e-2'), y[2], y[3], y[4]]
-    Kc = arb('10.4383548291385707688931284503716')
+    Kc = arb(arb('10.4383548291385707688931284503716').mid())
     rad = arb('1e-30')
     box = [x + arb(0, rad) for x in x0]
     xbar = [arb(v.mid()) for v in box] + [Kc]
@@ -59,12 +60,13 @@ def run_enclosure(phi, EL, y, drop_remainder, tol):
     F = L.Field(phi, EL)
     saved = L.remainder
     if drop_remainder:
-        L.remainder = lambda F_, vxh, W, h, p, nsub: [arb(0)] * 5
+        L.remainder = lambda F_, vxh, W, h, p_, nsub: [arb(0)] * 5
     try:
-        X, t, ns = L.integrate(F, X, 1.5, 30, tol, hmax=0.25)
+        X, t, ns = L.integrate(F, X, 1.5, p, tol, hmax=0.25)
     finally:
         L.remainder = saved
-    ref, _ = HP.flow([arb(v.mid()) for v in box[:5]], Kc, 1.5, phi, EL, tol * 1e-6, want_jac=False, hmax=0.05)
+    # reference: plain Taylor steps of order 40, a different step sequence, exact time, from the box centre
+    ref, _ = HP.flow([arb(v.mid()) for v in box[:5]], Kc, 1.5, phi, EL, 1e-60, want_jac=False, hmax=0.02)
     hx = X.hull()
     inside = all(hx[i].contains(ref[i]) for i in range(5))
     return inside, ns, hx, ref
@@ -76,14 +78,18 @@ def main():
     t0 = time.time()
     print('1. jets')
     ok1 = test_jets(phi, EL, y)
-    print('2. enclosure through the upstroke contains an independent reference solution')
-    inside, ns, hx, ref = run_enclosure(phi, EL, y, False, 1e-40)
-    print('   %d steps; u(1.5) in %s, reference %s; contained: %s' % (ns, hx[0].str(20), ref[0].str(25), inside))
-    print('3. negative control: remainder dropped, coarse tolerance')
-    inside_bad, ns_b, hxb, refb = run_enclosure(phi, EL, y, True, 1e-8)
+    print('2. enclosures through the upstroke contain an independent reference solution')
+    ok2 = True
+    for p, tol in ((30, 1e-40), (8, 1e-10)):
+        inside, ns, hx, ref = run_enclosure(phi, EL, y, False, tol, p)
+        print('   order %d, tol %g: %d steps; u(1.5) in %s, reference %s; contained: %s' % (
+            p, tol, ns, hx[0].str(20), ref[0].str(25), inside))
+        ok2 = ok2 and inside
+    print('3. negative control: order 8, tol 1e-10, Lagrange remainder dropped')
+    inside_bad, ns_b, hxb, refb = run_enclosure(phi, EL, y, True, 1e-10, 8)
     print('   %d steps; u(1.5) in %s, reference %s; contained: %s (must be False)' % (
         ns_b, hxb[0].str(20), refb[0].str(25), inside_bad))
-    ok = ok1 and inside and not inside_bad
+    ok = ok1 and ok2 and not inside_bad
     print('ALL TESTS PASSED' if ok else 'SOME TEST FAILED', '(%.0f s)' % (time.time() - t0))
     return ok
 
