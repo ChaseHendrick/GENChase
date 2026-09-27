@@ -2508,20 +2508,31 @@
   {
     "id": "klein",
     "source": "src/modules/klein.js",
-    "sourceSha256": "42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29",
-    "reference": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
+    "sourceSha256": "1d07c1199bde099a1fe85c071b49c98a45321a73006535792de938c201e9816b",
+    "reference": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is not a carbon lattice and does not evolve a 2-component Dirac wave. It draws a traveling envelope through a marked barrier.",
     "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The painted field is not the Dirac evolution. It is a traveling Gaussian envelope times a cartoon amplitude, one Float32 channel, not a time-evolved 2-component spinor.",
+      "The number 1 at theta=0 on the plate is assigned in compute() when |sin theta| < 1e-3. It is not a measured transmitted-over-incident ratio. The same assignment is 1 for barrier heights and widths whose painted right-hand sum is not the left-hand sum.",
+      "The independent check is a separate 1D Dirac calculation (validation/KLEIN.md). It does not certify the plate's pixels, the oblique stand-in formula, or the print path. Promoting the plate would require evolving a 2-component spinor on the plate and measuring T from that evolution."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Evolve a 2-component Dirac wave inside the plate, measure T from that evolution rather than assigning it, show grid convergence, and show a mass term m>0 gives T<1 on the plate. That changes pixels and needs a recipe-version bump.",
+      "Validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/klein-science.js",
+        "command": "node tools/klein-science.js --write",
+        "results": "validation/results/klein-science.json",
+        "scope": "Independent 1D Dirac scattering at normal incidence, hbar = v_F = 1, H = -i sigma_x d/dx + m sigma_z + V(x). A positive-energy Gaussian wave packet (position standard deviation 28, peaked at E = 1.2) crosses a square barrier of height 2.5 and width 12 on a periodic interval of length 1600. Transmission is the probability on x > 912 after t = 420, once the barrier bin holds under 1e-8. Grids N = 4096 and N = 8192, Strang split-step, dt = 0.05. A stationary mode match at the same E, m, V and width is the monochromatic cross-check. The plate's compute() is run headless and compared with the cartoon it paints.",
+        "criteria": "Basis deterministic: one trajectory, no sampling error. Massless packet and mode match satisfy |T - 1| <= 1e-4 (measured packet T = 0.999999999999942 at N = 8192). The same predicate must fail for m = 0.6 (measured packet T = 0.4129900930271546 at N = 8192; mode match T = 0.41130251187190187). Fine-grid packet within 0.01 of that mode match. Probability conserved to 1e-8 and the barrier bin under 1e-8. A free massless packet moves at speed 1. Plate metric equals the expression in compute(), the Float32 field matches that cartoon exactly, and at theta = 0 the metric is 1 while a painted right/left sum is not.",
+        "benchmark": "Stationary mode matching of the 2-component Dirac equation on a square barrier (continuity of both spinor components), and a spectral Strang split-step evolution of a positive-energy Gaussian. At m = 0 both give transmission 1. Neither number is taken from the plate.",
+        "failureControl": "The same |T - 1| <= 1e-4 predicate on the same window and grid rejects m = 0.6 (packet T = 0.41299, mode match T = 0.41130). Counting the reflected side as transmission also fails it (massless R is about 2e-15). A massive packet with V = 0 still passes, so the failure is reflection at the barrier, not the mass term by itself. The plate check fails if compute() stops assigning 1 or the field leaves the cartoon.",
+        "limitations": "Normal incidence only, one energy, one barrier, two grids. The massive packet is not claimed closer to the mode match than 0.01. The plate's oblique expression is not this transmission. No print comparison."
+      }
+    ],
     "print": []
   },
   {

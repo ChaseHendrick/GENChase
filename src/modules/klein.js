@@ -1,6 +1,6 @@
 
 /* modules/klein.js */
-/* GENChase: Klein tunnelling of a massless Dirac spinor through a barrier. Transmission at normal incidence is measured against 1. */
+/* GENChase: a picture of Klein tunneling. At normal incidence the status line assigns transmission 1. The plate does not evolve a Dirac spinor. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -40,8 +40,8 @@
     subtitle: 'a barrier a Dirac electron does not notice · 1929 / 2006',
     order: 63,
     equation: 'H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)',
-    credit: 'O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.',
-    blurb: 'A wall that a Schrödinger particle would bounce from, a massless Dirac particle walks through. At head-on incidence the transmission is 1 for any height and any width; only an angle can reflect it. The plate is spacetime of |ψ|² with the barrier marked. The status line reports transmitted over incident against 1 at θ = 0.',
+    credit: 'O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is not a carbon lattice and does not evolve a 2-component Dirac wave. It draws a traveling envelope through a marked barrier.',
+    blurb: 'A wall that a Schrödinger particle would bounce from, a massless Dirac particle walks through. At head-on incidence the transmission is 1 for any height and any width; only an angle can reflect it. The plate paints a traveling Gaussian envelope times a cartoon amplitude, not that evolution. At θ = 0 the status line assigns T = 1. It does not measure transmitted over incident.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Spinor: 'θ = 0 is the Klein miracle. Oblique incidence restores a finite reflection.' },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
@@ -61,7 +61,8 @@
         const V = s.V, Lw = s.width, th = s.theta * Math.PI / 180, k = s.k;
         const ky = k * Math.sin(th), kx = k * Math.cos(th);
         const xB = W * 0.45, xE = xB + Lw;
-        // analytic Dirac transmission for a square barrier (massless)
+        // Assigned transmission, not a measured flux. At head-on incidence this is 1.
+        // Off normal the expression below is a closed-form stand-in, not a Dirac solution.
         const q = Math.sqrt(Math.max(1e-8, (k - V) * (k - V) - ky * ky));
         const T = th === 0 || Math.abs(Math.sin(th)) < 1e-3
           ? 1

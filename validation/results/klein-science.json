@@ -1,0 +1,257 @@
+{
+  "basis": "deterministic",
+  "date": "2026-09-27",
+  "source": "src/modules/klein.js",
+  "sourceSha256": "1d07c1199bde099a1fe85c071b49c98a45321a73006535792de938c201e9816b",
+  "command": "node tools/klein-science.js --write",
+  "hamiltonian": "H = -i sigma_x d/dx + m sigma_z + V(x), hbar = v_F = 1",
+  "measurement": {
+    "what": "Probability of a positive-energy Gaussian wave packet on cells with x > b1, divided by the total probability, after the packet has left the barrier.",
+    "window": "Periodic interval of length 1600. Square barrier on x in [900, 912], height 2.5. Packet centered at x = 700 with position standard deviation 28. Transmission is the sum of |psi|^2 for x > 912. Reflection is x < 900. The barrier bin must hold under 1e-8 before T is accepted.",
+    "grid": "N = 4096 (dx = 0.390625) and N = 8192 (dx = 0.1953125). Strang split-step, dt = 0.05, tEnd = 420. Kinetic evolution is spectral; V and m are local multiplications.",
+    "energy": "Incident packet peaked at E = 1.2. Massless k0 = 1.2. Massive k0 = sqrt(E^2 - m^2) with m = 0.6. Inside the barrier epsilon = E - V = -1.3, which is below -m, so both runs are in the Klein regime.",
+    "tolerance": 0.0001,
+    "matchTolerance": 0.01
+  },
+  "modeMatch": {
+    "massless": [
+      {
+        "V": 0.5,
+        "width": 2,
+        "T": 0.9999999999999999,
+        "R": 1.1401505270772436e-31,
+        "sum": 0.9999999999999999,
+        "eps": 0.7
+      },
+      {
+        "V": 0.5,
+        "width": 12,
+        "T": 0.9999999999999998,
+        "R": 1.5407439555097887e-32,
+        "sum": 0.9999999999999998,
+        "eps": 0.7
+      },
+      {
+        "V": 0.5,
+        "width": 20,
+        "T": 1,
+        "R": 1.232595164407831e-31,
+        "sum": 1,
+        "eps": 0.7
+      },
+      {
+        "V": 2.5,
+        "width": 2,
+        "T": 0.9999999999999999,
+        "R": 1.232595164407831e-32,
+        "sum": 0.9999999999999999,
+        "eps": -1.3
+      },
+      {
+        "V": 2.5,
+        "width": 12,
+        "T": 0.9999999999999996,
+        "R": 1.232595164407831e-32,
+        "sum": 0.9999999999999996,
+        "eps": -1.3
+      },
+      {
+        "V": 2.5,
+        "width": 20,
+        "T": 1,
+        "R": 2.465190328815662e-32,
+        "sum": 1,
+        "eps": -1.3
+      },
+      {
+        "V": 4,
+        "width": 2,
+        "T": 0.9999999999999999,
+        "R": 0,
+        "sum": 0.9999999999999999,
+        "eps": -2.8
+      },
+      {
+        "V": 4,
+        "width": 12,
+        "T": 0.9999999999999997,
+        "R": 6.162975822039155e-32,
+        "sum": 0.9999999999999997,
+        "eps": -2.8
+      },
+      {
+        "V": 4,
+        "width": 20,
+        "T": 0.9999999999999998,
+        "R": 2.7733391199176196e-32,
+        "sum": 0.9999999999999998,
+        "eps": -2.8
+      }
+    ],
+    "massive": {
+      "E": 1.2,
+      "m": 0.6,
+      "V": 2.5,
+      "width": 12,
+      "T": 0.41130251187190187,
+      "R": 0.5886974881280981,
+      "sum": 1,
+      "propagating": true,
+      "eps": -1.3,
+      "acceptsUnitTransmission": false
+    }
+  },
+  "wavePacket": {
+    "masslessCoarse": {
+      "N": 4096,
+      "dx": 0.390625,
+      "steps": 8400,
+      "norm0": 0.9999999999999452,
+      "norm1": 0.9999999996430272,
+      "T": 0.9999999999999462,
+      "R": 1.8865968950770623e-15,
+      "barrier": 5.191230998626796e-14,
+      "center": 1120.0072354763736,
+      "acceptsUnitTransmission": true
+    },
+    "masslessFine": {
+      "N": 8192,
+      "dx": 0.1953125,
+      "steps": 8400,
+      "norm0": 0.99999999999997,
+      "norm1": 0.9999999996617011,
+      "T": 0.999999999999942,
+      "R": 1.9129764638146497e-15,
+      "barrier": 5.3079222715650386e-14,
+      "center": 1120.0041820808738,
+      "acceptsUnitTransmission": true
+    },
+    "massiveCoarse": {
+      "N": 4096,
+      "dx": 0.390625,
+      "steps": 8400,
+      "norm0": 0.9999999999999376,
+      "norm1": 0.9999999995103317,
+      "T": 0.4306626984391698,
+      "R": 0.5693372953147746,
+      "barrier": 6.246055349591894e-9,
+      "center": 883.4363012492447,
+      "acceptsUnitTransmission": false
+    },
+    "massiveFine": {
+      "N": 8192,
+      "dx": 0.1953125,
+      "steps": 8400,
+      "norm0": 0.9999999999999744,
+      "norm1": 0.9999999996633517,
+      "T": 0.4129900930271546,
+      "R": 0.5870099008990515,
+      "barrier": 6.073795289558464e-9,
+      "center": 877.797127285624,
+      "acceptsUnitTransmission": false
+    },
+    "massiveNoBarrier": {
+      "N": 4096,
+      "dx": 0.390625,
+      "steps": 10400,
+      "norm0": 0.9999999999999376,
+      "norm1": 0.9999999995431568,
+      "T": 0.9999999482686348,
+      "R": 5.1731364727253845e-8,
+      "barrier": 7.64402215459098e-18,
+      "center": 1150.211256618934,
+      "acceptsUnitTransmission": true
+    },
+    "freeFlight": {
+      "N": 2048,
+      "dx": 0.78125,
+      "steps": 1600,
+      "norm0": 1.0000000000000004,
+      "norm1": 0.9999999999885986,
+      "T": 0.0000011888551161830461,
+      "R": 0.9999903093602689,
+      "barrier": 0.000008501784615090225,
+      "center": 779.9999999999428,
+      "acceptsUnitTransmission": false,
+      "expectedShift": 80,
+      "shift": 79.99999999994282,
+      "note": "At t = 80 the packet is still left of x = 912, so this T is not a transmission. The check is the center, which must move by +80."
+    }
+  },
+  "plate": {
+    "note": "metric is the number compute() stores. At |sin theta| < 1e-3 that number is the literal 1, not an integral of the field. rightOverLeft is the painted Float32 sum on x > xE divided by the sum on x < xB.",
+    "rows": [
+      {
+        "theta": 0,
+        "V": 1.8,
+        "width": 16,
+        "k": 0.9,
+        "grid": 160,
+        "aspect": "1:1",
+        "W": 160,
+        "H": 160,
+        "metric": 1,
+        "assigned": true,
+        "fieldMaxAbs": 0,
+        "rightOverLeft": 0.99070840567772
+      },
+      {
+        "theta": 0,
+        "V": 4,
+        "width": 40,
+        "k": 0.3,
+        "grid": 160,
+        "aspect": "1:1",
+        "W": 160,
+        "H": 160,
+        "metric": 1,
+        "assigned": true,
+        "fieldMaxAbs": 0,
+        "rightOverLeft": 0.6099984756283714
+      },
+      {
+        "theta": 0,
+        "V": 0.4,
+        "width": 4,
+        "k": 2,
+        "grid": 160,
+        "aspect": "1:1",
+        "W": 160,
+        "H": 160,
+        "metric": 1,
+        "assigned": true,
+        "fieldMaxAbs": 0,
+        "rightOverLeft": 1.1812864995708494
+      },
+      {
+        "theta": 0.05,
+        "V": 3,
+        "width": 20,
+        "k": 1,
+        "grid": 160,
+        "aspect": "1:1",
+        "W": 160,
+        "H": 160,
+        "metric": 1,
+        "assigned": true,
+        "fieldMaxAbs": 0,
+        "rightOverLeft": 0.9271835283672529
+      },
+      {
+        "theta": 35,
+        "V": 1.8,
+        "width": 16,
+        "k": 0.9,
+        "grid": 128,
+        "aspect": "16:9",
+        "W": 128,
+        "H": 72,
+        "metric": 0.9219322771748063,
+        "assigned": false,
+        "fieldMaxAbs": 0,
+        "rightOverLeft": 0.8538289771605132
+      }
+    ]
+  },
+  "pass": true
+}
