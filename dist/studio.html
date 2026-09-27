@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="132 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="134 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="132 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="134 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 132 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 134 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -1654,7 +1654,7 @@ shall not be misrepresented as the original profile.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 132 sciences share one control surface,
+      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 134 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1797,7 +1797,7 @@ shall not be misrepresented as the original profile.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 132 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 134 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
         Start a launcher in run/ to serve the folder on your own computer. No package installation,
@@ -6790,9 +6790,92 @@ shall not be misrepresented as the original profile.
       "resolution": "Force max |Δa| ~2e-15 / 5e-15 / 1e-14 at N=256/1024/4096; relative energy drift ~4.5e-6→2.8e-7 under h 0.004→0.001 (ratio ~16); position RMS refine ~5 on the ε band. Exact N/ε/h/steps recorded.",
       "precision": "Float64 production kernel vs independent all-pairs reference; finite-time fixtures only — not galaxy equilibrium, unsoftened close encounters, or chaotic long-time accuracy."
     }
+  },
+  {
+    "id": "fisher-kpp",
+    "source": "src/modules/fisher-kpp.js",
+    "sourceSha256": "8edac26c11ad0d003d7fdb101f02a28aea2a92dbba2aa8e8b825231048e54131",
+    "reference": "R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).",
+    "equation": "∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)",
+    "status": "unvalidated",
+    "limitations": [
+      "Deterministic single-species logistic reaction-diffusion on a closed (zero-flux) plate: no demographic noise, Allee effect, advection or genetic drift. The territory view maps first arrival, not genetics. A population illustration does not establish experimental accuracy.",
+      "The status-line front speed is read from the arrival-time field (mean 1/|∇T| over clean cells in the last half of the arrivals) and is compared with 2√(rD) with basis deterministic. It sits below 2√(rD) by the finite-time lag, which the note prints: Bramson's (3/2)√(D/r)/t for a straight front and 2√(D/r)/t for a circle. The circular coefficient 2 was not read in Gärtner (1982) or Ducrot (2015); it agrees with Bramson's 3/2 plus the curvature term, and its next correction and the founder-radius effect are unknown, so the plate criterion for circles is a band.",
+      "The grid effect printed on the status line is the difference from a twin on cells twice as large; with the 9-point stencil at D dt/h² = 1/6 the straight-front speed converges at fourth order, and the difference overstates the plate's own error.",
+      "Heterogeneous habitats (patchy, hostile islands) print no comparison and are not benchmarked beyond the scheme.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused because a pulled front is set by densities below its resolution. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/FISHER-KPP.md against the primary sources before any promotion.",
+      "Read Gärtner (1982) or Ducrot (2015) for the circular coefficient; extend the plate witness to other D, r and grids.",
+      "Benchmark the heterogeneous habitats against a published result (Shigesada, Kawasaki and Teramoto 1986) before any claim about them."
+    ],
+    "numerical": [
+      {
+        "test": "tools/fisher-kpp-science.js",
+        "command": "node tools/fisher-kpp-science.js --write",
+        "results": "validation/results/fisher-kpp-science.json",
+        "scope": "The real GPU module (logistic growth on a uniform field; its step against an independent Float64 twin on a 128 x 128 plate with seven founders; its status-line front speed on the Growth rings, One founder and Straight front presets at grid 512, h = 1/2) and a Float64 straight front of the same scheme (the 9-point stencil reduces to the 3-point one along a grid axis) over t in [100, 200]/r and [200, 400]/r for (D, r) = (1, 1), (2, 1/2), (1, 2) at one, two and four cells per √(D/r).",
+        "criteria": "Logistic error below the float32 bound 2e-5 over 480 steps; GPU density within 5.7e-5 of the twin, arrival times within 1e-3 at the 99.9th percentile, labels within 0.1%; straight-front speed within 1.5e-3 (first window) and 5e-4 (second) of 2√(rD) times the Bramson and Ebert-van Saarloos speed at two or more cells per decay length; second-order refinement at D dt/h² = 1/4 and fourth-order between h = 1 and 1/2 at 1/6; each plate speed inside its geometry's lag band within 3e-3 plus its h-and-2h difference, with 2√(rD) alone outside it. Two float32 tolerances were set from the rounding bound after guessed ones (2e-6, 1e-5) failed on the first run; validation/FISHER-KPP.md records both.",
+        "benchmark": "The exact logistic solution u0 e^{rt}/(1 + u0(e^{rt} - 1)); the straight-front position 2t - (3/2) ln t + a - 3√π/√t in units of D and r (Bramson 1978; Ebert and van Saarloos 2000; checked in Berestycki, Brunet and Derrida, arXiv:1705.08416, eq. 7); the circular lag 2√(D/r) ln t in two dimensions (Gärtner 1982, not read); an independent Float64 implementation of the scheme.",
+        "failureControl": "A halved growth rate must miss the logistic benchmark (misses by 0.55); the bare 2√(rD) with no finite-time lag must miss the straight-front and plate criteria (by 4.9e-3 to 9.9e-3 dimensionless); D -> -D must break the discrete maximum principle on the Float64 scheme and on the GPU (it does).",
+        "limitations": "Straight fronts along a grid axis and the three plate presets at one resolution; the unknown next asymptotic term (of order ln t/t² in the speed) limits the straight-front agreement to about 1e-3 at t ~ 100/r. SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/fisher-kpp-print.js",
+        "command": "node tools/fisher-kpp-print.js --write",
+        "results": "validation/results/fisher-kpp-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Growth rings) and 2400 x 1600 (a 3:2 straight front) in all four views, and a 2560 x 2560 export whose pixel centres fall on the 512 cell centres.",
+        "criteria": "Zero changed float32 components in the plate and its half-resolution twin; exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state 24 steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain and isochrone lines are drawn per output pixel and excluded from the agreement test; no colorimetric or printer-profile claim."
+      }
+    ]
+  },
+  {
+    "id": "cattaneo",
+    "source": "src/modules/cattaneo.js",
+    "sourceSha256": "3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e",
+    "reference": "Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.",
+    "equation": "τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0",
+    "status": "unvalidated",
+    "limitations": [
+      "Linear, constant-coefficient Maxwell-Cattaneo-Vernotte (telegraph) model with unit heat capacity on a periodic plate, a labeled simplification of the nonlinear equations of Kovács and Rogolino (arXiv:1910.09175). No temperature-dependent coefficients, boundaries, material data or Guyer-Krumhansl terms; not a material model, and no claim about which solids conduct heat this way. The model lets the temperature dip below ambient behind a front, a known objection to it.",
+      "The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.",
+      "Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/CATTANEO.md before any promotion.",
+      "Compare with a published numerical result for the linear case (for example a one-dimensional heat-pulse profile in Kovács and Rogolino) and state the differences from their nonlinear model quantitatively.",
+      "Extend the plate check to more modes and to non-square plates."
+    ],
+    "numerical": [
+      {
+        "test": "tools/cattaneo-science.js",
+        "command": "node tools/cattaneo-science.js --write",
+        "results": "validation/results/cattaneo-science.json",
+        "scope": "A Float64 one-dimensional twin of the staggered scheme and the scheme's scalar mode recursion (modes m = 1, 2, 3, 5, 8, 12 at α = 0.002, τ = 0.5 on 512 cells; refinement 64 to 512 cells at α = 0.02, τ = 0.35; the Nyquist step bound; τ from 0.1 to 0 on mode 2), and the real GPU module (single modes on 256 x 256 and 256 x 320 including τ = 0; one spark at α = 0.03, τ = 0.4 on 512; the status-line check on the Sparks, Moving torch, Rings and glow and Fourier limit presets).",
+        "criteria": "Twin equal to the recursion to 1e-10; each mode within (kh)²/12 + 1e-4 of the exact response; overdamped slow roots within 0.1% and oscillating decay rates and frequencies within 0.5%; GPU within 2e-5 of the recursion; second-order refinement (orders 1.8 to 2.3); bounded at 0.999 of the solved step bound and overflow at 1.01; relaxation-limit slow roots within 0.1% and the O(τ) coefficient within 10% for τ ≤ 0.01; ring edge speed within 1% of √(α/τ) with under 1e-3 of the peak beyond the front; plate mismatch below 1e-5 and heat within 1e-5. Some thresholds were set after first runs (the mode tolerance, the oscillation window, the plate-control ratio); validation/CATTANEO.md says which.",
+        "benchmark": "The exact dispersion relation τ s² + s + α k² = 0 of the continuum telegraph equation and the resulting mode response G_k(t) with G_k(0) = 1, G_k'(0) = 0; Fourier's law e^{-αk²t} at τ = 0; the wave speed √(α/τ); the Gaussian solution of the heat equation as the finite-speed control.",
+        "failureControl": "τ -> -τ must fail the mode check (error 163 on the recursion, overflow on the GPU); a step 1% above the solved bound must grow; τ five per cent high and Fourier's law must each miss the plate check by 20 times its own mismatch (80 to 40000 times).",
+        "limitations": "Periodic domain, linear constant coefficients, selected modes and presets at one or two resolutions; SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/cattaneo-print.js",
+        "command": "node tools/cattaneo-print.js --write",
+        "results": "validation/results/cattaneo-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Sparks) and 2400 x 3000 (a 4:5 moving torch) in all three views, and 2560 x 2560 exports whose pixel centres fall on the 512 cell centres in each view.",
+        "criteria": "Zero changed float32 components (temperature and both face fluxes); exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state ten steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain is drawn per output pixel and excluded; no colorimetric or printer-profile claim."
+      }
+    ]
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"aa4952743422","fingerprint":"aa4952743422005271ae4a1cdb8f0648de1eadc5894233ad012921c0f1b2044d","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/expr.js":"817d9354c12df378314589983eb40955cef1fac3a93f4590a4a4b5a6076480a2","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"a7cf0951fd5aa52bee75b72ce62079e9f47c22944f8da389998ee1404095269e","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3","src/modules/dynamics.js":"7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd","src/modules/rdx.js":"f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/neural-field.js":"b8c040ac5cbc5988f2a3a7d82bd40695f1631767049359823bec08efb32833df","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","phase":"src/modules/dynamics.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","neural-field":"src/modules/neural-field.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","phase":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","neural-field":"partially validated","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"25fe1a19d20e","fingerprint":"25fe1a19d20ea4c7fe8bfcb423afad853fd5d8c69b20049e5170b39ca9fa23d0","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/expr.js":"817d9354c12df378314589983eb40955cef1fac3a93f4590a4a4b5a6076480a2","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"29f522da4a357fbd4d6df3ec663ad17289257d031285a2888d84336ed2dc9f78","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3","src/modules/dynamics.js":"7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd","src/modules/rdx.js":"f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"fbfc0f7595ad6a72b5fdf25679c18d46dd35f5803ba6d7bb126cf6a864f5c458","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/neural-field.js":"b8c040ac5cbc5988f2a3a7d82bd40695f1631767049359823bec08efb32833df","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/modules/fisher-kpp.js":"8edac26c11ad0d003d7fdb101f02a28aea2a92dbba2aa8e8b825231048e54131","src/modules/cattaneo.js":"3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","phase":"src/modules/dynamics.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","neural-field":"src/modules/neural-field.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","cattaneo":"src/modules/cattaneo.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","fisher-kpp":"src/modules/fisher-kpp.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","phase":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","neural-field":"partially validated","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits","fisher-kpp":"unvalidated","cattaneo":"unvalidated"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -8578,6 +8661,7 @@ void main(){
     physarum: 'occasional',
     hl: 'occasional',
     cyclic: 'occasional',
+    'fisher-kpp': 'occasional',
     potts: 'occasional',
     sle: 'occasional',
     lens: 'occasional',
@@ -8647,6 +8731,7 @@ void main(){
     loschmidt: 'rare',
     thouless: 'rare',
     causticsea: 'rare',
+    cattaneo: 'rare',
     // unseen
     hyperbolic: 'unseen',
     rotor: 'unseen',
@@ -59120,6 +59205,999 @@ float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
     hints:{Field:'The starting time derivative is zero. Opposite cube faces connect. Standing mode numbers are (2, 3, 1). Crossed adds 0.6 times (5, -2, 3).',Workload:'Each frame advances at most one full-volume step and waits for prior GPU work. 256³ has 16.8 million cells and two 256 MiB textures, plus driver overhead. Free GPU memory cannot be queried reliably. Stop queued work cancels future steps, but cannot cancel a GPU command already submitted. The CFL ceiling is enforced, not user-overridable.',Slice:'The plate is one cell-aligned slice with bicubic display interpolation. Its resolution is the selected grid. Colors and exposure are illustrative, not calibrated intensity.'},
     closedGroups:['Workload'],palette:true,defaultPalette:'thermal',familiarity:'occasional',sanitize,create,
     surprise(rng){return {pattern:rng.pick(['pulse','mode','crossed']),axis:rng.pick(['xy','xz','yz']),slice:rng.range(0.15,0.85)};},
+  });
+})();
+</script>
+<script>/* modules/fisher-kpp.js */
+/* GENChase: Fisher-KPP invasion fronts. Logistic growth with diffusion on a GPU grid; the plate is the arrival time. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl, Pal = Studio.PALETTES;
+  const GEOM = 'geom', PAINT = 'paint';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+  const MAX_STEPS = 24000;
+
+  // One step of u_t = D ∇²u + r g(x) u (1 − u), split in two: forward Euler for the diffusion with the
+  // 9-point (Mehrstellen) Laplacian, then the exact logistic flow over dt. With mu = D dt / h² ≤ 3/10 the
+  // diffusion update is a convex combination of the nine cells and the logistic flow maps [0, 1] into itself,
+  // so the discrete solution stays in [0, 1] and no clamp is needed. At mu = 1/6 the leading errors of the
+  // stencil (+h²∇⁴/12, the same in every direction) and of the Euler step (−D dt ∇⁴/2) cancel, which leaves the
+  // speed of the leading edge in error at O(h⁴) in every direction. The texture is sampled clamp-to-edge, so a
+  // missing neighbour is the cell itself: zero flux through the edge of the plate (a closed habitat).
+  // State: R = u, G = arrival time (the first time u reaches 1/2, linearly interpolated inside the step;
+  // -1 before), B = founder label (copied at arrival from the neighbour that arrived first), A = g(x).
+  const STEP_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform float u_mu, u_rdt, u_t0, u_dt;
+vec4 S(vec2 d){ return texture(u_s, v_uv + d / u_res); }
+float first, most, lab, labU;
+void consider(vec4 q){
+  if (q.g >= 0.0 && q.g < first) { first = q.g; lab = q.b; }
+  if (q.b >= 0.0 && q.r > most) { most = q.r; labU = q.b; }
+}
+void main(){
+  vec4 c = S(vec2(0.0)), e = S(vec2(1.0, 0.0)), w = S(vec2(-1.0, 0.0)), n = S(vec2(0.0, 1.0)), s = S(vec2(0.0, -1.0));
+  float dg = S(vec2(1.0, 1.0)).r + S(vec2(-1.0, 1.0)).r + S(vec2(1.0, -1.0)).r + S(vec2(-1.0, -1.0)).r;
+  float ud = c.r + u_mu * (4.0 * (e.r + w.r + n.r + s.r) + dg - 20.0 * c.r) / 6.0;
+  float gr = exp(u_rdt * c.a);
+  float un = ud * gr / (1.0 + ud * (gr - 1.0));
+  float T = c.g;
+  lab = c.b;
+  if (T < 0.0 && un >= 0.5) {
+    T = u_t0 + u_dt * clamp((0.5 - c.r) / max(un - c.r, 1.0e-30), 0.0, 1.0);
+    first = 1.0e30; most = -1.0; labU = -1.0;
+    consider(e); consider(w); consider(n); consider(s);
+    if (first > 1.0e29) lab = labU;
+  }
+  outColor = vec4(un, T, lab, c.a);
+}`;
+
+  // The plate. Views: 0 arrival time with isochrones, 1 territories (who arrived first), 2 density u, 3 relief
+  // of the arrival time. A cell the front has not reached counts as arriving now: that is the earliest it can
+  // arrive, and it keeps the interpolated arrival time continuous across the front.
+  const RENDER_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform int u_view;
+uniform float u_tnow, u_tmax, u_lo, u_hi, u_iso, u_linePx, u_lineAmt, u_npal;
+uniform float u_exposure, u_gamma, u_contrast, u_grain, u_bump, u_lightAng;
+uniform vec3 u_bg;
+${G.GLSL.bicubic}
+${G.GLSL.hash}
+${G.GLSL.ramp}
+vec4 tapAt(vec2 ij){ return texture(u_s, (ij + 0.5) / u_res); }
+vec2 field(vec2 uv){
+  vec2 p = uv * u_res - 0.5, f = fract(p), b = floor(p);
+  vec2 sum = vec2(0.0); float ws = 0.0;
+  for (int j = -1; j <= 2; j++) for (int i = -1; i <= 2; i++) {
+    vec4 q = tapAt(b + vec2(float(i), float(j)));
+    float w = crW(float(i) - f.x) * crW(float(j) - f.y);
+    sum += w * vec2(q.r, q.g >= 0.0 ? q.g : u_tnow);
+    ws += w;
+  }
+  return sum / ws;
+}
+float tone(float T){ return clamp((T / max(u_tmax, 1.0e-6) - u_lo) / max(u_hi - u_lo, 1.0e-4), 0.0, 1.0); }
+vec3 labelColor(float l){
+  if (l < 0.0) return u_bg;
+  return ramp((1.0 + mod(floor(l + 0.5), u_npal)) / u_npal);
+}
+void main(){
+  vec2 fu = field(v_uv);
+  float u = fu.x, T = fu.y;
+  // Everything that takes a screen derivative is computed here, in uniform control flow.
+  float fwU = max(fwidth(u), 1.0e-5);
+  float arrived = smoothstep(0.5 - fwU, 0.5 + fwU, u);
+  float fIso = T / max(u_tmax / max(u_iso, 1.0), 1.0e-6);
+  float fwIso = max(fwidth(fIso), 1.0e-6);
+  float dIso = abs(fract(fIso + 0.5) - 0.5) / fwIso;
+  float line = (u_iso > 0.0 && fIso > 0.5) ? (1.0 - smoothstep(0.5 * u_linePx - 0.5, 0.5 * u_linePx + 0.5, dIso)) * u_lineAmt : 0.0;
+  // territories: the label whose bilinear weight wins, antialiased along the curve where two labels tie
+  vec2 p = v_uv * u_res - 0.5, b = floor(p), f = p - b;
+  vec4 q[4]; q[0] = tapAt(b); q[1] = tapAt(b + vec2(1.0, 0.0)); q[2] = tapAt(b + vec2(0.0, 1.0)); q[3] = tapAt(b + vec2(1.0, 1.0));
+  float wt[4]; wt[0] = (1.0 - f.x) * (1.0 - f.y); wt[1] = f.x * (1.0 - f.y); wt[2] = (1.0 - f.x) * f.y; wt[3] = f.x * f.y;
+  float lw[4];
+  for (int i = 0; i < 4; i++) { lw[i] = 0.0; for (int j = 0; j < 4; j++) if (q[j].b == q[i].b) lw[i] += wt[j]; }
+  int top = 0;
+  for (int i = 1; i < 4; i++) if (lw[i] > lw[top]) top = i;
+  int sec = top; float sw = -1.0;
+  for (int i = 0; i < 4; i++) if (q[i].b != q[top].b && lw[i] > sw) { sw = lw[i]; sec = i; }
+  float margin = lw[top] - (sec == top ? 0.0 : lw[sec]);
+  float fwM = max(fwidth(margin), 1.0e-5);
+  float win = smoothstep(-fwM, fwM, margin);
+  vec3 col;
+  float t = tone(T);
+  if (u_view == 1) {
+    vec3 cTop = labelColor(q[top].b), cSec = labelColor(q[sec].b);
+    col = mix(cSec, cTop, win) * mix(0.82, 1.06, t);
+    col = mix(col, u_bg, line);
+    col = mix(u_bg, col, arrived);
+  } else if (u_view == 2) {
+    col = ramp(clamp((u - u_lo) / max(u_hi - u_lo, 1.0e-4), 0.0, 1.0));
+  } else if (u_view == 3) {
+    vec2 px = 1.0 / u_res;
+    float hE = tone(field(v_uv + vec2(px.x, 0.0)).y), hW = tone(field(v_uv - vec2(px.x, 0.0)).y);
+    float hN = tone(field(v_uv + vec2(0.0, px.y)).y), hS = tone(field(v_uv - vec2(0.0, px.y)).y);
+    float gx = 0.5 * (hE - hW) * u_bump, gy = 0.5 * (hN - hS) * u_bump;
+    float ang = u_lightAng * 3.14159265 / 180.0;
+    vec3 N = normalize(vec3(-gx, -gy, 1.0));
+    vec3 Lt = normalize(vec3(cos(ang), sin(ang), 0.85));
+    float sh = clamp(pow(max(dot(N, Lt), 0.0), 1.15), 0.0, 1.0);
+    col = mix(u_bg, ramp(0.08 + 0.92 * t), mix(0.35, 1.0, sh)) * mix(0.55, 1.1, sh);
+    col = mix(col, u_bg, line * 0.6);
+    col = mix(u_bg, col, arrived);
+  } else {
+    col = ramp(0.08 + 0.92 * t);
+    col = mix(col, u_bg, line);
+    col = mix(u_bg, col, arrived);
+  }
+  col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
+  col *= u_exposure;
+  col = clamp((col - 0.5) * u_contrast + 0.5, 0.0, 1.0);
+  if (u_grain > 0.0) col = clamp(col + (hash21(gl_FragCoord.xy * 0.73) - 0.5) * u_grain * 0.4, 0.0, 1.0);
+  outColor = vec4(col, 1.0);
+}`;
+
+  // ---- geometry, habitat, time step ----
+  function sizeOf(s) {
+    const n = Number(s.grid) || 512, ar = ASPECTS[s.aspect] || 1;
+    return [n & ~1, Math.max(64, Math.round(n * ar)) & ~1];
+  }
+  const cellOf = s => 1 / (Number(s.scale) || 2);                    // h, length units per cell
+  // The diffusion number mu = D dt / h². The 9-point Euler step is monotone for mu ≤ 3/10 (its centre weight
+  // 1 − 10 mu / 3 stays nonnegative) and stable for mu ≤ 3/8 (the grid-scale symbol is −16/(3h²)).
+  const MUS = { '1/6': 1 / 6, '1/10': 0.1, '1/4': 0.25, '3/10': 0.3 };
+  const muOf = s => MUS[s.mu] || 1 / 6;
+  const dtOf = s => muOf(s) * cellOf(s) * cellOf(s) / Math.max(Number(s.D) || 1, 1e-6);
+  // Steps to the end time, a multiple of 4 so the half-resolution twin (4 dt per step) ends at the same time.
+  const stepsOf = s => Math.min(MAX_STEPS, 4 * Math.ceil(s.until / (4 * dtOf(s))));
+  // Growth multiplier g(x) at a point in length units: 1 on uniform ground, a smooth patchwork between 1 − a and
+  // 1 + a, or −1 inside islands where the population declines. Defined in length units, so both resolutions
+  // see the same habitat.
+  function habitatOf(s) {
+    if (s.habitat === 'uniform') return () => 1;
+    const nz = U.makeNoise(U.makeRng(s.seed + '/fisher-kpp/habitat'));
+    const L = Math.max(Number(s.patch) || 20, 1), a = U.clamp(Number(s.contrast) || 0, 0, 0.9);
+    if (s.habitat === 'patchy') return (x, y) => 1 + a * U.clamp(1.8 * nz.fbm(x / L, y / L, 3), -1, 1);
+    const cut = 0.55 - 0.5 * a;
+    return (x, y) => (nz.fbm(x / L, y / L, 3) > cut * 0.5 ? -1 : 1);
+  }
+  function foundersOf(s, Lx, Ly) {
+    const rng = U.makeRng(s.seed + '/fisher-kpp/founders');
+    const R = Math.max(Number(s.radius) || 3, 0.5);
+    if (s.init === 'single') return [{ x: Lx / 2, y: Ly / 2, R }];
+    if (s.init === 'edge') return [{ edge: true, R, k: 1 + rng.int(1, 3), ph: rng() * U.TAU, amp: R * rng.range(0.4, 0.8) }];
+    const n = Math.max(1, Math.round(s.founders)), out = [];
+    for (let i = 0; i < n; i++) {
+      let best = null, bestD = -1;
+      // Best of 12 candidates: the one farthest from the founders placed so far (Mitchell's blue noise).
+      for (let tries = 0; tries < 12; tries++) {
+        const c = { x: rng.range(R, Lx - R), y: rng.range(R, Ly - R), R: R * rng.range(0.7, 1.3) };
+        let d = Infinity;
+        for (const o of out) d = Math.min(d, Math.hypot(c.x - o.x, c.y - o.y));
+        if (d > bestD) { best = c; bestD = d; }
+      }
+      out.push(best);
+    }
+    return out;
+  }
+  // The initial field for a W x H grid of cell h: rows from the bottom (GL order), RGBA = u, arrival, label, g.
+  function seedField(s, W, H, h) {
+    const Lx = W * h, Ly = H * h, g = habitatOf(s), fs = foundersOf(s, Lx, Ly);
+    const data = new Float32Array(W * H * 4);
+    for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
+      const x = (i + 0.5) * h, y = (j + 0.5) * h, k = (j * W + i) * 4;
+      let u = 0, lab = -1;
+      for (let f = 0; f < fs.length; f++) {
+        const F = fs[f];
+        const d = F.edge ? F.R + F.amp * Math.sin(U.TAU * F.k * y / Ly + F.ph) - x : F.R - Math.hypot(x - F.x, y - F.y);
+        const v = U.clamp(d / h + 0.5, 0, 1);
+        if (v > u) { u = v; lab = f; }
+      }
+      data[k] = u; data[k + 1] = u >= 0.5 ? 0 : -1; data[k + 2] = u >= 0.5 ? lab : -1; data[k + 3] = g(x, y);
+    }
+    return data;
+  }
+
+  // Front speed read from the arrival-time field: the mean of 1/|∇T| (central differences) over the cells that
+  // arrived in the last half of the arrival times, away from everything that is not a free front. A cell is
+  // used only when no cell within `m` of it is unreached, belongs to another founder, lies on the edge of the
+  // plate or has a growth rate other than r. Where two fronts meet their leading edges overlap before either
+  // arrives, so m is three decay lengths √(D/r) of the leading edge.
+  function frontSpeed(st, W, H, h, m) {
+    let tmax = 0;
+    for (let i = 0; i < W * H; i++) if (st[i * 4 + 1] > tmax) tmax = st[i * 4 + 1];
+    const out = { speed: NaN, n: 0, tmax, invT: NaN, tMean: NaN };
+    if (!(tmax > 0)) return out;
+    const bad = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x, lab = st[i * 4 + 2];
+      let b = st[i * 4 + 1] < 0 || st[i * 4 + 3] !== 1 || x === 0 || y === 0 || x === W - 1 || y === H - 1;
+      if (!b) for (const j of [i + 1, i - 1, i + W, i - W]) if (st[j * 4 + 2] !== lab || st[j * 4 + 1] < 0) { b = true; break; }
+      bad[i] = b ? 1 : 0;
+    }
+    // dilate by m along rows, then along columns (a square of side 2m + 1), with running sums
+    const rowNear = new Uint8Array(W * H), near = new Uint8Array(W * H), pre = new Int32Array(Math.max(W, H) + 1);
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) pre[x + 1] = pre[x] + bad[y * W + x];
+      for (let x = 0; x < W; x++) rowNear[y * W + x] = pre[Math.min(W, x + m + 1)] - pre[Math.max(0, x - m)] > 0 ? 1 : 0;
+    }
+    for (let x = 0; x < W; x++) {
+      for (let y = 0; y < H; y++) pre[y + 1] = pre[y] + rowNear[y * W + x];
+      for (let y = 0; y < H; y++) near[y * W + x] = pre[Math.min(H, y + m + 1)] - pre[Math.max(0, y - m)] > 0 ? 1 : 0;
+    }
+    const lo = 0.5 * tmax;
+    let n = 0, sv = 0, si = 0, st2 = 0;
+    for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+      const i = y * W + x, T = st[i * 4 + 1];
+      if (near[i] || !(T >= lo)) continue;
+      const gx = (st[(i + 1) * 4 + 1] - st[(i - 1) * 4 + 1]) / (2 * h), gy = (st[(i + W) * 4 + 1] - st[(i - W) * 4 + 1]) / (2 * h);
+      const gg = Math.hypot(gx, gy);
+      if (!(gg > 0)) continue;
+      sv += 1 / gg; si += 1 / T; st2 += T; n++;
+    }
+    if (n) Object.assign(out, { speed: sv / n, n, invT: si / n, tMean: st2 / n });
+    return out;
+  }
+
+  function hexToRgb01(hex) { const c = U.hexToRgb(hex || '#000000'); return [c[0] / 255, c[1] / 255, c[2] / 255]; }
+  // A float32 texture read back in its own row order (row 0 at the bottom, the order it was uploaded in).
+  function readRaw(gl, target) {
+    const out = new Float32Array(target.w * target.h * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+    gl.readPixels(0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, out);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return out;
+  }
+  const VIEWS = { arrival: 0, territory: 1, density: 2, relief: 3 };
+
+  function create(host) {
+    const gl = G.createGL(host.canvas);
+    const noop = () => {};
+    const dead = msg => {
+      host.setStatus(msg); host.fault(msg);
+      return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), repaint: noop, resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
+    };
+    if (!gl) return dead('WebGL2 is not available in this browser');
+    // A pulled front is set by densities far below what float16 can hold: with a cutoff ε the speed falls by
+    // about π²/(ln ε)² (Brunet and Derrida 1997), several per cent at float16. Refuse rather than draw it.
+    if (!gl.floatExt) return dead('Fisher-KPP needs float32 render targets: the front is pulled by densities far below float16 resolution');
+    let stepPass, renderPass;
+    try { stepPass = new G.Pass(gl, STEP_FS); renderPass = new G.Pass(gl, RENDER_FS); }
+    catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
+
+    // the plate's grid and, on uniform ground, a twin at twice the cell size that runs the same recipe to the
+    // same time (4 dt per step, the same D dt / h²) for the resolution part of the error
+    let fine = null, coarse = null, ramp = null, rampKey = '';
+    let steps = 0, total = 0, dt = 0, timer = 0, paused = false, meas = null, tmaxShown = 1, lastPaint = 0;
+    function grid(W, H, h) { return { W, H, h, C: new G.PingPong(gl, W, H, { type: 'rgba32f', filter: 'nearest', wrap: 'clamp' }) }; }
+    function drop() { if (fine) fine.C.dispose(); if (coarse) coarse.C.dispose(); fine = coarse = null; }
+    function stepGrid(g, k, dtg) {
+      const s = host.getState();
+      stepPass.draw(g.C.write, { u_s: g.C.read, u_res: [g.W, g.H], u_mu: s.D * dtg / (g.h * g.h), u_rdt: s.r * dtg, u_t0: k * dtg, u_dt: dtg });
+      g.C.swap();
+    }
+    function step(n) {
+      for (let i = 0; i < n && steps < total; i++) {
+        stepGrid(fine, steps, dt);
+        if (coarse && (steps + 1) % 4 === 0) stepGrid(coarse, (steps + 1) / 4 - 1, 4 * dt);
+        steps++;
+      }
+    }
+    function ensureRamp(s) {
+      const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+      if (ramp && key === rampKey) return;
+      if (ramp) ramp.dispose();
+      ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
+    }
+    function render(target, pxWidth) {
+      if (!fine) return;
+      const s = host.getState();
+      ensureRamp(s);
+      const w = pxWidth || (target ? target.w : gl.drawingBufferWidth);
+      renderPass.draw(target || null, {
+        u_s: fine.C.read, u_res: [fine.W, fine.H], u_view: { int: VIEWS[s.view] || 0 },
+        u_tnow: steps * dt, u_tmax: Math.max(tmaxShown, 1e-6), u_lo: s.lo, u_hi: s.hi,
+        u_iso: s.iso, u_linePx: Math.max(0.75, s.line * w / 1000), u_lineAmt: s.lineAmt,
+        u_npal: Math.max(1, (s.palette || []).length), u_ramp: ramp, u_bg: hexToRgb01(s.bg),
+        u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain, u_bump: s.bump, u_lightAng: s.lightAng,
+      });
+    }
+    // At the end of the run: read the arrival times back, set the colour scale from the latest arrival
+    // actually present, and measure the front speed on both grids.
+    function measure() {
+      const s = host.getState();
+      const st = readRaw(gl, fine.C.read);
+      const m = k => Math.max(2, Math.ceil(3 * Math.sqrt(s.D / s.r) / k));
+      const a = frontSpeed(st, fine.W, fine.H, fine.h, m(fine.h));
+      tmaxShown = a.tmax > 0 ? a.tmax : Math.max(steps * dt, 1e-6);
+      const b = coarse ? frontSpeed(readRaw(gl, coarse.C.read), coarse.W, coarse.H, coarse.h, m(coarse.h)) : null;
+      meas = { a, b, time: steps * dt };
+    }
+    function status(extra) {
+      const s = host.getState();
+      const head = '<span>grid <b>' + fine.W + '×' + fine.H + '</b> · h <b>' + f2(fine.h) + '</b></span>';
+      const clock = '<span>t <b>' + (steps * dt).toFixed(1) + '</b> · step <b>' + steps.toLocaleString() + '</b> of ' + total.toLocaleString() +
+        ' · dt <b>' + dt.toPrecision(3) + '</b>' + (extra ? ' · ' + extra : '') + '</span>';
+      const cs = 2 * Math.sqrt(s.r * s.D);
+      let cmp;
+      if (extra) cmp = '<span>front speed after the run · 2√(rD) <b>' + cs.toFixed(3) + '</b></span>';
+      else if (s.habitat !== 'uniform') cmp = '<span>growth varies across the habitat: local speeds differ, no single front speed to compare</span>';
+      else if (!meas || !(meas.a.n > 0)) cmp = '<span>no free front cells to measure (fronts met too early, or nothing arrived)</span>';
+      else {
+        const k = Math.sqrt(s.D / s.r) * meas.a.invT;
+        const grid = meas.b && meas.b.n > 0 ? Math.abs(meas.a.speed - meas.b.speed) : NaN;
+        // Deterministic: the seed only places the founders. The printed lags are Bramson's (3/2)√(D/r)/t for a
+        // straight front and Gärtner's 2√(D/r)/t for a circular one in two dimensions, at the sampled times.
+        cmp = U.stats.compare({
+          label: 'front speed', measured: meas.a.speed, expected: cs, reference: '2√(rD)', basis: 'deterministic', digits: 4,
+          note: 'mean arrival t ' + f1(meas.a.tMean) + ' over ' + meas.a.n.toLocaleString() + ' cells · finite-time lag ' +
+            (1.5 * k).toFixed(3) + ' straight to ' + (2 * k).toFixed(3) + ' circular · ' +
+            (Number.isFinite(grid) ? 'cells h and 2h differ by ' + grid.toFixed(4) : 'no half-resolution twin'),
+        });
+      }
+      host.setStatus(head + cmp + clock);
+    }
+    function stop() { clearTimeout(timer); timer = 0; }
+    function finish() { measure(); render(); status(); }
+    function run() {
+      stop();
+      if (paused || !fine) return;
+      if (steps >= total) { finish(); return; }
+      const animate = !host.reducedMotion();
+      let chunkN = 8;
+      (function chunk() {
+        timer = 0;
+        if (paused) return;
+        const t0 = performance.now();
+        step(chunkN);
+        const ms = Math.max(performance.now() - t0, 0.5);
+        chunkN = Math.round(U.clamp(chunkN * 30 / ms, 4, 256));
+        if (steps < total) {
+          if (animate && performance.now() - lastPaint > 150) {
+            tmaxShown = Math.max(steps * dt, 1e-6); render(); status('computing'); lastPaint = performance.now();
+          }
+          timer = setTimeout(chunk, 0);
+        } else finish();
+      })();
+    }
+
+    return {
+      // The plate magnifies a grid, so the shell renders once at print size instead of supersampling.
+      fieldCells() { return fine ? [fine.W, fine.H] : null; },
+      aspect(s) { return ASPECTS[s.aspect] || 1; },
+      regenerate() {
+        stop(); drop(); paused = false; meas = null;
+        const s = host.getState(), [W, H] = sizeOf(s), h = cellOf(s);
+        dt = dtOf(s); total = stepsOf(s); steps = 0; tmaxShown = 1e-6;
+        try {
+          fine = grid(W, H, h);
+          fine.C.read.upload(seedField(s, W, H, h));
+          if (s.habitat === 'uniform') { coarse = grid(W / 2, H / 2, 2 * h); coarse.C.read.upload(seedField(s, W / 2, H / 2, 2 * h)); }
+        } catch (err) { drop(); host.fault('Float render targets are not available in this browser'); return; }
+        lastPaint = performance.now();
+        render(); status('computing');
+        run();
+      },
+      repaint() { if (fine) render(); },
+      resize() { if (fine) render(); },
+      pause() { paused = true; stop(); },
+      resume() { paused = false; if (fine) { render(); run(); } },
+      // The fields for research use, read back unrounded; rows from the top.
+      async exportData() {
+        if (!fine) throw new Error('nothing to export');
+        const s = host.getState(), st = G.readTarget(fine.C.read), n = fine.W * fine.H;
+        const pick = c => { const a = new Float32Array(n); for (let i = 0; i < n; i++) a[i] = st[i * 4 + c]; return a; };
+        const shape = [fine.H, fine.W];
+        return {
+          arrays: {
+            density: { data: pick(0), shape, description: 'population density u in [0, 1] (carrying capacity 1)' },
+            arrival: { data: pick(1), shape, units: 'model time', description: 'first time u reached 1/2, interpolated inside the step; -1 where the front has not arrived' },
+            founder: { data: pick(2), shape, description: 'index of the founder whose front arrived first (copied from the neighbour that arrived first); -1 before arrival' },
+            habitat: { data: pick(3), shape, description: 'growth multiplier g(x): the local growth rate is r g(x); negative inside hostile islands' },
+          },
+          meta: {
+            tab: 'fisher-kpp', grid: [fine.W, fine.H], cell: fine.h, units: 'length and time in the units of D and r', D: s.D, r: s.r,
+            boundary: 'zero flux (closed habitat)', scheme: 'forward Euler diffusion (5-point) then the exact logistic flow',
+            steps, dt, time: steps * dt, precision: 'rgba32f',
+            frontSpeed: meas && meas.a.n ? { measured: meas.a.speed, cells: meas.a.n, meanArrival: meas.a.tMean, halfResolution: meas.b && meas.b.n ? meas.b.speed : null, minimalSpeed: 2 * Math.sqrt(s.r * s.D) } : null,
+          },
+        };
+      },
+      async exportPNG(w, h) {
+        if (!fine) throw new Error('nothing to export');
+        const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        if (w > max || h > max) throw new Error('larger than this GPU allows (' + max + ' px)');
+        const Tgt = new G.Target(gl, w, h, { type: 'rgba8' });
+        const px = new Uint8Array(w * h * 4);
+        try {
+          render(Tgt, w);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, Tgt.fbo);
+          gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        } finally { gl.bindFramebuffer(gl.FRAMEBUFFER, null); Tgt.dispose(); }
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+        for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+        ctx.putImageData(img, 0, 0);
+        return U.toBlob(c);
+      },
+    };
+  }
+
+  const PICTURE_DEFAULTS = { lo: 0, hi: 1, iso: 14, line: 1.1, lineAmt: 0.85, bump: 5, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 };
+  Studio.register({
+    id: 'fisher-kpp',
+    name: 'Fisher-KPP',
+    tab: 'Fisher-KPP',
+    subtitle: 'invasion fronts and arrival times · 1937',
+    order: 96.3,
+    equation: '∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)',
+    credit: 'R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).',
+    blurb: 'A population that grows until it fills its ground and wanders at random spreads as a wave. Fisher wrote the equation for an advantageous gene sweeping through a species strung out along a coast; Kolmogorov, Petrovsky and Piskunov proved the same year that the wave settles to the speed 2√(rD), set by the growth rate r at vanishing density and the diffusion D, and not by anything that happens behind the front. The front is pulled by its own thin leading edge. Here a few founders are dropped on empty ground and every cell records the moment the density first reaches half the carrying capacity. That arrival time is the picture: bands of equal arrival ring each founder like growth rings, and where two invasions meet their rings fold into a crease, so the plate divides itself into territories. The territory view colors each cell by the founder whose wave got there first; it is a map of arrival, not a model of genetics. Patchy habitat changes the growth rate from place to place and wrinkles the rings; hostile islands, where the population declines, deflect the waves around them.',
+    schema: [
+      { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[256, '256'], [384, '384'], [512, '512'], [768, '768'], [1024, '1024']] },
+      { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+      RANGE('Grid', 'scale', 'Cells per length unit', GEOM, 1, 4, 0.25, f2, {
+        hint: 'Resolution of the physics: cells per unit of length in which D and r are measured. The leading edge decays over √(D/r); two cells per unit resolves it at D = r = 1. Finer is slower: the stable step shrinks with the square of this number.' }),
+      RANGE('Population', 'D', 'Diffusion D', GEOM, 0.25, 4, 0.05, f2, {
+        hint: 'How fast individuals wander. The front speed grows as √D and its leading edge thickens as √D.' }),
+      RANGE('Population', 'r', 'Growth rate r', GEOM, 0.25, 2, 0.05, f2, {
+        hint: 'Growth rate at low density. The minimal speed 2√(rD) is set here, at vanishing density, which is why the front is called pulled.' }),
+      { group: 'Founders', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['founders', 'Founders'], ['single', 'One founder'], ['edge', 'From an edge']] },
+      RANGE('Founders', 'founders', 'Founders', GEOM, 2, 24, 1, String, { dimUnless: s => s.init === 'founders' }),
+      RANGE('Founders', 'radius', 'Founder radius', GEOM, 1, 10, 0.5, f1),
+      { group: 'Habitat', key: 'habitat', label: 'Habitat', type: 'seg', kind: GEOM, options: [['uniform', 'Uniform'], ['patchy', 'Patchy'], ['islands', 'Hostile islands']] },
+      RANGE('Habitat', 'contrast', 'Contrast', GEOM, 0, 0.9, 0.05, f2, { dimUnless: s => s.habitat !== 'uniform',
+        hint: 'Patchy: the growth rate varies between r(1 − c) and r(1 + c), always positive, so the whole plate is invaded. Hostile islands: more cover as c rises; inside an island the population declines at rate r.' }),
+      RANGE('Habitat', 'patch', 'Patch size', GEOM, 5, 80, 1, String, { dimUnless: s => s.habitat !== 'uniform' }),
+      RANGE('Simulation', 'until', 'Run until t', GEOM, 5, 200, 1, String, {
+        hint: 'The model time the plate is computed to. Arrival times run from 0 to this; the colors are scaled to the latest arrival actually present.' }),
+      { group: 'Simulation', key: 'mu', label: 'Time step D dt/h²', type: 'seg', kind: GEOM, options: [['1/6', '1/6'], ['1/10', '1/10'], ['1/4', '1/4'], ['3/10', '3/10']],
+        hint: 'The diffusion step is explicit. At 1/6 its error cancels the leading error of the 9-point stencil, so the front speed is right to fourth order in the cell size; the other values are there to show the difference. Above 3/10 the step would stop being monotone. The growth step is the exact logistic flow at any dt.' },
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true, options: [['arrival', 'Arrival time'], ['territory', 'Territories'], ['density', 'Density'], ['relief', 'Relief']] },
+      RANGE('Picture', 'iso', 'Isochrones', PAINT, 0, 40, 1, String, { hint: 'Lines of equal arrival time, evenly spaced from 0 to the latest arrival. Their spacing is the front speed times the interval.' }),
+      RANGE('Picture', 'line', 'Line weight', PAINT, 0.3, 4, 0.1, f1, { hint: 'Thousandths of the plate width, so a print keeps the proportions of the screen.' }),
+      RANGE('Picture', 'lineAmt', 'Line strength', PAINT, 0, 1, 0.05, pct),
+      RANGE('Picture', 'lo', 'Black point', PAINT, -0.5, 0.9, 0.01, f2),
+      RANGE('Picture', 'hi', 'White point', PAINT, 0.1, 1.5, 0.01, f2),
+      RANGE('Picture', 'bump', 'Relief', PAINT, 1, 20, 0.5, f1, { dimUnless: s => s.view === 'relief' }),
+      RANGE('Picture', 'lightAng', 'Light angle', PAINT, 0, 360, 5, v => v + '°', { dimUnless: s => s.view === 'relief' }),
+      RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+      RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ],
+    defaults: Object.assign({
+      grid: 512, aspect: '1:1', scale: 2, D: 1, r: 1,
+      init: 'founders', founders: 7, radius: 3, habitat: 'uniform', contrast: 0.6, patch: 24,
+      until: 64, mu: '1/6', view: 'arrival', seed: 'fisher-1937',
+    }, PICTURE_DEFAULTS),
+    presets: {
+      rings: pre('Growth rings', { init: 'founders', founders: 7, habitat: 'uniform', until: 64, view: 'arrival', iso: 14 }, Pal.kiln),
+      territories: pre('Territories', { init: 'founders', founders: 14, habitat: 'uniform', until: 48, view: 'territory', iso: 10, lineAmt: 0.5 }, Pal.risograph),
+      single: pre('One founder', { init: 'single', radius: 4, habitat: 'uniform', until: 60, view: 'arrival', iso: 18 }, Pal.glacier),
+      edge: pre('Straight front', { init: 'edge', radius: 6, habitat: 'uniform', until: 110, view: 'arrival', iso: 22 }, Pal.harbor),
+      patchy: pre('Patchy habitat', { init: 'founders', founders: 5, habitat: 'patchy', contrast: 0.7, patch: 22, until: 70, view: 'relief', iso: 16, lineAmt: 0.6, bump: 8 }, Pal.meadow),
+      islands: pre('Hostile islands', { init: 'edge', radius: 5, habitat: 'islands', contrast: 0.45, patch: 20, until: 90, view: 'arrival', iso: 20 }, Pal.verdigris),
+      spread: pre('Mid-invasion density', { init: 'founders', founders: 9, habitat: 'uniform', until: 22, view: 'density', iso: 0 }, Pal.thermal),
+    },
+    closedGroups: ['Habitat', 'Simulation'],
+    hints: {
+      Population: 'D and r set the only speed in the problem, 2√(rD), and the only length, √(D/r), the decay length of the leading edge.',
+      Founders: 'Founders are disks of full density on empty ground, placed by the seed. From an edge starts a straight front along the left side with a gentle ripple, which the invasion irons out.',
+      Habitat: 'The growth rate becomes r g(x). Patchy keeps g positive, so every place is eventually invaded, at a local pace near 2√(r g D). Hostile islands have g = −1: the population declines there, and the waves go around them.',
+      Simulation: 'The front speed on the status line is measured from the arrival times on the plate, over cells that arrived in the last half of the run and are clear of other founders, walls and the unreached ground. It reads low, and should: the approach to 2√(rD) is slow, a lag of (3/2)√(D/r)/t for a straight front and 2√(D/r)/t for a circle, still a few per cent at t = 40. The status prints both lags at the sampled times, and the grid effect as the difference from the same run on a grid of twice the cell size. Nothing here is rounded toward 2√(rD).',
+      Picture: 'Arrival time colors each cell by when the front reached it, with isochrones. Territories colors it by the founder that got there first. Density is the population itself, interesting mid-invasion. Relief lights the arrival time as a landscape of cones.',
+    },
+    palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (early → late)',
+    headline: 'founders', headlineLabel: 'founders',
+    sanitize(s) {
+      s.grid = [256, 384, 512, 768, 1024].includes(Number(s.grid)) ? Number(s.grid) : 512;
+      s.founders = Math.round(U.clamp(Number(s.founders) || 7, 2, 24));
+      // keep the run inside the step budget: the end time comes down rather than the step going up
+      const dtv = dtOf(s);
+      if (s.until / dtv > MAX_STEPS) s.until = Math.max(5, Math.floor(MAX_STEPS * dtv));
+    },
+    surprise(rng) {
+      const init = rng.pick(['founders', 'founders', 'founders', 'single', 'edge']);
+      const habitat = rng.pick(['uniform', 'uniform', 'patchy', 'islands']);
+      return {
+        grid: 512, aspect: rng.pick(['1:1', '1:1', '4:5', '5:4', '3:2']), scale: 2, D: 1, r: 1,
+        init, founders: rng.int(3, 16), radius: rng.pick([2, 3, 4, 5]), habitat, contrast: rng.range(0.3, 0.8), patch: rng.int(12, 40),
+        until: init === 'edge' ? rng.int(90, 140) : rng.int(40, 80), mu: '1/6',
+        view: rng.pick(['arrival', 'arrival', 'territory', 'relief']), iso: rng.int(8, 24), line: rng.range(0.8, 1.6), lineAmt: rng.range(0.5, 0.95),
+        lo: 0, hi: 1, bump: rng.range(3, 8), lightAng: rng.int(0, 360), exposure: 1, gamma: rng.range(0.9, 1.15), contrast: rng.range(0.95, 1.15), grain: rng.pick([0, 0.04, 0.08]),
+      };
+    },
+    create,
+  });
+})();
+</script>
+<script>/* modules/cattaneo.js */
+/* GENChase: Maxwell-Cattaneo heat, the linear telegraph form. Heat pulses travel as damped waves on a GPU grid. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl, Pal = Studio.PALETTES;
+  const GEOM = 'geom', PAINT = 'paint';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+  const MAX_STEPS = 20000, MAX_DEP = 4;
+
+  // The model is the linear, constant-coefficient Maxwell-Cattaneo-Vernotte law with the energy balance,
+  //   T_t + ∇·q = S,   τ q_t + q = −α ∇T   (unit heat capacity, so the conductivity is α),
+  // which for a source-free region is the telegraph equation τ T_tt + T_t = α ∇²T.
+  // Staggered grid: T at cell centres, q_x on east faces, q_y on north faces. Each step first advances q over dt
+  // with the relaxation integrated exactly and ∇T held at its mid-step value,
+  //   q ← E q − (1 − E) α ∇T,   E = exp(−dt/τ)   (E = 0 at τ = 0: Fourier's law q = −α∇T),
+  // then T by the divergence of the new flux, so total heat is conserved to round-off. The scheme is second
+  // order in dt at fixed τ > 0 and reduces exactly to forward-Euler diffusion at τ = 0. Its growth factor g for a
+  // mode whose Laplacian symbol is −m satisfies g² − (1 + E − dt α m (1 − E)) g + E = 0, stable while
+  // dt α m ≤ 2 coth(dt/2τ); the largest m on a periodic grid is 8/h² (dtBound below solves for it).
+  // The plate wraps (periodic), so every Fourier mode evolves on its own. State: R = T, G = q_x, B = q_y.
+  const STEP_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform float u_E, u_K, u_dtH, u_Kd;
+uniform vec4 u_depX, u_depY, u_depS, u_depA;
+uniform int u_ndep;
+vec4 S(vec2 d){ return texture(u_s, v_uv + d / u_res); }
+float bump(vec2 p, int i){
+  vec2 d = p - vec2(u_depX[i], u_depY[i]);
+  d -= u_res * floor(d / u_res + 0.5);
+  return u_depA[i] * exp(-dot(d, d) / (2.0 * u_depS[i] * u_depS[i]));
+}
+void main(){
+  vec4 c = S(vec2(0.0)), e = S(vec2(1.0, 0.0)), w = S(vec2(-1.0, 0.0)), n = S(vec2(0.0, 1.0)), s = S(vec2(0.0, -1.0));
+  float qe = u_E * c.g - u_K * (e.r - c.r);
+  float qw = u_E * w.g - u_K * (c.r - w.r);
+  float qn = u_E * c.b - u_K * (n.r - c.r);
+  float qs = u_E * s.b - u_K * (c.r - s.r);
+  float T = c.r - u_dtH * ((qe - qw) + (qn - qs));
+  // Heat deposited this step: Gaussians in cell units, nearest periodic image. The flux is staggered in time
+  // (it lives half a step before T), so zero flux at the moment of the deposit means a flux of
+  // +tanh(dt/2τ) α ∇(deposit) on the half step before it: with the next update, the two average to zero.
+  // Without it the new heat would start with a head start of order dt/τ.
+  vec2 p = floor(v_uv * u_res) + 0.5;
+  for (int i = 0; i < ${MAX_DEP}; i++) {
+    if (i >= u_ndep) break;
+    float b0 = bump(p, i);
+    T += b0;
+    qe += u_Kd * (bump(p + vec2(1.0, 0.0), i) - b0);
+    qn += u_Kd * (bump(p + vec2(0.0, 1.0), i) - b0);
+  }
+  outColor = vec4(T, qe, qn, 0.0);
+}`;
+
+  // Views: 0 temperature, 1 heat flux |q|, 2 relief of the temperature. The flux lives on the faces, so it is
+  // sampled half a cell back to put it at the cell centre before its magnitude is taken.
+  const RENDER_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform int u_view;
+uniform float u_mlo, u_mhi, u_lo, u_hi, u_exposure, u_gamma, u_contrast, u_grain, u_bump, u_lightAng;
+uniform vec3 u_bg;
+${G.GLSL.bicubic}
+${G.GLSL.hash}
+${G.GLSL.ramp}
+float temp(vec2 uv){ return texCR(u_s, uv, u_res); }
+float scalarAt(vec2 uv){
+  if (u_view == 1) {
+    vec2 px = 1.0 / u_res;
+    float qx = texCR4(u_s, uv - vec2(0.5 * px.x, 0.0), u_res).g;
+    float qy = texCR4(u_s, uv - vec2(0.0, 0.5 * px.y), u_res).b;
+    return length(vec2(qx, qy));
+  }
+  return temp(uv);
+}
+float nrm(float x){
+  float t = (x - u_mlo) / max(u_mhi - u_mlo, 1.0e-9);
+  return (t - u_lo) / max(u_hi - u_lo, 1.0e-4);
+}
+void main(){
+  vec3 col;
+  if (u_view == 2) {
+    vec2 px = 1.0 / u_res;
+    float hE = nrm(temp(v_uv + vec2(px.x, 0.0))), hW = nrm(temp(v_uv - vec2(px.x, 0.0)));
+    float hN = nrm(temp(v_uv + vec2(0.0, px.y))), hS = nrm(temp(v_uv - vec2(0.0, px.y)));
+    float gx = 0.5 * (hE - hW) * u_bump, gy = 0.5 * (hN - hS) * u_bump;
+    float ang = u_lightAng * 3.14159265 / 180.0;
+    vec3 N = normalize(vec3(-gx, -gy, 1.0));
+    vec3 Lt = normalize(vec3(cos(ang), sin(ang), 0.85));
+    float sh = clamp(pow(max(dot(N, Lt), 0.0), 1.15), 0.0, 1.0);
+    float t = clamp(nrm(temp(v_uv)), 0.0, 1.0);
+    col = mix(u_bg, ramp(0.15 + 0.85 * t), mix(0.3, 1.0, sh)) * mix(0.6, 1.12, sh);
+  } else {
+    col = ramp(clamp(nrm(scalarAt(v_uv)), 0.0, 1.0));
+  }
+  col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
+  col *= u_exposure;
+  col = clamp((col - 0.5) * u_contrast + 0.5, 0.0, 1.0);
+  if (u_grain > 0.0) col = clamp(col + (hash21(gl_FragCoord.xy * 0.73) - 0.5) * u_grain * 0.4, 0.0, 1.0);
+  outColor = vec4(col, 1.0);
+}`;
+
+  function sizeOf(s) {
+    const n = Number(s.grid) || 512, ar = ASPECTS[s.aspect] || 1;
+    return [n & ~1, Math.max(64, Math.round(n * ar)) & ~1];
+  }
+  const coth = x => 1 / Math.tanh(x);
+  // The largest stable step for the scheme above: dt α m ≤ 2 coth(dt / 2τ) with m = 8/h², solved by bisection
+  // (the left side rises and the right side falls with dt). τ = 0 gives h²/(4α), forward-Euler diffusion.
+  function dtBound(alpha, tau, h) {
+    const m = 8 / (h * h);
+    if (!(tau > 0)) return 2 / (alpha * m);
+    let lo = 0, hi = Math.max(2 / (alpha * m), Math.sqrt(4 * tau / (alpha * m))) * 4;
+    for (let i = 0; i < 80; i++) {
+      const mid = 0.5 * (lo + hi);
+      if (mid * alpha * m <= 2 * coth(mid / (2 * tau))) lo = mid; else hi = mid;
+    }
+    return lo;
+  }
+  const cellOf = s => 1 / sizeOf(s)[0];                       // the plate is one unit wide
+  const dtOf = s => U.clamp(Number(s.cfl) || 0.8, 0.2, 0.95) * dtBound(s.alpha, s.tau, cellOf(s));
+  const stepsOf = s => Math.min(MAX_STEPS, Math.max(1, Math.ceil(s.until / dtOf(s))));
+  const speedOf = s => s.tau > 0 ? Math.sqrt(s.alpha / s.tau) : Infinity;
+  const kcOf = s => s.tau > 0 ? 1 / (2 * Math.sqrt(s.alpha * s.tau)) : Infinity;
+
+  // The heat the plate receives: every deposit is a Gaussian added to T in one step, { k (step), x, y, sig (cells), a }.
+  // Sparks fire at seeded times; a torch deposits every step along a straight seeded path.
+  function depositsOf(s, W, H, dt, steps) {
+    const rng = U.makeRng(s.seed + '/cattaneo/sources');
+    const sig = Math.max(0.5, (Number(s.width) || 6) * W / 1000), out = [];
+    if (s.source === 'torch') {
+      const v = speedOf(s), speed = (Number.isFinite(v) ? v : 0.3) * (Number(s.mach) || 2) * W;   // cells per unit time
+      const ang = rng.range(-0.35, 0.35) + (rng() < 0.5 ? 0 : Math.PI), x0 = rng.range(0.15, 0.35) * W, y0 = rng.range(0.25, 0.75) * H;
+      const dir = [Math.cos(ang), Math.sin(ang)], sx = ang > Math.PI / 2 ? W - x0 : x0;
+      const a = (Number(s.amp) || 1) * 0.02 * dt / 0.001;
+      for (let k = 0; k < steps; k++) {
+        const t = k * dt;
+        out.push({ k, x: ((sx + dir[0] * speed * t) % W + W) % W, y: ((y0 + dir[1] * speed * t) % H + H) % H, sig, a });
+      }
+      return out;
+    }
+    const n = s.source === 'single' ? 1 : Math.max(1, Math.round(s.sparks));
+    for (let i = 0; i < n; i++) {
+      const t = s.source === 'burst' || s.source === 'single' ? 0 : rng.range(0, 0.75) * s.until;
+      const x = s.source === 'single' ? W / 2 : rng.range(0, W), y = s.source === 'single' ? H / 2 : rng.range(0, H);
+      const k = Math.min(steps - 1, Math.max(0, Math.round(t / dt)));
+      out.push({ k, x, y, sig: sig * (s.source === 'single' ? 1 : rng.range(0.6, 1.5)), a: (Number(s.amp) || 1) * rng.range(0.5, 1) });
+    }
+    return out.sort((p, q) => p.k - q.k);
+  }
+
+  // The continuum response of one Fourier mode to heat deposited at t = 0 with no flux: the solution of
+  // τ G'' + G' + α k² G = 0 with G(0) = 1, G'(0) = 0, from the roots of τ s² + s + α k² = 0.
+  function modeResponse(alpha, tau, k2, t) {
+    if (!(t >= 0)) return 0;
+    if (!(tau > 0)) return Math.exp(-alpha * k2 * t);
+    const disc = 1 - 4 * alpha * tau * k2, g = 1 / (2 * tau);
+    if (Math.abs(disc) < 1e-12) return Math.exp(-g * t) * (1 + g * t);
+    if (disc > 0) {
+      const r = Math.sqrt(disc), s1 = -2 * alpha * k2 / (1 + r), s2 = -(1 + r) / (2 * tau);
+      return (s2 * Math.exp(s1 * t) - s1 * Math.exp(s2 * t)) / (s2 - s1);
+    }
+    const om = Math.sqrt(-disc) / (2 * tau);
+    return Math.exp(-g * t) * (Math.cos(om * t) + g * Math.sin(om * t) / om);
+  }
+  // The discrete Fourier coefficient, at mode (m, n), of one deposit exactly as the step shader lays it down
+  // (the Gaussian is separable, and so is the nearest periodic image). Returns [re, im] without the amplitude.
+  function depositMode(d, W, H, m, n) {
+    const axis = (N, c, sig, j) => {
+      let re = 0, im = 0;
+      for (let i = 0; i < N; i++) {
+        let x = i + 0.5 - c; x -= N * Math.floor(x / N + 0.5);
+        const gv = Math.exp(-x * x / (2 * sig * sig)), ph = -U.TAU * j * i / N;
+        re += gv * Math.cos(ph); im += gv * Math.sin(ph);
+      }
+      return [re, im];
+    };
+    const a = axis(W, d.x, d.sig, m), b = axis(H, d.y, d.sig, n);
+    return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+  }
+  // The same coefficient measured from a temperature field (rows from the bottom, the order it was uploaded in).
+  function fieldMode(st, W, H, m, n) {
+    const cx = new Float64Array(W), sx = new Float64Array(W), cy = new Float64Array(H), sy = new Float64Array(H);
+    for (let i = 0; i < W; i++) { cx[i] = Math.cos(-U.TAU * m * i / W); sx[i] = Math.sin(-U.TAU * m * i / W); }
+    for (let j = 0; j < H; j++) { cy[j] = Math.cos(-U.TAU * n * j / H); sy[j] = Math.sin(-U.TAU * n * j / H); }
+    let re = 0, im = 0;
+    for (let j = 0; j < H; j++) {
+      let rr = 0, ri = 0;
+      for (let i = 0; i < W; i++) { const T = st[(j * W + i) * 4]; rr += T * cx[i]; ri += T * sx[i]; }
+      re += rr * cy[j] - ri * sy[j]; im += rr * sy[j] + ri * cy[j];
+    }
+    return [re, im];
+  }
+  // The continuum amplitude of mode (m, n) at time t from the deposits made so far, with each deposit counted
+  // from the end of its step. Also returns Fourier's law alone (τ = 0) and the total injected amplitude.
+  function modeExact(s, deps, W, H, dt, stepsDone, m, n) {
+    const kx = U.TAU * m, ky = U.TAU * n * W / H, k2 = kx * kx + ky * ky, t = stepsDone * dt;
+    let re = 0, im = 0, fr = 0, fi = 0, scale = 0, heat = 0;
+    for (const d of deps) {
+      if (d.k >= stepsDone) break;
+      const c = depositMode(d, W, H, m, n), c0 = depositMode(d, W, H, 0, 0)[0];
+      const age = t - (d.k + 1) * dt, gk = modeResponse(s.alpha, s.tau, k2, age), gf = modeResponse(s.alpha, 0, k2, age);
+      re += d.a * c[0] * gk; im += d.a * c[1] * gk; fr += d.a * c[0] * gf; fi += d.a * c[1] * gf;
+      scale += d.a * Math.hypot(c[0], c[1]); heat += d.a * c0;
+    }
+    return { re, im, fourier: Math.hypot(fr, fi), scale, heat, k2 };
+  }
+  function readRaw(gl, target) {
+    const out = new Float32Array(target.w * target.h * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+    gl.readPixels(0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, out);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return out;
+  }
+  function hexToRgb01(hex) { const c = U.hexToRgb(hex || '#000000'); return [c[0] / 255, c[1] / 255, c[2] / 255]; }
+  const VIEWS = { temp: 0, flux: 1, relief: 2 };
+
+  function create(host) {
+    const gl = G.createGL(host.canvas);
+    const noop = () => {};
+    const dead = msg => {
+      host.setStatus(msg); host.fault(msg);
+      return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), repaint: noop, resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
+    };
+    if (!gl) return dead('WebGL2 is not available in this browser');
+    // The mode check and the flux bookkeeping need float32 state; float16 keeps about three digits.
+    if (!gl.floatExt) return dead('Maxwell-Cattaneo heat needs float32 render targets on this device');
+    let stepPass, renderPass;
+    try { stepPass = new G.Pass(gl, STEP_FS); renderPass = new G.Pass(gl, RENDER_FS); }
+    catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
+
+    let C = null, W = 0, H = 0, h = 0, dt = 0, steps = 0, total = 0, deps = [], di = 0, timer = 0, paused = false, lastPaint = 0;
+    let ramp = null, rampKey = '', mlo = -1, mhi = 1, meas = null, E = 0, K = 0, Kd = 0;
+    function drop() { if (C) C.dispose(); C = null; }
+    function step(n) {
+      const uni = { u_res: [W, H], u_E: E, u_K: K, u_dtH: dt / h, u_Kd: Kd, u_depX: [0, 0, 0, 0], u_depY: [0, 0, 0, 0], u_depS: [1, 1, 1, 1], u_depA: [0, 0, 0, 0], u_ndep: { int: 0 } };
+      for (let i = 0; i < n && steps < total; i++) {
+        let nd = 0;
+        const X = [0, 0, 0, 0], Y = [0, 0, 0, 0], Sg = [1, 1, 1, 1], A = [0, 0, 0, 0];
+        while (di < deps.length && deps[di].k === steps && nd < MAX_DEP) { const d = deps[di++]; X[nd] = d.x; Y[nd] = d.y; Sg[nd] = d.sig; A[nd] = d.a; nd++; }
+        // more than four deposits in one step wait for the next; the bookkeeping records the step they used
+        for (let j = di; j < deps.length && deps[j].k === steps; j++) deps[j].k = steps + 1;
+        uni.u_s = C.read; uni.u_depX = X; uni.u_depY = Y; uni.u_depS = Sg; uni.u_depA = A; uni.u_ndep = { int: nd };
+        stepPass.draw(C.write, uni);
+        C.swap();
+        steps++;
+      }
+    }
+    function ensureRamp(s) {
+      const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+      if (ramp && key === rampKey) return;
+      if (ramp) ramp.dispose();
+      ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
+    }
+    // Black and white points from the field: the 1st and 99.7th percentiles of the view's scalar over a sample of
+    // cells (the relief uses the temperature).
+    function expose(st) {
+      const s = host.getState(), flux = s.view === 'flux', vals = [];
+      const stride = Math.max(1, Math.floor(W * H / 65536));
+      for (let i = 0; i < W * H; i += stride) {
+        if (!flux) { vals.push(st[i * 4]); continue; }
+        const x = i % W, y = (i - x) / W, iw = y * W + (x + W - 1) % W, is = ((y + H - 1) % H) * W + x;
+        vals.push(Math.hypot(0.5 * (st[i * 4 + 1] + st[iw * 4 + 1]), 0.5 * (st[i * 4 + 2] + st[is * 4 + 2])));
+      }
+      vals.sort((a, b) => a - b);
+      const q = f => vals[Math.min(vals.length - 1, Math.floor(f * (vals.length - 1)))];
+      mlo = flux ? 0 : q(0.01); mhi = Math.max(q(0.997), mlo + 1e-9);
+    }
+    function render(target) {
+      if (!C) return;
+      const s = host.getState();
+      ensureRamp(s);
+      renderPass.draw(target || null, {
+        u_s: C.read, u_res: [W, H], u_view: { int: VIEWS[s.view] || 0 }, u_ramp: ramp, u_bg: hexToRgb01(s.bg),
+        u_mlo: mlo, u_mhi: mhi, u_lo: s.lo, u_hi: s.hi,
+        u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain, u_bump: s.bump, u_lightAng: s.lightAng,
+      });
+    }
+    // The plate's lowest mode against the exact dispersion relation, and the total heat against what was deposited.
+    function measure(st) {
+      const s = host.getState();
+      const ex = modeExact(s, deps, W, H, dt, steps, 1, 0);
+      const a = fieldMode(st, W, H, 1, 0), q = fieldMode(st, W, H, 0, 0)[0];
+      meas = { ex, a, heat: q, mis: Math.hypot(a[0] - ex.re, a[1] - ex.im) / Math.max(ex.scale, 1e-300) };
+    }
+    function status(extra) {
+      const s = host.getState();
+      const v = speedOf(s), kc = kcOf(s);
+      const head = '<span>grid <b>' + W + '×' + H + '</b> · wave speed <b>' + (Number.isFinite(v) ? f3(v) : '∞ (τ = 0)') + '</b> · k_c <b>' +
+        (Number.isFinite(kc) ? kc.toFixed(2) : '∞') + '</b></span>';
+      const clock = '<span>t <b>' + (steps * dt).toFixed(3) + '</b> · step <b>' + steps.toLocaleString() + '</b> of ' + total.toLocaleString() +
+        ' · dt <b>' + dt.toPrecision(3) + '</b>' + (extra ? ' · ' + extra : '') + '</span>';
+      if (extra || !meas || !(meas.ex.heat > 0)) { host.setStatus(head + '<span>lowest mode after the run</span>' + clock); return; }
+      const Q = meas.ex.heat, k = Math.sqrt(meas.ex.k2);
+      const regime = !(s.tau > 0) ? 'Fourier limit' : k > kc ? 'oscillating, period ' + (U.TAU * 2 * s.tau / Math.sqrt(4 * s.alpha * s.tau * meas.ex.k2 - 1)).toPrecision(3) : 'overdamped';
+      // Deterministic: the seed only places the heat. The mode evolves on its own because the plate wraps, so the
+      // plate's coefficient can be set beside the exact solution of τ s² + s + α k² = 0 for the same deposits.
+      const mode = U.stats.compare({
+        label: 'mode (1,0) / heat', measured: Math.hypot(meas.a[0], meas.a[1]) / meas.heat, expected: Math.hypot(meas.ex.re, meas.ex.im) / Q,
+        reference: 'exact dispersion', basis: 'deterministic', digits: 5,
+        note: 'k/k_c ' + (Number.isFinite(kc) ? (k / kc).toFixed(2) : '0') + ', ' + regime + ' · Fourier law alone ' + (meas.ex.fourier / Q).toPrecision(3) +
+          ' · complex mismatch ' + meas.mis.toExponential(1) + ' of the injected amplitude',
+      });
+      // Heat moves only through face fluxes, each leaving one cell and entering the next: a regression test.
+      const heat = U.stats.compare({ label: 'total heat', measured: meas.heat, expected: Q, reference: 'deposited', basis: 'construction', digits: 7 });
+      host.setStatus(head + mode + heat + clock);
+    }
+    function stop() { clearTimeout(timer); timer = 0; }
+    function finish() { const st = readRaw(gl, C.read); expose(st); measure(st); render(); status(); }
+    function run() {
+      stop();
+      if (paused || !C) return;
+      if (steps >= total) { finish(); return; }
+      const animate = !host.reducedMotion();
+      let chunkN = 8;
+      (function chunk() {
+        timer = 0;
+        if (paused) return;
+        const t0 = performance.now();
+        step(chunkN);
+        const ms = Math.max(performance.now() - t0, 0.5);
+        chunkN = Math.round(U.clamp(chunkN * 30 / ms, 4, 256));
+        if (steps < total) {
+          if (animate && performance.now() - lastPaint > 150) { expose(readRaw(gl, C.read)); render(); status('computing'); lastPaint = performance.now(); }
+          timer = setTimeout(chunk, 0);
+        } else finish();
+      })();
+    }
+
+    return {
+      fieldCells() { return C ? [W, H] : null; },
+      aspect(s) { return ASPECTS[s.aspect] || 1; },
+      regenerate() {
+        stop(); drop(); paused = false; meas = null;
+        const s = host.getState();
+        [W, H] = sizeOf(s); h = 1 / W; dt = dtOf(s); total = stepsOf(s); steps = 0; di = 0;
+        E = s.tau > 0 ? Math.exp(-dt / s.tau) : 0; K = (1 - E) * s.alpha / h;
+        Kd = (s.tau > 0 ? Math.tanh(dt / (2 * s.tau)) : 1) * s.alpha / h;
+        deps = depositsOf(s, W, H, dt, total);
+        try {
+          C = new G.PingPong(gl, W, H, { type: 'rgba32f', filter: 'nearest', wrap: 'repeat' });
+          C.read.upload(new Float32Array(W * H * 4));
+        } catch (err) { drop(); host.fault('Float render targets are not available in this browser'); return; }
+        mlo = -1; mhi = 1; lastPaint = performance.now();
+        render(); status('computing');
+        run();
+      },
+      repaint() { if (C) { expose(readRaw(gl, C.read)); render(); } },
+      resize() { if (C) render(); },
+      pause() { paused = true; stop(); },
+      resume() { paused = false; if (C) { render(); run(); } },
+      async exportData() {
+        if (!C) throw new Error('nothing to export');
+        const s = host.getState(), st = G.readTarget(C.read), n = W * H;
+        const pick = c => { const a = new Float32Array(n); for (let i = 0; i < n; i++) a[i] = st[i * 4 + c]; return a; };
+        return {
+          arrays: {
+            temperature: { data: pick(0), shape: [H, W], description: 'temperature above ambient at cell centres' },
+            flux_x: { data: pick(1), shape: [H, W], description: 'heat flux q_x on the east face of each cell (staggered half a cell to the right)' },
+            flux_y: { data: pick(2), shape: [H, W], description: 'heat flux q_y on the face above each cell (staggered half a cell up in the picture)' },
+          },
+          meta: {
+            tab: 'cattaneo', grid: [W, H], cell: h, units: 'lengths in plate widths, time in the units of α and τ, unit heat capacity',
+            alpha: s.alpha, tau: s.tau, waveSpeed: speedOf(s), boundary: 'periodic',
+            model: 'linear constant-coefficient Maxwell-Cattaneo-Vernotte (telegraph) heat equation',
+            scheme: 'staggered flux; relaxation integrated exactly over dt with ∇T held at mid-step; conservative temperature update',
+            steps, dt, time: steps * dt, precision: 'rgba32f',
+            deposits: deps.filter(d => d.k < steps).map(d => ({ step: d.k, x: d.x, y: d.y, sigma: d.sig, amplitude: d.a })),
+            deposits_note: 'Gaussians a exp(-r²/2σ²) added to T at the end of the given step, in cell units from the bottom-left corner, nearest periodic image',
+          },
+        };
+      },
+      async exportPNG(w, hh) {
+        if (!C) throw new Error('nothing to export');
+        const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        if (w > max || hh > max) throw new Error('larger than this GPU allows (' + max + ' px)');
+        const Tgt = new G.Target(gl, w, hh, { type: 'rgba8' });
+        const px = new Uint8Array(w * hh * 4);
+        try {
+          render(Tgt);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, Tgt.fbo);
+          gl.readPixels(0, 0, w, hh, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        } finally { gl.bindFramebuffer(gl.FRAMEBUFFER, null); Tgt.dispose(); }
+        const c = document.createElement('canvas'); c.width = w; c.height = hh;
+        const ctx = c.getContext('2d'), img = ctx.createImageData(w, hh);
+        for (let y = 0; y < hh; y++) img.data.set(px.subarray((hh - 1 - y) * w * 4, (hh - y) * w * 4), y * w * 4);
+        ctx.putImageData(img, 0, 0);
+        return U.toBlob(c);
+      },
+    };
+  }
+
+  const PICTURE_DEFAULTS = { lo: 0, hi: 1, bump: 6, lightAng: 40, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 };
+  Studio.register({
+    id: 'cattaneo',
+    name: 'Maxwell-Cattaneo heat',
+    tab: 'Heat waves',
+    subtitle: 'heat that travels as a damped wave · 1948',
+    order: 88.6,
+    equation: 'τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0',
+    credit: 'Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.',
+    blurb: 'Fourier’s law says heat flows down the temperature gradient the instant the gradient appears, so a spark warms the far side of a plate at once, if only a little. Cattaneo and Vernotte let the flux take a relaxation time τ to catch up with the gradient. The change is small and the consequence is not: heat now travels as a wave, at the speed √(α/τ), with a sharp front, and it rings. A Fourier mode of wavenumber k decays smoothly while k is below k_c = 1/(2√(ατ)) and oscillates above it, all the fast ripples dying together at the rate 1/(2τ). Here sparks of heat are dropped on a plate that wraps at the edges; each throws out a ring that fades as it runs, leaving a diffusive glow behind it, and the rings pass through one another. Set τ to zero and the rings disappear: the same sparks only spread and blur, which is Fourier. The torch drags a source across the plate faster than the heat wave, and the heat piles into a Mach cone. The model is linear with constant coefficients, a simplification: it is not a material model, it allows the temperature to dip below ambient behind a front, and whether real solids behave this way outside a few special cases is a matter the literature still argues about.',
+    schema: [
+      { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[256, '256'], [384, '384'], [512, '512'], [768, '768'], [1024, '1024']] },
+      { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+      RANGE('Heat', 'alpha', 'Diffusivity α', GEOM, 0.0005, 0.1, 0.0005, v => v.toFixed(4), {
+        hint: 'In plate widths squared per unit time. With τ it sets the wave speed √(α/τ) and the crossover wavenumber 1/(2√(ατ)).' }),
+      RANGE('Heat', 'tau', 'Relaxation time τ', GEOM, 0, 2, 0.01, f2, {
+        hint: 'How long the heat flux takes to follow the gradient. Zero is Fourier’s law: no wave, no front, pure diffusion. Longer τ: faster to ring, slower to fade.' }),
+      { group: 'Sources', key: 'source', label: 'Heat', type: 'seg', kind: GEOM, options: [['sparks', 'Sparks'], ['burst', 'All at once'], ['single', 'One spark'], ['torch', 'Moving torch']] },
+      RANGE('Sources', 'sparks', 'Sparks', GEOM, 1, 24, 1, String, { dimUnless: s => s.source === 'sparks' || s.source === 'burst' }),
+      RANGE('Sources', 'width', 'Spark width', GEOM, 2, 30, 0.5, v => v.toFixed(1), { hint: 'Thousandths of the plate width. Below about two cells the grid starts to show in the rings as ripples trailing each front.' }),
+      RANGE('Sources', 'amp', 'Heat per spark', GEOM, 0.2, 3, 0.05, f2),
+      RANGE('Sources', 'mach', 'Torch speed / wave speed', GEOM, 0.5, 4, 0.05, f2, { dimUnless: s => s.source === 'torch',
+        hint: 'Above 1 the torch outruns its own heat wave and a Mach cone forms, half-angle arcsin(1/M). Below 1 the heat runs ahead of it.' }),
+      RANGE('Simulation', 'until', 'Run until t', GEOM, 0.05, 4, 0.01, f2),
+      RANGE('Simulation', 'cfl', 'Time step (share of the bound)', GEOM, 0.2, 0.95, 0.05, f2, {
+        hint: 'The step is explicit. Its bound, dt α (8/h²) ≤ 2 coth(dt/2τ), is solved exactly for the current α, τ and grid; this is the share used. It is the wave bound h√(τ/2α) when τ is large and the diffusion bound h²/4α when τ is small.' }),
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['temp', 'Temperature'], ['flux', 'Heat flux'], ['relief', 'Relief']] },
+      RANGE('Picture', 'lo', 'Black point', PAINT, -0.5, 0.9, 0.01, f2, { hint: 'In measured units: 0 is the 1st percentile of the field, 1 the 99.7th.' }),
+      RANGE('Picture', 'hi', 'White point', PAINT, 0.1, 1.5, 0.01, f2),
+      RANGE('Picture', 'bump', 'Relief', PAINT, 1, 20, 0.5, v => v.toFixed(1), { dimUnless: s => s.view === 'relief' }),
+      RANGE('Picture', 'lightAng', 'Light angle', PAINT, 0, 360, 5, v => v + '°', { dimUnless: s => s.view === 'relief' }),
+      RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+      RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ],
+    defaults: Object.assign({
+      grid: 512, aspect: '1:1', alpha: 0.02, tau: 0.35,
+      source: 'sparks', sparks: 11, width: 5, amp: 1, mach: 2,
+      until: 1.1, cfl: 0.8, view: 'temp', seed: 'vernotte-1958',
+    }, PICTURE_DEFAULTS),
+    presets: {
+      sparks: pre('Sparks', { source: 'sparks', sparks: 11, alpha: 0.02, tau: 0.35, until: 1.1, view: 'temp' }, Pal.thermal),
+      burst: pre('All at once', { source: 'burst', sparks: 7, alpha: 0.02, tau: 0.5, until: 0.9, view: 'relief', width: 6 }, Pal.glacier),
+      single: pre('One spark', { source: 'single', alpha: 0.03, tau: 0.4, until: 1.0, view: 'temp', width: 8 }, Pal.ember),
+      crossover: pre('Rings and glow', { source: 'sparks', sparks: 9, alpha: 0.004, tau: 0.08, until: 0.8, view: 'temp', width: 9 }, Pal.kiln),
+      fourier: pre('Fourier limit τ = 0', { source: 'sparks', sparks: 11, alpha: 0.001, tau: 0, until: 0.6, view: 'temp', width: 6 }, Pal.harbor),
+      torch: pre('Moving torch', { source: 'torch', mach: 2, alpha: 0.02, tau: 0.35, until: 1.2, view: 'temp', width: 5 }, Pal.nightshade),
+      flux: pre('Heat flux', { source: 'sparks', sparks: 11, alpha: 0.02, tau: 0.35, until: 1.1, view: 'flux' }, Pal.bioluminescent),
+    },
+    closedGroups: ['Simulation'],
+    hints: {
+      Heat: 'α and τ together make the two scales that decide the look: the wave speed √(α/τ) and the damping time 2τ. A ring travels about 2τ√(α/τ) before it has faded by a factor e.',
+      Sources: 'Each spark is heat added in one step as a Gaussian, at a time and place drawn from the seed; the flux is left alone, so the new heat starts at rest and splits into an outgoing ring. The torch adds heat every step along a straight path.',
+      Simulation: 'The status line measures the plate’s longest wave across the width, its (1, 0) Fourier coefficient divided by the total heat, and sets it beside the exact solution of τ s² + s + α k² = 0 for the same deposits. Since the plate wraps and the equation is linear, that mode evolves on its own, so the two agree to discretization and round-off error; the mismatch is printed. Fourier’s law alone is printed next to it, to show how far the waves have taken the plate from diffusion. Total heat is conserved by construction, a regression test.',
+      Picture: 'Temperature is the field itself; ambient is wherever the plate has not been reached, and the Cattaneo front can leave it slightly colder than ambient. Heat flux shows |q|, bright along every moving front. Relief lights the temperature as a surface.',
+    },
+    palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors (cold → hot)',
+    headline: 'tau', headlineLabel: 'relaxation time τ',
+    sanitize(s) {
+      s.grid = [256, 384, 512, 768, 1024].includes(Number(s.grid)) ? Number(s.grid) : 512;
+      s.alpha = U.clamp(Number(s.alpha) || 0.02, 0.0005, 0.1);
+      s.tau = U.clamp(Number(s.tau) || 0, 0, 2);
+      // keep the run inside the step budget: the end time comes down rather than the step going up
+      const dtv = dtOf(s);
+      if (s.until / dtv > MAX_STEPS) s.until = Math.max(0.05, Math.floor(MAX_STEPS * dtv * 100) / 100);
+    },
+    surprise(rng) {
+      const source = rng.pick(['sparks', 'sparks', 'burst', 'torch', 'single']);
+      const tau = rng.pick([0.08, 0.2, 0.35, 0.5, 0.8]);
+      return {
+        grid: 512, aspect: rng.pick(['1:1', '1:1', '4:5', '5:4', '3:2']), alpha: tau < 0.1 ? rng.range(0.003, 0.006) : rng.range(0.012, 0.035), tau,
+        source, sparks: rng.int(4, 16), width: rng.range(3.5, 9), amp: 1, mach: rng.range(1.4, 3),
+        until: rng.range(0.7, 1.4), cfl: 0.8, view: rng.pick(['temp', 'temp', 'flux', 'relief']),
+        lo: 0, hi: 1, bump: rng.range(4, 9), lightAng: rng.int(0, 360), exposure: 1, gamma: rng.range(0.9, 1.15), contrast: rng.range(0.95, 1.15), grain: rng.pick([0, 0.04, 0.08]),
+      };
+    },
+    create,
   });
 })();
 </script>
