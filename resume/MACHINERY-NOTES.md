@@ -116,3 +116,100 @@ witnesses" unless it is read as one audited primary kernel plus an independent c
 6. **A second integrator for the HH pulse flight (item 1).**
 7. **Later:** the fold enclosure (2a step 2), the pendulum second integrator, and the meromorphic question after a
    prior-article search.
+
+# Part 2: the shape of the claim, the input data, and failures (Grok's second and third lists, 2026-09-27)
+
+## Corrections to the lists before anything else
+
+- **nf-pulse:** it is not "one point at recovery 0.1". Theorem `thm:range` already covers every eps in a union of
+  intervals, including [0.08, 0.13693] and [0.1499, 0.1501]. What is missing is the edge: the eps where the fast and
+  slow pulses meet and disappear.
+- **The pendulum:** "three energies" is right for the horseshoe. `thm:interval` covers only E in [-1e-10, 1e-10]
+  around E = 0, so an energy range is a real gap.
+- **HH pulse:** existence along the axon is done at 18.5 C and 6.3 C (release 1.0.0 pending). Stability is what is
+  unfinished.
+- **Nonlinear stability needs a spectral gap, not the whole spectrum.** The requirement is: nothing in
+  Re lambda >= -delta except a simple 0, and the essential spectrum left of -delta. Eigenvalues further left do not
+  matter. The missing piece is the linear-to-nonlinear theorem (Part 1, item 2b), not more spectrum.
+- **The leak potential:** "already did this for the leak potential" overstates it. We proved the theorem at two
+  different leak values (printed and zero-current), not on an interval of rounding.
+- **"Pin the pendulum to its energy":** the return map already lives on the energy level (the lift takes
+  (theta2, p2) at fixed E to the full state). Drift inside a box during a flight only adds overestimation. It is
+  worth doing only when extending the energy range.
+
+## The items, ranked by value for cost (Claude's view)
+
+1. **Numbers in the PDF come from the certificates (agree, cheap, first).**
+   - Review-1's M2 and M3 were exactly typed numbers that did not match the certificates.
+   - hh-dynamics already generates its number block (`code/hh_make_numbers.py`, BEGIN/END markers in the tex), and
+     rank-window has `make_numbers.py`.
+   - Do the same for hh-pulse (tables.py is the start), nf-pulse and the double pendulum. Have paper-check fail
+     when a typed digit in the prose disagrees with the certificate.
+2. **A hypothesis ledger that the checker cannot vouch for (agree, cheap).**
+   - Each theorem gets a `hypotheses.json`. Every hypothesis is one named item: "boxed" (certificate id), "cited"
+     (source, page, read), or "unread".
+   - paper-check refuses priority sentences ("first", "no earlier proof", "has not been proved") while any item is
+     unread.
+   - This makes the QUALITY items machine-checked.
+3. **Derivatives from one formula (agree, cheap to audit).**
+   - List, per proof, every place a Jacobian, second derivative or Taylor jet is written by hand.
+   - Replace each with automatic differentiation of the single field expression, or add a test against it,
+     including the exponential rate functions.
+   - hh-pulse's jets (hhjet6) are generated; the hh-dynamics and nf-pulse helpers need the audit.
+4. **Uniqueness in a stated window, and publishing the misses (agree, moderate).**
+   - For the HH pulse and nf-pulse, the unstable manifold is one-dimensional. So a pulse is fixed by its speed and
+     branch, and uniqueness reduces to showing that the splitting function has one zero in a speed window.
+   - Method: sign-definite cells, plus a derivative enclosure bounded away from 0.
+   - The statement becomes "exactly one pulse with speed in [a, b]". The windows must be stated: HH has a slow pulse
+     too, and the pendulum has infinitely many homoclinics, so there the right statement is isolation of a named
+     orbit, not uniqueness.
+   - An excluded window is a theorem; the perturbed-model controls stay as tests.
+5. **Name the guilty box (agree, cheap).** Every failed verdict reports the segment, coordinate, cell and inequality
+   that failed, with its margin. M4 made verdicts explicit, so extend them.
+6. **Two compilers and pinned libraries (agree, cheap once item 3 of Part 1 exists).**
+   - CAPD built with gcc and with clang.
+   - python-flint pinned. The certificate checker also runs with a second arithmetic (mpmath.iv or Arb from C).
+   - A CI matrix job.
+7. **The printed constants as rounded numbers (agree, high value, medium-high cost).**
+   - The claim: for every parameter within half a unit of the last printed digit (120, 36, 0.3, 115, 12, 10.613,
+     1, and the constants in the rate functions), a pulse exists with speed in [a, b].
+   - The speed interval will be much wider than 1e-45: a relative change of order 1e-3 is plausible, not measured.
+   - This is the same parameter-strip machinery as the temperature strip (tstrip.py), in more dimensions. Build it
+     after tstrip works.
+   - Do hh-dynamics's bistability the same way.
+8. **The edge of each claim (agree, staged).**
+   - HH bistability on a current interval first (Part 1, 2a step 1).
+   - Then the enclosed degenerate points by validated Newton on extended systems: the fold of cycles (HH), the
+     fold where the nf-pulse fast and slow pulses meet, and where the pendulum's saddle or its transversality is
+     lost.
+   - Covering up to epsilon of an edge is interval work. The edge itself is a separate, harder theorem.
+9. **Plates may name a theorem only inside its box (agree, cheap).**
+   - A contract and lint rule: a status line may cite a proof only when the plate's parameters are in the
+     certified set, and must otherwise say "not covered".
+   - #207 (dptangle) already labels uncovered energies, but its credit is stale: the pendulum is now published,
+     doi:10.5281/zenodo.22997540.
+10. **Multiple shooting, time changes near the saddle, energy pinning (agree as techniques; use when needed).**
+    - The pendulum already chains h-sets, and the HH pulse already handles the crawl near rest with an isolating
+      block and a cone condition, not by integration.
+    - Use multiple shooting for the temperature and rounding strips, where one long flight over a parameter box
+      will fatten.
+11. **Sensitivities (agree, moderate).** Publish derivative enclosures with respect to the parameters: dK/dT from
+    the strip, and d(period)/dJ from the bistability interval. They come almost free once strips exist.
+12. **Algebra before intervals (agree where it applies).** Use exact rationals and root counting for the polynomial
+    facts: Routh-Hurwitz coefficients, the vortex identities, the nf-pulse polynomial embedding. Little applies to
+    HH, whose rates are exponential.
+13. **The profile as a shape (a function-space Newton-Kantorovich proof with tail bounds) (agree long-term).** It is
+    the best second witness for the pulses (Part 1, item 1), and it gives existence and the linearization from one
+    object. Weeks of work: after everything above.
+
+## Combined order with Part 1
+
+1. Finish HH pulse 1.0.0.
+2. Numbers from certificates; the hypothesis ledger; the derivative audit.
+3. The shared kernel suite and mutation gate; guilty-box logs.
+4. The certificate checker, plus a second compiler and arithmetic.
+5. Uniqueness windows for the HH pulse and nf-pulse.
+6. The linear-to-nonlinear lemma (read Zhang 2007).
+7. HH stability (in progress on hh-stability).
+8. tstrip, then rounded constants, then the bistability interval.
+9. Edges (fold enclosures); a second integrator; the profile-as-shape method; meromorphic search.
