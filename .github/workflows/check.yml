@@ -240,6 +240,9 @@ jobs:
       - name: Provenance in every export, research data and the status badge
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/provenance-check.js
+      - name: Fisher-KPP data export metadata
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/fisher-kpp-metadata-check.js
 
   volunteer-ui:
     name: volunteer and navigation (${{ matrix.browser }})
