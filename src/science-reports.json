@@ -1139,7 +1139,7 @@
   {
     "id": "pendulum",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "sourceSha256": "2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee",
     "reference": "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
     "equation": "L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π",
     "status": "unvalidated",
@@ -1235,7 +1235,7 @@
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
+    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
     "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
     "status": "validated within stated limits",
@@ -2455,7 +2455,7 @@
   {
     "id": "holomorphic",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "sourceSha256": "2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee",
     "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
     "status": "unvalidated",
@@ -2475,23 +2475,34 @@
   {
     "id": "phase",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "sourceSha256": "2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee",
     "reference": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.",
-      "The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 equally spaced samples on the circle, a step bisected where its principal phase change exceeds pi/2 (at most 24 levels and 400,000 evaluations). The printed integer is the winding number about 0 of the sampled closed polygon f(z_k). It equals the number of zeros minus poles inside, with multiplicity, only when f is meromorphic inside and on the circle and no sampling step hides a whole turn of the phase, which the refinement makes likely and cannot prove; a zero or pole within about the sample spacing 2 pi r / 4096 of the circle can be missed.",
-      "No count is printed when f is undefined or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f|, or when refinement does not resolve a step. For an essential singularity or a branch point inside the circle the printed number is a winding number, not a count of zeros and poles, and the status line does not detect those cases.",
+      "The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 initial circle samples, with bisection when the wrapped phase change or the angular step times the endpoint logarithmic-derivative magnitude exceeds pi/2. The derivative uses f(theta +/- 1e-7); all probes count toward the 400,000-evaluation budget, with at most 24 refinement levels. Finite differences and endpoint sampling cannot certify arbitrary typed functions or exclude every hidden turn. The argument principle requires a meromorphic function inside and on the circle.",
+      "No count or verdict is printed for nonfinite evaluations, a sampled min |f| at or below 1e-9 of max |f|, or unresolved refinement. Conservative refusal includes the tested near-double-zero circles whose analytic count is zero. Essential singularities and branch points inside remain outside the theorem; an accepted number there is only a sampled winding number.",
       "The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources."
     ],
     "remaining": [
-      "Register a numerical test of the winding computation against functions with known zeros and poles, including zeros close to the circle and circles through a zero or across a cut, with failure controls and a results artifact.",
+      "Extend the bounded winding regression fixtures to broader parameter sweeps and independent error bounds; finite-difference endpoint refinement is not a certified zero/pole isolation method.",
       "Compare the GPU phase and modulus with the double-precision values exportData() writes, at the print path's resolution.",
       "Review the styles against Wegert and Semmler (2011) and Wegert (2012)."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/phase-winding-check.js",
+        "scope": "Production CPU winding routine and refused status formatter extracted from dynamics.js. Fourteen fixed functions/circles cover the default, near and on-circle double zeros, double poles, positive/negative winding 4096, a branch cut and a constant; budget and depth exhaustion are checked separately.",
+        "criteria": "Default count remains 3; fast windings are +/-4096; resolvable outside/inside cases are 0/2; boundary and below-floor cases refuse with no count or verdict. Removing the derivative guard must miss the boundary and fast-winding fixtures.",
+        "benchmark": "Analytic locations and multiplicities of zeros and poles for the listed factored rational functions and monomials; undefined count on a contour zero or pole. See validation/PHASE-WINDING.md.",
+        "failureControl": "The test removes the endpoint logarithmic-derivative criterion from the actual routine and asserts that the historical wrapped-phase-only algorithm fails boundary and fast-winding fixtures.",
+        "command": "node tools/phase-winding-check.js (also run by node tools/expr-check.js in CI); node tools/phase-winding-check.js --write refreshes results.",
+        "results": "validation/results/phase-winding.json",
+        "limitations": "Finite fixtures only, no interval certification, arbitrary-formula guarantee, GPU phase/modulus comparison or scientific print validation. Close-but-valid contours can be conservatively refused."
+      }
+    ],
     "print": []
   },
   {
@@ -3246,7 +3257,7 @@
   {
     "id": "orbitals",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "sourceSha256": "2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee",
     "reference": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
     "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
     "status": "unvalidated",
@@ -3392,7 +3403,7 @@
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
+    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
     "status": "validated within stated limits",
@@ -4707,16 +4718,16 @@
   {
     "id": "neural-field",
     "source": "src/modules/neural-field.js",
-    "sourceSha256": "b8c040ac5cbc5988f2a3a7d82bd40695f1631767049359823bec08efb32833df",
+    "sourceSha256": "8b9f41aafe788dbeba9cbdffcbd094df95f7aefb7b2c7a348b2127e993da8b9d",
     "reference": "D. J. Pinto and G. B. Ermentrout, Spatially structured activity in synaptically coupled neuronal networks: I. Traveling fronts and pulses, SIAM J. Appl. Math. 62, 206–225 (2001), eq. (3) with the feedback decay set to zero; S. Amari, Dynamics of pattern formation in lateral-inhibition type neural fields, Biol. Cybern. 27, 77–87 (1977). The pulse speeds compared at β = 20, θ = 1/4, ε = 1/10 and at β = 12, θ = 1/4, ε = 3/20 are computer-assisted enclosures drafted in this repository (papers/nf-pulse). Original implementation of established equations.",
     "equation": "∂u/∂t = −u − v + w ∗ S(u);  ∂v/∂t = εu;  w(x) = e^−|x|/2;  S(u) = 1/(1 + e^−β(u − θ))",
     "status": "partially validated",
     "limitations": [
       "The comparison covers two parameter points only, beta = 20, theta = 1/4, eps = 1/10 and beta = 12, theta = 1/4, eps = 3/20 (gamma = 0, kernel e^-|x|/2), with a central kick (six kick shapes at the first point, the default shape at the second), rings of 240 and 400, and the shipped cells (1,024, 2,048, 4,096) and steps (0.1, 0.05, 0.025). At every other parameter the timed speed is printed as a measurement with no reference and no error estimate.",
       "The reference speeds are computer-assisted enclosures of width 1e-25 drafted in this repository (papers/nf-pulse and papers/nf-pulse/ext/gain-12), computed in ball arithmetic from the traveling-wave ODE by programs separate from this tab. The lemmas those proofs rest on do not yet have written proofs (papers/nf-pulse/notes/QUALITY.md).",
-      "The error estimate |K| dx^4 + |Kt| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 7.6e-10 and 2.2e-10 from the proved speeds.",
+      "The error estimate |K| dx^4 + |Kt| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 9.1e-10 and 2.3e-10 from the proved speeds.",
       "That the plate settles onto the fast pulse is observed, not proved: stability of the fast pulse is not established (papers/nf-pulse/ext/stability). The slow pulse proved at the first point is expected to be unstable; kicks at the launch threshold hesitate at a front speed near 0.1 and then die or accelerate to the fast pulse, an observation at one kick width.",
-      "The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, isolated after covering that distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.",
+      "The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, kick sites behind excluded within the larger of their half-width and 20 kernel lengths, isolated after covering the ahead distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. The behind margin uses the symmetric kernel decay exp(-20)/2, about 1e-9, not a proved speed-error bound. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.",
       "No print-accuracy evidence is registered. The plate is a Catmull-Rom display of a Float32 record of u and v (at most 2,048 columns and 1,536 rows); prints add pixels, not resolution. Periodic ring only: no two-dimensional field, synaptic delay, recovery decay (gamma), noise or heterogeneity."
     ],
     "remaining": [
@@ -4730,11 +4741,11 @@
         "test": "tools/neural-field-science.js",
         "command": "node tools/neural-field-science.js --write",
         "results": "validation/results/neural-field-science.json",
-        "scope": "The maintained Float64 solver loaded unchanged (Numerov periodic solve of r - r'' = S(u), classical RK4) and its front timing: the kernel against constants and Fourier modes; the RK4 step bound over the eigenvalue set of the linearization for every offered step and eps from 0.01 to 0.3; the timed speed at the two proved points on cells 1,024, 2,048 and 4,096 with the step halved each time, step refinement at 2,048 cells, three slider corners (ring 400 on 1,024 cells, 4,096 cells at step 0.1); six kick shapes, window choice, a short ring, a subthreshold kick and the launch threshold; every preset to completion; determinism.",
-        "criteria": "Constant returned to 1e-13 and Fourier-mode errors falling 14 to 18 times per halving; discrete symbol in (0, 1]; RK4 stable for steps up to 0.1 on the decaying eigenvalues (largest stable step 2.81 to 4.78); observed order 3.6 to 4.4 (measured 4.01 and 4.00); Richardson limit within 2e-8 of the proved speed; module K and Kt within 5 and 10 per cent of the refinement; every timed speed at the proved points, corners, kick shapes and presets within 2(|K| dx^4 + |Kt| dt^4) + 2e-8 of the proved speed; all controls fail as stated.",
+        "scope": "The maintained Float64 solver loaded unchanged (Numerov periodic solve of r - r'' = S(u), classical RK4) and its front timing: the kernel against constants and Fourier modes; the RK4 step bound over the eigenvalue set of the linearization for every offered step and eps from 0.01 to 0.3; the timed speed at the two proved points on cells 1,024, 2,048 and 4,096 with the step halved each time, step refinement at 2,048 cells, three slider corners (ring 400 on 1,024 cells, 4,096 cells at step 0.1); six kick shapes, window choice, an extra unit-amplitude kick 8.7 units behind the default left front at t = 42.3, the two-kick scatter recipe with seed probe-54, a short ring, a subthreshold kick and the launch threshold; every preset to completion; determinism.",
+        "criteria": "Constant returned to 1e-13 and Fourier-mode errors falling 14 to 18 times per halving; discrete symbol in (0, 1]; RK4 stable for steps up to 0.1 on the decaying eigenvalues (largest stable step 2.81 to 4.78); observed order 3.6 to 4.4 (measured 4.01 and 4.00); Richardson limit within 2e-8 of the proved speed; module K and Kt within 5 and 10 per cent of the refinement; every timed speed at the proved points, corners, kick shapes and presets within 2(|K| dx^4 + |Kt| dt^4) + 2e-8 of the proved speed; the affected front in the behind-kick fixture and the scatter witness must be untimed or within that same tolerance; all controls fail as stated.",
         "limitations": "Deterministic finite-grid evidence at two parameter points and the listed fixtures; no stability proof, no other parameters, no print path, no GPU.",
         "benchmark": "Computer-assisted enclosures of the fast pulse speed, width 1e-25: 1.10274770973415924914786... at beta 20, theta 1/4, eps 1/10 (papers/nf-pulse) and 1.04753749779917111554998... at beta 12, theta 1/4, eps 3/20 (papers/nf-pulse/ext/gain-12), computed from the traveling-wave ODE in ball arithmetic by separate programs; and the exact Fourier-mode solutions f/(1 + q^2) of r - r'' = f.",
-        "failureControl": "eps = 0.5, where the fast pulse does not exist: every front ends and nothing is timed. A kernel of mass 2 and of mass 1.001 with the rest state moved to match: speed errors 2.37 and 2.6e-3 against tolerances 6.5e-5 and 3.5e-6. The second-order stencil in place of Numerov's: errors 3.2e-3, 8.0e-4 and 2.0e-4 at the three grids, observed order 2.0, outside the tolerance at every grid."
+        "failureControl": "eps = 0.5, where the fast pulse does not exist: every front ends and nothing is timed. A kernel of mass 2 and of mass 1.001 with the rest state moved to match: speed errors 2.37 and 2.6e-3 against tolerances 6.5e-5 and 3.5e-6. The second-order stencil in place of Numerov's: errors 3.2e-3, 8.0e-4 and 2.0e-4 at the three grids, observed order 2.0, outside the tolerance at every grid. The regression fixture fails with the old kick-site guard (only the kick half-width behind the front): speed error 9.50e-6 exceeds tolerance 3.50e-6 for the kick 8.7 units behind at t = 42.3."
       }
     ],
     "print": []

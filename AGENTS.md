@@ -81,6 +81,15 @@ node tools/provenance-check.js     # provenance in every export, and the .npz da
 node tools/verify-commitment.js --all   # the commitment ledger, its stamps and reveals
 ```
 
+**Keep every command bounded** (owner's instruction, 2026-09-27): no shell command runs for hours when it does
+not need to. Give each one a `timeout` sized to its known runtime, run a long one in the background under its own
+cap, give every wait loop a deadline and an exit for every end state, stop a background watcher as soon as its
+subject is done or cancelled, and run the checks the change can reach rather than whole suites. The full
+`tools/checkall.sh` sweep (hours on a software renderer) is for a change to a shared path: `src/shared/`, a family
+factory used by several tabs, the build or the shell; a change confined to named modules is swept by `check.js` and
+`export.js` for those tabs. [.claude/skills/babysit/SKILL.md](.claude/skills/babysit/SKILL.md) has the details
+for driving a pull request to green.
+
 `tools/modules/CONTRACT.md` is the real contract: the register keys, the instance methods, the GL
 helpers, and the numerical rules. Read it before writing a technique, not after.
 

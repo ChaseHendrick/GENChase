@@ -10,7 +10,7 @@
 //   3. the timed pulse speed at the two proved points under grid refinement (cells 1024, 2048, 4096 with the time
 //      step halved each time), the observed order, the error constants K (space) and Kt (time) estimated from the
 //      refinement alone, the Richardson limit against the proved speed, and the module's witness tolerance;
-//   4. the timing rules: launch transient, window choice, stimulus shape, a ring too short to isolate a front;
+//   4. the timing rules: launch transient, window choice, stimulus shape, kicks behind a front, a short ring;
 //   5. negative controls that must fail: recovery rate 0.5 (no fast pulse), a kernel of twice the mass, and the
 //      second-order stencil in place of Numerov's;
 //   6. every preset to completion, and determinism.
@@ -180,6 +180,33 @@ for (const point of A.PROVED) {
   }
   const short = run({ stimulus: 'single', length: 60, duration: 60 });
   assert.equal(short.m.best, null);
+  // A kick behind the left front still couples to it through the symmetric kernel. Check that front alone:
+  // selecting the longest window across both fronts could hide its bad speed behind the unaffected right one.
+  const baseline = run({}), kickTime = 42.3, behind = 8.7;
+  const left = baseline.sim.tracks.find(tr => tr.dir === -1);
+  const row = left.t.findIndex(t => Math.abs(t - kickTime) < 1e-9);
+  assert(row >= 0 && baseline.m.timed === 2, 'default plate must supply two timed fronts and the kick row');
+  const kicked = A.makeSim(baseline.s);
+  const kickX = (left.x[row] - left.dir * behind + kicked.L) % kicked.L;
+  kicked.kicks.push({ x: kickX, t: kickTime, step: Math.round(kickTime / kicked.dt), amp: 1 });
+  while (kicked.step < kicked.steps && !kicked.halted) kicked.advance(4096);
+  assert.equal(kicked.halted, '');
+  const tracks = kicked.tracks, affected = tracks.find(tr => tr.id === left.id);
+  assert(affected && affected.dir === -1 && affected.t.at(-1) > kickTime + A.MIN_WINDOW);
+  let affectedTiming;
+  try { kicked.tracks = [affected]; affectedTiming = kicked.measure().best; }
+  finally { kicked.tracks = tracks; }
+  const kickTol = tolerance(P, kicked.h, kicked.dt);
+  const kickError = affectedTiming ? affectedTiming.speed - P.c : null;
+  log('behind kick:', affectedTiming ? 'error ' + kickError + ', tolerance ' + kickTol : 'affected front untimed');
+  assert(!affectedTiming || Math.abs(kickError) <= kickTol, 'kick behind the front must end its clear run or leave its speed within tolerance');
+  const behindKick = { time: kickTime, behind, amplitude: 1, x: kickX, track: affected.id, timed: affectedTiming, error: kickError, tolerance: kickTol };
+  // The same failure can occur with an ordinary seeded scatter recipe, without an injected stimulus.
+  const scatter = run({ stimulus: 'scatter', seed: 'probe-54', count: 2 });
+  const scatterTol = tolerance(P, scatter.sim.h, scatter.sim.dt);
+  const scatterError = scatter.m.best ? scatter.m.best.speed - P.c : null;
+  assert(!scatter.m.best || Math.abs(scatterError) <= scatterTol, 'probe-54 scatter witness misses the proved speed');
+  const scatterKick = { seed: 'probe-54', count: 2, timed: scatter.m.best, error: scatterError, tolerance: scatterTol };
   const sub = run({ stimulus: 'single', kick: .2, width: 2, duration: 60 });
   assert.equal(sub.m.best, null); assert.equal(sub.m.alive, 0);
   // At the launch threshold (kick width 1.5, found by bisection) the fronts hesitate, creeping at about 0.1, and then
@@ -199,7 +226,7 @@ for (const point of A.PROVED) {
   const settled = up.rows.filter(r => Math.abs(r.speed - .3775) < .05).length;
   assert(settled <= 2, 'the front lingered near the slow pulse speed');
   const nearThreshold = { width: 1.5, threshold: [lo, hi], launched: up, died: down, rowsWithin005OfSlowSpeed: settled };
-  out.timing = { nearThreshold, skip: A.SKIP, minWindow: A.MIN_WINDOW, ahead: A.AHEAD, restFrom: A.REST_FROM, restTol: A.REST_TOL, windows, stimuli: stimuliRows,
+  out.timing = { nearThreshold, skip: A.SKIP, minWindow: A.MIN_WINDOW, ahead: A.AHEAD, restFrom: A.REST_FROM, restTol: A.REST_TOL, windows, stimuli: stimuliRows, behindKick, scatterKick,
     shortRing: { length: 60, timed: short.m.best, fronts: short.m.tracks, note: 'a ring no longer than twice the clear distance never isolates a front, so nothing is timed' },
     subthreshold: { kick: .2, width: 2, fronts: sub.m.tracks, alive: sub.m.alive } };
   log('timing ok', JSON.stringify(windows.map(w => w.minusLate.toExponential(2))));
