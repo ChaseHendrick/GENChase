@@ -1,0 +1,17 @@
+f(x0) = [ 0.2         0.4        -0.47628587  0.74978528] 
+dE(x0) = [ 0.16851337 -0.26436674  0.7684244   0.5842122 ]
+Salnikov M1: |M f - f| = 15.989 (|f| = 0.994),  |dE M - dE| = 23.807 (|dE| = 1.015)
+   M - I ~ rank one: s = [7.2311e+01 8.0000e-03 7.0000e-03 1.0000e-03]; column direction u = [-0.485+0.421j  0.435-0.314j -0.302-0.17j   0.291+0.309j]  row direction v = [-0.562+0.j    -0.276-0.201j  0.336-0.549j  0.391+0.028j]
+   |v . f| / |f| = 0.222   (0 if M fixes f)
+   angle test: |dE . u| / |dE| = 0.324   (0 if M preserves dE)
+Salnikov M2: |M f - f| = 15.989 (|f| = 0.994),  |dE M - dE| = 23.807 (|dE| = 1.015)
+   M - I ~ rank one: s = [7.2311e+01 8.0000e-03 7.0000e-03 2.0000e-03]; column direction u = [-0.485-0.421j  0.435+0.314j -0.302+0.17j   0.291-0.309j]  row direction v = [ 0.562+0.j     0.276-0.201j -0.336-0.549j -0.391+0.028j]
+   |v . f| / |f| = 0.222   (0 if M fixes f)
+   angle test: |dE . u| / |dE| = 0.324   (0 if M preserves dE)
+
+best readings (smallest violation of the two necessary conditions; 0 = consistent):
+  g=1.0 velocities ordering (3, 2, 0, 1): |v.f|/|f| = 0.067, |dE.u|/|dE| = 0.129
+  g=1.0 velocities ordering (3, 2, 1, 0): |v.f|/|f| = 0.142, |dE.u|/|dE| = 0.203
+  g=1.0 momenta ordering (2, 1, 0, 3): |v.f|/|f| = 0.031, |dE.u|/|dE| = 0.265
+  g=1.0 velocities ordering (1, 0, 2, 3): |v.f|/|f| = 0.285, |dE.u|/|dE| = 0.178
+  g=1.0 momenta ordering (0, 3, 2, 1): |v.f|/|f| = 0.267, |dE.u|/|dE| = 0.303

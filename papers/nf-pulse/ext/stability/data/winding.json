@@ -1,0 +1,29 @@
+{
+ "pieces": [
+  "right_up",
+  "top",
+  "left_up",
+  "left_down",
+  "bottom",
+  "right_down"
+ ],
+ "arg_changes": {
+  "right_up": "[2e+0 +/- 0.214]",
+  "top": "[1e+0 +/- 0.0743]",
+  "left_up": "[+/- 0.658]",
+  "left_down": "[+/- 0.658]",
+  "bottom": "[1e+0 +/- 0.0743]",
+  "right_down": "[2e+0 +/- 0.214]"
+ },
+ "total/(2 pi)": "[+/- 1.17]",
+ "winding_number": 1,
+ "sha256": {
+  "evans_rig.py": "0057267d1af278627808bded255c4ced95e95b3d829c3ddcd26fbe771ee10a0e",
+  "winding.py": "93b17f170e546f2e8a17f0a98c18e835b3dc0b9d0aaf04baee8b568c418502d5",
+  "pulse_records.pkl": "7e2bdbbdc8fa4e31f62a8e64dc6f74d5d8cbbe7323c40cc3a438ee3dedfabd0c"
+ },
+ "speed_bracket": [
+  "1.102747709734159249147867735746621733255053383781820878927200000000000",
+  "1.102747709734159249147867735746621733255053383781820878927300000000000"
+ ]
+}

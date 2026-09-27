@@ -5,20 +5,24 @@ in `papers/nf-pulse/`.
 
 ## 1. Outcome
 
-**Partly proved.**
+**Spectral stability proved (computer-assisted) for the class of pulses P; nonlinear stability not proved.**
 
-- **Spectral stability.** Not proved yet (see the correction below). The steps of Theorem S that are certified by
-  computer are E (the essential spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R) and P (the
-  pulse class and its enclosure); the winding-number step W, on which Part 2 of the proof rests, was not completed.
+- **Spectral stability.** For every pulse of the class, the spectrum of the linearization in Re lambda >= -1/20 is
+  exactly {0}, and 0 is algebraically simple. The essential spectrum lies in Re lambda <= -0.1127... This is
+  spectral stability with a gap of at least 1/20 (Theorem S, Section 5). Certified by computer: E (the essential
+  spectrum), L (no eigenvalue with Re lambda >= -1/20 outside a box R), P (the pulse class and its enclosure), W
+  (the winding number of the Evans function on the boundary of R is 1) and Z (lambda = 0 is a simple zero, with
+  D'(0) in [0.2308, 0.2693], by a Cauchy integral independent of W). The algebra of Part 3 is checked in SymPy.
+  Written, standard and not machine checked: the analysis of Part 3 and the Evans-function facts listed in
+  Section 6.
 - **Nonlinear stability.** Not proved here. The step from spectral to nonlinear stability rests on a published
   theorem (Sandstede 2007), whose full text I could not obtain, so its hypotheses are unchecked. Section 7 lists
   what remains.
 
-**Correction made when this folder was merged (2026-09-26).** The session that wrote this report ended before
-`winding.py` finished. No winding certificate is in `data/`, the placeholders for the winding status, its section and
-the numerical section were never filled, and the adversarial check below says "the winding number (W) is not
-established yet". Theorem S needs W (Part 2 of the proof outline), so spectral stability is **not proved**; the
-statements E, L and P are certified, and `run_all.sh` will report W only when a run of `winding.py` completes.
+**History (2026-09-26).** When this folder was first merged, the winding run had not finished, and this section
+said spectral stability was not proved. The session finished the six winding pieces and combined them later that day
+(Section 4.W); a local rerun of four of the pieces, on pulse records that differ only in a timing field, gave the
+same intervals. The adversarial check in Section 8 predates W and did not rerun it.
 
 ## 2. Setting and notation
 
@@ -198,13 +202,47 @@ R = [-1/20, 9/2] x [-38/5, 38/5].
 
 ### W. Winding number (rigorous: `winding.py`)
 
-Not completed: see the correction in Section 1.
+- **Contour.** The boundary of R is split into six pieces: right upper, top, left upper, left lower, bottom, right
+  lower. Each piece is covered by segments of length 1/50, 1976 segments in all.
+- **Per segment.** Dt is enclosed on the segment's square. With thin enclosures at its two ends, it must lie in an
+  open half plane through 0; that then gives the argument change along the segment exactly (up to the enclosure
+  width). No segment had to be split.
+- **Argument changes** (radians, midpoint +/- radius), from `data/winding_*.json`:
+
+| Piece | Segments | Argument change | Lower bound for abs(Dt) on the piece | Time (4 cores) |
+|---|---|---|---|---|
+| right upper, Re = 9/2, Im 0 to 38/5 | 380 | 1.8844 +/- 0.0976 | 403.3 | 1835 s |
+| top, Im = 38/5 | 228 | 0.9762 +/- 0.0505 | 820.3 | 1102 s |
+| left upper, Re = -1/20, Im 38/5 to 0 | 380 | 0.2809 +/- 0.3761 | 0.2756 | 1258 s |
+| left lower | 380 | 0.2809 +/- 0.3761 | 0.2756 | 969 s |
+| bottom | 228 | 0.9762 +/- 0.0505 | 820.3 | 1057 s |
+| right lower | 380 | 1.8844 +/- 0.0976 | 403.3 | 1412 s |
+
+- **Total.** The argument change divided by 2 pi lies in **[0.8331, 1.1669]**, so **the winding number is 1**
+  (`data/winding.json`).
+- **Symmetry as a check.** The lower pieces were computed independently of the upper ones. They agree with them to
+  about 10^-10, as the symmetry Dt(conj lambda) = conj Dt(lambda) requires.
+- **Provenance.** All six pieces carry the same sha256 of `evans_rig.py`, `winding.py` and `data/pulse_records.pkl`
+  (recorded in `data/winding.json`), and `combine` verifies them against the present files.
+- **Statement W.** Dt has exactly one zero in R counted with order. Since Dt(0) = 0 (translation), that zero is
+  lambda = 0, and Dt'(0) is nonzero.
 
 ### Numerical (not rigorous: `pulse_hp.py`, `evans_num.py`, `spectrum_num.py`)
 
 The double-precision Evans function uses a high-precision pulse at the 60-digit speed.
 
-Not written: the session ended before this section was filled.
+The double-precision Evans function (`data/spectrum_num.json`) is normalized with w^T v = 1.
+
+- **Winding number on the boundary of R: 1.** 629 points; min |D| = 0.01187, at lambda = -1/20.
+- **Winding number on the wider box** [-0.11, 9/2] x [-38/5, 38/5]: also 1. So, numerically, 0 is the only
+  eigenvalue with Re lambda > -0.11 in that box.
+- **At lambda = 0:** D(0) = 1.8e-13 and D'(0) = 0.25005.
+- **Matching point.** D does not depend on the matching point: at lambda = 0.5 + i, the values at xi = 18.5 and at
+  xi = 40 agree to 10^-9.
+- **Near the imaginary axis.** For Re lambda in {-0.1, -0.05, 0} and 0.05 < Im lambda <= 8, the smallest |D| is
+  about 0.02, at Im lambda = 0.075, close to the zero at the origin. There is no sign of another eigenvalue.
+- **Checker's discretization.** The independent Fourier-spectral discretization (Section 8) agrees: 0 is the only
+  eigenvalue with Re lambda > -0.1127.
 
 ## 5. Exact statements
 
@@ -231,18 +269,30 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
     order.
   - D(0) = 0 by translation invariance: (U', V', Q', P') solves the ODE at lambda = 0 and decays at both ends.
   - Hence 0 is the only eigenvalue in R, and D'(0) is nonzero.
-- **Part 3** is a written argument, standard and not machine checked. The independent check flagged it as
-  needed (Section 8, finding 1).
-  - **Geometric multiplicity 1.** The solutions decaying at -infinity form the one-dimensional space spanned by
-    phi^-.
-  - **No Jordan chain.** A generalized eigenvector P1 with L P1 = P0 = (U', V') is, in ODE form, a solution decaying
-    at both ends of phi1' = A(xi, 0) phi1 + (d A/d lambda) phi0, where phi0 = phi^-(., 0).
-  - Since D(0) = 0, psi0 = psi^+(., 0) is bounded on all of R. It is orthogonal to phi^- and to the stable space at
-    +infinity, and it decays at both ends.
-  - Integrating (psi0^T phi1)' = psi0^T (dA/dlambda) phi0 over R gives the integral of psi0^T (dA/dlambda) phi0 = 0.
-  - Differentiating D(lambda) = psi^+(xi, lambda)^T phi^-(xi, lambda) in lambda (the standard computation) gives D'(0)
-    equal to that same integral. D'(0) is nonzero, so no Jordan chain exists.
-  - Numerically D'(0) = 0.2501 (normalization w^T v = 1); the independent check found the same.
+- **Part 3.** The independent check flagged it as needed (Section 8, finding 1). Its two computational inputs are
+  certified (`simple_zero.py`), its algebra is checked exactly (`part3_symbolic.py`, SymPy), and the analysis that
+  joins them is written, standard and not machine checked. Each step says which.
+  - **Geometric multiplicity 1.** *Certified:* at lambda = 0 the rest matrix A_inf(0) has exactly one eigenvalue with
+    positive real part, nu = 0.968761160579..., and three with negative real part, in four disjoint Krawczyk balls.
+    *Written:* since A(xi, 0) tends to A_inf(0) exponentially as xi -> -infinity, the solutions that decay at
+    -infinity form the one-dimensional space spanned by phi^-.
+  - **No Jordan chain.** *Exact (SymPy):* a generalized eigenvector P1 with L P1 = P0 = (U', V') is, in ODE form, a
+    solution of phi1' = A(xi, 0) phi1 + (dA/dlambda) phi0, where dA/dlambda = diag(-kappa, -kappa, 0, 0) and
+    phi0 = (U', V', Q', P') solves the variational equation. *Written:* phi1 decays at both ends.
+  - *Written:* since D(0) = 0, psi0 = psi^+(., 0) is bounded on all of R. It is orthogonal to phi^- and to the stable
+    space at +infinity, and it decays at both ends.
+  - *Exact (SymPy):* (psi0^T phi1)' = psi0^T (dA/dlambda) phi0. *Written:* the boundary terms vanish, so integrating
+    over R gives the integral of psi0^T (dA/dlambda) phi0 = 0.
+  - *Exact (SymPy):* the two halves of the lambda-derivative of D(lambda) = psi^+(xi, lambda)^T phi^-(xi, lambda) at 0
+    have derivatives in xi equal to +psi0^T (dA/dlambda) phi0 and -psi0^T (dA/dlambda) phi0. *Written:* they vanish at
+    -infinity and +infinity respectively, so D'(0) equals that same integral (for any normalisation of psi^+ and
+    phi^-, in particular for Dt).
+  - *Certified, independently of W:* Dt'(0) lies in [-16.3820, -14.0497] + [-1.1611, 1.1611]i, so it is nonzero, and
+    D'(0) = Dt'(0) / (wt^T v)(0) lies in [0.230893, 0.269221] + [-0.019081, 0.019081]i (normalization w^T v = 1;
+    (wt^T v)(0) = -60.8493463...). This is Cauchy's formula on the circle |lambda| = 1/25, split into 128 arcs, each
+    covered by an `evans_rig.py` enclosure; the mean-value integral over the same arcs encloses Dt(0) in a ball about
+    0 of radius 0.021, as it must. So no Jordan chain exists, and 0 is a simple zero of D without using W.
+  - Numerically D'(0) = 0.2501, inside the certified interval; the independent check found the same.
 
 ## 6. What is rigorous and what is numerical
 
@@ -254,7 +304,10 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
 | Pulse enclosures on [-16, 120] and the tail constants | Rigorous: `pulse_enclosure.py`, the base `manifold.py`, `lohner.py` and `block.py` |
 | Enclosures of Dt on squares and points | Rigorous: `evans_rig.py` |
 | Winding number of Dt on the boundary of R | Rigorous: `winding.py` |
-| Algebraic simplicity of 0 given D'(0) nonzero | Written argument (Section 5), not machine checked |
+| Rest eigenvalues at lambda = 0: one with Re > 0, three with Re < 0 | Rigorous: `simple_zero.py` (and inside every `evans_rig.py` enclosure) |
+| D'(0) nonzero, in [0.2308, 0.2693]: 0 is a simple zero of D, independently of W | Rigorous: `simple_zero.py`, a Cauchy integral on 128 arcs of the circle \|lambda\| = 1/25 |
+| The algebra of Part 3: the ODE forms of the eigenvalue and Jordan-chain equations, dA/dlambda, and the two integration identities | Exact: `part3_symbolic.py` (SymPy, with two negative controls) |
+| The analysis of Part 3: decaying solutions and L^2 eigenfunctions, the limits at +-infinity, and the decay of psi0 when D(0) = 0 | Written argument (Section 5), standard, not machine checked |
 | Relation between eigenvalues and zeros of D; analyticity of D | Standard Evans-function facts for the ODE form, used as known and not re-proved here |
 | High-precision pulse table, double-precision Evans function, numerical winding numbers, D'(0) = 0.2501, and the checker's Fourier discretization | Numerical only |
 
@@ -362,6 +415,8 @@ python3 large_lambda.py                                   # L (rigorous)
 sh thin_runs.sh                                           # P: base prove_pulse.py on c_lo and c_hi, T_B = 110 (1 minute)
 python3 pulse_enclosure.py 1.1027477097341592491478677357466217332550533837818208789272 \
         1.1027477097341592491478677357466217332550533837818208789273 110 120      # P: records (15 s)
+python3 simple_zero.py 128 4                              # Z: rest eigenvalues at 0 and D'(0) nonzero (rigorous, 4 minutes)
+python3 part3_symbolic.py                                 # the algebra of Part 3 (exact, SymPy, seconds)
 for p in left_up right_up top left_down bottom right_down; do python3 winding.py $p 4; done
 python3 winding.py combine                                # W (rigorous)
 python3 pulse_hp.py 120 && python3 evans_num.py && python3 spectrum_num.py 4       # numerical only

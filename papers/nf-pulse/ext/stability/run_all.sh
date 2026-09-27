@@ -26,8 +26,26 @@ sh thin_runs.sh > data/thin_runs.log 2>&1
 check "P: narrow bracket, orbit at c_lo enters K- (base prove_pulse.py, T_B = 110)" data/thin_c_lo.log 'VERDICT PASS'
 check "P: narrow bracket, orbit at c_hi enters K+ (base prove_pulse.py, T_B = 110)" data/thin_c_hi.log 'VERDICT PASS'
 
-python3 pulse_enclosure.py $C_LO $C_HI 110 120 > data/pulse_enclosure.log 2>&1
+if [ -f data/pulse_records.pkl ]; then
+  # the stored records are the ones the winding pieces were computed with (their sha256 is checked by combine):
+  # recompute into work/rerun and compare everything except the timing
+  NF_STAB_OUT=work/rerun python3 pulse_enclosure.py $C_LO $C_HI 110 120 > data/pulse_enclosure.log 2>&1
+  python3 -c "
+import pickle
+a = pickle.load(open('data/pulse_records.pkl', 'rb')); b = pickle.load(open('work/rerun/pulse_records.pkl', 'rb'))
+for d in (a, b): d['info'].pop('time_s')
+print('RECORDS REPRODUCED' if a == b else 'RECORDS DIFFER')" >> data/pulse_enclosure.log 2>&1
+  check "P: the stored pulse records are reproduced exactly" data/pulse_enclosure.log 'RECORDS REPRODUCED'
+else
+  python3 pulse_enclosure.py $C_LO $C_HI 110 120 > data/pulse_enclosure.log 2>&1
+fi
 check "P: every orbit with c in [c_lo, c_hi] is in the interior of the block at xi = 110" data/pulse_enclosure.log '"in_int_B_at_T_B": true'
+
+python3 simple_zero.py 128 4 > data/simple_zero.log 2>&1
+check "Z: at lam = 0, one rest eigenvalue with Re > 0 and three with Re < 0 (disjoint balls)" data/simple_zero.log 'disjoint balls: True'
+check "Z: lam = 0 is a simple zero of the Evans function (Cauchy integral on |lam| = 1/25, 128 arcs)" data/simple_zero.log 'SIMPLE ZERO: CERTIFIED'
+python3 part3_symbolic.py > data/part3_symbolic.log 2>&1
+check "Part 3: the algebra of the multiplicity argument (SymPy, two negative controls)" data/part3_symbolic.log 'PART 3 ALGEBRA: CHECKED'
 
 if [ "$1" != "quick" ]; then
   for p in right_up top left_up left_down bottom right_down; do

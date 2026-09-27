@@ -12,12 +12,16 @@ horizontal position. Consequently (Smale-Birkhoff) the flow on each of these ene
 and has positive topological entropy, and (Kozlov's argument, written out in Section 4.5) every real-analytic
 function on the energy level that is invariant under the flow is constant. With the persistence of transversal
 homoclinic points in E, this also excludes any real-analytic first integral on the whole phase space that is
-functionally independent of the energy (Corollary 3), a statement that may already follow from Bolotin and
-Negrini (1997) if their parameter domain contains the equal case (Section 2; we could not read that paper).
+functionally independent of the energy (Corollary 3). Bolotin and Negrini (1997) prove analytic
+non-integrability of the double pendulum only under a parameter inequality that, as far as we could read it,
+fails at equal masses and lengths (Section 2).
 Rigorous: the fixed point, its hyperbolicity, the local unstable manifold and the transversal crossing, all by
 interval arithmetic with the CAPD library (C^0 and C^1 Lohner integrators, rigorous Poincare maps), together
-with the written lemmas below. Numerical: how the orbit and the crossing were found. Not attempted: meromorphic
-(Morales-Ramis) non-integrability, and an explicit lower bound on the entropy.
+with the written lemmas below. At E = 0 a separate computation (Theorem 2) verifies 24 covering relations
+between 23 pairwise disjoint h-sets along the homoclinic loop and gives an explicit bound: the topological
+entropy of the return map is at least 0.1016 per return, and that of the flow on the level at least 0.0138 per
+unit time. Numerical: how the orbit, the crossing and the h-sets were found. Meromorphic (Morales-Ramis)
+non-integrability: see Section 11.
 
 ## 2. Prior art (full ledger in [PRIOR-ART.md](PRIOR-ART.md))
 
@@ -40,18 +44,21 @@ and relevant hit is in the ledger. What the sources say, quoted:
   also lack a proof of transversality of the orbits".
 - Burov (PMM 1986), Ivanov I-IV (1999-2001), Tabanov (1999), Moauro and Negrini (PMM 1998): perturbative in a
   parameter (link geometry, mass ratio) that is not small in the equal case.
-- Unresolved: Bolotin and Negrini, "A variational criterion for nonintegrability", Russ. J. Math. Phys. 5 (1997)
-  415-436. zbMATH (Zbl 0951.37029): "the nonintegrability of a double pendulum in a certain domain of parameters
-  is proved"; Moauro and Negrini (1998, p. 892, translated): "for energy values close to the maximum of the
-  potential energy". Rabinowitz, TMNA 9 (1997) 41-76, Sect. 1, describes it as "a variational criterion for the
-  nonintegrability of (HS) when V is analytic". The full text was not reached, so we do not know whether the
-  equal case is in their domain. Their energies are near the top of the potential (E = 3 here), far from ours,
-  and their statement is non-integrability, not a horseshoe; but if their domain contains the equal case,
-  Corollary 3 below is not new.
+- Bolotin and Negrini, "A variational criterion for nonintegrability", Russ. J. Math. Phys. 5 (1997) 415-436
+  (Zbl 0951.37029). Full text not reached; Section 10 ("Nonintegrability of the double pendulum") was read in
+  Google Books search-within snippets of the journal volume (id as3yAAAAMAAJ, pp. 434-435, rechecked by us on
+  2026-09-26), log in [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md). Theorem 10.1 (OCR text): "The double pendulum is
+  a nonintegrable system in a neighborhood of Sh provided that 9m2 ( m1l2 + m2 ( 11 - 12 ) 2 ) ( ( m1 + m2 ) 11 +
+  m212 ) < 32m2 ( max { 11,12 } ) 3 . Of course , this condition is quite restrictive." S_h is the energy level
+  of the upright equilibrium (E = 3 here), and the preceding line derives the condition from "2 pi mu < 2d".
+  Read with the units balanced (9 pi^2 on the left, 32 m2^2 on the right; the OCR renders l1, l2 as 11, 12), the
+  condition at m1 = m2, l1 = l2 is 27 pi^2 < 32, false by a factor of about 8.3; it holds at equal lengths only
+  for m1/m2 below about 0.17. This reconstruction rests on OCR snippets, not the printed page. Their energy
+  (near the top of the potential) is also far from ours.
 
 Verdict: as far as the search reached, no proof of chaos (horseshoe, positive entropy, transversal homoclinic
-orbit) exists at the classical parameters, and no proof of non-integrability on a given energy level below the
-top of the potential. Global analytic non-integrability is open or proved depending on Bolotin-Negrini.
+orbit) exists at the classical parameters, and no proof of analytic non-integrability either: the one
+non-perturbative result, Bolotin-Negrini's Theorem 10.1, appears (from OCR snippets) to exclude the equal case.
 
 ## 3. Setting and statement
 
@@ -106,6 +113,16 @@ a neighbourhood of M_E in phase space) that is invariant under the flow is const
 
 **Corollary 3 (analytic non-integrability).** There is no real-analytic first integral F on T*T^2 (or on any
 connected open set containing M_0) that is functionally independent of H.
+
+**Theorem 2 (explicit horseshoe at E = 0).** There are 23 pairwise disjoint compact h-sets N, M_0, ..., M_21 in
+Sigma_0 (N around p_0, M_0 ... M_21 along the homoclinic loop of Theorem 1) with covering relations, in the
+sense of Zgliczynski and Gidea, N =P=> N, N =P=> M_0, M_i =P=> M_{i+1} (0 <= i <= 20) and M_21 =P=> N. Hence P_0
+restricted to a compact invariant set is semiconjugate onto the subshift of finite type of this graph, and
+
+    h_top(P_0) >= log r > 0.1016086,  r > 1.1069502 the largest root of r^23 = r^22 + 1,
+
+and the flow on M_0 has topological entropy at least log r / 7.3553854 > 0.0138141 per unit time
+(7.3553854 bounds the return time on all the h-sets).
 
 What is rigorous: Theorem 1 is established by the interval computations of Section 5 together with Lemmas 1-3
 (written proofs in Section 4). Corollaries 1-3 follow from Theorem 1 by the classical theorems cited in Section
@@ -204,6 +221,38 @@ of maximal entropy of the shift,
 h(phi_1) = h(P^N)/(mean return time of P^N) >= log 2 / (N T_max) > 0, so the flow on M_E has positive
 topological entropy by the variational principle.
 
+### 4.4a Explicit horseshoe (Theorem 2)
+
+h-sets (Zgliczynski and Gidea, J. Differential Equations 202 (2004) 32-58, Definition 1; author copy read) are
+parallelograms X = c + B [-1, 1]^2, B = [alpha u, beta s], with the first coordinate nominally expanding. For one
+expanding direction, their Theorem 16 gives X =P=> Y (with degree +-1) if (76) the image of the midline
+{(x, 0)} lies in {|y| < 1} of Y's coordinates, (77) P(X) does not meet {|x| <= 1, |y| = 1}, and (78) or (79)
+the images of the left and right edges lie in {x < -1} and {x > 1} or the reverse. `code/horseshoe_check.cpp`
+verifies (76)-(78) for each relation on covers of the edges, the midline and the set (16 pieces per edge,
+bisected where needed), with the mean-value form Y's coordinates of P(zc) + (B_Y^{-1} DP(piece) B_X)(r - rc),
+where P(zc) is a validated C^0 enclosure and DP(piece) CAPD's validated C^1 enclosure over the piece; it also
+verifies that the 23 sets are pairwise disjoint on the cylinder and bounds the return time on all of them.
+
+From the relations: for every bi-infinite path in the graph there is an orbit that visits the interiors of the
+sets in that order (Zgliczynski-Gidea, Corollary 12, "Collorary 12" in the author copy). Let Lambda be the set
+of points whose full orbit stays in the union of the sets and moves along edges of the graph; it is compact and
+invariant because the sets are compact and disjoint, the itinerary map Lambda -> Sigma_A is continuous (the sets
+are disjoint) and onto (Corollary 12), and it conjugates P to the shift. A factor has no more entropy than the
+system, so h_top(P) >= h_top(P|Lambda) >= h_top(sigma_A) = log r, where r is the spectral radius of the graph:
+one loop of length 1 at N and one of length 23 through the M_i, so r^23 = r^22 + 1. The bound r > 1.106950245016
+is certified by evaluating r^23 - r^22 - 1 < 0 at that value in interval arithmetic. For the flow, Abramov's
+formula applied to the invariant measures of P|Lambda and the variational principle give
+h_top(phi_1) >= h_top(P|Lambda) / T_max.
+
+The sets were designed numerically (`code/horseshoe_design.cpp`): a pseudo-orbit along the homoclinic loop, built
+forward from z_0 = P^{-9}(q_0) for nine returns and completed by the reversibility (z_{18-i} = G z_i, closing
+to 1e-10), then continued along W^s towards p for three returns; the expanding directions u_i are pushed
+forward by DP, the contracting ones are s_i = DG u_{18-i}; the widths alpha_i are chosen so that each image
+overshoots the next set by a factor of about 3, and the thicknesses beta_i are three times the sampled image
+thickness but never below 1e-8, the width of a validated one-return enclosure near the symmetry line. Two
+earlier designs failed the check (a factor-2 overshoot, which made the first set 1e5 times taller than wide; and
+thicknesses below the enclosure width), which is recorded here because the check did its job.
+
 ### 4.5 No analytic integral on the level (Corollary 2; Kozlov's argument)
 
 Let F be real-analytic near M_E and invariant under the flow; g = F restricted to Sigma_E is real-analytic
@@ -262,6 +311,11 @@ Results ([data/E0.log](data/E0.log), [data/Ehalf.log](data/Ehalf.log), [data/Emi
 Robustness at E = 0 ([data/robustness_E0.log](data/robustness_E0.log)): Taylor order 12 and 30 instead of 20,
 and a finer cover (1500 boxes, 50 pieces), all pass with the same conclusions.
 
+Explicit horseshoe at E = 0 ([data/horseshoe_E0.log](data/horseshoe_E0.log), configuration
+[configs/horseshoe_E0.cfg](configs/horseshoe_E0.cfg)): all 24 covering relations verified, every edge image on
+the correct side, the largest midline value |y| = 0.503 (it must stay below 1), pairwise disjointness of the 23
+sets, return time at most 7.355385352; about 5 minutes on 4 cores.
+
 ## 6. Numerics (numerical, not part of the proof)
 
 - `code/explore.cpp`: Poincare sections at E = -1, -1/2, 0, 1/2.
@@ -281,6 +335,8 @@ and a finer cover (1500 boxes, 50 pieces), all pass with the same conclusions.
   still contains 0 at bisection depth 16 ([-5.4e-9, 1.0e-8]). The method does not certify a horseshoe there.
 - Mutations: moving the segment so that both edge images lie on one side of Fix(G) fails (C4); narrowing the
   cone to alpha = 1e-4, below the measured ratio 3.6e-4, fails (C1).
+- Covering relations that must not hold ([configs/control_horseshoe_wrong.cfg](configs/control_horseshoe_wrong.cfg)):
+  a skipped step M_0 => M_2, a backward step M_2 => M_1 and M_5 => M_5 all fail (edges not separated).
 
 ## 8. Independent adversarial check
 
@@ -311,6 +367,19 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
   interval arithmetic (worst case over the enclosure of p), and the last piece of the segment cover ends exactly
   at x2. The three proofs and three controls were rerun after these changes with the same outcomes.
 
+A second independent agent checked Theorem 2 and the horseshoe code ([check/VERDICT-horseshoe.md](check/VERDICT-horseshoe.md)).
+Verdict: **confirmed with caveats**. It reran the check with 16 and with 32 pieces per edge (all 24 relations
+pass; largest midline value 0.492 at 32 pieces), recomputed r = 1.10695024501688 independently, confirmed the
+code against Zgliczynski-Gidea Theorem 16 and the mathematics of Section 4.4a, caught mutations (a shrunk
+alpha, an enlarged beta, a moved centre, a wrong shift, E = 1e-3, displaced targets), and spot-checked M9 => M10
+and M21 => N with its own integrator (edge images at x = -2.99991 and +3.00009, return time 7.355385).
+Two defects it found were fixed and everything was rerun (same numbers): the transition graph was assumed from
+the number of sets instead of built from the verified relations (a dropped relation still printed the bound;
+now the graph is built from the verified relations and its spectral radius bounded below by the Collatz-Wielandt
+ratio min (Av)_i / v_i in interval arithmetic, and the dropped-relation mutation fails); and the derivative
+enclosure in the mean-value form did not always contain the rounded piece centre (a gap of about 1e-15 in phase
+space; `derivC1` in `code/rig.h` now widens the offsets to contain 0, which also applies to `prove.cpp`).
+
 ## 9. Limitations
 
 - The proof trusts CAPD's rigorous integrator and Poincare map and the C++ compiler and floating-point rounding
@@ -322,16 +391,48 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
   so a step contains at most one crossing, in one direction. Hence the departure phase ends right after the
   first downward crossing, and no upward crossing (a return) can be skipped. This is our reading of the code,
   not a documented guarantee.
-- Corollary 3 uses an unquantified persistence argument, and may be implied by Bolotin-Negrini (1997), unread.
-- No explicit entropy bound: Smale-Birkhoff gives an iterate N but no value.
-- Meromorphic non-integrability (Morales-Ramis; Salnikov's monodromy computation made rigorous) was not
-  attempted.
+- Corollary 3 uses an unquantified persistence argument. Its novelty rests on our reading of Bolotin-Negrini's Theorem 10.1 from OCR snippets (Section 2); the printed page was not seen.
+- The explicit entropy bound (Theorem 2) is proved at E = 0 only, and it is a lower bound from one loop, far below
+  the entropy one would estimate numerically.
+- Meromorphic non-integrability (Morales-Ramis) is not proved; Section 11 records the attempt.
 - Only three energies are proved; nothing is claimed for other E, although the orbit family and the crossing
   were followed numerically between them.
 
 ## 10. Rerun
 
-    sh research/double-pendulum/code/run_all.sh      # builds CAPD (pinned) and the programs, about 8 minutes on 4 cores
+    sh research/double-pendulum/code/run_all.sh      # builds CAPD (pinned) and the programs, about 15 minutes on 4 cores
 
-Prints PROVED for E0, Ehalf, Eminushalf and "fails, as it must" for the three controls; logs go to `data/`.
+Prints PROVED for E0, Ehalf, Eminushalf, "all covering relations VERIFIED" for the horseshoe, and "fails, as it
+must" for the four controls; logs go to `data/`. The h-set design is regenerated by
+
+    _bin/horseshoe_design 0 0 -1.462373092479858 0.95568530469114732 -0.29439021450684943 \
+        0.95568530469114776 0.29439021450684805 -1.8870e-5 -1.8838e-5 9 3 1e-5 2.5e-7 3 1e-8 > configs/horseshoe_E0.cfg
+
 Single runs: `_bin/prove configs/E0.cfg <threads>`. Requirements: g++, cmake, python3 with sympy.
+
+## 11. Meromorphic non-integrability (Morales-Ramis): attempted, not proved
+
+Details, code and every run are in [morales-ramis/NOTES.md](morales-ramis/NOTES.md). We tried to redo Salnikov's
+computation (arXiv:1303.4904) with validated complex-time integration.
+
+- His loops. The note does not state g; the loops, read from the figure in the arXiv source, are diamonds around
+  0.5 +- 0.9i based at t = 0, each taken three times. They close on the phase curve after three turns only at
+  g = 1 (not at 9.8, 9.81 or 10). The singular point they enclose is at t* = 0.71083085844270 + 0.64647678336182i
+  (numerical), where the mass matrix degenerates (cos^2(t1 - t2) = 2), and a Puiseux fit shows an algebraic branch
+  point of order 3 with velocities like (t - t*)^(-1/3) (numerical).
+- Result (numerical, order-60 Taylor, 256 bits): along both three-fold loops the monodromy of the variational
+  equation is the identity, max|M - I| = 3e-38 and 4e-38; rerun by us with the same result. Trivial monodromy
+  cannot prove non-integrability.
+- Rigorous (ball arithmetic, validated complex-time integrator with a Cauchy remainder, about 51 minutes per loop):
+  along both loops the endpoint matrix of the variational equation lies within 4e-9 of I entrywise. Not proved:
+  that the loops close exactly (so this is not yet a monodromy statement), and where the singular point is.
+- Salnikov's printed matrices are unipotent (I plus a rank-one nilpotent part of size about 72); in ball
+  arithmetic, every matrix rounding to his numbers moves the orbit tangent by at least 10.26 and fails to preserve
+  the energy gradient by at least 15.31, which a monodromy along a loop closed on the phase curve must do; 96
+  other readings of his variables also fail (numerical). We could not reproduce his result. Even if genuine,
+  unipotent matrices are resonant, so Ziglin's theorem would not apply; Morales-Ramis would, but it would need
+  exact closure, proved unipotence and a certified non-zero commutator.
+- The gap. A proof needs a loop closed on the phase curve with non-trivial monodromy. The order-3 branch points
+  found give none. Our rigorous periodic orbit gives one certified non-resonant element (trace -3.8087, real
+  period); a second, non-commuting element would have to come from a singularity of another type (five
+  singular points near Im t = 2 did not close within 8 turns and were not resolved). Open.

@@ -14,7 +14,8 @@ block.py (isolating block) via prove_pulse.block_data.  Coordinates as in prove_
    c_hi -> K+ of prove_pulse.py this re-proves the existence of a pulse with speed in (c_lo, c_hi)).
  * At xi = T_FAR the enclosure of y' = (y2, y3, y4), y = T (x - x*), gives eta0 >= |y'(T_FAR)| for the right tail.
  * Left tail: C_U with |U(xi)| <= C_U t for t = exp(lam_u xi)/4 <= 1, and lam_u >= lam_lo.
-Output: data/pulse_records.pkl (exact serialisation of the balls) and data/pulse_enclosure.json.
+Output: data/pulse_records.pkl (exact serialisation of the balls) and data/pulse_enclosure.json (or the directory
+$NF_STAB_OUT).
 usage: python3 pulse_enclosure.py c_lo c_hi [T_B T_FAR XI_MINUS]
 """
 import sys, os, json, time, pickle, math
@@ -110,8 +111,10 @@ def main(c_lo, c_hi, T_B=100, T_far=115, xi_minus=-16, h_left=fmpq(1, 4)):
            'recs': [(ser(arb(ts)), ser(arb(h)), [ser(v) for v in hull], [ser(v) for v in W]) for ts, h, hull, W in recs],
            'C_U': ser(C_U), 'lam': ser(lam), 'kappa': ser(kappa), 'T': [[ser(T[i, j]) for j in range(4)] for i in range(4)],
            'Tinv': [[ser(Tinv[i, j]) for j in range(4)] for i in range(4)]}
-    pickle.dump(out, open(_paths.DATA + '/pulse_records.pkl', 'wb'))
-    json.dump(info, open(_paths.DATA + '/pulse_enclosure.json', 'w'), indent=1)
+    outdir = os.environ.get('NF_STAB_OUT', _paths.DATA)
+    os.makedirs(outdir, exist_ok=True)
+    pickle.dump(out, open(outdir + '/pulse_records.pkl', 'wb'))
+    json.dump(info, open(outdir + '/pulse_enclosure.json', 'w'), indent=1)
     return info
 
 
