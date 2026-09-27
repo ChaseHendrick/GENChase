@@ -62,5 +62,5 @@ references:
         orcid: "https://orcid.org/0009-0002-9754-6087"
     year: 2026
     url: "https://github.com/ChaseHendrick/minimal-winding"
-    doi: "10.5281/zenodo.22966989"
-    notes: "The DOI is that of release 2.1.0 of the paper's repository, with its programs and data. Release 2.2.0 adds the explicit forms and examples of the retired identities note; its DOI replaces this one once it is archived."
+    doi: "10.5281/zenodo.22994932"
+    notes: "The DOI is that of release 2.2.0 of the paper's repository, with its programs and data."
