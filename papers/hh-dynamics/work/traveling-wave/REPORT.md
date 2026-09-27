@@ -365,6 +365,73 @@ of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
   pulses (Hastings, Carpenter, Jones, Sandstede) and textbook authors who repeat the Keener-Sneyd sentence. Before any
   claim: read Hastings pp. 231-257, Carpenter 1977 and Foote and Chen 1981 (Section 1.5).
 
+### 4.4 The closing argument, as designed on 2026-09-27 (before the long computations)
+
+This replaces the plan of 4.1 and 4.2 where they differ. Two measurements changed the costs. (i) A block with weights
+fitted to the eigenvalues is far larger than the round one of 3.2: in the coordinates zeta = M (y - y*), M = S T with
+T an inverse real eigenbasis of Df(y*) (unstable, fast real, Re and Im of the complex pair, slow real) and
+S = diag(10, 7, 1, 1, 40), the cone and entrance conditions hold, in floating point, out to |zeta_s| about 0.8 to 1,
+against 0.01 before; the pulse is inside such a block about 8 ms after the upstroke instead of 17. (ii) Only the growth
+from the upstroke to that time matters for the widths, so the K interval and the stable box of the exit set have to be
+about 1e-47 wide, not 1e-85, and 256 bits suffice.
+
+**Theorem to be proved (computer-assisted).** Let T = 18.5 C, phi = 3^((T - 6.3)/10), the rate functions and
+constants of Hodgkin and Huxley (1952) as in 2.1, and E_l the leak potential that makes the resting current zero. There
+are explicit numbers K1 < K2 (printed with the result, K2 - K1 about 1e-46) such that for some K* in (K1, K2) the
+travelling-wave system (2.1) has a solution y(t) = (u, u', m, n, h)(t), defined for all real t, not constant, with
+y(t) -> y* = (0, 0, m_inf(0), n_inf(0), h_inf(0)) as t -> +infinity and as t -> -infinity. Hence eq. (31) of Hodgkin
+and Huxley has a propagated action potential V(x, t) = -u(t - x/theta), theta = sqrt(K* a / (2 R_2 C_M)), with the
+speed in (theta(K1), theta(K2)) for their a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2. The orbit leaves rest on the
+branch of the unstable manifold along which u increases, and u exceeds a proved lower bound near 90 mV.
+
+**Hypotheses, each checked by a program in ball arithmetic (python-flint, 256 bits), with K in [K1, K2] throughout:**
+
+- (H1) Lemma A (3.1): Df(y*) has exactly one eigenvalue with positive real part, simple and real, and four with
+  negative real part. So W^u(y*) is a curve and W^s(y*) is four-dimensional, for every K in the interval.
+- (H2) Lemma B (3.2) at a tiny radius r_B = 1e-25, in coordinates z = T_B (y - y*) with T_B an exact dyadic matrix that
+  diagonalizes Df(y*) to about 1e-70 (from a rigorous eigen-decomposition, acb_mat.eig): the branch of W^u with z1 > 0
+  leaves the box through the face z1 = r_B inside the exit set E, whose stable widths are (2e-51, 1e-49, 6e-51). And
+  (H2') the crossing is transversal, z1' > 0 on E, so the exit point p(K) depends continuously on K.
+- (H3) The closing block B0 = {|zeta_1| <= r, |zeta_s|_2 <= rho} (rho = 0.8, r = 0.84; `block0.py`): for every x in
+  B0, (C) D A + A^T D is positive definite, A = M Df(x) M^-1, D = diag(1, -1, -1, -1, -1); and for every x in B0 with
+  |zeta_1| <= rho, (E) lambda_max(sym A_ss) + |A_s1|_2 < 0. Checked on a cover of B0 by cells in zeta, with interval
+  Cholesky factorizations. Consequences (argument in the docstring of `block0.py`): L = zeta_1^2 - |zeta_s|^2
+  increases strictly along orbits in B0; every boundary point with L <= 0 is a strict entrance point; the cones
+  K+ = {L > 0, zeta_1 > 0} and K- = {L > 0, zeta_1 < 0} cannot be left while an orbit stays in B0; an orbit that stays
+  in B0 for all later times tends to y*.
+- (H4) The interval run: a C^0 Lohner integrator in the six variables (y, K), K' = 0 (`lohner6.py`, jets from
+  `hhjet6.py`), carries a set containing E x [K1, K2] from t = 0 (the exit time) to t = T_enter and encloses it in the
+  interior of B0.
+- (H5) The endpoint runs: for K = K1 and K = K2, E is carried to T_enter, lies in int B0 there, and is carried further
+  with an enclosure of the whole path over every step (`lohner6.step_range`) inside int B0, until the set lies in K-
+  (for one endpoint) and in K+ (for the other).
+
+**Argument.** For K in [K1, K2] let x_K(t) be the solution with x_K(0) = p(K); it lies on W^u(y*), so x_K(t) -> y* as
+t -> -infinity, and K -> x_K(t) is continuous uniformly on compact time intervals (by H2' and continuous dependence).
+Let S+ (S-) be the set of K for which there is t >= T_enter with x_K([T_enter, t]) in int B0 and x_K(t) in K+ (K-).
+Both sets are open in [K1, K2] (conditions on a compact time interval, with open targets), disjoint (by H3 a cone
+cannot be left while the orbit is in B0) and non-empty (H5). As [K1, K2] is connected, some K* is in neither. Its
+orbit is in int B0 at T_enter (H4). If it ever left B0, at the first time t_e it reached the boundary either L <= 0,
+and then the orbit would have entered B0 strictly at t_e, so it was outside just before, which it was not; or L > 0, and
+then it was in K+ or K- just before t_e while still in int B0, so K* would be in S+ or S-. Hence x_{K*}(t) stays in
+B0 for all t >= T_enter and tends to y* (H3). It is not constant (it passes through the exit set, at distance r_B from
+rest, and through the spike). This is the pulse.
+
+**What the argument does not use or claim.** No isolating property of the face |zeta_1| = r; no uniqueness of the
+pulse or of K*; no stability; nothing for the printed E_l = 10.613 (whose K* differs by 3e-5 relative), nor for the
+slow pulse. The standard facts used without a computer are the local unstable manifold theorem with parameters (for
+the continuity of p(K)), continuous dependence on initial data and parameters, and the connectedness of an interval.
+
+**Negative controls (each must fail):** Lemma A with a bracket above lambda_u; Lemma B with stable faces 100 times
+thinner; the block with its radius multiplied by 1.5; the interval run for a K interval of the same width that does
+not contain the pulse speed (shifted by 40 half-widths); the interval run at the true interval for the model with
+alpha_m multiplied by 1 + 1e-12 u^2 (which leaves rest and its linearization unchanged, so Lemmas A and B still apply,
+but moves the pulse speed by far more than the interval).
+
+**Execution:** `prove_pulse.py` (stages setup, interval, K1, K2, neg-shift, neg-model, summary), each stage under
+`nice -n 19` and a timeout, checkpointing the Lohner set to `data/ckpt/` every two minutes; K* to about 55 digits from
+`hp_pulse.py` (numerical: multiple shooting in high precision, Newton's method, to centre the interval).
+
 ## 5. Independent check
 
 An independent subagent (2026-09-26), with no access to our reasoning beyond this report and the code, re-opened the

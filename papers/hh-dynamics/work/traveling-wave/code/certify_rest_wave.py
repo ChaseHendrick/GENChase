@@ -123,7 +123,7 @@ def lemma_B(K, phi, EL, r, s, Tf=None):
     if Tf is None:
         V, _ = real_basis(Am)
         Tf = np.linalg.inv(V)
-    T = exact(Tf)
+    T = Tf if isinstance(Tf, arb_mat) else exact(Tf)       # an exact arb_mat is used as given (prove_pulse.py)
     Ti = T.inv()
     s2, s3, s5 = [arb(v) for v in s]
     r = arb(r)

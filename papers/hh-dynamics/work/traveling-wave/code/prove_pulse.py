@@ -1,0 +1,431 @@
+#!/usr/bin/env python3
+# Copyright 2026 Chase Hendrick
+# SPDX-License-Identifier: Apache-2.0
+"""Rigorous (ball arithmetic): computer-assisted existence proof of the propagated action potential of Hodgkin and
+Huxley (J. Physiol. 117 (1952), eq. (31)) at their 1952 rate functions and constants, as an orbit homoclinic to rest
+of the travelling-wave ODE (hhwave.py conventions: u = -V, w = u', t in ms, phi = 3^((T - 6.3)/10), E_l the leak
+potential that makes the resting current zero).
+
+The argument (written out in REPORT.md, Section 4) has these computed hypotheses, each checked here:
+ (A) Lemma A of certify_rest_wave.py for every K in [K1, K2]: rest has one eigenvalue with positive real part (simple,
+     real) and four with negative real part.
+ (B) Lemma B of certify_rest_wave.py at the radius r_B, in coordinates z = T_B (y - y*) that diagonalize Df(y*) to
+     about 1e-70 (a rigorous eigen-decomposition at the working precision, then exact dyadic midpoints): for every K
+     in [K1, K2] the branch of the unstable manifold with z1 > 0 leaves the box through the face z1 = r_B inside the
+     exit set E = { y* + T_B^-1 (r_B e1 + z') : |z'_2| <= s2, |(z'_3, z'_4)| <= s3, |z'_5| <= s5 }; and
+     (B') the crossing is transversal: z1' > 0 on E for every K in the ball, so the exit point p(K) depends
+     continuously on K.
+ (C) The closing block B0 of block0.py (cone and entrance conditions), for every K in [K1, K2].
+ (D) The interval run: the Lohner set containing { (y, K) : y in E, K in [K1, K2] }, integrated from t = 0 to
+     t = T_enter, lies in the interior of B0 at t = T_enter.
+ (E) The endpoint runs: for K = K1 (resp. K2) the set E is integrated to T_enter, lies in int B0 there, and is then
+     integrated further with enclosures of the whole path over every step, which stay in int B0, until the set lies
+     in K- = {L > 0, zeta_1 < 0} (resp. K+ = {L > 0, zeta_1 > 0}).
+Conclusion: some K* in (K1, K2) has an orbit that leaves rest along the branch z1 > 0 of W^u and stays in B0 for all
+t >= T_enter, hence tends to rest: a homoclinic orbit, the pulse, with speed theta = sqrt(K* a / (2 R_2 C_M)).
+
+Negative controls (each must fail): the interval run for a K interval that does not contain the pulse speed (shifted
+by 40 half-widths), and for the model with alpha_m multiplied by 1 + 1e-12 at the true interval; Lemma B with faces
+100 times too thin; the block with a radius 1.5 times too large (block0.py).
+
+Stages (run separately, each writes data/pulse_proof_<T>_<stage>.json and checkpoints to data/ckpt/):
+  python3 prove_pulse.py <T> setup      # config from data/hp_pulse_<T>.json, then (A), (B), (B'), (C)
+  python3 prove_pulse.py <T> interval   # (D)
+  python3 prove_pulse.py <T> K1         # (E) at K1
+  python3 prove_pulse.py <T> K2         # (E) at K2
+  python3 prove_pulse.py <T> neg-shift  # negative control: shifted K interval
+  python3 prove_pulse.py <T> neg-model  # negative control: perturbed alpha_m
+  python3 prove_pulse.py <T> summary    # collects the verdicts; exit status 0 iff everything is as expected
+"""
+import hashlib
+import json
+import math
+import os
+import sys
+import time
+from flint import arb, acb_mat, arb_mat, ctx
+import certify_rest_wave as C
+import hhjet6
+import lohner6 as L
+import block0
+
+PREC = 256
+ORDER = 40
+DATA = '../data'
+ctx.prec = PREC            # the imports above set other precisions; every stage below also sets it
+
+
+def ball(lo, hi):
+    return arb(lo).union(arb(hi))
+
+
+def require(cond, msg):
+    if not cond:
+        raise SystemExit('CHECK FAILED: ' + msg)
+
+
+def cfg_path(T):
+    return '%s/pulse_proof_%s_config.json' % (DATA, T)
+
+
+def out_path(T, stage):
+    return '%s/pulse_proof_%s_%s.json' % (DATA, T, stage)
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# configuration
+
+def make_config(T, delta, r_B, T_enter, tol_final, tol_min):
+    ctx.prec = PREC
+    hp = json.load(open('%s/hp_pulse_%s.json' % (DATA, T)))
+    Ks = arb(hp['K'])
+    # K1, K2: exact dyadic numbers (midpoints) at distance about delta from the numerical K*
+    K1 = arb((Ks - arb(delta)).mid())
+    K2 = arb((Ks + arb(delta)).mid())
+    require(bool(abs((K2 - K1) / (2 * arb(delta)) - 1) < arb('1e-6')), 'K1, K2 not at the intended distance')
+    sc = (float(r_B) / 1e-4) ** 2
+    cfg = {'T': T, 'K_numerical': hp['K'], 'delta': delta,
+           'K1': ser(K1), 'K2': ser(K2), 'K1_dec': K1.str(70, radius=False), 'K2_dec': K2.str(70, radius=False),
+           'r_B': r_B, 's': ['%.3e' % (2e-9 * sc), '%.3e' % (1e-7 * sc), '%.3e' % (6e-9 * sc)],
+           'T_enter': T_enter, 'order': ORDER, 'prec': PREC, 'prec_aux': L.PREC_AUX,
+           'tol_final': tol_final, 'tol_min': tol_min}
+    json.dump(cfg, open(cfg_path(T), 'w'), indent=1)
+    return cfg
+
+
+def ser(a):
+    return L.ser(a)
+
+
+def deser(s):
+    return L.deser(s)
+
+
+def cfg_hash(cfg, extra=''):
+    return hashlib.sha256((json.dumps(cfg, sort_keys=True) + extra).encode()).hexdigest()[:16]
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Lemma B coordinates: a rigorous eigen-decomposition, then exact dyadic midpoints
+
+def lemmaB_T(A0):
+    """Real eigenbasis (unstable, fast real, Re and Im of the complex pair, slow real) of the 5 x 5 arb matrix A0 from
+    acb_mat.eig at the working precision; columns normalized as in certify_rest_wave.real_basis; returns T = an exact
+    dyadic matrix close to the inverse of that basis. Only its exactness matters for rigour (Lemma B is verified for
+    whatever T is used); its accuracy makes the linear part nearly diagonal, which the check at tiny r_B needs."""
+    E, R = acb_mat(A0).eig(right=True)
+    ev = [(float(e.real.mid()), float(e.imag.mid()), k) for k, e in enumerate(E)]
+    iu = max(ev, key=lambda t: t[0])[2]
+    reals = sorted([t for t in ev if abs(t[1]) < 1e-9 and t[2] != iu], key=lambda t: t[0])
+    cpx = [t for t in ev if t[1] > 1e-9][0][2]
+    fast, slow = reals[0][2], reals[1][2]
+
+    def col(k):
+        return [R[i, k] for i in range(5)]
+    vu = col(iu)
+    vu = [x / vu[0] for x in vu]
+    vc = col(cpx)
+    vc = [x / vc[0] for x in vc]
+
+    def realnorm(v):
+        i = max(range(5), key=lambda i: abs(float(v[i].real.mid())))
+        return [x / v[i] for x in v]
+    vf, vs = realnorm(col(fast)), realnorm(col(slow))
+    cols = [[x.real for x in vu], [x.real for x in vf], [x.real for x in vc], [x.imag for x in vc],
+            [x.real for x in vs]]
+    P = arb_mat([[arb(cols[j][i].mid()) for j in range(5)] for i in range(5)])
+    Pi = P.inv()
+    return arb_mat([[arb(Pi[i, j].mid()) for j in range(5)] for i in range(5)])
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# common setup
+
+class Setup:
+    def __init__(self, T, perturb=None):
+        ctx.prec = PREC
+        self.cfg = json.load(open(cfg_path(T)))
+        self.T = T
+        self.phi = C.phi_of(T)
+        self.ystar, self.EL = C.rest_state()
+        self.K1, self.K2 = deser(self.cfg['K1']), deser(self.cfg['K2'])
+        self.Kball = self.K1.union(self.K2)
+        A0 = C.jac(self.ystar, arb(self.Kball.mid()), self.phi, self.EL)
+        self.TB = lemmaB_T(A0)
+        self.rB = arb(self.cfg['r_B'])
+        self.s = tuple(arb(v) for v in self.cfg['s'])
+        M, Minv, rho, r, d = block0.load_block(T)
+        self.M, self.Minv, self.rho, self.r = M, Minv, arb(rho), arb(r)
+        self.M6 = arb_mat([[M[i, j] if j < 5 else 0 for j in range(6)] for i in range(5)])
+        self.shift6 = list(self.ystar) + [arb(0)]
+        self.T_enter = self.cfg['T_enter']
+        self.lam = None
+
+    def lemma_B(self, s=None):
+        return C.lemma_B(self.Kball, self.phi, self.EL, self.rB, s or self.s, Tf=self.TB)
+
+    def exit_set(self, Kpart, B):
+        """Lohner set for { (y* + T_B^-1 (r_B e1 + z'), K) : z' in the stable box, K in Kpart } (Kpart a ball)."""
+        Ti = B['Ti']
+        s2, s3, s5 = B['s']
+        R0 = [ball(-s2, s2), ball(-s3, s3), ball(-s3, s3), ball(-s5, s5)]
+        centre = [self.ystar[i] + Ti[i, 0] * self.rB for i in range(5)]
+        xbar = [arb(c.mid()) for c in centre] + [arb(Kpart.mid())]
+        kr = arb(Kpart.rad())
+        m = 5 if kr > 0 else 4
+        Cm = arb_mat(6, m)
+        for i in range(5):
+            for k in range(4):
+                Cm[i, k] = arb(Ti[i, k + 1].mid())
+        if m == 5:
+            Cm[5, 4] = arb(kr.mid()) if arb(kr.mid()) >= kr else arb(kr.upper())
+            R0 = R0 + [ball(-1, 1)]
+        Rr = [centre[i] - xbar[i] + sum(((Ti[i, k + 1] - Cm[i, k]) * R0[k] for k in range(4)), arb(0))
+              for i in range(5)]
+        Rr.append(arb(0))
+        # the K ball must be covered: K in xbar_K + Cm[5, 4] [-1, 1]
+        if m == 5:
+            require(bool(ball(xbar[5] - Cm[5, 4], xbar[5] + Cm[5, 4]).contains(Kpart)), 'K ball not covered')
+        else:
+            require(bool(Kpart == xbar[5]), 'K point not exact')
+        Bm = arb_mat([[1 if i == j else 0 for j in range(6)] for i in range(6)])
+        return L.LSet(xbar, Cm, R0, Bm, Rr)
+
+    def zeta(self, X):
+        return X.affine_image_hull(self.M6, self.shift6)
+
+    def norm_s_upper(self, z):
+        return sum((arb(v.abs_upper()) ** 2 for v in z[1:]), arb(0)).sqrt()
+
+    def in_int_B0(self, z):
+        return bool(arb(z[0].abs_upper()) < self.r) and bool(self.norm_s_upper(z) < self.rho)
+
+    def in_cone(self, z, sign):
+        v = z[0] if sign > 0 else -z[0]
+        return bool(arb(v.lower()) > self.norm_s_upper(z))
+
+    def tol(self, lam):
+        tf, tm, Te = self.cfg['tol_final'], self.cfg['tol_min'], self.T_enter
+
+        def f(t):
+            return max(tm, tf * math.exp(-lam * max(Te - t, 0.0)))
+        return f
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# stages
+
+def stage_setup(T):
+    S = Setup(T)
+    out = {'stage': 'setup', 'T': T, 'prec': PREC, 'K1': S.cfg['K1_dec'], 'K2': S.cfg['K2_dec']}
+    lines = []
+
+    def say(s):
+        print(s, flush=True)
+        lines.append(s)
+    say('T = %s C, phi = 3^((T - 6.3)/10) = %s, E_l = %s' % (T, S.phi.str(30), S.EL.str(40)))
+    say('K1 = %s\nK2 = %s' % (S.cfg['K1_dec'], S.cfg['K2_dec']))
+    # (A)
+    Kf = float(S.Kball.mid())
+    A = C.lemma_A(S.Kball, S.phi, S.EL, Kf * 0.9, Kf * 1.2)
+    bad = C.lemma_A(S.Kball, S.phi, S.EL, Kf * 1.2, Kf * 2.4)
+    say('(A) one real simple unstable eigenvalue in %s, the other four in Re < 0 (Hurwitz: D2 = %s, D3 = %s): %s; '
+        'negative control (bracket above lambda_u) rejected: %s' % (A['lam_u'].str(30), A['D2'].str(8),
+                                                                   A['D3'].str(8), A['ok'], not bad['ok']))
+    out['A'] = bool(A['ok']) and not bad['ok']
+    out['lambda_u'] = A['lam_u'].str(40)
+    # (B)
+    B = S.lemma_B()
+    say('(B) Lemma B at r_B = %s, stable box %s: %s; inflow bounds %s; cone Gershgorin bounds %s' % (
+        S.cfg['r_B'], S.cfg['s'], B['ok'], [v.str(5) for v in B['inflow'].values()], [g.str(5) for g in B['gersh']]))
+    badB = S.lemma_B(tuple(x / 100 for x in S.s))
+    say('    negative control (stable faces 100 times thinner) rejected: %s' % (not badB['ok']))
+    out['B'] = bool(B['ok']) and not badB['ok']
+    # (B') transversality: z1' = (T_B f(y))_1 > 0 on E for every K in the ball
+    Ti = B['Ti']
+    s2, s3, s5 = B['s']
+    zb = [S.rB, ball(-s2, s2), ball(-s3, s3), ball(-s3, s3), ball(-s5, s5)]
+    Ebox = [S.ystar[i] + sum((Ti[i, k] * zb[k] for k in range(5)), arb(0)) for i in range(5)]
+    f = hhjet6.vfield(Ebox + [S.Kball], S.phi, S.EL)
+    z1dot = sum((S.TB[0, i] * f[i] for i in range(5)), arb(0))
+    say("(B') z1' on the exit set: %s (needs > 0): %s" % (z1dot.str(8), bool(z1dot > 0)))
+    out['B_transversal'] = bool(z1dot > 0)
+    # (C) the closing block for every K in the ball, and its negative control
+    ctx.prec = 128
+    res = block0.run(T, S.Kball, S.M, S.Minv, float(S.rho.mid()), float(S.r.mid()), log=lambda s: None)
+    neg = block0.run(T, S.Kball, S.M, S.Minv, 1.5 * float(S.rho.mid()), 1.5 * float(S.r.mid()), log=lambda s: None)
+    ctx.prec = PREC
+    say('(C) block B0 (rho = %s, r = %s): cone %s on %d cells, entrance %s on %d cells; negative control (radius x '
+        '1.5) rejected: %s' % (S.rho.str(10), S.r.str(10), res['cone']['ok'], res['cone']['cells'],
+                                res['entrance']['ok'], res['entrance']['cells'], not neg['ok']))
+    out['C'] = bool(res['ok']) and not neg['ok']
+    out['ok'] = all(out[k] for k in ('A', 'B', 'B_transversal', 'C'))
+    out['lines'] = lines
+    json.dump(out, open(out_path(T, 'setup'), 'w'), indent=1)
+    say('SETUP ' + ('PASSED' if out['ok'] else 'FAILED'))
+    return out['ok']
+
+
+def jac6(y, K, phi, EL):
+    """Df at rest or over a box, from hhjet6 (so that the negative control's perturbation reaches Lemmas A and B)."""
+    J = hhjet6.jacobian(list(y) + [K], phi, EL)
+    return arb_mat([[J[i][j] for j in range(5)] for i in range(5)])
+
+
+C.jac = jac6
+
+
+def perturb_model(eps):
+    """alpha_m -> alpha_m (1 + eps u^2) everywhere (negative control only)."""
+    hhjet6.ALPHA_M_PERTURB = eps
+
+
+def run_stage(T, stage):
+    t_start = time.time()
+    if stage == 'neg-model':
+        perturb_model('1e-12')
+    S = Setup(T)
+    cfg = S.cfg
+    lam = float(arb(json.load(open(out_path(T, 'setup')))['lambda_u']).mid())
+    B = S.lemma_B()
+    require(B['ok'], 'Lemma B')
+    if stage in ('interval', 'neg-model'):
+        Kpart, expect = S.Kball, None
+    elif stage == 'neg-shift':
+        d = S.K2 - S.K1
+        Kpart, expect = (S.K2 + 19 * d).union(S.K2 + 20 * d), None
+    elif stage == 'K1':
+        Kpart, expect = S.K1, None
+    elif stage == 'K2':
+        Kpart, expect = S.K2, None
+    else:
+        raise SystemExit('unknown stage')
+    F = L.Field(S.phi, S.EL)
+    ck = '%s/ckpt/pulse_%s_%s.json' % (DATA, T, stage)
+    os.makedirs(os.path.dirname(ck), exist_ok=True)
+    h = cfg_hash(cfg, stage)
+    state = {'phase': 'approach', 'steps': 0, 'umax_lower': -1e9, 'umax_upper_steps': -1e9}
+    t0 = 0.0
+    X = S.exit_set(Kpart, B)
+    if os.path.exists(ck):
+        d = json.load(open(ck))
+        if d.get('hash') == h:
+            X = L.LSet.from_json(d['X'])
+            t0 = float(deser(d['t_ser']))
+            state = d['state']
+            print('%s: resumed from checkpoint at t = %s (%d steps)' % (stage, t0, state['steps']), flush=True)
+    tolf = S.tol(lam)
+    log = {'stage': stage, 'T': T, 'K': Kpart.str(70), 'T_enter': S.T_enter, 'order': ORDER, 'prec': PREC}
+    last_ck = [time.time()]
+
+    def cb(tp, t, Xh, Xn, W, hh):
+        state['steps'] += 1
+        hx = Xn.hull()
+        state['umax_lower'] = max(state['umax_lower'], float(hx[0].lower()))
+        state['umax_upper_steps'] = max(state['umax_upper_steps'], float(hx[0].upper()))
+        wid = max(float(arb(x.rad()).mid()) for x in hx[:5])
+        if state['steps'] % 25 == 0:
+            z = S.zeta(Xn)
+            print('%s t=%.4f steps=%d h=%.2e u=%s maxrad=%.2e zeta1=%s |zeta_s|<=%.3e (%.0fs)' % (
+                stage, float(t.mid()), state['steps'], hh, hx[0].str(6, radius=False), wid, z[0].str(4),
+                float(S.norm_s_upper(z).mid()), time.time() - t_start), flush=True)
+        if wid > 1e3 or not all(x.is_finite() for x in hx):
+            state['phase'] = 'blew_up'
+            return True
+        if state['phase'] == 'inside':
+            zr = L.step_range(F, Xh, W, arb((t - tp).upper()), ORDER, S.M6, S.shift6)
+            if not S.in_int_B0(zr):
+                state['phase'] = 'left_int_B0'
+                return True
+            z = S.zeta(Xn)
+            sign = -1 if stage == 'K1' else 1
+            if S.in_cone(z, sign):
+                state['phase'] = 'in_cone'
+                state['t_cone'] = float(t.mid())
+                state['zeta_cone'] = [v.str(10) for v in z]
+                return True
+            if S.in_cone(z, -sign):
+                state['phase'] = 'wrong_cone'
+                return True
+        if time.time() - last_ck[0] > 120:
+            require(bool(arb(float(t.mid())) == t), 'time not a float')
+            json.dump({'hash': h, 't_ser': ser(t), 'X': Xn.to_json(), 'state': state}, open(ck + '.tmp', 'w'))
+            os.replace(ck + '.tmp', ck)
+            last_ck[0] = time.time()
+        return False
+
+    if state['phase'] == 'approach':
+        X, t, ns = L.integrate(F, X, S.T_enter, ORDER, tolf, hmax=0.25, t0=t0, callback=cb)
+        if state['phase'] == 'blew_up':
+            log['verdict'] = 'FAIL'
+            log['reason'] = 'the set blew up at t = %s' % t.str(8)
+        else:
+            require(bool(t == arb(S.T_enter)), 'did not reach T_enter exactly')
+            z = S.zeta(X)
+            inB = S.in_int_B0(z)
+            log['zeta_at_T_enter'] = [v.str(12) for v in z]
+            log['|zeta_s|_upper_at_T_enter'] = S.norm_s_upper(z).str(10)
+            log['in_int_B0_at_T_enter'] = inB
+            log['steps_to_T_enter'] = state['steps']
+            log['u_max_lower_bound'] = state['umax_lower']
+            print('%s: at T_enter = %s: zeta = %s, |zeta_s| <= %s, in int B0: %s' % (
+                stage, S.T_enter, [v.str(6) for v in z], S.norm_s_upper(z).str(6), inB), flush=True)
+            if stage in ('K1', 'K2') and inB:
+                state['phase'] = 'inside'
+                json.dump({'hash': h, 't_ser': ser(t), 'X': X.to_json(), 'state': state}, open(ck, 'w'))
+                t0 = float(t.mid())
+            else:
+                log['verdict'] = 'PASS' if inB else 'FAIL'
+    if state['phase'] in ('inside',):
+        X, t, ns = L.integrate(F, X, t0 + 20.0, ORDER, cfg['tol_final'], hmax=0.0625, t0=t0, callback=cb)
+        log['phase2'] = state['phase']
+        if state['phase'] == 'in_cone':
+            log['t_cone'] = state['t_cone']
+            log['zeta_at_t_cone'] = state['zeta_cone']
+        log['verdict'] = 'PASS' if state['phase'] == 'in_cone' else 'FAIL'
+        log['steps_total'] = state['steps']
+        log['u_max_lower_bound'] = state['umax_lower']
+    elif state['phase'] in ('in_cone', 'left_int_B0', 'wrong_cone'):
+        log['phase2'] = state['phase']
+        log['verdict'] = 'PASS' if state['phase'] == 'in_cone' else 'FAIL'
+    log['secs'] = round(time.time() - t_start)
+    json.dump(log, open(out_path(T, stage), 'w'), indent=1)
+    print('%s VERDICT %s (%d s)' % (stage, log['verdict'], log['secs']), flush=True)
+    return log['verdict'] == 'PASS'
+
+
+def stage_summary(T):
+    expect = {'setup': True, 'interval': True, 'K1': True, 'K2': True, 'neg-shift': False, 'neg-model': False}
+    ok = True
+    lines = []
+    for st, e in expect.items():
+        p = out_path(T, st)
+        if not os.path.exists(p):
+            lines.append('%-10s MISSING' % st)
+            ok = False
+            continue
+        d = json.load(open(p))
+        v = d['ok'] if st == 'setup' else d['verdict'] == 'PASS'
+        good = (v == e)
+        ok = ok and good
+        lines.append('%-10s %s (%s)' % (st, 'as expected' if good else 'NOT AS EXPECTED',
+                                        ('passed' if v else 'failed') + (', a negative control' if not e else '')))
+    lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
+    print('\n'.join(lines))
+    open('%s/pulse_proof_%s_summary.txt' % (DATA, T), 'w').write('\n'.join(lines) + '\n')
+    return ok
+
+
+if __name__ == '__main__':
+    T = float(sys.argv[1])
+    stage = sys.argv[2]
+    if stage == 'config':
+        # python3 prove_pulse.py T config delta r_B T_enter tol_final tol_min
+        make_config(T, sys.argv[3], sys.argv[4], float(sys.argv[5]), float(sys.argv[6]), float(sys.argv[7]))
+        sys.exit(0)
+    if stage == 'setup':
+        sys.exit(0 if stage_setup(T) else 1)
+    if stage == 'summary':
+        sys.exit(0 if stage_summary(T) else 1)
+    ok = run_stage(T, stage)
+    sys.exit(0 if ok else 1)
