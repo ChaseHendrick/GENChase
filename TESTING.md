@@ -77,6 +77,35 @@ Parallel workers are expected to reduce this check to roughly 7 to 8 minutes whe
 are available. This is an estimate from those timings, not an observed parallel result;
 runner queues and machine speed can change the elapsed time.
 
+## Avoiding unnecessary CI waits
+
+Pull requests that change only allowlisted Markdown documentation take a shorter browser
+path. The scope check reads the actual checkout merge against its first parent, including
+both sides of renames. It accepts only ordinary text files in the explicit documentation
+allowlist in `tools/ci-scope.js`. Source, workflow, tool, application, validation-data,
+generated-file and unknown-path changes run the full suite. Binary files, symlinks,
+malformed diffs and unavailable merge history also run the full suite. Pushes to `main`
+and manual runs always run the full suite, even for documentation changes.
+
+Every browser job and matrix check keeps its existing name. On a documentation-only PR,
+it reports that browser work is not applicable and skips browser installation and execution.
+Structural, distribution, native-science and print-production checks still run. This keeps
+required checks from waiting for matrix entries that never appear; it does not claim that
+skipped browser tests passed. Scope regression tests include real Git merge fixtures:
+
+```sh
+node tools/ci-scope-check.js
+```
+
+The workflow runs the maintenance and verifier controls once through `npm test`, and uses
+the Chromium headless-shell download for distribution and art checks. The volunteer job
+keeps full Chromium because its readiness check requires that executable; WebKit is unchanged.
+Browser installation steps have five-minute caps; structural and print-production jobs
+have ten-minute caps, so a stalled command cannot occupy a runner for the default six hours.
+Superseded Pages PR builds are cancelled; production deployments remain serialized and
+uninterrupted. None of these changes removes GitHub's runner queue, so elapsed time can
+still depend on available capacity.
+
 ## Diagnosing a failure
 
 Keep the failing seed, recipe version, module, browser/device, output dimensions and

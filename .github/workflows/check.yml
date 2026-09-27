@@ -45,9 +45,10 @@ jobs:
         with:
           python-version: '3.x'
       - name: Install browser checks
+        timeout-minutes: 5
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2 axe-core@4.10.3
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps --only-shell chromium
       - name: Package and test extracted offline studio
         run: |
           python3 tools/package-release.py --version 0.0.0
@@ -59,14 +60,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
+      browser_required: ${{ steps.scope.outputs.browser_required }}
       matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
       - name: Check exhaustive, disjoint evidence coverage
-        run: timeout 120 node tools/pde-ci-check.js
+        run: |
+          timeout 120 node tools/pde-ci-check.js
+          timeout 120 node tools/ci-scope-check.js
+      - name: Determine whether browser checks are required
+        id: scope
+        env:
+          CI_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          timeout 30 node tools/ci-scope.js > "$RUNNER_TEMP/ci-scope.json"
+          node -e 'const fs = require("node:fs"), s = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + "/ci-scope.json", "utf8")); if (typeof s.browserRequired !== "boolean") throw Error("Missing CI scope"); console.log(s.reason); fs.appendFileSync(process.env.GITHUB_OUTPUT, "browser_required=" + s.browserRequired + "\n");'
       - name: Plan independent evidence workers
         id: plan
         run: |
@@ -83,15 +96,23 @@ jobs:
       max-parallel: 4
       matrix: ${{ fromJSON(needs.pde-plan.outputs.matrix) }}
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install reviewed browser
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Verify assigned numerical and print evidence
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: timeout 1080 node tools/pde-ci.js ${{ matrix.id }}
 
   # Keep the required check's original name. A skipped, cancelled or failed worker must fail it.
@@ -105,6 +126,7 @@ jobs:
       - name: Require every evidence worker to pass
         env:
           PLAN_RESULT: ${{ needs.pde-plan.result }}
+          BROWSER_REQUIRED: ${{ needs.pde-plan.outputs.browser_required }}
           WORKERS_RESULT: ${{ needs.pde-workers.result }}
         run: |
           timeout 30 bash -c '
@@ -112,12 +134,17 @@ jobs:
               echo "PDE verification incomplete: plan=$PLAN_RESULT workers=$WORKERS_RESULT"
               exit 1
             fi
-            echo "All PDE verification workers passed."
+            if [[ "$BROWSER_REQUIRED" == false ]]; then
+              echo "Documentation-only PR: PDE browser evidence is not applicable; coverage planning passed."
+            else
+              echo "All PDE verification workers passed."
+            fi
           '
 
   lint:
     name: structure
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -125,8 +152,7 @@ jobs:
           node-version: '22'
       - name: Generated build and scientific coverage
         run: |
-          node tools/maintenance-check.js
-          node tools/verify-check.js
+          npm test
           node tools/maxwell-search-check.js
           node tools/maxwell-robust.js --check
           node tools/molecular-memory.js --controls
@@ -152,7 +178,6 @@ jobs:
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
           node tools/three-vortex-custom-check.js
-          npm test
           npm run test:validator
       - name: Structural checks
         run: node tools/lint.js
@@ -164,33 +189,46 @@ jobs:
   chrome:
     name: shell chrome
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 15
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Cahn-Hilliard GPU numerical benchmark
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
           node tools/pde-science.js
           node tools/pde-convergence.js
           node tools/pde-stability.js
       - name: Reaction-diffusion family GPU benchmarks
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/rdx-science.js
       - name: Reuleaux geometry and actual print preservation
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/reuleaux-science.js
       - name: PDE print exports preserve numerical state
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/pde-print-state.js
       - name: Seed box, hash, shortcuts, dock, formula chooser
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
           node tools/ui.js
           node tools/formula-chooser-check.js
       - name: Folder loading, recipes, witness and recovery
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
           node tools/folder-browser.js
           node tools/engine-api-check.js
@@ -200,27 +238,38 @@ jobs:
           node tools/direct-gravity-browser.js
           node tools/bec-preview-check.js
       - name: Provenance in every export, research data and the status badge
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/provenance-check.js
 
   volunteer-ui:
     name: volunteer and navigation (${{ matrix.browser }})
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 12
     strategy:
       fail-fast: false
       matrix:
         browser: [chromium, webkit]
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install browser engine
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2 axe-core@4.10.3
+          # The validator checks chromium.executablePath() before starting witness jobs.
+          # Keep the full binary here even though the browser itself runs headlessly.
           npx playwright install --with-deps ${{ matrix.browser }}
       - name: Navigation and local app lifecycle
+        if: needs.pde-plan.outputs.browser_required != 'false'
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
@@ -228,10 +277,10 @@ jobs:
           node tools/print-smoothing-browser.js
           node tools/validator-ui-check.js
       - name: Validator usability and accessibility
-        if: matrix.browser == 'chromium'
+        if: needs.pde-plan.outputs.browser_required != 'false' && (matrix.browser == 'chromium')
         run: node tools/validator-ux-check.js
       - name: Witness corpus and deliberate misses
-        if: matrix.browser == 'chromium'
+        if: needs.pde-plan.outputs.browser_required != 'false' && (matrix.browser == 'chromium')
         run: |
           node tools/harvest-browser-check.js
           node tools/validator-process-check.js
@@ -239,71 +288,103 @@ jobs:
   art:
     name: art modes (hunt, deep render, evolve)
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install the validator's browser
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps --only-shell chromium
       # Small grids on the software renderer: verified step counts, the engine's own hash and print path,
       # repeatable metrics on one renderer, resume, refusals, the flat gate and tab eligibility.
       - name: Art modes end to end
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/art-check.js
 
   complete-reviews:
     name: completed numerical and print reviews
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install reviewed browser
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Independent complete fields, trajectories and actual exports
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/verify.js --print three-vortex-bound parallelogram-lock quincunx-lock double-triangle-bound cgl vortex hopf apollonian weierstrass rogue soliton breather gyroid devil surfaces peakon neural-mass phyllotaxis ust lump fput
 
   wave-science:
     name: wave science
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Numerical benchmarks and shared print-state checks
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/verify.js --print schrodinger convection
 
   particle-field-science:
     name: particle and field science
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Independent benchmarks and print-state checks
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
           node tools/verify.js --print maxwell molecular
           node tools/volume-wave-science.js
@@ -312,26 +393,34 @@ jobs:
   recipes:
     name: recipe compatibility
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       # Every `legacy:` declaration in studio.html becomes five assertions, so a default that moves
       # without declaring what it used to be fails here rather than silently rewriting old plates.
       - name: Older recipes still reprint
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/recipe.js
 
   plates:
     name: plates (${{ matrix.id }})
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -342,15 +431,23 @@ jobs:
         # identity plate whose check must fail off Gröbli's L=0 circle.
         id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, three-vortex-bound, maxwell, molecular, tennis]
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Plate check
+        if: needs.pde-plan.outputs.browser_required != 'false'
         # 25 s rather than 12: the default grids are 512 on the field families now, and on a software
         # renderer a 12 s budget judged every preset at about a quarter of its warm-up.
         run: node tools/check.js ${{ matrix.id }} 25000
@@ -358,7 +455,7 @@ jobs:
   prints:
     name: print export (${{ matrix.id }})
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, pde-plan]
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -368,15 +465,23 @@ jobs:
         # One raster technique, one vector technique, and the identity plate (SVG spirals).
         id: [cahn, tilings, three-vortex-bound, maxwell, molecular, tennis]
     steps:
+      - name: Documentation-only change
+        if: needs.pde-plan.outputs.browser_required == 'false'
+        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
+        if: needs.pde-plan.outputs.browser_required != 'false'
         with:
           node-version: '22'
       - name: Install Chromium
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Export at 8 in, 300 ppi
+        if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/export.js ${{ matrix.id }} 8 300 8000 240000
 
   native-science:
@@ -395,6 +500,7 @@ jobs:
   print-production:
     name: print production
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
