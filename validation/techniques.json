@@ -702,17 +702,30 @@
     "sourceSha256": "2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f",
     "reference": "Linus Pauling, J. Am. Chem. Soc. 57, 2680 (1935), counted the residual entropy of ice. Castelnovo, Moessner and Sondhi, Nature 451, 42 (2008), showed that the same two-in/two-out rule on a pyrochlore magnet fractionalises a dipole into a pair of magnetic monopoles. The plate is square ice, the 2-D vertex model, not a 3-D crystal of Dy₂Ti₂O₇.",
     "equation": "E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Square ice on the torus, the six-vertex model. Not pyrochlore spin ice and not a three-dimensional crystal.",
+      "Exact counts for n by n tori, n = 1 through 6, are in validation/SPINICE.md. W_L is still above Lieb's (4/3)^(3/2) at n = 6. These lattices have not reached the thermodynamic limit. n = 1 is the degenerate one-vertex torus.",
+      "The chi-squared test that passes is an independent plaquette and winding-loop flip on the 2 by 2 and 3 by 3 tori. It is not the plate's Monte Carlo. The plate's single-arrow Metropolis was executed from the source and fails that predicate at the default J, T and h.",
+      "The ice seed is ice on even by even tori, including the default 96 by 96. On the 80 by 45 sheet the UI can build, one seam row is off the ice rule.",
+      "No print-state audit is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "The plate's update is finite-temperature single-arrow Metropolis, not a uniform draw from the ice manifold. A full label needs that update, or a claim that matches it, to pass, plus print evidence.",
+      "The odd-period ice seed still breaks a seam row. The status-line monopole weight is not a tested density."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/spinice-science.js",
+        "scope": "Exact ice-rule counts on n by n tori for n = 1 through 6, compared with brute force for n <= 3, with the plate charges() census for n <= 3, and with OEIS A054759. W_L against Lieb's (4/3)^(3/2) and Pauling's 3/2. An independent loop flip on the 2 by 2 and 3 by 3 tori, plus the plate sweep extracted from src/modules/spinice.js in a vm and run on the enumerated 2 by 2 torus at the module defaults.",
+        "criteria": "Integer counts equal the brute force, the plate census and OEIS A054759. Each W_L differs from Lieb by more than 0.001, and from n = 2 to n = 6 it moves closer. The loop flip passes the declared chi-squared predicate (independent-draw variance 2(k-1), bin variance n(1/k)(1-1/k), |z| <= 4, bin |z| <= 5) at the declared burn, gap and sample size. A biased accept, an arrow flip that leaves the ice rule, and the unthinned fair chain fail that predicate. The plate sweep fails it, with a forced accept and reject checked against exp(-J/T).",
+        "limitations": "Finite tori only. The passing sampler is not the plate. The plate leaves the ice rule. The multinomial variance assumes independent draws; the gap-1 control shows the unthinned chain fails that reading. No print audit, no UI-sized grid, no claim that W_L has reached Lieb.",
+        "benchmark": "Lieb, Phys. Rev. Lett. 18, 692 (1967), W = (4/3)^(3/2); Pauling's (3/2)^N count on the square lattice; OEIS A054759; the plate's own charges() on every orientation of the 1, 2 and 3 tori; exact multinomial variance of the uniform frequencies.",
+        "failureControl": "Skipping a vertex, or dropping the horizontal wrap, changes the count and fails the OEIS comparison. A biased loop flip and an ice-breaking arrow flip fail the uniform-ice predicate. The plate's Metropolis fails that same predicate.",
+        "command": "node tools/spinice-science.js --write",
+        "results": "validation/results/spinice-science.json"
+      }
+    ],
     "print": []
   },
   {
