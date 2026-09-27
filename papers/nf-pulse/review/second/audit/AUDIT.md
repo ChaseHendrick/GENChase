@@ -1,6 +1,6 @@
 # Adversarial code audit of the nf-pulse computer-assisted proof
 
-Date: 2026-09-26. Scope: `papers/nf-pulse/code/` at commit 27aeb7b (lohner.py, prove_pulse.py, block.py,
+Date: 2026-09-26. Scope: `code/` at commit 27aeb7b (lohner.py, prove_pulse.py, block.py,
 block_check_iv.py, manifold.py, certify_rest.py, nfcore.py, run_all.sh and the tests). Environment:
 python-flint 0.9.0, mpmath 1.3.0, 4 cores; `sh code/run_all.sh` on an unmodified copy passes all 15 checks in
 7.3 s. The repository copy was never run or edited; every run below is on a copy under `/tmp/claude-0/nfmut/`.
@@ -9,7 +9,7 @@ Files in this folder:
 
 - `mutations.py`: the mutation catalogue (44 mutations, each an exact text substitution that must match exactly
   once, so no mutation can be a silent no-op).
-- `mutate.sh`: the driver. `sh mutate.sh [name ...]` copies `papers/nf-pulse` to `/tmp/claude-0/nfmut/<name>/`,
+- `mutate.sh`: the driver. `sh mutate.sh [name ...]` copies the paper's folder to `/tmp/claude-0/nfmut/<name>/`,
   applies the mutation, runs that copy's `run_all.sh` and prints which checks fail.
 - `mutation_results.txt`: the raw output of the full sweep (5 min 44 s for 42 mutations, plus 2 added later).
 

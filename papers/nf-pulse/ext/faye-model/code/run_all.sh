@@ -6,6 +6,11 @@
 # usage: sh run_all.sh [eps]        (eps as a fraction, default 1/20; the settings are in config.py)
 # Full output goes to data/logs/ (not tracked); one line per check; exit status 1 if any check fails.
 cd "$(dirname "$0")"
+# As in code/run_all.sh of this paper's folder: refuse python -O, which would remove the assertions that some gates
+# of these programs still use, and clear every NF_* variable, which would change parameters, blocks, precision,
+# order or tolerances of the programs.
+if [ -n "${PYTHONOPTIMIZE:-}" ]; then echo "FAIL  PYTHONOPTIMIZE is set; unset it and rerun"; exit 1; fi
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 EPS=${1:-1/20}
 export FAYE_EPS=$EPS
 TAG=$(echo "$EPS" | tr '/' '_')

@@ -1,0 +1,16 @@
+system: coupled double pendulum, g = [1, 1], E = [0, 0], f = P^1 shifted by 1*2pi in t2
+stage 1 (Krawczyk): B = ([-1.0000000000000001e-09, 1.0000000000000001e-09], [-1.462373093479858, -1.4623730914798578])
+  K = ([-1.7898326464478453e-12, 1.7898490340875881e-12], [-1.4623730924803009, -1.4623730924794167])  K in int B: yes
+  G(K) in B (so the fixed point is G-symmetric, t2 = 0): yes
+  over B: trace Df in [-3.8086824279981935, -3.8086303088277877], det Df in [0.99991236126472849, 1.0000876387969653], return time of f in [2.9534890074349835, 2.9534890133549041]
+stage 2: N0 = p0 + A([-2.5e-05,2.5e-05] x [-4e-08,4e-08]), alpha = 0.001, grid 1000 x 1, p local = ([-1.6857632146822439e-12, 1.688788799120556e-12], [-1.6887802253569673e-12, 1.6857717884458407e-12])
+  min over N0 of |(M(1,t))_x| = 3.52385 (mu), sign -, max |(M(1,t))_y|/|(M(1,t))_x| = 0.000364323 (< alpha = 0.001), failures 0
+stage 3: R = [-1.887e-05, -1.8838e-05] x [-1.8871690469014162e-08, 1.887168746057725e-08] (local), k = 9 (f~^k = P^9)
+  image of edge x = x1: t2 in [0.0015190638462811989, 0.0015219298770077216]
+  image of edge x = x2: t2 in [-0.0031180046172636366, -0.0031151507324906902]
+  target line t2 = 0*pi: edges on opposite sides: yes
+    piece x in [-1.88595e-05, -1.8859e-05] (depth 1): image t2 [-8.7665214564935923e-05, 1.1890305614770114e-05], p2 [0.82214597785324139, 0.82225154617706087], dp2/dt2 in [-6.2137662157480547, -0.52378700511944554]
+    piece x in [-1.886e-05, -1.88595e-05] (depth 1): image t2 [-1.5214982674649491e-05, 8.4378674984009194e-05], p2 [0.82204913246569633, 0.82215472451103555], dp2/dt2 in [-6.2088752995896872, -0.52387590940843543]
+  pieces checked 34, pieces whose image may meet t2 = m*pi: 2, unresolved 0
+  on those pieces the image tangent slope dp2/dt2 lies in [-6.21377, -0.523787] (excludes 0 and infinity)
+RESULT: ALL CHECKS PASSED

@@ -176,10 +176,10 @@ edges nor fine texture. A Penrose tiling is mostly the flat insides of tiles, so
 measure calls it blurry while its edges are perfectly hard; this one does not.
 
 The last full sweep, over all 130 tabs at 8 in and 300 ppi on 2026-09-24, is in
-[docs/print-audit-2026-09-24/](docs/print-audit-2026-09-24/). Its counts are not yet authoritative:
-`sharp.js` samples only even pixel offsets, so a plate enlarged by nearest-neighbour blocks of even size
-never shows a block edge and scores as featureless. Fix the sampling, re-run `sh tools/sharpall.sh`
-(roughly an hour on a software renderer) and record the counts here. The verdict requires some hard edge
+[docs/print-audit-2026-09-24/](docs/print-audit-2026-09-24/). Sampling now includes every pixel.
+The 2026-09-24 counts in docs/print-audit-2026-09-24/ were taken with the even-offset sampler and
+are not yet replaced. A rerun of `sh tools/sharpall.sh` (roughly an hour on a software renderer)
+is still required before those counts are authoritative. The verdict requires some hard edge
 before the acuity term can pass a plate, because a plate with no hard edge anywhere reads as blurry
 whatever its acuity. Soft field plates are arithmetic rather than a bug: a 192-cell
 field across 2,400 print pixels is twelve pixels per cell and there is no detail under that. Four things

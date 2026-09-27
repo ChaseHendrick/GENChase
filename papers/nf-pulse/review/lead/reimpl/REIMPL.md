@@ -1,8 +1,8 @@
 # Independent reimplementation: the nf-pulse speed claim
 
 Reviewer: an independent reimplementer (Claude, working as a sub-agent), 2026-09-26.
-Rule followed: nothing in `papers/nf-pulse/code/` or `papers/nf-pulse/data/` was read, imported or
-copied. The only project file read was `papers/nf-pulse/README.md`, for the statement of the claim.
+Rule followed: nothing in `code/` or `data/` was read, imported or
+copied. The only project file read was `README.md`, for the statement of the claim.
 Everything below was derived from the model equations and written from scratch.
 
 ## Verdicts in one table

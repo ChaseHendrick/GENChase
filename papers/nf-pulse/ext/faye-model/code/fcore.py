@@ -35,6 +35,10 @@ The polynomial embedding used for Taylor arithmetic adds Y = S(u):  Y' = lam Y (
 """
 import os
 from flint import arb, fmpq, ctx
+# Refuse python -O (or PYTHONOPTIMIZE): it removes assert statements, and some programs of this folder still use
+# assertions as gates of a proof.  Without -O this test does nothing.
+if not __debug__:
+    raise SystemExit('refusing to run under python -O (PYTHONOPTIMIZE): assertions are gates of the proofs here')
 
 # ---------------------------------------------------------------- parameters (exact rationals)
 _LAM = fmpq(20)

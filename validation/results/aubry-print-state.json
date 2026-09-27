@@ -1,0 +1,59 @@
+{
+  "pass": true,
+  "source": "src/modules/aubry.js",
+  "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
+  "harnessSha256": "db3cd90ae4627983c0600eeda377c9537e6fb542ebdcab6ed46e83a7b81ffd70",
+  "command": "node tools/aubry-print-state.js --write",
+  "scope": "Actual aubry exportPNG at the default recipe (grid 128, aspect 4:5, lambda 2.4, 140 relax steps, intensity view, exposure 1.05), longest edge 2400 (1920x2400). Exact Float32 field words, IPR metric, lambda extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+  "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and a blob over 1000 bytes; luminance spread over 12/255; wrong dimensions and a deliberate post-export field and metric mutation rejected.",
+  "rows": [
+    {
+      "fixture": "default",
+      "cells": [
+        128,
+        160
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "ipr": 0.16929971736639468,
+      "lambda": 2.4,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 85630,
+        "ipr": 0.16929971736639468,
+        "lambda": 2.4,
+        "cells": [
+          128,
+          160
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 20480,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 206.075,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions only. Does not establish accuracy of the inverse participation ratio, the Lyapunov exponent, calibrated color, or coverage of every control, aspect or hardware. The plate is a fixed-step imaginary-time relaxation; that IPR is not the transfer-matrix measurement in tools/aubry-science.js."
+}

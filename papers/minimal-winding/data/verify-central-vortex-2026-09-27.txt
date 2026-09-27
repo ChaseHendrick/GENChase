@@ -117,5 +117,32 @@ OK    n = 2: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is ne
 OK    n = 5: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is negative   [lowest coefficients [0, -20*(kk - 2), -110*(kk - 2)]]
 OK    without zero angular impulse (|zeta|^2 = y != x) the quotients differ by a term n(x - y)/(y(v - 1)^2) that depends on theta
 OK    Biot-Savart, n = 3, Gamma0 = 2.5: the quotients agree (4.65e-31) but differ with |zeta|^2 = 1.1x (0.0775) or Gamma0 + 1e-3 (5.31e-5)
+8. The examples with n = 2 after Proposition 3 (release 2.2.0), and the growth of F_n
+OK    n = 2, Gamma0 = 3/2: x = 2 is the root > 1 of eq:circ0; a = 21/4, b = 3, D = 19/4
+OK    n = 2, Gamma0 = 1/2: x = 3 is the root > 1 of eq:circ0; a = 6, b = 2, D = 6
+OK    Gamma0 = 3/2: coth t = 3, cosh 2t = 5/4, sinh 2t = 3/4, b/a = 4/7, and (a - b cos 2theta)/(4 sin 2theta) = (3/16)(7 - 4 cos 2theta)/sin 2theta
+OK    Gamma0 = -3/4 (Gotoda, Fig. 3(b)): x = 1/2 is the root in (0, 1) of eq:circ0, and the ring swap (x, Gamma0) -> (1/x, -Gamma0/x) gives (2, 3/2)
+OK    Gamma0 = 1/2: A = 2 and S = 2 - 2/(1 - 3e^{2i theta}) = 6/(3 - e^{-2i theta}); P = (3 - cos 2theta)/(2 sin 2theta)
+OK    Gotoda Fig. 3(b), Biot-Savart at 50 digits, five angles in (0, pi/2): self-similar with the center at rest, collapsing (Re kappa < 0)   [max residual 3.65e-51]
+OK       omega_0 = Im kappa < 0 in this orientation, and |omega_0| t_c = P = (3/16)(7 - 4 cos 2theta)/sin 2theta   [max difference 1.07e-50]
+OK       at cos 2theta = 4/7, P = 3 sqrt(33)/16 = 1.0771054962   [2.67e-51]
+OK       negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands
+OK    Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at six angles, two of them (2.0 and 5.0) expanding   [max relative difference 2.79e-51; 2 expanding]
+OK       and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1   [max relative difference 4.0e-51]
+OK    CWW (4.6), third position read as -sqrt3/2 - 1 + i/2, turned by pi/6: the vortices of circulation (2 sqrt3 + 5)pi at +-1, those of circulation (sqrt3 - 4)pi at +-sqrt(2 + sqrt3) e^{i pi/12}: Proposition 2 with n = 2, theta = pi/12 (exact)
+OK       circulations: (4 - sqrt3)pi (x_2, -1) with x_2 = 2 + sqrt3, a positive factor; P = (4 sqrt3 - sqrt3 cos(pi/6))/(4 sin(pi/6)) = 2 sqrt3 - 3/4 by eq:Pring (exact)
+OK       Biot-Savart at 50 digits: z_c = 0, self-similar, collapsing, P = 2 sqrt3 - 3/4 = 2.71410161514   [spread 7.26e-52]
+OK       their map V, Eq. (4.4), vanishes there with their printed Omega = 2 sqrt3 - 3/4 - i/2, which is i conj(kappa)   [residual 5.98e-51]
+OK       negative control: with the third position as printed (v1 and Math. Ann.), z_c != 0 and the motion is not self-similar   [z_c = (0.0 + 0.18301j), spread 0.21]
+OK    cosh(eta_n) = n/(n-1) gives sinh(eta_n/2)^2 = (x_n + 1/x_n - 2)/4 = 1/(2(n-1))
+OK    (n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})   [series 529*sqrt(2)*h**3/960 + 29*sqrt(2)*h/24]
+OK    ((n - 1)/n) exp(E_n - sqrt(n/2)) = 1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2}), since E_n has no term in 1/n   [series 265*h**2/576 + 29*sqrt(2)*h/24 + 1]
+      n = ['10', '100', '1000', '10000', '100000', '1000000', '100000000', '1000000000000']
+      n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))): ['0.3739762', '0.4526772', '0.4572068', '0.4591136', '0.4597622', '0.4599718', '0.4600597', '0.4600693'];  265/576 = 0.4600694444
+      n^{3/2} (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n)) - 265/(576 n)): ['-0.27225', '-0.073922', '-0.090525', '-0.095589', '-0.097156', '-0.097648', '-0.097852', '-0.097875']
+OK    F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2})): n^{3/2} times the remainder lies in [-0.28, -0.07] for n = 10^k, k = 1..6, and n = 10^8, 10^12 (50 digits)   [range [-0.2723, -0.07392]]
+OK       so n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))) tends to 265/576: it increases, from 0.374 at n = 10 to 0.45997 at n = 10^6, and differs from 265/576 by less than 0.28/sqrt(n)   [at n = 10^12: 0.4600693466]
+OK       the ratio F_n/(e^{sqrt(n/2)}/4) is 1.577..., 1.175..., 1.054... (truncated) at n = 10, 100, 1000 and tends to 1   [['1.5777807', '1.1754109', '1.0544955', '1.0171343', '1.0054084', '1.0017093', '1.0001709', '1.0000017']]
+OK       negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)   [['0.1876', '-0.1366', '-1.406', '-5.433', '-18.17', '-58.47', '-588.8', '-5.893e+4']]
 
 all checks passed

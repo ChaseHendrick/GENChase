@@ -1,49 +1,88 @@
 Hodgkin-Huxley 1952: equilibria and Hopf bifurcations, certified in Arb at 256 bits (python-flint)
+  python-flint 0.9.0 on FLINT 3.6.0; Python 3.11.15; mpmath 1.3.0 and SymPy 1.14.0 for the non-rigorous self-tests and cross-checks
+  check kinds: proof (a step of a proof), consistency (an identity proved exactly in the manuscript, checked to
+  enclose 0), control (a negative control), selftest (a known answer), crosscheck (a non-rigorous recomputation).
+  Bounds printed as [lo, hi], or after <= or >=, are rounded outward from their balls; [m +/- r] is an Arb ball.
 
 0. Self-tests of the series arithmetic and of Psi against mpmath (non-rigorous guards against coding errors)
-OK    Psi and its first three Taylor coefficients agree with mpmath at 10 points, both branches   [max difference 4.35e-40]
-OK    negative control: the closed form of Psi refuses a ball that contains 0
-OK    Jss and dJss/du from the series agree with mpmath at u = 7.3   [differences 1.3e-39, 3.4e-40]
-OK    identity a4 = (alpha_m + beta_m)(alpha_n + beta_n)(alpha_h + beta_h) dJss/du holds (encloses 0)
+OK    [selftest] Psi and its first three Taylor coefficients agree with mpmath at 10 points, both branches   [max difference 4.35e-40]
+OK    [control] negative control: the closed form of Psi refuses a ball that contains 0
+OK    [selftest] Jss and dJss/du from the series agree with mpmath at u = 7.3   [differences 1.3e-39, 3.4e-40]
+OK    [consistency] identity a4 = (alpha_m + beta_m)(alpha_n + beta_n)(alpha_h + beta_h) dJss/du holds (encloses 0)
+OK    [selftest] the zero-current leak potential E_l* (ionic current 0 at u = 0) computed with this model (Psi by its Bernoulli series) overlaps the one computed with hh_arb.py (Psi by 1F1), an independent implementation   [E_l* in [10.5989209693916785221988785294, 10.5989209693916785221988785295]]
+   E_l* = [10.59892096939167852219887852940657980278 +/- 4.80e-39]; the resting current at u = 0 with E_l = 10.613 is 0.3 (E_l* - 10.613) in [-0.004223709183, -0.004223709182] uA/cm^2
 
 A. Exactly one equilibrium for every J in [0, J_max]
-OK    dJss/du > 0 on every piece of a subdivision of [-12, 115] (Jss strictly increasing there)   [74 pieces]
-OK    for u < -12: u - 115 < 0, u + 12 < 0 and u - E_l < 0 for every E_l in the ball (so Jss(u) < 0)
-OK    Jss(u) >= 36 n_inf(115)^4 * 127 > J_max = 200 for every u >= 115   [bound 4089.4815]
-OK    Jss(-12) < 0 <= J and Jss(115) > J_max, so every J in [0, J_max] has an equilibrium in (-12, 115)   [Jss(-12) = -6.80]
+OK    [proof] dJss/du > 0 on every piece of a subdivision of [-12, 115] (Jss strictly increasing there)   [74 pieces]
+OK    [proof] for u < -12: u - 115 < 0, u + 12 < 0 and u - E_l < 0 for every E_l in the ball (so Jss(u) < 0)
+OK    [proof] Jss(u) >= 36 n_inf(115)^4 * 127 > J_max = 200 for every u >= 115   [36 n_inf(115)^4 * 127 >= 4089.4815]
+OK    [proof] Jss(-12) < 0 <= J and Jss(115) > J_max, so every J in [0, J_max] has an equilibrium in (-12, 115)   [Jss(-12) <= -6.7999]
 
 B. Stability along the branch: Routh-Hurwitz signs on [-12, 115]
-OK    a1, a3, a4 > 0 on every piece, the sign of D3 is decided except on tiny pieces, and D2 > 0 where D3 > 0   [1043 pieces, 52 undecided tiny pieces]
-OK    the undecided pieces form exactly two clusters   [[5.345749617, 5.345961571], [21.941817522, 21.941999197]]
-OK    cluster 1: dD3/du excludes 0 on it and D3 changes sign across it, so it holds exactly one zero u_H1, a simple one   [dD3/du in -4.1]
-OK       interval Newton encloses u_H1 in a ball of radius < 1e-60   [u_H1 in [5.345856397004594535603253257542804921024 +/- 4.50e-42]]
-OK    cluster 2: dD3/du excludes 0 on it and D3 changes sign across it, so it holds exactly one zero u_H2, a simple one   [dD3/du in 1.76e+2]
-OK       interval Newton encloses u_H2 in a ball of radius < 1e-60   [u_H2 in [21.94190798701617370238010973621278942789 +/- 2.52e-39]]
-OK    D3 > 0 at u = -12 and u = 115, and D3 < 0 between the two zeros
-OK    at the midpoint of (u_H1, u_H2) the Routh first column is regular and has exactly two sign changes, so the equilibrium has exactly two eigenvalues in Re > 0 on the whole interval   [signs [1, 1, -1, 1, 1]]
+OK    [proof] a1, a3, a4 > 0 on every piece, the sign of D3 is decided except on tiny pieces, and D2 > 0 where D3 > 0   [1043 pieces, 52 undecided tiny pieces]
+OK    [proof] the undecided pieces form exactly two clusters   [[5.345749617, 5.345961571], [21.941817522, 21.941999197]]
+OK    [proof] cluster 1: dD3/du excludes 0 on it and D3 changes sign across it, so it holds exactly one zero u_H1, a simple one   [dD3/du in [-4.121, -4.109] on the cluster]
+OK    [proof]    interval Newton encloses u_H1 in a ball of radius < 1e-60   [u_H1 in [5.3458563970045945356032532575428049210239, 5.3458563970045945356032532575428049210240], radius <= 2.28e-73]
+OK    [proof] cluster 2: dD3/du excludes 0 on it and D3 changes sign across it, so it holds exactly one zero u_H2, a simple one   [dD3/du in [176.1, 176.6] on the cluster]
+OK    [proof]    interval Newton encloses u_H2 in a ball of radius < 1e-60   [u_H2 in [21.9419079870161737023801097362127894278925, 21.9419079870161737023801097362127894278926], radius <= 3.69e-73]
+OK    [proof] D3 > 0 at u = -12 and u = 115, and D3 < 0 between the two zeros
+OK    [consistency] at the midpoint of (u_H1, u_H2) the Routh first column is regular and has exactly two sign changes, so the equilibrium has two eigenvalues in Re > 0 there (the manuscript proves the count on the whole interval from a1 > 0, a4 > 0 and D3 < 0)   [signs [1, 1, -1, 1, 1]]
    Where D3 > 0: all Hurwitz determinants positive, so every eigenvalue has Re < 0. No eigenvalue reaches the
    imaginary axis except at u_H1 and u_H2 (a1, a3 > 0; a4 > 0 excludes 0).
 
 C. The two Hopf points: crossing speed and first Lyapunov coefficient
-   H1: u = 5.34585639700459453560325325754
-       J_H1 for E_l = 10.613 (printed): [9.7754379953931263325 +/- 1.37e-20]
-       J_H1 for E_l = the ball [10.59, 10.62]: [9.78 +/- 6.67e-3]
-       omega_H1 = 0.58623381313029253588 (period 2 pi/omega = 10.7178828079 ms)
-OK    H1: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
-OK    H1: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in 0.050190869, dJss/du in 2.6712817]
-OK    H1: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
-OK    H1: the first Lyapunov coefficient is enclosed away from 0: l1 > 0, so the Hopf bifurcation is subcritical   [l1 in [0.0147936481310 +/- 8.08e-15]]
-OK    H1: independent cross-check (SymPy derivatives, mpmath eigenvectors, explicit tensors) agrees   [mpmath l1 = 0.0147936481310081, relative difference 3.23e-40]
-   H2: u = 21.9419079870161737023801097362
-       J_H2 for E_l = 10.613 (printed): [154.52243366580800086 +/- 2.57e-18]
-       J_H2 for E_l = the ball [10.59, 10.62]: [154.52 +/- 9.34e-3]
-       omega_H2 = 1.0629218067603364428 (period 2 pi/omega = 5.91123944134 ms)
-OK    H2: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
-OK    H2: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in -0.082408673, dJss/du in 18.344513]
-OK    H2: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
-OK    H2: the first Lyapunov coefficient is enclosed away from 0: l1 < 0, so the Hopf bifurcation is supercritical   [l1 in [-0.00472850269507 +/- 3.99e-15]]
-OK    H2: independent cross-check (SymPy derivatives, mpmath eigenvectors, explicit tensors) agrees   [mpmath l1 = -0.00472850269507399, relative difference 6.24e-41]
+   C0. The l1 routine on systems whose first Lyapunov coefficient is known in closed form
+OK    [selftest] l1 routine on the planar, omega = 1 test system reproduces the known l1   [known l1 in [-0.160416666667, -0.160416666666], routine in [-0.160416666667, -0.160416666666]]
+OK    [selftest] l1 routine on the planar, omega = 3/2 test system reproduces the known l1   [known l1 in [0.125573192239, 0.125573192240], routine in [0.125573192239, 0.125573192240]]
+OK    [selftest] l1 routine on the coupled, omega = 1 test system reproduces the known l1   [known l1 in [0.143137254901, 0.143137254902], routine in [0.143137254901, 0.143137254902]]
+OK    [selftest] l1 routine on the coupled, omega = 3/2 test system reproduces the known l1   [known l1 in [-0.101501501502, -0.101501501501], routine in [-0.101501501502, -0.101501501501]]
+OK    [selftest] the four test systems have l1 of both signs
+OK    [control] negative control: the l1 routine with the middle term with +2 instead of -2 misses the known l1 of the coupled test system   [mutated routine in [-0.19019608, -0.19019607]]
+OK    [control] negative control: the l1 routine with (-A)^-1 in place of (2 i omega - A)^-1 misses the known l1 of the coupled test system   [mutated routine in [2.9666666, 2.9666667]]
 
-OK    negative control: the Newton image of a box 1e-6 away from u_H1 does not lie in that box
+   H1: u_H1 in [5.345856397004594535603253257542, 5.345856397004594535603253257543]
+       J_H1 for E_l = 10.613 (Hodgkin and Huxley): [9.7754379953931263, 9.7754379953931264]   (Arb ball [9.775437995393126332514 +/- 3.87e-22])
+       J_H1 for E_l = E_l* (zero resting current): [9.7796617045756227, 9.7796617045756228]   (Arb ball [9.779661704575622775854 +/- 5.05e-23])
+       J_H1 for E_l = 10.599 (Guckenheimer and Oliva): [9.7796379953931263, 9.7796379953931264]   (Arb ball [9.779637995393126332514 +/- 3.87e-22])
+       J_H1 for E_l = 10.59: [9.7823379953931263, 9.7823379953931264]   (Arb ball [9.782337995393126332514 +/- 3.87e-22])
+       J_H1 for E_l = 10.62: [9.7733379953931263, 9.7733379953931264]   (Arb ball [9.773337995393126332514 +/- 3.87e-22])
+       J_H1(E_l) = J_H1(10.613) + 0.3 (10.613 - E_l) exactly; over E_l in [10.59, 10.62]: J_H1 in [9.773337995, 9.782337996]
+       omega_H1 in [0.586233813130292, 0.586233813130293], period 2 pi/omega in [10.717882807935, 10.717882807936] ms
+OK    [consistency] H1: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
+OK    [proof] H1: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in [0.05019086897, 0.05019086898], dJss/du in [2.671281689, 2.671281690], Re d lambda/dJ in [0.01878905889, 0.01878905890]]
+OK    [crosscheck] H1: independent cross-check of the transversality (central differences of the eigenvalue near i omega of the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du   [finite differences: Re d lambda/du = 0.0501908689738, dJss/du = 2.67128168911; relative differences 5.9e-27, 2.8e-27]
+OK    [consistency] H1: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
+OK    [proof] H1: the first Lyapunov coefficient is enclosed away from 0: l1 > 0, so the Hopf bifurcation is subcritical   [l1 in [0.01479364813100, 0.01479364813101] (with <q, q> = 1; Arb ball [0.014793648131008077780 +/- 4.25e-22])]
+       |q_u| in [0.9999042898, 0.9999042899] (u-component of q with <q, q> = 1); 16 |q_u|^2 Re(d lambda/dJ)/(omega l1) in [34.657379, 34.657380]
+       (the normal-form prediction of (peak-to-peak u amplitude)^2 / |J - J_H1| as J -> J_H1; used only in the
+       numerical section of the manuscript)
+OK    [crosscheck] H1: independent cross-check (SymPy derivatives, mpmath eigenvectors, explicit tensors) agrees   [mpmath l1 = 0.0147936481310081, relative difference 3.23e-40]
+   H2: u_H2 in [21.941907987016173702380109736212, 21.941907987016173702380109736213]
+       J_H2 for E_l = 10.613 (Hodgkin and Huxley): [154.5224336658080008, 154.5224336658080009]   (Arb ball [154.5224336658080008626 +/- 3.77e-20])
+       J_H2 for E_l = E_l* (zero resting current): [154.5266573749904973, 154.5266573749904974]   (Arb ball [154.5266573749904973059 +/- 2.68e-21])
+       J_H2 for E_l = 10.599 (Guckenheimer and Oliva): [154.5266336658080008, 154.5266336658080009]   (Arb ball [154.5266336658080008626 +/- 3.77e-20])
+       J_H2 for E_l = 10.59: [154.5293336658080008, 154.5293336658080009]   (Arb ball [154.5293336658080008626 +/- 3.77e-20])
+       J_H2 for E_l = 10.62: [154.5203336658080008, 154.5203336658080009]   (Arb ball [154.5203336658080008626 +/- 3.77e-20])
+       J_H2(E_l) = J_H2(10.613) + 0.3 (10.613 - E_l) exactly; over E_l in [10.59, 10.62]: J_H2 in [154.520333665, 154.529333666]
+       omega_H2 in [1.062921806760336, 1.062921806760337], period 2 pi/omega in [5.911239441337, 5.911239441338] ms
+OK    [consistency] H2: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
+OK    [proof] H2: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in [-0.08240867285, -0.08240867284], dJss/du in [18.34451285, 18.34451286], Re d lambda/dJ in [-0.004492279162, -0.004492279161]]
+OK    [crosscheck] H2: independent cross-check of the transversality (central differences of the eigenvalue near i omega of the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du   [finite differences: Re d lambda/du = -0.0824086728404, dJss/du = 18.3445128591; relative differences 2.7e-27, 5.5e-28]
+OK    [consistency] H2: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
+OK    [proof] H2: the first Lyapunov coefficient is enclosed away from 0: l1 < 0, so the Hopf bifurcation is supercritical   [l1 in [-0.004728502695074, -0.004728502695073] (with <q, q> = 1; Arb ball [-0.0047285026950739886388 +/- 1.61e-23])]
+       |q_u| in [0.9997206845, 0.9997206846] (u-component of q with <q, q> = 1); 16 |q_u|^2 Re(d lambda/dJ)/(omega l1) in [14.292859, 14.292860]
+       (the normal-form prediction of (peak-to-peak u amplitude)^2 / |J - J_H2| as J -> J_H2; used only in the
+       numerical section of the manuscript)
+OK    [crosscheck] H2: independent cross-check (SymPy derivatives, mpmath eigenvectors, explicit tensors) agrees   [mpmath l1 = -0.00472850269507399, relative difference 6.24e-41]
 
-27 checks, 0 failed
+D. The current J = 8 of the bistability proof (certify_bistability.py)
+OK    [proof] J_H1 > 8 for every E_l in [10.59, 10.62], so by (A) and (B) the equilibrium at J = 8 is unique and asymptotically stable for every such E_l   [J_H1 >= 9.773337 on the ball]
+
+Negative controls of the Hopf-point checks
+OK    [control] negative control: the Newton image of a box 1e-6 away from u_H1 does not lie in that box
+OK    [control] negative control: at u = u_H1 + 1e-3 the factorization test a2 - omega^2 - a4/omega^2 (omega^2 = a3/a1) excludes 0, so it is not passed away from a Hopf point   [a2 - omega^2 - a4/omega^2 in [-0.0004982, -0.0004981]]
+
+OK    [proof] every decimal bound printed with outward rounding (99 of them) re-read as an exact rational lies on the correct side of the ball it stands for
+
+40 checks, 0 failed: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks
+run time 7.4 s

@@ -30,6 +30,48 @@ def section_set(d, sec, c, F, zbar, zrad, params, C1):
     return LSet.from_box(0.0, center, C, r0, C1=C1)
 
 
+def initial_set_covers(S, F, zbar, zrad, params):
+    """True if the set S that a run integrated contains the box zbar +- zrad (coordinates F) times the balls of
+    params, decided in exact rational arithmetic.
+
+    S = {xbar + C rho0 + B rho : rho0 in r0, rho in r} as built by section_set: the check requires rho = 0 (r = 0), an
+    exact centre xbar, and columns of C that are distinct unit vectors, so that S is exactly the product of the
+    intervals [xbar_j + lo(r0_k), xbar_j + hi(r0_k)], one per coordinate j = row of column k (and the point xbar_j in
+    the other coordinates); these end points are formed as exact rationals from the exact end points of the Arb balls,
+    with no rounding.  In each coordinate of F the interval must contain the requested box arb(z) + arb(0, r) (the box
+    of the Krawczyk and inclusion tests: r rounded up to Arb's radius format), and in each coordinate of params the
+    requested ball.  A run over a smaller box, or with a parameter ball replaced by its midpoint, is refused.  This
+    guards the statement 'the set Z x E is integrated' of the proofs against a slip at a call site.
+    """
+    from outward import _exact
+
+    def ends(b):                                            # the exact end points of the ball b = [m +- r]
+        m, r = _exact(b.mid()), _exact(b.rad())
+        return m - r, m + r
+    d = S.xbar.nrows()
+    for i in range(d):
+        if not (S.r[i, 0].mid() == 0 and S.r[i, 0].rad() == 0 and S.xbar[i, 0].rad() == 0):
+            return False
+    ncol = S.C.ncols()
+    rows = []
+    for k in range(ncol):
+        nz = [i for i in range(d) if not (S.C[i, k].mid() == 0 and S.C[i, k].rad() == 0)]
+        if len(nz) != 1 or not (S.C[nz[0], k].mid() == 1 and S.C[nz[0], k].rad() == 0):
+            return False
+        rows.append(nz[0])
+    if len(set(rows)) != len(rows):
+        return False
+    lo = [_exact(S.xbar[i, 0]) for i in range(d)]           # exact: the centre has radius 0
+    hi = list(lo)
+    for k, i in enumerate(rows):
+        a, b = ends(S.r0[k, 0])
+        lo[i], hi[i] = lo[i] + a, hi[i] + b
+    # the requested sets are the balls themselves (the box of the proof is the Arb ball arb(z) + arb(0, r)), so their
+    # exact end points are compared
+    want = [(f, arb(z) + arb(0, r) if r > 0 else arb(z)) for f, z, r in zip(F, zbar, zrad)] + list(params)
+    return all(lo[i] <= ends(w)[0] and ends(w)[1] <= hi[i] for i, w in want)
+
+
 def poincare_on_section(system, sec, c, F, zbar, zrad, params, C1, order=20, tol_rem=1e-18,
                         scale=None, log=None):
     integ = Integrator(system, order=order, tol=tol_rem * 1e-3, tol_rem=tol_rem, hmax=2.0,
@@ -202,6 +244,7 @@ def certify_orbit(system, sec, zbar0, params, kind, log, order=20, tol_rem=1e-18
     zbar = [float(v) for v in zbar]
     # 2. P(zbar) for every parameter value
     r0 = run(zbar, [0.0] * n, False)
+    covers0 = initial_set_covers(r0['S0'], F, zbar, [0.0] * n, params)
     Pz = col([r0['P'][j, 0] for j in F])
     log('    C^0 run: P(zbar) - zbar = %s, radius %.2e (%d steps, %.1fs)' % (
         np.array2string(np.array([float(Pz[i, 0].mid()) - zbar[i] for i in range(n)]), precision=3),
@@ -223,8 +266,11 @@ def certify_orbit(system, sec, zbar0, params, kind, log, order=20, tol_rem=1e-18
         zrad = [4 * z for z in zrad]
     if not okK:
         raise CertificateFailure('Krawczyk test failed')
+    # the sets integrated are {zbar} x params (C^0 run, P(zbar)) and Z x params (C^1 run, DP over Z)
+    covers = covers0 and initial_set_covers(r1['S0'], F, zbar, zrad, params)
     okM, discs, mods = multiplier_test(DPZ, kind)
-    return {'ok': okK and okM, 'krawczyk': okK, 'multipliers_ok': okM, 'K': K, 'Z': Z, 'zbar': zbar,
+    return {'ok': okK and okM and covers, 'krawczyk': okK, 'covers': covers, 'multipliers_ok': okM, 'K': K, 'Z': Z,
+            'zbar': zbar,
             'zrad': zrad, 'DPZ': DPZ, 'discs': discs, 'mods': mods, 'tau': r1['tau'], 'Pz': Pz,
             'extremes': r1['extremes'], 'passes': r1['passes'], 'F': F, 'steps': r1['steps'],
             'DPfull': r1['DP']}
@@ -306,7 +352,7 @@ def certify_equilibrium(J, E, u_guess, log):
     okW = True
     for k in range(npieces):
         a = wl + (wh - wl) * k / npieces
-        b = wl + (wh - wl) * (k + 1) / npieces
+        b = wh if k + 1 == npieces else wl + (wh - wl) * (k + 1) / npieces     # the last piece ends at wh exactly
         piece = arb(a).union(arb(b))
         if not (dI_ss(sysm, piece) > 0):
             okW = False

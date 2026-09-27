@@ -1,0 +1,465 @@
+{
+  "kind": "precision check of exact formulas, not a confirmed prediction",
+  "reviewed": "2026-09-27",
+  "print": "not run",
+  "crapper": {
+    "label": "precision check of an exact formula",
+    "closureMax": 1.3877787807814457e-15,
+    "steepnessIdentityMaxAbs": 2.220446049250313e-16,
+    "rows": [
+      {
+        "A": 0.05,
+        "maxDx": 2.220446049250313e-16,
+        "maxDy": 6.440160904563896e-17,
+        "sProfile": 0.06382153106441919,
+        "sFormula": 0.06382153106441919,
+        "sModule": 0.06382153106441919,
+        "formulaMinusProfile": 0,
+        "moduleMinusFormula": 0
+      },
+      {
+        "A": 0.2,
+        "maxDx": 4.440892098500626e-16,
+        "maxDy": 2.7755575615628914e-16,
+        "sProfile": 0.2652582384864922,
+        "sFormula": 0.26525823848649227,
+        "sModule": 0.26525823848649227,
+        "formulaMinusProfile": 5.551115123125783e-17,
+        "moduleMinusFormula": 0
+      },
+      {
+        "A": 0.36,
+        "maxDx": 8.881784197001252e-16,
+        "maxDy": 7.771561172376096e-16,
+        "sProfile": 0.5266156205246536,
+        "sFormula": 0.5266156205246536,
+        "sModule": 0.5266156205246536,
+        "formulaMinusProfile": 0,
+        "moduleMinusFormula": 0
+      },
+      {
+        "A": 0.45,
+        "maxDx": 1.3322676295501878e-15,
+        "maxDy": 1.3877787807814457e-15,
+        "sProfile": 0.7184423763395901,
+        "sFormula": 0.7184423763395903,
+        "sModule": 0.7184423763395903,
+        "formulaMinusProfile": 2.220446049250313e-16,
+        "moduleMinusFormula": 0
+      },
+      {
+        "A": 0.458,
+        "maxDx": 1.3322676295501878e-15,
+        "maxDy": 1.3877787807814457e-15,
+        "sProfile": 0.7379361500725157,
+        "sFormula": 0.7379361500725158,
+        "sModule": 0.7379361500725158,
+        "formulaMinusProfile": 1.1102230246251565e-16,
+        "moduleMinusFormula": 0
+      }
+    ],
+    "classicalSplash": {
+      "A": 0.4546700164520109,
+      "alpha": 2.0815759778181007,
+      "residual": 2.220446049250313e-16,
+      "steepness": 0.7297642257877295,
+      "formula": 0.7297642257877293
+    },
+    "classicalWithin0p001Of0p730": true,
+    "pointwiseDistanceAtA0p2": {
+      "maxHypot": 0.05305164769729846,
+      "phi": 0,
+      "note": "Implemented catalog map versus classical z_A, same A, one period. Recorded disagreement. The plate was not retuned."
+    },
+    "plateInjectivity": {
+      "note": "The implemented catalog map (denominator 1+A^2-2A cos) is a different curve from classical z_A (denominator 1+A^2+2A cos). X_phi at the trough vanishes at A = 3-2*sqrt(2). Above that, the catalog map meets itself on the symmetry line. Classical z_A stays separated until the tangent splash solved above.",
+      "Auni": 0.1715728752538097,
+      "steepnessAtAuni": 0.22507907903927624,
+      "troughXpAtAuni": 1.6653345369377348e-15,
+      "plateAtA0p30": {
+        "crossed": true,
+        "phi": 0.20057389107975282,
+        "x": -2.7755575615628914e-17,
+        "y": -0.0011766116985348954,
+        "gap": 5.551115123125783e-17,
+        "minAbs": 0.00003628436304470295,
+        "minPhi": 0.2006
+      },
+      "plateAtA0p15Crossed": false,
+      "classicalAtA0p30": {
+        "crossed": false,
+        "minAbsX": 0.014460620587393669,
+        "fSignChanges": 0
+      },
+      "classicalAtA0p46": {
+        "crossed": true,
+        "phi": 0.2979530219850455,
+        "x": 0,
+        "y": -0.05093232493969709,
+        "gap": 0,
+        "minAbs": 0.000003238938440286443,
+        "minPhi": 0.3628
+      },
+      "classicalSplashTouch": {
+        "crossed": false,
+        "minAbsX": 1.8127116474531135e-10,
+        "minPhi": 0.3313,
+        "fSignChanges": 0
+      }
+    },
+    "clamp": {
+      "A": 0.458,
+      "steepness": 0.7379361500725158,
+      "classicalA": 0.4546700164520109,
+      "classicalSteepness": 0.7297642257877295,
+      "isLimitingWave": false,
+      "moduleAStarFromHardcoded0p7298": 0.4546846682104742,
+      "moduleHardcodedS": 0.7298
+    },
+    "failureControls": {
+      "wrongSteepnessMinAbsMiss": 0.003191076553220956,
+      "signInsideCosMiss": 0.04420970641441535,
+      "linearPhiSignClosureDx": 2.0000000000000004,
+      "allCaught": true
+    }
+  },
+  "airy": {
+    "label": "precision check of the real-argument Ai the plate actually evaluates, not a complex Ai(x-z^2/4+ia) prediction",
+    "Ai0": 0.35502805388781744,
+    "Aip0": -0.25881940379280677,
+    "seriesVersusFineRk4MaxAbsOnMinus5To4": 3.5033087542046815e-12,
+    "moduleVersusSeriesOnMinus4To4": {
+      "maxAbs": 7.228326336372604e-7,
+      "at": -4
+    },
+    "tails": {
+      "asymRows": [
+        {
+          "z": 9,
+          "module": 2.4804687864990606e-9,
+          "oneTerm": 2.4804687864990606e-9,
+          "twoTerm": 2.4708990766746043e-9,
+          "relToTwoTerm": 0.0038729666924864634
+        },
+        {
+          "z": 12,
+          "module": 1.3966192598880017e-13,
+          "oneTerm": 1.3966192598880017e-13,
+          "twoTerm": 1.3931195267905547e-13,
+          "relToTwoTerm": 0.0025121556550927243
+        },
+        {
+          "z": 15,
+          "module": 2.1687989564954417e-18,
+          "oneTerm": 2.1687989564954417e-18,
+          "twoTerm": 2.164910196199248e-18,
+          "relToTwoTerm": 0.0017962686410831108
+        }
+      ],
+      "samples": {
+        "z6": {
+          "module": -0.00011997186561529816,
+          "series": 0.000009947695389200817
+        },
+        "z8": {
+          "module": -0.07551282458007336,
+          "series": 4.738103598356247e-8
+        },
+        "zMinus10": {
+          "module": 0.040772674829669425,
+          "series": 0.04024123426607071
+        }
+      },
+      "note": "For z>8 the plate returns the one-term asymptotic, clipped by exp(-40). At z=6 and z=8 the 80-step RK4 bridge disagrees with the series. The intensity peak sits near Airy argument -1, inside the accurate interval."
+    },
+    "peaks": [
+      {
+        "state": {
+          "span": 12,
+          "apod": 0.08,
+          "grid": 96,
+          "aspect": "4:5",
+          "kind": "int"
+        },
+        "moduleMetric": 0.9384447142211791,
+        "independentMetric": 0.9384447142211791,
+        "maxPeakDelta": 0,
+        "halfCausticMaxShift": 9.852631578947367,
+        "signFlipMaxShift": 9.6
+      },
+      {
+        "state": {
+          "span": 10,
+          "apod": 0.12,
+          "grid": 96,
+          "aspect": "1:1",
+          "kind": "int"
+        },
+        "moduleMetric": 0.8920829237780363,
+        "independentMetric": 0.8920829237780363,
+        "maxPeakDelta": 0,
+        "halfCausticMaxShift": 2.8421052631578947,
+        "signFlipMaxShift": 8.210526315789473
+      },
+      {
+        "state": {
+          "span": 14,
+          "apod": 0.05,
+          "grid": 80,
+          "aspect": "16:9",
+          "kind": "int"
+        },
+        "moduleMetric": 0.9513326694814138,
+        "independentMetric": 0.9513326694814138,
+        "maxPeakDelta": 0,
+        "halfCausticMaxShift": 12.227848101265824,
+        "signFlipMaxShift": 11.69620253164557
+      }
+    ],
+    "peakAgreementMax": 0,
+    "meanOffsetFromZ2over4": [
+      0.9384447142211791,
+      0.8920829237780363,
+      0.9513326694814138
+    ],
+    "catalogComplexFactorNotEvaluated": true,
+    "complexArgumentRatio": {
+      "note": "Ratio |Ai(xi + i a)| / |Ai(xi)| from the independent series at a=0.08. The plate multiplies real Ai(xi) by exp(a x - a z^2/2). It does not evaluate Ai(xi + i a). A ratio other than 1 is a disagreement with the catalog argument, not a failure of the real evaluator.",
+      "seriesAgreesOnRealAxis": 0,
+      "rows": [
+        {
+          "xi": -2,
+          "a": 0.08,
+          "absAiComplex": 0.234168242709648,
+          "absAiReal": 0.22740742820168558,
+          "ratio": 1.0297299633588324
+        },
+        {
+          "xi": -1,
+          "a": 0.08,
+          "absAiComplex": 0.5372762442963195,
+          "absAiReal": 0.5355608832923522,
+          "ratio": 1.0032029243686025
+        },
+        {
+          "xi": 0,
+          "a": 0.08,
+          "absAiComplex": 0.35563220718090144,
+          "absAiReal": 0.35502805388781744,
+          "ratio": 1.0017017057848474
+        },
+        {
+          "xi": 1,
+          "a": 0.08,
+          "absAiComplex": 0.13545863503641778,
+          "absAiReal": 0.13529241631288175,
+          "ratio": 1.0012285886235606
+        },
+        {
+          "xi": 2,
+          "a": 0.08,
+          "absAiComplex": 0.03495889106746152,
+          "absAiReal": 0.034924130423275135,
+          "ratio": 1.0009953188172502
+        }
+      ]
+    },
+    "failureControls": {
+      "causticZ2over2MaxPeakShift": 12.227848101265824,
+      "argumentSignFlipMaxPeakShift": 11.69620253164557,
+      "allCaught": true
+    }
+  },
+  "orbitals": {
+    "label": "precision check of an exact radial formula",
+    "measure": "int_0^inf R(r)^2 r^2 dr in atomic units. The module factors psi = R(r) times an angular factor (anorm, and sqrt(2) for real m>0). This check is only the radial measure.",
+    "laguerre": {
+      "maxAbs": 3.377596544673622e-7,
+      "where": {
+        "n": 6,
+        "l": 1,
+        "k": 4,
+        "alpha": 3
+      },
+      "grid": "rho = 0, 0.25, ..., 2",
+      "nMax": 6,
+      "under1e8": false,
+      "under1e6": true,
+      "note": "laguerre() stores coefficients in a Float32Array. Absolute error 1e-8 is not met; the largest miss on this grid is recorded."
+    },
+    "nodes": {
+      "matched": 21,
+      "expectedStates": 21,
+      "wrongLplus1Matches": 0
+    },
+    "norm": {
+      "maxAbsError": 3.6529357871906143e-7,
+      "where": {
+        "n": 6,
+        "l": 0,
+        "integral": 1.0000003652935787
+      },
+      "quadrature": "Simpson, 8192 panels, upper limit 4 n^2 + 30"
+    },
+    "rows": [
+      {
+        "n": 1,
+        "l": 0,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 1.000000000079117
+      },
+      {
+        "n": 2,
+        "l": 0,
+        "radialNodes": 1,
+        "expect": 1,
+        "integral": 1.0000000000331244
+      },
+      {
+        "n": 2,
+        "l": 1,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 0.9999999999999839
+      },
+      {
+        "n": 3,
+        "l": 0,
+        "radialNodes": 2,
+        "expect": 2,
+        "integral": 1.0000000000347624
+      },
+      {
+        "n": 3,
+        "l": 1,
+        "radialNodes": 1,
+        "expect": 1,
+        "integral": 0.9999999999962527
+      },
+      {
+        "n": 3,
+        "l": 2,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 0.9999999999990958
+      },
+      {
+        "n": 4,
+        "l": 0,
+        "radialNodes": 3,
+        "expect": 3,
+        "integral": 1.0000001490274977
+      },
+      {
+        "n": 4,
+        "l": 1,
+        "radialNodes": 2,
+        "expect": 2,
+        "integral": 0.999999999963037
+      },
+      {
+        "n": 4,
+        "l": 2,
+        "radialNodes": 1,
+        "expect": 1,
+        "integral": 0.9999999999852882
+      },
+      {
+        "n": 4,
+        "l": 3,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 0.9999999999972533
+      },
+      {
+        "n": 5,
+        "l": 0,
+        "radialNodes": 4,
+        "expect": 4,
+        "integral": 1.0000002742460794
+      },
+      {
+        "n": 5,
+        "l": 1,
+        "radialNodes": 3,
+        "expect": 3,
+        "integral": 1.0000001668414693
+      },
+      {
+        "n": 5,
+        "l": 2,
+        "radialNodes": 2,
+        "expect": 2,
+        "integral": 0.9999999999739498
+      },
+      {
+        "n": 5,
+        "l": 3,
+        "radialNodes": 1,
+        "expect": 1,
+        "integral": 0.9999999999916822
+      },
+      {
+        "n": 5,
+        "l": 4,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 0.9999999999987169
+      },
+      {
+        "n": 6,
+        "l": 0,
+        "radialNodes": 5,
+        "expect": 5,
+        "integral": 1.0000003652935787
+      },
+      {
+        "n": 6,
+        "l": 1,
+        "radialNodes": 4,
+        "expect": 4,
+        "integral": 1.0000003576032848
+      },
+      {
+        "n": 6,
+        "l": 2,
+        "radialNodes": 3,
+        "expect": 3,
+        "integral": 1.000000178797432
+      },
+      {
+        "n": 6,
+        "l": 3,
+        "radialNodes": 2,
+        "expect": 2,
+        "integral": 0.999999999993069
+      },
+      {
+        "n": 6,
+        "l": 4,
+        "radialNodes": 1,
+        "expect": 1,
+        "integral": 0.9999999999981372
+      },
+      {
+        "n": 6,
+        "l": 5,
+        "radialNodes": 0,
+        "expect": 0,
+        "integral": 0.9999999999997594
+      }
+    ],
+    "failureControls": {
+      "wrongLaguerreIndexKplus1MinAbs": 1,
+      "alphaPlus1FailsForKAtLeast1": {
+        "checked": 15,
+        "failed": 15
+      },
+      "nodeCountWithLplus1Matches": 0,
+      "allCaught": true
+    }
+  },
+  "passed": true,
+  "failures": []
+}

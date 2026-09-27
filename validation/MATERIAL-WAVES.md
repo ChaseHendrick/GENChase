@@ -29,8 +29,11 @@ Helmholtz benchmark follows directly by differentiating its separable cosine mod
 - Circular Chladni modes use `(m+1)*2.4048` for every Bessel order. These are not
   generally zeros of the corresponding Bessel function, so fixed circular boundary
   conditions are not established. They are explicitly excluded from the partial label.
-- Aubry uses potential `2*lambda*cos(...)` but prints a dual threshold of 2.
-  The parameter convention must be reconciled with the primary model before promotion.
+- Aubry uses potential `2*lambda*cos(...)` with unit hopping. That normalization is
+  self-dual at λ = 1, not at 2. The catalog, the critical preset and the hints now say
+  λ = 1. The transfer-matrix review is [AUBRY.md](AUBRY.md); this note no longer treats
+  the factor-of-two disagreement as open. The plate's fixed-step relaxation is outside
+  that measurement.
 - The SSH edge amplitude uses a positive geometric ratio. Its Hamiltonian sign
   convention needs an explicit residual check; field intensity alone loses the sign.
 - Airy and breather diagnostic issues remain recorded in

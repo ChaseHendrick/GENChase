@@ -1,7 +1,7 @@
 # rest_eigen.py -- Task 1: the rest state and the eigenvalues of the wave ODE at rest, rigorously
 # (python-flint arb ball arithmetic), for ALL c in [c1, c2] (kappa = 1/c taken as one ball).
 # Run:  python3 rest_eigen.py      (under 1 second)
-# Independent of papers/nf-pulse/code/.
+# Independent of code/.
 from flint import arb, fmpq, ctx, arb_mat
 from common import BETA, THETA, EPS, C1, C2, consts
 

@@ -156,7 +156,7 @@ if __name__ == '__main__':
         info['U_range_bound'] = ur.str(10)
         res['dU=' + dU] = info
         print('dU', dU, 'CERTIFIED' if ok else 'FAILED', json.dumps(info))
-    # negative control: a block reaching up to U = 0.15 (S' up to ~2.7 > 1) must fail
+    # negative control: a block reaching up to U = 0.15 (S' up to ~2.1 > 1) must fail
     ok, info = check(T, Tinv, (arb('-0.05'), arb('0.15')), kappa)
     res['negative_U_to_0.15'] = info
     print('NEGATIVE CONTROL U in [-0.05, 0.15]:', 'CERTIFIED (BAD)' if ok else 'fails as expected', json.dumps(info))
