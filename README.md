@@ -8,7 +8,7 @@ Open the browser studio immediately, or unzip the offline bundle and double-clic
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 131 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+A folder-based studio with one shared engine and 132 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
 
 <p align="center">
   <a href="docs/trailer/genchase-trailer.mp4"><img src="docs/trailer/poster.jpg" width="80%" alt="GENChase trailer: 45 seconds of real simulations from the studio, with an original score" /></a><br />

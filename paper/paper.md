@@ -28,7 +28,7 @@ validation counts are in VALIDATION.md. `node tools/index.js` keeps the catalog 
 
 # Summary
 
-GENChase is a browser studio of 131 techniques, each a seeded simulation of a published model:
+GENChase is a browser studio of 132 techniques, each a seeded simulation of a published model:
 partial differential equations such as Cahn–Hilliard phase separation [@cahn1958], lattice
 models such as the Ising model [@onsager1944; @metropolis1953], membrane and population models
 from neuroscience [@hodgkin1952; @montbrio2015], point-vortex collapse

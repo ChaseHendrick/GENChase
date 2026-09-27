@@ -1,6 +1,6 @@
 # Techniques
 
-131 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
+132 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
 Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 

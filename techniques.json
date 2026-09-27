@@ -3,7 +3,7 @@
   "repository": "https://github.com/ChaseHendrick/GENChase",
   "file": "index.html",
   "portableFile": "dist/studio.html",
-  "count": 131,
+  "count": 132,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
