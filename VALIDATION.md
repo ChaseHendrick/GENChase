@@ -637,6 +637,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.
 - Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.
 - Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one.
+- The measured relaxation coefficient passes the unchanged 10% numerical tolerance only on the tested m = 2, N = 512, α = 0.002, CFL = 0.8, t ≤ 3, τ = 0.01, 0.003, 0.001 cases; no uniform τ -> 0 accuracy is established. Continuum-reference measured ratios 0.9955, 0.9662, 0.8962 include a 10% failure at τ = 0.001 from the amplified spatial offset; the discrete-reference ratios are 1.012, 1.019, 1.055.
 
 The remaining records retain each catalog equation and reference as a review target. They do not
 claim those descriptions have been checked against the primary paper. Full parameter, precision,

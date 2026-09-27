@@ -44,11 +44,23 @@ regression test of the flux form, not a prediction.
 | GPU step on single modes, including oblique (3, 2) on 256 × 320 and τ = 0 | within 2e-5 of the recursion (float32) | 2.0e-7 to 4.3e-7 |
 | Refinement, 64 to 512 cells at fixed domain and time, dt ∝ h | second order | orders 2.00, 2.00, 1.99 (m = 1) and 2.00, 2.00, 2.02 (m = 3) |
 | Step bound on the 2D Nyquist mode | bounded at 0.95 and 0.999 of the solved bound, overflow at 1.01 and 1.05 | as required |
-| Relaxation limit, mode m = 2, τ from 0.1 to 0 | slow root within 0.1%; (s₁ + αk²) against −α²τk⁴ within 10% for τ ≤ 0.01; deviation from e^{−αk²t} shrinking to under 1e-4 at τ = 0 | ratio 1.006 at τ = 0.01 and 1.002 at 0.003; deviation 2.7e-2, 8.8e-3, 3.0e-3, 9.1e-4, 2.8e-4, 3.7e-6 |
+| Relaxation limit, mode m = 2, τ from 0.1 to 0 | measured slow root within 0.1% of the continuum root; (s_measured + αλ) / (−α²τλ²) within 10% of 1 for τ = 0.01, 0.003, 0.001, with λ = 4N² sin²(πm/N), N = 512; deviation from e^{−αk²t} shrinking to under 1e-4 at τ = 0 | measured ratios 1.012, 1.019, 1.055, all pass; deviation 2.7e-2, 8.8e-3, 3.0e-3, 9.1e-4, 2.8e-4, 3.7e-6 |
 | One spark on the real plate, α = 0.03, τ = 0.4 | ring edge speed within 1% of √(α/τ); nothing beyond the front | 0.27377 against 0.27386 (−0.03%); 3.8e-9 of the ring peak ahead of it, where Fourier's law at the same α has 0.38 of its peak |
 | The plate's own check on four presets | mismatch below 1e-5 of the injected amplitude, heat within 1e-5 | 1.7e-8 to 2.0e-6; heat within 1e-7 |
 | Controls for that check | τ five per cent high and Fourier's law must each miss by 20 times the plate's mismatch | 80 to 2900 times and 1600 to 40000 times |
 | Wrong relaxation sign τ → −τ, recursion and GPU | the mode check must fail | error 163 on the recursion, overflow on the GPU |
+
+The relaxation coefficient uses the late-time decay rate measured from the Float64 twin, with the spatially
+discrete Fourier rate −αλ and correction −α²τλ². The staggered gradient followed by divergence gives the
+Laplacian symbol −4 sin²(kh/2)/h² for a mode constant along y; h = 1/N and k = 2πm give λ above.
+The original 10% tolerance is unchanged: it allows higher-order terms in τ and finite-step error in the measured
+rate, and is a deterministic numerical tolerance, not a confidence interval. The continuum reference leaves an
+O(h²) offset that is amplified when divided by the small O(τ) correction: the measured continuum ratios were
+0.9955, 0.9662 and 0.8962, with the last outside 10%. The formerly reported 1.0064, 1.0019 and 1.0006 were an
+**identity check of roots()**, not evidence about the scheme, and that analytic-only criterion has been removed.
+`node tools/cattaneo-relaxation-check.js` runs the actual CPU harness, then substitutes the discrete Fourier rate
+for each tested measured root while leaving the analytic values intact. Each missing correction must fail the
+O(τ) criterion itself. This regression fails on the former analytic-only criterion and is included in `npm test`.
 
 Three criteria were set or changed after a first run, and are recorded here rather than hidden: the single-mode
 tolerance was 2e-4 and became (kh)²/12 + 1e-4 when mode 8 read 2.6e-4 (the discretization estimate for that mode is
@@ -72,4 +84,8 @@ state-mutating export wrapper and a state ten steps later are both caught.
 - The plate check uses the lowest mode only. Far below k_c that mode is nearly Fourier: on the Rings and glow
   preset (k/k_c = 0.22) Fourier's law misses by 1.5e-3, a factor 1600 above the mismatch but a small number, so the
   check says less there about τ than on the wave-dominated presets.
+- The measured relaxation-coefficient check covers only m = 2, N = 512, α = 0.002, CFL = 0.8,
+  t ≤ 3 and τ = 0.01, 0.003, 0.001. All three pass the unchanged 10% threshold. It does not establish
+  uniform accuracy as τ → 0 at fixed grid and step; the measured ratio already differs from 1 by 5.5%
+  at τ = 0.001. The continuum-reference failure above is retained for context.
 - One renderer (SwiftShader, float32); float16 is refused.
