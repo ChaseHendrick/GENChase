@@ -440,7 +440,7 @@
     }
   },
   "gpu": {
-    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
     "logistic": [
       {
         "label": "production",
@@ -558,6 +558,10 @@
       }
     ],
     "implementation": {
+      "requestedGrid": [
+        512,
+        512
+      ],
       "grid": [
         512,
         512
@@ -664,13 +668,13 @@
       ],
       "steps": 400,
       "uRange": [
-        -48724.2421875,
-        94616.8125
+        -118481.75,
+        196534.15625
       ],
       "nonfiniteCells": 0,
       "maximumPrincipleHolds": false
     }
   },
   "failures": [],
-  "seconds": 199
+  "seconds": 33
 }
