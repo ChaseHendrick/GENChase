@@ -3,15 +3,17 @@
 > [!IMPORTANT]
 > **Confirmed novel findings among the six candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five vortex entries are not independent findings. The sixth, from random tilings, has no plate yet and rests on a heuristic expansion checked against exact numbers.
 
-Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. The first formula specializes Gröbli’s 1877 spiral coefficient; historical priority of the optimized minima remains unconfirmed. Handwritten, not generated. Last updated 2026-09-20.
+Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. The first formula specializes Gröbli’s 1877 spiral coefficient, and its closed form is the ratio of the rates Kimura gives in J. Phys. Soc. Jpn. 56 (1987), Eq. (4.4); historical priority of the optimized minima remains unconfirmed. Handwritten, not generated. Last updated 2026-09-27.
 
 An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, with a documented literature search, locked so the status line marks **miss** if the claim is wrong. **Miss is a grade on the numbers, not a crash.** The picture still draws. The site is working. Do not put a name from this file on work that already exists.
 
 **Novelty audit:** [All five candidates reviewed](identities/NOVELTY-AUDIT.md). The fifth includes the parallelogram and double-triangle bounds as special cases. A proof or passing numerical check does not establish novelty. The [follow-up](identities/ORIGINALITY-FOLLOWUP.md) gives the explicit reduction of the first formula to Gröbli’s 1877 original.
 
+**Where the vortex entries are proved (2026-09-27).** All five vortex entries are proved, with the classical credits, in the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* ([`papers/minimal-winding/`](papers/minimal-winding/), release 2.2.0): the three-vortex bound in Remark 2 (with Theorem 1(b) and Corollary 1), the parallelogram, double-triangle, square and general polygon bounds in Proposition 2, and the quincunx in the example after Proposition 3. The identities note that stated the first three is retired as a record of its own ([identities/README.md](identities/README.md)). Throughout this file the product is the unsigned P = |ω₀| t_c of the paper.
+
 The search ledger is [`RESEARCH.md`](RESEARCH.md). The plates are `#three-vortex-bound`, `#parallelogram-lock`, and `#quincunx-lock`.
 
-**Name:** Three-vortex collapse bound. The former personal name has been retired because the formula specializes Gröbli’s published work.
+**Name:** Equal-pair three-vortex collapse (renamed on 2026-09-27 from "Three-vortex collapse bound", because √2 is the minimum for this family only, while the bound over every three-vortex collapse is √3/2; the former personal name was retired earlier because the formula specializes Gröbli’s published work).
 
 ## What a miss is (not a broken site)
 
@@ -42,9 +44,9 @@ Existing names identify this project's writeups and plates; they do not establis
 
 | Name | Tab | 🔵 Mathematical statement | 🟠 Conditions that invalidate the check |
 |---|---|---|---|
-| Three-vortex collapse bound | `three-vortex-bound` | ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
-| Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
-| Quincunx lock | `quincunx-lock` | ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
+| Equal-pair three-vortex collapse | `three-vortex-bound` | \|ω₀\| t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
+| Parallelogram lock | `parallelogram-lock` | \|ω₀\| t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
+| Quincunx lock | `quincunx-lock` | \|ω₀\| t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
 ## Candidate fourth result: double-triangle bound
 
@@ -58,7 +60,7 @@ $$
 
 The triangles have radius ratio $\varphi=(1+\sqrt5)/2$, with circulation $-1$ at each outer vertex and $\varphi^2$ at each inner vertex. Equality is unique at $\cos(3\theta)=\sqrt5/11$.
 
-**Mathematics proved; priority under investigation.** The two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and minimum are a candidate contribution, not a verified first-discovery claim. The initial search reached indexed excerpts of the primary paper, not its full PDF. The earlier three candidates also have unconfirmed priority; the frozen note below is an archival project record. Read the [full derivation, checks, and source limitations](identities/double-triangle.md). Open `#double-triangle-bound` for the integrated plate and Broken control.
+**Mathematics proved; priority under investigation.** The two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and minimum are a candidate contribution, not a verified first-discovery claim. The initial search reached indexed excerpts of the primary paper, not its full PDF. The earlier three candidates also have unconfirmed priority; the dated identities note below is kept as a provenance record. The bound is proved in the minimal-winding paper as Proposition 2 with $n=3$. Read the [full derivation, checks, and source limitations](identities/double-triangle.md). Open `#double-triangle-bound` for the integrated plate and Broken control.
 
 ## Candidate fifth result: the general polygon bound
 
@@ -69,7 +71,7 @@ $$
 \ge\frac{\sqrt{K_n^2-(2n-1)}}{2n}.
 $$
 
-The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, uniquely attained at $\cos(4\theta)=9/55$, or $\theta\approx20.145493^\circ$. This is one generalization, not a separate discovery for every polygon order. **Proved mathematics; historical priority remains unresolved.** The two-ring family for arbitrary $n$ is classical. Read the [full theorem, square formula, proof, and tests](identities/polygon-collapse.md). The existing `#double-triangle-bound` tab now includes **Square minimum** and a vertex-count control; its original triangle default remains.
+The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, uniquely attained at $\cos(4\theta)=9/55$, or $\theta\approx20.145493^\circ$. This is one generalization, not a separate discovery for every polygon order. **Proved mathematics; historical priority remains unresolved.** It is Proposition 2 of the minimal-winding paper, which also proves that $F_n=\tfrac14 e^{\sqrt{n/2}}\bigl(1+29/(12\sqrt{2n})+265/(576n)+O(n^{-3/2})\bigr)$, so $F_n\to\infty$ (Section 5). The two-ring family for arbitrary $n$ is classical. Read the [full theorem, square formula, proof, and tests](identities/polygon-collapse.md). The existing `#double-triangle-bound` tab now includes **Square minimum** and a vertex-count control; its original triangle default remains.
 
 ## Candidate sixth result: finite-size constant of the arctic regions
 
@@ -114,29 +116,19 @@ These dates record this repository's statements by Chase Hendrick. They do not e
 
 | Statement | Recorded here | Record |
 |---|---|---|
-| Three-vortex collapse bound, ω₀ t_c ≥ √2 | 2026-09-19 | [ChaseHendrick/GENChase#24](https://github.com/ChaseHendrick/GENChase/pull/24), [IDENTITIES.md](https://github.com/ChaseHendrick/GENChase/commit/6632e64) |
-| Parallelogram lock, ω₀ t_c ≥ 3√5/4 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
-| Quincunx lock, ω₀ t_c ≥ 3√33/16 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
+| Three-vortex collapse bound, \|ω₀\| t_c ≥ √2 | 2026-09-19 | [ChaseHendrick/GENChase#24](https://github.com/ChaseHendrick/GENChase/pull/24), [IDENTITIES.md](https://github.com/ChaseHendrick/GENChase/commit/6632e64) |
+| Parallelogram lock, \|ω₀\| t_c ≥ 3√5/4 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
+| Quincunx lock, \|ω₀\| t_c ≥ 3√33/16 | 2026-09-20 | [ChaseHendrick/GENChase#44](https://github.com/ChaseHendrick/GENChase/pull/44) |
 
-Anyone may use the mathematics. Cite this writeup when using it, and credit the underlying work of Gröbli, Novikov–Sedov, Aref, Gotoda and Koiller et al. Project names and timestamps are provenance, not proof of originality. Credit published results to their original sources.
+Anyone may use the mathematics. Cite the minimal-winding paper when using it, and credit the underlying work of Gröbli, Kimura, Novikov–Sedov, Aref, Gotoda, Koiller et al. and Demina–Kudryashov. Project names and timestamps are provenance, not proof of originality. Credit published results to their original sources.
 
 No earlier explicit statement of the listed sharp minima was located in the sources inspected. That limited negative evidence does not establish first discovery or justify attributing every later derivation to this project. Earlier unqualified priority assertions are superseded by the audit.
 
-The frozen note and its source retain their original bytes as an archival snapshot; any priority claims in them must be read with the audit correction. The frozen note is [`identities/note.pdf`](identities/note.pdf) (Typst source [`identities/note.typ`](identities/note.typ)). Canonical byte-exact lines are [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt). SHA-256 fingerprints (UTF-8, LF, no BOM):
-
-| Artifact | SHA-256 |
-|---|---|
-| `identities/STATEMENTS.txt` | `fa51c2a28dfd93c2217c80746fe8b9a50c8e35a1edfa7172cfe6d19a8cd741ad` |
-| Three-vortex collapse bound block | `feec9106d080aa2575665ac2ec4439f3caee99e756b293878dcb7cd5ce2ccb10` |
-| Parallelogram lock block | `c5feb77708a1163c2275e0e2467a9007d97fae88e21ac3771444d8617f4d7c6e` |
-| Quincunx lock block | `ab967c2c842b0532c679f767d53d780102b508a53107b00d07972df840ad850d` |
-| `identities/note.pdf` | `42f47dbe13dda800d660a3f642e5131e830ca525dfafa0609c8ce33c002d955b` |
-
-A GitHub release tag `identities-2026-09-20` attaches the PDF and the statements. How to mint a Zenodo DOI and how to upload the note to arXiv: [`identities/ARXIV.md`](identities/ARXIV.md).
+The identities note of 2026-09-21 ([`identities/note.pdf`](identities/note.pdf), Typst source [`identities/note.typ`](identities/note.typ), statements [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt)) is kept as a dated original. It was refingerprinted on 2026-09-24 and 2026-09-25 for changes that were not mathematical (the affiliation, the author line, three references), and its current fingerprints are in [`identities/HASHES.txt`](identities/HASHES.txt). It is retired as a record of its own (2026-09-27): its results are in the minimal-winding paper, and its errata are listed in [`identities/README.md`](identities/README.md). Any priority wording in it must be read with the audit correction.
 
 ---
 
-## Three-vortex collapse bound
+## Equal-pair three-vortex collapse
 
 
 An explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance.
@@ -147,11 +139,11 @@ Imagine three whirlpools on a flat pond. Two of them spin the same way, equally 
 
 In 1877 Gröbli found that if you place those three just right, they do not wander forever. They keep the same triangle shape while that triangle shrinks, and in a finite time they crash into one point. The picture in the studio is that dance.
 
-Aref, in 2010, wrote two separate formulas: how fast the triangle is spinning (call that ω, omega) and how long until the crash (call that t_c). Multiply those two numbers and you get a single score. That score is also the tightness of the spiral they trace as they shrink: a small score is a tight spiral that finishes soon; a large score is a looser, slower collapse.
+Kimura, in 1987, wrote two separate formulas for exactly this family: how fast the triangle is spinning (call that ω, omega) and how fast it shrinks, which fixes how long until the crash (call that t_c). Aref gave such formulas for every collapsing triangle in 2010. Multiply the size of the spin by the time to the crash and you get a single score. That score is also the tightness of the spiral they trace as they shrink: a small score is a tight spiral that finishes soon; a large score is a looser, slower collapse.
 
-**Three-vortex collapse bound is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
+**The equal-pair three-vortex collapse bound is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. The floor √2 belongs to this equal-strength family. When the two whirlpools that spin the same way have different strengths the floor is lower, and over every three-vortex collapse the score stays above √3/2 (about 0.866); that bound, and √2 as its equal-strength end, are proved in the minimal-winding paper (Corollary 1 and Remark 2). Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
 
-The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: the [explicit comparison](identities/ORIGINALITY-FOLLOWUP.md) recovers this very formula from Gröbli’s 1877 coefficient. Novikov–Sedov used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
+The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: the [explicit comparison](identities/ORIGINALITY-FOLLOWUP.md) recovers this very formula from Gröbli’s 1877 coefficient, and it is the ratio of the two rates Kimura gives for this family (1987, Eq. (4.4)). Novikov–Sedov used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
 
 ### Statement
 
@@ -171,10 +163,10 @@ $$
 
 These configurations lie on the L = 0 circle and collapse self-similarly. Here θ parameterizes the third vortex's position on that circle; it is not an interior angle of the triangle.
 
-Let ω₀ denote the initial angular velocity about the center of vorticity and t_c the collapse time. Their dimensionless product is
+Let ω₀ denote the initial angular velocity about the center of vorticity and t_c the collapse time. Their dimensionless product, taken positive (the paper's P), is
 
 $$
-\boxed{\displaystyle \omega_0 t_c=\frac{2-\cos^2\theta}{\sin(2\theta)}\ge\sqrt{2}.}
+\boxed{\displaystyle |\omega_0| t_c=\frac{2-\cos^2\theta}{\sin(2\theta)}\ge\sqrt{2}.}
 $$
 
 Equality occurs uniquely on this arc at
@@ -190,13 +182,13 @@ giving a triangle with interior angles 22.5°, 45°, and 112.5°.
 Setting u = tan θ > 0 gives
 
 $$
-\omega_0 t_c = u + \frac{1}{2u},
+|\omega_0| t_c = u + \frac{1}{2u},
 \qquad
-\omega_0 t_c - \sqrt{2}
+|\omega_0| t_c - \sqrt{2}
 = \frac{(\sqrt{2}\,u-1)^2}{2u}\ge 0.
 $$
 
-The equality condition follows immediately. At θ = 45° the product is 3/2.
+The equality condition follows immediately. At θ = 45° the product is 3/2, and since it is unchanged under u ↦ 1/(2u), so is the product of the fastest collapse (u = 1/2). This is Remark 2 of the minimal-winding paper.
 
 ### The factors (same family, same 2π kernel, |z₁−z₂| = 1)
 
@@ -207,7 +199,7 @@ t_c=\frac{\pi}{3}\Bigl(4u+\frac{1}{u}\Bigr),\qquad
 2\pi\omega_0=\frac{3(2u^2+1)}{4u^2+1}.
 $$
 
-These are Aref's separate formulas for τ and Ω, written in this family's angle. Their product is Three-vortex collapse bound and does not depend on the length unit. The collapse time at this length has a unique minimum 4π/3 at u = 1/2. That fastest-collapse time, in this normalization, already appears in Leoncini, Kuznetsov and Zaslavsky, Physics of Fluids 12, 1911 (2000). It is not a second identity and it is not claimed here.
+These are Kimura's rates (J. Phys. Soc. Jpn. 56 (1987), Eq. (4.4), for Γ = (2, 2, −1)), rescaled to this family and written in the variable u: with his normalization of the circulations, κ = (A + iB)/(4π) for Γ = (1, 1, −1/2) (Table 1 of the minimal-winding paper), so the two agree only after time is rescaled; Aref's τ and Ω (2010) specialize to them. Their product is the equal-pair winding (u + 1/(2u)) and does not depend on the length unit. The collapse time at this length has a unique minimum 4π/3 at u = 1/2. That fastest collapse is Kimura's Eq. (4.6), and it appears again in Leoncini, Kuznetsov and Zaslavsky, Physics of Fluids 12, 1911 (2000), Fig. 18. It is not a second identity and it is not claimed here.
 
 ### Visualization
 
@@ -221,34 +213,23 @@ Octant should read 1, 0, and 0. The Broken configuration moves off the circle, s
 
 ### Attribution and originality
 
-Three-vortex collapse bound is the project's name for this formula and sharp bound. Its formula is an explicit specialization and reparameterization of Gröbli's 1877 spiral coefficient (§10, equations 8, 9, 11 and 12); see the [comparison with the original scan](identities/ORIGINALITY-FOLLOWUP.md). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
+Equal-pair three-vortex collapse (formerly Three-vortex collapse bound) is the project's name for this formula and sharp bound. Its formula is an explicit specialization and reparameterization of Gröbli's 1877 spiral coefficient (§10, equations 8, 9, 11 and 12); see the [comparison with the original scan](identities/ORIGINALITY-FOLLOWUP.md) and Remark 2 of the minimal-winding paper. Kimura (1987, Sect. 4) gives the two rates in exactly this parametrization, for Γ = (2, 2, −1), in his Eq. (4.4), and their ratio is the formula above. Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
 
 The explicit minimum and equality triangle were derived here and recorded on 2026-09-19. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model.
 
-When using this derivation or implementation, cite this project's writeup under its existing label, Three-vortex collapse bound, and credit Gröbli for the classical formula. Anyone may use the mathematics. The project label does not confer ownership or historical priority.
+When using this derivation or implementation, cite the minimal-winding paper (Remark 2) and credit Gröbli and Kimura for the classical formula. Anyone may use the mathematics. The project label does not confer ownership or historical priority.
 
 ### Cite
 
-Hendrick, C. (2026). *Three-vortex collapse bound*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
+Cite the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* (Chase Hendrick, 2026; Remark 2), which proves this formula and bound with the classical credits, and the classical sources: Gröbli (1877) for the coefficient and Kimura (1987) for the rates. The label above names this project's plate and writeup, not a result to cite.
 
-```bibtex
-@misc{three-vortex-bound-2026,
-  author       = {Hendrick, Chase},
-  title        = {Three-vortex collapse bound: an explicit formula and sharp minimum
-                  for a classical three-vortex collapse family},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-19}
-}
-```
-
-GitHub's "Cite this repository" button uses the same record via [`CITATION.cff`](CITATION.cff).
+[`CITATION.cff`](CITATION.cff) lists the paper under its references. GitHub's "Cite this repository" box shows the software's own record, not that list.
 
 ### References
 
 - H. Aref, Self-similar motion of three point vortices, Physics of Fluids 22, 057104 (2010).
-- W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877).
+- W. Gröbli, Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden, Inaugural-Dissertation, Göttingen; printed by Zürcher und Furrer, Zürich (1877).
+- Y. Kimura, Similarity solution of two-dimensional point vortices, J. Phys. Soc. Jpn. 56, 2024–2030 (1987), Sect. 4, Eqs. (4.4) and (4.6).
 - X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, Physics of Fluids 12, 1911 (2000).
 - Y. Kimura, Chaos and collapse of a system of point vortices, Fluid Dyn. Res. 3, 98 (1988). Two-page conference note on complex-time singularities. Not a coefficient table and not these closed forms.
 
@@ -279,18 +260,18 @@ $$
 and positions at the vertices of a parallelogram whose diagonals meet at the origin,
 
 $$
-z_1=\tfrac12 d_1 e^{i\theta},\quad
-z_2=-\tfrac12 d_1 e^{i\theta},\quad
+z_1=\tfrac12 d_1 e^{-i\theta},\quad
+z_2=-\tfrac12 d_1 e^{-i\theta},\quad
 z_3=-\tfrac12 d_2,\quad
 z_4=\tfrac12 d_2,
 $$
 
-with $d_1/d_2=\sqrt{2+\sqrt{3}}$ and $0<\theta<\pi/2$. These configurations have $L=0$ and collapse self-similarly (Novikov and Sedov 1979). $\theta$ is the angle between the diagonals.
+with $d_1/d_2=\sqrt{2+\sqrt{3}}$ and $0<\theta<\pi/2$. These configurations have $L=0$ and collapse self-similarly (Novikov and Sedov 1979). $\theta$ is the angle between the diagonals. (With $e^{+i\theta}$ in place of $e^{-i\theta}$ the same parallelograms expand for $0<\theta<\pi/2$: at the minimizing angle $\operatorname{Re}\kappa=+0.352$ for $d_2=1$ ($\operatorname{Re}\kappa$ scales like $1/d_2^2$); the plate `src/modules/parallelogram-lock.js` uses $-\theta$.)
 
-Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Their dimensionless product is
+Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Here $\omega_0<0$: the collapsing parallelogram turns clockwise. The dimensionless product, taken positive (the paper's $P$), is
 
 $$
-\boxed{\omega_0 t_c=\frac{\sqrt{3}}{4}\frac{4-\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{5}}{4}.}
+\boxed{|\omega_0| t_c=\frac{\sqrt{3}}{4}\frac{4-\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{5}}{4}.}
 $$
 
 Equality occurs uniquely on this arc at $\cos 2\theta=1/4$.
@@ -302,12 +283,12 @@ The reciprocal pair $\Gamma=(1,1,-2+\sqrt{3},-2+\sqrt{3})$ with $d_1/d_2=\sqrt{2
 Setting $\varphi=2\theta\in(0,\pi)$ gives
 
 $$
-\omega_0 t_c=\frac{\sqrt{3}}{4}\frac{4-\cos\varphi}{\sin\varphi}.
+|\omega_0| t_c=\frac{\sqrt{3}}{4}\frac{4-\cos\varphi}{\sin\varphi}.
 $$
 
 Differentiating the quotient, the unique critical point on $(0,\pi)$ is $\cos\varphi=1/4$, where $\sin\varphi=\sqrt{15}/4$ and the quotient equals $\sqrt{15}$. Multiplying by $\sqrt{3}/4$ yields $3\sqrt{5}/4$. The second-derivative (or the sign of the first derivative on either side) shows it is a minimum. At $\theta=45^\circ$ the product is $\sqrt{3}$.
 
-The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, after Novikov and Sedov): $\omega_0 t_c=-B/(2A)$. Direct Biot-Savart on this family's parallelograms (2π kernel) matches that closed form to machine precision.
+The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, after Novikov and Sedov): $|\omega_0| t_c=|B|/(2|A|)$ on the collapsing branch. It is Proposition 2 of the minimal-winding paper with $n=2$. Direct Biot-Savart on this family's parallelograms (2π kernel) matches that closed form to machine precision.
 
 ### Visualization
 
@@ -325,19 +306,7 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Cite
 
-Hendrick, C. (2026). *Parallelogram lock*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
-
-```bibtex
-@misc{parallelogram-lock-2026,
-  author       = {Hendrick, Chase},
-  title        = {Parallelogram lock: an explicit formula and sharp minimum
-                  for the Novikov--Sedov four-vortex parallelogram collapse},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
-}
-```
+Cite the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* (Chase Hendrick, 2026; Proposition 2 with n = 2) and the classical sources: Novikov and Sedov (1979) for the family and its rates, and Gotoda (2020 preprint, eq. 3.13) for the rates in closed form.
 
 References:
 
@@ -358,7 +327,7 @@ Two on one diagonal spin the same way. Two on the other spin the opposite way, h
 
 They can collapse to a point while staying the same shape, spinning as they go. How fast they spin, times how long until they meet, is a single score that does not care how large you drew the figure.
 
-**The quincunx lock is that score as one formula, plus the fact that it can never drop below $3\sqrt{33}/16$ (about 1.073).** It hits that floor at one angle between the diagonals: $\cos 2\theta = 4/7$, about 27.575°. That is the Lock preset. Slide the angle and the score only goes up. Step off the quincunx (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
+**The quincunx lock is that score as one formula, plus the fact that it can never drop below $3\sqrt{33}/16$ (about 1.0771).** It hits that floor at one angle between the diagonals: $\cos 2\theta = 4/7$, about 27.575°. That is the Lock preset. Slide the angle and the score only goes up. Step off the quincunx (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
 
 ### Statement
 
@@ -380,10 +349,10 @@ $$
 
 with $d_1/d_2=1/\sqrt{2}$ and $0<\theta<\pi/2$. These configurations have $L=0$ and collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). $\theta$ is the angle between the diagonals.
 
-Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Their dimensionless product is
+Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Here $\omega_0<0$: in this orientation the collapsing quincunx turns clockwise. The dimensionless product, taken positive (the paper's $P$), is
 
 $$
-\boxed{\omega_0 t_c=\frac{3}{16}\frac{7-4\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{33}}{16}.}
+\boxed{|\omega_0| t_c=\frac{3}{16}\frac{7-4\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{33}}{16}.}
 $$
 
 Equality occurs uniquely on this arc at $\cos 2\theta=4/7$.
@@ -395,12 +364,12 @@ The reciprocal pair with the diagonals swapped is the same family and carries th
 Setting $\varphi=2\theta\in(0,\pi)$ gives
 
 $$
-\omega_0 t_c=\frac{3}{16}\frac{7-4\cos\varphi}{\sin\varphi}.
+|\omega_0| t_c=\frac{3}{16}\frac{7-4\cos\varphi}{\sin\varphi}.
 $$
 
 Differentiating the quotient, the unique critical point on $(0,\pi)$ is $\cos\varphi=4/7$, where $\sin\varphi=\sqrt{33}/7$ and the quotient equals $\sqrt{33}$. Multiplying by $3/16$ yields $3\sqrt{33}/16$. The sign of the first derivative on either side shows it is a minimum. Endpoints $\varphi\to 0,\pi$ send the product to infinity. At $\theta=45^\circ$ the product is $21/16$.
 
-The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, the five-vortex case $\gamma_3\neq 0$): $\omega_0 t_c=-B/(2A)$. Direct Biot-Savart on this family's quincunxes (2π kernel) matches that closed form to machine precision.
+The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, the five-vortex case $\gamma_3\neq 0$): $|\omega_0| t_c=|B|/(2|A|)$, since $A<0$ and $B<0$ on the collapsing branch. It is the example after Proposition 3 of the minimal-winding paper (central circulation $3/2$ after the interchange of the rings). Direct Biot-Savart on this family's quincunxes (2π kernel) matches that closed form to machine precision.
 
 ### Visualization
 
@@ -418,21 +387,9 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Cite
 
-Hendrick, C. (2026). *Quincunx lock*. GENChase. https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md
+Cite the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* (Chase Hendrick, 2026; the example after Proposition 3) and the classical sources: Novikov and Sedov (1979) for the family and its rates, and Gotoda (2020 preprint, eq. 3.13 and Fig. 3(b)) for the rates in closed form and this configuration.
 
-```bibtex
-@misc{quincunx-lock-2026,
-  author       = {Hendrick, Chase},
-  title        = {Quincunx lock: an explicit formula and sharp minimum
-                  for the Novikov--Sedov five-vortex quincunx collapse},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/ChaseHendrick/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
-}
-```
-
-A different five-vortex slice of the same Novikov–Sedov family, with diagonal ratio $\mu=3$, recovers the three-vortex product $\omega_0 t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically. That is Three-vortex collapse bound on five vortices, not a third identity, and it is not claimed here.
+A different five-vortex slice of the same Novikov–Sedov family, with circulation ratio 3 and radius ratio $\sqrt{3}$ (Proposition 3 of the minimal-winding paper at central circulation $1/2$), recovers the three-vortex product $|\omega_0| t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically; the paper records that the constants $\kappa$ agree as well. That is the equal-pair three-vortex formula on five vortices, not a third identity, and it is not claimed here.
 
 References:
 
@@ -444,9 +401,9 @@ References:
 
 The historical catalog began with three rows; the two later candidates are above. All five have unconfirmed priority. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, the three-vortex $t_c$ minimum, Peregrine's amplitude 3, and Moore–Saffman's strain bound remain published and are not claimed.
 
-Checked 2026-09-20 and not a fourth row: the remaining exact Novikov-Sedov five-vortex slices (the quincunx with the diagonals swapped, the three-vortex bound on five vortices at diagonal ratio 3, and slices whose minimum is a nested radical), three-vortex $L=0$ with $\Gamma_1\neq\Gamma_2$ (Gotoda's $\theta$ gives a closed product; the critical point is a cubic in $\cos\theta$, not a floor like $\sqrt{2}$), and kite, non-parallelogram trapezoid, and equilateral-plus-interior four-vortex scans, which had no self-similar $L=0$ family. Seven-vortex Gotoda (4.4) is numerical $H$-$A$ curves. The search is in [`RESEARCH.md`](RESEARCH.md). Do not re-derive these. Credit published results to their original sources.
+Checked 2026-09-20 and not a fourth row: the remaining exact Novikov-Sedov five-vortex slices (the quincunx with the diagonals swapped, the three-vortex bound on five vortices at circulation ratio 3 and radius ratio $\sqrt{3}$, and slices whose minimum is a nested radical), three-vortex $L=0$ with $\Gamma_1\neq\Gamma_2$ (Gotoda's $\theta$ gives a closed product; the critical point is a cubic in $\cos\theta$, not a floor like $\sqrt{2}$), and kite, non-parallelogram trapezoid, and equilateral-plus-interior four-vortex scans, which had no self-similar $L=0$ family. Seven-vortex Gotoda (4.4) is numerical $H$-$A$ curves. The search is in [`RESEARCH.md`](RESEARCH.md). Do not re-derive these. Credit published results to their original sources.
 
-Checked again 2026-09-20, still not a fourth row. Distinguished five-vortex diagonal ratios other than $1/2$, $2$, $3$, and $2\pm\sqrt{3}$: $\varphi$, $\sqrt{2}$, $3/2$, and the rest give a product of the form $C(a-b\cos 2\theta)/\sin 2\theta$ whose minimum is a messy radical, not a floor like $\sqrt{2}$. The slice $\mu=2+\sqrt{3}$ kills the center vortex and recovers the parallelogram lock identically. Gotoda 4.1 with $\Gamma=(1,1,1,-1)$ is numerical $H$-$A$ curves; an isosceles-plus-axis Biot-Savart scan found no self-similar $L=0$ family. O'Neil's explicit quadruple and the hollow-vortex 2025 triples/quadruples are single published configurations, not a one-parameter family. Kallyadan–Shukla 2022 families are numerical. Mixed-sign wall/image and periodic-strip collapse have no closed $A(\theta)$, $B(\theta)$. Gotoda 2025 $\theta_Z$ remains a grid bracket. Do not claim any of these. Credit published results to their original sources.
+Checked again 2026-09-20, still not a fourth row. Distinguished five-vortex diagonal ratios (here $\mu=d_1^2/d_2^2=-\gamma_2/\gamma_1$ in Gotoda's (3.10), the squared ratio) other than $1/2$, $2$, $3$, and $2\pm\sqrt{3}$: $\varphi$, $\sqrt{2}$, $3/2$, and the rest give a product of the form $C(a-b\cos 2\theta)/\sin 2\theta$ whose minimum is a messy radical, not a floor like $\sqrt{2}$. The slice $\mu=2+\sqrt{3}$ kills the center vortex and recovers the parallelogram lock identically. Gotoda 4.1 with $\Gamma=(1,1,1,-1)$ is numerical $H$-$A$ curves; an isosceles-plus-axis Biot-Savart scan found no self-similar $L=0$ family. O'Neil's explicit quadruple and the hollow-vortex 2025 triples/quadruples are single published configurations, not a one-parameter family. Kallyadan–Shukla 2022 families are numerical. Mixed-sign wall/image and periodic-strip collapse have no closed $A(\theta)$, $B(\theta)$. Gotoda 2025 $\theta_Z$ remains a grid bracket. Do not claim any of these. Credit published results to their original sources.
 
 Checked 2026-09-20 outside planar point-vortex collapse. Love's leapfrog period is complete elliptic integrals, not an algebraic floor; existence $\alpha=3-2\sqrt{2}$ and stability $\alpha=\varphi^{-2}$ are already published. Three-vortex collapse on a sphere has a distinct angular velocity at each vortex (Kidambi–Newton). SQG / generalized-Euler collapse times are numerical. Moore–Saffman and Kida give published strain bounds, not a product min. Stuart / Mallier–Maslowe, Peregrine $|u|_{\max}=3$, Thomson's centered $N$-gon, hetons, and Calogero's goldfish are published families. The search is in [`RESEARCH.md`](RESEARCH.md). Do not claim these. Credit published results to their original sources.
 
@@ -474,7 +431,7 @@ Checked 2026-09-20 rigid-body, MHD sheets, β-plane dipoles, minimal surfaces. R
 
 Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex collapse is numerical in α (2D Euler slice is the three-vortex bound). Massive point vortices forbid collapse. Hollow-vortex implosion desingularizes existing rows. Vortices on ellipsoid/bean have no closed collapse product; conical NS is a 2-param exact family with numerical existence. Zipoy–Voorhees photon and ISCO are isolated published radii vs γ. Prandtl punch $2+\pi$ is 1920. Kasner is two constraints on three exponents. Camassa–Holm two-peakon phase shift is published 1993. Do not claim these. Credit published results to their original sources.
 
-Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) construct the first self-similar hollow-vortex implosion and desingularize any non-degenerate point-vortex collapse — including the three rows above — to a real-analytic family of 2D Euler hollow imploders. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. Cite Chen–Walsh–Wheeler as the Euler realization of the three locks. Do not claim a fourth row from these papers.
+Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093; Math. Ann. 396 (2026) 5) construct self-similarly imploding hollow vortices and prove that every collapsing point-vortex configuration that is non-degenerate in their sense (their Definition 4.1) can be desingularized into a real-analytic family of them (Theorems 1.3 and 4.4); they verify the hypothesis for one explicit triple and one explicit quartet (Examples 4.2 and 4.3, Corollary 4.6). Both lie in families of the minimal-winding paper: their triple (4.5), circulations (1, 2, −2/3) at −2, 1 and √7 i, is the μ = 1/2 configuration of its Proposition 1 at θ = π/2 on the arc A₊ (interchange the first two vortices and halve the circulations), with $P=5\sqrt7/2$; their quartet (4.6), turned by π/6, is the n = 2 ring configuration of its Proposition 2 at θ = π/12, with $P=2\sqrt3-3/4$. In this file's parallelogram-lock parametrization the quartet is the configuration with 15° between the diagonals (after a reflection and a change of sign of the circulations). In arXiv:2506.04093v1 the quartet's third position is printed as $-\sqrt3/2-1-i/2$; it must be $-\sqrt3/2-1+i/2$ for the four points to be a parallelogram centered at the origin. The Math. Ann. version (Eq. (4.6), p. 29 of 40, compared on 2026-09-27) prints the same sign, with the same numbering, so quote the corrected position with a note in either case. Non-degeneracy is unchanged by similarities, a positive factor in the circulations and relabeling, so one member of each family is non-degenerate, and by real-analyticity all but isolated members of the arcs containing them are (the paper's Meaning and limits paragraph). Of the three rows above, only the parallelogram lock's family is covered, at all but isolated angles; the three-vortex family Γ = (1, 1, −1/2) and the quincunx family are not, and no minimizer, so no Lock preset, has been checked. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. The minimal-winding paper cites Chen–Walsh–Wheeler in its Meaning and limits paragraph, with that qualification. Do not claim a fourth row from these papers.
 
 **Superseded in part by the double-triangle correction above.** The earlier 2026-09-20 missed-geometries entry said: nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). That six-vortex inference was false: the scan omitted $\mu=(3\pm\sqrt5)/2$, and generic relatively rotated triangles have no common reflection symmetry. The remaining exclusions in this paragraph are unchanged. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
 
@@ -486,7 +443,7 @@ Checked 2026-09-20 other areas. Brizard XMHD X-point collapse (arXiv:2504.07311)
 
 Checked 2026-09-20 outside math and physics. SIR peak and final size are published (Lambert $W$, Padé). Keller–Segel $8\pi$ and type-II $\lambda(t)$ are published. Lotka–Volterra periods are elliptic. Kingman waiting times, hawk–dove $p^*=V/C$, Nicholson–Bailey, Little's $L=\lambda W$, Kelly's $f^*$, and Kleiber's $3/4$ are isolated published or empirical. The identity bar does not pick up a fourth row in epidemiology, ecology, genetics, games, queues, or allometry. Do not claim these. Credit published results to their original sources.
 
-Checked 2026-09-20 extra-μ five-vortex and remaining 2022/2025 collapse papers. Gotoda (3.13) at diagonal ratio 3 recovers the three-vortex bound $\sqrt{2}$ on five vortices (already skipped). Other rational $\mu$ keep the quincunx shape $(a-b\cos 2\theta)/\sin 2\theta$ with a nested-radical floor: same formula, other coefficients, not a new family. Kallyadan–Shukla (Phys. Rev. Fluids 7, 114701) families are numerical. Geostrophic triple collapse (JPSJ 94, 094402, 2025) is non-self-similar. A regular pentagon plus centre has $I\neq 0$. Do not claim these. Credit published results to their original sources.
+Checked 2026-09-20 extra-μ five-vortex and remaining 2022/2025 collapse papers. Gotoda (3.13) at circulation ratio 3 and radius ratio $\sqrt{3}$ recovers the three-vortex bound $\sqrt{2}$ on five vortices (already skipped; Proposition 3 of the minimal-winding paper at central circulation $1/2$). Other rational $\mu$ keep the quincunx shape $(a-b\cos 2\theta)/\sin 2\theta$ with a nested-radical floor: same formula, other coefficients, not a new family. Kallyadan–Shukla (Phys. Rev. Fluids 7, 114701) families are numerical. Geostrophic triple collapse (JPSJ 94, 094402, 2025) is non-self-similar. A regular pentagon plus centre has $I\neq 0$. Do not claim these. Credit published results to their original sources.
 
 Checked 2026-09-20 periodic domains, Chern–Simons, optics, peakons. Aref–Stremler three-vortex in a strip or parallelogram is integrable with zero net circulation; rational $\Gamma$ gives periodic motion, not a plane-style $\omega t_c$ floor. Jackiw–Pi vortices are static Liouville solitons. Optical vortex annihilation and Fibich's Kerr-ring collapse are numerical or a published azimuthal count. Novikov peakon–antipeakon is a collision / ill-posedness result. Abelian Higgs three-vortex motion is moduli geodesics; 2025 reconnection is of filaments. Do not claim these. Credit published results to their original sources.
 

@@ -11,13 +11,20 @@
 # replicates (replicates 0..R-1, so an added cell shares its W draws with the cells already there).
 # The first run (2026-09-26 morning) computed nu = 1 at 1/4, 1, 4 on all sets and all nu at those ell on the
 # two sets with R = 20; the revision added the remaining cells with R = 5 (the between-population SD is 0.0013).
-# Usage: python3 matern_finiteN.py R [N [SET,SET,...]]      (writes the combined out/matern_finiteN.json)
+# Replicate r's W comes from a fresh generator seeded [20260926, 7, r], so it does not depend on R, on the set or on
+# the other cells: the 5 replicates of a cell run with R = 5 are the first 5 of the same cell run with R = 20.
+# out/ is reproduced by the two stages (README):
+#   python3 matern_finiteN.py 20 --first      the 54 cells of the first run (first_run below), 20 replicates
+#   python3 matern_finiteN.py 5               the other 58 cells, 5 replicates
+# Usage: python3 matern_finiteN.py R [N [SET,SET,...]] [--first]      (writes the combined out/matern_finiteN.json)
 import sys, os, json, time, numpy as np
 sys.path.insert(0, os.path.dirname(__file__))
 from common import window_slope, stim_files, OUT
 
-R = int(sys.argv[1]); NN = int(sys.argv[2]) if len(sys.argv) > 2 else 8704
-ONLY = sys.argv[3].split(',') if len(sys.argv) > 3 else None
+FIRST = '--first' in sys.argv[1:]
+ARGS = [a for a in sys.argv[1:] if a != '--first']
+R = int(ARGS[0]); NN = int(ARGS[1]) if len(ARGS) > 1 else 8704
+ONLY = ARGS[2].split(',') if len(ARGS) > 2 else None
 P = 2800
 EXTRA = ('8D_MP032_0810', '4D_MP032_0922')
 PART = f'{OUT}/finiteN_parts'; os.makedirs(PART, exist_ok=True)
@@ -26,8 +33,14 @@ PART = f'{OUT}/finiteN_parts'; os.makedirs(PART, exist_ok=True)
 def keys_for(label):
     k = [f'{label}|1.0|{c}' for c in (0.25, 0.5, 1.0, 2.0, 4.0, 8.0)] + [f'{label}|0.75|{c}' for c in (2.0, 4.0, 8.0)]
     if label in EXTRA:
-        k += [f'{label}|{nu}|{c}' for nu in (0.5, 1.5, 2.5) for c in (0.25, 1.0, 4.0)]
+        k += [f'{label}|{nu}|{c}' for nu in (0.5, 0.75, 1.5, 2.5) for c in (0.25, 1.0, 4.0) if (nu, c) != (0.75, 4.0)]
     return k
+
+
+def first_run(key):
+    """A cell of the first run: ell = 1/4, 1 or 4, with nu = 1 on every set and every nu on the two EXTRA sets."""
+    label, nu, c = key.split('|')
+    return float(c) in (0.25, 1.0, 4.0) and (float(nu) == 1.0 or label in EXTRA)
 
 
 def bartlett(rng, P, N):
@@ -56,9 +69,9 @@ for label, _, d in stim_files():
         continue
     fo = f'{PART}/{label}.json'
     old = json.load(open(fo))['res'] if os.path.exists(fo) else {}
-    todo = [k for k in keys_for(label) if k not in old]
+    todo = [k for k in keys_for(label) if k not in old and (first_run(k) or not FIRST)]
     if not todo:
-        print(f'{label}: complete', flush=True); continue
+        print(f'{label}: {"first-run cells " if FIRST else ""}complete', flush=True); continue
     with np.load(f'{OUT}/matern_parts/{label}.npz') as z:
         sp = {k: np.array(z[k]) for k in todo}
     D = {k: np.sqrt(np.clip(sp[k], 0, None)) for k in todo}
