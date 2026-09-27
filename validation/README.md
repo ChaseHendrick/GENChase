@@ -142,3 +142,5 @@ claims a focus where no image exists, and the exit ray is drawn backwards when t
 the plate.
 
 Two tabs added on 2026-09-26 carry evidence while their records stay unvalidated: [Fisher-KPP fronts](FISHER-KPP.md) (logistic benchmark, straight-front speed against Bramson and Ebert-van Saarloos, fourth-order refinement at D dt/h² = 1/6, the plate's front-speed witness, a wrong-diffusion-sign control, print agreement) and [Maxwell-Cattaneo heat](CATTANEO.md) (Fourier modes against the exact dispersion relation, the relaxation limit, second-order refinement, the step bound, ring speed, a wrong-relaxation-sign control, print agreement).
+
+The [Arago spot](ARAGO.md) record also carries evidence while it stays unvalidated: an independent radial quadrature of the on-axis Fresnel identity for an opaque disk, with a circular-aperture control against 4 sin²(kR²/4z). It tests the textbook identity, not the module, whose 24 by 18 plate sum compares I(0) with a ring and is recorded as outside the claim.

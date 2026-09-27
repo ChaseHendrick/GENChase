@@ -2,7 +2,7 @@
 
 The Arago plate draws Fresnel diffraction by an opaque disk. This note checks one statement of that model, and only that statement.
 
-**Status: partially validated.** The checked object is an independent radial quadrature of the on-axis integral. It is not the interactive plate. The plate still uses a fixed 24 by 18 angular sum and reports I(0) against a ring just outside the disk. That number is not this proof. There is no laboratory photometry and no print-path evidence. The picture was not changed.
+**Status: unvalidated, with this evidence recorded** (in-project contract check, 2026-09-27). The checked object is an independent radial quadrature of the textbook on-axis integral. It is not the interactive plate, and nothing about `src/modules/arago.js` is validated by it. The plate still uses a fixed 24 by 18 angular sum and reports I(0) against a ring just outside the disk. That number is not this proof. There is no laboratory photometry and no print-path evidence. The picture was not changed.
 
 ## The identity
 
@@ -49,9 +49,9 @@ Run `node tools/arago-science.js`. The artifact is [results/arago-science.json](
 | 0.001 | 632,456 | 632.456 | 1.001086 | 0.001086 | fail |
 | 0.0005 | 1,264,912 | 632.456 | 0.999805 | 0.000195 | pass |
 
-The sampling that meets the tolerance is 1,264,912 radial zones of width 0.0005, on the window rho_max = 632.456. The coarser run at width 0.002 (316,228 zones, same window and the same convergence factor) has abs(ratio - 1) = 0.0808 and fails the same predicate. The ladder is not monotone: width 0.002 is worse than width 0.004. That is aliasing of the outer rings, which is why one coarse number is not a proof and why the refinement is part of the check. Width 0.001 still fails. Width 0.0005 passes. Past that point the residual sits on the convergence-factor floor near 2e-4, not on zero.
+The sampling that meets the tolerance is 1,264,912 radial zones of width 0.0005, on the window rho_max = 632.456. The coarser run at width 0.002 (316,228 zones, same window and the same convergence factor) has abs(ratio - 1) = 0.0808 and fails the same predicate. The ladder is not monotone: width 0.002 is worse than width 0.004. That is aliasing. The sampled chirp exp(i k rho^2 / (2 z)) advances by k rho dr / z per zone, and where that step is a multiple of 2 pi the samples stop rotating: a discrete stationary point, at rho = 0.4 m / dr for these parameters. The first one lies inside the window at rho = 100, 200 and 400 for widths 0.004, 0.002 and 0.001. For width 0.0005 the first is at 800, beyond rho_max = 632.456. So every failing row is aliased, and the failure of a coarser row is not a clean refinement control: it shows aliasing, not convergence toward the fine row. Width 0.001 still fails. Width 0.0005 passes. Past that point the residual sits on the convergence-factor floor near 2e-4, not on zero.
 
-At the passing width the aperture ratio is 2.0000051436. The closed form, computed as 4 sin^2(k R^2 / (4 z)) and not from the sum, is 1.9999999999999996. The absolute difference is 5.1e-6. The disk predicate abs(ratio - 1) < 1e-3 fails for this aperture, because the ratio is 2, not 1. A formula that dropped the factor of 4 would give sin^2 = 1/2, which this sum does not match.
+At the passing width the aperture ratio is 2.0000051436. The closed form, computed as 4 sin^2(k R^2 / (4 z)) and not from the sum, is 1.9999999999999996. The absolute difference is 5.1e-6. The disk predicate abs(ratio - 1) < 1e-3 fails for this aperture, because the ratio is 2, not 1. A formula that dropped the factor of 4 would give sin^2 = 1/2, which this sum does not match. This aperture control, not the zone-width ladder, is the failure control that carries the check.
 
 The same zone width with eps = 1e-3 instead of 1e-4 gives a disk ratio 0.998007. Then abs(ratio - 1) = 0.001993, so the predicate fails. The tolerance is wider than the weak convergence factor and narrower than a strong one. It does not accept every integral.
 
@@ -65,8 +65,8 @@ The same command loads `src/modules/arago.js` through `tools/science-harness.js`
 | Probe R 20, z 0.8, k 1.2 | 96 | 95.493 | 0.665727 |
 | Same probe | 160 | 95.493 | 1.375842 |
 
-The grid-96 probe is the earlier reading of about 0.67 at Fresnel number about 95. The same probe on the shipped grid is 1.376. None of these is within 0.2 of 1, and none is required to be. The sum is cut off near half the diagonal, and the comparison target is a ring. Both sit outside the converged claim above.
+The grid-96 probe is the earlier reading of about 0.67 at Fresnel number about 95. The same probe on the shipped grid is 1.376. None of these is within 0.2 of 1, and the tool asserts that none is. A metric that moves from 0.67 to 1.38 when only the grid changes is not a converged quantity. The sum is cut off near half the diagonal, and the comparison target is a ring. Both sit outside the converged claim above.
 
 ## Limits
 
-The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring. That number is not this proof. No laboratory photometry. No print path, so the record stays partially validated rather than validated within stated limits.
+The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring. That number is not this proof. No laboratory photometry. No print path. Nothing about the module is validated, so the record stays unvalidated, with this evidence recorded, as the Fisher-KPP and Maxwell-Cattaneo records do. Promotion needs a benchmark of the module's own propagator and metric against a converged reference, and then a print-path check.
