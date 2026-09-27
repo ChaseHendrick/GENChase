@@ -1347,7 +1347,7 @@ void main(){
     try { input.scrollIntoView({ block: 'center' }); } catch (err) { input.scrollIntoView(); }
     input.focus({ preventScroll: true });
     // On a narrow screen the stage is pinned over the top of the page, and it grows as the new plate's status
-    // fills in; keep the focused field out from under it for the first few seconds.
+    // fills in; keep the focused field uncovered until the plate reports its first completed status.
     const stage = $('stage');
     if (stage && getComputedStyle(stage).position === 'sticky') {
       const uncover = () => {
@@ -1356,7 +1356,25 @@ void main(){
         if (top < below) window.scrollBy(0, top - below);
       };
       uncover();
-      if (window.ResizeObserver) { const watch = new ResizeObserver(uncover); watch.observe(stage); setTimeout(() => watch.disconnect(), 3000); }
+      if (window.ResizeObserver) {
+        let frame = 0;
+        const stop = () => {
+          watch.disconnect(); statusWatch.disconnect(); cancelAnimationFrame(frame);
+          input.removeEventListener('blur', stop);
+        };
+        const watch = new ResizeObserver(() => {
+          if (document.activeElement !== input) stop(); else uncover();
+        });
+        const statusWatch = new MutationObserver(() => {
+          if (document.activeElement !== input) { stop(); return; }
+          if (!e.statusHtml || /warming up|sampling V\(x, y\) on the grid/i.test(e.statusHtml) || frame) return;
+          // Let the completed status affect layout before the last scroll and disconnect.
+          frame = requestAnimationFrame(() => { uncover(); stop(); });
+        });
+        watch.observe(stage);
+        statusWatch.observe($('status'), { childList: true, subtree: true, characterData: true });
+        input.addEventListener('blur', stop, { once: true });
+      }
     }
     try { input.setSelectionRange(input.value.length, input.value.length); } catch (err) { /* not a text input */ }
   }
@@ -2200,6 +2218,9 @@ void main(){
 
   function bindRange(input, apply) {
     input.addEventListener('pointerdown', () => { dragSnap = false; });   // a new gesture on the same slider gets its own snapshot
+    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+      input.addEventListener(type, () => { dragSnap = false; }); // a drag back to its start may never fire change
+    }
     input.addEventListener('input', () => apply('drag'));
     input.addEventListener('change', () => apply('commit'));
   }
@@ -2495,6 +2516,7 @@ void main(){
       const label = h('label', { for: 'headline-input', text: (mod.headlineLabel || f.label).toLowerCase() });
       headlineInput = h('input', { id: 'headline-input', type: 'number', min: f.min, max: f.max, step: f.step, inputmode: 'numeric', 'aria-label': f.label, value: e.state[f.key] });
       let timer = null;
+      headlineInput.addEventListener('focus', () => { dragSnap = false; });
       headlineInput.addEventListener('input', () => {
         const raw = Number(headlineInput.value); if (!isFinite(raw)) return;
         const v = clamp(Math.round(raw / f.step) * f.step, f.min, f.max);
