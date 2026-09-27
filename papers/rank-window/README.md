@@ -2,11 +2,10 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft methods note** (drafted in this repository by the owner's standing decision of 2026-09-26), not submitted
-anywhere. Three independent referee readings were made in the project (`notes/review-1.md`, verdict major revision;
-`notes/review-2.md` and `notes/review-3.md`, verdict minor revision each). The fixes of the first two are applied; of
-the third, the findings that further readers confirmed are fixed and the others are answered (`notes/review-3.md`,
-"Response"). The fixes of the third have not been read again.
+**Preprint**, archived on Zenodo with its programs ([doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835)), not peer reviewed. Three independent referee readings were made in the project
+(`notes/review-1.md`, verdict major revision; `notes/review-2.md` and `notes/review-3.md`, verdict minor revision
+each). The fixes of the first two are applied; of the third, the findings that further readers confirmed are fixed
+and the others are answered (`notes/review-3.md`, "Response"). The fixes of the third have not been read again.
 
 **[Read the draft (PDF, 16 pages)](paper/note.pdf)**
 
@@ -114,7 +113,8 @@ From this folder, with the inputs above in place, `code/requirements.txt` instal
 
 ```
 python3 code/matern_window.py > out/matern_window.log          # about 1 h, resumable
-python3 code/matern_finiteN.py 20 > out/matern_finiteN.log
+python3 code/matern_finiteN.py 20 --first > out/matern_finiteN_first.log   # first run: 54 cells, 20 replicates
+python3 code/matern_finiteN.py 5 > out/matern_finiteN.log                   # the other 58 cells, 5 replicates
 python3 code/matern_extra.py white > out/matern_extra_white.log
 python3 code/matern_extra.py sub > out/matern_extra_sub.log
 python3 code/matern_extra.py kv > out/matern_extra_kv.log
@@ -136,6 +136,19 @@ cd paper && pdflatex note && pdflatex note && pdflatex note
 `make_numbers.py` and `make_figures.py` run from `out/` alone, without the inputs (checked: `make_numbers.py`
 reproduces `paper/numbers.tex`, the five tables and `out/numbers.json` byte for byte); `verify_independent.py`
 needs the stimulus files (`NOTE_STIM=<folder> python3 code/verify_independent.py` reads them from another folder).
+
+The finite populations were computed in two stages, and the two `matern_finiteN.py` lines repeat them. `--first`
+restricts the run to the cells of the first computation: ell = 1/4, 1 and 4, with nu = 1 on every set and all five nu
+on 8D MP032 2017-08-10 and 4D MP032 2017-09-22. The second line adds the other cells (nu = 1 at ell = 1/2, 2 and 8,
+and nu = 0.75 at ell = 2, 4 and 8 where not already computed) with 5 replicates. Replicate r uses the same Wishart
+draw in every run (a generator seeded [20260926, 7, r]), so the stage that computes a cell sets only its replicate
+count, not its values.
+
+The full rerun of 2026-09-27 (`notes/rerun-2026-09-27.md`) ran these commands from the downloaded inputs and
+reproduced every committed output, and `make_numbers.py` then reproduced `paper/numbers.tex`, the tables and
+`out/numbers.json` byte for byte. The one exception is the last bits of the `matern_window.py` outputs. They were
+computed with two BLAS threads, and one thread gives spectra within 1e-8 relative of them (window exponents within
+1e-9, and the finite-population values that rest on them within 2e-13). No printed number changes.
 
 ## License
 

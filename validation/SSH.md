@@ -3,11 +3,14 @@
 The `ssh` tab diagonalizes a finite dimerized tight-binding chain, draws every
 eigenmode, and reports the end weight and energy of the mid-gap pair. This note
 records an **independent Float64** numerical check of the single-particle SSH
-Hamiltonian, and a comparison of the studio's own solver in `src/modules/ssh.js`
-with it. It does **not** promote the technique status or exercise the print path.
+Hamiltonian, a comparison of the studio's own solver in `src/modules/ssh.js`
+with it, and a print-path check that exporting the sheet does not change that
+state.
 
-Status in `validation/techniques.json` remains **unvalidated** until a print
-harness and review exist.
+Status in `validation/techniques.json` is **validated within stated limits** for
+the domain below. The winding that the status line prints is the closed rule
+ν = 1 when w > v, not a numerical integral of the Berry connection. The
+swapped-hopping control is what checks that rule: it removes the edge modes.
 
 ## Model
 
@@ -109,13 +112,16 @@ at \(N=96\), and on Critical again at \(N=160\).
 
 Critical is the finite-size case. Its localization length, 18.5 unit cells, is
 comparable to the default chain of 48 cells. The two end modes overlap, split,
-and keep only 0.43 of their weight on the ends. The winding \(\nu=1\) says they
+and keep only 0.43 of their weight on the ends. The winding \(\nu=1\), which
+here is the closed rule \(w>v\) and not a sampled Berry phase, says they
 should be there, and on a chain of 80 cells they are. The status prints the
 disagreement and the reason rather than calling the default plate topological.
 
 Failure controls for the comparison:
 - The edge-mode presets with \(v\) and \(w\) swapped must read trivial. They
-  measure end weights of 0.015 to 0.016.
+  measure end weights of 0.015 to 0.016. That is the wrong-boundary control:
+  the hop that should close the chain on the other dimerisation removes the
+  edge zero modes.
 - A reference chain terminated on the wrong bond must miss the studio
   eigenvalues. It misses by 0.80.
 - The retired display heuristic must miss the reference densities. It misses
@@ -152,5 +158,18 @@ boundary, and its pixels change. No `legacy` value is declared, for two reasons:
 Finite open/periodic chains only; no interactions, phonons, continuum limit,
 thermodynamic-limit proof, or experimental polyacetylene claim. The studio
 comparison covers the registered presets at \(N=96\) and Critical at \(N=160\).
-Other grids, the plate's row mapping, per-row scaling and palette, and the print
-path are not compared pixel by pixel. Print-state accuracy is not registered.
+The plate's row mapping, per-row scaling and palette are not compared pixel by
+pixel against the Jacobi modes. The winding on the status line is \(w>v\),
+checked by the swapped-hopping control, not a discretized Berry phase.
+
+## Print
+
+`node tools/ssh-print-state.js --write` calls the module `exportPNG` at
+1920×2400, which is 8 in at 300 ppi for the 4:5 sheet, on the Topological and
+Trivial presets at grid 96. The Float32 mode field, the mid-gap end weight, the
+mid-gap energy, the cell counts and the settings are unchanged by the export. A
+second regenerate matches. A width one pixel short is rejected, and adding 1 to
+the first field word and to the end weight after export is rejected by the same
+predicate. On that instance the Topological end weight is above 0.9 with
+mid-gap energy under \(10^{-8}\), and the Trivial end weight is under 0.05.
+The spectral comparison remains `tools/ssh-science.js`.

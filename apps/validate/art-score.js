@@ -18,8 +18,9 @@
     let v = 0; for (let i = 0; i < L.length; i++) v += (L[i] - mean) * (L[i] - mean);
     return { mean, sd: Math.sqrt(v / Math.max(1, L.length)) };
   }
-  // Mean |L(x+k) - L(x)| over horizontal and vertical pairs, at every pixel offset. tools/sharp.js samples
-  // even offsets only, so an image enlarged by even nearest-neighbour blocks never shows a block edge there.
+  // Mean |L(x+k) - L(x)| over horizontal and vertical pairs, at every pixel offset, the same stride
+  // tools/sharp.js uses. An even nearest-neighbor block edge sits between an odd pixel and the next
+  // even pixel, so a stride of 2 would miss it.
   function madCurve(L, w, h) {
     const out = {};
     for (const k of KS) {
