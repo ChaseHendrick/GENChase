@@ -1,6 +1,6 @@
 # Closed forms: Crapper, Airy, hydrogen orbitals
 
-These are precision checks of exact formulas the plates evaluate. They are not confirmed predictions, and they are not print audits. `node tools/closed-forms-science.js --write` writes [validation/results/closed-forms-science.json](results/closed-forms-science.json). All three records are **partially validated**. Print was not run. No module source was edited, so the source fingerprints are unchanged. The comparison below was made inside the project on 2026-09-27. There is no outside review.
+These are precision checks of exact formulas the plates evaluate. They are not confirmed predictions, and they are not print audits. `node tools/closed-forms-science.js --write` writes [validation/results/closed-forms-science.json](results/closed-forms-science.json). `crapper` is **unvalidated**. `airy` and `orbitals` are **partially validated**. Print was not run. No module source was edited, so the source fingerprints are unchanged. The comparison below was made inside the project on 2026-09-27. There is no outside review.
 
 ## Crapper
 
@@ -61,13 +61,13 @@ Against that series, the module on [-4, 4] at steps of 0.05 has maximum absolute
 | 8 | -0.07551 | 4.74e-8 |
 | -10 | 0.04077 | 0.04024 |
 
-z = 8 is still on the RK4 branch; the switch is `z > 8`. At z = 9, 12, and 15 the module equals its own one-term asymptotic. A two-term factor `(1 - 5/(72 zeta))` differs from that one-term value by 0.387%, 0.251%, and 0.180%.
+z = 8 is still on the RK4 branch; the switch is `z > 8`. The bridge has the wrong sign at arguments 6 to 8. At span 14 the plate coordinate `xx` reaches `span * 0.48`, about 6.72, so those arguments are on the sheet, not only in this table. At z = 9, 12, and 15 the module equals its own one-term asymptotic. A two-term factor `(1 - 5/(72 zeta))` differs from that one-term value by 0.387%, 0.251%, and 0.180%.
 
 The pixel map in `compute()` is `W = grid`, `H = round(grid * aspect)`, `zMax = sqrt(2 L)` with `L = span`, `z = zMax * y / (H-1)`, `xx = L * (x/(W-1) - 0.52)`, argument `xx - z^2/4`, and amplitude `ai(argument) * exp(max(-18, a*xx - a*z^2/2))`. The stored metric is the mean of `|peak x - z^2/4|` on rows with `y` in `(0.25 H, 0.9 H)`, using intensity equal to amplitude squared.
 
 On three states (span 12, 10, 14) those peaks match the same real formula evaluated with the independent series. The maximum peak-position difference is 0. The mean offsets are 0.938, 0.892, and 0.951. They are not zero. The maximum of real Ai sits near argument -1.02, so the intensity peak does not lie on the catalog line `x_peak = z^2/4`. That line is where the Airy argument is zero. The status text calls an offset under 1.5 "accelerating" and marks the comparison as construction. This check does not claim the peak is exactly on `z^2/4`.
 
-The catalog factor `Ai(x - z^2/4 + i a)` is not what the plate evaluates. An independent complex series at a = 0.08 gives `|Ai(xi + i a)| / |Ai(xi)|` equal to 1.0297, 1.0032, 1.0017, 1.0012, and 1.0010 at xi = -2, -1, 0, 1, 2. The plate multiplies real `Ai(xi)` by the real exponential. The imaginary phase is used only when the drawing mode is phase.
+The plate multiplies real `Ai(xi)` by `exp(a x - a z^2/2)`. That is not the finite-energy factor `Ai(xi + i a)` named in the credit. An independent complex series at a = 0.08 gives `|Ai(xi + i a)| / |Ai(xi)|` equal to 1.0297, 1.0032, 1.0017, 1.0012, and 1.0010 at xi = -2, -1, 0, 1, 2. The imaginary phase is used only when the drawing mode is phase.
 
 Failure controls move the tracked peak coordinate. A wrong caustic can leave the mean offset almost unchanged, so the scalar metric alone is not the control. Both controls were caught:
 
@@ -94,4 +94,4 @@ Failure controls, all caught:
 
 ## Status
 
-`crapper`, `airy`, and `orbitals` are partially validated. Each `print` list is empty. A full "validated within stated limits" label would need a real print run, a reviewed domain, and a review date on the record. Those were not added.
+`crapper` is unvalidated. The checks are closure of a periodic parametrisation and the height against Crapper's steepness formula. The same tool shows the plate draws a different curve: denominator `1+A^2-2A cos` is Crapper's map with the sign of the x-perturbation flipped. It overturns at the trough at `A = 3-2*sqrt(2)` and self-touches near `A = 0.30`, not at Crapper's `A ≈ 0.4547`. `airy` and `orbitals` stay partially validated. The Airy record includes the two module defects above (RK4 sign on arguments 6 to 8, and real `Ai` times the exponential instead of `Ai(xi + i a)`). Each `print` list is empty. A full "validated within stated limits" label would need a real print run, a reviewed domain, and a review date on the record. Those were not added.

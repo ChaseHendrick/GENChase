@@ -2949,13 +2949,13 @@
     "status": "partially validated",
     "limitations": [
       "Precision check of the real-argument Ai that airy.js actually evaluates (80-step RK4 on [-10, 8], one-term asymptotic for z>8, leading oscillation for z<-10). Not a check of the catalog factor Ai(x - z^2/4 + i a), and not a print audit.",
-      "On [-4, 4] the module matches an independent power series to 7.23e-7. At z=6 and z=8 the RK4 bridge disagrees with that series, including a sign change at z=6. For z>8 the plate matches its own one-term asymptotic; a two-term expansion differs by 0.387% at z=9.",
-      "Tracked intensity peaks match the same real formula, but the mean |peak x - z^2/4| is about 0.89 to 0.95 because the maximum of Ai is near argument -1.02, not 0. The catalog line x_peak = z^2/4 is the zero of the Airy argument. At a=0.08, |Ai(xi+ia)|/|Ai(xi)| is 1.0017 at xi=0 and 1.030 at xi=-2."
+      "On [-4, 4] the module matches an independent power series to 7.23e-7. The RK4 bridge has the wrong sign at arguments 6 to 8: at z=6 the module returns -1.200e-4 against the series +9.948e-6, and at z=8 it returns -0.07551 against 4.74e-8. The switch to the asymptotic is z>8, so z=8 is still on that bridge. At span 14 the plate coordinate xx reaches span*0.48, about 6.7, so those arguments are on the sheet.",
+      "The plate multiplies real Ai by exp(a x - a z^2/2). That is not the finite-energy factor Ai(xi + i a) named in the credit. At a=0.08, |Ai(xi+ia)|/|Ai(xi)| is 1.0017 at xi=0 and 1.030 at xi=-2. The tracked peaks match the real formula, but the mean |peak x - z^2/4| is about 0.89 to 0.95 because the maximum of Ai is near argument -1.02, not 0."
     ],
     "remaining": [
       "Run a real print-state check before any full validation label.",
-      "The catalog complex argument Ai(x - z^2/4 + i a) is not what the plate evaluates. Decide whether that factor should be implemented; this check did not change the field.",
-      "The RK4 bridge for z near 6 to 8, and the one-term tail for z>8, are outside the accurate interval used for the peak."
+      "The RK4 bridge has the wrong sign on arguments 6 to 8, and span 14 reaches those arguments. The one-term tail for z>8 is also outside the accurate interval.",
+      "Implement Ai(xi + i a), not real Ai times exp(a x - a z^2/2), before the credit's finite-energy beam can be claimed. This check did not change the field."
     ],
     "numerical": [
       {
@@ -3954,16 +3954,16 @@
     "sourceSha256": "463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92",
     "reference": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
     "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
-    "status": "partially validated",
+    "status": "unvalidated",
     "limitations": [
-      "Precision check that the implemented period-1 map closes and that its crest-to-trough height equals 4|A|/(pi(1-A^2)) and the module sOfA (max abs 2.22e-16). Not a derivation from the water-wave equations, and not a print audit.",
-      "The catalog map (denominator 1+A^2-2A cos) is not classical z_A (denominator 1+A^2+2A cos). At A=0.2 the pointwise distance reaches 0.05305. The catalog trough derivative vanishes at A=3-2*sqrt(2)=0.17157 (steepness 0.22508). At A=0.30 the catalog map meets itself (gap 5.55e-17). Classical z_A does not.",
-      "An independent solve of the classical splash f=f'=0, not using 0.730 as an input, gives A=0.4546700164520109 and steepness 0.7297642257877295, within 0.001 of 0.730. The plate was not retuned to that curve.",
+      "Status is unvalidated. The checks are closure, which is automatic for a periodic parametrisation, and the crest-to-trough height against 4|A|/(pi(1-A^2)) and the module sOfA (max abs 2.22e-16). That is not a derivation from the water-wave equations, and not a print audit.",
+      "The plate draws a different curve from Crapper's. The catalog map uses denominator 1+A^2-2A cos, which is Crapper's map with the sign of the x-perturbation flipped. Classical z_A uses 1+A^2+2A cos. At A=0.2 the pointwise distance reaches 0.05305.",
+      "The implemented map overturns at the trough at A=3-2*sqrt(2)=0.17157 (steepness 0.22508) and self-touches at A=0.30 (gap 5.55e-17). Crapper's profile self-touches at A=0.4546700164520109, steepness 0.7297642257877295, within 0.001 of 0.730. Classical z_A at A=0.30 is still separated. The plate was not retuned.",
       "The schema clamps A at 0.458, where the steepness formula gives 0.73794, past the classical limit. Module A_STAR is the inverse of the hardcoded constant 0.7298, not that geometric solve."
     ],
     "remaining": [
-      "Run a real print-state check before any full validation label.",
-      "Decide whether the plate should draw classical z_A or the catalog map. This check records the disagreement and does not change the formula.",
+      "Draw classical z_A before this record can claim Crapper's wave. Closure of the flipped map is not that claim.",
+      "A print-state check is still required, and only after the drawn curve is the classical one.",
       "Interior streamlines, curvature, and the dual Euler reading were not checked."
     ],
     "numerical": [
