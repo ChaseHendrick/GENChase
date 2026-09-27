@@ -1,0 +1,12 @@
+coupled component 0: CAPD string minus Hamilton equation is exactly 0: True
+coupled component 1: CAPD string minus Hamilton equation is exactly 0: True
+coupled component 2: CAPD string minus Hamilton equation is exactly 0: True
+coupled component 3: CAPD string minus Hamilton equation is exactly 0: True
+coupled field agrees with Hamilton's equations at 800 random points: True
+uncoupled field minus Hamilton's equations of H0: [0, 0, 0, 0]
+H(0, t2, p1_lift, p2) - E simplifies to 0
+dt1/dt on the lift = sqrt(2*E + 2*g*cos(t2) + 4*g - p2**2)/sqrt(sin(t2)**2 + 1)  (positive where the square root is)
+lift and lift_dp1 checked at 200 random points, mismatches: 0
+lift_dp1 formulas minus exact derivatives: 0 0
+uncoupled lift residuals: 0 0 0
+RESULT: OK

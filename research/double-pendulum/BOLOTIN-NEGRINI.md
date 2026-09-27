@@ -141,3 +141,63 @@ variational methods".
 | OpenAlex, Semantic Scholar | rate-limited (429 / budget) |
 | ScienceDirect (JDE 1998, 3-center), AIMS DCDS 2003, ResearchGate | 403 or paywall |
 | Unpaywall | JDE 1998 flagged OA (Elsevier archive) but blocked; DCDS 2003 not OA |
+
+## Update 2026-09-27: no open copy found; more of the printed text; what to obtain
+
+Searched again, through legal and open sources only (no paywall was bypassed):
+
+| where | result |
+|---|---|
+| Bolotin's home page, people.math.wisc.edu/~bolotin/ | contact details and research interests only; no publication list, no PDFs |
+| Negrini, mat.uniroma1.it/people/negrini and /~negrini/ | 404 |
+| mp_arc (web.ma.utexas.edu/mp_arc), indexes for 1995, 1996 and 1997 | no Bolotin or Negrini preprint; the only pendulum item is on separatrix splitting |
+| Internet Archive advanced search ("Russian Journal of Mathematical Physics", "variational criterion for nonintegrability", "Bolotin Negrini") | no copy of the journal volume or the paper |
+| Crossref (bibliographic query) | no DOI for the article; the nearest hit is Bolotin's 1994 NATO chapter |
+| journals.rcsi.science/1061-9208 (the journal's archive site) | HTTP 403 |
+| Math-Net.ru | the English journal list fetched has no entry for this journal; its paper search returned an error page |
+| Semantic Scholar | rate-limited (429) |
+| citing texts | Bolotin and Treschev, "Hill's formula" (arXiv:1006.1532): no pendulum, no Negrini; Rabinowitz 1997 and 1999 were read before |
+| Google Books snippet view of the volume (as3yAAAAMAAJ), about 40 further search terms | new snippets from pp. 420, 434 and 435, below |
+
+New OCR text (raw, superscripts dropped; λ rendered as "1" or "d1"):
+
+- p. 420: "Proposition 3.1. Under condition (3.1), there exist infinitely many transversal homoclinics to the
+  equilibrium O. If we drop the analyticity assumption, then the assertion remains valid, but the proof must be
+  different." Before it: "One can prove that the existence of five or more transversal homoclinics implies the
+  inequality htop > 0. If 1 ≠ 12 and if there exist three transversal homoclinics belonging neither to W8 (0) nor to
+  War (O) ..." and "... double pendulum treated below in §10, we have d1 ≠ 12, and therefore htop > 0."
+  So Bolotin and Negrini also claim positive topological entropy on the critical level for the double pendulum of
+  Section 10, under the same hypothesis as Theorem 10.1. The priority question therefore concerns chaos as well as
+  non-integrability, and it is settled by the same parameter condition.
+- p. 434: "(10.1) ... where μ2 = 2g ( m1l2 + m2 ( 11-12 ) 2 ) ( ( m1 + m2 ) 11 + m2l2 )" (μ² with the superscripts
+  dropped), and "It follows from (10.1) that DJ / dm1 ≥ 0. Hence, J > Jo."
+- p. 435, (10.3): "For m1 = 0, the Maupertuis distance from the curve σ = { y = -r } to the point O = { y = R } is at
+  least d = inf { Jo ( y ) | y ( 0 ) = 0, γ ( 1 ) Ε α } ≥ ( 2/3 ) m2√2g ( R + r ) 3/2."
+
+**The equal case fails the condition the theorem is derived from, whatever the displayed inequality reads.** The text
+says: "By (10.2), inf J > J(γ0) provided that 2πμ < 2d. We obtain the following assertion. Theorem 10.1." With
+μ² = 2g(m1 l1² + m2(l1 − l2)²)((m1 + m2) l1 + m2 l2) (p. 434) and 2d = (16/3) m2 √g (max{l1, l2})^{3/2} (p. 435),
+both quoted above, m1 = m2 = m and l1 = l2 = l give μ² = 6 g m² l³, so 2πμ = 2π√6 m √g l^{3/2} ≈ 15.39 m √g l^{3/2}
+against 2d ≈ 5.33 m √g l^{3/2}: the condition fails by a factor of 2.89 (8.33 after squaring, the 27π²/32 of the
+earlier reading). One caveat remains. The p. 434 snippet renders "2πμ" with a π, while the inequality of Theorem 10.1
+begins "9m2"; if the printed theorem really reads 9 m2 (a misprint for 9π²), its displayed statement would literally
+include the equal case (27 < 32), although its proof does not. Only the printed page settles that.
+
+### What the owner should obtain (library or interlibrary loan)
+
+S. V. Bolotin and P. Negrini, "A variational criterion for nonintegrability", *Russian Journal of Mathematical
+Physics*, vol. 5, no. 4 (1997), pp. 415-436 (Zbl 0951.37029; no DOI). The pages needed are:
+
+1. pp. 434-435, Section 10: equations (10.1)-(10.3) and the displayed inequality of Theorem 10.1. Question: does it
+   read 9π²(m1 l1² + m2(l1 − l2)²)((m1 + m2) l1 + m2 l2) < 32 m2² (max{l1, l2})³, as its derivation requires?
+2. p. 420 and the pages before it in Section 3: Theorem 3.1, condition (3.1), Proposition 3.1 and the remark that the
+   double pendulum of Section 10 has h_top > 0. Questions: on which energy levels is h_top > 0 claimed, and under
+   which hypothesis?
+3. Anywhere else in the paper: does any statement cover m1 = m2, l1 = l2?
+
+The paper is not online anywhere we could find (Zbl 0951.37029); it needs a library copy or interlibrary loan. Ivanov I
+(RCD 4 (1999), ref. [3]) cites it as a 1996 preprint of the Universita degli Studi di Roma La Sapienza, which the authors
+or the department might also supply.
+
+Until then the novelty statements that depend on this paper (global analytic non-integrability, and chaos in the equal
+double pendulum at any energy) stay conditional on this reading.

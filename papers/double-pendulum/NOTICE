@@ -1,0 +1,12 @@
+Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof:
+programs, configurations and reports.
+Copyright 2026 Chase Hendrick
+
+The programs in code/, the configurations in configs/ and the reports in data/ are licensed under the Apache
+License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
+
+The C++ programs use the CAPD library (https://github.com/CAPDGroup/CAPD), which is distributed under the GNU
+General Public License. CAPD is not included here; code/build.sh fetches it at a pinned commit. The Python
+cross-check programs use python-flint and SymPy, installed separately (code/requirements.txt).
+
+The text of the manuscript (paper/) is not licensed for reuse.

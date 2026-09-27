@@ -205,3 +205,113 @@ their derivatives"; the online page capd.ii.uj.edu.pl/html/poincare.html returne
   sign. Only after that is a crossing detected. So "first return" means the first crossing in
   the chosen direction after that departure phase. A return within the departure steps is not
   detected.
+
+---
+
+## Update 2026-09-27: primary sources obtained by the owner (copies not committed)
+
+**Palis, "On Morse-Smale dynamical systems", Topology 8 (1969) 385-404, doi:10.1016/0040-9383(69)90024-X.** Read on
+pp. 385-388 (the setting, fundamental domains, C^1-closeness, Lemma 1.1 with its proof and the remarks after it).
+Setting (p. 385): C^r diffeomorphisms, r >= 1, of a compact C^infinity manifold without boundary. p. 387: "(1.1)
+LEMMA (λ-lemma). Suppose P is a hyperbolic fixed point for f ∈ Diff(M), dim W^u(P) = r, 0 < r < m, and N is a 1-1
+immersed manifold in M, invariant under f and having a point Q of transversal intersection with W^s(P). For any given
+cell neighborhood B^r of P in W^u(P) and any ε > 0, there exists an r-cell in N, ε C^1-close to B^r." (checked against
+the page image, since the text extraction confuses the superscripts s and u). Proof, p. 387: "since W^s(P) and N are
+invariant under f, we can reduce the question to a local one around P"; pp. 387-388: the cells are found among the
+positive iterates of a small cell D' of N around f^{n0}(Q), for n large. For the double pendulum: the hypotheses hold
+with M replaced by a neighbourhood of the homoclinic orbit on which the return map is an analytic diffeomorphism
+(Palis's proof is local); with N = W^u(p) the statement is met trivially by the local cell, so the manuscript uses the
+form the proof gives (cells inside f^n(D')). This replaces the REU paper's Lemma 3.11 in the manuscript.
+
+**Bowen and Walters, "Expansive one-parameter flows", J. Differential Equations 12 (1972) 180-193,
+doi:10.1016/0022-0396(72)90013-7.** Read in Sects. 1, 3 and 4. p. 185: topological entropy of a flow by
+(t, δ)-separated sets, h(Φ) = lim_{δ→0} limsup_t (1/t) log M_t(Φ, δ) (definition taken from Bowen's [3]). p. 186,
+Definition 2: "The suspension of φ under f is the flow Φ on the space Y_f" for a homeomorphism φ of a compact metric
+space Y and a continuous f: Y → R_{>0}; Theorem 6: the suspension is expansive if and only if φ is. There is no
+formula for the entropy of a suspension against the entropy of its base map, so it does not replace Abramov's formula
+(still used as stated by Kucherenko and Thompson); the manuscript cites Definition 2 for the suspension in Corollary 1.
+
+**Smale (1965).** Only p. 63 (introduction, Theorem A and its corollary, the De Gruyter preview) is available to the
+owner; the homoclinic theorem itself has not been read.
+
+**Ito, "An elementary proof of Abramov's result on the entropy of a flow", Nagoya Math. J. 41 (1971) 1-5 (owner's
+copy, not committed), read in full on 2026-09-27.** Setting: {T_t} a flow of automorphisms of a probability space
+(Ω, B, P), continuous in the sense (D.4) "lim P(T_t A Δ A) = 0 for every A ∈ B"; entropy is measure-theoretic
+(Kolmogorov-Sinai, (D.1)-(D.3)). Theorem (p. 4): "If {T_t} is a continuous flow, then h(T_t) = |t| h(T_1) for any real
+t." This is Abramov's formula (F) for the time-t maps of one flow. It has no roof function and says nothing about a
+special (suspension) flow. The manuscript does not use (F): Corollary 1 and Theorem 3 use the other formula of
+Abramov (1959), for the flow built under a function, h(φ_1) = h_ν(P)/∫τ dν, which Ito does not prove. So Ito does not
+replace Abramov for that step, and it is not cited; the formula still rests on Kucherenko and Thompson's statement of
+it (arXiv:1909.07317, Sect. 2), with Abramov's paper unread.
+
+**Flow entropy (2026-09-27).** The manuscript no longer uses Abramov's formula for a flow under a roof function or the
+variational principle. Its Lemma 7, proved in full from Bowen's separated-set definitions (the map form as in Walters,
+Sect. 7.2; the flow form as in Bowen and Walters, p. 185), gives h_top(φ_1) ≥ h(φ|K) ≥ h_top(P|Λ)/τ_max for a compact
+P-invariant Λ in the section with P injective and τ continuous on Λ, K the flow-saturation of Λ up to the first return.
+The proof uses only the first-return property, τ_min > 0 and compactness (no lower bound on the flow speed beyond the
+absence of equilibria on M_E). The constant for the E = 0 horseshoe is unchanged: τ_max ≤ 7.355385354 from the
+program's return-time enclosures over pieces covering all 23 h-sets, so h_top(φ_1) ≥ log r/7.3553854 > 0.0138141.
+Abramov (1959) and Kucherenko-Thompson are background only.
+
+**Option (b), 2026-09-27 (owner's decision; Katok-Hasselblatt will not be obtained).** The manuscript claims the
+horseshoe and positive topological entropy only at E = 0, from the covering relations (Theorem 3) and Lemma 7. At
+E = ±1/2 and on the energy interval it claims only the transversal homoclinic orbit and the two non-integrability
+corollaries; the Smale-Birkhoff horseshoe there is a remark labelled as resting on a source not read (Smale 1965, only
+p. 63 seen; Perez-Stark's statement). No proof step now depends on Smale, Abramov or the variational principle.
+
+**Smale (1965), read in full, 2026-09-27** (owner's photographs of the reprint in *The Collected Papers of Stephen
+Smale*, World Scientific, pp. 636-653; images not committed; the manuscript cites the original, pp. 63-80). Quotes
+used in the manuscript, checked against the page images: p. 64, Theorem B ("If D(M) denotes the space of
+diffeomorphisms of M with the C^r topology, r > 0, there is a subset D_0 which is the countable intersection of open
+dense sets of D with the following property. If x ∈ M is a homoclinic point of T ∈ D_0, then there is a Cantor set
+Ω ⊂ M, x ∈ Ω, and p such that T^pΩ = Ω and T^p restricted to Ω is equivalent to a shift automorphism of symbolic
+dynamics."); p. 78, Sect. 9 ("we can assume that the periodic points of T ∈ D_0 can satisfy a slightly stronger
+condition without loss of generality, namely Sternberg's non-degeneracy condition of [13]. Thus by Sternberg's
+theorem [13] in the neighborhood of a point of M of period p, there will exist local coordinates in which T^p is
+linear."). The transcription of pp. 71, 77 and 79 (the session's `smale-reading.md`) was not checked against the
+images. Checked here: for an area-preserving saddle λ1 λ2 = 1, so λ1 = λ1^(k+1) λ2^k for every k ≥ 1, a resonance of
+order 2k + 1 that Sternberg's condition excludes; the generic perturbation of p. 78 leaves the area-preserving class;
+and membership of a given map in the residual set D_0 cannot be decided. So Theorem B does not apply to the return map
+as stated, and the manuscript does not use it (Remark 2). The horseshoes at E = -1/2, 0 and 1/2 are proved by covering
+relations (Theorem 3), with Lemma 7 for the flow. Perez-Stark is no longer cited.
+
+**The local results proved from cone conditions, 2026-09-27 (owner's decision; closes QUALITY item 1).** The
+manuscript no longer applies Dyatlov's stable manifold theorem (arXiv:1805.11660, Sect. 4.1, Thm. 4) or Palis's
+lambda-lemma (Topology 8 (1969), Lemma 1.1) to the return map, which is defined only on an open subset of the plane;
+both stay cited as the classical statements. What replaces them, written out in the paper:
+- Lemma 5 (the graph transform and the local unstable manifold): on N0, graphs of α-Lipschitz functions over [-a, a]
+  are mapped to such graphs ((C1)-(C3)); the transform contracts vertical distances by
+  κ = δ_M/(m11 − α m12) and slopes by ϑ = δ_M/(m11 − α m12)^2, from a new condition (C6) on an interval hull [M] of
+  A^{-1} Df A over N0; the fixed graph through p is C^1 (a contraction on continuous slope fields), lies in W^u(p),
+  and every C^1 sequence h_{n+1} = Γ h_n converges to it in C^1.
+- Lemma 8 (a local lambda-lemma): a C^1 arc through a point of W^s_loc = G(W^u_loc), transversal to it, has forward
+  images that contain graphs over [-a, a] converging in C^1 to W^u_loc. Proof: reversibility places the forward orbit
+  of the point in N0 near p; the tangent enters the open cone C_u (the W^s component shrinks like μ^{-n} by
+  reversibility, the C_u component grows like μ^n by (C1)); the graphs then grow to full width ((C1)-(C3)) and
+  converge by Lemma 5.
+- Sect. 2 defines W^u(p) and W^s(p) as sets and transversality at q by C^1 arcs, so the global immersion that was
+  cited from Dyatlov is not needed; Lemma 6's transversality is stated for the arcs f^k(Γ) and G(f^k(Γ)).
+(C6) is checked by `papers/double-pendulum/code/cones.cpp` (interval hull over 100 full-height sub-boxes of N0, about
+10 s per configuration): κ ≤ 0.2878, 0.3351, 0.3547, 0.2879 and ϑ ≤ 0.0818, 0.1118, 0.1233, 0.0818 at E = 0, 1/2,
+−1/2 and on [−1e-10, 1e-10]; the negative control with the columns of A exchanged fails ([M]_11 contains 0). A
+backward vertical contraction (needed to show that every point of N0 whose backward orbit stays in N0 lies on the
+graph) was not certified at α = 1e-3 (the hull gives max|[M]_21| ≈ 4e-3 > α m11) and is not used. Zgliczyński,
+"Covering relations, cone conditions and the stable manifold theorem", JDE 246 (2009): cited as related work; no
+statement of it is used (abstract and Theorems 14 and 24 read earlier).
+
+**After the in-project review, 2026-09-27 (papers/double-pendulum/notes/review-1.md).**
+- The conditions are renumbered in order of appearance: the derivative-hull condition is now (C4) (it was (C6)), and
+  the transversal-crossing conditions are (C5) and (C6). The inequality |x_p| < a(μ − 1)/(μ + 1), which no program had
+  checked, is moved from (C3) into (C4) with μ_h = m11 − α m12 in place of μ (the secant expansion from the hull), and
+  `cones.cpp` now checks it, with stage 1 repeated and compared with inward-rounded bounds of B.
+- Remark 2 is rewritten: Smale's own 1965 proof uses Sternberg linearization, which fails for area-preserving saddles;
+  later forms of the Smale-Birkhoff theorem need no non-resonance condition (Katok-Hasselblatt Thm. 6.5.5, Palis-Takens
+  Ch. 2, Moser 1973, as named by the reviewer; not read here, not used) and would give horseshoes and positive entropy
+  on the whole energy interval. The manuscript keeps the covering-relation proofs and calls their result a topological
+  horseshoe (a semiconjugacy onto a subshift of finite type; no hyperbolicity or conjugacy is claimed).
+- CAPD's departure phase: the manuscript (Sect. 8) now proves that no upward crossing is skipped from three facts read
+  in the code at commit 03dc5628: `checkTransversability` (PoincareMap_templateMembers.h) requires the vector field's
+  θ1-component to be single-signed on a step enclosure on which θ1 contains 0; the step enclosure contains the box hull
+  of the set at the start of the step (HighOrderEnclosure::enclosure: Taylor polynomial in [0, h] with that hull as
+  constant term, plus a remainder containing 0); and the sign tested at a step end is θ1 on the box hull
+  (CoordinateSection::evalAt).
