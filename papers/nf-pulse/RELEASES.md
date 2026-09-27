@@ -5,7 +5,7 @@ peer reviewed.
 
 ## 1.0.1 (2026-09-27)
 
-**DOI:** to be assigned by Zenodo when the release is made.
+**DOI:** [10.5281/zenodo.23002938](https://doi.org/10.5281/zenodo.23002938)
 
 A spelling release of *Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and
 Spectral Stability*. The preprint and the texts of this repository now write "traveling", the American spelling, in
