@@ -50,6 +50,7 @@ OK    [control] negative control: the l1 routine with (-A)^-1 in place of (2 i o
        omega_H1 in [0.586233813130292, 0.586233813130293], period 2 pi/omega in [10.717882807935, 10.717882807936] ms
 OK    [consistency] H1: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
 OK    [proof] H1: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in [0.05019086897, 0.05019086898], dJss/du in [2.671281689, 2.671281690], Re d lambda/dJ in [0.01878905889, 0.01878905890]]
+OK    [crosscheck] H1: independent cross-check of the transversality (central differences of the eigenvalue near i omega of the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du   [finite differences: Re d lambda/du = 0.0501908689738, dJss/du = 2.67128168911; relative differences 5.9e-27, 2.8e-27]
 OK    [consistency] H1: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
 OK    [proof] H1: the first Lyapunov coefficient is enclosed away from 0: l1 > 0, so the Hopf bifurcation is subcritical   [l1 in [0.01479364813100, 0.01479364813101] (with <q, q> = 1; Arb ball [0.014793648131008077780 +/- 4.25e-22])]
        |q_u| in [0.9999042898, 0.9999042899] (u-component of q with <q, q> = 1); 16 |q_u|^2 Re(d lambda/dJ)/(omega l1) in [34.657379, 34.657380]
@@ -66,6 +67,7 @@ OK    [crosscheck] H1: independent cross-check (SymPy derivatives, mpmath eigenv
        omega_H2 in [1.062921806760336, 1.062921806760337], period 2 pi/omega in [5.911239441337, 5.911239441338] ms
 OK    [consistency] H2: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0)
 OK    [proof] H2: transversality, Re(d lambda/du) at lambda = i omega is enclosed away from 0 (dJ/du > 0, so the same sign in J)   [Re d lambda/du in [-0.08240867285, -0.08240867284], dJss/du in [18.34451285, 18.34451286], Re d lambda/dJ in [-0.004492279162, -0.004492279161]]
+OK    [crosscheck] H2: independent cross-check of the transversality (central differences of the eigenvalue near i omega of the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du   [finite differences: Re d lambda/du = -0.0824086728404, dJss/du = 18.3445128591; relative differences 2.7e-27, 5.5e-28]
 OK    [consistency] H2: A q = i omega q and w^T A = i omega w^T hold (every component encloses 0)
 OK    [proof] H2: the first Lyapunov coefficient is enclosed away from 0: l1 < 0, so the Hopf bifurcation is supercritical   [l1 in [-0.004728502695074, -0.004728502695073] (with <q, q> = 1; Arb ball [-0.0047285026950739886388 +/- 1.61e-23])]
        |q_u| in [0.9997206845, 0.9997206846] (u-component of q with <q, q> = 1); 16 |q_u|^2 Re(d lambda/dJ)/(omega l1) in [14.292859, 14.292860]
@@ -82,5 +84,5 @@ OK    [control] negative control: at u = u_H1 + 1e-3 the factorization test a2 -
 
 OK    [proof] every decimal bound printed with outward rounding (99 of them) re-read as an exact rational lies on the correct side of the ball it stands for
 
-38 checks, 0 failed: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 2 cross-checks
-run time 13.0 s
+40 checks, 0 failed: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks
+run time 7.4 s

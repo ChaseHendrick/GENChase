@@ -20,7 +20,7 @@ Stages (every check is printed; the program stops at the first failed check):
      E_l = 10.599 (Guckenheimer-Oliva): Krawczyk proofs of a stable and of an unstable periodic
      orbit with enclosed periods, section points and Floquet multipliers;
   4b. the stable orbit for every E_l in [10.59, 10.62] (60 pieces, contraction of a box on the
-     section; 4 worker processes);
+     section; --workers N worker processes, default 2);
   5. negative controls for the certificates (they must fail);
   6. high-precision (non-rigorous) refinement of both orbits;
   7. summary.  Every decimal bound printed in stages 3-7 is rounded outward from its ball (outward.py)
@@ -28,9 +28,16 @@ Stages (every check is printed; the program stops at the first failed check):
 
 Checks are counted by kind: proof checks, negative controls, self-tests and numerical-only checks.
 
-Output is written to ../data/certify_bistability.txt; the debug file numerics.json goes to ../data/logs/, which is not tracked.
-Usage: python3 certify_bistability.py [--quick] [--no-ball]
-  --quick skips the mpmath tests and stage 6; --no-ball skips stage 4b.
+Output is written to ../data/certify_bistability.txt; the debug file numerics.json and the stage-4b checkpoint
+stage4b_checkpoint.jsonl go to ../data/logs/, which is not tracked.
+Usage: python3 certify_bistability.py [--quick] [--no-ball] [--workers N] [--resume] [--reuse-numerics]
+  --quick skips the mpmath tests and stage 6; --no-ball skips stage 4b;
+  --workers N runs the pieces of stage 4b in N worker processes (default 2); each piece is appended to the
+    checkpoint as it completes, and a line is printed to the terminal (not to the report);
+  --resume reads back the stage-4b pieces that the checkpoint holds for the same arguments and the same code
+    (SHA-256 of the files that compute a piece) instead of recomputing them; the report says how many;
+  --reuse-numerics (debugging) reloads the floating-point candidates of stage 2 from numerics.json instead of
+    recomputing them, and says so in the report; they are only starting points.
 """
 import os
 import sys
@@ -48,7 +55,7 @@ sys.path.insert(0, HERE)
 
 from hh_lohner import Section, Integrator, poincare, col, to_np, SectionMismatch       # noqa: E402
 from certlib import (certify_orbit, certify_equilibrium, section_set, krawczyk,     # noqa: E402
-                     multiplier_test, CertificateFailure)
+                     multiplier_test, initial_set_covers, CertificateFailure)
 from hh_arb import HH                                                                # noqa: E402
 import outward as O                                                                  # noqa: E402
 from ball_stable import SEC as SEC_STABLE                                            # noqa: E402
@@ -131,6 +138,7 @@ def disc_separated(discs, k):
 
 def main():
     quick = '--quick' in sys.argv
+    workers = int(sys.argv[sys.argv.index('--workers') + 1]) if '--workers' in sys.argv else 2
     stage('STAGE 0  set-up')
     log('  python-flint %s (Arb ball arithmetic), working precision %d bits, Taylor order %d, remainder '
         'tolerance %.0e (relative to scales %s)' % (flint.__version__, PREC, ORDER, TOL_REM, SCALE))
@@ -222,11 +230,15 @@ def main():
         log('  stable orbit:')
         rs = certify_orbit(sysm, sec_s, zs_E, [(4, E)], 'stable', log, order=ORDER, tol_rem=TOL_REM, scale=SCALE)
         check('Krawczyk: unique fixed point of the first-return map in Z (stable orbit)', rs['krawczyk'])
+        check('the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l '
+              'ball) (stable orbit)', rs['covers'])
         _report_orbit(rs, 'stable')
         check('all nontrivial Floquet multipliers of the stable orbit lie in |mu| < 1', rs['multipliers_ok'])
         log('  unstable orbit:')
         ru = certify_orbit(sysm, sec_u, zu_E, [(4, E)], 'unstable', log, order=ORDER, tol_rem=TOL_REM, scale=SCALE)
         check('Krawczyk: unique fixed point of the first-return map in Z (unstable orbit)', ru['krawczyk'])
+        check('the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l '
+              'ball) (unstable orbit)', ru['covers'])
         _report_orbit(ru, 'unstable')
         check('exactly one Floquet multiplier of the second orbit is real and > 1, the other two lie in '
               '|mu| < 1', ru['multipliers_ok'])
@@ -256,16 +268,26 @@ def main():
     # ------------------------------------------------------------------ stage 4b
     ball = None
     if '--no-ball' not in sys.argv:
-        stage('STAGE 4b  the stable orbit for EVERY E_l in [10.59, 10.62] (proof, 60 pieces, 4 processes)')
+        stage('STAGE 4b  the stable orbit for EVERY E_l in [10.59, 10.62] (proof, 60 pieces, %d worker processes)'
+              % workers)
         log('  on each piece: a box Z on {u = %g, du/dt > 0} with P_E(Z) in int Z and sup ||DP_E||_inf < 1 over'
             % SEC_STABLE.c)
-        log('  Z x piece, so P_E is a contraction of Z: unique attracting fixed point, all |mu| < 1')
+        log('  Z x piece, so P_E is a contraction of Z: unique attracting fixed point, all |mu| < 1 (both runs of a')
+        log('  piece are checked to integrate a set that contains Z x piece)')
         from decimal import Decimal
         from ball_stable import prove_ball
         log('  predictor for the box centres: dz*/dE_l = %s (from the E_l = 10.613 run)' % np.array2string(dzdE, precision=6))
         t0 = time.time()
-        ball = prove_ball(rs0['zbar'], 10.613, dzdE, log)
+        os.makedirs(LOGS, exist_ok=True)
+
+        def progress(r):
+            print('    (piece [%s, %s] done: ok %s, %.0f s, %.0f s since the start of stage 4b)'
+                  % (r['lo'], r['hi'], r['ok'], r['time'], time.time() - t0), flush=True)
+        ball, n_loaded = prove_ball(rs0['zbar'], 10.613, dzdE, log, workers=workers,
+                                    checkpoint=os.path.join(LOGS, 'stage4b_checkpoint.jsonl'),
+                                    resume='--resume' in sys.argv, progress=progress)
         ball.sort(key=lambda r: Decimal(r['lo']))
+        log('  pieces read back from the checkpoint of an earlier run of the same code: %d' % n_loaded)
         for r in ball:
             if r['completed']:
                 log('    E_l in [%s, %s]: P(Z) in int Z %s, sup||DP||_inf <= %s, T in [%s, %s], box radius ~%.1e, '
@@ -302,6 +324,31 @@ def main():
     ok = _krawczyk_only(HH(arb('8.05')), sec_s, rs['zbar'], rs['zrad'], [(4, E)])
     check('NEG stable orbit box of J = 8 tested with the vector field at J = 8.05: Krawczyk must fail', not ok,
           kind='control')
+    # the term (I - C (DP(Z) - I)) (Z - zbar) of the Krawczyk operator: with DP(Z) widened by 0.5 in every entry the
+    # Newton point zbar - C (P(zbar) - zbar) is unchanged and still lies in int Z, but K must leave Z
+    from hh_lohner import from_np
+    DPw = rs['DPZ'] + arb_mat(3, 3, [arb(0, 0.5)] * 9)
+    Cw = from_np(np.linalg.inv(to_np(DPw) - np.eye(3)))
+    zbv = col([arb(v) for v in rs['zbar']])
+    Zbv = col([arb(v) + arb(0, r) for v, r in zip(rs['zbar'], rs['zrad'])])
+    Npt = zbv - Cw * (rs['Pz'] - zbv)
+    newton_in = all(Zbv[i, 0].contains_interior(Npt[i, 0]) for i in range(3))
+    okW = krawczyk(rs['Pz'], DPw, rs['zbar'], rs['zrad'])[0]
+    check('NEG stable orbit, E_l = 10.613: Krawczyk with DP(Z) widened by 0.5 in every entry must fail, while the '
+          'Newton point zbar - C (P(zbar) - zbar) lies in int Z (%s), so the test depends on the term '
+          '(I - C (DP(Z) - I)) (Z - zbar)' % newton_in, newton_in and not okW, kind='control')
+    # the covering check (the sets integrated contain Z x E_l ball) refuses a smaller set and a midpoint of E_l
+    Epc = arb('10.59').union(arb('10.5905'))
+    F3 = [1, 2, 3]
+    small = section_set(5, 0, sec_s.c, F3, rs['zbar'], [z * 1e-3 for z in rs['zrad']], [(4, E)], True)
+    thinE = section_set(5, 0, sec_s.c, F3, rs['zbar'], rs['zrad'], [(4, arb(Epc.mid()))], True)
+    good = section_set(5, 0, sec_s.c, F3, rs['zbar'], rs['zrad'], [(4, Epc)], True)
+    c_small = initial_set_covers(small, F3, rs['zbar'], rs['zrad'], [(4, E)])
+    c_thin = initial_set_covers(thinE, F3, rs['zbar'], rs['zrad'], [(4, Epc)])
+    c_good = initial_set_covers(good, F3, rs['zbar'], rs['zrad'], [(4, Epc)])
+    check('NEG the covering check refuses a set 1000 times smaller than Z and a set with E_l at the midpoint of the '
+          'piece [10.59, 10.5905] instead of the piece, and accepts Z x piece (%s, %s, %s)' % (c_small, c_thin, c_good),
+          (not c_small) and (not c_thin) and c_good, kind='control')
     # the multiplier code (the function the certificates use) on the other orbit's DP(Z)
     okX = multiplier_test(rs['DPZ'], 'unstable')[0]
     check('NEG the multiplier test "one real multiplier > 1, the others in |mu| < 1", run on the stable orbit\'s '
@@ -340,10 +387,17 @@ def main():
     zg = [float(rs0['zbar'][i] + dzdE[i] * (em - 10.613)) for i in range(3)]
     rsm = prove_piece(('10.59', '10.5905', zg, PREC, {'box_factor': 0.3}))
     check('NEG Theorem C, piece E_l in [10.59, 10.5905] with the box radius 0.3 (instead of 3) times the defect of '
-          'its centre, so that the fixed points z*(E_l) of the piece are not all in the box: P(Z) in int Z fails',
-          rsm['completed'] and not rsm['inside'],
+          'its centre, so that the fixed points z*(E_l) of the piece are not all in the box: P(Z) in int Z fails and '
+          'the piece is refused',
+          rsm['completed'] and not rsm['inside'] and not rsm['ok'],
           'P(Z) vs Z: ' + '; '.join('%s vs %s' % pz for pz in rsm.get('PZ_minus_Z', [])) if rsm['completed']
           else rsm['err'], kind='control')
+    rk = prove_piece(('10.59', '10.5905', zg, PREC, {'kappa_max': 0.5}))
+    check('NEG Theorem C, piece E_l in [10.59, 10.5905] with the contraction bound required to be below 0.5 instead '
+          'of 1 (the enclosure gives sup ||DP_E||_inf <= %s): the piece is refused, although P(Z) in int Z holds and '
+          'the runs cover Z x piece' % (O.hi(rk['norm_hi'], 4) if rk['completed'] else '-'),
+          rk['completed'] and rk['inside'] and rk['covers'] and not rk['ok'],
+          '' if rk['completed'] else rk['err'], kind='control')
     run_ = prove_piece(('10.613', '10.613', ru['zbar'], PREC, {'sec': sec_u, 'centre_iters': 0}))
     check('NEG Theorem C test on the unstable orbit (section u = %g, E_l = 10.613, box radius %s): the contraction '
           'test fails decisively, every member of DP(Z) has ||DP||_inf >= %s > 1'
@@ -476,13 +530,10 @@ def _summary(eq, Evals, certs, num, ball, sec_s, sec_u):
         say('    asymptotically stable equilibrium and an orbitally asymptotically stable periodic orbit coexist.')
         say('    Nothing is claimed about other attractors or about the basins.')
     say('')
-    say('  CITED, NOT RE-PROVED HERE (papers/hh-dynamics/code/certify_equilibria_hopf.py, 256-bit Arb, report')
-    say('    papers/hh-dynamics/data/certify_equilibria_hopf.txt, 27 checks, 0 failed): for every E_l in [10.59, 10.62],')
-    say('    exactly one equilibrium for every J in [0, 200], and exactly two Hopf points along this branch: the')
-    say('    first subcritical (first Lyapunov coefficient l1 > 0), at J_H1 = [9.7754379953931263325 +/- 1.37e-20]')
-    say('    for E_l = 10.613 and J_H1 in [9.78 +/- 6.67e-3] over the ball; the second supercritical (l1 < 0), at')
-    say('    J_H2 = [154.52243366580800086 +/- 2.57e-18] for E_l = 10.613.  (Theorem A re-proves the uniqueness')
-    say('    at J = 8 independently.)')
+    say('  PROVED ELSEWHERE, NOT RE-PROVED HERE: the equilibria for J in [0, 200] and the two Hopf points, with their')
+    say('    enclosures and criticality, are proved by code/certify_equilibria_hopf.py (report')
+    say('    data/certify_equilibria_hopf.txt); this program does not use them.  (Theorem A re-proves the uniqueness')
+    say('    and stability of the equilibrium at J = 8 independently.)')
     say('  NUMERICAL ONLY (not proved): the Hopf currents as computed here (by E_l) %s;'
         % '; '.join('%s: %.6f, %.6f' % (k, v[0][0], v[1][0]) for k, v in num['hopf_by_EL'].items()))
     say('    the fold of cycles %s; the bistability window (J_LPC, J_H1) as an interval of J;'

@@ -541,7 +541,7 @@ def poincare(integ, S, sec, c=None, monitors=(), tmax=200.0, maxsteps=100000, lo
     The initial set must lie exactly on a section: on `sec` itself (a first-return map, the default) or
     on `start_on` (a section-to-section map); otherwise SectionMismatch is raised before integrating.
 
-    Encloses, for every x0 in the set S, the hitting time tau(x0), the hitting point
+    Encloses, for every x0 in the set S (returned as 'S0'), the hitting time tau(x0), the hitting point
     P(x0) = phi(tau(x0), x0) and, in C^1 mode, (I - f(P) e_idx^T / f_idx(P)) D phi_tau(x0).
 
     First-hit certification: every step whose a priori enclosure Y meets the section has
@@ -554,6 +554,7 @@ def poincare(integ, S, sec, c=None, monitors=(), tmax=200.0, maxsteps=100000, lo
     if not isinstance(sec, Section):
         sec = Section(sec, c, 1)
     check_on_section(S, sec if start_on is None else start_on)
+    S0 = S                              # the initial set, returned so that a caller can check what was integrated
     idx = sec.idx
     d = S.d
     X0 = S.hull()
@@ -632,7 +633,7 @@ def poincare(integ, S, sec, c=None, monitors=(), tmax=200.0, maxsteps=100000, lo
                     if res is None:
                         raise PoincareFailure('crossing enclosure failed (transversality on the window)')
                     note(res['P'], sd.Y)
-                    res.update(passes=passes, steps=nsteps + 1, extremes=extremes, section=sec)
+                    res.update(passes=passes, steps=nsteps + 1, extremes=extremes, section=sec, S0=S0)
                     return res
                 if win[0] == 'approach':
                     h_app = win[1]
@@ -676,7 +677,7 @@ def poincare(integ, S, sec, c=None, monitors=(), tmax=200.0, maxsteps=100000, lo
                         if res is None:
                             raise PoincareFailure('crossing enclosure failed')
                         note(res['P'], sd2.Y)
-                        res.update(passes=passes, steps=nsteps + 1, extremes=extremes, section=sec)
+                        res.update(passes=passes, steps=nsteps + 1, extremes=extremes, section=sec, S0=S0)
                         return res
                 raise PoincareFailure('crossing window does not fit in one Taylor step (%s)' % (win,))
             # sign of the crossing speed undetermined on Y: shorten the step
