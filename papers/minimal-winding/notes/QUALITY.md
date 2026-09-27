@@ -26,16 +26,15 @@ GENChase: the companion repository does not carry `notes/`.
 - [x] **1. Complete proofs.** Theorem 1 and Corollary 1 (three Euler vortices; Corollary 1 also has a direct proof
   from Lemmas 1 and 3), Theorem 2 with Remark 4 (the alpha-models, every alpha > -2), Propositions 1 to 4, Theorem 3
   (a strong vortex with weak tight pairs) and the lemmas are proved in the paper. Theorems 4 and 5 are
-  computer-assisted (item 2). Release 2.2.0 (2026-09-27), the results of the identities note (whose retirement as a
-  record of its own waits for the owner): the forms P = u + 1/(2u) and P - sqrt(2) = (sqrt(2) u - 1)^2/(2u), the
-  invariance under u -> 1/(2u), the angles of the minimizing triangle and the reduction to Groebli's coefficient in
-  Remark 2; the closed forms c_m of the critical cosines in Proposition 1 and its proof; the two examples with n = 2
-  after Proposition 3; the expansion F_n = (1/4) e^sqrt(n/2) (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^(-3/2))) in
-  Section 5; and, in the Meaning and limits paragraph, the identification of the triple and the quartet of Chen,
-  Walsh and Wheeler with members of the families of Propositions 1 and 2, the invariance of their non-degeneracy
-  under similarities, a positive factor in the circulations and relabeling, and the analyticity argument that gives
-  non-degeneracy on those arcs except at isolated angles. Each is proved in the text, with no new numbered
-  environment.
+  computer-assisted (item 2). Release 2.2.0 (2026-09-27), the results of the retired identities note: the forms
+  P = u + 1/(2u) and P - sqrt(2) = (sqrt(2) u - 1)^2/(2u), the invariance under u -> 1/(2u), the angles of the
+  minimizing triangle and the reduction to Groebli's coefficient in Remark 2; the closed forms c_m of the critical
+  cosines in Proposition 1 and its proof; the two examples with n = 2 after Proposition 3; the expansion
+  F_n = (1/4) e^sqrt(n/2) (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^(-3/2))) in Section 5; and, in the Meaning and
+  limits paragraph, the identification of the triple and the quartet of Chen, Walsh and Wheeler with members of the
+  families of Propositions 1 and 2, the invariance of their non-degeneracy under similarities, a positive factor in
+  the circulations and relabeling, and the analyticity argument that gives non-degeneracy on those arcs except at
+  isolated angles. Each is proved in the text, with no new numbered environment.
 - [x] **2. Rigorous computation.** Theorems 4 and 5 are proved by the Krawczyk operator in ball arithmetic
   (FLINT/Arb through python-flint, 320 bits) in `certify_collapses.py` and `certify_sqg60.py`, with negative controls
   in `certify_controls.py`; the resultants and sextics of Theorem 1 are exact (`verify_general_mu.py`), and so are

@@ -216,3 +216,14 @@ Applied:
 - **The brief of these readings** was wider than item 6's "briefed only with the paper and its programs", and the
   fixes (among them the new non-degeneracy argument in the Meaning and limits paragraph) had no further reading. The
   owner may want a fresh reading of the Meaning and limits paragraph before release 2.2.0 is made.
+
+## The owner's answer (2026-09-27)
+
+- **The note's retirement is decided.** The same day, offered to move anything the note has that minimal-winding
+  lacks into minimal-winding, release that as 2.2.0 and retire the separate identities record, the owner answered
+  "move anything from the note into minimal-winding". The retirement is therefore the owner's decision of
+  2026-09-27, and the parts of the F4 and F7 fixes that put it on hold are undone in a later commit: the
+  `identities-note` entry of `papers/papers.json`, `identities/zenodo.json` and `identities/ARXIV.md` are removed
+  again, the upload instructions are gone from `identities/README.md`, RELEASES.md again says that the note is retired
+  and gets no record of its own, and the records that describe the retirement cite the owner's decision. Every other
+  fix above stands.

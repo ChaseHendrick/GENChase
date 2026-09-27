@@ -5,9 +5,11 @@ has not been peer reviewed.
 
 ## 2.2.0 (unreleased)
 
-The paper adds explicit forms and worked examples for its three-vortex and ring families, a proved expansion of the
-ring minimum, and credits to Gotoda's Fig. 3(b), to Chen, Walsh and Wheeler, to Yudovich and to Crippa and Stefani.
-No earlier result changes; 40 pages. A minor version because content was added. Changes since 2.1.0:
+The paper takes in the results of a separate note by the same author on the same collapsing families, which is
+retired and will not get a record of its own: explicit forms and worked examples for its three-vortex and ring
+families, and a proved expansion of the ring minimum. It also adds credits to Gotoda's Fig. 3(b), to Chen, Walsh and
+Wheeler, to Yudovich and to Crippa and Stefani. No earlier result changes; 40 pages. A minor version because content
+was added. Changes since 2.1.0:
 
 - **Equal circulations, in elementary form** (Remark 2). With u = tan χ, P = u + 1/(2u), and
   P − √2 = (√2 u − 1)²/(2u) is a second proof of the bound √2. P is unchanged under u ↦ 1/(2u), so χ = π/4 and

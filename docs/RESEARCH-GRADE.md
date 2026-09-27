@@ -61,7 +61,9 @@ This is the largest gap, and most of it is not code.
 **1b. The vortex paper.**
 - **Finding:** `papers/minimal-winding/submission/cover-letter-rcd.md` is a draft. It still has placeholders
   for the suggested reviewers. arXiv is deferred until the owner has an endorsement (owner's decision,
-  2026-09-25); the Zenodo release 2.0.0 is the preprint of record.
+  2026-09-25); the Zenodo release 2.1.0 of the companion, doi:10.5281/zenodo.22966989, is the preprint of
+  record, and it is the DOI the paper's data availability paragraph cites (as the previous release: release
+  2.2.0, prepared, holds the programs and data of the current version and gets its own DOI when archived).
 - **Why:** one peer-reviewed publication is worth more credibility than any number of internal
   audits.
 - **Done when:** the manuscript is submitted to the journal.
@@ -76,9 +78,8 @@ This is the largest gap, and most of it is not code.
   been archived under the note's title.
 - **Done when:**
   - `.zenodo.json` describes the software (done);
-  - the note is its own Zenodo upload. On hold since 2026-09-27: a pull request proposes to retire
-    the note into the minimal-winding paper (release 2.2.0) with no separate upload, which would
-    replace this criterion; that waits for the owner's decision;
+  - no separate Zenodo upload of the identities note: by the owner's decision (2026-09-27) the note is
+    retired into the minimal-winding paper, release 2.2.0 (done);
   - the software DOI is in `CITATION.cff`.
 - **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
   with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).
