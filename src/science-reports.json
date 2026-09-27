@@ -978,17 +978,28 @@
     "sourceSha256": "63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06",
     "reference": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The checked claim is the on-axis Fresnel integral only: a unit-amplitude plane wave has the same intensity on axis behind an opaque circular disk as in the unobstructed beam. The interactive plate uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring; that number is not this proof.",
+      "No laboratory photometry.",
+      "No print-path evidence. The plate picture was not changed, and the plate is not a converged Poisson-spot solver at its default."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "The 24 by 18 plate sum still compares the center to a ring and cuts the aperture off. Do not read I(0)/I_ring as the on-axis identity.",
+      "A print-path check is required before any promotion, and only inside a domain limited to a converged propagator."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/arago-science.js",
+        "command": "node tools/arago-science.js",
+        "results": "validation/results/arago-science.json",
+        "scope": "Independent midpoint quadrature of the on-axis Fresnel radial integral at R = 1, z = 1, k = 5 pi (Fresnel number 2.5), convergence factor exp(-1e-4 rho^2), window rho_max = 632.456. The shipped plate is run through tools/science-harness.js and its I(0)/I_ring is recorded, not required to equal 1.",
+        "criteria": "Disk ratio within 1e-3 of 1 at zone width 0.0005 (1,264,912 zones); the same predicate fails at zone width 0.002, where the absolute error is larger. Aperture ratio at the fine width within 1e-4 of the separate closed form 4 sin^2(k R^2 / 4z) = 2, and that same |ratio - 1| < 1e-3 predicate fails for the aperture. The fine width with eps = 1e-3 also fails the disk predicate.",
+        "benchmark": "For a unit-amplitude plane wave the on-axis Fresnel integrals from R to infinity and from 0 to infinity differ by a boundary term that cancels in the intensity, so the ratio is 1. The aperture closed form 4 sin^2(k R^2 / 4z) is evaluated from that expression, not from the sum.",
+        "failureControl": "The circular aperture at the same k, R and z has ratio 2, so the disk acceptance predicate fails while the aperture quadrature still matches 4 sin^2. Zone width 0.002 fails the disk predicate with a larger error. The same fine width with a tenfold stronger convergence factor (eps = 1e-3, bias about 0.002) fails it as well.",
+        "limitations": "The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring; that number is not this proof. No laboratory photometry. No print path."
+      }
+    ],
     "print": []
   },
   {
