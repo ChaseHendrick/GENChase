@@ -980,15 +980,29 @@
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Nothing about src/modules/arago.js is validated, so the record stays unvalidated with its evidence recorded (in-project contract check, 2026-09-27). The recorded test is a separate radial midpoint quadrature of the textbook on-axis identity for Poisson's spot: a unit-amplitude plane wave has the same intensity on axis behind an opaque circular disk as in the unobstructed beam. The interactive plate is not that object. It uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring, and the tool asserts that its metric is more than 0.2 from 1: 1.83 at the defaults, and 0.67 against 1.38 at R 20, z 0.8, k 1.2 when only the grid changes from 96 to 160.",
+      "The zone-width ladder is not a clean refinement control. Its disk errors are not monotone (width 0.004: 0.0086; 0.002: 0.081; 0.001: 0.0011; 0.0005: 0.0002) because the coarse rows are aliased: the sampled chirp exp(i k rho^2 / 2z) has discrete stationary points where the phase step k rho dr / z is a multiple of 2 pi, at rho = 0.4 m / dr, so the first lies inside the window rho_max = 632.456 at rho = 100, 200 and 400 for widths 0.004, 0.002 and 0.001, while the fine row's first is at 800, beyond it. That a coarser row fails shows aliasing, not convergence. The aperture control (ratio 2.000005 against 4 sin^2(k R^2 / 4z) = 2) is the real failure control.",
+      "No laboratory photometry.",
+      "No print-path evidence. The plate picture was not changed, and the plate is not a converged Poisson-spot solver at its default."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Validate the module itself: benchmark the plate's propagator and its status-line metric in src/modules/arago.js against a converged reference, with a failure control, before any promotion.",
+      "The 24 by 18 plate sum still compares the center to a ring and cuts the aperture off. Do not read I(0)/I_ring as the on-axis identity.",
+      "Replace the zone-width ladder with rows free of discrete stationary points inside the window (0.4 / dr beyond rho_max), or present it as an aliasing demonstration rather than a refinement control.",
+      "A print-path check is required before any promotion, and only inside a domain limited to a converged propagator."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/arago-science.js",
+        "command": "node tools/arago-science.js",
+        "results": "validation/results/arago-science.json",
+        "scope": "Independent midpoint quadrature of the on-axis Fresnel radial integral at R = 1, z = 1, k = 5 pi (Fresnel number 2.5), convergence factor exp(-1e-4 rho^2), window rho_max = 632.456. This is the textbook identity, not src/modules/arago.js. The shipped plate is run through tools/science-harness.js and its I(0)/I_ring is recorded, not required to equal 1; the tool asserts it is more than 0.2 from 1.",
+        "criteria": "Disk ratio within 1e-3 of 1 at zone width 0.0005 (1,264,912 zones); the same predicate fails at zone width 0.002, where the absolute error is larger, but that row is aliased (a discrete stationary point of the sampled chirp at rho = 200, inside the window), so this is not a refinement control. Aperture ratio at the fine width within 1e-4 of the separate closed form 4 sin^2(k R^2 / 4z) = 2, and that same |ratio - 1| < 1e-3 predicate fails for the aperture. The fine width with eps = 1e-3 also fails the disk predicate.",
+        "benchmark": "For a unit-amplitude plane wave the on-axis Fresnel integrals from R to infinity and from 0 to infinity differ by a boundary term that cancels in the intensity, so the ratio is 1. The aperture closed form 4 sin^2(k R^2 / 4z) is evaluated from that expression, not from the sum.",
+        "failureControl": "The circular aperture at the same k, R and z has ratio 2.000005 against the closed form 4 sin^2 = 2, so the disk acceptance predicate fails while the aperture quadrature still matches; this is the real control. Zone width 0.002 fails the disk predicate with a larger error, but that row is aliased, not an under-resolved version of the fine one. The same fine width with a tenfold stronger convergence factor (eps = 1e-3, bias about 0.002) fails it as well.",
+        "limitations": "Validates the textbook identity through a separate quadrature, not the module. The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring; that number is not this proof. The coarse ladder rows are aliased. No laboratory photometry. No print path."
+      }
+    ],
     "print": []
   },
   {

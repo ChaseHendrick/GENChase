@@ -51,7 +51,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [rmt](src/modules/rmt.js) | validated within stated limits | [rmt-science.js](tools/rmt-science.js) | Limited evidence recorded | none |
 | [stealth](src/modules/stealth.js) | unvalidated | None registered | Not scientifically validated | none |
 | [lozenge](src/modules/lozenge.js) | validated within stated limits | [lozenge-science.js](tools/lozenge-science.js) | Limited evidence recorded | none |
-| [arago](src/modules/arago.js) | unvalidated | None registered | Not scientifically validated | none |
+| [arago](src/modules/arago.js) | unvalidated | [arago-science.js](tools/arago-science.js) | Not scientifically validated | none |
 | [ust](src/modules/ust.js) | validated within stated limits | [ust-review.js](tools/ust-review.js) | Limited evidence recorded | none |
 | [cppn](src/modules/cppn.js) | unvalidated | None registered | Not scientifically validated | none |
 | [rogue](src/modules/rogue.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
@@ -237,6 +237,13 @@ No record has an outside review yet; every review so far was done inside the pro
 - The local radius 1 to 4 tests remain for recipes made before v4 (legacy ring 3) and are not the arctic boundary: on the same tilings radius 3 extrapolates 6.6 sigma below the limit in both radius and free area.
 - Exhaustive uniformity covers the boxes 2,2,2, 2,2,3, 2,3,4 and 3,3,3 plus the volume law on 4,4,4; larger hexagons use the same code but are not enumerated here. Uniformity probabilities assume the seeded draws behave as independent uniform variates; fixed PRNG samples do not prove it.
 - Print evidence covers seven recipes on one renderer (headless Chromium 141, SwiftShader, Linux). Grain is omitted from the vector sheet by design.
+
+### arago
+
+- Nothing about src/modules/arago.js is validated, so the record stays unvalidated with its evidence recorded (in-project contract check, 2026-09-27). The recorded test is a separate radial midpoint quadrature of the textbook on-axis identity for Poisson's spot: a unit-amplitude plane wave has the same intensity on axis behind an opaque circular disk as in the unobstructed beam. The interactive plate is not that object. It uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring, and the tool asserts that its metric is more than 0.2 from 1: 1.83 at the defaults, and 0.67 against 1.38 at R 20, z 0.8, k 1.2 when only the grid changes from 96 to 160.
+- The zone-width ladder is not a clean refinement control. Its disk errors are not monotone (width 0.004: 0.0086; 0.002: 0.081; 0.001: 0.0011; 0.0005: 0.0002) because the coarse rows are aliased: the sampled chirp exp(i k rho^2 / 2z) has discrete stationary points where the phase step k rho dr / z is a multiple of 2 pi, at rho = 0.4 m / dr, so the first lies inside the window rho_max = 632.456 at rho = 100, 200 and 400 for widths 0.004, 0.002 and 0.001, while the fine row's first is at 800, beyond it. That a coarser row fails shows aliasing, not convergence. The aperture control (ratio 2.000005 against 4 sin^2(k R^2 / 4z) = 2) is the real failure control.
+- No laboratory photometry.
+- No print-path evidence. The plate picture was not changed, and the plate is not a converged Poisson-spot solver at its default.
 
 ### ust
 
