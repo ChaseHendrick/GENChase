@@ -73,7 +73,7 @@
       "typst": null,
       "latex": "papers/rank-window/paper/note.tex",
       "pdf": "papers/rank-window/paper/note.pdf",
-      "companion": null,
+      "companion": "ChaseHendrick/rank-window",
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
