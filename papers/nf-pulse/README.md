@@ -31,6 +31,7 @@ integrator, and closes it with an isolating block around rest and a shooting arg
   An earlier version of this README said that a second, slow pulse was not found and that the second switch of the
   shooting, near c = 0.3775, looked like a wave train. That was wrong: `ext/slow-pulse/` proves by computer a slow
   pulse with speed in an interval of width 10^-25 at 0.3775319350688905765075606, at these same parameters.
+- **Simulated in the studio:** the Neural-Field Pulse tab (`src/modules/neural-field.js`) runs this model on a periodic ring, and its timed front speed converges at fourth order to the enclosure above (`tools/neural-field-science.js`); a simulation, not part of the proof.
 - **Recomputed independently:** separate programs written from the equations alone (`review/lead/reimpl/`) confirm
   the rest state and its eigenvalues for all c in [c1, c2] and the speed to all quoted digits, and prove the
   existence step again with their own isolating block (exact rational arithmetic), their own validated integrator

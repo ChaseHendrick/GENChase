@@ -1,0 +1,175 @@
+{
+  "scope": "fisher-kpp exportPNG on SwiftShader float32: state preservation in all four views at 2400 x 2400 and 2400 x 1600, and agreement of the print with the state at every cell centre (2560 x 2560, five pixels per cell).",
+  "criteria": "Zero changed float32 components in the plate grid and its half-resolution twin; exact requested dimensions; at cell centres, under 0.5% of cells differ from a one-pixel-per-cell render by more than 2 levels and the median difference is 0. Controls: a one-step state change after export and a state 24 steps later must both be caught.",
+  "limitations": "Selected recipes on one renderer; no colorimetric or printer-profile claim. Grain and isochrone lines are drawn per output pixel and are excluded from the agreement test. A larger print adds pixels, not resolved physics: the field has the cells shown.",
+  "command": "node tools/fisher-kpp-print.js --write",
+  "reviewed": "2026-09-27",
+  "preservation": [
+    {
+      "label": "rings, 2400 x 2400",
+      "view": "arrival",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8863179,
+      "changedComponents": 0,
+      "steps": 1536
+    },
+    {
+      "label": "rings, 2400 x 2400",
+      "view": "territory",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 7931211,
+      "changedComponents": 0,
+      "steps": 1536
+    },
+    {
+      "label": "rings, 2400 x 2400",
+      "view": "density",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 5999304,
+      "changedComponents": 0,
+      "steps": 1536
+    },
+    {
+      "label": "rings, 2400 x 2400",
+      "view": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8581512,
+      "changedComponents": 0,
+      "steps": 1536
+    },
+    {
+      "label": "straight front 3:2, 2400 x 1600",
+      "view": "arrival",
+      "grid": [
+        512,
+        340
+      ],
+      "requested": [
+        2400,
+        1600
+      ],
+      "width": 2400,
+      "height": 1600,
+      "bytes": 5346253,
+      "changedComponents": 0,
+      "steps": 1440
+    },
+    {
+      "label": "straight front 3:2, 2400 x 1600",
+      "view": "territory",
+      "grid": [
+        512,
+        340
+      ],
+      "requested": [
+        2400,
+        1600
+      ],
+      "width": 2400,
+      "height": 1600,
+      "bytes": 5285342,
+      "changedComponents": 0,
+      "steps": 1440
+    },
+    {
+      "label": "straight front 3:2, 2400 x 1600",
+      "view": "density",
+      "grid": [
+        512,
+        340
+      ],
+      "requested": [
+        2400,
+        1600
+      ],
+      "width": 2400,
+      "height": 1600,
+      "bytes": 4999038,
+      "changedComponents": 0,
+      "steps": 1440
+    },
+    {
+      "label": "straight front 3:2, 2400 x 1600",
+      "view": "relief",
+      "grid": [
+        512,
+        340
+      ],
+      "requested": [
+        2400,
+        1600
+      ],
+      "width": 2400,
+      "height": 1600,
+      "bytes": 5300051,
+      "changedComponents": 0,
+      "steps": 1440
+    }
+  ],
+  "agreement": {
+    "grid": [
+      512,
+      512
+    ],
+    "print": [
+      2560,
+      2560
+    ],
+    "pixelsPerCell": 5,
+    "time": 64,
+    "cells": 262144,
+    "fractionOver2Levels": 0,
+    "maxLevels": 1,
+    "medianLevels": 0
+  },
+  "controls": {
+    "stateMutatingExport": {
+      "changedComponents": 259164,
+      "rejected": true
+    },
+    "laterState": {
+      "cells": 262144,
+      "fractionOver2Levels": 0.050632476806640625,
+      "maxLevels": 28,
+      "medianLevels": 0,
+      "rejected": true
+    }
+  },
+  "failures": []
+}

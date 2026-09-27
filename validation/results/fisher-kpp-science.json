@@ -1,0 +1,676 @@
+{
+  "scope": "Fisher-KPP tab (src/modules/fisher-kpp.js): the logistic reaction step, the GPU implementation of the scheme, the straight-front speed of the scheme against the continuum asymptotics, refinement, the plate's own front-speed witness on three presets, and a wrong-diffusion-sign control.",
+  "command": "node tools/fisher-kpp-science.js --write",
+  "reviewed": "2026-09-27",
+  "references": {
+    "asymptotics": "Straight front, D = r = 1: X(t) = 2t - (3/2) ln t + a - 3√π/√t + o(t^-1/2) (Bramson, Comm. Pure Appl. Math. 31, 531 (1978); Ebert and van Saarloos, Physica D 146, 1 (2000); the t^-1/2 term proved by Nolen, Roquejoffre and Ryzhik). Circular front in two dimensions: lag 2 ln t (Gärtner, Math. Nachr. 105, 317 (1982); Ducrot, Nonlinearity 28, 1043 (2015)). Checked in Berestycki, Brunet and Derrida, J. Phys. A 51, 035204 (2018), arXiv:1705.08416, eqs. (1) and (7)."
+  },
+  "cpu": {
+    "windows": [
+      {
+        "D": 1,
+        "r": 1,
+        "h": 1,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 1.9885716094019192,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.0025886020304517476,
+        "errorVsBareMinimalSpeed": -0.011428390598080762,
+        "tolerance": 0.0015,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 1,
+        "h": 1,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.9934059318050916,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.0019460951585028585,
+        "errorVsBareMinimalSpeed": -0.006594068194908376,
+        "tolerance": 0.0005,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 1,
+        "h": 0.5,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 1.9901029120113694,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.001057299421001634,
+        "errorVsBareMinimalSpeed": -0.009897087988630648,
+        "tolerance": 0.0015,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 1,
+        "h": 0.5,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.994985599576303,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.00036642738729142366,
+        "errorVsBareMinimalSpeed": -0.005014400423696941,
+        "tolerance": 0.0005,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 1,
+        "h": 0.25,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 1.9902053862843143,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.0009548251480566705,
+        "errorVsBareMinimalSpeed": -0.009794613715685685,
+        "tolerance": 0.0015,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 1,
+        "h": 0.25,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.995089805338808,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.00026222162478650723,
+        "errorVsBareMinimalSpeed": -0.004910194661192024,
+        "tolerance": 0.0005,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 2,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.9885716094020796,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.0025886020302914314,
+        "errorVsBareMinimalSpeed": -0.011428390597920446,
+        "tolerance": 0.0015,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 2,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          400,
+          800
+        ],
+        "measured": 1.993405931805074,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.0019460951585204,
+        "errorVsBareMinimalSpeed": -0.006594068194925917,
+        "tolerance": 0.0005,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 1,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.9901029120115892,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.0010572994207818098,
+        "errorVsBareMinimalSpeed": -0.009897087988410824,
+        "tolerance": 0.0015,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 1,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          400,
+          800
+        ],
+        "measured": 1.9949855995763541,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.0003664273872403534,
+        "errorVsBareMinimalSpeed": -0.005014400423645871,
+        "tolerance": 0.0005,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 0.5,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          200,
+          400
+        ],
+        "measured": 1.9902053862845377,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.991160211432371,
+        "errorVsAsymptotic": -0.0009548251478332936,
+        "errorVsBareMinimalSpeed": -0.009794613715462308,
+        "tolerance": 0.0015,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 2,
+        "r": 0.5,
+        "h": 0.5,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          400,
+          800
+        ],
+        "measured": 1.9950898053388588,
+        "minimalSpeed": 2,
+        "bramsonEbertVanSaarloos": 1.9953520269635945,
+        "errorVsAsymptotic": -0.000262221624735659,
+        "errorVsBareMinimalSpeed": -0.004910194661141176,
+        "tolerance": 0.0005,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.7071067811865476,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          50,
+          100
+        ],
+        "measured": 2.8122520616162614,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8159257758653387,
+        "errorVsAsymptotic": -0.0036737142490772534,
+        "errorVsBareMinimalSpeed": -0.01617506312992889,
+        "tolerance": 0.002121320343559643,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.7071067811865476,
+        "cellsPerDecayLength": 1,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 2.8191400967382454,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8218538982405614,
+        "errorVsAsymptotic": -0.002713801502316038,
+        "errorVsBareMinimalSpeed": -0.009287028007944897,
+        "tolerance": 0.0007071067811865476,
+        "accepted": null,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.3535533905932738,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          50,
+          100
+        ],
+        "measured": 2.8144353770650063,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8159257758653387,
+        "errorVsAsymptotic": -0.0014903988003323043,
+        "errorVsBareMinimalSpeed": -0.013991747681183941,
+        "tolerance": 0.002121320343559643,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.3535533905932738,
+        "cellsPerDecayLength": 2,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 2.8213361991881243,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8218538982405614,
+        "errorVsAsymptotic": -0.0005176990524371483,
+        "errorVsBareMinimalSpeed": -0.007090925558066008,
+        "tolerance": 0.0007071067811865476,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.1767766952966369,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          50,
+          100
+        ],
+        "measured": 2.814578764012869,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8159257758653387,
+        "errorVsAsymptotic": -0.0013470118524696595,
+        "errorVsBareMinimalSpeed": -0.013848360733321297,
+        "tolerance": 0.002121320343559643,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      },
+      {
+        "D": 1,
+        "r": 2,
+        "h": 0.1767766952966369,
+        "cellsPerDecayLength": 4,
+        "mu": "1/6",
+        "window": [
+          100,
+          200
+        ],
+        "measured": 2.821484295461838,
+        "minimalSpeed": 2.8284271247461903,
+        "bramsonEbertVanSaarloos": 2.8218538982405614,
+        "errorVsAsymptotic": -0.0003696027787234435,
+        "errorVsBareMinimalSpeed": -0.006942829284352303,
+        "tolerance": 0.0007071067811865476,
+        "accepted": true,
+        "bareMinimalSpeedRejected": true
+      }
+    ],
+    "refinement": [
+      {
+        "mu": "1/4",
+        "h": 1,
+        "dt": 0.25,
+        "measured": 1.9479940610045827,
+        "errorVsAsymptotic": -0.043166150427788263,
+        "gridError": -0.04221840361981943
+      },
+      {
+        "mu": "1/4",
+        "h": 0.5,
+        "dt": 0.0625,
+        "measured": 1.9798851845557346,
+        "errorVsAsymptotic": -0.011275026876636396,
+        "gridError": -0.010327280068667566
+      },
+      {
+        "mu": "1/4",
+        "h": 0.25,
+        "dt": 0.015625,
+        "measured": 1.9876437783946255,
+        "errorVsAsymptotic": -0.0035164330377455144,
+        "gridError": -0.0025686862297766844
+      },
+      {
+        "mu": "1/4",
+        "h": 0.125,
+        "dt": 0.00390625,
+        "measured": 1.9895720947477795,
+        "errorVsAsymptotic": -0.0015881166845914674,
+        "gridError": -0.0006403698766226373
+      },
+      {
+        "mu": "1/6",
+        "h": 1,
+        "dt": 0.16666666666666666,
+        "measured": 1.9885716094019192,
+        "errorVsAsymptotic": -0.0025886020304517476,
+        "gridError": -0.0016408552224829176
+      },
+      {
+        "mu": "1/6",
+        "h": 0.5,
+        "dt": 0.041666666666666664,
+        "measured": 1.9901029120113694,
+        "errorVsAsymptotic": -0.001057299421001634,
+        "gridError": -0.00010955261303280395
+      },
+      {
+        "mu": "1/6",
+        "h": 0.25,
+        "dt": 0.010416666666666666,
+        "measured": 1.9902053862843143,
+        "errorVsAsymptotic": -0.0009548251480566705,
+        "gridError": -0.000007078340087840473
+      },
+      {
+        "mu": "1/6",
+        "h": 0.125,
+        "dt": 0.0026041666666666665,
+        "measured": 1.9902124646244022,
+        "errorVsAsymptotic": -0.00094774680796883,
+        "gridError": 0
+      }
+    ],
+    "wrongSign": {
+      "h": 0.5,
+      "mu": "1/6",
+      "maximumPrincipleHolds": false,
+      "uRange": [
+        -42.62650307477791,
+        31.72399530536044
+      ],
+      "measured": null,
+      "rejected": true
+    },
+    "refinementOrders": {
+      "1/4": [
+        2.031411691252332,
+        2.0073577586736144,
+        2.0040533235453397
+      ],
+      "1/6": [
+        3.9047521504088216,
+        3.9520690059189056
+      ]
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "logistic": [
+      {
+        "label": "production",
+        "dt": 0.041666666666666664,
+        "steps": 480,
+        "maxAbsError": 0.000004146302624241649,
+        "maxSpatialSpread": 0,
+        "samples": [
+          {
+            "t": 2.5,
+            "exact": 0.19911731562508864,
+            "measuredMin": 0.1991192102432251,
+            "measuredMax": 0.1991192102432251
+          },
+          {
+            "t": 5,
+            "exact": 0.7517895958772464,
+            "measuredMin": 0.7517937421798706,
+            "measuredMax": 0.7517937421798706
+          },
+          {
+            "t": 7.5,
+            "exact": 0.9736139575388467,
+            "measuredMin": 0.9736151099205017,
+            "measuredMax": 0.9736151099205017
+          },
+          {
+            "t": 10,
+            "exact": 0.9977803412867725,
+            "measuredMin": 0.9977805018424988,
+            "measuredMax": 0.9977805018424988
+          },
+          {
+            "t": 12.5,
+            "exact": 0.9998174273334334,
+            "measuredMin": 0.9998178482055664,
+            "measuredMax": 0.9998178482055664
+          },
+          {
+            "t": 15,
+            "exact": 0.9999850110109685,
+            "measuredMin": 0.9999850392341614,
+            "measuredMax": 0.9999850392341614
+          },
+          {
+            "t": 17.5,
+            "exact": 0.9999987696119276,
+            "measuredMin": 0.9999987483024597,
+            "measuredMax": 0.9999987483024597
+          },
+          {
+            "t": 20,
+            "exact": 0.9999998990034829,
+            "measuredMin": 0.9999987483024597,
+            "measuredMax": 0.9999987483024597
+          }
+        ]
+      },
+      {
+        "label": "control: growth rate halved",
+        "dt": 0.041666666666666664,
+        "steps": 480,
+        "maxAbsError": 0.5526697448840899,
+        "maxSpatialSpread": 0,
+        "samples": [
+          {
+            "t": 2.5,
+            "exact": 0.19911731562508864,
+            "measuredMin": 0.06649543344974518,
+            "measuredMax": 0.06649543344974518
+          },
+          {
+            "t": 5,
+            "exact": 0.7517895958772464,
+            "measuredMin": 0.19911985099315643,
+            "measuredMax": 0.19911985099315643
+          },
+          {
+            "t": 7.5,
+            "exact": 0.9736139575388467,
+            "measuredMin": 0.46461036801338196,
+            "measuredMax": 0.46461036801338196
+          },
+          {
+            "t": 10,
+            "exact": 0.9977803412867725,
+            "measuredMin": 0.7517954111099243,
+            "measuredMax": 0.7517954111099243
+          },
+          {
+            "t": 12.5,
+            "exact": 0.9998174273334334,
+            "measuredMin": 0.9135856032371521,
+            "measuredMax": 0.9135856032371521
+          },
+          {
+            "t": 15,
+            "exact": 0.9999850110109685,
+            "measuredMin": 0.9736154675483704,
+            "measuredMax": 0.9736154675483704
+          },
+          {
+            "t": 17.5,
+            "exact": 0.9999987696119276,
+            "measuredMin": 0.9922957420349121,
+            "measuredMax": 0.9922957420349121
+          },
+          {
+            "t": 20,
+            "exact": 0.9999998990034829,
+            "measuredMin": 0.9977807998657227,
+            "measuredMax": 0.9977807998657227
+          }
+        ]
+      }
+    ],
+    "implementation": {
+      "grid": [
+        512,
+        512
+      ],
+      "h": 0.5,
+      "dt": 0.041666666666666664,
+      "mu": 0.16666666666666666,
+      "steps": 480,
+      "time": 20,
+      "maxAbsDensityDifference": 0.000015946260080612618,
+      "arrivedCells": 95360,
+      "arrivalStatusMismatches": 1,
+      "arrivalTimeDifference": {
+        "median": 0.000041138157522269125,
+        "p999": 0.00005623737536097906,
+        "max": 0.00005688339640030904
+      },
+      "labelMismatches": 0
+    },
+    "plate": [
+      {
+        "preset": "rings",
+        "grid": [
+          512,
+          512
+        ],
+        "h": 0.5,
+        "dt": 0.041666666666666664,
+        "steps": 1536,
+        "time": 64,
+        "D": 1,
+        "r": 1,
+        "init": "founders",
+        "measured": 1.9516462704205668,
+        "cells": 63773,
+        "meanArrival": 34.3584589503957,
+        "meanInverseArrival": 0.02971664196417059,
+        "halfResolution": 1.9478050713750958,
+        "gridEffect": 0.0038411990454709777,
+        "minimalSpeed": 2,
+        "lagStraight": 0.04457496294625588,
+        "lagCircular": 0.05943328392834118,
+        "accepted": true,
+        "bareMinimalSpeedAccepted": false
+      },
+      {
+        "preset": "single",
+        "grid": [
+          512,
+          512
+        ],
+        "h": 0.5,
+        "dt": 0.041666666666666664,
+        "steps": 1440,
+        "time": 60,
+        "D": 1,
+        "r": 1,
+        "init": "single",
+        "measured": 1.9575102097433141,
+        "cells": 112972,
+        "meanArrival": 45.473162308380154,
+        "meanInverseArrival": 0.022721652285179517,
+        "halfResolution": 1.9565812450076865,
+        "gridEffect": 0.0009289647356276465,
+        "minimalSpeed": 2,
+        "lagStraight": 0.03408247842776928,
+        "lagCircular": 0.045443304570359035,
+        "circularPrediction": 1.954556695429641,
+        "accepted": true,
+        "bareMinimalSpeedAccepted": false
+      },
+      {
+        "preset": "edge",
+        "grid": [
+          512,
+          512
+        ],
+        "h": 0.5,
+        "dt": 0.041666666666666664,
+        "steps": 2640,
+        "time": 110,
+        "D": 1,
+        "r": 1,
+        "init": "edge",
+        "measured": 1.9829863251435027,
+        "cells": 105350,
+        "meanArrival": 81.59147220236801,
+        "meanInverseArrival": 0.012719369136739985,
+        "halfResolution": 1.9815241996361823,
+        "gridEffect": 0.0014621255073203887,
+        "minimalSpeed": 2,
+        "lagStraight": 0.019079053705109976,
+        "lagCircular": 0.02543873827347997,
+        "straightPrediction": 1.98092094629489,
+        "ebertVanSaarloosTermApprox": 0.0038138582939746812,
+        "accepted": true,
+        "bareMinimalSpeedAccepted": false
+      }
+    ],
+    "wrongSignGPU": {
+      "grid": [
+        256,
+        256
+      ],
+      "steps": 400,
+      "uRange": [
+        -48724.2421875,
+        94616.8125
+      ],
+      "nonfiniteCells": 0,
+      "maximumPrincipleHolds": false
+    }
+  },
+  "failures": [],
+  "seconds": 199
+}

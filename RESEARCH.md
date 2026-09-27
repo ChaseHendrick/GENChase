@@ -616,7 +616,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-130 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+134 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -752,6 +752,10 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `hodgkin-huxley` | Hodgkin-Huxley Membranes | occasional | science only | never searched |
 | `direct-gravity` | Direct Gravity | common | science only | never searched |
 | `volume-wave` | Wave volume | occasional | science only | never searched |
+| `phase` | Phase portraits | occasional | science only | never searched |
+| `neural-field` | Neural-Field Pulse | rare | science only | never searched |
+| `cattaneo` | Maxwell-Cattaneo heat | rare | science only | never searched |
+| `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -828,7 +832,7 @@ Write the query next time. These are the families that were already run, reconst
 | `three-vortex-bound` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. The rates A and B in this very parametrization: Kimura 1987 Eq. (4.4), so the closed form is their ratio (read 2026-09-24). Min √2: not in Gröbli 1877, Kimura 1987, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
 | `track` `causticsea` | is a published PDE plus a feedback term an invention | No. Named prior articles in both cases. |
 | self-checking gen-art | a generative art tool that measures an observable against theory | Not found on art platforms (seed + traits). Physics teaching tools do this routinely. Rechecked 2026-09-24 (log entry below): still not found; the nearest science-art studios, Simunauts and Morphon, could be read only through search snippets. |
-| `flow` `attractors` `turing` formula entry | typing the equations of a simulation into a browser studio | Not searched, and not new: interactive formula entry for PDEs in the browser is the core of VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol. 85:113, 2023; see the 2026-09-24 survey entry). The Flow Field custom field and the Attractors custom ODE (2026-09-25) follow it and are credited to it, and so does the Turing tab's custom reaction (2026-09-25), typed reaction terms with the diffusion built in, which is VisualPDE's own use. Re-search: skip. |
+| `flow` `attractors` `turing` `schrodinger` formula entry | typing the equations of a simulation into a browser studio | Not searched, and not new: interactive formula entry for PDEs in the browser is the core of VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol. 85:113, 2023; see the 2026-09-24 survey entry). The Flow Field custom field and the Attractors custom ODE (2026-09-25) follow it and are credited to it, and so does the Turing tab's custom reaction (2026-09-25), typed reaction terms with the diffusion built in, which is VisualPDE's own use. The Schrödinger tab's custom potential (2026-09-26), a typed V(x, y) under the tab's own leapfrog and step bound, and the studio's Type a formula dialog that lists these places are the same idea applied here and credited the same way; no claim is made for either. Re-search: skip. |
 | comparable public projects | a public tool combining per-technique numerical validation, per-model citations, seeded recipe links and physical-size print or SVG export | Not found, 2026-09-24 (log entry below). Nearest in rigor: VisualPDE (PDEs only, peer reviewed). Nearest science-art studios: Simunauts (84 browser simulations), Morphon (63, iOS). Snippet-level negative. |
 
 ## Still open
@@ -2021,3 +2025,9 @@ Each study below searched the literature before it computed, and logged the quer
 - Result: nothing found at the classical parameters. A computer-assisted proof (CAPD, interval arithmetic; written lemmas in `research/double-pendulum/REPORT.md`) gives, at E = -1/2, 0, 1/2 (bottom rest state E = -3), a symmetric hyperbolic periodic orbit with a transversal homoclinic orbit, hence a horseshoe, positive topological entropy and no real-analytic integral on the level; at E = 0, 24 verified covering relations give h_top(P) > 0.1016 per return. An independent adversarial check reran and could not break it.
 - Meromorphic non-integrability: Salnikov's loops close on the phase curve only at g = 1, around an order-3 branch point, and there the monodromy is the identity to 3e-38 (numerical; within 4e-9 of I in ball arithmetic along the loop); his printed matrices could not be reproduced. Open (`research/double-pendulum/morales-ramis/NOTES.md`).
 - Re-search: no, unless a week passes; read the printed page of Bolotin-Negrini Theorem 10.1 before any claim that global analytic non-integrability is new.
+
+### 2026-09-26  `fisher-kpp`, `cattaneo`  query: "Ebert van Saarloos pulled front velocity correction v(t) = v* - 3/(2 lambda t) + t^{-3/2} Fisher-KPP"; "radially symmetric Fisher-KPP front position 2t - (N+2)/2 log t Gartner Ducrot multidimensional compactly supported"; "Ducrot On the large time behaviour of the multi-dimensional Fisher-KPP equation with compactly supported initial data abstract logarithmic N+2"  (session agent)
+Opened: arXiv:1705.08416 (Berestycki, Brunet and Derrida, J. Phys. A 2018), eqs. (1) and (7): for H_t = H_xx + H - H², the front is at 2t - (3/2) log t + Cst - 3√π/√t + o(t^-1/2), Bramson's term and Ebert and van Saarloos's, the latter proved for compactly supported data by Nolen, Roquejoffre and Ryzhik; arXiv:1702.08146 (Roquejoffre and Roussier-Michon), whose references give Gärtner, Math. Nachr. 105 (1982) and Ducrot, Nonlinearity 28, 1043 (2015) for compactly supported data in R^N.
+Blocked: the full texts of Gärtner (1982) and Ducrot (2015) were not opened. The circular coefficient (N + 2)/2, 2 in two dimensions, comes from search summaries and the abstract of a paper on Z^d, and agrees with Bramson's 3/2 plus the curvature term D/R = √(D/r)/(2t); it was not read in a primary source.
+Conclusion: reference verification for two new tabs, not an originality search. The straight-front asymptotics the fisher-kpp benchmark tests are confirmed in a primary source; the circular coefficient is used only in the tab's status note and one plate criterion, and its record says so. Kovács and Rogolino (arXiv:1910.09175) was already verified on 2026-09-21 above; the cattaneo tab implements only the linear constant-coefficient case, whose dispersion relation is derived in the tab and the benchmark.
+Re-search: skip, except read Gärtner (1982) or Ducrot (2015) before anything depends on the circular coefficient.

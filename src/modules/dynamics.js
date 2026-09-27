@@ -138,7 +138,7 @@ uniform vec2 u_res, u_off;
     // Siegel disk: c = lambda/2 - lambda^2/4 with lambda = exp(2 pi i theta), theta the golden mean
     siegel: [Math.cos(TAU * GOLD) / 2 - Math.cos(2 * TAU * GOLD) / 4, Math.sin(TAU * GOLD) / 2 - Math.sin(2 * TAU * GOLD) / 4],
   };
-  const SETS = { mandel: 0, julia: 1, newton: 2, newtonr: 2, ship: 3 };
+  const SETS = { mandel: 0, julia: 1, newton: 2, newtonr: 2, ship: 3, custom: 4 };
   const COLORS = { smooth: 0, distance: 1, point: 2, cross: 3 };
 
   const HOLO_FS = HEAD + `
@@ -249,7 +249,72 @@ void main(){
     if (s.juliaSet === 'custom') return [s.cRe, s.cIm];
     return JULIA_C[s.juliaSet] || JULIA_C.rabbit;
   }
-  const SET_NAMES = { mandel: 'Mandelbrot', julia: 'Julia', newton: 'Newton zⁿ − 1', newtonr: 'Newton, seeded roots', ship: 'Burning Ship' };
+  const SET_NAMES = { mandel: 'Mandelbrot', julia: 'Julia', newton: 'Newton zⁿ − 1', newtonr: 'Newton, seeded roots', ship: 'Burning Ship', custom: 'Custom map' };
+
+  /* Custom map: z <- f(z, c) typed by the viewer in z and c, parsed by the complex mode of the shared expression
+     language (src/shared/expr.js) and written into the shader only through U.expr.toGLSLComplex; nothing typed is
+     evaluated as code. The shader is HOLO_FS with three splices: the complex helpers and the map in place of its
+     cmul (the helpers define the same cmul), an escape loop for the map, and shade() calling that loop. HOLO_FS
+     itself is untouched, so the built-in maps compile exactly the program they always did. In the parameter plane
+     c is the pixel and the orbit starts at z0 (a critical point of the map, 0 for z^d + c); in the dynamical
+     plane c is fixed and z0 is the pixel. The orbit escapes when |z| > R. The smooth count assumes a map of
+     degree 2 near infinity, so its bands are continuous for quadratic maps and approximate otherwise, and the
+     distance estimate takes the derivative of the typed map by central differences. */
+  const MAP_SPEC = { vars: ['z', 'c'] };
+  const MAP_DEFAULT = 'z^2 + c';
+  const isCustomMap = s => s.set === 'custom';
+  const checkMap = v => U.expr.checkComplex(v, MAP_SPEC, { glsl: true });
+  const mapText = s => (typeof s.zmap === 'string' && !checkMap(s.zmap)) ? s.zmap : MAP_DEFAULT;
+  const escRadius = s => Math.pow(2, s.escape);
+  const fmtR = r => r < 999.5 ? String(Math.round(r * 100) / 100) : r.toExponential(2).replace('e+', 'e');
+  const HOLO_CMUL = 'vec2 cmul(vec2 a, vec2 b){ return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }\n';
+  const HOLO_CUSTOM = `// z <- f(z, c), the typed map; see holoCustomFS. The derivative for the distance estimate is a central
+// difference in z (and in c on the parameter plane), step 1% of max(1, |z|) and of max(1, |c|).
+float escapeCustom(vec2 p){
+  bool dyn = u_plane == 1;
+  vec2 z = dyn ? p : u_z0;
+  vec2 c = dyn ? u_c : p;
+  vec2 dz = dyn ? vec2(1.0, 0.0) : vec2(0.0);
+  float trap = 1e9, R2 = u_esc * u_esc; int n = 0; bool fled = false;
+  for (int k = 0; k < 4000; k++) {
+    if (k >= u_iters) break;
+    if (u_color == 1) {
+      float h = 0.01 * max(1.0, length(z));
+      vec2 dn = cmul((fmap(z + vec2(h, 0.0), c) - fmap(z - vec2(h, 0.0), c)) / (2.0 * h), dz);
+      if (!dyn) { float hc = 0.01 * max(1.0, length(c)); dn += (fmap(z, c + vec2(hc, 0.0)) - fmap(z, c - vec2(hc, 0.0))) / (2.0 * hc); }
+      dz = dn;
+    }
+    z = fmap(z, c);
+    trap = min(trap, trapDist(z));
+    n = k + 1;
+    if (dot(z, z) > R2) { fled = true; break; }
+  }
+  if (!fled) return -1.0;
+  float r = min(length(z), 1e30), lr = log(r);
+  if (u_color == 1) {
+    float d = r * lr / max(length(dz), 1e-30);
+    float px = d / u_scale;
+    if (px < 0.5) return 0.0;
+    return clamp((log2(px) + 1.0) / 10.0 * u_cycles + u_shift, 0.0, 1.0);
+  }
+  if (u_color >= 2) return tri(trap * u_cycles * 0.5 + u_shift);
+  float mu = float(n) + 1.0 - log2(max(lr / log(u_esc), 1.0));
+  return tri(mu * u_cycles / 64.0 + u_shift);
+}
+`;
+  // Replace the one occurrence of anchor in src; a missing or repeated anchor is a programming error.
+  function splice(src, anchor, text) {
+    const at = src.indexOf(anchor);
+    if (at < 0 || src.indexOf(anchor, at + 1) >= 0) throw new Error('holomorphic shader: anchor not found once');
+    return src.slice(0, at) + text + src.slice(at + anchor.length);
+  }
+  function holoCustomFS(text) {
+    const map = U.expr.toGLSLComplex(text, MAP_SPEC);
+    let src = splice(HOLO_FS, HOLO_CMUL, U.expr.COMPLEX_GLSL +
+      'uniform vec2 u_z0;\nuniform float u_esc;\nuniform int u_plane;\nvec2 fmap(vec2 z, vec2 c){ return ' + map + '; }\n');
+    src = splice(src, '// Newton basins', HOLO_CUSTOM + '// Newton basins');
+    return splice(src, '  float t = escape(p);', '  float t = escapeCustom(p);');
+  }
 
   /* ==================== Double pendulum flip time ==================== */
   const SENT = 30000.0;   // omega1 channel value marking a cell that has flipped (fits half floats too)
@@ -470,14 +535,20 @@ void main(){
     tab: 'Holomorphic',
     subtitle: 'escape-time and Newton basins in the complex plane · 1918',
     order: 63,
-    equation: 'z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)',
-    credit: "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-    blurb: 'Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton\'s method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Zoom is clamped where 32-bit floats run out of digits.',
+    equation: 'z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)',
+    credit: "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    blurb: 'Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton\'s method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Custom map iterates a map you type in z and c, with the pixel as the parameter c or as the starting point z₀, and escapes at a radius you choose. Zoom is clamped where 32-bit floats run out of digits.',
     schema: [
-      { group: 'Set', key: 'set', label: 'Map', type: 'seg', kind: GEOM, wrap: true, options: [['mandel', 'Mandelbrot'], ['julia', 'Julia'], ['newton', 'Newton zⁿ−1'], ['newtonr', 'Newton seeded'], ['ship', 'Burning Ship']] },
+      { group: 'Set', key: 'set', label: 'Map', type: 'seg', kind: GEOM, wrap: true, options: [['mandel', 'Mandelbrot'], ['julia', 'Julia'], ['newton', 'Newton zⁿ−1'], ['newtonr', 'Newton seeded'], ['ship', 'Burning Ship'], ['custom', 'Custom map']] },
+      { group: 'Set', key: 'zmap', label: 'f(z, c) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkMap, dimUnless: isCustomMap, activeOnly: true,
+        hint: 'Custom map: z ← f(z, c) in the complex numbers z and c. Operators + - * / ^, functions sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg pow, constants i, pi and e; log, sqrt and powers take the principal branch. Smooth count bands assume a map of degree 2, so they are approximate for other maps, and Distance uses a finite-difference derivative. A user-defined map is not validated.' },
+      { group: 'Set', key: 'plane', label: 'Pixel is', type: 'seg', kind: GEOM, options: [['param', 'c (parameter plane)'], ['dyn', 'z₀ (dynamical plane)']], dimUnless: isCustomMap, activeOnly: true },
+      RANGE('Set', 'z0Re', 'Start Re z₀', GEOM, -4, 4, 0.001, f3, { dimUnless: s => isCustomMap(s) && s.plane === 'param', activeOnly: true, hint: 'On the parameter plane the orbit starts at z₀. Start it at a critical point of the map: 0 for z^d + c, π/2 for c·sin(z).' }),
+      RANGE('Set', 'z0Im', 'Start Im z₀', GEOM, -4, 4, 0.001, f3, { dimUnless: s => isCustomMap(s) && s.plane === 'param', activeOnly: true }),
+      RANGE('Set', 'escape', 'Escape radius R', GEOM, 1, 20, 0.1, v => fmtR(Math.pow(2, v)), { dimUnless: isCustomMap, activeOnly: true, hint: 'An orbit has escaped once |z| > R. The slider is logarithmic, from 2 to about 10^6. Transcendental maps want a large R.' }),
       { group: 'Set', key: 'juliaSet', label: 'Julia constant', type: 'seg', kind: GEOM, wrap: true, options: [['rabbit', 'Douady rabbit'], ['dendrite', 'Dendrite'], ['sanmarco', 'San Marco'], ['siegel', 'Siegel disk'], ['custom', 'Custom']], dimUnless: s => s.set === 'julia' },
-      RANGE('Set', 'cRe', 'Re c', GEOM, -2, 1, 0.001, f3, { dimUnless: s => s.set === 'julia' && s.juliaSet === 'custom' }),
-      RANGE('Set', 'cIm', 'Im c', GEOM, -1.5, 1.5, 0.001, f3, { dimUnless: s => s.set === 'julia' && s.juliaSet === 'custom' }),
+      RANGE('Set', 'cRe', 'Re c', GEOM, -2, 1, 0.001, f3, { dimUnless: s => (s.set === 'julia' && s.juliaSet === 'custom') || (isCustomMap(s) && s.plane === 'dyn') }),
+      RANGE('Set', 'cIm', 'Im c', GEOM, -1.5, 1.5, 0.001, f3, { dimUnless: s => (s.set === 'julia' && s.juliaSet === 'custom') || (isCustomMap(s) && s.plane === 'dyn') }),
       RANGE('Set', 'degree', 'Polynomial degree n', GEOM, 3, 8, 1, String, { dimUnless: s => s.set === 'newton' || s.set === 'newtonr' }),
       RANGE('Set', 'relax', 'Relaxation a', GEOM, 0.5, 1.6, 0.01, f2, { dimUnless: s => s.set === 'newton' || s.set === 'newtonr', hint: 'a = 1 is plain Newton. Below 1 the basins swell and smooth out; above 1 the boundaries fold into new filigree.' }),
       RANGE('Set', 'iters', 'Iterations', GEOM, 20, 2000, 10, String),
@@ -496,7 +567,8 @@ void main(){
       { group: 'Quality', key: 'aa', label: 'Supersample 2×2', type: 'toggle', kind: PAINT, hint: 'Four samples per pixel on screen and in print. Four times the work.' },
     ],
     defaults: {
-      set: 'mandel', juliaSet: 'rabbit', cRe: -0.8, cIm: 0.156, degree: 3, relax: 1, iters: 300,
+      set: 'mandel', zmap: MAP_DEFAULT, plane: 'param', z0Re: 0, z0Im: 0, escape: 2,
+      juliaSet: 'rabbit', cRe: -0.8, cIm: 0.156, degree: 3, relax: 1, iters: 300,
       cx: -0.745, cy: 0.186, zoom: 1.6, rot: 0, aspect: '1:1',
       color: 'smooth', cycles: 1.2, shift: 0, trapX: 0, trapY: 0, interior: false, gamma: 1,
       aa: false, seed: 'julia-1918',
@@ -509,9 +581,11 @@ void main(){
       siegel: pre('Siegel disk', { set: 'julia', juliaSet: 'siegel', cx: 0, cy: 0, zoom: 0.1, rot: 0, iters: 400, color: 'point', trapX: 0, trapY: 0, cycles: 2, shift: 0, interior: true }, Pal.verdigris),
       newton: pre('Newton z⁵ − 1', { set: 'newton', degree: 5, relax: 1, cx: 0, cy: 0, zoom: 0.15, rot: 0, iters: 60, color: 'smooth', cycles: 1, shift: 0 }, Pal.tram),
       ship: pre('Burning Ship', { set: 'ship', cx: -1.755, cy: 0.028, zoom: 1.5, rot: 0, iters: 300, color: 'smooth', cycles: 1.6, shift: 0.2, interior: false }, Pal.ember),
+      cubic: pre('Cubic z³ + c', { set: 'custom', zmap: 'z^3 + c', plane: 'param', z0Re: 0, z0Im: 0, escape: 10, cx: 0, cy: 0, zoom: 0.08, rot: 90, iters: 300, color: 'cross', trapX: 0, trapY: 0, cycles: 2, shift: 0, interior: false }, Pal.xray),
+      sine: pre('Sine family c·sin z', { set: 'custom', zmap: 'c*sin(z)', plane: 'dyn', cRe: 1, cIm: 0.3, escape: 6, cx: 0, cy: 0, zoom: 0, rot: 0, iters: 200, color: 'smooth', cycles: 1.5, shift: 0, interior: true }, Pal.ember),
     },
     hints: {
-      Set: 'Julia constants are the classic four; San Marco sits on the real axis at the period-doubling point, the Siegel disk uses c for the golden-mean rotation number. Seeded Newton draws its roots from the seed.',
+      Set: 'Julia constants are the classic four; San Marco sits on the real axis at the period-doubling point, the Siegel disk uses c for the golden-mean rotation number. Seeded Newton draws its roots from the seed. Custom map iterates a map you type, with c or z₀ as the pixel.',
       View: 'Zoom is log10 of the magnification. It is clamped where a 32-bit float can no longer separate neighboring pixels, about 10^4 near the main cardioid.',
       Color: 'Smooth count bands the escape time; Distance draws the set boundary; the traps color by the closest approach of the orbit to a point or to the axes through it.',
     },
@@ -550,6 +624,18 @@ void main(){
       let pass;
       try { pass = new G.Pass(gl, HOLO_FS); } catch (err) { console.error(err); return start.dead('Shader compilation failed on this GPU'); }
       let ramp = null, pal = null, rampKey = '';
+      // The custom map's program, rebuilt when the text changes; null when this GPU could not compile it.
+      const custom = { key: null, pass: null };
+      function customPass(s) {
+        const text = mapText(s);
+        if (custom.key !== text) {
+          if (custom.pass) gl.deleteProgram(custom.pass.prog);
+          custom.pass = null; custom.key = text;
+          try { custom.pass = new G.Pass(gl, holoCustomFS(text)); } catch (err) { console.error(err); }
+        }
+        return custom.pass;
+      }
+      const passFor = s => isCustomMap(s) ? customPass(s) : pass;
       function ensureRamp(s) {
         const key = s.bg + '|' + s.palette.join(',');
         if (ramp && rampKey === key) return;
@@ -563,23 +649,322 @@ void main(){
         const zoom = Math.pow(10, s.zoom), a = s.rot * PI / 180;
         return {
           u_res: [w, h], u_off: [ox, oy], u_center: [s.cx, s.cy], u_rot: [Math.cos(a), Math.sin(a)],
-          u_scale: HOLO_SPAN / (zoom * w), u_c: holoC(s), u_trap: [s.trapX, s.trapY],
+          u_scale: HOLO_SPAN / (zoom * w), u_c: isCustomMap(s) ? [s.cRe, s.cIm] : holoC(s), u_trap: [s.trapX, s.trapY],
           u_cycles: s.cycles, u_shift: s.shift, u_relax: s.relax, u_gamma: s.gamma,
           u_roots: holoRoots(s), u_nroots: { int: Math.round(s.degree) },
           u_set: { int: SETS[s.set] || 0 }, u_iters: { int: Math.round(s.iters) }, u_color: { int: COLORS[s.color] || 0 },
           u_aa: { int: s.aa ? 1 : 0 }, u_interior: { int: s.interior ? 1 : 0 },
           u_bg: hex01(s.bg), u_ramp: ramp, u_pal: pal,
+          u_z0: [s.z0Re, s.z0Im], u_esc: escRadius(s), u_plane: { int: s.plane === 'dyn' ? 1 : 0 },
         };
+      }
+      // A custom map says it is user-defined and makes no claim; the typed map appears only as escaped text in
+      // a tooltip.
+      function mapSpan(s) {
+        const where = s.plane === 'dyn' ? 'z₀ = pixel, c = ' + f3(s.cRe) + (s.cIm < 0 ? ' − ' : ' + ') + f3(Math.abs(s.cIm)) + 'i'
+          : 'c = pixel, z₀ = ' + f3(s.z0Re) + (s.z0Im < 0 ? ' − ' : ' + ') + f3(Math.abs(s.z0Im)) + 'i';
+        return '<span title="' + U.escapeHtml('f(z, c) = ' + mapText(s)) + '"><b>Custom map</b> · ' + where + ' · user-defined, not validated</span>';
       }
       function draw() {
         const s = host.getState();
-        pass.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
-        gl.finish();
+        const p = passFor(s);
         const limit = holoZoomLimit(s.cx, s.cy);
+        if (!p) {
+          const bg = hex01(s.bg);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.clearColor(bg[0], bg[1], bg[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+          host.setStatus('<span><b>Custom map</b> · this map did not compile on this GPU</span>');
+          return;
+        }
+        p.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
+        gl.finish();
         host.setStatus(
-          '<span><b>' + SET_NAMES[s.set] + '</b>' + (s.set === 'julia' ? ' c = ' + holoC(s).map(f3).join(' + ') + 'i' : '') + '</span>' +
+          (isCustomMap(s) ? mapSpan(s) : '<span><b>' + SET_NAMES[s.set] + '</b>' + (s.set === 'julia' ? ' c = ' + holoC(s).map(f3).join(' + ') + 'i' : '') + '</span>') +
           '<span>zoom <b>10^' + f2(s.zoom) + '</b>' + (s.zoom >= limit - 0.005 ? ' · float32 limit' : '') + '</span>' +
-          '<span>' + s.iters + ' iters' + (s.aa ? ' · 2×2 AA' : '') + '</span><span>' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+          '<span>' + s.iters + ' iters' + (isCustomMap(s) ? ' · R = ' + fmtR(escRadius(s)) : '') + (s.aa ? ' · 2×2 AA' : '') + '</span><span>' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { draw(); },
+        repaint() { draw(); },
+        resize() { draw(); },
+        pause() {}, resume() { draw(); },
+        // The custom map is typed by the viewer, so this tab's validation record does not cover it; the stage badge
+        // and the export provenance say so while it is on (the engine only ever lowers the tab's status).
+        evidence() { return isCustomMap(host.getState()) ? { status: 'unvalidated', why: 'Custom map: f(z, c) is typed by the user and is not covered by this tab\'s validation record' } : null; },
+        async exportPNG(w, h) {
+          const s = host.getState();
+          const p = passFor(s);
+          if (!p) throw new Error('this custom map did not compile on this GPU');
+          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { p.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
+          draw();
+          return blob;
+        },
+      };
+    },
+  });
+
+  /* ==================== Phase portraits ==================== */
+  /* A typed complex function f(z), in z and the complex parameters a and b, parsed by the complex mode of the shared
+     expression language and written into the shader only through U.expr.toGLSLComplex. Each pixel is a point z; its
+     hue is arg f(z) through a cyclic ramp (the palette run round and back to its first color, or the hue wheel with
+     red on the positive reals), and the enhanced styles shade log|f| and arg f with sawtooth ramps whose jumps are
+     the level lines of the modulus and the phase (Wegert and Semmler 2011). The spacing is 2 pi / k in both log|f|
+     and arg f, so where f' is not zero the two families of lines cut the plane into small squares: the conformal
+     grid. The witness is the argument principle, computed on the CPU in double precision along a circle the
+     viewer places. */
+  const PHASE_SPAN = 6;            // width of the plane shown at zoom 1
+  const F_SPEC = { vars: ['z'], params: ['a', 'b'] };
+  const F_GLSL = { rename: { a: 'u_a', b: 'u_b' } };
+  const F_DEFAULT = '(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)';
+  const checkF = v => U.expr.checkComplex(v, F_SPEC, { glsl: true });
+  const fText = s => (typeof s.fz === 'string' && !checkF(s.fz)) ? s.fz : F_DEFAULT;
+  const STYLES = { phase: 0, modulus: 1, grid: 2, lines: 3 };
+  const cplx = (re, im) => f2(re) + (im < 0 ? ' − ' : ' + ') + f2(Math.abs(im)) + 'i';
+  const signed = n => (n < 0 ? '−' : '') + Math.abs(n);
+  function phaseFS(fz) {
+    return HEAD + `
+uniform vec2 u_center, u_rot, u_a, u_b, u_ccen;
+uniform float u_scale, u_shift, u_gamma, u_lines, u_shade, u_crad, u_lw;
+uniform int u_style, u_hue, u_aa, u_ring;
+uniform vec3 u_bg, u_ink;
+uniform sampler2D u_pal;
+${U.expr.COMPLEX_GLSL}vec2 fz(vec2 z){ return ${fz}; }
+const float TAU_ = 6.283185307179586;
+// the hue wheel at full saturation and value: red at t = 0, then yellow, green, cyan, blue, magenta
+vec3 wheel(float t){ return clamp(abs(fract(t + vec3(0.0, 2.0, 1.0) / 3.0) * 6.0 - 3.0) - 1.0, 0.0, 1.0); }
+vec3 cyc(float t){ return texture(u_pal, vec2(0.002 + 0.996 * t, 0.5)).rgb; }
+vec3 shade(vec2 px){
+  vec2 d = (px - u_res * 0.5) * u_scale;
+  vec2 z = u_center + vec2(u_rot.x * d.x - u_rot.y * d.y, u_rot.y * d.x + u_rot.x * d.y);
+  vec2 w = fz(z);
+  bool bad = any(isnan(w)) || any(isinf(w));
+  float ph = atan(w.y, w.x) / TAU_;                     // arg f in turns
+  vec3 col = u_hue == 1 ? wheel(fract(ph + u_shift)) : cyc(fract(ph + u_shift));
+  float lm = clamp(log(length(w)), -80.0, 80.0);       // log|f|
+  float q = u_lines / TAU_;                            // lines per unit of log|f|, and per radian of arg f
+  // |grad log|f|| = |grad arg f| away from zeros and poles (Cauchy-Riemann), in units per pixel
+  float g = max(fwidth(lm), 1e-6);
+  float sm = fract(lm * q), sp = fract(ph * u_lines);
+  if (u_style == 1) col *= 1.0 - u_shade + u_shade * sm;
+  else if (u_style == 2) col *= (1.0 - u_shade + u_shade * sm) * (1.0 - u_shade + u_shade * sp);
+  else if (u_style == 3) {
+    float dm = abs(fract(lm * q + 0.5) - 0.5) / (q * g);           // pixels to the nearest modulus line
+    float dp = abs(fract(ph * u_lines + 0.5) - 0.5) / (q * g);     // pixels to the nearest phase line
+    float line = 1.0 - smoothstep(0.5 * u_lw - 0.5, 0.5 * u_lw + 0.5, min(dm, dp));
+    col = mix(col, u_ink, line * u_shade);
+  }
+  if (u_ring == 1) {
+    float rd = abs(length(z - u_ccen) - u_crad) / u_scale;        // pixels from the circle
+    col = mix(col, vec3(0.04), 1.0 - smoothstep(1.3 * u_lw, 1.3 * u_lw + 1.0, rd));
+    col = mix(col, vec3(1.0), 1.0 - smoothstep(0.45 * u_lw, 0.45 * u_lw + 1.0, rd));
+  }
+  return bad ? u_bg : col;
+}
+void main(){
+  vec2 px = gl_FragCoord.xy + u_off;
+  vec3 col;
+  if (u_aa == 1) col = 0.25 * (shade(px + vec2(-0.25, -0.25)) + shade(px + vec2(0.25, -0.25)) + shade(px + vec2(-0.25, 0.25)) + shade(px + vec2(0.25, 0.25)));
+  else col = shade(px);
+  col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
+  ${DITHER}
+  outColor = vec4(col, 1.0);
+}`;
+  }
+
+  /* The argument principle on the CPU. For f meromorphic inside and on the circle |z - c0| = r, with no zero or pole
+     on it, the winding number of f(circle) about 0 is the number of zeros minus the number of poles inside, each
+     counted with its multiplicity. f is evaluated in double precision through U.expr.compileComplex at 4096 equally
+     spaced points, counterclockwise from angle 0; a step whose principal phase change exceeds pi/2 is bisected (at
+     most 24 times, 400,000 evaluations in all) until no step does. The sum of the principal phase changes is 2 pi
+     times an integer whatever the sampling, because it telescopes; that integer is the winding number when no step
+     hides a whole turn, which the refinement makes likely and cannot prove. No count is reported when f is undefined
+     or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f| (a zero on or at the circle), when
+     a step still turns by more than pi/2 after refinement (a zero, a pole or a branch cut on the circle), or when the
+     budget runs out. An essential singularity or a branch point inside is outside the theorem: a number is still
+     printed if the checks pass, and it is the winding number, not a count of zeros and poles. */
+  const WIND_N = 4096, WIND_DEPTH = 24, WIND_BUDGET = 400000, WIND_FLOOR = 1e-9;
+  const WIND_WHY = {
+    nonfinite: 'f is undefined or infinite on the circle',
+    small: '|f| nearly vanishes on the circle',
+    fast: 'the phase turns faster than the sampling can follow',
+    budget: 'the sampling budget ran out',
+    error: 'the count could not be completed',
+  };
+  function windingNumber(F, s) {
+    const env = new Float64Array([0, 0, s.aRe, s.aIm, s.bRe, s.bIm]), out = [0, 0];
+    const cx = s.ccx, cy = s.ccy, r = s.cr;
+    let evals = 0, refined = 0, lo = Infinity, hi = 0, bad = null;
+    const phase = th => {
+      env[0] = cx + r * Math.cos(th); env[1] = cy + r * Math.sin(th);
+      F(env, out); evals++;
+      const m = Math.hypot(out[0], out[1]);
+      if (!Number.isFinite(m)) { bad = bad || 'nonfinite'; return 0; }
+      if (m < lo) lo = m;
+      if (m > hi) hi = m;
+      return Math.atan2(out[1], out[0]);
+    };
+    const wrap = d => d - TAU * Math.round(d / TAU);
+    const seg = (t0, a0, t1, a1, depth) => {
+      const d = wrap(a1 - a0);
+      if (Math.abs(d) <= PI / 2 || bad) return d;
+      if (evals >= WIND_BUDGET) { bad = 'budget'; return d; }
+      if (depth >= WIND_DEPTH) { bad = 'fast'; return d; }
+      refined++;
+      const tm = 0.5 * (t0 + t1), am = phase(tm);
+      return seg(t0, a0, tm, am, depth + 1) + seg(tm, am, t1, a1, depth + 1);
+    };
+    const first = phase(0);
+    let total = 0, prev = first;
+    for (let k = 1; k <= WIND_N && !bad; k++) {
+      const cur = k === WIND_N ? first : phase(TAU * k / WIND_N);
+      total += seg(TAU * (k - 1) / WIND_N, prev, TAU * k / WIND_N, cur, 0);
+      prev = cur;
+    }
+    if (!bad && !(lo > WIND_FLOOR * hi)) bad = 'small';
+    const turns = total / TAU, n = Math.round(turns);
+    // telescoping makes turns a whole number up to rounding; anything else is a bug, and says so
+    if (!bad && Math.abs(turns - n) > 1e-6) throw new Error('argument principle: phase sum is not a whole number of turns');
+    return { n: bad ? null : n, why: bad, evals, refined, minMod: lo, maxMod: hi };
+  }
+  const PAL_PHASE = { bg: '#141217', colors: ['#D1495B', '#EDAE49', '#E8DAB2', '#00798C', '#30638E', '#6B4E71'] };
+
+  /* ---------- Phase Portraits ---------- */
+  Studio.register({
+    id: 'phase',
+    name: 'Phase portraits',
+    tab: 'Phase',
+    subtitle: 'domain coloring and enhanced phase portraits of complex functions · 2011',
+    order: 40.5,
+    equation: 'color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle',
+    credit: "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    blurb: 'Type a function f(z) and every pixel z takes the color of the phase of f(z), the angle of the complex number it lands on, so the whole function is visible at once. A zero is a point where every color meets, running once round the wheel for each order of the zero; a pole is the same with the colors running the other way. The shading styles add the level lines of |f| and of the phase, which cross at right angles wherever the function is conformal and tile the plane with little squares. The circle is a check you can move: the studio walks f once round it in double precision and counts how often the phase turns, which by the argument principle is the number of zeros minus the number of poles inside. Nothing is sampled on a grid, so a print recomputes every pixel at its own size.',
+    schema: [
+      { group: 'Function', key: 'fz', label: 'f(z) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkF,
+        hint: 'f of the complex variable z and the parameters a and b below. Operators + - * / ^, functions sin cos tan sinh cosh tanh exp log sqrt conj re im abs arg pow, constants i, pi and e; log, sqrt and powers take the principal branch, so their cuts show as seams in the colors. A user-defined function is not validated.' },
+      RANGE('Function', 'aRe', 'Re a', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'aIm', 'Im a', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'bRe', 'Re b', GEOM, -3, 3, 0.001, f3),
+      RANGE('Function', 'bIm', 'Im b', GEOM, -3, 3, 0.001, f3),
+      RANGE('Circle', 'ccx', 'Center Re', GEOM, -10, 10, 0.01, f2),
+      RANGE('Circle', 'ccy', 'Center Im', GEOM, -10, 10, 0.01, f2),
+      RANGE('Circle', 'cr', 'Radius', GEOM, 0.01, 10, 0.01, f2),
+      { group: 'Circle', key: 'ring', label: 'Draw the circle', type: 'toggle', kind: PAINT },
+      RANGE('View', 'cx', 'Center Re', GEOM, -10, 10, 0.001, f3),
+      RANGE('View', 'cy', 'Center Im', GEOM, -10, 10, 0.001, f3),
+      RANGE('View', 'zoom', 'Zoom (log10)', GEOM, -1, 4, 0.01, v => '10^' + v.toFixed(2)),
+      RANGE('View', 'rot', 'Rotation', GEOM, 0, 360, 1, deg),
+      ASPECT_FIELD,
+      { group: 'Color', key: 'style', label: 'Style', type: 'seg', kind: PAINT, wrap: true, options: [['phase', 'Phase'], ['modulus', 'Modulus'], ['grid', 'Conformal grid'], ['lines', 'Contour lines']] },
+      { group: 'Color', key: 'hue', label: 'Hues', type: 'seg', kind: PAINT, options: [['palette', 'Palette, cyclic'], ['wheel', 'Hue wheel']] },
+      RANGE('Color', 'lines', 'Lines per turn', PAINT, 2, 48, 1, String, { dimUnless: s => s.style !== 'phase', hint: 'k phase lines round each zero, and modulus lines 2π/k apart in log|f|, so the two families make squares.' }),
+      RANGE('Color', 'shade', 'Line strength', PAINT, 0, 1, 0.01, f2, { dimUnless: s => s.style !== 'phase' }),
+      RANGE('Color', 'shift', 'Hue shift', PAINT, 0, 1, 0.01, f2),
+      RANGE('Color', 'gamma', 'Gamma', PAINT, 0.5, 2, 0.02, f2),
+      { group: 'Quality', key: 'aa', label: 'Supersample 2×2', type: 'toggle', kind: PAINT, hint: 'Four samples per pixel on screen and in print. Four times the work.' },
+    ],
+    defaults: {
+      fz: F_DEFAULT, aRe: 1, aIm: 0, bRe: 0, bIm: 1,
+      ccx: 1, ccy: 0.5, cr: 1.5, ring: true,
+      cx: 0.5, cy: 0, zoom: 0, rot: 0, aspect: '1:1',
+      style: 'grid', hue: 'palette', lines: 12, shade: 0.35, shift: 0, gamma: 1, aa: false, seed: 'wegert-2011',
+    },
+    presets: {
+      rational: pre('Rational function', { fz: F_DEFAULT, ccx: 1, ccy: 0.5, cr: 1.5, ring: true, cx: 0.5, cy: 0, zoom: 0, rot: 0, style: 'grid', hue: 'palette', lines: 12, shade: 0.35, shift: 0, gamma: 1 }, PAL_PHASE),
+      wheel: pre('Hue wheel', { fz: '(z^3 - 1)/(z^3 + 1)', ccx: 1, ccy: 0, cr: 0.5, ring: true, cx: 0, cy: 0, zoom: 0.1, rot: 0, style: 'phase', hue: 'wheel', lines: 12, shade: 0.35, shift: 0, gamma: 1 }, Pal.graphite),
+      blaschke: pre('Blaschke product', { fz: 'z*(z - a)/(1 - conj(a)*z)*(z - b)/(1 - conj(b)*z)', aRe: 0.5, aIm: 0.3, bRe: -0.4, bIm: -0.5, ccx: 0, ccy: 0, cr: 1, ring: true, cx: 0, cy: 0, zoom: 0.4, rot: 0, style: 'modulus', hue: 'palette', lines: 16, shade: 0.45, shift: 0.1, gamma: 1 }, Pal.risograph),
+      tan: pre('Zeros and poles of tan z', { fz: 'tan(z)', ccx: 0, ccy: 0, cr: 2, ring: true, cx: 0, cy: 0, zoom: -0.2, rot: 0, style: 'lines', hue: 'palette', lines: 12, shade: 0.75, shift: 0, gamma: 1 }, Pal.tram),
+      essential: pre('Essential singularity exp(1/z)', { fz: 'exp(1/z)', ccx: 0, ccy: 0, cr: 0.3, ring: false, cx: 0, cy: 0, zoom: 0.5, rot: 0, style: 'grid', hue: 'palette', lines: 8, shade: 0.4, shift: 0, gamma: 1 }, Pal.verdigris),
+      quintic: pre('Quintic z⁵ + a z + b', { fz: 'z^5 + a*z + b', aRe: -1, aIm: 0.5, bRe: 0.3, bIm: -0.2, ccx: 0, ccy: 0, cr: 1, ring: true, cx: 0, cy: 0, zoom: 0.3, rot: 0, style: 'grid', hue: 'wheel', lines: 20, shade: 0.3, shift: 0, gamma: 1.1 }, Pal.nightshade),
+    },
+    hints: {
+      Function: 'The function is evaluated afresh at every pixel, on the GPU in 32-bit floats; the count on the status line uses 64-bit floats on the CPU.',
+      Circle: 'The status line gives the number of turns f makes round 0 as z goes once round this circle: zeros minus poles inside, with multiplicity, when f is meromorphic there. No count is given when the circle runs through or next to a zero or a pole, or across a branch cut.',
+      Color: 'Phase colors by arg f alone. Modulus adds a sawtooth in log|f|, whose jumps are the lines |f| = constant; the conformal grid adds a sawtooth in arg f as well; contour lines draws both families as lines.',
+    },
+    closedGroups: ['Quality'],
+    palette: true, defaultPalette: PAL_PHASE, paletteLabel: 'Phase colors (cyclic)',
+    headline: 'zoom', headlineLabel: 'zoom',
+    surprise(rng) {
+      const f = rng.pick(['(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)', 'z^5 + a*z + b', '(z - a)*(z - b)/(z^3 - 1)', 'sin(z)/z', 'exp(1/z)', 'tan(z)',
+        'z^3 - a*z + b', '1/(1 + z^2) + a/(z - b)', 'sinh(z)^2 - a', 'z*(z - a)/(1 - conj(a)*z)', 'cos(z^2) - a', 'z^4 - 1 + a/z']);
+      const zoom = rng.range(-0.3, 0.6), half = PHASE_SPAN / Math.pow(10, zoom) / 2;
+      return {
+        fz: f, aRe: rng.range(-1.5, 1.5), aIm: rng.range(-1.5, 1.5), bRe: rng.range(-1.5, 1.5), bIm: rng.range(-1.5, 1.5),
+        cx: rng.range(-0.5, 0.5), cy: rng.range(-0.5, 0.5), zoom, rot: rng() < 0.2 ? rng.int(0, 359) : 0,
+        ccx: rng.range(-0.4, 0.4) * half, ccy: rng.range(-0.4, 0.4) * half, cr: rng.range(0.25, 0.6) * half, ring: rng() < 0.7,
+        style: rng.pick(['phase', 'modulus', 'grid', 'grid', 'lines']), hue: rng() < 0.7 ? 'palette' : 'wheel',
+        lines: rng.int(6, 24), shade: rng.range(0.2, 0.6), shift: rng.range(0, 1), gamma: rng.range(0.85, 1.15), aa: false,
+      };
+    },
+    create(host) {
+      const start = glStart(host);
+      if (!start.gl) return start.dead;
+      const gl = start.gl;
+      let pal = null, palKey = '';
+      const prog = { key: null, pass: null };
+      let wind = null, windKey = '';
+      // The program for the typed function, rebuilt when the text changes; null when this GPU could not compile it.
+      function passFor(s) {
+        const text = fText(s);
+        if (prog.key !== text) {
+          if (prog.pass) gl.deleteProgram(prog.pass.prog);
+          prog.pass = null; prog.key = text;
+          try { prog.pass = new G.Pass(gl, phaseFS(U.expr.toGLSLComplex(text, F_SPEC, F_GLSL))); } catch (err) { console.error(err); }
+        }
+        return prog.pass;
+      }
+      function ensurePal(s) {
+        const key = s.bg + '|' + s.palette.join(',');
+        if (pal && palKey === key) return;
+        if (pal) pal.dispose();
+        // the palette run round and back to its first color, so arg f = pi and -pi get the same color
+        pal = G.rampTexture(gl, s.palette.concat([s.palette[0]]), null); palKey = key;
+      }
+      function witness(s) {
+        const key = [fText(s), s.aRe, s.aIm, s.bRe, s.bIm, s.ccx, s.ccy, s.cr].join('|');
+        if (wind && windKey === key) return wind;
+        windKey = key;
+        try { wind = windingNumber(U.expr.compileComplex(fText(s), F_SPEC), s); }
+        catch (err) { console.error(err); wind = { n: null, why: 'error', evals: 0, refined: 0 }; }
+        return wind;
+      }
+      function uniforms(s, w, h, ox, oy) {
+        ensurePal(s);
+        const zoom = Math.pow(10, s.zoom), a = s.rot * PI / 180;
+        return {
+          u_res: [w, h], u_off: [ox, oy], u_center: [s.cx, s.cy], u_rot: [Math.cos(a), Math.sin(a)],
+          u_scale: PHASE_SPAN / (zoom * w), u_a: [s.aRe, s.aIm], u_b: [s.bRe, s.bIm],
+          u_ccen: [s.ccx, s.ccy], u_crad: s.cr, u_ring: { int: s.ring ? 1 : 0 }, u_lw: Math.max(1, w / 700),
+          u_shift: s.shift, u_gamma: s.gamma, u_lines: Math.round(s.lines), u_shade: s.shade,
+          u_style: { int: STYLES[s.style] || 0 }, u_hue: { int: s.hue === 'wheel' ? 1 : 0 }, u_aa: { int: s.aa ? 1 : 0 },
+          u_bg: hex01(s.bg), u_ink: hex01(U.inkFor(s.bg)), u_pal: pal,
+        };
+      }
+      // The typed function is shown only as escaped text in a tooltip; the count is a measurement with no reference
+      // printed beside it.
+      function status(s) {
+        const W = witness(s);
+        const circle = '|z − (' + cplx(s.ccx, s.ccy) + ')| = ' + f2(s.cr);
+        host.setStatus(
+          '<span title="' + U.escapeHtml('f(z) = ' + fText(s) + ', a = ' + cplx(s.aRe, s.aIm) + ', b = ' + cplx(s.bRe, s.bIm)) + '">f typed · user-defined, not validated</span>' +
+          (W.n !== null
+            ? '<span>zeros − poles inside ' + circle + ': <b>' + signed(W.n) + '</b></span>'
+            : '<span>zeros − poles inside ' + circle + ': <b>not counted</b>, ' + WIND_WHY[W.why] + '</span>') +
+          '<span>argument principle, ' + W.evals.toLocaleString() + ' samples of f</span>' +
+          '<span>zoom 10^' + f2(s.zoom) + ' · ' + host.canvas.width + '×' + host.canvas.height + ' px</span>');
+      }
+      function draw() {
+        const s = host.getState();
+        const p = passFor(s);
+        if (!p) {
+          const bg = hex01(s.bg);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.clearColor(bg[0], bg[1], bg[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+          host.setStatus('<span>f typed · this function did not compile on this GPU</span>');
+          return;
+        }
+        p.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0));
+        gl.finish();
+        status(s);
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -589,9 +974,44 @@ void main(){
         pause() {}, resume() { draw(); },
         async exportPNG(w, h) {
           const s = host.getState();
-          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { pass.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
+          const p = passFor(s);
+          if (!p) throw new Error('this function did not compile on this GPU');
+          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { p.draw(target, uniforms(s, w, h, ox, oy)); gl.finish(); });
           draw();
           return blob;
+        },
+        // f on a grid of the plate's own frame, in double precision on the CPU (the plate itself is 32-bit, on the
+        // GPU), with the points z and the argument-principle count.
+        async exportData() {
+          const s = host.getState(), F = U.expr.compileComplex(fText(s), F_SPEC);
+          const W = Math.max(8, Math.min(512, host.canvas.width)), H = Math.max(8, Math.round(W * (ASPECTS[s.aspect] || 1)));
+          const n = W * H, fr = new Float64Array(n), fi = new Float64Array(n), zr = new Float64Array(n), zi = new Float64Array(n);
+          const scale = PHASE_SPAN / (Math.pow(10, s.zoom) * W), a = s.rot * PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+          const env = new Float64Array([0, 0, s.aRe, s.aIm, s.bRe, s.bIm]), out = [0, 0];
+          for (let y = 0; y < H; y++) {
+            const dy = (H - y - 0.5 - H / 2) * scale;             // row 0 is the top of the plate
+            for (let x = 0; x < W; x++) {
+              const dx = (x + 0.5 - W / 2) * scale, k = y * W + x;
+              env[0] = zr[k] = s.cx + ca * dx - sa * dy; env[1] = zi[k] = s.cy + sa * dx + ca * dy;
+              F(env, out); fr[k] = out[0]; fi[k] = out[1];
+            }
+            if (y % 64 === 63) await yieldNow();
+          }
+          const wn = witness(s);
+          return {
+            arrays: {
+              f_re: { data: fr, shape: [H, W], description: 'Re f(z) at the pixel centres, double precision' },
+              f_im: { data: fi, shape: [H, W], description: 'Im f(z) at the pixel centres, double precision' },
+              z_re: { data: zr, shape: [H, W], description: 'Re z, the point each pixel stands for' },
+              z_im: { data: zi, shape: [H, W], description: 'Im z, the point each pixel stands for' },
+            },
+            meta: {
+              tab: 'phase', grid: [W, H], units: 'dimensionless (the complex plane)', function: fText(s),
+              a: [s.aRe, s.aIm], b: [s.bRe, s.bIm], center: [s.cx, s.cy], pixelSpacing: scale, rotationDegrees: s.rot,
+              argumentPrinciple: { circleCenter: [s.ccx, s.ccy], radius: s.cr, zerosMinusPoles: wn.n, refused: wn.why ? WIND_WHY[wn.why] : null, samples: wn.evals, bisections: wn.refined },
+              note: 'NaN where f is undefined. The winding count is a double-precision sampled computation, not interval arithmetic.',
+            },
+          };
         },
       };
     },

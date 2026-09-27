@@ -1139,7 +1139,7 @@
   {
     "id": "pendulum",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
     "equation": "L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π",
     "status": "unvalidated",
@@ -1235,8 +1235,8 @@
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
-    "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
+    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
+    "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
     "status": "validated within stated limits",
     "limitations": [
@@ -1244,7 +1244,8 @@
       "Complete evidence covers only the documented domain in validation/SCHRODINGER.md and the schrodinger-science / schrodinger-state / schrodinger-absorber-science / wave-print-state results artifacts.",
       "Periodic wrap still couples opposite edges through the absorber layer. Stability and conservation do not imply accuracy at coarse steps. Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).",
       "Scattering probabilities, arbitrary potentials/packets, float16, all aspect ratios, other hardware, and full print color fidelity remain outside this domain.",
-      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images."
+      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images.",
+      "The Custom potential mode steps a potential V(x, y) the viewer types, with coefficients a and b, through the same leapfrog. A user-defined potential is not validated: the status line says so and prints no comparison with theory in that mode, the stage badge and the provenance read unvalidated, and none of the evidence above covers it. V is sampled once per cell in double precision on the CPU (x and y from the frame center in units of half its shorter side, y up), stored at the state precision, held between -16 and 16, and a cell where it is undefined (NaN) is a hard wall. The step used is min(dt, 1.6/(4 + max|V|)) over the stored samples, the bound this record states for every potential (validation/SCHRODINGER.md, Custom potential). That bound keeps the explicit scheme stable; it says nothing about accuracy: the lattice dispersion and a potential that changes over a few cells are resolved only as well as the grid allows."
     ],
     "remaining": [
       "Extend beyond the documented Fourier/uniform-V/absorber/long-time-phase and paused-export print domain with independent evidence for scattering probabilities, general non-uniform potentials, float16, other aspect ratios, hardware, and quantitative scientific rendering."
@@ -2454,18 +2455,41 @@
   {
     "id": "holomorphic",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
-    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Custom map mode iterates a map f(z, c) the viewer types, written into the shader only through the complex mode of src/shared/expr.js. A user-defined map is not validated: the status line says so and prints no comparison with theory, and the stage badge and export provenance report the mode as unvalidated through evidence(). Its smooth count assumes a map of degree 2 near infinity, so the bands are approximate for other maps, and its distance estimate uses a central-difference derivative of the typed map in 32-bit floats. The built-in maps compile the unchanged shader."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
+    ],
+    "numerical": [],
+    "print": []
+  },
+  {
+    "id": "phase",
+    "source": "src/modules/dynamics.js",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
+    "reference": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
+    "status": "unvalidated",
+    "limitations": [
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.",
+      "The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 equally spaced samples on the circle, a step bisected where its principal phase change exceeds pi/2 (at most 24 levels and 400,000 evaluations). The printed integer is the winding number about 0 of the sampled closed polygon f(z_k). It equals the number of zeros minus poles inside, with multiplicity, only when f is meromorphic inside and on the circle and no sampling step hides a whole turn of the phase, which the refinement makes likely and cannot prove; a zero or pole within about the sample spacing 2 pi r / 4096 of the circle can be missed.",
+      "No count is printed when f is undefined or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f|, or when refinement does not resolve a step. For an essential singularity or a branch point inside the circle the printed number is a winding number, not a count of zeros and poles, and the status line does not detect those cases.",
+      "The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources."
+    ],
+    "remaining": [
+      "Register a numerical test of the winding computation against functions with known zeros and poles, including zeros close to the circle and circles through a zero or across a cut, with failure controls and a results artifact.",
+      "Compare the GPU phase and modulus with the double-precision values exportData() writes, at the print path's resolution.",
+      "Review the styles against Wegert and Semmler (2011) and Wegert (2012)."
     ],
     "numerical": [],
     "print": []
@@ -3222,7 +3246,7 @@
   {
     "id": "orbitals",
     "source": "src/modules/dynamics.js",
-    "sourceSha256": "f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60",
+    "sourceSha256": "7ca2afffea50a3c23d03468bdaa1773ac7e8f16ed2fdbb7215f3fc01c64459cd",
     "reference": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
     "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
     "status": "unvalidated",
@@ -3368,7 +3392,7 @@
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
+    "sourceSha256": "8479dd5e35c7aa906dcc1594959304c38d4f5d6aa51ba0af24cf4082c84517c3",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
     "status": "validated within stated limits",
@@ -4681,6 +4705,41 @@
     }
   },
   {
+    "id": "neural-field",
+    "source": "src/modules/neural-field.js",
+    "sourceSha256": "b8c040ac5cbc5988f2a3a7d82bd40695f1631767049359823bec08efb32833df",
+    "reference": "D. J. Pinto and G. B. Ermentrout, Spatially structured activity in synaptically coupled neuronal networks: I. Traveling fronts and pulses, SIAM J. Appl. Math. 62, 206–225 (2001), eq. (3) with the feedback decay set to zero; S. Amari, Dynamics of pattern formation in lateral-inhibition type neural fields, Biol. Cybern. 27, 77–87 (1977). The pulse speeds compared at β = 20, θ = 1/4, ε = 1/10 and at β = 12, θ = 1/4, ε = 3/20 are computer-assisted enclosures drafted in this repository (papers/nf-pulse). Original implementation of established equations.",
+    "equation": "∂u/∂t = −u − v + w ∗ S(u);  ∂v/∂t = εu;  w(x) = e^−|x|/2;  S(u) = 1/(1 + e^−β(u − θ))",
+    "status": "partially validated",
+    "limitations": [
+      "The comparison covers two parameter points only, beta = 20, theta = 1/4, eps = 1/10 and beta = 12, theta = 1/4, eps = 3/20 (gamma = 0, kernel e^-|x|/2), with a central kick (six kick shapes at the first point, the default shape at the second), rings of 240 and 400, and the shipped cells (1,024, 2,048, 4,096) and steps (0.1, 0.05, 0.025). At every other parameter the timed speed is printed as a measurement with no reference and no error estimate.",
+      "The reference speeds are computer-assisted enclosures of width 1e-25 drafted in this repository (papers/nf-pulse and papers/nf-pulse/ext/gain-12), computed in ball arithmetic from the traveling-wave ODE by programs separate from this tab. The lemmas those proofs rest on do not yet have written proofs (papers/nf-pulse/notes/QUALITY.md).",
+      "The error estimate |K| dx^4 + |Kt| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 7.6e-10 and 2.2e-10 from the proved speeds.",
+      "That the plate settles onto the fast pulse is observed, not proved: stability of the fast pulse is not established (papers/nf-pulse/ext/stability). The slow pulse proved at the first point is expected to be unstable; kicks at the launch threshold hesitate at a front speed near 0.1 and then die or accelerate to the fast pulse, an observation at one kick width.",
+      "The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, isolated after covering that distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.",
+      "No print-accuracy evidence is registered. The plate is a Catmull-Rom display of a Float32 record of u and v (at most 2,048 columns and 1,536 rows); prints add pixels, not resolution. Periodic ring only: no two-dimensional field, synaptic delay, recovery decay (gamma), noise or heterogeneity."
+    ],
+    "remaining": [
+      "Register print-state evidence: the exported sheet against the Float32 record, and the record preserved by export.",
+      "Extend the comparison to further parameter points once speed enclosures exist there (papers/nf-pulse/ext/eps-range proves existence over an eps interval with speed windows, not sharp speeds).",
+      "A planar version with the K0/(2 pi) kernel of (1 - Laplacian) r = S(u) is not implemented.",
+      "Outside review of the benchmark and of the reference enclosures."
+    ],
+    "numerical": [
+      {
+        "test": "tools/neural-field-science.js",
+        "command": "node tools/neural-field-science.js --write",
+        "results": "validation/results/neural-field-science.json",
+        "scope": "The maintained Float64 solver loaded unchanged (Numerov periodic solve of r - r'' = S(u), classical RK4) and its front timing: the kernel against constants and Fourier modes; the RK4 step bound over the eigenvalue set of the linearization for every offered step and eps from 0.01 to 0.3; the timed speed at the two proved points on cells 1,024, 2,048 and 4,096 with the step halved each time, step refinement at 2,048 cells, three slider corners (ring 400 on 1,024 cells, 4,096 cells at step 0.1); six kick shapes, window choice, a short ring, a subthreshold kick and the launch threshold; every preset to completion; determinism.",
+        "criteria": "Constant returned to 1e-13 and Fourier-mode errors falling 14 to 18 times per halving; discrete symbol in (0, 1]; RK4 stable for steps up to 0.1 on the decaying eigenvalues (largest stable step 2.81 to 4.78); observed order 3.6 to 4.4 (measured 4.01 and 4.00); Richardson limit within 2e-8 of the proved speed; module K and Kt within 5 and 10 per cent of the refinement; every timed speed at the proved points, corners, kick shapes and presets within 2(|K| dx^4 + |Kt| dt^4) + 2e-8 of the proved speed; all controls fail as stated.",
+        "limitations": "Deterministic finite-grid evidence at two parameter points and the listed fixtures; no stability proof, no other parameters, no print path, no GPU.",
+        "benchmark": "Computer-assisted enclosures of the fast pulse speed, width 1e-25: 1.10274770973415924914786... at beta 20, theta 1/4, eps 1/10 (papers/nf-pulse) and 1.04753749779917111554998... at beta 12, theta 1/4, eps 3/20 (papers/nf-pulse/ext/gain-12), computed from the traveling-wave ODE in ball arithmetic by separate programs; and the exact Fourier-mode solutions f/(1 + q^2) of r - r'' = f.",
+        "failureControl": "eps = 0.5, where the fast pulse does not exist: every front ends and nothing is timed. A kernel of mass 2 and of mass 1.001 with the rest state moved to match: speed errors 2.37 and 2.6e-3 against tolerances 6.5e-5 and 3.5e-6. The second-order stencil in place of Numerov's: errors 3.2e-3, 8.0e-4 and 2.0e-4 at the three grids, observed order 2.0, outside the tolerance at every grid."
+      }
+    ],
+    "print": []
+  },
+  {
     "id": "volume-wave",
     "source": "src/modules/volume-wave.js",
     "sourceSha256": "5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234",
@@ -4791,5 +4850,88 @@
       "resolution": "Force max |Δa| ~2e-15 / 5e-15 / 1e-14 at N=256/1024/4096; relative energy drift ~4.5e-6→2.8e-7 under h 0.004→0.001 (ratio ~16); position RMS refine ~5 on the ε band. Exact N/ε/h/steps recorded.",
       "precision": "Float64 production kernel vs independent all-pairs reference; finite-time fixtures only — not galaxy equilibrium, unsoftened close encounters, or chaotic long-time accuracy."
     }
+  },
+  {
+    "id": "fisher-kpp",
+    "source": "src/modules/fisher-kpp.js",
+    "sourceSha256": "8edac26c11ad0d003d7fdb101f02a28aea2a92dbba2aa8e8b825231048e54131",
+    "reference": "R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).",
+    "equation": "∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)",
+    "status": "unvalidated",
+    "limitations": [
+      "Deterministic single-species logistic reaction-diffusion on a closed (zero-flux) plate: no demographic noise, Allee effect, advection or genetic drift. The territory view maps first arrival, not genetics. A population illustration does not establish experimental accuracy.",
+      "The status-line front speed is read from the arrival-time field (mean 1/|∇T| over clean cells in the last half of the arrivals) and is compared with 2√(rD) with basis deterministic. It sits below 2√(rD) by the finite-time lag, which the note prints: Bramson's (3/2)√(D/r)/t for a straight front and 2√(D/r)/t for a circle. The circular coefficient 2 was not read in Gärtner (1982) or Ducrot (2015); it agrees with Bramson's 3/2 plus the curvature term, and its next correction and the founder-radius effect are unknown, so the plate criterion for circles is a band.",
+      "The grid effect printed on the status line is the difference from a twin on cells twice as large; with the 9-point stencil at D dt/h² = 1/6 the straight-front speed converges at fourth order, and the difference overstates the plate's own error.",
+      "Heterogeneous habitats (patchy, hostile islands) print no comparison and are not benchmarked beyond the scheme.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused because a pulled front is set by densities below its resolution. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/FISHER-KPP.md against the primary sources before any promotion.",
+      "Read Gärtner (1982) or Ducrot (2015) for the circular coefficient; extend the plate witness to other D, r and grids.",
+      "Benchmark the heterogeneous habitats against a published result (Shigesada, Kawasaki and Teramoto 1986) before any claim about them."
+    ],
+    "numerical": [
+      {
+        "test": "tools/fisher-kpp-science.js",
+        "command": "node tools/fisher-kpp-science.js --write",
+        "results": "validation/results/fisher-kpp-science.json",
+        "scope": "The real GPU module (logistic growth on a uniform field; its step against an independent Float64 twin on a 128 x 128 plate with seven founders; its status-line front speed on the Growth rings, One founder and Straight front presets at grid 512, h = 1/2) and a Float64 straight front of the same scheme (the 9-point stencil reduces to the 3-point one along a grid axis) over t in [100, 200]/r and [200, 400]/r for (D, r) = (1, 1), (2, 1/2), (1, 2) at one, two and four cells per √(D/r).",
+        "criteria": "Logistic error below the float32 bound 2e-5 over 480 steps; GPU density within 5.7e-5 of the twin, arrival times within 1e-3 at the 99.9th percentile, labels within 0.1%; straight-front speed within 1.5e-3 (first window) and 5e-4 (second) of 2√(rD) times the Bramson and Ebert-van Saarloos speed at two or more cells per decay length; second-order refinement at D dt/h² = 1/4 and fourth-order between h = 1 and 1/2 at 1/6; each plate speed inside its geometry's lag band within 3e-3 plus its h-and-2h difference, with 2√(rD) alone outside it. Two float32 tolerances were set from the rounding bound after guessed ones (2e-6, 1e-5) failed on the first run; validation/FISHER-KPP.md records both.",
+        "benchmark": "The exact logistic solution u0 e^{rt}/(1 + u0(e^{rt} - 1)); the straight-front position 2t - (3/2) ln t + a - 3√π/√t in units of D and r (Bramson 1978; Ebert and van Saarloos 2000; checked in Berestycki, Brunet and Derrida, arXiv:1705.08416, eq. 7); the circular lag 2√(D/r) ln t in two dimensions (Gärtner 1982, not read); an independent Float64 implementation of the scheme.",
+        "failureControl": "A halved growth rate must miss the logistic benchmark (misses by 0.55); the bare 2√(rD) with no finite-time lag must miss the straight-front and plate criteria (by 4.9e-3 to 9.9e-3 dimensionless); D -> -D must break the discrete maximum principle on the Float64 scheme and on the GPU (it does).",
+        "limitations": "Straight fronts along a grid axis and the three plate presets at one resolution; the unknown next asymptotic term (of order ln t/t² in the speed) limits the straight-front agreement to about 1e-3 at t ~ 100/r. SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/fisher-kpp-print.js",
+        "command": "node tools/fisher-kpp-print.js --write",
+        "results": "validation/results/fisher-kpp-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Growth rings) and 2400 x 1600 (a 3:2 straight front) in all four views, and a 2560 x 2560 export whose pixel centres fall on the 512 cell centres.",
+        "criteria": "Zero changed float32 components in the plate and its half-resolution twin; exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state 24 steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain and isochrone lines are drawn per output pixel and excluded from the agreement test; no colorimetric or printer-profile claim."
+      }
+    ]
+  },
+  {
+    "id": "cattaneo",
+    "source": "src/modules/cattaneo.js",
+    "sourceSha256": "3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e",
+    "reference": "Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.",
+    "equation": "τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0",
+    "status": "unvalidated",
+    "limitations": [
+      "Linear, constant-coefficient Maxwell-Cattaneo-Vernotte (telegraph) model with unit heat capacity on a periodic plate, a labeled simplification of the nonlinear equations of Kovács and Rogolino (arXiv:1910.09175). No temperature-dependent coefficients, boundaries, material data or Guyer-Krumhansl terms; not a material model, and no claim about which solids conduct heat this way. The model lets the temperature dip below ambient behind a front, a known objection to it.",
+      "The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.",
+      "Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/CATTANEO.md before any promotion.",
+      "Compare with a published numerical result for the linear case (for example a one-dimensional heat-pulse profile in Kovács and Rogolino) and state the differences from their nonlinear model quantitatively.",
+      "Extend the plate check to more modes and to non-square plates."
+    ],
+    "numerical": [
+      {
+        "test": "tools/cattaneo-science.js",
+        "command": "node tools/cattaneo-science.js --write",
+        "results": "validation/results/cattaneo-science.json",
+        "scope": "A Float64 one-dimensional twin of the staggered scheme and the scheme's scalar mode recursion (modes m = 1, 2, 3, 5, 8, 12 at α = 0.002, τ = 0.5 on 512 cells; refinement 64 to 512 cells at α = 0.02, τ = 0.35; the Nyquist step bound; τ from 0.1 to 0 on mode 2), and the real GPU module (single modes on 256 x 256 and 256 x 320 including τ = 0; one spark at α = 0.03, τ = 0.4 on 512; the status-line check on the Sparks, Moving torch, Rings and glow and Fourier limit presets).",
+        "criteria": "Twin equal to the recursion to 1e-10; each mode within (kh)²/12 + 1e-4 of the exact response; overdamped slow roots within 0.1% and oscillating decay rates and frequencies within 0.5%; GPU within 2e-5 of the recursion; second-order refinement (orders 1.8 to 2.3); bounded at 0.999 of the solved step bound and overflow at 1.01; relaxation-limit slow roots within 0.1% and the O(τ) coefficient within 10% for τ ≤ 0.01; ring edge speed within 1% of √(α/τ) with under 1e-3 of the peak beyond the front; plate mismatch below 1e-5 and heat within 1e-5. Some thresholds were set after first runs (the mode tolerance, the oscillation window, the plate-control ratio); validation/CATTANEO.md says which.",
+        "benchmark": "The exact dispersion relation τ s² + s + α k² = 0 of the continuum telegraph equation and the resulting mode response G_k(t) with G_k(0) = 1, G_k'(0) = 0; Fourier's law e^{-αk²t} at τ = 0; the wave speed √(α/τ); the Gaussian solution of the heat equation as the finite-speed control.",
+        "failureControl": "τ -> -τ must fail the mode check (error 163 on the recursion, overflow on the GPU); a step 1% above the solved bound must grow; τ five per cent high and Fourier's law must each miss the plate check by 20 times its own mismatch (80 to 40000 times).",
+        "limitations": "Periodic domain, linear constant coefficients, selected modes and presets at one or two resolutions; SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/cattaneo-print.js",
+        "command": "node tools/cattaneo-print.js --write",
+        "results": "validation/results/cattaneo-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Sparks) and 2400 x 3000 (a 4:5 moving torch) in all three views, and 2560 x 2560 exports whose pixel centres fall on the 512 cell centres in each view.",
+        "criteria": "Zero changed float32 components (temperature and both face fluxes); exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state ten steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain is drawn per output pixel and excluded; no colorimetric or printer-profile claim."
+      }
+    ]
   }
 ]

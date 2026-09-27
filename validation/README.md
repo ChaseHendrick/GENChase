@@ -114,7 +114,7 @@ Further bounded audits: [PLASMA.md](PLASMA.md), [SHALLOW.md](SHALLOW.md), and [N
 
 The five multi-species reaction-diffusion tabs (excitable, turing, cyclic, chemotaxis, vegetation) have bounded GPU benchmarks in [RDX.md](RDX.md).
 
-The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](PDE-FAMILY.md). Neuroscience additions are bounded by [HODGKIN-HUXLEY.md](HODGKIN-HUXLEY.md) and [NEURAL-MASS.md](NEURAL-MASS.md); neither is a clinical or finite-neuron validation.
+The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](PDE-FAMILY.md). Neuroscience additions are bounded by [HODGKIN-HUXLEY.md](HODGKIN-HUXLEY.md) and [NEURAL-MASS.md](NEURAL-MASS.md); neither is a clinical or finite-neuron validation. The neural-field tab's timed pulse speed is checked against the computer-assisted speed enclosures of `papers/nf-pulse` at two parameter points by `tools/neural-field-science.js` ([results](results/neural-field-science.json)), with fourth-order refinement and three failure controls.
 
 [Direct gravity](DIRECT-GRAVITY.md) and [wave volume](VOLUME-WAVE.md) have bounded analytic and numerical checks. Their extreme workload controls extend beyond the tested accuracy domains. The optional native CPU fixtures are in `results/heavy-runner-check.json`; CuPy/CUDA execution remains unverified on the local Mac.
 
@@ -140,3 +140,5 @@ independent negative-index Snell trace across the slider domain, and checks ever
 against the field. It stays partially validated because of two recorded defects: the status label
 claims a focus where no image exists, and the exit ray is drawn backwards when the slab runs off
 the plate.
+
+Two tabs added on 2026-09-26 carry evidence while their records stay unvalidated: [Fisher-KPP fronts](FISHER-KPP.md) (logistic benchmark, straight-front speed against Bramson and Ebert-van Saarloos, fourth-order refinement at D dt/h² = 1/6, the plate's front-speed witness, a wrong-diffusion-sign control, print agreement) and [Maxwell-Cattaneo heat](CATTANEO.md) (Fourier modes against the exact dispersion relation, the relaxation limit, second-order refinement, the step bound, ring speed, a wrong-relaxation-sign control, print agreement).

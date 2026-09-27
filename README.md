@@ -8,7 +8,7 @@ Open the browser studio immediately, or unzip the offline bundle and double-clic
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+A folder-based studio with one shared engine and 134 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
 
 <p align="center">
   <a href="docs/trailer/genchase-trailer.mp4"><img src="docs/trailer/poster.jpg" width="80%" alt="GENChase trailer: 45 seconds of real simulations from the studio, with an original score" /></a><br />
@@ -115,8 +115,11 @@ Recent additions include classical geometry, field dynamics and larger optional 
 | **Nonlinear Active Mixture** | Two conserved fields with nonreciprocal interactions | Up to 1024 × 1024 GPU cells | Independent implementation of a 2025 published model; [equation, convergence and print checks](validation/NONRECIPROCAL.md) |
 | **Hodgkin–Huxley Membranes** | Seeded squid-membrane voltage and gate traces | 256 independent membranes | Classical 1952 single-compartment ODE; [bounded numerical and print evidence](validation/HODGKIN-HUXLEY.md) |
 | **Neural Populations** | Montbrió–Pazó–Roxin rate/voltage traces | 128 independent preparations | Established QIF mean-field equations; [Riccati, convergence and print evidence](validation/NEURAL-MASS.md) |
+| **Neural-Field Pulse** | Space-time plates of pulses launched by kicks: collisions, a pacemaker train, the launch threshold | Up to 4,096 cells on the CPU | Pinto–Ermentrout neural field with a logistic rate on a ring; [timed speed against the computer-assisted enclosures of papers/nf-pulse](validation/results/neural-field-science.json) |
 | **Maxwell FDTD** | Electric and magnetic waves scattering through dielectric patterns | Up to 2048 × 2048 cells for a square GPU field | Lossless, periodic, two-dimensional model; [numerical and print evidence](validation/MAXWELL.md) |
 | **Molecular Dynamics** | Attractive and repulsive particles in a periodic box | Up to 16,384 particles on the CPU | Two-dimensional force-shifted Lennard–Jones model; [trajectory and print evidence](validation/MOLECULAR.md) |
+| **Fisher-KPP** | Invasion fronts from seeded founders, drawn as arrival times and first-arrival territories | Up to 1024 × 1024 GPU cells | Logistic reaction-diffusion; unvalidated, with [front-speed, refinement and print evidence](validation/FISHER-KPP.md) |
+| **Maxwell-Cattaneo heat** | Heat released by sparks travelling as damped rings, and a Mach cone behind a fast torch | Up to 1024 × 1024 GPU cells | Linear, constant-coefficient telegraph form only; unvalidated, with [dispersion, refinement and print evidence](validation/CATTANEO.md) |
 
 The larger settings are optional and may be slow. More computation does not automatically establish
 more accurate science. Maxwell prints interpolate its chosen numerical grid; molecular prints
@@ -141,6 +144,7 @@ The following results have executable tests and recorded scope. They report disc
 | [PDE family stencil and guard audit](validation/PDE-FAMILY.md) | Independent Float64 stencil error < 3 × 10⁻⁶; explicit invalid-batch rollback | Recorded for PFC, Swift, KS, Ohta, AMB and Cahn fixtures | Finite-grid evidence; no continuum or global-stability claim |
 | [Hodgkin–Huxley ODE and print audit](validation/HODGKIN-HUXLEY.md) | Independent rates, DOPRI5 reference and fixed-time refinement | Two crossings; fourth-order refinement; exact export-state preservation | Classical squid parameters and bounded recordings only |
 | [MPR neural-population audit](validation/NEURAL-MASS.md) | Closed-form Riccati and independent DOPRI5 agreement | Equilibria ≤ 3.68 × 10⁻¹⁶; driven trajectory ≤ 2.68 × 10⁻¹¹ | Mean-field model; no finite-neuron or clinical claim |
+| [Neural-field pulse speed](validation/results/neural-field-science.json) | Timed front speed within twice the fourth-order estimate plus 2 × 10⁻⁸ of the proved speed | Observed orders 4.01 and 4.00; Richardson limits 7.6 × 10⁻¹⁰ and 2.2 × 10⁻¹⁰ from the proved speeds | Two parameter points of papers/nf-pulse; no stability or print claim |
 | [Schrödinger time/space refinement](validation/SCHRODINGER.md) | Error decreases at second order under refinement | Time orders 2.005/2.001; space orders 1.980/1.992 | Declared periodic wave modes at fixed physical domain/time; excludes absorbers and general scattering |
 | [Convection diffusion refinement](validation/CONVECTION.md) | Error decreases against exact continuum diffusion | 3.77 × 10⁻⁶ → 1.06 × 10⁻⁶ → 2.73 × 10⁻⁷ | One isolated component; does not validate the complete turbulent flow |
 | [Wave/convection print-state preservation](validation/results/wave-print-state.json) | No changed field or history components | Zero changes across 28 exports | Two grids, initial/evolved paused fields and every view; not full rendering accuracy |
@@ -188,15 +192,25 @@ Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.
 
 ## For people (and agents) adding to it
 
-**Typing your own formula:** three tabs run equations you type:
+**Typing your own formula:** six tabs run equations you type:
 - **Attractors**, System *Custom ODE*: dx/dt, dy/dt and dz/dt in x, y, z with coefficients a to d.
 - **Flow Field**, Field *Custom field*: the velocity u(x, y, t) and v(x, y, t) that the strokes follow.
 - **Turing Patterns**, Kinetics *Custom reaction*: the reaction terms f(u, v) and g(u, v) with parameters a to d
   and diffusivities Du and Dv, run on the GPU with a time step bounded from a sample of the field.
+- **Holomorphic dynamics**, Map *Custom map*: a complex map f(z, c), iterated with the pixel as the parameter c or
+  as the starting point z₀, to an escape radius you choose.
+- **Phase portraits**: a complex function f(z) with complex parameters a and b, drawn as a phase portrait; the status
+  line counts the zeros minus the poles inside a circle you place, by the argument principle.
+- **Schrödinger**, Potential *Custom potential*: the potential V(x, y) the wave packet meets, with coefficients a and
+  b, sampled on the grid and held between -16 and 16 (a cell where V is undefined becomes a hard wall), with the
+  time step held under the stability bound 1.6/(4 + max|V|) of the explicit leapfrog.
 
-The formulas use a small expression language ([`src/shared/expr.js`](src/shared/expr.js): + - * / ^, sin, cos,
-exp, log, sqrt and similar, pi and e). It is parsed, never run as code, so a typed formula travels safely inside a
-share link. A typed formula is outside the tab's validation record, and the status line says so.
+**Type a formula** (the button beside Browse all modules, or the T key) lists every place a formula can be typed,
+each with an example, and opens the one you pick in that mode with its formula field focused. The formulas use a
+small expression language ([`src/shared/expr.js`](src/shared/expr.js): + - * / ^, sin, cos, exp, log, sqrt and
+similar, pi and e; the two complex tabs add i, conj, re, im, abs and arg, with principal branches). It is parsed,
+never run as code, so a typed formula travels safely inside a share link. A typed formula is outside the tab's
+validation record, and the status line says so.
 
 **Adding a new simulation:** contribute a source module. The [formula submission guide](validation/FORMULA-SUBMISSIONS.md)
 explains how to state assumptions, supply an independent benchmark and record measured errors and failure controls.
@@ -272,6 +286,7 @@ The folder entry uses local HTTP so its modules can load. You can also open the 
 | , . | previous / next preset |
 | L | copy recipe link |
 | B / G | save / gallery |
+| T | type a formula: open a tab that runs an equation you type |
 | H | timeline |
 | F | focus |
 | P | pause |

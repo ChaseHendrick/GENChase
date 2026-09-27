@@ -141,17 +141,33 @@ default is left out of every hash that does not change it, so older links reprin
 | Sanitizing | The shell keeps a text value only when it is a string no longer than `maxLength` that `validate` accepts, and otherwise uses the default, so a hand-edited link or settings file cannot crash a plate. A `validate` that throws counts as a refusal. |
 | Editing | The control checks every keystroke and commits on Enter or blur only when the text is valid, so the plate and the recipe keep the last valid value. The problem, its column and the typed text are shown with `textContent`, never as HTML. Escape restores the committed value. |
 | `activeOnly: true` | Leaves the control out of the caption's parameter list while its `dimUnless(state)` is false, so a formula that does not apply is not printed under a plate. |
-| `Studio.util.expr` | The expression language, `src/shared/expr.js`: `parse`, `compile`, `check`, `toGLSL`, `tokenize`, `ExprError`, `FUNCTIONS`, `CONSTANTS`, `LIMITS`. Text is parsed into a tree and compiled to closures; nothing is evaluated as code. |
+| `Studio.util.expr` | The expression language, `src/shared/expr.js`: `parse`, `compile`, `check`, `toGLSL`, `tokenize`, `ExprError`, `FUNCTIONS`, `CONSTANTS`, `LIMITS`, and its complex mode (2026-09-26): `parseComplex`, `compileComplex`, `checkComplex`, `toGLSLComplex`, `COMPLEX_GLSL`, `COMPLEX_FUNCTIONS`, `COMPLEX_CONSTANTS`, `COMPLEX_LIMITS`. Text is parsed into a tree and compiled to closures; nothing is evaluated as code. |
 
 The grammar, limits and error positions are documented at the top of `src/shared/expr.js`.
 `compile(text, { vars, params })` returns `fn(env)`, where `env` holds the variables and then
 the parameters in the order the spec lists them. `toGLSL` writes the same tree with every
 operation parenthesized, `^` as `pow()` and `atan2(y, x)` as `atan(y, x)`, and refuses output
-containing any token outside its whitelist. `node tools/expr-check.js` (in `npm test`) checks
-agreement with `Math`, hostile inputs, the GLSL output and precedence negative controls;
+containing any token outside its whitelist. The complex mode reads the same grammar, limits and
+errors over complex numbers, with the constant `i`, principal branches (arg in (-pi, pi]) and the
+real-only functions refused by name; `compileComplex(text, spec)` returns `fn(env, out?)` giving
+`[re, im]`, where `env` is the flat array `[re0, im0, re1, im1, ...]` of the variables and then the
+parameters, and `toGLSLComplex` writes a `vec2` expression over the fixed helper prelude
+`COMPLEX_GLSL`. `node tools/expr-check.js` (in `npm test`) checks
+agreement with `Math`, hostile inputs, the GLSL output and precedence negative controls, and for the
+complex mode agreement with an independent reference built from exp and log, the branches at named
+points, hostile inputs, exact GLSL, a GLSL round trip and function and precedence mutants;
 `tools/lint.js` fails any `eval(`, `new Function` or string timer in `src/`. A plate built
 from a typed formula is user-defined and not validated; a module must say so on its status
 line and print no comparison with theory in that mode.
+
+The shell's **Type a formula** dialog (the T key, beside Browse all modules, and in More) lists the
+places that run a typed formula: a tab, the seg option that selects its typed mode, if any, and the text
+control to focus. A place is listed only when the registered schema has that control and option, so the
+list follows the build; a folder build loads those families when the dialog opens. Choosing one switches
+tabs and applies the mode through the recipe path Surprise uses (an undo snapshot of the tab's previous
+state, then `sanitize` and regenerate), so the link, the timeline and undo treat it as any other change, then
+opens the field's group and focuses it.
+It adds no API: modules, recipes and the recipe version are unchanged.
 
 ## Contributor on-ramp and checks
 
@@ -165,8 +181,11 @@ polygon module and its broken control, successive recipe defaults, fixed RNG out
 invalid inputs, stale-data clearing, snapshot isolation, safe text rendering,
 shared print/colophon preferences across tabs, and text controls: validation, commit
 of valid text only, the hash round trip, fallback for bad link values, markup shown as
-text, Flow Field's custom field, Attractors' custom-ODE divergence guard, and the Turing tab's custom reaction
-(its step ceiling on the status line, a constant GLSL cannot hold refused, a non-finite field stopped). CI also retains saved-recipe, lazy-load,
+text, Flow Field's custom field, Attractors' custom-ODE divergence guard, the Turing tab's custom reaction
+(its step ceiling on the status line, a constant GLSL cannot hold refused, a non-finite field stopped), and the
+Schrödinger tab's custom potential (its step held under 1.6/(4 + max|V|), undefined cells held as hard walls,
+values past the cap held at it, the badge lowered only in that mode). `node tools/formula-chooser-check.js`
+checks the Type a formula dialog in the portable and the folder builds. CI also retains saved-recipe, lazy-load,
 loading failure/retry, UI, print and all scientific checks.
 
 ## Caption editing on desktop and mobile

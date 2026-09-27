@@ -24,7 +24,14 @@ const { chromium } = require('playwright');
   const mode=()=>p.evaluate(()=>{const w=document.querySelector('#witness');
     return {cls:w.className, labelVisible:getComputedStyle(document.querySelector('#live-label')).display!=='none',
             badgeOpacity:getComputedStyle(document.querySelector('#live-badge')).opacity};});
-  const click=async()=>{await p.evaluate(()=>document.querySelector('#live-badge').click());await p.waitForTimeout(400);};
+  // A CSS transition starts at the first style recalculation after the class changes. On a busy page (a running
+  // plate, a slow runner) no frame may come in a fixed wait, so the read itself would start the transition and
+  // see its first value. getAnimations() recalculates style, which starts any transition now, and the helper
+  // waits for the badge's own transitions to finish (bounded, so a missing one cannot hang the test).
+  const settle=()=>p.evaluate(()=>Promise.race([
+    Promise.all(document.querySelector('#live-badge').getAnimations().filter(a=>a instanceof CSSTransition).map(a=>a.finished.catch(()=>{}))),
+    new Promise(r=>setTimeout(r,3000))]));
+  const click=async()=>{await p.evaluate(()=>document.querySelector('#live-badge').click());await settle();};
   const key=k=>p.keyboard.press(k);
   let fail=0; const t=(name,cond,got)=>{if(!cond)fail++;console.log((cond?'  ok   ':'  FAIL ')+name+'   '+JSON.stringify(got));};
 
@@ -32,7 +39,7 @@ const { chromium } = require('playwright');
   await click(); m=await mode(); t('click 1 -> quiet, words gone', m.cls.includes('w-quiet')&&!m.labelVisible, m);
   await click(); m=await mode(); t('click 2 -> off, badge invisible', m.cls.includes('w-off')&&m.badgeOpacity==='0', m);
   await click(); m=await mode(); t('click 3 -> back to full', !m.cls.includes('w-quiet')&&!m.cls.includes('w-off')&&m.labelVisible, m);
-  await key('w'); await p.waitForTimeout(260); m=await mode(); t('W key cycles too', m.cls.includes('w-quiet'), m);
+  await key('w'); await settle(); m=await mode(); t('W key cycles too', m.cls.includes('w-quiet'), m);
 
   // persistence across a reload
   await p.goto('file://'+studio+'#snowflake/gravner-2008',{waitUntil:'domcontentloaded'});
@@ -354,6 +361,63 @@ const { chromium } = require('playwright');
   t('custom dimensions and export fit mobile', customMobile.every(c => c.shown), customMobile);
   await p.selectOption('#export-inches', '8');
   t('preset shortcut exits custom mode', await p.$eval('#export-custom', el => el.hidden), true);
+
+  // Undo returns the state from before the change. A preset, a seg click and a Settings JSON apply once
+  // snapshotted after mutating, so the first Undo restored the new state and did nothing visible. A slider
+  // drag is one step however many input events it fires. On Schrödinger the V0 slider also moves the time
+  // step's ceiling, which setParam applies through onParam since it never runs sanitize.
+  await p.setViewportSize({width: 1400, height: 900});
+  await p.waitForTimeout(250);
+  const sch = () => p.evaluate(() => Object.assign({}, Studio.modules.schrodinger.defaults, Studio.getRecipe()));
+  const loadWell = async () => {
+    await p.evaluate(() => { location.hash = '#schrodinger/undo-check/' + btoa(JSON.stringify({v: 6, kind: 'well', V0: 2, running: false, warmup: 50})).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); });
+    await p.waitForFunction(() => { const r = Studio.getRecipe(); return r && r.id === 'schrodinger' && r.kind === 'well' && r.seed === 'undo-check'; }, null, {timeout: 20000}).catch(() => {});
+    await p.waitForTimeout(400);
+  };
+  const undo = async () => { await p.evaluate(() => document.querySelector('#btn-undo').click()); await p.waitForTimeout(500); };
+  await loadWell();
+  t('undo fixture loads a harmonic well', (await sch()).kind === 'well', (await sch()).kind);
+  await p.selectOption('#preset', 'tunnel');
+  await p.waitForTimeout(500);
+  t('the Tunneling preset sets a barrier', (await sch()).kind === 'barrier', (await sch()).kind);
+  await undo();
+  let r = await sch();
+  t('one Undo after a preset returns the previous recipe', r.kind === 'well' && r.V0 === 2 && r.seed === 'undo-check', {kind: r.kind, V0: r.V0});
+
+  await loadWell();
+  await p.evaluate(() => document.querySelector('#p-schrodinger-kind-barrier').click());
+  await p.waitForTimeout(500);
+  t('a seg click sets the barrier', (await sch()).kind === 'barrier', (await sch()).kind);
+  await undo();
+  r = await sch();
+  t('one Undo after a seg click returns the previous value', r.kind === 'well', r.kind);
+
+  // A grid click first, so the snapshot before the drag can be told apart from the one before it.
+  await loadWell();
+  await p.evaluate(() => document.querySelector('#p-schrodinger-grid-128').click());
+  await p.waitForTimeout(500);
+  const bound = await p.evaluate(() => {
+    const s = Object.assign({}, Studio.modules.schrodinger.defaults, Studio.getRecipe(), {V0: 6});
+    const n = Number(s.grid), ar = {'1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16}[s.aspect] || 1;
+    const W = n & ~1, H = Math.max(64, Math.round(n * ar)) & ~1, m = Math.min(W, H);
+    return Math.min(0.25, 1.6 / (4 + 6 * (((W - 1) / m) ** 2 + ((H - 1) / m) ** 2)));
+  });
+  await p.evaluate(() => {
+    const el = document.querySelector('#p-schrodinger-V0');
+    for (const v of [3, 4.5, 6]) { el.value = String(v); el.dispatchEvent(new Event('input', {bubbles: true})); }
+    el.dispatchEvent(new Event('change', {bubbles: true}));
+  });
+  await p.waitForTimeout(500);
+  r = await sch();
+  const dtShown = await p.$eval('#p-schrodinger-dt', el => Number(el.value));
+  t('V0 = 6 on the harmonic well holds dt under its bound', r.V0 === 6 && r.dt <= bound + 1e-12 && r.dt < 0.2, {V0: r.V0, dt: r.dt, bound});
+  t('the dt slider shows the clamped step', Math.abs(dtShown - r.dt) < 0.0051, {slider: dtShown, dt: r.dt});
+  await undo();
+  r = await sch();
+  t('one Undo after a slider drag returns V0 and dt', r.V0 === 2 && r.dt === 0.2 && r.grid === 128, {V0: r.V0, dt: r.dt, grid: r.grid});
+  await undo();
+  r = await sch();
+  t('the drag made exactly one snapshot: the next Undo reverts the grid click', r.V0 === 2 && r.grid === 192, {V0: r.V0, grid: r.grid});
 
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();

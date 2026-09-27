@@ -266,7 +266,7 @@ python3 -m http.server 8080 --bind 127.0.0.1
 # http://127.0.0.1:8080/index.html
 ```
 
-Space generate · S surprise · E export · C copy image · L copy link · B save · G gallery · Z undo · R reset · H timeline · F focus · P pause · V record · A ambient · , . presets · 1-9 tabs · [ ] history
+Space generate · S surprise · E export · C copy image · L copy link · B save · G gallery · T type a formula · Z undo · R reset · H timeline · F focus · P pause · V record · A ambient · , . presets · 1-9 tabs · [ ] history
 
 The folder entry needs a local HTTP server so its modules can load. `dist/studio.html` is the standalone fallback. `package.json` contains private development shortcuts only: `npm test` is fast and does not run scientific benchmarks or browser tests. The full scientific CI remains required.
 

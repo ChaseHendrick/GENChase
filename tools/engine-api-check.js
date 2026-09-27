@@ -121,6 +121,17 @@ const {chromium}=require('playwright');
   check(await until(()=>tst().includes('seed react-blowup')&&/stopped at step [0-9,]+: the field was found non-finite/.test(tst())&&tst().includes('no uniform state found'),20000),'custom reaction stops on a non-finite field and says so');
   location.hash='turing/react-builtin/'+b64({v:5,tmodel:'schnak',grid:128,warmup:20,running:false});
   check(await until(()=>tst().includes('seed react-builtin')&&/Validated/.test(document.getElementById('btn-science-report').textContent)&&Studio.getProvenance().technique.validation==='validated within stated limits'&&Studio.getProvenance().technique.validationNote===null,20000),'a built-in reaction keeps the tab status on the badge and in the provenance');
+  // Schrödinger's custom potential: labeled user-defined, the step held under 1.6/(4 + max|V|) of the sampled V, cells
+  // where V is undefined held as hard walls, values past the cap held at it, and the badge lowered in that mode only.
+  location.hash='schrodinger/pot-check/'+b64({v:6,kind:'custom',potV:'40*x + sqrt(x)',grid:128,warmup:40,running:false});
+  check(await until(()=>tst().includes('seed pot-check')&&/step 40\s*paused/.test(tst())&&tst().includes('custom potential · user-defined, not validated')&&/dt 0\.0800 · clamped to 1\.6\/\(4 \+ max\|V\|\) = 0\.0800, max\|V\| 16\.0/.test(tst())&&tst().includes('8,192 undefined cells held as hard walls')&&/[0-9,]+ cells held at \|V\| = 16/.test(tst()),30000),'custom potential status, step ceiling, walls and cap');
+  { const badge=document.getElementById('btn-science-report'), prov=Studio.getProvenance();
+    check(/Unvalidated/.test(badge.textContent)&&prov.technique.validation==='unvalidated'&&prov.technique.tabValidation==='validated within stated limits'&&prov.technique.validationNote==='a typed potential','custom potential lowers the stage badge and the provenance to unvalidated'); }
+  const potV=document.getElementById('p-schrodinger-potV');
+  potV.value='V + 1';potV.dispatchEvent(new Event('input'));potV.dispatchEvent(new Event('change'));
+  check(document.getElementById('p-schrodinger-potV-error').textContent.includes('unknown name')&&Studio.getRecipe().potV==='40*x + sqrt(x)','a potential in an unknown name is refused and the last valid one kept');
+  location.hash='schrodinger/pot-builtin/'+b64({v:6,kind:'double',grid:128,warmup:20,running:false});
+  check(await until(()=>tst().includes('seed pot-builtin')&&!tst().includes('custom potential')&&/Validated/.test(document.getElementById('btn-science-report').textContent)&&Studio.getProvenance().technique.validationNote===null&&Studio.getRecipe().potV===undefined,20000),'a built-in potential keeps the tab status and leaves the typed one out of the hash');
   check(!document.querySelector('img[src="x"]')&&!alerted,'no markup from typed text in the real modules');
   return {random,rejects};
  });

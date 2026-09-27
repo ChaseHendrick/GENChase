@@ -88,33 +88,26 @@ states the sizes and the extrapolation rule; the failure control fails.
 Checks: `node tools/build.js --check`, `node tools/science.js --write`, `node tools/lint.js`,
 `node tools/check.js <id> 12000` and `node tools/export.js <id> 8 300`.
 
-## New tab proposal: Fisher-KPP invasion front
+## Done: Fisher-KPP invasion front
 
-Paper: R. A. Fisher, [The wave of advance of advantageous genes](https://doi.org/10.1111/j.1469-1809.1937.tb02153.x)
-(1937). Implement the scalar logistic reaction-diffusion equation with stated
-initial and boundary conditions. The current Turing tab already includes Schnakenberg
-kinetics; adding that again would duplicate an existing model.
-Neighbor: `src/modules/rdx.js` for field evolution and print handling.
-Proposed ID: `fisher-kpp`, subject to checking the catalog for future overlap.
-Acceptance: homogeneous logistic-growth benchmark, measured front speed in a stated
-asymptotic regime, refinement, a wrong-diffusion-sign control, and print-state agreement.
-Begin unvalidated; a population illustration does not establish experimental accuracy.
-After registration: `node tools/build.js`, `node tools/index.js`, `npm test`,
-`node tools/check.js fisher-kpp 12000`, `node tools/export.js fisher-kpp 8 300`,
-and `node tools/verify.js --print fisher-kpp` with the new registered evidence.
+Added as the `fisher-kpp` tab ([src/modules/fisher-kpp.js](../src/modules/fisher-kpp.js)), from the proposal
+that stood here: R. A. Fisher, [The wave of advance of advantageous genes](https://doi.org/10.1111/j.1469-1809.1937.tb02153.x)
+(1937), the scalar logistic reaction-diffusion equation on a closed (zero-flux) plate, drawn as the arrival time
+of the front. Its record in `validation/techniques.json` starts unvalidated. The acceptance items are in
+[validation/FISHER-KPP.md](../validation/FISHER-KPP.md): the homogeneous logistic benchmark, the straight-front
+speed of the scheme against Bramson's lag and the Ebert-van Saarloos term, refinement, the plate's own front-speed
+witness, a wrong-diffusion-sign control (`tools/fisher-kpp-science.js`) and print-state agreement
+(`tools/fisher-kpp-print.js`). Run `node tools/verify.js --print fisher-kpp`.
 
-## New tab proposal: finite-relaxation heat transport
+## Done: finite-relaxation heat transport
 
-Paper: R. Kovács and P. Rogolino, [Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations](https://arxiv.org/abs/1910.09175).
-Start with a clearly labeled linear, constant-coefficient Maxwell-Cattaneo model and
-state which simplifications differ from the paper. Do not imply a validated material model.
-Neighbor: `src/modules/wavesflow.js` for field evolution and print handling.
-Proposed ID: `cattaneo`, subject to checking the current catalog for overlap.
-Acceptance: independently derived Fourier-mode decay/oscillation, the relaxation limit,
-stable time/space refinement, a wrong relaxation-sign control, and print-state agreement.
-After registration: `node tools/build.js`, `node tools/index.js`, `npm test`,
-`node tools/check.js cattaneo 12000`, `node tools/export.js cattaneo 8 300`,
-and `node tools/verify.js --print cattaneo` with the new registered evidence.
+Added as the `cattaneo` tab ([src/modules/cattaneo.js](../src/modules/cattaneo.js)): the linear, constant-coefficient
+Maxwell-Cattaneo-Vernotte model, labeled as that simplification of the nonlinear equations of R. Kovács and
+P. Rogolino, [Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations](https://arxiv.org/abs/1910.09175).
+It is not a material model. Its record starts unvalidated. The acceptance items are in
+[validation/CATTANEO.md](../validation/CATTANEO.md): Fourier-mode decay and oscillation against the exact
+dispersion relation on both sides of k_c, the relaxation limit, second-order refinement and the computed step
+bound, the ring speed of one spark, a wrong-relaxation-sign control (`tools/cattaneo-science.js`) and print-state
+agreement (`tools/cattaneo-print.js`). Run `node tools/verify.js --print cattaneo`.
 
-The proposed IDs and their commands do not work until those modules and evidence are added.
-Missing evidence remains incomplete; none of these proposals is a novelty claim.
+Neither tab is a novelty claim, and neither record is promoted past unvalidated until the evidence is reviewed.

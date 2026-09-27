@@ -3,7 +3,7 @@
   "repository": "https://github.com/ChaseHendrick/GENChase",
   "file": "index.html",
   "portableFile": "dist/studio.html",
-  "count": 130,
+  "count": 134,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -657,6 +657,33 @@
       "aliases": []
     },
     {
+      "id": "phase",
+      "source": "src/modules/dynamics.js",
+      "name": "Phase portraits",
+      "tab": "Phase",
+      "subtitle": "domain coloring and enhanced phase portraits of complex functions · 2011",
+      "equation": "color = arg f(z);   shading: sawtooth of log|f| and of arg f;   witness: (1/2πi) ∮ f′/f dz = zeros − poles inside the circle",
+      "credit": "Frank A. Farris, Visualizing complex-valued functions in the plane (1998), named domain coloring, the coloring of each point z by the value f(z); Elias Wegert and Gunter Semmler, Phase plots of complex functions: a journey in illustration, Notices of the AMS 58(6) (2011), and Elias Wegert, Visual Complex Functions: An Introduction with Phase Portraits, Birkhäuser (2012), for phase portraits and their enhanced versions with modulus and phase lines. The count on the status line is the argument principle of complex analysis. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "Type a function f(z) and every pixel z takes the color of the phase of f(z), the angle of the complex number it lands on, so the whole function is visible at once. A zero is a point where every color meets, running once round the wheel for each order of the zero; a pole is the same with the colors running the other way. The shading styles add the level lines of |f| and of the phase, which cross at right angles wherever the function is conformal and tile the plane with little squares. The circle is a check you can move: the studio walks f once round it in double precision and counts how often the phase turns, which by the argument principle is the number of zeros minus the number of poles inside. Nothing is sampled on a grid, so a print recomputes every pixel at its own size.",
+      "order": 40.5,
+      "seed": "wegert-2011",
+      "presets": [
+        "rational",
+        "wheel",
+        "blaschke",
+        "tan",
+        "essential",
+        "quintic"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "zoom",
+      "hash": "#phase/wegert-2011",
+      "aliases": []
+    },
+    {
       "id": "lens",
       "source": "src/modules/lens.js",
       "name": "Gravitational Lens",
@@ -850,6 +877,34 @@
       "runningDefault": false,
       "headline": "grow",
       "hash": "#growdomain/growdomain-1999",
+      "aliases": []
+    },
+    {
+      "id": "neural-field",
+      "source": "src/modules/neural-field.js",
+      "name": "Neural-Field Pulse",
+      "tab": "Neural Field",
+      "subtitle": "a traveling pulse of cortical activity · 2001",
+      "equation": "∂u/∂t = −u − v + w ∗ S(u);  ∂v/∂t = εu;  w(x) = e^−|x|/2;  S(u) = 1/(1 + e^−β(u − θ))",
+      "credit": "D. J. Pinto and G. B. Ermentrout, Spatially structured activity in synaptically coupled neuronal networks: I. Traveling fronts and pulses, SIAM J. Appl. Math. 62, 206–225 (2001), eq. (3) with the feedback decay set to zero; S. Amari, Dynamics of pattern formation in lateral-inhibition type neural fields, Biol. Cybern. 27, 77–87 (1977). The pulse speeds compared at β = 20, θ = 1/4, ε = 1/10 and at β = 12, θ = 1/4, ε = 3/20 are computer-assisted enclosures drafted in this repository (papers/nf-pulse). Original implementation of established equations.",
+      "blurb": "A line of cortex, treated as a continuum: u is the local activity, S(u) the firing rate, and every point excites its neighbors through a kernel that falls off as e^−|x|, while a slow recovery variable v builds up wherever the tissue has been active and shuts it down. Space runs across the plate and time runs down it, so a traveling pulse is a slanted stripe. A brief stimulus in the middle launches two pulses that run apart at constant speed and meet again on the far side of the ring, where each runs into the other's refractory wake and both die. The gain β sets how sharp the firing threshold θ is; the recovery rate ε sets how long each patch stays lit, so a small ε gives wide pulses and a large one extinguishes them. Other stimulus patterns show collisions, a pacemaker train and the threshold for launching a pulse at all. At the default point the plate settles onto the fast pulse, whose speed is compared with a proved value; a slower pulse also exists there, is expected to be unstable, and never appears.",
+      "order": 45.8,
+      "seed": "pulse-front",
+      "presets": [
+        "proved",
+        "gain12",
+        "collisions",
+        "pacemaker",
+        "threshold",
+        "wide",
+        "refractory"
+      ],
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "eps",
+      "hash": "#neural-field/pulse-front",
       "aliases": []
     },
     {
@@ -1300,8 +1355,8 @@
       "tab": "Schrödinger",
       "subtitle": "wave packet on a detector · 1926",
       "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
-      "credit": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
-      "blurb": "A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke.",
+      "credit": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke. Custom potential lets you type V(x, y) yourself, with two coefficients a and b on sliders: it opens on a soft Gaussian bump the packet reflects from, and the Gaussian lens preset turns the bump into a well that bends the packet onto its axis, where the crossing paths draw a cusp and its interference fringes. The time step is held under the bound measured from the potential you type, the formula travels in the link, and nothing checks it against theory.",
       "order": 53,
       "seed": "visscher-1991",
       "presets": [
@@ -1312,7 +1367,8 @@
         "orbit",
         "stadium",
         "lattice",
-        "anderson"
+        "anderson",
+        "lens"
       ],
       "vectors": false,
       "familiarity": "common",
@@ -2089,9 +2145,9 @@
       "name": "Holomorphic dynamics",
       "tab": "Holomorphic",
       "subtitle": "escape-time and Newton basins in the complex plane · 1918",
-      "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
-      "credit": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
-      "blurb": "Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton's method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Zoom is clamped where 32-bit floats run out of digits.",
+      "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship);   z ← f(z, c) typed   (Custom map)",
+      "credit": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "Every pixel is a point in the complex plane pushed through the same map again and again. The Mandelbrot set is the black heart of parameters whose orbit never escapes; the Julia sets are the same question asked of the starting point with c held fixed, so the rabbit, the dendrite and the Siegel disk each show one c from inside the heart. Newton basins color the plane by which root Newton's method lands on, with the relaxation factor bending the basin boundaries into filigree. Smooth iteration count bands the escape time, the distance estimator draws the boundary itself, and the orbit traps color by how close each orbit came to a point or a cross. Custom map iterates a map you type in z and c, with the pixel as the parameter c or as the starting point z₀, and escapes at a radius you choose. Zoom is clamped where 32-bit floats run out of digits.",
       "order": 63,
       "seed": "julia-1918",
       "presets": [
@@ -2101,7 +2157,9 @@
         "dendrite",
         "siegel",
         "newton",
-        "ship"
+        "ship",
+        "cubic",
+        "sine"
       ],
       "vectors": false,
       "familiarity": "ubiquitous",
@@ -2529,6 +2587,34 @@
       "aliases": []
     },
     {
+      "id": "cattaneo",
+      "source": "src/modules/cattaneo.js",
+      "name": "Maxwell-Cattaneo heat",
+      "tab": "Heat waves",
+      "subtitle": "heat that travels as a damped wave · 1948",
+      "equation": "τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0",
+      "credit": "Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.",
+      "blurb": "Fourier’s law says heat flows down the temperature gradient the instant the gradient appears, so a spark warms the far side of a plate at once, if only a little. Cattaneo and Vernotte let the flux take a relaxation time τ to catch up with the gradient. The change is small and the consequence is not: heat now travels as a wave, at the speed √(α/τ), with a sharp front, and it rings. A Fourier mode of wavenumber k decays smoothly while k is below k_c = 1/(2√(ατ)) and oscillates above it, all the fast ripples dying together at the rate 1/(2τ). Here sparks of heat are dropped on a plate that wraps at the edges; each throws out a ring that fades as it runs, leaving a diffusive glow behind it, and the rings pass through one another. Set τ to zero and the rings disappear: the same sparks only spread and blur, which is Fourier. The torch drags a source across the plate faster than the heat wave, and the heat piles into a Mach cone. The model is linear with constant coefficients, a simplification: it is not a material model, it allows the temperature to dip below ambient behind a front, and whether real solids behave this way outside a few special cases is a matter the literature still argues about.",
+      "order": 88.6,
+      "seed": "vernotte-1958",
+      "presets": [
+        "sparks",
+        "burst",
+        "single",
+        "crossover",
+        "fourier",
+        "torch",
+        "flux"
+      ],
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "tau",
+      "hash": "#cattaneo/vernotte-1958",
+      "aliases": []
+    },
+    {
       "id": "shallow",
       "source": "src/modules/shallow.js",
       "name": "Shallow Water",
@@ -2901,6 +2987,34 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#loschmidt",
+      "aliases": []
+    },
+    {
+      "id": "fisher-kpp",
+      "source": "src/modules/fisher-kpp.js",
+      "name": "Fisher-KPP",
+      "tab": "Fisher-KPP",
+      "subtitle": "invasion fronts and arrival times · 1937",
+      "equation": "∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)",
+      "credit": "R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).",
+      "blurb": "A population that grows until it fills its ground and wanders at random spreads as a wave. Fisher wrote the equation for an advantageous gene sweeping through a species strung out along a coast; Kolmogorov, Petrovsky and Piskunov proved the same year that the wave settles to the speed 2√(rD), set by the growth rate r at vanishing density and the diffusion D, and not by anything that happens behind the front. The front is pulled by its own thin leading edge. Here a few founders are dropped on empty ground and every cell records the moment the density first reaches half the carrying capacity. That arrival time is the picture: bands of equal arrival ring each founder like growth rings, and where two invasions meet their rings fold into a crease, so the plate divides itself into territories. The territory view colors each cell by the founder whose wave got there first; it is a map of arrival, not a model of genetics. Patchy habitat changes the growth rate from place to place and wrinkles the rings; hostile islands, where the population declines, deflect the waves around them.",
+      "order": 96.3,
+      "seed": "fisher-1937",
+      "presets": [
+        "rings",
+        "territories",
+        "single",
+        "edge",
+        "patchy",
+        "islands",
+        "spread"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "founders",
+      "hash": "#fisher-kpp/fisher-1937",
       "aliases": []
     },
     {
