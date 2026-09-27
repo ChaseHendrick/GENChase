@@ -81,6 +81,21 @@
       "commitments": []
     },
     {
+      "id": "hh-dynamics",
+      "title": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
+      "status": "draft",
+      "note": "Drafted in this repository by the owner's decision (2026-09-26): computer-assisted proofs, for every leak potential in [10.59, 10.62], of the unique equilibrium for J in [0, 200], its two Hopf points (subcritical and supercritical, first Lyapunov coefficients enclosed) and bistability of rest and repetitive firing at J = 8. Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its first page was read, and no priority is claimed for the Hopf enclosures. The written proofs have not had a second reading; the mutation reading of the bistability program is described but its record is not in the folder.",
+      "typst": null,
+      "latex": "papers/hh-dynamics/paper/hh-dynamics.tex",
+      "pdf": "papers/hh-dynamics/paper/hh-dynamics.pdf",
+      "companion": "ChaseHendrick/hh-dynamics",
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
       "id": "software-paper",
       "title": "GENChase: seeded scientific simulations with validation records, provenance and print export",
       "status": "draft",
