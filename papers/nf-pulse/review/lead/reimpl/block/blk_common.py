@@ -2,7 +2,7 @@
 # (review/lead/reimpl/block).  Not run on its own.
 #
 # Written from the model equations only.  Reuses review/lead/reimpl/common.py and vi_integrate.py
-# (the earlier independent reimplementation); nothing from papers/nf-pulse/code, data, or
+# (the earlier independent reimplementation); nothing from code, data, or
 # review/lead/code, review/lead/math was read.
 #
 # Contents

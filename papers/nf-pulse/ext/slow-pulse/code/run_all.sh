@@ -6,6 +6,11 @@
 # with negative controls.  Uses the unchanged programs of ../../../code through the wrappers in this folder.
 # One line per check; exit status 1 if any proof step fails or any negative control passes.  About a minute.
 cd "$(dirname "$0")"
+# As in code/run_all.sh of this paper's folder: refuse python -O, which would remove the assertions that some gates
+# of these programs still use, and clear every NF_* variable, which would change parameters, blocks, precision,
+# order or tolerances of the programs.
+if [ -n "${PYTHONOPTIMIZE:-}" ]; then echo "FAIL  PYTHONOPTIMIZE is set; unset it and rerun"; exit 1; fi
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 mkdir -p ../data/logs
 L=../data/logs
 fails=0
@@ -33,7 +38,7 @@ for E in 1/10 3/20; do
   python3 prove_slow.py custom:$C1:25:-1 $T > $L/negctrl_samebracket_$e.log 2>&1
   check "N: negative control, the orbit at c1 asked to reach K-, is refused" $L/negctrl_samebracket_$e.log 'VERDICT FAIL'
   python3 prove_slow.py custom:$(python3 -c "import slowsetup as s; print(int(s.cr.C_REF * 10**4) + 1)"):4:1 $T > $L/negctrl_far_c_$e.log 2>&1
-  check "N: negative control, c = c1 + about 1e-4, is refused" $L/negctrl_far_c_$e.log 'VERDICT FAIL'
+  check "N: negative control, c = c1 rounded up at the fourth decimal (at most 1e-4 above c1), is refused" $L/negctrl_far_c_$e.log 'VERDICT FAIL'
 done
 export NF_EPS=1/10
 for sg in 1 -1; do

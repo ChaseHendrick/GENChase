@@ -1,8 +1,8 @@
 # Referee review of the nf-pulse computer-assisted proof (second team)
 
 Date: 2026-09-26. Four independent checks, each run by its own agent without sight of the others, then merged here.
-Subject: `papers/nf-pulse/` at commit fec31cf (README.md, code/, data/). A different review session worked on the
-same branch at the same time; its reports are in `papers/nf-pulse/review/` outside this folder (`MATH.md`,
+Subject: the paper's folder at commit fec31cf (README.md, code/, data/). A different review session worked on the
+same branch at the same time; its reports are in `review/` outside this folder (`MATH.md`,
 `CODE.md`, `PRIOR-ART.md`, `lead/`). The two teams did not see each other's work; where they agree it is noted.
 
 | Check | Report | Scripts |
@@ -12,7 +12,7 @@ same branch at the same time; its reports are in `papers/nf-pulse/review/` outsi
 | 3. Independent reimplementation | [reimpl/REIMPL.md](reimpl/REIMPL.md) | `certify_rest_reimpl.py`, `manifold_reimpl.py`, `integrate_reimpl.py`, `shoot_mp.py`, `bracket_mp.py`, `compare_base.py` |
 | 4. Prior art | [prior-art/PRIOR-ART.md](prior-art/PRIOR-ART.md) | none (no PDF or full text stored) |
 
-The baseline `sh papers/nf-pulse/code/run_all.sh` passes all 15 checks in about 8 s (reproduced by the lead and by
+The baseline `sh code/run_all.sh` passes all 15 checks in about 8 s (reproduced by the lead and by
 checks 1 and 2, each on its own copy).
 
 ## Verdict
@@ -166,9 +166,9 @@ and check the 2025 argument.
 ### Proposed RESEARCH.md entry
 
 ```
-### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `papers/nf-pulse/review/second/prior-art/PRIOR-ART.md`)
+### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `review/second/prior-art/PRIOR-ART.md`)
 
-- Why: the entry of the same day could not reach Zhang (2004, 2005) or Pinto, Jackson and Wayne (2005), and priority for `papers/nf-pulse/` waited on them.
+- Why: the entry of the same day could not reach Zhang (2004, 2005) or Pinto, Jackson and Wayne (2005), and priority for the paper's folder waited on them.
 - Read, not the full texts (ScienceDirect 403, Springer client challenge, SIAM and World Scientific closed, ResearchGate 403, Sandstede's page captcha): zbMATH 1054.45005 review of Zhang, JDE 197 (2004) 162-196 (scalar, w constant, "H is the Heaviside step function"); zbMATH 1082.45009 review of Zhang, "Traveling waves of a singularly perturbed system of integral-differential equations arising from neuronal networks", JDDE 17 (2005) 489-522 (Heaviside, "the case eps = 0 and 0 < eps << 1"); abstract of Pinto-Jackson-Wayne, SIADS 4 (2005) 954-984 ("A Heaviside step function governs the activation", no assumption on the recovery rate); abstract of Sandstede, IJBC 17 (2007) 2693-2704 (spectral implies nonlinear stability). zbMATH reviews of eight further Zhang neural-field papers: all Heaviside where stated; six reviews unavailable (Math. Z. 255, JJIAM 27, Physica D 239, DCDS 34, DCDS-B 16, JMN 3), not read.
 - Found and read in full: Burlakov, Oleynik and Ponosov, Mathematics 13 (2025) 701, doi:10.3390/math13050701 (CC BY). Same model; Theorem 3 (p. 14): pulses exist for "any sufficiently steep firing rate function approximating the Heaviside", at fixed 0 < eps < 1/(sigma + 4), for a nonnegative C^1 kernel, if a Heaviside pulse satisfies (17)-(19), (21). No steepness bound, no example checked, e^(-|x|)/2 is not C^1; its fixed-speed formulation and the uniqueness in a ball under translation need checking.
 - Searched (arXiv abstract search): '"neural field" pulse sigmoid existence' 0; '"neural field" pulse sigmoidal' 0; '"neural field" traveling pulse' 8, none rigorous for smooth rates; 'rigorous numerics "neural field"' 5, none; 'computer-assisted proof traveling wave' 10 and 'computer-assisted nonlocal' 29, none on neural fields; '"interval arithmetic" "traveling pulse"' 0. Web searches for computer-assisted or validated-numerics neural-field waves: only FitzHugh-Nagumo (Matsue arXiv:1507.01462, Czechowski arXiv:1909.06207) and non-neural nonlocal problems (Cadiot 2505.03091, Breden et al. 2504.05066). Semantic Scholar search rate-limited; OpenAlex budget exhausted.
@@ -182,4 +182,4 @@ and check the 2025 argument.
 - The Burlakov, Oleynik and Ponosov argument was read once, not verified.
 - The written proofs of QUALITY.md item 1 are still absent from the paper folder; `math/MATH.md` is a referee's
   proof sketch, not the manuscript.
-- No fix was applied to `papers/nf-pulse/code` (out of scope for this review).
+- No fix was applied to `code` (out of scope for this review).

@@ -126,6 +126,21 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.22997540",
       "commitments": []
+    },
+    {
+      "id": "nf-pulse",
+      "title": "Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
+      "status": "ready",
+      "note": "Ready (2026-09-27): the quality record, notes/QUALITY.md, is complete. Drafted in this repository by the owner's decision (2026-09-26): computer-assisted proofs in ball arithmetic of travelling pulses of the Pinto-Ermentrout neural field with a logistic firing rate at explicit, non-small recovery rates (a fast and a slow pulse at eps = 1/10 and 3/20, a fast pulse on [0.08, 0.13693] and five further intervals, the Fig. 5 sigmoid of Pinto and Ermentrout, Faye's model with synaptic depression at eps = 1/100, 1/50 and 1/20) and spectral stability of the fast pulse at eps = 1/10; nonlinear stability not proved (39 pages). The programs and certificates are in papers/nf-pulse/ (code/, ext/); every check script was rerun on 2026-09-27 with the present programs (review/RERUNS.md). All checks were made within the project by separate AI agent sessions, none of them an outside review: review/, ext/*/REPORT.md, three readings of the manuscript on 2026-09-27, then a fourth and a fifth reading of the proofs written in response and a review of the stability controls, with a response to each finding in notes/referee-2026-09-27-*.md. Enculescu (2004) could not be reached and is unread, and Sandstede (2007) is known from its abstract only; the manuscript says what the works read contain and makes no claim to be first. Release 1.0.0 of the companion is prepared (RELEASES.md) and not yet made. No journal chosen.",
+      "typst": null,
+      "latex": "papers/nf-pulse/paper/nf-pulse.tex",
+      "pdf": "papers/nf-pulse/paper/nf-pulse.pdf",
+      "companion": "ChaseHendrick/nf-pulse",
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
+      "codeDoi": null,
+      "commitments": []
     }
   ]
 }

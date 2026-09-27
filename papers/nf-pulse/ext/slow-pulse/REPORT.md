@@ -1,6 +1,6 @@
 # The slow pulse of the Pinto-Ermentrout neural field
 
-Extension of `papers/nf-pulse/` (work in progress). Everything here lives in this
+Extension of the base proof in `code/` (work in progress). Everything here lives in this
 folder; the programs of the fast-pulse proof in `../../code/` are imported and run unchanged.
 
 ## Outcome
@@ -34,7 +34,10 @@ parameter point has at least two travelling pulses.
 (b) eps = 3/20. The same holds with c1 = 0.4932988879736285669800062, c2 = c1 + 10^-25, and max U >= 0.38983
 (numerically 0.3899). Here the two stable eigenvalues of the rest state nearest the imaginary axis are complex
 (about -0.592 +- 0.065 i), and the block is built in a real Jordan basis. The fast pulse at this point
-(c about 1.0343608707) is numerical only; it was not proved here.
+(c about 1.0343608707) was not proved here; `../eps-range/` proves it by computer (added 2026-09-27): its certificate
+`data/probes/eps_0.149900_0.150100.json.gz` covers eps in [0.1499, 0.1501] and gives the speed window
+[1.0343501717, 1.0343715699] at eps = 3/20, disjoint from the slow pulse's. So this point, too, has at least two
+travelling pulses (the corollary in Section 3 of `../../paper/nf-pulse.tex`).
 
 Scope: existence only. Nothing here concerns stability (Pinto and Ermentrout expect the slow pulse to be unstable),
 uniqueness, or other parameter values.
@@ -219,4 +222,4 @@ same caveats as the fast pulse. The owner may want to update that line.
 
 ## License
 
-Apache License 2.0, as the rest of `papers/nf-pulse/`.
+Apache License 2.0, as the rest of the paper's folder.

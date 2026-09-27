@@ -1,7 +1,7 @@
 # Stability of the fast pulse: report
 
-Work in `papers/nf-pulse/ext/stability/`. Nothing else in the repository was changed. This extends the existence proof
-in `papers/nf-pulse/`.
+Work in `ext/stability/`. Nothing else in the repository was changed. This extends the existence proof
+in `code/`.
 
 ## 1. Outcome
 
@@ -26,7 +26,7 @@ same intervals. The adversarial check in Section 8 predates W and did not rerun 
 
 ## 2. Setting and notation
 
-Model, parameters and coordinates are those of `papers/nf-pulse/README.md`:
+Model, parameters and coordinates are those of `README.md`:
 
     u_t = -u - v + w*S(u),   v_t = eps u   (gamma = 0),   w(x) = e^{-|x|}/2,   S(u) = 1/(1 + e^{-beta(u - theta)}),
 
@@ -68,8 +68,19 @@ The quotes below are copied from the copies I read. Page numbers are those of th
     analyzing spectral stability."
   - I cannot quote its hypotheses, its function spaces or its theorem, so none of them is checked here.
   - Secondary sources disagree on its scope. Faye (2013) applies it to a smooth sigmoid with an exponential kernel
-    (quoted next). An earlier version of Dyson, arXiv:1810.05142, as reported in a Semantic Scholar citation snippet
-    that I did not verify, describes it as for "single Heaviside firing rates".
+    (quoted next), but on p. 2 of the same author copy lists it ([35]) among the studies of the neural field "when the
+    firing rate is assumed to be a Heaviside function". Dyson, arXiv:1810.05142v1, p. 29, says that Sandstede
+    "proved that spectral stability implies nonlinear stability for neural field models with single Heaviside firing
+    rates" (checked in the arXiv PDF on 2026-09-27).
+- **Habib, S. and Veltz, R., "Theoretical / numerical study of modulated traveling waves in inhibition stabilized
+  networks", arXiv:2412.03613v1 (4 Dec 2024).** Found in the third prior-article pass (2026-09-27). Theorem 1 (printed
+  p. 7): if ker A = span{d v-bar} and the other eigenvalues lie in {Re < w}, w < 0, the travelling wave is
+  "exponentially and asymptotically orbitally stable in L2". Its model (eqs. (1)-(2), printed p. 3) is a
+  two-population Wilson-Cowan field du/dt = -L0 u + L0 S(W u - theta), with S of class C^{r+1}, r >= 2, increasing with
+  bounded derivatives (Hypothesis 1), and kernels in W^{1,1} (Hypothesis 3). The firing rate acts on the convolution,
+  not inside it, and there is no linear recovery variable, so the theorem does not apply to the Pinto-Ermentrout field
+  as stated; it is the nearest proved principle of linearized stability for neural-field travelling waves we found. It
+  calls the principle "conjectured in [Fay18]" and does not cite Sandstede (2007).
   - Reading it is the first item of Section 7.
 - **Faye, G., "Existence and stability of traveling pulses in a neural field equation with synaptic depression",
   SIAM J. Appl. Dyn. Syst. 12 (2013) 2032-2067.** Read in the author's preprint (math.univ-toulouse.fr/~gfaye), p. 17:
@@ -203,27 +214,42 @@ R = [-1/20, 9/2] x [-38/5, 38/5].
 ### W. Winding number (rigorous: `winding.py`)
 
 - **Contour.** The boundary of R is split into six pieces: right upper, top, left upper, left lower, bottom, right
-  lower. Each piece is covered by segments of length 1/50, 1976 segments in all.
+  lower. Each piece is covered by segments of length at most 1/50, 1976 segments in all.
 - **Per segment.** Dt is enclosed on the segment's square. With thin enclosures at its two ends, it must lie in an
   open half plane through 0; that then gives the argument change along the segment exactly (up to the enclosure
   width). No segment had to be split.
-- **Argument changes** (radians, midpoint +/- radius), from `data/winding_*.json`:
+- **Argument changes** (radians), from `arg_change_exact` in `data/winding_*.json`, as intervals rounded outward
+  (an earlier version of this table gave midpoint +/- radius rounded to nearest, which cut off the ends of two of the
+  intervals in the last digit, and lower bounds of abs(Dt) rounded up):
 
 | Piece | Segments | Argument change | Lower bound for abs(Dt) on the piece | Time (4 cores) |
 |---|---|---|---|---|
-| right upper, Re = 9/2, Im 0 to 38/5 | 380 | 1.8844 +/- 0.0976 | 403.3 | 1835 s |
-| top, Im = 38/5 | 228 | 0.9762 +/- 0.0505 | 820.3 | 1102 s |
-| left upper, Re = -1/20, Im 38/5 to 0 | 380 | 0.2809 +/- 0.3761 | 0.2756 | 1258 s |
-| left lower | 380 | 0.2809 +/- 0.3761 | 0.2756 | 969 s |
-| bottom | 228 | 0.9762 +/- 0.0505 | 820.3 | 1057 s |
-| right lower | 380 | 1.8844 +/- 0.0976 | 403.3 | 1412 s |
+| right upper, Re = 9/2, Im 0 to 38/5 | 380 | [1.7868, 1.9821] | 403.27 | 1835 s |
+| top, Im = 38/5 | 228 | [0.9257, 1.0267] | 820.28 | 1102 s |
+| left upper, Re = -1/20, Im 38/5 to 0 | 380 | [-0.0953, 0.6571] | 0.2756 | 1258 s |
+| left lower | 380 | [-0.0953, 0.6571] | 0.2756 | 969 s |
+| bottom | 228 | [0.9257, 1.0267] | 820.28 | 1057 s |
+| right lower | 380 | [1.7868, 1.9821] | 403.27 | 1412 s |
 
 - **Total.** The argument change divided by 2 pi lies in **[0.8331, 1.1669]**, so **the winding number is 1**
   (`data/winding.json`).
 - **Symmetry as a check.** The lower pieces were computed independently of the upper ones. They agree with them to
   about 10^-10, as the symmetry Dt(conj lambda) = conj Dt(lambda) requires.
 - **Provenance.** All six pieces carry the same sha256 of `evans_rig.py`, `winding.py` and `data/pulse_records.pkl`
-  (recorded in `data/winding.json`), and `combine` verifies them against the present files.
+  (recorded in `data/winding.json`), and `combine` verifies them against the present files. The base modules that
+  `evans_rig.py` imports (`code/nfcore.py`, `code/certify_rest.py`, `code/block.py`) are not fingerprinted; since the
+  pieces were computed (commit 5af378b), `nfcore.py` has not changed, and `certify_rest.py` and `block.py` have changed
+  only in comments (2026-09-27).
+- **Controls (added 2026-09-27, `winding_controls.py`).** The same code (`winding.main`, unchanged) on two small
+  squares, each run as two open pieces with one worker: on [-1/25, 1/25]^2, around the zero lambda = 0, the total
+  argument change divided by 2 pi lies in [0.98, 1.02], winding number 1 (8 + 8 segments, 258 s and 242 s); on
+  [1/10, 3/10] x [-1/10, 1/10], which contains no zero, it lies in [-0.0204, 0.0204], winding number 0, so the false
+  statement that Dt vanishes there is refused (20 + 20 segments, 513 s and 625 s). The pieces
+  (`data/winding_ctrl*.json`, with the same sha256 records) are not in any cover of `COVERS`, so `combine` never uses
+  them; `winding_controls.py check` decides the two winding numbers from the stored pieces and writes
+  `data/winding_controls.json`. Recomputed from a copy of the folder the same day (one worker, 157, 151, 356 and
+  349 s): every piece is identical to the stored one apart from its timing field, and every segment file byte for
+  byte.
 - **Statement W.** Dt has exactly one zero in R counted with order. Since Dt(0) = 0 (translation), that zero is
   lambda = 0, and Dt'(0) is nonzero.
 
@@ -287,12 +313,15 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
     have derivatives in xi equal to +psi0^T (dA/dlambda) phi0 and -psi0^T (dA/dlambda) phi0. *Written:* they vanish at
     -infinity and +infinity respectively, so D'(0) equals that same integral (for any normalisation of psi^+ and
     phi^-, in particular for Dt).
-  - *Certified, independently of W:* Dt'(0) lies in [-16.3820, -14.0497] + [-1.1611, 1.1611]i, so it is nonzero, and
-    D'(0) = Dt'(0) / (wt^T v)(0) lies in [0.230893, 0.269221] + [-0.019081, 0.019081]i (normalization w^T v = 1;
+  - *Certified, independently of W:* Dt'(0) lies in [-16.3819, -14.0497] + [-1.16101, 1.16101]i (as `simple_zero.py` prints it, rounded outward), so it is nonzero, and
+    D'(0) = Dt'(0) / (wt^T v)(0) lies in [0.230893, 0.269221] + [-0.0190800, 0.0190800]i (normalization w^T v = 1;
     (wt^T v)(0) = -60.8493463...). This is Cauchy's formula on the circle |lambda| = 1/25, split into 128 arcs, each
     covered by an `evans_rig.py` enclosure; the mean-value integral over the same arcs encloses Dt(0) in a ball about
-    0 of radius 0.021, as it must. So no Jordan chain exists, and 0 is a simple zero of D without using W.
-  - Numerically D'(0) = 0.2501, inside the certified interval; the independent check found the same.
+    0 of radius 0.021, as it must. So no Jordan chain exists, and 0 is a simple zero of D without using W. Since
+    2026-09-27 `run_all.sh` checks that mean-value enclosure as a negative control (Z3): the false statement Dt(0) != 0
+    must be refused, that is, the enclosure must contain 0. It is computed from the same enclosures as Dt'(0), so it
+    would expose a bias in them but does not test the Cauchy argument independently.
+  - Numerically D'(0) = 0.25005, inside the certified interval; the independent check found the same.
 
 ## 6. What is rigorous and what is numerical
 
@@ -309,10 +338,11 @@ P is nonempty: it contains a pulse with speed in (c_lo, c_lo + 10^-58).
 | The algebra of Part 3: the ODE forms of the eigenvalue and Jordan-chain equations, dA/dlambda, and the two integration identities | Exact: `part3_symbolic.py` (SymPy, with two negative controls) |
 | The analysis of Part 3: decaying solutions and L^2 eigenfunctions, the limits at +-infinity, and the decay of psi0 when D(0) = 0 | Written argument (Section 5), standard, not machine checked |
 | Relation between eigenvalues and zeros of D; analyticity of D | Standard Evans-function facts for the ODE form, used as known and not re-proved here |
-| High-precision pulse table, double-precision Evans function, numerical winding numbers, D'(0) = 0.2501, and the checker's Fourier discretization | Numerical only |
+| Controls of the winding step: winding number 1 around 0, and 0 on a square without zeros | Rigorous: `winding_controls.py` (the code of `winding.py`, unchanged) |
+| High-precision pulse table, double-precision Evans function, numerical winding numbers, D'(0) = 0.25005, and the checker's Fourier discretization (its program is not in this folder) | Numerical only |
 
 All rigorous computations rest on python-flint (Arb) ball arithmetic, and on the base programs of
-`papers/nf-pulse/code`.
+`code`.
 
 ## 7. What remains for nonlinear stability
 
@@ -324,8 +354,9 @@ Nonlinear (orbital) stability with asymptotic phase is not proved. What remains:
    - its function space, and whether L^2 spectral information is what it assumes.
 
    If the hypotheses match, Theorem S would give nonlinear orbital stability for the pulses of the class P. Until
-   then this step is only plausible. Faye (2013) uses the result for a smooth sigmoid (quoted in Section 3), while one
-   secondary source calls it a Heaviside result.
+   then this step is only plausible. Faye (2013) uses the result for a smooth sigmoid but also lists it among
+   Heaviside studies, and Dyson calls it a result for single Heaviside firing rates (Section 3); Habib and Veltz (2024)
+   prove such a principle for a different form of neural field.
 2. **Or write a self-contained proof.** The following plan was not carried out.
    - L = -c d/dxi + (bounded operator) generates a C0 group on X = L^2 x L^2.
    - L - L_inf = K is compact. K e^{sL} is norm continuous in s, because K is compact and the group is strongly
@@ -370,7 +401,7 @@ a written argument, and the winding number (W) is not established yet."
 - **A Fourier-spectral discretization of L** (N = 2048 and 3072 on periodic domains of length 250 and 300) finds
   lambda = 0 as the only eigenvalue with Re lambda > -0.1127. The next values are the essential-spectrum edge at
   -0.11273. A pair at -0.1168 +/- 0.014i on the coarser grid disappears on refinement.
-- **Repository.** Nothing outside `papers/nf-pulse/ext/stability` was modified.
+- **Repository.** Nothing outside `ext/stability` was modified.
 
 **Findings and what was done.**
 
@@ -395,16 +426,17 @@ a written argument, and the winding number (W) is not established yet."
    sub-node boxes and the half-plane argument bookkeeping.
 
 The checker spot-checked the base modules (`nfcore.taylor`, `manifold.validate`) and did not rerun the winding
-pieces. It did not review the base existence proof, which remains unreviewed.
+pieces. It did not review the base existence proof, which has its own in-project checks (`../../review/lead/VERIFY.md`).
 
 ## 9. Commands
 
-From `papers/nf-pulse/ext/stability/`, with the base requirements installed
+From `ext/stability/`, with the base requirements installed
 (`python3 -m pip install -r ../../code/requirements.txt`, plus scipy for the numerical scripts):
 
 ```
-sh run_all.sh           # everything; the six winding pieces take most of the time (about 20 to 50 minutes each on 4 cores)
-sh run_all.sh quick     # everything except the winding pieces, then `winding.py combine` on the stored pieces
+sh run_all.sh           # everything; the six winding pieces take most of the time (16 to 31 minutes each on 4 cores)
+sh run_all.sh quick     # everything except the winding pieces and the pieces of the controls, then `winding.py combine`
+                        # and `winding_controls.py check` on the stored pieces
 ```
 
 The individual steps are:
@@ -419,10 +451,18 @@ python3 simple_zero.py 128 4                              # Z: rest eigenvalues 
 python3 part3_symbolic.py                                 # the algebra of Part 3 (exact, SymPy, seconds)
 for p in left_up right_up top left_down bottom right_down; do python3 winding.py $p 4; done
 python3 winding.py combine                                # W (rigorous)
+python3 winding_controls.py run 4                         # W1, W2: controls of the winding step (a few minutes each piece)
+python3 winding_controls.py check                         # W1, W2 from the stored pieces
 python3 pulse_hp.py 120 && python3 evans_num.py && python3 spectrum_num.py 4       # numerical only
 ```
 
-- `data/pulse_records.pkl` and `data/pulse_table.npz` are regenerated by the commands above and are not tracked.
+- `data/pulse_records.pkl` is tracked: it holds the records the winding pieces and the Cauchy integral were computed
+  with, and `run_all.sh` recomputes it into `work/rerun/` and checks that it is reproduced exactly (apart from a timing
+  field). `data/pulse_table.npz` is regenerated by the commands above and is not tracked.
+- `data/run_all.txt` is the output of `sh run_all.sh quick` of 2026-09-27, rerun after the controls Z3, W1 and W2 were
+  added (from a copy of the folder at commit 395bba3, one process at a time, with twelve `NF_*` variables set in the
+  environment, which the script clears); every certificate it rewrote is identical to the stored one apart from its
+  timing field. `notes/QUALITY.md` of the paper records the run.
 - The base program's certificates for the narrow bracket are written to `data/proof_custom_*.json`.
 - The speed c* to about 60 digits came from the base program, run as
   `python3 ../../code/shoot_hp.py 360 115 1.1027477097341592491478677 1.1027477097341592491478678` (18 minutes,

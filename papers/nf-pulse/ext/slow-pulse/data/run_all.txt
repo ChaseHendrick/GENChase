@@ -10,7 +10,7 @@ OK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 
 OK    P: the orbit at c1 enters the cone K+ inside the block
 OK    P: the orbit at c2 enters the cone K- inside the block
 OK    N: negative control, the orbit at c1 asked to reach K-, is refused
-OK    N: negative control, c = c1 + about 1e-4, is refused
+OK    N: negative control, c = c1 rounded up at the fourth decimal (at most 1e-4 above c1), is refused
 == eps = 3/20
 OK    R: rest state, s = S'(0) < 1, one unstable and three stable eigenvalues on [c1, c2]
 OK    M: unstable manifold validated for |t| <= 1 (c1)
@@ -23,7 +23,7 @@ OK    P: every orbit with c in [c1, c2] is in the interior of the block at xi = 
 OK    P: the orbit at c1 enters the cone K+ inside the block
 OK    P: the orbit at c2 enters the cone K- inside the block
 OK    N: negative control, the orbit at c1 asked to reach K-, is refused
-OK    N: negative control, c = c1 + about 1e-4, is refused
+OK    N: negative control, c = c1 rounded up at the fourth decimal (at most 1e-4 above c1), is refused
 OK    N: negative control, eps = 1/10 at the wave-train switch c = 0.37752881442..., cone 1, is refused
 OK    N: negative control, eps = 1/10 at the wave-train switch c = 0.37752881442..., cone -1, is refused
 all checks passed

@@ -1,6 +1,6 @@
 # Independent reimplementation: nf-pulse (fast pulse, beta = 20, theta = 1/4, eps = 1/10, gamma = 0)
 
-Date: 2026-09-26. Everything in this folder was written without importing or reading `papers/nf-pulse/code`
+Date: 2026-09-26. Everything in this folder was written without importing or reading `code`
 (only `README.md` was read for the statement) until Tasks 1 to 3 had produced their results; Task 4 was done
 afterwards. Nothing in `code/` or `data/` was modified. Tools: Python 3.11, python-flint 0.9 (arb), mpmath 1.3.
 

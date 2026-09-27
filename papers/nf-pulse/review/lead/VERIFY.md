@@ -1,4 +1,4 @@
-# Referee verification of `papers/nf-pulse`: merged verdict
+# Referee verification of the paper's folder: merged verdict
 
 Date: 2026-09-26. Four independent checks, each run by its own agent in parallel, then merged here by the
 session that launched them. Each check's full report and scripts are in this folder:

@@ -4,7 +4,7 @@
 #
 # Low-order stress test of the rigorous integrator (code review, 2026-09-26).
 #
-# HOW TO RUN:   python3 lohner_stress.py <path to a copy of papers/nf-pulse/code>
+# HOW TO RUN:   python3 lohner_stress.py <path to a copy of code>
 #
 # At production settings (order 30, tol 1e-45) the Taylor remainder, the a priori set and the inverse of
 # the QR factor contribute errors far below the enclosure radius, so a program that drops or corrupts any
