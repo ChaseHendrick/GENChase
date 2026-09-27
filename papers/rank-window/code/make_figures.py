@@ -57,8 +57,8 @@ def panel_matern(ax, rows, d, key, title, ylab):
 
 # Figure 1: window exponents of Matern codes on the real stimulus coordinates
 fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.75), sharey=False)
-panel_matern(axs[0], W, 8, 'w11_500', '8D stimulus sets (6 recordings)', 'window exponent, ranks 11-500')
-panel_matern(axs[1], W, 4, 'w11_500', '4D stimulus sets (4 recordings)', 'window exponent, ranks 11-500')
+panel_matern(axs[0], W, 8, 'w11_500', 'the six 8D stimulus sets', 'window exponent, ranks 11-500')
+panel_matern(axs[1], W, 4, 'w11_500', 'the four 4D stimulus sets', 'window exponent, ranks 11-500')
 axs[0].set_ylim(0.1, 3.75); axs[1].set_ylim(0.5, 4.0)
 axs[0].legend(loc='upper left', fontsize=6.8); axs[1].legend(loc='upper left', fontsize=6.8)
 fig.tight_layout(); fig.savefig(f'{FIG}/fig1.pdf'); plt.close(fig)
@@ -74,7 +74,7 @@ for nu in (0.5, 1.0, 1.5, 2.0):
     ax.plot(kap, [r['w_operator'] for r in rr], color=COL[nu], ls=':', lw=1.2)
     ax.plot([kap[0] / 1.5], [1 + 2 * nu], marker='>', color=COL[nu], ms=5, clip_on=False)
 ax.axhline(3, color=INK, lw=1.0, ls='--')
-ax.text(16, 3, 'bound 3  ', va='bottom', ha='right', fontsize=8)
+ax.text(16, 2.95, 'bound 3  ', va='top', ha='right', fontsize=8)
 ax.set_xscale('log', base=2); ax.set_xticks(kap); ax.set_xticklabels([f'{k:g}' for k in kap])
 ax.set_xlim(kap[0] / 1.6, kap[-1] * 1.2)
 ax.set_xlabel('bandwidth $\\kappa$ (tuning width $\\sim 2\\pi/\\kappa$)')
@@ -93,10 +93,12 @@ for a, col, lab in ((2.0, COL[0.5], 'tail $n^{-2}$ (not differentiable)'), (5.0,
     ax.loglog(np.arange(1, 32), mu, ls='none', marker='o' if a == 2 else 'x', color=col, ms=7 if a == 2 else 4,
               mfc='none' if a == 2 else col, label=f'32 directions, {lab.split(" (")[0]}')
 ax.axvspan(5, 30, color=GRID, alpha=0.5, lw=0)
-ax.text(12, 3e-1 * 30, 'ranks 5-30', ha='center', va='bottom', fontsize=7, color=INK2)
+ax.axvspan(11, 30, color=GRID, alpha=0.6, lw=0)              # darker: ranks 11-30, the window of the deposited code
+ax.text(12, 3e-12, 'ranks 5-30\n(darker: 11-30)', ha='center', va='bottom', fontsize=7, color=INK2)
 ax.set_xlabel('rank $n$'); ax.set_ylabel('eigenvalue')
-ax.set_title(f'Two codes, one sampled spectrum (window {C["prop1"]["nu1.5_kappa1.0_a2.0"]["w"]:.2f})', fontsize=9)
-ax.set_ylim(1e-13, 1e2); ax.legend(fontsize=6.5, loc='lower left'); style(ax)
+ex_ = C['prop1']['nu1.5_kappa1.0_a2.0']
+ax.set_title(f'Two codes, one sampled spectrum\n(window {ex_["w"]:.2f} over ranks 5-30, {ex_["w_11_30"]:.2f} over 11-30)', fontsize=9)
+ax.set_ylim(1e-13, 1e2); ax.legend(fontsize=6.5, loc='upper right'); style(ax)
 fig.tight_layout(); fig.savefig(f'{FIG}/fig2.pdf'); plt.close(fig)
 
 # Figure 3: MEME alpha2 under far-tail changes

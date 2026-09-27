@@ -5,8 +5,11 @@ name: check
 # the structural lint is instant and gates every push, and the browser jobs cover one technique from
 # each architecture family, which is what catches a change to a shared factory.
 #
-# Before merging anything that touches a simulation, run the full sweep locally:
-#   sh tools/checkall.sh dist/studio.html /tmp/all.log <every id printed by tools/lint.js>
+# Before merging a change to a shared path (src/shared/, a family factory used by several tabs, the build or
+# the shell), run the full sweep locally, in the background under an overall timeout (it takes hours):
+#   timeout 10800 sh tools/checkall.sh dist/studio.html /tmp/all.log <every id printed by tools/lint.js>
+# A change confined to named modules is swept by tools/check.js and tools/export.js for those tabs
+# (owner's instruction, 2026-09-27: no command runs for hours when it does not need to).
 
 on:
   push:
