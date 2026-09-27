@@ -164,6 +164,7 @@ jobs:
           python3 tools/release-notes.py --self-test
           node tools/build.js --check
           node tools/science.js
+          node tools/exceptional-science.js
           node tools/geometry-science.js
           node tools/breather-science.js
           node tools/peakon-science.js
@@ -222,6 +223,9 @@ jobs:
       - name: PDE print exports preserve numerical state
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/pde-print-state.js
+      - name: Exceptional-point dimer print preserves state
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/exceptional-print-state.js
       - name: Seed box, hash, shortcuts, dock, formula chooser
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
