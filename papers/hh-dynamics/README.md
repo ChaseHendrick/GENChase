@@ -39,9 +39,16 @@ not prove.
     candidate that avoids their multiplier of 2.8e7 and a plan and cost estimate for a computer-assisted proof.
     Numerical evidence, not a proof.
   - [`work/traveling-wave/`](work/traveling-wave/REPORT.md): the propagated action potential at Hodgkin and Huxley's
-    own constants. No existence proof was found in the literature reached. The first rigorous stage is done: the
-    shooting in the speed switches between 18.7321608 and 18.7321609 m/s at 18.5 C (numerically 18.7322 m/s; Hodgkin
-    and Huxley computed 18.8 m/s by hand). The closing step, which would prove the pulse, is not done.
+    own constants. **Proved by computer at 18.5 C (2026-09-27):** the travelling-wave equation (their eq. (31)), with
+    the 1952 rate functions and constants and the leak potential that makes the resting current zero, has a pulse, an
+    orbit homoclinic to rest, with speed in (18.732160814388902113775385154028169368017733735, ...739) m/s (Hodgkin
+    and Huxley computed 18.8 m/s by hand; `code/prove_pulse.py`, about 70 minutes at 256 bits, with negative
+    controls). The method: a closing block at rest with a cone condition in weighted eigen-coordinates, a validated
+    Lohner integrator carrying a speed interval of width 3e-45 through the spike into the block, and a Wazewski-type
+    shooting argument (REPORT, Sections 4.4 and 4.5). No existence proof for the unmodified equations was found in
+    the literature reached (Hastings 1976 and Carpenter 1977, the latter read in full, need artificial small
+    parameters); Hastings 1976 pp. 231-257 and Foote and Chen 1981 are still unread. Checked inside the project
+    only (tests, an independent program for the block conditions, a rereading); no outside review.
 - Nothing here is numerical evidence presented as proof: the program prints what it proves, and its only
   non-rigorous parts are self-tests and an independent cross-check in mpmath.
 
