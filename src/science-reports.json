@@ -2629,18 +2629,49 @@
     "sourceSha256": "aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6",
     "reference": "C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.",
     "equation": "H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The checked object is the displayed 2x2 dimer, not the Bender-Boettcher continuum Hamiltonian and not a laboratory exceptional point.",
+      "Modes-view pixels are two fixed Gaussians mixed by the gap. They are not the eigenvectors. The gap-versus-gamma plot is outside the pixel comparison.",
+      "Eigenvectors coalesce only at gamma = kappa. Off that curve, including in the broken phase, the overlap is smaller. The sheet stores one branch, Re lambda + 0.6 Im lambda, not both eigenvectors.",
+      "Print evidence is state preservation at the declared export size, not calibrated color. Grids and aspects outside validation/EXCEPTIONAL.md are outside the domain."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "The gap plot and the modes schematic are outside the validated domain.",
+      "No many-body, continuum, or experimental exceptional point is claimed."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/exceptional-science.js",
+        "scope": "Every sheet pixel of Re(lambda)+0.6*Im(lambda) on five kind:sheet runs (104,000 words: 160x160 twice, 96x120, 224x126, 128x102), with kappa = 0.15+2.1*x/(W-1) and gamma = 2.2*y/(H-1). Dimer states (gamma, kappa) = (0.4, 1.2), (1, 1), (1.6, 0.8), (0, 0.2), (2.2, 2), including below, at, and above the exceptional point. Independent eigenpairs on a 43 by 45 lattice covering kappa in [0.15, 2.25] and gamma in [0, 2.2], plus exact gamma = kappa at kappa 0.15, 0.5, 1, 1.6, and 2.2.",
+        "criteria": "Sheet absolute error at most 1e-6 (measured maximum 1.192e-7, Float32 rounding) and no nonfinite word. Eigenvalue mismatch and matrix-vector residual under 1e-12 (measured eigenvalue agreement 0 on this traceless matrix, residual at most 5.55e-16). At gamma = kappa, eigenvector overlap greater than 1-1e-9, the matrix not zero, determinant 0, and H squared 0, so geometric multiplicity is 1. Well below the point (gamma 0 and gamma 0.2 at kappa 1.5) overlap under 0.2. Dimer metric equals |lambda+ - lambda-| and extra equals gamma/kappa.",
+        "benchmark": "A 2x2 complex eigensolver written in tools/exceptional-science.js: quadratic formula on the trace and determinant, eigenvectors from one nonzero row of H - lambda I. The plate branch is the principal square root of kappa^2 - gamma^2. This is not a copy of ev() in src/modules/exceptional.js. The sheet value is Re(lambda)+0.6*Im(lambda) from that solver.",
+        "failureControl": "Replacing const d = k * k - g * g with const d = k * k + g * g removes the exceptional point. The same sheet predicate passes on the real 160x160 field (max error 1.192e-7) and fails on the mutated field (max error 3.042, required to exceed 0.1). Flipping the (2,2) entry from -i*gamma to +i*gamma yields eigenvalues i*gamma +/- kappa. At gamma = kappa = 1 the separation is 2 and the eigenvector overlap is 0, so the coalescence predicate that passes for the PT matrix fails. On the 1,935-point flipped lattice the overlap stays under 1.6e-15.",
+        "limitations": "Sheet eigenvalue field and the 2x2 eigenpairs only. The modes view is a schematic of two Gaussians, not the eigenvectors, and is not compared. The gap plot is not compared. Not a many-body PT system and not a laboratory exceptional point. Eigenvectors coalesce only at gamma = kappa.",
+        "command": "node tools/exceptional-science.js --write",
+        "results": "validation/results/exceptional-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/exceptional-print-state.js",
+        "command": "node tools/exceptional-print-state.js --write",
+        "results": "validation/results/exceptional-print-state.json",
+        "scope": "Actual exceptional exportPNG at a 2400 longest edge (8 in, 300 ppi) for the ep fixture (1:1, 2400x2400, gamma = kappa = 1, sheet, 160x160) and the broken fixture (4:5, 1920x2400, gamma 1.6, kappa 0.8, sheet, 160x200). Exact Float32 field words, dimer splitting, gamma/kappa, cells, buffer size, and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+        "criteria": "Zero changed or nonfinite field words; metric, extra, settings, cells, and buffer unchanged across export; exact requested PNG dimensions and blobs larger than 1000 bytes; luminance spread greater than 12/255; wrong width and a deliberate post-export field-plus-metric mutation rejected by the same predicate.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field, dimer splitting, gamma/kappa, cells, buffer, and settings against the same module exportPNG path. The field words themselves are checked against the independent 2x2 branch by tools/exceptional-science.js.",
+        "failureControl": "Requested PNG width reduced by one pixel fails acceptance. Mutating field[0] and the splitting after export fails the same preservation predicate (one changed word and a changed metric on both fixtures).",
+        "limitations": "State preservation and declared dimensions only. Does not establish calibrated color, the modes schematic, the gap plot, printed numerical resolution beyond the recorded grid, or a laboratory exceptional point."
+      }
+    ],
+    "domain": {
+      "parameters": "Sheet kappa in [0.15, 2.25] and gamma in [0, 2.2] on grids 160x160, 96x120, 224x126, and 128x102. Dimer (gamma, kappa): (0.4, 1.2), (1, 1), (1.6, 0.8), (0, 0.2), (2.2, 2). Eigenvector lattice 43 by 45 on those ranges, plus exact gamma = kappa at kappa 0.15, 0.5, 1, 1.6, and 2.2. Print: ep (gamma = kappa = 1, sheet, 1:1, grid 160) and broken (gamma 1.6, kappa 0.8, sheet, 4:5, grid 160).",
+      "conditions": "Static 2x2 H = [[i gamma, kappa], [kappa, -i gamma]]. No time stepping. The sheet samples kappa and gamma from pixel coordinates and does not use the dimer sliders. Below the exceptional point the stored branch is the nonnegative real eigenvalue; above it, the nonnegative imaginary eigenvalue. The field value is Re lambda + 0.6 Im lambda. The metric is 2*sqrt(|kappa^2 - gamma^2|). Print is nearest-neighbor scaling of that sheet.",
+      "resolution": "104,000 sheet pixels, maximum absolute error 1.192e-7 against tolerance 1e-6. Eigenvalue residual at most 5.55e-16 on 1,935 lattice points against tolerance 1e-12. Print PNG 2400x2400 and 1920x2400 (8 in at 300 ppi on the long edge) from 160x160 and 160x200 cells (validation/results/exceptional-science.json, validation/results/exceptional-print-state.json).",
+      "precision": "Float64 eigenpairs stored in a Float32 field; RGBA8 PNG output. No Monte Carlo error. Renderer and failure controls are recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-27",
+    "results": "validation/results/exceptional-science.json"
   },
   {
     "id": "meissner",
