@@ -87,7 +87,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [breather](src/modules/breather.js) | validated within stated limits | [breather-science.js](tools/breather-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
 | [turing](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
 | [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
-| [phase](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
+| [phase](src/modules/dynamics.js) | unvalidated | [phase-winding-check.js](tools/phase-winding-check.js) | Not scientifically validated | none |
 | [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated | none |
 | [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded | none |
 | [dendrite](src/modules/dendrite.js) | unvalidated | None registered | Not scientifically validated | none |
@@ -364,6 +364,14 @@ No record has an outside review yet; every review so far was done inside the pro
 - No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.
 - Broader settings require additional independent evidence.
 - The Custom reaction mode steps reaction terms f(u, v) and g(u, v) the viewer types, u_t = D_u lap u + f and v_t = D_v lap v + g on the same periodic stencils, by forward Euler without the clamps or implicit loss terms of the built-in kinetics. A user-defined reaction is not validated: the status line says so and prints no comparison with theory in that mode, and none of the evidence above covers it. Its step ceiling, 0.8 of 2/(lambda_D + rho_J) with lambda_D = Q c^2 max(D_u, D_v) from the stencil symbol (Q = 8 or 16/3) and rho_J the largest eigenvalue magnitude of the finite-difference Jacobian over 2048 field samples refreshed every 50 steps, is an estimate, not a stability proof: summed magnitudes do not bound the eigenvalues of a non-normal sum, forward Euler amplifies imaginary eigenvalues at any step, and the field can stiffen between samples. A field found non-finite (or past 1e30) at a sample stops the plate (validation/RDX.md, Custom reaction).
+
+### phase
+
+- Catalog equation and citation are review targets, not verified paper equivalence.
+- The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.
+- The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 initial circle samples, with bisection when the wrapped phase change or the angular step times the endpoint logarithmic-derivative magnitude exceeds pi/2. The derivative uses f(theta +/- 1e-7); all probes count toward the 400,000-evaluation budget, with at most 24 refinement levels. Finite differences and endpoint sampling cannot certify arbitrary typed functions or exclude every hidden turn. The argument principle requires a meromorphic function inside and on the circle.
+- No count or verdict is printed for nonfinite evaluations, a sampled min \|f\| at or below 1e-9 of max \|f\|, or unresolved refinement. Conservative refusal includes the tested near-double-zero circles whose analytic count is zero. Essential singularities and branch points inside remain outside the theorem; an accepted number there is only a sampled winding number.
+- The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources.
 
 ### gyroid
 
