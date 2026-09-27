@@ -74,4 +74,12 @@ GENChase: the companion repository does not carry `notes/`.
   the note.
 - [ ] **7. Reproducible.** The programs rerun every number from the downloaded inputs (README), and
   `make_numbers.py` reproduces `paper/numbers.tex`, the tables and `out/numbers.json` byte for byte from `out/` alone.
-  Open until a full rerun from the downloaded inputs has been done from this folder.
+  A full rerun from the downloaded inputs was done from a copy of this folder on 2026-09-27
+  (`notes/rerun-2026-09-27.md`). Every program ran and every stored value reproduces; with one BLAS thread every output
+  equals the committed one except the last bits of the `matern_window.py` outputs (committed from a two-thread run)
+  and the order of their rows; `make_numbers.py` on the committed `out/` reproduces its files byte for byte. Still open, because the
+  README does not regenerate `out/matern_finiteN.json`: the committed `matern_finiteN.py` lists 108 of its 112 cells
+  (nu = 0.75 at ell = 1/4 and 1 on the two sets with all five nu are missing), and `matern_finiteN.py 20` gives every
+  cell 20 replicates where 58 stored cells have 5, so `make_numbers.py` on the rerun `out/` changes 10 `\Fin...`
+  macros. Open until the program and README reproduce that file (or it is regenerated with one replicate count and the
+  macros and the Methods follow) and `matern_finiteN.py` and `make_numbers.py` are rerun from this folder.
