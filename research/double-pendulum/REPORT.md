@@ -345,6 +345,11 @@ code are in [check/](check/) (`VERDICT.md`, Python/Arb programs `common.py`, `dp
 `otherE.py`, `edges_nr.py` with their outputs). Verdict: **confirmed, with minor caveats**.
 
 - Rerun: field check OK, the three energies PROVED, the three controls fail; logs identical up to line order.
+- Rerun on 2026-09-27 in a fresh container (CAPD built from the pinned commit, `code/run_all.sh` with two threads):
+  field check OK; E = -1/2, 0, 1/2 PROVED with crossing slopes [-8.29156, -0.0936507], [-6.21377, -0.523787] and
+  [-21.4153, -0.278933], as in the table; the horseshoe's 24 covering relations VERIFIED, r >= 1.106950245017,
+  h_top > 0.101608707 per return and >= 0.013814 per unit time; the horseshoe control and the three proof controls
+  fail, as they must.
 - 22 mutations of the model and configuration: gravity x2.01 and x(1 + 1e-7), the coupling sign, the other square
   root branch of the lift, the opposite crossing direction and a wrong shift all fail stage 1; a sign error in the
   lift derivative fails stage 2; k = 8 or a wrong target line fail stage 3; alpha = 0.1 fails stage 2. Gravity
