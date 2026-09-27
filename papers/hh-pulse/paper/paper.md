@@ -90,7 +90,7 @@ fractions of `data/pulse_proof_18.5_El10.613_config.json`,
 
     K1 = 10.438051060101123692276486238318579121858669770478...,   K2 - K1 = 3.000e-45 (to 4 digits),
 
-the system of Section 2 has a pulse, and max u > 90.58 mV along it. The corresponding speed lies in
+the system of Section 2 has a pulse, and max u > 90.57 mV along it. The corresponding speed lies in
 
     (18.73188824788048354046831343329624387695575077276, 18.73188824788048354046831343329624387695575077548) m/s.
 
@@ -256,16 +256,17 @@ lengths; every enclosure is checked); the characteristic-polynomial check of (H1
 
 ## 5. Computations, controls and checks
 
-Table: stages at 18.5 C (printed E_l), one process at a time, 256 bits, order 40.
+Table: stages at 18.5 C (printed E_l), one process at a time, 256 bits, order 40; the times are those the
+certificates record.
 
 | stage | result | CPU time |
 |---|---|---|
-| setup (H2, H3, the check of H1) | lambda_u = 10.89231...; Lemma B passes; z1' > 0 on the exit face; B0 certified on 1232 + 5916 cells | seconds |
-| interval (H4) | at T_enter = 13.625 ms: zeta_1 in [-0.341, 0.341], abs(zeta_s) <= 0.63603 < 0.8 | 597 s |
-| K1 (H5) | enters K- at 13.6875 ms, path in int B0 | 570 s |
-| K2 (H5) | enters K+ at 13.6875 ms, path in int B0 | 561 s |
-| negative control: K interval shifted by 40 half-widths | zeta_1 about 13 at T_enter, outside B0: fails, as it must | 566 s |
-| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 6.72 ms: fails, as it must | 602 s |
+| setup (H2, H3, the check of H1) | lambda_u = 10.89208...; Lemma B passes; z1' > 0 on the exit face; B0 certified on 1232 + 5916 cells | seconds |
+| interval (H4) | at T_enter = 13.625 ms: zeta_1 in [-0.341, 0.341], abs(zeta_s) <= 0.63603 < 0.8 | 573 s |
+| K1 (H5) | enters K- at 13.6953125 ms, path in int B0 | 580 s |
+| K2 (H5) | enters K+ at 13.6875 ms, path in int B0 | 586 s |
+| negative control: K interval shifted by 40 half-widths | zeta_1 about 13 at T_enter, outside B0: fails, as it must | 580 s |
+| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 6.72 ms: fails, as it must | 596 s |
 | negative controls in setup | a bracket above lambda_u; Lemma B faces 100 times thinner; B0 with radius x 1.5: all rejected | seconds |
 
 Table: the same at 6.3 C (printed E_l).
@@ -273,11 +274,11 @@ Table: the same at 6.3 C (printed E_l).
 | stage | result | CPU time |
 |---|---|---|
 | setup (H2, H3, the check of H1) | lambda_u = 4.97403...; Lemma B at r_B = 1e-32; z1' > 0 on the exit face; B0 certified on 3590 + 1374 cells | seconds |
-| interval (H4) | at T_enter = 36.125 ms: zeta_1 in [-0.273, 0.273], abs(zeta_s) <= 0.4563 < 0.6 | 1237 s |
-| K1 (H5) | enters K- at 36.2578125 ms, path in int B0 | 1279 s |
-| K2 (H5) | enters K+ at 36.234375 ms, path in int B0 | 1293 s |
-| negative control: K interval shifted by 40 half-widths | zeta_1 about 10 at T_enter, outside B0: fails, as it must | 1276 s |
-| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 17.20 ms: fails, as it must | 1298 s |
+| interval (H4) | at T_enter = 36.125 ms: zeta_1 in [-0.273, 0.273], abs(zeta_s) <= 0.45631 < 0.6 | 1297 s |
+| K1 (H5) | enters K- at 36.2578125 ms, path in int B0 | 1297 s |
+| K2 (H5) | enters K+ at 36.234375 ms, path in int B0 | 1287 s |
+| negative control: K interval shifted by 40 half-widths | zeta_1 about 10 at T_enter, outside B0: fails, as it must | 1316 s |
+| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 17.20 ms: fails, as it must | 1344 s |
 | negative controls in setup | as at 18.5 C: all rejected | seconds |
 
 The model control multiplies alpha_m by a factor that is 1 at the enclosed rest value u*, so that rest and its

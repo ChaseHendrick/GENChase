@@ -43,5 +43,10 @@ The bar every paper in this repository meets before it is published or preprinte
   7, and a rereading of the proof by the same agent. An independent reviewer told to find errors, briefed only with
   the paper and its programs, has not read it.
 - [ ] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
-  scratch, one bounded process at a time. Pending: the full rerun from the committed code, its reports, and a clean
-  `node tools/paper-sync.js --check hh-pulse`.
+  scratch, one bounded process at a time. A first full rerun (`sh code/run.sh all`, started 2026-09-27 14:37 UTC from
+  commit 391ae68, ended 18:41 UTC) printed `run.sh all: ALL AS EXPECTED`: the certificates of the two printed-leak
+  proofs came out unchanged apart from run times, and those of Remark 1 changed only in the last digits of K1 and K2
+  (8.0e-62), because the committed ones had been computed from an older numerical centre (REPORT.md 4.5 in
+  `papers/hh-dynamics/work/traveling-wave/`). Pending: the review (`notes/review-1.md`) found that the 6.3 C runs used
+  the binary temperature 6.29999999999999982 C (M1) and that `run.sh` could pass on stale certificates (M4); the item
+  waits for the fixed programs and their rerun.

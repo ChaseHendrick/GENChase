@@ -519,6 +519,19 @@ written. What it does not say: nothing on uniqueness of the pulse or of K*, on s
 inside this project (the tests, the independent block program and the adversarial rereading in Section 5); no one
 outside the project has reviewed them.
 
+**Rerun (2026-09-27, later the same day).** `papers/hh-pulse/code/run.sh all`, started at 14:37 UTC from commit
+391ae68, recomputed this proof from scratch as its last block (18.5 C, no `HH_EL`), after the two printed-leak proofs,
+and ended at 18:41 UTC with every stage passed, both negative controls failed and `block_check_iv.py` passed. The
+certificates `papers/hh-pulse/data/pulse_proof_18.5_*.json` are now its output. The numerical centre came out
+byte for byte equal to the committed `hp_pulse_18.5.json`. K1 and K2 moved by 8.0e-62 (their last digits
+...446221386 became ...454212849): the run above took K* from `hp_pulse.py` before its flow was made to keep time
+exactly (commit 02e8ff5), and when the centre was recomputed with the exact-time flow (commit 735486e, the same 58
+digits) the configuration and the stages were not rerun. Neither the stopping rule of `hp_pulse.py` nor its resume path
+is involved (this centre converged in one pass). Apart from the run times, every value this section quotes (the digits
+of K*, K1, K2 and the speeds, the zeta enclosures, the cell counts, the escape time of `neg-model`) is shared by both
+runs; the interval [K1, K2] is recomputed from the centre on each run. Times of the rerun: `hp_pulse.py` 390 s,
+interval 591 s, K1 593 s, K2 568 s, neg-shift 572 s, neg-model 595 s, `block_check_iv.py` 17 s.
+
 ### 4.6 The same proof with the printed leak potential, E_l = 10.613 mV (2026-09-27)
 
 Hodgkin and Huxley print V_l = -10.613 mV (Table 3; in their convention depolarization is negative, so in ours

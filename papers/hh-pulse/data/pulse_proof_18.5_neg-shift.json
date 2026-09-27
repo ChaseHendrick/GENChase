@@ -12,10 +12,10 @@
   "[0.11 +/- 2.13e-3]",
   "[0.14 +/- 3.30e-3]"
  ],
- "|zeta_s|_upper_at_T_enter": "[0.6516453314 +/- 1.38e-11]",
+ "|zeta_s|_upper_at_T_enter": "[0.6516453314 +/- 1.34e-11]",
  "in_int_B0_at_T_enter": false,
  "steps_to_T_enter": 864,
  "u_max_lower_bound": 90.58140668736192,
  "verdict": "FAIL",
- "secs": 981
+ "secs": 572
 }

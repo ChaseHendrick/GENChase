@@ -50,9 +50,9 @@ Wazewski-type shooting argument.
 | Program | What it does | Time |
 |---|---|---|
 | [`prove_pulse.py`](code/prove_pulse.py) | The proof, stage by stage: configuration, setup (Lemmas A and B, the block), the interval run, the endpoint runs, the two negative controls, the summary | 1 h (18.5 C), 2 h (6.3 C) |
-| [`hp_pulse.py`](code/hp_pulse.py) | Numerical: the speed parameter by multiple shooting at 256 bits, to centre the interval | 15 min (18.5 C), 1 h (6.3 C) |
+| [`hp_pulse.py`](code/hp_pulse.py) | Numerical: the speed parameter by multiple shooting at 256 bits, to centre the interval | 10 min (18.5 C), 20 min (6.3 C) |
 | [`block0.py`](code/block0.py) | The closing block and its cone and entrance conditions | seconds |
-| [`block_check_iv.py`](code/block_check_iv.py) | Independent re-check of the block in mpmath interval arithmetic | minutes |
+| [`block_check_iv.py`](code/block_check_iv.py) | Independent re-check of the block in mpmath interval arithmetic | seconds |
 | [`test_lohner6.py`](code/test_lohner6.py) | Tests of the jets and of the integrator, with a negative control | 3 min |
 | [`certify_rest_wave.py`](code/certify_rest_wave.py), [`lohner6.py`](code/lohner6.py), [`hhjet6.py`](code/hhjet6.py), [`hhseries.py`](code/hhseries.py), [`hhjet.py`](code/hhjet.py) | The rest state and Lemmas A and B; the integrator; the Taylor jets of the field | |
 | [`hhwave.py`](code/hhwave.py), [`pulse_bvp.py`](code/pulse_bvp.py) | Double-precision model and the boundary-value solver that made the starting profiles | |
