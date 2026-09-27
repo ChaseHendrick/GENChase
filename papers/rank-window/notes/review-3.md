@@ -469,3 +469,167 @@ Two of review-2's should-fix items overlap with mine:
   matrices are uncentred and his eigenfunctions orthonormal (my S2).
 - **S5 (stand-in spectra) is fixed** by the sentence "We did not compute sub-window exponents of the recorded
   spectra". But the global claim that no recorded spectrum was computed is now false (my M1).
+
+## Response (the note's writer, 2026-09-27)
+
+Before anything was applied, each finding was checked by one or two further independent agents (skeptics) told to
+refute it. Findings they confirmed are fixed below; where their corrected facts differ from the report, the fix
+follows the corrected facts. Findings they judged already handled or overstated are not applied, with their reason.
+Every new number in the note is a macro written by `code/make_numbers.py`, and the worded claims that rest on the new
+numbers are asserted there. The minor items were not put through the skeptics; those not fixed along the way are left
+for the next revision.
+
+### Must-fix
+
+- **M1. Fixed.** `note.tex` (Introduction) now says: no exponent is fitted to any recording; the only neural data used
+  are the per-neuron signal and noise variances of one natural-image recording, which calibrate the simulator, and
+  that recording's cvPCA spectrum at ranks 11, 100 and 500, with which Section 4.6 compares simulated spectra. The
+  Methods paragraph on cvPCA says that `calib.py` computes that spectrum and that no exponent is fitted to it; the
+  stimulus-coordinates sentence is scoped ("The stimulus coordinates use these image files and no neural data");
+  `results.tex` names the calibration recording and points to the Methods. The README's "Not done" line says the
+  same, and `code/snr_cv.py`'s header says what `data_cv` is.
+- **M2. Fixed.** `code/circle_d1.py` now also fits ranks 11-30 (keys ending in `_11_30`, same random draws; the
+  5-30 values in `out/circle_d1.json` are unchanged, checked key by key), and `make_numbers.py` writes the 11-30
+  macros (`...Eleven`). The Methods (Gratings paragraph) state the discrepancy with file and line: `mainfigs/fig3.m`,
+  line 91 (`trange0 = [11:30]` for the gratings; line 94, `11:500` for the others), `powerlaws/statsShuffledPCA.m`,
+  line 59 (11 to min(500, n - 2), i.e. 11-30 for 32 gratings), and that the code fits the mean normalized spectrum
+  (`fig3.m`, line 111), so the published 3.43 was most probably fitted over 11-30. The Introduction says both windows
+  are reported; the abstract, the Fig. 2 caption and title, and Section 4.4 give both values: the example of
+  Proposition 1 reaches 3.5012 over ranks 5-30 and 3.4306 over ranks 11-30. Also over 11-30: border codes
+  0.321-2.405, all below 3; nu = 1.5 codes 0.558-3.468, above 3 for kappa <= 2 as over 5-30; the shortfall below
+  alpha_inf 0.502-4.180, of which pre-asymptotic 0.086-3.750 and aliasing 0.288-0.636; the k^-3 staircase 2.881;
+  finite populations shift the exponent by at most 0.044 on average (SD at most 0.012). `make_numbers.py` asserts
+  for both windows: no code with nu <= 1 exceeds 3, every code is below its asymptote, both parts of the shortfall
+  lower the exponent, the kappa threshold is the same, and the two codes of the example have the same exponent,
+  above 3 and equal to the family code's. The bibliography lists the code files read. (This also fixes m2: the
+  window fit is now cited as `powerlaws/get_powerlaw.m`, weights 1/n at 1-based ranks.)
+- **M3. Fixed.** `make_numbers.py` counts the flagged data sets under all five references (diagonal weights with the
+  pooled reference; full whitening with the pooled, first-four-folds, first-fold and leave-one-out references) and
+  computes exact Clopper-Pearson 95% intervals. The new Table 5 (`paper/tab_flag.tex`) prints every count with its
+  interval, the base row included; the flag columns of Table 4 moved there. Counts: diagonal weights 0/20 for every
+  variant, [0, 0.168] (base 1/20, [0.001, 0.249]); full whitening pooled 0/20 for every variant and the base; first
+  four folds 0-2/20 (2/20: [0.012, 0.317]); first fold 2-4/20 (4/20: [0.057, 0.437]); leave one out 1-5/20 (5/20,
+  exponent 0.8: [0.087, 0.491]); the base 1/20 under the last three. The abstract's "rarely or not at all" is replaced
+  by "flags none of 20 simulated data sets of any of them with diagonal weights (95% upper bound 0.168 on the flag
+  probability) and at most 5 of 20 with full whitening (upper bound 0.491), depending on the reference distribution";
+  "little power" and "nominal flag rates from 0 to 0.25" in Results and Discussion are replaced by the counts and
+  bounds. The Uncertainty paragraph states the convention. Asserted: the counts agree with the stored fractions, no
+  variant is flagged with diagonal weights or against the pooled whitened reference, the largest count is the
+  exponent-0.8 variant with the leave-one-out reference, and the base is flagged once under the first-fold and
+  leave-one-out references.
+- **M4. Not applied.** Both skeptics: the Discussion's evidence sentence right after the quoted clause already keeps the
+  cases apart (border codes "reach 1.49 ... and 1.65"; codes below the border only "exceed the bound in some
+  settings"); the general claim rests on Proposition 1, Corollary 1 and the d = 1 example, not on the Matern family;
+  border codes fail the finite-gradient condition and so already support "cannot show that the code satisfies it";
+  the nu = 0.75 maxima are printed in Tables 2 and 3 and asserted in `make_numbers.py`. A sentence stating the
+  nu = 0.75 maximum would be a clarity edit, not a correction; left for the reread to judge.
+- **M5. Not applied.** The two skeptics split. One refuted parts (b) and (c): at fixed P the estimator argument works
+  by continuity at the common limit spectrum, which the corollary's construction supplies; no positive margin is
+  needed, because b can lie on either side of 1 + 2/d; the abstract's hypothesis "bounded eigenfunctions" excludes the
+  sphere; Proposition 1 holds for arbitrary bounded psi_j. It judged (a) a wording point that the body already states
+  precisely (the paragraph after Proposition 1). The other agreed that (b) and (c) overstate the problem, but upheld
+  (a) ("blind to its rate of decay" is literally too strong when the tail mass is not small next to the eigenvalues
+  fitted) and the missing robustness qualifier in the abstract, as a wording correction. The triage did not confirm
+  the finding, so the gloss is unchanged in this revision; the reread should decide whether the abstract, the
+  Introduction and the README should carry the body's qualifier.
+
+### Should-fix
+
+- **S1. Fixed.** The places that cite Corollary 1 now say what it proves: the abstract and the Discussion speak of a
+  continuously differentiable code and one with infinite expected squared gradient. A paragraph after the corollary
+  proves, by Fatou's lemma on the spectral representation, that a stationary code with infinite expected squared
+  gradient is differentiable nowhere as a map into H, which covers the Matern codes with nu <= 1 and the circle codes
+  with sum k^2 c_k = infinity (the d = 1 examples); these are the codes the note calls non-differentiable, and for
+  the torus heavy code the note claims only the infinite gradient energy. The second point is fixed too: a sentence
+  in Section 2 says that Theorem 5 is stated for the uncentred kernel, that the second-moment operator exceeds the
+  covariance operator by the rank-one positive operator (mean) x (mean), and that the spectra therefore interlace and
+  the o(n^(-1-2/d)) conclusion holds for both.
+- **S2. Fixed.** The paragraph after Proposition 1 now says that the proof adapts Braun's argument, that his Lemmas 5
+  and 8 are stated for the uncentred matrix of a Mercer kernel with orthonormal eigenfunctions and nonincreasing
+  eigenvalues (his Section 2.1), what each lemma gives, and what the proof changes (Weyl applied to the centred
+  matrices, the projection H, positivity for the maximum; no orthonormality, zero mean or ordering needed). The
+  README's status line and `QUALITY.md`, item 1 ("as stated there"), are corrected the same way. (As the skeptic
+  noted, the text already said that Braun's matrices are uncentred; the orthonormality, the ordering and the centring
+  step were missing.)
+- **S3. Fixed.** "A tail exponent fitted to moments is therefore the continuation of the assumed parametric form" is
+  now "This suggests, but does not show, that a tail exponent fitted to the moments mostly continues the assumed
+  parametric form: the inequality bounds how much the moments can change, not what a fit to estimated moments
+  returns", with a pointer to Section 4.5 (not 4.4, as the skeptic corrected), where alpha2 moves toward the true
+  continuation by at most 0.14.
+- **S4. Not applied.** The skeptic: the abstract names the boundary (rank 500) and what "unresolved" means (the misfit
+  does not detect it); Section 2 and Results say that only the trace registers the change and the moments p >= 2
+  move by at most 0.01 SD; the boundary is given as rank 500 in five places, so it cannot be confused with the rank of
+  the data. Cosmetic.
+- **S5. Fixed.** The Introduction no longer says that every numerical result is in double precision, and a new
+  Methods paragraph (Precision) says which steps are in single precision (simulated responses, the cross-repeat Gram
+  products, the eigendecomposition inside cvPCA). The new program `code/precision_check.py` redoes base data sets 0,
+  20 and 99 and two cvPCA replicates with the same random draws in double precision throughout (the single-precision
+  path reproduces the stored eigenmoments exactly with one BLAS thread, and the stored cvPCA exponent to 1e-9; both
+  asserted). Result (`out/precision.json`): log eigenmoments change by at most 1.2e-6, the squared whitened shift by at
+  most 4.1e-10, alpha2 by at most 1.2e-7, the misfit by at most 5.0e-5 (data set 99, full whitening, misfit 54.34),
+  the cvPCA window exponent by at most 3.1e-7; `make_numbers.py` asserts that all are below 5e-4.
+- **S6. Not applied.** The skeptic: the consequence the report asks for is already in `results.tex` (the fold medians,
+  4 of 5 exceedances from the last fold, and the flag rates against a reference that leaves that fold out); the data
+  sets are exchangeable by construction (independent streams `[SEED, r]`, one uninterrupted run for 20-99); the
+  permutation p-value is post hoc (about 0.01-0.02 after allowing for the choice of fold and moment); rerunning 80-99
+  with the same seeds reproduces them, and replacing them because they look unusual would be selective. Table 5 now
+  shows the counts under the first-four-folds reference, which leaves that fold out.
+- **S7. Not applied.** The skeptic: the Discussion already says that codes satisfying the bound can produce the
+  reported exponents, the gratings section gives the nu = 1.5 numbers, and "not close" rests on Corollary 1 and the
+  d = 1 example; one of the report's three examples (d = 8, nu = 1.5, alpha_inf = 1.375) is not "well above the bound".
+- **S8. Fixed.** Results (Section 4.5) now compare the simulated alpha2 of the base with its exact-moment value: with
+  diagonal weights 1.233 +/- 0.006 against 1.250, a difference of -0.017 or -2.9 standard errors on the 20 paired data
+  sets, and 1.240 +/- 0.002, -0.010 or -4.2 standard errors, over all 100 base data sets (the skeptic's corrected
+  size); with full whitening 1.254 +/- 0.004 (1.0 standard errors) and 1.251 +/- 0.002 (0.5), no bias detected. The
+  text says the bias is smaller than every shift and cancels in the paired differences. Asserted: diagonal t below
+  -2 on both, full |t| below 2 on both, and the bias smaller than every paired shift.
+- **S9. Fixed.** The README's stimulus table now has the byte size and MD5 of each of the ten files (the figshare
+  API's MD5s, matched on download by the referee and again for this revision), so the note's "lists the image files
+  used, with their checksums" holds. The README and `out/LICENSE.md` no longer say that `out/` holds the run logs
+  (`*.log` is ignored by the repository).
+- **S10. Fixed.** The note no longer refers to work a reader cannot see: `est.py` and `sim.py` are described as our
+  own implementation, written for an earlier, unpublished feasibility study whose results are not used or reported;
+  the reference to "the independent check of that analysis" and the sentence reporting what "the simulations of the
+  preceding analysis found" are removed; `code/snr_cv.py` no longer names the untracked `snr_cv_orig.py`. The README
+  has a short paragraph on where `est.py`, `sim.py` and `code/stage1/` come from.
+
+### Minor
+
+- **m1.** Not fixed (SI section 2.3 not yet added to the bibliography's list of SI sections read).
+- **m2.** Fixed with M2 (the fit is cited as `powerlaws/get_powerlaw.m`). The notebook's 12-500 window is not
+  mentioned, since the note does not use the notebook.
+- **m3.** Partly fixed with M2: the Methods say that the code fits the mean normalized spectrum over the grating
+  recordings. The comparison of per-set model values with the pooled 8D and 4D statistics is not yet worded.
+- **m4.** Fixed: the README abstract now follows `abstract.tex`.
+- **m5.** Partly fixed: the README now says that the worded claims resting on the numbers are asserted, not every
+  worded claim; the new worded claims are asserted. The unasserted phrases the report lists are left.
+- **m6.** Not fixed (the hand-typed 4.8% or 13%, 1.1875 and 1.375, and 0.20 remain).
+- **m7.** Not fixed.
+- **m8.** Not fixed (the comment in `verify_independent.py`).
+- **m9.** Not fixed.
+- **m10.** Fixed: Fig. 1's panel titles say "stimulus sets", not "recordings".
+- **m11.** Not fixed.
+
+### Commands after the revision (tails)
+
+- `python3 code/circle_d1.py` (4 min 21 s): exit 0; the last line reads `Prop.1 example head nu=1.5 kappa=1.0: ...
+  tail exponent 2 (not differentiable): window 3.5012 (11-30: 3.4306) ... exponent 5 (differentiable): window 3.5012
+  (11-30: 3.4306)`. Every key of the previous `out/circle_d1.json` is unchanged.
+- `NOTE_DATA=<folder with calib_nat_MP032_0914.npz> OPENBLAS_NUM_THREADS=1 python3 code/precision_check.py`
+  (about 5 min): exit 0; data sets 0, 20 and 99 reproduce the stored moments to 0.0e+00 (relative), and
+  `cvPCA noise/1: window float32 1.3693118, float64 1.3693114, difference -3.1e-07`,
+  `cvPCA noise/16: window float32 1.5074569, float64 1.5074569, difference +9.3e-10`. (With two BLAS threads the
+  float32 path differed from the stored moments in the last bit of one moment, which is why the program asserts a
+  relative 1e-12 rather than equality.)
+- `python3 code/make_numbers.py`: `465 macros written`, exit 0; a second run is byte-identical.
+- `python3 code/make_figures.py`: `figures written to .../paper/figures`; `fig3.pdf` differs from the committed one
+  only in its creation date and was left as committed.
+- `pdflatex note` three times: `Output written on note.pdf (16 pages ...)`, no warnings.
+- `NOTE_STIM=<folder with the ten stimulus files> python3 code/verify_independent.py` (about 6 min): exit 0, 17 PASS
+  lines (three new ones for ranks 11-30: `d=1 window 11-30 nu=1.5 kappa=1.0: 3.430640 vs 3.430640 (tol 0.002)` and
+  two more), last line `ALL PASS`.
+- `NOTE_LIT=<saved source texts> python3 code/check_quotes.py`: `19 quotations, 0 not found verbatim (sources: 7
+  files)`.
+- `node tools/paper-check.js`: exit 0; `OK rank-window [draft]`, "the quality bar is not met (open: item 4, 6, 7)",
+  `note.pdf: 16 pages`.
+- `node tools/lint.js`: `PASS`.

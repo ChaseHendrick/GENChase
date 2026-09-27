@@ -278,6 +278,35 @@ for (nu_h, kap), t in (((1.0, 2.0), 'Two'), ((1.0, 8.0), 'Eight'), ((1.5, 1.0), 
     put(f'PropRel{t}', sci(S_['max_dmu_over_mu30']))
 fam = next(r for r in rows if r['nu'] == 1.5 and r['kappa'] == 1.0)
 put('PropSmoothFamily', f'{fam["w_sampled"]:.4f}')
+# third report M2: the same numbers over ranks 11-30, the grating window of Stringer's deposited code at 58443d1
+# (mainfigs/fig3.m:91; powerlaws/statsShuffledPCA.m:59).  Macro names end in Eleven.
+put('GratBorderMinEleven', f3(min(r['w_sampled_11_30'] for r in b))); put('GratBorderMaxEleven', f3(max(r['w_sampled_11_30'] for r in b)))
+put('GratShortMinEleven', f3(min(r['alpha_inf'] - r['w_sampled_11_30'] for r in rows)))
+put('GratShortMaxEleven', f3(max(r['alpha_inf'] - r['w_sampled_11_30'] for r in rows)))
+put('GratAliasMinEleven', f3(min(-r['aliasing_11_30'] for r in rows))); put('GratAliasMaxEleven', f3(max(-r['aliasing_11_30'] for r in rows)))
+put('GratPreMinEleven', f3(min(-r['finite_bw_11_30'] for r in rows))); put('GratPreMaxEleven', f3(max(-r['finite_bw_11_30'] for r in rows)))
+put('GratFinSDMaxEleven', f3(max(r['finiteN_sd_11_30'] for r in rows)))
+put('GratFinShiftMaxEleven', f3(max(abs(r['finiteN_mean_11_30'] - r['w_sampled_11_30']) for r in rows)))
+sm11 = [r for r in rows if r['nu'] == 1.5 and r['w_sampled_11_30'] > 3]
+assert max(r['kappa'] for r in sm11) == max(r['kappa'] for r in sm), 'nu = 1.5 exceeds 3 for the same bandwidths in both windows'
+assert all(r['w_sampled_11_30'] < 3 for r in rows if r['nu'] == 1.5 and r['kappa'] > max(x['kappa'] for x in sm11))
+put('GratNuOnePointFiveMinEleven', f3(min(r['w_sampled_11_30'] for r in s15)))
+put('GratNuOnePointFiveMaxEleven', f3(max(r['w_sampled_11_30'] for r in s15)))
+put('StairThreeEleven', f3(window_slope(np.repeat(k ** -3.0, 2), 11, 30)))
+for (nu_h, kap), t in (((1.0, 2.0), 'Two'), ((1.0, 8.0), 'Eight'), ((1.5, 1.0), 'Smooth')):
+    tg = f'nu{nu_h}_kappa{kap}'
+    A = C['prop1'][f'{tg}_a2.0']; B = C['prop1'][f'{tg}_a5.0']
+    put(f'PropW{t}AEleven', f'{A["w_11_30"]:.4f}'); put(f'PropW{t}BEleven', f'{B["w_11_30"]:.4f}')
+# both windows: the two codes of the example have equal window exponents (to the printed precision), above 3
+for key in ('w', 'w_11_30'):
+    wa, wb = C['prop1'][f'nu1.5_kappa1.0_a2.0'][key], C['prop1'][f'nu1.5_kappa1.0_a5.0'][key]
+    assert f'{wa:.4f}' == f'{wb:.4f}' and wa > 3, ('Prop. 1 example', key)
+    assert f'{wa:.4f}' == f'{next(r for r in rows if r["nu"] == 1.5 and r["kappa"] == 1.0)["w_sampled" + key[1:]]:.4f}', 'the value of the family code'
+for key in ('w_sampled', 'w_sampled_11_30'):
+    assert all(r[key] < 3 for r in rows if r['nu'] <= 1.0), ('no code with nu <= 1 exceeds 3', key)
+    assert all(r[key] < r['alpha_inf'] for r in rows), ('every code below its asymptote', key)
+for key in ('aliasing', 'aliasing_11_30', 'finite_bw', 'finite_bw_11_30'):
+    assert all(r[key] < 0 for r in rows), ('the pre-asymptotic and aliasing parts both lower the exponent', key)
 # grating table
 lines = []
 for nu in (0.5, 1.0, 1.5, 2.0):
@@ -322,10 +351,9 @@ for nm in order:
     if nm in SD_:
         s_ = SD_[nm]
         simcol = f'{s_["mean"]:.3f} $\\pm$ {s_["se"]:.3f} & '
-        simcol += (f'{sg(s_["diff_mean"])} [{sg(s_["diff_ci"][0])}, {sg(s_["diff_ci"][1])}] & {SD_[nm]["frac_flag"]:.2f} & {SF_[nm]["frac_flag"]:.2f}'
-                   if nm != 'base' else f' & {SD_[nm]["frac_flag"]:.2f} & {SF_[nm]["frac_flag"]:.2f}')
+        simcol += (f'{sg(s_["diff_mean"])} [{sg(s_["diff_ci"][0])}, {sg(s_["diff_ci"][1])}]' if nm != 'base' else '')
     else:
-        simcol = ' & & & '
+        simcol = ' & '
     lines.append(f'{lab[nm]} & {e1["window"]:.3f} & {e1["trace_ratio"]:.3f} & {e1["alpha2"]:.3f} & {ef["alpha2"]:.3f} & {simcol} & {e2["alpha2"]:.3f} \\\\')
     if nm == 'rank2800':
         lines.append('\\addlinespace')
@@ -366,6 +394,77 @@ allflags = [SF_[k]['frac_flag'] for k in tails] + fl03 + fl0 + list(M['loo19']['
 put('MemeFlagAnyMax', f2(max(allflags)))
 assert min(allflags) == 0
 put('MemeFlagFullBase', f2(SF_['base']['frac_flag']))
+# third report M3: flag counts out of 20 under every reference distribution, with exact (Clopper-Pearson) 95%
+# intervals for the flag probability; Table tab:flag (tab_flag.tex) and the worded statements of the text
+NSIM = 20
+assert all(len(SD_[k_]['cost']) == NSIM and len(SF_[k_]['cost']) == NSIM for k_ in SD_)
+
+
+def cp(kk, n=NSIM, conf=0.95):
+    a_ = (1 - conf) / 2
+    lo_ = 0.0 if kk == 0 else float(_st.beta.ppf(a_, kk, n - kk + 1))
+    hi_ = 1.0 if kk == n else float(_st.beta.ppf(1 - a_, kk + 1, n - kk))
+    return lo_, hi_
+
+
+assert abs(cp(0)[1] - (1 - 0.025 ** (1 / NSIM))) < 1e-12, 'Clopper-Pearson upper bound for 0 of n'
+REFS = (('diag', 'diagonal weights, pooled'), ('full', 'full whitening, pooled'), ('ff', 'first four folds'),
+        ('fo', 'first fold'), ('loo', 'leave one out'))
+flagn = {}
+for k_ in SD_:
+    loo_c = M['loo19']['null'] if k_ == 'base' else M['loo19']['var'][k_]
+    flagn[k_] = dict(diag=int(np.sum(np.array(SD_[k_]['cost']) > M['null']['diag']['q95'])),
+                     full=int(np.sum(np.array(SF_[k_]['cost']) > M['null']['full']['q95'])),
+                     ff=int(np.sum(np.array(SF_[k_]['cost']) > q03)), fo=int(np.sum(np.array(SF_[k_]['cost']) > q0)),
+                     loo=int(np.sum(np.array(loo_c) > M['loo19']['q95'])))
+    # the counts agree with the fractions stored by meme_analyze.py
+    assert flagn[k_]['diag'] == round(SD_[k_]['frac_flag'] * NSIM) and flagn[k_]['full'] == round(SF_[k_]['frac_flag'] * NSIM)
+    if k_ != 'base':
+        assert flagn[k_]['loo'] == round(M['loo19']['frac_flag'][k_] * NSIM)
+lines = []
+for nm in ('base',) + TAILS:
+    cells = []
+    for ref, _ in REFS:
+        lo_, hi_ = cp(flagn[nm][ref])
+        cells.append(f'{flagn[nm][ref]} [{lo_:.3f}, {hi_:.3f}]')
+    lines.append(f'{lab[nm]} & ' + ' & '.join(cells) + ' \\\\')
+    if nm == 'base':
+        lines.append('\\addlinespace')
+open(f'{P}/tab_flag.tex', 'w').write('\n'.join(lines) + '\n\\bottomrule\n')
+var_counts = {ref: [flagn[k_][ref] for k_ in TAILS] for ref, _ in REFS}
+# worded: with diagonal weights, and with full whitening against the pooled reference, no variant data set is flagged
+assert max(var_counts['diag']) == 0 and max(var_counts['full']) == 0
+put('MemeFlagZeroHi', f'{cp(0)[1]:.3f}')
+for ref, t in (('ff', 'FF'), ('fo', 'FO'), ('loo', 'Loo')):
+    put(f'MemeFlag{t}MinN', str(min(var_counts[ref]))); put(f'MemeFlag{t}MaxN', str(max(var_counts[ref])))
+    put(f'MemeFlag{t}MaxHi', f'{cp(max(var_counts[ref]))[1]:.3f}')
+    put(f'MemeFlag{t}BaseN', str(flagn['base'][ref]))
+allc = [(flagn[k_][ref], k_, ref) for k_ in TAILS for ref, _ in REFS]
+cmax = max(allc)
+put('MemeFlagMaxN', str(cmax[0])); put('MemeFlagMaxLo', f'{cp(cmax[0])[0]:.3f}'); put('MemeFlagMaxHi', f'{cp(cmax[0])[1]:.3f}')
+assert [c_ for c_ in allc if c_[0] == cmax[0]] == [(cmax[0], 'tail500_0.8', 'loo')], 'the largest count: exponent 0.8, leave one out'
+assert max(var_counts['loo']) == flagn['tail500_0.8']['loo'] and max(var_counts['fo']) == flagn['tail500_0.8']['fo'], 'exponent 0.8 most often'
+assert cmax[0] / NSIM == float(mac['MemeFlagAnyMax'])
+# the base itself is flagged in one of 20 under the first-fold and leave-one-out references
+assert flagn['base']['fo'] == 1 and flagn['base']['loo'] == 1
+put('MemeFlagBaseWord', 'one')
+# third report S8: the simulated alpha2 of the correctly specified base against its exact-moment value
+for how, t, S_h in (('diag', 'Diag', SD_), ('full', 'Full', SF_)):
+    ex_ = M['exact'][how]['1.25|base']['alpha2']
+    put(f'MemeExactBase{t}', f3(ex_))
+    b_ = S_h['base']; tb = (b_['mean'] - ex_) / b_['se']
+    put(f'MemeSimBase{t}Mean', f3(b_['mean'])); put(f'MemeSimBase{t}SE', f3(b_['se'])); put(f'MemeSimBase{t}T', f'{tb:.1f}')
+    a100 = np.array(M['null'][how]['alpha2']); assert len(a100) == M['n_base']
+    se100 = a100.std(ddof=1) / np.sqrt(len(a100)); t100 = (a100.mean() - ex_) / se100
+    put(f'MemeNullAlpha{t}', f3(a100.mean())); put(f'MemeNullAlpha{t}SE', f3(se100)); put(f'MemeNullAlpha{t}T', f'{t100:.1f}')
+    put(f'MemeNullAlpha{t}Bias', sg(a100.mean() - ex_))
+    if how == 'diag':
+        assert tb < -2 and t100 < -2, 'diagonal weights: biased low, more than two standard errors'
+        put('MemeSimBaseBias', sg(b_['mean'] - ex_))
+        assert abs(b_['mean'] - ex_) < min(abs(SD_[k_]['diff_mean']) for k_ in TAILS), 'the bias is smaller than every shift'
+    else:
+        assert abs(tb) < 2 and abs(t100) < 2, 'full whitening: no bias detected'
+assert mac['MemeSimBaseDiagMean'] == mac['MemeSimBase'] and mac['MemeSimBaseDiagSE'] == mac['MemeSimBaseSE']
 for nm, t in (('tail500_3.0', 'Three'), ('tail500_0.8', 'PointEight')):
     put(f'MemeSimDiff{t}', sg(S[nm]["diff_mean"]))
     put(f'MemeSimDiff{t}Lo', sg(S[nm]["diff_ci"][0])); put(f'MemeSimDiff{t}Hi', sg(S[nm]["diff_ci"][1]))
@@ -478,7 +577,21 @@ for k, t in (('1', 'One'), ('4', 'Four'), ('16', 'Sixteen')):
     cv = np.mean(lv[k]['cv'], 0)
     put(f'SnrRatio{t}', ', '.join(f'{dcv[i] / cv[i]:.1f}' for i in range(3)))
 
+# ---------------------------------------------------------------- single precision (third report, S5)
+PR_ = json.load(open(f'{OUT}/precision.json'))
+put('PrecN', str(len(PR_['meme'])))
+put('PrecLogMomMax', sci(max(v['dlog_all'] for v in PR_['meme'].values())))
+put('PrecWhiteMax', sci(max(v['white_shift'] for v in PR_['meme'].values())))
+dal = [abs(v[h]['alpha2_f64'] - v[h]['alpha2_f32']) for v in PR_['meme'].values() for h in ('diag', 'full')]
+dmi = [abs(v[h]['misfit_f64'] - v[h]['misfit_f32']) for v in PR_['meme'].values() for h in ('diag', 'full')]
+dcv = [abs(v['window_f64'] - v['window_f32']) for v in PR_['cvpca'].values()]
+put('PrecAlphaMax', sci(max(dal))); put('PrecMisfitMax', sci(max(dmi))); put('PrecCvMax', sci(max(dcv)))
+# worded: far below the printed precision (three decimals) of alpha2, the misfit and the cvPCA exponent
+assert max(dal) < 5e-4 and max(dmi) < 5e-4 and max(dcv) < 5e-4, 'single-precision effects below the printed precision'
+
 # ---------------------------------------------------------------- qualitative statements in the text
+# whitened 8D coordinates: no nu = 0.75 code exceeds the bound at any length scale computed (abstract)
+assert max(EXW[s_][f'0.75|{e}']['w11_500'] for s_ in sets8 for e in ELLS) < 1.25, 'whitened 8D nu = 0.75 below the bound'
 # Each assertion guards a sentence of the note that is worded rather than printed as a number.
 for d in (8, 4):
     sets_d = sorted({r['set'] for r in W if r['d'] == d}); bnd = 1 + 2 / d
