@@ -1,9 +1,10 @@
 # Computation D (side result). Dependence of the cvPCA ranks 11-500 window bias on the tail signal-to-noise
-# ratio.  Same logic as the independent check's snr_cv.py (copied in snr_cv_orig.py): stage-1 simulator,
-# condition bpl1.5 (calibrated gains and rotation, realized signal window slope 1.497), aligned noise
-# 0.75 x signal kept, the non-aligned noise (per-neuron isotropic + shared mode) variance divided by k.
-# Only paths and the replicate count / seed are parameters here.  With R = 3 and seed 99 it reproduces the
-# check's run exactly.  Output: out/snr_cv_seed<seed>.json
+# ratio.  Stage-1 simulator (sim.py, calibrated by code/stage1/calib.py), condition bpl1.5 (calibrated gains and
+# rotation, realized signal window slope 1.497), aligned noise 0.75 x signal kept, the non-aligned noise
+# (per-neuron isotropic + shared mode) variance divided by k.  The program was adapted from a check made during an
+# earlier, unpublished feasibility study in this project (README); only paths and the replicate count / seed are
+# parameters here.  The calibration recording's own cvPCA spectrum at ranks 11, 100 and 500 (computed by calib.py)
+# is stored as data_cv for comparison.  Output: out/snr_cv_seed<seed>.json
 # Usage: python3 snr_cv.py R seed
 import sys, os, json, time, zlib, numpy as np
 sys.path.insert(0, os.path.dirname(__file__))

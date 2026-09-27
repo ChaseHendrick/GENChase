@@ -5,7 +5,7 @@
 // 1. Logistic growth: the real GPU module on a uniform field against the exact logistic solution; a halved
 //    growth rate must fail.
 // 2. Implementation: the real GPU step against an independent Float64 twin of the same scheme (9-point
-//    Laplacian, forward Euler, exact logistic flow, arrival time and founder label) on a 128 x 128 plate.
+//    Laplacian, forward Euler, exact logistic flow, arrival time and founder label) on a 512 x 512 plate.
 // 3. Front speed in a stated asymptotic regime (Float64): a straight front of the tab's scheme, whose 9-point
 //    stencil reduces exactly to the 3-point one on a field that does not vary along the front, measured over
 //    t in [100, 200] and [200, 400] (units of 1/r) against Bramson's lag and the Ebert-van Saarloos term,
@@ -189,12 +189,17 @@ async function gpuPart() {
       return rows;
     });
 
-    // 2. GPU step against the Float64 twin on a 128 x 128 plate with seven founders
+    // 2. GPU step against the Float64 twin on a 512 x 512 plate with seven founders
     const start = await page.evaluate(() => {
-      const { inst, state, I } = window.__make({ grid: 128, founders: 7, radius: 3, habitat: 'uniform' });
+      const requestedGrid = 512;
+      const { inst, state, I } = window.__make({ grid: requestedGrid, founders: 7, radius: 3, habitat: 'uniform' });
       inst.regenerate(); inst.pause();
+      if (I.fine.W !== requestedGrid || I.fine.H !== requestedGrid) {
+        throw Error('Fisher-KPP twin grid mismatch: requested ' + requestedGrid + ' x ' + requestedGrid +
+          ', got ' + I.fine.W + ' x ' + I.fine.H);
+      }
       window.__twin = { inst, state, I };
-      return { W: I.fine.W, H: I.fine.H, h: I.fine.h, dt: I.dt, D: state.D, r: state.r, st: Array.from(I.readRaw(I.gl, I.fine.C.read)) };
+      return { requestedGrid, W: I.fine.W, H: I.fine.H, h: I.fine.h, dt: I.dt, D: state.D, r: state.r, st: Array.from(I.readRaw(I.gl, I.fine.C.read)) };
     });
     let cpu = Float64Array.from(start.st);
     const mu = start.D * start.dt / (start.h * start.h), rdt = start.r * start.dt, N = 480;
@@ -213,7 +218,7 @@ async function gpuPart() {
         else if (a >= 0) { arrived++; dT.push(Math.abs(a - b)); if (gpu[i * 4 + 2] !== cpu[i * 4 + 2]) labMis++; }
       }
       dT.sort((x, y) => x - y);
-      out.implementation = { grid: [start.W, start.H], h: start.h, dt: start.dt, mu, steps: N, time: N * start.dt,
+      out.implementation = { requestedGrid: [start.requestedGrid, start.requestedGrid], grid: [start.W, start.H], h: start.h, dt: start.dt, mu, steps: N, time: N * start.dt,
         maxAbsDensityDifference: du, arrivedCells: arrived, arrivalStatusMismatches: arrMis,
         arrivalTimeDifference: { median: dT[Math.floor(dT.length / 2)], p999: dT[Math.floor(0.999 * (dT.length - 1))], max: dT[dT.length - 1] },
         labelMismatches: labMis };

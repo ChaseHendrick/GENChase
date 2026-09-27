@@ -14,7 +14,9 @@
   // has stayed clear for as long as it takes to cover AHEAD, so everything it now runs into was checked at rest while it
   // was still REST_FROM to AHEAD ahead. It is timed only SKIP time units after its birth (the launch transient falls
   // about tenfold every five time units at the proved points) and over at least MIN_WINDOW. A residue of 1e-7 ahead
-  // moves the speed by a few times 1e-8. tools/neural-field-science.js checks each rule.
+  // moves the speed by a few times 1e-8. Kick sites behind the front also break a clear run within the larger of
+  // their half-width and 20 kernel lengths: the symmetric kernel still couples backwards, and exp(-20)/2 is
+  // about 1e-9, below FLOOR. This is a timing heuristic, checked by tools/neural-field-science.js, not an error bound.
   const SKIP = 30, MIN_WINDOW = 20, AHEAD = 42, REST_FROM = 22, REST_TOL = 1e-7;
   // Computer-assisted speed enclosures drafted in this repository: c is the lower end of an interval of width 1e-25.
   // The timed speed's error is K dx^4 + Kt dt^4 (Numerov in space, RK4 in time), with K and Kt estimated from grid and
@@ -177,7 +179,7 @@
     function isolated(c, all) {
       for (const k of sites) {
         const near = ((((k.x - c.x) * c.dir) % L + L) % L);
-        if (near <= AHEAD + k.half || near >= L - k.half) return false;
+        if (near <= AHEAD + k.half || near >= L - Math.max(k.half, 20)) return false;
       }
       for (const o of all) {
         if (o === c) continue;

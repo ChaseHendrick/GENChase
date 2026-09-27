@@ -35,7 +35,7 @@ const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), os = require('node:os'), path = require('node:path'), assert = require('node:assert/strict');
 const F = require('../src/shared/data-formats.js');
 const root = path.resolve(__dirname, '..');
-const TABS = ['amb', 'cahn', 'ohta', 'swift', 'pfc', 'ks', 'excitable', 'turing', 'cyclic', 'chemotaxis', 'vegetation'];
+const TABS = require('./lib/half-float-tabs');
 const BASED = { chemotaxis: 'froze: the float16 state stopped changing', amb: 'fluctuations shrank instead of growing' };
 const REFUSED = { pfc: 'the mean density, conserved by the equation, drifted' };
 const SEED = 'half-float-check';

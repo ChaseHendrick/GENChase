@@ -9,7 +9,10 @@ from scipy.special import kv, gamma
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-STIM = os.path.join(ROOT, 'data', 'stim')
+# The inputs are not in the repository (README, "Inputs").  NOTE_DATA and NOTE_STIM point to folders holding
+# them elsewhere; by default they are data/ and data/stim/ in this folder.
+DATA = os.environ.get('NOTE_DATA', os.path.join(ROOT, 'data'))
+STIM = os.environ.get('NOTE_STIM', os.path.join(DATA, 'stim'))
 OUT = os.path.join(ROOT, 'out')
 
 NUS = (0.5, 0.75, 1.0, 1.5, 2.5)

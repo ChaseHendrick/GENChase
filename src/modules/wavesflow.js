@@ -636,7 +636,7 @@ void main(){
     }
     function step(n) {
       const s = host.getState();
-      if (isCustomV(s) && !custom) return;      // the typed potential is still being sampled
+      if (isCustomV(s) && (!custom || deferred)) return; // sampling or the matching start is still pending
       const dt = dtUsed(s);
       if (dt !== staggerDt) restagger(s);
       for (let i = 0; i < n; i++) { halfStep(s, dt, 0, 0); halfStep(s, dt, dt, 1); }
@@ -711,6 +711,7 @@ void main(){
       aspect(s) { return ASPECTS[s.aspect] || 1; },
       fieldCells() { return [gw, gh]; },
       regenerate() {
+        held = false; // the shell only regenerates the visible tab, including deferred hash/history entry
         rig.stop(); rig.stepCount = 0; simTime = 0; norm0 = 0; normNow = 0; expWhite = 0; densWhite = 0;
         clearTimeout(sampleTimer); sampleTimer = 0; sampleToken++; deferred = null;
         const s = host.getState();

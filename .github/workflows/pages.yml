@@ -11,7 +11,8 @@ permissions:
 
 concurrency:
   group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
-  cancel-in-progress: false
+  # Discard obsolete PR builds; keep production deployments serialized and uninterrupted.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:

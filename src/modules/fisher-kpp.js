@@ -396,8 +396,8 @@ void main(){
           },
           meta: {
             tab: 'fisher-kpp', grid: [fine.W, fine.H], cell: fine.h, units: 'length and time in the units of D and r', D: s.D, r: s.r,
-            boundary: 'zero flux (closed habitat)', scheme: 'forward Euler diffusion (5-point) then the exact logistic flow',
-            steps, dt, time: steps * dt, precision: 'rgba32f',
+            boundary: 'zero flux (closed habitat)', scheme: 'forward Euler diffusion with the 9-point Mehrstellen Laplacian, D dt/h^2 = mu, then the exact logistic flow over dt',
+            steps, dt, mu: s.D * dt / (fine.h * fine.h), time: steps * dt, precision: 'rgba32f',
             frontSpeed: meas && meas.a.n ? { measured: meas.a.speed, cells: meas.a.n, meanArrival: meas.a.tMean, halfResolution: meas.b && meas.b.n ? meas.b.speed : null, minimalSpeed: 2 * Math.sqrt(s.r * s.D) } : null,
           },
         };

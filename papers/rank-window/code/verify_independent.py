@@ -65,11 +65,12 @@ for nu, kap in ((1.0, 2.0), (0.5, 8.0), (1.5, 1.0)):
     ev = np.linalg.eigvalsh(Hc @ K @ Hc / 32)[::-1][:31]
     ref = next(r for r in C['rows'] if r['nu'] == nu and r['kappa'] == kap)
     check(f'd=1 window 5-30 nu={nu} kappa={kap}', slope(ev, 5, 30), ref['w_sampled'], 2e-3)
+    check(f'd=1 window 11-30 nu={nu} kappa={kap}', slope(ev, 11, 30), ref['w_sampled_11_30'], 2e-3)
 
-# Proposition 1 on random points of the 2-torus.  (a) A demanding case: short common head (M = 3) and heavy,
-# very different tails, so that the eigenvalue gap is a sizeable fraction of the bound.  (b) A negative control:
-# the heads differ, which the proposition does not allow; the gap must then exceed the tail-mass bound, which
-# shows that the check can fail.
+# Proposition 1 on random points of the 2-torus.  (a) A short common head (M = 3) and heavy, very different tails;
+# the printed ratio of the eigenvalue gap to the bound shows how far from sharp the bound is here (it checks the
+# inequality, not its sharpness).  (b) A control that the comparison can fail, not a test of the proposition: the
+# heads differ, which the proposition does not allow, and the gap then exceeds the tail-mass value.
 rng = np.random.default_rng(5)
 kv_ = np.array([(a, b) for a in range(-40, 41) for b in range(-40, 41) if (a, b) != (0, 0)], float)
 kn = np.linalg.norm(kv_, axis=1); o = np.argsort(kn, kind='stable'); kv_, kn = kv_[o], kn[o]

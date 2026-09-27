@@ -19,6 +19,11 @@ O(h⁴) in every direction. Each cell records the first time u reaches 1/2 (inte
 founder whose front got there first. The plate refuses float16 state: a pulled front is set by densities far
 below float16 resolution, and a cutoff ε slows it by about π²/(ln ε)² (Brunet and Derrida 1997).
 
+The data export records this 9-point scheme and the numerical diffusion number `mu = D dt/h²`.
+`node tools/fisher-kpp-metadata-check.js` checks the real export metadata at grids 512, 256 and 384
+with μ = 1/6, 1/4 and 3/10 respectively, including a non-unit diffusion coefficient.
+The twin benchmark asserts that the actual grid equals the requested 512 × 512 before comparing fields.
+
 ## What is measured on the plate
 
 The status line reads the front speed from the arrival-time field: the mean of 1/|∇T| over cells that arrived
@@ -37,7 +42,7 @@ as large (4 dt per step, the same μ). The measured speed reads low and is not r
 |---|---|---|
 | Logistic growth, real GPU module, uniform u₀ = 0.02, 480 steps | max error against u₀e^{rt}/(1 + u₀(e^{rt} − 1)) below the float32 bound 2e-5 | 4.1e-6, no spatial spread |
 | Control: growth rate halved | must miss | misses by 0.55 |
-| GPU step against an independent Float64 twin, 128², seven founders, 480 steps | density within 5.7e-5 (480 roundings); arrival times within 1e-3 | 1.6e-5; arrival 5.7e-5 at the 99.9th percentile; labels identical |
+| GPU step against an independent Float64 twin, 512², seven founders, 480 steps | density within 5.7e-5 (480 roundings); arrival times within 1e-3 | 1.6e-5; arrival 5.6e-5 at the 99.9th percentile; one arrival-status mismatch (limit two); labels identical |
 | Straight front of the scheme, t ∈ [100, 200]/r and [200, 400]/r, (D, r) = (1, 1), (2, 1/2), (1, 2), two and four cells per √(D/r) | within 1.5e-3 and 5e-4 of 2√(rD) times the Bramson and Ebert-van Saarloos speed | 9.6e-4 to 1.1e-3 and 2.6e-4 to 3.7e-4 (dimensionless), shrinking with time as the next, unknown term should |
 | Control: the bare 2√(rD) with no finite-time lag | must miss by more than three tolerances | misses by 4.9e-3 to 9.9e-3 |
 | Refinement at fixed domain and window | second order at μ = 1/4, fourth order at μ = 1/6 | orders 2.03, 2.01, 2.00 and 3.90, 3.95 |
