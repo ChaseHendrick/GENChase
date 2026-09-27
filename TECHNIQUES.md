@@ -115,7 +115,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Optical caustics**<br><sub>folds and cusps of a light field · Berry</sub> | `#caustics/berry-caustic` | X = x + s ∇h(x),   I(X) = Σ 1 / \|det(I + s Hess h)\| | raster | still | Common |
 | **Veselago Lens**<br><sub>a slab that focuses because n is negative · 1968</sub> | `#veselago` | n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d | raster | still | Rare |
 | **Devil's Staircase**<br><sub>finite-time circle-map rotation estimates · 1965</sub> | `#devil` | θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase) | raster | still | Rare |
-| **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster | still | Occasional |
+| **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z)\|²,   z in d²/λ, revival at 2,   z_T = 2 d²/λ | raster | still | Occasional |
 | **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster | still | Common |
 | **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
 | **Fisher-KPP**<br><sub>invasion fronts and arrival times · 1937</sub> | `#fisher-kpp/fisher-1937` | ∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD) | raster | still | Occasional |
@@ -359,7 +359,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Devil's Staircase**. V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.
 
-**Talbot carpet**. H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.
+**Talbot carpet**. H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d²/λ and as a half-period image at z_T/2 = d²/λ. Depth on this plate is in units of d²/λ, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.
 
 **Hydrogen orbitals**. Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates \|ψ\|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.
 

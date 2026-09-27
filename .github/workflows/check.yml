@@ -164,6 +164,7 @@ jobs:
           python3 tools/release-notes.py --self-test
           node tools/build.js --check
           node tools/science.js
+          node tools/talbot-science.js
           node tools/geometry-science.js
           node tools/breather-science.js
           node tools/peakon-science.js
@@ -240,6 +241,9 @@ jobs:
       - name: Provenance in every export, research data and the status badge
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/provenance-check.js
+      - name: Talbot carpet export preserves the plate
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        run: node tools/talbot-print-state.js
       - name: Fisher-KPP data export metadata
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/fisher-kpp-metadata-check.js
