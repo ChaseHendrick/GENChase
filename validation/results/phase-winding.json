@@ -1,0 +1,259 @@
+{
+  "cases": [
+    {
+      "name": "default plate",
+      "f": "(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)",
+      "cx": 1,
+      "cy": 0.5,
+      "r": 1.5,
+      "expected": 3,
+      "actual": {
+        "n": 3,
+        "why": null,
+        "evals": 12288,
+        "refined": 0,
+        "minMod": 0.09512836214549023,
+        "maxMod": 10.528622434897697
+      }
+    },
+    {
+      "name": "circle through double zero",
+      "f": "(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)",
+      "cx": 0.5,
+      "cy": 0.2,
+      "r": 1.7,
+      "expected": null,
+      "actual": {
+        "n": null,
+        "why": "fast",
+        "evals": 1119,
+        "refined": 52,
+        "minMod": 2.6673782933363963e-22,
+        "maxMod": 0.3591709752196057
+      }
+    },
+    {
+      "name": "double zero just outside",
+      "f": "(z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i)",
+      "cx": 0.5,
+      "cy": 0.98,
+      "r": 1.5,
+      "expected": null,
+      "analyticCount": 0,
+      "actual": {
+        "n": null,
+        "why": "small",
+        "evals": 12333,
+        "refined": 15,
+        "minMod": 1.0224361405364558e-8,
+        "maxMod": 44.91416685243937
+      }
+    },
+    {
+      "name": "isolated double zero outside",
+      "f": "(z-1)^2",
+      "cx": 0,
+      "cy": 0.01,
+      "r": 1,
+      "expected": null,
+      "analyticCount": 0,
+      "actual": {
+        "n": null,
+        "why": "small",
+        "evals": 12351,
+        "refined": 21,
+        "minMod": 2.5221839441201716e-9,
+        "maxMod": 4.000199452683029
+      }
+    },
+    {
+      "name": "fast positive winding",
+      "f": "pow(z,4096)",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": 4096,
+      "actual": {
+        "n": 4096,
+        "why": null,
+        "evals": 78633,
+        "refined": 22115,
+        "minMod": 0.9999999999990903,
+        "maxMod": 1.0000000000009097
+      }
+    },
+    {
+      "name": "fast negative winding",
+      "f": "1/pow(z,4096)",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": -4096,
+      "actual": {
+        "n": -4096,
+        "why": null,
+        "evals": 78633,
+        "refined": 22115,
+        "minMod": 0.9999999999990903,
+        "maxMod": 1.0000000000009097
+      }
+    },
+    {
+      "name": "double zero inside",
+      "f": "(z-1)^2",
+      "cx": 0.01,
+      "cy": 0,
+      "r": 1,
+      "expected": 2,
+      "actual": {
+        "n": 2,
+        "why": null,
+        "evals": 12288,
+        "refined": 0,
+        "minMod": 0.00010000000000000018,
+        "maxMod": 3.9601
+      }
+    },
+    {
+      "name": "double pole outside",
+      "f": "1/(z-1)^2",
+      "cx": 0,
+      "cy": 0.01,
+      "r": 1,
+      "expected": null,
+      "analyticCount": 0,
+      "actual": {
+        "n": null,
+        "why": "small",
+        "evals": 12351,
+        "refined": 21,
+        "minMod": 0.2499875348288636,
+        "maxMod": 396481788.06753755
+      }
+    },
+    {
+      "name": "resolvable double zero outside",
+      "f": "(z-1)^2",
+      "cx": 0,
+      "cy": 0.02,
+      "r": 1,
+      "expected": 0,
+      "actual": {
+        "n": 0,
+        "why": null,
+        "evals": 12333,
+        "refined": 15,
+        "minMod": 4.16075666298348e-8,
+        "maxMod": 4.000799956928938
+      }
+    },
+    {
+      "name": "resolvable double pole outside",
+      "f": "1/(z-1)^2",
+      "cx": 0,
+      "cy": 0.02,
+      "r": 1,
+      "expected": 0,
+      "actual": {
+        "n": 0,
+        "why": null,
+        "evals": 12333,
+        "refined": 15,
+        "minMod": 0.24995001268886538,
+        "maxMod": 24034089.974465076
+      }
+    },
+    {
+      "name": "zero on circle",
+      "f": "z-1",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": null,
+      "actual": {
+        "n": null,
+        "why": "small",
+        "evals": 3,
+        "refined": 0,
+        "minMod": 0,
+        "maxMod": 9.999999999999993e-8
+      }
+    },
+    {
+      "name": "pole on circle",
+      "f": "1/(z-1)",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": null,
+      "actual": {
+        "n": null,
+        "why": "nonfinite",
+        "evals": 3,
+        "refined": 0,
+        "minMod": 10000000.000000004,
+        "maxMod": 10000000.000000004
+      }
+    },
+    {
+      "name": "branch cut crossing",
+      "f": "sqrt(z)",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": null,
+      "actual": {
+        "n": null,
+        "why": "fast",
+        "evals": 6264,
+        "refined": 38,
+        "minMod": 0.9999999999999998,
+        "maxMod": 1.0000000000000002
+      }
+    },
+    {
+      "name": "constant function",
+      "f": "2+i",
+      "cx": 0,
+      "cy": 0,
+      "r": 1,
+      "expected": 0,
+      "actual": {
+        "n": 0,
+        "why": null,
+        "evals": 12288,
+        "refined": 0,
+        "minMod": 2.23606797749979,
+        "maxMod": 2.23606797749979
+      }
+    }
+  ],
+  "failureControl": {
+    "removed": "endpoint logarithmic derivative guard",
+    "misses": [
+      "circle through double zero",
+      "double zero just outside",
+      "isolated double zero outside",
+      "fast positive winding",
+      "fast negative winding",
+      "double pole outside"
+    ]
+  },
+  "budget": {
+    "n": null,
+    "why": "budget",
+    "evals": 30,
+    "refined": 0,
+    "minMod": 0.2924954709949307,
+    "maxMod": 0.30451604896242335
+  },
+  "depth": {
+    "n": null,
+    "why": "fast",
+    "evals": 6,
+    "refined": 0,
+    "minMod": 0.9999999999995453,
+    "maxMod": 1.0000000000009095
+  },
+  "refusedStatus": "<span title=\"f(z) = (z^2 - 1)*(z - 2 - i)^2/(z^2 + 2 + 2*i), a = 0, b = 0\">f typed · user-defined, not validated</span><span>zeros − poles inside |z − (0)| = 1.00: <b>not counted</b>, too close to a zero or pole (or an unresolved branch cut)</span><span>argument principle, 1,119 samples of f</span><span>zoom 10^0.00 · 800×800 px</span>"
+}
