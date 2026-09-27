@@ -145,6 +145,12 @@ and nu = 0.75 at ell = 2, 4 and 8 where not already computed) with 5 replicates.
 draw in every run (a generator seeded [20260926, 7, r]), so the stage that computes a cell sets only its replicate
 count, not its values.
 
+The full rerun of 2026-09-27 (`notes/rerun-2026-09-27.md`) ran these commands from the downloaded inputs and
+reproduced every committed output, and `make_numbers.py` then reproduced `paper/numbers.tex`, the tables and
+`out/numbers.json` byte for byte. The one exception is the last bits of the `matern_window.py` outputs. They were
+computed with two BLAS threads, and one thread gives spectra within 1e-8 relative of them (window exponents within
+1e-9, and the finite-population values that rest on them within 2e-13). No printed number changes.
+
 ## License
 
 The programs in `code/` are licensed under the Apache License 2.0. The outputs in `out/` are derived from the
