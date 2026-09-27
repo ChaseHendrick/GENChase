@@ -3,7 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
-## 2.2.0 (unreleased)
+## 2.2.0 (2026-09-27)
+
+**DOI:** [10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932)
 
 The paper takes in the results of a separate note by the same author on the same collapsing families, which is
 retired and will not get a record of its own: explicit forms and worked examples for its three-vortex and ring

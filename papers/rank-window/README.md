@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, not peer reviewed. Three independent referee readings were made in the project
+**Preprint**, archived on Zenodo with its programs ([doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835)), not peer reviewed. Three independent referee readings were made in the project
 (`notes/review-1.md`, verdict major revision; `notes/review-2.md` and `notes/review-3.md`, verdict minor revision
 each). The fixes of the first two are applied; of the third, the findings that further readers confirmed are fixed
 and the others are answered (`notes/review-3.md`, "Response"). The fixes of the third have not been read again.

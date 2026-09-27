@@ -3,7 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
-## 1.0.0 (unreleased)
+## 1.0.0 (2026-09-27)
+
+**DOI:** [10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835)
 
 The first public release of the methods note *A finite rank window cannot show that a neural population code
 satisfies the eigenspectrum smoothness bound* (16 pages), with the programs that compute its numbers and their output.
