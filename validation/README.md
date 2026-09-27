@@ -142,3 +142,5 @@ claims a focus where no image exists, and the exit ray is drawn backwards when t
 the plate.
 
 Two tabs added on 2026-09-26 carry evidence while their records stay unvalidated: [Fisher-KPP fronts](FISHER-KPP.md) (logistic benchmark, straight-front speed against Bramson and Ebert-van Saarloos, fourth-order refinement at D dt/h² = 1/6, the plate's front-speed witness, a wrong-diffusion-sign control, print agreement) and [Maxwell-Cattaneo heat](CATTANEO.md) (Fourier modes against the exact dispersion relation, the relaxation limit, second-order refinement, the step bound, ring speed, a wrong-relaxation-sign control, print agreement).
+
+The [London disk](MEISSNER.md) relaxes the module's Jacobi update to a residual below 1e-6 and compares it with an independent I0 series. The staircased rim keeps the global error near first order while the interior stencil on I0 falls faster than h². A sign flip of London's equation fails the same comparison. The default 90-sweep plate is outside that domain. Export at 8 in and 300 ppi preserves the field.
