@@ -2,7 +2,9 @@
 
 Each release of this paper's programs and data is archived on Zenodo with its own DOI.
 
-## 1.0.0 (unreleased)
+## 1.0.0 (2026-09-27)
+
+**DOI:** [10.5281/zenodo.22997540](https://doi.org/10.5281/zenodo.22997540)
 
 **DOI:** added on release.
 
