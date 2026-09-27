@@ -84,7 +84,7 @@
       "id": "hh-dynamics",
       "title": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
       "status": "ready",
-      "note": "Computer-assisted proofs, for every leak potential in [10.59, 10.62], of the unique equilibrium for J in [0, 200], its two Hopf points (subcritical and supercritical, first Lyapunov coefficients enclosed) and bistability of rest and repetitive firing at J = 8. Six in-project readings by separate agents (2026-09-27), every must-fix finding fixed (notes/referee-2026-09-27-*.md), and a mutation study of the programs (data/mutation_study.txt). Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its first page could be read, and no priority is claimed for the equilibria, the Hopf points or their criticality.",
+      "note": "Computer-assisted proofs, for every leak potential in [10.59, 10.62], of the unique equilibrium for J in [0, 200], its two Hopf points (subcritical and supercritical, first Lyapunov coefficients enclosed) and bistability of rest and repetitive firing at J = 8. Six in-project readings by separate agents (2026-09-27), every must-fix finding fixed (notes/referee-2026-09-27-*.md), and a mutation study of the programs (data/mutation_study.txt). Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its first page could be read, and no priority is claimed for the equilibria, the Hopf points or their criticality. Release 1.0.0 is archived at doi:10.5281/zenodo.22996260 (2026-09-27).",
       "typst": null,
       "latex": "papers/hh-dynamics/paper/hh-dynamics.tex",
       "pdf": "papers/hh-dynamics/paper/hh-dynamics.pdf",
@@ -92,7 +92,7 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": null,
+      "codeDoi": "10.5281/zenodo.22996260",
       "commitments": []
     },
     {

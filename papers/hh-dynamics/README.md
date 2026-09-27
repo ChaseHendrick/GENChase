@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, released with its programs and data, not peer reviewed.
+**Preprint**, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22996260](https://doi.org/10.5281/zenodo.22996260)), not peer reviewed.
 
 **[Read the preprint (PDF, 30 pages)](paper/hh-dynamics.pdf)**, built from [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex).
 
