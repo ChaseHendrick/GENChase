@@ -1589,21 +1589,52 @@
   {
     "id": "aubry",
     "source": "src/modules/aubry.js",
-    "sourceSha256": "a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652",
-    "reference": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
-    "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
-    "status": "unvalidated",
+    "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
+    "reference": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
+    "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localized for λ>1",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The validated claim is the transfer-matrix Lyapunov exponent of the almost Mathieu operator with unit hopping and potential 2λ cos(2π β n), reviewed in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.",
+      "The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation is not the measured quantity, and its IPR was not compared with log(λ).",
+      "Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.",
+      "At λ = 1 the exponent is reported and is not asserted to equal 0 at these lengths.",
+      "Print evidence is state preservation of the default recipe only."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "The plate relaxation, its ground-state claim, and the status-line IPR remain outside this measurement."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/aubry-science.js",
+        "scope": "Transfer-matrix Lyapunov exponent of psi_{n+1}+psi_{n-1}+2λ cos(2π β n) psi_n = E psi_n at E=0, β=(√5-1)/2, phase 0, lengths 256 and 2048, for λ in {0.3, 0.6, 1, 1.5, 2, 3}. Open-chain Jacobi diagonalization at N=64, mid-spectrum envelope and a spread of eigenenergies. Rational β=1/3 control on a periodic N=96 chain.",
+        "criteria": "For λ in {1.5, 2, 3}, |γ-log(λ)| < 0.012 at both lengths and the N=2048 error is smaller than the N=256 error. For λ in {0.3, 0.6}, |γ| < 0.01 at N=256 and < 0.001 at N=2048, and it falls with N. Sampled open-chain eigenenergies at N=64 lie within 0.02 of log(λ); the mid-spectrum envelope slope lies within 0.06 of the transfer-matrix exponent at that energy. The same 0.012 test fails for β=1/3.",
+        "limitations": "Finite products and one phase. λ=1 is reported, not matched to 0. The plate relaxation is not run.",
+        "benchmark": "Aubry-André / almost Mathieu: with this normalization the inverse localization length on the spectrum is log(λ) for λ>1 and 0 for λ<1. The exponent is the expanding singular value of the transfer-matrix product (QR each step), checked against an independent Jacobi eigenvector envelope so a bad normalization cannot pass alone.",
+        "failureControl": "Rational β=1/3 at λ=2 and λ=3, same tolerance 0.012 and the same transfer length: the in-band exponent and the E=0 exponent must both fail |γ-log(λ)| < 0.012. A potential λ cos (the other convention) and an un-normalized product must fail that test too.",
+        "command": "node tools/aubry-science.js --write",
+        "results": "validation/results/aubry-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/aubry-print-state.js",
+        "command": "node tools/aubry-print-state.js --write",
+        "results": "validation/results/aubry-print-state.json",
+        "scope": "Actual aubry exportPNG at the default recipe (grid 128, aspect 4:5, lambda 2.4, 140 relax steps), longest edge 2400 (1920x2400). Float32 field words, IPR metric, lambda, cells, buffer and settings.",
+        "criteria": "Zero changed or nonfinite field words; metric, lambda, settings and cells unchanged across export; exact PNG dimensions and a blob over 1000 bytes; luminance spread over 12/255; wrong dimensions and a post-export field and metric mutation rejected.",
+        "benchmark": "In-page audit snapshot of the private field before and after the real exportPNG path. Not an accuracy check of the IPR.",
+        "failureControl": "Requested width reduced by one pixel must fail acceptance; mutating field[0] and the IPR metric after export must fail the same predicate.",
+        "limitations": "State preservation and declared dimensions only. The plate is a fixed-step imaginary-time relaxation and its IPR is not the transfer-matrix measurement."
+      }
+    ],
+    "reviewed": "2026-09-27",
+    "results": "validation/results/aubry-science.json",
+    "domain": {
+      "parameters": "λ in {0.3, 0.6, 1, 1.5, 2, 3}, β=(√5-1)/2, phase 0, potential 2λ cos(2π β n), unit hopping. Failure controls: β=1/3 at λ in {2, 3}, and potential factor 1 instead of 2 at λ in {2, 3}.",
+      "conditions": "Transfer matrix on the infinite line (no boundary condition) at E=0. Open-chain exact diagonalization at N=64 for the eigenstate cross-check. Rational control: periodic commensurate chain, N=96, eigenvalue nearest zero, plus E=0. The plate's periodic fixed-step relaxation is outside this domain.",
+      "resolution": "Shared tolerance |γ-log(λ)| < 0.012 at transfer length 2048 (measured absolute errors 1.6e-4, 9.5e-5 and 6.2e-5 at λ=1.5, 2 and 3). N=256 errors are about 0.0078 and smaller at N=2048. Extended |γ| at N=2048 is below 1e-5. Rational in-band |γ-log(λ)| is 0.689 at λ=2 and 1.094 at λ=3. Open N=64 mid-spectrum envelope within 0.044 of the transfer-matrix exponent.",
+      "precision": "Float64 transfer matrices and Jacobi. No sampling error. The plate field is Float32 and is not part of this numerical domain."
+    }
   },
   {
     "id": "cahn",
