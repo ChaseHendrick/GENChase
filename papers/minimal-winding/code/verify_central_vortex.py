@@ -467,22 +467,24 @@ check('   at cos 2theta = 4/7, P = 3 sqrt(33)/16 = %s' % mp.nstr(3*mp.sqrt(33)/1
 zs = [mp.sqrt(2)/2*mp.expj(mp.mpf('2.0')), -mp.sqrt(2)/2*mp.expj(mp.mpf('2.0')), mp.mpc(-1), mp.mpc(1), mp.mpc(0)]
 check('   negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands', (velocities(zs, Gg)[0]/zs[0]).real > 0)
 # Gamma0 = 1/2, x = 3: kappa of the five vortices against kappa of the three vortices (1, 1, -1/2) of Remark 2 at chi = theta
-worst_k3 = mp.mpf(0); worst_kf = mp.mpf(0)
-for f in ('0.3', '0.7', '1.2', '2.0', '3.5'):
+worst_k3 = mp.mpf(0); worst_kf = mp.mpf(0); n_exp = 0
+for f in ('0.3', '0.7', '1.2', '2.0', '3.5', '5.0'):              # sin 2theta < 0, an expansion, at 2.0 and 5.0 only
     th = mp.mpf(f)
     zs, Gs = config(2, mp.mpf(1)/2, mp.mpf(3), th); vel = velocities(zs, Gs)
     k5 = vel[1]/zs[1]
+    n_exp += k5.real > 0
     z3 = [mp.mpc(0), mp.mpc(1), mp.mpf(1)/2 + mp.sqrt(3)/2*mp.expj(th)]; G3 = [mp.mpf(1), mp.mpf(1), mp.mpf(-1)/2]
     zc3 = sum(g_*z_ for g_, z_ in zip(G3, z3))/sum(G3); v3 = velocities(z3, G3)
     k3 = [v3[i]/(z3[i] - zc3) for i in range(3)]
     worst_k3 = max(worst_k3, max(abs(k_ - k5) for k_ in k3)/abs(k5))
     worst_kf = max(worst_kf, abs(k5 - 3j/(mp.pi*(3 - mp.expj(2*th))))/abs(k5))
-check('Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at five angles (two of them expanding)', worst_kf < mp.mpf('1e-45'),
-      'max relative difference %s' % mp.nstr(worst_kf, 3))
+check('Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at six angles, two of them (2.0 and 5.0) expanding',
+      worst_kf < mp.mpf('1e-45') and n_exp == 2, 'max relative difference %s; %d expanding' % (mp.nstr(worst_kf, 3), n_exp))
 check('   and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1', worst_k3 < mp.mpf('1e-45'),
       'max relative difference %s' % mp.nstr(worst_k3, 3))
-# The quartet of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.6), cited in the Discussion. Their third position
-# is printed there as -sqrt3/2 - 1 - i/2; with -sqrt3/2 - 1 + i/2 the four points are a parallelogram centered at 0.
+# The quartet of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.6), cited in the Discussion (the same number in
+# Math. Ann. 396 (2026) 5). Their third position is printed in both versions as -sqrt3/2 - 1 - i/2; with -sqrt3/2 - 1 + i/2
+# the four points are a parallelogram centered at 0.
 s3 = sp.sqrt(3)
 Qz = [s3/2 - sp.I/2, 1 + s3/2 - sp.I/2, -s3/2 - 1 + sp.I/2, -s3/2 + sp.I/2]
 Qg = [(2*s3 + 5)*sp.pi, (s3 - 4)*sp.pi, (s3 - 4)*sp.pi, (2*s3 + 5)*sp.pi]
@@ -511,8 +513,15 @@ for sgn in (1, -1):
         check('   Biot-Savart at 50 digits: z_c = 0, self-similar, collapsing, P = 2 sqrt3 - 3/4 = %s' % mp.nstr(2*m3 - mp.mpf(3)/4, 12),
               abs(zcq) < mp.mpf('1e-45') and sprd < mp.mpf('1e-45') and kqs[0].real < 0 and abs(Pq - (2*m3 - mp.mpf(3)/4)) < mp.mpf('1e-45'),
               'spread %s' % mp.nstr(sprd, 3))
+        # their map V, Eq. (4.4): V_k = sum_{j != k} gamma_j/(2 pi i (z_k - z_j)) + i Omega conj(z_k), zero iff the motion is
+        # self-similar about 0 with Omega = i conj(kappa)
+        OmQ = 2*m3 - mp.mpf(3)/4 - mp.mpc(0, 1)/2
+        resQ = max(abs(sum(gq[j]/(2*mp.pi*mp.mpc(0, 1)*(zq[k] - zq[j])) for j in range(4) if j != k) + mp.mpc(0, 1)*OmQ*mp.conj(zq[k]))
+                   for k in range(4))
+        check('   their map V, Eq. (4.4), vanishes there with their printed Omega = 2 sqrt3 - 3/4 - i/2, which is i conj(kappa)',
+              resQ < mp.mpf('1e-45') and abs(OmQ - mp.mpc(0, 1)*mp.conj(kqs[0])) < mp.mpf('1e-45'), 'residual %s' % mp.nstr(resQ, 3))
     else:
-        check('   negative control: with the third position as printed in v1, z_c != 0 and the motion is not self-similar',
+        check('   negative control: with the third position as printed (v1 and Math. Ann.), z_c != 0 and the motion is not self-similar',
               abs(zcq) > mp.mpf('0.1') and sprd > mp.mpf('0.1'), 'z_c = %s, spread %s' % (mp.nstr(zcq, 5), mp.nstr(sprd, 3)))
 
 # F_n as n -> oo

@@ -916,16 +916,17 @@ for bb in ['0.05', '0.2', '0.35', '0.5', '0.65', '0.8', '0.95', '1.1', '1.3', '1
 check('10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2',
       dev_kim < mp.mpf('1e-45'), 'max |kappa - (A + iB)/(4 pi)| = %s' % mp.nstr(dev_kim, 3))
 
-# 10j. Remark 2, elementary forms (release 2.2.0). u = tan(chi) is positive on both collapsing arcs.
-uR2 = sp.symbols('u', positive=True)
+# 10j. Remark 2, elementary forms (release 2.2.0). v = tan(chi) is positive on both collapsing arcs
+#      (the paper writes v, since u = mu + 1 + 1/mu in Section 3).
+uR2 = sp.symbols('v', positive=True)
 chiR2 = sp.atan(uR2)
 PuR2 = uR2 + 1/(2*uR2)
-check('10j Remark 2: with u = tan chi, (3 - cos 2chi)/(2 sin 2chi) = u + 1/(2u)  (exact)',
+check('10j Remark 2: with v = tan chi, (3 - cos 2chi)/(2 sin 2chi) = v + 1/(2v)  (exact)',
       sp.simplify((3 - sp.cos(2*chiR2))/(2*sp.sin(2*chiR2)) - PuR2) == 0)
-check('10j Remark 2: u + 1/(2u) - sqrt2 = (sqrt2 u - 1)^2/(2u); equality iff tan chi = 1/sqrt2, and then cos 2chi = 1/3',
+check('10j Remark 2: v + 1/(2v) - sqrt2 = (sqrt2 v - 1)^2/(2v); equality iff tan chi = 1/sqrt2, and then cos 2chi = 1/3',
       sp.simplify(PuR2 - sp.sqrt(2) - (sp.sqrt(2)*uR2 - 1)**2/(2*uR2)) == 0
       and sp.simplify(sp.cos(2*sp.atan(1/sp.sqrt(2))) - sp.Rational(1, 3)) == 0)
-check('10j Remark 2: P is unchanged under u -> 1/(2u); u = 1 and u = 1/2 (cos 2chi = 3/5) both give P = 3/2',
+check('10j Remark 2: P is unchanged under v -> 1/(2v); v = 1 and v = 1/2 (cos 2chi = 3/5) both give P = 3/2',
       sp.simplify(PuR2.subs(uR2, 1/(2*uR2)) - PuR2) == 0 and PuR2.subs(uR2, 1) == sp.Rational(3, 2)
       and PuR2.subs(uR2, sp.Rational(1, 2)) == sp.Rational(3, 2)
       and sp.simplify(sp.cos(2*sp.atan(sp.Rational(1, 2))) - sp.Rational(3, 5)) == 0)
@@ -942,7 +943,7 @@ for bb in ['0.2', '0.6', '1.3', '3.4', '4.5']:                      # both colla
     ku = kappa_beta(beta)[0]
     coll_u = coll_u and ku.real < 0
     dev_u = max(dev_u, abs(P_of_kappa(ku) - (mp.tan(beta) + 1/(2*mp.tan(beta)))))
-check('10j Remark 2: Biot-Savart P = u + 1/(2u), u = tan beta, at five angles on both arcs', coll_u and dev_u < mp.mpf('1e-45'),
+check('10j Remark 2: Biot-Savart P = v + 1/(2v), v = tan beta, at five angles on both arcs', coll_u and dev_u < mp.mpf('1e-45'),
       'max difference %s' % mp.nstr(dev_u, 3))
 
 
@@ -963,37 +964,107 @@ for (a_, b_), want in [((mp.mpf('0.01'), mp.pi/2 - mp.mpf('0.01')), (1, 5, 2)),
 check('10j Remark 2: the numerically located minimizers have interior angles (pi/8, 5pi/8, pi/4) on the first arc'
       ' and (5pi/8, pi/8, pi/4) on the second (z1, z2, z3)', dev_ang < mp.mpf('1e-15'), 'max deviation %s' % mp.nstr(dev_ang, 3))
 
-# 10k. Remark 2: Groebli 1877, Sect. 10, Eqs. (1), (5), (8), (9), (11), (12), read in the original (printed pp. 55-58).
-#      m = (1, 1, -1/2); his shape parameters mu_i (not the paper's mu) and his coefficient kappa, called k in the paper.
-aG = sp.symbols('a', positive=True)
+# 10k. Groebli 1877, Sect. 10 (printed pp. 55-59), Eqs. (1), (5), (6), (8), (9), (11), (12), read in the original.
+#      His circulations m_i, his shape parameters mu_i and shape constant a (the paper writes mu^G_i and a_G, since mu
+#      and a are taken), and his coefficient varkappa (the paper's \varkappa, not its kappa): d theta = varkappa dt/(2t)
+#      with s_i^2 = mu mu_i t, t measured from the collision, so P = |varkappa|/2 for every harmonic triple.
+#      First m = (1, 1, -1/2), the case of Remark 2.
+aG = sp.symbols('a_G', positive=True)
 mG = [sp.Integer(1), sp.Integer(1), sp.Rational(-1, 2)]
 MG = sum(mG)
 muG = [aG - (mG[1] - mG[2])/mG[0], aG - (mG[2] - mG[0])/mG[1], aG - (mG[0] - mG[1])/mG[2]]      # his (8)
 radG = 2*muG[1]*muG[2] + 2*muG[2]*muG[0] + 2*muG[0]*muG[1] - muG[0]**2 - muG[1]**2 - muG[2]**2
 rateG = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[1]*muG[2])                                                # his (9), original denominator
 kG = MG/sp.pi*(2*aG**2 + (mG[1] - mG[2])*(mG[2] - mG[0])*(mG[0] - mG[1])/(mG[0]*mG[1]*mG[2])*aG - 3)/(rateG*muG[0]*muG[1]*muG[2])  # his (12)
-PG = kG/2                                                                                           # his (11): d theta = k dt/(2t), s^2 = lambda t
-check('10k Groebli (8): at m = (1, 1, -1/2), mu_1 = a - 3/2, mu_2 = a + 3/2, mu_3 = a; radicand of (9) = 3a^2 - 9',
+PG = kG/2                                                                                           # his (11): d theta = varkappa dt/(2t), s^2 = lambda t
+PGa = (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))
+check('10k Groebli (8): at m = (1, 1, -1/2), muG_1 = a_G - 3/2, muG_2 = a_G + 3/2, muG_3 = a_G; radicand of (9) = 3a_G^2 - 9',
       [sp.simplify(muG[0] - (aG - sp.Rational(3, 2))), sp.simplify(muG[1] - (aG + sp.Rational(3, 2))), sp.simplify(muG[2] - aG)] == [0, 0, 0]
       and sp.expand(radG - (3*aG**2 - 9)) == 0)
-check('10k Groebli (9), (11), (12): P = |k|/2 = (2a^2 - 3)/(2 sqrt(3a^2 - 9))',
-      sp.simplify(PG - (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))) == 0)
-check('10k P^2 - 2 = (2a^2 - 9)^2/(12(a^2 - 3)): equality at a^2 = 9/2',
-      sp.simplify(((2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9)))**2 - 2 - (2*aG**2 - 9)**2/(12*(aG**2 - 3))) == 0)
-# a = sqrt3/cos chi with u = tan chi > 0: cos chi = 1/sqrt(1 + u^2) on the first arc (the branch a > sqrt 3)
+check('10k Groebli (9), (11), (12): P = |varkappa|/2 = (2a_G^2 - 3)/(2 sqrt(3a_G^2 - 9))',
+      sp.simplify(PG - PGa) == 0)
+check('10k P^2 - 2 = (2a_G^2 - 9)^2/(12(a_G^2 - 3)): equality at a_G^2 = 9/2',
+      sp.simplify(PGa**2 - 2 - (2*aG**2 - 9)**2/(12*(aG**2 - 3))) == 0)
+# a_G = sqrt3/cos chi with v = tan chi > 0: cos chi = 1/sqrt(1 + v^2) on the first arc (the branch a_G > sqrt 3)
 aU = sp.sqrt(3)*sp.sqrt(1 + uR2**2)
-check('10k a = sqrt3/cos chi turns Groebli\'s P into u + 1/(2u), the formula of Remark 2 (branch a > sqrt3; P is even in a)',
-      sp.simplify(((2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))).subs(aG, aU) - PuR2) == 0)
+check('10k a_G = sqrt3/cos chi turns Groebli\'s P into v + 1/(2v), the formula of Remark 2 (branch a_G > sqrt3; P is even in a_G)',
+      sp.simplify(PGa.subs(aG, aU) - PuR2) == 0)
 cG = sp.symbols('c', real=True)                      # c = cos chi; |w|^2 and |w - 1|^2 at z1 = 0, z2 = 1, z3 = w
 w2, wm12 = 1 + sp.sqrt(3)/2*cG, 1 - sp.sqrt(3)/2*cG
 aC = sp.sqrt(3)/cG
-check('10k with a = sqrt3/cos chi, mu_1 : mu_2 : mu_3 = |z2 - z3|^2 : |z3 - z1|^2 : |z1 - z2|^2 at the positions of Remark 2'
+check('10k with a_G = sqrt3/cos chi, muG_1 : muG_2 : muG_3 = |z2 - z3|^2 : |z3 - z1|^2 : |z1 - z2|^2 at the positions of Remark 2'
       ' (his (1), (5): s_i^2 = mu mu_i t)',
       sp.simplify((muG[0]/muG[2]).subs(aG, aC) - wm12) == 0 and sp.simplify((muG[1]/muG[2]).subs(aG, aC) - w2) == 0)
+# Negative control: Goodman's translation prints the denominator of (9) as mu_1 mu_3 mu_3 in its (10.9). Run that
+# coefficient through the same substitution: it does not give the formula of Remark 2.
 rate_tr = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[2]*muG[2])                                             # translation's (10.9)
 k_tr = MG/sp.pi*(2*aG**2 - 3)/(rate_tr*muG[0]*muG[1]*muG[2])
-check('10k negative control: the translation\'s denominator mu_1 mu_3 mu_3 in (10.9) gives a different coefficient',
-      sp.simplify(k_tr/2 - (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))) != 0)
+dtr = sp.simplify((k_tr/2).subs(aG, aU) - PuR2)
+dtr1 = dtr.subs(uR2, 1)                              # v = 1: Remark 2 gives P = 3/2
+check('10k negative control: with the translation\'s denominator mu_1 mu_3 mu_3 in (10.9), a_G = sqrt3/cos chi does not give'
+      ' v + 1/(2v): the difference is not identically 0, and at v = 1 it is far from 0',
+      dtr != 0 and sp.simplify(dtr1) != 0 and abs(float(dtr1)) > 0.1, 'difference at v = 1: %s' % sp.simplify(dtr1))
+# Every harmonic triple (m1, m2, -m1 m2/(m1 + m2)), symbolic in m1, m2 and a_G: his (6) holds, and with r_i^2
+# proportional to muG_i the sum S of Lemma 6 at beta = 1, where coth(ln(r_k/r_j)) = (r_k^2 + r_j^2)/(r_k^2 - r_j^2),
+# is -(2a_G^2 + [(m2 - m3)(m3 - m1)(m1 - m2)/(m1 m2 m3)] a_G - 3), the numerator of his (12). With 16 A^2 = the radicand
+# of (9) (Heron), P = |S|/(8A) = |varkappa|/2.
+g1, g2 = sp.symbols('m1 m2', positive=True)
+mH = [g1, g2, -g1*g2/(g1 + g2)]
+MH = sum(mH)
+KH = (mH[1] - mH[2])*(mH[2] - mH[0])*(mH[0] - mH[1])/(mH[0]*mH[1]*mH[2])
+muH = [aG - (mH[1] - mH[2])/mH[0], aG - (mH[2] - mH[0])/mH[1], aG - (mH[0] - mH[1])/mH[2]]
+SH = sum(muH[i]*(muH[(i + 2) % 3] + muH[(i + 1) % 3])/(muH[(i + 2) % 3] - muH[(i + 1) % 3]) for i in range(3))
+radH = 2*muH[1]*muH[2] + 2*muH[2]*muH[0] + 2*muH[0]*muH[1] - muH[0]**2 - muH[1]**2 - muH[2]**2
+heronH = 2*(muH[0]*muH[1] + muH[1]*muH[2] + muH[2]*muH[0]) - muH[0]**2 - muH[1]**2 - muH[2]**2
+check('10k every harmonic triple (symbolic m1, m2, a_G): his (6) holds, and Lemma 6 at beta = 1 with r_i^2 = muG_i gives'
+      ' S = -(2a_G^2 + K a_G - 3), K = (m2 - m3)(m3 - m1)(m1 - m2)/(m1 m2 m3), and 16A^2 = the radicand of (9);'
+      ' so P = |varkappa|/2 for every harmonic triple (exact)',
+      [sp.simplify(muH[1] - muH[2] - MH/mH[0]), sp.simplify(muH[2] - muH[0] - MH/mH[1]), sp.simplify(muH[0] - muH[1] - MH/mH[2])] == [0, 0, 0]
+      and sp.simplify(SH + (2*aG**2 + KH*aG - 3)) == 0 and sp.expand(heronH - radH) == 0)
+# The same against the Biot-Savart velocities, for the family of eq:norm with mu != 1: read the squared sides of eq:pos,
+# scale them to Groebli's mu_i by his (6), recover a_G from each of the three equations (8), and compare |varkappa|/2 with P.
+mp.mp.dps = 50
+dev_gh = mp.mpf(0); cons_gh = mp.mpf(0); coll_gh = True
+for mu_s in ['0.1', '0.3', '0.5', '0.8', '1', '2']:
+    muv = mp.mpf(mu_s)
+    Gs = Gams(muv)
+    th0 = mp.acos((muv - 1)/(2*mp.sqrt(1 + muv + muv**2)))
+    for thv in (th0*mp.mpf('0.3'), th0*mp.mpf('0.7'), mp.pi + (mp.pi - th0)*mp.mpf('0.2'), mp.pi + (mp.pi - th0)*mp.mpf('0.8')):
+        zs = config_theta(muv, thv)
+        ks, _ = kappas_direct(Gs, zs)
+        coll_gh = coll_gh and ks[0].real < 0
+        s2 = [abs(zs[1] - zs[2])**2, abs(zs[2] - zs[0])**2, abs(zs[0] - zs[1])**2]
+        lam = (sum(Gs)/Gs[0])/(s2[1] - s2[2])                   # his (6): mu_2 - mu_3 = (m1 + m2 + m3)/m1
+        mug = [lam*s_ for s_ in s2]
+        a_s = [mug[0] + (Gs[1] - Gs[2])/Gs[0], mug[1] + (Gs[2] - Gs[0])/Gs[1], mug[2] + (Gs[0] - Gs[1])/Gs[2]]
+        cons_gh = max(cons_gh, abs(a_s[1] - a_s[0]), abs(a_s[2] - a_s[0]))
+        Kv = (Gs[1] - Gs[2])*(Gs[2] - Gs[0])*(Gs[0] - Gs[1])/(Gs[0]*Gs[1]*Gs[2])
+        radv = 2*mug[1]*mug[2] + 2*mug[2]*mug[0] + 2*mug[0]*mug[1] - mug[0]**2 - mug[1]**2 - mug[2]**2
+        dev_gh = max(dev_gh, abs(abs(2*a_s[0]**2 + Kv*a_s[0] - 3)/(2*mp.sqrt(radv)) - P_of_kappa(ks[0])))
+check('10k every harmonic triple, Biot-Savart at 50 digits, mu in {0.1, 0.3, 0.5, 0.8, 1, 2}, two angles on each arc:'
+      ' the squared sides satisfy his (8) with one a_G, and |varkappa|/2 from (9), (12) equals P',
+      coll_gh and cons_gh < mp.mpf('1e-45') and dev_gh < mp.mpf('1e-45'),
+      '(8) consistent to %s; max |P - |varkappa|/2| = %s' % (mp.nstr(cons_gh, 3), mp.nstr(dev_gh, 3)))
+# His example, Fig. 6 (printed p. 59): m1 : m2 : m3 = 3 : -2 : 6, a = 2, s_1^2 : s_2^2 : s_3^2 = 28 : 21 : 7 and
+# rho_i proportional to e^{(sqrt3/5)(theta_i - alpha_i)}, i.e. varkappa = 5/sqrt3 and P = 5 sqrt3/6. The triangle has a right
+# angle at vortex 1 (his a = -(m2 - m3)/(m2 + m3) = 2): z1 = 0, z2 = sqrt7, z3 = +-sqrt21 i.
+m6 = [sp.Integer(3), sp.Integer(-2), sp.Integer(6)]
+mu6 = [2 - (m6[1] - m6[2])/m6[0], 2 - (m6[2] - m6[0])/m6[1], 2 - (m6[0] - m6[1])/m6[2]]
+K6 = (m6[1] - m6[2])*(m6[2] - m6[0])*(m6[0] - m6[1])/(m6[0]*m6[1]*m6[2])
+rad6 = 2*mu6[1]*mu6[2] + 2*mu6[2]*mu6[0] + 2*mu6[0]*mu6[1] - mu6[0]**2 - mu6[1]**2 - mu6[2]**2
+kap6 = (2*2**2 + K6*2 - 3)/sp.sqrt(rad6)
+P6 = []; spr6 = mp.mpf(0); re6 = []
+for sg in (1, -1):
+    z6 = [mp.mpc(0), mp.sqrt(7), sg*mp.sqrt(21)*mp.mpc(0, 1)]
+    k6, _ = kappas_direct([mp.mpf(3), mp.mpf(-2), mp.mpf(6)], z6)
+    spr6 = max(spr6, max(abs(k_ - k6[0]) for k_ in k6)/abs(k6[0]))
+    P6.append(abs(k6[0].imag)/(2*abs(k6[0].real))); re6.append(k6[0].real)
+check('10k Groebli\'s Fig. 6 (p. 59), m = (3, -2, 6), a_G = 2: muG = (14/3, 7/2, 7/6), proportional to 28 : 21 : 7, varkappa = 5/sqrt3'
+      ' (his exponent sqrt3/5); Biot-Savart at 50 digits: self-similar, one orientation collapses and its mirror image expands,'
+      ' and |Im kappa|/(2|Re kappa|) = 5 sqrt3/6 for both',
+      [x_/mu6[2] for x_ in mu6] == [4, 3, 1] and sp.simplify(kap6 - 5/sp.sqrt(3)) == 0
+      and spr6 < mp.mpf('1e-45') and re6[0]*re6[1] < 0 and all(abs(p_ - 5*mp.sqrt(3)/6) < mp.mpf('1e-45') for p_ in P6),
+      'spread %s, P = %s' % (mp.nstr(spr6, 3), mp.nstr(P6[0], 15)))
 
 # 10h. Demina and Kudryashov 2014, Sect. 3: two regular n-gons with circulations G1 (radius R1) and G2 (radius r R1)
 #      and G0 at the center. With G2 = -G1/r^2 (zero angular impulse) their Eq. (37) fixes r, and their Eq. (36)
@@ -1147,17 +1218,18 @@ check('10l Prop. 1: c = s - 8 sqrt7/21 gives s^3 - (125/42)s + 124 sqrt7/1323; 2
 mp.mp.dps = 60
 cm = [-8*mp.sqrt(7)/21 + 5*mp.sqrt(70)/21*mp.cos(mp.acos(-124*mp.sqrt(10)/3125)/3 - 2*mp.pi*mm/3) for mm in range(3)]
 res_c = max(abs(cc**3 + 8*mp.sqrt(7)/7*cc**2 + cc/14 - 32*mp.sqrt(7)/49) for cc in cm)
-check('10l Prop. 1: c_0, c_1, c_2 solve the cubic; c_0 in (0.67, 0.68), c_1 in (-0.93, -0.92), c_2 < -1',
-      res_c < mp.mpf('1e-55') and mp.mpf('0.67') < cm[0] < mp.mpf('0.68') and mp.mpf('-0.93') < cm[1] < mp.mpf('-0.92') and cm[2] < -1,
+check('10l Prop. 1: c_0, c_1, c_2 solve the cubic to 1e-59 (60 digits); c_0 in (0.67, 0.68), c_1 in (-0.93, -0.92), c_2 < -1',
+      res_c < mp.mpf('1e-59') and mp.mpf('0.67') < cm[0] < mp.mpf('0.68') and mp.mpf('-0.93') < cm[1] < mp.mpf('-0.92') and cm[2] < -1,
       'residual %s; c = %s' % (mp.nstr(res_c, 3), [mp.nstr(cc, 13) for cc in cm]))
 P12 = lambda th: (14*mp.sin(th)**2 + 6*mp.sqrt(7)*mp.cos(th) + 21)/(2*(14*mp.cos(th) + mp.sqrt(7))*mp.sin(th))
 qP = [605/mp.mpf(324) + 7*mp.sqrt(5201)/162*mp.cos(mp.acos(245351/mp.mpf(5201)**mp.mpf('1.5'))/3 - 2*mp.pi*mm/3) for mm in range(2)]
 dev_c = max(abs(P12(mp.acos(cm[0])) - mp.sqrt(qP[0])), abs(P12(2*mp.pi - mp.acos(cm[1])) - mp.sqrt(qP[1])))
-check('10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on A- is P_-, to 50 digits',
-      dev_c < mp.mpf('1e-50'), 'max difference %s' % mp.nstr(dev_c, 3))
+check('10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on A- is P_-, to 1e-60 (60 digits)',
+      dev_c < mp.mpf('1e-60'), 'max difference %s' % mp.nstr(dev_c, 3))
 mp.mp.dps = 50
 
-# 10m. Discussion (release 2.2.0): the collapsing triple of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.5),
+# 10m. Discussion (release 2.2.0): the collapsing triple of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.5) (the same
+#      number in Math. Ann. 396 (2026) 5),
 #      circulations (1, 2, -2/3) at -2, 1 and sqrt7 i. Interchanging the first two vortices and halving the circulations
 #      gives (1, 1/2, -1/3), the family mu = 1/2; its shape ratio is that of eq:pos at theta = pi/2, on A+ = (0, theta_0).
 mh = sp.Rational(1, 2)
@@ -1166,11 +1238,12 @@ zW = [sp.Integer(1), sp.Integer(-2), sp.sqrt(7)*I]                 # after the i
 gW = [sp.Integer(2)/2, sp.Integer(1)/2, sp.Rational(-2, 3)/2]
 wW = sp.simplify((zW[2] - zW[0])/(zW[1] - zW[0]))
 wpos = mh/(1 + mh) - qh/(1 + mh)*sp.exp(I*pi/2)
-th0h = sp.acos((mh - 1)/(2*qh))
+cos_th0h = sp.radsimp((mh - 1)/(2*qh))                            # cos theta_0 = (mu - 1)/(2 sqrtR)
 check('10m CWW (4.5): interchanged and halved, Gamma = (1, 1/2, -1/3) and w = 1/3 - (sqrt7/3) i, the shape ratio of eq:pos'
-      ' at mu = 1/2, theta = pi/2; and pi/2 < theta_0, so theta = pi/2 lies on A+ (exact)',
+      ' at mu = 1/2, theta = pi/2; and cos theta_0 = -sqrt7/14 < 0, so pi/2 < theta_0 and theta = pi/2 lies on A+ (exact)',
       gW == [sp.Integer(1), mh, -mh/(1 + mh)] and sp.simplify(wW - wpos) == 0
-      and sp.simplify(wW - (sp.Rational(1, 3) - sp.sqrt(7)/3*I)) == 0 and float(th0h) > float(pi/2))
+      and sp.simplify(wW - (sp.Rational(1, 3) - sp.sqrt(7)/3*I)) == 0
+      and sp.simplify(cos_th0h + sp.sqrt(7)/14) == 0 and cos_th0h.is_negative is True)
 PW = sp.simplify((Nf(C)/(2*m*sp.sqrt(R)*Mf(C))).subs(C, 0).subs(m, mh))
 check('10m CWW (4.5): P = N(0)/(2 mu sqrtR M(0)) = 5 sqrt7/2 at theta = pi/2, mu = 1/2 (eq:Ptheta, exact)',
       sp.simplify(PW - 5*sp.sqrt(7)/2) == 0, str(PW))
@@ -1184,6 +1257,48 @@ check('10m CWW (4.5), Biot-Savart at 50 digits: self-similar and collapsing, P =
       ' maps it onto eq:pos at mu = 1/2, theta = pi/2 (vortices 1 and 2 interchanged)',
       sprW < mp.mpf('1e-45') and kW[0].real < 0 and abs(P_of_kappa(kW[0]) - 5*mp.sqrt(7)/2) < mp.mpf('1e-45') and simW < mp.mpf('1e-45'),
       'spread %s, map residual %s, P = %s' % (mp.nstr(sprW, 3), mp.nstr(simW, 3), mp.nstr(P_of_kappa(kW[0]), 15)))
+# The map V of Chen, Walsh and Wheeler, their Eq. (4.4), the same in arXiv:2506.04093v1 and in Math. Ann. 396 (2026) 5:
+#   V_k(z, gamma, Omega) = sum_{j != k} gamma_j/(2 pi i (z_k - z_j)) + i Omega conj(z_k),  (z, gamma, Omega) in C^M x R^M x C.
+# With z_c = 0, V = 0 says conj(dz_k/dt) = conj(kappa) conj(z_k) by eq:bs: the self-similar motion with Omega = i conj(kappa).
+
+
+def V_cww(zs, gs, Om):
+    return [sum(gs[j]/(2*mp.pi*mp.mpc(0, 1)*(zs[k] - zs[j])) for j in range(len(zs)) if j != k) + mp.mpc(0, 1)*Om*mp.conj(zs[k])
+            for k in range(len(zs))]
+
+
+# Their triple (4.5) shifted by z_c = -2i/sqrt7, with their printed Omega = 35/(264 pi) and 1/kappa_CWW = sqrt7/(132 pi),
+# combined as in their Sect. 4.1: -1/(2 kappa_CWW) - i Omega =: -i Omega_bold, so Omega_bold = Omega - i/(2 kappa_CWW).
+zT = [z_ - zcW for z_ in zWn]
+OmT = mp.mpf(35)/(264*mp.pi) - mp.mpc(0, 1)*mp.sqrt(7)/(264*mp.pi)
+resT = max(abs(v_) for v_ in V_cww(zT, [mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3], OmT))
+resA = mp.mpf(0)                                  # along A+ for mu = 1/2: eq:pos with Omega(theta) = i conj(kappa(theta)), Lemma 3
+th0v = mp.acos(-mp.sqrt(7)/14)
+for f_ in ('0.1', '0.3', '0.5', '0.7', '0.9'):
+    thv = th0v*mp.mpf(f_)
+    OmA = mp.mpc(0, 1)*mp.conj(kappa_formula(mp.mpf(1)/2, thv))
+    resA = max(resA, max(abs(v_) for v_ in V_cww(config_theta(mp.mpf(1)/2, thv), Gams(mp.mpf(1)/2), OmA)))
+check('10m CWW map V, Eq. (4.4): V = 0 at their triple (4.5), shifted to z_c = 0, with their printed Omega and kappa, and their'
+      ' Omega_bold = i conj(kappa); V = 0 along A+ (mu = 1/2, five angles) with Omega(theta) = i conj(kappa(theta)) of Lemma 3',
+      resT < mp.mpf('1e-45') and abs(OmT - mp.mpc(0, 1)*mp.conj(kW[0])) < mp.mpf('1e-45') and resA < mp.mpf('1e-45'),
+      'residuals %s, %s' % (mp.nstr(resT, 3), mp.nstr(resA, 3)))
+# The symmetries used in the Discussion act on (z, gamma, Omega) by real-linear isomorphisms L with V(L Lambda) = A V(Lambda):
+# rotation (e^{i phi} z, gamma, Omega), A = e^{-i phi}; dilation (lam z, gamma, lam^{-2} Omega), A = 1/lam; circulations
+# (z, c gamma, c Omega), A = c; relabeling, A the same permutation. Checked at a point that is not a zero of V.
+zR = [mp.mpc('0.3', '-1.1'), mp.mpc('1.7', '0.4'), mp.mpc('-0.9', '0.8'), mp.mpc('0.1', '2.3')]
+gR = [mp.mpf('1.3'), mp.mpf('-0.7'), mp.mpf('2.1'), mp.mpf('0.45')]
+OR = mp.mpc('0.37', '-0.21')
+V0 = V_cww(zR, gR, OR)
+phR, laR, cR = mp.mpf('0.83'), mp.mpf('1.9'), mp.mpf('2.6')
+perm = [2, 0, 3, 1]
+eqv = max(
+    max(abs(a_ - mp.expj(-phR)*b_) for a_, b_ in zip(V_cww([mp.expj(phR)*z_ for z_ in zR], gR, OR), V0)),
+    max(abs(a_ - b_/laR) for a_, b_ in zip(V_cww([laR*z_ for z_ in zR], gR, OR/laR**2), V0)),
+    max(abs(a_ - cR*b_) for a_, b_ in zip(V_cww(zR, [cR*g_ for g_ in gR], cR*OR), V0)),
+    max(abs(a_ - V0[p_]) for a_, p_ in zip(V_cww([zR[p_] for p_ in perm], [gR[p_] for p_ in perm], OR), perm)))
+check('10m CWW map V: V(L Lambda) = A V(Lambda) for a rotation, a dilation with Omega -> lam^{-2} Omega, a factor c in the'
+      ' circulations with Omega -> c Omega, and a relabeling (50 digits, at a point with V != 0)',
+      eqv < mp.mpf('1e-45') and min(abs(v_) for v_ in V0) > mp.mpf('0.01'), 'max deviation %s' % mp.nstr(eqv, 3))
 
 # 10e. Remark 1: Q(a/b, xi^2) irreducible over Q for every a/b in (0, 1) with b <= 30, one by one.
 xi = sp.symbols('xi')

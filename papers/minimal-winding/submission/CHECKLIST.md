@@ -15,7 +15,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 
 - The manuscript, with the figures `paper/figures/minimal-winding.pdf`,
   `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
-  `paper/minimal-winding.pdf` (40 pages since the additions of release 2.2.0, 2026-09-27), the same PDF arXiv will build. The author block
+  `paper/minimal-winding.pdf` (41 pages since the additions of release 2.2.0 and the fixes of its third reading, 2026-09-27), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
 - The bibliography has 43 works. Every work cited in the LaTeX source has an entry, and every entry is
   cited.

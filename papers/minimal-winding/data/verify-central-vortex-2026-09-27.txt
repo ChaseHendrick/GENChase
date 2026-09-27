@@ -127,12 +127,13 @@ OK    Gotoda Fig. 3(b), Biot-Savart at 50 digits, five angles in (0, pi/2): self
 OK       omega_0 = Im kappa < 0 in this orientation, and |omega_0| t_c = P = (3/16)(7 - 4 cos 2theta)/sin 2theta   [max difference 1.07e-50]
 OK       at cos 2theta = 4/7, P = 3 sqrt(33)/16 = 1.0771054962   [2.67e-51]
 OK       negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands
-OK    Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at five angles (two of them expanding)   [max relative difference 2.79e-51]
+OK    Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at six angles, two of them (2.0 and 5.0) expanding   [max relative difference 2.79e-51; 2 expanding]
 OK       and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1   [max relative difference 4.0e-51]
 OK    CWW (4.6), third position read as -sqrt3/2 - 1 + i/2, turned by pi/6: the vortices of circulation (2 sqrt3 + 5)pi at +-1, those of circulation (sqrt3 - 4)pi at +-sqrt(2 + sqrt3) e^{i pi/12}: Proposition 2 with n = 2, theta = pi/12 (exact)
 OK       circulations: (4 - sqrt3)pi (x_2, -1) with x_2 = 2 + sqrt3, a positive factor; P = (4 sqrt3 - sqrt3 cos(pi/6))/(4 sin(pi/6)) = 2 sqrt3 - 3/4 by eq:Pring (exact)
 OK       Biot-Savart at 50 digits: z_c = 0, self-similar, collapsing, P = 2 sqrt3 - 3/4 = 2.71410161514   [spread 7.26e-52]
-OK       negative control: with the third position as printed in v1, z_c != 0 and the motion is not self-similar   [z_c = (0.0 + 0.18301j), spread 0.21]
+OK       their map V, Eq. (4.4), vanishes there with their printed Omega = 2 sqrt3 - 3/4 - i/2, which is i conj(kappa)   [residual 5.98e-51]
+OK       negative control: with the third position as printed (v1 and Math. Ann.), z_c != 0 and the motion is not self-similar   [z_c = (0.0 + 0.18301j), spread 0.21]
 OK    cosh(eta_n) = n/(n-1) gives sinh(eta_n/2)^2 = (x_n + 1/x_n - 2)/4 = 1/(2(n-1))
 OK    (n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})   [series 529*sqrt(2)*h**3/960 + 29*sqrt(2)*h/24]
 OK    ((n - 1)/n) exp(E_n - sqrt(n/2)) = 1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2}), since E_n has no term in 1/n   [series 265*h**2/576 + 29*sqrt(2)*h/24 + 1]

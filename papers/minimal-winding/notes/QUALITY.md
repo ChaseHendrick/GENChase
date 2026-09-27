@@ -21,30 +21,37 @@ GENChase: the companion repository does not carry `notes/`.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
-## Record (2026-09-25, updated 2026-09-27 for release 2.2.0)
+## Record (2026-09-25, updated 2026-09-27 for release 2.2.0 and its third reading)
 
 - [x] **1. Complete proofs.** Theorem 1 and Corollary 1 (three Euler vortices; Corollary 1 also has a direct proof
   from Lemmas 1 and 3), Theorem 2 with Remark 4 (the alpha-models, every alpha > -2), Propositions 1 to 4, Theorem 3
   (a strong vortex with weak tight pairs) and the lemmas are proved in the paper. Theorems 4 and 5 are
   computer-assisted (item 2). Release 2.2.0 (2026-09-27), the results of the retired identities note: the forms
-  P = u + 1/(2u) and P - sqrt(2) = (sqrt(2) u - 1)^2/(2u), the invariance under u -> 1/(2u), the angles of the
-  minimizing triangle and the reduction to Groebli's coefficient in Remark 2; the closed forms c_m of the critical
+  P = v + 1/(2v) and P - sqrt(2) = (sqrt(2) v - 1)^2/(2v), v = tan chi, the invariance under v -> 1/(2v), the angles
+  of the minimizing triangle and the reduction to Groebli's coefficient in Remark 2; after Lemma 3, that Groebli's
+  closed form gives P = |varkappa|/2 for every triple of circulations, which Lemma 6 at beta = 1 confirms by a
+  direct computation (added after the third reading); the closed forms c_m of the critical
   cosines in Proposition 1 and its proof; the two examples with n = 2 after Proposition 3; the expansion
   F_n = (1/4) e^sqrt(n/2) (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^(-3/2))) in Section 5; and, in the Meaning and
   limits paragraph, the identification of the triple and the quartet of Chen, Walsh and Wheeler with members of the
   families of Propositions 1 and 2, the invariance of their non-degeneracy under similarities, a positive factor in
   the circulations and relabeling, and the analyticity argument that gives non-degeneracy on those arcs except at
-  isolated angles. Each is proved in the text, with no new numbered environment.
+  isolated angles; since the third reading the argument states the form of their map V (their Eq. (4.4)) and the two
+  properties of it that it uses, real-analyticity and the behaviour under those symmetries. Each is proved in the
+  text, with no new numbered environment.
 - [x] **2. Rigorous computation.** Theorems 4 and 5 are proved by the Krawczyk operator in ball arithmetic
   (FLINT/Arb through python-flint, 320 bits) in `certify_collapses.py` and `certify_sqg60.py`, with negative controls
   in `certify_controls.py`; the resultants and sextics of Theorem 1 are exact (`verify_general_mu.py`), and so are
   the identities of the direct proof (`verify_direct_proof.py`). No step added in release 2.2.0 uses a computer;
-  its additions are checked exactly and at 50 to 60 digits in `verify_general_mu.py` (checks 10j to 10m, 140 in
-  all: the forms and angles of Remark 2, Groebli's Eqs. (8), (9), (11), (12) symbolically with the translation's
-  misprinted denominator as a negative control, the trigonometric roots of the cubic of Proposition 1, and the
-  triple of Chen, Walsh and Wheeler as the configuration theta = pi/2 of the family mu = 1/2) and in
-  `verify_central_vortex.py` (part 8, 102 checks in all: the n = 2 examples and the quartet of Chen, Walsh and
-  Wheeler exactly and against Biot-Savart, with the quartet's misprinted position as a negative control; the series
+  its additions are checked exactly and at 50 to 60 digits in `verify_general_mu.py` (checks 10j to 10m, 145 in
+  all: the forms and angles of Remark 2; Groebli's Eqs. (8), (9), (11), (12) symbolically for (1, 1, -1/2) and for
+  every triple of circulations against Lemma 6 at beta = 1, against Biot-Savart for six values of mu, and on his
+  example of Fig. 6, with the translation's misprinted denominator run through the same substitution as a negative
+  control; the trigonometric roots of the cubic of Proposition 1, to the tolerances Table 1 states; and the triple of
+  Chen, Walsh and Wheeler as the configuration theta = pi/2 of the family mu = 1/2, with their map V at it and along
+  A+ and V's behaviour under the symmetries) and in `verify_central_vortex.py` (part 8, 103 checks in all: the
+  n = 2 examples and the quartet of Chen, Walsh and Wheeler exactly and against Biot-Savart, with their map V and with
+  the quartet's misprinted position as a negative control; the series
   of E_n and of the F_n expansion with its coefficients 29/(12 sqrt 2) and 265/576; F_n at n = 10^k, k = 1..6, and
   n = 10^8, 10^12, where n^(3/2) times the remainder stays in [-0.28, -0.07]; and the coefficient 30 in place of 29
   as a negative control).
@@ -58,11 +65,14 @@ GENChase: the companion repository does not carry `notes/`.
 - [x] **4. Sources read.** The proofs are self-contained apart from standard tools (resultants, the Krawczyk test);
   the works credited in the Discussion are background, and RESEARCH.md records how far each was read. For
   release 2.2.0 (RESEARCH.md, log of 2026-09-27): Groebli 1877, Sect. 10, re-read in the original (BSB scan,
-  printed pp. 55-58, Eqs. (1) to (15)) and in Goodman's translation, arXiv:2404.01305v1, Sect. 10, which the
-  bibliography cites; Chen, Walsh and Wheeler, arXiv:2506.04093v1 and Math. Ann. 396 (2026) 5, read for the
-  abstract, Sect. 1, Sect. 4.1 (the map V of Eq. (4.4), Definition 4.1, Examples 4.2 and 4.3 with Eqs. (4.5) and
-  (4.6)), Theorems 1.3 and 4.4 and Corollary 4.6, not their proofs; the paper uses Definition 4.1 and the two
-  examples as stated there, and notes the sign of the quartet's third position in v1; the parameters of Gotoda's
+  printed pp. 55-59, all of Sect. 10: Eqs. (1) to (15) and the example of Fig. 6 on p. 59) and in Goodman's
+  translation, arXiv:2404.01305v1, Sect. 10, pp. 36-39, which the bibliography cites, read in full a second time
+  for the third reading to see whether it discusses an extremum of his coefficient (it does not); Chen, Walsh and
+  Wheeler, arXiv:2506.04093v1 and Math. Ann. 396 (2026) 5, read for the abstract, Sect. 1, Sect. 4.1 (the map V of
+  Eq. (4.4), Definition 4.1, Examples 4.2 and 4.3 with Eqs. (4.5) and (4.6)), Theorems 1.3 and 4.4 and Corollary
+  4.6, not their proofs, the journal version (pp. 26-29 of 40) fetched and compared for the third reading: the same
+  numbering and the same sign of the quartet's third position as v1; the paper uses the form of V, Definition 4.1
+  and the two examples as stated there, and notes that sign; the parameters of Gotoda's
   Fig. 3(b) checked in arXiv:2002.09624v1, Sect. 3.2. Yudovich 1963, cited for the global existence of vortex
   patches, was not opened: it is cited as Chen, Walsh and Wheeler (Sect. 1, their ref. [53]) and the stable-expansion
   record of 2026-09-26 recall it, for bounded domains, with Crippa and Stefani, Calc. Var. PDE 63 (2024) 168,
@@ -70,6 +80,10 @@ GENChase: the companion repository does not carry `notes/`.
   proof.
 - [x] **5. Prior article review.** RESEARCH.md: the final prior-article search of the pre-submission review (28 queries), the
   generalizations entry O and the owner-supplied full texts. The paper's novelty statements say "we have not found".
+  Since the third reading of release 2.2.0 the statements that P has not been found minimized name Groebli's Sect. 10
+  explicitly (Introduction, Discussion): read in the original, pp. 55-59, it gives varkappa, that is 2P, in closed
+  form for every triple of circulations and describes the possible shapes, but does not discuss the extremum; this
+  narrows the wording and adds no claim.
   Open: O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126 (four-vortex collapse configurations at a fixed rate) is
   unread (paywalled); it bears on the four-vortex minimum of Theorem 4 only. Release 2.2.0 adds no novelty
   statement: the sentence after Proposition 3 still says that the sources give the rates and none minimizes or
@@ -94,30 +108,46 @@ GENChase: the companion repository does not carry `notes/`.
   correctly, "computed at 50 digits" for the non-certified collapses, 1.717, a rigorous sign check of the objective
   in certify_collapses.py part 5 (94 checks), the side ratio at Gamma = 0.49 solved exactly (0.7514840918), the
   subdivision count (336 leaves, 733 boxes), stale labels in verify_general_mu.py, and no run time in
-  sqg60-certificate.json. Release 2.2.0 (2026-09-27): two in-project adversarial referee readings of the added
+  sqg60-certificate.json. Release 2.2.0 (2026-09-27): three in-project adversarial referee readings of the added
   passages (Remark 2, the statement and proof of Proposition 1, the expansion of F_n and the examples after
-  Proposition 3 in Section 5, the new rows of Table 1 and the Meaning and limits paragraph), one of the mathematics
-  and one of the claims and attribution, each told to find errors. The brief was wider than this item's wording: at
-  least one referee, by its own account, was briefed with the branch as a diff against main (the paper, its programs
-  and data, and the records moved from identities/), the AGENTS.md rules and the files of identities/, not only with
-  the paper and its programs; the other's brief is not recorded here beyond its subject. The two readings raised 11
-  serious findings; an in-project skeptic re-checked each against the files and the sources, recomputing every number,
-  and confirmed 10 and refuted 1. Must-fix, all fixed: this item was ticked while the reading was still under way, and
-  merging would have synced the unread additions to the public companion (found by both readings; now recorded here);
-  the Discussion credited the global existence of vortex patches only to a 2026 secondary discussion (now Yudovich
-  1963, with Crippa and Stefani 2024 for the whole plane). Should-fix, all fixed: the two configurations Chen, Walsh
-  and Wheeler verify are members of the paper's mu = 1/2 and n = 2 families (now said and proved, with the misprint in
-  v1 of their quartet, and non-degeneracy deduced on those arcs except at isolated angles); "n times the remainder at
-  most 0.46" held only at the tested n (now the coefficient 265/576 is stated and proved, and the program checks the
-  limit); the note's retirement and the deletion of its Zenodo metadata were presented as settled without an owner's
-  decision, and the records disagreed on it (now pending everywhere, with the papers.json entry and the metadata
-  restored, and the sentence about the note taken out of RELEASES.md); the Parallelogram and Quincunx plates printed
-  the signed product (now |omega_0| t_c); the papers.json note was stale; identities/README.md misstated the
+  Proposition 3 in Section 5, the new rows of Table 1 and the Meaning and limits paragraph), each told to find errors.
+  None of them is an outside review. The first two, on 2026-09-27, were one of the mathematics and one of the claims
+  and attribution, and their brief was wider than this item's wording: at least one referee, by its own account, was
+  briefed with the branch as a diff against main (the paper, its programs and data, and the records moved from
+  identities/), the AGENTS.md rules and the files of identities/, not only with the paper and its programs; the
+  other's brief is not recorded beyond its subject. They raised 11 serious findings; an in-project skeptic re-checked
+  each against the files and the sources, recomputing every number, and confirmed 10 and refuted 1. Must-fix, all
+  fixed: this item had been ticked before those readings were recorded, and merging would have synced the unread
+  additions to the public companion (found by both readings; fixed by recording them here); the Discussion credited
+  the global existence of vortex patches only to a 2026 secondary discussion (now Yudovich 1963, with Crippa and
+  Stefani 2024 for the whole plane). Should-fix, all fixed: the two configurations Chen, Walsh and Wheeler verify are
+  members of the paper's mu = 1/2 and n = 2 families (now said and proved, with the misprint of their quartet, and
+  non-degeneracy deduced on those arcs except at isolated angles); "n times the remainder at most 0.46" held only at
+  the tested n (now the coefficient 265/576 is stated and proved, and the program checks the limit); the note's
+  retirement and the deletion of its Zenodo metadata were presented as settled without an owner's decision (then
+  marked pending everywhere; the owner decided the same day, so the retirement is now in effect by the owner's
+  decision of 2026-09-27, and the records cite that decision); the Parallelogram and Quincunx plates printed the
+  signed product (now |omega_0| t_c); the papers.json note was stale; identities/README.md misstated the
   fingerprints of the note's files. Refuted: that the note's Kimura erratum misstates note.typ (the note cites Kimura
   1987 only for the set-up, never Eq. (4.4); a clarifying parenthesis was added anyway). The nits that were plainly
-  right were applied. The fixes were checked by rerunning the two programs (140 and 102 checks) and rebuilding the
-  PDF; they were not given a further reading. Findings, verdicts and fixes: `notes/review-identities-2026-09-27.md`.
+  right were applied. Findings, verdicts and fixes: `notes/review-identities-2026-09-27.md`. The third reading,
+  on 2026-09-27 after those fixes, was briefed only with the paper and its programs (it did not see notes/ or
+  anything outside the paper's folder), re-derived every closed form of the additions independently, among them
+  Groebli's coefficient for every triple of circulations through Lemma 6, and reran both programs. Verdict: minor
+  revision, no must-fix. Its four should-fix findings are fixed: Groebli's Sect. 10 is credited as the first closed
+  form of P for every triple of circulations (Section 2, after Lemma 3, Remark 2), and the statements that P has not
+  been found minimized name it (Sect. 10, read again in the original, does not discuss the extremum); the notation
+  clashes are removed (tan chi is v, Groebli's coefficient varkappa, his shape constant and parameters a_G and
+  mu^G_i, and the expansion of F_n no longer uses c and sigma_n); the citation of Chen, Walsh and Wheeler names
+  arXiv:2506.04093v1 as the numbering cited and says that the journal version has the same numbers and the same
+  misprint; and the non-degeneracy argument states the form of their map V and the two properties it uses. Its eight
+  nits are applied (the wording after Proposition 3, a sixth angle in verify_central_vortex.py so that two expand,
+  tolerances matching Table 1, an exact test of cos theta_0 < 0, a negative control run through the substitution,
+  the RELEASES.md wording on sources, the finite-core sentence stated as an expectation with the English translation
+  of Yudovich 1963, and Remark 2 in three paragraphs). The fixes were checked by rerunning the two programs (145 and
+  103 checks) and rebuilding the PDF (41 pages); they were not given a further reading. Report, verdicts and the
+  response to each finding: `notes/review-identities-3-2026-09-27.md`.
 - [x] **7. Reproducible.** The programs in `code/` run from the companion (release 2.1.0,
   doi:10.5281/zenodo.22966989; release 2.2.0 is not yet made); `paper-check` and `paper-sync --check` pass
-  (2026-09-27, after the fixes of the 2.2.0 readings), and the stated counts are current: 40 pages, 43 references,
-  140 checks in `verify_general_mu.py` and 102 in `verify_central_vortex.py`.
+  (2026-09-27, after the fixes of the third 2.2.0 reading), and the stated counts are current: 41 pages, 43
+  references, 145 checks in `verify_general_mu.py` and 103 in `verify_central_vortex.py`.
