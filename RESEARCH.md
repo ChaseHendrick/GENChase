@@ -753,6 +753,7 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `direct-gravity` | Direct Gravity | common | science only | never searched |
 | `volume-wave` | Wave volume | occasional | science only | never searched |
 | `phase` | Phase portraits | occasional | science only | never searched |
+| `neural-field` | Neural-Field Pulse | rare | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 

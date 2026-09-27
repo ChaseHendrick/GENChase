@@ -114,7 +114,7 @@ Further bounded audits: [PLASMA.md](PLASMA.md), [SHALLOW.md](SHALLOW.md), and [N
 
 The five multi-species reaction-diffusion tabs (excitable, turing, cyclic, chemotaxis, vegetation) have bounded GPU benchmarks in [RDX.md](RDX.md).
 
-The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](PDE-FAMILY.md). Neuroscience additions are bounded by [HODGKIN-HUXLEY.md](HODGKIN-HUXLEY.md) and [NEURAL-MASS.md](NEURAL-MASS.md); neither is a clinical or finite-neuron validation.
+The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](PDE-FAMILY.md). Neuroscience additions are bounded by [HODGKIN-HUXLEY.md](HODGKIN-HUXLEY.md) and [NEURAL-MASS.md](NEURAL-MASS.md); neither is a clinical or finite-neuron validation. The neural-field tab's timed pulse speed is checked against the computer-assisted speed enclosures of `papers/nf-pulse` at two parameter points by `tools/neural-field-science.js` ([results](results/neural-field-science.json)), with fourth-order refinement and three failure controls.
 
 [Direct gravity](DIRECT-GRAVITY.md) and [wave volume](VOLUME-WAVE.md) have bounded analytic and numerical checks. Their extreme workload controls extend beyond the tested accuracy domains. The optional native CPU fixtures are in `results/heavy-runner-check.json`; CuPy/CUDA execution remains unverified on the local Mac.
 

@@ -145,6 +145,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [nonreciprocal](src/modules/nonreciprocal.js) | validated within stated limits | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded | none |
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | validated within stated limits | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js), [hodgkin-huxley-duration-science.js](tools/hodgkin-huxley-duration-science.js) | Limited evidence recorded | none |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded | none |
+| [neural-field](src/modules/neural-field.js) | partially validated | [neural-field-science.js](tools/neural-field-science.js) | Not scientifically validated | none |
 | [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded | none |
 | [direct-gravity](src/modules/direct-gravity.js) | validated within stated limits | [direct-gravity-science.js](tools/direct-gravity-science.js), [direct-gravity-largen-science.js](tools/direct-gravity-largen-science.js) | Limited evidence recorded | none |
 
@@ -591,6 +592,15 @@ No record has an outside review yet; every review so far was done inside the pro
 - Complete numerical and print evidence covers exactly the finite recipes and benchmark domain in validation/NEURAL-MASS.md.
 - Larger parameter domains, longer histories, other hardware and physical or biological interpretations remain outside this completed label.
 - Infinite-population MPR model, not a finite-neuron or clinical model. Prints preserve recorded samples without adding temporal resolution.
+
+### neural-field
+
+- The comparison covers two parameter points only, beta = 20, theta = 1/4, eps = 1/10 and beta = 12, theta = 1/4, eps = 3/20 (gamma = 0, kernel e^-\|x\|/2), with a central kick (six kick shapes at the first point, the default shape at the second), rings of 240 and 400, and the shipped cells (1,024, 2,048, 4,096) and steps (0.1, 0.05, 0.025). At every other parameter the timed speed is printed as a measurement with no reference and no error estimate.
+- The reference speeds are computer-assisted enclosures of width 1e-25 drafted in this repository (papers/nf-pulse and papers/nf-pulse/ext/gain-12), computed in ball arithmetic from the traveling-wave ODE by programs separate from this tab. The lemmas those proofs rest on do not yet have written proofs (papers/nf-pulse/notes/QUALITY.md).
+- The error estimate \|K\| dx^4 + \|Kt\| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 7.6e-10 and 2.2e-10 from the proved speeds.
+- That the plate settles onto the fast pulse is observed, not proved: stability of the fast pulse is not established (papers/nf-pulse/ext/stability). The slow pulse proved at the first point is expected to be unstable; kicks at the launch threshold hesitate at a front speed near 0.1 and then die or accelerate to the fast pulse, an observation at one kick width.
+- The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, isolated after covering that distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.
+- No print-accuracy evidence is registered. The plate is a Catmull-Rom display of a Float32 record of u and v (at most 2,048 columns and 1,536 rows); prints add pixels, not resolution. Periodic ring only: no two-dimensional field, synaptic delay, recovery decay (gamma), noise or heterogeneity.
 
 ### volume-wave
 

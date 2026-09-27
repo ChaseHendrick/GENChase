@@ -480,6 +480,7 @@ void main(){
     nonreciprocal: 'rare',
     'hodgkin-huxley': 'occasional',
     'neural-mass': 'occasional',
+    'neural-field': 'rare',
     maxwell: 'occasional',
     molecular: 'occasional',
     // ubiquitous

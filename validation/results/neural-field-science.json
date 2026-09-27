@@ -1,0 +1,1127 @@
+{
+ "sourceSha256": "b8c040ac5cbc5988f2a3a7d82bd40695f1631767049359823bec08efb32833df",
+ "rngSha256": "3a139b7b42c4f70e42ef0664643d62d9c8d769fca1c97220aaf9460071690ab5",
+ "harnessSha256": "be354b3742d755ce318b133933dc1a96bf01167c826c703c27b19d8f237bc077",
+ "command": "node tools/neural-field-science.js --write",
+ "scope": "Pinto-Ermentrout neural field with logistic rate, gamma = 0, kernel exp(-|x|)/2, on a periodic ring: the maintained Float64 solver (Numerov kernel solve, classical RK4) and its front timing, against the computer-assisted speed enclosures at beta 20, theta 1/4, eps 1/10 (papers/nf-pulse) and beta 12, theta 1/4, eps 3/20 (papers/nf-pulse/ext/gain-12).",
+ "kernel": {
+  "method": "Numerov periodic solve of r - r_xx = f",
+  "constantError": 1.2656542480726785e-14,
+  "modes": [
+   {
+    "wave": 1,
+    "q": 0.15707963267948966,
+    "errors": [
+     {
+      "N": 100,
+      "h": 0.4,
+      "maxError": 1.5255633423194581e-9
+     },
+     {
+      "N": 200,
+      "h": 0.2,
+      "maxError": 9.537293177430683e-11
+     },
+     {
+      "N": 400,
+      "h": 0.1,
+      "maxError": 5.9504623450834515e-12
+     },
+     {
+      "N": 800,
+      "h": 0.05,
+      "maxError": 3.8324898810060404e-13
+     }
+    ],
+    "ratios": [
+     15.99576854709252,
+     16.027818721197082,
+     15.526361529548089
+    ]
+   },
+   {
+    "wave": 3,
+    "q": 0.47123889803846897,
+    "errors": [
+     {
+      "N": 100,
+      "h": 0.4,
+      "maxError": 7.828572152757118e-7
+     },
+     {
+      "N": 200,
+      "h": 0.2,
+      "maxError": 4.889512361661019e-8
+     },
+     {
+      "N": 400,
+      "h": 0.1,
+      "maxError": 3.0554133667592964e-9
+     },
+     {
+      "N": 800,
+      "h": 0.05,
+      "maxError": 1.9096302317223035e-10
+     }
+    ],
+    "ratios": [
+     16.01094664192171,
+     16.00278513819244,
+     16.000026162151855
+    ]
+   },
+   {
+    "wave": 12,
+    "q": 1.8849555921538759,
+    "errors": [
+     {
+      "N": 100,
+      "h": 0.4,
+      "maxError": 0.00023603716351869308
+     },
+     {
+      "N": 200,
+      "h": 0.2,
+      "maxError": 0.000014477644410315627
+     },
+     {
+      "N": 400,
+      "h": 0.1,
+      "maxError": 9.023749235337331e-7
+     },
+     {
+      "N": 800,
+      "h": 0.05,
+      "maxError": 5.635970676265423e-8
+     }
+    ],
+    "ratios": [
+     16.303561327318665,
+     16.04393476895462,
+     16.01099394171575
+    ]
+   }
+  ],
+  "symbol": {
+   "N": 256,
+   "h": 0.25,
+   "min": 0.010309278350515453,
+   "max": 0.9999999999999952,
+   "monotoneDecreasing": true
+  }
+ },
+ "stepBound": {
+  "argument": "eigenvalues of the linearization: real in [-1, 0) or modulus sqrt(eps) with real part in [-1/2, 0) for the decaying modes, independent of the cell size",
+  "rows": [
+   {
+    "eps": 0.01,
+    "largestStableStep": 2.8137178862398544
+   },
+   {
+    "eps": 0.1,
+    "largestStableStep": 3.139072231659788
+   },
+   {
+    "eps": 0.3,
+    "largestStableStep": 4.775387927609355
+   }
+  ],
+  "offeredSteps": [
+   0.1,
+   0.05,
+   0.025
+  ],
+  "note": "Growing modes (mu > 0, up to beta/4 - 1) are the physical instability of the front; at dt = 0.1 and beta = 40 dt times the largest growth rate is 0.9."
+ },
+ "proved": [
+  {
+   "point": {
+    "beta": 20,
+    "theta": 0.25,
+    "eps": 0.1,
+    "gamma": 0,
+    "provedLower": "1.1027477097...",
+    "width": 1e-25,
+    "source": "papers/nf-pulse"
+   },
+   "moduleK": -0.00919,
+   "moduleKt": -0.001,
+   "base": {
+    "beta": 20,
+    "theta": 0.25,
+    "eps": 0.1,
+    "stimulus": "single",
+    "kick": 1,
+    "width": 2,
+    "length": 240,
+    "duration": 100
+   },
+   "grid": [
+    {
+     "cells": 1024,
+     "dt": 0.1,
+     "dx": 0.234375,
+     "speed": 1.1027196773163521,
+     "window": [
+      41.5,
+      80.9
+     ],
+     "rows": 395,
+     "fronts": 2,
+     "errorFromProved": -0.00002803241780702237,
+     "seconds": 0.401017119
+    },
+    {
+     "cells": 2048,
+     "dt": 0.05,
+     "dx": 0.1171875,
+     "speed": 1.1027459721101376,
+     "window": [
+      41.5,
+      80.80000000000001
+     ],
+     "rows": 394,
+     "fronts": 2,
+     "errorFromProved": -0.0000017376240215583039,
+     "seconds": 1.001384366
+    },
+    {
+     "cells": 4096,
+     "dt": 0.025,
+     "dx": 0.05859375,
+     "speed": 1.1027476018401632,
+     "window": [
+      41.5,
+      80.80000000000001
+     ],
+     "rows": 394,
+     "fronts": 2,
+     "errorFromProved": -1.0789399595978466e-7,
+     "seconds": 3.2981906500000004
+    }
+   ],
+   "observedOrder": 4.012072284247913,
+   "timeRefinement": [
+    {
+     "dt": 0.1,
+     "dx": 0.1171875,
+     "speed": 1.1027458896356919
+    },
+    {
+     "dt": 0.05,
+     "dx": 0.1171875,
+     "speed": 1.1027459721101376
+    },
+    {
+     "dt": 0.025,
+     "dx": 0.1171875,
+     "speed": 1.102745977961332
+    }
+   ],
+   "timeOrder": 3.81714411640772,
+   "K": -0.009184535272543322,
+   "Kt": -0.000998603847316796,
+   "richardsonLimit": 1.1027477104888315,
+   "limitMinusProved": 7.546723246321108e-10,
+   "corners": [
+    {
+     "length": 400,
+     "cells": 1024,
+     "dt": 0.1,
+     "dx": 0.390625,
+     "speed": 1.1025246244648783,
+     "error": -0.0002230852692808316,
+     "tolerance": 0.00042816272303581237,
+     "estimate": -0.0002140713615179062
+    },
+    {
+     "length": 240,
+     "cells": 4096,
+     "dt": 0.1,
+     "dx": 0.05859375,
+     "speed": 1.1027475135583558,
+     "error": -1.9617580337971674e-7,
+     "tolerance": 4.3664600353688007e-7,
+     "estimate": -2.0832300176844002e-7
+    },
+    {
+     "length": 400,
+     "cells": 1024,
+     "dt": 0.025,
+     "dx": 0.390625,
+     "speed": 1.1025247200920747,
+     "error": -0.00022298964208444794,
+     "tolerance": 0.0004279635042858124,
+     "estimate": -0.0002139717521429062
+    }
+   ]
+  },
+  {
+   "point": {
+    "beta": 12,
+    "theta": 0.25,
+    "eps": 0.15,
+    "gamma": 0,
+    "provedLower": "1.0475374978...",
+    "width": 1e-25,
+    "source": "papers/nf-pulse/ext/gain-12"
+   },
+   "moduleK": -0.00284,
+   "moduleKt": -0.00071,
+   "base": {
+    "beta": 12,
+    "theta": 0.25,
+    "eps": 0.15,
+    "stimulus": "single",
+    "kick": 1,
+    "width": 2,
+    "length": 240,
+    "duration": 110
+   },
+   "grid": [
+    {
+     "cells": 1024,
+     "dt": 0.1,
+     "dx": 0.234375,
+     "speed": 1.047528849879153,
+     "window": [
+      43.6,
+      83.9
+     ],
+     "rows": 404,
+     "fronts": 2,
+     "errorFromProved": -0.000008647920018090005,
+     "seconds": 0.2581253809999998
+    },
+    {
+     "cells": 2048,
+     "dt": 0.05,
+     "dx": 0.1171875,
+     "speed": 1.0475369572931985,
+     "window": [
+      43.6,
+      83.9
+     ],
+     "rows": 404,
+     "fronts": 2,
+     "errorFromProved": -5.405059726459882e-7,
+     "seconds": 1.064406527000001
+    },
+    {
+     "cells": 4096,
+     "dt": 0.025,
+     "dx": 0.05859375,
+     "speed": 1.0475374642202127,
+     "window": [
+      43.6,
+      83.9
+     ],
+     "rows": 404,
+     "fronts": 2,
+     "errorFromProved": -3.3578958502644696e-8,
+     "seconds": 3.875158759
+    }
+   ],
+   "observedOrder": 3.9993918710382372,
+   "timeRefinement": [
+    {
+     "dt": 0.1,
+     "dx": 0.1171875,
+     "speed": 1.0475369002387602
+    },
+    {
+     "dt": 0.05,
+     "dx": 0.1171875,
+     "speed": 1.0475369572931985
+    },
+    {
+     "dt": 0.025,
+     "dx": 0.1171875,
+     "speed": 1.0475369614554948
+    }
+   ],
+   "timeOrder": 3.7768875492001937,
+   "K": -0.0028435990397135415,
+   "Kt": -0.0007103652327108041,
+   "richardsonLimit": 1.047537498015347,
+   "limitMinusProved": 2.161757439722578e-10,
+   "corners": [
+    {
+     "length": 400,
+     "cells": 1024,
+     "dt": 0.1,
+     "dx": 0.390625,
+     "speed": 1.047470414132529,
+     "error": -0.0000670836666420982,
+     "tolerance": 0.00013240980559539795,
+     "estimate": -0.00006619490279769898
+    },
+    {
+     "length": 240,
+     "cells": 4096,
+     "dt": 0.1,
+     "dx": 0.05859375,
+     "speed": 1.0475374030038298,
+     "error": -9.479534135437007e-8,
+     "tolerance": 2.2895045158267022e-7,
+     "estimate": -1.0447522579133511e-7
+    },
+    {
+     "length": 400,
+     "cells": 1024,
+     "dt": 0.025,
+     "dx": 0.390625,
+     "speed": 1.0474704753870623,
+     "error": -0.00006702241210887472,
+     "tolerance": 0.00013226836028289795,
+     "estimate": -0.00006612418014144898
+    }
+   ]
+  }
+ ],
+ "timing": {
+  "nearThreshold": {
+   "width": 1.5,
+   "threshold": [
+    0.2556425631046295,
+    0.25564256445504724
+   ],
+   "launched": {
+    "kick": 0.2556428200976117,
+    "alive": 2,
+    "rows": [
+     {
+      "t": 0.5,
+      "speed": 0.19387019414614315
+     },
+     {
+      "t": 1,
+      "speed": 0.1424885882605622
+     },
+     {
+      "t": 1.5,
+      "speed": 0.12120191503890965
+     },
+     {
+      "t": 2,
+      "speed": 0.11066335797204374
+     },
+     {
+      "t": 2.5,
+      "speed": 0.10524552047900215
+     },
+     {
+      "t": 3,
+      "speed": 0.10290107143282512
+     },
+     {
+      "t": 3.5,
+      "speed": 0.10296337601971572
+     },
+     {
+      "t": 4,
+      "speed": 0.10581290355821693
+     },
+     {
+      "t": 4.5,
+      "speed": 0.11366346120985327
+     },
+     {
+      "t": 5,
+      "speed": 0.1320420825331894
+     },
+     {
+      "t": 5.5,
+      "speed": 0.17321239146986045
+     },
+     {
+      "t": 6,
+      "speed": 0.25772906035706455
+     },
+     {
+      "t": 6.5,
+      "speed": 0.4024196760057066
+     },
+     {
+      "t": 7,
+      "speed": 0.5866592582501653
+     },
+     {
+      "t": 7.5,
+      "speed": 0.754726765178134
+     },
+     {
+      "t": 8,
+      "speed": 0.8761065772397387
+     },
+     {
+      "t": 8.5,
+      "speed": 0.9558370080247869
+     },
+     {
+      "t": 9,
+      "speed": 1.0076328198862257
+     },
+     {
+      "t": 9.5,
+      "speed": 1.0416329717481858
+     },
+     {
+      "t": 10,
+      "speed": 1.0638281724702665
+     },
+     {
+      "t": 10.5,
+      "speed": 1.0782393443832916
+     },
+     {
+      "t": 11,
+      "speed": 1.0873963251507348
+     },
+     {
+      "t": 11.5,
+      "speed": 1.0931939157875377
+     },
+     {
+      "t": 12,
+      "speed": 1.0968791094692278
+     },
+     {
+      "t": 12.5,
+      "speed": 1.0991523749599992
+     },
+     {
+      "t": 13,
+      "speed": 1.1005690018499763
+     },
+     {
+      "t": 13.5,
+      "speed": 1.1014975781156409
+     },
+     {
+      "t": 14,
+      "speed": 1.1020411392444203
+     },
+     {
+      "t": 14.5,
+      "speed": 1.1023710276292604
+     },
+     {
+      "t": 15,
+      "speed": 1.102602693400172
+     },
+     {
+      "t": 15.5,
+      "speed": 1.1027409396739358
+     },
+     {
+      "t": 16,
+      "speed": 1.102803941044158
+     },
+     {
+      "t": 16.5,
+      "speed": 1.1028400252088204
+     },
+     {
+      "t": 17,
+      "speed": 1.1028638975396916
+     },
+     {
+      "t": 17.5,
+      "speed": 1.1028348013140885
+     },
+     {
+      "t": 18,
+      "speed": 1.1028062885766303
+     },
+     {
+      "t": 18.5,
+      "speed": 1.102820924150592
+     },
+     {
+      "t": 19,
+      "speed": 1.1028040403994055
+     },
+     {
+      "t": 19.5,
+      "speed": 1.1027775726381606
+     },
+     {
+      "t": 20,
+      "speed": 1.10277679618207
+     },
+     {
+      "t": 20.5,
+      "speed": 1.1027849461881942
+     },
+     {
+      "t": 21,
+      "speed": 1.1027631240594928
+     },
+     {
+      "t": 21.5,
+      "speed": 1.1027459511572033
+     },
+     {
+      "t": 22,
+      "speed": 1.1027765438992674
+     },
+     {
+      "t": 22.5,
+      "speed": 1.1027589495971597
+     },
+     {
+      "t": 23,
+      "speed": 1.1027406506434545
+     },
+     {
+      "t": 23.5,
+      "speed": 1.1027576360773992
+     },
+     {
+      "t": 24,
+      "speed": 1.1027600375813336
+     },
+     {
+      "t": 24.5,
+      "speed": 1.102742397743441
+     },
+     {
+      "t": 25,
+      "speed": 1.1027401277206081
+     },
+     {
+      "t": 25.5,
+      "speed": 1.102763166551199
+     },
+     {
+      "t": 26,
+      "speed": 1.102746862184972
+     },
+     {
+      "t": 26.5,
+      "speed": 1.1027311665604884
+     },
+     {
+      "t": 27,
+      "speed": 1.1027603232336105
+     },
+     {
+      "t": 27.5,
+      "speed": 1.102752445797364
+     },
+     {
+      "t": 28,
+      "speed": 1.1027357889572613
+     },
+     {
+      "t": 28.5,
+      "speed": 1.1027455903775945
+     },
+     {
+      "t": 29,
+      "speed": 1.1027581170475287
+     },
+     {
+      "t": 29.5,
+      "speed": 1.1027416398362675
+     },
+     {
+      "t": 30,
+      "speed": 1.1027312462680356
+     },
+     {
+      "t": 30.5,
+      "speed": 1.1027631313085067
+     },
+     {
+      "t": 31,
+      "speed": 1.1027480352718158
+     },
+     {
+      "t": 31.5,
+      "speed": 1.1027320433169052
+     },
+     {
+      "t": 32,
+      "speed": 1.1027531242741588
+     },
+     {
+      "t": 32.5,
+      "speed": 1.1027543848944106
+     },
+     {
+      "t": 33,
+      "speed": 1.1027377863846368
+     },
+     {
+      "t": 33.5,
+      "speed": 1.1027388340695552
+     },
+     {
+      "t": 34,
+      "speed": 1.1027601498639115
+     },
+     {
+      "t": 34.5,
+      "speed": 1.102744190088515
+     },
+     {
+      "t": 35,
+      "speed": 1.1027291215598325
+     },
+     {
+      "t": 35.5,
+      "speed": 1.1027608581890718
+     },
+     {
+      "t": 36,
+      "speed": 1.1027507494694646
+     },
+     {
+      "t": 36.5,
+      "speed": 1.1027343626373067
+     },
+     {
+      "t": 37,
+      "speed": 1.1027467874223476
+     },
+     {
+      "t": 37.5,
+      "speed": 1.1027569625093747
+     },
+     {
+      "t": 38,
+      "speed": 1.1027405014940541
+     },
+     {
+      "t": 38.5,
+      "speed": 1.1027326597712772
+     },
+     {
+      "t": 39,
+      "speed": 1.102762338217076
+     },
+     {
+      "t": 39.5,
+      "speed": 1.1027470569354136
+     },
+     {
+      "t": 40,
+      "speed": 1.1027312634158761
+     }
+    ]
+   },
+   "died": {
+    "kick": 0.2556423074620664,
+    "alive": 0,
+    "rows": [
+     {
+      "t": 0.5,
+      "speed": 0.19385689358557556
+     },
+     {
+      "t": 1,
+      "speed": 0.14245378095779415
+     },
+     {
+      "t": 1.5,
+      "speed": 0.12111771326794951
+     },
+     {
+      "t": 2,
+      "speed": 0.11045517668276261
+     },
+     {
+      "t": 2.5,
+      "speed": 0.10472260045378334
+     },
+     {
+      "t": 3,
+      "speed": 0.10156642310198549
+     },
+     {
+      "t": 3.5,
+      "speed": 0.09953874579480271
+     },
+     {
+      "t": 4,
+      "speed": 0.09700893317153714
+     },
+     {
+      "t": 4.5,
+      "speed": 0.09113180930194176
+     },
+     {
+      "t": 5,
+      "speed": 0.07485641546213628
+     }
+    ]
+   },
+   "rowsWithin005OfSlowSpeed": 1
+  },
+  "skip": 30,
+  "minWindow": 20,
+  "ahead": 42,
+  "restFrom": 22,
+  "restTol": 1e-7,
+  "windows": [
+   {
+    "from": 10,
+    "to": 30,
+    "speed": 1.1027726135003935,
+    "minusLate": 0.00002501194715098798
+   },
+   {
+    "from": 20,
+    "to": 40,
+    "speed": 1.1027478865871783,
+    "minusLate": 2.850339357873821e-7
+   },
+   {
+    "from": 30,
+    "to": 55,
+    "speed": 1.1027476036557342,
+    "minusLate": 2.102491736266643e-9
+   },
+   {
+    "from": 40,
+    "to": 65,
+    "speed": 1.102747602049781,
+    "minusLate": 4.965385880240092e-10
+   },
+   {
+    "from": 55,
+    "to": 80,
+    "speed": 1.1027476015532425,
+    "minusLate": 0
+   }
+  ],
+  "stimuli": [
+   {
+    "kick": 0.3,
+    "width": 2,
+    "speed": 1.1027459774528385,
+    "error": -0.0000017322813206099852,
+    "tolerance": 0.00000349883605659008
+   },
+   {
+    "kick": 2,
+    "width": 0.5,
+    "speed": 1.1027459755025055,
+    "error": -0.0000017342316536161917,
+    "tolerance": 0.00000349883605659008
+   },
+   {
+    "kick": 2,
+    "width": 8,
+    "speed": 1.1027459796205967,
+    "error": -0.0000017301135624148145,
+    "tolerance": 0.00000349883605659008
+   },
+   {
+    "kick": 0.26,
+    "width": 1.5,
+    "speed": 1.1027459860815914,
+    "error": -0.0000017236525677866155,
+    "tolerance": 0.00000349883605659008
+   },
+   {
+    "kick": 0.5,
+    "width": 8,
+    "speed": 1.1027459779488042,
+    "error": -0.0000017317853548970419,
+    "tolerance": 0.00000349883605659008
+   },
+   {
+    "kick": 1,
+    "width": 4,
+    "speed": 1.102745990442305,
+    "error": -0.0000017192918542185964,
+    "tolerance": 0.00000349883605659008
+   }
+  ],
+  "shortRing": {
+   "length": 60,
+   "timed": null,
+   "fronts": 2,
+   "note": "a ring no longer than twice the clear distance never isolates a front, so nothing is timed"
+  },
+  "subthreshold": {
+   "kick": 0.2,
+   "width": 2,
+   "fronts": 0,
+   "alive": 0
+  }
+ },
+ "failureControls": {
+  "recoveryRateHalf": {
+   "eps": 0.5,
+   "timed": null,
+   "fronts": 2,
+   "lastFrontTime": 3,
+   "expected": "no pulse: every front ends and nothing is timed"
+  },
+  "kernelMass": [
+   {
+    "mass": 2,
+    "length": 1000,
+    "cells": 4096,
+    "speed": 3.4737948182117524,
+    "error": 2.371047108477593,
+    "tolerance": 0.0000653313774163532,
+    "witness": "fails"
+   },
+   {
+    "mass": 1.001,
+    "length": 240,
+    "cells": 2048,
+    "speed": 1.105330098971002,
+    "error": 0.0025823892368428414,
+    "tolerance": 0.00000349883605659008,
+    "witness": "fails"
+   }
+  ],
+  "secondOrderStencil": {
+   "rows": [
+    {
+     "cells": 1024,
+     "dt": 0.1,
+     "dx": 0.234375,
+     "speed": 1.0995198565327764,
+     "error": -0.0032278532013827466,
+     "tolerance": 0.00005568137690544129
+    },
+    {
+     "cells": 2048,
+     "dt": 0.05,
+     "dx": 0.1171875,
+     "speed": 1.1019455009615293,
+     "error": -0.0008022087726298199,
+     "tolerance": 0.00000349883605659008
+    },
+    {
+     "cells": 4096,
+     "dt": 0.025,
+     "dx": 0.05859375,
+     "speed": 1.1025474494176506,
+     "error": -0.00020026031650854925,
+     "tolerance": 2.3742725353688002e-7
+    }
+   ],
+   "observedOrder": 2.008525320111139,
+   "witness": "fails at every grid"
+  }
+ },
+ "presets": [
+  {
+   "name": "default",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.1,
+   "stimulus": "single",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1001,
+   "columns": 2048,
+   "fronts": 2,
+   "timed": 2,
+   "running": 2,
+   "speed": 1.1027459721101376,
+   "window": [
+    41.5,
+    80.80000000000001
+   ],
+   "restSlope": 0.1329611334158031,
+   "peakU": 0.9991420613552268,
+   "lowU": -0.567060504434932,
+   "compared": true,
+   "seconds": 0.9505426329999973,
+   "error": -0.0000017376240215583039,
+   "tolerance": 0.00000349883605659008
+  },
+  {
+   "name": "proved",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.1,
+   "stimulus": "single",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1001,
+   "columns": 2048,
+   "fronts": 2,
+   "timed": 2,
+   "running": 2,
+   "speed": 1.1027459721101376,
+   "window": [
+    41.5,
+    80.80000000000001
+   ],
+   "restSlope": 0.1329611334158031,
+   "peakU": 0.9991420613552268,
+   "lowU": -0.567060504434932,
+   "compared": true,
+   "seconds": 0.9210959360000052,
+   "error": -0.0000017376240215583039,
+   "tolerance": 0.00000349883605659008
+  },
+  {
+   "name": "gain12",
+   "beta": 12,
+   "theta": 0.25,
+   "eps": 0.15,
+   "stimulus": "single",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1101,
+   "columns": 2048,
+   "fronts": 2,
+   "timed": 2,
+   "running": 2,
+   "speed": 1.0475369572931985,
+   "window": [
+    43.6,
+    83.9
+   ],
+   "restSlope": 0.5421199167709456,
+   "peakU": 0.9991420613552268,
+   "lowU": -0.5316756899727201,
+   "compared": true,
+   "seconds": 1.0140209079999987,
+   "error": -5.405059726459882e-7,
+   "tolerance": 0.0000011000822253227234
+  },
+  {
+   "name": "collisions",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.1,
+   "stimulus": "scatter",
+   "cells": 2048,
+   "dx": 0.146484375,
+   "dt": 0.05,
+   "rows": 801,
+   "columns": 2048,
+   "fronts": 14,
+   "timed": 0,
+   "running": 2,
+   "speed": null,
+   "window": null,
+   "restSlope": 0.1329611334158031,
+   "peakU": 1.1859696941192037,
+   "lowU": -0.5676876495149049,
+   "compared": false,
+   "seconds": 1.3915121379999982
+  },
+  {
+   "name": "pacemaker",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.1,
+   "stimulus": "pacemaker",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1501,
+   "columns": 2048,
+   "fronts": 8,
+   "timed": 2,
+   "running": 6,
+   "speed": 1.1027459721101107,
+   "window": [
+    41.5,
+    80.80000000000001
+   ],
+   "restSlope": 0.1329611334158031,
+   "peakU": 0.9991420613552268,
+   "lowU": -0.567060504434932,
+   "compared": true,
+   "seconds": 1.4248103209999972,
+   "error": -0.000001737624048425701,
+   "tolerance": 0.00000349883605659008
+  },
+  {
+   "name": "threshold",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.1,
+   "stimulus": "ladder",
+   "cells": 2048,
+   "dx": 0.17578125,
+   "dt": 0.05,
+   "rows": 1201,
+   "columns": 2048,
+   "fronts": 6,
+   "timed": 0,
+   "running": 0,
+   "speed": null,
+   "window": null,
+   "restSlope": 0.1329611334158031,
+   "peakU": 0.815059068691081,
+   "lowU": -0.5687680138021629,
+   "compared": false,
+   "seconds": 1.0739444520000034
+  },
+  {
+   "name": "wide",
+   "beta": 20,
+   "theta": 0.25,
+   "eps": 0.03,
+   "stimulus": "single",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1201,
+   "columns": 2048,
+   "fronts": 2,
+   "timed": 2,
+   "running": 0,
+   "speed": 1.1798542747466025,
+   "window": [
+    38.800000000000004,
+    75.60000000000001
+   ],
+   "restSlope": 0.1329611334158031,
+   "peakU": 0.9991420613552268,
+   "lowU": -0.5624142501714103,
+   "compared": false,
+   "seconds": 1.097440085000002
+  },
+  {
+   "name": "refractory",
+   "beta": 40,
+   "theta": 0.3,
+   "eps": 0.03,
+   "stimulus": "pacemaker",
+   "cells": 2048,
+   "dx": 0.1171875,
+   "dt": 0.05,
+   "rows": 1501,
+   "columns": 2048,
+   "fronts": 4,
+   "timed": 2,
+   "running": 4,
+   "speed": 0.652711852722276,
+   "window": [
+    70,
+    136.70000000000002
+   ],
+   "restSlope": 0.00024576547405332703,
+   "peakU": 1.5978865885334634,
+   "lowU": -0.6281444784338465,
+   "compared": false,
+   "seconds": 1.2730832809999992
+  }
+ ],
+ "determinism": {
+  "sameSeedSameRecord": true,
+  "otherSeedOtherRecord": true,
+  "sha256": "10e22e554356d6b3583176219b14fcc875f08aa5826a339962353ce52ffa139a"
+ },
+ "seconds": 65.78804878700001,
+ "limitations": "Deterministic finite-grid evidence at two parameter points only. The enclosures are computer-assisted proofs drafted in this repository; the timed speed is compared with them within a fourth-order error estimate whose constants come from this refinement. No stability proof is used: that the simulation settles on the fast pulse is observed, not proved. Other parameters, the display, the print path and the GPU are outside this check."
+}

@@ -880,6 +880,34 @@
       "aliases": []
     },
     {
+      "id": "neural-field",
+      "source": "src/modules/neural-field.js",
+      "name": "Neural-Field Pulse",
+      "tab": "Neural Field",
+      "subtitle": "a traveling pulse of cortical activity · 2001",
+      "equation": "∂u/∂t = −u − v + w ∗ S(u);  ∂v/∂t = εu;  w(x) = e^−|x|/2;  S(u) = 1/(1 + e^−β(u − θ))",
+      "credit": "D. J. Pinto and G. B. Ermentrout, Spatially structured activity in synaptically coupled neuronal networks: I. Traveling fronts and pulses, SIAM J. Appl. Math. 62, 206–225 (2001), eq. (3) with the feedback decay set to zero; S. Amari, Dynamics of pattern formation in lateral-inhibition type neural fields, Biol. Cybern. 27, 77–87 (1977). The pulse speeds compared at β = 20, θ = 1/4, ε = 1/10 and at β = 12, θ = 1/4, ε = 3/20 are computer-assisted enclosures drafted in this repository (papers/nf-pulse). Original implementation of established equations.",
+      "blurb": "A line of cortex, treated as a continuum: u is the local activity, S(u) the firing rate, and every point excites its neighbors through a kernel that falls off as e^−|x|, while a slow recovery variable v builds up wherever the tissue has been active and shuts it down. Space runs across the plate and time runs down it, so a traveling pulse is a slanted stripe. A brief stimulus in the middle launches two pulses that run apart at constant speed and meet again on the far side of the ring, where each runs into the other's refractory wake and both die. The gain β sets how sharp the firing threshold θ is; the recovery rate ε sets how long each patch stays lit, so a small ε gives wide pulses and a large one extinguishes them. Other stimulus patterns show collisions, a pacemaker train and the threshold for launching a pulse at all. At the default point the plate settles onto the fast pulse, whose speed is compared with a proved value; a slower pulse also exists there, is expected to be unstable, and never appears.",
+      "order": 45.8,
+      "seed": "pulse-front",
+      "presets": [
+        "proved",
+        "gain12",
+        "collisions",
+        "pacemaker",
+        "threshold",
+        "wide",
+        "refractory"
+      ],
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "eps",
+      "hash": "#neural-field/pulse-front",
+      "aliases": []
+    },
+    {
       "id": "spinice",
       "source": "src/modules/spinice.js",
       "name": "Spin Ice",
