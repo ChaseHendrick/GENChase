@@ -1592,16 +1592,17 @@
     "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
     "reference": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
     "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localized for λ>1",
-    "status": "validated within stated limits",
+    "status": "unvalidated",
     "limitations": [
-      "The validated claim is the transfer-matrix Lyapunov exponent of the almost Mathieu operator with unit hopping and potential 2λ cos(2π β n), reviewed in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.",
-      "The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation is not the measured quantity, and its IPR was not compared with log(λ).",
+      "Status is unvalidated. tools/aubry-science.js hashes src/modules/aubry.js and never executes it. The evidence is an independent transfer-matrix Lyapunov exponent of the textbook almost Mathieu operator, recorded in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.",
+      "The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation, its ground-state claim, and the status-line IPR are outside the measurement. The print check preserves a field whose correctness is untested.",
       "Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.",
       "At λ = 1 the exponent is reported and is not asserted to equal 0 at these lengths.",
-      "Print evidence is state preservation of the default recipe only."
+      "The λ = 1 self-dual correction matches the potential the plate uses. That label fix is not a validation of the relaxation."
     ],
     "remaining": [
-      "The plate relaxation, its ground-state claim, and the status-line IPR remain outside this measurement."
+      "Promoting the record needs a test that executes the plate's own relaxation and can fail if that field is wrong.",
+      "Review the transfer-matrix evidence in validation/AUBRY.md on its own. It does not validate the drawn chain."
     ],
     "numerical": [
       {

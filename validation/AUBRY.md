@@ -26,9 +26,12 @@ node tools/aubry-print-state.js --write
 
 The numerical results are in [results/aubry-science.json](results/aubry-science.json).
 The print results are in [results/aubry-print-state.json](results/aubry-print-state.json).
-The record is the `aubry` entry of [techniques.json](techniques.json), reviewed
-2026-09-27, status **validated within stated limits** for the transfer-matrix
-domain below. The drawn plate is not that domain.
+The record is the `aubry` entry of [techniques.json](techniques.json).
+Status: **unvalidated**. The transfer-matrix evidence below is recorded and the
+failure controls fire, but `tools/aubry-science.js` only hashes
+`src/modules/aubry.js`. It never executes the plate. A test that does not run
+the module does not validate the plate. The λ = 1 label matches the potential
+the code uses. That correction stands. The drawn relaxation is not this domain.
 
 ## What is measured
 
@@ -145,5 +148,5 @@ the IPR against a formula.
 
 The status line still prints λ as a setting and the plate IPR against a uniform
 `1/N`, with the relaxation marked not converged. That comparison was not audited
-here and is not the validated result. No slider position outside the table, no
+here and is not evidence for the plate. No slider position outside the table, no
 other phase, and no ground-state convergence of the relaxation is claimed.
