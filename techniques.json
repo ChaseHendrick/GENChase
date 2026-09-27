@@ -2915,9 +2915,9 @@
       "name": "Talbot carpet",
       "tab": "Talbot",
       "subtitle": "near-field self-imaging · 1836",
-      "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
-      "credit": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
-      "blurb": "Shine a plane wave through a comb of slits and walk away. At one exact distance the comb comes back, sharp, as if the slits had been printed in the air. Halfway there it comes back shifted. In between, the light is a tapestry of fractional images, a carpet Talbot found with a magnifying glass in 1836. Nothing here is drawn. It is the squared modulus of a finite Fourier sum.",
+      "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z)|²,   z in d²/λ, revival at 2,   z_T = 2 d²/λ",
+      "credit": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d²/λ and as a half-period image at z_T/2 = d²/λ. Depth on this plate is in units of d²/λ, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
+      "blurb": "Shine a plane wave through a comb of slits and walk away. Depth is in units of d²/λ, and the Talbot length is z_T = 2 d²/λ, so the comb comes back sharp at 2, as if the slits had been printed in the air. At 1 it comes back shifted by half a period. In between, the light is a tapestry of fractional images, a carpet Talbot found with a magnifying glass in 1836. Nothing here is drawn. It is the squared modulus of a finite Fourier sum.",
       "order": 95,
       "seed": "talbot-1836",
       "presets": [

@@ -1,0 +1,103 @@
+{
+  "test": "tools/talbot-science.js",
+  "command": "node tools/talbot-science.js --write",
+  "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+  "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+  "phase": "TAU*n*u - PI*n*n*z",
+  "phaseCount": 1,
+  "unit": "d^2/lambda",
+  "talbotLength": "z_T = 2 d^2/lambda; slider value 2 is one Talbot length; half-period image at 1",
+  "samplesPerPeriod": 4096,
+  "tolerance": 1e-9,
+  "cases": [
+    {
+      "name": "default",
+      "fill": 0.22,
+      "orders": 18,
+      "samples": 4096,
+      "revivalMaxAbs": 2.886579864025407e-14,
+      "revivalAtU": 0.91943359375,
+      "halfPeriodMaxAbs": 1.3766765505351941e-14,
+      "halfPeriodAtU": 0.52001953125,
+      "unshiftedHalfMaxAbs": 1.2180248684870103
+    },
+    {
+      "name": "binary",
+      "fill": 0.5,
+      "orders": 16,
+      "samples": 4096,
+      "revivalMaxAbs": 2.5757174171303632e-14,
+      "revivalAtU": 0.015869140625,
+      "halfPeriodMaxAbs": 1.0436096431476471e-14,
+      "halfPeriodAtU": 0.2880859375,
+      "unshiftedHalfMaxAbs": 1.1802841289227086
+    },
+    {
+      "name": "dense",
+      "fill": 0.12,
+      "orders": 28,
+      "samples": 4096,
+      "revivalMaxAbs": 5.995204332975845e-14,
+      "revivalAtU": 0.98583984375,
+      "halfPeriodMaxAbs": 4.3076653355456074e-14,
+      "halfPeriodAtU": 0.5107421875,
+      "unshiftedHalfMaxAbs": 1.155646321542411
+    },
+    {
+      "name": "narrow",
+      "fill": 0.08,
+      "orders": 6,
+      "samples": 4096,
+      "revivalMaxAbs": 3.552713678800501e-15,
+      "revivalAtU": 0.970458984375,
+      "halfPeriodMaxAbs": 2.886579864025407e-15,
+      "halfPeriodAtU": 0.545654296875,
+      "unshiftedHalfMaxAbs": 0.8045448194157616
+    },
+    {
+      "name": "wide",
+      "fill": 0.7,
+      "orders": 40,
+      "samples": 4096,
+      "revivalMaxAbs": 9.836575998178887e-14,
+      "revivalAtU": 0.273193359375,
+      "halfPeriodMaxAbs": 4.796163466380676e-14,
+      "halfPeriodAtU": 0.2431640625,
+      "unshiftedHalfMaxAbs": 1.008368697957533
+    },
+    {
+      "name": "deep-preset",
+      "fill": 0.18,
+      "orders": 22,
+      "samples": 4096,
+      "revivalMaxAbs": 5.595524044110789e-14,
+      "revivalAtU": 0.98779296875,
+      "halfPeriodMaxAbs": 2.0650148258027912e-14,
+      "halfPeriodAtU": 0.560302734375,
+      "unshiftedHalfMaxAbs": 1.2186505651821433
+    },
+    {
+      "name": "mid",
+      "fill": 0.35,
+      "orders": 12,
+      "samples": 4096,
+      "revivalMaxAbs": 1.4432899320127035e-14,
+      "revivalAtU": 0.9697265625,
+      "halfPeriodMaxAbs": 7.549516567451064e-15,
+      "halfPeriodAtU": 0.5302734375,
+      "unshiftedHalfMaxAbs": 1.1657740374245102
+    }
+  ],
+  "failureControl": {
+    "phase": "TAU*n*u - 0.5*PI*n*n*z",
+    "fill": 0.5,
+    "orders": 16,
+    "predicate": "max_u |I(u, 2) - I(u, 0)| < 1e-9",
+    "correctMaxAbs": 2.5757174171303632e-14,
+    "correctPasses": true,
+    "wrongMaxAbs": 1.1802841289227086,
+    "wrongPasses": false,
+    "wrongRejected": true
+  },
+  "passed": true
+}

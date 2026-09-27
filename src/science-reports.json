@@ -122,7 +122,7 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
     "equation": "xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(|r₀(cosθ,sinθ)−xᵢ|²+λ²)",
     "status": "validated within stated limits",
@@ -170,7 +170,7 @@
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -189,7 +189,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -208,7 +208,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -2053,7 +2053,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -2110,7 +2110,7 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
     "status": "validated within stated limits",
@@ -2903,7 +2903,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -3104,7 +3104,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "unvalidated",
@@ -3171,7 +3171,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -3239,7 +3239,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -3361,21 +3361,50 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
-    "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
-    "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
-    "status": "unvalidated",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+    "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d²/λ and as a half-period image at z_T/2 = d²/λ. Depth on this plate is in units of d²/λ, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
+    "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z)|²,   z in d²/λ, revival at 2,   z_T = 2 d²/λ",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The checked object is the finite Fourier sum the plate paints, at phase 2π n u − π n² z, with z in units of d²/λ. It is not a laboratory grating, not a measured wavelength, and not the continuous Fresnel integral past this truncation.",
+      "Only the sampled planes z = 0, 1 and 2, and only the fill and order pairs in validation/results/talbot-science.json, are in the numerical domain. Other fractional planes, infinite orders, and a physical Talbot carpet are outside this label.",
+      "Print evidence is the default plate at 8 in and 300 ppi: PNG dimensions, a deterministic reprint, an unchanged recipe, and a half-coefficient phase that moves the pixels. It is not a color-managed proof and it does not cover every preset."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Other depths, orders, fills, hardware, and a comparison with a measured grating or the untruncated Fresnel integral remain outside the stated domain."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/talbot-science.js",
+        "command": "node tools/talbot-science.js --write",
+        "results": "validation/results/talbot-science.json",
+        "scope": "Truncated grating coefficients a_0 = fill, a_n = sin(n π fill)/(n π) for n ≠ 0 and |n| <= M, summed at the plate phase 2π n u − π n² z. Seven fill and order pairs, including the default fill 0.22 with 18 orders and binary fill 0.5 with 16 orders. u is sampled on 4096 points of one period.",
+        "criteria": "max_u |I(u, 2) − I(u, 0)| < 1e-9 and max_u |I(u, 1) − I(u + 0.5, 0)| < 1e-9. The binary grating at z = 1 must differ from the unshifted grating by more than 0.1, so the half-period check is not a flat field.",
+        "benchmark": "Independent evaluation of the same truncated sum. For integer n, exp(−i π n² z) is 1 at z = 2 and (−1)^n at z = 1, and (−1)^n is a shift of half a period, Δu = 0.5, because the plate coordinate u is already in periods.",
+        "failureControl": "The same sum with phase TAU*n*u − 0.5*PI*n*n*z, the missing factor of 2 that treats the slider number as z/z_T, must fail the z = 2 revival predicate. For fill 0.5 and 16 orders that error is greater than 0.1, while the plate phase passes.",
+        "limitations": "Finite truncation and the listed samples only. Not a continuous Fresnel integral and not a laboratory grating."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/talbot-print-state.js",
+        "command": "node tools/talbot-print-state.js --write",
+        "results": "validation/results/talbot-print-state.json",
+        "scope": "Default Talbot plate in the built studio, exported through the studio button at 8 in and 300 ppi, plus a fixed 240 by 276 reprint of the same state and an injected copy of the module.",
+        "criteria": "PNG is 2087 by 2400. Recipe and depth slider are unchanged by export. A second regenerate of the screen plate changes 0 bytes. A fixed-size reprint after export changes 0 bytes. The injected half-coefficient phase changes more than 10 percent of pixels and moves some pixel by more than 20 levels. Re-registering the maintained source changes 0 pixels.",
+        "benchmark": "Print size from aspect 1.15 using the studio long-edge rule at 8 in and 300 ppi. Pixel identity is a byte comparison of the ImageData the plate paints.",
+        "failureControl": "Re-registering the maintained source must leave the 240 by 276 plate unchanged. Replacing the phase coefficient PI with 0.5*PI must move the pixels.",
+        "limitations": "One sheet size and the default recipe only. The studio supersamples 2x and averages down; that is display, not extra physics. Not a calibrated print and not every preset. Opening the export sheet reflows the preview, so the screen buffer size is not the preserved object."
+      }
+    ],
+    "reviewed": "2026-09-27",
+    "results": "validation/results/talbot-science.json",
+    "domain": {
+      "parameters": "Fill and Fourier order pairs listed in validation/results/talbot-science.json, including default fill 0.22 with 18 orders and binary fill 0.5 with 16 orders. Planes z = 0, 1 and 2 in units of d²/λ. The print is the default recipe: zMax 1.5, 8 periods, fill 0.22, 18 orders, exposure 1, gamma 0.85, grain 0.04, seed talbot-1836.",
+      "conditions": "Coefficients a_0 = fill and a_n = sin(n π fill)/(n π) for n ≠ 0, |n| <= M. Phase 2π n u − π n² z with u in grating periods. No propagation, aperture, or laboratory illumination. Export does not change the recipe.",
+      "resolution": "4096 uniform samples of u over one period. One 8 in sheet at 300 ppi, aspect 1.15, 2087 by 2400 px after the studio 2x supersample. The injected control is 240 by 276 px.",
+      "precision": "Binary64 sum. Revival and half-period absolute intensity error under 1e-9. The half-coefficient phase is rejected when the z = 2 error exceeds 0.1 on the binary grating. PNG channels compared exactly."
+    }
   },
   {
     "id": "orbitals",
@@ -3437,7 +3466,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",
