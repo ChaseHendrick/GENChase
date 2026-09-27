@@ -980,15 +980,29 @@
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Nothing about src/modules/arago.js is validated, so the record stays unvalidated with its evidence recorded (in-project contract check, 2026-09-27). The recorded test is a separate radial midpoint quadrature of the textbook on-axis identity for Poisson's spot: a unit-amplitude plane wave has the same intensity on axis behind an opaque circular disk as in the unobstructed beam. The interactive plate is not that object. It uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring, and the tool asserts that its metric is more than 0.2 from 1: 1.83 at the defaults, and 0.67 against 1.38 at R 20, z 0.8, k 1.2 when only the grid changes from 96 to 160.",
+      "The zone-width ladder is not a clean refinement control. Its disk errors are not monotone (width 0.004: 0.0086; 0.002: 0.081; 0.001: 0.0011; 0.0005: 0.0002) because the coarse rows are aliased: the sampled chirp exp(i k rho^2 / 2z) has discrete stationary points where the phase step k rho dr / z is a multiple of 2 pi, at rho = 0.4 m / dr, so the first lies inside the window rho_max = 632.456 at rho = 100, 200 and 400 for widths 0.004, 0.002 and 0.001, while the fine row's first is at 800, beyond it. That a coarser row fails shows aliasing, not convergence. The aperture control (ratio 2.000005 against 4 sin^2(k R^2 / 4z) = 2) is the real failure control.",
+      "No laboratory photometry.",
+      "No print-path evidence. The plate picture was not changed, and the plate is not a converged Poisson-spot solver at its default."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Validate the module itself: benchmark the plate's propagator and its status-line metric in src/modules/arago.js against a converged reference, with a failure control, before any promotion.",
+      "The 24 by 18 plate sum still compares the center to a ring and cuts the aperture off. Do not read I(0)/I_ring as the on-axis identity.",
+      "Replace the zone-width ladder with rows free of discrete stationary points inside the window (0.4 / dr beyond rho_max), or present it as an aliasing demonstration rather than a refinement control.",
+      "A print-path check is required before any promotion, and only inside a domain limited to a converged propagator."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/arago-science.js",
+        "command": "node tools/arago-science.js",
+        "results": "validation/results/arago-science.json",
+        "scope": "Independent midpoint quadrature of the on-axis Fresnel radial integral at R = 1, z = 1, k = 5 pi (Fresnel number 2.5), convergence factor exp(-1e-4 rho^2), window rho_max = 632.456. This is the textbook identity, not src/modules/arago.js. The shipped plate is run through tools/science-harness.js and its I(0)/I_ring is recorded, not required to equal 1; the tool asserts it is more than 0.2 from 1.",
+        "criteria": "Disk ratio within 1e-3 of 1 at zone width 0.0005 (1,264,912 zones); the same predicate fails at zone width 0.002, where the absolute error is larger, but that row is aliased (a discrete stationary point of the sampled chirp at rho = 200, inside the window), so this is not a refinement control. Aperture ratio at the fine width within 1e-4 of the separate closed form 4 sin^2(k R^2 / 4z) = 2, and that same |ratio - 1| < 1e-3 predicate fails for the aperture. The fine width with eps = 1e-3 also fails the disk predicate.",
+        "benchmark": "For a unit-amplitude plane wave the on-axis Fresnel integrals from R to infinity and from 0 to infinity differ by a boundary term that cancels in the intensity, so the ratio is 1. The aperture closed form 4 sin^2(k R^2 / 4z) is evaluated from that expression, not from the sum.",
+        "failureControl": "The circular aperture at the same k, R and z has ratio 2.000005 against the closed form 4 sin^2 = 2, so the disk acceptance predicate fails while the aperture quadrature still matches; this is the real control. Zone width 0.002 fails the disk predicate with a larger error, but that row is aliased, not an under-resolved version of the fine one. The same fine width with a tenfold stronger convergence factor (eps = 1e-3, bias about 0.002) fails it as well.",
+        "limitations": "Validates the textbook identity through a separate quadrature, not the module. The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring; that number is not this proof. The coarse ladder rows are aliased. No laboratory photometry. No print path."
+      }
+    ],
     "print": []
   },
   {
@@ -2679,18 +2693,50 @@
     "sourceSha256": "18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7",
     "reference": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
     "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The converged claim is the module Jacobi update on a pixel disk at R/λ = 2, λ = 8, 16 and 24 cells, residual below 1e-6. The default 90-sweep plate is not that field: at λ = 10, R = 48 the centre is about 0.84 against 1/I0 = 0.044.",
+      "The numerical and print evidence cover disjoint recipes, which blocks full validation. The converged runs need 8,000 to 45,000 Jacobi sweeps, but the shell's sanitize clamps relax to its schema range of 40 to 240, so no recipe a user can make, by slider, preset or hash, is in the converged domain. Both print fixtures (the default at relax 90 and Expelled at relax 110) lie outside it.",
+      "The rim is a staircase. The 5-point stencil applied to the exact I0, three cells inside the rim, has a residual that falls faster than h² in cell units (ratios 14.2 and 4.83 against h² factors 4 and 2.25). That residual carries a factor h² from the cell-unit stencil; in physical units its observed orders are about 1.83 and 1.88, which is about h², as a second-order stencil should give. The solved field approaches I0 only about linearly (observed orders 0.82 and 1.05).",
+      "Float32 storage. No cut-cell boundary, no physical λ in metres, and no Meissner experiment."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add a recipe a user can reach that is in the converged domain (for example a relax range, or a solve to a stated residual, that meets the residual below 1e-6 of the numerical claim), print it with tools/meissner-print-state.js, and re-review for full promotion.",
+      "A boundary that follows the circle would be needed before the global error can show the interior order.",
+      "The slider default is outside the converged domain."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/meissner-science.js",
+        "scope": "Module Jacobi update for ∇²B = B/λ² on a pixel disk, R/λ = 2, λ = 8, 16, 24 cells, grids 96 and 160, swept until the discrete residual is below 1e-6. Compared with an independent I0 series.",
+        "criteria": "Plate centre series matches the independent I0 to 1e-12. Residual below 1e-6. Max field error falls under refinement (0.0483, 0.0275, 0.0179). Interior truncation of the exact I0, in cell units, falls by more than the h² factor; in physical units that is about h² (orders about 1.83 and 1.88). Observed global order stays between 0.8 and 1.6.",
+        "limitations": "Staircased rim. The 8,000 to 45,000 sweeps are reachable only through the harness: the shell clamps relax to 40 to 240, so no user recipe and neither print fixture is in this scope. The clamp at zero is idle because I0 is positive.",
+        "benchmark": "B(r) = I0(r/λ) / I0(R/λ), series independent of the plate. The field is the module update, not a second copy of the solver.",
+        "failureControl": "Replacing lap - B/λ² by lap + B/λ² (the sign of London's equation) raises the coarse-disk max error from 0.048 to 4.79 and fails the same I0 acceptance.",
+        "command": "node tools/meissner-science.js --write",
+        "results": "validation/results/meissner-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/meissner-print-state.js",
+        "scope": "exportPNG at 2400×2400 (8 in, 300 ppi) for the default recipe and the Expelled preset. Field words, centre metric, Bessel value, cells and settings.",
+        "criteria": "Zero changed field words, exact dimensions, nonblank downsample, wrong width rejected, post-export mutation rejected.",
+        "limitations": "Preservation only. Does not claim the default field equals I0. Both fixtures (relax 90 and 110) lie outside the converged numerical domain, so no printed recipe is one the numerical claim covers.",
+        "benchmark": "The live module exportPNG against an in-page snapshot of the Float32 field taken before the export.",
+        "failureControl": "A requested width of 2399 must fail acceptance, and adding 1 to field[0] after export must fail the same preservation predicate (one word changed).",
+        "command": "node tools/meissner-print-state.js --write",
+        "results": "validation/results/meissner-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "R/λ = 2 at λ = 8, 16 and 24 cells (R = 16, 32, 48), Jacobi coefficient 0.2, grids 96 (first two) and 160 (third), 8,000 to 45,000 sweeps. Print fixtures: module defaults (λ 10, R 48, relax 90) and Expelled (λ 8, R 52, relax 110), both grid 160, aspect 1:1. The two sets are disjoint: relax is clamped to 40 to 240 by the shell, so the numerical recipes are not reachable from the studio.",
+      "conditions": "B = 1 on pixel centres with r ≥ R and the update is not applied on the outer frame. Initial field 1. Iterated until the discrete residual is below 1e-6 for the numerical claim. Print is the real exportPNG and does not iterate further.",
+      "resolution": "Cell size 1. Max |B−I0| = 0.0483, 0.0275, 0.0179 at λ = 8, 16, 24. Interior stencil truncation in cell units 1.19e-5, 8.38e-7, 1.74e-7 (about 7.6e-4, 2.1e-4, 1.0e-4 in physical units). Print 2400×2400 from a 160×160 field.",
+      "precision": "Float64 Jacobi update stored as Float32. Independent Float64 I0 series. RGBA8 PNG. Residual of the stored field is about 2e-7, the float32 floor."
+    },
+    "reviewed": "2026-09-27",
+    "results": "validation/results/meissner-science.json"
   },
   {
     "id": "tennis",
