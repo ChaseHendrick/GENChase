@@ -101,7 +101,7 @@ which combines exact enumeration with measured sampling frequencies, is the mode
 | `sandpile` | Toppling order does not change the stabilized state (abelian property). The number of recurrent configurations equals the number of spanning trees (Dhar, Phys. Rev. Lett. 64, 1613, 1990). | An order-dependent toppling rule |
 | `sle` | The trace has dimension min(2, 1 + κ/8) (Beffara, Ann. Probab. 36, 2008). Use box counting with a stated fit range and seed ensemble. | Wrong driving variance, which changes κ |
 | `rmt` | Semicircle density and the beta-ensemble spacing laws (already credited in the tab). Use a goodness-of-fit test with a declared sample size. | Wrong beta scaling in the tridiagonal model |
-| `ssh`, `kitaev` | Exact edge zero modes and winding numbers in the topological phase. `ssh` already has `tools/ssh-science.js` registered, but the record is unvalidated. | Wrong boundary hopping removes the zero mode |
+| `ssh`, `kitaev` | Exact edge zero modes and winding numbers in the topological phase. `ssh` is validated within stated limits for the finite chains in validation/SSH.md (reviewed 2026-09-27). The status-line winding is the closed rule w > v, not a Berry-phase integral. | Wrong boundary hopping removes the zero mode |
 
 Each promotion still follows the contract: domain, resolution, precision, reviewed date and a
 results file under `validation/results/`.
@@ -224,11 +224,11 @@ impossible to miss on the tab itself, if it is not already.
 - Validated within stated limits: `ising` (Onsager's T_c by Binder crossings, Yang's magnetization),
   `percolation` (bond 1/2 and site 0.5927 by spanning probability, with diagonal and anisotropic controls),
   `sandpile` (the abelian property and exact toppling counts against independent references, after the
-  counter was fixed), `rmt` (the semicircle and the Gaudin-Mehta spacing laws) and `kitaev` (the
-  Bogoliubov-de Gennes spectrum and its edge modes).
+  counter was fixed), `rmt` (the semicircle and the Gaudin-Mehta spacing laws), `kitaev` (the
+  Bogoliubov-de Gennes spectrum and its edge modes) and `ssh` (Jacobi spectra, open-chain end weights
+  and export state preservation; winding on the status line is w > v).
 - Partially validated, each for its stated reason: `aztec`, `lozenge` and `sle`.
-- Still open: `ssh` has its tool but its record is unvalidated, and the Aztec and lozenge frozen-region
-  readouts are being reworked.
+- Still open: the Aztec and lozenge frozen-region readouts are being reworked.
 
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe
