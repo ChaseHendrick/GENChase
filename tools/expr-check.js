@@ -2,11 +2,13 @@
 // Checks the shared expression language (src/shared/expr.js): agreement with Math on seeded random
 // points for every function and precedence case, a battery of hostile inputs that must all be refused,
 // the GLSL emitter's exact output and round trip, and negative controls showing that a parser which
-// got precedence wrong would fail this file. Runs in npm test; well under a second.
+// got precedence wrong would fail this file. Also checks the phase tab's production winding count.
+// Runs in npm test and CI.
 'use strict';
 const assert = require('node:assert/strict');
 const E = require('../src/shared/expr.js');
 const { seeded } = require('../src/shared/stats.js');
+require('./phase-winding-check.js').run();
 
 let checks = 0;
 const ok = (cond, msg) => { assert.ok(cond, msg); checks++; };

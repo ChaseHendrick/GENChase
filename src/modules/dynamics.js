@@ -774,39 +774,51 @@ void main(){
   /* The argument principle on the CPU. For f meromorphic inside and on the circle |z - c0| = r, with no zero or pole
      on it, the winding number of f(circle) about 0 is the number of zeros minus the number of poles inside, each
      counted with its multiplicity. f is evaluated in double precision through U.expr.compileComplex at 4096 equally
-     spaced points, counterclockwise from angle 0; a step whose principal phase change exceeds pi/2 is bisected (at
-     most 24 times, 400,000 evaluations in all) until no step does. The sum of the principal phase changes is 2 pi
+     spaced points, counterclockwise from angle 0. A step is bisected if its principal phase change or its angular
+     width times |d log f/d theta| at either endpoint exceeds pi/2. The latter is estimated from f(theta +/- 1e-7)
+     and equals r|f'/f| for a holomorphic f. At most 24 levels and 400,000 evaluations, including derivative probes,
+     are allowed. The sum of the principal phase changes is 2 pi
      times an integer whatever the sampling, because it telescopes; that integer is the winding number when no step
      hides a whole turn, which the refinement makes likely and cannot prove. No count is reported when f is undefined
      or infinite at a sample, when min |f| on the circle is below 1e-9 of max |f| (a zero on or at the circle), when
-     a step still turns by more than pi/2 after refinement (a zero, a pole or a branch cut on the circle), or when the
+     a step still fails either refinement test (a zero, a pole or a branch cut near the circle), or when the
      budget runs out. An essential singularity or a branch point inside is outside the theorem: a number is still
      printed if the checks pass, and it is the winding number, not a count of zeros and poles. */
-  const WIND_N = 4096, WIND_DEPTH = 24, WIND_BUDGET = 400000, WIND_FLOOR = 1e-9;
+  const WIND_N = 4096, WIND_DEPTH = 24, WIND_BUDGET = 400000, WIND_FLOOR = 1e-9, WIND_H = 1e-7;
   const WIND_WHY = {
     nonfinite: 'f is undefined or infinite on the circle',
-    small: '|f| nearly vanishes on the circle',
-    fast: 'the phase turns faster than the sampling can follow',
-    budget: 'the sampling budget ran out',
+    small: 'too close to a zero or pole',
+    fast: 'too close to a zero or pole (or an unresolved branch cut)',
+    budget: 'too close to a zero or pole, or too fast for the sampling budget',
     error: 'the count could not be completed',
   };
   function windingNumber(F, s) {
     const env = new Float64Array([0, 0, s.aRe, s.aIm, s.bRe, s.bIm]), out = [0, 0];
     const cx = s.ccx, cy = s.ccy, r = s.cr;
     let evals = 0, refined = 0, lo = Infinity, hi = 0, bad = null;
-    const phase = th => {
+    const value = th => {
+      if (evals >= WIND_BUDGET) { bad = bad || 'budget'; return [0, 0, 0]; }
       env[0] = cx + r * Math.cos(th); env[1] = cy + r * Math.sin(th);
       F(env, out); evals++;
       const m = Math.hypot(out[0], out[1]);
-      if (!Number.isFinite(m)) { bad = bad || 'nonfinite'; return 0; }
+      if (!Number.isFinite(m)) bad = bad || 'nonfinite';
       if (m < lo) lo = m;
       if (m > hi) hi = m;
-      return Math.atan2(out[1], out[0]);
+      return [out[0], out[1], m];
+    };
+    const phase = th => {
+      const v = value(th), left = value(th - WIND_H), right = value(th + WIND_H);
+      // Use the complex derivative's magnitude, not a wrapped phase difference: a double zero
+      // can hide a whole turn between endpoints with almost identical phases.
+      const speed = Math.hypot(right[0] - left[0], right[1] - left[1]) / (2 * WIND_H * v[2]);
+      if (!Number.isFinite(speed)) bad = bad || 'small';
+      return { angle: Math.atan2(v[1], v[0]), speed };
     };
     const wrap = d => d - TAU * Math.round(d / TAU);
     const seg = (t0, a0, t1, a1, depth) => {
-      const d = wrap(a1 - a0);
-      if (Math.abs(d) <= PI / 2 || bad) return d;
+      const d = wrap(a1.angle - a0.angle);
+      const resolved = Math.abs(d) <= PI / 2 && Math.max(a0.speed, a1.speed) * (t1 - t0) <= PI / 2;
+      if (resolved || bad) return d;
       if (evals >= WIND_BUDGET) { bad = 'budget'; return d; }
       if (depth >= WIND_DEPTH) { bad = 'fast'; return d; }
       refined++;

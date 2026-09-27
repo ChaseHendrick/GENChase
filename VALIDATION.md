@@ -87,7 +87,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [breather](src/modules/breather.js) | validated within stated limits | [breather-science.js](tools/breather-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
 | [turing](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
 | [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
-| [phase](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
+| [phase](src/modules/dynamics.js) | unvalidated | [phase-winding-check.js](tools/phase-winding-check.js) | Not scientifically validated | none |
 | [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated | none |
 | [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded | none |
 | [dendrite](src/modules/dendrite.js) | unvalidated | None registered | Not scientifically validated | none |
@@ -365,6 +365,14 @@ No record has an outside review yet; every review so far was done inside the pro
 - Broader settings require additional independent evidence.
 - The Custom reaction mode steps reaction terms f(u, v) and g(u, v) the viewer types, u_t = D_u lap u + f and v_t = D_v lap v + g on the same periodic stencils, by forward Euler without the clamps or implicit loss terms of the built-in kinetics. A user-defined reaction is not validated: the status line says so and prints no comparison with theory in that mode, and none of the evidence above covers it. Its step ceiling, 0.8 of 2/(lambda_D + rho_J) with lambda_D = Q c^2 max(D_u, D_v) from the stencil symbol (Q = 8 or 16/3) and rho_J the largest eigenvalue magnitude of the finite-difference Jacobian over 2048 field samples refreshed every 50 steps, is an estimate, not a stability proof: summed magnitudes do not bound the eigenvalues of a non-normal sum, forward Euler amplifies imaginary eigenvalues at any step, and the field can stiffen between samples. A field found non-finite (or past 1e30) at a sample stops the plate (validation/RDX.md, Custom reaction).
 
+### phase
+
+- Catalog equation and citation are review targets, not verified paper equivalence.
+- The function is typed by the viewer: the plate renders whatever f the expression language accepts, and nothing checks it against any source. The GPU evaluates f in 32-bit floats, so phase and modulus lose accuracy near zeros, poles, overflow and cancellation; atan(0, 0) and points on a branch cut are left to the GPU, which may take either side of a cut.
+- The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 initial circle samples, with bisection when the wrapped phase change or the angular step times the endpoint logarithmic-derivative magnitude exceeds pi/2. The derivative uses f(theta +/- 1e-7); all probes count toward the 400,000-evaluation budget, with at most 24 refinement levels. Finite differences and endpoint sampling cannot certify arbitrary typed functions or exclude every hidden turn. The argument principle requires a meromorphic function inside and on the circle.
+- No count or verdict is printed for nonfinite evaluations, a sampled min \|f\| at or below 1e-9 of max \|f\|, or unresolved refinement. Conservative refusal includes the tested near-double-zero circles whose analytic count is zero. Essential singularities and branch points inside remain outside the theorem; an accepted number there is only a sampled winding number.
+- The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources.
+
 ### gyroid
 
 - Only the enumerated finite recipes in validation/PERIODIC-FIELD-REVIEW.md and recorded Chromium are covered.
@@ -600,9 +608,9 @@ No record has an outside review yet; every review so far was done inside the pro
 
 - The comparison covers two parameter points only, beta = 20, theta = 1/4, eps = 1/10 and beta = 12, theta = 1/4, eps = 3/20 (gamma = 0, kernel e^-\|x\|/2), with a central kick (six kick shapes at the first point, the default shape at the second), rings of 240 and 400, and the shipped cells (1,024, 2,048, 4,096) and steps (0.1, 0.05, 0.025). At every other parameter the timed speed is printed as a measurement with no reference and no error estimate.
 - The reference speeds are computer-assisted enclosures of width 1e-25 drafted in this repository (papers/nf-pulse and papers/nf-pulse/ext/gain-12), computed in ball arithmetic from the traveling-wave ODE by programs separate from this tab. The lemmas those proofs rest on do not yet have written proofs (papers/nf-pulse/notes/QUALITY.md).
-- The error estimate \|K\| dx^4 + \|Kt\| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 7.6e-10 and 2.2e-10 from the proved speeds.
+- The error estimate \|K\| dx^4 + \|Kt\| dt^4 uses constants measured by the benchmark's own refinement at each point (K = -9.19e-3 and -2.84e-3, Kt = -1.0e-3 and -7.1e-4); the witness allows twice it plus 2e-8. The Richardson limits sit 9.1e-10 and 2.3e-10 from the proved speeds.
 - That the plate settles onto the fast pulse is observed, not proved: stability of the fast pulse is not established (papers/nf-pulse/ext/stability). The slow pulse proved at the first point is expected to be unstable; kicks at the launch threshold hesitate at a front speed near 0.1 and then die or accelerate to the fast pulse, an observation at one kick width.
-- The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, isolated after covering that distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.
+- The timing rules (a front clear of other crossings, kick sites and disturbed medium for 42 units ahead, kick sites behind excluded within the larger of their half-width and 20 kernel lengths, isolated after covering the ahead distance, timed from 30 time units after its birth over at least 20) are heuristics checked on the stated fixtures. The behind margin uses the symmetric kernel decay exp(-20)/2, about 1e-9, not a proved speed-error bound. A residue below the 1e-7 rest tolerance ahead can still move the speed by a few times 1e-8.
 - No print-accuracy evidence is registered. The plate is a Catmull-Rom display of a Float32 record of u and v (at most 2,048 columns and 1,536 rows); prints add pixels, not resolution. Periodic ring only: no two-dimensional field, synaptic delay, recovery decay (gamma), noise or heterogeneity.
 
 ### volume-wave
@@ -629,6 +637,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.
 - Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.
 - Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one.
+- The measured relaxation coefficient passes the unchanged 10% numerical tolerance only on the tested m = 2, N = 512, α = 0.002, CFL = 0.8, t ≤ 3, τ = 0.01, 0.003, 0.001 cases; no uniform τ -> 0 accuracy is established. Continuum-reference measured ratios 0.9955, 0.9662, 0.8962 include a 10% failure at τ = 0.001 from the amplified spatial offset; the discrete-reference ratios are 1.012, 1.019, 1.055.
 
 The remaining records retain each catalog equation and reference as a review target. They do not
 claim those descriptions have been checked against the primary paper. Full parameter, precision,
