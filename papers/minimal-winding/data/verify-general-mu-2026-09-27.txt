@@ -303,7 +303,7 @@
    minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.
 
 ==============================================================================
-10. Path length and spiral angle; Remark 2; Section 5; Proposition 1; Remark 1  [exact + numerical]
+10. Path length and spiral angle; Remark 2 and Groebli; Section 5; Proposition 1; Remark 1  [exact + numerical]
 ==============================================================================
    mu=0.3 arc A+: P=3.305509054, 2P tan-angle check and path length to 0.9 t_c done
    mu=0.3 arc A-: P=1.67319919382, 2P tan-angle check and path length to 0.9 t_c done
@@ -319,6 +319,24 @@
   PASS 10b Remark 2: on both arcs min P = sqrt 2 at cos 2beta = 1/3 :: [('1.4142135623730950488', '0.333333333333333'), ('1.4142135623730950488', '0.333333333333333')]
   PASS 10f mu = 1: the fastest collapse at |z1 - z2| = 1 has t_c = 4 pi/3, P = 3/2, cos 2beta = 3/5 :: beta=0.463647609000806 t_c=4.18879020478639 P=1.5
   PASS 10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2 :: max |kappa - (A + iB)/(4 pi)| = 2.17e-51
+  PASS 10j Remark 2: with v = tan chi, (3 - cos 2chi)/(2 sin 2chi) = v + 1/(2v)  (exact)
+  PASS 10j Remark 2: v + 1/(2v) - sqrt2 = (sqrt2 v - 1)^2/(2v); equality iff tan chi = 1/sqrt2, and then cos 2chi = 1/3
+  PASS 10j Remark 2: P is unchanged under v -> 1/(2v); v = 1 and v = 1/2 (cos 2chi = 3/5) both give P = 3/2
+  PASS 10j Remark 2: at tan chi = 1/sqrt2, w = (1 + sqrt2)/2 + i/2, Im w/Re w = sqrt2 - 1 = tan(pi/8) and Im w/(Re w - 1) = sqrt2 + 1 = tan(3pi/8): interior angles pi/8 at z1, 5pi/8 at z2, pi/4 at z3
+  PASS 10j Remark 2: Biot-Savart P = v + 1/(2v), v = tan beta, at five angles on both arcs :: max difference 2.14e-50
+  PASS 10j Remark 2: the numerically located minimizers have interior angles (pi/8, 5pi/8, pi/4) on the first arc and (5pi/8, pi/8, pi/4) on the second (z1, z2, z3) :: max deviation 1.69e-27
+  PASS 10k Groebli (8): at m = (1, 1, -1/2), muG_1 = a_G - 3/2, muG_2 = a_G + 3/2, muG_3 = a_G; radicand of (9) = 3a_G^2 - 9
+  PASS 10k Groebli (9), (11), (12): P = |varkappa|/2 = (2a_G^2 - 3)/(2 sqrt(3a_G^2 - 9))
+  PASS 10k P^2 - 2 = (2a_G^2 - 9)^2/(12(a_G^2 - 3)): equality at a_G^2 = 9/2
+  PASS 10k a_G = sqrt3/cos chi turns Groebli's P into v + 1/(2v), the formula of Remark 2 (branch a_G > sqrt3; P is even in a_G)
+  PASS 10k with a_G = sqrt3/cos chi, muG_1 : muG_2 : muG_3 = |z2 - z3|^2 : |z3 - z1|^2 : |z1 - z2|^2 at the positions of Remark 2 (his (1), (5): s_i^2 = mu mu_i t)
+  PASS 10k negative control: with the translation's denominator mu_1 mu_3 mu_3 in (10.9), a_G = sqrt3/cos chi does not give v + 1/(2v): the difference is not identically 0, and at v = 1 it is far from 0 :: difference at v = 1: 9/10 - 3*sqrt(6)/5
+  PASS 10k every harmonic triple (symbolic m1, m2, a_G and lam): his (6) holds, and Lemma 6 at beta = 1 with r_i^2 = lam muG_i (lam of either sign) gives S = -lam (2a_G^2 + K a_G - 3), K = (m2 - m3)(m3 - m1)(m1 - m2)/(m1 m2 m3), and Heron's formula, factored in the side lengths r_i, gives 16A^2 = lam^2 times the radicand of (9); so P = |varkappa|/2 for every harmonic triple (exact)
+  PASS 10k relabeling and sign: m1 <-> m2 with a_G -> -a_G turns (muG_1, muG_2, muG_3) into (-muG_2, -muG_1, -muG_3) and K into -K, and keeps the numerator of (12) and the radicand of (9); m -> -m keeps every muG_i and K (exact)
+  PASS 10k the normalized family (1, mu, -mu/(1 + mu)), Biot-Savart at 50 digits, mu in {0.1, 0.3, 0.5, 0.8, 1, 2}, two angles on each arc: the squared sides satisfy his (8) with one a_G, and |varkappa|/2 from (9), (12) equals P :: (8) consistent to 8.55e-49; max |P - |varkappa|/2| = 1.05e-48
+  PASS 10k every harmonic triple, Biot-Savart at 50 digits: 188 triangles of 47 triples in random order and sign, among them (3, -2, 6) and (1, 2, -2/3), a_G random on both branches (94 with all muG_i > 0, 94 with all < 0), 89 of them expanding: self-similar, a_G recovered from the sides by his (6), (8), 16A^2 from the coordinates = lam^2 times the radicand, and |varkappa|/2 = |Im kappa|/(2|Re kappa|) :: spread 1.59e-48, a_G to 6.9e-48, area to 1.08e-48, max relative |P - |varkappa|/2| = 2.3e-48
+  PASS 10k negative control: with -K in place of K in (12), |varkappa|/2 misses P in each of the 184 random triangles with |K| > 0.01 :: least relative difference 0.00335, largest 5.97
+  PASS 10k Groebli's Fig. 6 (p. 59), m = (3, -2, 6), a_G = 2: muG = (14/3, 7/2, 7/6), proportional to 28 : 21 : 7, varkappa = 5/sqrt3 (his exponent sqrt3/5); Biot-Savart at 50 digits: self-similar, one orientation collapses and its mirror image expands, and |Im kappa|/(2|Re kappa|) = 5 sqrt3/6 for both :: spread 4.17e-51, P = 1.44337567297406
   PASS 10h DK Eq. (37) at Gamma0 = 0, r^2 = x is Gamma1 times the circulation condition (n-1)x^2 - 2nx + (n-1)
   PASS 10h DK Eq. (36) at Gamma0 = 0, Gamma1 = x, R1 = 1, r^2 = x, r^n b2 = v equals S - circ/(2x) identically
   PASS 10h DK Eq. (36) against the Biot-Savart sum over all 2n vortices, n = 2..8, three relative rotations each :: max relative difference 1.35e-50
@@ -336,12 +354,25 @@
   PASS 10c the root-of-unity sums and the reduced equations (10) against the full Biot-Savart sum, n = 2..10 :: 3.22e-50
   PASS 10d Prop. 1: q = s + 605/324 removes the quadratic term; sigma = 2 sqrt(-p/3) = 7 sqrt(5201)/162, X = (3r/2p) sqrt(-3/p) = 245351/5201^(3/2)
   PASS 10d Prop. 1: the cubic in q equals 16 Q(1/2, q)
+  PASS 10l Prop. 1: G(C) = 2C^3 + 8C^2 + C/4 - 8 at mu = 1/2, and G((sqrt7/2)c)/(7 sqrt7/4) = c^3 + (8 sqrt7/7)c^2 + c/14 - 32 sqrt7/49
+  PASS 10l Prop. 1: c = s - 8 sqrt7/21 gives s^3 - (125/42)s + 124 sqrt7/1323; 2 sqrt(-p/3) = 5 sqrt70/21 and (3q/2p) sqrt(-3/p) = -124 sqrt10/3125
+  PASS 10l Prop. 1: c_0, c_1, c_2 solve the cubic to 1e-59 (60 digits); c_0 in (0.67, 0.68), c_1 in (-0.93, -0.92), c_2 < -1 :: residual 4.36e-60; c = ['0.673983883948', '-0.9243893679189', '-2.773310300103']
+  PASS 10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on A- is P_-, to 1e-60 (60 digits) :: max difference 3.11e-61
+  PASS 10m CWW (4.5): interchanged and halved, Gamma = (1, 1/2, -1/3) and w = 1/3 - (sqrt7/3) i, the shape ratio of eq:pos at mu = 1/2, theta = pi/2; and cos theta_0 = -sqrt7/14 < 0, so pi/2 < theta_0 and theta = pi/2 lies on A+ (exact)
+  PASS 10m CWW (4.5): P = N(0)/(2 mu sqrtR M(0)) = 5 sqrt7/2 at theta = pi/2, mu = 1/2 (eq:Ptheta, exact) :: 5*sqrt(7)/2
+  PASS 10m CWW (4.5), Biot-Savart at 50 digits: self-similar and collapsing, P = 5 sqrt7/2, and a rotation-dilation about z_c maps it onto eq:pos at mu = 1/2, theta = pi/2 (vortices 1 and 2 interchanged) :: spread 4.07e-51, map residual 1.67e-51, P = 6.61437827766148
+  PASS 10m CWW (4.5), exact: z_c = -2i/sqrt7 as printed; kappa = (-sqrt7 + 35i)/(264 pi) at all three vortices; their kappa is the collapse time 1/(-2 Re kappa) = 132 pi/sqrt7; and Omega - i/(2 kappa) from their printed values is (35 - sqrt7 i)/(264 pi) = i conj(kappa) :: kappa = (-sqrt(7) + 35*I)/(264*pi)
+  PASS 10m CWW map V, Eq. (4.4): V = 0 at their triple (4.5) shifted to z_c = 0, with Omega_V = Omega - i/(2 kappa) formed from their printed Omega and kappa, which is i conj(kappa); V = 0 along A+ (mu = 1/2, five angles) with Omega(theta) = i conj(kappa(theta)) of Lemma 3 :: residuals 3.44e-52, 7.14e-52
+  PASS 10m negative controls: sum_k gamma_k V_k = i Omega conj(sum_k gamma_k z_k) (at Omega = 0.37 - 0.21i); at the triple as printed, with z_c = -2i/sqrt7, no Omega makes V vanish (min over Omega of |V| = 0.0489); at the shifted triple the printed real Omega alone leaves max |V_k| = 0.0109
+  PASS 10m CWW map V: V(L Lambda) = A V(Lambda) for a rotation, a dilation with Omega -> lam^{-2} Omega, a factor c in the circulations with Omega -> c Omega, and a relabeling (50 digits, at a point with V != 0) :: max deviation 2.99e-51
+  PASS 10m rank of D_Lambda V along A+ for mu = 1/2, numerical (30 digits): the Jacobian agrees with central differences (to 4.5e-20); at 199 equally spaced points of A+, V = 0 and the 6th singular value is at least 0.000795 times the largest (0.0169 at theta = pi/2)
+  PASS 10m rank of D_Lambda V along 0 < theta < pi/2 for n = 2, numerical (30 digits): at 199 equally spaced points, V = 0 and the 8th singular value is at least 0.000293 times the largest (0.0139 at theta = pi/12, the quartet of CWW turned by pi/6)
   PASS 10e Remark 1: Q(a/b, xi^2) factored directly: irreducible sextic for all a/b in (0,1), b <= 30 :: count 277
 
 ==============================================================================
 SUMMARY
 ==============================================================================
-checks: 121, passed: 121, failed: 0   (43.8 s)
+checks: 152, passed: 152, failed: 0   (66.3 s)
 
 kappa(theta; mu) = i (1+mu)^3/(2 pi sqrtR) * (sqrtR + (1-mu) e^{i theta}) / ((sqrtR - mu e^{i theta})(sqrtR + e^{i theta}))
    [normalization |z3 - z_c| = 1, R = 1 + mu + mu^2; zero-impulse circle |w - mu/(1+mu)| = sqrtR/(1+mu)]

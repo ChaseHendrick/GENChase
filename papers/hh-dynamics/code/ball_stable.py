@@ -20,7 +20,7 @@ import numpy as np
 from flint import arb, arb_mat, ctx
 
 from hh_lohner import Integrator, Section, poincare
-from certlib import section_set, infnorm_upper, infnorm_lower
+from certlib import section_set, infnorm_upper, infnorm_lower, initial_set_covers
 from hh_arb import HH
 from outward import lo_frac, hi_frac
 
@@ -37,19 +37,24 @@ def _run(sysm, sec, zb, zr, E, C1):
 
 def prove_piece(args):
     """args = (lo, hi, zguess, prec[, options]); options: 'sec' (a Section, default SEC), 'box_factor'
-    (the box radius is box_factor times the defect of the centre, default 3; the negative control uses
-    0.3), 'centre_iters' (iterations of P to centre the box, default 2), 'J' (default 8)."""
+    (the box radius is box_factor times the defect of the centre, default 3; a negative control uses
+    0.3), 'centre_iters' (iterations of P to centre the box, default 2), 'J' (default 8), 'kappa_max' (the
+    bound that sup ||DP_E||_inf must stay below, default 1; a negative control uses 0.5).
+
+    The piece passes ('ok') when P_E(Z) lies in int Z, sup ||DP_E||_inf < kappa_max, and the two runs integrated
+    sets that contain Z x piece ('covers')."""
     lo, hi, zguess, prec = args[:4]
     opts = args[4] if len(args) > 4 else {}
     sec = opts.get('sec', SEC)
     box_factor = opts.get('box_factor', 3.0)
     centre_iters = opts.get('centre_iters', 2)
+    kappa_max = opts.get('kappa_max', 1)
     ctx.prec = prec
     t0 = time.time()
     sysm = HH(opts.get('J', 8))
     E = arb(lo).union(arb(hi))
     zb = list(zguess)
-    out = {'lo': lo, 'hi': hi, 'ok': False, 'inside': False, 'completed': False, 'norm': float('nan'),
+    out = {'lo': lo, 'hi': hi, 'ok': False, 'inside': False, 'covers': False, 'completed': False, 'norm': float('nan'),
            'norm_hi': None, 'norm_lo': None, 'zb': zb, 'zr': None, 'tau_lo': None, 'tau_hi': None,
            'umax_lo': None, 'time': 0.0, 'err': ''}
     try:
@@ -67,9 +72,11 @@ def prove_piece(args):
         r1 = _run(sysm, sec, zb, zr, E, True)
         DP = arb_mat(3, 3, [r1['DP'][a, b] for a in F for b in F])
         nrmb = infnorm_upper(DP)
-        ok = inside and (nrmb < 1)
+        covers = (initial_set_covers(rc['S0'], F, zb, zr, [(4, E)]) and
+                  initial_set_covers(r1['S0'], F, zb, zr, [(4, E)]))
+        ok = inside and (nrmb < kappa_max) and covers
         tau = r1['tau']
-        out.update({'ok': ok, 'inside': inside, 'completed': True, 'norm': float(nrmb),
+        out.update({'ok': ok, 'inside': inside, 'covers': covers, 'completed': True, 'norm': float(nrmb),
                     'norm_hi': hi_frac(nrmb), 'norm_lo': lo_frac(infnorm_lower(DP)), 'zb': zb, 'zr': zr,
                     'tau_lo': lo_frac(tau), 'tau_hi': hi_frac(tau), 'umax_lo': lo_frac(r1['extremes'][0][2]),
                     'PZ_minus_Z': [(PZ[i].str(10, radius=True), arb(zb[i], zr[i]).str(10, radius=True))
@@ -87,17 +94,88 @@ def pieces(n=60, lo=10.59, hi=10.62):
     return [(str(a + k * step), str(a + (k + 1) * step)) for k in range(n)]
 
 
-def prove_ball(z0, E0, dzdE, log, n=60, prec=96, workers=4):
-    """z0: fixed point at E0 (float), dzdE: its derivative (linear predictor for the centres)."""
+def _key(a):
+    """The checkpoint key of a piece: its arguments (the floats of the centre guess exactly, as hex)."""
+    lo, hi, zg, prec = a[:4]
+    return '%s|%s|%s|%d' % (lo, hi, ','.join(float(v).hex() for v in zg), prec)
+
+
+def code_digest():
+    """SHA-256 of the files that compute a piece and of the versions of python-flint and FLINT; a checkpoint written
+    by other code is not reused."""
+    import hashlib
+    import os
+    import flint
+    here = os.path.dirname(os.path.abspath(__file__))
+    h = hashlib.sha256()
+    h.update(('python-flint %s FLINT %s' % (flint.__version__, getattr(flint, '__FLINT_VERSION__', '?'))).encode())
+    for fn in ('ball_stable.py', 'certlib.py', 'hh_lohner.py', 'hh_arb.py', 'outward.py'):
+        h.update(open(os.path.join(here, fn), 'rb').read())
+    return h.hexdigest()
+
+
+def _dump(r):
+    """A piece result as JSON (exact rationals as 'p/q' strings)."""
+    import json
+    from fractions import Fraction
+    return json.dumps({k: (('F:%d/%d' % (v.numerator, v.denominator)) if isinstance(v, Fraction) else v)
+                       for k, v in r.items()})
+
+
+def _load(line):
+    import json
+    from fractions import Fraction
+    d = json.loads(line)
+    return {k: (Fraction(v[2:]) if isinstance(v, str) and v.startswith('F:') else v) for k, v in d.items()}
+
+
+def prove_ball(z0, E0, dzdE, log, n=60, prec=96, workers=2, checkpoint=None, resume=False, progress=None):
+    """z0: fixed point at E0 (float), dzdE: its derivative (linear predictor for the centres).
+
+    workers: the number of worker processes.  progress(r): called as each piece completes (for a terminal line;
+    the pieces complete in an order that depends on the machine, so the report prints them sorted, at the end).
+    checkpoint: a file to which each completed piece is appended (with the SHA-256 of the code that computed it);
+    with resume=True, pieces with the same arguments computed by the same code are read back from it instead of
+    being recomputed.  Returns (results, number of pieces read from the checkpoint).
+    """
     from multiprocessing import get_context
+    import os
     ps = pieces(n)
     args = []
     for lo, hi in ps:
         em = 0.5 * (float(lo) + float(hi))
         zg = [float(z0[i] + dzdE[i] * (em - E0)) for i in range(3)]
         args.append((lo, hi, zg, prec))
-    with get_context('fork').Pool(workers) as pool:
-        res = pool.map(prove_piece, args, chunksize=1)
+    digest = code_digest()
+    done = {}
+    if checkpoint and resume and os.path.exists(checkpoint):
+        for line in open(checkpoint):
+            tag, _, rest = line.rstrip('\n').partition(' ')
+            if tag != digest:
+                continue
+            k, _, js = rest.partition(' ')
+            done[k] = dict(_load(js), from_checkpoint=True)
+    todo = [a for a in args if _key(a) not in done]
+    res = [done[_key(a)] for a in args if _key(a) in done]
+    n_loaded = len(res)
+    ck = open(checkpoint, 'a') if checkpoint else None
+    try:
+        if todo:
+            with get_context('fork').Pool(workers) as pool:
+                it = pool.imap_unordered(prove_piece, todo, chunksize=1)
+                for a_r in it:
+                    res.append(a_r)
+                    if ck is not None:
+                        a = [x for x in todo if x[0] == a_r['lo'] and x[1] == a_r['hi']][0]
+                        ck.write('%s %s %s\n' % (digest, _key(a), _dump(a_r)))
+                        ck.flush()
+                    if progress is not None:
+                        progress(a_r)
+    finally:
+        if ck is not None:
+            ck.close()
+    from decimal import Decimal
+    res.sort(key=lambda r: Decimal(r['lo']))
     # split failures once
     out = []
     for r in res:
@@ -105,8 +183,7 @@ def prove_ball(z0, E0, dzdE, log, n=60, prec=96, workers=4):
             out.append(r)
             continue
         log('    piece [%s, %s] failed (%s); splitting' % (r['lo'], r['hi'], r['err'] or 'test'))
-        from decimal import Decimal
         m = str((Decimal(r['lo']) + Decimal(r['hi'])) / 2)
         sub = [prove_piece((r['lo'], m, r['zb'], prec)), prove_piece((m, r['hi'], r['zb'], prec))]
         out.extend(sub)
-    return out
+    return out, n_loaded

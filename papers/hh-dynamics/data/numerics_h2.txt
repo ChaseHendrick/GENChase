@@ -1,0 +1,20 @@
+NUMERICAL ONLY: small periodic orbits below the supercritical Hopf point J_H2, E_l = 10.613
+  (float64, scipy DOP853 at rtol 1e-10 for the transient, shoot_float at rtol 1e-12; not used in any proof)
+  J_H2 = 154.522433665808 (data/certify_equilibria_hopf.txt); predicted limit of (peak-to-peak u)^2/(J_H2 - J): 14.292859
+
+  J_H2 - J = 1.00 (J = 153.522434): equilibrium u* = 21.887264, largest real part of an eigenvalue 4.491e-03
+    after 4000 ms from u* + 1.890: peak-to-peak u over the last 100 ms 3.797528 mV
+    Newton on {u = u*, du/dt > 0}: |P(z) - z| = 8.9e-16, period 5.920958 ms, nontrivial multipliers 0.948498, 0.156796, 0.000000
+    peak-to-peak u 3.797691 mV, u in [20.035805, 23.833495]; (peak-to-peak u)^2/(J_H2 - J) = 14.4225
+
+  J_H2 - J = 0.50 (J = 154.022434): equilibrium u* = 21.914619, largest real part of an eigenvalue 2.246e-03
+    after 4000 ms from u* + 1.337: peak-to-peak u over the last 100 ms 2.678004 mV
+    Newton on {u = u*, du/dt > 0}: |P(z) - z| = 3.9e-16, period 5.916061 ms, nontrivial multipliers 0.973850, 0.158018, 0.000000
+    peak-to-peak u 2.679286 mV, u in [20.598531, 23.277817]; (peak-to-peak u)^2/(J_H2 - J) = 14.3571
+
+  J_H2 - J = 0.25 (J = 154.272434): equilibrium u* = 21.928272, largest real part of an eigenvalue 1.123e-03
+    after 4000 ms from u* + 0.945: peak-to-peak u over the last 100 ms 1.889185 mV
+    Newton on {u = u*, du/dt > 0}: |P(z) - z| = 2.4e-16, period 5.913641 ms, nontrivial multipliers 0.986824, 0.158613, 0.000000
+    peak-to-peak u 1.892411 mV, u in [20.993810, 22.886221]; (peak-to-peak u)^2/(J_H2 - J) = 14.3249
+
+  run time 161.1 s

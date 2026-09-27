@@ -61,21 +61,25 @@ This is the largest gap, and most of it is not code.
 **1b. The vortex paper.**
 - **Finding:** `papers/minimal-winding/submission/cover-letter-rcd.md` is a draft. It still has placeholders
   for the suggested reviewers. arXiv is deferred until the owner has an endorsement (owner's decision,
-  2026-09-25); the Zenodo release 2.0.0 is the preprint of record.
+  2026-09-25); the Zenodo release 2.1.0 of the companion, doi:10.5281/zenodo.22966989, is the preprint of
+  record, and it is the DOI the paper's data availability paragraph cites (as the previous release: release
+  2.2.0, prepared, holds the programs and data of the current version and gets its own DOI when archived).
 - **Why:** one peer-reviewed publication is worth more credibility than any number of internal
   audits.
 - **Done when:** the manuscript is submitted to the journal.
 
 **1c. A DOI for the software.**
-- **Finding:** `.zenodo.json` describes the vortex identities note ("GENChase identities:
-  Three-vortex collapse bound, ...", `upload_type: publication`), not the software.
-  `CITATION.cff` has no DOI.
-- **Risk:** Zenodo's GitHub integration reads `.zenodo.json` when it archives a release. If the
-  integration were switched on as things stand, every software release would be archived under
-  the note's title.
+- **Finding:** `.zenodo.json` described the vortex identities note ("GENChase identities:
+  Three-vortex collapse bound, ...", `upload_type: publication`), not the software. Resolved in the
+  repository: `.zenodo.json` now describes the software (upload type software, Apache-2.0).
+  `CITATION.cff` still has no DOI.
+- **Risk:** Zenodo's GitHub integration reads `.zenodo.json` when it archives a release. Had the
+  integration been switched on while the old file was in place, every software release would have
+  been archived under the note's title.
 - **Done when:**
-  - `.zenodo.json` describes the software;
-  - the note is its own Zenodo upload;
+  - `.zenodo.json` describes the software (done);
+  - no separate Zenodo upload of the identities note: by the owner's decision (2026-09-27) the note is
+    retired into the minimal-winding paper, release 2.2.0 (done);
   - the software DOI is in `CITATION.cff`.
 - **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
   with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).
@@ -101,7 +105,7 @@ which combines exact enumeration with measured sampling frequencies, is the mode
 | `sandpile` | Toppling order does not change the stabilized state (abelian property). The number of recurrent configurations equals the number of spanning trees (Dhar, Phys. Rev. Lett. 64, 1613, 1990). | An order-dependent toppling rule |
 | `sle` | The trace has dimension min(2, 1 + κ/8) (Beffara, Ann. Probab. 36, 2008). Use box counting with a stated fit range and seed ensemble. | Wrong driving variance, which changes κ |
 | `rmt` | Semicircle density and the beta-ensemble spacing laws (already credited in the tab). Use a goodness-of-fit test with a declared sample size. | Wrong beta scaling in the tridiagonal model |
-| `ssh`, `kitaev` | Exact edge zero modes and winding numbers in the topological phase. `ssh` already has `tools/ssh-science.js` registered, but the record is unvalidated. | Wrong boundary hopping removes the zero mode |
+| `ssh`, `kitaev` | Exact edge zero modes and winding numbers in the topological phase. `ssh` is validated within stated limits for the finite chains in validation/SSH.md (reviewed 2026-09-27). The status-line winding is the closed rule w > v, not a Berry-phase integral. | Wrong boundary hopping removes the zero mode |
 
 Each promotion still follows the contract: domain, resolution, precision, reviewed date and a
 results file under `validation/results/`.
@@ -224,11 +228,11 @@ impossible to miss on the tab itself, if it is not already.
 - Validated within stated limits: `ising` (Onsager's T_c by Binder crossings, Yang's magnetization),
   `percolation` (bond 1/2 and site 0.5927 by spanning probability, with diagonal and anisotropic controls),
   `sandpile` (the abelian property and exact toppling counts against independent references, after the
-  counter was fixed), `rmt` (the semicircle and the Gaudin-Mehta spacing laws) and `kitaev` (the
-  Bogoliubov-de Gennes spectrum and its edge modes).
+  counter was fixed), `rmt` (the semicircle and the Gaudin-Mehta spacing laws), `kitaev` (the
+  Bogoliubov-de Gennes spectrum and its edge modes) and `ssh` (Jacobi spectra, open-chain end weights
+  and export state preservation; winding on the status line is w > v).
 - Partially validated, each for its stated reason: `aztec`, `lozenge` and `sle`.
-- Still open: `ssh` has its tool but its record is unvalidated, and the Aztec and lozenge frozen-region
-  readouts are being reworked.
+- Still open: the Aztec and lozenge frozen-region readouts are being reworked.
 
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe
