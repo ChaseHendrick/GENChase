@@ -1,0 +1,429 @@
+{
+  "date": "2026-09-27",
+  "source": "src/modules/spinice.js",
+  "sourceSha256": "2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f",
+  "model": "square ice, six-vertex model, periodic boundary, not pyrochlore spin ice",
+  "lieb": {
+    "citation": "E. H. Lieb, Phys. Rev. Lett. 18, 692 (1967)",
+    "W": 1.5396007178390019,
+    "formula": "(4/3)^(3/2)"
+  },
+  "pauling": {
+    "W": 1.5,
+    "note": "2^(2N) * (6/16)^N = (3/2)^N on the square lattice. Pauling, J. Am. Chem. Soc. 57, 2680 (1935), used the same style of count for three-dimensional ice."
+  },
+  "oeis": "A054759",
+  "reachedLieb": false,
+  "lattices": [
+    {
+      "n": 1,
+      "N": 1,
+      "count": "4",
+      "W_L": 4,
+      "distanceToLieb": 2.4603992821609983,
+      "distanceToPauling": 2.5,
+      "reachedLieb": false
+    },
+    {
+      "n": 2,
+      "N": 4,
+      "count": "18",
+      "W_L": 2.0597671439071177,
+      "distanceToLieb": 0.5201664260681158,
+      "distanceToPauling": 0.5597671439071177,
+      "reachedLieb": false
+    },
+    {
+      "n": 3,
+      "N": 9,
+      "count": "148",
+      "W_L": 1.7423692207749066,
+      "distanceToLieb": 0.20276850293590476,
+      "distanceToPauling": 0.24236922077490664,
+      "reachedLieb": false
+    },
+    {
+      "n": 4,
+      "N": 16,
+      "count": "2970",
+      "W_L": 1.648341823229102,
+      "distanceToLieb": 0.10874110539010018,
+      "distanceToPauling": 0.14834182322910205,
+      "reachedLieb": false
+    },
+    {
+      "n": 5,
+      "N": 25,
+      "count": "143224",
+      "W_L": 1.6078318665540912,
+      "distanceToLieb": 0.06823114871508928,
+      "distanceToPauling": 0.10783186655409116,
+      "reachedLieb": false
+    },
+    {
+      "n": 6,
+      "N": 36,
+      "count": "16448400",
+      "W_L": 1.5865285049248155,
+      "distanceToLieb": 0.04692778708581358,
+      "distanceToPauling": 0.08652850492481545,
+      "reachedLieb": false
+    }
+  ],
+  "failureControls": {
+    "enumeration": {
+      "skippedVertexMatchesPublished": false,
+      "openHorizontalCounts": {
+        "2": "4",
+        "3": "8",
+        "4": "16",
+        "5": "32",
+        "6": "64"
+      },
+      "skippedVertexCounts": {
+        "1": "4",
+        "2": "40",
+        "3": "832",
+        "4": "40928",
+        "5": "4783104",
+        "6": "1327404160"
+      }
+    }
+  },
+  "predicate": {
+    "description": "Every recorded configuration is an ice-rule state, none of the enumerated states is missing, chi-squared is within 4 standard deviations of its independent-draw mean df (variance 2*df), and no bin deviates by more than 5 of its exact multinomial standard deviations.",
+    "chiZMax": 4,
+    "binZMax": 5,
+    "independence": "The chi-squared variance 2*df and the bin variance n*(1/k)*(1-1/k) are exact for independent multinomial draws. The chains are thinned deterministic PRNG draws. The gap-1 control is the same fair flip recorded every step, and it fails this independent-draw predicate."
+  },
+  "loopFlip": {
+    "note": "Independent of the plate. Plaquette reversal plus reversal of a uniform row or column. Not the plate Monte Carlo.",
+    "fair2": {
+      "n": 2,
+      "mode": "fair",
+      "burn": 5000,
+      "gap": 20,
+      "seed": "spinice/fair/2",
+      "sampleSize": 20000,
+      "configurations": 18,
+      "offIce": 0,
+      "missing": 0,
+      "chi2": 17.5462,
+      "df": 17,
+      "chiVariance": 34,
+      "z": 0.093673,
+      "binVariance": 1049.382716,
+      "binSd": 32.394177,
+      "maxAbs": 54.888888888888914,
+      "maxZ": 1.694406,
+      "pass": true,
+      "observed": [
+        1094,
+        1134,
+        1102,
+        1090,
+        1161,
+        1066,
+        1166,
+        1140,
+        1081,
+        1138,
+        1097,
+        1073,
+        1165,
+        1068,
+        1084,
+        1139,
+        1098,
+        1104
+      ]
+    },
+    "fair3": {
+      "n": 3,
+      "mode": "fair",
+      "burn": 8000,
+      "gap": 40,
+      "seed": "spinice/fair/3",
+      "sampleSize": 15000,
+      "configurations": 148,
+      "offIce": 0,
+      "missing": 0,
+      "chi2": 115.910933,
+      "df": 147,
+      "chiVariance": 294,
+      "z": -1.813151,
+      "binVariance": 100.666545,
+      "binSd": 10.033272,
+      "maxAbs": 24.648648648648646,
+      "maxZ": 2.456691,
+      "pass": true
+    },
+    "gap1FailsIndependentVariance": {
+      "n": 2,
+      "mode": "fair",
+      "burn": 5000,
+      "gap": 1,
+      "seed": "spinice/gap1/2",
+      "sampleSize": 20000,
+      "configurations": 18,
+      "offIce": 0,
+      "missing": 0,
+      "chi2": 52.9702,
+      "df": 17,
+      "chiVariance": 34,
+      "z": 6.168838,
+      "binVariance": 1049.382716,
+      "binSd": 32.394177,
+      "maxAbs": 96.11111111111109,
+      "maxZ": 2.966926,
+      "pass": false,
+      "observed": [
+        1198,
+        1054,
+        1192,
+        1131,
+        1093,
+        1066,
+        1113,
+        1068,
+        1165,
+        1123,
+        1091,
+        1078,
+        1173,
+        1189,
+        1044,
+        1015,
+        1038,
+        1169
+      ]
+    },
+    "biased2": {
+      "n": 2,
+      "mode": "bias",
+      "burn": 5000,
+      "gap": 20,
+      "seed": "spinice/bias/2",
+      "sampleSize": 20000,
+      "configurations": 18,
+      "offIce": 0,
+      "missing": 0,
+      "chi2": 22028.1982,
+      "df": 17,
+      "chiVariance": 34,
+      "z": 3774.889349,
+      "binVariance": 1049.382716,
+      "binSd": 32.394177,
+      "maxAbs": 2192.8888888888887,
+      "maxZ": 67.693922,
+      "pass": false,
+      "observed": [
+        138,
+        609,
+        707,
+        3287,
+        127,
+        654,
+        622,
+        3304,
+        646,
+        626,
+        138,
+        670,
+        673,
+        3225,
+        137,
+        651,
+        567,
+        3219
+      ]
+    },
+    "biased3": {
+      "n": 3,
+      "mode": "bias",
+      "burn": 8000,
+      "gap": 40,
+      "seed": "spinice/bias/3",
+      "sampleSize": 15000,
+      "configurations": 148,
+      "offIce": 0,
+      "missing": 0,
+      "chi2": 27277.384,
+      "df": 147,
+      "chiVariance": 294,
+      "z": 1582.276127,
+      "binVariance": 100.666545,
+      "binSd": 10.033272,
+      "maxAbs": 567.6486486486486,
+      "maxZ": 56.576624,
+      "pass": false
+    },
+    "iceBreaking2": {
+      "n": 2,
+      "mode": "break",
+      "burn": 0,
+      "gap": 1,
+      "seed": "spinice/break/2",
+      "sampleSize": 2000,
+      "configurations": 18,
+      "offIce": 1870,
+      "missing": 0,
+      "chi2": 1749.828,
+      "df": 17,
+      "chiVariance": 34,
+      "z": 297.17755,
+      "binVariance": 104.938272,
+      "binSd": 10.243938,
+      "maxAbs": 109.11111111111111,
+      "maxZ": 10.651285,
+      "pass": false,
+      "observed": [
+        13,
+        8,
+        4,
+        8,
+        3,
+        10,
+        11,
+        7,
+        2,
+        3,
+        10,
+        6,
+        8,
+        8,
+        9,
+        6,
+        9,
+        5
+      ]
+    }
+  },
+  "plateSampler": {
+    "tested": true,
+    "passesUniformIcePredicate": false,
+    "note": "Single-arrow Metropolis from src/modules/spinice.js, evaluated in a vm. The UI will not build a 2x2 torus (height is clamped at 32, and sanitize rejects grids under 48). The harness allows _small only so this same sweep can run on an enumerated torus. Defaults J, temp and field are the module defaults.",
+    "defaults": {
+      "J": 1.6,
+      "temp": 0.55,
+      "field": 0
+    },
+    "forcedFlip": {
+      "independentAcceptRate": 0.05452527577743517,
+      "belowRateLeavesIce": {
+        "field": 0,
+        "acceptDraw": 0.027262637888717585,
+        "ice": false,
+        "flipped": 1,
+        "Q": [
+          -1,
+          1,
+          0,
+          0
+        ],
+        "unchanged": false,
+        "rngLeft": 0
+      },
+      "aboveRateStaysIce": {
+        "field": 0,
+        "acceptDraw": 0.10905055155487034,
+        "ice": true,
+        "flipped": 0,
+        "Q": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "unchanged": true,
+        "rngLeft": 0
+      },
+      "downhillFieldNeedsNoAcceptDraw": {
+        "field": 1,
+        "acceptDraw": null,
+        "ice": false,
+        "flipped": 1,
+        "Q": [
+          -1,
+          1,
+          0,
+          0
+        ],
+        "unchanged": false,
+        "rngLeft": 0
+      }
+    },
+    "histogram": {
+      "frames": 4000,
+      "flipsPerFrame": 16,
+      "sampleSize": 4000,
+      "configurations": 18,
+      "offIce": 1010,
+      "fracOffIce": 0.2525,
+      "chi2": 311.004,
+      "df": 17,
+      "chiVariance": 34,
+      "z": 50.42127,
+      "binVariance": 209.876543,
+      "binSd": 14.487116,
+      "maxZ": 7.815373,
+      "pass": false,
+      "chi2ConditionalOnIce": 74.888294,
+      "zConditionalOnIce": 9.927761,
+      "conditionalIsNotThePredicate": true
+    }
+  },
+  "iceSeed": {
+    "note": "warmup 0, init ice. The staggered pattern is an ice configuration when both periods are even. An odd period disagrees with itself across the seam.",
+    "sheets": [
+      {
+        "label": "default even sheet",
+        "grid": 96,
+        "aspect": "1:1",
+        "W": 96,
+        "H": 96,
+        "defectVertices": 0,
+        "defectRows": [],
+        "ice": true
+      },
+      {
+        "label": "4:5 even sheet",
+        "grid": 48,
+        "aspect": "4:5",
+        "W": 48,
+        "H": 60,
+        "defectVertices": 0,
+        "defectRows": [],
+        "ice": true
+      },
+      {
+        "label": "16:9 odd height",
+        "grid": 80,
+        "aspect": "16:9",
+        "W": 80,
+        "H": 45,
+        "defectVertices": 80,
+        "defectRows": [
+          0
+        ],
+        "ice": false
+      },
+      {
+        "label": "3x3 torus",
+        "grid": 3,
+        "aspect": "1:1",
+        "W": 3,
+        "H": 3,
+        "defectVertices": 4,
+        "defectRows": [
+          0,
+          1,
+          2
+        ],
+        "ice": false
+      }
+    ]
+  },
+  "status": "partially validated",
+  "whyNotFull": "The plate sampler was executed and fails the uniform-ice predicate. The loop flip that passes is not the plate. No print-state audit was run. Finite tori have not reached Lieb's limit."
+}
