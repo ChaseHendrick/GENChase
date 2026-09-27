@@ -88,7 +88,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [turing](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
 | [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
 | [phase](src/modules/dynamics.js) | unvalidated | [phase-winding-check.js](tools/phase-winding-check.js) | Not scientifically validated | none |
-| [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated | none |
+| [klein](src/modules/klein.js) | unvalidated | [klein-science.js](tools/klein-science.js) | Not scientifically validated | none |
 | [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded | none |
 | [dendrite](src/modules/dendrite.js) | unvalidated | None registered | Not scientifically validated | none |
 | [purcell](src/modules/purcell.js) | unvalidated | None registered | Not scientifically validated | none |
@@ -402,6 +402,12 @@ No record has an outside review yet; every review so far was done inside the pro
 - The argument-principle count is a double-precision sampled computation, not interval arithmetic: 4096 initial circle samples, with bisection when the wrapped phase change or the angular step times the endpoint logarithmic-derivative magnitude exceeds pi/2. The derivative uses f(theta +/- 1e-7); all probes count toward the 400,000-evaluation budget, with at most 24 refinement levels. Finite differences and endpoint sampling cannot certify arbitrary typed functions or exclude every hidden turn. The argument principle requires a meromorphic function inside and on the circle.
 - No count or verdict is printed for nonfinite evaluations, a sampled min \|f\| at or below 1e-9 of max \|f\|, or unresolved refinement. Conservative refusal includes the tested near-double-zero circles whose analytic count is zero. Essential singularities and branch points inside remain outside the theorem; an accepted number there is only a sampled winding number.
 - The shading styles and line spacing follow the descriptions of enhanced phase portraits; they have not been compared figure by figure with the cited sources.
+
+### klein
+
+- Status is unvalidated. The painted field is not the Dirac evolution. It is a traveling Gaussian envelope times a cartoon amplitude, one Float32 channel, not a time-evolved 2-component spinor. The plate assigns T = 1 rather than measuring it.
+- The number 1 at theta=0 on the plate is assigned in compute() when \|sin theta\| < 1e-3. It is not a measured transmitted-over-incident ratio. The same assignment is 1 for barrier heights and widths whose painted right-hand sum is not the left-hand sum.
+- The only check of the module compares the metric and the field with their own formulas. That is a regression test by construction. The independent Dirac calculation in validation/KLEIN.md does not execute a time-evolved plate and does not certify the pixels, the oblique stand-in, or the print path.
 
 ### gyroid
 

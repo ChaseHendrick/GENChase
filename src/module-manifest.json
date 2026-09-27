@@ -1997,8 +1997,8 @@
       "tab": "Klein",
       "subtitle": "a barrier a Dirac electron does not notice · 1929 / 2006",
       "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
-      "credit": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
-      "blurb": "A wall that a Schrödinger particle would bounce from, a massless Dirac particle walks through. At head-on incidence the transmission is 1 for any height and any width; only an angle can reflect it. The plate is spacetime of |ψ|² with the barrier marked. The status line reports transmitted over incident against 1 at θ = 0.",
+      "credit": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is not a carbon lattice and does not evolve a 2-component Dirac wave. It draws a traveling envelope through a marked barrier.",
+      "blurb": "A wall that a Schrödinger particle would bounce from, a massless Dirac particle walks through. At head-on incidence the transmission is 1 for any height and any width; only an angle can reflect it. The plate paints a traveling Gaussian envelope times a cartoon amplitude, not that evolution. At θ = 0 the status line assigns T = 1. It does not measure transmitted over incident.",
       "order": 63,
       "seed": "",
       "presets": [
