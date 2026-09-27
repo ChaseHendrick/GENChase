@@ -3,7 +3,7 @@
 **Status: numerical evidence and a proof plan, not a proof.** Every number in this folder comes from float64
 integration (an adaptive DOP853 at rtol 1e-14, atol 1e-16, compiled with numba), checked where stated by a
 256-bit Taylor-series integrator (python-flint `arb_series`, order 36) whose truncation error is controlled but not
-enclosed. Nothing here changes the status of `papers/hh-dynamics/`: the proved results there are the equilibria and the
+enclosed. Nothing here changes the status of the paper of this folder (`paper/hh-dynamics.tex`): the proved results there are the equilibria and the
 Hopf points. Work of 2026-09-26.
 
 ## 0. Summary
@@ -43,7 +43,7 @@ Hopf points. Work of 2026-09-26.
 
 ## 1. Conventions
 
-As in `papers/hh-dynamics/code/hh_ball.py`: u = depolarization from rest (mV), J = applied depolarizing current (uA/cm2), time
+As in `code/hh_ball.py` of this folder: u = depolarization from rest (mV), J = applied depolarizing current (uA/cm2), time
 in ms, 6.3 C, Hodgkin and Huxley's constants. E_l = 10.5989209693917 (the value that makes the resting current zero; `hhc.el_zero_current`).
 G&O write v = -u and print the current with the wrong sign (their Hopf point at I = 9.78 is our J = 9.78); their I equals our J
 up to the leak offset 0.3 (10.599 - 10.5989209693917) = 2.37092e-5.
@@ -311,7 +311,7 @@ same integrator.
 4. **Optional: cone conditions** (Zgliczynski, Covering relations, cone conditions and the stable manifold theorem, J. Differential Equations 246 (2009) 1774-1819) from the same C^1 enclosures, for a
    hyperbolic invariant set conjugate to the shift. The derivative ratios (|dxi'/dxi| >= 31 against |deta'/deta| <= 0.7) suggest a
    quadratic form xi^2 - gamma eta^2 with gamma of order 10^2 to 10^4. Not checked here.
-5. **E_l.** The statements should be proved for the ball E_l in [10.59, 10.62] as elsewhere in `papers/hh-dynamics/`, or at the two values
+5. **E_l.** The statements should be proved for the ball E_l in [10.59, 10.62] as in the paper of this folder, or at the two values
    10.613 and 10.5989...; since only J + 0.3 E_l enters, the natural statement is for J + 0.3 E_l = 11.041482... (J* + 0.3 E_l), a
    single number, with a small interval around it.
 6. **Threshold.** Enclose the fates of three states (u1 < u2 < u3 at gates g0) that go AP, REST, AP; this proves that no threshold
@@ -367,7 +367,7 @@ every refutation attempt with large margins, but rest on finite floating-point s
 
 ## 12. How to rerun
 
-    cd papers/hh-dynamics/work/chaos/code
+    cd work/chaos/code          # from the paper's folder
     python3 -m pip install numpy scipy numba mpmath python-flint==0.9.0   # also pymupdf only to read PDFs, not needed
     python3 continuation.py 3000 9.5                      # Hopf branch, J = 9.5 down past F1 (about 10 min)
     python3 continuation.py 6000 resume ../data/branch.npz ../data/branch2.npz
