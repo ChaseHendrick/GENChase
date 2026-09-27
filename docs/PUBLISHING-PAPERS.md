@@ -34,9 +34,6 @@ rebuild the PDFs, run the checks, update `papers.json`, and draft the messages.
 5. **After acceptance,** link the published version from the companion's README (and from arXiv, if the
    paper is there by then).
 
-The identities note is the exception: it goes to Zenodo as a record of its own and not to a journal
-(below).
-
 ## Statuses
 
 `papers.json` moves each paper through `draft`, `preparing`, `ready`, `on-arxiv`, `submitted`,
@@ -172,7 +169,7 @@ the result; reveal it, and any others you want on record. List their ids in the 
    publication fee. Keep the manuscripts' one-line AI statement: arXiv requires significant use of
    generative AI to be reported in the work, Springer Nature asks for it in the manuscript (copy
    editing alone is exempt), and JOSS requires a fuller "AI usage disclosure" section, which the
-   software paper has. A Zenodo-only record, such as the identities note, needs none.
+   software paper has. A Zenodo-only record needs none.
 2. **Submit to one journal at a time.** A preprint plus one journal is normal; the same paper at two
    journals at once is not allowed.
 3. Fill the cover letter's placeholders only in the copy you send, never in the repository.
@@ -201,12 +198,10 @@ the result; reveal it, and any others you want on record. List their ids in the 
 - Different papers may be under review at different journals at the same time. The same result must
   not appear in two papers as if it were new in each; journals treat that as redundant publication.
 
-## The identities note (Zenodo only)
+## The identities note (retired)
 
-The note has zero confirmed novel findings and is published as a record of its own, not submitted
-to a journal. Follow [identities/README.md](../identities/README.md), "Uploading the note as its own
-Zenodo record", keep the attribution cautions of [identities/ARXIV.md](../identities/ARXIV.md), and
-set `published` with `zenodo.doi` in `papers.json`.
+The note's results are proved in the minimal-winding paper, release 2.2.0, and the note gets no record of its own
+([identities/README.md](../identities/README.md), "The note is retired").
 
 ## The software paper (JOSS)
 

@@ -75,7 +75,7 @@ This is the largest gap, and most of it is not code.
   the note's title.
 - **Done when:**
   - `.zenodo.json` describes the software;
-  - the note is its own Zenodo upload;
+  - the identities note is retired into the minimal-winding paper (2026-09-27); no separate upload;
   - the software DOI is in `CITATION.cff`.
 - **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
   with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).

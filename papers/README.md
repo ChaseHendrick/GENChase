@@ -17,8 +17,9 @@ reproduce and how to cite, and two working folders that stay in this repository,
 The alpha-model draft that used to be a second paper here was merged into the minimal-winding paper on
 2026-09-25 (owner's decision), with its programs, data and notes.
 
-[`papers.json`](papers.json) is the record of each paper's status, and the identities note and the
-software paper are listed there too (they live in `identities/` and `paper/`).
+[`papers.json`](papers.json) is the record of each paper's status, and the software paper is listed there too
+(it lives in `paper/`). The identities note, which used to be listed as well, is retired (2026-09-27): its results
+are proved in the minimal-winding paper, release 2.2.0, and `identities/` stays as the provenance record.
 
 This repository may be private, so a paper never sends readers here. When `papers.json` marks a paper
 `ready`, the **publish papers** workflow copies its folder, without `notes/` and `submission/`, to its
