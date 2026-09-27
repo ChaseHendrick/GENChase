@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   auto Gm = [&](const V& w) { return V{2 * Tm - w[0], w[1]}; };
   for (int j = 1; j <= k; ++j) z[k + j] = Gm(z[k - j]);
   for (int j = 1; j <= J; ++j) z[2 * k + j] = Gm(onW(x0 / pow(lam, j)));
-  fprintf(stderr, "cfac %g; x0 = %.17g", cfac); fprintf(stderr, ", x0 = %.17g, residual %.3e, lambda %.10g, Fix(G) line t2 = %.6f\n", x0, res(x0), lam, Tm);
+  fprintf(stderr, "cfac %g", cfac); fprintf(stderr, ", x0 = %.17g, residual %.3e, lambda %.10g, Fix(G) line t2 = %.6f\n", x0, res(x0), lam, Tm);
   for (int i = 0; i < L; ++i) { V w = ret(z[i]); fprintf(stderr, "  step %2d: z = (%.9f, %.9f), |P(z_i) - z_{i+1}| mod 2pi = %.2e\n", i, z[i][0], z[i][1],
       hypot(remainder(w[0] - z[i + 1][0], 2 * M_PI), w[1] - z[i + 1][1])); }
   // directions
