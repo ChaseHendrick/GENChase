@@ -22,6 +22,7 @@ Jacobian of f = (w, K (w + I), phi (a_x (1 - x) - b_x x) for x = m, n, h), I = 1
 """
 import json
 import os
+import re
 import sys
 import time
 from fractions import Fraction
@@ -87,6 +88,11 @@ def jac(y, K, phi):
 
 
 HH_EL = os.environ.get('HH_EL')
+DECIMAL = re.compile(r'^[0-9]+(\.[0-9]+)?$')
+# The rest value u* of certify_rest_wave.rest_state for HH_EL = 10.613 (manuscript, Section 2): its interval Newton step
+# proves that the resting current has exactly one zero within 1e-3 mV of the float start 0.0036206688079..., so a zero
+# found here within that window is the same rest state. For other HH_EL values uniqueness is not checked here.
+U_STAR = {'10.613': '0.0036206688079425688'}
 
 
 def gates(u):
@@ -97,8 +103,10 @@ def gates(u):
 def rest():
     """Rest: u = 0 for the zero-current leak potential; with HH_EL set, the zero of the steady-state current
     g(u) = I(u, m_inf, n_inf, h_inf) enclosed by bisection with interval evaluations of g (own code, no derivatives):
-    g(a) < 0 < g(b) at the ends of the final interval, so it contains a zero; it lies within 1e-3 of the float rest
-    state, where certify_rest_wave.rest_state proves by an interval Newton step that the zero is unique."""
+    g(a) < 0 < g(b) at the ends of the final interval, so it contains a zero. Bisection alone does not show that the
+    zero is unique; for HH_EL = 10.613 the final interval is checked to lie within 1e-3 mV (less a margin of 1e-9) of
+    u* (U_STAR), where certify_rest_wave.rest_state proves by an interval Newton step that the zero is unique, so this
+    is the rest state of the proof."""
     if not HH_EL:
         m, n, h = gates(iv.mpf(0))
         return [iv.mpf(0), iv.mpf(0), m, n, h]
@@ -120,6 +128,10 @@ def rest():
         else:
             break
     u = iv.mpf([a, b])
+    if HH_EL in U_STAR:
+        c = mp.mpf(U_STAR[HH_EL])
+        if not (a > c - mp.mpf('0.000999999999') and b < c + mp.mpf('0.000999999999')):
+            raise ArithmeticError('the zero found is not in the window where the proof shows it is unique')
     m, n, h = gates(u)
     return [u, iv.mpf(0), m, n, h]
 
@@ -192,9 +204,18 @@ def check(Mi, Mii, ystar, K, phi, rho, r, which, maxdepth=24):
     return True, n
 
 
+def phi_iv(T):
+    """3^((T - 6.3)/10) for the decimal string T (iv.mpf of a decimal string encloses the decimal number)."""
+    if not isinstance(T, str) or not DECIMAL.match(T):
+        raise ValueError('the temperature must be a decimal string such as 18.5 or 6.3')
+    return iv.exp((iv.mpf(T) - iv.mpf('6.3')) / 10 * iv.log(3))
+
+
 def main():
-    T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
-    tg = '%s' % T + ('_El%s' % HH_EL if HH_EL else '')
+    T = sys.argv[1] if len(sys.argv) > 1 else '18.5'       # the decimal string, as typed (6.3 is not a float here)
+    if not DECIMAL.match(T):
+        raise SystemExit('the temperature must be a decimal number such as 18.5 or 6.3')
+    tg = T + ('_El%s' % HH_EL if HH_EL else '')
     blk = json.load(open('../data/closing_block_%s.json' % tg))
     cfg = json.load(open('../data/pulse_proof_%s_config.json' % tg))
     Tm = [[Fraction(float.fromhex(v)) for v in row] for row in blk['T_hex']]
@@ -207,9 +228,7 @@ def main():
     K = iv.mpf([dec_iv(cfg['K1_dec'][:45]).a, dec_iv(cfg['K2_dec'][:45]).b])
     # the 45-digit truncations bracket K1 and K2 up to 1e-43; widen by 1e-40 to contain [K1, K2] with margin
     K = iv.mpf([K.a - iv.mpf('1e-40').b, K.b + iv.mpf('1e-40').b])
-    phi = iv.exp(iv.mpf('1.22') * iv.log(3))           # 3^((18.5 - 6.3)/10); only T = 18.5 is handled here
-    if T != 18.5:
-        phi = iv.exp((iv.mpf(str(T)) - iv.mpf('6.3')) / 10 * iv.log(3))
+    phi = phi_iv(T)
     ystar = rest()
     lines = ['independent re-check of the closing block at T = %s C (mpmath.iv, %d bits)' % (T, iv.prec),
              'rho = %s, r = %s, weights %s, K in %s' % (float(rho), float(r), blk['weights'], K)]
@@ -218,8 +237,9 @@ def main():
     okE, nE = check(Mi, Mii, ystar, K, phi, rho, r, 'E')
     lines.append('(C) cone condition: %s (%d cells); (E) entrance condition: %s (%d cells); %.0f s' % (
         okC, nC, okE, nE, time.time() - t0))
-    b1, _ = check(Mi, Mii, ystar, K, phi, rho * Fraction(3, 2), r * Fraction(3, 2), 'C', maxdepth=16)
-    b2, _ = check(Mi, Mii, ystar, K, phi, rho * Fraction(3, 2), r * Fraction(3, 2), 'E', maxdepth=16)
+    # the negative control uses the same depth limit as the check itself, so its failure is not a depth artefact
+    b1, _ = check(Mi, Mii, ystar, K, phi, rho * Fraction(3, 2), r * Fraction(3, 2), 'C')
+    b2, _ = check(Mi, Mii, ystar, K, phi, rho * Fraction(3, 2), r * Fraction(3, 2), 'E')
     lines.append('negative control, radius x 1.5: %s' % ('rejected as expected' if not (b1 and b2) else 'CERTIFIED (BAD)'))
     ok = okC and okE and not (b1 and b2)
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')

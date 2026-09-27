@@ -4,8 +4,11 @@
 """Rigorous (ball arithmetic): the rest state of the Hodgkin-Huxley wave ODE, its eigenvalues, and an enclosure of
 the exit point of the u-increasing branch of its unstable manifold from a small block, for every K in a ball.
 
-Model and conventions: hhwave.py (u = -V, E_l = the value that makes the resting current zero, 10.5989...,
-phi = 3^((T - 6.3)/10)). The rest state is y* = (0, 0, m_inf(0), n_inf(0), h_inf(0)).
+Model and conventions: hhwave.py (u = -V, phi = 3^((T - 6.3)/10) with T the decimal temperature as typed, enclosed
+exactly). By default E_l is the value that makes the resting current zero, 10.5989..., and the rest state is
+y* = (0, 0, m_inf(0), n_inf(0), h_inf(0)); with HH_EL set (HH_EL=10.613 for the printed leak potential) E_l is that
+decimal number and rest is the nearby equilibrium y* = (u*, 0, m_inf(u*), n_inf(u*), h_inf(u*)), enclosed by an
+interval Newton step (rest_state).
 
 Lemma A (eigenvalues). For every K in the ball, the characteristic polynomial P of Df(y*) has exactly one root with
 positive real part, a simple real root lam_u, enclosed; the quotient Q = P / (x - lam_u) is Hurwitz (all four roots
@@ -29,6 +32,7 @@ This exit set is what prove_pulse.py integrates.
 """
 import json
 import os
+import re
 import sys
 import numpy as np
 from flint import arb, arb_mat, arb_poly, ctx
@@ -41,8 +45,23 @@ def ball(lo, hi):
     return arb(lo).union(arb(hi))
 
 
+DECIMAL = re.compile(r'^[0-9]+(\.[0-9]+)?$')
+
+
+def temperature(s):
+    """The temperature as the decimal string it was given (argv), checked to be a plain decimal number. Every program
+    passes this string, never a float, to phi_of and tag: the float 6.3 is 6.29999999999999982236... C."""
+    if not isinstance(s, str) or not DECIMAL.match(s):
+        raise ValueError('the temperature must be a decimal number such as 18.5 or 6.3, not %r' % (s,))
+    return s
+
+
 def phi_of(T):
-    return arb(3) ** ((arb(T) - arb('6.3')) / 10)
+    """phi = 3^((T - 6.3)/10) as a ball that contains the exact value for the decimal temperature T. T is a decimal
+    string (temperature()); a float is converted by repr, the shortest decimal that reads back as that float, so that
+    6.3 means the decimal 6.3 (arb(6.3) would be the binary number 6.29999999999999982236..., whose phi excludes 1)."""
+    d = temperature(T if isinstance(T, str) else repr(float(T)))
+    return arb(3) ** ((arb(d) - arb('6.3')) / 10)
 
 
 # The leak potential. Default: the value that makes the resting current zero, so that rest is at u = 0. With the
@@ -211,8 +230,8 @@ def lemma_B(K, phi, EL, r, s, Tf=None):
 
 
 def main():
-    T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
-    Klo, Khi = (arb('10.4383548'), arb('10.4383549')) if T == 18.5 else (arb('4.5107697'), arb('4.5107698'))
+    T = temperature(sys.argv[1]) if len(sys.argv) > 1 else '18.5'
+    Klo, Khi = (arb('10.4383548'), arb('10.4383549')) if float(T) == 18.5 else (arb('4.5107697'), arb('4.5107698'))
     K = Klo.union(Khi)
     phi = phi_of(T)
     y, EL = rest_state()

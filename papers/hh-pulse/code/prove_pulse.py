@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Rigorous (ball arithmetic): computer-assisted existence proof of the propagated action potential of Hodgkin and
 Huxley (J. Physiol. 117 (1952), eq. (31)) at their 1952 rate functions and constants, as an orbit homoclinic to rest
-of the travelling-wave ODE (hhwave.py conventions: u = -V, w = u', t in ms, phi = 3^((T - 6.3)/10), E_l the leak
-potential that makes the resting current zero).
+of the travelling-wave ODE (hhwave.py conventions: u = -V, w = u', t in ms, phi = 3^((T - 6.3)/10) for the decimal
+temperature T as typed, E_l the leak potential that makes the resting current zero).
 
 The argument (written out in the manuscript, Section 4) has these computed hypotheses, each checked here:
  (A) Lemma A of certify_rest_wave.py for every K in [K1, K2]: rest has one eigenvalue with positive real part (simple,
@@ -84,7 +84,7 @@ def make_config(T, delta, r_B, T_enter, tol_final, tol_min):
     K2 = arb((Ks + arb(delta)).mid())
     require(bool(abs((K2 - K1) / (2 * arb(delta)) - 1) < arb('1e-6')), 'K1, K2 not at the intended distance')
     sc = (float(r_B) / 1e-4) ** 2
-    cfg = {'T': T, 'K_numerical': hp['K'], 'delta': delta,
+    cfg = {'T': float(T), 'T_decimal': T, 'phi': C.phi_of(T).str(50), 'K_numerical': hp['K'], 'delta': delta,
            'K1': ser(K1), 'K2': ser(K2), 'K1_dec': K1.str(70, radius=False), 'K2_dec': K2.str(70, radius=False),
            'r_B': r_B, 's': ['%.3e' % (2e-9 * sc), '%.3e' % (1e-7 * sc), '%.3e' % (6e-9 * sc)],
            'T_enter': T_enter, 'order': ORDER, 'prec': PREC, 'prec_aux': L.PREC_AUX,
@@ -217,7 +217,7 @@ class Setup:
 
 def stage_setup(T):
     S = Setup(T)
-    out = {'stage': 'setup', 'T': T, 'prec': PREC, 'K1': S.cfg['K1_dec'], 'K2': S.cfg['K2_dec']}
+    out = {'stage': 'setup', 'T': float(T), 'prec': PREC, 'K1': S.cfg['K1_dec'], 'K2': S.cfg['K2_dec']}
     lines = []
 
     def say(s):
@@ -318,7 +318,7 @@ def run_stage(T, stage):
             state = d['state']
             print('%s: resumed from checkpoint at t = %s (%d steps)' % (stage, t0, state['steps']), flush=True)
     tolf = S.tol(lam)
-    log = {'stage': stage, 'T': T, 'K': Kpart.str(70), 'T_enter': S.T_enter, 'order': ORDER, 'prec': PREC}
+    log = {'stage': stage, 'T': float(T), 'K': Kpart.str(70), 'T_enter': S.T_enter, 'order': ORDER, 'prec': PREC}
     last_ck = [time.time()]
 
     def cb(tp, t, Xh, Xn, W, hh):
@@ -449,7 +449,7 @@ def stage_summary(T):
 
 
 if __name__ == '__main__':
-    T = float(sys.argv[1])
+    T = C.temperature(sys.argv[1])       # a decimal string: phi = 3^((T - 6.3)/10) is computed from it exactly
     stage = sys.argv[2]
     if stage == 'config':
         # python3 prove_pulse.py T config delta r_B T_enter tol_final tol_min

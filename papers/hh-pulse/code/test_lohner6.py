@@ -7,8 +7,10 @@
    u near 10 and 25 (the Psi-near-0 branch), and its K-derivatives agree with central differences in K.
 2. Lohner enclosures over 1.5 ms through the upstroke (from a small box at u = 1e-3 mV, K a small ball), at order 30
    with tolerance 1e-40 and at order 8 with tolerance 1e-10 (where the remainder term does real work), contain a
-   reference solution computed independently: hp_pulse.flow (plain Taylor steps of order 40, a different step
-   sequence, tolerance 1e-60, exact time) from the box centre at the ball centre.
+   high-precision reference solution: hp_pulse.flow (plain Taylor steps of order 40, a different step sequence,
+   tolerance 1e-60, exact time) from the box centre at the ball centre. The reference uses the same Taylor jets
+   (hhjet6), so this tests the enclosure machinery (a priori box, remainder, set update), not the field or the jets;
+   test_field.py tests the field against an independent transcription, and test 1 the jets.
 3. Negative control: the order-8 run with the Lagrange remainder replaced by 0 must NOT contain the reference solution
    (so test 2 is not vacuous).
 """
@@ -73,12 +75,12 @@ def run_enclosure(phi, EL, y, drop_remainder, tol, p):
 
 
 def main():
-    phi = C.phi_of(18.5)
+    phi = C.phi_of('18.5')
     y, EL = C.rest_state()
     t0 = time.time()
     print('1. jets')
     ok1 = test_jets(phi, EL, y)
-    print('2. enclosures through the upstroke contain an independent reference solution')
+    print('2. enclosures through the upstroke contain a high-precision reference solution (same jets)')
     ok2 = True
     for p, tol in ((30, 1e-40), (8, 1e-10)):
         inside, ns, hx, ref = run_enclosure(phi, EL, y, False, tol, p)

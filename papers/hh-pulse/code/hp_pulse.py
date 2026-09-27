@@ -161,14 +161,14 @@ def flow(x, K, tau, phi, EL, tol, want_jac=True, hmax=0.2, steps=None, order=Non
 
 
 def main():
-    T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
+    T = C.temperature(sys.argv[1]) if len(sys.argv) > 1 else '18.5'     # a decimal string: phi is exact for it
     t_end = float(sys.argv[2]) if len(sys.argv) > 2 else 10.0
     phi = C.phi_of(T)
     y, EL = C.rest_state()
     d = np.load('../data/pulse_%s.npz' % T)                  # the zero-current profile, as the initial guess
     tp, Yp, K0 = d['t'], d['Y'], float(d['K'])
     import hhwave
-    shift = hhwave.Wave(T, EL=float(C.HH_EL)).rest - hhwave.Wave(T).rest if C.HH_EL else np.zeros(5)
+    shift = hhwave.Wave(float(T), EL=float(C.HH_EL)).rest - hhwave.Wave(float(T)).rest if C.HH_EL else np.zeros(5)
     K = arb(K0)
     sigma0 = arb(SIGMA0)
     # start time in profile time: u_prof = sigma0 (log-linear interpolation on the early exponential part)
@@ -288,7 +288,8 @@ def main():
         say('not converged after 12 iterations; run the same command again to resume')
         sys.exit(3)
     # history of the unstable coordinate along the final orbit at the nodes
-    out = {'T': T, 't_end': t_end, 'K': K.str(70, radius=False), 'sigma0': SIGMA0, 'NP': NP, 'order': P_ORD,
+    out = {'T': float(T), 'phi': phi.str(60), 't_end': t_end, 'K': K.str(70, radius=False), 'sigma0': SIGMA0,
+           'NP': NP, 'order': P_ORD,
            'prec': ctx.prec, 'nodes_profile_time': nodes, 'residual_history': rhist,
            'Y': [[c.str(70, radius=False) for c in row] for row in Y],
            'p0': [c.str(70, radius=False) for c in p0], 'lambda_u': lam.str(40, radius=False)}

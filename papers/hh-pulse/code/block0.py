@@ -89,9 +89,9 @@ def store_block(T, Kf, rho=None):
     phi = C.phi_of(T)
     _, EL = C.rest_state()
     Tf = make_T(T, phi, EL, Kf)
-    rho = float(rho if rho is not None else RHO[T])
+    rho = float(rho if rho is not None else RHO[float(T)])
     r = rho * float(R_OVER_RHO)
-    d = {'T': T, 'K_ref': repr(Kf), 'weights': list(WEIGHTS), 'T_hex': [[float(v).hex() for v in row] for row in Tf],
+    d = {'T': float(T), 'K_ref': repr(Kf), 'weights': list(WEIGHTS), 'T_hex': [[float(v).hex() for v in row] for row in Tf],
          'T_matrix': [[float(v) for v in row] for row in Tf], 'rho_hex': rho.hex(), 'r_hex': r.hex(), 'rho': rho,
          'r': r, 'note': 'zeta = M (y - y*), M = diag(weights) T; B0 = {|zeta_1| <= r, |zeta_2..5|_2 <= rho}; '
                          'the entries of T, rho and r are exact binary floats (hex)'}
@@ -248,7 +248,7 @@ def main():
     """Create the stored block if needed, then check it for the K ball of the proof (from data/hp_pulse_<T>.json,
     +- 1e-40, which contains the proof's [K1, K2]) and run the negative control (the same weights with radius 1.5
     times larger must fail)."""
-    T = float(sys.argv[1]) if len(sys.argv) > 1 else 18.5
+    T = C.temperature(sys.argv[1]) if len(sys.argv) > 1 else '18.5'    # a decimal string: phi is exact for it
     import os
     ctx.prec = 128
     hp = '../data/hp_pulse_%s.json' % C.tag(T)
@@ -256,7 +256,7 @@ def main():
         Ks = arb(json.load(open(hp))['K'])
         Kf = float(Ks.mid())
     else:
-        Ks, Kf = arb(K_REF[T]), K_REF[T]
+        Ks, Kf = arb(K_REF[float(T)]), K_REF[float(T)]
     if not os.path.exists(block_file(T)):
         store_block(T, Kf)
     M, Minv, rho, r, d = load_block(T)

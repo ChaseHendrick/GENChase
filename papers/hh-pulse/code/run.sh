@@ -4,7 +4,8 @@
 #
 # Reruns every computation of the paper from scratch, one process at a time, each under nice -n 19 and a time limit.
 # Usage (from any folder):  sh code/run.sh [tests | 18.5 | 6.3 | zero | all]     (default: all)
-#   tests  test_lohner6.py: jets and integrator against an independent reference, with a negative control (3 min)
+#   tests  test_temperature.py (phi from the decimal temperature) and test_lohner6.py (jets and integrator), each with
+#          a negative control (3 min)
 #   18.5   Theorem 1: 18.5 C, printed leak potential E_l = 10.613 mV (about 1 hour)
 #   6.3    Theorem 2: 6.3 C, printed leak potential (about 3 hours)
 #   zero   Remark 1: 18.5 C, the zero-current leak potential (about 1 hour)
@@ -38,7 +39,7 @@ centre() {   # centre <tag> <T> <t_end>: hp_pulse.py resumes after 12 iterations
 
 proof() {   # proof <T> <t_end> <config arguments...>, with HH_EL exported or unset by the caller (in a subshell)
     T=$1; tend=$2; shift 2
-    tag=$(python3 -c "import certify_rest_wave as C; print(C.tag($T))")
+    tag=$(python3 -c "import certify_rest_wave as C; print(C.tag(C.temperature('$T')))") || return 1
     rm -f ../data/ckpt/pulse_"$tag"_*.json ../data/logs/hp_pulse_"$tag"_state_*.json ../data/closing_block_"$tag".json
     centre "$tag" "$T" "$tend" || return 1
     if [ "$T" = "6.3" ]; then
@@ -58,6 +59,7 @@ proof() {   # proof <T> <t_end> <config arguments...>, with HH_EL exported or un
 
 what=${1:-all}
 if [ "$what" = tests ] || [ "$what" = all ]; then
+    step test_temperature 600 python3 test_temperature.py || status=1
     step test_lohner6 1800 python3 test_lohner6.py || status=1
 fi
 if [ "$what" = 18.5 ] || [ "$what" = all ]; then
