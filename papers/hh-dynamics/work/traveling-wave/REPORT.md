@@ -68,9 +68,13 @@ Turner still secondhand: the checker could not find the sentence in the preview)
 
 G. A. Carpenter, "A geometric approach to singular perturbation problems with applications to nerve impulse
 equations", J. Differential Equations 23 (1977) 335-367, doi:10.1016/0022-0396(77)90116-4, zbMATH 0341.35007,
-MR442379. **Not read** (publisher 403 from this sandbox; the checker found that Crossref lists it under Elsevier's
-open-archive licence, so it should be freely readable in a browser and must be read before any claim). Her own description, read first hand
-in Carpenter, SIAM J. Appl. Math. 36 (1979) 334-372, p. 336 (self-report):
+MR442379. **Read in full on 2026-09-27** (a copy the owner obtained; details and quotations in
+[`prior-art-log.md`](prior-art-log.md), Section (I)). Eq. (0.1), p. 336, slows n and h by epsilon and speeds m by
+1/delta; Theorem 3.4, p. 353, gives a homoclinic travelling wave "for small epsilon > 0" with m = m_inf(V), under the
+abstract Hypotheses (3.1, CUBIC, H) and (3.3, HOM, H); Theorem 4.2, p. 357, extends it to "all small delta > 0";
+Theorem 5.1(B), pp. 357-358, shows that the pulse is lost if epsilon or delta is too large. The hypotheses are not
+checked for the 1952 functions, and epsilon = delta = 1 is not treated. Before this reading, her own description, read
+first hand in Carpenter, SIAM J. Appl. Math. 36 (1979) 334-372, p. 336 (self-report), was all we had:
 
 - "The model defined in Section 2 contains three positive parameters, epsilon, delta, and theta. epsilon is the order of
   magnitude of the rate at which Na+ inactivation and K+ activation occur; delta^-1 is the order of magnitude of the
@@ -138,8 +142,8 @@ was not reachable.
 
 ### 1.5 What was not reached, and what must be read before any claim of priority
 
-Hastings 1976 pp. 231-257 (his "remarks" on whether HH satisfies the hypotheses); Carpenter 1977 itself; Foote and
-Chen 1981; Huxley, Ann. N.Y. Acad. Sci. 81 (1959) 221-246; the full texts of Cooley and Dodge (1966) and Miller and
+Hastings 1976 pp. 231-257 (his "remarks" on whether HH satisfies the hypotheses); Foote and Chen 1981 (Carpenter 1977
+was read in full on 2026-09-27, see 1.2); Huxley, Ann. N.Y. Acad. Sci. 81 (1959) 221-246; the full texts of Cooley and Dodge (1966) and Miller and
 Rinzel (1981); Du and Hassard (2001).
 
 ### 1.6 The 1952 numbers (read first hand from a scan of the paper, pp. 522-528)

@@ -253,3 +253,52 @@ Hodgkin-Huxley wave proof, 2020-2026 especially. "none" means no hit proves or c
 the pulse of the unmodified 1952 equations, and no computer-assisted travelling-wave result for HH or any
 conductance-based model, 2020-2026 included. Still not read: Hastings 1976 pp. 231-257, Carpenter 1977, Foote and Chen
 1981, Huxley 1959, Du and Hassard 2001, and the full text of Nitta, Yamamoto and Matsue 2022.
+
+---
+
+## (I) Carpenter 1977, read in full on 2026-09-27
+
+G. A. Carpenter, "A geometric approach to singular perturbation problems with applications to nerve impulse equations",
+J. Differential Equations 23 (1977) 335-367, doi:10.1016/0022-0396(77)90116-4. **PRIMARY, read in full** (pp. 335-367,
+from a copy the owner obtained; the displayed equations quoted below were checked on the page images of pp. 336, 350,
+356 and 357, because the text layer is OCR). The PDF and its text are not in the repository (Elsevier open archive,
+not an open licence).
+
+What the paper proves, with the hypotheses as far as the argument needs:
+
+- The model, p. 336, eq. (0.1): "(1/R)(d^2V/dx^2) = C(dV/dt) + g(V, m, n, h), dm/dt = delta^-1 gamma_m(V)(m_inf(V) - m),
+  dn/dt = epsilon gamma_n(V)(n_inf(V) - n), dh/dt = epsilon gamma_h(V)(h_inf(V) - h)". So m is sped up by 1/delta and
+  n, h slowed by epsilon; the 1952 system is delta = epsilon = 1 with the 1952 rate functions.
+- p. 336: "The simplification m = m_inf(V) is minor provided delta is small"; "Mild qualitative conditions on each
+  system imply the existence of a homoclinic traveling wave solution".
+- Section 3 (p. 350) treats the travelling-wave system with m = m_inf(V) (that is, delta = 0), system (3.1, H):
+  V' = W, W' = theta W + G(V, n, h), n' = epsilon theta^-1 gamma_n(V)(n_inf(V) - n), h' = epsilon theta^-1
+  gamma_h(V)(h_inf(V) - h), under the abstract Hypothesis (3.1, CUBIC, H) (A)-(G) (p. 350: G(V_K, n, h) < 0 <
+  G(V_Na, n, h) for every n, h in [0, 1]; at most three zeros of G in V; dG/dV(0, n_0, h_0) > 0 and a zero V_2 > 0
+  with int_0^V2 G(V, n_0, h_0) dV < 0; dG/dn > 0, dG/dh < 0; a unique rest state; monotone n_inf, h_inf; gamma_n,
+  gamma_h > 0) and Hypothesis (3.3, HOM, H) (p. 353) on the singular orbit.
+- **Theorem 3.4** (p. 353), "Existence of a homoclinic solution of the Hodgkin-Huxley equations, m = m_inf(V)":
+  "Hypotheses (3.1, CUBIC, H) and (3.3, HOM, H) imply that for small epsilon > 0 (3.1, H, theta_epsilon, epsilon)
+  admits a homoclinic solution for some theta_epsilon > 0. Moreover theta_epsilon -> theta(n_0, h_0) as epsilon -> 0."
+- **Theorem 4.2** (p. 357) restores m as a fast variable: if the reduced system satisfies the hypotheses of Section 2,
+  the full system "(4.1, delta) admits a heteroclinic (or homoclinic or periodic) solution for all small delta > 0";
+  p. 357: "results of Section 3 hold for (HH) with delta small whenever (3.1, H) or (3.3, H) satisfies the appropriate
+  hypotheses".
+- **Theorem 5.1(B)** (pp. 357-358): under (CUBIC, H), the firing branch of the unstable manifold of rest is unbounded
+  if theta >= theta_max, theta <= theta_min, epsilon > E, or delta >= D/epsilon; p. 337: "showing that some conditions
+  on parameter values are necessary". So large epsilon or delta can destroy the pulse; the theorems are asymptotic in
+  the small parameters, with no explicit range.
+- The paper does not check (3.1, CUBIC, H) or (3.3, HOM, H) for the 1952 functions, gives no value of epsilon or
+  delta up to which the theorems hold, and says nothing about epsilon = delta = 1 (searched for "numerical",
+  "satisf", "actual", "original", "1952", "verif", "data", "computed": only the reference list cites the 1952 paper).
+  Its method (isolating blocks, Wazewski-type shooting in the speed, continuity of the exit map of a block, Lemma 1.3)
+  is the same kind of topological argument as our closing step, applied to a singular orbit rather than to a computed
+  one.
+
+**Verdict.** Carpenter (1977) proves a pulse (a homoclinic orbit to rest of the travelling-wave system) for a class
+of generalized Hodgkin-Huxley systems defined by abstract hypotheses, with n and h slowed by a small epsilon and m
+either slaved (delta = 0, Theorem 3.4) or fast with small delta (Theorem 4.2). It does not prove the pulse of the
+unmodified equations at the 1952 rate functions and constants (epsilon = delta = 1), and it does not verify its
+hypotheses for those functions. This confirms, now first hand, the self-report of Carpenter (1979) quoted in (B), and
+it does not anticipate the computer-assisted result of the closing step. Remaining unread before a claim of priority:
+Hastings 1976 pp. 231-257, Foote and Chen 1981, Huxley 1959, Du and Hassard 2001.
