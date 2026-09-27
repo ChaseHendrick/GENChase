@@ -69,7 +69,7 @@
       "id": "rank-window",
       "title": "A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound",
       "status": "draft",
-      "note": "Drafted in this repository by the owner's standing decision (2026-09-26): a methods note showing that exponents fitted over a finite rank window cannot test the eigenspectrum smoothness bound of Stringer et al. (2019); two in-project referee readings.",
+      "note": "Drafted in this repository by the owner's standing decision (2026-09-26): a methods note showing that exponents fitted over a finite rank window cannot test the eigenspectrum smoothness bound of Stringer et al. (2019); three in-project referee readings, the fixes of the third not yet read again.",
       "typst": null,
       "latex": "papers/rank-window/paper/note.tex",
       "pdf": "papers/rank-window/paper/note.pdf",

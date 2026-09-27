@@ -32,6 +32,13 @@ const offered = places => places.filter(([tab, key, value, field]) => {
 }).map(p => p[0]);
 const listed = () => [...document.querySelectorAll('#formula-list .formula-pick')].map(b => b.dataset.tab);
 const open = () => !document.getElementById('modal-formula').hidden;
+const fieldUncovered = () => {
+  const input = document.activeElement;
+  if (!input?.closest('.row')) return false;
+  const row = input.closest('.row').getBoundingClientRect(), stage = document.getElementById('stage').getBoundingClientRect();
+  const dock = document.getElementById('print-cluster').getBoundingClientRect();
+  return row.top >= stage.bottom && row.bottom <= dock.top;
+};
 
 async function openChooser(page, how) {
   if (how === 'key') await page.keyboard.press('t'); else await page.click('#btn-formula');
@@ -172,7 +179,7 @@ async function focusPick(page, tab) {
     t('phone: the dialog fits the screen', card.left >= 0 && card.right <= card.w && card.top >= 0 && card.bottom <= card.h, card);
     await phone.click('#formula-list .formula-pick[data-tab="turing"]');
     await phone.waitForFunction(() => document.activeElement?.id === 'p-turing-reactF', null, { timeout: 60000 });
-    await phone.waitForTimeout(1500);
+    await phone.waitForFunction(fieldUncovered, null, { timeout: 15000 });
     const seen = await phone.evaluate(() => {
       const row = document.activeElement.closest('.row').getBoundingClientRect(), stage = document.getElementById('stage').getBoundingClientRect();
       const dock = document.getElementById('print-cluster').getBoundingClientRect();
@@ -180,6 +187,36 @@ async function focusPick(page, tab) {
     });
     t('phone: the focused field is below the pinned stage and above the print dock', seen.rowTop >= seen.stageBottom && seen.rowBottom <= seen.dockTop, seen);
     await phone.close();
+
+    // Hold the real plate's status through a slow warm-up. Its first full status arrives after
+    // the retired three-second observer deadline, so a fixed timer cannot pass this fixture.
+    const slow = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await slow.goto('file://' + path.join(root, 'dist/studio.html') + '#reuleaux/formula-slow', { waitUntil: 'domcontentloaded' });
+    await slow.evaluate(() => Studio.ready);
+    await slow.evaluate(() => {
+      const mod = Studio.modules.turing, create = mod.create;
+      mod.create = host => {
+        let latest = '', released = false;
+        window.__releaseFormulaStatus = () => { released = true; host.setStatus(latest); };
+        return create({...host, setStatus: html => {
+          latest = html;
+          window.__formulaStatusReady = !!html && !/warming up/.test(html);
+          host.setStatus(released ? html : '<span>warming up</span>');
+        }});
+      };
+    });
+    await slow.click('#btn-formula');
+    await slow.click('#formula-list .formula-pick[data-tab="turing"]');
+    await slow.waitForFunction(() => document.activeElement?.id === 'p-turing-reactF');
+    await slow.waitForTimeout(3500); // deliberate negative control for the old 3000 ms lifetime
+    await slow.waitForFunction(() => window.__formulaStatusReady, null, { timeout: 60000 });
+    await slow.evaluate(() => window.__releaseFormulaStatus());
+    const uncovered = await slow.waitForFunction(fieldUncovered, null, { timeout: 15000 }).then(() => true, () => false);
+    t('phone: a status arriving after three seconds still uncovers the focused formula', uncovered, await slow.evaluate(() => {
+      const row = document.activeElement.closest('.row').getBoundingClientRect(), stage = document.getElementById('stage').getBoundingClientRect();
+      return {rowTop: row.top, stageBottom: stage.bottom, status: document.getElementById('status').textContent};
+    }));
+    await slow.close();
   } finally {
     await browser.close();
     await new Promise(resolve => server.close(resolve));

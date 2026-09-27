@@ -130,6 +130,11 @@ SwiftShader: `schrodinger-science.js` reproduced the recorded numbers to six sig
 the new source, and `wave-print-state.js` passed with its failure control rejected. The recorded result
 files, made on another machine, were left as they were.
 
+`tools/ui.js` also checks custom-potential lifecycle behavior: switch to Flow Field, return through
+a hash change with a different coefficient, and require the step count to advance again. Regeneration
+clears the previous tab pause, and stepping waits for the sampled potential's pending start. This is a
+shell regression check; it adds no numerical validation for typed potentials.
+
 ## Print and remaining limits
 
 `node tools/wave-print-state.js` checks initial and evolved paused states, every display view,

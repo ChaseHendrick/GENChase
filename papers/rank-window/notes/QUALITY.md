@@ -21,30 +21,57 @@ GENChase: the companion repository does not carry `notes/`.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
-## Record (2026-09-26)
+## Record (2026-09-26; updated 2026-09-27 after the third reading)
 
-- [x] **1. Complete proofs.** Proposition 1 and Corollary 1 are the only formal results and are proved in Section 2.
-  Proposition 1 uses Braun (JMLR 2006), Lemmas 5 and 8, as stated there (the triangle inequality gives the sum of the
-  tail masses; positivity gives the maximum; his matrices are uncentred, which the note says). Corollary 1 is proved in
-  full, including the C^1 differentiability of the torus code. Both referee readings checked them line by line and
-  found them correct (`review-1.md`, `review-2.md`).
+- [x] **1. Complete proofs.** Proposition 1 and Corollary 1 are the only formal results and are proved in Section 2,
+  with the one-line Fatou argument after them (a stationary code with infinite expected squared gradient is
+  differentiable nowhere) and the rank-one interlacing that carries Stringer's Theorem 5 from the uncentred to the
+  centred kernel (both added after `review-3.md`, S1). The proof of Proposition 1 is self-contained: it adapts the
+  argument of Braun (JMLR 2006), Lemmas 5 and 8, which Braun states for the uncentred kernel matrix of a Mercer kernel
+  with orthonormal eigenfunctions and nonincreasing eigenvalues; the note now says so and says what the proof changes
+  (Weyl's inequality applied to the centred matrices, the projection, positivity for the maximum), instead of saying
+  that the proposition follows from the lemmas (`review-3.md`, S2). Corollary 1 is proved in full, including the C^1
+  differentiability of the torus code. All three referee readings checked them line by line and found them correct
+  (`review-1.md`, `review-2.md`, `review-3.md`), and so did the session's lead reader (`signoff.md`).
 - [x] **2. Rigorous computation.** No proof uses a computer. Every computed result is labelled numerical in the note and
   the README; the programs assert every worded claim (`code/make_numbers.py`) and `verify_independent.py` recomputes
   selected numbers by independent code paths, with a negative control for the Proposition 1 check.
 - [x] **3. Every claim labelled.** The note states that Proposition 1 and Corollary 1 are proved and everything else is
   numerical; the README says the same. Numerical results are not stated as theorems.
-- [ ] **4. Sources read.** Read in the parts the note uses: Stringer et al. (2019) with its Supplementary
+- [x] **4. Sources read.** Read in the parts the note uses: Stringer et al. (2019) with its Supplementary
   Information; Pospisil and Pillow (2025); Davidovich and Roudi (arXiv:2204.08525); Braun (2006);
   Shawe-Taylor et al. (2005), Sects. I-III; Kong and Valiant (arXiv:1602.00061v5, Sects. 1 and 3); Spigler, Geiger and
-  Wyart (arXiv:1905.10843, Sects. 1 and 7). Only the abstract of Koltchinskii and Gine (2000), cited as such; Widom
-  (1963) not reached, so the note states the Matern tail-rate assumption instead of citing it. Open until Koltchinskii
-  and Gine is read or dropped.
+  Wyart (arXiv:1905.10843, Sects. 1 and 7); Stringer's deposited code at 58443d1 in the files the bibliography names
+  (the fitting windows of `mainfigs/fig3.m` and `powerlaws/statsShuffledPCA.m`, and `powerlaws/get_powerlaw.m`, read
+  for `review-3.md`, M2). Only the abstract of Koltchinskii and Gine (2000), cited as such; Widom (1963) not reached,
+  so the note states the Matern tail-rate assumption instead of citing it. Koltchinskii and Gine is background only
+  (the convergence of kernel-matrix eigenvalues as P grows); no proof step uses it, the bibliography marks it
+  "abstract read", and RESEARCH.md records it as "Only the abstract". That meets this item as the bar states it (every
+  source a proof step depends on read in full; background recorded with how far it was read), so the item is checked
+  (2026-09-27); an earlier version of this record held it open until the paper was read in full or dropped, which is
+  stricter than the bar. The one proof source, Braun (2006), was read in the lemmas the proof adapts.
 - [x] **5. Prior article review.** RESEARCH.md, entry of 2026-09-26 (finite rank windows and the eigenspectrum
   smoothness bound). The note says its central point is elementary and partly anticipated (Stringer's SI Example 3,
   Pospisil and Pillow, Davidovich and Roudi) and lists what it adds.
-- [ ] **6. Adversarial second reading.** Two in-project readings by independent referees told to find errors
-  (`review-1.md`: major revision, five must-fix items; `review-2.md`: minor revision, two must-fix items). The fixes of
-  both are applied; the fixes of the second have not been read again, and no one outside the project has read the note.
+- [x] **6. Adversarial second reading.** Three in-project readings by independent referees told to find errors
+  (`review-1.md`: major revision, five must-fix items; `review-2.md`: minor revision, two must-fix items;
+  `review-3.md`, 2026-09-27, by an independent agent that had not seen the earlier reports: minor revision, five
+  must-fix items). The fixes of the first two are applied. For the third, every finding was checked by one or two
+  further independent agents (skeptics) before it was applied: must-fix M1 (a false statement that no recorded
+  spectrum is computed), M2 (the grating window of the deposited code; both windows now reported) and M3 (Clopper-Pearson
+  intervals for every flag rate; the abstract's "rarely or not at all" replaced by counts and bounds) were confirmed and
+  are fixed, with should-fix S1, S2, S3, S5, S8, S9 and S10. M4 and M5 did not survive their skeptics (both skeptics
+  judged M4 already handled by the evidence sentence that follows it; they split on M5, whose parts (b) and (c) one
+  of them showed wrong), and S4, S6 and S7 were judged handled; the reasons are in the Response section of
+  `review-3.md`. An independent agent then read the fixes again: all ten landed, with six residual points (a
+  remaining "no exponent" statement and an undisclosed calibration constant, the Braun wording in the introduction and
+  abstract, a single-precision step not listed, two wording slips in Results, and this record's wording on M5).
+  The lead reader fixed those six, added the one clarifying sentence the M4 skeptics suggested (codes below the
+  border stay below the reported exponents in the Matern family, asserted in `make_numbers.py`) and the wording of
+  M5 part (a) that one skeptic confirmed ("whatever the tail's rate of decay" for "blind to its rate of decay"); those
+  last fixes were checked by the lead reader, not by a further independent reading. The lead reader's earlier
+  sign-off missed M1, M2 and M4 (`signoff.md`). All readings were in-project; no one outside the project has read
+  the note.
 - [ ] **7. Reproducible.** The programs rerun every number from the downloaded inputs (README), and
   `make_numbers.py` reproduces `paper/numbers.tex`, the tables and `out/numbers.json` byte for byte from `out/` alone.
   Open until a full rerun from the downloaded inputs has been done from this folder.

@@ -404,7 +404,9 @@ const { chromium } = require('playwright');
   });
   await p.evaluate(() => {
     const el = document.querySelector('#p-schrodinger-V0');
+    el.dispatchEvent(new PointerEvent('pointerdown', {bubbles: true}));
     for (const v of [3, 4.5, 6]) { el.value = String(v); el.dispatchEvent(new Event('input', {bubbles: true})); }
+    el.dispatchEvent(new PointerEvent('pointerup', {bubbles: true}));
     el.dispatchEvent(new Event('change', {bubbles: true}));
   });
   await p.waitForTimeout(500);
@@ -418,6 +420,60 @@ const { chromium } = require('playwright');
   await undo();
   r = await sch();
   t('the drag made exactly one snapshot: the next Undo reverts the grid click', r.V0 === 2 && r.grid === 192, {V0: r.V0, grid: r.grid});
+
+  // A range returned to its initial value fires input but no change in Chromium. The next
+  // headline edit must still get its own snapshot, separate from a seed roll in between.
+  await p.setViewportSize({width: 1600, height: 900});
+  await p.goto('file://' + studio + '#aztec/drag-back/' + Buffer.from(JSON.stringify({n: 120})).toString('base64url'));
+  await p.evaluate(() => Studio.ready);
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'aztec');
+  await p.locator('#p-aztec-n').evaluate(el => { el.closest('details').open = true; });
+  await p.locator('#p-aztec-n').scrollIntoViewIfNeeded();
+  const slider = await p.locator('#p-aztec-n').boundingBox();
+  const thumbX = slider.x + 8 + (slider.width - 16) * (120 - 8) / (320 - 8), thumbY = slider.y + slider.height / 2;
+  await p.evaluate(() => {
+    window.__rangeEvents = [];
+    const el = document.querySelector('#p-aztec-n');
+    for (const type of ['input', 'change']) el.addEventListener(type, () => window.__rangeEvents.push([type, +el.value]));
+  });
+  await p.mouse.move(thumbX, thumbY); await p.mouse.down();
+  await p.mouse.move(thumbX + 30, thumbY, {steps: 4});
+  await p.mouse.move(thumbX, thumbY, {steps: 4}); await p.mouse.up();
+  const dragEvents = await p.evaluate(() => window.__rangeEvents);
+  t('drag back really moved and returned without change', dragEvents.some(([type, n]) => type === 'input' && n > 120)
+    && dragEvents.at(-1)?.[1] === 120 && !dragEvents.some(([type]) => type === 'change'), dragEvents);
+  await p.evaluate(() => document.querySelector('#btn-generate').click());
+  const rolledSeed = await p.$eval('#seed', el => el.value);
+  t('the intervening dice click changes the seed', rolledSeed !== 'drag-back', rolledSeed);
+  await p.locator('#headline-input').fill('126');
+  await p.keyboard.press('Enter');
+  t('the headline edit sets order 126', await p.evaluate(() => Studio.getRecipe().n) === 126);
+  await p.locator('#stage').focus();
+  await p.keyboard.press('z');
+  const afterHeadlineUndo = await p.evaluate(() => ({...Studio.modules.aztec.defaults, ...Studio.getRecipe()}));
+  t('one Z undoes only the headline edit after drag back', afterHeadlineUndo.n === 120 && afterHeadlineUndo.seed === rolledSeed,
+    {n: afterHeadlineUndo.n, seed: afterHeadlineUndo.seed, rolledSeed});
+  await p.keyboard.press('z');
+  t('the next Z undoes the seed roll', await p.$eval('#seed', el => el.value) === 'drag-back');
+
+  // Hash navigation deliberately defers resume until regeneration. A custom potential must
+  // clear the previous tab pause and advance past warm-up on the already-created instance.
+  const customHash = a => '#schrodinger/s1/' + Buffer.from(JSON.stringify({kind: 'custom', pa: a, grid: 128, warmup: 100})).toString('base64url');
+  await p.goto('about:blank');
+  await p.goto('file://' + studio + customHash(1.5));
+  await p.evaluate(() => Studio.ready);
+  const advances = (minimum = 100) => p.waitForFunction(minimum => {
+    const text = document.querySelector('#status').textContent;
+    const step = /step\s+([\d,]+)/.exec(text);
+    return step && Number(step[1].replace(/,/g, '')) > minimum && !/warming up/.test(text);
+  }, minimum, {timeout: 20000}).then(() => true, () => false);
+  t('custom potential advances on first entry', await advances(), await p.$eval('#status', el => el.textContent));
+  await p.evaluate(() => document.querySelector('.tab[data-id="flow"]').click());
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'flow');
+  await p.evaluate(hash => { location.hash = hash; }, customHash(2.5));
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'schrodinger' && Studio.getRecipe().pa === 2.5);
+  const returnedStep = await p.$eval('#status', el => Number(/step\s+([\d,]+)/.exec(el.textContent)?.[1].replace(/,/g, '') || 0));
+  t('custom potential advances after hash re-entry with a new coefficient', await advances(Math.max(100, returnedStep)), await p.$eval('#status', el => el.textContent));
 
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
