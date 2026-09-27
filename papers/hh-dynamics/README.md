@@ -132,7 +132,7 @@ every J in [7.9931, 8.0021].
 | [`hh_lohner.py`](code/hh_lohner.py), [`certlib.py`](code/certlib.py), [`ball_stable.py`](code/ball_stable.py), [`outward.py`](code/outward.py), [`hh_arb.py`](code/hh_arb.py) | The C^0/C^1 Lohner Taylor integrator and Poincare maps (refusing an initial set off its section), the Krawczyk and multiplier certificates, the stable orbit over the E_l interval, outward decimal rounding, and the model in Arb |
 | [`tests_integrator.py`](code/tests_integrator.py), [`testsys.py`](code/testsys.py) | Exact test systems and negative controls for the integrator and the certificate code |
 | [`hh_numerics.py`](code/hh_numerics.py), [`hh_float.py`](code/hh_float.py), [`shoot_float.py`](code/shoot_float.py), [`hp_refine.py`](code/hp_refine.py), [`numerics_h2.py`](code/numerics_h2.py) | Numerical only: candidates, the fold of cycles, a high-precision refinement and the small cycles below J_H2 (not trusted) |
-| [`make_numbers.py`](code/make_numbers.py), [`make_figures.py`](code/make_figures.py) | The numbers and tables of the manuscript, rounded outward from the reports in exact rational arithmetic, and its figures |
+| [`hh_make_numbers.py`](code/hh_make_numbers.py), [`hh_make_figures.py`](code/hh_make_figures.py) | The numbers and tables of the manuscript, rounded outward from the reports in exact rational arithmetic, and its figures |
 
 ```
 python3 -m pip install -r code/requirements.txt
@@ -140,8 +140,8 @@ python3 code/certify_equilibria_hopf.py
 python3 code/certify_bistability.py
 python3 code/identify_stable_orbit.py
 python3 code/numerics_h2.py
-python3 code/make_numbers.py
-python3 code/make_figures.py
+python3 code/hh_make_numbers.py
+python3 code/hh_make_figures.py
 sh ../../tools/paper-build.sh hh-dynamics
 ```
 

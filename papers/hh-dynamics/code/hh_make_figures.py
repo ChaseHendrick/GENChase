@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The figures of the manuscript, from the committed reports and float64 integration (about 10 s).
 
-    python3 code/make_figures.py        writes paper/figures/branch.pdf, orbits.pdf and period.pdf
+    python3 code/hh_make_figures.py        writes paper/figures/branch.pdf, orbits.pdf and period.pdf
 
 NOT a proof: the curves are float64 evaluations and integrations (hh_float.py, scipy DOP853); the proved numbers
 drawn on them (the Hopf points, the certified periods) are read from data/certify_equilibria_hopf.txt and

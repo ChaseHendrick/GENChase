@@ -99,6 +99,6 @@ GENChase: the companion repository does not carry `notes/`.
   the project. Not read again: the fixes of this round and what they added (listed under item 1, and
   `code/identify_stable_orbit.py`, `code/numerics_h2.py`).
 - [ ] **7. Reproducible.** The programs run from this folder with `code/requirements.txt`; their outputs are in
-  `data/`, and `code/make_numbers.py` and `code/make_figures.py` rebuild every number, table and figure of the
+  `data/`, and `code/hh_make_numbers.py` and `code/hh_make_figures.py` rebuild every number, table and figure of the
   manuscript from them (the computation reading reproduced the generated block and the PDF text exactly). No companion
   repository yet.
