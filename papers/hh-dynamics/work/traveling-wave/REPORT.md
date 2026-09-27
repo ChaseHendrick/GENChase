@@ -831,3 +831,160 @@ dominates: each lambda cell is one or two integrations of the pulse with a 10-di
 20 to 60 minutes each). Chance of success along T2 in that time: about 40 per cent; T1 is more certain but slower.
 Sources the owner is asked to obtain: Evans I and IV (for the linear-to-nonlinear step and the Evans function
 theorem); Evans III is in hand. No long run until the owner has seen this plan.
+
+### 8.3 Stability of the pulse at 18.5 C: the design (2026-09-27, before the long computations)
+
+This section replaces the plan of 8.2 where they differ. It was written after reading Evans III in full (the owner's
+scan, pp. 577-593), Arioli and Koch (2015) Sections 3 and 4 (the owner's copy of the preprint), the neural-field
+precedent `papers/nf-pulse/ext/stability/`, and after a few floating-point experiments (labelled **numerical**
+below; their script is `papers/hh-pulse/code/stab_num.py`). Nothing in this section is proved yet.
+
+**Setting.** The cable equation in u = -V, with x scaled so that the diffusion coefficient a/(2 R_2 C_M) becomes 1, is
+u_t = u_xx - I(u, m, n, h), g_t = phi G(u, g) for the gates g = (m, n, h). In the moving coordinate
+xi = t - x/theta (the time-like variable of the wave ODE, in ms) a perturbation e^{lambda t} (p, q)(xi) of the pulse
+(U, g*)(xi) solves
+
+    (1/K) p'' - p' - a(xi) p - b(xi) . q = lambda p,      -q' + c(xi) p - diag(kappa(xi)) q = lambda q,
+
+with a = I_u, b = (I_m, I_n, I_h), c_i = phi dG_i/du and kappa_i = phi (alpha_i + beta_i), all evaluated along the
+pulse. In first-order form, Y = (p, p', q) in C^5,
+
+    Y' = A(xi, lambda) Y,     A(xi, lambda) = Df(x(xi), K) + lambda E,     E = K e_2 e_1^T - (e_3 e_3^T + e_4 e_4^T + e_5 e_5^T),
+
+where f is the field of the wave ODE and x(xi) the pulse. At lambda = 0 this is the variational equation, and x' is a
+solution. Evans III works in coordinates with speed 1: his y is -K xi (up to a shift) and his eigenvalue is lambda/K,
+so the spectral statements below translate one to one. His linearization at rest is our A_inf(lambda) =
+Df(y*, K) + lambda E.
+
+**Theorem S (to be proved; computer-assisted).** T = 18.5 C, E_l = 10.613 mV, and any pulse of Theorem 1 of the
+paper (K* in (K1, K2), leaving rest through the exit set E and staying in B0 from T_enter on). Let L be the
+linearization about the pulse in the moving frame on the bounded uniformly continuous functions (Evans's X). Then
+ (i) the essential spectrum (Evans's Sigma(T)) lies in Re lambda <= -delta, delta = 0.448;
+ (ii) the only lambda with Re lambda >= -eta, eta = 1/10, for which the eigenvalue equation has a bounded solution is
+      lambda = 0;
+ (iii) lambda = 0 is geometrically and algebraically simple: its bounded solutions are the multiples of x', and the
+      generalized eigenvector equation (Evans III, eq. (6)) has no bounded solution.
+Hence (Evans III, Theorem 1) the linearization is exponentially stable at the pulse derivative: there are P, alpha > 0
+such that every solution U of the linearized equation satisfies |U(t) - h x'|_sup <= P |U(0)|_sup e^{-alpha t} for
+some h with |h| <= P |U(0)|_sup. Nonlinear stability is the subject of the last paragraph of this section.
+
+**Computed hypotheses (ball arithmetic, python-flint 0.9.0; K in [K1, K2] and rest y* enclosed throughout).**
+- (E) For every s >= 0 the space-clamped Jacobian at rest minus s e_1 e_1^T (4 x 4: u and the gates) has all
+  eigenvalues in Re <= -delta: Routh-Hurwitz inequalities for the characteristic polynomial shifted by delta, on a
+  subdivision of s in [0, S], and Gershgorin discs after a diagonal scaling for s >= S. (Numerical: the supremum of
+  the real parts is -0.448606, the h gate rate phi (alpha_h + beta_h) at rest, approached as s -> infinity; at s = 0
+  it is -0.46272.) Negative control: delta = 0.449 must fail.
+- (R) A record of the pulse: the interval run of the existence proof (all K in [K1, K2], from the exit set to
+  T_enter) is rerun with the same program and the per-step data kept: the hull of the Lohner set at each step start
+  and the a priori enclosure W_j of the step. Together with the Lemma B box (xi <= 0) and B0 (xi >= T_enter), these
+  boxes contain the whole orbit of every pulse of Theorem 1. Also checked here: the path enclosures from a time
+  T_c (about T_enter - 0.3 ms, the first step start from which they all lie in int B0) to T_enter lie in int B0.
+- (L1) No eigenvalue with Re lambda > Lambda: with a fixed diagonal scaling of the gates the energy identity gives
+  Re lambda ||Y||^2 = -(1/K)||p'||^2 + <S Y, Y>, S the symmetric part of the zeroth-order matrix; so Re lambda <=
+  sup lambda_max(S) over the boxes of (R). Interval Cholesky of Lambda I - S on every box. (Numerical, on the float
+  profile: Lambda = 13.54 with scalings (84, 195, 193); the record's boxes will give a slightly larger number.)
+  Negative control: Lambda = 12 must fail.
+- (L2a) No eigenvalue with Omega <= |Im lambda| <= Omega_big, -eta <= Re lambda <= Lambda: a pointwise complex cone
+  condition along the whole orbit. In coordinates Z = M Y (M the inverse eigenbasis of A_inf(lambda_c) with
+  diagonal weights, fixed on a lambda-cell), D M A M^-1 + (D M A M^-1)^* is positive definite (D = diag(1, -1, -1,
+  -1, -1)) for every lambda in the cell and every state in the boxes of (R). Then Q = |Z_1|^2 - |Z_s|^2 increases
+  along every solution; the solution phi^- that decays at -infinity starts in Q > 0 (its limit direction, the
+  unstable eigenvector of A_inf, has Q > 0 by the complex form of Lemma 0 of the paper), so |Z_1| stays bounded
+  below and phi^- cannot decay at +infinity. (Numerical: with optimized weights the condition holds along the float
+  profile for Im lambda = 100, 150, 200, ..., 1000 (smallest eigenvalue 0.89, the h rate) and at -0.1 + 200 i; it
+  fails at 50 i.) Negative control: a cell at 40 i must fail.
+- (L2b) The same for |Im lambda| >= Omega_big, written: in the coordinates z_+ = (w - nu_- p)/(2R),
+  z_- = (nu_+ p - w)/(2R), q~_i = w_i q_i (nu_+- = K/2 +- R, R^2 = K^2/4 + K(lambda + a(y*)), w_i^2 = K B_i/(2|R| C_i)),
+  the Schur complement of the cone matrix is positive if
+  Re R > K/2 + (K/|R|) (sup |Delta a| + sum_i B_i C_i/(kappa_i^lo - eta)), with B_i = sup|b_i|, C_i = sup|c_i|,
+  kappa_i^lo = inf kappa_i over (R); the left side grows and the right side falls with |Im lambda| (Re R >=
+  (K |Im lambda|/2)^(1/2), |R| >= (K |Im lambda|)^(1/2)), so one interval check at Omega_big covers all larger values.
+  (Numerical: Omega_big about 3000 with these crude sup bounds.)
+- (C) For lambda-cells covering [-eta, Lambda] x [0, Omega]: the complex cone condition of (L2a) on B0 (a cover by
+  cells, as in `block0.py`) and on the path enclosures over [T_c, T_enter], for every lambda in the cell; and the
+  unstable eigenvector v_u(lambda) of A_inf (first component 1) lies in the open cone |Z_1| > |Z_s|. (Numerical: with
+  optimized weights the smallest eigenvalue of the cone matrix on B0 is 0.49 to 0.70 along Re lambda = -0.1 for
+  Im lambda from 0 to 100, and larger to the right.) Negative control: B0 enlarged 1.5 times must fail somewhere.
+- (W) The winding number of the Evans function on the upper half of the boundary of the box
+  [-eta, Lambda] x [-Omega, Omega] (the lower half by the symmetry below) is 1. Enclosures, per contour segment, of
+    D^(lambda) = (Z_1 - g . Z_s) / ((M v_u)_1 - (M v_u)_s . g),   Z = M phi^-(T_c; lambda),   |g| <= 1,
+  phi^- from the left-tail enclosure at xi = 0 (Gronwall: the pulse is within about 1e-25 of rest for xi <= 0)
+  integrated along the record by a Lohner-type method for the linear system with a second-order Taylor model in
+  lambda (the structure of `papers/nf-pulse/ext/stability/evans_rig.py`, generalized to 5 x 5 with the Taylor series
+  of Df along the pulse from `hhjet6.py`). Each segment's enclosure must lie in an open half-plane through 0; the
+  argument changes are then read from thin enclosures at the segment ends. Negative controls: the same code on the
+  circle |lambda| = 1/20 must give winding 1 (it sees the translation eigenvalue), and the cone exclusion
+  "phi^-(T_c) in the open cone Q > 0" must fail on a cell containing 0.
+
+**Written (not machine-checked) parts.** (a) Lemma R: from (E), the rest linearization is exponentially stable in the
+sup norm, which is Evans's "critical assumption" (Evans III p. 579). Evans derives this from Evans II, which we do not
+have, so it is proved here: the solution operator is e^{a t} (heat kernel) on u plus e^{tB} on the gates plus a
+convolution whose symbol is a rank-one resolvent integral, which lies in H^1 in the Fourier variable with norm
+<= C e^{-alpha t}, hence has an L^1 kernel. (b) The translation between Evans's equations (4)-(6) and the
+first-order system above. (c) For Re lambda > -delta, A_inf(lambda) has one eigenvalue with positive real part and four
+with negative real part (from (E) and lambda = 0), so bounded solutions of the eigenvalue equation decay at both
+ends, the solutions decaying at -infinity form a line (spanned by phi^-), and those decaying at +infinity a
+4-dimensional space S(xi). (d) The dual cone: if the cone condition holds on the region visited by the pulse after
+T_c, then S(T_c) lies in the open cone Q < 0, so the adjoint solution psi^+ that annihilates S (the Evans adjoint) is,
+in the dual coordinates, a multiple of (1, -g) with |g| < 1. (e) With the natural Evans function D(lambda) =
+psi^+(xi)^T phi^-(xi) (psi^+ ~ e^{-nu xi} w at +infinity), D^ = D / c with c(lambda) = v_u(lambda)^T psi^+(T_c) analytic
+and, by (C) and (d), zero-free in the box; D^ has exactly the zeros of D there, with multiplicities; it is the
+quotient above, and D^(conj lambda) = conj D^(lambda). (f) Every eigenvalue in the box is a zero of D (the easy
+direction; no Evans-function multiplicity theorem is used). D(0) = 0 because x' decays at both ends. (g) Winding 1
+then says that 0 is the only zero of D in the box and that D'(0) is not 0; D'(0) = integral psi_0^T E x' (as in
+`papers/nf-pulse/ext/stability/REPORT.md`, Part 3), so a bounded solution Y_1 of Y_1' = A(xi, 0) Y_1 + E x' (the
+first-order form of Evans's eq. (6)) would give (psi_0^T Y_1)' = psi_0^T E x' with vanishing boundary terms, a
+contradiction: 0 is algebraically simple in Evans's sense. (h) Evans III, Theorem 1, whose hypotheses (f^i of class
+C^2, rest at 0 after a shift, the pulse tends to rest, the critical assumption) are then all checked, gives the
+exponential linear stability. Theorem 2 of Evans III is the same condition written as an integral of the voltage
+components; we note it but do not need it.
+
+**T1 or T2: T2, for a reason 8.2 missed.** Section 8.2 feared that a cone that only confines the stable subspace of the
+tail (T2) cannot resolve lambda near 0, where phi^- is close to x', which lies in that subspace. That is right for
+the cone exclusion (phi^- in the unstable cone), and wrong for the Evans function on a contour that stays away from 0.
+The uncertainty that the cone leaves in psi^+ (the unknown g, |g| < 1) multiplies only the stable part Z_s of
+phi^-(T_c), while the pairing is carried by the unstable part Z_1. At T_c, about 8 ms after the upstroke, the stable
+part of phi^-(T_c; lambda) is smaller than its unstable part by a factor of order e^{-(10.9 + 0.46) x 8}, about
+1e-38, except within about 1e-38 of an eigenvalue (numerical: with the float Evans function normalized at both ends,
+|D| = 14620 |lambda| near 0, while the stable part of phi^- at T_c is about 1e-38 in the same normalization). So on a
+contour at distance eta = 0.1 from 0, the relative error that the tail leaves in D^ is negligible, and what remains
+is the width of the pulse enclosure near T_c (the orbits of the K interval spread by about 0.02 in zeta_1 at
+T_enter - 0.3 ms), which enters as a relative error of order 1e-3. T1 (a 4-dimensional validated stable manifold,
+about 1e4 coefficients per component) and a narrower K interval are therefore not needed.
+
+**The contour.** The upper half of the boundary of [-eta, Lambda] x [-Omega, Omega] with eta = 0.1, Lambda from (L1)
+(about 14), Omega from (L2a) (about 100), from Lambda up, across, and down to -eta: about 214 units, cut into
+segments whose length adapts to the variation of D^ (numerical: the phase of phi^- e^{-nu_c xi} at T_c moves by
+about 12 radians per unit of lambda near 0 and by about 2 near 100 i). **Numerical check of the target:** the float
+Evans function (collocation profile, DOP853, matching point independence to 1e-7) has winding number 1 on this box
+with 110 in place of Omega (adaptive steps, arg jumps below 0.3; min |D| on the contour 12.3), and winding 1 on
+[-0.3, 5] x [-5, 5]: 0 is the only eigenvalue there, numerically. D(0) = 1e-5, D'(0) = 1.46e4 in that normalization.
+
+**Cost and chance.** (E), (L1), (L2b): minutes. (R): one rerun of the interval stage (about 10 minutes) plus the
+Taylor series of Df on each step (about 10 minutes). (C): about 1500 lambda-cells of 1 x 1 near the axis (fewer and
+larger away from it), each a cover of B0 by about 1000 cells: 1 to 2 hours. (L2a): about 50 cells, minutes. (W):
+about 300 to 400 segments at 10 to 30 s each (5 x 5 complex step matrices, order about 16, 128 bits, about 1000 steps
+to T_c): 1 to 3 hours. At most two processes. Development: about a day of code, most of it in (W). Chance that
+(i)-(iii) and the linear stability are proved at 18.5 C in this session: about 60 per cent. Risks: the width of the
+record near T_c (the spread of the K interval) may inflate the enclosures of D^; (L1) and (L2a) on the record's a
+priori boxes (fatter than the float profile at the upstroke) may give larger Lambda and Omega; the number of segments.
+6.3 C afterwards, with the same programs, if 18.5 C succeeds.
+
+**Nonlinear stability.** Arioli and Koch's Lemma 3.1 (their own proof of the step Evans I makes, pp. 10-12 of the
+preprint) uses: the linearized semigroup on the bounded uniformly continuous functions, strongly continuous; its
+exponential stability at phi' with a bounded linear functional; the Duhamel formula; a nonlinearity Q with Q(0) = 0
+and DQ(0) = 0 that is locally Lipschitz with constant O(|v|) (theirs is "a polynomial with a zero of order 2"); and
+translation invariance. For Hodgkin-Huxley the current I is a polynomial in (u, m, n, h) and the gate right-hand sides
+are real analytic, so the Nemytskii map has those properties on bounded sets; the heat and translation semigroups are
+strongly continuous on that space and the rest of L is bounded. Whether their proof then carries over verbatim, with
+three non-diffusing gates in place of one, is to be checked line by line after (i)-(iii); if any step does not
+carry over, the theorem will state linear exponential stability and leave nonlinear stability open.
+
+**Prior articles (2026-09-27).** arXiv full-text search '"Hodgkin-Huxley" "Evans function"' (0 hits) and
+'"Hodgkin-Huxley" stability "traveling wave"' (1 hit, not relevant); zbMATH Open API '"Hodgkin-Huxley" & stability &
+(pulse | travelling | traveling | impulse)' (30 hits): the stability theory of Evans (1972-75), Evans and Feroe, Math.
+Biosci. 37 (1977) 23-50 (title and venue only; from later citations a numerical stability computation, not read),
+Ikeda, Mimura and Tsujikawa (1989, the epsilon-modified system), Rinzel (1975, neutrally stable waves), and
+Rottmann-Matthes (2012, nonlinear stability for parabolic-hyperbolic systems in general; not read). Two web searches
+found only this project's pull requests. No proof of the stability of the unmodified pulse was found, which is
+expected since its existence was not proved before Theorem 1.
