@@ -114,7 +114,8 @@ From this folder, with the inputs above in place, `code/requirements.txt` instal
 
 ```
 python3 code/matern_window.py > out/matern_window.log          # about 1 h, resumable
-python3 code/matern_finiteN.py 20 > out/matern_finiteN.log
+python3 code/matern_finiteN.py 20 --first > out/matern_finiteN_first.log   # first run: 54 cells, 20 replicates
+python3 code/matern_finiteN.py 5 > out/matern_finiteN.log                   # the other 58 cells, 5 replicates
 python3 code/matern_extra.py white > out/matern_extra_white.log
 python3 code/matern_extra.py sub > out/matern_extra_sub.log
 python3 code/matern_extra.py kv > out/matern_extra_kv.log
@@ -136,6 +137,13 @@ cd paper && pdflatex note && pdflatex note && pdflatex note
 `make_numbers.py` and `make_figures.py` run from `out/` alone, without the inputs (checked: `make_numbers.py`
 reproduces `paper/numbers.tex`, the five tables and `out/numbers.json` byte for byte); `verify_independent.py`
 needs the stimulus files (`NOTE_STIM=<folder> python3 code/verify_independent.py` reads them from another folder).
+
+The finite populations were computed in two stages, and the two `matern_finiteN.py` lines repeat them. `--first`
+restricts the run to the cells of the first computation: ell = 1/4, 1 and 4, with nu = 1 on every set and all five nu
+on 8D MP032 2017-08-10 and 4D MP032 2017-09-22. The second line adds the other cells (nu = 1 at ell = 1/2, 2 and 8,
+and nu = 0.75 at ell = 2, 4 and 8 where not already computed) with 5 replicates. Replicate r uses the same Wishart
+draw in every run (a generator seeded [20260926, 7, r]), so the stage that computes a cell sets only its replicate
+count, not its values.
 
 ## License
 
