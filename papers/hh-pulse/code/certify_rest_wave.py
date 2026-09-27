@@ -28,7 +28,7 @@ with z1 > 0 lies in the interior of B for all early times; there L increases str
 (the orbit tends to y*), so L > 0 on it; while in B, L keeps increasing, so z1 never vanishes and the orbit cannot converge to y* (L(y*) = 0) nor stay in B forever (an
 omega-limit set in B would carry an orbit with constant L, which (C) allows only at y*). It cannot leave through a
 stable face (F). Hence it leaves B through the face z1 = +r at a point with |z2| <= s2, |(z3, z4)| <= s3, |z5| <= s5.
-This exit set is what prove_pulse.py integrates.
+This exit set is what hh_prove_pulse.py integrates.
 """
 import json
 import os
@@ -195,7 +195,7 @@ def lemma_B(K, phi, EL, r, s, Tf=None):
     if Tf is None:
         V, _ = real_basis(Am)
         Tf = np.linalg.inv(V)
-    T = Tf if isinstance(Tf, arb_mat) else exact(Tf)       # an exact arb_mat is used as given (prove_pulse.py)
+    T = Tf if isinstance(Tf, arb_mat) else exact(Tf)       # an exact arb_mat is used as given (hh_prove_pulse.py)
     Ti = T.inv()
     s2, s3, s5 = [arb(v) for v in s]
     r = arb(r)

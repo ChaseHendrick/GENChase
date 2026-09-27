@@ -32,18 +32,19 @@ multiplied by 1 + 1e-12 (u - u*)^2 at the true interval (the whole set must esca
 faces 100 times too thin; the block with a radius 1.5 times too large (block0.py).
 
 Stages (run separately; each writes data/pulse_proof_<tag>_<stage>.json and checkpoints to data/ckpt/):
-  python3 prove_pulse.py <T> config <delta> <r_B> <T_enter> <tol_final> <tol_min>   # from data/hp_pulse_<tag>.json
-  python3 prove_pulse.py <T> setup      # (H2), (H3), the check of (H1), and their negative controls
-  python3 prove_pulse.py <T> interval   # (H4)
-  python3 prove_pulse.py <T> K1         # (H5) at K1
-  python3 prove_pulse.py <T> K2         # (H5) at K2
-  python3 prove_pulse.py <T> neg-shift  # negative control: shifted K interval
-  python3 prove_pulse.py <T> neg-model  # negative control: perturbed alpha_m
-  python3 prove_pulse.py <T> summary    # checks every certificate; exit status 0 iff everything is as expected
-  python3 prove_pulse.py <T> summary-control   # the summary must reject planted stale or wrong certificates
+  python3 hh_prove_pulse.py <T> config <delta> <r_B> <T_enter> <tol_final> <tol_min>   # from data/hp_pulse_<tag>.json
+  python3 hh_prove_pulse.py <T> setup      # (H2), (H3), the check of (H1), and their negative controls
+  python3 hh_prove_pulse.py <T> interval   # (H4)
+  python3 hh_prove_pulse.py <T> K1         # (H5) at K1
+  python3 hh_prove_pulse.py <T> K2         # (H5) at K2
+  python3 hh_prove_pulse.py <T> neg-shift  # negative control: shifted K interval
+  python3 hh_prove_pulse.py <T> neg-model  # negative control: perturbed alpha_m
+  python3 hh_prove_pulse.py <T> summary    # checks every certificate; exit status 0 iff everything is as expected
+  python3 hh_prove_pulse.py <T> summary-control   # the summary must reject planted stale or wrong certificates
 T is a decimal string (18.5, 6.3), never read as a float. Every certificate records its provenance: the sha256 of the
 configuration, of the closing block and of the programs (PROGRAMS), the python-flint version and the phi and E_l balls;
-the summary recomputes them and refuses a certificate that does not match, or whose K is not the configuration's.
+the summary recomputes them and refuses a certificate that does not match, whose K is not the configuration's, or
+whose verdict contradicts its own fields.
 Exit status of a stage: 0 if it passed, 1 if it wrote the verdict FAIL, 2 on any error (no certificate is written).
 """
 import hashlib
@@ -67,7 +68,7 @@ ORDER = 40
 DATA = '../data'
 HERE = os.path.dirname(os.path.abspath(__file__))
 # the programs whose code the certificates depend on (their sha256 goes into every certificate)
-PROGRAMS = ('prove_pulse.py', 'certify_rest_wave.py', 'lohner6.py', 'hhjet6.py', 'hhjet.py', 'hhseries.py',
+PROGRAMS = ('hh_prove_pulse.py', 'certify_rest_wave.py', 'lohner6.py', 'hhjet6.py', 'hhjet.py', 'hhseries.py',
             'block0.py', 'hhwave.py')
 STAGES = ('setup', 'interval', 'K1', 'K2', 'neg-shift', 'neg-model')
 # what each negative control must fail with: the stated reason, as recorded in the certificate's 'fail' field
@@ -484,6 +485,33 @@ def run_stage(T, stage):
     return log['verdict'] == 'PASS'
 
 
+SETUP_CHECKS = ('A', 'B', 'B_transversal', 'B_exit_u_above_rest', 'C')
+
+
+def contradictions(st, d):
+    """Fields of a certificate that contradict its own verdict (the summary recomputes the verdict from them)."""
+    out = []
+    if st == 'setup':
+        if d.get('ok') != all(d.get(k) is True for k in SETUP_CHECKS):
+            out.append('ok is not the conjunction of %s' % ', '.join(SETUP_CHECKS))
+        return out
+    v, inB = d.get('verdict'), d.get('in_int_B0_at_T_enter')
+    if v not in ('PASS', 'FAIL'):
+        out.append('no verdict')
+    if st == 'interval' and (v == 'PASS') != (inB is True):
+        out.append('the verdict disagrees with in_int_B0_at_T_enter')
+    if st in ('K1', 'K2') and v == 'PASS' and not (inB is True and d.get('phase2') == 'in_cone' and 't_cone' in d):
+        out.append('PASS without reaching the cone from int B0')
+    if st == 'neg-shift' and v == 'FAIL' and d.get('fail') == NEG_REASON[st] and inB is not False:
+        out.append('the stated reason disagrees with in_int_B0_at_T_enter')
+    if st == 'neg-model' and v == 'FAIL' and d.get('fail') == NEG_REASON[st] and not str(
+            d.get('reason', '')).startswith('the whole set escaped (u < -60 mV)'):
+        out.append('the stated reason disagrees with the recorded one')
+    if v == 'PASS' and 'fail' in d:
+        out.append('PASS with a reason for failure')
+    return out
+
+
 def check_certificates(T, data=DATA):
     """Every certificate of the proof, checked against the current configuration, closing block, programs, phi and E_l.
     Returns (ok, lines)."""
@@ -525,6 +553,7 @@ def check_certificates(T, data=DATA):
             if d.get('K') != kpart(K1, K2, st).str(70) or d.get('order') != ORDER:
                 why.append('K or order differ from the configuration')
             passed = d.get('verdict') == 'PASS'
+        why += contradictions(st, d)
         if st in NEG_REASON:
             good = d.get('verdict') == 'FAIL' and d.get('fail') == NEG_REASON[st]
             what = 'failed (%s), a negative control' % d.get('fail') if not passed else 'passed, a negative control'
@@ -534,7 +563,7 @@ def check_certificates(T, data=DATA):
         good = good and not why
         ok = ok and good
         lines.append('%-10s %s (%s)%s' % (st, 'as expected' if good else 'NOT AS EXPECTED', what,
-                                          ('; STALE OR FOREIGN: ' + '; '.join(why)) if why else ''))
+                                          ('; STALE, FOREIGN OR INCONSISTENT: ' + '; '.join(why)) if why else ''))
     lines.append('certificates made from config %s, closing block %s, programs %s, python-flint %s (sha256, first 16)'
                  % (prov['config_sha256'][:16], prov['block_sha256'][:16], prov['code_sha256'][:16],
                     prov['python_flint']))
@@ -606,6 +635,12 @@ def stage_summary_control(T):
          lambda data: edit(block_path(T, data), lambda d: d.__setitem__('K_ref', d['K_ref'] + '1'))),
         ('neg-model failed for another reason (the set blew up)', False,
          lambda data: edit(cert(data, 'neg-model'), lambda d: d.__setitem__('fail', 'blew_up'))),
+        ('setup certificate with "C": false and "ok": true', False,
+         lambda data: edit(cert(data, 'setup'), lambda d: d.__setitem__('C', False))),
+        ('interval PASS with in_int_B0_at_T_enter false', False,
+         lambda data: edit(cert(data, 'interval'), lambda d: d.__setitem__('in_int_B0_at_T_enter', False))),
+        ('K1 PASS without reaching the cone', False,
+         lambda data: edit(cert(data, 'K1'), lambda d: d.__setitem__('phase2', 'left_int_B0'))),
         ('neg-shift passed', False,
          lambda data: edit(cert(data, 'neg-shift'), lambda d: (d.__setitem__('verdict', 'PASS'), d.pop('fail', None)))),
     ]
@@ -639,7 +674,7 @@ def main(argv):
     T = C.temperature(argv[1])            # a decimal string: phi is computed from it exactly
     stage = argv[2]
     if stage == 'config':
-        # python3 prove_pulse.py T config delta r_B T_enter tol_final tol_min
+        # python3 hh_prove_pulse.py T config delta r_B T_enter tol_final tol_min
         make_config(T, argv[3], argv[4], float(argv[5]), float(argv[6]), float(argv[7]))
         return 0
     if stage == 'setup':

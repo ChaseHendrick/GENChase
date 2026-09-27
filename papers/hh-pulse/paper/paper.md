@@ -45,10 +45,11 @@ and the printed leak potential, the travelling-wave system has a pulse, with the
 interval of width 3e-45 at 18.5 C and 2.8e-61 at 6.3 C. [Computer-assisted.] The same holds at 18.5 C with the leak
 potential that makes the resting current exactly zero (Remark 1). [Computer-assisted.]
 
-**Priority, conditionally.** On the searches summarized in Appendix C (2026-09-25 to 2026-09-27), this is the first
-existence proof for the unmodified 1952 equations. The statement is conditional, and nothing else in the paper depends
-on it: Hastings (1976) was read on pp. 229-230 only; Foote and Chen, "Traveling wave properties of the Hodgkin-Huxley
-equations", Chinese J. Math. 9 (1981) 1-23, was not read at all; zbMATH Open has no review of either
+**Earlier work, as far as we could find.** The searches summarized in Appendix C (2026-09-25 to 2026-09-27) found no
+earlier existence proof, with or without a computer, for the unmodified 1952 equations. The searches have limits, and
+nothing else in the paper depends on this paragraph. Two papers could not be obtained in full: Hastings (1976), of
+which we read pp. 229-230 of its 29 pages, and Foote and Chen, "Traveling wave properties of the Hodgkin-Huxley
+equations", Chinese J. Math. 9 (1981) 1-23, which we could not read at all. zbMATH Open has no review of either
 (Zbl 0374.35004, Zbl 0472.35048), and MathSciNet was not reachable. Carpenter (1977) was read in full.
 
 **What the proof rests on.** Besides the computations, the proof uses only Hodgkin and Huxley's equations and constants
@@ -57,13 +58,22 @@ cited from one textbook that was read for the purpose (Teschl 2012: extension of
 continuous on its open domain, Theorem 6.1; orbits in a compact set are complete and have nonempty, compact, invariant
 limit sets, Lemmas 6.3, 6.5 and 6.6; the local unstable manifold of a hyperbolic equilibrium, Theorems 9.4 and 9.5).
 Every other step is proved here (Section 4 and Appendices A and B). No step of the proof depends on Hastings (1976),
-Carpenter (1977), Foote and Chen (1981) or Arioli and Koch (2015); they bear only on the priority statement and on the
-comparison of methods.
+Carpenter (1977), Foote and Chen (1981) or Arioli and Koch (2015); they bear only on the paragraph on earlier work and
+on the comparison of methods. The computations rest on the correctness of Arb (Johansson 2017), in FLINT, through
+python-flint 0.9.0, and, for the independent re-check of the closing block, of mpmath 1.3.0.
+
+**Methods and their sources.** The integrator is a Lohner-type method (Lohner 1988): Taylor enclosures of the flow
+with the wrapping effect controlled by moving coordinates. The closing argument is a topological shooting argument in
+the tradition of Wazewski (1947) and of Conley's isolating blocks (Conley 1975, 1978), the approach Carpenter (1977)
+used for nerve impulse equations with small parameters. The blocks are checked through cone conditions, a
+quadratic form that increases along the flow, as in Zgliczynski (2009). Every lemma the proof uses is proved here from
+these ideas, so the citations credit the methods and are not premises.
 
 ## 2. The equations
 
-We use the modern sign convention u = -V (depolarization, mV), t in ms, C_M = 1 uF/cm^2. Eq. (31) is odd in V and
-keeps its form:
+We use the modern sign convention u = -V (depolarization, mV), t in ms, C_M = 1 uF/cm^2. With u = -V, the reversal
+potentials rewritten in the new sign (V_Na = -115, V_K = 12 and V_l = -10.613 mV become 115, -12 and E_l = 10.613 mV)
+and the rate functions written in u, eq. (31) keeps its form:
 
     u'' = K (u' + I(u, m, n, h)),   I = 120 m^3 h (u - 115) + 36 n^4 (u + 12) + 0.3 (u - E_l),
     x'  = phi (alpha_x(u) (1 - x) - beta_x(u) x),   x = m, n, h,   phi = 3^((T - 6.3)/10),
@@ -226,12 +236,12 @@ inside just after. While the orbit is in B0, L > 0 persists and zeta_1 cannot va
 that stays in B0 for t >= t_0 has, by Teschl's Lemmas 6.3, 6.5 and 6.6, a nonempty invariant omega-limit set in B0 on
 which L is constant, hence {y*}. The face |zeta_1| = r is not used. QED
 
-**(H4) The interval run** (`prove_pulse.py interval`). A Lohner-type integrator in the six variables (y, K), K' = 0
+**(H4) The interval run** (`hh_prove_pulse.py interval`). A Lohner-type integrator in the six variables (y, K), K' = 0
 (`lohner6.py`; Taylor jets of order 40 with derivatives in the initial point, `hhjet6.py`), carries a set containing
 E x [K1, K2] from t = 0 to t = T_enter and encloses it, at T_enter, in the interior of B0. By Appendix A, for every
 (q, K) in E x [K1, K2] the solution through (q, K) exists on [0, T_enter] and its value at T_enter lies in int B0.
 
-**(H5) The endpoint runs** (`prove_pulse.py K1`, `K2`). For K = K1 (resp. K2) the set E is carried to T_enter, lies
+**(H5) The endpoint runs** (`hh_prove_pulse.py K1`, `K2`). For K = K1 (resp. K2) the set E is carried to T_enter, lies
 in int B0 there, and is carried further in steps of 2^-7 ms, with the whole path of every step enclosed (Lemma A.4)
 and inside int B0, until the set lies in K- (resp. K+).
 
@@ -287,7 +297,7 @@ K interval. At 6.3 C the numerical centre has to be computed with a local error 
 18.5 C: the budget is written for the growth rate at 18.5 C, and with the looser one K* was off by about 5e-59, which
 the interval run detected (zeta_1 = -86 at T_enter, outside B0).
 
-**Independent re-check of (H3).** `block_check_iv.py` is a separate program: mpmath interval arithmetic at 113 bits,
+**Independent re-check of (H3).** `hh_block_check_iv.py` is a separate program: mpmath interval arithmetic at 113 bits,
 the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test, and its
 own enclosure of the rest state by bisection. It confirms (C) and (E) at both temperatures and rejects the enlarged
 block.
@@ -320,8 +330,8 @@ The programs are in `code/` (Apache-2.0) and need python-flint 0.9.0, mpmath, nu
     sh code/run.sh all          # or: tests, 18.5, 6.3, zero
 
 `run.sh` runs `test_lohner6.py` and then, for each proof, from scratch and one process at a time: the numerical centre
-(`hp_pulse.py`), the block (`block0.py`), the configuration and the stages of `prove_pulse.py` (setup, interval, K1, K2
-and the two negative controls), the independent block check (`block_check_iv.py`) and the summary, whose exit status is
+(`hp_pulse.py`), the block (`block0.py`), the configuration and the stages of `hh_prove_pulse.py` (setup, interval, K1, K2
+and the two negative controls), the independent block check (`hh_block_check_iv.py`) and the summary, whose exit status is
 0 if and only if every check passed and every negative control failed. The certificates are
 `data/pulse_proof_<T>_El10.613_*.json` (printed E_l) and `data/pulse_proof_18.5_*.json` (zero-current E_l), with the
 summaries `*_summary.txt`. The starting profiles `data/pulse_<T>.npz` are numerical initial guesses made by

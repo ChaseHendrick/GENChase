@@ -33,9 +33,9 @@ parameters.
 
 - `code/run.sh all` reruns everything from scratch: `test_lohner6.py` (the jets and the integrator against an
   independent reference, and a control that must miss), and for each of the three proofs the numerical centre
-  (`hp_pulse.py`), the closing block (`block0.py`), the stages of `prove_pulse.py` (the setup with its negative
+  (`hp_pulse.py`), the closing block (`block0.py`), the stages of `hh_prove_pulse.py` (the setup with its negative
   controls, the interval run, the two endpoint runs, a shifted speed interval and a perturbed rate function that must
-  fail), the independent re-check of the block in mpmath interval arithmetic (`block_check_iv.py`) and the summary,
+  fail), the independent re-check of the block in mpmath interval arithmetic (`hh_block_check_iv.py`) and the summary,
   whose exit status is 0 only if every check passed and every control failed. About 1 hour of CPU for 18.5 C, 3 hours
   for 6.3 C and 1 hour for the zero-current variant, at 256 bits.
 

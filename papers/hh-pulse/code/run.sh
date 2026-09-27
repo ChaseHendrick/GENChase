@@ -62,18 +62,18 @@ proof() {   # proof <T> <t_end> <config arguments...>, with HH_EL exported or un
         step "hp_pulse_${tag}_tight" 10800 python3 hp_pulse.py "$T" "$tend" 1e-8 || return 1
     fi
     step "block0_$tag" 3600 python3 block0.py "$T" || return 1
-    step "config_$tag" 600 python3 prove_pulse.py "$T" config "$@" || return 1
-    step "setup_$tag" 3600 python3 prove_pulse.py "$T" setup || return 1
+    step "config_$tag" 600 python3 hh_prove_pulse.py "$T" config "$@" || return 1
+    step "setup_$tag" 3600 python3 hh_prove_pulse.py "$T" setup || return 1
     for s in interval K1 K2; do
-        step "${s}_$tag" 7200 python3 prove_pulse.py "$T" "$s" || return 1
+        step "${s}_$tag" 7200 python3 hh_prove_pulse.py "$T" "$s" || return 1
     done
     for s in neg-shift neg-model; do     # a negative control must end with a written FAIL verdict (status 1)
-        step "${s}_$tag" 7200 python3 prove_pulse.py "$T" "$s"; st=$?
+        step "${s}_$tag" 7200 python3 hh_prove_pulse.py "$T" "$s"; st=$?
         [ $st -eq 1 ] || { echo "$s: exit status $st, not a written FAIL verdict"; return 1; }
     done
-    step "block_check_iv_$tag" 3600 python3 block_check_iv.py "$T" || return 1
-    step "summary_$tag" 600 python3 prove_pulse.py "$T" summary || return 1
-    step "summary-control_$tag" 600 python3 prove_pulse.py "$T" summary-control
+    step "block_check_iv_$tag" 3600 python3 hh_block_check_iv.py "$T" || return 1
+    step "summary_$tag" 600 python3 hh_prove_pulse.py "$T" summary || return 1
+    step "summary-control_$tag" 600 python3 hh_prove_pulse.py "$T" summary-control
 }
 
 what=${1:-all}

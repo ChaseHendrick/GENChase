@@ -19,9 +19,9 @@ The bar every paper in this repository meets before it is published or preprinte
   own check; item 6 is where it is tested.
 - [x] **2. Rigorous computation.** Evidence: every proof step is ball arithmetic (FLINT/Arb via python-flint 0.9.0,
   256 bits; 128 bits for enclosures that only widen) in `code/` (`certify_rest_wave.py`, `block0.py`, `hhjet6.py`,
-  `hhseries.py`, `lohner6.py`, `prove_pulse.py`); each stage stops on a failed check; negative controls (a bracket
+  `hhseries.py`, `lohner6.py`, `hh_prove_pulse.py`); each stage stops on a failed check; negative controls (a bracket
   above lambda_u, thinner Lemma B faces, an enlarged block, a shifted K interval, alpha_m perturbed away from rest) run
-  their own code and fail as they must; `block_check_iv.py` re-checks the block in mpmath interval arithmetic with
+  their own code and fail as they must; `hh_block_check_iv.py` re-checks the block in mpmath interval arithmetic with
   independent code; `test_lohner6.py` tests the integrator with a negative control.
 - [x] **3. Every claim labelled.** Evidence: the manuscript labels Theorems 1 and 2, Remark 1 and the rest state
   [Computer-assisted], Remark 2 [numerical, not proved], says which branch statement is numerical, and lists what is

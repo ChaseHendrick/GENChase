@@ -2,7 +2,7 @@
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
 """Numerical (not rigorous): the speed parameter K* of the Hodgkin-Huxley pulse to about 50 digits, by multiple
-shooting in high precision, to centre the K interval of the proof (prove_pulse.py).
+shooting in high precision, to centre the K interval of the proof (hh_prove_pulse.py).
 
 Unknowns: the states Y_1..Y_N at nodes and K. Equations:
   Y_1 = phi(tau_0; P_K(sigma0), K),   Y_{i+1} = phi(tau_i; Y_i, K),   l . (phi(tau_N; Y_N, K) - y*) = 0,

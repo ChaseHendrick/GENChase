@@ -453,13 +453,13 @@ not contain the pulse speed (shifted by 40 half-widths); the interval run at the
 alpha_m multiplied by 1 + 1e-12 u^2 (which leaves rest and its linearization unchanged, so Lemmas A and B still apply,
 but moves the pulse speed by far more than the interval).
 
-**Execution:** `prove_pulse.py` (stages setup, interval, K1, K2, neg-shift, neg-model, summary), each stage under
+**Execution:** `hh_prove_pulse.py` (stages setup, interval, K1, K2, neg-shift, neg-model, summary), each stage under
 `nice -n 19` and a timeout, checkpointing the Lohner set to `data/ckpt/` every two minutes; K* to about 55 digits from
 `hp_pulse.py` (numerical: multiple shooting in high precision, Newton's method, to centre the interval).
 
 ### 4.5 Result at 18.5 C (2026-09-27): the closing step, computed
 
-All stages of `prove_pulse.py` at 18.5 C were run on 2026-09-27 at 256 bits (auxiliary precision 128 bits for the
+All stages of `hh_prove_pulse.py` at 18.5 C were run on 2026-09-27 at 256 bits (auxiliary precision 128 bits for the
 Jacobian, the a priori box and the remainder), Taylor order 40, under `nice -n 19` with at most two processes; the
 certificates are `data/pulse_proof_18.5_<stage>.json` and the summary `data/pulse_proof_18.5_summary.txt`.
 
@@ -494,7 +494,7 @@ certificates are `data/pulse_proof_18.5_<stage>.json` and the summary `data/puls
   so the run fails, as it must (628 s).
 - **Consistency of the rigorous and numerical computations:** the numerical values predict zeta_1(K1) = 0.0180 -
   0.3226 = -0.3046 and zeta_1(K2) = 0.3406 at T_enter; the rigorous enclosures are -0.30474 and 0.34075.
-- **Independent re-check of (H3):** `block_check_iv.py`, written separately (mpmath interval arithmetic at 113 bits,
+- **Independent re-check of (H3):** `hh_block_check_iv.py`, written separately (mpmath interval arithmetic at 113 bits,
   the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test), confirms
   the cone condition (933 cells) and the entrance condition (4220 cells) on B0 for K in an interval containing
   [K1, K2], and rejects the block enlarged 1.5 times (`data/block_check_iv_18.5.txt`).
@@ -521,7 +521,7 @@ outside the project has reviewed them.
 
 **Rerun (2026-09-27, later the same day).** `papers/hh-pulse/code/run.sh all`, started at 14:37 UTC from commit
 391ae68, recomputed this proof from scratch as its last block (18.5 C, no `HH_EL`), after the two printed-leak proofs,
-and ended at 18:41 UTC with every stage passed, both negative controls failed and `block_check_iv.py` passed. The
+and ended at 18:41 UTC with every stage passed, both negative controls failed and `hh_block_check_iv.py` passed. The
 certificates `papers/hh-pulse/data/pulse_proof_18.5_*.json` are now its output. The numerical centre came out
 byte for byte equal to the committed `hp_pulse_18.5.json`. K1 and K2 moved by 8.0e-62 (their last digits
 ...446221386 became ...454212849): the run above took K* from `hp_pulse.py` before its flow was made to keep time
@@ -530,7 +530,7 @@ digits) the configuration and the stages were not rerun. Neither the stopping ru
 is involved (this centre converged in one pass). Apart from the run times, every value this section quotes (the digits
 of K*, K1, K2 and the speeds, the zeta enclosures, the cell counts, the escape time of `neg-model`) is shared by both
 runs; the interval [K1, K2] is recomputed from the centre on each run. Times of the rerun: `hp_pulse.py` 390 s,
-interval 591 s, K1 593 s, K2 568 s, neg-shift 572 s, neg-model 595 s, `block_check_iv.py` 17 s.
+interval 591 s, K1 593 s, K2 568 s, neg-shift 572 s, neg-model 595 s, `hh_block_check_iv.py` 17 s.
 
 ### 4.6 The same proof with the printed leak potential, E_l = 10.613 mV (2026-09-27)
 
@@ -540,13 +540,13 @@ the environment variable `HH_EL=10.613`, `certify_rest_wave.rest_state` takes E_
 equilibrium by an interval Newton step (existence and uniqueness within 1e-3 mV of the float value):
 **u* = 0.0036206688079425688368876905420... mV**, enclosed to about 1e-73, with m, n, h at their steady-state
 values there. Every program is otherwise unchanged; the data files carry the tag `18.5_El10.613`, and
-`block_check_iv.py` finds the same rest state by its own bisection. The chain ran one stage at a time:
+`hh_block_check_iv.py` finds the same rest state by its own bisection. The chain ran one stage at a time:
 
 - numerical centre K* = 10.43805106010112369227648623831857912185866977197832623... (Newton converged to 1e-66);
 - `setup`: Lemmas A and B, transversality and the block (1232 and 5916 cells) pass, with their negative controls;
 - `interval`: at T_enter = 13.625 ms, zeta_1 in [-0.341, 0.341], |zeta_s| <= 0.63603: in int B0 (597 s);
 - `K1`, `K2`: into K- and K+ with the paths in int B0 (570 s, 561 s);
-- `neg-shift` and `neg-model`: fail, as they must (566 s, 389 s); `block_check_iv.py`: passes (935 and 4241 cells) and
+- `neg-shift` and `neg-model`: fail, as they must (566 s, 389 s); `hh_block_check_iv.py`: passes (935 and 4241 cells) and
   rejects the enlarged block.
 
 **Theorem (computer-assisted), printed leak potential.** As the theorem of 4.5, with E_l = 10.613 mV and rest the
@@ -574,7 +574,7 @@ The same programs, with `HH_EL=10.613` and T = 6.3 C (phi = 1), one stage at a t
 - `neg-shift` (the K interval moved by 40 half-widths): zeta_1 about 10 at T_enter, outside B0: fails (1276 s);
 - `neg-model` (alpha_m times 1 + 1e-12 (u - u*)^2): the whole set escapes below u = -60 mV at 17.20 ms, after the
   spike: fails (1298 s);
-- `block_check_iv.py`: passes (1447 + 974 cells) and rejects the enlarged block.
+- `hh_block_check_iv.py`: passes (1447 + 974 cells) and rejects the enlarged block.
 
 The model control was first run with the factor 1 + 1e-12 u^2, as at 18.5 C with the zero-current E_l. With the
 printed E_l rest is at u* = 0.0036 mV, not 0, so that factor changes alpha_m at rest by a factor 1 + 1.3e-17 and moves the equilibrium off the
@@ -627,9 +627,14 @@ summary:
 
 ## 6. Rerun
 
+**Renamed on 2026-09-27.** `prove_pulse.py` and `block_check_iv.py` are now `hh_prove_pulse.py` and
+`hh_block_check_iv.py`: a release attaches the papers' programs under their file names, and `papers/nf-pulse/code`
+has different files with the old names. This report uses the new names throughout, also where it records runs made
+before the rename.
+
 **Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
-`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `prove_pulse.py`,
-`block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
+`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `hh_prove_pulse.py`,
+`hh_block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
 inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
 repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
 other programs stay here and import the moved modules from there. Files named below without a folder are in one of
@@ -654,15 +659,15 @@ python3 test_lohner6.py              # tests of the six-variable jets and integr
 python3 hp_pulse.py 18.5 10.5        # numerical: K* to about 58 digits (about 15 minutes) -> data/hp_pulse_18.5.json
 python3 hp_pulse.py 18.5 10.5 1e-6   # the same with a tolerance 1e6 times smaller (discretization check)
 python3 block0.py 18.5               # the closing block: creates data/closing_block_18.5.json if absent, checks it
-python3 prove_pulse.py 18.5 config 1.5e-45 1e-25 13.625 1e-16 1e-70   # K1, K2, r_B, T_enter, tolerances
-python3 prove_pulse.py 18.5 setup    # rigorous: (H1), (H2), (H2'), (H3) and their negative controls
-python3 prove_pulse.py 18.5 interval # rigorous: (H4)
-python3 prove_pulse.py 18.5 K1       # rigorous: (H5) at K1
-python3 prove_pulse.py 18.5 K2       # rigorous: (H5) at K2
-python3 prove_pulse.py 18.5 neg-shift   # negative control: a K interval without the pulse must fail
-python3 prove_pulse.py 18.5 neg-model   # negative control: alpha_m (1 + 1e-12 u^2) must fail
-python3 prove_pulse.py 18.5 summary  # collects the verdicts -> data/pulse_proof_18.5_summary.txt
-python3 block_check_iv.py 18.5       # independent re-check of (H3) in mpmath interval arithmetic
+python3 hh_prove_pulse.py 18.5 config 1.5e-45 1e-25 13.625 1e-16 1e-70   # K1, K2, r_B, T_enter, tolerances
+python3 hh_prove_pulse.py 18.5 setup    # rigorous: (H1), (H2), (H2'), (H3) and their negative controls
+python3 hh_prove_pulse.py 18.5 interval # rigorous: (H4)
+python3 hh_prove_pulse.py 18.5 K1       # rigorous: (H5) at K1
+python3 hh_prove_pulse.py 18.5 K2       # rigorous: (H5) at K2
+python3 hh_prove_pulse.py 18.5 neg-shift   # negative control: a K interval without the pulse must fail
+python3 hh_prove_pulse.py 18.5 neg-model   # negative control: alpha_m (1 + 1e-12 u^2) must fail
+python3 hh_prove_pulse.py 18.5 summary  # collects the verdicts -> data/pulse_proof_18.5_summary.txt
+python3 hh_block_check_iv.py 18.5       # independent re-check of (H3) in mpmath interval arithmetic
 ```
 
 The rigorous programs exit with status 0 only if every check, including the negative controls, passes.
@@ -670,8 +675,8 @@ The rigorous programs exit with status 0 only if every check, including the nega
 ## 7. Files
 
 **Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
-`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `prove_pulse.py`,
-`block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
+`hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `hh_prove_pulse.py`,
+`hh_block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
 inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
 repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
 other programs stay here and import the moved modules from there. Files named below without a folder are in one of
@@ -693,8 +698,8 @@ the two places.
 | `code/hhjet6.py` | rigorous | jets in the six variables (y, K), K' = 0, with growing Picard truncation |
 | `code/lohner6.py` | rigorous | C^0 Lohner integrator in (y, K); refined a priori box, remainder over subintervals, path enclosures |
 | `code/block0.py` | rigorous | the closing block B0 (cone and entrance conditions on a cover by cells, interval Cholesky) |
-| `code/block_check_iv.py` | rigorous | an independent re-check of B0 (mpmath.iv, hand-derived Jacobian, rational M^-1) |
-| `code/prove_pulse.py` | rigorous | the closing step: stages setup, interval, K1, K2, the negative controls and the summary |
+| `code/hh_block_check_iv.py` | rigorous | an independent re-check of B0 (mpmath.iv, hand-derived Jacobian, rational M^-1) |
+| `code/hh_prove_pulse.py` | rigorous | the closing step: stages setup, interval, K1, K2, the negative controls and the summary |
 | `code/hp_pulse.py` | numerical | K* in high precision by multiple shooting (to centre [K1, K2]) |
 | `code/test_lohner6.py` | tests | jets against hhjet.py and finite differences; an enclosure against an independent solution |
 | `data/closing_block_18.5.json` | data | the block: T (exact hex floats), weights, rho, r |
@@ -770,7 +775,7 @@ is in every window, then in int B0 by (F), and the B0 argument of 4.4 shows that
 needed is now only sigma, not 1e-45, because the exit direction is re-cut at every window.
 
 *Reused:* `hhjet6.py` (with phi as a variable), `lohner6.py` (any number of parameters), Lemmas A and B and the
-transversality of `certify_rest_wave.py` / `prove_pulse.py` with phi as a ball, `block0.py` (cone and entrance with
+transversality of `certify_rest_wave.py` / `hh_prove_pulse.py` with phi as a ball, `block0.py` (cone and entrance with
 phi as a ball), `hp_pulse.py` for the reference pulse. *New:* the windows, the stage loop with checkpoints, the exit-face
 and entry checks, the endpoint runs (P), the final containment (F), and the driver over subintervals of [T_lo, T_hi].
 
