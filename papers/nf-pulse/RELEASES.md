@@ -3,11 +3,18 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.1 (2026-09-27)
+
+**DOI:** to be assigned by Zenodo when the release is made.
+
+A spelling release of *Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and
+Spectral Stability*. The preprint and the texts of this repository now write "traveling", the American spelling, in
+the title and every sentence of the project's own. Titles of cited works and quotations keep their authors' spelling.
+No theorem, program, number or certificate changed; the PDF was rebuilt from the edited source.
+
 ## 1.0.0 (2026-09-27)
 
 **DOI:** [10.5281/zenodo.22998376](https://doi.org/10.5281/zenodo.22998376)
-
-**DOI:** to be assigned by Zenodo when the release is made.
 
 The first public release of the preprint *Traveling Pulses in a Neural Field with a Smooth Firing Rate:
 Computer-Assisted Existence and Spectral Stability* (39 pages), with the programs that prove its results and their

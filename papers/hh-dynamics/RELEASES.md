@@ -3,6 +3,15 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.1 (2026-09-27)
+
+**DOI:** to be assigned by Zenodo when the release is made.
+
+A spelling release of *Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters:
+Computer-Assisted Proofs*. The preprint and the texts of this repository now write "traveling", the American spelling,
+in every sentence of the project's own. Titles of cited works and quotations keep their authors' spelling. No theorem,
+program, number or certificate changed; the PDF was rebuilt from the edited source.
+
 ## 1.0.0 (2026-09-27)
 
 **DOI:** [10.5281/zenodo.22996260](https://doi.org/10.5281/zenodo.22996260)
