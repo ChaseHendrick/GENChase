@@ -138,8 +138,10 @@ jobs:
         run: node tools/reuleaux-science.js
       - name: PDE print exports preserve numerical state
         run: node tools/pde-print-state.js
-      - name: Seed box, hash, shortcuts, dock
-        run: node tools/ui.js
+      - name: Seed box, hash, shortcuts, dock, formula chooser
+        run: |
+          node tools/ui.js
+          node tools/formula-chooser-check.js
       - name: Folder loading, recipes, witness and recovery
         run: |
           node tools/folder-browser.js

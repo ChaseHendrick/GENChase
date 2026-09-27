@@ -1265,6 +1265,98 @@ void main(){
     renderGallery();
     openModal('modal-gallery');
   }
+
+  /* ---- Type a formula: every place in the studio that runs an equation the viewer types ---- */
+  // Each place names a tab, the seg control and option that select its typed mode (null when the tab has no
+  // other mode) and the text control to focus. The tab's name, the option's label and the field come from the
+  // registered schema, so a place is listed only when this build has that tab with that control and option:
+  // the list works before and after a tab gains a formula mode. Choosing one goes through the recipe path
+  // (snapshot, sanitize, regenerate), so undo, the timeline and the share link treat it as any other change.
+  const FORMULA_PLACES = [
+    { tab: 'attractors', mode: ['system', 'custom'], field: 'odeX', what: 'A custom ODE: dx/dt, dy/dt and dz/dt in x, y, z and coefficients a to d.', example: 'dx/dt = 10*(y - x); dy/dt = x*(28 - z) - y; dz/dt = x*y - 8/3*z' },
+    { tab: 'flow', mode: ['fieldMode', 'custom'], field: 'fieldU', what: 'A custom velocity field u(x, y, t), v(x, y, t) that the strokes follow.', example: 'u = sin(pi*x)*cos(pi*y); v = -cos(pi*x)*sin(pi*y)' },
+    { tab: 'turing', mode: ['tmodel', 'custom'], field: 'reactF', what: 'Custom reaction terms f(u, v) and g(u, v), with the diffusion built in.', example: 'f = a - u + u^2*v; g = b - u^2*v' },
+    { tab: 'schrodinger', mode: ['kind', 'custom'], field: 'potV', what: 'A custom potential V(x, y) for the wave packet to meet.', example: 'V = -a*exp(-((x + 0.2)^2 + y^2)/b^2)' },
+    { tab: 'holomorphic', mode: ['set', 'custom'], field: 'zmap', what: 'A custom map f(z, c), iterated over the complex plane.', example: 'f = z^3 + c' },
+    { tab: 'phase', mode: null, field: 'fz', what: 'Any complex function f(z), drawn as a phase portrait.', example: 'f = (z^2 - 1)/(z^2 + 1)' },
+  ];
+  function formulaPlaceLabel(p) {
+    const mod = byId[p.tab];
+    if (!mod || typeof mod.create !== 'function') return null;
+    if (!mod.schema.some(f => f.key === p.field && f.type === 'text')) return null;
+    if (!p.mode) return mod.name;
+    const seg = mod.schema.find(f => f.key === p.mode[0] && f.type === 'seg');
+    const option = seg && seg.options.find(o => o[0] === p.mode[1]);
+    return option ? mod.name + ' · ' + option[1] : null;
+  }
+  function renderFormulaList() {
+    const list = $('formula-list');
+    list.replaceChildren();
+    for (const p of FORMULA_PLACES) {
+      const label = formulaPlaceLabel(p);
+      if (!label) continue;
+      list.appendChild(h('button', { type: 'button', class: 'formula-pick', 'data-tab': p.tab, 'data-field': p.field, onclick: () => chooseFormula(p) }, [
+        h('span', { class: 'formula-name', text: label }),
+        h('span', { class: 'formula-what', text: p.what }),
+        h('code', { class: 'formula-example', text: p.example }),
+      ]));
+    }
+    $('formula-empty').hidden = list.children.length > 0;
+  }
+  // A folder build downloads a family only when it is needed, so the families that could take a formula are
+  // loaded first; one that cannot load is left out of the list rather than offered and then refused.
+  let formulaOpening = null;
+  function openFormulaChooser() {
+    if (formulaOpening || !$('modal-formula').hidden) return formulaOpening;
+    const opener = document.activeElement;
+    formulaOpening = Promise.all(FORMULA_PLACES.filter(p => byId[p.tab] && typeof byId[p.tab].create !== 'function')
+      .map(p => loadModule(p.tab).catch(() => null)))
+      .then(() => {
+        if (MODALS.some(id => id !== 'modal-formula' && $(id) && !$(id).hidden) || document.querySelector('dialog[open]')) return;
+        renderFormulaList();
+        openModal('modal-formula');
+        if (opener && opener !== document.body) returnFocusTo = opener;
+        const first = $('formula-list').querySelector('.formula-pick');
+        if (first) first.focus();
+      })
+      .finally(() => { formulaOpening = null; });
+    return formulaOpening;
+  }
+  // Switch to the tab, select its typed mode through the recipe path when it is not already selected, then
+  // bring the formula field into view (opening its group) and put the caret at the end of the text.
+  async function chooseFormula(p) {
+    closeModal('modal-formula');
+    if (focusMode) setFocus(false);
+    if (!await switchTo(p.tab) || currentId !== p.tab) return;
+    const e = instances[p.tab];
+    if (!e) return;
+    if (p.mode && e.state[p.mode[0]] !== p.mode[1]) {
+      snapshot('formula mode');
+      e.state = sanitize(e.mod, Object.assign({}, e.state, { [p.mode[0]]: p.mode[1] }));
+      e.host.getState = () => e.state;
+      buildSidebar(e); syncAll(e);
+      regenerate({ skipSnap: true });
+    }
+    const input = $('p-' + p.tab + '-' + p.field);
+    if (!input) return;
+    const group = input.closest('details');
+    if (group && !group.open) group.open = true;
+    try { input.scrollIntoView({ block: 'center' }); } catch (err) { input.scrollIntoView(); }
+    input.focus({ preventScroll: true });
+    // On a narrow screen the stage is pinned over the top of the page, and it grows as the new plate's status
+    // fills in; keep the focused field out from under it for the first few seconds.
+    const stage = $('stage');
+    if (stage && getComputedStyle(stage).position === 'sticky') {
+      const uncover = () => {
+        if (document.activeElement !== input) return;
+        const below = stage.getBoundingClientRect().bottom + 8, top = (input.closest('.row') || input).getBoundingClientRect().top;
+        if (top < below) window.scrollBy(0, top - below);
+      };
+      uncover();
+      if (window.ResizeObserver) { const watch = new ResizeObserver(uncover); watch.observe(stage); setTimeout(() => watch.disconnect(), 3000); }
+    }
+    try { input.setSelectionRange(input.value.length, input.value.length); } catch (err) { /* not a text input */ }
+  }
   let historyVisible = true;
   let focusMode = false, focusControlsTimer = null;
   function revealArtControls() {
@@ -1548,7 +1640,7 @@ void main(){
   }
 
   /* ---- modals: open and close through here so focus goes in and comes back ---- */
-  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery', 'modal-more', 'modal-colophon', 'modal-science'];
+  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery', 'modal-more', 'modal-colophon', 'modal-science', 'modal-formula'];
   let returnFocusTo = null;
   function openModal(id) {
     const m = $(id);
@@ -3476,6 +3568,20 @@ void main(){
     const galClose = $('gallery-close');
     if (galClose) galClose.addEventListener('click', () => { closeModal('modal-gallery'); });
     $('modal-gallery').addEventListener('click', ev => { if (ev.target === $('modal-gallery')) closeModal('modal-gallery'); });
+    $('btn-formula').addEventListener('click', openFormulaChooser);
+    $('formula-close').addEventListener('click', () => closeModal('modal-formula'));
+    $('modal-formula').addEventListener('click', ev => { if (ev.target === $('modal-formula')) closeModal('modal-formula'); });
+    // The choices are one list: the arrows move between them, Home and End jump, Tab still walks the dialog.
+    $('formula-list').addEventListener('keydown', ev => {
+      const picks = [...$('formula-list').querySelectorAll('.formula-pick')];
+      const at = picks.indexOf(document.activeElement);
+      if (!picks.length || at < 0) return;
+      const to = ev.key === 'ArrowDown' ? (at + 1) % picks.length : ev.key === 'ArrowUp' ? (at - 1 + picks.length) % picks.length
+        : ev.key === 'Home' ? 0 : ev.key === 'End' ? picks.length - 1 : -1;
+      if (to < 0) return;
+      ev.preventDefault();
+      picks[to].focus();
+    });
     $('btn-copy-link').addEventListener('click', async () => {
       writeHash();
       const url = location.href;
@@ -3633,6 +3739,7 @@ void main(){
       else if (ev.key === 'l' || ev.key === 'L') { ev.preventDefault(); $('btn-copy-link').click(); }
       else if (ev.key === 'b' || ev.key === 'B') { ev.preventDefault(); saveToGallery(); }
       else if (ev.key === 'g' || ev.key === 'G') { ev.preventDefault(); openGallery(); }
+      else if (ev.key === 't' || ev.key === 'T') { ev.preventDefault(); openFormulaChooser(); }
       else if (ev.key === 'z' || ev.key === 'Z') {
         if (!ev.metaKey && !ev.ctrlKey && ev.key === 'z') { ev.preventDefault(); undoLast(); }
         else if (ev.metaKey || ev.ctrlKey) { ev.preventDefault(); undoLast(); }

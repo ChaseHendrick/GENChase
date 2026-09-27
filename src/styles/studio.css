@@ -731,6 +731,18 @@
 .bar #preset { flex-shrink: 0; }
 .tabstrip { gap: 4px; padding-top: 5px; }
 #browse-modules { margin: 0 0 5px 10px; min-height: 36px; }
+#btn-formula { margin: 0 0 5px; min-height: 36px; }
+/* Type a formula: one full-width choice per tab that runs a typed equation. */
+.formula-list { display: flex; flex-direction: column; gap: 6px; }
+.formula-pick {
+  display: grid; gap: 3px; width: 100%; text-align: left; font: inherit; color: var(--ink);
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-height: 44px;
+}
+.formula-pick:hover { border-color: var(--line-strong); background: var(--accent-soft); }
+.formula-pick:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
+.formula-name { font-weight: 600; font-size: 14px; }
+.formula-what { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+.formula-example { font-family: "Geist Mono", ui-monospace, monospace; font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
 .tabs { flex: 1 0 100%; display: flex; flex-wrap: wrap; overflow-y: auto; overflow-x: hidden; max-height: 88px; scrollbar-width: thin; cursor: auto; mask-image: none !important; align-content: start; }
 .tab { white-space: normal; text-align: left; }
 .sheet { transform-origin: center center; }

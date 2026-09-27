@@ -190,7 +190,7 @@ Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.
 
 ## For people (and agents) adding to it
 
-**Typing your own formula:** five tabs run equations you type:
+**Typing your own formula:** six tabs run equations you type:
 - **Attractors**, System *Custom ODE*: dx/dt, dy/dt and dz/dt in x, y, z with coefficients a to d.
 - **Flow Field**, Field *Custom field*: the velocity u(x, y, t) and v(x, y, t) that the strokes follow.
 - **Turing Patterns**, Kinetics *Custom reaction*: the reaction terms f(u, v) and g(u, v) with parameters a to d
@@ -199,11 +199,16 @@ Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.
   as the starting point z₀, to an escape radius you choose.
 - **Phase portraits**: a complex function f(z) with complex parameters a and b, drawn as a phase portrait; the status
   line counts the zeros minus the poles inside a circle you place, by the argument principle.
+- **Schrödinger**, Potential *Custom potential*: the potential V(x, y) the wave packet meets, with coefficients a and
+  b, sampled on the grid and held between -16 and 16 (a cell where V is undefined becomes a hard wall), with the
+  time step held under the stability bound 1.6/(4 + max|V|) of the explicit leapfrog.
 
-The formulas use a small expression language ([`src/shared/expr.js`](src/shared/expr.js): + - * / ^, sin, cos,
-exp, log, sqrt and similar, pi and e; the two complex tabs add i, conj, re, im, abs and arg, with principal
-branches). It is parsed, never run as code, so a typed formula travels safely inside a share link. A typed formula is
-outside the tab's validation record, and the status line says so.
+**Type a formula** (the button beside Browse all modules, or the T key) lists every place a formula can be typed,
+each with an example, and opens the one you pick in that mode with its formula field focused. The formulas use a
+small expression language ([`src/shared/expr.js`](src/shared/expr.js): + - * / ^, sin, cos, exp, log, sqrt and
+similar, pi and e; the two complex tabs add i, conj, re, im, abs and arg, with principal branches). It is parsed,
+never run as code, so a typed formula travels safely inside a share link. A typed formula is outside the tab's
+validation record, and the status line says so.
 
 **Adding a new simulation:** contribute a source module. The [formula submission guide](validation/FORMULA-SUBMISSIONS.md)
 explains how to state assumptions, supply an independent benchmark and record measured errors and failure controls.
@@ -279,6 +284,7 @@ The folder entry uses local HTTP so its modules can load. You can also open the 
 | , . | previous / next preset |
 | L | copy recipe link |
 | B / G | save / gallery |
+| T | type a formula: open a tab that runs an equation you type |
 | H | timeline |
 | F | focus |
 | P | pause |

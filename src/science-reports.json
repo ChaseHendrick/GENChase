@@ -1235,8 +1235,8 @@
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
-    "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
+    "sourceSha256": "1f6d44d688e8fb5ba3e474f011268a1a22a2144d56ef633cab5e0f3449ddce9a",
+    "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
     "status": "validated within stated limits",
     "limitations": [
@@ -1244,7 +1244,8 @@
       "Complete evidence covers only the documented domain in validation/SCHRODINGER.md and the schrodinger-science / schrodinger-state / schrodinger-absorber-science / wave-print-state results artifacts.",
       "Periodic wrap still couples opposite edges through the absorber layer. Stability and conservation do not imply accuracy at coarse steps. Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).",
       "Scattering probabilities, arbitrary potentials/packets, float16, all aspect ratios, other hardware, and full print color fidelity remain outside this domain.",
-      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images."
+      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images.",
+      "The Custom potential mode steps a potential V(x, y) the viewer types, with coefficients a and b, through the same leapfrog. A user-defined potential is not validated: the status line says so and prints no comparison with theory in that mode, the stage badge and the provenance read unvalidated, and none of the evidence above covers it. V is sampled once per cell in double precision on the CPU (x and y from the frame center in units of half its shorter side, y up), stored at the state precision, held between -16 and 16, and a cell where it is undefined (NaN) is a hard wall. The step used is min(dt, 1.6/(4 + max|V|)) over the stored samples, the bound this record states for every potential (validation/SCHRODINGER.md, Custom potential). That bound keeps the explicit scheme stable; it says nothing about accuracy: the lattice dispersion and a potential that changes over a few cells are resolved only as well as the grid allows."
     ],
     "remaining": [
       "Extend beyond the documented Fourier/uniform-V/absorber/long-time-phase and paused-export print domain with independent evidence for scattering probabilities, general non-uniform potentials, float16, other aspect ratios, hardware, and quantitative scientific rendering."
@@ -3391,7 +3392,7 @@
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
+    "sourceSha256": "1f6d44d688e8fb5ba3e474f011268a1a22a2144d56ef633cab5e0f3449ddce9a",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
     "status": "validated within stated limits",

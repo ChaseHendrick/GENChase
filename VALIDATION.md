@@ -261,6 +261,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - Periodic wrap still couples opposite edges through the absorber layer. Stability and conservation do not imply accuracy at coarse steps. Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).
 - Scattering probabilities, arbitrary potentials/packets, float16, all aspect ratios, other hardware, and full print color fidelity remain outside this domain.
 - Broader settings require additional independent evidence. Corrections intentionally change affected historical images.
+- The Custom potential mode steps a potential V(x, y) the viewer types, with coefficients a and b, through the same leapfrog. A user-defined potential is not validated: the status line says so and prints no comparison with theory in that mode, the stage badge and the provenance read unvalidated, and none of the evidence above covers it. V is sampled once per cell in double precision on the CPU (x and y from the frame center in units of half its shorter side, y up), stored at the state precision, held between -16 and 16, and a cell where it is undefined (NaN) is a hard wall. The step used is min(dt, 1.6/(4 + max\|V\|)) over the stored samples, the bound this record states for every potential (validation/SCHRODINGER.md, Custom potential). That bound keeps the explicit scheme stable; it says nothing about accuracy: the lattice dispersion and a potential that changes over a few cells are resolved only as well as the grid allows.
 
 ### excitable
 

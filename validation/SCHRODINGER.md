@@ -101,6 +101,35 @@ are both checked. Uniform cases also match a modal 2×2 damped recurrence. Resul
 Periodic wrap still couples opposite edges through the absorber layer. These fixtures do not
 certify continuum PML accuracy, scattering probabilities, hard-wall stadiums or arbitrary packets.
 
+## Custom potential, not validated
+
+The Custom potential mode (2026-09-26) steps a potential `V(x, y)` the viewer types, with coefficients
+`a` and `b` on sliders, through the same Visscher update. The text is parsed by the shared expression
+language (`src/shared/expr.js`) and compiled to closures; it is never evaluated as code. `x` and `y`
+are the harmonic well's coordinates: measured from the frame center in units of half its shorter side,
+`x` to the right and `y` up. `V` is in the tab's energy units (`hbar = m = 1`, unit cells), where a
+packet of momentum `k` carries about `k^2/2`.
+
+`V` is sampled once per cell on the CPU in double precision, so every GPU steps the same potential, and
+is stored at the state precision. Each sample is held between -16 and 16, and a cell where `V` is undefined
+(NaN, such as `0/0` or the square root of a negative number) becomes a hard wall, projected to zero like
+the stadium's. The step used is `min(dt, 1.6 / (4 + max|V|))` with `max|V|` taken over the stored samples:
+the bound in Corrections above, which covers any static real potential on this grid, with the same 0.8
+margin below `dt |E| < 2`. The cap keeps that step at or above 0.08. The status line names the step used,
+the bound and `max|V|`, and counts the cells held as walls or at the cap. A float16 fallback truncates
+stored values toward zero, so the bound computed from the float32 samples still holds.
+
+This is a stability guard, not validation. None of the evidence in this file covers a typed potential:
+the status line says "user-defined, not validated", the stage badge and the provenance read unvalidated
+in that mode, and nothing compares the plate with theory. The lattice dispersion and a potential that
+changes over a few cells are resolved only as well as the grid allows. The Gaussian lens preset types an
+attractive well; the focusing and interference it shows are what this discrete scheme computes for that
+potential, not a measured optical claim. On 2026-09-26 the harnesses were rerun on the changed source under
+SwiftShader: `schrodinger-science.js` reproduced the recorded numbers to six significant figures,
+`schrodinger-absorber-science.js` to four, `schrodinger-state.js` gave byte-identical output on the old and
+the new source, and `wave-print-state.js` passed with its failure control rejected. The recorded result
+files, made on another machine, were left as they were.
+
 ## Print and remaining limits
 
 `node tools/wave-print-state.js` checks initial and evolved paused states, every display view,

@@ -1355,8 +1355,8 @@
       "tab": "Schrödinger",
       "subtitle": "wave packet on a detector · 1926",
       "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
-      "credit": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
-      "blurb": "A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke.",
+      "credit": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+      "blurb": "A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke. Custom potential lets you type V(x, y) yourself, with two coefficients a and b on sliders: it opens on a soft Gaussian bump the packet reflects from, and the Gaussian lens preset turns the bump into a well that bends the packet onto its axis, where the crossing paths draw a cusp and its interference fringes. The time step is held under the bound measured from the potential you type, the formula travels in the link, and nothing checks it against theory.",
       "order": 53,
       "seed": "visscher-1991",
       "presets": [
@@ -1367,7 +1367,8 @@
         "orbit",
         "stadium",
         "lattice",
-        "anderson"
+        "anderson",
+        "lens"
       ],
       "vectors": false,
       "familiarity": "common",

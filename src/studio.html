@@ -207,6 +207,7 @@
 
   <div class="tabstrip">
     <button class="btn" id="browse-modules" type="button">Browse all modules</button>
+    <button class="btn" id="btn-formula" type="button" aria-haspopup="dialog" aria-controls="modal-formula" title="Open a tab that runs a formula you type (T)">Type a formula</button>
     <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
     <span class="find-n" id="find-n" hidden></span>
     <select class="seen" id="seen" aria-label="How often you see it elsewhere (a curator's call)">
@@ -308,6 +309,7 @@
       <button type="button" data-for="btn-settings">Settings JSON</button>
       <button type="button" data-for="btn-side">Move panel</button>
       <button type="button" data-for="btn-record">Record <kbd>V</kbd></button>
+      <button type="button" data-for="btn-formula">Type a formula <kbd>T</kbd></button>
     </div>
   </div>
 </div>
@@ -349,6 +351,7 @@
           <tr><td><kbd>Z</kbd> / <kbd>R</kbd></td><td>Undo / reset this technique</td></tr>
           <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient. In focus, Exit or Esc restores the chrome</td></tr>
           <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
+          <tr><td><kbd>T</kbd></td><td>Type a formula: open a tab that runs an equation you type, with its formula field ready</td></tr>
           <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a clip (starts a paused plate) / witness</td></tr>
           <tr><td>Arrows / <kbd>Enter</kbd></td><td>On a pokeable plate: move a crosshair, Enter disturbs. Shift+arrow drags</td></tr>
           <tr><td><kbd>+</kbd> / <kbd>−</kbd> / <kbd>0</kbd></td><td>Zoom the plate in, out, or fit. Alt-drag or middle-drag to pan; the wheel zooms toward the pointer. Left-drag still disturbs</td></tr>
@@ -588,6 +591,17 @@
     <div class="content">
       <p class="note">Plates you save stay on this machine. Each one is a recipe — seed, technique, every knob — so it rebuilds, it is not a screenshot. Click to open. Save on the bar (B) adds the current plate.</p>
       <div class="ggrid" id="gallery-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-formula" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="formula-title" aria-describedby="formula-note">
+    <div class="head"><h2 id="formula-title">Type a formula</h2><button class="x" id="formula-close" type="button" aria-label="Close">×</button></div>
+    <div class="content">
+      <p class="note" id="formula-note">These tabs run an equation you type. Pick one to open it in that mode with its formula field ready. Formulas are written in a small expression language (+ - * / ^, sin, exp, log, sqrt and similar, pi and e) that is parsed, never run as code; they travel in the link, and a typed formula is not validated.</p>
+      <div class="formula-list" id="formula-list" role="group" aria-label="Places to type a formula"></div>
+      <p class="note" id="formula-empty" hidden>No tab in this build takes a typed formula.</p>
     </div>
   </div>
 </div>

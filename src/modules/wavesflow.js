@@ -223,6 +223,57 @@ vec3 tone(vec3 col, float con, float grain){
   }
 
   /* ---------- Schrödinger ---------- */
+  /* Custom potential: V(x, y) typed by the viewer in x, y and the coefficients a, b, parsed by the shared
+     expression language (src/shared/expr.js) and compiled to closures; nothing typed is evaluated as code.
+     x and y are the harmonic well's coordinates: measured from the center of the frame in units of half its
+     shorter side, x to the right and y up, so the circle x^2 + y^2 = 1 just fits. V is in the tab's energy
+     units (hbar = m = 1, one cell = one length unit), where a packet of momentum k carries about k^2/2.
+     The formula is sampled once per cell on the CPU in double precision, so every GPU steps the same potential,
+     and each sample is clamped to [-V_CAP, V_CAP]; a cell where V is undefined (NaN) becomes a hard wall.
+     Visscher's leapfrog is explicit and needs dt |E| < 2 for every eigenvalue E of the discrete H. On the
+     unit-cell 5-point grid -1/2 lap has spectrum [0, 4], so |E| <= 4 + max|V|, and the step used is
+     min(dt, 1.6 / (4 + max|V|)) with max|V| taken over the samples as stored: the tab's documented bound
+     (validation/SCHRODINGER.md), with the same 0.8 margin. V_CAP keeps that step at or above 0.08. */
+  const POT_SPEC = { vars: ['x', 'y'], params: ['a', 'b'] };
+  const POT_DEFAULT = 'a*exp(-(x^2 + y^2)/b^2)';
+  const V_CAP = 16;
+  const isCustomV = s => s.kind === 'custom';
+  const checkPot = v => U.expr.check(v, POT_SPEC);
+  const potCeiling = vmax => 1.6 / (4 + vmax);
+  // V on a W x H grid, row 0 at the bottom (the texture's first row), clamped, with undefined cells as walls.
+  // run(ms) samples whole rows until the time budget is spent and says whether the grid is done, so a large grid
+  // is sampled between timers; the samples do not depend on how the rows were split.
+  function potentialSampler(s, W, H) {
+    let f;
+    try { f = U.expr.compile(s.potV, POT_SPEC); } catch (err) { f = U.expr.compile(POT_DEFAULT, POT_SPEC); }
+    const env = new Float64Array(4);
+    env[2] = s.pa; env[3] = s.pb;
+    const V = new Float32Array(W * H), wall = new Uint8Array(W * H);
+    const half = 0.5 * Math.min(W, H), cx = 0.5 * (W - 1), cy = 0.5 * (H - 1);
+    let j = 0, vmax = 0, clamped = 0, walls = 0;
+    function row() {
+      env[1] = (j - cy) / half;
+      for (let i = 0, k = j * W; i < W; i++, k++) {
+        env[0] = (i - cx) / half;
+        let v = f(env);
+        if (v !== v) { wall[k] = 1; walls++; continue; }
+        if (v > V_CAP) { v = V_CAP; clamped++; } else if (v < -V_CAP) { v = -V_CAP; clamped++; }
+        V[k] = v;
+        const m = Math.abs(V[k]);          // the stored float32 value; a float16 fallback truncates toward zero
+        if (m > vmax) vmax = m;
+      }
+      j++;
+    }
+    return {
+      run(ms) {
+        const t0 = performance.now();
+        while (j < H) { row(); if (performance.now() - t0 > ms) break; }
+        return j >= H;
+      },
+      result() { return { V, wall, vmax, clamped, walls, ceiling: potCeiling(vmax) }; },
+    };
+  }
+
   Studio.register({
     id: 'schrodinger',
     name: 'Schrödinger',
@@ -230,11 +281,15 @@ vec3 tone(vec3 col, float con, float grain){
     subtitle: 'wave packet on a detector · 1926',
     order: 53,
     equation: 'i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps',
-    credit: "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
-    blurb: 'A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke.',
+    credit: "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
+    blurb: 'A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke. Custom potential lets you type V(x, y) yourself, with two coefficients a and b on sliders: it opens on a soft Gaussian bump the packet reflects from, and the Gaussian lens preset turns the bump into a well that bends the packet onto its axis, where the crossing paths draw a cusp and its interference fringes. The time step is held under the bound measured from the potential you type, the formula travels in the link, and nothing checks it against theory.',
     schema: GRID.concat([
       { group: 'Potential', key: 'kind', label: 'Potential', type: 'seg', kind: GEOM, wrap: true,
-        options: [['double', 'Double slit'], ['single', 'Single slit'], ['barrier', 'Barrier'], ['well', 'Harmonic well'], ['stadium', 'Stadium'], ['lattice', 'Lattice'], ['disorder', 'Disorder'], ['free', 'Free']] },
+        options: [['double', 'Double slit'], ['single', 'Single slit'], ['barrier', 'Barrier'], ['well', 'Harmonic well'], ['stadium', 'Stadium'], ['lattice', 'Lattice'], ['disorder', 'Disorder'], ['free', 'Free'], ['custom', 'Custom potential']] },
+      { group: 'Potential', key: 'potV', label: 'V(x, y) =', type: 'text', kind: GEOM, maxLength: 256, validate: checkPot, dimUnless: isCustomV, activeOnly: true,
+        hint: 'Custom potential: type V in x, y and the coefficients a and b below. x and y are measured from the center of the frame in units of half its shorter side, x to the right and y up, so x² + y² = 1 is the largest circle that fits. V is in the same energy units as V₀: a packet of momentum k carries about k²/2 (0.41 at k = 0.9), and V well above that reflects it. Operators + - * / ^, functions sin cos tan asin acos atan atan2 sinh cosh tanh exp log sqrt abs min max pow floor sign, constants pi and e. V is sampled once per cell and held between -16 and 16; a cell where it is undefined (0/0, the square root or log of a negative number) is a hard wall. The step is held under 1.6/(4 + max|V|) over those samples, the stability bound this tab uses for every potential, so a steep V runs with a smaller step. A user-defined potential is not validated.' },
+      RANGE('Potential', 'pa', 'a', GEOM, -10, 10, 0.001, f3, { dimUnless: isCustomV, activeOnly: true }),
+      RANGE('Potential', 'pb', 'b', GEOM, -10, 10, 0.001, f3, { dimUnless: isCustomV, activeOnly: true }),
       RANGE('Potential', 'V0', 'Strength V₀', GEOM, 0, 6, 0.02, f2, { dimUnless: usesV0,
         hint: 'Barrier height, harmonic-well scale, lattice bump height, or disorder width. Harmonic corners exceed V₀. The continuum packet-energy estimate is k²/2; the grid has numerical dispersion.' }),
       RANGE('Potential', 'wallX', 'Wall position', GEOM, 0.2, 0.8, 0.01, f2, { dimUnless: usesWallX }),
@@ -260,6 +315,7 @@ vec3 tone(vec3 col, float con, float grain){
     defaults: {
       grid: 192, aspect: '1:1',
       kind: 'double', V0: 0.6, wallX: 0.42, thick: 4, slitW: 5, slitSep: 22, wallMode: 'absorbing', period: 16, corr: 2,
+      potV: POT_DEFAULT, pa: 1.5, pb: 0.2,
       px: 0.2, py: 0.5, sigma: 12, k: 0.9, ang: 0,
       running: true, steps: 4, dt: 0.2, warmup: 1000, absorb: 0.1, damp: 0.6,
       view: 'detector', showV: true, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04,
@@ -274,10 +330,13 @@ vec3 tone(vec3 col, float con, float grain){
       stadium: pre('Stadium', { kind: 'stadium', px: 0.36, py: 0.5, sigma: 8, k: 1.1, ang: 28, warmup: 1500, view: 'detector', exposure: 1, aspect: '3:2' }, Pal.graphite),
       lattice: pre('Lattice', { kind: 'lattice', V0: 0.5, period: 14, px: 0.25, py: 0.5, sigma: 12, k: 0.8, ang: 15, warmup: 1000, view: 'detector', exposure: 1 }, Pal.bioluminescent),
       anderson: pre('Anderson', { kind: 'disorder', V0: 3, corr: 2, px: 0.5, py: 0.5, sigma: 6, k: 0.4, ang: 0, warmup: 1200, view: 'detector', exposure: 1 }, Pal.ember),
+      // A typed attractive well: the packet speeds up inside it, is bent toward its axis and crosses there,
+      // so the detector records the cusp where the paths meet and the interference of the crossing waves.
+      lens: pre('Gaussian lens', { kind: 'custom', potV: '-a*exp(-((x + 0.2)^2 + y^2)/b^2)', pa: 1.2, pb: 0.3, px: 0.16, py: 0.5, sigma: 16, k: 0.9, ang: 0, aspect: '3:2', warmup: 1400, view: 'detector', exposure: 1, gamma: 1 }, Pal.tram),
     },
     closedGroups: ['Packet'],
     hints: {
-      Potential: 'The slits, barrier and well shape the packet. k²/2 is a continuum energy estimate, not an exact threshold on this grid. With the edge absorber off, outer boundaries are periodic.',
+      Potential: 'The slits, barrier and well shape the packet. k²/2 is a continuum energy estimate, not an exact threshold on this grid. With the edge absorber off, outer boundaries are periodic. Custom potential takes a V(x, y) you type, with coefficients a and b.',
       Packet: 'Where the packet starts, how wide it is, and which way it moves. Narrow packets spread faster (uncertainty). The seed jitters position and aim slightly.',
       Simulation: 'The step limit uses the largest potential on this grid, including harmonic-well corners. Changing the step recenters and restaggers the imaginary field. The edge absorber deliberately removes wave amplitude; conservation is not claimed with it enabled.',
       Picture: 'Detector integrates the centered numerical density over time. Density and Phase center the two imaginary half steps at the real field’s time. The displayed packet percentage is a sampled estimate, not a conserved-norm check.',
@@ -290,8 +349,9 @@ vec3 tone(vec3 col, float con, float grain){
       s.k = U.clamp(Number(s.k) || 0, 0, 1.6);
       // |E| dt < 2; the kinetic spectrum is [0,4] on the unit-cell 5-point grid.
       // A harmonic corner can exceed V0, especially on a rectangular grid.
+      // A typed potential is bounded by the instance from its samples (see samplePotential); V0 plays no part.
       const [W, H] = sizeOf(s), minWH = Math.min(W, H);
-      const vBound = s.kind === 'well' ? s.V0 * (((W - 1) / minWH) ** 2 + ((H - 1) / minWH) ** 2) : Math.abs(s.V0);
+      const vBound = s.kind === 'well' ? s.V0 * (((W - 1) / minWH) ** 2 + ((H - 1) / minWH) ** 2) : isCustomV(s) ? 0 : Math.abs(s.V0);
       const dtMax = Math.min(0.25, 1.6 / (4 + vBound));
       s.dt = U.clamp(Number(s.dt) || 0.2, 0.01, dtMax);
       s.sigma = U.clamp(Number(s.sigma) || 12, 2, 40);
@@ -476,7 +536,7 @@ void main(){
 }`;
 
   const SCH_KINDS = { free: 0, single: 1, double: 2, barrier: 3, well: 4, stadium: 5, lattice: 6, disorder: 7 };
-  const SCH_LABEL = { free: 'free packet', single: 'single slit', double: 'double slit', barrier: 'barrier', well: 'harmonic well', stadium: 'stadium billiard', lattice: 'periodic lattice', disorder: 'Anderson disorder' };
+  const SCH_LABEL = { free: 'free packet', single: 'single slit', double: 'double slit', barrier: 'barrier', well: 'harmonic well', stadium: 'stadium billiard', lattice: 'periodic lattice', disorder: 'Anderson disorder', custom: 'custom potential' };
 
   function schrodingerCreate(host) {
     const rig = makeRig(host, { pot: SCH_POT_FS, step: SCH_STEP_FS, kick: SCH_KICK_FS, render: SCH_RENDER_FS, reduce: SCH_REDUCE_FS });
@@ -484,6 +544,14 @@ void main(){
     const gl = rig.gl, P = rig.P;
     let S = null, potT = null, gw = 0, gh = 0;
     let nOff = 0, norm0 = 0, normNow = 0, expWhite = 0, densWhite = 0, simTime = 0, staggerDt = 0;
+    // The sampled typed potential and the recipe values it was sampled from (the absorber does not resample it).
+    // A new text, coefficient or grid is sampled in row chunks of about 16 ms between timers; a later
+    // regenerate cancels it through the token. The plate starts when the samples are complete, or on resume()
+    // when the tab was paused meanwhile, and nothing is stepped in the typed mode until then.
+    let custom = null, customKey = '', sampleTimer = 0, sampleToken = 0, held = false, deferred = null;
+    // The step the integrator takes. A built-in potential's dt is already held under its bound by sanitize;
+    // a typed one is held under the bound measured from its samples.
+    const dtUsed = s => isCustomV(s) && custom ? Math.min(s.dt, custom.ceiling) : s.dt;
 
     function ensureGrid(s) {
       const [W, H] = sizeOf(s);
@@ -494,11 +562,45 @@ void main(){
       gw = W; gh = H;
     }
     function buildPotential(s) {
+      if (isCustomV(s)) { uploadCustom(s); return; }
       P.pot.draw(potT, {
         u_res: [gw, gh], u_kind: { int: SCH_KINDS[s.kind] || 0 }, u_wallMode: { int: s.wallMode === 'absorbing' ? 1 : 0 },
         u_V0: s.V0, u_slitW: s.slitW, u_slitSep: s.slitSep, u_wallX: s.wallX, u_thick: s.thick,
         u_period: s.period, u_corr: s.corr, u_nOff: nOff, u_absorb: s.absorb,
       });
+    }
+    const customKeyOf = s => [s.potV, s.pa, s.pb, gw, gh].join('|');
+    function prepareCustom(s, then) {
+      const key = customKeyOf(s), token = sampleToken;
+      if (custom && customKey === key) { then(); return; }
+      custom = null;
+      const job = potentialSampler(s, gw, gh);
+      let first = true;
+      (function chunk() {
+        sampleTimer = 0;
+        if (token !== sampleToken) return;
+        if (!job.run(16)) {
+          if (first) host.setStatus('<span>grid <b>' + gw + '×' + gh + '</b></span><span>custom potential · sampling V(x, y) on the grid</span>');
+          first = false;
+          sampleTimer = setTimeout(chunk, 0);
+          return;
+        }
+        custom = job.result(); customKey = key;
+        if (held) deferred = then; else then();
+      })();
+    }
+    // The typed potential goes up as the same four channels SCH_POT_FS writes: V, hard wall, absorber weight
+    // (the shader's edge profile, computed here) and the drawn wall. Before its samples exist there is nothing
+    // to upload; the pending start does it.
+    function uploadCustom(s) {
+      if (!custom || customKey !== customKeyOf(s)) return;
+      const data = new Float32Array(gw * gh * 4), layer = s.absorb * Math.min(gw, gh);
+      for (let y = 0, k = 0; y < gh; y++) for (let x = 0; x < gw; x++, k++) {
+        const edge = Math.min(x, gw - 1 - x, y, gh - 1 - y);
+        const a = layer < 1 ? 0 : U.clamp(1 - edge / layer, 0, 1);
+        data[4 * k] = custom.V[k]; data[4 * k + 1] = custom.wall[k]; data[4 * k + 2] = a * a; data[4 * k + 3] = custom.wall[k];
+      }
+      rig.upload(potT, data);
     }
     function packet(s) {
       const rng = U.makeRng(s.seed + '/schrodinger/packet');
@@ -524,14 +626,17 @@ void main(){
     }
     function step(n) {
       const s = host.getState();
-      if (s.dt !== staggerDt) restagger(s);
-      for (let i = 0; i < n; i++) { halfStep(s, s.dt, 0, 0); halfStep(s, s.dt, s.dt, 1); }
-      rig.stepCount += n; simTime += n * s.dt;
+      if (isCustomV(s) && !custom) return;      // the typed potential is still being sampled
+      const dt = dtUsed(s);
+      if (dt !== staggerDt) restagger(s);
+      for (let i = 0; i < n; i++) { halfStep(s, dt, 0, 0); halfStep(s, dt, dt, 1); }
+      rig.stepCount += n; simTime += n * dt;
     }
     function restagger(s) {
+      const dt = dtUsed(s);
       halfStep(s, 0, 0, 2);
-      halfStep(s, 0.5 * s.dt, 0, 3);
-      staggerDt = s.dt;
+      halfStep(s, 0.5 * dt, 0, 3);
+      staggerDt = dt;
     }
     function measure(extra) {
       rig.reduce({ u_p: S.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED] }, b => applyMeasure(b, extra));
@@ -552,11 +657,22 @@ void main(){
       status(extra);
       if (!rig.raf) render();
     }
+    // A typed potential says it is user-defined and makes no claim. The text itself appears only escaped, in a
+    // tooltip; the step span names the bound the step is held under and the largest |V| it came from.
+    function customSpans(s) {
+      const c = custom, tip = U.escapeHtml('V = ' + s.potV + ', a = ' + s.pa + ', b = ' + s.pb);
+      const dt = dtUsed(s), notes = [];
+      if (c.walls) notes.push(c.walls.toLocaleString() + ' undefined cells held as hard walls');
+      if (c.clamped) notes.push(c.clamped.toLocaleString() + ' cells held at |V| = ' + V_CAP);
+      return '<span title="' + tip + '">custom potential · user-defined, not validated · k <b>' + s.k.toFixed(2) + '</b></span>' +
+        '<span>dt <b>' + dt.toFixed(4) + '</b> · ' + (s.dt > c.ceiling ? 'clamped to' : 'under') + ' 1.6/(4 + max|V|) = ' +
+        c.ceiling.toPrecision(3) + ', max|V| ' + c.vmax.toPrecision(3) + (notes.length ? ' · ' + notes.join(', ') : '') + '</span>';
+    }
     function status(extra) {
       const s = host.getState();
       host.setStatus(
         '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
-        '<span>' + SCH_LABEL[s.kind] + ' · k <b>' + s.k.toFixed(2) + '</b></span>' +
+        (isCustomV(s) && custom ? customSpans(s) : '<span>' + SCH_LABEL[s.kind] + ' · k <b>' + s.k.toFixed(2) + '</b></span>') +
         // the exposure view integrates the packet over its whole flight, so what matters there is the dose, not what is left in the box
         (s.view === 'density' || s.view === 'phase'
           ? '<span>density weight ≈ <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>'
@@ -573,7 +689,7 @@ void main(){
         u_p: S.read, u_pot: potT, u_res: [gw, gh], u_ramp: ramp, u_ramp2: ramp2,
         u_view: { int: view }, u_showV: { int: s.showV ? 1 : 0 },
         u_expScale: 1 / Math.max(expWhite, 1e-6), u_densScale: 1 / Math.max(densWhite, 1e-6),
-        u_vMax: Math.max(Math.abs(s.V0), 1e-3),
+        u_vMax: Math.max(isCustomV(s) && custom ? custom.vmax : Math.abs(s.V0), 1e-3),
         u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
         u_bg: hexToRgb01(s.bg), u_ink: hexToRgb01(U.inkFor(s.bg)),
       });
@@ -586,16 +702,21 @@ void main(){
       fieldCells() { return [gw, gh]; },
       regenerate() {
         rig.stop(); rig.stepCount = 0; simTime = 0; norm0 = 0; normNow = 0; expWhite = 0; densWhite = 0;
+        clearTimeout(sampleTimer); sampleTimer = 0; sampleToken++; deferred = null;
         const s = host.getState();
         nOff = U.makeRng(s.seed + '/schrodinger/off').range(0, 900);
         ensureGrid(s);
-        buildPotential(s);
-        rig.upload(S.read, packet(s));
-        // Mask the initial wave before evaluating H, then retain symmetric imaginary half levels.
-        restagger(s);
-        normNow = norm0;
-        expWhite = 2 * s.sigma / Math.max(s.k, 0.1); densWhite = 1;
-        if (s.warmup > 0) burst(s.warmup); else { measure(''); render(); loop(); }
+        const start = () => {
+          const st = host.getState();
+          buildPotential(st);
+          rig.upload(S.read, packet(st));
+          // Mask the initial wave before evaluating H, then retain symmetric imaginary half levels.
+          restagger(st);
+          normNow = norm0;
+          expWhite = 2 * st.sigma / Math.max(st.k, 0.1); densWhite = 1;
+          if (st.warmup > 0) burst(st.warmup); else { measure(''); render(); loop(); }
+        };
+        if (isCustomV(s)) prepareCustom(s, start); else start();
       },
       repaint() { if (S) render(); },
       live(key) {
@@ -605,8 +726,12 @@ void main(){
         if (key === 'running') loop(); else if (!rig.raf) loop();
       },
       resize() { if (S) render(); },
-      pause() { rig.stop(); },
-      resume() { if (S) { render(); loop(); } },
+      pause() { held = true; rig.stop(); },
+      resume() {
+        held = false;
+        if (deferred) { const start = deferred; deferred = null; start(); return; }
+        if (S) { render(); loop(); }
+      },
       action(key) {
         if (key === 'reseed') this.regenerate();
         else if (key === 'burst') burst(400);
@@ -623,6 +748,8 @@ void main(){
         render();
         if (!rig.raf) loop();
       },
+      // The tab's validation record covers the built-in potentials; a typed one lowers the stage badge.
+      evidence() { return isCustomV(host.getState()) ? { status: 'unvalidated', why: 'a typed potential' } : null; },
       exportPNG(w, h) { if (!S) return Promise.reject(new Error('nothing to export')); return rig.exportPNG(w, h, render); },
     };
   }

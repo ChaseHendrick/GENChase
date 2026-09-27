@@ -160,6 +160,15 @@ points, hostile inputs, exact GLSL, a GLSL round trip and function and precedenc
 from a typed formula is user-defined and not validated; a module must say so on its status
 line and print no comparison with theory in that mode.
 
+The shell's **Type a formula** dialog (the T key, beside Browse all modules, and in More) lists the
+places that run a typed formula: a tab, the seg option that selects its typed mode, if any, and the text
+control to focus. A place is listed only when the registered schema has that control and option, so the
+list follows the build; a folder build loads those families when the dialog opens. Choosing one switches
+tabs and applies the mode through the recipe path Surprise uses (an undo snapshot of the tab's previous
+state, then `sanitize` and regenerate), so the link, the timeline and undo treat it as any other change, then
+opens the field's group and focuses it.
+It adds no API: modules, recipes and the recipe version are unchanged.
+
 ## Contributor on-ramp and checks
 
 Copy the single [`src/modules/_template.js`](../src/modules/_template.js). Its witness
@@ -172,8 +181,11 @@ polygon module and its broken control, successive recipe defaults, fixed RNG out
 invalid inputs, stale-data clearing, snapshot isolation, safe text rendering,
 shared print/colophon preferences across tabs, and text controls: validation, commit
 of valid text only, the hash round trip, fallback for bad link values, markup shown as
-text, Flow Field's custom field, Attractors' custom-ODE divergence guard, and the Turing tab's custom reaction
-(its step ceiling on the status line, a constant GLSL cannot hold refused, a non-finite field stopped). CI also retains saved-recipe, lazy-load,
+text, Flow Field's custom field, Attractors' custom-ODE divergence guard, the Turing tab's custom reaction
+(its step ceiling on the status line, a constant GLSL cannot hold refused, a non-finite field stopped), and the
+Schrödinger tab's custom potential (its step held under 1.6/(4 + max|V|), undefined cells held as hard walls,
+values past the cap held at it, the badge lowered only in that mode). `node tools/formula-chooser-check.js`
+checks the Type a formula dialog in the portable and the folder builds. CI also retains saved-recipe, lazy-load,
 loading failure/retry, UI, print and all scientific checks.
 
 ## Caption editing on desktop and mobile

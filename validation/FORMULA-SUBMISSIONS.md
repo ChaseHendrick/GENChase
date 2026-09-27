@@ -1,13 +1,17 @@
 # Submitting a formula
 
-Five tabs run formulas typed in the studio: Attractors (a custom ODE), Flow Field (a custom velocity field), Turing
-Patterns (custom reaction terms), Holomorphic dynamics (a custom complex map f(z, c)) and Phase portraits (a complex
-function f(z), with the zeros minus poles inside a circle counted by the argument principle). They use the shared
-expression language of `src/shared/expr.js`, its complex mode for the last two, which parses the text and never runs
-it as code, and a typed formula is outside the tab's validation record. Any other new formula enters through a
-contributed source module. Elsewhere, controls change the parameters of installed techniques; Settings JSON restores
-those parameters. The displayed `equation` is explanatory text, not executable input. Adding an equation label does
-not implement or validate it.
+Six tabs run formulas typed in the studio: Attractors (a custom ODE), Flow Field (a custom velocity field), Turing
+Patterns (custom reaction terms), Holomorphic dynamics (a custom complex map f(z, c)), Phase portraits (a complex
+function f(z), with the zeros minus poles inside a circle counted by the argument principle) and Schrödinger (a custom
+potential V(x, y)). The studio's **Type a formula** dialog (the T key) lists them with an example each and opens the
+one picked in that mode with its formula field focused. They use the shared expression language of
+`src/shared/expr.js`, its complex mode for Holomorphic dynamics and Phase portraits, which parses the text and never
+runs it as code, and a typed formula is outside the tab's validation record. Where the tab's integrator is explicit,
+the typed formula cannot choose the time step: Turing Patterns holds it under a bound measured from the field, and
+Schrödinger under 1.6/(4 + max|V|) of the sampled potential, held between -16 and 16. Any other new formula enters
+through a contributed source module. Elsewhere, controls change the parameters of installed techniques; Settings JSON
+restores those parameters. The displayed `equation` is explanatory text, not executable input. Adding an equation
+label does not implement or validate it.
 
 For a new simulation, follow [CONTRIBUTING.md](../CONTRIBUTING.md) and the
 [module contract](../tools/modules/CONTRACT.md). Add the implementation in `src/modules/`, include it
