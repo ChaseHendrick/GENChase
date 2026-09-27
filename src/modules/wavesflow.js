@@ -240,6 +240,17 @@ vec3 tone(vec3 col, float con, float grain){
   const isCustomV = s => s.kind === 'custom';
   const checkPot = v => U.expr.check(v, POT_SPEC);
   const potCeiling = vmax => 1.6 / (4 + vmax);
+  // The step ceiling of a built-in potential: |E| dt < 2, and the kinetic spectrum is [0,4] on the unit-cell
+  // 5-point grid. A harmonic corner can exceed V0, especially on a rectangular grid. A typed potential is bounded
+  // by the instance from its samples (see potentialSampler), so V0 plays no part in it here. sanitize applies this
+  // when a recipe loads and onParam when a control changes a key it depends on; the instance itself does not cap
+  // a built-in potential's dt, so that tools/schrodinger-state.js can still step past the bound on purpose.
+  function schrodingerDtCeiling(s) {
+    const [W, H] = sizeOf(s), minWH = Math.min(W, H);
+    const vBound = s.kind === 'well' ? s.V0 * (((W - 1) / minWH) ** 2 + ((H - 1) / minWH) ** 2) : isCustomV(s) ? 0 : Math.abs(s.V0);
+    return Math.min(0.25, potCeiling(vBound));
+  }
+  const clampSchrodingerDt = s => { s.dt = U.clamp(Number(s.dt) || 0.2, 0.01, schrodingerDtCeiling(s)); };
   // V on a W x H grid, row 0 at the bottom (the texture's first row), clamped, with undefined cells as walls.
   // run(ms) samples whole rows until the time budget is spent and says whether the grid is done, so a large grid
   // is sampled between timers; the samples do not depend on how the rows were split.
@@ -347,15 +358,14 @@ vec3 tone(vec3 col, float con, float grain){
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
       s.V0 = U.clamp(Number(s.V0) || 0, 0, 8);
       s.k = U.clamp(Number(s.k) || 0, 0, 1.6);
-      // |E| dt < 2; the kinetic spectrum is [0,4] on the unit-cell 5-point grid.
-      // A harmonic corner can exceed V0, especially on a rectangular grid.
-      // A typed potential is bounded by the instance from its samples (see samplePotential); V0 plays no part.
-      const [W, H] = sizeOf(s), minWH = Math.min(W, H);
-      const vBound = s.kind === 'well' ? s.V0 * (((W - 1) / minWH) ** 2 + ((H - 1) / minWH) ** 2) : isCustomV(s) ? 0 : Math.abs(s.V0);
-      const dtMax = Math.min(0.25, 1.6 / (4 + vBound));
-      s.dt = U.clamp(Number(s.dt) || 0.2, 0.01, dtMax);
+      clampSchrodingerDt(s);
       s.sigma = U.clamp(Number(s.sigma) || 12, 2, 40);
       s.absorb = U.clamp(Number(s.absorb) || 0, 0, 0.25);
+    },
+    // setParam does not run sanitize, so a control that moves the bound (or the step itself) re-applies it here;
+    // the engine then syncs the dt slider to the clamped value.
+    onParam(s, key) {
+      if (key === 'V0' || key === 'kind' || key === 'grid' || key === 'aspect' || key === 'dt') clampSchrodingerDt(s);
     },
     surprise(rng) {
       const kind = rng.pick(['double', 'double', 'single', 'barrier', 'well', 'stadium', 'lattice', 'disorder']);

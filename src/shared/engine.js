@@ -1189,8 +1189,9 @@ void main(){
     const e = instances[currentId]; const p = e && e.mod.presets[key];
     if (!p) return false;
     presetAt[currentId] = key;
+    snapshot('preset');                                       // the state the preset replaces, so Z brings it back
     e.state = sanitize(e.mod, Object.assign({}, e.state, p.p, p.palette ? { palette: p.palette.colors.slice(), bg: p.palette.bg } : {}));
-    buildSidebar(e); syncAll(e); regenerate({ snapLabel: 'preset' });
+    buildSidebar(e); syncAll(e); regenerate({ skipSnap: true });
     return true;
   }
   // Walk the preset list without opening the menu, so you can find the one you want by looking at the plate.
@@ -2160,9 +2161,18 @@ void main(){
   let controls = {}, dimmers = [];
   function refreshDims() { for (const d of dimmers) d(); }
 
+  // Undo keeps the state from before a change, so every snapshot is taken before e.state[key] moves: once at the
+  // start of a slider drag (dragSnap holds the key being dragged, so a drag makes exactly one), once for a slider
+  // commit that no drag announced (a typed headline value), and once for any other committing change (a seg click,
+  // a switch, typed text), whatever its kind: a paint or live edit changes the recipe as much as a geom one, and
+  // undo restores it by regenerating, as it does after a slider drag of the same kinds. Deliberately left out:
+  // `running`, which is transport, not an edit (P, the pause button and a recording's wake-up flip it), and a
+  // click that leaves the value as it was.
   let dragSnap = false;
   function setParam(e, key, value, kind, phase) {
-    if (phase === 'drag' && !dragSnap) { snapshot(key); dragSnap = true; }
+    const snap = () => { if (currentId === e.mod.id) snapshot(key); };
+    if (phase === 'drag') { if (dragSnap !== key) { snap(); dragSnap = key; } }
+    else if (key !== 'running' && e.state[key] !== value && !(phase === 'commit' && dragSnap === key)) snap();
     if (phase === 'commit') dragSnap = false;
     e.scienceWitness = null;
     e.state[key] = value;
@@ -2173,7 +2183,7 @@ void main(){
     const commit = phase !== 'drag';
     const fromSlider = phase === 'drag' || phase === 'commit';
     if (kind === 'geom') {
-      if (commit) regenerate(fromSlider ? { skipSnap: true } : { snapLabel: key });
+      if (commit) regenerate({ skipSnap: true });
       else scheduleRegen({ skipSnap: true, skipHistory: true });
     } else if (kind === 'paint') {
       repaint();
@@ -2187,7 +2197,7 @@ void main(){
   }
 
   function bindRange(input, apply) {
-    input.addEventListener('pointerdown', () => { dragSnap = false; });
+    input.addEventListener('pointerdown', () => { dragSnap = false; });   // a new gesture on the same slider gets its own snapshot
     input.addEventListener('input', () => apply('drag'));
     input.addEventListener('change', () => apply('commit'));
   }
@@ -3405,7 +3415,7 @@ void main(){
     bindViewControls();
     // top bar wiring
     const seed = $('seed');
-    seed.addEventListener('change', () => { const e = instances[currentId]; if (!e) return; e.state.seed = seed.value.trim().slice(0, 64) || randomSeed(); seed.value = e.state.seed; regenerate(); });
+    seed.addEventListener('change', () => { const e = instances[currentId]; if (!e) return; snapshot('seed'); e.state.seed = seed.value.trim().slice(0, 64) || randomSeed(); seed.value = e.state.seed; regenerate({ skipSnap: true }); });
     seed.addEventListener('keydown', ev => { if (ev.key === 'Enter') seed.blur(); });
     const roll = () => {
       const e = instances[currentId]; if (!e) return;
@@ -3557,9 +3567,10 @@ void main(){
         delete obj.v;
         if (obj.id && byId[obj.id] && !await switchTo(obj.id)) return;
         const e2 = instances[currentId];
+        snapshot('settings JSON');                            // before the settings replace the state
         e2.state = sanitize(e2.mod, Object.assign(own(e2.state), obj));
         e2.host.getState = () => e2.state;
-        buildSidebar(e2); syncAll(e2); closeModal('modal-settings'); regenerate({ snapLabel: 'settings JSON' }); toast('Settings applied');
+        buildSidebar(e2); syncAll(e2); closeModal('modal-settings'); regenerate({ skipSnap: true }); toast('Settings applied');
       } catch (err) { $('settings-err').textContent = 'That is not valid JSON: ' + err.message; $('settings-err').hidden = false; }
     });
     $('btn-save').addEventListener('click', saveToGallery);
