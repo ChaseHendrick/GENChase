@@ -1,5 +1,7 @@
 # Double-triangle spin–collapse bound
 
+> **2026-09-27.** This bound is proved, with the classical credits, as Proposition 2 with n = 3 of the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* ([`papers/minimal-winding/`](../papers/minimal-winding/), release 2.2.0).
+
 See the [audit of all five candidates](NOVELTY-AUDIT.md): historical priority is unconfirmed for the earlier three results as well. The general polygon bound includes the parallelogram and double-triangle cases.
 
 **A proved formula and sharp bound; candidate fourth GENChase identity, with historical priority under investigation.** Derived in this project with AI assistance on 2026-09-20. The underlying two-ring collapse is classical (Aref 1982; Koiller et al. 1985), and is not claimed as new.

@@ -72,6 +72,21 @@ GENChase: the companion repository does not carry `notes/`.
   last fixes were checked by the lead reader, not by a further independent reading. The lead reader's earlier
   sign-off missed M1, M2 and M4 (`signoff.md`). All readings were in-project; no one outside the project has read
   the note.
-- [ ] **7. Reproducible.** The programs rerun every number from the downloaded inputs (README), and
+- [x] **7. Reproducible.** The programs rerun every number from the downloaded inputs (README), and
   `make_numbers.py` reproduces `paper/numbers.tex`, the tables and `out/numbers.json` byte for byte from `out/` alone.
-  Open until a full rerun from the downloaded inputs has been done from this folder.
+  Evidence: the full rerun of 2026-09-27 from a copy of this folder (`notes/rerun-2026-09-27.md`), made from the
+  figshare inputs (MD5s as in the README) with the versions of `code/requirements.txt`. Every program ran. With one
+  BLAS thread, the README's setting, every output equals the committed one, except the last bits of the
+  `matern_window.py` outputs (committed from a two-thread run; one thread gives spectra within 9.1e-9 relative and
+  exponents within 7.9e-10, and two threads reproduce them bit for bit) and the order of their rows. The
+  finite-population file needed a fix (4d6c418): `matern_finiteN.py` now lists all 112 cells (it lacked
+  nu = 0.75 at ell = 1/4 and 1 on the two sets with all five nu), and the README runs it in two stages,
+  `matern_finiteN.py 20 --first` and then `matern_finiteN.py 5`. Replicate r's draw is seeded by r alone, so the
+  stages set only the replicate counts. The fixed program, run from the README's commands, reproduced the four added
+  cells and a 5-replicate cell exactly, and both stages from empty parts reproduced one whole set exactly. The
+  documented procedure reproduces all 112 stored cells and 1,370 replicate values, with the stored counts (54 with 20
+  replicates, 58 with 5). `make_numbers.py` reproduces `paper/numbers.tex`, the five tables, `out/tab_grating.tex`
+  and `out/numbers.json` byte for byte from the committed `out/` and from the rerun `out/`. The figures are identical
+  pixel for pixel, the rebuilt PDF text is identical, and `verify_independent.py` passes all 17 checks.
+  `paper-check` passes (16 pages), and `paper-sync --check rank-window` passes against the companion
+  repository `ChaseHendrick/rank-window` (2026-09-27).
