@@ -5,7 +5,7 @@ project's accounts. For a manuscript (arXiv, a journal), follow [PUBLISHING-PAPE
 one action, and says how to check it worked.
 
 **The name on publications is Chase Hendrick, Independent Researcher** (decided 2026-09-24). The software
-metadata (`CITATION.cff`, `.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) and the manuscripts
+metadata (`CITATION.cff`, `.zenodo.json`, `paper/paper.md`) and the manuscripts
 all use it, and a DOI record carries whatever the metadata says on the day of the release. The git identity
 rule in AGENTS.md is about commits and is unaffected. The manuscripts carry the contact address
 recorded as `author.email` in `papers/papers.json` under the affiliation (owner's decision, 2026-09-24),
@@ -20,8 +20,7 @@ paper's programs and data get their DOI from the paper's own public repository i
 ([PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md), section 1).
 
 Already done in the repository: `.zenodo.json` describes the software (upload type software,
-Apache-2.0), the identities note has its own metadata in `identities/zenodo.json`, and
-`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (0.7.1,
+Apache-2.0), and `CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (0.7.1,
 2026-09-25) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
 `.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
 
@@ -52,8 +51,6 @@ Apache-2.0), the identities note has its own metadata in `identities/zenodo.json
      `pip install cffconvert && cffconvert --validate`.
    - `README.md`: add the DOI, for example a line under the links at the top. The README is
      maintained by hand.
-   - `identities/zenodo.json` and the note's Zenodo record, if it exists: add a related identifier
-     pointing to the software DOI.
    - `docs/RESEARCH-GRADE.md`: move item 1c to **Done** with the pull request link, as that file asks.
 7. **Check:** `https://doi.org/<concept DOI>` opens the Zenodo record, and GitHub's "Cite this
    repository" box shows the software with its DOI.
@@ -68,16 +65,17 @@ the same week, so the next release is right.
 2. In one pull request, add it everywhere the author appears:
    - `CITATION.cff`, under the author: `orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"` (CFF wants
      the full URL), then run `cffconvert --validate`;
-   - `.zenodo.json` and `identities/zenodo.json`, in the creator object:
+   - `.zenodo.json`, in the creator object:
      `"orcid": "XXXX-XXXX-XXXX-XXXX"` (the bare identifier);
    - `paper/paper.md`, under the author: `orcid: XXXX-XXXX-XXXX-XXXX`.
 3. Records already published on Zenodo are edited on Zenodo; the metadata files only affect future
    releases.
 
-## 3. The identities note as its own record
+## 3. The identities note (retired)
 
-Follow [identities/README.md](../identities/README.md), "Uploading the note as its own Zenodo
-record". It is a manual upload with its own DOI, separate from the software.
+There is no step here any more: by the owner's decision (2026-09-27) the note is retired. Its results are proved
+in the minimal-winding paper, release 2.2.0 (prepared), and the note gets no record of its own
+([identities/README.md](../identities/README.md), "The note is retired").
 
 ## 4. The software paper (RESEARCH-GRADE 1d)
 

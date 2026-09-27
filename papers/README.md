@@ -11,14 +11,15 @@ reproduce and how to cite, and two working folders that stay in this repository,
 | [Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit](collapse-without-rotation/) | preprint with its code and data (release 1.0.0, doi:10.5281/zenodo.22969841); not peer reviewed | [ChaseHendrick/collapse-without-rotation](https://github.com/ChaseHendrick/collapse-without-rotation) |
 | [Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches](stable-expansion/) | preprint with its code and data (release 1.0.0, doi:10.5281/zenodo.22971173); computer-assisted; not peer reviewed | [ChaseHendrick/stable-expansion](https://github.com/ChaseHendrick/stable-expansion) |
 | [A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound](rank-window/) | draft methods note with its programs and outputs (outputs CC BY-NC 4.0); two in-project referee readings | none yet |
-| [Rigorous Dynamics of the Hodgkin-Huxley Equations at the 1952 Parameters](hh-dynamics/) | work in progress, no manuscript: computer-assisted proofs of the equilibria, Hopf points and bistability at J = 8 | none yet |
+| [Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs](hh-dynamics/) | draft manuscript with its programs and outputs: computer-assisted proofs of the equilibria, the Hopf points and bistability at J = 8; three in-project readings of 2026-09-27, their must-fix findings fixed | none yet |
 | [A Travelling Pulse in a Neural Field with a Smooth Firing Rate](nf-pulse/) | work in progress, no manuscript: a computer-assisted proof with an in-project review, five extensions, and spectral stability proved by computer | none yet |
 
 The alpha-model draft that used to be a second paper here was merged into the minimal-winding paper on
 2026-09-25 (owner's decision), with its programs, data and notes.
 
-[`papers.json`](papers.json) is the record of each paper's status, and the identities note and the
-software paper are listed there too (they live in `identities/` and `paper/`).
+[`papers.json`](papers.json) is the record of each paper's status, and the software paper is listed there too
+(it lives in `paper/`). The identities note, which used to be listed as well, is retired (2026-09-27): its results
+are proved in the minimal-winding paper, release 2.2.0 (prepared), and `identities/` stays as the provenance record.
 
 This repository may be private, so a paper never sends readers here. When `papers.json` marks a paper
 `ready`, the **publish papers** workflow copies its folder, without `notes/` and `submission/`, to its

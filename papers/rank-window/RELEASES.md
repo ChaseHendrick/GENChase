@@ -1,0 +1,38 @@
+# Releases
+
+Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
+peer reviewed.
+
+## 1.0.0 (unreleased)
+
+The first public release of the methods note *A finite rank window cannot show that a neural population code
+satisfies the eigenspectrum smoothness bound* (16 pages), with the programs that compute its numbers and their output.
+
+### What the note shows
+
+Stringer, Pachitariu, Steinmetz, Carandini and Harris (Nature 571, 2019) proved that a differentiable, noise-free
+population code over a d-dimensional stimulus space has an eigenspectrum that decays asymptotically faster than
+n^-(1+2/d). They fitted exponents over a finite window of ranks and concluded that the visual cortex code is about as
+high-dimensional as that bound allows. The note makes quantitative, for their stimulus sets, why a finite window of
+ranks cannot settle this.
+
+- **Proved** (Proposition 1, Corollary 1): for codes built on bounded eigenfunctions, the head of the spectrum fixes
+  the finite-sample spectrum up to a constant times the variance of the tail, whatever the tail's rate of decay. So no
+  estimator continuous in that spectrum can tell a continuously differentiable code from one with infinite expected
+  squared gradient. The proof adapts Lemmas 5 and 8 of Braun (JMLR 2006) and is written out in full.
+- **Numerical** (floating point, no enclosures): noise-free Matern codes placed on the stimulus coordinates of all ten
+  8D and 4D stimulus sets.
+  - Codes exactly at the differentiability border give ranks 11-500 exponents from 0.255 to 1.628 at d = 8 and from
+    0.625 to 1.762 at d = 4, below the bound for short and above it for long tuning length scales.
+  - Non-differentiable codes with Matern nu = 0.75 also exceed the bound in unwhitened coordinates at 2,800 stimuli,
+    but not in every setting the note tests.
+  - For 32 grating directions a non-differentiable code reaches 3.5012 over ranks 5-30.
+  - The tail exponent of the eigenmoment method of Pospisil and Pillow depends on the unresolved tail.
+- **Conclusion:** the reported exponents are consistent with the bound but cannot show that the code satisfies it or
+  lies close to it.
+
+### Reproducibility
+
+The recorded data are not redistributed; the README says where they come from and how to fetch them. A full rerun
+from the downloaded inputs on 2026-09-27 reproduced every stored value, including all 112 finite-population cells
+and their 1,370 replicate values. `make_numbers.py` regenerated the note's numbers and tables byte for byte.
