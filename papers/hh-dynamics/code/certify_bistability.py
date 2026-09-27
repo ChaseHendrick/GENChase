@@ -411,10 +411,10 @@ def main():
           else rsm['err'], kind='control')
     rk = prove_piece(('10.59', '10.5905', zg, PREC, {'kappa_max': 0.5}))
     check('NEG Theorem C, piece E_l in [10.59, 10.5905] with the contraction bound required to be below 0.5 instead '
-          'of 1, where every member of the enclosure of DP has ||DP||_inf >= %s > 0.5 (and <= %s): the piece is refused, '
-          'although P(Z) in int Z holds and the runs cover Z x piece'
-          % ((O.lo(rk['norm_lo'], 4), O.hi(rk['norm_hi'], 4)) if rk['completed'] else ('-', '-')),
-          rk['completed'] and rk['inside'] and rk['covers'] and (rk['norm_lo'] > Fraction(1, 2)) and not rk['ok'],
+          'of 1, which the upper bound of the enclosure, sup ||DP_E||_inf <= %s, does not meet: the piece is refused, '
+          'although P(Z) in int Z holds and the runs cover Z x piece (so the verdict uses the bound)'
+          % (O.hi(rk['norm_hi'], 4) if rk['completed'] else '-'),
+          rk['completed'] and rk['inside'] and rk['covers'] and (rk['norm_hi'] >= Fraction(1, 2)) and not rk['ok'],
           '' if rk['completed'] else rk['err'], kind='control')
     run_ = prove_piece(('10.613', '10.613', ru['zbar'], PREC, {'sec': sec_u, 'centre_iters': 0}))
     check('NEG Theorem C test on the unstable orbit (section u = %g, E_l = 10.613, box radius %s): the contraction '

@@ -394,7 +394,7 @@ mac('CtlTwentyU', iv(*ball_iv(*m.group(1, 2)), 3))
 mac('CtlTwentyDtwo', iv(*ball_iv(*m.group(3, 4)), 2))
 mac('CtlTwentyDthree', iv(*ball_iv(*m.group(5, 6)), 2))
 mac('CtlNorm', one(r'every member of DP\(Z\) has \|\|DP\|\|_inf >= (' + NUM + ')', s5).group(1))
-mac('CtlKappaLo', one(r'where every member of the enclosure of DP has \|\|DP\|\|_inf >= (' + NUM + r') > 0\.5', s5).group(1))
+mac('CtlKappaHi', one(r'which the upper bound of the enclosure, sup \|\|DP_E\|\|_inf <= (' + NUM + r'), does not meet', s5).group(1))
 kv = every(r'K vs Z: max \|mid K - zbar\| / radius\(Z\) = (' + NUM + r'), K in int Z: False', s5, 5)
 mac('CtlKJ', sci_tex('%.1e' % float(kv[4].group(1))))
 

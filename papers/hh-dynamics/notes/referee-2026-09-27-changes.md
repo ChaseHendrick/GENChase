@@ -209,9 +209,12 @@ fixes.
 - **SF-5. Fixed in the wording.** The statement now says that the programs are in the companion repository of the paper,
   whose release 1.0.0 holds this version, as the other released papers of the project word it; the repository is
   written by the publishing workflow when the paper's status is "ready", so it could not be seen yet.
-- **SF-6. Fixed.** The control now also requires the rigorous lower bound: every member of the enclosure of DP has
-  ||DP||_inf at least the printed lower bound, which must exceed 0.5, and it prints both bounds; Section 7 quotes the
-  lower bound (generated macro `\CtlKappaLo`).
+- **SF-6. Fixed by dropping the claim.** The first fix tried the reader's other proposal, requiring the rigorous lower
+  bound of ||DP_E||_inf over the enclosure to exceed 0.5; a trial run showed that lower bound to be 0 on this piece
+  (the enclosure of DP over Z x piece is too wide to bound the norm from below), so "below the true bound" cannot be
+  shown. The control now requires and prints only what it shows: the enclosure's upper bound (0.5439) does not meet
+  0.5, so the piece must be refused although P(Z) lies in int Z and the runs cover Z x piece; that is, the verdict uses
+  the bound. Section 7 says so (generated macro `\CtlKappaHi`).
 
 ### Minor
 
