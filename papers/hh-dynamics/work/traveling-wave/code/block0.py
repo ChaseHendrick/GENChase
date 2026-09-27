@@ -229,9 +229,10 @@ def cover_check(M, Minv, ystar, K, phi, EL, rho, r, which, n0=(2, 2, 4, 4, 2), m
     return nfail == 0, ncheck, nfail
 
 
-def run(T, Kball, M, Minv, rho, r, log=print, n0=(1, 1, 2, 2, 1), maxdepth=20):
-    """Check (C) and (E) on B0 = {|zeta_1| <= r, |zeta_s| <= rho} for every K in Kball."""
-    phi = C.phi_of(T)
+def run(T, Kball, M, Minv, rho, r, log=print, n0=(1, 1, 2, 2, 1), maxdepth=20, phi=None):
+    """Check (C) and (E) on B0 = {|zeta_1| <= r, |zeta_s| <= rho} for every K in Kball (and every phi in the ball phi,
+    if given: a temperature interval, tstrip.py)."""
+    phi = C.phi_of(T) if phi is None else phi
     ystar, EL = C.rest_state()
     rho, r = arb(rho), arb(r)
     t0 = time.time()

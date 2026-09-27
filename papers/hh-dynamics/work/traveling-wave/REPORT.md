@@ -543,6 +543,43 @@ equilibrium u* above: for some K* in (K1, K2), K1 = 10.4380510601011236922764862
 speed differs from the zero-current case (18.7321608...) by 2.7e-4 m/s, and Hodgkin and Huxley's hand value is
 18.8 m/s. The same limits apply as in 4.5, and the same review status.
 
+### 4.7 Result at 6.3 C with the printed leak potential (2026-09-27)
+
+The same programs, with `HH_EL=10.613` and T = 6.3 C (phi = 1), one stage at a time:
+
+- numerical centre K* = 4.51063243827085102104174385842888070411449431302344897921140... /ms. The first run
+  (tolerance scale 1) converged to a K* that was wrong by about 5e-59: the local error budget of `hp_pulse.py` assumes
+  the growth rate at 18.5 C, and at 6.3 C (lambda_u = 4.974 against 10.892, over a pulse more than twice as long) it
+  is too loose. The first interval run with it missed the pulse (zeta_1 = -86 at T_enter). A second run at scale 1e-8,
+  started from the converged state with new step sequences, moved K* by 4.8e-59; with it every stage passed. The
+  scale-1 result is kept as `data/hp_pulse_6.3_El10.613_tol1.json`;
+- `setup`: lambda_u in [4.97403036032071991327233381098 +/- 2.9e-30]; Lemma B at r_B = 1e-32; transversality; the
+  block (rho = 0.6, r = 0.63) on 3590 + 1374 cells, and its negative controls;
+- `interval` (K1 = K* - 1.4e-61 to K2 = K* + 1.4e-61, delta rounded to binary): at T_enter = 36.125 ms, zeta_1 in
+  [-0.273, 0.273], |zeta_s| <= 0.4563 < 0.6, in int B0, max u > 102.98 mV (1237 s);
+- `K1`, `K2`: in K- at 36.2578125 ms and in K+ at 36.234375 ms, the paths in int B0 (1279 s, 1293 s);
+- `neg-shift` (the K interval moved by 40 half-widths): zeta_1 about 10 at T_enter, outside B0: fails (1276 s);
+- `neg-model` (alpha_m times 1 + 1e-12 (u - u*)^2): the whole set escapes below u = -60 mV at 17.20 ms, after the
+  spike: fails (1298 s);
+- `block_check_iv.py`: passes (1447 + 974 cells) and rejects the enlarged block.
+
+The model control was first run with the factor 1 + 1e-12 u^2, as at 18.5 C with the zero-current E_l. With the
+printed E_l rest is at u* = 0.0036 mV, not 0, so that factor changes alpha_m at rest by a factor 1 + 1.3e-17 and moves the equilibrium off the
+enclosed y*, while Lemmas A and B are those of the unperturbed rest; the set then left along the unstable direction long before the upstroke (u <
+-60 mV at 8.90 ms at 6.3 C, 4.10 ms at 18.5 C). That still failed, as it must, but for a different reason than
+intended, so on 2026-09-27 the factor was centred at the enclosed rest value, which leaves rest and its linearization
+unchanged; both controls were rerun from scratch (18.5 C: the set escapes below u = -60 mV at 6.72 ms, 602 s, like
+the zero-current control at 6.73 ms; 6.3 C: at 17.20 ms, 1298 s). The summaries now print outward-rounded decimal
+bounds of the speed with enough digits to separate the ends.
+
+**Theorem (computer-assisted), 6.3 C.** With T = 6.3 C, the 1952 rates and constants and E_l = 10.613 mV, for some K*
+in (K1, K2), K1 = 4.51063243827085102104174385842888070411449431302344897921140063822623..., K2 - K1 = 2.8e-61 (the
+exact binary fractions of `data/pulse_proof_6.3_El10.613_config.json`), the travelling-wave system has a pulse,
+homoclinic to rest, leaving it along the branch on which u increases, with max u > 102.98 mV and speed in
+(12.313756720162298508179797283771499327244899734708115548799408270,
+12.313756720162298508179797283771499327244899734708115548799408655) m/s for the fibre constants of p. 528. Same limits
+and status as 4.5.
+
 ## 5. Independent check
 
 An independent subagent (2026-09-26), with no access to our reasoning beyond this report and the code, re-opened the
@@ -669,6 +706,44 @@ K_c(T) does not help at first order, for the same reason. **Estimate: infeasible
   Chance of success in that time: about 50 per cent (the spike, where several directions expand at once, is the risk).
 - (c) Cheap and already possible: the present proof at a grid of temperatures (each piece is one run, 1x to 2x the
   18.5 C cost). It gives pulses at each grid temperature, not a branch.
+
+**Design of route (b), as built on 2026-09-27 (`code/tstrip.py`).** The temperature enters every rate only through
+phi = 3^((T - 6.3)/10), which multiplies the three gating right-hand sides; rest does not depend on T. So a
+T-interval is a phi-interval, and phi is carried as a seventh variable (phi' = 0) exactly as K is carried now
+(`hhjet6.py` takes (u, w, m, n, h, K, phi); `lohner6.py` handles any number of constant parameters). The speed is
+tied to the temperature by K = K_c + a (phi - phi_c) + s, with a a numerical slope of K*(phi) and s in [-sigma, sigma].
+
+*Sets.* Along a numerical pulse at phi_c (the multiple-shooting nodes of `hp_pulse.py`) we fix stage times
+0 = t_0 < t_1 < ... < t_m = T_enter and **windows** W_i = { c_i + F_i (e, v) + (phi - phi_c) g_i + s h_i :
+|e| <= w_i, |v_j| <= s_ij, phi in [phi_lo, phi_hi], |s| <= sigma }, where c_i is the pulse point, F_i a frame whose first
+column is the image of the unstable direction (QR of the numerical monodromy), e is the **exit** coordinate and v the
+four **entry** coordinates, and g_i, h_i are shears with zero exit component. W_0 is the exit set of Lemma B (e fixed
+at z1 = r_B) times the parameter box. The last target is the closing block B0.
+
+*Checks* (ball arithmetic, one Lohner run of the whole window per stage, the parameters in the set):
+ (S) the image of W_i at t_{i+1} has its entry coordinates strictly inside those of W_{i+1};
+ (X) the image of the face e = +w_i has e > 0 and that of e = -w_i has e < 0 in W_{i+1}'s coordinates
+     (the faces come from the same run, since the Lohner set holds for each value of its linear coordinate);
+ (F) the image of W_{m-1} lies in the interior of B0;
+ (P) for s = +sigma (resp. -sigma) and every phi, the orbit from the exit set leaves some window through its + (resp.
+     -) exit face, and never through the other one before that;
+ and Lemmas A and B, the transversality and the block conditions of B0, all for the whole phi and K ranges.
+The widths s_{i+1}, the shears and w_{i+1} are set from the stage-i image itself (the windows are free choices, made
+before the containments are checked), so (S) holds by construction and (X) is the real condition: expansion in the
+exit direction must beat what the parameters and the nonlinearity add in one stage.
+
+*Theorem it proves.* For every T in [T_lo, T_hi] there are K*(T) in K_c + a (phi(T) - phi_c) + (-sigma, sigma) and a
+pulse at (T, K*(T)). *Argument.* Fix T. Let S+ (S-) be the set of s such that the orbit leaves the windows, at the
+first stage where it is outside, through the + (-) exit face, or, having passed all windows, enters K+ (K-) in int
+B0. By (X) an orbit on an exit face at stage i is strictly beyond the same side at stage i+1, so the first exit is
+robust and S+ and S- are open; they are disjoint; (P) makes them non-empty; so some s is in neither. By (S) its orbit
+is in every window, then in int B0 by (F), and the B0 argument of 4.4 shows that it tends to rest. The K precision
+needed is now only sigma, not 1e-45, because the exit direction is re-cut at every window.
+
+*Reused:* `hhjet6.py` (with phi as a variable), `lohner6.py` (any number of parameters), Lemmas A and B and the
+transversality of `certify_rest_wave.py` / `prove_pulse.py` with phi as a ball, `block0.py` (cone and entrance with
+phi as a ball), `hp_pulse.py` for the reference pulse. *New:* the windows, the stage loop with checkpoints, the exit-face
+and entry checks, the endpoint runs (P), the final containment (F), and the driver over subintervals of [T_lo, T_hi].
 
 Per the owner's rule (run only if a piece costs at most about twice the 18.5 C run), none of (a) or (b) was run.
 Recommendation: (c) now for a few temperatures if wanted; (b) as a separate project.

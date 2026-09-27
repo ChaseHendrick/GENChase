@@ -49,7 +49,9 @@ not prove.
     the literature reached (Hastings 1976 and Carpenter 1977, the latter read in full, need artificial small
     parameters); Hastings 1976 pp. 231-257 and Foote and Chen 1981 are still unread. Checked inside the project
     only (tests, an independent program for the block conditions, a rereading); no outside review. With the printed
-    leak potential 10.613 mV the proof passes too (REPORT 4.6); the draft manuscript is [`papers/hh-pulse/`](../hh-pulse/).
+    leak potential 10.613 mV the proof passes at 18.5 C (REPORT 4.6) and at 6.3 C (REPORT 4.7, speed in
+    (12.3137567201622985081797972837714993272448997347081155487994082, ...087) m/s); the draft manuscript is
+    [`papers/hh-pulse/`](../hh-pulse/).
 - Nothing here is numerical evidence presented as proof: the program prints what it proves, and its only
   non-rigorous parts are self-tests and an independent cross-check in mpmath.
 

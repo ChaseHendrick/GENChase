@@ -1,0 +1,11 @@
+{
+ "stage": "neg-model",
+ "T": 6.3,
+ "K": "[4.510632438270851021041743858428880704114494313023448979211401 +/- 3.62e-61]",
+ "T_enter": 36.125,
+ "order": 40,
+ "prec": 256,
+ "verdict": "FAIL",
+ "reason": "the whole set escaped (u < -60 mV) at t = [17.201299 +/- 4.36e-7], before T_enter",
+ "secs": 1298
+}

@@ -114,16 +114,20 @@ def psi(x, key, cache):
     return x * (x.exp() - 1).inv()
 
 
-ALPHA_M_PERTURB = None     # negative controls only: alpha_m -> alpha_m (1 + eps u^2), which leaves rest (u = 0) and
-                           # the linearization there unchanged
+ALPHA_M_PERTURB = None     # negative controls only: alpha_m -> alpha_m (1 + eps (u - ALPHA_M_CENTER)^2), with the
+ALPHA_M_CENTER = 0         # centre the rest value u* (a ball), which leaves rest and the linearization there unchanged
 
 
 def field(y, phi, EL, cache):
-    """The field on Duals; y = (u, w, m, n, h, K). Returns the 5 moving components."""
-    u, w, m, n, h, K = y
+    """The field on Duals; y = (u, w, m, n, h, K) or (u, w, m, n, h, K, phi): with seven entries the temperature factor
+    phi is the variable y[6] (tstrip.py) and the argument phi is ignored. Returns the 5 moving components."""
+    u, w, m, n, h, K = y[:6]
+    if len(y) == 7:
+        phi = y[6]
     am = psi((25 - u) / 10, 'm', cache)
     if ALPHA_M_PERTURB is not None:
-        am = am * (u * u * arb(ALPHA_M_PERTURB) + 1)
+        du = u - ALPHA_M_CENTER
+        am = am * (du * du * arb(ALPHA_M_PERTURB) + 1)
     bm = (u * (-arb(1) / 18)).exp() * 4
     an = psi((10 - u) / 10, 'n', cache) / 10
     bn = (u * (-arb(1) / 80)).exp() / 8
@@ -136,22 +140,27 @@ def field(y, phi, EL, cache):
             (am * (1 - m) - bm * m) * phi, (an * (1 - n) - bn * n) * phi, (ah * (1 - h) - bh * h) * phi]
 
 
-def jet(x0, phi, EL, p, nd=NV):
+def jet(x0, phi, EL, p, nd=None):
     """Taylor coefficients (degree <= p) of x(t; x0) and of their derivatives with respect to x0_j, j < nd, for x0 a
-    list of 6 arb (u, w, m, n, h, K), balls allowed. nd = 0 gives the values only.
-    Returns vals[i][k] (i < 6; the K row is constant) and, if nd > 0, grads[i][k][j] = d x_{i,k} / d x0_j."""
+    list of 6 arb (u, w, m, n, h, K) or 7 (u, w, m, n, h, K, phi), balls allowed; nd defaults to len(x0), and nd = 0
+    gives the values only. Returns vals[i][k] (the parameter rows are constant) and, if nd > 0,
+    grads[i][k][j] = d x_{i,k} / d x0_j."""
+    n = len(x0)
+    if nd is None:
+        nd = n
     old = ctx.cap
     cache = PsiCache(p + 2)
     try:
         ctx.cap = 1
         one, zero = arb_series([arb(1)]), arb_series([arb(0)])
-        # arb_series carries its own truncation order, so the constant K (whose series never changes) is created
-        # with the full order p + 1; the moving components are replaced in every pass by series of order it + 2.
+        # arb_series carries its own truncation order, so the constant parameters (whose series never change) are
+        # created with the full order p + 1; the moving components are replaced in every pass by series of order
+        # it + 2.
         ctx.cap = p + 1
         oneF, zeroF = arb_series([arb(1)]), arb_series([arb(0)])
-        yK = Dual(arb_series([x0[5]]), [oneF if j == 5 else zeroF for j in range(nd)])
+        ypar = [Dual(arb_series([x0[q]]), [oneF if j == q else zeroF for j in range(nd)]) for q in range(NS, n)]
         ctx.cap = 1
-        y = [Dual(arb_series([x0[i]]), [one if j == i else zero for j in range(nd)]) for i in range(NS)] + [yK]
+        y = [Dual(arb_series([x0[i]]), [one if j == i else zero for j in range(nd)]) for i in range(NS)] + ypar
         for it in range(p):
             ctx.cap = it + 1                       # f(y) is needed modulo t^(it+1)
             F = field(y, phi, EL, cache)
@@ -165,17 +174,17 @@ def jet(x0, phi, EL, p, nd=NV):
                     fd = _coeffs(F[i].d[j], it + 1)
                     ds.append(arb_series([arb(1) if j == i else arb(0)] + [fd[k] / (k + 1) for k in range(it + 1)]))
                 new.append(Dual(v, ds))
-            new.append(y[5])
-            y = new
+            y = new + ypar
         L = p + 1
-        vals = [_coeffs(y[i].v, L) for i in range(NS)] + [[x0[5]] + [arb(0)] * p]
+        vals = [_coeffs(y[i].v, L) for i in range(NS)] + [[x0[q]] + [arb(0)] * p for q in range(NS, n)]
         if nd == 0:
             return vals, None
         grads = []
         for i in range(NS):
             dl = [_coeffs(y[i].d[j], L) for j in range(nd)]
             grads.append([[dl[j][k] for j in range(nd)] for k in range(L)])
-        grads.append([[arb(1) if j == 5 else arb(0) for j in range(nd)]] + [[arb(0)] * nd for _ in range(p)])
+        for q in range(NS, n):
+            grads.append([[arb(1) if j == q else arb(0) for j in range(nd)]] + [[arb(0)] * nd for _ in range(p)])
         return vals, grads
     finally:
         ctx.cap = old
@@ -186,12 +195,13 @@ def values(x0, phi, EL, p):
 
 
 def vfield(x, phi, EL):
-    """The field (6 components, the last 0) at a point or box x."""
+    """The field at a point or box x (len(x) components, the parameter components 0)."""
     v = values(x, phi, EL, 1)
-    return [v[i][1] for i in range(NS)] + [arb(0)]
+    return [v[i][1] for i in range(NS)] + [arb(0)] * (len(x) - NS)
 
 
 def jacobian(x, phi, EL):
-    """Df over the box x (6 x 6, last row 0)."""
+    """Df over the box x (len(x) x len(x), the parameter rows 0)."""
     _, g = jet(x, phi, EL, 1)
-    return [[g[i][1][j] for j in range(NV)] for i in range(NV)]
+    n = len(x)
+    return [[g[i][1][j] for j in range(n)] for i in range(n)]

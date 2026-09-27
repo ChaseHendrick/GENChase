@@ -118,9 +118,11 @@
       "id": "hh-pulse",
       "title": "The propagated action potential of Hodgkin and Huxley at their 1952 constants: a computer-assisted existence proof",
       "status": "draft",
-      "note": "Computer-assisted existence of the Hodgkin-Huxley pulse at 18.5 C and 6.3 C with the printed constants; programs in papers/hh-dynamics/work/traveling-wave/; adversarial reading (quality item 6) not yet done.",
+      "note": "Computer-assisted existence of the Hodgkin-Huxley pulse at 18.5 C and 6.3 C with the printed constants; programs and certificates in papers/hh-pulse/code and data (the companion ChaseHendrick/hh-pulse); adversarial reading (quality item 6) not yet done.",
       "markdown": "papers/hh-pulse/paper/paper.md",
       "pdf": null,
+      "companion": "ChaseHendrick/hh-pulse",
+      "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": {
        "name": null,

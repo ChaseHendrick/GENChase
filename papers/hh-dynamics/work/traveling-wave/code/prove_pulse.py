@@ -276,7 +276,10 @@ C.jac = jac6
 
 
 def perturb_model(eps):
-    """alpha_m -> alpha_m (1 + eps u^2) everywhere (negative control only)."""
+    """alpha_m -> alpha_m (1 + eps (u - u*)^2) everywhere, u* the enclosed rest value (negative control only; rest and
+    the linearization there are unchanged, so Lemmas A and B still apply)."""
+    ctx.prec = PREC
+    hhjet6.ALPHA_M_CENTER = C.rest_state()[0][0]
     hhjet6.ALPHA_M_PERTURB = eps
 
 
@@ -429,8 +432,16 @@ def stage_summary(T):
         return (K * 1000 * arb('0.0238') / (2 * arb('35.4') * arb('1e-6'))).sqrt() / 100
     lines.append('K1 = %s /ms, K2 = %s /ms (K2 - K1 = %s)' % (cfg['K1_dec'][:60], cfg['K2_dec'][:60],
                                                            (K2 - K1).str(5)))
-    lines.append('speed theta in (%s, %s) m/s for a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2' % (
-        theta(K1).str(55, radius=False), theta(K2).str(55, radius=False)))
+    # outward-rounded decimal bounds, with enough digits to separate theta(K1) from theta(K2)
+    from decimal import Decimal, ROUND_FLOOR, ROUND_CEILING, getcontext
+    getcontext().prec = 400
+    t1, t2 = theta(K1), theta(K2)
+    d = int(-float((t2 - t1).mid().log()) / 2.302585) + 3
+    q = Decimal(1).scaleb(-d)
+    lo = Decimal((t1.lower() - arb(10) ** -d).str(d + 10, radius=False)).quantize(q, rounding=ROUND_FLOOR)
+    hi = Decimal((t2.upper() + arb(10) ** -d).str(d + 10, radius=False)).quantize(q, rounding=ROUND_CEILING)
+    assert arb(str(lo)) < t1 and arb(str(hi)) > t2
+    lines.append('speed theta in (%s, %s) m/s for a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2' % (lo, hi))
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
     print('\n'.join(lines))
     open('%s/pulse_proof_%s_summary.txt' % (DATA, C.tag(T)), 'w').write('\n'.join(lines) + '\n')

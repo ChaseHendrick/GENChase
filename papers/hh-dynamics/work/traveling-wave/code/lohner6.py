@@ -25,7 +25,7 @@ import math
 from flint import arb, arb_mat, ctx
 import hhjet6
 
-N = 6
+N = 6          # the default dimension (y, K); a set may carry more constant parameters (y, K, phi)
 PREC_AUX = 128
 
 
@@ -74,19 +74,20 @@ class LSet:
     def hull(self):
         a = matvec(self.C, self.R0)
         b = matvec(self.B, self.R)
-        return [self.xbar[i] + a[i] + b[i] for i in range(N)]
+        return [self.xbar[i] + a[i] + b[i] for i in range(len(self.xbar))]
 
     def affine_image_hull(self, M, shift):
         """hull of { M (x - shift) : x in X } as M (xbar - shift) + (M C) R0 + (M B) R; M is k x 6."""
         MC, MB = M * self.C, M * self.B
-        d = [self.xbar[i] - shift[i] for i in range(N)]
+        d = [self.xbar[i] - shift[i] for i in range(len(self.xbar))]
         a, b, c = matvec(M, d), matvec(MC, self.R0), matvec(MB, self.R)
         return [a[i] + b[i] + c[i] for i in range(M.nrows())]
 
     def to_json(self):
+        n = len(self.xbar)
         return {'xbar': [ser(v) for v in self.xbar], 'C': [[ser(self.C[i, j]) for j in range(self.C.ncols())]
-                                                            for i in range(N)],
-                'R0': [ser(v) for v in self.R0], 'B': [[ser(self.B[i, j]) for j in range(N)] for i in range(N)],
+                                                            for i in range(n)],
+                'R0': [ser(v) for v in self.R0], 'B': [[ser(self.B[i, j]) for j in range(n)] for i in range(n)],
                 'R': [ser(v) for v in self.R]}
 
     @staticmethod
@@ -138,7 +139,7 @@ def rough_enclosure(F, Xh, vx, h, tries=10):
         w = horner(vx[i], hint) + (Xh[i] - arb(Xh[i].mid()))
         rad = arb(w.rad()) * arb('0.2') + arb(abs(w).upper()) * arb(2) ** (-(ctx.prec - 20)) + arb(2) ** -400
         W.append(w + ball(-rad, rad))
-    W.append(Xh[5])
+    W += list(Xh[5:])
     for _ in range(tries):
         try:
             f = F.f(W)
@@ -148,7 +149,7 @@ def rough_enclosure(F, Xh, vx, h, tries=10):
         if inside(W[:5], cand):
             return W
         W = [W[i].union(cand[i]) for i in range(5)]
-        W = [w + ball(-arb(w.rad()) * arb('0.2'), arb(w.rad()) * arb('0.2')) for w in W] + [Xh[5]]
+        W = [w + ball(-arb(w.rad()) * arb('0.2'), arb(w.rad()) * arb('0.2')) for w in W] + list(Xh[5:])
     return None
 
 
@@ -169,7 +170,7 @@ def refine_enclosure(F, vxh, W, h, qs=(3, 6, 12)):
             if not wi.is_finite():
                 wi = W[i]
             Wn.append(wi)
-        W = Wn + [W[5]]
+        W = Wn + list(W[5:])
     return W
 
 
@@ -184,7 +185,7 @@ def remainder(F, vxh, W, h, p, nsub):
         tj = ball(hA * j / nsub, hA * (j + 1) / nsub)
         tp = ball(0, (hA * (j + 1) / nsub) ** (p + 1))
         Wj = [horner(vxh[i][:p + 1], tj) + tp * vW[i][p + 1] for i in range(5)]
-        Wj = [Wj[i].intersection(W[i]) for i in range(5)] + [W[5]]
+        Wj = [Wj[i].intersection(W[i]) for i in range(5)] + list(W[5:])
         vj = F.vals(Wj, p + 1)
         for i in range(5):
             r = vj[i][p + 1]
@@ -203,8 +204,9 @@ def step(F, X, h, p, vx=None, tol=None):
     if vx is None:
         vx = F.vals(X.xbar, p)
     hA = arb(h)
-    y = [horner(vx[i][:p + 1], hA) for i in range(5)] + [X.xbar[5]]
+    y = [horner(vx[i][:p + 1], hA) for i in range(5)] + list(X.xbar[5:])
     Xh = X.hull()
+    N = len(X.xbar)
     prec = ctx.prec
     ctx.prec = F.prec_aux
     try:
@@ -225,7 +227,7 @@ def step(F, X, h, p, vx=None, tol=None):
                 J[i, m] = horner([g[i][k][m] for k in range(p + 1)], hA)
     finally:
         ctx.prec = prec
-    y = [y[i] + Rem[i] for i in range(5)] + [y[5]]
+    y = [y[i] + Rem[i] for i in range(5)] + y[5:]
     xbar2 = [arb(v.mid()) for v in y]
     JC = J * X.C
     C2 = mid_mat(JC)
@@ -263,7 +265,7 @@ def step_range(F, Xh, W, h, p, M, shift):
         vW = F.vals(W, p + 1)
     finally:
         ctx.prec = prec
-    rem = [vW[i][p + 1] * ball(0, arb(h) ** (p + 1)) for i in range(5)] + [arb(0)]
+    rem = [vW[i][p + 1] * ball(0, arb(h) ** (p + 1)) for i in range(5)] + [arb(0)] * (len(Xh) - 5)
     out = []
     for a in range(M.nrows()):
         co = []

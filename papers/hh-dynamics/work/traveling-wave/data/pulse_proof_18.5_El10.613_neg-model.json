@@ -6,6 +6,6 @@
  "order": 40,
  "prec": 256,
  "verdict": "FAIL",
- "reason": "the whole set escaped (u < -60 mV) at t = [4.1031591 +/- 2.97e-8], before T_enter",
- "secs": 389
+ "reason": "the whole set escaped (u < -60 mV) at t = [6.7251911 +/- 1.64e-8], before T_enter",
+ "secs": 602
 }

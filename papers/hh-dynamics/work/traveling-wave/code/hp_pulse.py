@@ -14,7 +14,12 @@ which moves K by about that over dz1/dK(t_end), about 1e-50 at t_end = 10 ms. Ne
 the pieces from the jets; later iterations reuse it (chord method) while the residual keeps shrinking.
 
 Output: data/hp_pulse_<T>.json (K*, the node states, the unstable coordinate history) and a log.
-Usage: python3 hp_pulse.py [T] [t_end] [tolerance scale, default 1; a run at 1e-6 checks the discretization]
+Usage: python3 hp_pulse.py [T] [t_end] [tolerance scale, default 1]
+Each iteration is saved to data/logs/hp_pulse_<T>_state_<scale>.json, and a run resumes from that file. A run stops
+after 12 iterations; if |dK| has not fallen below 1e-60 by then it exits with status 3 and writes no output, and the
+same command resumes it. A run with a scale below 1 (1e-8 at 6.3 C, where the tolerance schedule written for the
+growth at 18.5 C is too loose: see REPORT 4.7) starts from the converged state of the scale-1 run with new step
+sequences, keeps the scale-1 output as data/hp_pulse_<T>_tol1.json and writes its own to data/hp_pulse_<T>.json.
 """
 import json
 import math
@@ -203,12 +208,21 @@ def main():
     TOLSCALE = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
     state_file = '../data/logs/hp_pulse_%s_state_%s.json' % (C.tag(T), TOLSCALE)
     import os
+    seed_file = '../data/logs/hp_pulse_%s_state_%s.json' % (C.tag(T), 1.0)
     if os.path.exists(state_file):
         st = json.load(open(state_file))
         K = arb(st['K'])
         Y = [[arb(c) for c in row] for row in st['Y']]
         stepseq = st['steps']
         say('resumed from %s' % state_file)
+    elif TOLSCALE < 1.0:
+        if not os.path.exists('../data/hp_pulse_%s.json' % C.tag(T)):
+            sys.exit('run the scale-1 computation to convergence first')
+        st = json.load(open(seed_file))
+        K = arb(st['K'])
+        Y = [[arb(c) for c in row] for row in st['Y']]
+        say('started from the converged scale-1 state %s, new step sequences' % seed_file)
+    converged = False
     for it in range(12):
         t0 = time.time()
         full = Jcache is None
@@ -267,7 +281,11 @@ def main():
         if (len(rhist) >= 2 and rhist[-1] > 0.1 * rhist[-2]) or it == 2:
             Jcache = None                                   # refresh once after two chord steps, or on a stall
         if abs(float(dKn.mid())) < 1e-60:
+            converged = True
             break
+    if not converged:
+        say('not converged after 12 iterations; run the same command again to resume')
+        sys.exit(3)
     # history of the unstable coordinate along the final orbit at the nodes
     out = {'T': T, 't_end': t_end, 'K': K.str(70, radius=False), 'sigma0': SIGMA0, 'NP': NP, 'order': P_ORD,
            'prec': ctx.prec, 'nodes_profile_time': nodes, 'residual_history': rhist,
@@ -275,8 +293,12 @@ def main():
            'p0': [c.str(70, radius=False) for c in p0], 'lambda_u': lam.str(40, radius=False)}
     out['tol_scale'] = TOLSCALE
     out['steps_per_piece'] = [len(q) for q in stepseq]
-    json.dump(out, open('../data/hp_pulse_%s%s.json' % (C.tag(T), '' if TOLSCALE == 1.0 else '_tol%g' % TOLSCALE), 'w'),
-              indent=1)
+    target = '../data/hp_pulse_%s.json' % C.tag(T)
+    if TOLSCALE < 1.0:
+        os.replace(target, '../data/hp_pulse_%s_tol1.json' % C.tag(T))
+    elif TOLSCALE > 1.0:
+        target = '../data/hp_pulse_%s_tol%g.json' % (C.tag(T), TOLSCALE)
+    json.dump(out, open(target, 'w'), indent=1)
     say('K* = %s' % K.str(60, radius=False))
 
 

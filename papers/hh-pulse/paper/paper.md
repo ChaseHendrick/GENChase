@@ -84,16 +84,25 @@ fractions of `papers/hh-dynamics/work/traveling-wave/data/pulse_proof_18.5_El10.
 the system of Section 2 has a pulse. It leaves rest along the branch of the unstable manifold on which u increases,
 and max u > 90.58 mV. The corresponding speed lies in
 
-    (18.731888247880483540468313433296243876955750772, 18.731888247880483540468313433296243876955750776) m/s.
+    (18.73188824788048354046831343329624387695575077276, 18.73188824788048354046831343329624387695575077548) m/s.
 
-**Theorem 2 (6.3 C).** [Computer-assisted.] *(Pending: the 6.3 C computation with the printed leak potential is running; this theorem is not claimed until it passes.)*
+**Theorem 2 (6.3 C).** [Computer-assisted.] Let T = 6.3 C. For some K* in (K1, K2), with K1 and K2 the exact binary
+fractions of `data/pulse_proof_6.3_El10.613_config.json`,
+
+    K1 = 4.51063243827085102104174385842888070411449431302344897921140063822623...,   K2 - K1 = 2.800e-61,
+
+the system of Section 2 has a pulse, and max u > 102.98 mV. The corresponding speed lies in
+
+    (12.313756720162298508179797283771499327244899734708115548799408270,
+     12.313756720162298508179797283771499327244899734708115548799408655) m/s.
 
 **Remark 1 (the zero-current leak potential).** [Computer-assisted.] With E_l = 10.5989209693916785... (the value
 that makes the resting current zero at u = 0) Theorem 1 holds with K2 - K1 = 3e-45 and the speed in
-(18.732160814388902113775385154028169368017733735, 18.732160814388902113775385154028169368017733739) m/s.
+(18.73216081438890211377538515402816936801773373586, 18.73216081438890211377538515402816936801773373858) m/s.
 
 **Remark 2 (numerical, not proved).** High-precision multiple shooting gives K* = 10.43805106010112369227648623831857
-912185866977197832623... at 18.5 C (printed E_l), which Theorem 1 confirms to 45 digits, and (pending) at 6.3 C.
+912185866977197832623... at 18.5 C and K* = 4.510632438270851021041743858428880704114494313023448979211400... at
+6.3 C (printed E_l), which Theorems 1 and 2 confirm to 45 and 61 digits.
 Hodgkin and Huxley's K = 10.47 /ms is 0.3 per cent higher; their 18.8 m/s is our 18.73 rounded after a hand
 integration. The measured speed in that fibre was 21.2 m/s.
 
@@ -177,10 +186,24 @@ Table: stages at 18.5 C (printed E_l), one process at a time, 256 bits, order 40
 | K1 (H5) | enters K- at 13.6875 ms, path in int B0 | 570 s |
 | K2 (H5) | enters K+ at 13.6875 ms, path in int B0 | 561 s |
 | negative control: K interval shifted by 40 half-widths | zeta_1 about 13 at T_enter, outside B0: fails, as it must | 566 s |
-| negative control: alpha_m times (1 + 1e-12 u^2) | the whole set escapes below u = -60 mV at 6.73 ms: fails, as it must | 389 s |
+| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 6.72 ms: fails, as it must | 602 s |
 | negative controls in setup | a bracket above lambda_u; Lemma B faces 100 times thinner; B0 with radius x 1.5: all rejected | seconds |
 
-*(6.3 C: pending.)*
+Table: the same at 6.3 C (printed E_l).
+
+| stage | result | CPU time |
+|---|---|---|
+| setup (H1, H2, H2', H3) | lambda_u = 4.97403...; Lemma B at r_B = 1e-32; z1' > 0 on the exit face; B0 certified on 3590 + 1374 cells | seconds |
+| interval (H4) | at T_enter = 36.125 ms: zeta_1 in [-0.273, 0.273], abs(zeta_s) <= 0.4563 < 0.6 | 1237 s |
+| K1 (H5) | enters K- at 36.2578125 ms, path in int B0 | 1279 s |
+| K2 (H5) | enters K+ at 36.234375 ms, path in int B0 | 1293 s |
+| negative control: K interval shifted by 40 half-widths | zeta_1 about 10 at T_enter, outside B0: fails, as it must | 1276 s |
+| negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 17.20 ms: fails, as it must | 1298 s |
+| negative controls in setup | as at 18.5 C: all rejected | seconds |
+
+At 6.3 C the numerical centre had to be computed with a local error budget 1e-8 times tighter than at 18.5 C: the
+budget is written for the growth rate at 18.5 C, and with the looser one K* was off by about 5e-59, which the
+interval run detected (zeta_1 = -86 at T_enter, outside B0).
 
 **Independent re-check of (H3).** `block_check_iv.py` is a separate program: mpmath interval arithmetic at 113 bits,
 the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test, and its
