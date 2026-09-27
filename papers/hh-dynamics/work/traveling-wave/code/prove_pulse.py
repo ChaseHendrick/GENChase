@@ -332,6 +332,11 @@ def run_stage(T, stage):
         if wid > 1e3 or not all(x.is_finite() for x in hx):
             state['phase'] = 'blew_up'
             return True
+        if hx[0] < -60 or hx[0] > 150:        # the whole set has escaped, as in prove_bracket.py
+            state['phase'] = 'escaped'
+            state['escape'] = 'u < -60 mV' if hx[0] < -60 else 'u > 150 mV'
+            state['t_escape'] = float(t.mid())
+            return True
         if state['phase'] == 'inside':
             zr = L.step_range(F, Xh, W, arb((t - tp).upper()), ORDER, S.M6, S.shift6)
             if not S.in_int_B0(zr):
@@ -359,6 +364,9 @@ def run_stage(T, stage):
         if state['phase'] == 'blew_up':
             log['verdict'] = 'FAIL'
             log['reason'] = 'the set blew up at t = %s' % t.str(8)
+        elif state['phase'] == 'escaped':
+            log['verdict'] = 'FAIL'
+            log['reason'] = 'the whole set escaped (%s) at t = %s, before T_enter' % (state['escape'], t.str(8))
         else:
             require(bool(t == arb(S.T_enter)), 'did not reach T_enter exactly')
             z = S.zeta(X)
@@ -377,7 +385,9 @@ def run_stage(T, stage):
             else:
                 log['verdict'] = 'PASS' if inB else 'FAIL'
     if state['phase'] in ('inside',):
-        X, t, ns = L.integrate(F, X, t0 + 20.0, ORDER, cfg['tol_final'], hmax=0.0625, t0=t0, callback=cb)
+        # short steps after T_enter: zeta_1 grows by about exp(lambda_u h) per step, which must not carry the set past
+        # |zeta_1| = r between two checks of the cone (the path check would then fail, safely but uselessly)
+        X, t, ns = L.integrate(F, X, t0 + 20.0, ORDER, cfg['tol_final'], hmax=2.0 ** -7, t0=t0, callback=cb)
         log['phase2'] = state['phase']
         if state['phase'] == 'in_cone':
             log['t_cone'] = state['t_cone']
@@ -410,6 +420,17 @@ def stage_summary(T):
         ok = ok and good
         lines.append('%-10s %s (%s)' % (st, 'as expected' if good else 'NOT AS EXPECTED',
                                         ('passed' if v else 'failed') + (', a negative control' if not e else '')))
+    ctx.prec = PREC
+    cfg = json.load(open(cfg_path(T)))
+    K1, K2 = deser(cfg['K1']), deser(cfg['K2'])
+
+    def theta(K):
+        # theta = sqrt(K a / (2 R_2 C_M)): K in 1/ms, a = 0.0238 cm, R_2 = 35.4 ohm cm, C_M = 1e-6 F/cm^2; in m/s
+        return (K * 1000 * arb('0.0238') / (2 * arb('35.4') * arb('1e-6'))).sqrt() / 100
+    lines.append('K1 = %s /ms, K2 = %s /ms (K2 - K1 = %s)' % (cfg['K1_dec'][:60], cfg['K2_dec'][:60],
+                                                           (K2 - K1).str(5)))
+    lines.append('speed theta in (%s, %s) m/s for a = 238 um, R_2 = 35.4 ohm cm, C_M = 1 uF/cm^2' % (
+        theta(K1).str(55, radius=False), theta(K2).str(55, radius=False)))
     lines.append('ALL CHECKS PASSED' if ok else 'SOME CHECK FAILED')
     print('\n'.join(lines))
     open('%s/pulse_proof_%s_summary.txt' % (DATA, T), 'w').write('\n'.join(lines) + '\n')

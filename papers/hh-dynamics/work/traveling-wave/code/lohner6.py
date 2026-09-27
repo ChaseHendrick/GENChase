@@ -152,8 +152,54 @@ def rough_enclosure(F, Xh, vx, h, tries=10):
     return None
 
 
-def step(F, X, h, p, vx=None):
-    """One step; returns (new set, W, Xh). vx: Taylor coefficients at xbar (working precision), if already known."""
+def refine_enclosure(F, vxh, W, h, qs=(3, 6, 12)):
+    """Tighter enclosures of the solutions from the hull [X] on [0, h], given a valid one W (all at the current
+    precision). By Taylor's theorem with the Lagrange remainder, for t in [0, h] and each component,
+    x(t) = sum_{k<=q} x_k(x0) t^k + x_{q+1}(x(xi)) t^(q+1) with x(xi) in W, so
+    x(t) in sum_{k<=q} x_k([X]) [0, h]^k + [0, h^(q+1)] x_{q+1}(W); intersected with W it is again valid.
+    vxh: Taylor coefficients over the hull [X]."""
+    hint = ball(0, h)
+    for q in qs:
+        vq = F.vals(W, q + 1)
+        tq = ball(0, arb(h) ** (q + 1))
+        Wn = []
+        for i in range(5):
+            w = horner(vxh[i][:q + 1], hint) + tq * vq[i][q + 1]
+            wi = w.intersection(W[i])
+            if not wi.is_finite():
+                wi = W[i]
+            Wn.append(wi)
+        W = Wn + [W[5]]
+    return W
+
+
+def remainder(F, vxh, W, h, p, nsub):
+    """Rem_i = h^(p+1) x_{i,p+1}(x(xi_i)), xi_i in [0, h], enclosed over nsub subintervals [t_j, t_j+1] of [0, h]:
+    there x(t) lies in W_j = sum_{k<=p} x_k([X]) [t_j, t_j+1]^k + [0, t_j+1^(p+1)] x_{p+1}(W) (Taylor's theorem again),
+    and x(xi_i) lies in the union of the W_j."""
+    hA = arb(h)
+    vW = F.vals(W, p + 1)
+    Rem = [None] * 5
+    for j in range(nsub):
+        tj = ball(hA * j / nsub, hA * (j + 1) / nsub)
+        tp = ball(0, (hA * (j + 1) / nsub) ** (p + 1))
+        Wj = [horner(vxh[i][:p + 1], tj) + tp * vW[i][p + 1] for i in range(5)]
+        Wj = [Wj[i].intersection(W[i]) for i in range(5)] + [W[5]]
+        vj = F.vals(Wj, p + 1)
+        for i in range(5):
+            r = vj[i][p + 1]
+            Rem[i] = r if Rem[i] is None else Rem[i].union(r)
+    return [Rem[i] * hA ** (p + 1) for i in range(5)]
+
+
+REM_FACTOR = 1e3     # a step whose enclosed remainder exceeds REM_FACTOR * tol is rejected (and h halved)
+NSUB = 4
+
+
+def step(F, X, h, p, vx=None, tol=None):
+    """One step; returns (new set, W, Xh), W an enclosure of the solutions from Xh on [0, h]. vx: Taylor coefficients
+    at xbar (working precision), if already known. tol: if given, the step is rejected (StepFailure) when the enclosed
+    remainder exceeds REM_FACTOR * tol; this only affects the step size, never the validity."""
     if vx is None:
         vx = F.vals(X.xbar, p)
     hA = arb(h)
@@ -166,11 +212,13 @@ def step(F, X, h, p, vx=None):
         if W is None:
             raise StepFailure('a priori enclosure')
         try:
-            vW = F.vals(W, p + 1)
-            _, g = F.jet(Xh, p)
+            vxh, g = F.jet(Xh, p)
+            W = refine_enclosure(F, vxh, W, h)
+            Rem = remainder(F, vxh, W, h, p, NSUB)
         except (ArithmeticError, ZeroDivisionError, ValueError):
             raise StepFailure('remainder or jet')
-        Rem = [vW[i][p + 1] * hA ** (p + 1) for i in range(5)]
+        if tol is not None and max(float(arb(r.abs_upper())) for r in Rem) > REM_FACTOR * tol:
+            raise StepFailure('remainder too large')
         J = arb_mat(N, N)
         for i in range(N):
             for m in range(N):
@@ -246,7 +294,7 @@ def integrate(F, X, T_end, p, tol, hmax=0.25, t0=0.0, callback=None, max_steps=1
             vx = vx
         while True:
             try:
-                Xn, W, Xh = step(F, X, h, p, vx)
+                Xn, W, Xh = step(F, X, h, p, vx, tl)
                 break
             except StepFailure:
                 h /= 2

@@ -45,6 +45,7 @@ def eig_unstable(A, lam0):
     w, V = np.linalg.eig(Af)
     i = int(np.argmax(w.real))
     v = [arb(float(x)) for x in (V[:, i].real / V[0, i].real)]
+    lam = arb(float(w[i].real))                          # the float eigenvalue starts Newton (lam0 is not used)
     for _ in range(12):
         # F(v, lam) = (A - lam) v, with v[0] fixed to 1; unknowns v[1..4], lam
         r = [sum((A[a, b] * v[b] for b in range(n)), arb(0)) - lam * v[a] for a in range(n)]
@@ -147,10 +148,13 @@ def main():
     ta, tb = tp[iu - 1], tp[iu]
     ua, ub = Yp[0, iu - 1], Yp[0, iu]
     t_s = ta + (math.log(float(SIGMA0)) - math.log(ua)) / (math.log(ub) - math.log(ua)) * (tb - ta)
-    # nodes: every 0.25 ms from t_s to t_end (profile time); denser pieces are not needed at 256 bits
+    # nodes: every DT ms from t_s to t_end (profile time), DT = 0.25 ms at 18.5 C and scaled by 10.89/lambda_u
+    # otherwise (about 2.7 units of unstable growth per piece)
+    lam_f = float(eig_unstable(C.jac(y, K, phi, EL), 10.0)[0].mid())
+    DT = 0.25 * 10.8923 / lam_f
     nodes = [t_s]
-    while nodes[-1] + 0.25 < t_end - 1e-9:
-        nodes.append(nodes[-1] + 0.25)
+    while nodes[-1] + DT < t_end - 1e-9:
+        nodes.append(nodes[-1] + DT)
     nodes.append(t_end)
     taus = [nodes[i + 1] - nodes[i] for i in range(len(nodes) - 1)]
     Nn = len(taus)                                   # pieces; unknown states Y_1..Y_{Nn-1}... see below
@@ -167,8 +171,8 @@ def main():
         T, t_end, Nn, SIGMA0, NP, P_ORD, ctx.prec))
 
     def tol_of(t_abs):
-        # local error budget: errors at profile time t move K by about err / S_K(t), S_K(t) ~ 200 exp(10.9 t)
-        return 1e-58 * max(1.0, 200 * math.exp(min(10.9 * t_abs, 600)))
+        # local error budget: errors at profile time t move K by about err / S_K(t), S_K(t) ~ 200 exp(lambda_u t)
+        return 1e-58 * max(1.0, 200 * math.exp(min(lam_f * t_abs, 600)))
 
     Jcache = None
     rhist = []
@@ -186,13 +190,13 @@ def main():
         t0 = time.time()
         full = Jcache is None
         A = C.jac(y, K, phi, EL)
-        lam, v, l = eig_unstable(A, 10.89)
+        lam, v, l = eig_unstable(A, lam_f)
         a = manifold(K, phi, EL, y, A, lam, v)
         p0 = p_of_sigma(a, sigma0)
         # d p0 / dK by a difference quotient (the dependence is weak: p0 moves by about sigma0 * dv/dK)
         dK = arb('1e-40')
         A2 = C.jac(y, K + dK, phi, EL)
-        lam2, v2, _ = eig_unstable(A2, 10.89)
+        lam2, v2, _ = eig_unstable(A2, lam_f)
         a2 = manifold(K + dK, phi, EL, y, A2, lam2, v2)
         dp0 = [(x2 - x1) / dK for x1, x2 in zip(p0, p_of_sigma(a2, sigma0))]
         starts = [p0] + Y
