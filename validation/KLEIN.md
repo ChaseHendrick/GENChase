@@ -1,8 +1,10 @@
 # Klein tunneling: an independent transmission check
 
-Status: **partially validated**. The check below is a separate 1D Dirac calculation.
+Status: **unvalidated**. The check below is a separate 1D Dirac calculation.
 It is not a certification of the plate. The painted field is not the Dirac evolution,
-and the number 1 at theta = 0 on the plate is assigned.
+and the number 1 at theta = 0 on the plate is assigned. The only module check
+compares the metric and the field with their own formulas, which is a regression
+test by construction. The honesty fixes to the credit, blurb, and comments stay.
 
 Reviewed against `src/modules/klein.js` on 2026-09-27. The numbers are in
 [klein-science.json](results/klein-science.json).
@@ -93,7 +95,7 @@ normal-incidence massless transmission. A mass term has to fail it.
   sits 0.019 away, which is why only N = 8192 is held to that match.
 - The plate's oblique stand-in is not checked against a Dirac transmission.
   Its phase uses the cell count, not a length in units of `1/k`.
-- No print comparison. Partial status does not claim a reviewed print domain.
+- No print comparison. Unvalidated status does not claim a reviewed print domain.
 
 ```sh
 node tools/klein-science.js --write

@@ -2511,15 +2511,15 @@
     "sourceSha256": "1d07c1199bde099a1fe85c071b49c98a45321a73006535792de938c201e9816b",
     "reference": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is not a carbon lattice and does not evolve a 2-component Dirac wave. It draws a traveling envelope through a marked barrier.",
     "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
-    "status": "partially validated",
+    "status": "unvalidated",
     "limitations": [
-      "The painted field is not the Dirac evolution. It is a traveling Gaussian envelope times a cartoon amplitude, one Float32 channel, not a time-evolved 2-component spinor.",
+      "Status is unvalidated. The painted field is not the Dirac evolution. It is a traveling Gaussian envelope times a cartoon amplitude, one Float32 channel, not a time-evolved 2-component spinor. The plate assigns T = 1 rather than measuring it.",
       "The number 1 at theta=0 on the plate is assigned in compute() when |sin theta| < 1e-3. It is not a measured transmitted-over-incident ratio. The same assignment is 1 for barrier heights and widths whose painted right-hand sum is not the left-hand sum.",
-      "The independent check is a separate 1D Dirac calculation (validation/KLEIN.md). It does not certify the plate's pixels, the oblique stand-in formula, or the print path. Promoting the plate would require evolving a 2-component spinor on the plate and measuring T from that evolution."
+      "The only check of the module compares the metric and the field with their own formulas. That is a regression test by construction. The independent Dirac calculation in validation/KLEIN.md does not execute a time-evolved plate and does not certify the pixels, the oblique stand-in, or the print path."
     ],
     "remaining": [
       "Evolve a 2-component Dirac wave inside the plate, measure T from that evolution rather than assigning it, show grid convergence, and show a mass term m>0 gives T<1 on the plate. That changes pixels and needs a recipe-version bump.",
-      "Validate the actual print path."
+      "Validate the actual print path. The credit, blurb, and comments now say the picture is a cartoon. That wording is not a validation."
     ],
     "numerical": [
       {
