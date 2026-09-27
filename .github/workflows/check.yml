@@ -54,10 +54,34 @@ jobs:
           node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
           python3 tools/release-assets.py --check
 
-  pde-complete:
-    name: complete PDE fields and prints
+  pde-plan:
+    name: PDE evidence coverage
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Check exhaustive, disjoint evidence coverage
+        run: timeout 120 node tools/pde-ci-check.js
+      - name: Plan independent evidence workers
+        id: plan
+        run: |
+          pde_matrix=$(timeout 30 node tools/pde-ci.js --matrix)
+          echo "matrix=$pde_matrix" >> "$GITHUB_OUTPUT"
+
+  pde-workers:
+    name: PDE evidence (${{ matrix.id }})
+    runs-on: ubuntu-latest
+    needs: pde-plan
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.pde-plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -66,9 +90,30 @@ jobs:
       - name: Install reviewed browser
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
-          npx playwright install --with-deps chromium
-      - name: Independent trajectories, fixed-domain convergence and every view
-        run: node tools/verify.js --print cahn ohta amb swift ks pfc
+          npx playwright install --with-deps --only-shell chromium
+      - name: Verify assigned numerical and print evidence
+        run: timeout 1080 node tools/pde-ci.js ${{ matrix.id }}
+
+  # Keep the required check's original name. A skipped, cancelled or failed worker must fail it.
+  pde-complete:
+    name: complete PDE fields and prints
+    runs-on: ubuntu-latest
+    needs: [pde-plan, pde-workers]
+    if: ${{ always() }}
+    timeout-minutes: 5
+    steps:
+      - name: Require every evidence worker to pass
+        env:
+          PLAN_RESULT: ${{ needs.pde-plan.result }}
+          WORKERS_RESULT: ${{ needs.pde-workers.result }}
+        run: |
+          timeout 30 bash -c '
+            if [[ "$PLAN_RESULT" != success || "$WORKERS_RESULT" != success ]]; then
+              echo "PDE verification incomplete: plan=$PLAN_RESULT workers=$WORKERS_RESULT"
+              exit 1
+            fi
+            echo "All PDE verification workers passed."
+          '
 
   lint:
     name: structure

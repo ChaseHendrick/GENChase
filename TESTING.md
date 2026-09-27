@@ -43,6 +43,40 @@ python3 tools/print-formats-check.py /tmp/genchase-print-check /path/to/test-cmy
 CI uses Ghostscript's test/default CMYK profile solely as a conversion fixture.
 It is not a recommended profile for a customer's printer.
 
+## Complete PDE CI
+
+The required `complete PDE fields and prints` check waits for four independent GitHub
+runners. `numerical` runs the six shorter registered tests, `fields` runs the complete
+field and print review, and `half-1` and `half-2` divide the half-float cases. The plan
+preserves all eight registered scripts, all 12 field trajectories and 31 print exports,
+and all 11 half-float tabs at 100 and 1000 steps with their four failure controls.
+Every worker checks build and validation-inventory consistency before running evidence.
+The required check fails if planning or any worker fails, is cancelled, or is skipped.
+
+The planning checks require no browser:
+
+```sh
+node tools/pde-ci-check.js
+node tools/pde-ci.js --check
+node tools/pde-ci.js --matrix
+```
+
+After installing the workflow's Playwright and Chromium versions, reproduce one worker
+with `node tools/pde-ci.js numerical`, `fields`, `half-1`, or `half-2` as its argument.
+Each worker bounds its child checks; CI also caps the worker command at 18 minutes and
+the whole worker job at 20 minutes. The original sequential command remains available:
+
+```sh
+node tools/verify.js --print cahn ohta amb swift ks pfc
+```
+
+The [measured sequential run](https://github.com/ChaseHendrick/GENChase/actions/runs/36292512890/job/108545183952)
+took 17 minutes 16 seconds overall: about 6 minutes 48 seconds for field and print review,
+9 minutes 9 seconds for half-float coverage, and 54 seconds for the remaining checks.
+Parallel workers are expected to reduce this check to roughly 7 to 8 minutes when runners
+are available. This is an estimate from those timings, not an observed parallel result;
+runner queues and machine speed can change the elapsed time.
+
 ## Diagnosing a failure
 
 Keep the failing seed, recipe version, module, browser/device, output dimensions and
