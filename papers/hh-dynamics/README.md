@@ -48,7 +48,8 @@ not prove.
     shooting argument (REPORT, Sections 4.4 and 4.5). No existence proof for the unmodified equations was found in
     the literature reached (Hastings 1976 and Carpenter 1977, the latter read in full, need artificial small
     parameters); Hastings 1976 pp. 231-257 and Foote and Chen 1981 are still unread. Checked inside the project
-    only (tests, an independent program for the block conditions, a rereading); no outside review.
+    only (tests, an independent program for the block conditions, a rereading); no outside review. With the printed
+    leak potential 10.613 mV the proof passes too (REPORT 4.6); the draft manuscript is [`papers/hh-pulse/`](../hh-pulse/).
 - Nothing here is numerical evidence presented as proof: the program prints what it proves, and its only
   non-rigorous parts are self-tests and an independent cross-check in mpmath.
 
