@@ -88,5 +88,5 @@ GENChase: the companion repository does not carry `notes/`.
   replicates, 58 with 5). `make_numbers.py` reproduces `paper/numbers.tex`, the five tables, `out/tab_grating.tex`
   and `out/numbers.json` byte for byte from the committed `out/` and from the rerun `out/`. The figures are identical
   pixel for pixel, the rebuilt PDF text is identical, and `verify_independent.py` passes all 17 checks.
-  `paper-check` passes (16 pages). The note has no companion repository yet (`companion` is null in
-  `papers/papers.json`), so `paper-sync --check` has nothing to stage; it is run when one is made.
+  `paper-check` passes (16 pages), and `paper-sync --check rank-window` passes against the companion
+  repository `ChaseHendrick/rank-window` (2026-09-27).
