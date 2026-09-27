@@ -1,5 +1,5 @@
 # common.py -- shared model definitions for the independent reimplementation (review/reimpl).
-# Written from the equations only; nothing here is taken from papers/nf-pulse/code/.
+# Written from the equations only; nothing here is taken from code/.
 # Model: Pinto-Ermentrout field, beta=20, theta=1/4, eps=1/10, gamma=0, w=e^{-|x|}/2.
 # Wave ODE (xi = x + c t, kappa = 1/c, Q = w*S(U), P = Q'):
 #   U' = kappa (Q - U - V),  V' = eps kappa U,  Q' = P,  P' = Q - S(U).

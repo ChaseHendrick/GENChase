@@ -38,6 +38,10 @@ and the polynomial embedding used for Taylor arithmetic adds Y = S(U):
 State order everywhere: x = (U, V, Q, P, Y).  All arithmetic is python-flint arb (ball arithmetic).
 """
 from flint import arb, ctx
+# Refuse python -O (or PYTHONOPTIMIZE): it removes assert statements, and some programs of this folder still use
+# assertions as gates of a proof.  Without -O this test does nothing.
+if not __debug__:
+    raise SystemExit('refusing to run under python -O (PYTHONOPTIMIZE): assertions are gates of the proofs here')
 
 # ---------------------------------------------------------------- parameters (exact rationals)
 # Stored as exact rationals and converted to arb balls at the CURRENT working precision on every

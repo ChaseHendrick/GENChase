@@ -1,0 +1,29 @@
+classical double pendulum, E = [0, 0]; 23 h-sets, 24 covering relations to check (pieces per edge 16)
+  N    => N    (shift  1): edges left->right, right->left, midline max|y| 0.023, pieces 112, unresolved 0: covers
+  N    => M0   (shift  1): edges left->right, right->left, midline max|y| 0.023, pieces 112, unresolved 0: covers
+  M0   => M1   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M1   => M2   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M2   => M3   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M3   => M4   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M4   => M5   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M5   => M6   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M6   => M7   (shift  0): edges left->left, right->right, midline max|y| 0.000, pieces 112, unresolved 0: covers
+  M7   => M8   (shift  0): edges left->left, right->right, midline max|y| 0.001, pieces 112, unresolved 0: covers
+  M8   => M9   (shift  0): edges left->left, right->right, midline max|y| 0.005, pieces 112, unresolved 0: covers
+  M9   => M10  (shift  0): edges left->left, right->right, midline max|y| 0.049, pieces 112, unresolved 0: covers
+  M10  => M11  (shift  0): edges left->left, right->right, midline max|y| 0.045, pieces 112, unresolved 0: covers
+  M11  => M12  (shift  0): edges left->left, right->right, midline max|y| 0.017, pieces 112, unresolved 0: covers
+  M12  => M13  (shift  0): edges left->left, right->right, midline max|y| 0.031, pieces 112, unresolved 0: covers
+  M13  => M14  (shift  0): edges left->left, right->right, midline max|y| 0.034, pieces 112, unresolved 0: covers
+  M14  => M15  (shift  0): edges left->left, right->right, midline max|y| 0.049, pieces 112, unresolved 0: covers
+  M15  => M16  (shift  0): edges left->left, right->right, midline max|y| 0.062, pieces 112, unresolved 0: covers
+  M16  => M17  (shift  0): edges left->left, right->right, midline max|y| 0.089, pieces 112, unresolved 0: covers
+  M17  => M18  (shift  0): edges left->left, right->right, midline max|y| 0.116, pieces 112, unresolved 0: covers
+  M18  => M19  (shift  1): edges left->left, right->right, midline max|y| 0.165, pieces 112, unresolved 0: covers
+  M19  => M20  (shift  1): edges left->left, right->right, midline max|y| 0.217, pieces 112, unresolved 0: covers
+  M20  => M21  (shift  1): edges left->left, right->right, midline max|y| 0.297, pieces 112, unresolved 0: covers
+  M21  => N    (shift 19): edges left->left, right->right, midline max|y| 0.503, pieces 112, unresolved 0: covers
+pairwise disjointness of the 23 h-sets on the cylinder: yes
+transition graph from the 24 verified relations: min_i (A v)_i / v_i >= 1.106950245015 for a positive v, so the spectral radius is at least that: yes
+  h_top(P) >= log r >= 0.101608705 per return; return time <= 7.355385354, so h_top(flow) >= 0.013814190 per unit time
+RESULT: ALL COVERING RELATIONS VERIFIED

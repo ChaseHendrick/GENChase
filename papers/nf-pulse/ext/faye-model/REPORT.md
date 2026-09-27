@@ -1,6 +1,6 @@
 # A travelling pulse in Faye's neural field with synaptic depression: a computer-assisted proof at fixed eps
 
-Extension of `papers/nf-pulse/` (the Pinto-Ermentrout proof) to the second model. Work in progress, **not independently
+Extension of the base proof in `code/` (the Pinto-Ermentrout proof) to the second model. Work in progress, **not independently
 reviewed**; see "Check" below for the adversarial reading that was done.
 
 ## Outcome
@@ -110,9 +110,9 @@ state has a one-dimensional unstable and a three-dimensional stable manifold**, 
 
 The small eigenvalue is the slow recovery of q (about -eps k (1 + beta S(u0))): it is what makes small eps expensive.
 
-## 3. The proof, adapted from `papers/nf-pulse/`
+## 3. The proof, adapted from the base proof in `code/`
 
-The argument and most of the code are those of `papers/nf-pulse/`; what changed is the model, the manifold tail bound,
+The argument and most of the code are those of the base proof in `code/`; what changed is the model, the manifold tail bound,
 the Taylor recursion and its gradients, and the block.
 
 1. **Unstable manifold** (`manifold.py`). Parametrisation method: P(t) = sum a_n t^n with mu t P'(t) = F(P(t)), in the
@@ -129,7 +129,7 @@ the Taylor recursion and its gradients, and the block.
    coefficient is integrable as xi -> -infinity (u' decays exponentially there), and G -> 0 backward, so G = 0: the
    orbit lies on the invariant surface Y = S(u) and projects to the one-dimensional unstable manifold of rest in the 4D
    system (unique, since the unstable eigenvalue is simple), on the branch where u increases.
-2. **Integration** (`lohner.py`): the C^0-Lohner interval Taylor integrator of `papers/nf-pulse/code/lohner.py`, with
+2. **Integration** (`lohner.py`): the C^0-Lohner interval Taylor integrator of `code/lohner.py`, with
    the Taylor recursion of this model and its forward-mode gradients (tested against finite differences in
    `test_jacobian.py`, and the whole integrator against mpmath's `odefun` on the original 4D system in `test_lohner.py`).
 3. **Block** (`block.py`). Around rest, coordinates y = T (x - x*), L = y1^2 - |y'|^2, B = {|y1| <= r, |y'| <= rho},
@@ -313,7 +313,7 @@ were fixed in this report.
 
 ## 9. Rerun
 
-From `papers/nf-pulse/ext/faye-model/code/` (Python 3.11, `python3 -m pip install -r ../../../code/requirements.txt`):
+From `ext/faye-model/code/` (Python 3.11, `python3 -m pip install -r ../../../code/requirements.txt`):
 
     sh run_all.sh 1/20        # about 3 minutes (mostly the mpmath reference in the integrator test)
     sh run_all.sh 1/50        # about 4 minutes on 4 cores (about 5 serially)

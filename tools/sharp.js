@@ -19,6 +19,10 @@
 //
 // Soft means edge below 0.8 AND acuity below 0.15. That is a field a few hundred cells across smeared
 // over two thousand pixels, and on paper at 24 inches it reads as a mistake.
+//
+// Differences are sampled at every pixel, stride 1 on both axes. A stride of 2 from an even offset
+// never crosses the edge of a nearest-neighbor block of even size, so that plate scores as featureless.
+// node tools/sharp-sampling-check.js guards the stride on a synthetic plate, with no browser.
 const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
@@ -93,8 +97,8 @@ const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorke
     for (let i = 0; i < S * S; i++) L[i] = 0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2];
     const diffs = k => {
       const out = [];
-      for (let y = 0; y < S; y += 2) for (let x = 0; x + k < S; x += 2) out.push(Math.abs(L[y * S + x + k] - L[y * S + x]));
-      for (let y = 0; y + k < S; y += 2) for (let x = 0; x < S; x += 2) out.push(Math.abs(L[(y + k) * S + x] - L[y * S + x]));
+      for (let y = 0; y < S; y += 1) for (let x = 0; x + k < S; x += 1) out.push(Math.abs(L[y * S + x + k] - L[y * S + x]));
+      for (let y = 0; y + k < S; y += 1) for (let x = 0; x < S; x += 1) out.push(Math.abs(L[(y + k) * S + x] - L[y * S + x]));
       return out;
     };
     const m = {};

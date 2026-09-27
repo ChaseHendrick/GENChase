@@ -1,0 +1,106 @@
+{
+  "pass": true,
+  "source": "src/modules/exceptional.js",
+  "sourceSha256": "aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6",
+  "harnessSha256": "83ec07ade7f35b75c9bfce653aafbbc5512a827c1fa252bf2c7df7c23e525d4c",
+  "command": "node tools/exceptional-print-state.js --write",
+  "scope": "Actual exceptional exportPNG at 2400 longest edge for the ep fixture (1:1, 2400x2400, gamma = kappa = 1, sheet) and the broken fixture (4:5, 1920x2400, gamma 1.6, kappa 0.8, sheet). Exact Float32 field words, dimer splitting, gamma/kappa, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+  "criteria": "Zero changed or nonfinite field words; metric, extra, settings, cells and buffer unchanged across export; exact requested PNG dimensions and blobs larger than 1000 bytes; luminance spread greater than 12/255; wrong width and a deliberate post-export field-plus-metric mutation rejected by the same predicate.",
+  "rows": [
+    {
+      "fixture": "ep",
+      "cells": [
+        160,
+        160
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "splitting": 0,
+      "gammaOverKappa": 1,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 152387,
+        "splitting": 0,
+        "gammaOverKappa": 1,
+        "cells": [
+          160,
+          160
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 25600,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 230.41819999999998,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    },
+    {
+      "fixture": "broken",
+      "cells": [
+        160,
+        200
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "splitting": 2.771281292110204,
+      "gammaOverKappa": 2,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 148102,
+        "splitting": 2.771281292110204,
+        "gammaOverKappa": 2,
+        "cells": [
+          160,
+          200
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 230.41819999999998,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions only. Does not establish calibrated color, the modes schematic, the gap plot, printed numerical resolution beyond the recorded grid, or a laboratory exceptional point. The sheet eigenvalue comparison is tools/exceptional-science.js."
+}

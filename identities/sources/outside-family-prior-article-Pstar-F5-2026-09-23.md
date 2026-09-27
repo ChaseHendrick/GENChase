@@ -2,7 +2,7 @@
 
 **Date.** 2026-09-23 (America/New_York).  
 **Repo.** ChaseHendrick/GENChase.  
-**Requested by.** Project Manager (Sharpie priority): look **outside** classical families.  
+**Requested by.** Project Manager (priority set by Chase Hendrick): look **outside** classical families.  
 **Do not edit** `IDENTITIES.md`. No copyrighted PDF commits. No bot merge.
 
 **Targets (proved candidates; priority unconfirmed):**
@@ -89,7 +89,7 @@ would flip the corresponding row to **KILLED** (priority only; algebra remains a
 
 ---
 
-## One-paragraph status (for PM / Sharpie)
+## One-paragraph status (for PM / Chase Hendrick)
 
 Outside classical Aref / O’Neil / Koiller, a 2026-09-23 web + OA + arXiv needle hunt found **no** independent derivation or known closed form that scoops or kills P⋆ ≈ 2.203855 or F₅ = √31682/80. Nearby RE-energy products, five-vortex classification papers, and collapse-kinematics surveys are adjacent but do not match these floors. **Verdict: STILL OPEN; priority still unconfirmed.** No `IDENTITIES.md` edit; no bot merge.
 

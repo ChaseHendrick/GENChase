@@ -1,7 +1,7 @@
 # The fast pulse at Pinto and Ermentrout's own firing rate (gain-12 extension)
 
 **Chase Hendrick**, drafted in this repository by the owner's decision of 2026-09-26, as an extension of
-`papers/nf-pulse/` (see "Independent check" below for what an adversarial subagent did and did not check).
+the base proof in `code/` (see "Independent check" below for what an adversarial subagent did and did not check).
 This folder changes nothing outside itself.
 
 ## Outcome
@@ -9,7 +9,7 @@ This folder changes nothing outside itself.
 **Proved by computer (ball arithmetic), not yet reviewed:** the fast travelling pulse exists at logistic gain 12,
 which is Pinto and Ermentrout's (1 + tanh(6(u - theta)))/2, with theta = 1/4, eps = 3/20, feedback decay 0 and the
 kernel e^(-|x|)/2. The speed is enclosed in an interval of width 10^-25. At this point the rest state is a
-saddle-focus (a complex pair of stable eigenvalues), so the isolating block of `papers/nf-pulse/` had to be
+saddle-focus (a complex pair of stable eigenvalues), so the isolating block of the base proof in `code/` had to be
 generalised; that generalisation, and one more obstacle that was not the complex eigenvalues, are described below.
 
 ## Theorem (computer-assisted)
@@ -51,7 +51,7 @@ https://sites.pitt.edu/~phase/bard/pubs/siap62a.pdf (read in full through the ap
 - **What "gain" means here.** (1 + tanh(z))/2 = 1/(1 + e^(-2z)), so the tanh gain 6 is the logistic gain 12:
   S(u) = 1/(1 + e^(-12(u - theta))). Its maximal slope is S'(theta) = 12/4 = 3. As printed, L has slope 6 on its linear
   piece, so the two slopes differ by a factor 2 despite "the same linear slope"; a logistic with maximal slope 6 would
-  have gain 24. We take the formula as printed (tanh gain 6, logistic gain 12); the gain-20 proof of `papers/nf-pulse/`
+  have gain 24. We take the formula as printed (tanh gain 6, logistic gain 12); the gain-20 proof of `code/`
   sits between the two readings.
 - Pulse figures. Sect. 3.1 takes "the decay of negative feedback is weak (i.e., β = 0)" with the Heaviside rate, "Note
   that, in the following calculations, we need not assume ϵ is small", and "we consider the case in which
@@ -150,11 +150,11 @@ so there is xi2 with x_c([45, xi2]) in the interior of B and y_c(xi2) in the ope
 of the manifold point and of the flow keeps both for nearby c. c1 is in A- and c2 in A+, and [c1, c2] is connected, so
 some c is in neither. By (e) its orbit stays in B for all xi >= 45 and tends to x*; as xi -> -infinity it tends to x*
 along the unstable manifold. It is nonconstant (it leaves along the unstable eigenvector with U increasing, sigma > 0).
-The reduction from this homoclinic orbit of the wave ODE to a travelling pulse is that of `papers/nf-pulse/README.md`
+The reduction from this homoclinic orbit of the wave ODE to a travelling pulse is that of `README.md`
 (a bounded Q is unique); the 5D polynomial embedding Y = S(U) used by the integrator is exact on the invariant surface,
 on which the unstable manifold lies.
 
-Inherited and still owed as written proofs (as for the gain-20 proof, `papers/nf-pulse/README.md`): the tail bound of
+Inherited and still owed as written proofs (as for the gain-20 proof, `README.md`): the tail bound of
 the unstable manifold, the continuous dependence of the parametrised manifold point on c, and the reduction to the
 wave ODE.
 
@@ -202,7 +202,7 @@ and check every quotation against the author copy.
 What it did and found (its report, condensed):
 
 - Rerun from a copy: all 21 checks of the chain at that time passed; each negative control failed for the stated
-  reason; T identical to the stored one; `lohner.py`, `manifold.py`, `shoot_hp.py` byte-identical to the gain-20 code.
+  reason; T identical to the stored one; `lohner.py`, `manifold.py`, `shoot_hp.py` byte-identical to the gain-20 code. (Note of 2026-09-27: that was true when this check ran; the base `code/manifold.py` has since replaced its assertions by explicit checks and fixed sigma = 1/7, so this copy now equals the base file at commit 3e2000a, and `choose_sigma` gives 1/7 here too, as `data/manifold_validation.json` records. `code/run_all.sh` now clears every NF_* variable, so NF_BETA and NF_EPS cannot change a run of the check script.)
 - Independent recomputation (own code, no repository imports): the eigenvalues by the Krawczyk test in mpmath.iv for
   kappa in [1/c2, 1/c1] (unique roots lu, l1 and a +- i w, agreeing with `data/rest_certificate.json`); the identity
   (1 + tanh 6z)/2 = 1/(1 + e^(-12z)); and its own order-60 Taylor integrator at 80 digits (S by its exponential series,
@@ -245,11 +245,11 @@ still owed.
 
 ## Rerun
 
-From the repository root, with the pinned requirements (`python3 -m pip install -r papers/nf-pulse/ext/gain-12/code/requirements.txt`):
+From the paper's folder, with the pinned requirements (`python3 -m pip install -r ext/gain-12/code/requirements.txt`):
 
 ```
-sh papers/nf-pulse/ext/gain-12/code/run_all.sh                              # 23 checks, about 2 min on 4 cores
-cd papers/nf-pulse/ext/gain-12/code
+sh ext/gain-12/code/run_all.sh                              # 23 checks, about 2 min on 4 cores
+cd ext/gain-12/code
 python3 test_lohner.py; python3 test_lohner2.py prod                       # longer tests, a few minutes
 python3 shoot_first_return.py 256 bisect 88 1.0475374977 1.0475374979     # numerical speed, about 80 s
 python3 shoot_hp.py 256 88 1.0 1.05                                         # the escape-classifier switch, about 2 min
@@ -260,13 +260,13 @@ The summary is in `data/run_all.txt`, the certificates in `data/*.json`; full lo
 
 ## Files
 
-`code/` is a copy of `papers/nf-pulse/code/` with these changes: `nfcore.py` (parameters beta = 12, eps = 3/20; the
+`ext/gain-12/code/` is a copy of the base `code/` with these changes: `nfcore.py` (parameters beta = 12, eps = 3/20; the
 environment variables NF_BETA and NF_EPS override them for exploration only, and every certificate records the values
 it ran with), `bracket.py` (new), `certify_rest.py` (complex pair, R5), `block.py` (real Jordan form, Lyapunov form,
 sharp entrance test, controls), `block_check_iv.py` (generalised), `prove_pulse.py` (block |U| <= 0.02, entry at
 xi = 45, interval negative control), `shoot_first_return.py` and `check_ends_hp.py` (new, numerical), `test_decisions.py` (new), the
 tests (parameters). `RESEARCH.md` is not updated, because this task was confined to this folder; the ledger entry
-of 2026-09-26 for `papers/nf-pulse/` covers the prior-art search, and no literature search on Shilnikov orbits in
+of 2026-09-26 for the paper's folder covers the prior-art search, and no literature search on Shilnikov orbits in
 neural fields was made for this report. `lohner.py`, `manifold.py` and `shoot_hp.py` are unchanged.
 
-License: Apache-2.0, as `papers/nf-pulse/` (see its NOTICE).
+License: Apache-2.0, as the rest of the paper's folder (see its NOTICE).

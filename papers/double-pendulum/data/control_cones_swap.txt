@@ -1,0 +1,19 @@
+cones: coupled double pendulum, E = [0, 0], N0 = centre + A([-4e-08, 4e-08] x [-4e-08, 4e-08]), alpha = 0.001, 100 sub-boxes
+NEGATIVE CONTROL: columns of A exchanged, square box (graphs over the stable direction)
+stage 1 (Krawczyk, K compared with inward-rounded bounds of B, rho = 1e-09):
+  K = ([-1.7898326464478453e-12, 1.7898490340875881e-12], [-1.4623730924803009, -1.4623730924794167])
+  K in int B: yes; G(K) in int B: yes
+  zeta_p in ([-1.6887802253569673e-12, 1.6857717884458407e-12], [-1.6857632146822439e-12, 1.688788799120556e-12])
+hull of A^-1 Df A over N0:
+  M11 in [-0.28419851531892487, -0.28318289812788339]
+  M12 in [-0.0005078516540644451, 0.00050785185916560338]
+  M21 in [-0.00050795160894501201, 0.00050795143362392103]
+  M22 in [-3.5254736656497676, -3.5244576577810092]
+  m11 >= 0.283182898, m12 <= 0.000507851859, m21 <= 0.000507951609, |det| <= delta = 1.00193464
+  mu_h = m11 - alpha m12 >= 0.28318239 (lower bound, rounded down)
+FAIL: (C4) mu_h > 1
+  kappa = delta / mu_h <= 3.53812481
+  theta = delta / mu_h^2 <= 12.4941555
+FAIL: (C4) kappa < 1
+FAIL: (C4) theta < 1
+RESULT: FAIL (3)

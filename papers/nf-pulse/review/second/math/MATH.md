@@ -1,6 +1,6 @@
 # Adversarial reading of the mathematics: nf-pulse (2026-09-26)
 
-Scope: the computer-assisted proof in `papers/nf-pulse/code/` of a fast travelling pulse of the Pinto-Ermentrout
+Scope: the computer-assisted proof in `code/` of a fast travelling pulse of the Pinto-Ermentrout
 field at beta = 20, theta = 1/4, eps = 1/10, gamma = 0, with c in (c1, c1 + 1e-25). I read `README.md`,
 `notes/QUALITY.md` and every file in `code/`. I ran `run_all.sh` on a copy under the scratch directory (all 15 lines
 OK, 8 s) and nothing in `code/` or `data/` was modified. The review scripts in this folder:

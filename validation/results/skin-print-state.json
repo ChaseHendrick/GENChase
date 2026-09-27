@@ -1,0 +1,59 @@
+{
+  "pass": true,
+  "source": "src/modules/skin.js",
+  "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
+  "harnessSha256": "fee323619d6a472fe6b226857ef6de169967368d22e9212d26aa11b63e207b0d",
+  "command": "node tools/skin-print-state.js --write",
+  "scope": "Actual skin exportPNG at 2400 longest edge for one open clean chain: grid 96, aspect 4:5, g=0.08, disorder 0, bc open, log view (1920x2400). Exact Float32 amp words, skin weight, IPR, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+  "criteria": "Zero changed/nonfinite amp words; skin weight, IPR, settings, cells and buffer unchanged across export; exact requested PNG dimensions and >1000-byte blob; luminance spread >12/255; wrong dimensions and deliberate post-export amp+skinW mutation rejected.",
+  "rows": [
+    {
+      "fixture": "open-skin",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "skinW": 0.7734955338221577,
+      "ipr": 0.10794940883986817,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 118079,
+        "skinW": 0.7734955338221577,
+        "ipr": 0.10794940883986817,
+        "cells": [
+          96,
+          120
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "skinWChanged": false,
+          "iprChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.31699999999998,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "skinWChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions for this one open clean fixture. Does not validate disordered or periodic subspace iteration, calibrated color, or every control."
+}

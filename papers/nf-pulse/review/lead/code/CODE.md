@@ -1,6 +1,6 @@
 # Code review of the nf-pulse certificate chain
 
-Date: 2026-09-26. Scope: `papers/nf-pulse/code/*.py`, `code/run_all.sh`, `data/*.json`, and the README claims
+Date: 2026-09-26. Scope: `code/*.py`, `code/run_all.sh`, `data/*.json`, and the README claims
 about the code. The mathematics (block lemma, Wazewski argument, manifold tail lemma) is reviewed elsewhere;
 this file asks only whether the programs could print PASS for a false statement.
 

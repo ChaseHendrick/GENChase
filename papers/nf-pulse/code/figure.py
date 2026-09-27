@@ -22,15 +22,19 @@ tr = d['cstar']['traj']
 t = np.array([p[0] for p in tr]); X = np.array([p[1] for p in tr])
 m = t < 110
 fig, ax = plt.subplots(1, 2, figsize=(10, 3.6))
-for i, (lab, col) in enumerate((('U (activity u)', '#1f5fa8'), ('V (recovery v)', '#c0392b'), ('Q = w*S(U)', '#7f8c8d'))):
+for i, (lab, col) in enumerate((('$U$ (activity $u$)', '#1f5fa8'), ('$V$ (recovery $v$)', '#c0392b'), ('$Q = w * S(U)$', '#7f8c8d'))):
     ax[0].plot(t[m], X[m, i], label=lab, color=col, lw=1.4)
-ax[0].axvspan(53, 110, color='#2ecc71', alpha=0.12, label='in block B (xi >= 53)')
-ax[0].set_xlabel('xi = x + c t  (manifold point at xi = 0)'); ax[0].legend(fontsize=8, frameon=False)
-ax[0].set_title('fast pulse, c = 1.10274770973...', fontsize=10)
+ax[0].axvspan(53, 110, color='#2ecc71', alpha=0.12, label=r'in the block $B$ ($\xi \geq 53$)')
+ax[0].set_xlabel(r'$\xi = x + ct$  (manifold point at $\xi = 0$)'); ax[0].legend(fontsize=8, frameon=False)
+ax[0].set_title(r'fast pulse, $c = 1.10274770973\ldots$', fontsize=10)
 u = np.linspace(-0.5, 1.0, 400); S = 1 / (1 + np.exp(-20 * (u - 0.25)))
-ax[1].plot(u, S - u, color='#95a5a6', lw=1, label='v = S(u) - u (fast nullcline)')
-ax[1].plot(X[m, 0], X[m, 1], color='#1f5fa8', lw=1.4, label='pulse (U, V)')
+ax[1].plot(u, S - u, color='#95a5a6', lw=1, label='$V = S(U) - U$ (fast nullcline)')
+ax[1].plot(X[m, 0], X[m, 1], color='#1f5fa8', lw=1.4, label='pulse $(U, V)$')
 ax[1].plot([0], [1 / (1 + np.exp(5))], 'ko', ms=4, label='rest')
-ax[1].set_xlabel('U'); ax[1].set_ylabel('V'); ax[1].legend(fontsize=8, frameon=False)
+ax[1].set_xlabel('$U$'); ax[1].set_ylabel('$V$'); ax[1].legend(fontsize=8, frameon=False)
 fig.tight_layout(); fig.savefig('../data/pulse_profile.png', dpi=130)
+# the same figure as a vector file for the manuscript (Figure 1 of paper/nf-pulse.tex), without a creation date
+import os
+os.makedirs('../paper/figures', exist_ok=True)
+fig.savefig('../paper/figures/pulse-profile.pdf', metadata={'CreationDate': None})
 print('saved')

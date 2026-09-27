@@ -1,7 +1,7 @@
 # Independent existence step for the nf-pulse homoclinic orbit: isolating block and shooting
 
 Reviewer: an independent reimplementer (Claude, working as a sub-agent), 2026-09-26.
-Rule followed: nothing in `papers/nf-pulse/code/`, `papers/nf-pulse/data/`, `review/lead/code/` or
+Rule followed: nothing in `code/`, `data/`, `review/lead/code/` or
 `review/lead/math/` was read, imported or copied. The only project files read were `../REIMPL.md` and the
 scripts of the earlier independent reimplementation in `..` (`common.py`, `vi_integrate.py`,
 `rig_bisect.py`, `rest_eigen.py`, `test_enclosure.py`), which are reused here. The block, its lemma, the

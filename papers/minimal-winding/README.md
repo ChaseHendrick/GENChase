@@ -2,9 +2,9 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989)). Not yet peer reviewed.
+Preprint. Release 2.2.0 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932)). Not yet peer reviewed.
 
-**[Read the paper (PDF, 38 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 42 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -38,10 +38,10 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 
 | Program | What it checks |
 |---|---|
-| [`verify_general_mu.py`](code/verify_general_mu.py) | Three Euler vortices, the general-μ theory (Theorem 1): 121 checks, exact and at 50 digits, about 30 s |
+| [`verify_general_mu.py`](code/verify_general_mu.py) | Three Euler vortices, the general-μ theory (Theorem 1), Gröbli's closed form of P for every triple of circulations that can collapse (symbolically, and by Biot–Savart on triples in random order and sign) and its reduction in Remark 2, the closed forms of Proposition 1, and the triple of Chen, Walsh and Wheeler in the family μ = 1/2, with their map V and, numerically, the rank of its derivative along both arcs: 152 checks, exact and at 30 to 60 digits, about a minute and a half |
 | [`verify_floors_independent.py`](code/verify_floors_independent.py) | μ = 1/2 and the rings, independently, with interval enclosures, about a minute |
 | [`verify_direct_proof.py`](code/verify_direct_proof.py) | Every identity in the direct proof of Corollary 1, exact, a few seconds |
-| [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, and the leading-order relations used in the proof of Theorem 3: 80 checks, about 10 s |
+| [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, its examples with n = 2, the quartet of Chen, Walsh and Wheeler in the family of Proposition 2, and the growth of F_n (Section 5), and the leading-order relations used in the proof of Theorem 3: 103 checks, about 15 s |
 | [`verify_strong_vortex.py`](code/verify_strong_vortex.py) | Theorem 3, a strong vortex with weak pairs: every identity in the proof, its explicit constants, exact self-similar solutions checked by Biot–Savart, and negative controls; 143 checks, about 17 s |
 | [`verify_pairs_bound.py`](code/verify_pairs_bound.py) | Proposition 4, the bound at a fixed circulation for weak pairs: every identity in the proof and in Remark 6 exactly (SymPy), the remainder bounds on random configurations with negative controls, and 90 exact self-similar collapses checked by Biot–Savart at 50 digits; 69 checks, about 30 s |
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
@@ -87,13 +87,13 @@ Until the paper is published in a journal:
   title  = {Minimal Winding in the Self-Similar Collapse of Point Vortices},
   year   = {2026},
   note   = {Preprint},
-  doi    = {10.5281/zenodo.22966989},
+  doi    = {10.5281/zenodo.22994932},
   url    = {https://github.com/ChaseHendrick/minimal-winding}
 }
 ```
 
-Release 2.1.0, with the programs and data of this version, is archived at
-[doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989).
+This version is release 2.2.0, archived at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). The previous version, release
+2.1.0, is archived at [doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989).
 
 ## License
 
