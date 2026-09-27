@@ -1,6 +1,6 @@
 # Rice-Mele pump: independent numerical benchmark
 
-**Status: partially validated.** The numbers below are from an independent solver. They are not a measurement of the Thouless plate.
+**Status: unvalidated.** The numbers below are from an independent solver. `tools/thouless-science.js` never executes `src/modules/thouless.js`. A test that does not run the module does not validate the plate. The Rice-Mele evidence is recorded. It is not a measurement of the Thouless plate.
 
 `src/modules/thouless.js` draws a cartoon density. `pol()` keeps only the real part of the overlap, so that sum is not a Berry phase. The status line names the chosen cycle and says pumping is not measured. An unused metric is hardcoded to 1 or 0. The plate does not compute ΔP. This review does not execute the plate and does not change the painted field.
 
