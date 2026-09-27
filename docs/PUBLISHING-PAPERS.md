@@ -34,6 +34,9 @@ rebuild the PDFs, run the checks, update `papers.json`, and draft the messages.
 5. **After acceptance,** link the published version from the companion's README (and from arXiv, if the
    paper is there by then).
 
+The identities note is the exception: it goes to Zenodo as a record of its own and not to a journal
+(below), a plan now on hold pending the owner's decision.
+
 ## Statuses
 
 `papers.json` moves each paper through `draft`, `preparing`, `ready`, `on-arxiv`, `submitted`,
@@ -169,7 +172,7 @@ the result; reveal it, and any others you want on record. List their ids in the 
    publication fee. Keep the manuscripts' one-line AI statement: arXiv requires significant use of
    generative AI to be reported in the work, Springer Nature asks for it in the manuscript (copy
    editing alone is exempt), and JOSS requires a fuller "AI usage disclosure" section, which the
-   software paper has. A Zenodo-only record needs none.
+   software paper has. A Zenodo-only record, such as the identities note, needs none.
 2. **Submit to one journal at a time.** A preprint plus one journal is normal; the same paper at two
    journals at once is not allowed.
 3. Fill the cover letter's placeholders only in the copy you send, never in the repository.
@@ -198,10 +201,14 @@ the result; reveal it, and any others you want on record. List their ids in the 
 - Different papers may be under review at different journals at the same time. The same result must
   not appear in two papers as if it were new in each; journals treat that as redundant publication.
 
-## The identities note (retired)
+## The identities note (Zenodo only)
 
-The note's results are proved in the minimal-winding paper, release 2.2.0, and the note gets no record of its own
-([identities/README.md](../identities/README.md), "The note is retired").
+The note has zero confirmed novel findings and is published as a record of its own, not submitted
+to a journal. Follow [identities/README.md](../identities/README.md), "Uploading the note as its own
+Zenodo record", keep the attribution cautions of [identities/ARXIV.md](../identities/ARXIV.md), and
+set `published` with `zenodo.doi` in `papers.json`.
+
+**On hold (2026-09-27), pending the owner's decision.** The results of the note are now proved in the minimal-winding paper (release 2.2.0, prepared), and a pull request of 2026-09-27 proposes to retire the note and drop its separate record, since the same results should not appear in two records as if new in each. The owner decides what is published: until the owner confirms or declines that proposal, do not upload the note.
 
 ## The software paper (JOSS)
 

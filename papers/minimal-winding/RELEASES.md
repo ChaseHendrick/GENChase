@@ -5,9 +5,9 @@ has not been peer reviewed.
 
 ## 2.2.0 (unreleased)
 
-The paper takes in the results of a separate note by the same author on the same collapsing families, which is
-retired and will not get a record of its own, and adds two credits. No earlier result changes; 40 pages. A minor
-version because content was added. Changes since 2.1.0:
+The paper adds explicit forms and worked examples for its three-vortex and ring families, a proved expansion of the
+ring minimum, and credits to Gotoda's Fig. 3(b), to Chen, Walsh and Wheeler, to Yudovich and to Crippa and Stefani.
+No earlier result changes; 40 pages. A minor version because content was added. Changes since 2.1.0:
 
 - **Equal circulations, in elementary form** (Remark 2). With u = tan χ, P = u + 1/(2u), and
   P − √2 = (√2 u − 1)²/(2u) is a second proof of the bound √2. P is unchanged under u ↦ 1/(2u), so χ = π/4 and
@@ -16,29 +16,35 @@ version because content was added. Changes since 2.1.0:
 - **Gröbli's coefficient, written out** (Remark 2). For the circulations (1, 1, −1/2), Gröbli's §10 (1877),
   Eqs. (8), (9), (11) and (12), gives P = (2a² − 3)/(2√(3a² − 9)) in his shape constant a, and a = √3/cos χ turns
   this into the formula of Remark 2; P² − 2 = (2a² − 9)²/(12(a² − 3)). The formula is Gröbli's; the substitution
-  is our calculation. The English translation prints the denominator of his Eq. (9) as μ₁μ₃μ₃ in its (10.9); the
-  original has μ₁μ₂μ₃.
+  is our calculation. His coefficient is ϰ, which the paper calls k. Goodman's English translation prints the
+  denominator of his Eq. (9) as μ₁μ₃μ₃ in its (10.9); the original has μ₁μ₂μ₃.
 - **The critical cosines for μ = 1/2 in closed form** (Proposition 1): the minima are attained at
   cos θ = c₁ = −0.9243893679… and c₀ = 0.6739838839…, the trigonometric roots of an explicit cubic.
 - **Two worked examples after Proposition 3.** The five-vortex configuration of Gotoda's Fig. 3(b)
   (circulations −1, −1, 1/2, 1/2, −3/4) has P = (3/16)(7 − 4 cos 2θ)/sin 2θ ≥ 3√33/16 = 1.0771054962…, with
   equality at cos 2θ = 4/7. For the central circulation 1/2 the constant κ of the five vortices equals that of
-  the three vortices of Remark 2, as an identity between the two formulas.
-- **The growth of the ring minimum** (Section 5): F_n = (1/4) e^√(n/2) (1 + 29/(12√(2n)) + O(1/n)), proved in
-  the text; in particular F_n → ∞.
-- **A credit and a corrected scope statement** (Discussion). Chen, Walsh and Wheeler (Math. Ann. 396 (2026) 5)
+  the three vortices of Remark 2 at the normalizations used, as an identity between the two formulas.
+- **The growth of the ring minimum** (Section 5): F_n = (1/4) e^√(n/2) (1 + 29/(12√(2n)) + 265/(576n) + O(n^(−3/2))),
+  proved in the text; in particular F_n → ∞.
+- **Credits and a corrected scope statement** (Discussion). Vortex patches exist for all time by Yudovich's theorem
+  (1963), cited with Crippa and Stefani (2024) for the whole plane. Chen, Walsh and Wheeler (Math. Ann. 396 (2026) 5)
   prove that collapsing point-vortex configurations that are non-degenerate in their sense can be desingularized
-  into hollow vortices that implode self-similarly. The paper no longer calls every finite-core analysis future
-  work; it says that it has not checked their hypothesis for its configurations.
+  into hollow vortices that implode self-similarly. The two configurations they verify lie in the paper's families:
+  their triple is the μ = 1/2 configuration of Proposition 1 at θ = π/2, and their quartet is the n = 2
+  configuration of Proposition 2 at θ = π/12. So one member of each family is non-degenerate, and by analyticity all
+  but isolated members of the arcs containing them; the minimizers are not checked. The paper no longer calls every
+  finite-core analysis future work.
 
 How it was checked. Every addition is proved in the text, and the programs check each one:
-`code/verify_general_mu.py` now makes 137 checks (16 new: the forms and angles of Remark 2 exactly and at
-50 digits, Gröbli's equations symbolically with the translation's misprint as a negative control, and the closed
-forms of Proposition 1 at 60 digits), and `code/verify_central_vortex.py` makes 96 (16 new: the two examples
-exactly and against the Biot–Savart velocities at 50 digits, and the expansion of F_n as a series and at 50 digits
-up to n = 10⁶, with a negative control). Their output is `data/verify-general-mu-2026-09-27.txt` and
-`data/verify-central-vortex-2026-09-27.txt`. Table 1 has five new rows. The added passages are being read by
-in-project referees before the release is made.
+`code/verify_general_mu.py` now makes 140 checks (19 new: the forms and angles of Remark 2 exactly and at
+50 digits, Gröbli's equations symbolically with the translation's misprint as a negative control, the closed
+forms of Proposition 1 at 60 digits, and the triple of Chen, Walsh and Wheeler exactly and at 50 digits), and
+`code/verify_central_vortex.py` makes 102 (22 new: the two examples and the quartet of Chen, Walsh and Wheeler
+exactly and against the Biot–Savart velocities at 50 digits, with the quartet's misprinted position as a negative
+control, and the expansion of F_n as a series and at 50 digits up to n = 10¹², with a negative control). Their
+output is `data/verify-general-mu-2026-09-27.txt` and `data/verify-central-vortex-2026-09-27.txt`. Table 1 has six
+new rows. Two in-project readings of the added passages, each told to find errors, were made before the release;
+their confirmed findings are fixed in this version. Neither is an outside review.
 
 Files: `paper/minimal-winding.tex` and `paper/minimal-winding.pdf`, the two programs and their output in `data/`,
 and this README. To reproduce, run the two programs from the folder of this README, as the README says, and build

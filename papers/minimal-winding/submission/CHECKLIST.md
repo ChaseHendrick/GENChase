@@ -17,7 +17,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
   `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
   `paper/minimal-winding.pdf` (40 pages since the additions of release 2.2.0, 2026-09-27), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
-- The bibliography has 41 works. Every work cited in the LaTeX source has an entry, and every entry is
+- The bibliography has 43 works. Every work cited in the LaTeX source has an entry, and every entry is
   cited.
 - A data availability paragraph naming the verification programs in `code/` and their output in
   `data/`, a funding statement (no external funding), and the statement

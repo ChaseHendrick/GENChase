@@ -129,11 +129,19 @@ OK       at cos 2theta = 4/7, P = 3 sqrt(33)/16 = 1.0771054962   [2.67e-51]
 OK       negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands
 OK    Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at five angles (two of them expanding)   [max relative difference 2.79e-51]
 OK       and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1   [max relative difference 4.0e-51]
+OK    CWW (4.6), third position read as -sqrt3/2 - 1 + i/2, turned by pi/6: the vortices of circulation (2 sqrt3 + 5)pi at +-1, those of circulation (sqrt3 - 4)pi at +-sqrt(2 + sqrt3) e^{i pi/12}: Proposition 2 with n = 2, theta = pi/12 (exact)
+OK       circulations: (4 - sqrt3)pi (x_2, -1) with x_2 = 2 + sqrt3, a positive factor; P = (4 sqrt3 - sqrt3 cos(pi/6))/(4 sin(pi/6)) = 2 sqrt3 - 3/4 by eq:Pring (exact)
+OK       Biot-Savart at 50 digits: z_c = 0, self-similar, collapsing, P = 2 sqrt3 - 3/4 = 2.71410161514   [spread 7.26e-52]
+OK       negative control: with the third position as printed in v1, z_c != 0 and the motion is not self-similar   [z_c = (0.0 + 0.18301j), spread 0.21]
 OK    cosh(eta_n) = n/(n-1) gives sinh(eta_n/2)^2 = (x_n + 1/x_n - 2)/4 = 1/(2(n-1))
 OK    (n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})   [series 529*sqrt(2)*h**3/960 + 29*sqrt(2)*h/24]
-      n (F_n e^{-sqrt(n/2)} 4 - 1 - 29/(12 sqrt(2n))) for n = 10 .. 10^6: ['0.373976', '0.452677', '0.457207', '0.459114', '0.459762', '0.459972']
-OK    F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + O(1/n)): n times the remainder stays bounded, n = 10 .. 10^6 (50 digits)   [max 0.46]
-OK       the ratio F_n/(e^{sqrt(n/2)}/4) is 1.578, 1.175, 1.054 at n = 10, 100, 1000 and tends to 1   [['1.57778', '1.17541', '1.0545', '1.01713', '1.00541', '1.00171']]
-OK       negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)   [['0.1876', '-0.1366', '-1.406', '-5.433', '-18.17', '-58.47']]
+OK    ((n - 1)/n) exp(E_n - sqrt(n/2)) = 1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2}), since E_n has no term in 1/n   [series 265*h**2/576 + 29*sqrt(2)*h/24 + 1]
+      n = ['10', '100', '1000', '10000', '100000', '1000000', '100000000', '1000000000000']
+      n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))): ['0.3739762', '0.4526772', '0.4572068', '0.4591136', '0.4597622', '0.4599718', '0.4600597', '0.4600693'];  265/576 = 0.4600694444
+      n^{3/2} (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n)) - 265/(576 n)): ['-0.27225', '-0.073922', '-0.090525', '-0.095589', '-0.097156', '-0.097648', '-0.097852', '-0.097875']
+OK    F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2})): n^{3/2} times the remainder lies in [-0.28, -0.07] for n = 10^k, k = 1..6, and n = 10^8, 10^12 (50 digits)   [range [-0.2723, -0.07392]]
+OK       so n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))) tends to 265/576: it increases, from 0.374 at n = 10 to 0.45997 at n = 10^6, and differs from 265/576 by less than 0.28/sqrt(n)   [at n = 10^12: 0.4600693466]
+OK       the ratio F_n/(e^{sqrt(n/2)}/4) is 1.577..., 1.175..., 1.054... (truncated) at n = 10, 100, 1000 and tends to 1   [['1.5777807', '1.1754109', '1.0544955', '1.0171343', '1.0054084', '1.0017093', '1.0001709', '1.0000017']]
+OK       negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)   [['0.1876', '-0.1366', '-1.406', '-5.433', '-18.17', '-58.47', '-588.8', '-5.893e+4']]
 
 all checks passed

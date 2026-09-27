@@ -1157,6 +1157,34 @@ check('10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on
       dev_c < mp.mpf('1e-50'), 'max difference %s' % mp.nstr(dev_c, 3))
 mp.mp.dps = 50
 
+# 10m. Discussion (release 2.2.0): the collapsing triple of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.5),
+#      circulations (1, 2, -2/3) at -2, 1 and sqrt7 i. Interchanging the first two vortices and halving the circulations
+#      gives (1, 1/2, -1/3), the family mu = 1/2; its shape ratio is that of eq:pos at theta = pi/2, on A+ = (0, theta_0).
+mh = sp.Rational(1, 2)
+qh = sp.sqrt(1 + mh + mh**2)
+zW = [sp.Integer(1), sp.Integer(-2), sp.sqrt(7)*I]                 # after the interchange: circulations 2, 1, -2/3
+gW = [sp.Integer(2)/2, sp.Integer(1)/2, sp.Rational(-2, 3)/2]
+wW = sp.simplify((zW[2] - zW[0])/(zW[1] - zW[0]))
+wpos = mh/(1 + mh) - qh/(1 + mh)*sp.exp(I*pi/2)
+th0h = sp.acos((mh - 1)/(2*qh))
+check('10m CWW (4.5): interchanged and halved, Gamma = (1, 1/2, -1/3) and w = 1/3 - (sqrt7/3) i, the shape ratio of eq:pos'
+      ' at mu = 1/2, theta = pi/2; and pi/2 < theta_0, so theta = pi/2 lies on A+ (exact)',
+      gW == [sp.Integer(1), mh, -mh/(1 + mh)] and sp.simplify(wW - wpos) == 0
+      and sp.simplify(wW - (sp.Rational(1, 3) - sp.sqrt(7)/3*I)) == 0 and float(th0h) > float(pi/2))
+PW = sp.simplify((Nf(C)/(2*m*sp.sqrt(R)*Mf(C))).subs(C, 0).subs(m, mh))
+check('10m CWW (4.5): P = N(0)/(2 mu sqrtR M(0)) = 5 sqrt7/2 at theta = pi/2, mu = 1/2 (eq:Ptheta, exact)',
+      sp.simplify(PW - 5*sp.sqrt(7)/2) == 0, str(PW))
+zWn = [mp.mpc(-2), mp.mpc(1), mp.sqrt(7)*mp.mpc(0, 1)]
+kW, zcW = kappas_direct([mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3], zWn)
+sprW = max(abs(k_ - kW[0]) for k_ in kW)/abs(kW[0])
+cfg = config_theta(mp.mpf(1)/2, mp.pi/2)
+lamW = cfg[2]/(zWn[2] - zcW)
+simW = max(abs(lamW*(zz - zcW) - cc_) for zz, cc_ in zip([zWn[1], zWn[0], zWn[2]], cfg))
+check('10m CWW (4.5), Biot-Savart at 50 digits: self-similar and collapsing, P = 5 sqrt7/2, and a rotation-dilation about z_c'
+      ' maps it onto eq:pos at mu = 1/2, theta = pi/2 (vortices 1 and 2 interchanged)',
+      sprW < mp.mpf('1e-45') and kW[0].real < 0 and abs(P_of_kappa(kW[0]) - 5*mp.sqrt(7)/2) < mp.mpf('1e-45') and simW < mp.mpf('1e-45'),
+      'spread %s, map residual %s, P = %s' % (mp.nstr(sprW, 3), mp.nstr(simW, 3), mp.nstr(P_of_kappa(kW[0]), 15)))
+
 # 10e. Remark 1: Q(a/b, xi^2) irreducible over Q for every a/b in (0, 1) with b <= 30, one by one.
 xi = sp.symbols('xi')
 cnt = 0

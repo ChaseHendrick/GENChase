@@ -30,7 +30,9 @@ relative rotation theta, and a vortex of circulation Gamma0 at the center.
   6. Numerical minimization over theta from the Biot-Savart velocities at 30 digits.
   7. Negative controls: checks that must fail do fail.
   8. The examples with n = 2 after the proof of Proposition 3 (Gamma0 = 3/2 and 1/2; Gotoda's Fig. 3(b), Biot-Savart at
-     50 digits; kappa against the three vortices of Remark 2), and the expansion of F_n as n -> infinity.
+     50 digits; kappa against the three vortices of Remark 2), the quartet of Chen, Walsh and Wheeler (arXiv:2506.04093v1,
+     Eq. (4.6)) as the configuration of Proposition 2 with n = 2 at theta = pi/12, and the expansion of F_n as n -> infinity
+     with its coefficients 29/(12 sqrt 2) and 265/576.
 
 Convention: conj(dz_j/dt) = (1/(2 pi i)) sum_{k != j} Gamma_k/(z_j - z_k). Needs sympy and mpmath
 (code/requirements.txt). Run: python3 verify_central_vortex.py. Prints every check; exits with status 1
@@ -479,6 +481,40 @@ check('Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at fiv
       'max relative difference %s' % mp.nstr(worst_kf, 3))
 check('   and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1', worst_k3 < mp.mpf('1e-45'),
       'max relative difference %s' % mp.nstr(worst_k3, 3))
+# The quartet of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.6), cited in the Discussion. Their third position
+# is printed there as -sqrt3/2 - 1 - i/2; with -sqrt3/2 - 1 + i/2 the four points are a parallelogram centered at 0.
+s3 = sp.sqrt(3)
+Qz = [s3/2 - sp.I/2, 1 + s3/2 - sp.I/2, -s3/2 - 1 + sp.I/2, -s3/2 + sp.I/2]
+Qg = [(2*s3 + 5)*sp.pi, (s3 - 4)*sp.pi, (s3 - 4)*sp.pi, (2*s3 + 5)*sp.pi]
+x2 = 2 + s3
+rotQ = [sp.simplify(sp.expand_complex(sp.exp(sp.I*sp.pi/6)*z_)) for z_ in Qz]
+check('CWW (4.6), third position read as -sqrt3/2 - 1 + i/2, turned by pi/6: the vortices of circulation (2 sqrt3 + 5)pi at +-1,'
+      ' those of circulation (sqrt3 - 4)pi at +-sqrt(2 + sqrt3) e^{i pi/12}: Proposition 2 with n = 2, theta = pi/12 (exact)',
+      sp.simplify(rotQ[0] - 1) == 0 and sp.simplify(rotQ[3] + 1) == 0
+      and sp.simplify(sp.expand_complex(rotQ[1] - sp.sqrt(x2)*(sp.cos(sp.pi/12) + sp.I*sp.sin(sp.pi/12)))) == 0
+      and sp.simplify(rotQ[2] + rotQ[1]) == 0)
+check('   circulations: (4 - sqrt3)pi (x_2, -1) with x_2 = 2 + sqrt3, a positive factor; P = (4 sqrt3 - sqrt3 cos(pi/6))/(4 sin(pi/6))'
+      ' = 2 sqrt3 - 3/4 by eq:Pring (exact)',
+      sp.simplify(Qg[0] - (4 - s3)*sp.pi*x2) == 0 and sp.simplify(Qg[1] + (4 - s3)*sp.pi) == 0 and (4 - s3).is_positive
+      and sp.simplify((4*s3 - s3*sp.cos(sp.pi/6))/(4*sp.sin(sp.pi/6)) - (2*s3 - sp.Rational(3, 4))) == 0)
+mp.mp.dps = 50
+m3 = mp.sqrt(3)
+for sgn in (1, -1):
+    zq = [m3/2 - 0.5j, 1 + m3/2 - 0.5j, -m3/2 - 1 + sgn*0.5j, -m3/2 + 0.5j]
+    gq = [(2*m3 + 5)*mp.pi, (m3 - 4)*mp.pi, (m3 - 4)*mp.pi, (2*m3 + 5)*mp.pi]
+    zcq = sum(g_*z_ for g_, z_ in zip(gq, zq))/sum(gq)
+    vq = velocities(zq, gq)
+    kqs = [vq[i]/(zq[i] - zcq) for i in range(4)]
+    sprd = max(abs(k_ - kqs[0]) for k_ in kqs)/abs(kqs[0])
+    if sgn == 1:
+        Pq = abs(kqs[0].imag)/(-2*kqs[0].real)
+        check('   Biot-Savart at 50 digits: z_c = 0, self-similar, collapsing, P = 2 sqrt3 - 3/4 = %s' % mp.nstr(2*m3 - mp.mpf(3)/4, 12),
+              abs(zcq) < mp.mpf('1e-45') and sprd < mp.mpf('1e-45') and kqs[0].real < 0 and abs(Pq - (2*m3 - mp.mpf(3)/4)) < mp.mpf('1e-45'),
+              'spread %s' % mp.nstr(sprd, 3))
+    else:
+        check('   negative control: with the third position as printed in v1, z_c != 0 and the motion is not self-similar',
+              abs(zcq) > mp.mpf('0.1') and sprd > mp.mpf('0.1'), 'z_c = %s, spread %s' % (mp.nstr(zcq, 5), mp.nstr(sprd, 3)))
+
 # F_n as n -> oo
 kk2 = sp.Symbol('kk2', positive=True)                      # n - 1
 xk = (kk2 + 1 + sp.sqrt(2*kk2 + 1))/kk2
@@ -488,6 +524,11 @@ ser = sp.series((1/hh**2 + 2)*sp.asinh(1/sp.sqrt(2*(1/hh**2 - 1))) - 1/(sp.sqrt(
 check('(n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})',
       sp.simplify(ser.coeff(hh, 0)) == 0 and sp.simplify(ser.coeff(hh, 1) - sp.Rational(29, 12)/sp.sqrt(2)) == 0 and sp.simplify(ser.coeff(hh, 2)) == 0,
       'series %s' % ser)
+ser2 = sp.series((1 - hh**2)*sp.exp(ser), hh, 0, 3).removeO()
+check('((n - 1)/n) exp(E_n - sqrt(n/2)) = 1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2}), since E_n has no term in 1/n',
+      sp.simplify(ser2.coeff(hh, 0) - 1) == 0 and sp.simplify(ser2.coeff(hh, 1) - sp.Rational(29, 12)/sp.sqrt(2)) == 0
+      and sp.simplify(ser2.coeff(hh, 2) - sp.Rational(265, 576)) == 0 and sp.simplify(sp.Rational(29, 12)**2/4 - 1 - sp.Rational(265, 576)) == 0,
+      'series %s' % sp.nsimplify(ser2))
 mp.mp.dps = 50
 
 
@@ -497,18 +538,29 @@ def F_ring(nn):
     return mp.sqrt(Kn_**2 - (2*nn - 1))/(2*nn)
 
 
-rems = []; ratios = []; bad = []
-for nn in (10, 100, 1000, 10**4, 10**5, 10**6):
+NS = (10, 100, 1000, 10**4, 10**5, 10**6, 10**8, 10**12)
+LIM = mp.mpf(265)/576
+rems = []; nxt = []; ratios = []; bad = []
+for nn in NS:
     r_ = F_ring(nn)/(mp.e**mp.sqrt(mp.mpf(nn)/2)/4)
     ratios.append(r_); rems.append(nn*(r_ - 1 - mp.mpf(29)/(12*mp.sqrt(2*nn))))
+    nxt.append(mp.mpf(nn)**mp.mpf('1.5')*(r_ - 1 - mp.mpf(29)/(12*mp.sqrt(2*nn)) - LIM/nn))
     bad.append(nn*(r_ - 1 - mp.mpf(30)/(12*mp.sqrt(2*nn))))
-print('      n (F_n e^{-sqrt(n/2)} 4 - 1 - 29/(12 sqrt(2n))) for n = 10 .. 10^6: %s' % [mp.nstr(r_, 6) for r_ in rems])
-check('F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + O(1/n)): n times the remainder stays bounded, n = 10 .. 10^6 (50 digits)',
-      max(abs(r_) for r_ in rems) < 1, 'max %s' % mp.nstr(max(abs(r_) for r_ in rems), 4))
-check('   the ratio F_n/(e^{sqrt(n/2)}/4) is 1.578, 1.175, 1.054 at n = 10, 100, 1000 and tends to 1',
-      [mp.nstr(r_, 4) for r_ in ratios[:3]] == ['1.578', '1.175', '1.054'] and abs(ratios[-1] - 1) < mp.mpf('0.002'),
-      str([mp.nstr(r_, 6) for r_ in ratios]))
-check('   negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)', abs(bad[-1]) > 5*abs(bad[3]) and abs(bad[-1]) > 20,
+print('      n = %s' % [str(nn) for nn in NS])
+print('      n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))): %s;  265/576 = %s' % ([mp.nstr(r_, 7) for r_ in rems], mp.nstr(LIM, 10)))
+print('      n^{3/2} (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n)) - 265/(576 n)): %s' % [mp.nstr(r_, 5) for r_ in nxt])
+check('F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + 265/(576 n) + O(n^{-3/2})): n^{3/2} times the remainder lies in'
+      ' [-0.28, -0.07] for n = 10^k, k = 1..6, and n = 10^8, 10^12 (50 digits)',
+      all(mp.mpf('-0.28') <= r_ <= mp.mpf('-0.07') for r_ in nxt), 'range [%s, %s]' % (mp.nstr(min(nxt), 4), mp.nstr(max(nxt), 4)))
+check('   so n (4 F_n e^{-sqrt(n/2)} - 1 - 29/(12 sqrt(2n))) tends to 265/576: it increases, from 0.374 at n = 10 to 0.45997 at'
+      ' n = 10^6, and differs from 265/576 by less than 0.28/sqrt(n)',
+      all(rems[i] < rems[i + 1] for i in range(len(rems) - 1)) and mp.nstr(rems[0], 3) == '0.374' and mp.nstr(rems[5], 5) == '0.45997'
+      and all(abs(r_ - LIM) < mp.mpf('0.28')/mp.sqrt(nn) for r_, nn in zip(rems, NS)),
+      'at n = 10^12: %s' % mp.nstr(rems[-1], 10))
+check('   the ratio F_n/(e^{sqrt(n/2)}/4) is 1.577..., 1.175..., 1.054... (truncated) at n = 10, 100, 1000 and tends to 1',
+      [mp.nstr(mp.floor(r_*1000)/1000, 4) for r_ in ratios[:3]] == ['1.577', '1.175', '1.054'] and abs(ratios[-1] - 1) < mp.mpf('1e-5'),
+      str([mp.nstr(r_, 8) for r_ in ratios]))
+check('   negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)', abs(bad[5]) > 5*abs(bad[3]) and abs(bad[5]) > 20,
       str([mp.nstr(b_, 4) for b_ in bad]))
 
 print()

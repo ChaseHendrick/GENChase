@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989)). Not yet peer reviewed.
+Preprint. Release 2.1.0 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989)); this version, release 2.2.0, is not yet archived. Not yet peer reviewed.
 
 **[Read the paper (PDF, 40 pages)](paper/minimal-winding.pdf)**
 
@@ -38,10 +38,10 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 
 | Program | What it checks |
 |---|---|
-| [`verify_general_mu.py`](code/verify_general_mu.py) | Three Euler vortices, the general-μ theory (Theorem 1), Remark 2 with its reduction to Gröbli's coefficient, and the closed forms of Proposition 1: 137 checks, exact and at 50 digits, about a minute |
+| [`verify_general_mu.py`](code/verify_general_mu.py) | Three Euler vortices, the general-μ theory (Theorem 1), Remark 2 with its reduction to Gröbli's coefficient, the closed forms of Proposition 1, and the triple of Chen, Walsh and Wheeler in the family μ = 1/2: 140 checks, exact and at 50 digits, about a minute |
 | [`verify_floors_independent.py`](code/verify_floors_independent.py) | μ = 1/2 and the rings, independently, with interval enclosures, about a minute |
 | [`verify_direct_proof.py`](code/verify_direct_proof.py) | Every identity in the direct proof of Corollary 1, exact, a few seconds |
-| [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, its examples with n = 2 and the growth of F_n (Section 5), and the leading-order relations used in the proof of Theorem 3: 96 checks, about 10 s |
+| [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, its examples with n = 2, the quartet of Chen, Walsh and Wheeler in the family of Proposition 2, and the growth of F_n (Section 5), and the leading-order relations used in the proof of Theorem 3: 102 checks, about 15 s |
 | [`verify_strong_vortex.py`](code/verify_strong_vortex.py) | Theorem 3, a strong vortex with weak pairs: every identity in the proof, its explicit constants, exact self-similar solutions checked by Biot–Savart, and negative controls; 143 checks, about 17 s |
 | [`verify_pairs_bound.py`](code/verify_pairs_bound.py) | Proposition 4, the bound at a fixed circulation for weak pairs: every identity in the proof and in Remark 6 exactly (SymPy), the remainder bounds on random configurations with negative controls, and 90 exact self-similar collapses checked by Biot–Savart at 50 digits; 69 checks, about 30 s |
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |

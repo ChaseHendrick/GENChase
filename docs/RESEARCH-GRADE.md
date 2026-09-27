@@ -67,15 +67,18 @@ This is the largest gap, and most of it is not code.
 - **Done when:** the manuscript is submitted to the journal.
 
 **1c. A DOI for the software.**
-- **Finding:** `.zenodo.json` describes the vortex identities note ("GENChase identities:
-  Three-vortex collapse bound, ...", `upload_type: publication`), not the software.
-  `CITATION.cff` has no DOI.
-- **Risk:** Zenodo's GitHub integration reads `.zenodo.json` when it archives a release. If the
-  integration were switched on as things stand, every software release would be archived under
-  the note's title.
+- **Finding:** `.zenodo.json` described the vortex identities note ("GENChase identities:
+  Three-vortex collapse bound, ...", `upload_type: publication`), not the software. Resolved in the
+  repository: `.zenodo.json` now describes the software (upload type software, Apache-2.0).
+  `CITATION.cff` still has no DOI.
+- **Risk:** Zenodo's GitHub integration reads `.zenodo.json` when it archives a release. Had the
+  integration been switched on while the old file was in place, every software release would have
+  been archived under the note's title.
 - **Done when:**
-  - `.zenodo.json` describes the software;
-  - the identities note is retired into the minimal-winding paper (2026-09-27); no separate upload;
+  - `.zenodo.json` describes the software (done);
+  - the note is its own Zenodo upload. On hold since 2026-09-27: a pull request proposes to retire
+    the note into the minimal-winding paper (release 2.2.0) with no separate upload, which would
+    replace this criterion; that waits for the owner's decision;
   - the software DOI is in `CITATION.cff`.
 - **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
   with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).
