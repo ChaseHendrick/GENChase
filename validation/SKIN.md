@@ -2,7 +2,7 @@
 
 The `skin` tab draws every row of an open directed-hopping chain. On a clean open chain (on-site disorder below 0.04 and open ends) those rows are the closed form, row-normalized `|psi|^2`. The tab does not diagonalize that case. Disorder and periodic ends use subspace iteration with Gram-Schmidt. That path is not an eigensolver, and it is not part of this validation.
 
-Reviewed 2026-09-27. Status in `validation/techniques.json` is **validated within stated limits** for the domain below.
+Reviewed 2026-09-27. Status in `validation/techniques.json` is **partially validated** (in-project contract check, 2026-09-27). The numerical evidence below holds for the domain it states, but the only print fixture is the default 4:5 sheet, which lies outside the 1:1 eigenvector domain, and the plate has a recorded defect on that sheet (see Print). Under the precedent of the tilings and Veselago records, a recorded plate defect keeps the status at partially validated. Promotion needs the plate to draw at most N rows and a 1:1 print fixture inside the numerical domain.
 
 ## Operator
 
@@ -54,7 +54,7 @@ For a normalized ED eigenvector, `sin(pi n j / (N+1))` has the same magnitude at
 g_hat = ln(p_{N+1-j} / p_j) / (2 (N+1 - 2j))
 ```
 
-over pairs with both probabilities above `1e-18` is the measured asymmetry. The probability length is `1/(2 |g_hat|)`. It is required to match `1/(2|g|)` within 1 percent.
+over pairs with both probabilities above `1e-18` is the measured asymmetry. The probability length is `1/(2 |g_hat|)`. It is required to match `1/(2|g|)` within 1 percent. This is a regression test, not a prediction: once the right eigenvectors match `e^{g j} sin(pi n j / (N+1))`, the ratio `p_{N+1-j} / p_j` is `e^{2 g (N+1-2j)}` by the closed form, so the length is forced.
 
 Checked at `N` in {48, 64} and `g` in {0.03, 0.08, 0.12}, modes `n = 1, 2, 3` and `n = round(N/8)`. The largest relative error is about `3e-13`. The case called out in the task, `N = 64`, `g = 0.08`, has probability length `6.25` sites.
 
@@ -90,9 +90,13 @@ One fixture: open chain, grid 96, aspect `4:5` (120 rows), `g = 0.08`, disorder 
 
 That sheet has more rows than sites. Rows past `n = N` continue the sine formula and are not eigenpairs. They are inside the print-state check and outside the eigenvector comparison, which uses aspect `1:1`.
 
+This is a plate defect. At grid 96 and aspect `4:5` the plate draws 120 rows for 96 modes. Row 97 has `k = pi`, where `sin(pi (j+1))` is float noise; the row normalization turns that noise, times `e^{2 g j}`, into a skin-shaped row (right-tenth weight 0.868). Rows 98 to 120 have `k = pi + pi m / 97`, so their `|psi|^2` rows are bit-exact repeats of modes 1 to 23. The status-line skin weight averages all 120 rows: 0.773 on this sheet, against 0.780 over the 96 modes at `1:1`. The print check therefore preserves a sheet outside the numerical domain, and no print fixture lies inside it.
+
 ## Limits
 
+- Partially validated: the only print fixture is the default 4:5 sheet, outside the 1:1 eigenvector domain, and on that sheet the plate draws 24 rows past `n = N` (float noise at `k = pi` and repeats of modes 1 to 23) that the skin weight averages in.
 - Open chain, disorder below 0.04, only. Periodic ends and disordered subspace iteration are excluded.
 - Finite `N`, up to 96 for the tab comparison and 48 for the strict cosine and eigenvector tolerances.
+- The probability length `1/(2|g|)` is a regression test forced by the closed form, not an independent prediction.
 - No experiment, and no claim about the non-Hermitian skin effect in a laboratory sample.
 - Right eigenvectors are not an orthonormal energy basis. The similarity that removes the skin is not unitary.
