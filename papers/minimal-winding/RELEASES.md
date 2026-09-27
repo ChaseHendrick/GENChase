@@ -9,7 +9,7 @@ The paper takes in the results of a separate note by the same author on the same
 retired and will not get a record of its own: explicit forms and worked examples for its three-vortex and ring
 families, and a proved expansion of the ring minimum. It also adds credits to Gotoda's Fig. 3(b), to Chen, Walsh and
 Wheeler, to Yudovich and to Crippa and Stefani, and credits Gröbli's closed form of P for every triple of
-circulations. No earlier result changes; 41 pages. A minor version because content was added. Changes since 2.1.0:
+circulations. No earlier result changes; 42 pages. A minor version because content was added. Changes since 2.1.0:
 
 - **Equal circulations, in elementary form** (Remark 2). With v = tan χ, P = v + 1/(2v), and
   P − √2 = (√2 v − 1)²/(2v) is a second proof of the bound √2. P is unchanged under v ↦ 1/(2v), so χ = π/4 and
@@ -35,31 +35,39 @@ circulations. No earlier result changes; 41 pages. A minor version because conte
   proved in the text; in particular F_n → ∞.
 - **Credits and a corrected scope statement** (Discussion). Vortex patches exist for all time by Yudovich's theorem
   (1963), cited with Crippa and Stefani (2024) for the whole plane. Chen, Walsh and Wheeler (Math. Ann. 396 (2026) 5)
-  prove that collapsing point-vortex configurations that are non-degenerate in their sense can be desingularized
-  into hollow vortices that implode self-similarly. The two configurations they verify lie in the paper's families:
-  their triple is the μ = 1/2 configuration of Proposition 1 at θ = π/2, and their quartet is the n = 2
-  configuration of Proposition 2 at θ = π/12. So one member of each family is non-degenerate, and by analyticity all
-  but isolated members of the arcs containing them; the minimizers are not checked. The argument states the two
-  properties of their map V (their Eq. (4.4)) that it uses: V is real-analytic, and rotations, dilations with
-  Ω ↦ λ⁻²Ω, a positive factor in the circulations with Ω ↦ cΩ, and relabeling change V by an invertible linear map.
-  The numbering cited is that of arXiv:2506.04093v1 and is the same in the journal version; both print the quartet's
-  third position as −√3/2 − 1 − i/2, which has to be read with +i/2. The paper no longer calls every finite-core
-  analysis future work.
+  prove that collapsing point-vortex configurations that are non-degenerate in their sense can be desingularized into
+  hollow vortices that implode self-similarly. The two configurations they verify lie in the paper's families: their
+  triple is the μ = 1/2 configuration of Proposition 1 at θ = π/2, and their quartet is the n = 2 configuration of
+  Proposition 2 at θ = π/12. So one member of each family is non-degenerate, and by analyticity all but isolated
+  members of the arcs containing them; the minimizers are not checked. The argument states the two properties of
+  their map V (their Eq. (4.4)) that it uses: V is real-analytic, and rotations, dilations with Ω ↦ λ⁻²Ω, a positive
+  factor in the circulations with Ω ↦ cΩ, and relabeling change V by an invertible linear map. Their triple as
+  printed has its center of vorticity at −2i/√7 and is a zero of V for no Ω; shifted to its center of vorticity, as
+  they do, it is a zero with Ω = iκ̄ = (35 − √7 i)/(264π), which is Ω − i/(2κ) formed as in their Sect. 4.1 from the
+  printed Ω = 35/(264π) and 1/κ = √7/(132π), their κ being the collapse time; for the quartet the printed Ω is iκ̄.
+  Numerically, the derivative of V has full rank at 199 points of each of the two arcs; the argument does not use
+  this. The numbering cited is that of arXiv:2506.04093v1 and is the same in the journal version; both print the
+  quartet's third position as −√3/2 − 1 − i/2, which has to be read with +i/2. The paper no longer calls every
+  finite-core analysis future work.
 
 How it was checked. Every mathematical addition is proved in the text. The readings of Gröbli, Goodman, Kimura and
 Chen, Walsh and Wheeler are statements about sources: the programs check them for internal consistency and against
-the Biot–Savart velocities, not against the sources themselves. `code/verify_general_mu.py` now makes 145 checks
-(24 new: the forms and angles of Remark 2 exactly and at 50 digits; Gröbli's equations symbolically, for (1, 1, −1/2)
-and for every triple of circulations, against the Biot–Savart velocities and on his own example of Fig. 6, with the
-translation's misprint run through the same substitution as a negative control; the closed forms of Proposition 1 at
-60 digits; and the triple of Chen, Walsh and Wheeler exactly and at 50 digits, with their map V and its behaviour
-under the symmetries), and `code/verify_central_vortex.py` makes 103 (23 new: the two examples and the quartet of
-Chen, Walsh and Wheeler exactly and against the Biot–Savart velocities at 50 digits, with their map V and with the
-quartet's misprinted position as a negative control, and the expansion of F_n as a series and at 50 digits up to
-n = 10¹², with a negative control). Their output is `data/verify-general-mu-2026-09-27.txt` and
-`data/verify-central-vortex-2026-09-27.txt`. Table 1 has six new rows. Three in-project readings of the added
-passages, each told to find errors, were made before the release, the third briefed only with the paper and its
-programs; their confirmed findings are fixed in this version. None is an outside review.
+the Biot–Savart velocities, not against the sources themselves. `code/verify_general_mu.py` now makes 152 checks (31
+new: the forms and angles of Remark 2 exactly and at 50 digits; Gröbli's equations symbolically, for (1, 1, −1/2) and
+for every triple of circulations that can collapse, with Heron's formula factored in the side lengths and under
+relabeling and a change of sign, against the Biot–Savart velocities on the normalized family, on 188 triangles of 47
+triples in random order and sign with the area from the coordinates, and on his own example of Fig. 6, with the
+translation's misprint run through the same substitution and a wrong sign of his K as negative controls; the closed
+forms of Proposition 1 at 60 digits; and the triple of Chen, Walsh and Wheeler exactly and at 50 digits, with their
+map V at the shifted triple, its Ω formed from their printed values, the unshifted triple as a negative control, V's
+behaviour under the symmetries, and, numerically at 30 digits, the rank of its derivative along both arcs), and
+`code/verify_central_vortex.py` makes 103 (23 new: the two examples and the quartet of Chen, Walsh and Wheeler
+exactly and against the Biot–Savart velocities at 50 digits, with their map V and with the quartet's misprinted
+position as a negative control, and the expansion of F_n as a series and at 50 digits up to n = 10¹², with a negative
+control). Their output is `data/verify-general-mu-2026-09-27.txt` and `data/verify-central-vortex-2026-09-27.txt`.
+Table 1 has six new rows. Four in-project readings of the added passages, each told to find errors, were made before
+the release, the third and the fourth briefed only with the paper and its programs; their confirmed findings are
+fixed in this version. None is an outside review.
 
 Files: `paper/minimal-winding.tex` and `paper/minimal-winding.pdf`, the two programs and their output in `data/`,
 and this README. To reproduce, run the two programs from the folder of this README, as the README says, and build
