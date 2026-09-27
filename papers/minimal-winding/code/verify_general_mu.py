@@ -810,7 +810,7 @@ print('   Q_mu(y) is an irreducible cubic, hence (6d) Q_mu(P^2) is an irreducibl
 print('   minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.')
 
 # ==================================================================================
-hdr('10. Path length and spiral angle; Remark 2; Section 5; Proposition 1; Remark 1  [exact + numerical]')
+hdr('10. Path length and spiral angle; Remark 2 and Groebli; Section 5; Proposition 1; Remark 1  [exact + numerical]')
 # ==================================================================================
 # 10a. Integrate the Biot-Savart ODE (RK4, 30 digits) and compare each vortex's distance to the
 #      collision point, rotation angle, velocity angle and path length with the self-similar formulas.
@@ -915,6 +915,85 @@ for bb in ['0.05', '0.2', '0.35', '0.5', '0.65', '0.8', '0.95', '1.1', '1.3', '1
     dev_kim = max(dev_kim, abs(kappa_beta(beta)[0] - mp.mpc(A_k, B_k)/(4*mp.pi)))
 check('10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2',
       dev_kim < mp.mpf('1e-45'), 'max |kappa - (A + iB)/(4 pi)| = %s' % mp.nstr(dev_kim, 3))
+
+# 10j. Remark 2, elementary forms (release 2.2.0). u = tan(chi) is positive on both collapsing arcs.
+uR2 = sp.symbols('u', positive=True)
+chiR2 = sp.atan(uR2)
+PuR2 = uR2 + 1/(2*uR2)
+check('10j Remark 2: with u = tan chi, (3 - cos 2chi)/(2 sin 2chi) = u + 1/(2u)  (exact)',
+      sp.simplify((3 - sp.cos(2*chiR2))/(2*sp.sin(2*chiR2)) - PuR2) == 0)
+check('10j Remark 2: u + 1/(2u) - sqrt2 = (sqrt2 u - 1)^2/(2u); equality iff tan chi = 1/sqrt2, and then cos 2chi = 1/3',
+      sp.simplify(PuR2 - sp.sqrt(2) - (sp.sqrt(2)*uR2 - 1)**2/(2*uR2)) == 0
+      and sp.simplify(sp.cos(2*sp.atan(1/sp.sqrt(2))) - sp.Rational(1, 3)) == 0)
+check('10j Remark 2: P is unchanged under u -> 1/(2u); u = 1 and u = 1/2 (cos 2chi = 3/5) both give P = 3/2',
+      sp.simplify(PuR2.subs(uR2, 1/(2*uR2)) - PuR2) == 0 and PuR2.subs(uR2, 1) == sp.Rational(3, 2)
+      and PuR2.subs(uR2, sp.Rational(1, 2)) == sp.Rational(3, 2)
+      and sp.simplify(sp.cos(2*sp.atan(sp.Rational(1, 2))) - sp.Rational(3, 5)) == 0)
+wR2 = sp.expand_complex(sp.Rational(1, 2) + sp.sqrt(3)/2*sp.exp(sp.I*sp.atan(1/sp.sqrt(2))))
+check('10j Remark 2: at tan chi = 1/sqrt2, w = (1 + sqrt2)/2 + i/2, Im w/Re w = sqrt2 - 1 = tan(pi/8) and'
+      ' Im w/(Re w - 1) = sqrt2 + 1 = tan(3pi/8): interior angles pi/8 at z1, 5pi/8 at z2, pi/4 at z3',
+      sp.simplify(wR2 - ((1 + sp.sqrt(2))/2 + sp.I/2)) == 0
+      and sp.simplify(sp.im(wR2)/sp.re(wR2) - sp.tan(sp.pi/8)) == 0
+      and sp.simplify(sp.im(wR2)/(sp.re(wR2) - 1) - sp.tan(3*sp.pi/8)) == 0)
+mp.mp.dps = 50
+dev_u = mp.mpf(0); coll_u = True
+for bb in ['0.2', '0.6', '1.3', '3.4', '4.5']:                      # both collapsing arcs
+    beta = mp.mpf(bb)
+    ku = kappa_beta(beta)[0]
+    coll_u = coll_u and ku.real < 0
+    dev_u = max(dev_u, abs(P_of_kappa(ku) - (mp.tan(beta) + 1/(2*mp.tan(beta)))))
+check('10j Remark 2: Biot-Savart P = u + 1/(2u), u = tan beta, at five angles on both arcs', coll_u and dev_u < mp.mpf('1e-45'),
+      'max difference %s' % mp.nstr(dev_u, 3))
+
+
+def tri_angles(zs):
+    out = []
+    for j in range(3):
+        a_, b_ = zs[(j + 1) % 3] - zs[j], zs[(j + 2) % 3] - zs[j]
+        out.append(mp.acos((a_*mp.conj(b_)).real/(abs(a_)*abs(b_))))
+    return out
+
+
+dev_ang = mp.mpf(0)
+for (a_, b_), want in [((mp.mpf('0.01'), mp.pi/2 - mp.mpf('0.01')), (1, 5, 2)),
+                       ((mp.pi + mp.mpf('0.01'), 3*mp.pi/2 - mp.mpf('0.01')), (5, 1, 2))]:
+    bmin, _ = golden_min(fb, a_, b_, mp.mpf('1e-25'))
+    angs = tri_angles([mp.mpc(0), mp.mpc(1), mp.mpf(1)/2 + mp.sqrt(3)/2*mp.expj(bmin)])
+    dev_ang = max(dev_ang, max(abs(an - k_*mp.pi/8) for an, k_ in zip(angs, want)))
+check('10j Remark 2: the numerically located minimizers have interior angles (pi/8, 5pi/8, pi/4) on the first arc'
+      ' and (5pi/8, pi/8, pi/4) on the second (z1, z2, z3)', dev_ang < mp.mpf('1e-15'), 'max deviation %s' % mp.nstr(dev_ang, 3))
+
+# 10k. Remark 2: Groebli 1877, Sect. 10, Eqs. (1), (5), (8), (9), (11), (12), read in the original (printed pp. 55-58).
+#      m = (1, 1, -1/2); his shape parameters mu_i (not the paper's mu) and his coefficient kappa, called k in the paper.
+aG = sp.symbols('a', positive=True)
+mG = [sp.Integer(1), sp.Integer(1), sp.Rational(-1, 2)]
+MG = sum(mG)
+muG = [aG - (mG[1] - mG[2])/mG[0], aG - (mG[2] - mG[0])/mG[1], aG - (mG[0] - mG[1])/mG[2]]      # his (8)
+radG = 2*muG[1]*muG[2] + 2*muG[2]*muG[0] + 2*muG[0]*muG[1] - muG[0]**2 - muG[1]**2 - muG[2]**2
+rateG = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[1]*muG[2])                                                # his (9), original denominator
+kG = MG/sp.pi*(2*aG**2 + (mG[1] - mG[2])*(mG[2] - mG[0])*(mG[0] - mG[1])/(mG[0]*mG[1]*mG[2])*aG - 3)/(rateG*muG[0]*muG[1]*muG[2])  # his (12)
+PG = kG/2                                                                                           # his (11): d theta = k dt/(2t), s^2 = lambda t
+check('10k Groebli (8): at m = (1, 1, -1/2), mu_1 = a - 3/2, mu_2 = a + 3/2, mu_3 = a; radicand of (9) = 3a^2 - 9',
+      [sp.simplify(muG[0] - (aG - sp.Rational(3, 2))), sp.simplify(muG[1] - (aG + sp.Rational(3, 2))), sp.simplify(muG[2] - aG)] == [0, 0, 0]
+      and sp.expand(radG - (3*aG**2 - 9)) == 0)
+check('10k Groebli (9), (11), (12): P = |k|/2 = (2a^2 - 3)/(2 sqrt(3a^2 - 9))',
+      sp.simplify(PG - (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))) == 0)
+check('10k P^2 - 2 = (2a^2 - 9)^2/(12(a^2 - 3)): equality at a^2 = 9/2',
+      sp.simplify(((2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9)))**2 - 2 - (2*aG**2 - 9)**2/(12*(aG**2 - 3))) == 0)
+# a = sqrt3/cos chi with u = tan chi > 0: cos chi = 1/sqrt(1 + u^2) on the first arc (the branch a > sqrt 3)
+aU = sp.sqrt(3)*sp.sqrt(1 + uR2**2)
+check('10k a = sqrt3/cos chi turns Groebli\'s P into u + 1/(2u), the formula of Remark 2 (branch a > sqrt3; P is even in a)',
+      sp.simplify(((2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))).subs(aG, aU) - PuR2) == 0)
+cG = sp.symbols('c', real=True)                      # c = cos chi; |w|^2 and |w - 1|^2 at z1 = 0, z2 = 1, z3 = w
+w2, wm12 = 1 + sp.sqrt(3)/2*cG, 1 - sp.sqrt(3)/2*cG
+aC = sp.sqrt(3)/cG
+check('10k with a = sqrt3/cos chi, mu_1 : mu_2 : mu_3 = |z2 - z3|^2 : |z3 - z1|^2 : |z1 - z2|^2 at the positions of Remark 2'
+      ' (his (1), (5): s_i^2 = mu mu_i t)',
+      sp.simplify((muG[0]/muG[2]).subs(aG, aC) - wm12) == 0 and sp.simplify((muG[1]/muG[2]).subs(aG, aC) - w2) == 0)
+rate_tr = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[2]*muG[2])                                             # translation's (10.9)
+k_tr = MG/sp.pi*(2*aG**2 - 3)/(rate_tr*muG[0]*muG[1]*muG[2])
+check('10k negative control: the translation\'s denominator mu_1 mu_3 mu_3 in (10.9) gives a different coefficient',
+      sp.simplify(k_tr/2 - (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))) != 0)
 
 # 10h. Demina and Kudryashov 2014, Sect. 3: two regular n-gons with circulations G1 (radius R1) and G2 (radius r R1)
 #      and G0 at the center. With G2 = -G1/r^2 (zero angular impulse) their Eq. (37) fixes r, and their Eq. (36)
@@ -1047,6 +1126,36 @@ check('10d Prop. 1: q = s + 605/324 removes the quadratic term; sigma = 2 sqrt(-
       dep.coeff(sv, 2) == 0 and sp.simplify(sigma_ - 7*sp.sqrt(5201)/162) == 0
       and sp.simplify(X_ - 245351/sp.Integer(5201)**sp.Rational(3, 2)) == 0)
 check('10d Prop. 1: the cubic in q equals 16 Q(1/2, q)', sp.expand(16*Qexp.subs(m, sp.Rational(1, 2)).subs(y, qv) - cubq) == 0)
+
+# 10l. Prop. 1 (release 2.2.0): the critical cosines in closed form. At mu = 1/2, G(C) = 2C^3 + 8C^2 + C/4 - 8,
+#      and C = (sqrt7/2) c gives c^3 + (8 sqrt7/7) c^2 + c/14 - 32 sqrt7/49 = 0.
+cL, sL = sp.symbols('c s')
+GL = sp.expand((4*(1 - m)*C**3 + 4*(2*m**2 - m + 2)*C**2 + 2*(1 - m)**3*C
+                - (2*m**4 + 7*m**3 + 6*m**2 + 7*m + 2)).subs(m, sp.Rational(1, 2)))   # eq:K (Kc is reused in 10c)
+cubL = cL**3 + 8*sp.sqrt(7)/7*cL**2 + cL/14 - 32*sp.sqrt(7)/49
+check('10l Prop. 1: G(C) = 2C^3 + 8C^2 + C/4 - 8 at mu = 1/2, and G((sqrt7/2)c)/(7 sqrt7/4) = c^3 + (8 sqrt7/7)c^2 + c/14 - 32 sqrt7/49',
+      sp.expand(GL - (2*C**3 + 8*C**2 + C/4 - 8)) == 0
+      and sp.simplify(sp.expand(GL.subs(C, sp.sqrt(7)/2*cL))/(7*sp.sqrt(7)/4) - cubL) == 0)
+depL = sp.expand(cubL.subs(cL, sL - 8*sp.sqrt(7)/21))
+pL, qL = depL.coeff(sL, 1), depL.coeff(sL, 0)
+check('10l Prop. 1: c = s - 8 sqrt7/21 gives s^3 - (125/42)s + 124 sqrt7/1323; 2 sqrt(-p/3) = 5 sqrt70/21 and'
+      ' (3q/2p) sqrt(-3/p) = -124 sqrt10/3125',
+      sp.simplify(depL.coeff(sL, 2)) == 0 and sp.simplify(pL + sp.Rational(125, 42)) == 0
+      and sp.simplify(qL - 124*sp.sqrt(7)/1323) == 0
+      and sp.simplify(2*sp.sqrt(-pL/3) - 5*sp.sqrt(70)/21) == 0
+      and sp.simplify(sp.radsimp(3*qL/(2*pL)*sp.sqrt(-3/pL)) + 124*sp.sqrt(10)/3125) == 0)
+mp.mp.dps = 60
+cm = [-8*mp.sqrt(7)/21 + 5*mp.sqrt(70)/21*mp.cos(mp.acos(-124*mp.sqrt(10)/3125)/3 - 2*mp.pi*mm/3) for mm in range(3)]
+res_c = max(abs(cc**3 + 8*mp.sqrt(7)/7*cc**2 + cc/14 - 32*mp.sqrt(7)/49) for cc in cm)
+check('10l Prop. 1: c_0, c_1, c_2 solve the cubic; c_0 in (0.67, 0.68), c_1 in (-0.93, -0.92), c_2 < -1',
+      res_c < mp.mpf('1e-55') and mp.mpf('0.67') < cm[0] < mp.mpf('0.68') and mp.mpf('-0.93') < cm[1] < mp.mpf('-0.92') and cm[2] < -1,
+      'residual %s; c = %s' % (mp.nstr(res_c, 3), [mp.nstr(cc, 13) for cc in cm]))
+P12 = lambda th: (14*mp.sin(th)**2 + 6*mp.sqrt(7)*mp.cos(th) + 21)/(2*(14*mp.cos(th) + mp.sqrt(7))*mp.sin(th))
+qP = [605/mp.mpf(324) + 7*mp.sqrt(5201)/162*mp.cos(mp.acos(245351/mp.mpf(5201)**mp.mpf('1.5'))/3 - 2*mp.pi*mm/3) for mm in range(2)]
+dev_c = max(abs(P12(mp.acos(cm[0])) - mp.sqrt(qP[0])), abs(P12(2*mp.pi - mp.acos(cm[1])) - mp.sqrt(qP[1])))
+check('10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on A- is P_-, to 50 digits',
+      dev_c < mp.mpf('1e-50'), 'max difference %s' % mp.nstr(dev_c, 3))
+mp.mp.dps = 50
 
 # 10e. Remark 1: Q(a/b, xi^2) irreducible over Q for every a/b in (0, 1) with b <= 30, one by one.
 xi = sp.symbols('xi')

@@ -1,6 +1,6 @@
 # RESEARCH
 
-Ledger of prior-article searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-24.
+Ledger of prior-article searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-27.
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
@@ -11,6 +11,8 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Confirmed novel findings among the five candidates: 0.** Mathematical proofs and numerical checks establish validity, not historical originality. The fifth contains the second and fourth; there are not four confirmed discoveries remaining after correcting the first.
 
 The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. The first formula explicitly specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) supplies the substitution. The personal name has been retired in favor of Three-vortex collapse bound. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
+
+Since 2026-09-27 the five vortex candidates are proved, with the classical credits and without a novelty claim, in the paper *Minimal Winding in the Self-Similar Collapse of Point Vortices* (`papers/minimal-winding/`, release 2.2.0), and the identities note is retired as a record of its own (log of 2026-09-27).
 
 
 ## 2026-09-23 — proved candidates (priority unconfirmed)
@@ -2031,3 +2033,23 @@ Opened: arXiv:1705.08416 (Berestycki, Brunet and Derrida, J. Phys. A 2018), eqs.
 Blocked: the full texts of Gärtner (1982) and Ducrot (2015) were not opened. The circular coefficient (N + 2)/2, 2 in two dimensions, comes from search summaries and the abstract of a paper on Z^d, and agrees with Bramson's 3/2 plus the curvature term D/R = √(D/r)/(2t); it was not read in a primary source.
 Conclusion: reference verification for two new tabs, not an originality search. The straight-front asymptotics the fisher-kpp benchmark tests are confirmed in a primary source; the circular coefficient is used only in the tab's status note and one plate criterion, and its record says so. Kovács and Rogolino (arXiv:1910.09175) was already verified on 2026-09-21 above; the cattaneo tab implements only the linear constant-coefficient case, whose dispersion relation is derived in the tab and the benchmark.
 Re-search: skip, except read Gärtner (1982) or Ducrot (2015) before anything depends on the circular coefficient.
+
+### 2026-09-27  identities note retired into papers/minimal-winding  query: (none for the note's results; arXiv abs 2506.04093 opened for the Chen–Walsh–Wheeler credit)  (session agents)
+
+- Two in-project readings mapped `identities/note.typ`, `identities/STATEMENTS.txt`, `IDENTITIES.md` and `identities/*.md` against the minimal-winding paper, result by result, and a third pass checked every number by exact and 40- to 60-digit computation.
+- Moved into release 2.2.0 (prepared, not yet made): in Remark 2 the form P = u + 1/(2u), its sum-of-squares proof, the invariance under u ↦ 1/(2u), the minimizing triangle (π/8, 5π/8, π/4) and the explicit reduction to Gröbli's §10 coefficient; in Proposition 1 the critical cosines in closed form; after Proposition 3 the configuration of Gotoda's Fig. 3(b) (≥ 3√33/16) and the slice at central circulation 1/2, whose κ equals the three-vortex κ; in Section 5 a proof of F_n = (1/4) e^√(n/2) (1 + 29/(12√(2n)) + O(1/n)); in the Discussion the Chen–Walsh–Wheeler credit. Everything else in the note was already in the paper, with fuller credits (Kimura 1987 Eqs. (4.4) and (4.6), Novikov–Sedov p. 298, Conte–de Seze 1980), or was a defect: the division by z_m, the "2π-periodic" law and the signed ω₀ t_c, now listed as errata in `identities/README.md`.
+- Nothing moved claims novelty. Confirmed novel findings remain **0**; the paper's statements stay at "we have not found", and the F_n expansion carries no novelty statement because no prior-article search for it is logged.
+- Demina–Kudryashov 2014, listed as unread in `identities/NOVELTY-AUDIT.md` (2026-09-23 addendum), was read in full on 2026-09-24 (entry N above); the audit's 2026-09-27 addendum supersedes its "main priority risk" line.
+- Also re-opened for the added passages: Gotoda arXiv:2002.09624v1, Sect. 3.2, Eqs. (3.9)–(3.13) and Fig. 3(b), whose parameters are d₂ = 2, γ₁ = −1, γ₂ = 1/2, with d₁ = √2 and γ₃ = −3/4 from (3.11)–(3.12), the note's quincunx; Novikov and Sedov 1979, Sect. 4 (jetp.ras.ru PDF), which gives the four- and five-vortex families and their rates (4.3)–(4.4) but no numerical example with these circulations, so the paper credits the configuration to Gotoda's figure.
+- Re-search: skip.
+
+### 2026-09-27  Gröbli 1877 §10 re-read for Remark 2  query: (none; the original and the translation the paper cites were opened directly)  (session agent)
+Opened: the Bayerische Staatsbibliothek scan of the dissertation (bsb11358655), IIIF images 00059 to 00062, printed pp. 55–58, all of §10 ("Das Dreieck der drei Wirbelfäden ändere seine Grösse, aber nicht seine Gestalt"), Eqs. 1) to 15); arxiv.org/pdf/2404.01305 (v1), Goodman's English translation, §10, Eqs. (10.1)–(10.15), the translation `identities/ORIGINALITY-FOLLOWUP.md` used (there from roygoodman.net) and the one the paper's bibliography cites.
+Conclusion: Eqs. 8) (p. 56), 9), 11) and 12) (p. 57) give, for (m₁, m₂, m₃) = (1, 1, −1/2), μ₁ = a − 3/2, μ₂ = a + 3/2, μ₃ = a and P = |ϰ|/2 = (2a² − 3)/(2√(3a² − 9)); Eqs. 1) and 5) make the μᵢ proportional to the squared sides, so a = √3/cos χ is the configuration of Remark 2. The original's denominator in 9) is μ₁μ₂μ₃; the translation's (10.9) prints μ₁μ₃μ₃. The coefficient is Gröbli's ϰ, called k in the paper because κ is taken there.
+Re-search: skip.
+
+### 2026-09-27  Chen–Walsh–Wheeler, hollow-vortex implosion, read for the finite-core sentence  query: "arXiv 2506.04093"; "doi 10.1007/s00208-026-03541-2" (Crossref API)  (session agent)
+Opened: arxiv.org/pdf/2506.04093 (v1, 4 June 2025, 22 pp.); api.crossref.org for the DOI (Math. Ann. 396, issue 1, article 5, published online 23 July 2026, CC BY 4.0); link.springer.com PDF of that version (40 pp.).
+Read: the abstract, Sect. 1 (with Theorem 1.3 and the remark that the non-degeneracy assumption "can in principle be verified for any explicit configuration"), Sect. 4.1 (Definition 4.1, Examples 4.2 and 4.3), the statement of Theorem 4.4 and Corollary 4.6, in both versions; not the proofs of Sects. 2, 3 and 4.2–4.3. The paper cites Theorems 1.3 and 4.4, Definition 4.1, Examples 4.2 and 4.3 and Corollary 4.6, and says that it has not checked the hypothesis for its own configurations.
+Conclusion: every collapsing point-vortex configuration that is non-degenerate in their sense desingularizes into self-similarly imploding hollow vortices; the paper's old "an analysis with finite cores is future work" was too broad and is qualified. The earlier IDENTITIES.md line calling their result "the Euler realization of the three locks" assumed the hypothesis without checking it and is corrected.
+Re-search: skip.

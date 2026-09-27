@@ -29,6 +29,8 @@ relative rotation theta, and a vortex of circulation Gamma0 at the center.
   5. Biot-Savart velocities of all 2n + 1 vortices at 50 digits against the closed forms, both roots.
   6. Numerical minimization over theta from the Biot-Savart velocities at 30 digits.
   7. Negative controls: checks that must fail do fail.
+  8. The examples with n = 2 after the proof of Proposition 3 (Gamma0 = 3/2 and 1/2; Gotoda's Fig. 3(b), Biot-Savart at
+     50 digits; kappa against the three vortices of Remark 2), and the expansion of F_n as n -> infinity.
 
 Convention: conj(dz_j/dt) = (1/(2 pi i)) sum_{k != j} Gamma_k/(z_j - z_k). Needs sympy and mpmath
 (code/requirements.txt). Run: python3 verify_central_vortex.py. Prints every check; exits with status 1
@@ -419,6 +421,95 @@ sp_circ = max(spread(nn, g + mp.mpf('1e-3'), xx, xx, f*mp.pi/nn) for f in (0.2, 
 check('Biot-Savart, n = 3, Gamma0 = 2.5: the quotients agree (%s) but differ with |zeta|^2 = 1.1x (%s) or Gamma0 + 1e-3 (%s)'
       % (mp.nstr(sp_ok, 3), mp.nstr(sp_imp, 3), mp.nstr(sp_circ, 3)),
       sp_ok < mp.mpf('1e-25') and sp_imp > mp.mpf('1e-3') and sp_circ > mp.mpf('1e-6'))
+
+# ============================================================================ 8. the examples with n = 2, and F_n as n -> oo
+print('8. The examples with n = 2 after Proposition 3 (release 2.2.0), and the growth of F_n')
+th2, Ee = sp.symbols('theta E')
+for g0, xv, (aw, bw, Dw) in ((sp.Rational(3, 2), sp.Integer(2), (sp.Rational(21, 4), sp.Integer(3), sp.Rational(19, 4))),
+                             (sp.Rational(1, 2), sp.Integer(3), (sp.Integer(6), sp.Integer(2), sp.Integer(6)))):
+    sub = {n: 2, X: sp.sqrt(xv), Y: xv}                  # X = e^t, Y = e^{2t} = x for n = 2
+    av, bv, Dv = [sp.simplify(e_.subs(sub)) for e_ in (a_t, b_t, D_t)]
+    check('n = 2, Gamma0 = %s: x = %s is the root > 1 of eq:circ0; a = %s, b = %s, D = %s' % (g0, xv, aw, bw, Dw),
+          sp.expand(circ0.subs({n: 2, G0: g0, x: xv})) == 0 and xv > 1 and [av, bv, Dv] == [aw, bw, Dw])
+check('Gamma0 = 3/2: coth t = 3, cosh 2t = 5/4, sinh 2t = 3/4, b/a = 4/7, and (a - b cos 2theta)/(4 sin 2theta) = (3/16)(7 - 4 cos 2theta)/sin 2theta',
+      sp.simplify(coth.subs(X, sp.sqrt(2)) - 3) == 0 and ch.subs(Y, 2) == sp.Rational(5, 4) and sh.subs(Y, 2) == sp.Rational(3, 4)
+      and sp.Rational(3, 1)/sp.Rational(21, 4) == sp.Rational(4, 7)
+      and sp.simplify((sp.Rational(21, 4) - 3*sp.cos(2*th2))/(4*sp.sin(2*th2)) - sp.Rational(3, 16)*(7 - 4*sp.cos(2*th2))/sp.sin(2*th2)) == 0)
+check('Gamma0 = -3/4 (Gotoda, Fig. 3(b)): x = 1/2 is the root in (0, 1) of eq:circ0, and the ring swap (x, Gamma0) -> (1/x, -Gamma0/x) gives (2, 3/2)',
+      circ0.subs({n: 2, G0: -sp.Rational(3, 4), x: sp.Rational(1, 2)}) == 0
+      and (1/sp.Rational(1, 2), -(-sp.Rational(3, 4))/sp.Rational(1, 2)) == (2, sp.Rational(3, 2)))
+check('Gamma0 = 1/2: A = 2 and S = 2 - 2/(1 - 3e^{2i theta}) = 6/(3 - e^{-2i theta}); P = (3 - cos 2theta)/(2 sin 2theta)',
+      sp.simplify(A_t.subs({n: 2, X: sp.sqrt(3)}) - 2) == 0
+      and sp.simplify(2 - 2/(1 - 3*Ee**2) - 6/(3 - 1/Ee**2)) == 0
+      and sp.simplify((6 - 2*sp.cos(2*th2))/(4*sp.sin(2*th2)) - (3 - sp.cos(2*th2))/(2*sp.sin(2*th2))) == 0)
+mp.mp.dps = 50
+# Gotoda's Fig. 3(b), positions of his Eq. (3.9): d1 = sqrt 2, d2 = 2, gamma = (-1, 1/2, -3/4)
+Gg = [mp.mpf(-1), mp.mpf(-1), mp.mpf(1)/2, mp.mpf(1)/2, mp.mpf(-3)/4]
+worst_g = mp.mpf(0); coll_g = True; neg_w = True; rest_g = mp.mpf(0)
+th_star = mp.acos(mp.mpf(4)/7)/2
+for th in (mp.mpf('0.2'), mp.mpf('0.5'), th_star, mp.mpf('0.9'), mp.mpf('1.3')):
+    zs = [mp.sqrt(2)/2*mp.expj(th), -mp.sqrt(2)/2*mp.expj(th), mp.mpc(-1), mp.mpc(1), mp.mpc(0)]
+    vel = velocities(zs, Gg)
+    kq = [vel[i]/zs[i] for i in range(4)]
+    rest_g = max(rest_g, abs(vel[4]), max(abs(q_ - kq[0]) for q_ in kq)/abs(kq[0]))
+    coll_g = coll_g and kq[0].real < 0; neg_w = neg_w and kq[0].imag < 0
+    Pg = abs(kq[0].imag)/(-2*kq[0].real)
+    worst_g = max(worst_g, abs(Pg - 3*(7 - 4*mp.cos(2*th))/(16*mp.sin(2*th))))
+    if th == th_star:
+        dev_star = abs(Pg - 3*mp.sqrt(33)/16)
+check('Gotoda Fig. 3(b), Biot-Savart at 50 digits, five angles in (0, pi/2): self-similar with the center at rest, collapsing (Re kappa < 0)',
+      rest_g < mp.mpf('1e-45') and coll_g, 'max residual %s' % mp.nstr(rest_g, 3))
+check('   omega_0 = Im kappa < 0 in this orientation, and |omega_0| t_c = P = (3/16)(7 - 4 cos 2theta)/sin 2theta',
+      neg_w and worst_g < mp.mpf('1e-45'), 'max difference %s' % mp.nstr(worst_g, 3))
+check('   at cos 2theta = 4/7, P = 3 sqrt(33)/16 = %s' % mp.nstr(3*mp.sqrt(33)/16, 11), dev_star < mp.mpf('1e-45'), mp.nstr(dev_star, 3))
+zs = [mp.sqrt(2)/2*mp.expj(mp.mpf('2.0')), -mp.sqrt(2)/2*mp.expj(mp.mpf('2.0')), mp.mpc(-1), mp.mpc(1), mp.mpc(0)]
+check('   negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands', (velocities(zs, Gg)[0]/zs[0]).real > 0)
+# Gamma0 = 1/2, x = 3: kappa of the five vortices against kappa of the three vortices (1, 1, -1/2) of Remark 2 at chi = theta
+worst_k3 = mp.mpf(0); worst_kf = mp.mpf(0)
+for f in ('0.3', '0.7', '1.2', '2.0', '3.5'):
+    th = mp.mpf(f)
+    zs, Gs = config(2, mp.mpf(1)/2, mp.mpf(3), th); vel = velocities(zs, Gs)
+    k5 = vel[1]/zs[1]
+    z3 = [mp.mpc(0), mp.mpc(1), mp.mpf(1)/2 + mp.sqrt(3)/2*mp.expj(th)]; G3 = [mp.mpf(1), mp.mpf(1), mp.mpf(-1)/2]
+    zc3 = sum(g_*z_ for g_, z_ in zip(G3, z3))/sum(G3); v3 = velocities(z3, G3)
+    k3 = [v3[i]/(z3[i] - zc3) for i in range(3)]
+    worst_k3 = max(worst_k3, max(abs(k_ - k5) for k_ in k3)/abs(k5))
+    worst_kf = max(worst_kf, abs(k5 - 3j/(mp.pi*(3 - mp.expj(2*th))))/abs(k5))
+check('Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at five angles (two of them expanding)', worst_kf < mp.mpf('1e-45'),
+      'max relative difference %s' % mp.nstr(worst_kf, 3))
+check('   and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1', worst_k3 < mp.mpf('1e-45'),
+      'max relative difference %s' % mp.nstr(worst_k3, 3))
+# F_n as n -> oo
+kk2 = sp.Symbol('kk2', positive=True)                      # n - 1
+xk = (kk2 + 1 + sp.sqrt(2*kk2 + 1))/kk2
+zero('cosh(eta_n) = n/(n-1) gives sinh(eta_n/2)^2 = (x_n + 1/x_n - 2)/4 = 1/(2(n-1))', sp.radsimp((xk + 1/xk - 2)/4) - 1/(2*kk2))
+hh = sp.Symbol('h', positive=True)                         # h = n^{-1/2}
+ser = sp.series((1/hh**2 + 2)*sp.asinh(1/sp.sqrt(2*(1/hh**2 - 1))) - 1/(sp.sqrt(2)*hh), hh, 0, 4).removeO()
+check('(n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})',
+      sp.simplify(ser.coeff(hh, 0)) == 0 and sp.simplify(ser.coeff(hh, 1) - sp.Rational(29, 12)/sp.sqrt(2)) == 0 and sp.simplify(ser.coeff(hh, 2)) == 0,
+      'series %s' % ser)
+mp.mp.dps = 50
+
+
+def F_ring(nn):
+    nn = mp.mpf(nn); eta = mp.log((nn + mp.sqrt(2*nn - 1))/(nn - 1))
+    Kn_ = (nn - 1)*mp.sinh((nn + 2)*eta/2)
+    return mp.sqrt(Kn_**2 - (2*nn - 1))/(2*nn)
+
+
+rems = []; ratios = []; bad = []
+for nn in (10, 100, 1000, 10**4, 10**5, 10**6):
+    r_ = F_ring(nn)/(mp.e**mp.sqrt(mp.mpf(nn)/2)/4)
+    ratios.append(r_); rems.append(nn*(r_ - 1 - mp.mpf(29)/(12*mp.sqrt(2*nn))))
+    bad.append(nn*(r_ - 1 - mp.mpf(30)/(12*mp.sqrt(2*nn))))
+print('      n (F_n e^{-sqrt(n/2)} 4 - 1 - 29/(12 sqrt(2n))) for n = 10 .. 10^6: %s' % [mp.nstr(r_, 6) for r_ in rems])
+check('F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + O(1/n)): n times the remainder stays bounded, n = 10 .. 10^6 (50 digits)',
+      max(abs(r_) for r_ in rems) < 1, 'max %s' % mp.nstr(max(abs(r_) for r_ in rems), 4))
+check('   the ratio F_n/(e^{sqrt(n/2)}/4) is 1.578, 1.175, 1.054 at n = 10, 100, 1000 and tends to 1',
+      [mp.nstr(r_, 4) for r_ in ratios[:3]] == ['1.578', '1.175', '1.054'] and abs(ratios[-1] - 1) < mp.mpf('0.002'),
+      str([mp.nstr(r_, 6) for r_ in ratios]))
+check('   negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)', abs(bad[-1]) > 5*abs(bad[3]) and abs(bad[-1]) > 20,
+      str([mp.nstr(b_, 4) for b_ in bad]))
 
 print()
 if FAILED:

@@ -117,5 +117,23 @@ OK    n = 2: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is ne
 OK    n = 5: with 2n replaced by kn, k > 2, the lowest nonzero coefficient is negative   [lowest coefficients [0, -20*(kk - 2), -110*(kk - 2)]]
 OK    without zero angular impulse (|zeta|^2 = y != x) the quotients differ by a term n(x - y)/(y(v - 1)^2) that depends on theta
 OK    Biot-Savart, n = 3, Gamma0 = 2.5: the quotients agree (4.65e-31) but differ with |zeta|^2 = 1.1x (0.0775) or Gamma0 + 1e-3 (5.31e-5)
+8. The examples with n = 2 after Proposition 3 (release 2.2.0), and the growth of F_n
+OK    n = 2, Gamma0 = 3/2: x = 2 is the root > 1 of eq:circ0; a = 21/4, b = 3, D = 19/4
+OK    n = 2, Gamma0 = 1/2: x = 3 is the root > 1 of eq:circ0; a = 6, b = 2, D = 6
+OK    Gamma0 = 3/2: coth t = 3, cosh 2t = 5/4, sinh 2t = 3/4, b/a = 4/7, and (a - b cos 2theta)/(4 sin 2theta) = (3/16)(7 - 4 cos 2theta)/sin 2theta
+OK    Gamma0 = -3/4 (Gotoda, Fig. 3(b)): x = 1/2 is the root in (0, 1) of eq:circ0, and the ring swap (x, Gamma0) -> (1/x, -Gamma0/x) gives (2, 3/2)
+OK    Gamma0 = 1/2: A = 2 and S = 2 - 2/(1 - 3e^{2i theta}) = 6/(3 - e^{-2i theta}); P = (3 - cos 2theta)/(2 sin 2theta)
+OK    Gotoda Fig. 3(b), Biot-Savart at 50 digits, five angles in (0, pi/2): self-similar with the center at rest, collapsing (Re kappa < 0)   [max residual 3.65e-51]
+OK       omega_0 = Im kappa < 0 in this orientation, and |omega_0| t_c = P = (3/16)(7 - 4 cos 2theta)/sin 2theta   [max difference 1.07e-50]
+OK       at cos 2theta = 4/7, P = 3 sqrt(33)/16 = 1.0771054962   [2.67e-51]
+OK       negative control: at theta = 2.0, in (pi/2, pi), the same configuration expands
+OK    Gamma0 = 1/2, n = 2: Biot-Savart kappa = 3i/(pi(3 - e^{2i theta})) at five angles (two of them expanding)   [max relative difference 2.79e-51]
+OK       and equals kappa of the three vortices of Remark 2 at chi = theta, |z1 - z2| = 1   [max relative difference 4.0e-51]
+OK    cosh(eta_n) = n/(n-1) gives sinh(eta_n/2)^2 = (x_n + 1/x_n - 2)/4 = 1/(2(n-1))
+OK    (n + 2) arsinh((2(n-1))^{-1/2}) = sqrt(n/2) + 29/(12 sqrt(2n)) + O(n^{-3/2})  (series in h = n^{-1/2})   [series 529*sqrt(2)*h**3/960 + 29*sqrt(2)*h/24]
+      n (F_n e^{-sqrt(n/2)} 4 - 1 - 29/(12 sqrt(2n))) for n = 10 .. 10^6: ['0.373976', '0.452677', '0.457207', '0.459114', '0.459762', '0.459972']
+OK    F_n = (1/4) e^{sqrt(n/2)} (1 + 29/(12 sqrt(2n)) + O(1/n)): n times the remainder stays bounded, n = 10 .. 10^6 (50 digits)   [max 0.46]
+OK       the ratio F_n/(e^{sqrt(n/2)}/4) is 1.578, 1.175, 1.054 at n = 10, 100, 1000 and tends to 1   [['1.57778', '1.17541', '1.0545', '1.01713', '1.00541', '1.00171']]
+OK       negative control: with 30 in place of 29, n times the remainder grows like sqrt(n)   [['0.1876', '-0.1366', '-1.406', '-5.433', '-18.17', '-58.47']]
 
 all checks passed
