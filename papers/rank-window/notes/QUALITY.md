@@ -38,15 +38,18 @@ GENChase: the companion repository does not carry `notes/`.
   selected numbers by independent code paths, with a negative control for the Proposition 1 check.
 - [x] **3. Every claim labelled.** The note states that Proposition 1 and Corollary 1 are proved and everything else is
   numerical; the README says the same. Numerical results are not stated as theorems.
-- [ ] **4. Sources read.** Read in the parts the note uses: Stringer et al. (2019) with its Supplementary
+- [x] **4. Sources read.** Read in the parts the note uses: Stringer et al. (2019) with its Supplementary
   Information; Pospisil and Pillow (2025); Davidovich and Roudi (arXiv:2204.08525); Braun (2006);
   Shawe-Taylor et al. (2005), Sects. I-III; Kong and Valiant (arXiv:1602.00061v5, Sects. 1 and 3); Spigler, Geiger and
   Wyart (arXiv:1905.10843, Sects. 1 and 7); Stringer's deposited code at 58443d1 in the files the bibliography names
   (the fitting windows of `mainfigs/fig3.m` and `powerlaws/statsShuffledPCA.m`, and `powerlaws/get_powerlaw.m`, read
   for `review-3.md`, M2). Only the abstract of Koltchinskii and Gine (2000), cited as such; Widom (1963) not reached,
   so the note states the Matern tail-rate assumption instead of citing it. Koltchinskii and Gine is background only
-  (the convergence of kernel-matrix eigenvalues as P grows); no proof step uses it. Open until it is read in full or
-  dropped.
+  (the convergence of kernel-matrix eigenvalues as P grows); no proof step uses it, the bibliography marks it
+  "abstract read", and RESEARCH.md records it as "Only the abstract". That meets this item as the bar states it (every
+  source a proof step depends on read in full; background recorded with how far it was read), so the item is checked
+  (2026-09-27); an earlier version of this record held it open until the paper was read in full or dropped, which is
+  stricter than the bar. The one proof source, Braun (2006), was read in the lemmas the proof adapts.
 - [x] **5. Prior article review.** RESEARCH.md, entry of 2026-09-26 (finite rank windows and the eigenspectrum
   smoothness bound). The note says its central point is elementary and partly anticipated (Stringer's SI Example 3,
   Pospisil and Pillow, Davidovich and Roudi) and lists what it adds.
