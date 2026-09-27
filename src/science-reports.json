@@ -2946,17 +2946,29 @@
     "sourceSha256": "7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f",
     "reference": "M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.",
     "equation": "ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Precision check of the real-argument Ai that airy.js actually evaluates (80-step RK4 on [-10, 8], one-term asymptotic for z>8, leading oscillation for z<-10). Not a check of the catalog factor Ai(x - z^2/4 + i a), and not a print audit.",
+      "On [-4, 4] the module matches an independent power series to 7.23e-7. At z=6 and z=8 the RK4 bridge disagrees with that series, including a sign change at z=6. For z>8 the plate matches its own one-term asymptotic; a two-term expansion differs by 0.387% at z=9.",
+      "Tracked intensity peaks match the same real formula, but the mean |peak x - z^2/4| is about 0.89 to 0.95 because the maximum of Ai is near argument -1.02, not 0. The catalog line x_peak = z^2/4 is the zero of the Airy argument. At a=0.08, |Ai(xi+ia)|/|Ai(xi)| is 1.0017 at xi=0 and 1.030 at xi=-2."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Run a real print-state check before any full validation label.",
+      "The catalog complex argument Ai(x - z^2/4 + i a) is not what the plate evaluates. Decide whether that factor should be implemented; this check did not change the field.",
+      "The RK4 bridge for z near 6 to 8, and the one-term tail for z>8, are outside the accurate interval used for the peak."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/closed-forms-science.js",
+        "command": "node tools/closed-forms-science.js --write",
+        "results": "validation/results/closed-forms-science.json",
+        "scope": "Real ai(z) on [-4, 4] against an independent Airy series, tails at z=6, 8, -10, 9, 12, 15, and the tracked |psi|^2 peak on three (span, apod, grid, aspect) states. Complex |Ai(xi+ia)|/|Ai(xi)| at a=0.08 is recorded as a disagreement, not as a pass against the plate.",
+        "criteria": "Series and a 2000-step RK4 agree to 1e-9 on [-5, 4]. Module versus series on [-4, 4] is under 1e-6. Module peaks match the independent real evaluation to 1e-9. Mean offset from z^2/4 is reported and is not required to be zero.",
+        "benchmark": "Airy power series from Lanczos Ai(0) and Ai'(0), cross-checked by a fine RK4 of y''=x y. Pixel map copied from compute(): xx = span*(x/(W-1)-0.52), z = sqrt(2*span)*y/(H-1), argument xx - z^2/4.",
+        "failureControl": "Shifting the caustic from z^2/4 to z^2/2 moves the tracked peak by up to 12.23. Flipping the argument sign to xx + z^2/4 moves it by up to 11.70. Both must exceed 1.",
+        "limitations": "Real evaluator only. Peak rows sit near Airy argument -1, inside [-4, 4]. Does not certify z near 6 to 8, the clipped z>8 tail, the complex catalog factor, or any print."
+      }
+    ],
     "print": []
   },
   {
@@ -3260,17 +3272,29 @@
     "sourceSha256": "2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee",
     "reference": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
     "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Precision check of the radial hydrogen formula in dynamics.js for n<=6 only. Other ids registered in that file are not validated by this record.",
+      "laguerre() stores Float32 coefficients. Against an independent float64 series on rho = 0, 0.25, ..., 2 the largest absolute error is 3.378e-7 (n=6, l=1). Absolute error 1e-8 is not met.",
+      "The norm check is Simpson quadrature of R(r)^2 r^2 only (8192 panels, upper limit 4 n^2+30). Worst |integral-1| is 3.653e-7 at n=6, l=0. The angular factor anorm is not included, and the shader ray integral was not checked."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Run a real print-state check before any full validation label.",
+      "n>6, the 3D integral of |psi|^2, and the WebGL ray march remain unchecked.",
+      "A Float64 Laguerre table would be required before claiming absolute error under 1e-8. This check did not change the coefficients."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/closed-forms-science.js",
+        "command": "node tools/closed-forms-science.js --write",
+        "results": "validation/results/closed-forms-science.json",
+        "scope": "Every hydrogen state with n=1..6 and l=0..n-1: associated Laguerre coefficients, radial node count, and an independent Simpson integral of the module radial function R.",
+        "criteria": "Laguerre absolute error under 1e-6 and, as a recorded fact, above 1e-8. radialNodes equals n-l-1 on all 21 states. |integral R^2 r^2 dr - 1| under 1e-3 (measured 3.65e-7).",
+        "benchmark": "Independent float64 associated Laguerre series L_k^{(alpha)}. Node count n-l-1. Simpson rule on the module's own R, not the printed norm constant. Measure: integral from 0 to infinity of R(r)^2 r^2 dr in atomic units.",
+        "failureControl": "Index k+1 instead of k misses by at least 1 on every state. Alpha off by +1 misses by more than 0.01 on all 15 states with k>=1. Replacing l by l+1 in the node formula matches 0 of 21 states.",
+        "limitations": "Float32 coefficient error prevents a 1e-8 claim. Radial measure only. n<=6. No print and no other dynamics.js id."
+      }
+    ],
     "print": []
   },
   {
@@ -3930,17 +3954,30 @@
     "sourceSha256": "463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92",
     "reference": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
     "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Precision check that the implemented period-1 map closes and that its crest-to-trough height equals 4|A|/(pi(1-A^2)) and the module sOfA (max abs 2.22e-16). Not a derivation from the water-wave equations, and not a print audit.",
+      "The catalog map (denominator 1+A^2-2A cos) is not classical z_A (denominator 1+A^2+2A cos). At A=0.2 the pointwise distance reaches 0.05305. The catalog trough derivative vanishes at A=3-2*sqrt(2)=0.17157 (steepness 0.22508). At A=0.30 the catalog map meets itself (gap 5.55e-17). Classical z_A does not.",
+      "An independent solve of the classical splash f=f'=0, not using 0.730 as an input, gives A=0.4546700164520109 and steepness 0.7297642257877295, within 0.001 of 0.730. The plate was not retuned to that curve.",
+      "The schema clamps A at 0.458, where the steepness formula gives 0.73794, past the classical limit. Module A_STAR is the inverse of the hardcoded constant 0.7298, not that geometric solve."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Run a real print-state check before any full validation label.",
+      "Decide whether the plate should draw classical z_A or the catalog map. This check records the disagreement and does not change the formula.",
+      "Interior streamlines, curvature, and the dual Euler reading were not checked."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/closed-forms-science.js",
+        "command": "node tools/closed-forms-science.js --write",
+        "results": "validation/results/closed-forms-science.json",
+        "scope": "Closure and steepness identity of posSurf at A in {0.05, 0.2, 0.36, 0.45, 0.458}; independent classical splash solve; symmetry-line crossings of the catalog map at A=0.15 and A=0.30 and of classical z_A at A=0.30, the solved splash A, and A=0.46.",
+        "criteria": "Closure and steepness identity within 1e-12. Classical residual under 1e-10 and steepness within 0.001 of 0.730. Catalog map meets at A=0.30 (gap under 1e-9) and does not cross at A=0.15. Classical profile stays separated at A=0.30 and meets at A=0.46.",
+        "benchmark": "Algebraic height 4|A|/(pi(1-A^2)) and the module sOfA. Classical z_A splash from f=f'=0, started at (0.45, 2.08), compared with 0.730 only after the solve. Trough derivative 1-4A/(1-A)^2.",
+        "failureControl": "Wrong height 4|A|/(pi(1-A)) misses by at least 0.00319. Mutating (cos-A) to (cos+A) misses the steepness identity by 0.0442. Flipping the sign of the linear phi term breaks closure by Delta x = 2.",
+        "limitations": "Does not claim the catalog map is classical z_A. Does not claim the A=0.458 clamp is the limiting wave. No print. Streamlines and curvature unchecked."
+      }
+    ],
     "print": []
   },
   {
