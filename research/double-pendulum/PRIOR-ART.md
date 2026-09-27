@@ -362,3 +362,84 @@ fails at m1 = m2, l1 = l2 by a factor of about 8.3 (27 pi^2 against 32). The Bol
 for nonintegrability and chaos in Hamiltonian systems" is in Seimenis (ed.), NATO ASI B 331 (1994), pp. 173-179,
 DOI 10.1007/978-1-4899-0964-0_14 (not the 1999 Simo volume); its visible pages do not mention the double pendulum.
 Verdict updated: the equal case appears not to be covered; this rests on OCR snippets, not the printed page.
+
+## Update 2026-09-27: Szuminski-Kapitaniak read in full, and a search for newer work
+
+**Szuminski and Kapitaniak, J. Sound Vib. 611 (2025) 119099, arXiv:2602.21123v1 (34 pages), read in full.** The
+system is not the classical double pendulum: it is a three-degree-of-freedom "variable-length double pendulum", a
+swinging Atwood machine (masses M and m1 on a string of fixed total length, M moving vertically) with a second
+pendulum m2 of fixed length hung from m1, parameters mu1 = M/(m1 + m2) >= 1 and mu2 = m2/(m1 + m2) (Sect. 2, pp. 4-5).
+Sections 3.1-3.4 (pp. 5-19) are numerical (Lyapunov spectra with Mathematica's NDSolve, phase-parametric diagrams,
+Poincare sections, "Lyapunov refined maps"). Section 4 (pp. 19-24) is Morales-Ramis theory along the particular
+solution phi1 = phi2 = 0 of the Atwood motion: Theorem 2 (p. 19), integrability forces mu1 = 1 + 4/(n(n + 3) - 2);
+Theorem 3 (p. 23), "For mu1 = 3 and 0 < mu2 < 1, the variable-length double pendulum ... is not integrable in the class
+of functions meromorphic in coordinates and velocities"; Conjecture 1 (p. 22) for the other n. Nothing is proved about
+the classical double pendulum, and nothing about chaos is proved (the chaos statements rest on Lyapunov exponents).
+Decisive lines: abstract (p. 1), "this work represents a significant step toward proving the long-sought
+non-integrability of the classical double pendulum"; Introduction (p. 3), "This requirement is precisely why a
+non-integrability proof for the classical double pendulum is still missing — an explicit particular solution has yet
+to be found. However, in the proposed model, we can obtain a particular solution ... This result brings us closer than
+ever to proving the non-integrability of the classical double pendulum." Their double-pendulum references: Shinbrot,
+Grebogi, Wisdom and Yorke, Am. J. Phys. 60 (1992) 491-499 [10] (experimental and numerical), Stachowiak-Okada [11],
+Stachowiak-Szuminski [13], Dullin [54], Ivanov I [55]; no rigorous proof at the classical parameters.
+
+Newer work, searched 2026-09-27:
+
+| source | query | hits | relevant |
+|---|---|---|---|
+| arXiv (HTML search) | author Szuminski, newest first | 19 | since 2602.21123: 2603.20712 (gyroscopic non-homogeneous potentials), 2608.09310 (Atwood machine with a massive string), 2609.17336 (Rossler, C^1 non-integrability via averaging), 2609.17449 (ABC flow, same method), 2609.19958 (trigonometric Nose-Hoover); abstracts read, none on the double pendulum |
+| arXiv | `"double pendulum"` (all fields), newest first | 149 | the same count as on 2026-09-26; newest 2609.26972 (22 Sep 2026, machine learning); no rigorous chaos or non-integrability result |
+| arXiv | `"double pendulum"` with non-integrability / integrability / Morales-Ramis / Galois / "first integral" / Ziglin / horseshoe / "topological entropy" / homoclinic / "computer-assisted" / "computer assisted" / rigorous / "interval arithmetic" / Melnikov / chaos proof | 13 / 34 / 1 / 1 / 1 / 0 / 0 / 0 / 1 / 0 / 0 / 2 / 0 / 0 / 0 | only items already in this ledger (2602.21123, 1303.4904, 2209.03724, 2104.13211, 2111.14889, 2404.08478) plus 2512.10569 (generalized Ziegler pendulum with follower force, abstract read) |
+| arXiv | authors Combot, Maciejewski, Przybylska, Stachowiak (T.), Wilczak, Zgliczynski, Capinski, Kapela, newest first | 23 / 57 / 47 / 35 / 17 / 57 / 30 / 6 | the newest 6 to 10 titles of each scanned (2025-2026 included): no double pendulum item |
+| arXiv | `pendulum "computer-assisted proof"`, `pendulum "transversal homoclinic"`, `pendulum horseshoe`, `"two-link pendulum"`, `"double mathematical pendulum"`, `Llibre pendulum` | 1 / 3 / 3 / 5 / 0 / 2 | only 0905.3924 (forced damped pendulum) and Llibre-Novaes-Teixeira 1109.6378, 1203.0498 (periodic orbits of perturbed double pendula) |
+| zbMATH Open API | `ti:"double pendulum" & py:2025-2026`; `"double pendulum" & py:2025-2026` | 5; 18 | control, machine learning, 2609.05337; none rigorous on chaos or integrability |
+| zbMATH Open API | `au:Szuminski` | 21 | nothing on the classical double pendulum (Stachowiak-Szuminski 2015 as before; Szuminski-Wozniak 2020 is two pendulums coupled by a spring) |
+| zbMATH Open API | `"double pendulum" & (nonintegrab* \| non-integrab* \| horseshoe \| "topological entropy" \| "computer-assisted" \| "computer assisted" \| "transversal homoclinic")` | 11 | new to this ledger: Mielke, Holmes and O'Reilly, J. Dyn. Diff. Eq. 4 (1992) 95-126 (Zbl 0749.58022; review read: saddle-centre cascades, applications include the orthogonal double pendulum, a different system); Beck-Donders-Yang 2020 (flat systems; the double pendulum only as motivation); Rabinowitz 1999 and Bolotin-Negrini 1997 as before |
+| zbMATH Open API | `"double pendulum" & (Melnikov \| separatri*)` | 5 | new: Pumarino and Valls, DCDS 11 (2004) 413-448 (abstract read at aimsciences.org: "fast periodic perturbations of a double pendulum", a Melnikov lower bound in the perturbation parameter; forced, perturbative) |
+| Semantic Scholar | citations of 10.1016/j.jsv.2025.119099 | 12 | as on 2026-09-26 (Szuminski's 2026 papers, pendulum arrays, LCE pendulums, planetary dynamics, a vibration analysis of a double pendulum); none proves anything about the classical double pendulum |
+| Crossref | `double pendulum non-integrability`, from 2025 | 30 shown | Physica Scripta 2026 and a Research Square preprint (graph-theoretic analyses, numerical); J. Low Freq. Noise 2026 (equivalent linearization); "Conditions for the emergence of deterministic chaos in the motion of a double pendulum in a homogeneous electrostatic field", Human and Space 2025 (a charged, modified system; no abstract, not reached) |
+| OpenAlex | citations of W4409546399 | - | HTTP 429, not reached |
+| web search | "classical double pendulum" non-integrability proof 2026; double pendulum rigorous proof chaos horseshoe computer-assisted interval arithmetic 2025 2026 | - | only the items above and this project's own public pull request |
+
+Verdict of this update: nothing newer proves chaos or non-integrability of the classical double pendulum. Szuminski's
+group has moved to other systems (Atwood machines, ABC flow, Rossler, Nose-Hoover); its most recent statement on the
+classical double pendulum is still that the proof is missing. The scoop risk noted on 2026-09-26 is not realized as far
+as arXiv, zbMATH Open, Crossref and Semantic Scholar reach on 2026-09-27; a journal paper not yet indexed cannot be
+excluded. Bolotin and Negrini (1997): see the update in [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md); their Section 3 also
+claims h_top > 0 on the critical level for the double pendulum of Section 10, under the same parameter condition, which
+fails at the equal case.
+
+Ivanov I, III and IV, read 2026-09-27 from open copies of the journal's archive (rcd.ics.org.ru; not committed): I
+(RCD 4 (1999) 104-116) in full, III (RCD 5 (2000) 329-343) in Sects. 1 and 5, IV (RCD 6 (2001) 53-94) in Sect. 1 and its
+Main Theorem. I, p. 105: "Now we formulate our main conjecture: For all non-degenerate values of the parameters
+[mass ratio, length ratio, energy], the system (1.2) is nonintegrable." Its Theorem 1 claims nonintegrability in
+unspecified neighbourhoods of three parameter points with mass ratio m2/m1 = 0.01 and length ratios 5, 10, 7, from
+Runge-Kutta 7/8 computations whose accuracy is "upper estimated by 10^-5. This bound is very rough" (Sect. 6); no
+interval arithmetic. III: nonintegrability for a mass ratio below an unspecified r(d0) < 1 with one other parameter
+near a degenerate value. IV: the reduced system (mass ratio 0) near the vertices of its parameter square, with explicit
+small neighbourhoods. None covers m1 = m2, l1 = l2. II (J. Phys. A 34 (2001)) was not reached (free in a browser,
+blocked from the session).
+
+Ivanov II, "Study of the double mathematical pendulum: II. Investigation of exponentially small homoclinic
+intersections", J. Phys. A 34 (2001) 11011-11031, doi:10.1088/0305-4470/34/49/318 (owner's copy, not committed), read
+2026-09-27 in its abstract, Sect. 1 and its Main theorem. Parameters delta = m2/m1, epsilon = l2/l1, energy nu. Main
+theorem (p. 11013): "For any ν ≠ 1 there is a positive number ε0(ν) such that for any ε > ε0(ν) there exists
+δ0(ε, ν) > 0 such that for 0 < δ < δ0(ε, ν)" the system has a hyperbolic periodic trajectory whose invariant manifolds
+intersect transversally, exponentially small in ε. Remark 1: "we prove the nonintegrability of the double
+mathematical pendulum for very narrow neighbourhood of the edge (δ = 0, ε = ∞) in the space of parameters." The
+equal case (δ = 1, ε = 1) is not covered. With I, III and IV, none of Ivanov's four papers covers it.
+
+## 2026-09-27, after the in-project review (papers/double-pendulum/notes/review-1.md, should-fix 4)
+
+- Ivanov IV (RCD 6 (2001) 53-94), Main Theorem (p. 54), re-read from the open copy: it concerns the reduced system (the
+  limit m2/m1 -> 0, two parameters: length ratio and energy) and proves a hyperbolic periodic orbit with transversally
+  intersecting invariant manifolds when the parameters are non-degenerate and within explicit distances of one of the
+  four vertices of the compactified parameter square (four conditions with bounds 1e-3, 5e-3, 4e-7 and 2e-5, two of
+  them with an additional logarithmic condition; the symbols are garbled in the text layer, so only the bounds are
+  quoted). The equal double pendulum (m2/m1 = 1) is not the reduced system; no statement of IV applies to it. The
+  manuscript now says so (Sect. 1).
+- The computer-assisted-proof search (section "CAPD group" above, and the zbMATH query
+  `ti:pendulum & ti:"computer assisted proof"`) is now summarized in the manuscript (Sect. 1), with Wilczak and
+  Zgliczynski (2009, forced damped pendulum) cited from its title and abstract. No new search was run for this note.
+- Bolotin and Negrini (1997): the manuscript now says in Sects. 1 and 8 that the paper is known only from search
+  snippets and must be read in print before the novelty is relied on (BOLOTIN-NEGRINI.md lists the pages).
