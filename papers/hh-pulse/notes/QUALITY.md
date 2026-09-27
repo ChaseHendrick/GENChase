@@ -5,31 +5,43 @@ The bar every paper in this repository meets before it is published or preprinte
 
 ## Record (2026-09-27)
 
-- [ ] **1. Complete proofs.** The argument from the computed hypotheses (H1)-(H5) to Theorems 1 and 2, and Lemmas 1
-  and 2, are written in Section 4 of the manuscript. Open: the validity of each step of the Lohner integrator (a
-  priori enclosure, refined enclosure, remainder over subintervals, mean-value form, QR update) is stated in the
-  program docstrings and summarized in the paper, and still has to be written out as a proof in an appendix; the
-  continuity of the exit point uses the local unstable manifold theorem with parameters, which must be cited from a
-  source that has been read, with its hypotheses checked.
+- [x] **1. Complete proofs.** Evidence: Section 4 of the manuscript proves Lemma 0 (a cone condition gives the inertia
+  of the rest state, so (H1) follows from (H2) without the Routh-Hurwitz criterion), Lemma 1 (the exit of the unstable
+  branch from the box B and the continuity of the exit point in K, proved from the cone condition, the unstable
+  manifold theorem without parameters and the continuity of the flow, instead of an unread parametric manifold
+  theorem), Lemma 2 (the closing block), and Theorems 1 and 2 from the computed hypotheses. Appendix A proves the
+  integrator's steps (a priori enclosure, Lagrange remainder on subintervals, mean-value form and the set update, the
+  path enclosure) and states the rigorous tail bound for Psi near 0; Appendix B proves the one-variable interval Newton
+  lemma used for the rest state, the interval Cholesky lemma and the cover of the block by cells. Found open on
+  2026-09-27 and closed the same day: the continuity of p(K) (it cited a parametric manifold theorem that had not been
+  read), the integrator lemmas (only described), the interval Newton and Cholesky facts (unproved), and the reliance of
+  (H1) on the Routh-Hurwitz criterion (now an independent check that the proof does not use). This is the author's
+  own check; item 6 is where it is tested.
 - [x] **2. Rigorous computation.** Evidence: every proof step is ball arithmetic (FLINT/Arb via python-flint 0.9.0,
-  256 bits; 128 bits for enclosures that only widen) in `papers/hh-dynamics/work/traveling-wave/code/`
-  (`certify_rest_wave.py`, `block0.py`, `hhjet6.py`, `lohner6.py`, `prove_pulse.py`); each stage stops on a failed
-  check; negative controls (a bracket above lambda_u, thinner Lemma B faces, an enlarged block, a shifted K interval,
-  a perturbed alpha_m) run their own code and fail as they must; `block_check_iv.py` re-checks the block in mpmath
-  interval arithmetic with independent code; `test_lohner6.py` tests the integrator with a negative control.
+  256 bits; 128 bits for enclosures that only widen) in `code/` (`certify_rest_wave.py`, `block0.py`, `hhjet6.py`,
+  `hhseries.py`, `lohner6.py`, `prove_pulse.py`); each stage stops on a failed check; negative controls (a bracket
+  above lambda_u, thinner Lemma B faces, an enlarged block, a shifted K interval, alpha_m perturbed away from rest) run
+  their own code and fail as they must; `block_check_iv.py` re-checks the block in mpmath interval arithmetic with
+  independent code; `test_lohner6.py` tests the integrator with a negative control.
 - [x] **3. Every claim labelled.** Evidence: the manuscript labels Theorems 1 and 2, Remark 1 and the rest state
-  [Computer-assisted], Remark 2 [numerical, not proved], and lists what is not claimed; the README does the same.
-- [ ] **4. Sources read.** Hodgkin and Huxley (1952) read on pp. 519-528 and Table 3 (the equations and constants
-  the proof uses); Carpenter (1977) read in full; Hastings (1976) pp. 229-230 only; Arioli and Koch (2015) read in the
-  parts cited. Open: a read source for the local unstable manifold theorem with parameters (item 1).
+  [Computer-assisted], Remark 2 [numerical, not proved], says which branch statement is numerical, and lists what is
+  not claimed; the README does the same.
+- [x] **4. Sources read.** Evidence: every source a proof step uses was read: Hodgkin and Huxley (1952) pp. 519-528 and
+  Table 3 (the equations and constants), in a scan of the paper; Teschl, Ordinary Differential Equations and Dynamical
+  Systems (AMS GSM 140, 2012), the statements cited (Corollary 2.15, Theorem 6.1, Lemmas 6.3, 6.5, 6.6, Theorems 9.4,
+  9.5, and the Routh-Hurwitz statement of p. 72 for the unused check), read on 2026-09-27 in the author's preliminary
+  version, which he makes available with the publisher's permission. Sources that bear only on priority or comparison
+  and on no proof step: Carpenter (1977), read in full; Hastings (1976), pp. 229-230 only; Foote and Chen (1981), not
+  read; Arioli and Koch (2015), read in the parts cited; Ikeda, Mimura and Tsujikawa (1987, 1989), abstracts; Huxley
+  (1959), not read (cited only for what is not claimed). The manuscript says so in Section 1 and in the reference list.
 - [x] **5. Prior article review.** Evidence: RESEARCH.md entries of 2026-09-25, 2026-09-26 and 2026-09-27 and
-  `papers/hh-dynamics/work/traveling-wave/prior-art-log.md` (A)-(J); the manuscript's priority statement is conditional
-  and names what was not read (Hastings 1976 beyond pp. 229-230, Foote and Chen 1981) and that zbMATH Open has no
-  review of either.
+  `papers/hh-dynamics/work/traveling-wave/prior-art-log.md` (A)-(J), summarized in Appendix C of the manuscript; the
+  priority statement is conditional and names what was not read (Hastings 1976 beyond pp. 229-230, Foote and Chen
+  1981) and that zbMATH Open has no review of either.
 - [ ] **6. Adversarial second reading.** Open. So far only checks inside the session that produced the proof: the
-  tests, the independent block program, the consistency of the rigorous and numerical values, and a rereading of the
-  proof logic by the same agent. An independent reviewer told to find errors, briefed only with the paper and its
-  programs, has not read it.
-- [ ] **7. Reproducible.** The programs run from `papers/hh-dynamics/work/traveling-wave/code/` with python-flint
-  0.9.0, numpy and scipy (manuscript, Section 7). Open: a `requirements.txt` for this paper, a companion repository,
-  and `paper-check` and `paper-sync --check` for a release.
+  tests, the independent block program, the consistency of the rigorous and numerical values, the full rerun of item
+  7, and a rereading of the proof by the same agent. An independent reviewer told to find errors, briefed only with
+  the paper and its programs, has not read it.
+- [ ] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
+  scratch, one bounded process at a time. Pending: the full rerun from the committed code, its reports, and a clean
+  `node tools/paper-sync.js --check hh-pulse`.

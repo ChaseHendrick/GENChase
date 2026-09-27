@@ -1,7 +1,7 @@
 ---
 title: "The propagated action potential of Hodgkin and Huxley at their 1952 constants: a computer-assisted existence proof"
 author: "Chase Hendrick, Independent Researcher (ORCID 0009-0002-9754-6087)"
-status: "Draft, 2026-09-27. Not reviewed outside this project. See notes/QUALITY.md for what has and has not been checked."
+status: "Draft of release 1.0.0, 2026-09-27."
 ---
 
 ## Abstract
@@ -12,11 +12,12 @@ their travelling-wave equation (J. Physiol. 117, eq. (31)), and noted that the s
 Carpenter (1977), treat modified systems in which the gating variables are slowed or sped up by small parameters. We
 give a computer-assisted proof, in ball arithmetic, that the unmodified equation, with Hodgkin and Huxley's rate
 functions and constants as printed (including the leak potential 10.613 mV), has a pulse, an orbit homoclinic to rest,
-at 18.5 C and at 6.3 C. At 18.5 C the speed K parameter is pinned in an interval of width 3e-45, which gives a
-conduction speed of 18.731888247880483540468313433296243876955750774 m/s (to about 45 digits) for the fibre constants of
-their p. 528, against the 18.8 m/s they computed. The proof leaves rest along its one-dimensional unstable manifold,
-carries a whole speed interval through the spike with a validated Taylor integrator, and closes with an isolating block
-with a cone condition around rest and a Wazewski-type shooting argument. [Computer-assisted.]
+at 18.5 C and at 6.3 C. The speed parameter K is pinned in an interval of width 3e-45 at 18.5 C and 2.8e-61 at 6.3 C.
+For the fibre constants of their p. 528 the conduction speed begins 18.73188824788048354046831343329624387695575077 m/s
+at 18.5 C, against the 18.8 m/s they computed, and 12.313756720162298508179797283771499327244899734708115548799408 m/s
+at 6.3 C (all digits shown are proved). The proof leaves rest along its one-dimensional unstable manifold, carries a
+whole speed interval through the spike with a validated Taylor integrator, and closes with an isolating block with a
+cone condition around rest and a Wazewski-type shooting argument. [Computer-assisted.]
 
 ## 1. Introduction
 
@@ -44,12 +45,20 @@ and the printed leak potential, the travelling-wave system has a pulse, with the
 interval of width 3e-45 at 18.5 C and 2.8e-61 at 6.3 C. [Computer-assisted.] The same holds at 18.5 C with the leak
 potential that makes the resting current exactly zero (Remark 1). [Computer-assisted.]
 
-**Priority, conditionally.** On the searches logged in the repository (RESEARCH.md, entries of 2026-09-25 to
-2026-09-27; `papers/hh-dynamics/work/traveling-wave/prior-art-log.md`), this is the first existence proof for the
-unmodified 1952 equations. The statement is conditional: Hastings (1976) was read on pp. 229-230 only; Foote and
-Chen, "Traveling wave properties of the Hodgkin-Huxley equations", Chinese J. Math. 9 (1981) 1-23, was not read at
-all; zbMATH Open has no review of either (Zbl 0374.35004, Zbl 0472.35048), and MathSciNet was not reachable.
-Carpenter (1977) was read in full.
+**Priority, conditionally.** On the searches summarized in Appendix C (2026-09-25 to 2026-09-27), this is the first
+existence proof for the unmodified 1952 equations. The statement is conditional, and nothing else in the paper depends
+on it: Hastings (1976) was read on pp. 229-230 only; Foote and Chen, "Traveling wave properties of the Hodgkin-Huxley
+equations", Chinese J. Math. 9 (1981) 1-23, was not read at all; zbMATH Open has no review of either
+(Zbl 0374.35004, Zbl 0472.35048), and MathSciNet was not reachable. Carpenter (1977) was read in full.
+
+**What the proof rests on.** Besides the computations, the proof uses only Hodgkin and Huxley's equations and constants
+(1952, pp. 519-528 and Table 3, read in a scan of the paper) and standard facts about ordinary differential equations,
+cited from one textbook that was read for the purpose (Teschl 2012: extension of solutions, Corollary 2.15; the flow is
+continuous on its open domain, Theorem 6.1; orbits in a compact set are complete and have nonempty, compact, invariant
+limit sets, Lemmas 6.3, 6.5 and 6.6; the local unstable manifold of a hyperbolic equilibrium, Theorems 9.4 and 9.5).
+Every other step is proved here (Section 4 and Appendices A and B). No step of the proof depends on Hastings (1976),
+Carpenter (1977), Foote and Chen (1981) or Arioli and Koch (2015); they bear only on the priority statement and on the
+comparison of methods.
 
 ## 2. The equations
 
@@ -62,27 +71,26 @@ keeps its form:
 with alpha_m = Psi((25 - u)/10), beta_m = 4 e^(-u/18), alpha_n = Psi((10 - u)/10)/10, beta_n = e^(-u/80)/8,
 alpha_h = 0.07 e^(-u/20), beta_h = 1/(e^((30 - u)/10) + 1), Psi(x) = x/(e^x - 1) (Psi(0) = 1), and
 **E_l = 10.613 mV**, Hodgkin and Huxley's V_l = -10.613 mV (Table 3) in our convention. The state is
-y = (u, u', m, n, h) in R^5. The speed is theta = sqrt(K a / (2 R_2 C_M)), with a = 238 um and R_2 = 35.4 ohm cm
-for the fibre of their p. 528.
+y = (u, u', m, n, h) in R^5, and we write the system as y' = f(y, K); f is real analytic in (y, K). The speed is
+theta = sqrt(K a / (2 R_2 C_M)), with a = 238 um and R_2 = 35.4 ohm cm for the fibre of their p. 528.
 
 With the printed E_l the resting current is not exactly zero at u = 0 (Table 3's footnote says the value was chosen to
 make it zero; with the printed rate functions the exact value is 10.5989...). Rest is then the equilibrium
 y* = (u*, 0, m_inf(u*), n_inf(u*), h_inf(u*)) with
 
-    u* = 0.0036206688079425688368876905420... mV     [computer-assisted: an interval Newton step in ball
-                                                       arithmetic; unique within 1e-3 mV of this value]
+    u* = 0.0036206688079425688368876905420... mV     [computer-assisted: Lemma B.1; the only zero of the
+                                                       resting current within 1e-3 mV of this value]
 
-and it does not depend on T. A pulse is a non-constant solution with y(t) -> y* as t -> +-infinity.
+and it depends neither on T nor on K. A pulse is a non-constant solution with y(t) -> y* as t -> +-infinity.
 
 ## 3. Results
 
 **Theorem 1 (18.5 C).** [Computer-assisted.] Let T = 18.5 C. For some K* in (K1, K2), with K1 and K2 the exact binary
-fractions of `papers/hh-dynamics/work/traveling-wave/data/pulse_proof_18.5_El10.613_config.json`,
+fractions of `data/pulse_proof_18.5_El10.613_config.json`,
 
     K1 = 10.438051060101123692276486238318579121858669770478...,   K2 - K1 = 3.000e-45 (to 4 digits),
 
-the system of Section 2 has a pulse. It leaves rest along the branch of the unstable manifold on which u increases,
-and max u > 90.58 mV. The corresponding speed lies in
+the system of Section 2 has a pulse, and max u > 90.58 mV along it. The corresponding speed lies in
 
     (18.73188824788048354046831343329624387695575077276, 18.73188824788048354046831343329624387695575077548) m/s.
 
@@ -91,89 +99,160 @@ fractions of `data/pulse_proof_6.3_El10.613_config.json`,
 
     K1 = 4.51063243827085102104174385842888070411449431302344897921140063822623...,   K2 - K1 = 2.800e-61,
 
-the system of Section 2 has a pulse, and max u > 102.98 mV. The corresponding speed lies in
+the system of Section 2 has a pulse, and max u > 102.98 mV along it. The corresponding speed lies in
 
     (12.313756720162298508179797283771499327244899734708115548799408270,
      12.313756720162298508179797283771499327244899734708115548799408655) m/s.
 
+In both theorems the pulse leaves rest along a branch of the one-dimensional unstable manifold of y* (the branch
+through the exit set of Lemma 1; numerically it is the branch on which u increases) and returns to y* inside the block
+B0 of Section 4.
+
 **Remark 1 (the zero-current leak potential).** [Computer-assisted.] With E_l = 10.5989209693916785... (the value
-that makes the resting current zero at u = 0) Theorem 1 holds with K2 - K1 = 3e-45 and the speed in
+that makes the resting current zero at u = 0, so that u* = 0) Theorem 1 holds with K2 - K1 = 3e-45 and the speed in
 (18.73216081438890211377538515402816936801773373586, 18.73216081438890211377538515402816936801773373858) m/s.
+The printed E_l moves the speed by 2.7e-4 m/s.
 
 **Remark 2 (numerical, not proved).** High-precision multiple shooting gives K* = 10.43805106010112369227648623831857
 912185866977197832623... at 18.5 C and K* = 4.510632438270851021041743858428880704114494313023448979211400... at
-6.3 C (printed E_l), which Theorems 1 and 2 confirm to 45 and 61 digits.
-Hodgkin and Huxley's K = 10.47 /ms is 0.3 per cent higher; their 18.8 m/s is our 18.73 rounded after a hand
-integration. The measured speed in that fibre was 21.2 m/s.
+6.3 C (printed E_l), which Theorems 1 and 2 confirm to 45 and 61 digits. Hodgkin and Huxley's K = 10.47 /ms is 0.3
+per cent higher; their 18.8 m/s is our 18.73 rounded after a hand integration. The measured speed in that fibre was
+21.2 m/s.
 
 **Not claimed.** Uniqueness of the pulse or of K*; stability; other temperatures; the slow pulse that Huxley (1959)
 and later authors found numerically.
 
 ## 4. The proof
 
-The proof has five computed hypotheses (H1 to H5) and an argument that uses only them, the local unstable manifold
-theorem with parameters, and continuous dependence on initial data and parameters. All computations are in ball
-arithmetic (FLINT/Arb through python-flint 0.9.0) at 256 bits; each program stops on a failed check.
+The proof has computed hypotheses (H2) to (H5) and an argument that uses only them and the facts from Teschl (2012)
+listed in Section 1. All computations are in ball arithmetic (FLINT/Arb through python-flint 0.9.0) at 256 bits (128
+bits for enclosures that are only widened); each program stops on a failed check. Appendix A proves that the
+integrator's enclosures are enclosures, and Appendix B the interval lemmas the checks use.
 
-**(H1) Rest and its eigenvalues** (`certify_rest_wave.lemma_A`). For every K in [K1, K2], the characteristic
-polynomial P of Df(y*) has one simple real root lambda_u in an enclosed interval (P(a) < 0 < P(b), P' > 0 on [a, b])
-and the quotient P/(x - lambda_u) satisfies the Hurwitz inequalities. So W^u(y*) is a curve and W^s(y*) is
-four-dimensional.
+For an invertible matrix P we use the coordinates z = P (y - y*). Since f(y*, K) = 0, for y in a convex set Q that
+contains y*,
 
-**(H2) Where W^u leaves a small box** (`certify_rest_wave.lemma_B`). In z = T_B (y - y*), with T_B an exact binary
-matrix inverting a rigorously enclosed eigenbasis (unstable, fast real, complex pair, slow real) to about 1e-70, let
-B = {|z1| <= r_B, |z2| <= s2, z3^2 + z4^2 <= s3^2, |z5| <= s5} with r_B = 1e-25 (18.5 C) or 1e-32 (6.3 C) and
-s_j of order r_B^2. Checked over B and the K interval: every stable face is strictly inflowing, and D A + A^T D
-(D = diag(1, -1, -1, -1, -1), A the interval matrix of T_B Df T_B^-1 over B) is positive definite. **Lemma 1.** The
-branch of W^u tangent to +e1 leaves B through the face z1 = r_B. *Proof.* Near y* the branch lies in the interior of
-B, since the eigenvector is e1 up to 1e-70 while the aspect ratio of B is at least 1e-26; there L = z1^2 - |z'|^2 > 0.
-Since f(y*) = 0 and B is convex, z' = A-bar(z) z with A-bar an average of Jacobians over the segment [y*, y], so
-dL/dt = z^T (D A-bar + A-bar^T D) z > 0 for z != 0. The orbit cannot leave through a stable face (strict inflow),
-and cannot stay in B for all time (its omega-limit set would lie in a level set of L, which the cone condition allows
-only at y*, where L = 0 < L(orbit)). **(H2')** z1' > 0 on the whole face z1 = r_B, so the exit is transversal and the
-exit point p(K) depends continuously on K (the local unstable manifold depends continuously on K; the first exit time
-is continuous at a transversal exit from the interior).
+    z' = A-bar z,   A-bar = integral_0^1 P Df(y* + s (y - y*), K) P^-1 ds,                      (4.1)
+
+an average of the matrices P Df(x, K) P^-1 over x in Q. We write sym S = (S + S^T)/2.
+
+**Lemma 0 (a cone condition gives the inertia).** Let A be a real n x n matrix and D = diag(1, -1, ..., -1). If
+D A + A^T D is positive definite, then A has one simple real eigenvalue lambda_u > 0, with an eigenvector v such that
+v^T D v > 0, and n - 1 eigenvalues with negative real part.
+
+*Proof.* If A v = lambda v with v complex and nonzero, then v^* (D A + A^T D) v = 2 Re(lambda) v^* D v > 0, so no
+eigenvalue is on the imaginary axis. Let E+ and E- be the real invariant subspaces of A belonging to the eigenvalues
+with positive and with negative real part; R^n is their direct sum. For x in E- \ {0}, x(t) = e^(tA) x tends to 0 as
+t -> +infinity and d/dt (x(t)^T D x(t)) = x(t)^T (D A + A^T D) x(t) > 0, so x^T D x < 0; likewise x^T D x > 0 on
+E+ \ {0}, with t -> -infinity. Every 2-dimensional subspace contains a nonzero x with x_1 = 0, where x^T D x <= 0, so
+dim E+ <= 1; and E- does not contain e_1, so dim E- <= n - 1. Hence dim E+ = 1: E+ is spanned by a real eigenvector v
+of a real eigenvalue lambda_u > 0 of algebraic multiplicity one, and v^T D v > 0. QED
+
+**(H2) Where the unstable manifold leaves a small box** (`certify_rest_wave.lemma_B`). In z = T_B (y - y*), with T_B
+an exact binary matrix that approximately diagonalizes Df(y*) (unstable, fast real, complex pair, slow real), let
+
+    B = {|z1| <= r_B, |z2| <= s2, z3^2 + z4^2 <= s3^2, |z5| <= s5},
+
+with r_B = 1e-25 (18.5 C) or 1e-32 (6.3 C) and s_j of order r_B^2 (the values are in the configuration files).
+Checked in ball arithmetic over B x [K1, K2]: (i) D A + A^T D is positive definite for every A in an interval matrix
+enclosing T_B Df(y, K) T_B^-1, D = diag(1, -1, -1, -1, -1) (Lemma B.2); (ii) the stable faces are strictly inflowing:
+z2 z2' < 0 where |z2| = s2, z3 z3' + z4 z4' < 0 where z3^2 + z4^2 = s3^2, and z5 z5' < 0 where |z5| = s5, at every
+point of B; (iii) z1' > 0 on the exit face E = B intersected with {z1 = r_B}.
+
+Write L = z1^2 - (z2^2 + ... + z5^2). By (i), (4.1) with P = T_B and Q = B, and the concavity in A of the smallest
+eigenvalue of D A + A^T D, dL/dt = z^T (D A-bar + A-bar^T D) z > 0 at every point of B other than y*.
+
+**(H1) Rest is hyperbolic, with a one-dimensional unstable manifold.** By Lemma 0 applied to T_B Df(y*, K) T_B^-1 (y*
+lies in B), for every K in [K1, K2]. As an independent check, `certify_rest_wave.lemma_A` encloses the characteristic
+polynomial of Df(y*, K) over the K interval, shows that it has one simple real root lambda_u in an interval, and checks
+the Routh-Hurwitz inequalities for the quotient (Lemma B.4); the proof does not use this check.
+
+**Lemma 1.** Assume (H2). For every K in [K1, K2]:
+
+(a) the unstable manifold of y* has a branch, the orbit Gamma_K of a solution x_K with x_K(t) -> y* as t -> -infinity
+and z1 > 0 on it near y*, that stays in B until a first time t_e, at which it leaves B through a point p(K) of E;
+
+(b) p(K) is the only point of E whose backward orbit stays in B, and K -> p(K) is continuous on [K1, K2].
+
+*Proof.* (a) By Lemma 0, y* is hyperbolic with a one-dimensional unstable space spanned by v, with v^T D v > 0 in z
+coordinates, so v_1 is not 0. By Teschl's Theorems 9.4 and 9.5 the points near y* whose backward orbits stay near y*
+form a C^1 curve through y*, tangent to v, that consists of y* and two orbits; near y*, z1 has opposite signs on them,
+and L > 0 on them (tangency and v^T D v > 0). Let Gamma_K be the orbit with z1 > 0 and x_K a solution on it. The point
+z = 0 is interior to B, so x_K(t) lies in B for all t below some t_0. While x_K is in B, L increases, so L > 0 and z1
+cannot vanish: z1 > 0. Let t_e = sup {t : x_K(s) in B for all s <= t}. If t_e were infinite, the forward orbit would
+lie in the compact set B; by Teschl's Lemmas 6.3, 6.5 and 6.6 its omega-limit set would be nonempty, compact,
+invariant and inside B, and L, increasing and bounded along the orbit, would be constant on it; since dL/dt > 0 on
+B \ {y*}, the omega-limit set would be {y*}, and L(x_K(t)) would increase to L(y*) = 0 from positive values, which is
+impossible. So t_e is finite, x_K(t_e) is on the boundary of B, and there are times t > t_e arbitrarily close to t_e
+at which x_K(t) is outside B. One of the constraints g_j <= 0 that define B (g = z2^2 - s2^2, and so on) is violated
+at such times while g_j(x_K(t_e)) = 0, so d g_j(x_K(t))/dt >= 0 at t_e. By (ii) this is impossible for the stable
+faces, so x_K(t_e) is on a face |z1| = r_B, and since z1 > 0, p(K) = x_K(t_e) is in E.
+
+(b) Let q be in E, with its backward orbit in B. By Teschl's Lemma 6.3, q is backward complete; by Lemmas 6.5 and 6.6
+its alpha-limit set is nonempty, compact, invariant and in B, and L is constant on it, so as in (a) it is {y*}. So the
+backward orbit tends to y*, L decreases to 0 along it in backward time, hence L > 0 and z1 > 0 on it, and by Teschl's
+Theorem 9.5 it eventually lies on the local unstable manifold, on the branch with z1 > 0: q is on Gamma_K. A point of
+Gamma_K after p(K) has a backward orbit through points just after p(K), where z1 > r_B by (iii), so outside B. A point
+of Gamma_K in E before p(K) would, by (iii), be followed at once by points with z1 > r_B, outside B, before t_e,
+contradicting the definition of t_e. So q = p(K).
+
+Continuity: let K_n -> K in [K1, K2]. Since E is compact it suffices to show that every limit q of a subsequence of
+p(K_n) is p(K). Consider the system with K as a sixth variable, K' = 0, and its flow Phi, continuous on its open
+domain (Teschl, Theorem 6.1). For every t <= 0 in the maximal interval of the solution through (q, K), the points
+Phi(t, (p(K_n), K_n)) are defined for large n (the domain is open) and lie in B, so their limit Phi(t, (q, K)) lies in
+B (B is closed). By Teschl's Lemma 6.3 the solution through q is then defined for all t <= 0, and its backward orbit
+lies in B. By (b), q = p(K). QED
 
 **(H3) The closing block** (`block0.py`). In zeta = M (y - y*), M = diag(10, 7, 1, 1, 40) T (T an exact binary
 approximate inverse eigenbasis), let B0 = {|zeta_1| <= r, |zeta_s|_2 <= rho}, zeta_s = (zeta_2, ..., zeta_5), with
-rho = 0.8, r = 0.84 (18.5 C) and rho = 0.6, r = 0.63 (6.3 C). Checked on a cover of B0 by cells (interval Cholesky
-factorizations), for every K in the interval: (C) D A + A^T D is positive definite for A = M Df(x) M^-1, x in B0;
-(E) lambda_max(sym A_ss) + |A_s1|_2 < 0 for x in B0 with |zeta_1| <= rho. **Lemma 2.** While an orbit is in B0,
-L = zeta_1^2 - |zeta_s|^2 increases strictly; every boundary point of B0 with L <= 0 is a point of strict entrance;
-the cones K+ = {L > 0, zeta_1 > 0} and K- = {L > 0, zeta_1 < 0} cannot be left while the orbit stays in B0; and an
-orbit that stays in B0 for all t >= t0 tends to y*. *Proof.* zeta' = A-bar zeta as in Lemma 1, the average taken over
-the segment [y*, y], which lies in B0 (and in {|zeta_1| <= rho} when |zeta_1| <= rho). The smallest eigenvalue of
-D A + A^T D is concave in A and lambda_max(sym A_ss) + |A_s1|_2 is convex, so the bounds (C) and (E), valid for every
-Df(x) in the region, hold for averages. Then dL/dt > 0 for zeta != 0; at a boundary point with L <= 0 we have
-|zeta_s| = rho and |zeta_1| <= rho (because r > rho), and d|zeta_s|^2/dt / 2 <= (lambda_max(sym A-bar_ss) +
-|A-bar_s1|) rho^2 < 0; L > 0 persists, so zeta_1 keeps its sign; and the omega-limit set of an orbit that stays in
-B0 is invariant, lies in a level set of L, hence is {y*}. The face |zeta_1| = r is not used.
+rho = 0.8, r = 0.84 (18.5 C) and rho = 0.6, r = 0.63 (6.3 C). Checked on a cover of B0 by cells (Lemma B.3), with
+interval Cholesky factorizations (Lemma B.2), for every K in the interval: (C) D A + A^T D is positive definite for
+every A in an interval matrix enclosing M Df(x) M^-1 over the cell; (E) on the cells that meet B0 and
+{|zeta_1| <= rho}, -sym(A_ss) - mu I is positive definite, where mu is an upper bound of the Euclidean norm of the
+column A_s1 over the cell; so lambda_max(sym A_ss) + |A_s1|_2 < 0 there.
 
-**(H4) The interval run** (`prove_pulse.py interval`). A C^0 Lohner integrator in the six variables (y, K), K' = 0
+**Lemma 2.** Assume (H3). While an orbit is in B0 and not at y*, L = zeta_1^2 - |zeta_s|^2 increases strictly; every
+boundary point of B0 with L <= 0 is a point of strict entrance; the cones K+ = {L > 0, zeta_1 > 0} and
+K- = {L > 0, zeta_1 < 0} cannot be left while the orbit stays in B0; and an orbit that stays in B0 for all t >= t_0
+tends to y*.
+
+*Proof.* Apply (4.1) with P = M and Q = B0, or Q = B0 intersected with {|zeta_1| <= rho}; both are convex and contain
+y*. The smallest eigenvalue of D A + A^T D is a concave function of A and lambda_max(sym A_ss) + |A_s1|_2 is a convex
+one, so the bounds (C) and (E), which hold for every M Df(x) M^-1 with x in the region, hold for the averages A-bar.
+Then dL/dt = zeta^T (D A-bar + A-bar^T D) zeta > 0 for zeta != 0. At a boundary point with L <= 0 we have
+|zeta_s| = rho and |zeta_1| <= rho (because r > rho), and (1/2) d|zeta_s|^2/dt = zeta_s^T (A-bar_ss zeta_s +
+A-bar_s1 zeta_1) <= (lambda_max(sym A-bar_ss) + |A-bar_s1|_2) rho^2 < 0, so the orbit is outside B0 just before and
+inside just after. While the orbit is in B0, L > 0 persists and zeta_1 cannot vanish, so it keeps its sign. An orbit
+that stays in B0 for t >= t_0 has, by Teschl's Lemmas 6.3, 6.5 and 6.6, a nonempty invariant omega-limit set in B0 on
+which L is constant, hence {y*}. The face |zeta_1| = r is not used. QED
+
+**(H4) The interval run** (`prove_pulse.py interval`). A Lohner-type integrator in the six variables (y, K), K' = 0
 (`lohner6.py`; Taylor jets of order 40 with derivatives in the initial point, `hhjet6.py`), carries a set containing
-{(p, K) : p in the exit set of (H2), K in [K1, K2]} from t = 0 to t = T_enter and encloses it in the interior of B0.
-Each step uses an a priori enclosure W (Xh + [0, h] f(W) inside W), tightened by Taylor's theorem at low order; the
-Lagrange remainder of order 41 enclosed over four subintervals of the step; the mean-value form of the Taylor
-polynomial over the hull; and the QR representation of the set.
+E x [K1, K2] from t = 0 to t = T_enter and encloses it, at T_enter, in the interior of B0. By Appendix A, for every
+(q, K) in E x [K1, K2] the solution through (q, K) exists on [0, T_enter] and its value at T_enter lies in int B0.
 
-**(H5) The endpoint runs** (`prove_pulse.py K1`, `K2`). For K = K1 (resp. K2) the exit set is carried to T_enter, lies
-in int B0 there, and is carried further in steps of 2^-7 ms with the whole path of every step enclosed (Taylor
-polynomial over [0, h] plus the remainder) and inside int B0, until the set lies in K- (resp. K+).
+**(H5) The endpoint runs** (`prove_pulse.py K1`, `K2`). For K = K1 (resp. K2) the set E is carried to T_enter, lies
+in int B0 there, and is carried further in steps of 2^-7 ms, with the whole path of every step enclosed (Lemma A.4)
+and inside int B0, until the set lies in K- (resp. K+).
 
-**Proof of Theorems 1 and 2 from (H1) to (H5).** For K in [K1, K2] let x_K be the solution with x_K(0) = p(K). It lies
-on W^u(y*), so x_K(t) -> y* as t -> -infinity, and K -> x_K(t) is continuous, uniformly for t in compact intervals.
-Let S+ (resp. S-) be the set of K for which there is t >= T_enter with x_K([T_enter, t]) in int B0 and x_K(t) in K+
-(resp. K-). Both are open in [K1, K2] (finitely many open conditions over a compact time interval); they are disjoint
-(Lemma 2: a cone cannot be left while in B0); and K2 is in S+, K1 in S- (H5). Since [K1, K2] is connected, some K* is in
-neither. By (H4), x_{K*}(T_enter) is in int B0. If x_{K*} left B0, then at the first time t_e at which it reaches the
-boundary, either L <= 0, and the orbit enters B0 strictly there, so it was outside B0 just before t_e, which it was
-not; or L > 0, and then it was in K+ or K- just before t_e while in int B0, so K* would be in S+ or S-. Hence
-x_{K*}(t) stays in B0 for t >= T_enter and tends to y* (Lemma 2). It is not constant. So it is a pulse, and the speed
-bounds follow from theta = sqrt(K a / (2 R_2 C_M)) in ball arithmetic. The lower bound on max u is a lower end of the
-enclosure of u at a step end of the interval run. QED.
+**Proof of Theorems 1 and 2 from (H2) to (H5).** For K in [K1, K2] let x_K be the solution with x_K(0) = p(K). It
+lies on the unstable manifold, so x_K(t) -> y* as t -> -infinity. By Lemma 1(b) and the continuity of the flow of the
+six-variable system on its open domain (Teschl, Theorem 6.1), K -> x_K(t) is continuous, uniformly for t in compact
+intervals on which the solutions exist. Let S+ (resp. S-) be the set of K in [K1, K2] for which there is t >= T_enter
+with x_K([T_enter, t]) in int B0 and x_K(t) in K+ (resp. K-). Both are open in [K1, K2]: the conditions are open and
+concern a compact time interval. They are disjoint (Lemma 2: a cone cannot be left while in B0, and an orbit in K+
+never meets K-). K2 is in S+ and K1 in S- (H5, since p(K1) and p(K2) are in E). Since [K1, K2] is connected, some K*
+is in neither. By (H4), x_{K*}(T_enter) is in int B0. If x_{K*} left B0, then at the first time t_e at which it
+reaches the boundary, either L <= 0, and then the orbit enters B0 strictly there, so it was outside B0 just before
+t_e, which it was not; or L > 0, and then it was in K+ or K- just before t_e while in int B0, so K* would be in S+ or
+S-. Hence x_{K*}(t) stays in B0 for t >= T_enter (and exists for all such t, by Teschl's Lemma 6.3) and tends to y*
+(Lemma 2). It is not constant. So it is a pulse. The speed bounds follow from theta = sqrt(K a / (2 R_2 C_M)) in ball
+arithmetic, with the decimal ends rounded outward. The lower bound on max u is the lower end of an enclosure of u at a
+step end of the interval run. QED
 
 **What is not part of the proof.** The numerical centre K* (Remark 2), used only to place [K1, K2]; the choice of the
-weights, radii and T_enter; floating-point step-size heuristics (they choose step lengths; every enclosure is checked).
+weights, the radii, the matrices T_B, T and M, and T_enter; floating-point step-size heuristics (they choose step
+lengths; every enclosure is checked); the characteristic-polynomial check of (H1).
 
 ## 5. Computations, controls and checks
 
@@ -181,7 +260,7 @@ Table: stages at 18.5 C (printed E_l), one process at a time, 256 bits, order 40
 
 | stage | result | CPU time |
 |---|---|---|
-| setup (H1, H2, H2', H3) | lambda_u = 10.89231...; Lemma B passes; z1' > 0 on the exit face; B0 certified on 1232 + 5916 cells | seconds |
+| setup (H2, H3, the check of H1) | lambda_u = 10.89231...; Lemma B passes; z1' > 0 on the exit face; B0 certified on 1232 + 5916 cells | seconds |
 | interval (H4) | at T_enter = 13.625 ms: zeta_1 in [-0.341, 0.341], abs(zeta_s) <= 0.63603 < 0.8 | 597 s |
 | K1 (H5) | enters K- at 13.6875 ms, path in int B0 | 570 s |
 | K2 (H5) | enters K+ at 13.6875 ms, path in int B0 | 561 s |
@@ -193,7 +272,7 @@ Table: the same at 6.3 C (printed E_l).
 
 | stage | result | CPU time |
 |---|---|---|
-| setup (H1, H2, H2', H3) | lambda_u = 4.97403...; Lemma B at r_B = 1e-32; z1' > 0 on the exit face; B0 certified on 3590 + 1374 cells | seconds |
+| setup (H2, H3, the check of H1) | lambda_u = 4.97403...; Lemma B at r_B = 1e-32; z1' > 0 on the exit face; B0 certified on 3590 + 1374 cells | seconds |
 | interval (H4) | at T_enter = 36.125 ms: zeta_1 in [-0.273, 0.273], abs(zeta_s) <= 0.4563 < 0.6 | 1237 s |
 | K1 (H5) | enters K- at 36.2578125 ms, path in int B0 | 1279 s |
 | K2 (H5) | enters K+ at 36.234375 ms, path in int B0 | 1293 s |
@@ -201,9 +280,11 @@ Table: the same at 6.3 C (printed E_l).
 | negative control: alpha_m times (1 + 1e-12 (u - u*)^2) | the whole set escapes below u = -60 mV at 17.20 ms: fails, as it must | 1298 s |
 | negative controls in setup | as at 18.5 C: all rejected | seconds |
 
-At 6.3 C the numerical centre had to be computed with a local error budget 1e-8 times tighter than at 18.5 C: the
-budget is written for the growth rate at 18.5 C, and with the looser one K* was off by about 5e-59, which the
-interval run detected (zeta_1 = -86 at T_enter, outside B0).
+The model control multiplies alpha_m by a factor that is 1 at the enclosed rest value u*, so that rest and its
+linearization, and with them (H1) to (H3), are unchanged, while the pulse speed moves by far more than the width of the
+K interval. At 6.3 C the numerical centre has to be computed with a local error budget 1e-8 times tighter than at
+18.5 C: the budget is written for the growth rate at 18.5 C, and with the looser one K* was off by about 5e-59, which
+the interval run detected (zeta_1 = -86 at T_enter, outside B0).
 
 **Independent re-check of (H3).** `block_check_iv.py` is a separate program: mpmath interval arithmetic at 113 bits,
 the Jacobian from hand-derived formulas, M^-1 in exact rational arithmetic, its own cover and Cholesky test, and its
@@ -231,34 +312,153 @@ did not verify for the 1952 functions.
 
 ## 7. Reproducibility
 
-The programs are in `papers/hh-dynamics/work/traveling-wave/code/` (Apache-2.0), with python-flint 0.9.0, numpy and
-scipy. From that folder:
+The programs are in `code/` (Apache-2.0) and need python-flint 0.9.0, mpmath, numpy and scipy
+(`code/requirements.txt`). From the folder of this paper:
 
-    python3 test_lohner6.py
-    HH_EL=10.613 python3 hp_pulse.py 18.5 10.5                      # numerical centre (about 15 minutes)
-    HH_EL=10.613 python3 block0.py 18.5
-    HH_EL=10.613 python3 prove_pulse.py 18.5 config 1.5e-45 1e-25 13.625 1e-16 1e-70
-    HH_EL=10.613 python3 prove_pulse.py 18.5 setup
-    for s in interval K1 K2 neg-shift neg-model; do HH_EL=10.613 python3 prove_pulse.py 18.5 $s; done
-    HH_EL=10.613 python3 block_check_iv.py 18.5
-    HH_EL=10.613 python3 prove_pulse.py 18.5 summary                 # exit status 0 iff all as expected
-    # 6.3 C: the same with "6.3", hp_pulse.py 6.3 23.0 and config 1.4e-61 1e-32 36.125 1e-35 1e-70
-    # zero-current E_l: the same without HH_EL
+    python3 -m pip install -r code/requirements.txt
+    sh code/run.sh all          # or: tests, 18.5, 6.3, zero
 
-The certificates are `data/pulse_proof_<T>_El10.613_*.json` and `*_summary.txt` in that folder.
+`run.sh` runs `test_lohner6.py` and then, for each proof, from scratch and one process at a time: the numerical centre
+(`hp_pulse.py`), the block (`block0.py`), the configuration and the stages of `prove_pulse.py` (setup, interval, K1, K2
+and the two negative controls), the independent block check (`block_check_iv.py`) and the summary, whose exit status is
+0 if and only if every check passed and every negative control failed. The certificates are
+`data/pulse_proof_<T>_El10.613_*.json` (printed E_l) and `data/pulse_proof_18.5_*.json` (zero-current E_l), with the
+summaries `*_summary.txt`. The starting profiles `data/pulse_<T>.npz` are numerical initial guesses made by
+`pulse_bvp.py`.
+
+## Appendix A. Validated integration
+
+The integrator works with sets X = xbar + C r0 + B r, r0 in R0, r in R (xbar a point of R^6, C and B matrices, R0 and R
+boxes), in the variables (y, K) with K' = 0. Write [X] for the interval hull of X and F(W) for an interval enclosure of
+f over a box W. The Taylor coefficients x_k(x0) of the solution through x0 (x(t) = sum x_k(x0) t^k) are computed by
+the standard recursion on truncated power series (automatic differentiation of the field) in ball arithmetic, so that
+for a box Q the computed ball [x_k](Q) contains x_k(x0) for every x0 in Q. The only function beyond the arithmetic
+operations and exp is Psi; near 0 it is 1/G with G(x) = (e^x - 1)/x = sum_n x^n/(n + 1)!, whose Taylor coefficients at
+a ball x0 with |x0| <= 1/2 are summed to n = 400, with the tail bounded by twice the first omitted term (for
+n >= 2k + 2 the ratio of consecutive terms of the k-th coefficient is at most 2|x0|/(n + 2) <= 1/2).
+
+**Lemma A.1 (a priori enclosure).** Let W be a box with [X] + [0, h] F(W) contained in int W. Then for every x0 in X
+the solution exists on [0, h] and lies in W there.
+
+*Proof.* Let tau be the supremum of the t in [0, h] such that the solution exists on [0, t] and lies in W there.
+For t < tau, x(t) = x0 + integral_0^t f(x(s)) ds lies in x0 + t F(W) (F(W) is a box, hence convex), a subset of the
+compact set [X] + [0, h] F(W), which lies in int W. By Teschl's Corollary 2.15 the solution extends beyond tau, and by
+continuity it stays in int W a little longer; so tau = h, and the solution lies in W on [0, h]. QED
+
+**Lemma A.2 (Lagrange remainder).** Under Lemma A.1, for t in [0, h] and each component i,
+x_i(t) - sum_{k <= p} x_{i,k}(x0) t^k lies in t^(p+1) [x_{i,p+1}](W') for any box W' that contains the solution on
+[0, h]; if boxes W'_1, ..., W'_m contain it on subintervals that cover [0, h], it lies in the hull of the
+t^(p+1) [x_{i,p+1}](W'_j).
+
+*Proof.* Taylor's theorem with the Lagrange remainder for the real function x_i gives the remainder
+x_i^(p+1)(xi) t^(p+1)/(p+1)! with xi in (0, t), and x_i^(p+1)(xi)/(p+1)! = x_{i,p+1}(x(xi)) because the system is
+autonomous; x(xi) lies in W' (or in the W'_j of a subinterval containing xi). QED
+
+Lemma A.2 with a lower order in place of p and t in [0, h] gives tighter enclosures of the path on [0, h] or on
+subintervals, which are then used as W'.
+
+**Lemma A.3 (mean-value form and the new set).** Let Phi(x0) = sum_{k <= p} x_k(x0) h^k, [J] = sum_{k <= p} h^k
+[D x_k]([X]), and let Rem be the remainder box of Lemma A.2 at t = h. With y = Phi(xbar) + Rem, xbar' = mid(y),
+C' = mid([J] C), B' an invertible point matrix, [B'^-1] an enclosure of its inverse, and
+
+    R' = [B'^-1](y - xbar' + ([J] C - C') R0) + ([B'^-1] [J] B) R,
+
+the solution at time h from every x0 in X lies in X' = xbar' + C' r0 + B' r', r0 in R0, r' in R'.
+
+*Proof.* For each component, the mean value theorem on the segment from xbar to x0, which lies in the convex hull of X
+and so in [X], gives Phi_i(x0) = Phi_i(xbar) + grad Phi_i(xi_i) (x0 - xbar) with grad Phi_i(xi_i) in the i-th row of
+[J]. So x(h) = Phi(x0) + rem with rem in Rem, and x(h) - xbar' - C' r0 = (Phi(xbar) + rem - xbar') + (J C - C') r0
++ J B r for a matrix J in [J]. Multiplying by B'^-1 and enclosing each term gives r' = B'^-1 (x(h) - xbar' - C' r0)
+in R'. QED
+
+In the program B' is the orthogonal factor of a QR factorization of mid([J] B), and `arb_mat.inv` encloses its
+inverse; Phi(xbar) and the linear algebra are at 256 bits, [J], W and Rem at 128 bits (wider balls, still
+enclosures).
+
+**Lemma A.4 (the path of a step).** Under Lemma A.1, for every t in [0, h] the solution lies in
+sum_{k <= p} [x_k]([X]) [0, h]^k + [0, h]^(p+1) [x_{p+1}](W). *Proof.* Lemma A.2 with t in [0, h] and the interval
+extension of each term. QED
+
+In (H5) this box, mapped to zeta coordinates, is checked to lie in int B0 for every step.
+
+## Appendix B. Interval lemmas
+
+**Lemma B.1 (interval Newton in one variable).** Let g be C^1 on X = [a, b], m in X, G' a closed interval that
+contains g'(X) and not 0, and N = m - g(m)/G' (interval arithmetic) contained in the interior of X. Then g has exactly
+one zero in X, and it lies in N.
+
+*Proof.* g' has constant sign on X, so g has at most one zero there, and a zero x satisfies x = m - g(m)/g'(xi), in
+N, by the mean value theorem. Existence: say G' = [c, d] with c > 0 and g(m) > 0 (the other cases are symmetric, and
+g(m) = 0 is trivial). Then N = [m - g(m)/c, m - g(m)/d], and N in int X gives m - g(m)/c > a, so
+g(a) <= g(m) - c (m - a) < 0 < g(m), and g has a zero in (a, m). QED
+
+`certify_rest_wave.rest_state` applies Lemma B.1 to the resting current g(u) = I(u, m_inf(u), n_inf(u), h_inf(u)) on
+the interval of radius 1e-3 mV around a floating-point zero, and then intersects further Newton steps down to a radius
+of about 1e-73.
+
+**Lemma B.2 (interval Cholesky).** Let H be an interval matrix whose lower triangle contains the lower triangle of
+every symmetric matrix S in a set. If the Cholesky recursion, carried out in interval arithmetic on the lower triangle
+of H, produces pivots whose intervals are positive, then every such S is positive definite.
+
+*Proof.* Run the same recursion on S in exact arithmetic. By induction on the steps, each quantity it computes lies
+in the corresponding interval (inclusion isotonicity), so each pivot is positive and the recursion does not break
+down. It produces a real lower-triangular L with positive diagonal and S = L L^T, so S is positive definite. QED
+
+In (H2)(i) and (H3)(C), S = D A + A^T D for A in the interval matrix of the region, and the interval entries of H are
+evaluated from those of A, so they contain the entries of S.
+
+**Lemma B.3 (covers).** `block0.cover_check` starts from the box {|zeta_1| <= r, |zeta_j| <= rho, j = 2..5}, which
+contains B0 (for the entrance check, from the same box with |zeta_1| <= rho), and bisects coordinates in a fixed cycle.
+A cell is discarded only when a rigorous lower bound of |zeta_s| over it exceeds rho, so that it misses B0, and it is
+accepted only when its check passes; a cell that still fails at the maximal depth ends the program with a failure. So
+the accepted cells cover B0 (resp. B0 intersected with {|zeta_1| <= rho}).
+
+**Lemma B.4 (the check of (H1)).** With lambda_u enclosed in [a, b] (P(a) < 0 < P(b), P' > 0 on [a, b]), synthetic
+division of the enclosed coefficients of the characteristic polynomial P by x - [a, b] encloses the coefficients of
+the quotient Q for every K and every root in [a, b], and the remainder encloses 0. The Routh-Hurwitz inequalities for
+the quartic Q/q_4 = x^4 + a3 x^3 + a2 x^2 + a1 x + a0, namely a3, a2, a1, a0 > 0, a3 a2 - a1 > 0 and
+a3 a2 a1 - a1^2 - a3^2 a0 > 0 (Teschl 2012, p. 72, eq. (3.45), which states the criterion with a reference to
+Gantmacher), are checked on those enclosures. The proof does not use this check; Lemma 0 gives (H1).
+
+## Appendix C. The prior-article search
+
+Dates: 2026-09-25 to 2026-09-27. Sources: arXiv (abstract and all-field search; the API refused requests from our
+machine), zbMATH Open (web and API), PubMed, Crossref, Semantic Scholar (search, and the citing papers of Hastings
+1976, Carpenter 1977 and Arioli and Koch 2015), OpenAlex (its free budget was exhausted), a general web search, and the
+book of abstracts of Dynamics, Topology and Computations 2025. Query families: "Hodgkin-Huxley" with travelling or
+traveling wave or pulse, propagated or propagating action potential, homoclinic, existence or cable, and with
+computer-assisted, rigorous numerics, interval arithmetic or validated; and "computer-assisted" with travelling wave,
+homoclinic, nerve, excitable or conductance-based. Positive controls: the computer-assisted FitzHugh-Nagumo results
+(Arioli and Koch 2015; Czechowski and Zgliczynski 2016) were found each time.
+
+Result: no proof, with or without a computer, of the existence of the pulse of the unmodified 1952 equations, and no
+computer-assisted travelling-wave result for Hodgkin-Huxley or any conductance-based model. Every existence proof
+found (Hastings 1976; Carpenter 1977; Ikeda, Mimura and Tsujikawa 1987 and 1989, from their abstracts) uses artificial
+small parameters. Not read: Hastings (1976) beyond pp. 229-230, Foote and Chen (1981), Huxley (1959), and the
+MathSciNet reviews (not reachable); Google Scholar was not reachable. This is why the priority statement of Section 1
+is conditional.
 
 ## References
 
 - Arioli, G., Koch, H. Existence and stability of traveling pulse solutions of the FitzHugh-Nagumo equation. Nonlinear
-  Anal. 113 (2015) 51-70. doi:10.1016/j.na.2014.09.023.
+  Anal. 113 (2015) 51-70. doi:10.1016/j.na.2014.09.023. (Read in the parts cited; not used by the proof.)
 - Carpenter, G. A. A geometric approach to singular perturbation problems with applications to nerve impulse
-  equations. J. Differential Equations 23 (1977) 335-367. doi:10.1016/0022-0396(77)90116-4.
+  equations. J. Differential Equations 23 (1977) 335-367. doi:10.1016/0022-0396(77)90116-4. (Read in full; not used
+  by the proof.)
+- Czechowski, A., Zgliczynski, P. SIAM J. Appl. Dyn. Syst. 15 (2016) 1615-1655; arXiv:1502.02451. Periodic orbits of
+  the FitzHugh-Nagumo equations for an explicit range of the small parameter. (Found in the search; not read.)
 - Foote, J. R., Chen, K.-H. Traveling wave properties of the Hodgkin-Huxley equations. Chinese J. Math. 9 (1981)
-  1-23. Zbl 0472.35048. (Not read.)
+  1-23. Zbl 0472.35048. (Not read; bears only on the priority statement.)
 - Hastings, S. P. On travelling wave solutions of the Hodgkin-Huxley equations. Arch. Rational Mech. Anal. 60 (1976)
-  229-257. doi:10.1007/BF01789258. (Read: pp. 229-230.)
+  229-257. doi:10.1007/BF01789258. (Read: pp. 229-230; bears only on the priority statement.)
 - Hodgkin, A. L., Huxley, A. F. A quantitative description of membrane current and its application to conduction and
   excitation in nerve. J. Physiol. 117 (1952) 500-544. (Read: pp. 519-528 and Table 3.)
-- Huxley, A. F. The quantitative analysis of excitation and conduction in nerve. Nobel Lecture, 11 December 1963.
-- Lohner, R. J. Enclosing the solutions of ordinary initial and boundary value problems. In: Computer Arithmetic,
-  Teubner (1987) 255-286. (Method reference; not read here.)
+- Huxley, A. F. Ion movements during nerve activity. Ann. N.Y. Acad. Sci. 81 (1959) 221-246.
+  doi:10.1111/j.1749-6632.1959.tb49311.x. (Not read; cited for the slow pulse, which is not claimed.)
+- Ikeda, H., Mimura, M., Tsujikawa, T. Slow traveling wave solutions to the Hodgkin-Huxley equations. In: Recent
+  Topics in Nonlinear PDE III, Lecture Notes Numer. Appl. Anal. 9 (1987) 1-73; and Japan J. Appl. Math. 6 (1989)
+  1-66, doi:10.1007/BF03167914. (Abstracts read; not used by the proof.)
+- Teschl, G. Ordinary Differential Equations and Dynamical Systems. Graduate Studies in Mathematics 140, American
+  Mathematical Society, 2012. (Read in the author's freely available preliminary version, whose page numbers are
+  given: Corollary 2.15, p. 52; the Routh-Hurwitz criterion, p. 72; Theorem 6.1, p. 189; Lemmas 6.3 and 6.5, p. 193;
+  Lemma 6.6, p. 194; Theorems 9.4 and 9.5, p. 259.)

@@ -7,5 +7,5 @@
  "prec": 256,
  "verdict": "FAIL",
  "reason": "the whole set escaped (u < -60 mV) at t = [6.7251911 +/- 1.64e-8], before T_enter",
- "secs": 602
+ "secs": 596
 }

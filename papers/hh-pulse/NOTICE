@@ -1,6 +1,3 @@
 The propagated action potential of Hodgkin and Huxley at their 1952 constants:
-a computer-assisted existence proof. Manuscript draft.
+verification programs and data.
 Copyright 2026 Chase Hendrick
-
-The programs and data this paper relies on are in papers/hh-dynamics/work/traveling-wave/
-and are licensed under the Apache License 2.0 (see papers/hh-dynamics/NOTICE).
