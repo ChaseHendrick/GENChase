@@ -1,0 +1,434 @@
+{
+  "tool": "tools/hofstadter-science.js",
+  "reviewed": "2026-09-27",
+  "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+  "node": "v22.23.3",
+  "claim": "Independent Harper matrix, TKNN gap integers, and Fukui-Hatsugai-Suzuki band Chern numbers. Not a laboratory quantum Hall measurement.",
+  "hamiltonian": "H_j = ψ_{j+1} + ψ_{j-1} + 2 cos(φ + 2π p j / q) ψ_j, with ψ_{n+q} = exp(-i θ) ψ_n. The wrap adds, so q = 2 has off-diagonal 1 + exp(-i θ). θ, φ in [0, 2π). This boundary sign is the one whose lattice Chern numbers match TKNN.",
+  "plate": "The module builds one real q by q matrix per coprime p/q, with diagonal 2 cos(2π p i / q) and off-diagonal 1, including the corner. That is the θ = φ = 0 Harper matrix only for q >= 3. q = 1 overwrites the diagonal (eigenvalue 1 instead of 4). q = 2 stores 1 instead of 1 + 1 (eigenvalues ±√5 instead of ±2√2). jacobiEV stops after min(60, 8 + q) pivots.",
+  "coloring": "Each sorted eigenvalue index r (0 at the bottom) is painted with the TKNN integer t_r of the gap with r bands filled, smallest |t_r| and negative on a tie. That is the gap below the eigenvalue, not the Chern number of the band and not the gap above it. The source comment says \"gap above\". Neighboring pixels that only receive the 0.4 density smear are painted as Hall integer 0.",
+  "solverErrorByQ": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1.7763568394002505e-15,
+    "5": 0.0005860104964221513,
+    "6": 0.02200873058047481,
+    "7": 0.1432490092656682,
+    "8": 0.0870591123205613,
+    "9": 0.25364291469806033,
+    "10": 0.2492449936292882,
+    "11": 0.21569575531119423,
+    "12": 0.31633838853504126
+  },
+  "solver": {
+    "maxAbsErrorQAtMost4": 1.7763568394002505e-15,
+    "maxAbsErrorQ8": 0.0870591123205613,
+    "q2Plate": [
+      -2.2360679774997894,
+      2.236067977499789
+    ],
+    "q2Harper": [
+      -2.82842712474619,
+      2.82842712474619
+    ],
+    "q1Plate": 1,
+    "q1Harper": 4,
+    "alphaSymmetryPlateMaxAbsQ16": 0.3167411412447163,
+    "alphaSymmetryPlateMaxAbsQAtMost4": 8.881784197001252e-16
+  },
+  "blochSymmetry": {
+    "eToMinusE": 3.1086244689504383e-15,
+    "alphaToOneMinusAlpha": 4.218847493575595e-15,
+    "residual": 5.329070518200751e-15
+  },
+  "diophantine": {
+    "colorChecks": 2914,
+    "colorMismatch": 0,
+    "wrongIndexFailures": 2914,
+    "wrongIndexTied": 0,
+    "example": {
+      "flux": "1/3",
+      "r": 1,
+      "passing": 1,
+      "failing": -1
+    }
+  },
+  "hoppingPhase": {
+    "flux": "1/3",
+    "band": 0,
+    "passing": 1,
+    "failing": -1,
+    "droppedPhase": 0
+  },
+  "cases": [
+    {
+      "p": 1,
+      "q": 3,
+      "alpha": "1/3",
+      "gapChern": [
+        0,
+        1,
+        -1,
+        0
+      ],
+      "bandChernTKNN": [
+        1,
+        -2,
+        1
+      ],
+      "bandChernFHS": [
+        1,
+        -2,
+        1
+      ],
+      "minGap": 1.2679491924311233,
+      "minLink": 0.7413508589771542,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "p": 2,
+      "q": 3,
+      "alpha": "2/3",
+      "gapChern": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "bandChernTKNN": [
+        -1,
+        2,
+        -1
+      ],
+      "bandChernFHS": [
+        -1,
+        2,
+        -1
+      ],
+      "minGap": 1.2679491924311228,
+      "minLink": 0.7413508589771541,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "p": 1,
+      "q": 4,
+      "alpha": "1/4",
+      "gapChern": [
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "bandChernTKNN": [
+        1,
+        -3,
+        1,
+        1
+      ],
+      "bandChernFHS": [
+        1,
+        -1,
+        -1,
+        1
+      ],
+      "minGap": 7.907497781826639e-17,
+      "minLink": 0.12260795506889535,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        3
+      ]
+    },
+    {
+      "p": 1,
+      "q": 5,
+      "alpha": "1/5",
+      "gapChern": [
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0
+      ],
+      "bandChernTKNN": [
+        1,
+        1,
+        -4,
+        1,
+        1
+      ],
+      "bandChernFHS": [
+        1,
+        1,
+        -4,
+        1,
+        1
+      ],
+      "minGap": 0.5201470213402022,
+      "minLink": 0.35943252105764034,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "p": 2,
+      "q": 5,
+      "alpha": "2/5",
+      "gapChern": [
+        0,
+        -2,
+        1,
+        -1,
+        2,
+        0
+      ],
+      "bandChernTKNN": [
+        -2,
+        3,
+        -2,
+        3,
+        -2
+      ],
+      "bandChernFHS": [
+        -2,
+        3,
+        -2,
+        3,
+        -2
+      ],
+      "minGap": 0.15717856267230657,
+      "minLink": 0.2808973570551323,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "p": 3,
+      "q": 5,
+      "alpha": "3/5",
+      "gapChern": [
+        0,
+        2,
+        -1,
+        1,
+        -2,
+        0
+      ],
+      "bandChernTKNN": [
+        2,
+        -3,
+        2,
+        -3,
+        2
+      ],
+      "bandChernFHS": [
+        2,
+        -3,
+        2,
+        -3,
+        2
+      ],
+      "minGap": 0.15717856267230612,
+      "minLink": 0.28089735705513263,
+      "meshes": [
+        8,
+        12
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "p": 1,
+      "q": 7,
+      "alpha": "1/7",
+      "gapChern": [
+        0,
+        1,
+        2,
+        3,
+        -3,
+        -2,
+        -1,
+        0
+      ],
+      "bandChernTKNN": [
+        1,
+        1,
+        1,
+        -6,
+        1,
+        1,
+        1
+      ],
+      "bandChernFHS": [
+        1,
+        1,
+        1,
+        -6,
+        1,
+        1,
+        1
+      ],
+      "minGap": 0.30151057843412093,
+      "minLink": 0.20678918479588948,
+      "meshes": [
+        10,
+        14
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "p": 2,
+      "q": 7,
+      "alpha": "2/7",
+      "gapChern": [
+        0,
+        -3,
+        1,
+        -2,
+        2,
+        -1,
+        3,
+        0
+      ],
+      "bandChernTKNN": [
+        -3,
+        4,
+        -3,
+        4,
+        -3,
+        4,
+        -3
+      ],
+      "bandChernFHS": [
+        -3,
+        4,
+        -3,
+        4,
+        -3,
+        4,
+        -3
+      ],
+      "minGap": 0.02025270539734647,
+      "minLink": 0.10722741724437596,
+      "meshes": [
+        10,
+        14
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "p": 3,
+      "q": 7,
+      "alpha": "3/7",
+      "gapChern": [
+        0,
+        -2,
+        3,
+        1,
+        -1,
+        -3,
+        2,
+        0
+      ],
+      "bandChernTKNN": [
+        -2,
+        5,
+        -2,
+        -2,
+        -2,
+        5,
+        -2
+      ],
+      "bandChernFHS": [
+        -2,
+        5,
+        -2,
+        -2,
+        -2,
+        5,
+        -2
+      ],
+      "minGap": 0.14091195335333584,
+      "minLink": 0.2238633538702649,
+      "meshes": [
+        10,
+        14
+      ],
+      "comparedBands": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "limits": [
+    "Spectral positions of the plate match a converged diagonalization only for q <= 4 (absolute error below 1e-9). At q = 8 the capped Jacobi is already off by more than 0.01, and from q = 7 it mis-orders eigenvalues, so every legal plate (Q >= 8) paints some Chern integers at the wrong energy.",
+    "The picture is the θ = φ = 0 slice, q points per rational, not the filled magnetic bands.",
+    "No disorder, no interactions, no edge transport, and no laboratory quantum Hall datum."
+  ]
+}

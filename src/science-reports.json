@@ -2984,18 +2984,50 @@
     "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Evidence is the finite check in validation/HOFSTADTER.md. It is not a laboratory quantum Hall measurement.",
+      "The plate draws one phase, θ = φ = 0, so q eigenvalues per rational, not the filled magnetic bands. E -> -E holds for the Bloch Hamiltonian and fails for that single phase when q is odd.",
+      "At q = 1 the corner hop overwrites the diagonal (eigenvalue 1 instead of 4). At q = 2 the two x-hoppings should add and the Harper edge is ±2√2; the plate stores 1 and returns ±√5.",
+      "jacobiEV stops after min(60, 8 + q) pivots. Absolute error against a converged Jacobi is below 1e-9 for q ≤ 4 and 0.087 at q = 8. From q = 7 some eigenvalues are mis-ordered, so Chern colors sit on the wrong energy. Every legal plate uses Q ≥ 8.",
+      "The Chern view paints eigenvalue index r with the TKNN integer t_r of the gap below it (r bands filled), not with that band's Chern number. The source comment says the gap above. Density-smear neighbors are painted as Hall integer 0.",
+      "At α = 1/4 the middle gap closes. Only the outer bands were compared with the lattice Chern number. The negative tie t_2 = -2 is not an open-gap invariant."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Iterate the symmetric eigensolver to convergence, and add the q = 2 wrap instead of overwriting it, before treating eigenvalue positions on a legal plate as the Harper spectrum.",
+      "Sample the Bloch phases if the picture is meant to be the filled butterfly rather than one slice.",
+      "Correct the comment that says the gap above band r; the arithmetic is the gap below."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/hofstadter-science.js",
+        "command": "node tools/hofstadter-science.js --write",
+        "results": "validation/results/hofstadter-science.json",
+        "scope": "The module's harperEV, jacobiEV and Chern coloring, loaded from the source. Converged Jacobi of that matrix for every coprime p/q with q ≤ 12. Bloch Harper Hamiltonian on a phase grid for q = 2, 3, 4, 5, 7. TKNN integers for every eigenvalue with 2 ≤ q ≤ 24. Fukui-Hatsugai-Suzuki Chern numbers at 1/3, 2/3, 1/4, 1/5, 2/5, 3/5, 1/7, 2/7 and 3/7.",
+        "criteria": "q eigenvalues. For q ≤ 4, plate versus converged Jacobi below 1e-9, and α versus 1 - α below 1e-9. Bloch spectrum symmetric under E -> -E and under α -> 1 - α to 1e-8, residual below 1e-8. Painted integer equals t_r with |t_r| ≤ q/2. Isolated-band lattice Chern numbers equal the differences of those t_r on two meshes. The q = 2 plate stays off the Harper edge by more than 0.5, and the q = 8 Jacobi error stays above 1e-2, until this record is revised.",
+        "benchmark": "Thouless, Kohmoto, Nightingale and den Nijs, Phys. Rev. Lett. 49, 405 (1982), r = q s_r + p t_r. Fukui, Hatsugai and Suzuki, J. Phys. Soc. Jpn. 74, 1674 (2005), on the Bloch Harper matrix with wrap exp(-i θ). Independent converged Jacobi of the matrix the module builds.",
+        "failureControl": "At α = 1/3 and r = 1 the passing gap integer is 1 and the failing integer, from the next gap, is -1. All 2914 wrong gap indices with 2 ≤ q ≤ 24 fail the predicate, and all 2914 painted integers match. The same lowest band has lattice Chern number 1; reversing the hopping phase returns -1, and dropping the Bloch phase returns 0.",
+        "limitations": "Open gaps only for the band Chern numbers. The closed middle gap at 1/4 is not assigned a band Chern number. No edge, disorder, interaction or laboratory datum."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/hofstadter-print-state.js",
+        "command": "node tools/hofstadter-print-state.js --write",
+        "results": "validation/results/hofstadter-print-state.json",
+        "scope": "Chromium exportPNG of the Chern view at Q = 8, Q = 12 and the Chern preset Q = 28, and the density view at Q = 12. The 640 by 640 buffer and a 2400 by 2400 sheet.",
+        "criteria": "On the Chern view every recorded integer equals t_r and every buffer pixel matches the ramp of chern/dens. The sheet is a 2400 by 2400 PNG, deterministic, and the field is unchanged. A one-sample Chern shift changes the export. The density sheet is nonblank and leaves the field unchanged.",
+        "limitations": "Paint of the module's own field, including the unconverged Jacobi energies for q ≥ 5. The 2400 sheet is a smoothed enlargement of the 640 buffer. Grain is off. Chromium with SwiftShader only."
+      }
+    ],
+    "reviewed": "2026-09-27",
+    "results": "validation/results/hofstadter-science.json",
+    "domain": {
+      "parameters": "Coprime p/q, 2 ≤ q ≤ 24, for the gap integers painted on eigenvalue index r. Lattice Chern numbers at 1/3, 2/3, 1/5, 2/5, 3/5, 1/7, 2/7, 3/7 (every band) and the outer bands only at 1/4. Plate paint at Q = 8, 12 and the Chern preset Q = 28.",
+      "conditions": "Spinless nearest-neighbor square lattice, rational flux, no disorder. The plate is the single phase θ = φ = 0. The Chern benchmark uses the Bloch phases with wrap exp(-i θ). Not a laboratory quantum Hall measurement.",
+      "resolution": "Exact q by q matrix. Plate Jacobi is converged only for q ≤ 4. Fukui-Hatsugai-Suzuki meshes 8 and 12 (q ≤ 5) or 10 and 14, bands kept only when both neighboring gaps exceed 0.015. Print buffer 640 by 640, sheet 2400 by 2400.",
+      "precision": "Binary64 arithmetic. Plate versus converged Jacobi below 1e-9 for q ≤ 4. Bloch symmetry and residual below 1e-8. Chern numbers within 1e-6 of integers and stable across the two meshes. RGBA8 exports, zero channel error on the Chern buffer."
+    }
   },
   {
     "id": "weierstrass",
