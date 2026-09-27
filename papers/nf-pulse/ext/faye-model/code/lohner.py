@@ -17,7 +17,7 @@
 """A C^0 Lohner-type interval Taylor integrator in python-flint ball arithmetic.
 
 State z = (u, v, w, q, Y, kappa) in R^6 (kappa' = 0), vector field of fcore (Faye's model, 5D embedding).
-Adapted from papers/nf-pulse/code/lohner.py (same algorithm; only the Taylor recursion and its gradients differ).
+Adapted from code/lohner.py (same algorithm; only the Taylor recursion and its gradients differ).
 
 Set representation (Lohner, "QR" variant):   X = xbar + C r0 + B r,   r0 in R0, r in R,
 with xbar a point, C an n x m matrix, B an n x n (nearly orthogonal) matrix, R0 and R boxes.

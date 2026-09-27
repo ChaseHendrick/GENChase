@@ -810,7 +810,7 @@ print('   Q_mu(y) is an irreducible cubic, hence (6d) Q_mu(P^2) is an irreducibl
 print('   minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.')
 
 # ==================================================================================
-hdr('10. Path length and spiral angle; Remark 2; Section 5; Proposition 1; Remark 1  [exact + numerical]')
+hdr('10. Path length and spiral angle; Remark 2 and Groebli; Section 5; Proposition 1; Remark 1  [exact + numerical]')
 # ==================================================================================
 # 10a. Integrate the Biot-Savart ODE (RK4, 30 digits) and compare each vortex's distance to the
 #      collision point, rotation angle, velocity angle and path length with the self-similar formulas.
@@ -915,6 +915,257 @@ for bb in ['0.05', '0.2', '0.35', '0.5', '0.65', '0.8', '0.95', '1.1', '1.3', '1
     dev_kim = max(dev_kim, abs(kappa_beta(beta)[0] - mp.mpc(A_k, B_k)/(4*mp.pi)))
 check('10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2',
       dev_kim < mp.mpf('1e-45'), 'max |kappa - (A + iB)/(4 pi)| = %s' % mp.nstr(dev_kim, 3))
+
+# 10j. Remark 2, elementary forms (release 2.2.0). v = tan(chi) is positive on both collapsing arcs
+#      (the paper writes v, since u = mu + 1 + 1/mu in Section 3).
+uR2 = sp.symbols('v', positive=True)
+chiR2 = sp.atan(uR2)
+PuR2 = uR2 + 1/(2*uR2)
+check('10j Remark 2: with v = tan chi, (3 - cos 2chi)/(2 sin 2chi) = v + 1/(2v)  (exact)',
+      sp.simplify((3 - sp.cos(2*chiR2))/(2*sp.sin(2*chiR2)) - PuR2) == 0)
+check('10j Remark 2: v + 1/(2v) - sqrt2 = (sqrt2 v - 1)^2/(2v); equality iff tan chi = 1/sqrt2, and then cos 2chi = 1/3',
+      sp.simplify(PuR2 - sp.sqrt(2) - (sp.sqrt(2)*uR2 - 1)**2/(2*uR2)) == 0
+      and sp.simplify(sp.cos(2*sp.atan(1/sp.sqrt(2))) - sp.Rational(1, 3)) == 0)
+check('10j Remark 2: P is unchanged under v -> 1/(2v); v = 1 and v = 1/2 (cos 2chi = 3/5) both give P = 3/2',
+      sp.simplify(PuR2.subs(uR2, 1/(2*uR2)) - PuR2) == 0 and PuR2.subs(uR2, 1) == sp.Rational(3, 2)
+      and PuR2.subs(uR2, sp.Rational(1, 2)) == sp.Rational(3, 2)
+      and sp.simplify(sp.cos(2*sp.atan(sp.Rational(1, 2))) - sp.Rational(3, 5)) == 0)
+wR2 = sp.expand_complex(sp.Rational(1, 2) + sp.sqrt(3)/2*sp.exp(sp.I*sp.atan(1/sp.sqrt(2))))
+check('10j Remark 2: at tan chi = 1/sqrt2, w = (1 + sqrt2)/2 + i/2, Im w/Re w = sqrt2 - 1 = tan(pi/8) and'
+      ' Im w/(Re w - 1) = sqrt2 + 1 = tan(3pi/8): interior angles pi/8 at z1, 5pi/8 at z2, pi/4 at z3',
+      sp.simplify(wR2 - ((1 + sp.sqrt(2))/2 + sp.I/2)) == 0
+      and sp.simplify(sp.im(wR2)/sp.re(wR2) - sp.tan(sp.pi/8)) == 0
+      and sp.simplify(sp.im(wR2)/(sp.re(wR2) - 1) - sp.tan(3*sp.pi/8)) == 0)
+mp.mp.dps = 50
+dev_u = mp.mpf(0); coll_u = True
+for bb in ['0.2', '0.6', '1.3', '3.4', '4.5']:                      # both collapsing arcs
+    beta = mp.mpf(bb)
+    ku = kappa_beta(beta)[0]
+    coll_u = coll_u and ku.real < 0
+    dev_u = max(dev_u, abs(P_of_kappa(ku) - (mp.tan(beta) + 1/(2*mp.tan(beta)))))
+check('10j Remark 2: Biot-Savart P = v + 1/(2v), v = tan beta, at five angles on both arcs', coll_u and dev_u < mp.mpf('1e-45'),
+      'max difference %s' % mp.nstr(dev_u, 3))
+
+
+def tri_angles(zs):
+    out = []
+    for j in range(3):
+        a_, b_ = zs[(j + 1) % 3] - zs[j], zs[(j + 2) % 3] - zs[j]
+        out.append(mp.acos((a_*mp.conj(b_)).real/(abs(a_)*abs(b_))))
+    return out
+
+
+dev_ang = mp.mpf(0)
+for (a_, b_), want in [((mp.mpf('0.01'), mp.pi/2 - mp.mpf('0.01')), (1, 5, 2)),
+                       ((mp.pi + mp.mpf('0.01'), 3*mp.pi/2 - mp.mpf('0.01')), (5, 1, 2))]:
+    bmin, _ = golden_min(fb, a_, b_, mp.mpf('1e-25'))
+    angs = tri_angles([mp.mpc(0), mp.mpc(1), mp.mpf(1)/2 + mp.sqrt(3)/2*mp.expj(bmin)])
+    dev_ang = max(dev_ang, max(abs(an - k_*mp.pi/8) for an, k_ in zip(angs, want)))
+check('10j Remark 2: the numerically located minimizers have interior angles (pi/8, 5pi/8, pi/4) on the first arc'
+      ' and (5pi/8, pi/8, pi/4) on the second (z1, z2, z3)', dev_ang < mp.mpf('1e-15'), 'max deviation %s' % mp.nstr(dev_ang, 3))
+
+# 10k. Groebli 1877, Sect. 10 (printed pp. 55-59), Eqs. (1), (5), (6), (8), (9), (11), (12), read in the original.
+#      His circulations m_i, his shape parameters mu_i and shape constant a (the paper writes mu^G_i and a_G, since mu
+#      and a are taken), and his coefficient varkappa (the paper's \varkappa, not its kappa): d theta = varkappa dt/(2t)
+#      with s_i^2 = mu mu_i t, t measured from the collision, so P = |varkappa|/2 for every harmonic triple.
+#      First m = (1, 1, -1/2), the case of Remark 2.
+aG = sp.symbols('a_G', positive=True)
+mG = [sp.Integer(1), sp.Integer(1), sp.Rational(-1, 2)]
+MG = sum(mG)
+muG = [aG - (mG[1] - mG[2])/mG[0], aG - (mG[2] - mG[0])/mG[1], aG - (mG[0] - mG[1])/mG[2]]      # his (8)
+radG = 2*muG[1]*muG[2] + 2*muG[2]*muG[0] + 2*muG[0]*muG[1] - muG[0]**2 - muG[1]**2 - muG[2]**2
+rateG = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[1]*muG[2])                                                # his (9), original denominator
+kG = MG/sp.pi*(2*aG**2 + (mG[1] - mG[2])*(mG[2] - mG[0])*(mG[0] - mG[1])/(mG[0]*mG[1]*mG[2])*aG - 3)/(rateG*muG[0]*muG[1]*muG[2])  # his (12)
+PG = kG/2                                                                                           # his (11): d theta = varkappa dt/(2t), s^2 = lambda t
+PGa = (2*aG**2 - 3)/(2*sp.sqrt(3*aG**2 - 9))
+check('10k Groebli (8): at m = (1, 1, -1/2), muG_1 = a_G - 3/2, muG_2 = a_G + 3/2, muG_3 = a_G; radicand of (9) = 3a_G^2 - 9',
+      [sp.simplify(muG[0] - (aG - sp.Rational(3, 2))), sp.simplify(muG[1] - (aG + sp.Rational(3, 2))), sp.simplify(muG[2] - aG)] == [0, 0, 0]
+      and sp.expand(radG - (3*aG**2 - 9)) == 0)
+check('10k Groebli (9), (11), (12): P = |varkappa|/2 = (2a_G^2 - 3)/(2 sqrt(3a_G^2 - 9))',
+      sp.simplify(PG - PGa) == 0)
+check('10k P^2 - 2 = (2a_G^2 - 9)^2/(12(a_G^2 - 3)): equality at a_G^2 = 9/2',
+      sp.simplify(PGa**2 - 2 - (2*aG**2 - 9)**2/(12*(aG**2 - 3))) == 0)
+# a_G = sqrt3/cos chi with v = tan chi > 0: cos chi = 1/sqrt(1 + v^2) on the first arc (the branch a_G > sqrt 3)
+aU = sp.sqrt(3)*sp.sqrt(1 + uR2**2)
+check('10k a_G = sqrt3/cos chi turns Groebli\'s P into v + 1/(2v), the formula of Remark 2 (branch a_G > sqrt3; P is even in a_G)',
+      sp.simplify(PGa.subs(aG, aU) - PuR2) == 0)
+cG = sp.symbols('c', real=True)                      # c = cos chi; |w|^2 and |w - 1|^2 at z1 = 0, z2 = 1, z3 = w
+w2, wm12 = 1 + sp.sqrt(3)/2*cG, 1 - sp.sqrt(3)/2*cG
+aC = sp.sqrt(3)/cG
+check('10k with a_G = sqrt3/cos chi, muG_1 : muG_2 : muG_3 = |z2 - z3|^2 : |z3 - z1|^2 : |z1 - z2|^2 at the positions of Remark 2'
+      ' (his (1), (5): s_i^2 = mu mu_i t)',
+      sp.simplify((muG[0]/muG[2]).subs(aG, aC) - wm12) == 0 and sp.simplify((muG[1]/muG[2]).subs(aG, aC) - w2) == 0)
+# Negative control: Goodman's translation prints the denominator of (9) as mu_1 mu_3 mu_3 in its (10.9). Run that
+# coefficient through the same substitution: it does not give the formula of Remark 2.
+rate_tr = MG/sp.pi*sp.sqrt(radG)/(muG[0]*muG[2]*muG[2])                                             # translation's (10.9)
+k_tr = MG/sp.pi*(2*aG**2 - 3)/(rate_tr*muG[0]*muG[1]*muG[2])
+dtr = sp.simplify((k_tr/2).subs(aG, aU) - PuR2)
+dtr1 = dtr.subs(uR2, 1)                              # v = 1: Remark 2 gives P = 3/2
+check('10k negative control: with the translation\'s denominator mu_1 mu_3 mu_3 in (10.9), a_G = sqrt3/cos chi does not give'
+      ' v + 1/(2v): the difference is not identically 0, and at v = 1 it is far from 0',
+      dtr != 0 and sp.simplify(dtr1) != 0 and abs(float(dtr1)) > 0.1, 'difference at v = 1: %s' % sp.simplify(dtr1))
+# Every harmonic triple (m1, m2, -m1 m2/(m1 + m2)), symbolic in m1, m2 and a_G: his (6) holds, and with r_i^2 = lam muG_i,
+# lam real and nonzero (negative on the branch where all muG_i < 0), the sum S of Lemma 6 at beta = 1, where
+# coth(ln(r_k/r_j)) = (r_k^2 + r_j^2)/(r_k^2 - r_j^2), is -lam (2a_G^2 + [(m2 - m3)(m3 - m1)(m1 - m2)/(m1 m2 m3)] a_G - 3),
+# -lam times the numerator of his (12), and Heron's formula in the side lengths r_i, factored,
+# 16 A^2 = (r1 + r2 + r3)(-r1 + r2 + r3)(r1 - r2 + r3)(r1 + r2 - r3), is lam^2 times the radicand of (9). So
+# P = |S|/(8A) = |varkappa|/2 whatever the sign of lam.
+g1, g2 = sp.symbols('m1 m2', positive=True)
+lamH = sp.symbols('lambda', real=True, nonzero=True)
+mH = [g1, g2, -g1*g2/(g1 + g2)]
+MH = sum(mH)
+KH = (mH[1] - mH[2])*(mH[2] - mH[0])*(mH[0] - mH[1])/(mH[0]*mH[1]*mH[2])
+muH = [aG - (mH[1] - mH[2])/mH[0], aG - (mH[2] - mH[0])/mH[1], aG - (mH[0] - mH[1])/mH[2]]
+r2H = [lamH*mu_ for mu_ in muH]                                     # the squared sides
+SH = sum(r2H[i]*(r2H[(i + 2) % 3] + r2H[(i + 1) % 3])/(r2H[(i + 2) % 3] - r2H[(i + 1) % 3]) for i in range(3))
+radH = 2*muH[1]*muH[2] + 2*muH[2]*muH[0] + 2*muH[0]*muH[1] - muH[0]**2 - muH[1]**2 - muH[2]**2
+rH = [sp.sqrt(r2_) for r2_ in r2H]                                  # the side lengths
+heronF = (rH[0] + rH[1] + rH[2])*(-rH[0] + rH[1] + rH[2])*(rH[0] - rH[1] + rH[2])*(rH[0] + rH[1] - rH[2])
+check('10k every harmonic triple (symbolic m1, m2, a_G and lam): his (6) holds, and Lemma 6 at beta = 1 with r_i^2 = lam muG_i'
+      ' (lam of either sign) gives S = -lam (2a_G^2 + K a_G - 3), K = (m2 - m3)(m3 - m1)(m1 - m2)/(m1 m2 m3), and Heron\'s'
+      ' formula, factored in the side lengths r_i, gives 16A^2 = lam^2 times the radicand of (9); so P = |varkappa|/2 for'
+      ' every harmonic triple (exact)',
+      [sp.simplify(muH[1] - muH[2] - MH/mH[0]), sp.simplify(muH[2] - muH[0] - MH/mH[1]), sp.simplify(muH[0] - muH[1] - MH/mH[2])] == [0, 0, 0]
+      and sp.simplify(SH + lamH*(2*aG**2 + KH*aG - 3)) == 0 and sp.simplify(sp.expand(heronF) - lamH**2*radH) == 0)
+# A transposition of two circulations, m1 <-> m2, with a_G -> -a_G: his (8) gives (-muG_2, -muG_1, -muG_3), K becomes -K,
+# and the numerator 2a_G^2 + K a_G - 3 and the radicand are unchanged; so relabeling exchanges the two branches (all
+# muG_i > 0, all muG_i < 0) and keeps |varkappa|. With the change of sign of all circulations, which keeps every muG_i
+# and K, this is why the normalized family (1, mu, -mu/(1 + mu)) represents every harmonic triple.
+mT = [mH[1], mH[0], mH[2]]
+KT = (mT[1] - mT[2])*(mT[2] - mT[0])*(mT[0] - mT[1])/(mT[0]*mT[1]*mT[2])
+muT = [-aG - (mT[1] - mT[2])/mT[0], -aG - (mT[2] - mT[0])/mT[1], -aG - (mT[0] - mT[1])/mT[2]]
+radT = 2*muT[1]*muT[2] + 2*muT[2]*muT[0] + 2*muT[0]*muT[1] - muT[0]**2 - muT[1]**2 - muT[2]**2
+mN = [-x_ for x_ in mH]
+muN = [aG - (mN[1] - mN[2])/mN[0], aG - (mN[2] - mN[0])/mN[1], aG - (mN[0] - mN[1])/mN[2]]
+KN = (mN[1] - mN[2])*(mN[2] - mN[0])*(mN[0] - mN[1])/(mN[0]*mN[1]*mN[2])
+check('10k relabeling and sign: m1 <-> m2 with a_G -> -a_G turns (muG_1, muG_2, muG_3) into (-muG_2, -muG_1, -muG_3) and K into'
+      ' -K, and keeps the numerator of (12) and the radicand of (9); m -> -m keeps every muG_i and K (exact)',
+      [sp.simplify(muT[0] + muH[1]), sp.simplify(muT[1] + muH[0]), sp.simplify(muT[2] + muH[2])] == [0, 0, 0]
+      and sp.simplify(KT + KH) == 0 and sp.simplify((2*aG**2 - KT*aG - 3) - (2*aG**2 + KH*aG - 3)) == 0
+      and sp.simplify(radT - radH) == 0
+      and [sp.simplify(muN[i_] - muH[i_]) for i_ in range(3)] == [0, 0, 0] and sp.simplify(KN - KH) == 0)
+# The same against the Biot-Savart velocities, for the family of eq:norm with mu != 1: read the squared sides of eq:pos,
+# scale them to Groebli's mu_i by his (6), recover a_G from each of the three equations (8), and compare |varkappa|/2 with P.
+mp.mp.dps = 50
+dev_gh = mp.mpf(0); cons_gh = mp.mpf(0); coll_gh = True
+for mu_s in ['0.1', '0.3', '0.5', '0.8', '1', '2']:
+    muv = mp.mpf(mu_s)
+    Gs = Gams(muv)
+    th0 = mp.acos((muv - 1)/(2*mp.sqrt(1 + muv + muv**2)))
+    for thv in (th0*mp.mpf('0.3'), th0*mp.mpf('0.7'), mp.pi + (mp.pi - th0)*mp.mpf('0.2'), mp.pi + (mp.pi - th0)*mp.mpf('0.8')):
+        zs = config_theta(muv, thv)
+        ks, _ = kappas_direct(Gs, zs)
+        coll_gh = coll_gh and ks[0].real < 0
+        s2 = [abs(zs[1] - zs[2])**2, abs(zs[2] - zs[0])**2, abs(zs[0] - zs[1])**2]
+        lam = (sum(Gs)/Gs[0])/(s2[1] - s2[2])                   # his (6): mu_2 - mu_3 = (m1 + m2 + m3)/m1
+        mug = [lam*s_ for s_ in s2]
+        a_s = [mug[0] + (Gs[1] - Gs[2])/Gs[0], mug[1] + (Gs[2] - Gs[0])/Gs[1], mug[2] + (Gs[0] - Gs[1])/Gs[2]]
+        cons_gh = max(cons_gh, abs(a_s[1] - a_s[0]), abs(a_s[2] - a_s[0]))
+        Kv = (Gs[1] - Gs[2])*(Gs[2] - Gs[0])*(Gs[0] - Gs[1])/(Gs[0]*Gs[1]*Gs[2])
+        radv = 2*mug[1]*mug[2] + 2*mug[2]*mug[0] + 2*mug[0]*mug[1] - mug[0]**2 - mug[1]**2 - mug[2]**2
+        dev_gh = max(dev_gh, abs(abs(2*a_s[0]**2 + Kv*a_s[0] - 3)/(2*mp.sqrt(radv)) - P_of_kappa(ks[0])))
+check('10k the normalized family (1, mu, -mu/(1 + mu)), Biot-Savart at 50 digits, mu in {0.1, 0.3, 0.5, 0.8, 1, 2}, two angles'
+      ' on each arc: the squared sides satisfy his (8) with one a_G, and |varkappa|/2 from (9), (12) equals P',
+      coll_gh and cons_gh < mp.mpf('1e-45') and dev_gh < mp.mpf('1e-45'),
+      '(8) consistent to %s; max |P - |varkappa|/2| = %s' % (mp.nstr(cons_gh, 3), mp.nstr(dev_gh, 3)))
+# Harmonic triples in random order and sign, not normalized: Groebli's (3, -2, 6) and the triple (1, 2, -2/3) of Chen,
+# Walsh and Wheeler, each also relabeled and with all signs changed, (1, 1, -1/2), and 42 triples (m1, m2, -m1 m2/(m1 + m2))
+# with random m1, m2 of random sign, shuffled, times a random sign. The radicand of (9) is 3a_G^2 + ..., so a_G is taken
+# at random beyond its larger root (all muG_i > 0) and below its smaller root (all muG_i < 0), twice each. The triangle
+# with the squared sides |lam| muG_i, a random size, orientation, rotation and position is built from coordinates, and
+# the Biot-Savart velocities give kappa; a_G is then recovered from the sides by his (6) and (8), 16 A^2 is taken from
+# the coordinates (the shoelace formula), and |varkappa|/2 is compared with |Im kappa|/(2 |Re kappa|), collapse or expansion.
+import random as _random
+rngG = _random.Random(20260927)
+mp.mp.dps = 50
+
+
+def groebli(ms, a_):
+    mu_ = [a_ - (ms[1] - ms[2])/ms[0], a_ - (ms[2] - ms[0])/ms[1], a_ - (ms[0] - ms[1])/ms[2]]
+    K_ = (ms[1] - ms[2])*(ms[2] - ms[0])*(ms[0] - ms[1])/(ms[0]*ms[1]*ms[2])
+    return mu_, K_, 2*mu_[1]*mu_[2] + 2*mu_[2]*mu_[0] + 2*mu_[0]*mu_[1] - mu_[0]**2 - mu_[1]**2 - mu_[2]**2
+
+
+named_t = [[mp.mpf(3), mp.mpf(-2), mp.mpf(6)], [mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3]]
+trips = named_t + [[-t_[2], -t_[0], -t_[1]] for t_ in named_t] + [[mp.mpf(1), mp.mpf(1), mp.mpf(-1)/2]]
+while len(trips) < 47:
+    m1r = mp.mpf(rngG.uniform(0.05, 5))*rngG.choice((1, -1)); m2r = mp.mpf(rngG.uniform(0.05, 5))*rngG.choice((1, -1))
+    if abs(m1r + m2r) < mp.mpf('0.05'):
+        continue
+    t_ = [m1r, m2r, -m1r*m2r/(m1r + m2r)]
+    rngG.shuffle(t_)
+    sg_ = rngG.choice((1, -1))
+    trips.append([sg_*x_ for x_ in t_])
+harm_r = max(abs(sum(1/x_ for x_ in t_)) for t_ in trips)
+dev_r = mp.mpf(0); spr_r = mp.mpf(0); arec_r = mp.mpf(0); area_r = mp.mpf(0); lead_r = mp.mpf(0)
+nbr = [0, 0]; nexp_r = 0; ncase_r = 0; negK = []; br_ok = True
+for ms in trips:
+    f0, fp, fm = groebli(ms, mp.mpf(0))[2], groebli(ms, mp.mpf(1))[2], groebli(ms, mp.mpf(-1))[2]
+    c1_, c2_ = (fp - fm)/2, (fp + fm)/2 - f0                # radicand = c2 a^2 + c1 a + f0
+    lead_r = max(lead_r, abs(c2_ - 3))
+    rt_ = mp.sqrt(c1_**2 - 4*c2_*f0)
+    for br_ in (1, -1):
+        for _ in range(2):
+            off_ = mp.mpf(10)**mp.mpf(rngG.uniform(-2, 1.5))
+            a_ = (-c1_ + rt_)/(2*c2_) + off_ if br_ == 1 else (-c1_ - rt_)/(2*c2_) - off_
+            mu_, K_, rad_ = groebli(ms, a_)
+            sgn_ = 1 if mu_[0] > 0 else -1
+            br_ok = br_ok and all((x_ > 0) == (sgn_ > 0) for x_ in mu_) and rad_ > 0 and (sgn_ > 0) == (br_ == 1)
+            nbr[0 if sgn_ > 0 else 1] += 1
+            scl = mp.mpf(rngG.uniform(0.3, 3))
+            S2 = [sgn_*scl*x_ for x_ in mu_]                  # |z2 - z3|^2, |z3 - z1|^2, |z1 - z2|^2
+            xx_ = (S2[1] + S2[2] - S2[0])/(2*mp.sqrt(S2[2]))
+            z3_ = mp.mpc(xx_, rngG.choice((1, -1))*mp.sqrt(S2[1] - xx_**2))
+            rot_ = mp.expj(mp.mpf(rngG.uniform(0, 6.3))); sh_ = mp.mpc(rngG.uniform(-2, 2), rngG.uniform(-2, 2))
+            zs = [sh_ + rot_*z_ for z_ in (mp.mpc(0), mp.mpc(mp.sqrt(S2[2])), z3_)]
+            ks, _ = kappas_direct(ms, zs)
+            spr_r = max(spr_r, max(abs(k_ - ks[0]) for k_ in ks)/abs(ks[0]))
+            nexp_r += ks[0].real > 0
+            Pr = abs(ks[0].imag)/(2*abs(ks[0].real))
+            s2 = [abs(zs[1] - zs[2])**2, abs(zs[2] - zs[0])**2, abs(zs[0] - zs[1])**2]
+            lam = (sum(ms)/ms[0])/(s2[1] - s2[2])                 # his (6): mu_2 - mu_3 = (m1 + m2 + m3)/m1
+            mug = [lam*s_ for s_ in s2]
+            a_s = [mug[0] + (ms[1] - ms[2])/ms[0], mug[1] + (ms[2] - ms[0])/ms[1], mug[2] + (ms[0] - ms[1])/ms[2]]
+            arec_r = max(arec_r, max(abs(x_ - a_) for x_ in a_s)/max(1, abs(a_)))
+            radv = 2*mug[1]*mug[2] + 2*mug[2]*mug[0] + 2*mug[0]*mug[1] - mug[0]**2 - mug[1]**2 - mug[2]**2
+            Ash = ((zs[1] - zs[0]).real*(zs[2] - zs[0]).imag - (zs[1] - zs[0]).imag*(zs[2] - zs[0]).real)/2
+            area_r = max(area_r, abs(16*Ash**2*lam**2 - radv)/radv)
+            dev_r = max(dev_r, abs(abs(2*a_s[0]**2 + K_*a_s[0] - 3)/(2*mp.sqrt(radv)) - Pr)/Pr)
+            if abs(K_) > mp.mpf('0.01'):                           # negative control: K replaced by -K
+                negK.append(abs(abs(2*a_s[0]**2 - K_*a_s[0] - 3)/(2*mp.sqrt(radv)) - Pr)/Pr)
+            ncase_r += 1
+check('10k every harmonic triple, Biot-Savart at 50 digits: %d triangles of 47 triples in random order and sign, among them'
+      ' (3, -2, 6) and (1, 2, -2/3), a_G random on both branches (%d with all muG_i > 0, %d with all < 0), %d of them expanding:'
+      ' self-similar, a_G recovered from the sides by his (6), (8), 16A^2 from the coordinates = lam^2 times the radicand,'
+      ' and |varkappa|/2 = |Im kappa|/(2|Re kappa|)' % (ncase_r, nbr[0], nbr[1], nexp_r),
+      br_ok and ncase_r == 188 and nbr == [94, 94] and 0 < nexp_r < ncase_r and harm_r < mp.mpf('1e-45') and lead_r < mp.mpf('1e-40')
+      and spr_r < mp.mpf('1e-45') and arec_r < mp.mpf('1e-45') and area_r < mp.mpf('1e-45') and dev_r < mp.mpf('1e-45'),
+      'spread %s, a_G to %s, area to %s, max relative |P - |varkappa|/2| = %s'
+      % (mp.nstr(spr_r, 3), mp.nstr(arec_r, 3), mp.nstr(area_r, 3), mp.nstr(dev_r, 3)))
+check('10k negative control: with -K in place of K in (12), |varkappa|/2 misses P in each of the %d random triangles with'
+      ' |K| > 0.01' % len(negK),
+      len(negK) > 150 and min(negK) > mp.mpf('1e-6'),
+      'least relative difference %s, largest %s' % (mp.nstr(min(negK), 3), mp.nstr(max(negK), 3)))
+# His example, Fig. 6 (printed p. 59): m1 : m2 : m3 = 3 : -2 : 6, a = 2, s_1^2 : s_2^2 : s_3^2 = 28 : 21 : 7 and
+# rho_i proportional to e^{(sqrt3/5)(theta_i - alpha_i)}, i.e. varkappa = 5/sqrt3 and P = 5 sqrt3/6. The triangle has a right
+# angle at vortex 1 (his a = -(m2 - m3)/(m2 + m3) = 2): z1 = 0, z2 = sqrt7, z3 = +-sqrt21 i.
+m6 = [sp.Integer(3), sp.Integer(-2), sp.Integer(6)]
+mu6 = [2 - (m6[1] - m6[2])/m6[0], 2 - (m6[2] - m6[0])/m6[1], 2 - (m6[0] - m6[1])/m6[2]]
+K6 = (m6[1] - m6[2])*(m6[2] - m6[0])*(m6[0] - m6[1])/(m6[0]*m6[1]*m6[2])
+rad6 = 2*mu6[1]*mu6[2] + 2*mu6[2]*mu6[0] + 2*mu6[0]*mu6[1] - mu6[0]**2 - mu6[1]**2 - mu6[2]**2
+kap6 = (2*2**2 + K6*2 - 3)/sp.sqrt(rad6)
+P6 = []; spr6 = mp.mpf(0); re6 = []
+for sg in (1, -1):
+    z6 = [mp.mpc(0), mp.sqrt(7), sg*mp.sqrt(21)*mp.mpc(0, 1)]
+    k6, _ = kappas_direct([mp.mpf(3), mp.mpf(-2), mp.mpf(6)], z6)
+    spr6 = max(spr6, max(abs(k_ - k6[0]) for k_ in k6)/abs(k6[0]))
+    P6.append(abs(k6[0].imag)/(2*abs(k6[0].real))); re6.append(k6[0].real)
+check('10k Groebli\'s Fig. 6 (p. 59), m = (3, -2, 6), a_G = 2: muG = (14/3, 7/2, 7/6), proportional to 28 : 21 : 7, varkappa = 5/sqrt3'
+      ' (his exponent sqrt3/5); Biot-Savart at 50 digits: self-similar, one orientation collapses and its mirror image expands,'
+      ' and |Im kappa|/(2|Re kappa|) = 5 sqrt3/6 for both',
+      [x_/mu6[2] for x_ in mu6] == [4, 3, 1] and sp.simplify(kap6 - 5/sp.sqrt(3)) == 0
+      and spr6 < mp.mpf('1e-45') and re6[0]*re6[1] < 0 and all(abs(p_ - 5*mp.sqrt(3)/6) < mp.mpf('1e-45') for p_ in P6),
+      'spread %s, P = %s' % (mp.nstr(spr6, 3), mp.nstr(P6[0], 15)))
 
 # 10h. Demina and Kudryashov 2014, Sect. 3: two regular n-gons with circulations G1 (radius R1) and G2 (radius r R1)
 #      and G0 at the center. With G2 = -G1/r^2 (zero angular impulse) their Eq. (37) fixes r, and their Eq. (36)
@@ -1047,6 +1298,230 @@ check('10d Prop. 1: q = s + 605/324 removes the quadratic term; sigma = 2 sqrt(-
       dep.coeff(sv, 2) == 0 and sp.simplify(sigma_ - 7*sp.sqrt(5201)/162) == 0
       and sp.simplify(X_ - 245351/sp.Integer(5201)**sp.Rational(3, 2)) == 0)
 check('10d Prop. 1: the cubic in q equals 16 Q(1/2, q)', sp.expand(16*Qexp.subs(m, sp.Rational(1, 2)).subs(y, qv) - cubq) == 0)
+
+# 10l. Prop. 1 (release 2.2.0): the critical cosines in closed form. At mu = 1/2, G(C) = 2C^3 + 8C^2 + C/4 - 8,
+#      and C = (sqrt7/2) c gives c^3 + (8 sqrt7/7) c^2 + c/14 - 32 sqrt7/49 = 0.
+cL, sL = sp.symbols('c s')
+GL = sp.expand((4*(1 - m)*C**3 + 4*(2*m**2 - m + 2)*C**2 + 2*(1 - m)**3*C
+                - (2*m**4 + 7*m**3 + 6*m**2 + 7*m + 2)).subs(m, sp.Rational(1, 2)))   # eq:K (Kc is reused in 10c)
+cubL = cL**3 + 8*sp.sqrt(7)/7*cL**2 + cL/14 - 32*sp.sqrt(7)/49
+check('10l Prop. 1: G(C) = 2C^3 + 8C^2 + C/4 - 8 at mu = 1/2, and G((sqrt7/2)c)/(7 sqrt7/4) = c^3 + (8 sqrt7/7)c^2 + c/14 - 32 sqrt7/49',
+      sp.expand(GL - (2*C**3 + 8*C**2 + C/4 - 8)) == 0
+      and sp.simplify(sp.expand(GL.subs(C, sp.sqrt(7)/2*cL))/(7*sp.sqrt(7)/4) - cubL) == 0)
+depL = sp.expand(cubL.subs(cL, sL - 8*sp.sqrt(7)/21))
+pL, qL = depL.coeff(sL, 1), depL.coeff(sL, 0)
+check('10l Prop. 1: c = s - 8 sqrt7/21 gives s^3 - (125/42)s + 124 sqrt7/1323; 2 sqrt(-p/3) = 5 sqrt70/21 and'
+      ' (3q/2p) sqrt(-3/p) = -124 sqrt10/3125',
+      sp.simplify(depL.coeff(sL, 2)) == 0 and sp.simplify(pL + sp.Rational(125, 42)) == 0
+      and sp.simplify(qL - 124*sp.sqrt(7)/1323) == 0
+      and sp.simplify(2*sp.sqrt(-pL/3) - 5*sp.sqrt(70)/21) == 0
+      and sp.simplify(sp.radsimp(3*qL/(2*pL)*sp.sqrt(-3/pL)) + 124*sp.sqrt(10)/3125) == 0)
+mp.mp.dps = 60
+cm = [-8*mp.sqrt(7)/21 + 5*mp.sqrt(70)/21*mp.cos(mp.acos(-124*mp.sqrt(10)/3125)/3 - 2*mp.pi*mm/3) for mm in range(3)]
+res_c = max(abs(cc**3 + 8*mp.sqrt(7)/7*cc**2 + cc/14 - 32*mp.sqrt(7)/49) for cc in cm)
+check('10l Prop. 1: c_0, c_1, c_2 solve the cubic to 1e-59 (60 digits); c_0 in (0.67, 0.68), c_1 in (-0.93, -0.92), c_2 < -1',
+      res_c < mp.mpf('1e-59') and mp.mpf('0.67') < cm[0] < mp.mpf('0.68') and mp.mpf('-0.93') < cm[1] < mp.mpf('-0.92') and cm[2] < -1,
+      'residual %s; c = %s' % (mp.nstr(res_c, 3), [mp.nstr(cc, 13) for cc in cm]))
+P12 = lambda th: (14*mp.sin(th)**2 + 6*mp.sqrt(7)*mp.cos(th) + 21)/(2*(14*mp.cos(th) + mp.sqrt(7))*mp.sin(th))
+qP = [605/mp.mpf(324) + 7*mp.sqrt(5201)/162*mp.cos(mp.acos(245351/mp.mpf(5201)**mp.mpf('1.5'))/3 - 2*mp.pi*mm/3) for mm in range(2)]
+dev_c = max(abs(P12(mp.acos(cm[0])) - mp.sqrt(qP[0])), abs(P12(2*mp.pi - mp.acos(cm[1])) - mp.sqrt(qP[1])))
+check('10l Prop. 1: P at cos theta = c_0 on A+ is P_+, and at cos theta = c_1 on A- is P_-, to 1e-60 (60 digits)',
+      dev_c < mp.mpf('1e-60'), 'max difference %s' % mp.nstr(dev_c, 3))
+mp.mp.dps = 50
+
+# 10m. Discussion (release 2.2.0): the collapsing triple of Chen, Walsh and Wheeler, arXiv:2506.04093v1, Eq. (4.5) (the same
+#      number in Math. Ann. 396 (2026) 5),
+#      circulations (1, 2, -2/3) at -2, 1 and sqrt7 i. Interchanging the first two vortices and halving the circulations
+#      gives (1, 1/2, -1/3), the family mu = 1/2; its shape ratio is that of eq:pos at theta = pi/2, on A+ = (0, theta_0).
+mh = sp.Rational(1, 2)
+qh = sp.sqrt(1 + mh + mh**2)
+zW = [sp.Integer(1), sp.Integer(-2), sp.sqrt(7)*I]                 # after the interchange: circulations 2, 1, -2/3
+gW = [sp.Integer(2)/2, sp.Integer(1)/2, sp.Rational(-2, 3)/2]
+wW = sp.simplify((zW[2] - zW[0])/(zW[1] - zW[0]))
+wpos = mh/(1 + mh) - qh/(1 + mh)*sp.exp(I*pi/2)
+cos_th0h = sp.radsimp((mh - 1)/(2*qh))                            # cos theta_0 = (mu - 1)/(2 sqrtR)
+check('10m CWW (4.5): interchanged and halved, Gamma = (1, 1/2, -1/3) and w = 1/3 - (sqrt7/3) i, the shape ratio of eq:pos'
+      ' at mu = 1/2, theta = pi/2; and cos theta_0 = -sqrt7/14 < 0, so pi/2 < theta_0 and theta = pi/2 lies on A+ (exact)',
+      gW == [sp.Integer(1), mh, -mh/(1 + mh)] and sp.simplify(wW - wpos) == 0
+      and sp.simplify(wW - (sp.Rational(1, 3) - sp.sqrt(7)/3*I)) == 0
+      and sp.simplify(cos_th0h + sp.sqrt(7)/14) == 0 and cos_th0h.is_negative is True)
+PW = sp.simplify((Nf(C)/(2*m*sp.sqrt(R)*Mf(C))).subs(C, 0).subs(m, mh))
+check('10m CWW (4.5): P = N(0)/(2 mu sqrtR M(0)) = 5 sqrt7/2 at theta = pi/2, mu = 1/2 (eq:Ptheta, exact)',
+      sp.simplify(PW - 5*sp.sqrt(7)/2) == 0, str(PW))
+zWn = [mp.mpc(-2), mp.mpc(1), mp.sqrt(7)*mp.mpc(0, 1)]
+kW, zcW = kappas_direct([mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3], zWn)
+sprW = max(abs(k_ - kW[0]) for k_ in kW)/abs(kW[0])
+cfg = config_theta(mp.mpf(1)/2, mp.pi/2)
+lamW = cfg[2]/(zWn[2] - zcW)
+simW = max(abs(lamW*(zz - zcW) - cc_) for zz, cc_ in zip([zWn[1], zWn[0], zWn[2]], cfg))
+check('10m CWW (4.5), Biot-Savart at 50 digits: self-similar and collapsing, P = 5 sqrt7/2, and a rotation-dilation about z_c'
+      ' maps it onto eq:pos at mu = 1/2, theta = pi/2 (vortices 1 and 2 interchanged)',
+      sprW < mp.mpf('1e-45') and kW[0].real < 0 and abs(P_of_kappa(kW[0]) - 5*mp.sqrt(7)/2) < mp.mpf('1e-45') and simW < mp.mpf('1e-45'),
+      'spread %s, map residual %s, P = %s' % (mp.nstr(sprW, 3), mp.nstr(simW, 3), mp.nstr(P_of_kappa(kW[0]), 15)))
+# The map V of Chen, Walsh and Wheeler, their Eq. (4.4), the same in arXiv:2506.04093v1 and in Math. Ann. 396 (2026) 5:
+#   V_k(z, gamma, Omega) = sum_{j != k} gamma_j/(2 pi i (z_k - z_j)) + i Omega conj(z_k),  (z, gamma, Omega) in C^M x R^M x C.
+# With z_c = 0, V = 0 says conj(dz_k/dt) = conj(kappa) conj(z_k) by eq:bs: the self-similar motion with Omega = i conj(kappa).
+
+
+def V_cww(zs, gs, Om):
+    return [sum(gs[j]/(2*mp.pi*mp.mpc(0, 1)*(zs[k] - zs[j])) for j in range(len(zs)) if j != k) + mp.mpc(0, 1)*Om*mp.conj(zs[k])
+            for k in range(len(zs))]
+
+
+# Their triple (4.5) as printed has the center of vorticity z_c = -2i/sqrt7, which they print, and is not a zero of V for
+# any Omega: the double sum cancels in pairs, so sum_k gamma_k V_k = i Omega conj(sum_k gamma_k z_k), which vanishes only for
+# Omega = 0. They shift it by z_c ("Shifting each center z_k -> z_k - z_c ... giving us a solution Lambda_0 to (4.4)"). For
+# the triple they print, from Aref's formulas, a real Omega = 35/(264 pi) and 1/kappa = sqrt7/(132 pi), where their kappa is the
+# collapse time; the Omega of V is the bold one of their Sect. 4.1, L d(conj L)/dt = -1/(2 kappa) - i Omega =: -i Omega_V, i.e.
+# Omega_V = Omega - i/(2 kappa). The quartet (4.6) is printed with z_c = 0 and with Omega_V itself (verify_central_vortex.py).
+zWs = [sp.Integer(-2), sp.Integer(1), sp.sqrt(7)*I]
+gWs = [sp.Integer(1), sp.Integer(2), sp.Rational(-2, 3)]
+zcWs = sp.simplify(sum(g_*z_ for g_, z_ in zip(gWs, zWs))/sum(gWs))
+kWs = [sp.simplify(sp.expand_complex(sp.conjugate(sum(gWs[j]/(zWs[k] - zWs[j]) for j in range(3) if j != k)/(2*pi*I))
+                                     /(zWs[k] - zcWs))) for k in range(3)]
+OmC_s, invkC_s = sp.Rational(35, 264)/pi, sp.sqrt(7)/(132*pi)          # as printed in (4.5): Omega and 1/kappa
+OmV_s = OmC_s - I*invkC_s/2
+check('10m CWW (4.5), exact: z_c = -2i/sqrt7 as printed; kappa = (-sqrt7 + 35i)/(264 pi) at all three vortices; their kappa is'
+      ' the collapse time 1/(-2 Re kappa) = 132 pi/sqrt7; and Omega - i/(2 kappa) from their printed values is'
+      ' (35 - sqrt7 i)/(264 pi) = i conj(kappa)',
+      sp.simplify(zcWs + 2*I/sp.sqrt(7)) == 0 and all(sp.simplify(k_ - (-sp.sqrt(7) + 35*I)/(264*pi)) == 0 for k_ in kWs)
+      and sp.simplify(1/(-2*sp.re(kWs[0])) - 1/invkC_s) == 0
+      and sp.simplify(OmV_s - (35 - sp.sqrt(7)*I)/(264*pi)) == 0
+      and sp.simplify(sp.expand_complex(OmV_s - I*sp.conjugate(kWs[0]))) == 0, 'kappa = %s' % kWs[0])
+zT = [z_ - zcW for z_ in zWn]
+OmC, invkC = mp.mpf(35)/(264*mp.pi), mp.sqrt(7)/(132*mp.pi)         # their printed Omega and 1/kappa
+OmT = OmC - mp.mpc(0, 1)*invkC/2                                     # Omega_V = Omega - i/(2 kappa), their Sect. 4.1
+resT = max(abs(v_) for v_ in V_cww(zT, [mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3], OmT))
+resA = mp.mpf(0)                                  # along A+ for mu = 1/2: eq:pos with Omega(theta) = i conj(kappa(theta)), Lemma 3
+th0v = mp.acos(-mp.sqrt(7)/14)
+for f_ in ('0.1', '0.3', '0.5', '0.7', '0.9'):
+    thv = th0v*mp.mpf(f_)
+    OmA = mp.mpc(0, 1)*mp.conj(kappa_formula(mp.mpf(1)/2, thv))
+    resA = max(resA, max(abs(v_) for v_ in V_cww(config_theta(mp.mpf(1)/2, thv), Gams(mp.mpf(1)/2), OmA)))
+check('10m CWW map V, Eq. (4.4): V = 0 at their triple (4.5) shifted to z_c = 0, with Omega_V = Omega - i/(2 kappa) formed from'
+      ' their printed Omega and kappa, which is i conj(kappa); V = 0 along A+ (mu = 1/2, five angles) with'
+      ' Omega(theta) = i conj(kappa(theta)) of Lemma 3',
+      resT < mp.mpf('1e-45') and abs(OmT - mp.mpc(0, 1)*mp.conj(kW[0])) < mp.mpf('1e-45') and resA < mp.mpf('1e-45'),
+      'residuals %s, %s' % (mp.nstr(resT, 3), mp.nstr(resA, 3)))
+# Negative controls. V is affine in Omega, V = a + Omega b with b_k = i conj(z_k), so min over Omega of |V| (Euclidean norm)
+# is attained at Omega = -(b^H a)/(b^H b). At the triple as printed (z_c != 0) the minimum is positive; at the shifted triple
+# with the printed real Omega alone, without -i/(2 kappa), V is not 0.
+gWn = [mp.mpf(1), mp.mpf(2), mp.mpf(-2)/3]
+OmX = mp.mpc('0.37', '-0.21')
+sumV = sum(g_*v_ for g_, v_ in zip(gWn, V_cww(zWn, gWn, OmX)))
+aV = V_cww(zWn, gWn, mp.mpf(0)); bV = [mp.mpc(0, 1)*mp.conj(z_) for z_ in zWn]
+Omin = -sum(mp.conj(b_)*a_ for a_, b_ in zip(aV, bV))/sum(abs(b_)**2 for b_ in bV)
+minV = mp.sqrt(sum(abs(a_ + Omin*b_)**2 for a_, b_ in zip(aV, bV)))
+realV = max(abs(v_) for v_ in V_cww(zT, gWn, OmC))
+check('10m negative controls: sum_k gamma_k V_k = i Omega conj(sum_k gamma_k z_k) (at Omega = 0.37 - 0.21i); at the triple as'
+      ' printed, with z_c = -2i/sqrt7, no Omega makes V vanish (min over Omega of |V| = %s); at the shifted triple the printed'
+      ' real Omega alone leaves max |V_k| = %s' % (mp.nstr(minV, 3), mp.nstr(realV, 3)),
+      abs(sumV - mp.mpc(0, 1)*OmX*mp.conj(sum(g_*z_ for g_, z_ in zip(gWn, zWn)))) < mp.mpf('1e-45')
+      and minV > mp.mpf('0.04') and realV > mp.mpf('0.01'))
+# The symmetries used in the Discussion act on (z, gamma, Omega) by real-linear isomorphisms L with V(L Lambda) = A V(Lambda):
+# rotation (e^{i phi} z, gamma, Omega), A = e^{-i phi}; dilation (lam z, gamma, lam^{-2} Omega), A = 1/lam; circulations
+# (z, c gamma, c Omega), A = c; relabeling, A the same permutation. Checked at a point that is not a zero of V.
+zR = [mp.mpc('0.3', '-1.1'), mp.mpc('1.7', '0.4'), mp.mpc('-0.9', '0.8'), mp.mpc('0.1', '2.3')]
+gR = [mp.mpf('1.3'), mp.mpf('-0.7'), mp.mpf('2.1'), mp.mpf('0.45')]
+OR = mp.mpc('0.37', '-0.21')
+V0 = V_cww(zR, gR, OR)
+phR, laR, cR = mp.mpf('0.83'), mp.mpf('1.9'), mp.mpf('2.6')
+perm = [2, 0, 3, 1]
+eqv = max(
+    max(abs(a_ - mp.expj(-phR)*b_) for a_, b_ in zip(V_cww([mp.expj(phR)*z_ for z_ in zR], gR, OR), V0)),
+    max(abs(a_ - b_/laR) for a_, b_ in zip(V_cww([laR*z_ for z_ in zR], gR, OR/laR**2), V0)),
+    max(abs(a_ - cR*b_) for a_, b_ in zip(V_cww(zR, [cR*g_ for g_ in gR], cR*OR), V0)),
+    max(abs(a_ - V0[p_]) for a_, p_ in zip(V_cww([zR[p_] for p_ in perm], [gR[p_] for p_ in perm], OR), perm)))
+check('10m CWW map V: V(L Lambda) = A V(Lambda) for a rotation, a dilation with Omega -> lam^{-2} Omega, a factor c in the'
+      ' circulations with Omega -> c Omega, and a relabeling (50 digits, at a point with V != 0)',
+      eqv < mp.mpf('1e-45') and min(abs(v_) for v_ in V0) > mp.mpf('0.01'), 'max deviation %s' % mp.nstr(eqv, 3))
+# The rank of D_Lambda V along the two arcs of the Discussion, a numerical observation (the paper's argument does not use it).
+# V is holomorphic in each z_j except for the term i Omega conj(z_k), so with dV_k = A_kj dz_j + B_kj conj(dz_j),
+# A_kk = -sum_{l != k} gamma_l/(2 pi i (z_k - z_l)^2), A_kj = gamma_j/(2 pi i (z_k - z_j)^2), B_kk = i Omega, the columns for
+# Re z_j and Im z_j are A + B and i(A - B); dV_k/dgamma_j = 1/(2 pi i (z_k - z_j)); dV_k/dOmega = i conj(z_k), times 1 and i.
+# The real Jacobian is 2N x (3N + 2); full rank is rank 2N. Checked against central differences, then the ratio of the
+# 2N-th to the largest singular value at 199 equally spaced points of A+ for mu = 1/2 and of 0 < theta < pi/2 for n = 2.
+
+
+def jac_V(zs, gs, Om):
+    N_ = len(zs); ii = mp.mpc(0, 1); cols = []
+    for j in range(N_):
+        Aj = [(-sum(gs[l_]/(2*mp.pi*ii*(zs[k] - zs[l_])**2) for l_ in range(N_) if l_ != k) if k == j
+               else gs[j]/(2*mp.pi*ii*(zs[k] - zs[j])**2)) for k in range(N_)]
+        Bj = [ii*Om if k == j else mp.mpc(0) for k in range(N_)]
+        cols.append([a_ + b_ for a_, b_ in zip(Aj, Bj)]); cols.append([ii*(a_ - b_) for a_, b_ in zip(Aj, Bj)])
+    for j in range(N_):
+        cols.append([mp.mpc(0) if k == j else 1/(2*mp.pi*ii*(zs[k] - zs[j])) for k in range(N_)])
+    cols.append([ii*mp.conj(z_) for z_ in zs]); cols.append([-mp.conj(z_) for z_ in zs])
+    M_ = mp.matrix(2*N_, len(cols))
+    for c_, col in enumerate(cols):
+        for k in range(N_):
+            M_[2*k, c_], M_[2*k + 1, c_] = col[k].real, col[k].imag
+    return M_
+
+
+def jac_fd(zs, gs, Om, h):
+    def Vr(zz, gg, OO):
+        out = []
+        for v_ in V_cww(zz, gg, OO):
+            out += [v_.real, v_.imag]
+        return out
+    cols = []
+    for j in range(len(zs)):
+        for d_ in (mp.mpc(1), mp.mpc(0, 1)):
+            zp = list(zs); zp[j] += h*d_; zm = list(zs); zm[j] -= h*d_
+            cols.append([(a_ - b_)/(2*h) for a_, b_ in zip(Vr(zp, gs, Om), Vr(zm, gs, Om))])
+    for j in range(len(zs)):
+        gp = list(gs); gp[j] += h; gm = list(gs); gm[j] -= h
+        cols.append([(a_ - b_)/(2*h) for a_, b_ in zip(Vr(zs, gp, Om), Vr(zs, gm, Om))])
+    for d_ in (mp.mpc(1), mp.mpc(0, 1)):
+        cols.append([(a_ - b_)/(2*h) for a_, b_ in zip(Vr(zs, gs, Om + h*d_), Vr(zs, gs, Om - h*d_))])
+    return cols
+
+
+def sv_ratio(M_, N_):
+    sv = sorted([x_ for x_ in mp.svd_r(M_, compute_uv=False)], reverse=True)
+    return sv[2*N_ - 1]/sv[0]
+
+
+mp.mp.dps = 30
+x2r = 2 + mp.sqrt(3)
+
+
+def ring2(th):                                     # Proposition 2, n = 2: x_2 at +-1, -1 at +-sqrt(x_2) e^{i theta}; z_c = 0
+    zs = [mp.mpc(1), mp.mpc(-1), mp.sqrt(x2r)*mp.expj(th), -mp.sqrt(x2r)*mp.expj(th)]
+    gs = [x2r, x2r, mp.mpf(-1), mp.mpf(-1)]
+    kap = mp.conj(sum(gs[j]/(zs[0] - zs[j]) for j in range(1, 4))/(2*mp.pi*mp.mpc(0, 1)))/zs[0]
+    return zs, gs, mp.mpc(0, 1)*mp.conj(kap)
+
+
+fd_err = mp.mpf(0)
+for zs, gs, Om in [(config_theta(mp.mpf(1)/2, th0v/3), Gams(mp.mpf(1)/2), mp.mpc(0, 1)*mp.conj(kappa_formula(mp.mpf(1)/2, th0v/3))),
+                   ring2(mp.pi/12)]:
+    M_ = jac_V(zs, gs, Om); F_ = jac_fd(zs, gs, Om, mp.mpf('1e-12'))
+    fd_err = max(fd_err, max(abs(M_[r_, c_] - F_[c_][r_]) for c_ in range(len(F_)) for r_ in range(M_.rows)))
+ratA = []; resRA = mp.mpf(0)
+for k in range(1, 200):
+    thv = th0v*k/200
+    zs, gs, Om = config_theta(mp.mpf(1)/2, thv), Gams(mp.mpf(1)/2), mp.mpc(0, 1)*mp.conj(kappa_formula(mp.mpf(1)/2, thv))
+    resRA = max(resRA, max(abs(v_) for v_ in V_cww(zs, gs, Om)))
+    ratA.append(sv_ratio(jac_V(zs, gs, Om), 3))
+check('10m rank of D_Lambda V along A+ for mu = 1/2, numerical (30 digits): the Jacobian agrees with central differences'
+      ' (to %s); at 199 equally spaced points of A+, V = 0 and the 6th singular value is at least %s times the largest'
+      ' (%s at theta = pi/2)' % (mp.nstr(fd_err, 2), mp.nstr(min(ratA), 3),
+                                 mp.nstr(sv_ratio(jac_V(config_theta(mp.mpf(1)/2, mp.pi/2), Gams(mp.mpf(1)/2),
+                                                        mp.mpc(0, 1)*mp.conj(kappa_formula(mp.mpf(1)/2, mp.pi/2))), 3), 3)),
+      fd_err < mp.mpf('1e-15') and resRA < mp.mpf('1e-25') and min(ratA) > mp.mpf('1e-4'))
+ratR = []; resRR = mp.mpf(0)
+for k in range(1, 200):
+    zs, gs, Om = ring2(mp.pi/2*k/200)
+    resRR = max(resRR, max(abs(v_) for v_ in V_cww(zs, gs, Om)))
+    ratR.append(sv_ratio(jac_V(zs, gs, Om), 4))
+check('10m rank of D_Lambda V along 0 < theta < pi/2 for n = 2, numerical (30 digits): at 199 equally spaced points, V = 0 and'
+      ' the 8th singular value is at least %s times the largest (%s at theta = pi/12, the quartet of CWW turned by pi/6)'
+      % (mp.nstr(min(ratR), 3), mp.nstr(sv_ratio(jac_V(*ring2(mp.pi/12)), 4), 3)),
+      resRR < mp.mpf('1e-25') and min(ratR) > mp.mpf('1e-4'))
+mp.mp.dps = 50
 
 # 10e. Remark 1: Q(a/b, xi^2) irreducible over Q for every a/b in (0, 1) with b <= 30, one by one.
 xi = sp.symbols('xi')

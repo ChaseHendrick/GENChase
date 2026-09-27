@@ -1,6 +1,6 @@
 # The propagated action potential of Hodgkin and Huxley: prior art, numerics and a proof plan
 
-Chase Hendrick, 2026-09-26. Work in progress in `papers/hh-dynamics/work/traveling-wave/`. Every statement below is
+Chase Hendrick, 2026-09-26. Work in progress in `work/traveling-wave/` of the paper's folder. Every statement below is
 labelled **rigorous** (proved by a program in ball arithmetic, whose logic is stated), **numerical** (floating point,
 not a proof) or **literature** (with the source and whether it was read first hand).
 
@@ -105,7 +105,7 @@ from the ledger entry of 2026-09-25 in RESEARCH.md; the book was not re-read her
 - A lead against an existing ledger line: Du and Hassard, Dyn. Contin. Discrete Impuls. Syst. Ser. A 8 (2001)
   495-518, locate Hopf points with interval arithmetic and apply it to the HH model (zbMATH review; not read). The
   RESEARCH.md entry of 2026-09-25 says no computer-assisted Hopf proofs for HH were found; this paper should be read
-  before any Hopf priority claim in `papers/hh-dynamics/`.
+  before any Hopf priority claim in the paper of this folder.
 
 ### 1.4 Searches
 
@@ -169,13 +169,13 @@ unstable subthreshold propagating wave". Miller and Rinzel (1981, abstract): fas
 
 ### 2.1 The equation
 
-With u = -V (depolarization, mV), the modern sign convention of `papers/hh-dynamics/`, eq. (31) is unchanged in form
+With u = -V (depolarization, mV), the modern sign convention of the paper of this folder, eq. (31) is unchanged in form
 because it is odd in V:
 
     u'' = K (u' + I(u, m, n, h)),     I = 120 m^3 h (u - 115) + 36 n^4 (u + 12) + 0.3 (u - E_l),
     x'  = phi (alpha_x(u)(1 - x) - beta_x(u) x),     x = m, n, h,    phi = 3^((T - 6.3)/10),
 
-with t in ms, C_M = 1, the 1952 rate functions (as in `papers/hh-dynamics/code/hh_ball.py`) and
+with t in ms, C_M = 1, the 1952 rate functions (as in `code/hh_ball.py` of the paper's folder) and
 theta = sqrt(K a / (2 R_2 C_M)), a = 0.0238 cm, R_2 = 35.4 ohm cm. The state is y = (u, u', m, n, h), five-dimensional.
 E_l is 10.5989209694 mV, the value that makes the resting current exactly zero, as Table 3's footnote intends; the
 printed 10.613 is also run for comparison. A pulse is an orbit homoclinic to rest y* = (0, 0, m_inf(0), n_inf(0),
@@ -274,7 +274,7 @@ could have) and fails at 0.02 with these crude bounds (the checker's run; 0.03 f
 
 ### 3.3 The bracketing orbits (`prove_bracket.py`, `lohner_hh.py`, `hhjet.py`)
 
-`lohner_hh.py` is a C^0 Lohner (QR) integrator adapted from `papers/nf-pulse/code/lohner.py`; `hhjet.py` computes the
+`lohner_hh.py` is a C^0 Lohner (QR) integrator adapted from `code/lohner.py` of the author's nf-pulse paper; `hhjet.py` computes the
 Taylor coefficients of the flow and their derivatives with respect to the initial point by Picard iteration on
 truncated power series of dual numbers, with Psi(x) = x/(e^x - 1) near x = 0 evaluated as 1/G(x),
 G(x) = (e^x - 1)/x = sum x^n/(n+1)!, whose Taylor coefficients carry a rigorous tail bound, so no ball containing 0 is
@@ -307,14 +307,14 @@ sets at the ends of the steps, not over the steps themselves.) **This does not p
 ### 4.1 Formulation
 
 Unknowns: the speed, through K, and nothing else; the phase is fixed by leaving rest on W^u. The argument is the one
-of `papers/nf-pulse/` (Wazewski-type shooting with an isolating block at rest):
+of the author's nf-pulse paper (Wazewski-type shooting with an isolating block at rest):
 
 1. **Block at rest** (extends Lemma B): a round block B0 of radius r0 about 0.01 in z, with the cone condition on all
    of B0 and strict entrance on the stable faces where L <= 0. Then K+ = {L > 0, z1 > 0} and K- = {L > 0, z1 < 0} are
    forward invariant in B0, and an orbit that stays in B0 forever tends to rest. The check with r = s = 0.01 already
    passes (3.2); the entrance statement restricted to L <= 0 is weaker than the inflow checked there.
 2. **Local manifold:** Lemma B with r of order 1e-35 and s of order r^2 (the check scales), or a Taylor
-   parametrization with a validated tail as in `papers/nf-pulse/code/manifold.py`.
+   parametrization with a validated tail as in `code/manifold.py` of the nf-pulse paper.
 3. **Integration of a K interval** [K1, K2] of width about 1e-80 around the pulse speed, with K carried as a sixth
    state variable (K' = 0) so that the Lohner set tracks it linearly, from the exit set of step 2 to about t = 17 ms
    after the upstroke, where every orbit of the interval must be in the interior of B0; and the two endpoint orbits
@@ -400,7 +400,7 @@ summary:
 ## 6. Rerun
 
 ```
-cd papers/hh-dynamics/work/traveling-wave/code
+cd work/traveling-wave/code          # from the paper's folder
 python3 -m pip install python-flint==0.9.0 numpy scipy
 python3 numerics.py                  # speeds, tolerance spread, eigenvalues (about 1 minute) -> data/numerics.txt
 python3 scan_T.py                    # switches in K at 6.3 ... 38 C (several minutes) -> data/scan_T.txt
@@ -435,5 +435,5 @@ The rigorous programs exit with status 0 only if every check, including the nega
 
 A line for RESEARCH.md (not added here, since this work is confined to this folder): "2026-09-26, Hodgkin-Huxley
 propagated action potential at the 1952 parameters: open as far as reached (Hastings 1976 p. 230 and Carpenter 1979
-p. 336 self-report: artificial small parameters); see papers/hh-dynamics/work/traveling-wave/REPORT.md. Re-search: no,
+p. 336 self-report: artificial small parameters); see this report. Re-search: no,
 except to read Hastings pp. 231-257, Carpenter 1977 and Foote-Chen 1981."

@@ -1,61 +1,73 @@
-# A Travelling Pulse in a Neural Field with a Smooth Firing Rate
+# Travelling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Work in progress** (drafted in this repository by the owner's decision of 2026-09-26). No manuscript yet; this folder
-holds the verification programs and their output. An adversarial
-in-repository review (mathematics, code audit with mutation tests, a partial independent reimplementation, prior art)
-is in [`review/lead/VERIFY.md`](review/lead/VERIFY.md); it found no gap in the proof, and its fixes are applied here.
+**Preprint**, archived on Zenodo with its programs and data ([doi:10.5281/zenodo.22998376](https://doi.org/10.5281/zenodo.22998376)), not peer reviewed. The manuscript is [`paper/nf-pulse.tex`](paper/nf-pulse.tex), built to
+`paper/nf-pulse.pdf` (39 pages); it writes out the proofs of all six theorems. This folder holds the manuscript, the
+verification programs and their output. The checks made of it, all within the project by separate AI agent sessions
+instructed to find errors, are in `review/` and in the `REPORT.md` of each folder under `ext/`; `review/RERUNS.md`
+records the reruns of 2026-09-27, and Section 9 of the manuscript lists what has and has not been checked.
 
 ## Abstract
 
 Neural field equations describe the activity of a sheet of cortex as a continuum, and their travelling pulses model
 waves of activity such as those seen in disinhibited cortical slices. Pinto and Ermentrout (2001) analysed their model
 mainly with a Heaviside firing rate. For a Heaviside rate, Pinto, Jackson and Wayne (2005) prove pulses without
-assuming slow recovery. For a smooth rate, Faye and Scheel prove pulses when the recovery is sufficiently slow, under
-hypotheses, and Hastings (2017) wrote that, apart from these "partial results", he was "not aware of any existence
-proof for pulses which covers all reasonable smooth functions S". Burlakov, Oleynik and Ponosov (2025) prove
-travelling waves at a fixed recovery rate for continuous firing rates close to a Heaviside, provided a Heaviside pulse
-at the same parameters satisfies further conditions, for a continuously differentiable kernel; they verify no
-concrete case. We give a computer-assisted proof, in ball arithmetic, of a fast travelling pulse for one smooth
-(logistic) firing rate at one fixed, non-small recovery rate: gain 20, threshold 1/4, recovery rate 1/10, no recovery
-decay, and the kernel e^(-|x|)/2. The speed is enclosed in an interval of width 10^-25 about 1.10274770973415924914786...
-The proof leaves rest along its one-dimensional unstable manifold, follows the pulse with a validated Taylor
-integrator, and closes it with an isolating block around rest and a shooting argument of Wazewski type in the speed.
+assuming slow recovery. For a smooth rate, the existence results we found either require the recovery rate eps to be
+sufficiently small (Faye and Scheel; Dyson, arXiv:1810.05142; for synaptic depression, Faye 2013 and Hastings 2017) or
+are conditional: Burlakov, Oleynik and Ponosov (2025) prove travelling waves at a fixed recovery rate for continuous
+rates close to a Heaviside, provided a Heaviside pulse satisfies conditions verified for no example, and Hastings's
+Theorem 2 rests on properties of two solutions (one of the fast system, one of the full system) checked only
+numerically. We give computer-assisted proofs, in ball arithmetic, at explicit parameters, with eps not small for the
+Pinto-Ermentrout field. For the logistic firing rate with gain 20 and threshold 1/4, no recovery decay and the kernel
+e^(-|x|)/2 there is a fast pulse at eps = 1/10, with speed in an interval of width 10^-25 about
+1.10274770973415924914786..., and a slow pulse; a fast pulse exists for every eps in [0.08, 0.13693] and at eps =
+3/20, where it coexists with a slow pulse. A fast pulse also exists for the sigmoid of Pinto and Ermentrout's Fig. 5
+at eps = 3/20 (a saddle-focus at rest) and in Faye's model with synaptic depression at his other parameters for eps =
+1/100, 1/50 and 1/20. For the fast pulse at eps = 1/10 we prove spectral stability for every pulse of a nonempty class
+defined by a speed bracket of width 10^-58 and a condition on the profile. Nonlinear stability is not proved.
 
 ## Status of the results
 
-- **Proved by computer:** the theorem below (`code/run_all.sh`, 20 checks:
-  9 proof steps, 4 tests of the integrator and 7 negative controls, about two minutes on four cores).
-- **Numerical, not proved:** the speed to 55 digits from high-precision shooting and the profile in the figure.
-  An earlier version of this README said that a second, slow pulse was not found and that the second switch of the
-  shooting, near c = 0.3775, looked like a wave train. That was wrong: `ext/slow-pulse/` proves by computer a slow
-  pulse with speed in an interval of width 10^-25 at 0.3775319350688905765075606, at these same parameters.
-- **Simulated in the studio:** the Neural-Field Pulse tab (`src/modules/neural-field.js`) runs this model on a periodic ring, and its timed front speed converges at fourth order to the enclosure above (`tools/neural-field-science.js`); a simulation, not part of the proof.
+- **Proved by computer** (written proofs in `paper/nf-pulse.tex`, inequalities checked in ball arithmetic):
+  Theorem 1, the fast pulse at eps = 1/10 (`code/run_all.sh`, 20 checks: 9 proof steps, 4 tests of the integrator and
+  7 negative controls, about six minutes with its parallel steps run one after another); Theorems 2 to 5 and the spectral stability, Theorem 6, in
+  `ext/` (table below).
+- **Numerical, not proved:** the speed c* to about 58 digits from high-precision shooting, confirmed by two separate
+  programs, and the profile in the figure. An earlier version of this README said that a second, slow pulse was not
+  found and that the second switch of the shooting, near c = 0.3775, looked like a wave train. The switch is a wave
+  train, but a slow pulse exists nearby: `ext/slow-pulse/` proves it by computer, with speed in an interval of width
+  10^-25 at 0.3775319350688905765075606, at these same parameters.
+- **Simulated in the studio:** the Neural-Field Pulse tab (`src/modules/neural-field.js`) runs this model on a periodic
+  ring, and its timed front speed converges at fourth order to the enclosures of Theorems 1 and 4
+  (`tools/neural-field-science.js`); a simulation, not part of any proof. That it settles on the fast pulse is observed,
+  not proved.
 - **Recomputed independently:** separate programs written from the equations alone (`review/lead/reimpl/`) confirm
   the rest state and its eigenvalues for all c in [c1, c2] and the speed to all quoted digits, and prove the
   existence step again with their own isolating block (exact rational arithmetic), their own validated integrator
-  and their own shooting argument (`review/lead/reimpl/block/BLOCK.md`). Neither computation has been read by a
-  person.
-- **Before this draft becomes a preprint:** a manuscript with the written proofs (drafts of every argument are in
-  `review/lead/math/MATH.md`); a review by someone outside this project; and a reading of the full texts of Zhang,
-  J. Dyn. Differ. Equ. 17 (2005), Zhang, J. Differential Equations 197 (2004), Pinto, Jackson and Wayne (2005) and
-  Sandstede (2007), so far read only through abstracts and reviews, and of Enculescu, Physica D 196 (2004), and
-  Zhang, Math. Z. 255 (2006), whose content is unknown. Until then the result is new only as far as we could
-  determine (RESEARCH.md, 2026-09-26). See `notes/QUALITY.md`.
+  and their own shooting argument (`review/lead/reimpl/block/BLOCK.md`). These programs were written by AI agent
+  sessions within the project.
+- **Sources:** Enculescu, Physica D 196 (2004), could not be reached and is unread; Sandstede (2007) is known from
+  its abstract only. Zhang, J. Differential Equations 197 (2004), was read in part (its model uses the Heaviside
+  rate throughout; its pulses are for sufficiently small eps). Zhang, J. Dyn. Differ. Equ. 17 (2005), Zhang, Math. Z.
+  255 (2007; online 29 July 2006), Zhang, Acta Math. Appl. Sin. 20 (2004), Zhang, SIAM J. Appl. Dyn. Syst. 6 (2007)
+  (abstract only), and Pinto, Jackson and Wayne (2005) are known from abstracts, reviews and first pages; every page
+  of these that we reached uses the Heaviside rate or concerns stability. The manuscript makes no claim to
+  be first: it says what the works we read contain and names the works we could not read (Sections 1 and 9 of the
+  manuscript; the searches are in `review/PRIOR-ART.md` and `review/lead/priorart/PRIORART.md`).
 
 ## Extensions (`ext/`)
 
-Each extension has its own folder, programs, certificates and report, and imports the programs in `code/` unchanged.
-All of them are computer-assisted proofs in ball arithmetic, and they rest on the same lemmas as the base proof, whose written proofs are still to do.
+Each extension has its own folder, programs, certificates and report, and imports the programs in `code/`. All of them
+are computer-assisted proofs in ball arithmetic, and they rest on the lemmas written out in `paper/nf-pulse.tex`.
 
 | Folder | Claim | Status |
 |---|---|---|
-| [`ext/slow-pulse/`](ext/slow-pulse/REPORT.md) | A second, slow pulse at eps = 1/10 (speed about 0.37753) and at eps = 3/20 (about 0.49330), with the rest state a saddle-focus at 3/20 | proved by computer; an in-repository adversarial check |
-| [`ext/gain-12/`](ext/gain-12/REPORT.md) | The fast pulse at Pinto and Ermentrout's own firing rate, (1 + tanh(6(u - 1/4)))/2, at eps = 3/20, speed about 1.04754, rest a saddle-focus | proved by computer; an in-repository adversarial check |
-| [`ext/eps-range/`](ext/eps-range/REPORT.md) | The fast pulse for every eps in [0.08, 0.13693], in 383 certified subintervals with a speed window that moves with eps; [0.05, 0.2] not reached | proved by computer; an in-repository adversarial check |
-| [`ext/faye-model/`](ext/faye-model/REPORT.md) | A fast pulse in Faye's (2013) neural field with synaptic depression at eps = 1/100 (Faye's own value), 1/50 and 1/20 | proved by computer; an in-repository adversarial check |
-| [`ext/stability/`](ext/stability/REPORT.md) | Toward spectral stability of the fast pulse (a class of pulses with speed in a bracket of width 10^-58) | proved, computer-assisted: in Re lambda >= -1/20 the spectrum is exactly {0}, and 0 is simple (the essential spectrum, the exclusion of large eigenvalues, the pulse enclosure, the winding number 1 of the Evans function on the box boundary, and D'(0) in [0.2308, 0.2693] by a Cauchy integral are certified; the algebra of the multiplicity argument is checked in SymPy, its analysis is written); nonlinear stability would further rest on Sandstede (2007), not read |
+| [`ext/slow-pulse/`](ext/slow-pulse/REPORT.md) | A second, slow pulse at eps = 1/10 (speed about 0.37753) and at eps = 3/20 (about 0.49330), with the rest state a saddle-focus at 3/20 | Theorem 3; proved by computer; an in-repository adversarial check |
+| [`ext/gain-12/`](ext/gain-12/REPORT.md) | The fast pulse for the sigmoid (1 + tanh(6(u - 1/4)))/2 printed in Pinto and Ermentrout's Fig. 5, at eps = 3/20, speed about 1.04754, rest a saddle-focus | Theorem 4; proved by computer; an in-repository adversarial check |
+| [`ext/eps-range/`](ext/eps-range/REPORT.md) | The fast pulse for every eps in [0.08, 0.13693] (381 certified subintervals) and in five further intervals, among them [0.069975, 0.070025] and [0.1499, 0.1501], which contains 3/20: 386 certificates in all, each with a speed window that moves with eps | Theorem 2; proved by computer; an in-repository adversarial check |
+| [`ext/faye-model/`](ext/faye-model/REPORT.md) | A fast pulse in Faye's (2013) neural field with synaptic depression at eps = 1/100 (Faye's own value), 1/50 and 1/20 | Theorem 5; proved by computer; an in-repository adversarial check |
+| [`ext/stability/`](ext/stability/REPORT.md) | Spectral stability of the fast pulse at eps = 1/10, for the class P of pulses with speed in a bracket of width 10^-58 | Theorem 6; proved, computer-assisted: in Re lambda >= -1/20 the spectrum is exactly {0}, and 0 is algebraically simple; nonlinear stability would further rest on Sandstede (2007), not read, whose scope for this model is disputed |
 
 ## The model and the claim
 
@@ -71,10 +83,12 @@ a speed c in (c1, c2), with c1 = 1.1027477097341592491478677 and c2 = c1 + 10^-2
 The orbit leaves rest on the branch of the unstable manifold where U increases, and U exceeds 0.7596 (a proved
 lower bound; the numerical maximum is 0.7597).
 
-Scope: one smooth firing rate at one parameter point, with eps fixed and not small. Nothing here concerns stability,
-uniqueness, the slow pulse, or the general smooth S of Hastings's remark. The threshold, the kernel scale and gamma = 0
+Scope of this claim (Theorem 1 of the manuscript): one smooth firing rate at one parameter point, with eps fixed and
+not small. The slow pulse, the range of eps, the gain 12, Faye's model and the spectral stability are the other
+theorems (`ext/`); nothing here concerns uniqueness, nonlinear stability, or the general smooth S of Hastings's remark. The threshold, the kernel scale and gamma = 0
 follow Pinto and Ermentrout; the gain 20 is the lambda that Faye (2013) and Hastings (2017) use for a related model
-(Pinto and Ermentrout's own gain 12 gives complex eigenvalues at rest, which the present block does not handle).
+(the gain 12 of the sigmoid printed in Pinto and Ermentrout's Fig. 5 gives complex eigenvalues at rest, which the
+block of `code/` does not handle; `ext/gain-12/` builds a block in a real Jordan basis for it).
 
 ## Method
 
@@ -126,7 +140,8 @@ sh code/run_all.sh
 ```
 
 The summary is in `data/run_all.txt` and the certificates in `data/`; the full output of each step goes to `data/logs/`,
-which the repository does not track.
+which the repository does not track. The manuscript is built with `pdflatex nf-pulse.tex`, run three times in
+`paper/`; `code/figure.py` makes its figure. Section 8 of the manuscript lists the commands for every theorem.
 
 ## License
 

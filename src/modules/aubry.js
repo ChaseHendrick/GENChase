@@ -1,6 +1,6 @@
 
 /* modules/aubry.js */
-/* GENChase: Aubry-André quasiperiodic chain. Localisation without disorder, at λ = 2. IPR is measured against the self-dual point. */
+/* GENChase: Aubry-André quasiperiodic chain. Unit hopping and potential 2λ cos(2π β n): the self-dual point is λ = 1. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -17,18 +17,18 @@
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    RANGE('Chain', 'lambda', 'Potential λ', GEOM, 0, 4.5, 0.05, f2, { hint: 'Self-dual at λ = 2. Below, extended. Above, localised. No randomness is required.' }),
+    RANGE('Chain', 'lambda', 'Potential λ', GEOM, 0, 4.5, 0.05, f2, { hint: 'Self-dual at λ = 1. Below, extended. Above, localized. No randomness is required.' }),
     RANGE('Chain', 'relax', 'Relax steps', GEOM, 40, 300, 10, v => v + ''),
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['int', 'Field'], ['log', 'Log']] },
     RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
   ];
   const DEFAULTS = { grid: 128, aspect: '4:5', lambda: 2.4, relax: 140, view: 'int', exposure: 1.05 };
   const PRESETS = {
-    loc: pre('Localised', { lambda: 3.2 }, Pal.ember),
+    loc: pre('Localized', { lambda: 3.2 }, Pal.ember),
     ext: pre('Extended', { lambda: 0.8 }, Pal.harbor),
-    crit: pre('Critical λ=2', { lambda: 2.0, view: 'log' }, Pal.nightshade),
+    crit: pre('Critical λ=1', { lambda: 1, view: 'log' }, Pal.nightshade),
     deep: pre('Deep', { lambda: 4.0 }, Pal.thermal),
-    sweep: pre('Near dual', { lambda: 2.15 }, Pal.kiln),
+    sweep: pre('Above dual', { lambda: 2.15 }, Pal.kiln),
     clean: pre('Almost free', { lambda: 0.3 }, Pal.glacier),
   };
 
@@ -36,13 +36,13 @@
   function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'aubry', name: 'Aubry–André', tab: 'Aubry',
-    subtitle: 'localisation without disorder · 1980',
+    subtitle: 'localization without disorder · 1980',
     order: 56,
-    equation: 'ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2',
-    credit: 'S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.',
-    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.',
+    equation: 'ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localized for λ>1',
+    credit: 'S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.',
+    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 1 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Chain: 'The golden ratio keeps the potential from ever repeating. λ = 2 is the self-dual critical line.' },
+    hints: { Chain: 'The golden ratio keeps the potential from ever repeating. λ = 1 is the self-dual critical line.' },
     palette: true, defaultPalette: 'nightshade', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -114,12 +114,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      // λ is printed as a setting only. With unit hopping and the potential 2λ cos(2πβn) implemented
-      // here the self-dual point is λ = 1, not the 2 this line used to print, and the localised or
-      // extended verdict keyed on λ > 2 went with it: an IPR from one unconverged relaxation cannot
-      // classify the state on its own (λ = 0.8 reads about 5/N). Reconciling the convention with the
-      // primary model is open in validation/MATERIAL-WAVES.md. One Gaussian start vector relaxed for a
-      // fixed number of steps gives no honest error bar on the IPR from one plate.
+      // λ is printed as a setting. With unit hopping the potential here is 2λ cos(2π β n),
+      // whose self-dual point is λ = 1 (localized for λ > 1). That convention is the one
+      // reviewed in validation/AUBRY.md; the old λ = 2 wording was the other normalization
+      // and is not left open. This status line does not classify the state. One Gaussian
+      // start, relaxed for a fixed number of steps, is not a measurement of the Lyapunov
+      // exponent, and the inverse participation ratio on this plate is not that measurement.
       function status() {
         host.setStatus('<span>λ <b>' + f2(extra) + '</b></span>' +
           U.stats.compare({ label: 'IPR', measured: metric, expected: 1 / W, reference: 'uniform state', basis: 'sampled',

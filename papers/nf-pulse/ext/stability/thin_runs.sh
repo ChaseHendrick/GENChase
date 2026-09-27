@@ -6,6 +6,11 @@
 # from xi = T_B on.  prove_pulse writes ../data/proof_custom_*.json relative to the working directory, so it is
 # run from work/ and its certificates land in this folder's data/.
 cd "$(dirname "$0")/work"
+# As in code/run_all.sh of this paper's folder: refuse python -O, which would remove the assertions that some gates
+# of these programs still use, and clear every NF_* variable, which would change parameters, blocks, precision,
+# order or tolerances of the programs.
+if [ -n "${PYTHONOPTIMIZE:-}" ]; then echo "FAIL  PYTHONOPTIMIZE is set; unset it and rerun"; exit 1; fi
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 CODE=../../../code
 N_LO=11027477097341592491478677357466217332550533837818208789272
 N_HI=11027477097341592491478677357466217332550533837818208789273

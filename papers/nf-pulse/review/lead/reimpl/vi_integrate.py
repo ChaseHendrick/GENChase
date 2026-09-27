@@ -28,7 +28,7 @@
 #         The tube radius eta is accepted only if that bound is < eta (continuity argument).
 #      4. z_{n+1} = e^{Mh} z_n + h e^{M+ h} rho + radius of the ball p(h); y_{n+1} = midpoint of p(h).
 #  (c) Decision: integrate until U leaves [-1, 1] with an enclosure of fixed sign.
-# Independent of papers/nf-pulse/code/ (not read).
+# Independent of code/ (not read).
 import sys, time, math
 from flint import arb, fmpq, ctx, arb_mat, arb_series
 from common import BETA, THETA, EPS, C1, C2, consts, Sp_arb

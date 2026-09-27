@@ -52,7 +52,7 @@ check "N: negative control, the orbit at c1 asked to reach K+, is refused" $L/ne
 python3 prove_pulse.py custom:11024:4:-1 53 > $L/negctrl_far_c.log 2>&1
 check "N: negative control c = 1.1024, far from the pulse speed, is refused" $L/negctrl_far_c.log 'VERDICT FAIL'
 
-# negative controls of the block inside the proof driver: a block reaching U = 0.15 (S' up to about 2.7) and a
+# negative controls of the block inside the proof driver: a block reaching U = 0.15 (S' up to about 2.1) and a
 # block with r < rho must stop the driver with a CertificateError before any verdict is printed
 NF_DU=0.15 python3 prove_pulse.py c1 53 > $L/negctrl_block_du.log 2>&1
 if grep -q 'CertificateError' $L/negctrl_block_du.log && ! grep -q 'VERDICT PASS' $L/negctrl_block_du.log; then

@@ -1568,14 +1568,14 @@ void main(){
     tab: 'Talbot',
     subtitle: 'near-field self-imaging · 1836',
     order: 95,
-    equation: 'I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ',
-    credit: "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
-    blurb: 'Shine a plane wave through a comb of slits and walk away. At one exact distance the comb comes back, sharp, as if the slits had been printed in the air. Halfway there it comes back shifted. In between, the light is a tapestry of fractional images, a carpet Talbot found with a magnifying glass in 1836. Nothing here is drawn. It is the squared modulus of a finite Fourier sum.',
+    equation: 'I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z)|²,   z in d²/λ, revival at 2,   z_T = 2 d²/λ',
+    credit: "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d²/λ and as a half-period image at z_T/2 = d²/λ. Depth on this plate is in units of d²/λ, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
+    blurb: 'Shine a plane wave through a comb of slits and walk away. Depth is in units of d²/λ, and the Talbot length is z_T = 2 d²/λ, so the comb comes back sharp at 2, as if the slits had been printed in the air. At 1 it comes back shifted by half a period. In between, the light is a tapestry of fractional images, a carpet Talbot found with a magnifying glass in 1836. Nothing here is drawn. It is the squared modulus of a finite Fourier sum.',
     schema: [
       { group: 'Grating', key: 'slits', label: 'Periods across', type: 'range', kind: GEOM, min: 2, max: 24, step: 1, fmt: String },
       { group: 'Grating', key: 'fill', label: 'Duty cycle', type: 'range', kind: GEOM, min: 0.08, max: 0.7, step: 0.02, fmt: f2 },
       { group: 'Grating', key: 'orders', label: 'Fourier orders', type: 'range', kind: GEOM, min: 6, max: 40, step: 1, fmt: String },
-      { group: 'Grating', key: 'zMax', label: 'Depth in z_T', type: 'range', kind: GEOM, min: 0.5, max: 3, step: 0.1, fmt: f1 },
+      { group: 'Grating', key: 'zMax', label: 'Depth in d²/λ', type: 'range', kind: GEOM, min: 0.5, max: 3, step: 0.1, fmt: f1 },
       { group: 'Picture', key: 'exposure', label: 'Exposure', type: 'range', kind: PAINT, min: 0.4, max: 2.2, step: 0.05, fmt: f2 },
       { group: 'Picture', key: 'gamma', label: 'Gamma', type: 'range', kind: PAINT, min: 0.4, max: 2.2, step: 0.05, fmt: f2 },
       { group: 'Picture', key: 'grain', label: 'Grain', type: 'range', kind: PAINT, min: 0, max: 0.4, step: 0.02, fmt: pct },
@@ -1587,7 +1587,7 @@ void main(){
       binary: pre('Binary 50%', { slits:6, fill:0.5, orders:16, zMax:2 }, Pal.graphite),
       deep: pre('Two revivals', { slits:10, fill:0.18, orders:22, zMax:2.5 }, Pal.glacier),
     },
-    hints: { Grating: 'Duty cycle is slit width over period. More Fourier orders, sharper fractional revivals. Depth in units of the Talbot length.' },
+    hints: { Grating: 'Duty cycle is slit width over period. More Fourier orders, sharper fractional revivals. Depth is in units of d²/λ, not z/z_T. The Talbot length is z_T = 2 d²/λ, so 2 is a full revival and 1 is the half-period image.' },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Intensity',
     headline: 'slits', headlineLabel: 'slits',
     surprise(rng){ return { slits: rng.int(4,16), fill: rng.range(0.12,0.45), orders: rng.int(12,28), zMax: rng.range(1,2.4), exposure:1, gamma: rng.range(0.7,1.1), grain: rng.pick([0,0.04]) }; },
@@ -1623,7 +1623,7 @@ void main(){
       function draw(){ const s=host.getState(); paint(ctx, canvas.width, canvas.height, s); }
       return {
         aspect(){ return 1.15; },
-        regenerate(){ draw(); host.setStatus('<span>slits <b>'+host.getState().slits+'</b></span><span>z ≤ '+host.getState().zMax.toFixed(1)+' z<sub>T</sub></span>'); },
+        regenerate(){ draw(); host.setStatus('<span>slits <b>'+host.getState().slits+'</b></span><span>z ≤ '+host.getState().zMax.toFixed(1)+' d<sup>2</sup>/λ</span>'); },
         repaint(){ draw(); }, resize(){ draw(); }, pause(){}, resume(){ draw(); },
         async exportPNG(w,h){ const out=document.createElement('canvas'); out.width=w; out.height=h; paint(out.getContext('2d'),w,h,host.getState()); return U.toBlob(out); },
       };

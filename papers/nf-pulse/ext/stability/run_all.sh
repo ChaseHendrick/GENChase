@@ -3,9 +3,16 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Re-run the stability programs.  One line per check; exit status 1 if any rigorous check fails.
-#   sh run_all.sh          everything (the six winding runs take most of the time, 10 to 40 minutes each on 4 cores)
-#   sh run_all.sh quick    everything except the winding runs (reuses data/winding_*.json if present)
+#   sh run_all.sh          everything (the six winding runs take most of the time, 16 to 31 minutes each on 4 cores;
+#                          the four pieces of the winding controls a few minutes each)
+#   sh run_all.sh quick    everything except the winding runs and the pieces of the winding controls (reuses the
+#                          stored data/winding_*.json, whose sha256 records are checked against the present files)
 cd "$(dirname "$0")"
+# As in code/run_all.sh of this paper's folder: refuse python -O, which would remove the assertions that some gates
+# of these programs still use, and clear every NF_* variable, which would change parameters, blocks, precision,
+# order or tolerances of the programs.
+if [ -n "${PYTHONOPTIMIZE:-}" ]; then echo "FAIL  PYTHONOPTIMIZE is set; unset it and rerun"; exit 1; fi
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 mkdir -p data work
 fails=0
 check() {            # check <label> <file> <pattern expected to be present>
@@ -44,6 +51,7 @@ check "P: every orbit with c in [c_lo, c_hi] is in the interior of the block at 
 python3 simple_zero.py 128 4 > data/simple_zero.log 2>&1
 check "Z: at lam = 0, one rest eigenvalue with Re > 0 and three with Re < 0 (disjoint balls)" data/simple_zero.log 'disjoint balls: True'
 check "Z: lam = 0 is a simple zero of the Evans function (Cauchy integral on |lam| = 1/25, 128 arcs)" data/simple_zero.log 'SIMPLE ZERO: CERTIFIED'
+check "Z: negative control, Dt(0) != 0 from the same arcs (mean-value integral), is refused: its enclosure contains 0" data/simple_zero.log 'contains 0: True'
 python3 part3_symbolic.py > data/part3_symbolic.log 2>&1
 check "Part 3: the algebra of the multiplicity argument (SymPy, two negative controls)" data/part3_symbolic.log 'PART 3 ALGEBRA: CHECKED'
 
@@ -54,6 +62,12 @@ if [ "$1" != "quick" ]; then
 fi
 python3 winding.py combine > data/winding_combine.log 2>&1
 check "W: winding number of the Evans function on the box boundary is 1" data/winding_combine.log 'WINDING NUMBER 1$'
+if [ "$1" != "quick" ]; then
+  python3 winding_controls.py run 4 > data/winding_controls_run.log 2>&1
+fi
+python3 winding_controls.py check > data/winding_controls.log 2>&1
+check "W: control, winding number 1 on the square [-1/25, 1/25]^2 around the zero lam = 0" data/winding_controls.log '^CTRL0 WINDING NUMBER 1 AS EXPECTED'
+check "W: negative control, a zero in the square [1/10, 3/10] x [-1/10, 1/10] is refused (winding number 0)" data/winding_controls.log '^CTRLN WINDING NUMBER 0 AS EXPECTED'
 
 # numerical (not rigorous)
 python3 pulse_hp.py 120 > data/pulse_hp.log 2>&1

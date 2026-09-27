@@ -1,6 +1,6 @@
 # Prior-art check: travelling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
 
-Date: 2026-09-26. Scope: the claim in `papers/nf-pulse/README.md` (computer-assisted proof of a fast pulse of
+Date: 2026-09-26. Scope: the claim in `README.md` (computer-assisted proof of a fast pulse of
 u_t = -u - v + w*S(u), v_t = eps(u - gamma v), w = e^{-|x|}/2, logistic S with beta = 20, theta = 1/4, at
 eps = 1/10, gamma = 0). Starting point: RESEARCH.md entries of 2026-09-25 (neuroscience scout) and 2026-09-26
 (neural-field travelling pulse), whose searches are not repeated here.
@@ -356,7 +356,7 @@ evidence of content.
 Reflects both passes.
 
 ```
-### 2026-09-26  neural-field pulse with a smooth sigmoid at fixed eps: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, Enculescu, and a 2025 paper the ledger missed  (session agent, two passes; `papers/nf-pulse/review/lead/priorart/`)
+### 2026-09-26  neural-field pulse with a smooth sigmoid at fixed eps: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, Enculescu, and a 2025 paper the ledger missed  (session agent, two passes; `review/lead/priorart/`)
 
 - Why: the entry of the same day left Zhang (2005), Zhang (2004) and Pinto, Jackson and Wayne (2005) unread before any claim of priority.
 - Read in full: Burlakov, Oleynik and Ponosov, Mathematics 13 (2025) 701, doi:10.3390/math13050701 (CC BY; found through Dyson, arXiv:2511.17328v2, ref. [8]). Same model with decay sigma, eps < (sigma + 4)^-1 allowed; Theorem 3: under conditions (17)-(21) on a Heaviside pulse, "for each beta in [0, infinity), there exists a regular travelling wave solution" for continuous firing rates tending to the Heaviside. Kernel assumed C^1 (A1), so e^{-|x|}/2 is outside; the proof of Lemma 5 needs f(U) integrable, which a logistic with S(0) > 0 is not (our reading); the conditions are verified for no example; not computer-assisted.
