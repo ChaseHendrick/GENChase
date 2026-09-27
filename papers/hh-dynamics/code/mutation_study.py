@@ -168,7 +168,7 @@ def main():
         L.append('  %-16s %-8s %s (%.0f s)' % (mid, kind, det, sec))
     if any(r[1] != 'passed' for r in bres):
         L.append('')
-        L.append('STOPPED: a baseline did not pass, so the mutation results would mean nothing.')
+        L.append('STUDY STOPPED: a baseline did not pass, so the mutation results would mean nothing.')
         open(OUT, 'w').write('\n'.join(L) + '\n')
         sys.exit(1)
     with ThreadPoolExecutor(workers) as ex:
@@ -200,6 +200,7 @@ def main():
              % (len(muts), len(stopped), len(strong), len(by_check), len(stopped) - len(by_check), len(weak),
                 sum(1 for r in weak if r[1] == 'passed')))
     L.append('Every mutation not marked weak was stopped: %s' % ok_all)
+    L.append('Full list of mutations: %s' % (only is None and bool(base)))
     L.append('run time %.0f s' % (time.time() - t0))
     open(OUT, 'w').write('\n'.join(L) + '\n')
     print('\n'.join(L[-4:]))

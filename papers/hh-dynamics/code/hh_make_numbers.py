@@ -232,6 +232,8 @@ mac('BiTimeFourB', '%d' % round(float(one(r'stage 4b time ([0-9.]+) s \(wall\)',
 mac('BiTimeNumerics', '%d' % round(float(one(r'numerics time ([0-9.]+)s', BIST).group(1))))
 mac('BiWorkers', one(r'STAGE 4b .*?\(proof, 60 pieces, (\d+) worker processes\)', BIST).group(1))
 mac('BiCkpt', one(r'pieces read back from the checkpoint of an earlier run of the same code: (\d+)', BIST).group(1))
+if MAC['BiCkpt'] != '0' or 'read from the checkpoint' in BIST or 'debug: numerics loaded' in BIST:
+    raise SystemExit('the committed report must come from one run that computed every piece and its own candidates')
 mac('BiLedger', one(r'every decimal bound printed in stages 3-7 \((\d+) of them\)', BIST).group(1))
 m = one(r'python-flint (\S+) \(Arb ball arithmetic\), working precision (\d+) bits, Taylor order (\d+), remainder '
         r'tolerance (\S+) \(relative to scales \[([^\]]+)\]\)', BIST)
@@ -365,7 +367,7 @@ mac('Normball', one(r'nontrivial Floquet multipliers satisfy \|mu\| <= (' + NUM 
 
 # stage 4b: the 60 pieces
 s4b = block(BIST, 'STAGE 4b ', 'STAGE 5 ')
-pieces = every(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, sup\|\|DP\|\|_inf <= ([0-9.]+), '
+pieces = every(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, runs cover Z x piece True, sup\|\|DP\|\|_inf <= ([0-9.]+), '
                r'T in \[([0-9.]+), ([0-9.]+)\], box radius ~(' + NUM + r'), (\d+)s', s4b, 60)
 mac('NPieces', str(len(pieces)))
 mac('PieceWidth', '5\\cdot 10^{-4}')
@@ -392,6 +394,7 @@ mac('CtlTwentyU', iv(*ball_iv(*m.group(1, 2)), 3))
 mac('CtlTwentyDtwo', iv(*ball_iv(*m.group(3, 4)), 2))
 mac('CtlTwentyDthree', iv(*ball_iv(*m.group(5, 6)), 2))
 mac('CtlNorm', one(r'every member of DP\(Z\) has \|\|DP\|\|_inf >= (' + NUM + ')', s5).group(1))
+mac('CtlKappaLo', one(r'where every member of the enclosure of DP has \|\|DP\|\|_inf >= (' + NUM + r') > 0\.5', s5).group(1))
 kv = every(r'K vs Z: max \|mid K - zbar\| / radius\(Z\) = (' + NUM + r'), K in int Z: False', s5, 5)
 mac('CtlKJ', sci_tex('%.1e' % float(kv[4].group(1))))
 
@@ -440,7 +443,7 @@ offs = every(r'K lies in the interior of its box \(centre of K about ([0-9.]+) b
 mac('IdOffMax', max((Fr(x.group(1)), x.group(1)) for x in offs)[1])
 ctl = every(r'centre of K about ([0-9.]+) box radii away\): the inclusion must fail', IDENT, 3)
 mac('IdCtlMin', min((Fr(x.group(1)), x.group(1)) for x in ctl)[1])
-idp = every(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, sup\|\|DP\|\|_inf <= ([0-9.]+), T in \[([0-9.]+), '
+idp = every(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, runs cover Z x piece True, sup\|\|DP\|\|_inf <= ([0-9.]+), T in \[([0-9.]+), '
             r'([0-9.]+)\], box radius ~(' + NUM + ')', IDENT, 4)
 mac('IdPieces', ', '.join('$[%s, %s]$' % x.group(1, 2) for x in idp))
 for x in idp:                                  # the same lines as stage 4b of the committed run
@@ -458,8 +461,8 @@ mac('HtwoMuMax', '%.3f' % max(float(x.group(4)) for x in h2))
 mac('HtwoExtrap', '%.2f' % float(r1 - (r2 - r1) / (d2 - d1) * d1))
 
 # ================================================================== the mutation study (not a proof)
-if 'STOPPED' in MUT or 'harness-error' in MUT:
-    raise SystemExit('the mutation study did not complete')
+if 'STUDY STOPPED' in MUT or 'harness-error' in MUT or 'Full list of mutations: True' not in MUT:
+    raise SystemExit('the mutation study did not complete, or did not run the full list')
 m = one(r'Summary: (\d+) mutations; (\d+) of the (\d+) not marked weak stopped the program \((\d+) at a failed check, '
         r'(\d+) by an exception\); (\d+) marked weak, of which (\d+) passed\.', MUT)
 for k, v in zip(('MutTotal', 'MutStopped', 'MutStrong', 'MutByCheck', 'MutByExc', 'MutWeak', 'MutWeakPassed'),

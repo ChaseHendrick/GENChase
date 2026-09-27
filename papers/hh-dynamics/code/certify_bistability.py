@@ -42,6 +42,7 @@ Usage: python3 certify_bistability.py [--quick] [--no-ball] [--workers N] [--res
 import os
 import sys
 import time
+from fractions import Fraction
 import numpy as np
 
 import flint
@@ -89,6 +90,20 @@ class Log:
 
 log = Log(OUT)
 T_START = time.time()
+
+
+def _excepthook(tp, val, tb):
+    """An exception stops the program like a failed check: the report says so and the exit status is nonzero."""
+    try:
+        log('')
+        log('STOPPED: exception %s: %s, after %.1f s; no result of this run stands' % (tp.__name__, val,
+                                                                                      time.time() - T_START))
+        log.f.close()
+    finally:
+        sys.__excepthook__(tp, val, tb)
+
+
+sys.excepthook = _excepthook
 KINDS = ('proof', 'control', 'selftest', 'numerical')
 N_CHECKS = {k: 0 for k in KINDS}
 
@@ -290,16 +305,18 @@ def main():
         log('  pieces read back from the checkpoint of an earlier run of the same code: %d' % n_loaded)
         for r in ball:
             if r['completed']:
-                log('    E_l in [%s, %s]: P(Z) in int Z %s, sup||DP||_inf <= %s, T in [%s, %s], box radius ~%.1e, '
-                    '%.0fs' % (r['lo'], r['hi'], r['inside'], O.hi(r['norm_hi'], 4), O.lo(r['tau_lo'], 9),
-                               O.hi(r['tau_hi'], 9), max(r['zr']), r['time']))
+                log('    E_l in [%s, %s]: P(Z) in int Z %s, runs cover Z x piece %s, sup||DP||_inf <= %s, T in [%s, %s], '
+                    'box radius ~%.1e, %.0fs%s' % (r['lo'], r['hi'], r['inside'], r['covers'], O.hi(r['norm_hi'], 4),
+                                                   O.lo(r['tau_lo'], 9), O.hi(r['tau_hi'], 9), max(r['zr']), r['time'],
+                                                   ' (read from the checkpoint)' if r.get('from_checkpoint') else ''))
             else:
                 log('    E_l in [%s, %s]: ERROR %s (%.0fs)' % (r['lo'], r['hi'], r['err'], r['time']))
         cover = (Decimal(ball[0]['lo']) == Decimal('10.59') and Decimal(ball[-1]['hi']) == Decimal('10.62') and
                  all(Decimal(a['hi']) == Decimal(b['lo']) for a, b in zip(ball[:-1], ball[1:])))
         check('the pieces cover [10.59, 10.62] without gaps (%d pieces)' % len(ball), cover)
         allok = all(r['ok'] for r in ball)
-        check('every piece: P_E(Z) in int Z and sup ||DP_E||_inf < 1 (max %s)'
+        check('every piece: P_E(Z) in int Z, both runs integrated a set containing Z x piece, and sup ||DP_E||_inf < 1 '
+              '(max %s)'
               % (O.hi(O.max_hi([r['norm_hi'] for r in ball]), 4) if allok else '-'), allok)
         ball = {'n': len(ball), 'Tlo': O.min_lo([r['tau_lo'] for r in ball]),
                 'Thi': O.max_hi([r['tau_hi'] for r in ball]),
@@ -394,9 +411,10 @@ def main():
           else rsm['err'], kind='control')
     rk = prove_piece(('10.59', '10.5905', zg, PREC, {'kappa_max': 0.5}))
     check('NEG Theorem C, piece E_l in [10.59, 10.5905] with the contraction bound required to be below 0.5 instead '
-          'of 1 (the enclosure gives sup ||DP_E||_inf <= %s): the piece is refused, although P(Z) in int Z holds and '
-          'the runs cover Z x piece' % (O.hi(rk['norm_hi'], 4) if rk['completed'] else '-'),
-          rk['completed'] and rk['inside'] and rk['covers'] and not rk['ok'],
+          'of 1, where every member of the enclosure of DP has ||DP||_inf >= %s > 0.5 (and <= %s): the piece is refused, '
+          'although P(Z) in int Z holds and the runs cover Z x piece'
+          % ((O.lo(rk['norm_lo'], 4), O.hi(rk['norm_hi'], 4)) if rk['completed'] else ('-', '-')),
+          rk['completed'] and rk['inside'] and rk['covers'] and (rk['norm_lo'] > Fraction(1, 2)) and not rk['ok'],
           '' if rk['completed'] else rk['err'], kind='control')
     run_ = prove_piece(('10.613', '10.613', ru['zbar'], PREC, {'sec': sec_u, 'centre_iters': 0}))
     check('NEG Theorem C test on the unstable orbit (section u = %g, E_l = 10.613, box radius %s): the contraction '

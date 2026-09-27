@@ -78,6 +78,20 @@ class Log:
 log = Log(OUT)
 
 
+def _excepthook(tp, val, tb):
+    """An exception stops the program like a failed check: the report says so and the exit status is nonzero."""
+    try:
+        log('')
+        log('STOPPED: exception %s: %s, after %.1f s; no result of this run stands' % (tp.__name__, val,
+                                                                                      time.time() - T_START))
+        log.write()
+    finally:
+        sys.__excepthook__(tp, val, tb)
+
+
+sys.excepthook = _excepthook
+
+
 def check(name, ok, detail='', kind='proof'):
     assert kind in KINDS
     N_CHECKS[kind] += 1
@@ -99,9 +113,22 @@ def zero_current_EL_ball():
 
 def piece_line(r):
     """The line of stage 4b for a piece, without its run time."""
-    return ('E_l in [%s, %s]: P(Z) in int Z %s, sup||DP||_inf <= %s, T in [%s, %s], box radius ~%.1e'
-            % (r['lo'], r['hi'], r['inside'], O.hi(r['norm_hi'], 4), O.lo(r['tau_lo'], 9), O.hi(r['tau_hi'], 9),
-               max(r['zr'])))
+    return ('E_l in [%s, %s]: P(Z) in int Z %s, runs cover Z x piece %s, sup||DP||_inf <= %s, T in [%s, %s], box '
+            'radius ~%.1e' % (r['lo'], r['hi'], r['inside'], r['covers'], O.hi(r['norm_hi'], 4), O.lo(r['tau_lo'], 9),
+                              O.hi(r['tau_hi'], 9), max(r['zr'])))
+
+
+def arb_half_widths(radii):
+    """The half-widths of the Arb balls arb(0, r) that the proofs use (r rounded up to Arb's radius format), as exact
+    float64 hex strings; the conversion is checked to be exact."""
+    out = []
+    for r in radii:
+        h = arb(0, r).rad()
+        f = float(h)
+        if O._exact(arb(f)) != O._exact(h):
+            raise ValueError('half-width not exactly representable in float64')
+        out.append(f.hex())
+    return ', '.join(out)
 
 
 def in_piece(E, lo, hi):
@@ -147,6 +174,8 @@ def main():
         log('          %s' % ', '.join(float(v).hex() for v in rs['zbar']))
         log('    radii (float64: shortest decimal, then exact hex) = %s' % ', '.join(repr(float(v)) for v in rs['zrad']))
         log('          %s' % ', '.join(float(v).hex() for v in rs['zrad']))
+        log('    the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb\'s radius '
+            'format, are exactly (hex) %s' % arb_half_widths(rs['zrad']))
         log('    the fixed point lies in K:')
         lines = ['      %s = %s' % (nm, rs['K'][i, 0].str(17, radius=True)) for nm, i in zip('mnh', range(3))]
         for s in lines:
@@ -198,6 +227,8 @@ def main():
         log('          %s' % ', '.join(float(v).hex() for v in r['zb']))
         log('      box radii (float64: shortest decimal, then exact hex) = %s' % ', '.join(repr(float(v)) for v in r['zr']))
         log('          %s' % ', '.join(float(v).hex() for v in r['zr']))
+        log('      the box is the Arb ball centre + arb(0, radius); its half-widths, the radii rounded up to Arb\'s radius '
+            'format, are exactly (hex) %s' % arb_half_widths(r['zr']))
         check('piece [%s, %s]: P_E(Z) in int Z and sup ||DP_E||_inf < 1 for every E_l in the piece (both runs integrated '
               'a set containing Z x piece), so P_E has exactly one fixed point in Z' % (r['lo'], r['hi']),
               r['ok'] and r['inside'] and r['covers'])

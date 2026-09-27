@@ -486,7 +486,9 @@ def mpmath_l1(u_mid):
 def mpmath_transversality(u_mid, om_mid):
     """Independent, non-rigorous cross-check of Theorem 2(d): d lambda/du and dJss/du by central differences at
     u_H +- 1e-12, of the eigenvalue near i omega of the Jacobian (exact symbolic derivatives with SymPy, eigenvalues in
-    mpmath at 50 digits) and of Jss (mpmath).  It shares nothing with the series arithmetic of hh_ball.py."""
+    mpmath at 50 digits) and of Jss (mpmath).  It shares nothing with the series arithmetic of hh_ball.py.  The leak
+    term is written 0.3 u without E_l and J: both enter the vector field additively, so neither d lambda/du nor
+    dJss/du depends on them."""
     import sympy as sp
     uu, mm, nn, hh = sp.symbols('u m n h')
     Psi = lambda x: x / (sp.exp(x) - 1)

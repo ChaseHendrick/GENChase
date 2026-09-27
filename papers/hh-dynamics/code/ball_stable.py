@@ -101,11 +101,14 @@ def _key(a):
 
 
 def code_digest():
-    """SHA-256 of the files that compute a piece; a checkpoint written by other code is not reused."""
+    """SHA-256 of the files that compute a piece and of the versions of python-flint and FLINT; a checkpoint written
+    by other code is not reused."""
     import hashlib
     import os
+    import flint
     here = os.path.dirname(os.path.abspath(__file__))
     h = hashlib.sha256()
+    h.update(('python-flint %s FLINT %s' % (flint.__version__, getattr(flint, '__FLINT_VERSION__', '?'))).encode())
     for fn in ('ball_stable.py', 'certlib.py', 'hh_lohner.py', 'hh_arb.py', 'outward.py'):
         h.update(open(os.path.join(here, fn), 'rb').read())
     return h.hexdigest()
@@ -151,7 +154,7 @@ def prove_ball(z0, E0, dzdE, log, n=60, prec=96, workers=2, checkpoint=None, res
             if tag != digest:
                 continue
             k, _, js = rest.partition(' ')
-            done[k] = _load(js)
+            done[k] = dict(_load(js), from_checkpoint=True)
     todo = [a for a in args if _key(a) not in done]
     res = [done[_key(a)] for a in args if _key(a) in done]
     n_loaded = len(res)

@@ -32,17 +32,25 @@ def section_set(d, sec, c, F, zbar, zrad, params, C1):
 
 def initial_set_covers(S, F, zbar, zrad, params):
     """True if the set S that a run integrated contains the box zbar +- zrad (coordinates F) times the balls of
-    params, decided exactly.
+    params, decided in exact rational arithmetic.
 
-    S = {xbar + C rho0 + B rho : rho0 in r0, rho in r} as built by section_set: the check requires rho = 0 (r = 0),
-    columns of C that are distinct unit vectors (so that S is the product of the intervals xbar_j + r0_k, one per
-    coordinate), and, in each coordinate of F and of params, an interval that contains the requested one.  A run
-    over a smaller box, or with a parameter ball replaced by its midpoint, is refused.  This guards the statement
-    'the set Z x E is integrated' of the proofs against a slip at a call site.
+    S = {xbar + C rho0 + B rho : rho0 in r0, rho in r} as built by section_set: the check requires rho = 0 (r = 0), an
+    exact centre xbar, and columns of C that are distinct unit vectors, so that S is exactly the product of the
+    intervals [xbar_j + lo(r0_k), xbar_j + hi(r0_k)], one per coordinate j = row of column k (and the point xbar_j in
+    the other coordinates); these end points are formed as exact rationals from the exact end points of the Arb balls,
+    with no rounding.  In each coordinate of F the interval must contain the requested box arb(z) + arb(0, r) (the box
+    of the Krawczyk and inclusion tests: r rounded up to Arb's radius format), and in each coordinate of params the
+    requested ball.  A run over a smaller box, or with a parameter ball replaced by its midpoint, is refused.  This
+    guards the statement 'the set Z x E is integrated' of the proofs against a slip at a call site.
     """
+    from outward import _exact
+
+    def ends(b):                                            # the exact end points of the ball b = [m +- r]
+        m, r = _exact(b.mid()), _exact(b.rad())
+        return m - r, m + r
     d = S.xbar.nrows()
     for i in range(d):
-        if not (S.r[i, 0].mid() == 0 and S.r[i, 0].rad() == 0):
+        if not (S.r[i, 0].mid() == 0 and S.r[i, 0].rad() == 0 and S.xbar[i, 0].rad() == 0):
             return False
     ncol = S.C.ncols()
     rows = []
@@ -53,11 +61,15 @@ def initial_set_covers(S, F, zbar, zrad, params):
         rows.append(nz[0])
     if len(set(rows)) != len(rows):
         return False
-    comp = [S.xbar[i, 0] for i in range(d)]
+    lo = [_exact(S.xbar[i, 0]) for i in range(d)]           # exact: the centre has radius 0
+    hi = list(lo)
     for k, i in enumerate(rows):
-        comp[i] = comp[i] + S.r0[k, 0]
+        a, b = ends(S.r0[k, 0])
+        lo[i], hi[i] = lo[i] + a, hi[i] + b
+    # the requested sets are the balls themselves (the box of the proof is the Arb ball arb(z) + arb(0, r)), so their
+    # exact end points are compared
     want = [(f, arb(z) + arb(0, r) if r > 0 else arb(z)) for f, z, r in zip(F, zbar, zrad)] + list(params)
-    return all(comp[i].contains(w) for i, w in want)
+    return all(lo[i] <= ends(w)[0] and ends(w)[1] <= hi[i] for i, w in want)
 
 
 def poincare_on_section(system, sec, c, F, zbar, zrad, params, C1, order=20, tol_rem=1e-18,
