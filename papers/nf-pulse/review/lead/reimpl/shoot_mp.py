@@ -1,5 +1,5 @@
 # shoot_mp.py -- Task 3 (NON-RIGOROUS): high-precision shooting for the pulse speed c* in mpmath.
-# Written independently of papers/nf-pulse/code/ (not read).
+# Written independently of code/ (not read).
 #
 # Run:   python3 shoot_mp.py [dps] [taylor_order] [manifold_order] [log10_start_distance]
 #        e.g. python3 shoot_mp.py 80 40 24 -8   (default; roughly 40-60 minutes on one core with the

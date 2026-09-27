@@ -1,6 +1,6 @@
 # Prior-art check: a travelling pulse of the Pinto-Ermentrout field with a smooth firing rate at fixed eps
 
-Date: 2026-09-26. Scope: the claim in `papers/nf-pulse/README.md`, a computer-assisted proof of a fast travelling pulse of
+Date: 2026-09-26. Scope: the claim in `README.md`, a computer-assisted proof of a fast travelling pulse of
 
     u_t = -u - v + w * S(u),   v_t = eps (u - gamma v),   w(x) = e^(-|x|)/2,
     S(u) = 1/(1 + e^(-beta (u - theta))),   beta = 20, theta = 1/4, eps = 1/10, gamma = 0,
@@ -211,9 +211,9 @@ and settle whether the Burlakov-Oleynik-Ponosov argument is complete.
 ## Proposed RESEARCH.md entry
 
 ```
-### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `papers/nf-pulse/review/second/prior-art/PRIOR-ART.md`)
+### 2026-09-26  neural-field pulse with a smooth sigmoid: the Zhang papers, Pinto-Jackson-Wayne, Sandstede, and a 2025 existence theorem  (session agent; `review/second/prior-art/PRIOR-ART.md`)
 
-- Why: the entry of the same day could not reach Zhang (2004, 2005) or Pinto, Jackson and Wayne (2005), and priority for `papers/nf-pulse/` waited on them.
+- Why: the entry of the same day could not reach Zhang (2004, 2005) or Pinto, Jackson and Wayne (2005), and priority for the paper's folder waited on them.
 - Read, not the full texts (ScienceDirect 403, Springer client challenge, SIAM and World Scientific closed, ResearchGate 403, Sandstede's page captcha): zbMATH 1054.45005 review of Zhang, JDE 197 (2004) 162-196 (scalar, w constant, "H is the Heaviside step function"); zbMATH 1082.45009 review of Zhang, "Traveling waves of a singularly perturbed system of integral-differential equations arising from neuronal networks", JDDE 17 (2005) 489-522 (Heaviside, "the case eps = 0 and 0 < eps << 1"); abstract of Pinto-Jackson-Wayne, SIADS 4 (2005) 954-984 ("A Heaviside step function governs the activation", no assumption on the recovery rate); abstract of Sandstede, IJBC 17 (2007) 2693-2704 (spectral implies nonlinear stability). zbMATH reviews of eight further Zhang neural-field papers: all Heaviside where stated; six reviews unavailable (Math. Z. 255, JJIAM 27, Physica D 239, DCDS 34, DCDS-B 16, JMN 3), not read.
 - Found and read in full: Burlakov, Oleynik and Ponosov, Mathematics 13 (2025) 701, doi:10.3390/math13050701 (CC BY). Same model; Theorem 3 (p. 14): pulses exist for "any sufficiently steep firing rate function approximating the Heaviside", at fixed 0 < eps < 1/(sigma + 4), for a nonnegative C^1 kernel, if a Heaviside pulse satisfies (17)-(19), (21). No steepness bound, no example checked, e^(-|x|)/2 is not C^1; its fixed-speed formulation and the uniqueness in a ball under translation need checking.
 - Searched (arXiv abstract search): '"neural field" pulse sigmoid existence' 0; '"neural field" pulse sigmoidal' 0; '"neural field" traveling pulse' 8, none rigorous for smooth rates; 'rigorous numerics "neural field"' 5, none; 'computer-assisted proof traveling wave' 10 and 'computer-assisted nonlocal' 29, none on neural fields; '"interval arithmetic" "traveling pulse"' 0. Web searches for computer-assisted or validated-numerics neural-field waves: only FitzHugh-Nagumo (Matsue arXiv:1507.01462, Czechowski arXiv:1909.06207) and non-neural nonlocal problems (Cadiot 2505.03091, Breden et al. 2504.05066). Semantic Scholar search rate-limited; OpenAlex budget exhausted.

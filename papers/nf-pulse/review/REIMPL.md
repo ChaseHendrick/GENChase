@@ -1,7 +1,7 @@
 # Independent reimplementation of the nf-pulse computer-assisted claim
 
 Date: 2026-09-26. Scripts: `review/reimpl/` (see its README). Written from the equations only: nothing in
-`papers/nf-pulse/code/` or `papers/nf-pulse/data/` was read, imported or copied; only `papers/nf-pulse/README.md`
+`code/` or `data/` was read, imported or copied; only `README.md`
 was read, for the statement of the claim. Tools: python-flint 0.9.0 (Arb ball arithmetic) for everything
 rigorous, mpmath 1.3.0 for the non-rigorous shooting. Two files in `review/reimpl/` (`common.py`,
 `rest_eigen.py`) were not written by this reimplementation (they appeared during the work); nothing here uses them.

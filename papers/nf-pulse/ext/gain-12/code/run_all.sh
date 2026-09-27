@@ -7,6 +7,11 @@
 # Every step writes its full output to ../data/logs/; this script prints one line per check and exits with
 # status 1 at the end if any proof step fails or any negative control passes.
 cd "$(dirname "$0")"
+# As in code/run_all.sh of this paper's folder: refuse python -O, which would remove the assertions that some gates
+# of these programs still use, and clear every NF_* variable, which would change parameters, blocks, precision,
+# order or tolerances of the programs.
+if [ -n "${PYTHONOPTIMIZE:-}" ]; then echo "FAIL  PYTHONOPTIMIZE is set; unset it and rerun"; exit 1; fi
+for v in $(env | sed -n 's/^\(NF_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 mkdir -p ../data/logs
 L=../data/logs
 fails=0

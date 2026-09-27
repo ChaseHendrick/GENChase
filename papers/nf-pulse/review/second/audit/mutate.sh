@@ -1,5 +1,5 @@
 #!/bin/sh
-# Mutation driver: for each mutation, copy papers/nf-pulse to /tmp/claude-0/nfmut/<name>/, apply the
+# Mutation driver: for each mutation, copy the paper's folder to /tmp/claude-0/nfmut/<name>/, apply the
 # edit, run the copy's run_all.sh and record which checks fail.  Never touches the repository copy.
 # usage: sh mutate.sh [name ...]      (default: every mutation in mutations.py)
 HERE=$(cd "$(dirname "$0")" && pwd)

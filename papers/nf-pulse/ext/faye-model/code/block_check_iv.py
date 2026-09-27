@@ -23,6 +23,10 @@ import json, os
 import numpy as np
 import mpmath
 from mpmath import iv
+# Refuse python -O (or PYTHONOPTIMIZE): it removes assert statements, and some programs of this folder still use
+# assertions as gates of a proof.  Without -O this test does nothing.
+if not __debug__:
+    raise SystemExit('refusing to run under python -O (PYTHONOPTIMIZE): assertions are gates of the proofs here')
 iv.dps = 60
 EPS = os.environ.get('FAYE_EPS', '1/20')
 res = json.load(open('../data/block_certificate_eps%s.json' % EPS.replace('/', '_')))

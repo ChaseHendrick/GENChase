@@ -1,0 +1,17 @@
+OK    E: essential spectrum in Re lam <= -0.11270...
+OK    E: negative control eps = 3/10 is refused
+OK    L: no eigenvalue with Re lam >= -1/20 outside the box [-1/20, 9/2] x [-38/5, 38/5]
+OK    L: negative control (box too small for the bound) is refused
+OK    P: narrow bracket, orbit at c_lo enters K- (base prove_pulse.py, T_B = 110)
+OK    P: narrow bracket, orbit at c_hi enters K+ (base prove_pulse.py, T_B = 110)
+OK    P: the stored pulse records are reproduced exactly
+OK    P: every orbit with c in [c_lo, c_hi] is in the interior of the block at xi = 110
+OK    Z: at lam = 0, one rest eigenvalue with Re > 0 and three with Re < 0 (disjoint balls)
+OK    Z: lam = 0 is a simple zero of the Evans function (Cauchy integral on |lam| = 1/25, 128 arcs)
+OK    Z: negative control, Dt(0) != 0 from the same arcs (mean-value integral), is refused: its enclosure contains 0
+OK    Part 3: the algebra of the multiplicity argument (SymPy, two negative controls)
+OK    W: winding number of the Evans function on the box boundary is 1
+OK    W: control, winding number 1 on the square [-1/25, 1/25]^2 around the zero lam = 0
+OK    W: negative control, a zero in the square [1/10, 3/10] x [-1/10, 1/10] is refused (winding number 0)
+(numerical) 2 numerical winding records in data/spectrum_num.json
+all checks passed

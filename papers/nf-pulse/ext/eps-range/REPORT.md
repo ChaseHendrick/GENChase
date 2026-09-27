@@ -1,14 +1,17 @@
 # The fast pulse for a range of recovery rates
 
-Extension of the computer-assisted proof in `papers/nf-pulse/` (fixed eps = 1/10) to an interval of eps,
+Extension of the computer-assisted proof in `code/` (fixed eps = 1/10) to an interval of eps,
 keeping beta = 20, theta = 1/4, gamma = 0 and the kernel w(x) = e^(-|x|)/2. The adversarial check is recorded
 at the end.
 
 ## Outcome
 
-**Proved by computer, on the interval eps in [0.08, 0.13693].** The target
-[0.08, 0.12] is covered in full, and the certified range extends to 0.13693: 383 subintervals, each certified by
-its own rigorous computation, with no gap (checked exactly by `table.py`). The wider range [0.05, 0.2] is **not
+**Proved by computer, on the interval eps in [0.08, 0.13693] and on five further intervals.** The target
+[0.08, 0.12] is covered in full, and the certified range extends to 0.13693: 381 subintervals, each certified by
+its own rigorous computation, with no gap (checked exactly by `table.py`). Two more certificates in `data/certs/`
+cover [0.138, 0.1382] and [0.1395, 0.1397] (383 in that folder), and three single attempts in `data/probes/` cover
+[0.069975, 0.070025], [0.1399, 0.1401] and [0.1499, 0.1501], the last of which contains Pinto and Ermentrout's
+eps = 3/20; a fourth, [0.1299, 0.1301], lies inside [0.08, 0.13693]. The wider range [0.05, 0.2] is **not
 achieved**: numerically, the method needs ever narrower subintervals below eps = 0.08 and fails at eps = 0.05 even
 with width 2.5e-5; above 0.13693 it still works (eps = 0.14, 0.15 certify as single subintervals) but was stopped
 for cost; and from eps of about 0.176 the rest state has complex eigenvalues along the pulse branch, which the
@@ -21,15 +24,18 @@ with this block unless |E_k| is of order 1e-23 (next section; a numerical observ
 
 ## The theorem
 
-**Theorem (computer-assisted).** Let beta = 20, theta = 1/4, gamma = 0,
-w(x) = e^(-|x|)/2 and S(u) = 1/(1 + e^(-beta (u - theta))). For every eps in [0.08, 0.13693] there are a speed
+**Theorem (computer-assisted; Theorem 2 of `paper/nf-pulse.tex`).** Let beta = 20, theta = 1/4, gamma = 0,
+w(x) = e^(-|x|)/2 and S(u) = 1/(1 + e^(-beta (u - theta))). For every eps in [0.069975, 0.070025] u [0.08, 0.13693]
+u [0.138, 0.1382] u [0.1395, 0.1397] u [0.1399, 0.1401] u [0.1499, 0.1501] there are a speed
 c > 0 and a smooth, bounded, nonconstant profile (U, V) with (U, V)(xi) -> (0, S(0)) as xi -> +-infinity such that
 u = U(x + ct), v = V(x + ct) solves
 
     u_t = -u - v + (w * S(u)),     v_t = eps u.
 
-More precisely, [0.08, 0.13693] is the union of the 383 subintervals E_k = [e_lo, e_hi] listed in
-`data/speed_table.md` (certificates `data/certs/eps_<e_lo>_<e_hi>.json.gz`), and for eps in E_k the speed satisfies
+More precisely, [0.08, 0.13693] is the union of 381 subintervals E_k = [e_lo, e_hi], and each of the other five
+intervals is one more E_k; they are listed in `data/speed_table.md` (383 rows: the 381 and [0.138, 0.1382],
+[0.1395, 0.1397]; certificates `data/certs/eps_<e_lo>_<e_hi>.json.gz`) and `data/probe_table.md` (certificates
+`data/probes/`), and for eps in E_k the speed satisfies
 
     1/c in [q0 + s1 eps0 - |dk|, q0 + s1 eps0 + |dk|],     eps0 = (eps - e_m)/w,
 
@@ -38,11 +44,14 @@ with the exact dyadic numbers e_m, w, q0, s1, dk of the certificate (`e_m_exact`
 orbit leaves the rest state along the branch of the one-dimensional unstable manifold on which U increases.
 
 At eps = 1/10 the window of a certificate containing 1/10 is c in [1.1027337393, 1.1027617086], consistent with
-(and much weaker than) the original theorem, which encloses the speed in an interval of width 1e-25.
+(and much weaker than) the original theorem, which encloses the speed in an interval of width 1e-25. At eps = 3/20
+the window of the certificate [0.1499, 0.1501] is c in [1.0343501717, 1.0343715699] (`python3 table.py --certs
+data/probes --at 3/20`, `data/probe_summary.txt`): the fast pulse at Pinto and Ermentrout's eps = 3/20, which with
+the slow pulse of `../slow-pulse/` gives two pulses there (Corollary of the manuscript).
 
 The proof of each subinterval is the rigorous computation of `chain.py` plus the argument below; the argument uses
 the block lemma, the manifold tail bound and the reduction to the wave ODE of the original work, whose written
-proofs the original README lists as still to be done. For each eps the theorem gives existence, not uniqueness.
+proofs are now in `../../paper/nf-pulse.tex` (Sections 2 and 4; this argument is its Section 4.7). For each eps the theorem gives existence, not uniqueness.
 
 ## Why the original proof could not simply be run with eps as a ball
 
@@ -127,21 +136,25 @@ times at which they are compared.
 What this argument uses and the original does not: continuity of each segment map in zeta (it is a flow map of a
 smooth field); and that the checks hold for the fixed eps, which they do because each enclosure contains every
 eps in E. The block lemma itself (cone invariance, strict entrance, convergence) is the one of `../../code/block.py`,
-whose written proof the original README lists as still to be done.
+written out in `../../paper/nf-pulse.tex`, Section 4.2.
 
 ## What is rigorous and what is numerical
 
-- **Proved by computer (ball arithmetic, python-flint 0.9.0 / Arb):** for each of the 383 subintervals of
-  [0.08, 0.13693], the statements R, M, B and C above, for all eps in the subinterval; the coverage of the union
-  (exact rational endpoints, `table.py`); the speed brackets (outward rounded).
+- **Proved by computer (ball arithmetic, python-flint 0.9.0 / Arb):** for each of the 386 subintervals (381 making
+  up [0.08, 0.13693], two in `data/certs/` beyond it and three in `data/probes/`), the statements R, M, B and C
+  above, for all eps in the subinterval; the coverage of [0.08, 0.13693] (exact rational endpoints, `table.py`); the
+  speed brackets (enclosed in ball arithmetic and printed rounded outward, c1 down and c2 up).
 - **Numerical, used only to choose sets:** kappa*(e_m), kappa*'(e_m), the pulse centres and eps-shifts, the time
   rescaling factors, the sizes of the h-sets, `data/cstar_scan.txt` and `data/pulse_numerics.json`.
-- **Not proved here:** uniqueness of the pulse for each eps, stability, anything about eps outside the table, the
-  written proofs that the original README lists as missing (block lemma, shooting argument, manifold tail, reduction).
+- **Not proved here:** uniqueness of the pulse for each eps, stability, anything about eps outside the table and the probes. (The
+  written proofs of the block lemma, the shooting argument, the manifold tail and the reduction, missing when this
+  report was first written, are now in `../../paper/nf-pulse.tex`.)
 
 ## Speed enclosures
 
-The full table, one row per certified subinterval (383 rows), is `data/speed_table.md`: E_k, the constant bracket
+The full table, one row per certificate of `data/certs/` (383 rows: the 381 subintervals of [0.08, 0.13693] and the
+two further ones, [0.138, 0.1382] and [0.1395, 0.1397]), is `data/speed_table.md`; the three accepted certificates of
+`data/probes/` beyond [0.08, 0.13693] are in `data/probe_table.md`. Columns: E_k, the constant bracket
 c1(E_k) = 1/max kappa and c2(E_k) = 1/min kappa over the window (outward rounded), the width of the window at a
 fixed eps (approximate), the U-range of the block, the time of block entry, the number of stages and the largest
 subdivision used. Condensed to bins of eps of length 0.005 (`python3 table.py --from 0.08 --to 0.13693 --condensed`;
@@ -149,21 +162,24 @@ the last bin holds the subintervals that start below 0.13693):
 
 | eps bin | subintervals | smallest width | min c1(E_k) | max c2(E_k) | widest c2 - c1 |
 |---|---|---|---|---|---|
-| [0.080, 0.085) | 56 | 3.0e-05 | 1.120447885 | 1.126184732 | 2.0e-04 |
+| [0.080, 0.085) | 56 | 3.0e-05 | 1.120447884 | 1.126184732 | 2.0e-04 |
 | [0.085, 0.090) | 43 | 3.2e-05 | 1.114630533 | 1.120457049 | 3.0e-04 |
-| [0.090, 0.095) | 50 | 2.3e-05 | 1.108745260 | 1.114652673 | 3.0e-04 |
-| [0.095, 0.100) | 34 | 1.0e-04 | 1.102516850 | 1.108753587 | 3.5e-04 |
-| [0.100, 0.105) | 23 | 1.2e-04 | 1.096533473 | 1.102549925 | 4.7e-04 |
-| [0.105, 0.110) | 25 | 9.3e-05 | 1.090137678 | 1.096555156 | 3.7e-04 |
-| [0.110, 0.115) | 21 | 4.7e-05 | 1.083800060 | 1.090158052 | 4.9e-04 |
-| [0.115, 0.120) | 20 | 5.7e-05 | 1.077529075 | 1.083832317 | 5.0e-04 |
-| [0.120, 0.125) | 41 | 3.2e-05 | 1.070770108 | 1.077545764 | 3.3e-04 |
-| [0.125, 0.130) | 40 | 5.0e-05 | 1.063724897 | 1.070784849 | 4.0e-04 |
-| [0.130, 0.135) | 20 | 4.6e-05 | 1.056941557 | 1.063758520 | 5.4e-04 |
-| [0.135, 0.137) | 8 | 1.5e-04 | 1.054156252 | 1.056963740 | 5.5e-04 |
+| [0.090, 0.095) | 50 | 2.3e-05 | 1.108745260 | 1.114652673 | 3.1e-04 |
+| [0.095, 0.100) | 34 | 1.0e-04 | 1.102516850 | 1.108753588 | 3.6e-04 |
+| [0.100, 0.105) | 23 | 1.2e-04 | 1.096533473 | 1.102549926 | 4.8e-04 |
+| [0.105, 0.110) | 25 | 9.3e-05 | 1.090137678 | 1.096555157 | 3.7e-04 |
+| [0.110, 0.115) | 21 | 4.7e-05 | 1.083800059 | 1.090158053 | 5.0e-04 |
+| [0.115, 0.120) | 20 | 5.7e-05 | 1.077529075 | 1.083832318 | 5.0e-04 |
+| [0.120, 0.125) | 41 | 3.2e-05 | 1.070770107 | 1.077545764 | 3.4e-04 |
+| [0.125, 0.130) | 40 | 5.0e-05 | 1.063724897 | 1.070784849 | 4.1e-04 |
+| [0.130, 0.135) | 20 | 4.6e-05 | 1.056941556 | 1.063758520 | 5.5e-04 |
+| [0.135, 0.137) | 8 | 1.5e-04 | 1.054156251 | 1.056963740 | 5.5e-04 |
+
+(c1 rounded down and c2 up to 10 digits, the widest bracket rounded up; before 2026-09-27 `table.py` printed these
+rounded to nearest, which put some printed c1 above, and some c2 below, the certified bounds in the last digit.)
 
 The constant brackets are wide (up to 5.5e-4) because they contain the whole variation of c over E_k; at fixed
-eps the window is much narrower, about 2.4 |dk| = 2.4 w/20 in c, between 2.9e-6 and 4.2e-5.
+eps the window is much narrower, about 2.4 |dk| = 2.4 w/20 in c, about 2.9e-6 to 4.3e-5 (floating-point estimates).
 
 Consistency check (numerical, `crosscheck.py`): at each eps of `data/cstar_scan.txt` in the range (0.080, 0.085,
 ..., 0.135) the numerically computed speed lies inside the certified window at that eps.
@@ -291,7 +307,8 @@ differs from the present one only in these safeguards and in the split offsets o
 of one of them reproduced it exactly; moreover all 53 of them were then rerun with the present
 code, with the same arguments; all 53 passed again with every in-run negative check refused
 (`data/rerun_old.txt`, `rerun_old.py`), and the rerun certificates replaced the old ones. Every certificate used
-by the theorem therefore records sha256 prefixes of the programs: 282 of the 383 come from the present `chain.py`
+by the theorem therefore records sha256 prefixes of the programs: 282 of the 383 in `data/certs/` (and the three accepted
+probes) come from the present `chain.py`
 (prefix 328042d015af5043) and 101 from the version of 04:45 to 05:48 UTC (e0aa72d09e4519dc), which differs from it
 only in the over-strict split assertion above (git commits 2f47c26 and 0aab47a). In 35 of the 53
 reruns the exact data differ in the last bits, because kappa* was read back from the cache
@@ -304,11 +321,19 @@ From this folder (python-flint 0.9.0, mpmath, numpy as in `../../code/requiremen
 ```
 sh run_checks.sh                                   # about a minute on four cores (with the cached kappa*): tests,
                                                    # one subinterval proof, its in-run negative checks, the
-                                                   # negative controls, the table of the stored certificates
+                                                   # negative controls, the coverage of [0.08, 0.13693] by 381
+                                                   # stored certificates, the four accepted probes
 python3 chain.py 0.0998 0.1002 1.1027477 --dk 2e-5 --out cert.json      # one subinterval (about 1.5 minutes)
 python3 run_range.py 0.08 0.13693 --w0 1.5e-4 --tag X   # the whole sweep (about four hours on four cores);
                                                    # resumable: attempts with a certificate in data/certs/ are skipped
-python3 table.py --from 0.08 --to 0.13693 --md data/speed_table.md --condensed   # coverage and speed table
+python3 run_range.py 0.138 0.1382; python3 run_range.py 0.1395 0.1397   # the two further certificates of data/certs/
+                                                   # (first attempts of chunks 12 and 13 of the sweep range_B1, stopped
+                                                   # for cost; move the stored certificates away to recompute them)
+python3 table.py --from 0.08 --to 0.13693 --md data/speed_table.md --condensed --at 1/10 > data/table_summary.txt
+                                                   # coverage (381 certificates in [0.08, 0.13693], no gap), speed
+                                                   # table and the window at eps = 1/10
+python3 table.py --certs data/probes --md data/probe_table.md --at 3/20 > data/probe_summary.txt
+                                                   # the four accepted single attempts and the window at eps = 3/20
 python3 crosscheck.py                              # numerical speeds inside the certified windows (not a proof)
 bash probe_limits.sh                               # the single attempts of 'Where and why the method stops'
 ```

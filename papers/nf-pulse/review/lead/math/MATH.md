@@ -1,4 +1,4 @@
-# Adversarial reading of the mathematics: `papers/nf-pulse`
+# Adversarial reading of the mathematics: the paper's folder
 
 Reviewer: hostile referee (mathematics only), 2026-09-26. Scope: whether the theorem in `README.md` follows from the
 hypotheses that `code/run_all.sh` checks. The correctness of the Lohner integrator's code and of the ball arithmetic

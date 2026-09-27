@@ -47,9 +47,11 @@ if PULSE == 'fast':
     C2 = arb(fmpq(11027477097341592491478678, 10**25))   # above c* by 6.4e-26 (numerically: escape into Q>1)
     C_REF = 1.1027477097341592
     SIDE_C1, SIDE_C2 = -1, +1                             # expected cone K- / K+ at the block
-else:  # slow pulse
-    C1 = arb(fmpq(3775288144231931360774251, 10**25))    # below c*_slow by 3.7e-26 (numerically: escape into Q>1)
-    C2 = arb(fmpq(3775288144231931360774252, 10**25))    # above c*_slow by 6.3e-26 (numerically: escape into Q<0)
+else:  # NF_PULSE=slow (exploration only; run_all.sh clears NF_* variables).  NOT the slow pulse: this bracket is
+    # the second switch of the escape classification of shoot_hp.py, where the orbit settles on a periodic wave
+    # train; the slow pulse, at 0.37753193506889..., is proved in ../ext/slow-pulse/ with its own programs.
+    C1 = arb(fmpq(3775288144231931360774251, 10**25))    # below the wave-train switch by 3.7e-26 (escape into Q>1)
+    C2 = arb(fmpq(3775288144231931360774252, 10**25))    # above the wave-train switch by 6.3e-26 (escape into Q<0)
     C_REF = 0.37752881442319314
     SIDE_C1, SIDE_C2 = +1, -1
 
