@@ -15,8 +15,8 @@
 // 3. Refinement at fixed physical domain and time (dt proportional to h): second order.
 // 4. The explicit step bound dt α (8/h²) ≤ 2 coth(dt/2τ): the Nyquist mode is stable just below it and grows just
 //    above it.
-// 5. The relaxation limit τ → 0: the slow root tends to −αk² with the O(τ) correction −α²τk⁴, and τ = 0 is
-//    Fourier's law.
+// 5. The relaxation limit τ → 0: the measured slow root tends to −α lam with the O(τ) correction
+//    −α²τ lam² for the grid Laplacian eigenvalue lam, and τ = 0 tends to continuum Fourier diffusion.
 // 6. Finite speed: the ring of one spark on the real plate moves at √(α/τ) and leaves nothing ahead of it,
 //    where Fourier's law at the same α has already spread heat.
 // 7. The plate's own status-line check on four presets, with a perturbed τ and Fourier's law as controls.
@@ -65,7 +65,17 @@ function recursion({ alpha, tau, lam, dt, steps, sign = 1 }) {
   for (let n = 1; n <= steps; n++) { P = E * P + (1 - E) * alpha * lam * A; A = A - dt * P; out[n] = A; }
   return out;
 }
-const lam1 = (m, N) => 4 * N * N * Math.sin(Math.PI * m / N) ** 2;   // 1D 5-point symbol on the unit domain, h = 1/N
+// For exp(i k x), the staggered divergence of the face gradient is
+// (exp(i kh) - 2 + exp(-i kh))/h² = -4 sin²(kh/2)/h².
+// The mode is constant along y, so the y part of the 5-point Laplacian is zero.
+// On the unit periodic domain h = 1/N and k = 2πm, hence the positive eigenvalue below.
+const lam1 = (m, N) => 4 * N * N * Math.sin(Math.PI * m / N) ** 2;
+const RELAXATION_TOLERANCE = 0.1;
+// Keep the original 10% tolerance: the leading O(tau) term omits higher powers of tau,
+// and the measured rate includes time-step error. Subtract the spatially discrete
+// Fourier rate so the O(h²) spatial offset is not divided by a vanishing O(tau) term.
+// This is a deterministic numerical tolerance, not a statistical confidence interval.
+const relaxationRatio = r => (r.slowRootMeasured - r.discreteFourierRate) / r.discreteFirstOrderCorrection;
 
 // A Float64 run of the actual staggered scheme in one dimension (a field constant along y reduces the 2D step to
 // this exactly): cosine initial temperature of mode m, flux at rest in the sense above. Returns a(t)/a(0).
@@ -149,15 +159,16 @@ function cpuPart() {
     const grow = f => { const r = recursion({ alpha: 0.02, tau: 0.35, lam, dt: f * b, steps: 4000 }); let mx = 0; for (const v of r) { if (!Number.isFinite(v)) return 'overflow'; mx = Math.max(mx, Math.abs(v)); } return mx; };
     out.bound = { alpha: 0.02, tau: 0.35, h, dtBound: b, waveBound: h * Math.sqrt(0.35 / (2 * 0.02)), maxAmplitudeAt: { '0.95': grow(0.95), '0.999': grow(0.999), '1.01': grow(1.01), '1.05': grow(1.05) } };
   }
-  // 5. relaxation limit on mode m = 2 (αk² = 0.316): the slow root against −αk² and its O(τ) correction
+  // 5. relaxation limit on mode m = 2 (αk² = 0.316): measured O(τ) correction using the grid symbol
   out.relaxation = [];
   for (const t of [0.1, 0.03, 0.01, 0.003, 0.001, 0]) {
     const k2 = (TAU * 2) ** 2, run = twin1d({ N: 512, m: 2, alpha: 0.002, tau: t, cfl: 0.8, tEnd: 3 });
-    const exact = roots(0.002, t, k2), fourier = -0.002 * k2;
+    const exact = roots(0.002, t, k2), fourier = -0.002 * k2, lam = lam1(2, 512);
     let dev = 0; for (let n = 0; n <= run.steps; n++) dev = Math.max(dev, Math.abs(run.a[n] - Math.exp(fourier * n * run.dt)));
     const measured = lateRate(run.a, run.dt);
     out.relaxation.push({ tau: t, steps: run.steps, dt: run.dt, slowRootExact: exact.s1, slowRootMeasured: measured, fourierRate: fourier,
-      firstOrderCorrection: -(0.002 ** 2) * t * k2 * k2, maxDeviationFromFourierSolution: dev });
+      laplacianEigenvalue: lam, discreteFourierRate: -0.002 * lam,
+      discreteFirstOrderCorrection: -(0.002 ** 2) * t * lam * lam, maxDeviationFromFourierSolution: dev });
   }
   // 8. wrong relaxation sign on the recursion (mode 3 of the 512 plate, α = 0.02, τ = 0.35)
   {
@@ -326,7 +337,12 @@ async function gpuPart() {
   check(b['0.95'] <= 1.0001 && b['0.999'] <= 1.0001 && blew(b['1.01']) && blew(b['1.05']), 'the computed step bound is not sharp: ' + JSON.stringify(b));
   for (const r of cpu.relaxation) {
     if (r.tau > 0) check(Math.abs(r.slowRootMeasured / r.slowRootExact - 1) < 1e-3, 'relaxation slow root at τ ' + r.tau);
-    if (r.tau > 0 && r.tau <= 0.01) check(Math.abs((r.slowRootExact - r.fourierRate) / r.firstOrderCorrection - 1) < 0.1, 'O(τ) correction at τ ' + r.tau);
+    if (r.tau > 0 && r.tau <= 0.01) {
+      r.measuredCorrectionRatio = relaxationRatio(r);
+      r.correctionTolerance = RELAXATION_TOLERANCE;
+      check(Math.abs(r.measuredCorrectionRatio - 1) < RELAXATION_TOLERANCE,
+        'O(τ) correction at τ ' + r.tau + ': measured/discrete ratio ' + r.measuredCorrectionRatio);
+    }
   }
   const rl = cpu.relaxation;
   check(rl.slice(1).every((r, i) => r.maxDeviationFromFourierSolution < rl[i].maxDeviationFromFourierSolution), 'the deviation from Fourier does not shrink as τ → 0');
