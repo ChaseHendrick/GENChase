@@ -118,6 +118,8 @@ Recent additions include classical geometry, field dynamics and larger optional 
 | **Neural-Field Pulse** | Space-time plates of pulses launched by kicks: collisions, a pacemaker train, the launch threshold | Up to 4,096 cells on the CPU | Pinto–Ermentrout neural field with a logistic rate on a ring; [timed speed against the computer-assisted enclosures of papers/nf-pulse](validation/results/neural-field-science.json) |
 | **Maxwell FDTD** | Electric and magnetic waves scattering through dielectric patterns | Up to 2048 × 2048 cells for a square GPU field | Lossless, periodic, two-dimensional model; [numerical and print evidence](validation/MAXWELL.md) |
 | **Molecular Dynamics** | Attractive and repulsive particles in a periodic box | Up to 16,384 particles on the CPU | Two-dimensional force-shifted Lennard–Jones model; [trajectory and print evidence](validation/MOLECULAR.md) |
+| **Fisher-KPP** | Invasion fronts from seeded founders, drawn as arrival times and first-arrival territories | Up to 1024 × 1024 GPU cells | Logistic reaction-diffusion; unvalidated, with [front-speed, refinement and print evidence](validation/FISHER-KPP.md) |
+| **Maxwell-Cattaneo heat** | Heat released by sparks travelling as damped rings, and a Mach cone behind a fast torch | Up to 1024 × 1024 GPU cells | Linear, constant-coefficient telegraph form only; unvalidated, with [dispersion, refinement and print evidence](validation/CATTANEO.md) |
 
 The larger settings are optional and may be slow. More computation does not automatically establish
 more accurate science. Maxwell prints interpolate its chosen numerical grid; molecular prints

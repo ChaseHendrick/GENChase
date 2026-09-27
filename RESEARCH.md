@@ -754,6 +754,8 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `volume-wave` | Wave volume | occasional | science only | never searched |
 | `phase` | Phase portraits | occasional | science only | never searched |
 | `neural-field` | Neural-Field Pulse | rare | science only | never searched |
+| `cattaneo` | Maxwell-Cattaneo heat | rare | science only | never searched |
+| `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -2023,3 +2025,9 @@ Each study below searched the literature before it computed, and logged the quer
 - Result: nothing found at the classical parameters. A computer-assisted proof (CAPD, interval arithmetic; written lemmas in `research/double-pendulum/REPORT.md`) gives, at E = -1/2, 0, 1/2 (bottom rest state E = -3), a symmetric hyperbolic periodic orbit with a transversal homoclinic orbit, hence a horseshoe, positive topological entropy and no real-analytic integral on the level; at E = 0, 24 verified covering relations give h_top(P) > 0.1016 per return. An independent adversarial check reran and could not break it.
 - Meromorphic non-integrability: Salnikov's loops close on the phase curve only at g = 1, around an order-3 branch point, and there the monodromy is the identity to 3e-38 (numerical; within 4e-9 of I in ball arithmetic along the loop); his printed matrices could not be reproduced. Open (`research/double-pendulum/morales-ramis/NOTES.md`).
 - Re-search: no, unless a week passes; read the printed page of Bolotin-Negrini Theorem 10.1 before any claim that global analytic non-integrability is new.
+
+### 2026-09-26  `fisher-kpp`, `cattaneo`  query: "Ebert van Saarloos pulled front velocity correction v(t) = v* - 3/(2 lambda t) + t^{-3/2} Fisher-KPP"; "radially symmetric Fisher-KPP front position 2t - (N+2)/2 log t Gartner Ducrot multidimensional compactly supported"; "Ducrot On the large time behaviour of the multi-dimensional Fisher-KPP equation with compactly supported initial data abstract logarithmic N+2"  (session agent)
+Opened: arXiv:1705.08416 (Berestycki, Brunet and Derrida, J. Phys. A 2018), eqs. (1) and (7): for H_t = H_xx + H - H², the front is at 2t - (3/2) log t + Cst - 3√π/√t + o(t^-1/2), Bramson's term and Ebert and van Saarloos's, the latter proved for compactly supported data by Nolen, Roquejoffre and Ryzhik; arXiv:1702.08146 (Roquejoffre and Roussier-Michon), whose references give Gärtner, Math. Nachr. 105 (1982) and Ducrot, Nonlinearity 28, 1043 (2015) for compactly supported data in R^N.
+Blocked: the full texts of Gärtner (1982) and Ducrot (2015) were not opened. The circular coefficient (N + 2)/2, 2 in two dimensions, comes from search summaries and the abstract of a paper on Z^d, and agrees with Bramson's 3/2 plus the curvature term D/R = √(D/r)/(2t); it was not read in a primary source.
+Conclusion: reference verification for two new tabs, not an originality search. The straight-front asymptotics the fisher-kpp benchmark tests are confirmed in a primary source; the circular coefficient is used only in the tab's status note and one plate criterion, and its record says so. Kovács and Rogolino (arXiv:1910.09175) was already verified on 2026-09-21 above; the cattaneo tab implements only the linear constant-coefficient case, whose dispersion relation is derived in the tab and the benchmark.
+Re-search: skip, except read Gärtner (1982) or Ducrot (2015) before anything depends on the circular coefficient.

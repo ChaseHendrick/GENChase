@@ -2587,6 +2587,34 @@
       "aliases": []
     },
     {
+      "id": "cattaneo",
+      "source": "src/modules/cattaneo.js",
+      "name": "Maxwell-Cattaneo heat",
+      "tab": "Heat waves",
+      "subtitle": "heat that travels as a damped wave · 1948",
+      "equation": "τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0",
+      "credit": "Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.",
+      "blurb": "Fourier’s law says heat flows down the temperature gradient the instant the gradient appears, so a spark warms the far side of a plate at once, if only a little. Cattaneo and Vernotte let the flux take a relaxation time τ to catch up with the gradient. The change is small and the consequence is not: heat now travels as a wave, at the speed √(α/τ), with a sharp front, and it rings. A Fourier mode of wavenumber k decays smoothly while k is below k_c = 1/(2√(ατ)) and oscillates above it, all the fast ripples dying together at the rate 1/(2τ). Here sparks of heat are dropped on a plate that wraps at the edges; each throws out a ring that fades as it runs, leaving a diffusive glow behind it, and the rings pass through one another. Set τ to zero and the rings disappear: the same sparks only spread and blur, which is Fourier. The torch drags a source across the plate faster than the heat wave, and the heat piles into a Mach cone. The model is linear with constant coefficients, a simplification: it is not a material model, it allows the temperature to dip below ambient behind a front, and whether real solids behave this way outside a few special cases is a matter the literature still argues about.",
+      "order": 88.6,
+      "seed": "vernotte-1958",
+      "presets": [
+        "sparks",
+        "burst",
+        "single",
+        "crossover",
+        "fourier",
+        "torch",
+        "flux"
+      ],
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "tau",
+      "hash": "#cattaneo/vernotte-1958",
+      "aliases": []
+    },
+    {
       "id": "shallow",
       "source": "src/modules/shallow.js",
       "name": "Shallow Water",
@@ -2959,6 +2987,34 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#loschmidt",
+      "aliases": []
+    },
+    {
+      "id": "fisher-kpp",
+      "source": "src/modules/fisher-kpp.js",
+      "name": "Fisher-KPP",
+      "tab": "Fisher-KPP",
+      "subtitle": "invasion fronts and arrival times · 1937",
+      "equation": "∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)",
+      "credit": "R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).",
+      "blurb": "A population that grows until it fills its ground and wanders at random spreads as a wave. Fisher wrote the equation for an advantageous gene sweeping through a species strung out along a coast; Kolmogorov, Petrovsky and Piskunov proved the same year that the wave settles to the speed 2√(rD), set by the growth rate r at vanishing density and the diffusion D, and not by anything that happens behind the front. The front is pulled by its own thin leading edge. Here a few founders are dropped on empty ground and every cell records the moment the density first reaches half the carrying capacity. That arrival time is the picture: bands of equal arrival ring each founder like growth rings, and where two invasions meet their rings fold into a crease, so the plate divides itself into territories. The territory view colors each cell by the founder whose wave got there first; it is a map of arrival, not a model of genetics. Patchy habitat changes the growth rate from place to place and wrinkles the rings; hostile islands, where the population declines, deflect the waves around them.",
+      "order": 96.3,
+      "seed": "fisher-1937",
+      "presets": [
+        "rings",
+        "territories",
+        "single",
+        "edge",
+        "patchy",
+        "islands",
+        "spread"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "founders",
+      "hash": "#fisher-kpp/fisher-1937",
       "aliases": []
     },
     {

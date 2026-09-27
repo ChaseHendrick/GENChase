@@ -1,0 +1,471 @@
+{
+  "scope": "Maxwell-Cattaneo tab (src/modules/cattaneo.js), linear constant-coefficient telegraph form only: single Fourier modes against the exact dispersion relation on both sides of k_c, the GPU step against the scheme's recursion, refinement, the explicit step bound, the relaxation limit, the ring speed and finite propagation of one spark, the plate's own status-line check, and a wrong-relaxation-sign control.",
+  "command": "node tools/cattaneo-science.js --write",
+  "reviewed": "2026-09-27",
+  "model": "T_t + ∇·q = S, τ q_t + q = −α∇T, unit heat capacity; equivalently τ T_tt + T_t = α∇²T away from sources. Dispersion τ s² + s + α k² = 0.",
+  "cpu": {
+    "modes": [
+      {
+        "m": 1,
+        "k": 6.283185307179586,
+        "kOverKc": 0.397383530631844,
+        "regime": "overdamped",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.000006602074389627788,
+        "maxErrorVsDiscreteRecursion": 2.220446049250313e-15,
+        "slowRootExact": -0.08234738076842484,
+        "slowRootMeasured": -0.08234574419964003,
+        "fastRoot": -1.9176526192315753,
+        "fourierRate": -0.07895683520871487,
+        "tolerance": 0.00011254985097387868
+      },
+      {
+        "m": 2,
+        "k": 12.566370614359172,
+        "kOverKc": 0.794767061263688,
+        "regime": "overdamped",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.00001995557322576058,
+        "maxErrorVsDiscreteRecursion": 1.9984014443252818e-15,
+        "slowRootExact": -0.39308541100886274,
+        "slowRootMeasured": -0.3929311422496949,
+        "fastRoot": -1.6069145889911374,
+        "fourierRate": -0.31582734083485947,
+        "tolerance": 0.00015019940389551472
+      },
+      {
+        "m": 3,
+        "k": 18.84955592153876,
+        "kOverKc": 1.192150591895532,
+        "regime": "oscillating",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.00003386966870044805,
+        "maxErrorVsDiscreteRecursion": 1.7763568394002505e-15,
+        "tolerance": 0.00021294865876490812
+      },
+      {
+        "m": 5,
+        "k": 31.41592653589793,
+        "kOverKc": 1.98691765315922,
+        "regime": "oscillating",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.00006849525907055842,
+        "maxErrorVsDiscreteRecursion": 1.4432899320127035e-15,
+        "gammaExact": 1,
+        "gammaMeasured": 0.9999935525182576,
+        "omegaExact": 1.7169280009469654,
+        "omegaMeasured": 1.7166710621103023,
+        "zeroCrossings": 4,
+        "tolerance": 0.000413746274346967
+      },
+      {
+        "m": 8,
+        "k": 50.26548245743669,
+        "kOverKc": 3.179068245054752,
+        "regime": "oscillating",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.00026038667394842965,
+        "maxErrorVsDiscreteRecursion": 3.9968028886505635e-15,
+        "gammaExact": 1,
+        "gammaMeasured": 0.9999979579687508,
+        "omegaExact": 3.017693640301398,
+        "omegaMeasured": 3.016779120854889,
+        "zeroCrossings": 8,
+        "tolerance": 0.0009031904623282356
+      },
+      {
+        "m": 12,
+        "k": 75.39822368615503,
+        "kOverKc": 4.768602367582128,
+        "regime": "oscillating",
+        "dt": 0.01747066952931571,
+        "steps": 458,
+        "tEnd": 8,
+        "maxErrorVsContinuum": 0.0010051776079798031,
+        "maxErrorVsDiscreteRecursion": 1.2212453270876722e-15,
+        "gammaExact": 1,
+        "gammaMeasured": 1.0000017447505714,
+        "omegaExact": 4.662571022527151,
+        "omegaMeasured": 4.65954460852582,
+        "zeroCrossings": 12,
+        "tolerance": 0.00190717854023853
+      }
+    ],
+    "refinement": [
+      {
+        "m": 1,
+        "alpha": 0.02,
+        "tau": 0.35,
+        "kOverKc": 1.0513779971646773,
+        "rows": [
+          {
+            "N": 64,
+            "dt": 0.037002386858674234,
+            "time": 1.9981288903684087,
+            "error": 0.00009980096144723838
+          },
+          {
+            "N": 128,
+            "dt": 0.01849110833459787,
+            "time": 1.9970397001365698,
+            "error": 0.000024953266606730917
+          },
+          {
+            "N": 256,
+            "dt": 0.009244294474723703,
+            "time": 1.99676760654032,
+            "error": 0.000006238504814154444
+          },
+          {
+            "N": 512,
+            "dt": 0.004621989805284338,
+            "time": 2.0013215856881184,
+            "error": 0.0000015657444335237525
+          }
+        ],
+        "orders": [
+          1.9998250243796047,
+          1.9999564855415157,
+          1.9943515490743897
+        ]
+      },
+      {
+        "m": 3,
+        "alpha": 0.02,
+        "tau": 0.35,
+        "kOverKc": 3.1541339914940316,
+        "rows": [
+          {
+            "N": 64,
+            "dt": 0.037002386858674234,
+            "time": 1.9981288903684087,
+            "error": 0.0012337254392569101
+          },
+          {
+            "N": 128,
+            "dt": 0.01849110833459787,
+            "time": 1.9970397001365698,
+            "error": 0.0003080501680136384
+          },
+          {
+            "N": 256,
+            "dt": 0.009244294474723703,
+            "time": 1.99676760654032,
+            "error": 0.00007698845230614398
+          },
+          {
+            "N": 512,
+            "dt": 0.004621989805284338,
+            "time": 2.0013215856881184,
+            "error": 0.000019035249710579183
+          }
+        ],
+        "orders": [
+          2.001784136476443,
+          2.000451348865907,
+          2.015968572768797
+        ]
+      }
+    ],
+    "bound": {
+      "alpha": 0.02,
+      "tau": 0.35,
+      "h": 0.001953125,
+      "dtBound": 0.005777487256605422,
+      "waveBound": 0.005777421663183219,
+      "maxAmplitudeAt": {
+        "0.95": 1,
+        "0.999": 1,
+        "1.01": "overflow",
+        "1.05": "overflow"
+      }
+    },
+    "relaxation": [
+      {
+        "tau": 0.1,
+        "steps": 384,
+        "dt": 0.007815605765878319,
+        "slowRootExact": -0.32648669717829887,
+        "slowRootMeasured": -0.3264751665363048,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": -0.009974690921881848,
+        "maxDeviationFromFourierSolution": 0.0268220766771875
+      },
+      {
+        "tau": 0.03,
+        "steps": 700,
+        "dt": 0.004284758594508897,
+        "slowRootExact": -0.31887783300634415,
+        "slowRootMeasured": -0.3188668536704806,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": -0.002992407276564554,
+        "maxDeviationFromFourierSolution": 0.008818845746539128
+      },
+      {
+        "tau": 0.01,
+        "steps": 1209,
+        "dt": 0.0024803894466575494,
+        "slowRootExact": -0.3168311606786291,
+        "slowRootMeasured": -0.31682034647890894,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": -0.0009974690921881848,
+        "maxDeviationFromFourierSolution": 0.0030359694777633006
+      },
+      {
+        "tau": 0.003,
+        "steps": 2188,
+        "dt": 0.0013713514121131893,
+        "slowRootExact": -0.3161271499596844,
+        "slowRootMeasured": -0.31611646791182996,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": -0.0002992407276564554,
+        "maxDeviationFromFourierSolution": 0.0009052749073511501
+      },
+      {
+        "tau": 0.001,
+        "steps": 3687,
+        "dt": 0.0008136853307768729,
+        "slowRootExact": -0.31592715079947176,
+        "slowRootMeasured": -0.31591673340916343,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": -0.00009974690921881848,
+        "maxDeviationFromFourierSolution": 0.0002822653522350782
+      },
+      {
+        "tau": 0,
+        "steps": 7864,
+        "dt": 0.0003814697265625,
+        "slowRootExact": -0.31582734083485947,
+        "slowRootMeasured": -0.31583051164002773,
+        "fourierRate": -0.31582734083485947,
+        "firstOrderCorrection": 0,
+        "maxDeviationFromFourierSolution": 0.0000036880907954839337
+      }
+    ],
+    "wrongSign": {
+      "m": 3,
+      "steps": 216,
+      "correctSignError": 0.00003230867221856726,
+      "wrongSignError": 162.9069981208185,
+      "rejected": true
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "implementation": [
+      {
+        "grid": [
+          256,
+          256
+        ],
+        "mode": [
+          1,
+          0
+        ],
+        "alpha": 0.02,
+        "tau": 0.35,
+        "dt": 0.009244294474723703,
+        "steps": 400,
+        "maxErrorVsDiscreteRecursion": 4.3263043028596293e-7,
+        "maxErrorVsContinuum": 0.000016232986023934082,
+        "amplitudeAtEnd": 0.014759868343768872
+      },
+      {
+        "grid": [
+          256,
+          256
+        ],
+        "mode": [
+          3,
+          0
+        ],
+        "alpha": 0.02,
+        "tau": 0.35,
+        "dt": 0.009244294474723703,
+        "steps": 400,
+        "maxErrorVsDiscreteRecursion": 3.832821119931218e-7,
+        "maxErrorVsContinuum": 0.00013958517655673908,
+        "amplitudeAtEnd": -0.005213587499161276
+      },
+      {
+        "grid": [
+          256,
+          320
+        ],
+        "mode": [
+          3,
+          2
+        ],
+        "alpha": 0.02,
+        "tau": 0.35,
+        "dt": 0.009244294474723703,
+        "steps": 400,
+        "maxErrorVsDiscreteRecursion": 3.76375713817545e-7,
+        "maxErrorVsContinuum": 0.0000825026231435072,
+        "amplitudeAtEnd": 0.0028335485187263487
+      },
+      {
+        "grid": [
+          256,
+          256
+        ],
+        "mode": [
+          2,
+          0
+        ],
+        "alpha": 0.002,
+        "tau": 0,
+        "dt": 0.00152587890625,
+        "steps": 400,
+        "maxErrorVsDiscreteRecursion": 2.0433200231817494e-7,
+        "maxErrorVsContinuum": 0.000006179253244864569,
+        "amplitudeAtEnd": 0.8246689846073241
+      }
+    ],
+    "wrongSignGPU": {
+      "mode": [
+        3,
+        0
+      ],
+      "steps": 200,
+      "maxErrorVsContinuum": null,
+      "rejected": true
+    },
+    "front": {
+      "alpha": 0.03,
+      "tau": 0.4,
+      "waveSpeed": 0.27386127875258304,
+      "grid": [
+        512,
+        512
+      ],
+      "dt": 0.0040343843709890114,
+      "sigma": 0.008,
+      "times": [
+        0.40343843709890115,
+        1.0085960927472528
+      ],
+      "edgeRadii": [
+        0.13033629617159634,
+        0.2960123504131061
+      ],
+      "ringPeaks": [
+        0.036081092363154446,
+        0.01108316276912336
+      ],
+      "measuredSpeed": 0.27377337573959687,
+      "relativeError": -0.0003209764205679422,
+      "cutoffRadius": 0.34401235041310607,
+      "maxAheadCattaneoOverRingPeak": 3.840776233673057e-9,
+      "fourierAtCutoffOverItsPeak": 0.37652686118345635
+    },
+    "plate": [
+      {
+        "preset": "sparks",
+        "grid": [
+          512,
+          512
+        ],
+        "steps": 238,
+        "dt": 0.004621989805284338,
+        "time": 1.1000335736576725,
+        "alpha": 0.02,
+        "tau": 0.35,
+        "deposits": 11,
+        "measured": 0.13994301934815995,
+        "exact": 0.13994366684397824,
+        "fourierLaw": 0.11428614984935181,
+        "mismatch": 6.383312681456093e-7,
+        "heat": 415.03298727743095,
+        "deposited": 415.0329586765053,
+        "heatRelativeError": 6.891242021467292e-8,
+        "mismatchWithTau5PercentHigh": 0.0018599022395115504,
+        "mismatchWithFourierLaw": 0.025678413891179558,
+        "discriminationTau5": 2913.694397134388,
+        "discriminationFourier": 40227.4103942564
+      },
+      {
+        "preset": "torch",
+        "grid": [
+          512,
+          512
+        ],
+        "steps": 260,
+        "dt": 0.004621989805284338,
+        "time": 1.201717349373928,
+        "alpha": 0.02,
+        "tau": 0.35,
+        "deposits": 260,
+        "measured": 0.44076558023884993,
+        "exact": 0.44076753930822765,
+        "fourierLaw": 0.37136015591682997,
+        "mismatch": 0.0000020073937867404827,
+        "heat": 989.6739157364347,
+        "deposited": 989.6739200000441,
+        "heatRelativeError": -4.30809510287844e-9,
+        "mismatchWithTau5PercentHigh": 0.0033383015006284104,
+        "mismatchWithFourierLaw": 0.07270967387656775,
+        "discriminationTau5": 1663.0028062650313,
+        "discriminationFourier": 36220.932014854196
+      },
+      {
+        "preset": "crossover",
+        "grid": [
+          512,
+          512
+        ],
+        "steps": 162,
+        "dt": 0.004942286304542441,
+        "time": 0.8006503813358755,
+        "alpha": 0.004,
+        "tau": 0.08,
+        "deposits": 9,
+        "measured": 0.13156115569767107,
+        "exact": 0.13156211193154452,
+        "fourierLaw": 0.13005715220143288,
+        "mismatch": 9.577455262627584e-7,
+        "heat": 995.6507102464998,
+        "deposited": 995.6507063883043,
+        "heatRelativeError": 3.875049170432021e-9,
+        "mismatchWithTau5PercentHigh": 0.00007718874605628565,
+        "mismatchWithFourierLaw": 0.001507958015432166,
+        "discriminationTau5": 80.59421207372868,
+        "discriminationFourier": 1574.4871409803445
+      },
+      {
+        "preset": "fourier",
+        "grid": [
+          512,
+          512
+        ],
+        "steps": 787,
+        "dt": 0.000762939453125,
+        "time": 0.600433349609375,
+        "alpha": 0.001,
+        "tau": 0,
+        "deposits": 11,
+        "measured": 0.2437353216625147,
+        "exact": 0.24373532918357543,
+        "fourierLaw": 0.24373532918357543,
+        "mismatch": 1.7154362490282925e-8,
+        "heat": 597.647505084267,
+        "deposited": 597.6474604941676,
+        "heatRelativeError": 7.460936801706453e-8,
+        "mismatchWithTau5PercentHigh": null,
+        "mismatchWithFourierLaw": null
+      }
+    ]
+  },
+  "failures": [],
+  "seconds": 63
+}

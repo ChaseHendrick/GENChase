@@ -148,6 +148,8 @@ No record has an outside review yet; every review so far was done inside the pro
 | [neural-field](src/modules/neural-field.js) | partially validated | [neural-field-science.js](tools/neural-field-science.js) | Not scientifically validated | none |
 | [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded | none |
 | [direct-gravity](src/modules/direct-gravity.js) | validated within stated limits | [direct-gravity-science.js](tools/direct-gravity-science.js), [direct-gravity-largen-science.js](tools/direct-gravity-largen-science.js) | Limited evidence recorded | none |
+| [fisher-kpp](src/modules/fisher-kpp.js) | unvalidated | [fisher-kpp-science.js](tools/fisher-kpp-science.js) | Limited evidence recorded | none |
+| [cattaneo](src/modules/cattaneo.js) | unvalidated | [cattaneo-science.js](tools/cattaneo-science.js) | Limited evidence recorded | none |
 
 ## Recorded limitations
 
@@ -612,6 +614,21 @@ No record has an outside review yet; every review so far was done inside the pro
 
 - Planar Plummer-softened G=1 only. Large-N evidence is force-kernel agreement at fixed snapshots, not a statistical N-body convergence study; dt/ε band is finite-time energy drift on one N=64 disk seed.
 - Browser cancellation and selected exports preserve a completed-step snapshot — not full scientific print certification across hardware.
+
+### fisher-kpp
+
+- Deterministic single-species logistic reaction-diffusion on a closed (zero-flux) plate: no demographic noise, Allee effect, advection or genetic drift. The territory view maps first arrival, not genetics. A population illustration does not establish experimental accuracy.
+- The status-line front speed is read from the arrival-time field (mean 1/\|∇T\| over clean cells in the last half of the arrivals) and is compared with 2√(rD) with basis deterministic. It sits below 2√(rD) by the finite-time lag, which the note prints: Bramson's (3/2)√(D/r)/t for a straight front and 2√(D/r)/t for a circle. The circular coefficient 2 was not read in Gärtner (1982) or Ducrot (2015); it agrees with Bramson's 3/2 plus the curvature term, and its next correction and the founder-radius effect are unknown, so the plate criterion for circles is a band.
+- The grid effect printed on the status line is the difference from a twin on cells twice as large; with the 9-point stencil at D dt/h² = 1/6 the straight-front speed converges at fourth order, and the difference overstates the plate's own error.
+- Heterogeneous habitats (patchy, hostile islands) print no comparison and are not benchmarked beyond the scheme.
+- Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused because a pulled front is set by densities below its resolution. No record has an outside review; the status stays unvalidated until one.
+
+### cattaneo
+
+- Linear, constant-coefficient Maxwell-Cattaneo-Vernotte (telegraph) model with unit heat capacity on a periodic plate, a labeled simplification of the nonlinear equations of Kovács and Rogolino (arXiv:1910.09175). No temperature-dependent coefficients, boundaries, material data or Guyer-Krumhansl terms; not a material model, and no claim about which solids conduct heat this way. The model lets the temperature dip below ambient behind a front, a known objection to it.
+- The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.
+- Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.
+- Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one.
 
 The remaining records retain each catalog equation and reference as a review target. They do not
 claim those descriptions have been checked against the primary paper. Full parameter, precision,

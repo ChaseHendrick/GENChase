@@ -527,6 +527,7 @@ void main(){
     physarum: 'occasional',
     hl: 'occasional',
     cyclic: 'occasional',
+    'fisher-kpp': 'occasional',
     potts: 'occasional',
     sle: 'occasional',
     lens: 'occasional',
@@ -596,6 +597,7 @@ void main(){
     loschmidt: 'rare',
     thouless: 'rare',
     causticsea: 'rare',
+    cattaneo: 'rare',
     // unseen
     hyperbolic: 'unseen',
     rotor: 'unseen',

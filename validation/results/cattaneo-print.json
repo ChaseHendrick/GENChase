@@ -1,0 +1,175 @@
+{
+  "scope": "cattaneo exportPNG on SwiftShader float32: state preservation in all three views at 2400 x 2400 and 2400 x 3000, and agreement of the print with the state at every cell centre (2560 x 2560, five pixels per cell) in each view.",
+  "criteria": "Zero changed float32 components (temperature and both face fluxes); exact requested dimensions; at cell centres, under 0.5% of cells differ from a one-pixel-per-cell render by more than 2 levels and the median difference is 0. Controls: a one-step state change after export and the state ten steps later must both be caught.",
+  "limitations": "Selected recipes on one renderer; no colorimetric or printer-profile claim. Grain is drawn per output pixel and excluded from the agreement test. The black and white points come from the field at the end of the run and are shared by both renders. A larger print adds pixels, not resolved physics.",
+  "command": "node tools/cattaneo-print.js --write",
+  "reviewed": "2026-09-27",
+  "preservation": [
+    {
+      "label": "sparks, 2400 x 2400",
+      "view": "temp",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8240591,
+      "changedComponents": 0,
+      "steps": 238
+    },
+    {
+      "label": "sparks, 2400 x 2400",
+      "view": "flux",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8637472,
+      "changedComponents": 0,
+      "steps": 238
+    },
+    {
+      "label": "sparks, 2400 x 2400",
+      "view": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8191026,
+      "changedComponents": 0,
+      "steps": 238
+    },
+    {
+      "label": "torch 4:5, 2400 x 3000",
+      "view": "temp",
+      "grid": [
+        512,
+        640
+      ],
+      "requested": [
+        2400,
+        3000
+      ],
+      "width": 2400,
+      "height": 3000,
+      "bytes": 8017182,
+      "changedComponents": 0,
+      "steps": 238
+    },
+    {
+      "label": "torch 4:5, 2400 x 3000",
+      "view": "flux",
+      "grid": [
+        512,
+        640
+      ],
+      "requested": [
+        2400,
+        3000
+      ],
+      "width": 2400,
+      "height": 3000,
+      "bytes": 8012049,
+      "changedComponents": 0,
+      "steps": 238
+    },
+    {
+      "label": "torch 4:5, 2400 x 3000",
+      "view": "relief",
+      "grid": [
+        512,
+        640
+      ],
+      "requested": [
+        2400,
+        3000
+      ],
+      "width": 2400,
+      "height": 3000,
+      "bytes": 8020072,
+      "changedComponents": 0,
+      "steps": 238
+    }
+  ],
+  "agreement": [
+    {
+      "view": "temp",
+      "grid": [
+        512,
+        512
+      ],
+      "print": [
+        2560,
+        2560
+      ],
+      "pixelsPerCell": 5,
+      "cells": 262144,
+      "fractionOver2Levels": 0,
+      "maxLevels": 1,
+      "medianLevels": 0
+    },
+    {
+      "view": "flux",
+      "grid": [
+        512,
+        512
+      ],
+      "print": [
+        2560,
+        2560
+      ],
+      "pixelsPerCell": 5,
+      "cells": 262144,
+      "fractionOver2Levels": 0,
+      "maxLevels": 1,
+      "medianLevels": 0
+    },
+    {
+      "view": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "print": [
+        2560,
+        2560
+      ],
+      "pixelsPerCell": 5,
+      "cells": 262144,
+      "fractionOver2Levels": 0,
+      "maxLevels": 1,
+      "medianLevels": 0
+    }
+  ],
+  "controls": {
+    "stateMutatingExport": {
+      "changedComponents": 753976,
+      "rejected": true
+    },
+    "laterState": {
+      "cells": 262144,
+      "fractionOver2Levels": 0.6459922790527344,
+      "maxLevels": 251,
+      "medianLevels": 9,
+      "rejected": true
+    }
+  },
+  "failures": []
+}

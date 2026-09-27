@@ -4850,5 +4850,88 @@
       "resolution": "Force max |Δa| ~2e-15 / 5e-15 / 1e-14 at N=256/1024/4096; relative energy drift ~4.5e-6→2.8e-7 under h 0.004→0.001 (ratio ~16); position RMS refine ~5 on the ε band. Exact N/ε/h/steps recorded.",
       "precision": "Float64 production kernel vs independent all-pairs reference; finite-time fixtures only — not galaxy equilibrium, unsoftened close encounters, or chaotic long-time accuracy."
     }
+  },
+  {
+    "id": "fisher-kpp",
+    "source": "src/modules/fisher-kpp.js",
+    "sourceSha256": "8edac26c11ad0d003d7fdb101f02a28aea2a92dbba2aa8e8b825231048e54131",
+    "reference": "R. A. Fisher, The wave of advance of advantageous genes, Annals of Eugenics 7, 355 (1937); A. N. Kolmogorov, I. G. Petrovsky and N. S. Piskunov, Bulletin of Moscow University, Mathematics and Mechanics 1, 1 (1937). A front started from a bounded patch travels at the minimal speed 2√(rD) only in the long run: Maury Bramson, Communications on Pure and Applied Mathematics 31, 531 (1978), showed a straight front lags by (3/2)√(D/r) ln t, so its speed is 2√(rD) − (3/2)√(D/r)/t; Ute Ebert and Wim van Saarloos, Physica D 146, 1 (2000), found the next term; Jürgen Gärtner, Mathematische Nachrichten 105, 317 (1982), gave the circular front in two dimensions, which lags by 2√(D/r) ln t. Habitats of varying quality follow Nanako Shigesada, Kohkichi Kawasaki and Ei Teramoto, Theoretical Population Biology 30, 143 (1986).",
+    "equation": "∂u/∂t = D∇²u + r u(1 − u),   minimal front speed 2√(rD)",
+    "status": "unvalidated",
+    "limitations": [
+      "Deterministic single-species logistic reaction-diffusion on a closed (zero-flux) plate: no demographic noise, Allee effect, advection or genetic drift. The territory view maps first arrival, not genetics. A population illustration does not establish experimental accuracy.",
+      "The status-line front speed is read from the arrival-time field (mean 1/|∇T| over clean cells in the last half of the arrivals) and is compared with 2√(rD) with basis deterministic. It sits below 2√(rD) by the finite-time lag, which the note prints: Bramson's (3/2)√(D/r)/t for a straight front and 2√(D/r)/t for a circle. The circular coefficient 2 was not read in Gärtner (1982) or Ducrot (2015); it agrees with Bramson's 3/2 plus the curvature term, and its next correction and the founder-radius effect are unknown, so the plate criterion for circles is a band.",
+      "The grid effect printed on the status line is the difference from a twin on cells twice as large; with the 9-point stencil at D dt/h² = 1/6 the straight-front speed converges at fourth order, and the difference overstates the plate's own error.",
+      "Heterogeneous habitats (patchy, hostile islands) print no comparison and are not benchmarked beyond the scheme.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused because a pulled front is set by densities below its resolution. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/FISHER-KPP.md against the primary sources before any promotion.",
+      "Read Gärtner (1982) or Ducrot (2015) for the circular coefficient; extend the plate witness to other D, r and grids.",
+      "Benchmark the heterogeneous habitats against a published result (Shigesada, Kawasaki and Teramoto 1986) before any claim about them."
+    ],
+    "numerical": [
+      {
+        "test": "tools/fisher-kpp-science.js",
+        "command": "node tools/fisher-kpp-science.js --write",
+        "results": "validation/results/fisher-kpp-science.json",
+        "scope": "The real GPU module (logistic growth on a uniform field; its step against an independent Float64 twin on a 128 x 128 plate with seven founders; its status-line front speed on the Growth rings, One founder and Straight front presets at grid 512, h = 1/2) and a Float64 straight front of the same scheme (the 9-point stencil reduces to the 3-point one along a grid axis) over t in [100, 200]/r and [200, 400]/r for (D, r) = (1, 1), (2, 1/2), (1, 2) at one, two and four cells per √(D/r).",
+        "criteria": "Logistic error below the float32 bound 2e-5 over 480 steps; GPU density within 5.7e-5 of the twin, arrival times within 1e-3 at the 99.9th percentile, labels within 0.1%; straight-front speed within 1.5e-3 (first window) and 5e-4 (second) of 2√(rD) times the Bramson and Ebert-van Saarloos speed at two or more cells per decay length; second-order refinement at D dt/h² = 1/4 and fourth-order between h = 1 and 1/2 at 1/6; each plate speed inside its geometry's lag band within 3e-3 plus its h-and-2h difference, with 2√(rD) alone outside it. Two float32 tolerances were set from the rounding bound after guessed ones (2e-6, 1e-5) failed on the first run; validation/FISHER-KPP.md records both.",
+        "benchmark": "The exact logistic solution u0 e^{rt}/(1 + u0(e^{rt} - 1)); the straight-front position 2t - (3/2) ln t + a - 3√π/√t in units of D and r (Bramson 1978; Ebert and van Saarloos 2000; checked in Berestycki, Brunet and Derrida, arXiv:1705.08416, eq. 7); the circular lag 2√(D/r) ln t in two dimensions (Gärtner 1982, not read); an independent Float64 implementation of the scheme.",
+        "failureControl": "A halved growth rate must miss the logistic benchmark (misses by 0.55); the bare 2√(rD) with no finite-time lag must miss the straight-front and plate criteria (by 4.9e-3 to 9.9e-3 dimensionless); D -> -D must break the discrete maximum principle on the Float64 scheme and on the GPU (it does).",
+        "limitations": "Straight fronts along a grid axis and the three plate presets at one resolution; the unknown next asymptotic term (of order ln t/t² in the speed) limits the straight-front agreement to about 1e-3 at t ~ 100/r. SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/fisher-kpp-print.js",
+        "command": "node tools/fisher-kpp-print.js --write",
+        "results": "validation/results/fisher-kpp-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Growth rings) and 2400 x 1600 (a 3:2 straight front) in all four views, and a 2560 x 2560 export whose pixel centres fall on the 512 cell centres.",
+        "criteria": "Zero changed float32 components in the plate and its half-resolution twin; exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state 24 steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain and isochrone lines are drawn per output pixel and excluded from the agreement test; no colorimetric or printer-profile claim."
+      }
+    ]
+  },
+  {
+    "id": "cattaneo",
+    "source": "src/modules/cattaneo.js",
+    "sourceSha256": "3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e",
+    "reference": "Carlo Cattaneo, Atti del Seminario Matematico e Fisico della Università di Modena 3, 83 (1948), and Pierre Vernotte, Comptes Rendus de l’Académie des Sciences 246, 3154 (1958), gave the heat flux a relaxation time τ, τ ∂q/∂t + q = −α∇T, so that heat released at a point spreads at the finite speed √(α/τ) instead of everywhere at once. With the energy balance it is the telegraph equation. The linear, constant-coefficient form here is the simplest member of the family; the proposal this tab follows points to Róbert Kovács and Patrizia Rogolino, Numerical treatment of nonlinear Fourier and Maxwell-Cattaneo-Vernotte heat transport equations, arXiv:1910.09175 (2019), whose nonlinear, temperature-dependent coefficients this tab does not include.",
+    "equation": "τ ∂²T/∂t² + ∂T/∂t = α∇²T  (linear, constant coefficients),   τ s² + s + α k² = 0",
+    "status": "unvalidated",
+    "limitations": [
+      "Linear, constant-coefficient Maxwell-Cattaneo-Vernotte (telegraph) model with unit heat capacity on a periodic plate, a labeled simplification of the nonlinear equations of Kovács and Rogolino (arXiv:1910.09175). No temperature-dependent coefficients, boundaries, material data or Guyer-Krumhansl terms; not a material model, and no claim about which solids conduct heat this way. The model lets the temperature dip below ambient behind a front, a known objection to it.",
+      "The status line compares the plate's (1, 0) Fourier coefficient per unit heat with the exact solution of τ s² + s + α k² = 0 for the same deposits (basis deterministic) and prints Fourier's law alone beside it. Only the lowest mode is used: far below k_c it is nearly Fourier (on Rings and glow, k/k_c = 0.22, Fourier misses by only 1.5e-3), so the check says less about τ there. Total heat is a construction regression.",
+      "Deposits add the half-step flux +tanh(dt/2τ)α∇(deposit) so that new heat starts at rest; without it the check missed by 3e-4. More than four deposits in one step are carried to the next step and the bookkeeping records the step used.",
+      "Evidence is from SwiftShader float32 in Chromium on selected recipes; float16 state is refused. No record has an outside review; the status stays unvalidated until one."
+    ],
+    "remaining": [
+      "Review the evidence in validation/CATTANEO.md before any promotion.",
+      "Compare with a published numerical result for the linear case (for example a one-dimensional heat-pulse profile in Kovács and Rogolino) and state the differences from their nonlinear model quantitatively.",
+      "Extend the plate check to more modes and to non-square plates."
+    ],
+    "numerical": [
+      {
+        "test": "tools/cattaneo-science.js",
+        "command": "node tools/cattaneo-science.js --write",
+        "results": "validation/results/cattaneo-science.json",
+        "scope": "A Float64 one-dimensional twin of the staggered scheme and the scheme's scalar mode recursion (modes m = 1, 2, 3, 5, 8, 12 at α = 0.002, τ = 0.5 on 512 cells; refinement 64 to 512 cells at α = 0.02, τ = 0.35; the Nyquist step bound; τ from 0.1 to 0 on mode 2), and the real GPU module (single modes on 256 x 256 and 256 x 320 including τ = 0; one spark at α = 0.03, τ = 0.4 on 512; the status-line check on the Sparks, Moving torch, Rings and glow and Fourier limit presets).",
+        "criteria": "Twin equal to the recursion to 1e-10; each mode within (kh)²/12 + 1e-4 of the exact response; overdamped slow roots within 0.1% and oscillating decay rates and frequencies within 0.5%; GPU within 2e-5 of the recursion; second-order refinement (orders 1.8 to 2.3); bounded at 0.999 of the solved step bound and overflow at 1.01; relaxation-limit slow roots within 0.1% and the O(τ) coefficient within 10% for τ ≤ 0.01; ring edge speed within 1% of √(α/τ) with under 1e-3 of the peak beyond the front; plate mismatch below 1e-5 and heat within 1e-5. Some thresholds were set after first runs (the mode tolerance, the oscillation window, the plate-control ratio); validation/CATTANEO.md says which.",
+        "benchmark": "The exact dispersion relation τ s² + s + α k² = 0 of the continuum telegraph equation and the resulting mode response G_k(t) with G_k(0) = 1, G_k'(0) = 0; Fourier's law e^{-αk²t} at τ = 0; the wave speed √(α/τ); the Gaussian solution of the heat equation as the finite-speed control.",
+        "failureControl": "τ -> -τ must fail the mode check (error 163 on the recursion, overflow on the GPU); a step 1% above the solved bound must grow; τ five per cent high and Fourier's law must each miss the plate check by 20 times its own mismatch (80 to 40000 times).",
+        "limitations": "Periodic domain, linear constant coefficients, selected modes and presets at one or two resolutions; SwiftShader float32 only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/cattaneo-print.js",
+        "command": "node tools/cattaneo-print.js --write",
+        "results": "validation/results/cattaneo-print.json",
+        "scope": "Real exportPNG at 2400 x 2400 (Sparks) and 2400 x 3000 (a 4:5 moving torch) in all three views, and 2560 x 2560 exports whose pixel centres fall on the 512 cell centres in each view.",
+        "criteria": "Zero changed float32 components (temperature and both face fluxes); exact requested dimensions; at cell centres under 0.5% of cells more than 2 levels from a one-pixel-per-cell render and median 0; a state-mutating export wrapper and a state ten steps later caught.",
+        "limitations": "Selected recipes on one renderer; grain is drawn per output pixel and excluded; no colorimetric or printer-profile claim."
+      }
+    ]
   }
 ]
