@@ -4,7 +4,7 @@ The paper is *Minimal Winding in the Self-Similar Collapse of Point Vortices*, i
 (the manuscript and its only source, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); the Typst copy was dropped on 2026-09-25).
 The target is *Regular and Chaotic Dynamics*. By the owner's decision (2026-09-25) arXiv is deferred until
 the owner has an endorsement, which arXiv asked for at the first attempt; the Zenodo release 2.1.0 of the
-companion, doi:10.5281/zenodo.22966989, is the preprint of record (release 2.0.0, doi:10.5281/zenodo.22963796, before it). Checked 2026-09-24 from the repository
+companion, doi:10.5281/zenodo.22994932 (release 2.2.0), is the preprint of record (release 2.1.0, doi:10.5281/zenodo.22966989, and release 2.0.0, doi:10.5281/zenodo.22963796, before it). Checked 2026-09-24 from the repository
 alone; no journal page was consulted.
 
 By the owner's decision (2026-09-25) the second draft, on the α-models, is merged into this paper
@@ -15,9 +15,9 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 
 - The manuscript, with the figures `paper/figures/minimal-winding.pdf`,
   `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
-  `paper/minimal-winding.pdf` (38 pages since the fixes of the second readings of Sections 4 to 8, 2026-09-25), the same PDF arXiv will build. The author block
+  `paper/minimal-winding.pdf` (42 pages since the additions of release 2.2.0 and the fixes of its fourth reading, 2026-09-27), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
-- The bibliography has 36 works. Every work cited in the LaTeX source has an entry, and every entry is
+- The bibliography has 43 works. Every work cited in the LaTeX source has an entry, and every entry is
   cited.
 - A data availability paragraph naming the verification programs in `code/` and their output in
   `data/`, a funding statement (no external funding), and the statement

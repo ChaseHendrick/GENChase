@@ -1,7 +1,7 @@
 """Hodgkin-Huxley (1952) in float64 for the chaos search: model, Jacobian, an adaptive DOP853 integrator
 compiled with numba, the variational equations, and a Poincare return map. NUMERICAL, NOT RIGOROUS.
 
-Conventions follow papers/hh-dynamics/code/hh_ball.py: u = depolarization from rest (mV), J = applied
+Conventions follow code/hh_ball.py of the paper's folder: u = depolarization from rest (mV), J = applied
 depolarizing current (uA/cm2), 6.3 C, Hodgkin and Huxley's constants:
 
     du/dt = J - 120 m^3 h (u - 115) - 36 n^4 (u + 12) - 0.3 (u - E_l)

@@ -1,0 +1,87 @@
+Mutation study of the certificate programs (code/mutation_study.py); not a step of any proof.
+Each mutation replaces one exact piece of source text in a copy of code/ and runs the program it belongs to.
+Programs: bist = certify_bistability.py --quick --no-ball --reuse-numerics; bist-mp = certify_bistability.py --no-ball --reuse-numerics; hopf = certify_equilibria_hopf.py; ident = identify_stable_orbit.py --workers 1.
+Python 3.11.15, 2 run(s) in parallel.
+
+Baselines (unmutated programs; each must pass):
+  baseline-bist    passed   the program ran to its end (673 s)
+  baseline-bist-mp passed   the program ran to its end (1011 s)
+  baseline-hopf    passed   the program ran to its end (15 s)
+  baseline-ident   passed   the program ran to its end (401 s)
+
+Mutations:
+  H1 (hopf, hh_ball.py): the model: beta_h with 30.01 in place of 30
+      replaced: bh = ((30 - u) / 10).exp()
+      by:       bh = ((30.01 - u) / 10).exp()
+      result:   caught -- FAIL  [selftest] Jss and dJss/du from the series agree with mpmath at u = 7.3   [differences 0.0045, 0.0011] (1 s)
+  H2 (hopf, certify_equilibria_hopf.py): the transversality formula of Theorem 2(d): a factor 2 dropped from dp/dlambda
+      replaced: + 2 * g['a2'] * lam + g['a3']
+      by:       + g['a2'] * lam + g['a3']
+      result:   caught -- FAIL  [crosscheck] H1: independent cross-check of the transversality (central differences of the eigenvalue near i omega of the SymPy Jacobian and of Jss, mpmath) agrees with Re d lambda/du and dJss/du   [finite differences: Re d lambda/du = 0.0501908689738, dJss/du = 2.67128168911; relative differe (12 s)
+  H3 (hopf, hh_ball.py): the Bernoulli series of Psi truncated at N = 12 instead of 240, and its tail bound dropped
+      replaced: def psi_coeffs(x0, L, N=240):
+      by:       def psi_coeffs(x0, L, N=12):
+      replaced: s += arb(0, (first / (1 - rho)).upper())
+      by:       s += 0
+      result:   caught -- FAIL  [selftest] Psi and its first three Taylor coefficients agree with mpmath at 10 points, both branches   [max difference 0.000534] (1 s)
+  H4 (hopf, outward.py): printed bounds rounded to nearest instead of outward
+      replaced: return math.ceil(q) if up else math.floor(q)
+      by:       return round(q)
+      result:   caught -- FAIL  [proof] every decimal bound printed with outward rounding (99 of them) re-read as an exact rational lies on the correct side of the ball it stands for   [[('10.5989209693916785221988785294', Fraction(76704450169191444709561314060197953921987695057787867444649300439812427554871, 723700557733226 (16 s)
+  H5 (hopf, hh_ball.py): the Hurwitz determinant D3 with a1 a4 in place of a1^2 a4
+      replaced: a3 * a3 - a1 * a1 * a4)
+      by:       a3 * a3 - a1 * a4)
+      result:   caught -- FAIL  [consistency] H1: p(l) = (l^2 + omega^2)(l^2 + a1 l + a4/omega^2), i.e. a2 - omega^2 - a4/omega^2 encloses 0, with a1 > 0 and a4/omega^2 > 0 (the other two eigenvalues in Re < 0) (11 s)
+  H6 (hopf, certify_equilibria_hopf.py): the adjoint eigenvector normalized with the conjugate of <p, q>
+      replaced: w = [x / nrm for x in w]
+      by:       w = [x / nrm.conjugate() for x in w]
+      result:   caught -- FAIL  [crosscheck] H1: independent cross-check (SymPy derivatives, mpmath eigenvectors, explicit tensors) agrees   [mpmath l1 = 0.0147936481310081, relative difference 1.13] (15 s)
+  B1 (bist-mp, hh_arb.py): the model: alpha_h with 0.0701 in place of 0.07
+      replaced: self.c007 = arb(7) / 100
+      by:       self.c007 = arb(701) / 10000
+      result:   caught -- [FAIL] HH upstroke u=20, t=0.5 ms: mpmath (dps=30, 28s) reference inside the enclosure (max radius 1.4e-17, 1.5s) (103 s)
+  B2 (bist, hh_lohner.py): the Taylor remainder dropped from the step of the Lohner set
+      replaced: a = horner_vec(self.xs_bar, s) + self.rem_coeff * s ** (self.p + 1)
+      by:       a = horner_vec(self.xs_bar, s)
+      result:   caught -- [FAIL] exact: x'=x^2, x(0)=1/2, x(1)=1 in [0.99999999999999999999999999 +/- 3.39e-27] (49 s)
+  B3 (bist, hh_lohner.py): the projection of the centre onto the section dropped (a term of the order of the float root error, 1e-16)
+      replaced: Pa[j, 0] = a[j, 0] - Q[j] * (a[idx, 0] - cc)
+      by:       Pa[j, 0] = a[j, 0]
+      result:   passed -- the program ran to its end (584 s)  [marked weak]
+  B3b (bist, hh_lohner.py): the projection quotients f_j/f_i of the section crossing set to 0
+      replaced: Q = [fYT[j, 0] / fu for j in range(d)]
+      by:       Q = [arb(0) for j in range(d)]
+      result:   caught -- [FAIL] exact Poincare map over a wide box (twist, x0 in [1.19, 1.21]): return time [4.12429, 4.13177] and z-image [0.78775, 0.78776] contain T and z0 e^{aT} at both ends (the return time varies by [0.00555 +/- 4.54e-6] across the box) (60 s)
+  B4 (bist, certlib.py): the Krawczyk operator reduced to a Newton step
+      replaced: K = zb - Cm * (Pzbar - zb) + (I - Cm * (DPZ - I)) * dZ
+      by:       K = zb - Cm * (Pzbar - zb)
+      result:   caught -- [FAIL] NEG stable orbit, E_l = 10.613: Krawczyk with DP(Z) widened by 0.5 in every entry must fail, while the Newton point zbar - C (P(zbar) - zbar) lies in int Z (True), so the test depends on the term (I - C (DP(Z) - I)) (Z - zbar) (458 s)
+  B5 (bist, certlib.py): the off-diagonal terms dropped from the Gershgorin radii
+      replaced: R = R + abs(M[i, j])
+      by:       R = R + 0 * abs(M[i, j])
+      result:   caught -- [FAIL] multiplier code: the Gershgorin discs of the interval matrix [[2, e], [e, 1]], |e| <= 0.1, contain the eigenvalues (3 +- sqrt(1 + 4 e^2))/2 of its members e = 0, +-0.1 (51 s)
+  B6 (bist, certlib.py): the E_l interval dropped from the initial sets (E_l fixed at the midpoint of its ball)
+      replaced: r0.append(ball - mid)
+      by:       r0.append(arb(0))
+      result:   caught -- [FAIL] the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l ball) (stable orbit) (87 s)
+  B7 (bist, certlib.py): DP enclosed over a box 1000 times smaller than the Krawczyk box
+      replaced:         r1 = run(zbar, zrad, True)
+      by:               r1 = run(zbar, [z * 1e-3 for z in zrad], True)
+      result:   caught -- [FAIL] the C^0 run integrated a set containing {zbar} x (E_l ball) and the C^1 run a set containing Z x (E_l ball) (stable orbit) (76 s)
+  B13 (bist, ball_stable.py): the contraction bound of stage 4b no longer required
+      replaced: ok = inside and (nrmb < kappa_max) and covers
+      by:       ok = inside and covers
+      result:   caught -- [FAIL] NEG Theorem C, piece E_l in [10.59, 10.5905] with the contraction bound required to be below 0.5 instead of 1, which the upper bound of the enclosure, sup ||DP_E||_inf <= 0.5439, does not meet: the piece is refused, although P(Z) in int Z holds and the runs cover Z x piece (so the verdict use (392 s)
+  S1 (bist, hh_lohner.py): the check that an initial set lies exactly on its section disabled
+      replaced: if not (sec.cc.rad() == 0 and x.rad() == 0 and x == sec.cc):
+      by:       if False and not (sec.cc.rad() == 0 and x.rad() == 0 and x == sec.cc):
+      result:   caught -- [FAIL] NEG Poincare map refuses an initial set on y = 0.001 with the section at y = 0 (39 s)
+  I1 (ident, identify_stable_orbit.py): the inclusion of K in the box of Theorem 4 tested against a box with five times its radii
+      replaced: return all(arb(r['zb'][i], r['zr'][i]).contains_interior(K[i, 0]) for i in range(3))
+      by:       return all(arb(r['zb'][i], 5 * r['zr'][i]).contains_interior(K[i, 0]) for i in range(3))
+      result:   caught -- [FAIL] [control] NEG E_l = 10.613: K tested against the box of its own piece [10.6125, 10.6130] with the radii shrunk to 0.1 (centre of K about 0.18 box radii from the centre of the box): the inclusion must fail (303 s)
+
+Summary: 17 mutations; 16 of the 16 not marked weak stopped the program (16 at a failed check, 0 by an exception); 1 marked weak, of which 1 passed.
+Every mutation not marked weak was stopped: True
+Full list of mutations: True
+run time 2236 s
