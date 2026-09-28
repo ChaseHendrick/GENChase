@@ -14,8 +14,10 @@ mean every underlying diagnostic is a tautology.
   to the radius formula and evaluates a pressure residual. This checks the implemented formula,
   not an independent fluid solver. Its two-train graphics mode is explicitly not Euler flow.
 - `src/modules/crapper.js`, `measure`: samples 721 surface points to estimate height/period, then
-  compares to the closed steepness formula. This is a sampled geometry check; it can catch a wrong
-  map but does not independently establish the water-wave equations.
+  compares to the closed steepness formula. Both the classical sign and the older flipped sign
+  satisfy that formula, so the ratio does not catch the sign. `tools/crapper-science.js` calls the
+  module map and checks closure, that identity, and the self-intersection. Neither check runs the
+  plate or establishes the water-wave equations.
 - `src/modules/peakon.js`, `probe`: locates maxima of a sampled single-peakon field at two times,
   estimates speed and one-sided slopes, and computes an H1 comparison for the configured peakons.
   The single-peakon speed probe uses a fixed reference speed, not every displayed multiparticle

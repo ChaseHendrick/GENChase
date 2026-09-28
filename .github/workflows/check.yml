@@ -180,6 +180,7 @@ jobs:
           node tools/breather-science.js
           node tools/peakon-science.js
           node tools/material-wave-science.js
+          node tools/crapper-science.js
           node tools/orbit-science.js
           node tools/lump-science.js
           node tools/chain-science.js

@@ -693,7 +693,9 @@ void main(){
   // separate-limit ceiling wherever their step was stable, and take the combined one where it was not.
   // v6 (2026-09-26): causticsea's linear operator is the Swift-Hohenberg (lap + q)^2 its label states; older recipes
   // keep the -lap(lap + q) they were made with.
-  const RECIPE_V = 6;
+  // v7 (2026-09-27): crapper's profile is Crapper's classical map (denominator 1+A^2+2A cos); older recipes
+  // keep the flipped sign they were made with.
+  const RECIPE_V = 7;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },
