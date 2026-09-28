@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Hopf cycle and Nagumo front for the pulse integrator.** `suite_hopf.py` carries the radius-1 cycle from (1, 0) to (0, 1) at t = π/2 (radii 1.5e-14 and 5.0e-15) and excludes the opposite point (0, −1). A start at radius 1/2 stays off the cycle. `suite_nagumo.py` carries the bistable front φ(ξ) = 1/(1+exp(ξ/√2)), speed √2/4, from ξ = 0 to ξ = 1; both the profile and its slope match the closed form (radii about 7e-16) and the value at ξ = −1 is excluded. Not part of the published proof. The mutation study is still not in CI: the full run is 2236 s, and the cheapest must-fail case (H1) stops the Hopf self-test.
+
 - **Exact solutions for the pulse integrator.** `papers/hh-pulse/code/suite_exact.py` runs the Lohner stepper on y' = -y and on the logistic equation, where the answers are known. At t = 1 the decay enclosure contains e^{-1} (radius 2.3e-19) and excludes e^{+1}. A ball of radius 1e-6 is carried onto its exact image. Not part of the published proof.
 
 - **The Hofstadter plate diagonalizes the Harper matrix (recipe v8).** Symmetric QL, with both hops added: flux 0 is energy 4 and flux 1/2 is ±2√2. The old capped Jacobi stays for links saved before v8. It still returns 1 and ±√5, and at q = 8 it is off by more than 0.01. The Chern-number check still passes, and a second check covers every coprime p/q through q = 56 (largest error 3.46e-14).
