@@ -2174,8 +2174,8 @@
       "tab": "Meissner",
       "subtitle": "a field a perfect conductor would have frozen, expelled · 1933",
       "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
-      "credit": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
-      "blurb": "Cool a metal in a field and a perfect conductor would trap that field forever. A superconductor kicks it out. That is the Meissner effect, and it is why superconductivity is not just infinite conductivity. The plate is B. The status line reports B at the centre against 1/I0(R/λ).",
+      "credit": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². From recipe v7 the plate is a multigrid solve of that equation on a disk; recipes older than v7 keep the Jacobi relaxation they were made with.",
+      "blurb": "Cool a metal in a field and a perfect conductor would trap that field forever. A superconductor kicks it out. That is the Meissner effect, and it is why superconductivity is not just infinite conductivity. The plate is B inside a disk held at B0 on the rim. From recipe v7 a multigrid reaches the London profile I0(r/λ)/I0(R/λ) inside the Relax cap. Older links keep the Jacobi sweeps they were made with, which stop short of that profile. The status line reports the core against that profile.",
       "order": 67,
       "seed": "",
       "presets": [
