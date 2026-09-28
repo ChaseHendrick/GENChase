@@ -15,12 +15,18 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
-  // Period-1 Crapper. X is Hur & Vanden-Broeck arXiv:2003.00950 (13).
-  // Y is the same potential mapping with y up, water below, so crests flatten
-  // and troughs sharpen. Then s = Y_crest - Y_trough = 4|A|/(π(1-A²)) identically.
-  // A* ≈ 0.45467 at the touching bubble s* ≈ 0.7298. The diffeomorphism range
-  // |A| ≤ 3-2√2 ≈ 0.1716 (Constantin-Martín) is a different limit.
-  const A_UNI = 3 - 2 * Math.sqrt(2);
+  // Period-1 Crapper, classical sign. Over one wavelength the surface is
+  // z/(2π) for z(α) = α − 4i A e^{−iα} / (1 + A e^{−iα}), denominator
+  // 1+A²+2A cos. Crests are the broad high points, troughs the sharp low
+  // ones. s = Y_crest - Y_trough = 4|A|/(π(1-A²)) for this sign and for the
+  // older flipped sign alike, so steepness cannot tell them apart.
+  // The trough self-touches at A* ≈ 0.45467, s* ≈ 0.7298. The first vertical
+  // tangent is at A = √2-1 on a shoulder, not at the trough. |A| ≤ 3-2√2
+  // (Constantin-Martín) is an interior diffeomorphism bound, a third limit.
+  // Profile "flipped" is the plate from before recipe v7: denominator
+  // 1+A²-2A cos. It overturns at the trough at A = 3-2√2 and self-crosses
+  // near A = 0.30. It is not Crapper's bubble.
+  const A_SHOULDER = Math.SQRT2 - 1;
   const S_STAR = 0.7298;
 
   function sOfA(A) {
@@ -37,12 +43,13 @@
 
   const SCHEMA = [
     RANGE('Wave', 'amp', 'Amplitude A', GEOM, 0.03, 0.458, 0.002, f3, {
-      hint: 'Crapper parameter. s = 4|A|/(π(1-A²)). Diffeomorphism only for |A| ≤ 3-2√2 ≈ 0.172. The trough pinches a bubble at A* ≈ 0.455, s* ≈ 0.730. Those two limits are not the same.',
+      hint: 'Crapper parameter. s = 4|A|/(π(1-A²)) for either profile. Classical shoulder overturn at √2-1 ≈ 0.414; the trough pinches at A* ≈ 0.455, s* ≈ 0.730. Flipped sign overturns at the trough at 3-2√2 ≈ 0.172 and self-crosses near 0.30. The diffeomorphism |A| ≤ 3-2√2 is an interior limit, not the bubble.',
     }),
     RANGE('Wave', 'waves', 'Wavelengths', GEOM, 1.4, 5.5, 0.1, f2),
     RANGE('Wave', 't', 'Time t', LIVE, 0, 4, 0.02, f2),
     { group: 'Wave', key: 'running', label: 'Run', type: 'toggle', kind: LIVE },
-    { group: 'Wave', key: 'reading', label: 'Reading', type: 'seg', kind: GEOM, options: [['capillary', 'Capillary'], ['euler', 'Dual Euler']], hint: 'Same profile. Capillary is irrotational Crapper (g=0, σ>0). Dual Euler is the Hur & Vanden-Broeck constant-vorticity flow (g=0, σ=0). The flows underneath differ.' },
+    { group: 'Wave', key: 'profile', label: 'Profile', type: 'seg', kind: GEOM, options: [['classical', 'Crapper'], ['flipped', 'Flipped sign']], hint: 'Crapper is the classical map, denominator 1+A²+2A cos. The shoulder first stands vertical at A = √2-1, and the trough pinches a bubble at A* ≈ 0.455, s* ≈ 0.730. Flipped sign is the old plate, denominator 1+A²-2A cos: it overturns at the trough at A = 3-2√2 and self-crosses near A = 0.30. Old links keep it so they reprint. It is not Crapper\'s bubble.' },
+    { group: 'Wave', key: 'reading', label: 'Reading', type: 'seg', kind: GEOM, options: [['capillary', 'Capillary'], ['euler', 'Dual Euler']], hint: 'Same drawn profile. Capillary is irrotational Crapper (g=0, σ>0). Dual Euler is the Hur & Vanden-Broeck constant-vorticity flow (g=0, σ=0). The flows underneath differ.' },
     { group: 'Slice', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Slice', 'depth', 'Depth (λ)', GEOM, 0.28, 0.95, 0.02, f2, { hint: 'View depth in wavelengths. Irrotational streamlines decay as e^{2π y} with y ≤ 0.' }),
     RANGE('Slice', 'rows', 'Stream rows', GEOM, 4, 16, 1, v => Math.round(v) + ''),
@@ -54,7 +61,7 @@
     RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.25, 0.01, f2),
   ];
   const DEFAULTS = {
-    amp: 0.20, waves: 2.5, t: 0.5, running: false, reading: 'capillary',
+    amp: 0.20, waves: 2.5, t: 0.5, running: false, reading: 'capillary', profile: 'classical',
     aspect: '16:9', depth: 0.52, rows: 8, nAlong: 12, columns: true, paths: false,
     view: 'slice', exposure: 1.08, grain: 0.04,
   };
@@ -92,6 +99,7 @@
     s.rows = Math.round(U.clamp(Number(s.rows) || 8, 3, 18));
     s.nAlong = Math.round(U.clamp(Number(s.nAlong) || 11, 4, 28));
     if (s.reading !== 'euler') s.reading = 'capillary';
+    if (s.profile !== 'flipped') s.profile = 'classical';
     if (s.view !== 'slice' && s.view !== 'trails' && s.view !== 'woodcut') s.view = 'slice';
   }
 
@@ -103,56 +111,52 @@
       t: Number(s.t) || 0,
       waves: s.waves, depth: s.depth, rows: s.rows | 0, nAlong: s.nAlong | 0,
       reading: s.reading === 'euler' ? 'euler' : 'capillary',
-      uni: Math.abs(A) <= A_UNI + 1e-12,
+      profile: s.profile === 'flipped' ? 'flipped' : 'classical',
     };
   }
 
-  // Interior Crapper map. ψ ≤ 0 is the fluid, B = A e^{2πψ} decays with depth.
-  // Phase t travels to the right: the trig argument is 2π(φ − t).
-  function pos(phi, psi, t, A) {
+  // Classical Crapper map, and the pre-v7 flipped sign.
+  // ψ ≤ 0 is the water. B = A e^{2πψ} decays with depth on both profiles, so a
+  // streamline never meets the pole (that pole sits in the air, above the trough).
+  // Phase t travels to the right: the trig argument is 2π(φ - t). The φ in x is
+  // the label, not the phase.
+  // classical: D = 1+B²+2B cos, y = ψ - (2/π) B (B+cos)/D. Sharp trough at phase 0.
+  // flipped:   D = 1+B²-2B cos, y = ψ - (2/π) B (cos-B)/D. The old plate, unchanged.
+  function crapperMap(phi, psi, A, profile, t) {
+    const flipped = profile === 'flipped';
     const B = A * Math.exp(TAU * psi);
-    const th = TAU * (phi - t);
+    const th = TAU * (phi - (t || 0));
     const c = Math.cos(th), sn = Math.sin(th);
-    const D = 1 + B * B - 2 * B * c;
+    const D = flipped ? (1 + B * B - 2 * B * c) : (1 + B * B + 2 * B * c);
     const inv = D > 1e-18 ? 1 / D : 0;
-    const twoPi = 2 / PI;
+    const k = 2 / PI;
     return {
-      x: phi - twoPi * B * sn * inv,
-      y: psi - twoPi * B * (c - B) * inv,
+      x: phi - k * B * sn * inv,
+      y: flipped ? psi - k * B * (c - B) * inv : psi - k * B * (B + c) * inv,
     };
   }
-  function posSurf(phi, t, A) { return pos(phi, 0, t, A); }
+  function pos(phi, psi, t, A, profile) { return crapperMap(phi, psi, A, profile, t); }
+  function posSurf(phi, t, A, profile) { return crapperMap(phi, 0, A, profile, t); }
 
-  // Analytic z_φ on the surface, for speed q = 1/|z_φ| and curvature.
-  function surfDerivs(phi, t, A) {
-    const th = TAU * (phi - t);
-    const c = Math.cos(th), sn = Math.sin(th);
-    const D = 1 + A * A - 2 * A * c;
-    const D2 = D * D;
-    const twoPi = 2 / PI;
-    const x = phi - twoPi * A * sn / D;
-    const y = -twoPi * A * (c - A) / D;
-    // dX/dφ = 1 - 4 A (c(1+A²) - 2A) / D²
-    // dY_classic/dφ = -4 A (1-A²) sn / D², then Y = -Y_classic so Y' flips.
-    const Xp = 1 - 4 * A * (c * (1 + A * A) - 2 * A) / D2;
-    const Yp = 4 * A * (1 - A * A) * sn / D2;
-    return { x, y, Xp, Yp, D };
-  }
-  function surfD2(phi, t, A, h) {
-    h = h || 1e-5;
-    const m = surfDerivs(phi, t, A);
-    const L = surfDerivs(phi - h, t, A);
-    const R = surfDerivs(phi + h, t, A);
-    return { x: m.x, y: m.y, Xp: m.Xp, Yp: m.Yp, Xpp: (R.Xp - L.Xp) / (2 * h), Ypp: (R.Yp - L.Yp) / (2 * h) };
+  // Curvature from the map actually drawn, so both profiles share one path.
+  function surfJet(phi, t, A, profile) {
+    const h = 1e-5;
+    const at = q => crapperMap(q, 0, A, profile, t);
+    const m = at(phi), L = at(phi - h), R = at(phi + h);
+    const Lm = at(phi - 2 * h), Rp = at(phi + 2 * h);
+    const Xp = (R.x - L.x) / (2 * h), Yp = (R.y - L.y) / (2 * h);
+    const XpR = (Rp.x - m.x) / (2 * h), XpL = (m.x - Lm.x) / (2 * h);
+    const YpR = (Rp.y - m.y) / (2 * h), YpL = (m.y - Lm.y) / (2 * h);
+    return { x: m.x, y: m.y, Xp, Yp, Xpp: (XpR - XpL) / (2 * h), Ypp: (YpR - YpL) / (2 * h) };
   }
 
   function measure(spec) {
-    const A = spec.A, t = spec.t;
+    const A = spec.A, t = spec.t, profile = spec.profile;
     const N = 720;
     let ymin = 1e9, ymax = -1e9;
-    let x0 = posSurf(0, t, A).x, x1 = posSurf(1, t, A).x;
+    let x0 = posSurf(0, t, A, profile).x, x1 = posSurf(1, t, A, profile).x;
     for (let i = 0; i <= N; i++) {
-      const y = posSurf(i / N, t, A).y;
+      const y = posSurf(i / N, t, A, profile).y;
       if (y < ymin) ymin = y;
       if (y > ymax) ymax = y;
     }
@@ -161,8 +165,9 @@
     const sTh = spec.sTh;
     const ratio = sTh > 0 ? sMeas / sTh : 0;
 
-    const tr = surfD2(t, t, A); // φ − t = 0: trough
-    const cr = surfD2(t + 0.5, t, A);
+    // Phase 0 is the trough on both profiles; phase 1/2 is the crest.
+    const tr = surfJet(t, t, A, profile);
+    const cr = surfJet(t + 0.5, t, A, profile);
     function kappa(d) {
       const sp2 = d.Xp * d.Xp + d.Yp * d.Yp;
       const sp = Math.sqrt(sp2);
@@ -184,13 +189,20 @@
   }
   function cssRgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
 
+  function extremaY(A, profile) {
+    const k = 2 / PI;
+    if (profile === 'flipped') return { yCrest: k * A / (1 + A), yTrough: -k * A / (1 - A) };
+    return { yCrest: k * A / (1 - A), yTrough: -k * A / (1 + A) };
+  }
   function worldOf(W, H, spec) {
     const pad = 0.042 * Math.min(W, H);
     const innerW = W - 2 * pad, innerH = H - 2 * pad;
     const x0 = 0, x1 = spec.waves * spec.lambda;
     const worldW = x1 - x0;
-    const yCrest = (2 / PI) * spec.A / (1 + spec.A);
-    const yTrough = -(2 / PI) * spec.A / (1 - spec.A);
+    // Extrema swap roles with the sign. Flipped: deep sharp trough, low broad crest.
+    // Classical: shallow sharp trough, tall broad crest. Same steepness either way.
+    const ext = extremaY(spec.A, spec.profile);
+    const yCrest = ext.yCrest, yTrough = ext.yTrough;
     let yTop = Math.max(1.35 * yCrest, 0.10 * spec.lambda);
     let yBot = Math.min(-spec.depth * spec.lambda, yTrough - 0.08 * spec.lambda);
     let worldH = yTop - yBot;
@@ -224,7 +236,7 @@
     const pts = [];
     for (let i = 0; i <= nPts; i++) {
       const phi = a0 + (a1 - a0) * (i / nPts);
-      const p = pos(phi, psi, spec.t, spec.A);
+      const p = pos(phi, psi, spec.t, spec.A, spec.profile);
       pts.push(scr(p.x, p.y, w));
     }
     return pts;
@@ -349,7 +361,7 @@
         g.beginPath();
         for (let i = 0; i <= nP; i++) {
           const phi = w.x0 + (w.x1 - w.x0) * (i / nP);
-          const p0 = posSurf(phi, spec.t, spec.A);
+          const p0 = posSurf(phi, spec.t, spec.A, spec.profile);
           const q2 = scr(p0.x, w.yBot + (p0.y - w.yBot) * (1 - u), w);
           if (i === 0) g.moveTo(q2[0], q2[1]); else g.lineTo(q2[0], q2[1]);
         }
@@ -382,7 +394,7 @@
         g.beginPath();
         for (let j = 0; j <= nB; j++) {
           const psi = lab.bMin * (j / nB);
-          const p = pos(phi, psi, spec.t, spec.A);
+          const p = pos(phi, psi, spec.t, spec.A, spec.profile);
           const q = scr(p.x, p.y, w);
           if (j === 0) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
         }
@@ -431,7 +443,7 @@
       g.beginPath();
       for (let i = 0; i <= n; i++) {
         const tau = i / n;
-        const p = pos(phi + tau, psi, spec.t + tau, spec.A);
+        const p = pos(phi + tau, psi, spec.t + tau, spec.A, spec.profile);
         const q = scr(p.x - tau, p.y, w);
         if (i === 0) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
       }
@@ -444,7 +456,7 @@
       for (let i = 0; i < n; i++) {
         const u = i / (n - 1);
         const tau = -(1 - u) * behind;
-        const p = pos(phi + tau, psi, spec.t + tau, spec.A);
+        const p = pos(phi + tau, psi, spec.t + tau, spec.A, spec.profile);
         const q = scr(p.x - tau, p.y, w);
         if (prev) {
           g.globalAlpha = (0.08 + 0.92 * u) * tone.a;
@@ -504,7 +516,7 @@
       const pr = Math.max(1.2, Smin * (psi === 0 ? 0.0068 : 0.0046) * (1.05 - 0.4 * tDepth) * Math.sqrt(exp));
       g.fillStyle = 'rgba(' + Math.round(col[0]) + ',' + Math.round(col[1]) + ',' + Math.round(col[2]) + ',' + (wood ? 1 : 0.95) + ')';
       for (let i = 0; i < lab.cols.length; i++) {
-        const p = pos(lab.cols[i], psi, spec.t, spec.A);
+        const p = pos(lab.cols[i], psi, spec.t, spec.A, spec.profile);
         const q = scr(p.x, p.y, w);
         g.beginPath();
         g.arc(q[0], q[1], pr, 0, TAU);
@@ -550,7 +562,7 @@
     for (let j = 0; j < lab.rows.length; j++) {
       const psi = lab.rows[j];
       for (let i = 0; i < lab.cols.length; i++) {
-        const p = pos(lab.cols[i], psi, spec.t, spec.A);
+        const p = pos(lab.cols[i], psi, spec.t, spec.A, spec.profile);
         const q = scr(p.x, p.y, w);
         const rr = psi === 0 ? 2.4 : 1.7;
         body += '<circle cx="' + f(q[0]) + '" cy="' + f(q[1]) + '" r="' + rr + '" fill="' + (psi === 0 ? crest : ink) + '"/>';
@@ -563,14 +575,16 @@
     id: 'crapper', name: 'Crapper', tab: 'Crapper',
     subtitle: 'exact finite-amplitude pure-capillary waves · 1957',
     order: 114,
-    equation: 'X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))',
-    credit: 'Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper\'s wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.',
-    blurb: 'A pure capillary wave on deep water has an exact Euler solution, and only one: Crapper (1957). The free surface is an inverted cousin of Gerstner\'s trochoid, rounded at the crests and needle-sharp in the troughs. Steepness s = crest-to-trough over a period is 4|A|/(π(1−A²)) identically. At A* ≈ 0.455, s* ≈ 0.730, the trough pinches a bubble of air. The interior map is a diffeomorphism only out to |A| ≤ 3−2√2 ≈ 0.172 (Constantin-Martín); do not treat those two limits as the same. The Dual Euler reading keeps the profile and replaces irrotational Crapper streamlines by a constant-vorticity shear (Hur and Vanden-Broeck 2020, g=0 and σ=0). The status line reports measured s against 4|A|/(π(1−A²)). If the map were a stacked sine, that ratio would fail.',
+    equation: 'X = φ − (2/π) A sin(2πφ) / (1+A²+2A cos 2πφ),   Y = −(2/π) A (A+cos 2πφ) / (1+A²+2A cos 2πφ),   s = 4|A|/(π(1−A²))',
+    credit: 'Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. The free surface drawn here is that classical map, denominator 1+A²+2A cos. It first stands vertical at A = √2−1 on a shoulder and the trough self-touches at A* ≈ 0.455. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper\'s wave, J. Nonlinear Math. Phys. (2011), proved an interior diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. Recipes older than v7 keep the previous plate, whose denominator was 1+A²−2A cos: that curve overturns at the trough at A = 3−2√2 and self-crosses near A = 0.30, and it is not this bubble. This plate is a seeded print of the exact map. It is not a new equation.',
+    blurb: 'A pure capillary wave on deep water has an exact Euler solution, and only one: Crapper (1957). Crests flatten and troughs sharpen. Steepness s = crest-to-trough over a period is 4|A|/(π(1−A²)) for this map and for the older flipped sign alike, so that ratio cannot tell them apart. The classical denominator is 1+A²+2A cos. The trough pinches a bubble at A* ≈ 0.455, s* ≈ 0.730. The older plate used 1+A²−2A cos: it overturns at the trough at A = 3−2√2 and self-crosses near A = 0.30. Profile keeps that curve for old links and labels it flipped sign, not the bubble. The interior diffeomorphism |A| ≤ 3−2√2 (Constantin-Martín) is a different limit. The Dual Euler reading keeps the profile and replaces irrotational streamlines by a constant-vorticity shear (Hur and Vanden-Broeck 2020, g=0 and σ=0). The status line reports the drawn map\'s steepness as a regression, not as a proof of the bubble.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    // Recipes older than v7 were drawn with the flipped sign; they keep it, so they reprint.
+    legacy: { 7: { profile: 'flipped' } },
     hints: {
-      Wave: 'A is Crapper\'s amplitude. s = 4|A|/(π(1−A²)). The trough pinches a bubble at A* ≈ 0.455, s* ≈ 0.730. Univalent interior flow only for |A| ≤ 3−2√2 ≈ 0.172. Dual Euler is the same profile as a constant-vorticity wave with no gravity and no surface tension.',
-      Slice: 'Depth is in wavelengths. Capillary streamlines are the exact conformal map, amplitude A e^{2πψ} with ψ ≤ 0. Dual Euler draws a linear shear instead. Columns are constant-potential lines.',
-      Picture: 'Slice is the textbook plate: rounded gold crests, needle troughs, dark water. Trails mark a fraction of a period. Woodcut is the same geometry as ink on paper.',
+      Wave: 'A is Crapper\'s amplitude. Profile Crapper uses denominator 1+A²+2A cos: the shoulder stands vertical at A = √2−1, and the trough pinches a bubble at A* ≈ 0.455, s* ≈ 0.730. Flipped sign is the old plate (denominator 1+A²−2A cos): it overturns at the trough at A = 3−2√2 and self-crosses near A = 0.30. Old links keep it, and it is not the bubble. Dual Euler is the same drawn profile as a constant-vorticity wave with no gravity and no surface tension.',
+      Slice: 'Depth is in wavelengths. Streamlines are the exact map, amplitude A e^{2πψ} with ψ ≤ 0, so they decay downward. Dual Euler draws a linear shear instead. Columns are constant-potential lines.',
+      Picture: 'Slice is the textbook plate: rounded crests, sharp troughs, dark water. Trails mark a fraction of a period. Woodcut is the same geometry as ink on paper. Flipped sign draws the old curve and says so.',
     },
     palette: true, defaultPalette: 'ember', paletteLabel: 'Water (deep → crest)',
     headline: 'amp', headlineLabel: 'A',
@@ -590,9 +604,10 @@
         const m = metric;
         const A = U.clamp(Number(st.amp) || 0.2, 0.02, 0.458);
         const euler = st.reading === 'euler';
-        const nearBubble = Math.abs(A - A_STAR) < 0.012 || Math.abs(m.sMeas - S_STAR) < 0.02;
+        const flipped = st.profile === 'flipped';
+        const nearBubble = !flipped && (Math.abs(A - A_STAR) < 0.012 || Math.abs(m.sMeas - S_STAR) < 0.02);
         const ok = Math.abs(m.ratio - 1) < 1e-4;
-        const tag = !ok ? 'map failed' : (euler ? 'dual Euler' : (nearBubble ? 'bubble' : (Math.abs(A) <= A_UNI ? 'univalent' : 'Crapper')));
+        const tag = !ok ? 'map failed' : flipped ? 'flipped sign' : (euler ? 'dual Euler' : (nearBubble ? 'bubble' : (A + 1e-12 >= A_SHOULDER ? 'overhang' : 'no overhang')));
         // The height of the implemented map is 4|A|/(π(1−A²)) algebraically, so the measured steepness
         // meets it to round-off whatever the physics; and A* is defined by inverting that formula at
         // s* = 0.7298, so the bubble reference is the same identity. Regression tests, not predictions.
@@ -603,7 +618,9 @@
             : U.stats.compare({ label: 's', measured: m.sMeas, expected: m.sTh, reference: '4|A|/(π(1−A²))', basis: 'construction' })) +
           (euler
             ? '<span>dual Euler <b>same profile</b> · g=0 σ=0</span>'
-            : '<span>κ_trough/κ_crest <b>' + (m.kRatio > 99 ? m.kRatio.toExponential(1) : m.kRatio.toFixed(1)) + '</b> · Crapper</span>') +
+            : flipped
+              ? '<span>profile <b>flipped sign</b> · old plate</span>'
+              : '<span>κ_trough/κ_crest <b>' + (m.kRatio > 99 ? m.kRatio.toExponential(1) : m.kRatio.toFixed(1)) + '</b> · Crapper</span>') +
           '<span>A <b>' + f3(A) + '</b> · ' + tag + '</span>'
         );
       }

@@ -1,0 +1,84 @@
+{
+  "sourceSha256": "fc890ab432a44d9dc96c5dc7f82c014ca9ed78e1931868014750e67d8b059b7f",
+  "scope": "The module map in node: classical profile at sampled phases and a few depths. Not the plate, the canvas, or the print path.",
+  "closure": {
+    "dx": 3.3306690738754696e-16,
+    "dy": 1.5265566588595902e-16
+  },
+  "formulaMaxAbs": 1.1102230246251565e-16,
+  "steepness": [
+    {
+      "A": 0.07,
+      "measured": 0.08956563976631637,
+      "expected": 0.08956563976631635,
+      "absErr": 2.7755575615628914e-17
+    },
+    {
+      "A": 0.2,
+      "measured": 0.2652582384864922,
+      "expected": 0.26525823848649227,
+      "absErr": 5.551115123125783e-17
+    },
+    {
+      "A": 0.36,
+      "measured": 0.5266156205246537,
+      "expected": 0.5266156205246536,
+      "absErr": 1.1102230246251565e-16
+    },
+    {
+      "A": 0.45,
+      "measured": 0.7184423763395902,
+      "expected": 0.7184423763395903,
+      "absErr": 1.1102230246251565e-16
+    }
+  ],
+  "selfIntersection": {
+    "alphaStar": 2.0815759778181007,
+    "A": 0.4546700164520109,
+    "steepness": 0.7297642257877293,
+    "sampledSteepness": 0.7297642257877295,
+    "gapAt": {
+      "dx": 0,
+      "dy": -6.418476861114186e-17,
+      "distance": 6.418476861114186e-17
+    },
+    "gapBelow": {
+      "dx": -0.0001516803563925695,
+      "dy": -6.591949208711867e-17,
+      "distance": 0.0001516803563925695
+    },
+    "gapAbove": {
+      "dx": 0.00015166569123392648,
+      "dy": -6.591949208711867e-17,
+      "distance": 0.00015166569123392648
+    },
+    "tangent": {
+      "sin": 1.281137369854521e-11,
+      "dot": -1
+    },
+    "accepts": true
+  },
+  "failureControl": {
+    "profile": "flipped",
+    "accepts": false,
+    "gapAtAnalyticTouch": {
+      "dx": -0.35675074025180753,
+      "dy": 0,
+      "distance": 0.35675074025180753
+    },
+    "steepnessAtAnalyticA": 0.7297642257877294,
+    "steepnessAtA03": 0.41974930046214154,
+    "troughOverturnA": 0.1715728752538097,
+    "flippedTroughSlope": 1.6609786700064796e-13,
+    "classicalTroughSlopeAtSameA": 0.5000000000000085,
+    "stillWaterCrossingA": 0.3014421093721956,
+    "stillWaterCrossingSteepness": 0.42216942942048097
+  },
+  "limitations": [
+    "Calls the module map in node. Does not run the plate, the canvas, or the print path.",
+    "Steepness 4|A|/(pi(1-A^2)) holds for both signs. The sign is tested by the self-intersection.",
+    "The touch amplitude is the Hur-Wheeler maximum, not the module preset that inverts the rounded steepness 0.7298.",
+    "No full parameter domain and no review date."
+  ],
+  "pass": true
+}

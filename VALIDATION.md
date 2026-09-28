@@ -130,7 +130,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [eight](src/modules/eight.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded | none |
 | [peakon](src/modules/peakon.js) | validated within stated limits | [peakon-science.js](tools/peakon-science.js), [peakon-field-review.js](tools/peakon-field-review.js) | Limited evidence recorded | none |
 | [photon](src/modules/photon.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded | none |
-| [crapper](src/modules/crapper.js) | unvalidated | [closed-forms-science.js](tools/closed-forms-science.js) | Not scientifically validated | none |
+| [crapper](src/modules/crapper.js) | unvalidated | [crapper-science.js](tools/crapper-science.js) | Not scientifically validated | none |
 | [hasimoto](src/modules/hasimoto.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
 | [lump](src/modules/lump.js) | validated within stated limits | [lump-science.js](tools/lump-science.js), [lump-field-review.js](tools/lump-field-review.js) | Limited evidence recorded | none |
 | [three-vortex-bound](src/modules/three-vortex-bound.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded | none |
@@ -603,10 +603,10 @@ No record has an outside review yet; every review so far was done inside the pro
 
 ### crapper
 
-- Status is unvalidated. The checks are closure, which is automatic for a periodic parametrisation, and the crest-to-trough height against 4\|A\|/(pi(1-A^2)) and the module sOfA (max abs 2.22e-16). That is not a derivation from the water-wave equations, and not a print audit.
-- The plate draws a different curve from Crapper's. The catalog map uses denominator 1+A^2-2A cos, which is Crapper's map with the sign of the x-perturbation flipped. Classical z_A uses 1+A^2+2A cos. At A=0.2 the pointwise distance reaches 0.05305.
-- The implemented map overturns at the trough at A=3-2*sqrt(2)=0.17157 (steepness 0.22508) and self-touches at A=0.30 (gap 5.55e-17). Crapper's profile self-touches at A=0.4546700164520109, steepness 0.7297642257877295, within 0.001 of 0.730. Classical z_A at A=0.30 is still separated. The plate was not retuned.
-- The schema clamps A at 0.458, where the steepness formula gives 0.73794, past the classical limit. Module A_STAR is the inverse of the hardcoded constant 0.7298, not that geometric solve.
+- The node check evaluates the module map. It does not run the plate, the canvas, or the print path.
+- Steepness 4\|A\|/(pi(1-A^2)) is an identity of both signs. It does not test the classical denominator.
+- No print evidence, no full parameter domain, and no review date, so the status stays unvalidated.
+- Catalog equation and citation remain review targets. Paper equivalence of the whole plate is not claimed.
 
 ### hasimoto
 
