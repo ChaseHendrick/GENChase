@@ -1,0 +1,30 @@
+[
+  {
+    "id": "theorem-1",
+    "statement": "A hyperbolic periodic orbit with a transversal homoclinic at E = -1/2, 0 and 1/2.",
+    "status": "boxed",
+    "certificate": "data/Eminushalf.txt, data/cones_Eminushalf.txt, data/E0.txt, data/cones_E0.txt, data/Ehalf.txt, data/cones_Ehalf.txt"
+  },
+  {
+    "id": "theorem-2",
+    "statement": "The same for every energy in [-1e-10, 1e-10].",
+    "status": "boxed",
+    "certificate": "data/E0_interval.txt"
+  },
+  {
+    "id": "theorem-3",
+    "statement": "At E = 0 the return-map entropy exceeds 0.1016 and the flow entropy exceeds 0.0138.",
+    "status": "boxed",
+    "certificate": "data/horseshoe_E0.txt"
+  },
+  {
+    "id": "bolotin-negrini-1997",
+    "statement": "Bolotin and Negrini (1997) were read only in snippet view.",
+    "status": "unread"
+  },
+  {
+    "id": "smale-birkhoff-later",
+    "statement": "Later forms of the Smale-Birkhoff theorem (Katok-Hasselblatt, Palis-Takens, Moser) were not read and are not used.",
+    "status": "unread"
+  }
+]

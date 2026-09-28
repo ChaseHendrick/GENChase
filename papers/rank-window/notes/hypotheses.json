@@ -1,0 +1,23 @@
+[
+  {
+    "id": "proposition-1",
+    "statement": "The head of a spectrum of bounded eigenfunctions fixes the finite-sample spectrum up to a constant times the tail variance.",
+    "status": "proved"
+  },
+  {
+    "id": "window-exponents",
+    "statement": "Border codes give ranks 11-500 exponents from 0.255 to 1.628 at d = 8 and from 0.625 to 1.762 at d = 4. Numerical.",
+    "status": "numerical",
+    "certificate": "paper/numbers.tex"
+  },
+  {
+    "id": "koltchinskii-gine-2000",
+    "statement": "Koltchinskii and Gine (2000) is known from its abstract only.",
+    "status": "unread"
+  },
+  {
+    "id": "widom-1963",
+    "statement": "Widom (1963) was not reached and is not cited.",
+    "status": "unread"
+  }
+]

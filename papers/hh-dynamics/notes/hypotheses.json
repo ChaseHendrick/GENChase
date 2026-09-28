@@ -1,0 +1,35 @@
+[
+  {
+    "id": "theorem-1",
+    "statement": "Exactly one equilibrium for every J in [0, 200] and every E_l in [10.59, 10.62].",
+    "status": "boxed",
+    "certificate": "data/certify_equilibria_hopf.txt"
+  },
+  {
+    "id": "theorem-2",
+    "statement": "The equilibrium is asymptotically stable for J < J_H1 and for J > J_H2, and has exactly two eigenvalues with positive real part strictly between the Hopf points.",
+    "status": "boxed",
+    "certificate": "data/certify_equilibria_hopf.txt"
+  },
+  {
+    "id": "theorem-4",
+    "statement": "At J = 8, for every E_l in [10.59, 10.62], an orbitally asymptotically stable periodic orbit with period in [16.005827509, 16.013912063] ms.",
+    "status": "boxed",
+    "certificate": "data/certify_bistability.txt"
+  },
+  {
+    "id": "du-hassard-2001",
+    "statement": "Du and Hassard (2001) was not read beyond the first page.",
+    "status": "unread"
+  },
+  {
+    "id": "hassard-1978",
+    "statement": "Hassard (1978) was not obtained.",
+    "status": "unread"
+  },
+  {
+    "id": "rinzel-miller-1980",
+    "statement": "Rinzel and Miller (1980) was not obtained.",
+    "status": "unread"
+  }
+]
