@@ -1,0 +1,42 @@
+[
+  {
+    "id": "theorem-fast",
+    "statement": "The fast pulse at eps = 1/10 has left endpoint c_1 = 1.1027477097341592491478677, the truncated midpoint of the c1 certificate, and speed in (c_1, c_1 + 10^-25). This file is the endpoint, not the whole existence chain.",
+    "status": "boxed",
+    "certificate": "data/proof_c1_final.json"
+  },
+  {
+    "id": "theorem-stab",
+    "statement": "The printed stability class has width 10^-58 inside the fast-pulse interval. winding_bottom.json is the bottom piece of that winding, not the whole spectral proof. Nonlinear stability is not proved.",
+    "status": "boxed",
+    "certificate": "ext/stability/data/winding_bottom.json"
+  },
+  {
+    "id": "theorem-slow",
+    "statement": "A slow pulse at eps = 1/10 and at eps = 3/20, each in an open speed bracket of width 10^-25. These files are the c1 endpoints, not the whole existence chains.",
+    "status": "boxed",
+    "certificate": "ext/slow-pulse/data/proof_c1_eps1_10_final.json, ext/slow-pulse/data/proof_c1_eps3_20_final.json"
+  },
+  {
+    "id": "theorem-gain12",
+    "statement": "A pulse at gain 12 with speed in an open bracket of width 10^-25 about the stored c1 endpoint. The file is that endpoint, not the whole existence chain. Three rest-eigenvalue radii are larger than half a unit in the last printed place.",
+    "status": "boxed",
+    "certificate": "ext/gain-12/data/proof_c1_final.json"
+  },
+  {
+    "id": "theorem-faye",
+    "statement": "Faye's model at eps = 1/100, 1/50 and 1/20, each an open bracket between the exact ends in config.py. The forty-digit prints round the last digit except at 1/20, which forces all 28 digits.",
+    "status": "boxed",
+    "certificate": "ext/faye-model/data/proof_eps1_100_c1.json, ext/faye-model/data/proof_eps1_50_c1.json, ext/faye-model/data/proof_eps1_20_c1.json"
+  },
+  {
+    "id": "enculescu-2004",
+    "statement": "Enculescu, Physica D 196 (2004), was not obtained.",
+    "status": "unread"
+  },
+  {
+    "id": "sandstede-2007",
+    "statement": "Sandstede (2007) is known from its abstract only.",
+    "status": "unread"
+  }
+]

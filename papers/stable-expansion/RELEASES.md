@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.1 (2026-09-28)
+
+A checking release of the same preprint. The manuscript is unchanged. This archive adds `code/check_quote.py`, `code/check_abstract.py` and `code/check_hypotheses.py`. The printed prefixes for P, the angle, c, the five-vortex family and the endpoint derivatives chop out of the stored balls. The printed speed radius 1.4e-14 contains the stored radius. The survey counts 52 of 342 and 32 of 543 are the survey line. `code/hypotheses.json` names the two expansion theorems and the sample, and keeps two sources unread.
+
 ## 1.0.0 (2026-09-26)
 
 **DOI:** [10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173)

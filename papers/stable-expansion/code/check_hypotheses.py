@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Hypothesis ledger, the same gate as the Hodgkin-Huxley pulse paper.
 
-notes/hypotheses.json names each claim boxed, proved, numerical, cited or
+code/hypotheses.json names each claim boxed, proved, numerical, cited or
 unread. While any item is unread, the manuscript may not say "the first
 proof", "for the first time", "has not been proved", or "no earlier"
 unless that last one still sits next to a limit the paper already uses:
@@ -20,7 +20,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..'))
-HYPO = os.path.join(ROOT, 'notes', 'hypotheses.json')
+HYPO = os.path.join(ROOT, 'code', 'hypotheses.json')
 PAPER = os.path.join(ROOT, 'paper')
 PHRASES = ('no earlier', 'the first proof that', 'the first proof of', 'has not been proved', 'for the first time')
 LIMITS = (
@@ -55,8 +55,24 @@ def blocking(text, unread):
     return found, blocked, limited
 
 
+def certificates(hypotheses):
+    missing = []
+    for item in hypotheses:
+        raw = item.get('certificate') or ''
+        for rel in [part.strip() for part in raw.split(',') if part.strip()]:
+            if not os.path.isfile(os.path.join(ROOT, rel)):
+                missing.append('%s -> %s' % (item.get('id'), rel))
+    return missing
+
+
 def main():
     hypotheses = json.load(open(HYPO, encoding='utf-8'))
+    missing = certificates(hypotheses)
+    if missing:
+        print('certificate file missing')
+        for line in missing:
+            print(line)
+        return 1
     text = manuscript()
     unread = [item['id'] for item in hypotheses if item.get('status') == 'unread']
     counts = {}

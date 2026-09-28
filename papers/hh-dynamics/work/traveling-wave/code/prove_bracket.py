@@ -14,7 +14,7 @@ Usage: python3 prove_bracket.py [r] [T]     (r: exit face of the block, default 
 At 6.3 C the bracket is K1 = 4.5107697, K2 = 4.5107698 (12.31394 m/s).
 """
 import os as _os, sys as _sys
-# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to hh-pulse/code on 2026-09-27
 _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import sys
 import time

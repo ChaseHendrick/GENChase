@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.1 (2026-09-28)
+
+A checking release of the same note. The manuscript is unchanged. This archive adds `code/check_abstract.py` and `code/check_hypotheses.py`. The README prints the same generated numbers as the abstract. `code/hypotheses.json` names the proved window proposition and the numerical exponents, and keeps Koltchinskii-Gine and Widom unread. `code/check_quotes.py` is the older literature checker. It does not run from this archive: the saved source texts it reads are not here.
+
 ## 1.0.0 (2026-09-27)
 
 **DOI:** [10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835)

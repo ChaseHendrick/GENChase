@@ -6,7 +6,8 @@
 paper/collapse-without-rotation.tex cites the companion for the minima
 0.7978967838…, 0.7448144569… and 0.7136801485…, and for eleven vortices at
 alpha = 2 and sixty SQG vortices collapsing without rotation, in families
-of dimension 9 and 58. Those enclosures are the companion's logs, not a
+of dimension 9 and 58. Those enclosures are copies of the minimal-winding logs, kept in
+data/minimal-winding so this archive can run the check. They are not a
 new computation. The two-arm value at 603 vortices is labelled numerical.
 
 This program only reads the manuscript and those logs. It does not import
@@ -24,10 +25,10 @@ getcontext().prec = 40
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, '..', 'paper', 'collapse-without-rotation.tex')
-ROOT = os.path.join(HERE, '..', '..')
-COLLAPSE = os.path.join(ROOT, 'minimal-winding', 'data', 'certify-collapses-2026-09-25.txt')
-SQG = os.path.join(ROOT, 'minimal-winding', 'data', 'certify-sqg60-2026-09-25.txt')
-MANY = os.path.join(ROOT, 'minimal-winding', 'data', 'verify_many_vortices.txt')
+DATA = os.path.join(HERE, '..', 'data', 'minimal-winding')
+COLLAPSE = os.path.join(DATA, 'certify-collapses-2026-09-25.txt')
+SQG = os.path.join(DATA, 'certify-sqg60-2026-09-25.txt')
+MANY = os.path.join(DATA, 'verify_many_vortices.txt')
 
 
 def fail(printed, stored, reason=None):
@@ -82,7 +83,7 @@ def main():
             fail(prefix, match.group(0), 'not below sqrt(3)/2')
         print('manuscript: %s' % prefix)
         print('certificate: %s' % match.group(0))
-        print('file: papers/minimal-winding/data/certify-collapses-2026-09-25.txt')
+        print('file: data/minimal-winding/certify-collapses-2026-09-25.txt')
 
     if not re.search(r'eleven vortices at \$\\alpha = 2\$ and sixty SQG vortices collapse without rotation', tex):
         fail('without rotation', '(phrase not found)')
