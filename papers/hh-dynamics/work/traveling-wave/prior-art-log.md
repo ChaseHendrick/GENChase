@@ -203,3 +203,123 @@ Source: Hodgkin and Huxley, J. Physiol. 117 (1952) 500-544. I read these pages f
 **Not reached:** the Hastings 1976 body; Carpenter JDE 1977; the MathSciNet reviews MR402302 and MR442379; Huxley 1959 (Ann. N.Y. Acad. Sci.) and Huxley 1959 J. Physiol. 148, 80P; the full texts of Miller-Rinzel 1981 and Cooley-Dodge 1966 (PMC proof-of-work gate, not bypassed); Phillipson-Schuster 2005 and 2006; Keener-Sneyd (not re-read); Foote-Chen 1981; Du-Hassard 2001.
 
 **Recommendation for the ledger:** before any priority claim, obtain Hastings 1976 pp. 231-257 (especially whatever section discusses whether HH satisfies the hypotheses), Carpenter 1977 and Foote-Chen 1981 through a library. Also flag Du-Hassard 2001 against the existing RESEARCH.md line on Hopf computer-assisted proofs.
+
+---
+
+## (H) Re-check of 2026-09-27, before the closing step
+
+Date of search: 2026-09-27, by the session agent that attempted the closing step (same labels as above). Purpose: to
+recheck, before computing, for any existence proof of the pulse at the 1952 parameters and any computer-assisted
+Hodgkin-Huxley wave proof, 2020-2026 especially. "none" means no hit proves or claims existence of an HH pulse at the
+1952 rates, and no hit is a computer-assisted travelling-wave result for HH or a conductance-based model.
+
+| engine | exact query | hits | relevant hits |
+|---|---|---|---|
+| arXiv API (export.arxiv.org) | `abs:"Hodgkin-Huxley" "traveling wave"` and four more | ERR 406 | refused again from this sandbox; the arxiv.org search page was used below |
+| arXiv search, abstracts | `"Hodgkin-Huxley" "traveling wave"` / `"travelling wave"` | 2 / 2 | none (0905.0701, q-bio/0505031, as on 2026-09-26) |
+| arXiv, abstracts | `"Hodgkin-Huxley" "traveling pulse"` | 2 | none (1709.09132 FHN; nlin/0209053 Muratov, an approximation) |
+| arXiv, abstracts | `"Hodgkin-Huxley" homoclinic` | 1 | none (1109.5689) |
+| arXiv, abstracts | `"Hodgkin-Huxley"` with `"computer-assisted"`, `"rigorous numerics"`, `"interval arithmetic"` | 0 each | |
+| arXiv, all fields | `"Hodgkin-Huxley" "computer-assisted"` / `"computer assisted"` | 0 / 0 | |
+| arXiv, abstracts | `"Hodgkin-Huxley" "validated"` | 20 | none (titles scanned; data assimilation, learning, stochastic) |
+| arXiv, abstracts | `"Hodgkin-Huxley" "existence" wave` | 3 | none |
+| arXiv, abstracts | `"Hodgkin-Huxley" "propagating"` | 44 | none (all titles scanned, newest 2609.26224) |
+| arXiv, abstracts | `"Hodgkin-Huxley" "cable"` | 7 | none |
+| arXiv, abstracts | `"traveling pulse" "computer-assisted"`, `"travelling pulse" "computer-assisted"`, `"nerve" "computer-assisted proof"`, `"action potential" "computer-assisted"`, `"conductance-based" "computer-assisted"` | 0 each | |
+| arXiv, abstracts | `"excitable" "computer-assisted"` | 8 | none (medical imaging, unrelated) |
+| arXiv, abstracts | `"homoclinic" "computer-assisted"` | 15 | none on nerve models (2020-2026: 2507.16798, 2503.04701, 2405.17087, 2212.00930, 2205.03922) |
+| arXiv, abstracts | `"traveling wave" "computer-assisted"` / `"travelling wave" ...` | 11 / 11 | none on HH (2605.03920 Burgers-Hilbert, 2509.16693 and 2405.19759 suspension bridge, ...) |
+| arXiv, abstracts (positive control) | `"FitzHugh-Nagumo" "computer-assisted"` | 4 | the same four as on 2026-09-26, so the search works |
+| zbMATH Open API | `Hodgkin-Huxley & (travelling \| traveling) & (wave \| pulse) & py:2019-2026` | 4 | none (FHN on cylinders 2025, Karma vs FHN 2021, extended FHN 2022, an exact-solution paper 2019) |
+| zbMATH | `Hodgkin-Huxley & (travelling \| traveling)` | 54 | none new (the 9 titles since 2015 scanned) |
+| zbMATH | `Hodgkin-Huxley & (rigorous \| validated \| interval)` | 52 | none on waves (Du-Hassard 2001 again; all titles scanned) |
+| zbMATH | `Hodgkin-Huxley & homoclinic` | 14 | none since 2015 |
+| zbMATH | `(nerve \| axon) & (travelling \| traveling) & (pulse \| wave) & (computer-assisted \| "rigorous numerics" \| "interval arithmetic")` | 2 | Arioli-Koch 2015 and Czechowski-Zgliczynski 2016, both FitzHugh-Nagumo |
+| zbMATH | `Hodgkin-Huxley & "computer-assisted"`, `Hodgkin-Huxley & computer assisted` | ERR 404 | the API rejects these strings; covered by the arXiv and PubMed rows |
+| Semantic Scholar citations | citers of Hastings 1976 | 67 | none; 6 since 2019 (discrete and adaptive-grid FHN-type, noise-forced waves) |
+| Semantic Scholar citations | citers of Carpenter 1977 | 219 | none; 38 since 2019 scanned. Nearest: "The existence of solitary wave solutions for the neuron model with conductance-resistance symmetry", AIMS Math. (2023), doi 10.3934/math.2023171 (abstract read: a two-dimensional reduction of Deng's CRS model, a phase-plane proof; not HH) |
+| Semantic Scholar citations | citers of Arioli-Koch 2015 | 83 | none on HH; Arioli, "A comparative study of validated Taylor and Chebyshev long time integration of ODEs", CNSNS (2025), doi 10.1016/j.cnsns.2025.109398 (search snippet: logistic, Newton and Lorenz examples; not read) |
+| Crossref | Nitta, Yamamoto and Matsue, "A numerical verification method to specify homoclinic orbits as application of local Lyapunov functions", Japan J. Ind. Appl. Math. 39 (2022) 467-513, doi 10.1007/s13160-022-00502-5 | 1 | abstract read (PRIMARY, Crossref): local Lyapunov functions, verified integration and Brouwer's coincidence theorem to find parameters with homoclinic orbits, "numerical examples for problems in 3 and 4-dimensional cases"; the HH wave ODE is five-dimensional, so not HH. A method precedent for the closing argument; full text not read |
+| OpenAlex | citers of Hastings, Carpenter, Arioli-Koch | ERR | free daily budget exhausted again ("Insufficient budget") |
+| PubMed | `"Hodgkin-Huxley"[tiab] AND (traveling/travelling wave/pulse)[tiab] AND 2020:2026[dp]` | 1 | none (an extended FHN model, 2022) |
+| PubMed | `"Hodgkin-Huxley"[tiab] AND ("computer-assisted" OR "computer assisted" OR "interval arithmetic" OR rigorous OR "validated numerics")[tiab]` | 9 | none (titles read) |
+| PubMed | `("propagating action potential" OR "propagated action potential")[tiab] AND (existence OR proof)[tiab] AND 2015:2026[dp]` | 1 | none |
+| WebSearch | 5 queries (computer-assisted proof HH pulse 2024-2026; HH travelling wave rigorous at the original parameters; validated numerics HH homoclinic; existence of the pulse without small parameters; the Arioli 2025 title) | n/a | nothing beyond this project's own pull requests and the items above |
+| Book of abstracts, Dynamics, Topology and Computations 2025 (Bedlewo/Krakow) | grep for Hodgkin, Huxley, nerve, axon, action potential, FitzHugh, neuron | 0 | none |
+| Encyclopedia of Mathematics, "Hodgkin-Huxley system" | | ERR 502 | not reached |
+| Carpenter 1977 full text | ScienceDirect PDF; Elsevier text API; CORE | 403 / 400 (needs a key) / 404 | still NOT READ, although Crossref lists Elsevier's open-archive licence from 2013-07-17 |
+
+**Conclusion of the re-check.** Nothing found changes the conclusion of (F): no proof, with or without a computer, of
+the pulse of the unmodified 1952 equations, and no computer-assisted travelling-wave result for HH or any
+conductance-based model, 2020-2026 included. Still not read: Hastings 1976 pp. 231-257, Carpenter 1977, Foote and Chen
+1981, Huxley 1959, Du and Hassard 2001, and the full text of Nitta, Yamamoto and Matsue 2022.
+
+---
+
+## (I) Carpenter 1977, read in full on 2026-09-27
+
+G. A. Carpenter, "A geometric approach to singular perturbation problems with applications to nerve impulse equations",
+J. Differential Equations 23 (1977) 335-367, doi:10.1016/0022-0396(77)90116-4. **PRIMARY, read in full** (pp. 335-367,
+from a copy the owner obtained; the displayed equations quoted below were checked on the page images of pp. 336, 350,
+356 and 357, because the text layer is OCR). The PDF and its text are not in the repository (Elsevier open archive,
+not an open licence).
+
+What the paper proves, with the hypotheses as far as the argument needs:
+
+- The model, p. 336, eq. (0.1): "(1/R)(d^2V/dx^2) = C(dV/dt) + g(V, m, n, h), dm/dt = delta^-1 gamma_m(V)(m_inf(V) - m),
+  dn/dt = epsilon gamma_n(V)(n_inf(V) - n), dh/dt = epsilon gamma_h(V)(h_inf(V) - h)". So m is sped up by 1/delta and
+  n, h slowed by epsilon; the 1952 system is delta = epsilon = 1 with the 1952 rate functions.
+- p. 336: "The simplification m = m_inf(V) is minor provided delta is small"; "Mild qualitative conditions on each
+  system imply the existence of a homoclinic traveling wave solution".
+- Section 3 (p. 350) treats the travelling-wave system with m = m_inf(V) (that is, delta = 0), system (3.1, H):
+  V' = W, W' = theta W + G(V, n, h), n' = epsilon theta^-1 gamma_n(V)(n_inf(V) - n), h' = epsilon theta^-1
+  gamma_h(V)(h_inf(V) - h), under the abstract Hypothesis (3.1, CUBIC, H) (A)-(G) (p. 350: G(V_K, n, h) < 0 <
+  G(V_Na, n, h) for every n, h in [0, 1]; at most three zeros of G in V; dG/dV(0, n_0, h_0) > 0 and a zero V_2 > 0
+  with int_0^V2 G(V, n_0, h_0) dV < 0; dG/dn > 0, dG/dh < 0; a unique rest state; monotone n_inf, h_inf; gamma_n,
+  gamma_h > 0) and Hypothesis (3.3, HOM, H) (p. 353) on the singular orbit.
+- **Theorem 3.4** (p. 353), "Existence of a homoclinic solution of the Hodgkin-Huxley equations, m = m_inf(V)":
+  "Hypotheses (3.1, CUBIC, H) and (3.3, HOM, H) imply that for small epsilon > 0 (3.1, H, theta_epsilon, epsilon)
+  admits a homoclinic solution for some theta_epsilon > 0. Moreover theta_epsilon -> theta(n_0, h_0) as epsilon -> 0."
+- **Theorem 4.2** (p. 357) restores m as a fast variable: if the reduced system satisfies the hypotheses of Section 2,
+  the full system "(4.1, delta) admits a heteroclinic (or homoclinic or periodic) solution for all small delta > 0";
+  p. 357: "results of Section 3 hold for (HH) with delta small whenever (3.1, H) or (3.3, H) satisfies the appropriate
+  hypotheses".
+- **Theorem 5.1(B)** (pp. 357-358): under (CUBIC, H), the firing branch of the unstable manifold of rest is unbounded
+  if theta >= theta_max, theta <= theta_min, epsilon > E, or delta >= D/epsilon; p. 337: "showing that some conditions
+  on parameter values are necessary". So large epsilon or delta can destroy the pulse; the theorems are asymptotic in
+  the small parameters, with no explicit range.
+- The paper does not check (3.1, CUBIC, H) or (3.3, HOM, H) for the 1952 functions, gives no value of epsilon or
+  delta up to which the theorems hold, and says nothing about epsilon = delta = 1 (searched for "numerical",
+  "satisf", "actual", "original", "1952", "verif", "data", "computed": only the reference list cites the 1952 paper).
+  Its method (isolating blocks, Wazewski-type shooting in the speed, continuity of the exit map of a block, Lemma 1.3)
+  is the same kind of topological argument as our closing step, applied to a singular orbit rather than to a computed
+  one.
+
+**Verdict.** Carpenter (1977) proves a pulse (a homoclinic orbit to rest of the travelling-wave system) for a class
+of generalized Hodgkin-Huxley systems defined by abstract hypotheses, with n and h slowed by a small epsilon and m
+either slaved (delta = 0, Theorem 3.4) or fast with small delta (Theorem 4.2). It does not prove the pulse of the
+unmodified equations at the 1952 rate functions and constants (epsilon = delta = 1), and it does not verify its
+hypotheses for those functions. This confirms, now first hand, the self-report of Carpenter (1979) quoted in (B), and
+it does not anticipate the computer-assisted result of the closing step. Remaining unread before a claim of priority:
+Hastings 1976 pp. 231-257, Foote and Chen 1981, Huxley 1959, Du and Hassard 2001.
+
+---
+
+## (J) Hastings 1976 and Foote-Chen 1981 through zbMATH Open, 2026-09-27
+
+The owner could not obtain Hastings 1976 (beyond the two preview pages), Foote and Chen 1981, or Evans I. What the free
+records say:
+
+- **Hastings 1976**, Zbl 0374.35004 (zbMATH Open, API record read): MSC 35B25 (singular perturbations), 35A05, 35K45;
+  **no review** (the record has no editorial contribution). MathSciNet MR402302: not reachable. What is known of its
+  content is from pp. 229-230 (PRIMARY, Springer preview, Section (A)): n and h multiplied by a small epsilon, the
+  results "for epsilon sufficiently small", and "it is not clear that our results apply to the original
+  HODGKIN-HUXLEY system". Pp. 231-257 remain unread.
+- **Foote and Chen 1981**, "Traveling wave properties of the Hodgkin-Huxley equations", Chinese J. Math. 9 (1981)
+  1-23, Zbl 0472.35048 (API record read): MSC 35K60, 35K15, 92Cxx; **no review**, no abstract, no DOI or online copy
+  found. Semantic Scholar was rate limited (HTTP 429) and was not retried. Its content is unknown.
+
+**Consequence for priority.** The claim that the closing step is the first existence proof for the unmodified 1952
+equations stays conditional: Hastings 1976 was read on pp. 229-230 only (its body not at all, and no review exists),
+Foote and Chen 1981 not at all (title and classification only), Carpenter 1977 in full. No proof step depends on these
+unread sources.
