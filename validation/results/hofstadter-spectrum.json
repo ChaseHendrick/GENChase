@@ -1,0 +1,472 @@
+{
+  "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+  "sourceSha256": "e99d92b4d9fc99bc1683236130b6132547fce22f53d60f47b8e048172fde3049",
+  "harness": "tools/hofstadter-science.js",
+  "harnessSha256": "66eea50810be08574df4900ee5e62e03221b3f8033c33ee84c455ca829bd96ec",
+  "command": "node tools/hofstadter-spectrum.js --write",
+  "scope": "Every coprime p/q with q from 1 to 56. The plate builds the Harper matrix at zero crystal momentum and diagonalizes it with symmetric QL. The reference builds that matrix by adding each site's own forward and backward hop and diagonalizes it with cyclic Jacobi. The capped Jacobi failure control is compared through q = 24, where it was already shown to miss.",
+  "roundoffGate": 1e-8,
+  "matrices": 965,
+  "maxAbsError": 3.4638958368304884e-14,
+  "through24": 1.021405182655144e-14,
+  "maxAt": {
+    "p": 1,
+    "q": 51
+  },
+  "byQ": [
+    {
+      "q": 1,
+      "matrices": 2,
+      "maxAbsError": 0,
+      "legacyMaxAbsError": 3,
+      "legacyWorstP": 0
+    },
+    {
+      "q": 2,
+      "matrices": 1,
+      "maxAbsError": 8.881784197001252e-16,
+      "legacyMaxAbsError": 0.5923591472464014,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 3,
+      "matrices": 2,
+      "maxAbsError": 8.881784197001252e-16,
+      "legacyMaxAbsError": 1.7763568394002505e-15,
+      "legacyWorstP": 2
+    },
+    {
+      "q": 4,
+      "matrices": 2,
+      "maxAbsError": 4.440892098500626e-16,
+      "legacyMaxAbsError": 4.440892098500626e-16,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 5,
+      "matrices": 4,
+      "maxAbsError": 1.7763568394002505e-15,
+      "legacyMaxAbsError": 0.0005860104964219293,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 6,
+      "matrices": 2,
+      "maxAbsError": 3.1086244689504383e-15,
+      "legacyMaxAbsError": 0.022008730580475033,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 7,
+      "matrices": 6,
+      "maxAbsError": 2.4424906541753444e-15,
+      "legacyMaxAbsError": 0.14324900926566642,
+      "legacyWorstP": 3
+    },
+    {
+      "q": 8,
+      "matrices": 4,
+      "maxAbsError": 5.329070518200751e-15,
+      "legacyMaxAbsError": 0.08705911232056218,
+      "legacyWorstP": 3
+    },
+    {
+      "q": 9,
+      "matrices": 6,
+      "maxAbsError": 4.440892098500626e-15,
+      "legacyMaxAbsError": 0.25364291469805933,
+      "legacyWorstP": 7
+    },
+    {
+      "q": 10,
+      "matrices": 4,
+      "maxAbsError": 3.552713678800501e-15,
+      "legacyMaxAbsError": 0.2492449936292882,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 11,
+      "matrices": 10,
+      "maxAbsError": 3.552713678800501e-15,
+      "legacyMaxAbsError": 0.21569575531119223,
+      "legacyWorstP": 10
+    },
+    {
+      "q": 12,
+      "matrices": 4,
+      "maxAbsError": 6.661338147750939e-15,
+      "legacyMaxAbsError": 0.3163383885350377,
+      "legacyWorstP": 11
+    },
+    {
+      "q": 13,
+      "matrices": 12,
+      "maxAbsError": 1.021405182655144e-14,
+      "legacyMaxAbsError": 0.37232709176012624,
+      "legacyWorstP": 12
+    },
+    {
+      "q": 14,
+      "matrices": 6,
+      "maxAbsError": 6.217248937900877e-15,
+      "legacyMaxAbsError": 0.3830123526262832,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 15,
+      "matrices": 8,
+      "maxAbsError": 9.769962616701378e-15,
+      "legacyMaxAbsError": 0.3791874054529525,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 16,
+      "matrices": 8,
+      "maxAbsError": 4.052314039881821e-15,
+      "legacyMaxAbsError": 0.3353398368820626,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 17,
+      "matrices": 16,
+      "maxAbsError": 7.993605777301127e-15,
+      "legacyMaxAbsError": 0.4408650835100225,
+      "legacyWorstP": 13
+    },
+    {
+      "q": 18,
+      "matrices": 6,
+      "maxAbsError": 4.884981308350689e-15,
+      "legacyMaxAbsError": 0.3274752228329887,
+      "legacyWorstP": 17
+    },
+    {
+      "q": 19,
+      "matrices": 18,
+      "maxAbsError": 8.881784197001252e-15,
+      "legacyMaxAbsError": 0.42663814248136456,
+      "legacyWorstP": 2
+    },
+    {
+      "q": 20,
+      "matrices": 8,
+      "maxAbsError": 6.661338147750939e-15,
+      "legacyMaxAbsError": 0.3390503334057253,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 21,
+      "matrices": 12,
+      "maxAbsError": 8.43769498715119e-15,
+      "legacyMaxAbsError": 0.5015127611813051,
+      "legacyWorstP": 5
+    },
+    {
+      "q": 22,
+      "matrices": 10,
+      "maxAbsError": 8.43769498715119e-15,
+      "legacyMaxAbsError": 0.38155920628214735,
+      "legacyWorstP": 21
+    },
+    {
+      "q": 23,
+      "matrices": 22,
+      "maxAbsError": 6.661338147750939e-15,
+      "legacyMaxAbsError": 0.5211528407365744,
+      "legacyWorstP": 1
+    },
+    {
+      "q": 24,
+      "matrices": 8,
+      "maxAbsError": 5.773159728050814e-15,
+      "legacyMaxAbsError": 0.372124943363753,
+      "legacyWorstP": 13
+    },
+    {
+      "q": 25,
+      "matrices": 20,
+      "maxAbsError": 9.769962616701378e-15,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 26,
+      "matrices": 12,
+      "maxAbsError": 1.021405182655144e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 27,
+      "matrices": 18,
+      "maxAbsError": 1.4210854715202004e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 28,
+      "matrices": 12,
+      "maxAbsError": 7.549516567451064e-15,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 29,
+      "matrices": 28,
+      "maxAbsError": 1.3766765505351941e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 30,
+      "matrices": 8,
+      "maxAbsError": 2.0872192862952943e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 31,
+      "matrices": 30,
+      "maxAbsError": 1.3322676295501878e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 32,
+      "matrices": 16,
+      "maxAbsError": 1.2434497875801753e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 33,
+      "matrices": 20,
+      "maxAbsError": 1.509903313490213e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 34,
+      "matrices": 16,
+      "maxAbsError": 1.2434497875801753e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 35,
+      "matrices": 24,
+      "maxAbsError": 2.3092638912203256e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 36,
+      "matrices": 12,
+      "maxAbsError": 1.509903313490213e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 37,
+      "matrices": 36,
+      "maxAbsError": 1.5987211554602254e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 38,
+      "matrices": 18,
+      "maxAbsError": 1.2878587085651816e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 39,
+      "matrices": 24,
+      "maxAbsError": 1.3766765505351941e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 40,
+      "matrices": 16,
+      "maxAbsError": 1.3322676295501878e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 41,
+      "matrices": 40,
+      "maxAbsError": 1.865174681370263e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 42,
+      "matrices": 12,
+      "maxAbsError": 1.4210854715202004e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 43,
+      "matrices": 42,
+      "maxAbsError": 1.4654943925052066e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 44,
+      "matrices": 20,
+      "maxAbsError": 1.509903313490213e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 45,
+      "matrices": 24,
+      "maxAbsError": 1.8207657603852567e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 46,
+      "matrices": 22,
+      "maxAbsError": 2.042810365310288e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 47,
+      "matrices": 46,
+      "maxAbsError": 1.4654943925052066e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 48,
+      "matrices": 16,
+      "maxAbsError": 1.2878587085651816e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 49,
+      "matrices": 42,
+      "maxAbsError": 2.708944180085382e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 50,
+      "matrices": 20,
+      "maxAbsError": 1.9095836023552692e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 51,
+      "matrices": 32,
+      "maxAbsError": 3.4638958368304884e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 52,
+      "matrices": 24,
+      "maxAbsError": 1.6431300764452317e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 53,
+      "matrices": 52,
+      "maxAbsError": 1.8207657603852567e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 54,
+      "matrices": 18,
+      "maxAbsError": 3.375077994860476e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 55,
+      "matrices": 40,
+      "maxAbsError": 2.1760371282653068e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    },
+    {
+      "q": 56,
+      "matrices": 24,
+      "maxAbsError": 1.3766765505351941e-14,
+      "legacyMaxAbsError": null,
+      "legacyWorstP": null
+    }
+  ],
+  "closedForms": {
+    "q1": {
+      "plate": 4,
+      "legacy": 1,
+      "reference": 4,
+      "legacyAbsError": 3
+    },
+    "q2": {
+      "plate": [
+        -2.8284271247461894,
+        2.8284271247461903
+      ],
+      "legacy": [
+        -2.2360679774997894,
+        2.236067977499789
+      ],
+      "reference": [
+        -2.8284271247461903,
+        2.8284271247461903
+      ],
+      "legacyAbsError": 0.5923591472464014
+    }
+  },
+  "failureControls": {
+    "cappedJacobiAndOldMatrix": {
+      "q1AbsError": 3,
+      "q2AbsError": 0.5923591472464014,
+      "q7AbsError": 0.14324900926566642,
+      "q7WorstP": 3,
+      "legacyMaxAbsError": 3,
+      "legacyAt": {
+        "p": 0,
+        "q": 1,
+        "legErr": 3
+      }
+    },
+    "cappedJacobiOnCorrectMatrix": {
+      "q": 7,
+      "p": 3,
+      "absError": 0.14324900926566642
+    },
+    "wrongFlux": {
+      "plate": "2/7",
+      "reference": "1/7",
+      "absError": 0.7724176951171127
+    },
+    "allMissedRoundoffGate": true
+  },
+  "q1": {
+    "maxAbsError": 0,
+    "legacyMaxAbsError": 3
+  },
+  "q2": {
+    "maxAbsError": 8.881784197001252e-16,
+    "legacyMaxAbsError": 0.5923591472464014
+  },
+  "q7": {
+    "maxAbsError": 2.4424906541753444e-15,
+    "legacyMaxAbsError": 0.14324900926566642,
+    "legacyWorstP": 3
+  },
+  "elapsedMs": 1522
+}

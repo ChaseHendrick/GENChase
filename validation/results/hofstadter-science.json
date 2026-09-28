@@ -2,41 +2,47 @@
   "tool": "tools/hofstadter-science.js",
   "reviewed": "2026-09-27",
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+  "sourceSha256": "e99d92b4d9fc99bc1683236130b6132547fce22f53d60f47b8e048172fde3049",
   "node": "v22.23.3",
   "claim": "Independent Harper matrix, TKNN gap integers, and Fukui-Hatsugai-Suzuki band Chern numbers. Not a laboratory quantum Hall measurement.",
   "hamiltonian": "H_j = ψ_{j+1} + ψ_{j-1} + 2 cos(φ + 2π p j / q) ψ_j, with ψ_{n+q} = exp(-i θ) ψ_n. The wrap adds, so q = 2 has off-diagonal 1 + exp(-i θ). θ, φ in [0, 2π). This boundary sign is the one whose lattice Chern numbers match TKNN.",
-  "plate": "The module builds one real q by q matrix per coprime p/q, with diagonal 2 cos(2π p i / q) and off-diagonal 1, including the corner. That is the θ = φ = 0 Harper matrix only for q >= 3. q = 1 overwrites the diagonal (eigenvalue 1 instead of 4). q = 2 stores 1 instead of 1 + 1 (eigenvalues ±√5 instead of ±2√2). jacobiEV stops after min(60, 8 + q) pivots.",
+  "plate": "The module diagonalizes one real q by q Harper matrix per coprime p/q with symmetric QL. Both hops are added, so q = 1 is E = 4 and q = 2 is ±2√2. Recipes older than v8 keep jacobiCapped on the overwritten matrix: q = 1 returns 1, q = 2 returns ±√5, and the diagonal is still off the spectrum for q at least 7.",
   "coloring": "Each sorted eigenvalue index r (0 at the bottom) is painted with the TKNN integer t_r of the gap with r bands filled, smallest |t_r| and negative on a tie. That is the gap below the eigenvalue, not the Chern number of the band and not the gap above it. The source comment says \"gap above\". Neighboring pixels that only receive the 0.4 density smear are painted as Hall integer 0.",
   "solverErrorByQ": {
     "1": 0,
-    "2": 0,
-    "3": 0,
+    "2": 4.440892098500626e-16,
+    "3": 2.6645352591003757e-15,
     "4": 1.7763568394002505e-15,
-    "5": 0.0005860104964221513,
-    "6": 0.02200873058047481,
-    "7": 0.1432490092656682,
-    "8": 0.0870591123205613,
-    "9": 0.25364291469806033,
-    "10": 0.2492449936292882,
-    "11": 0.21569575531119423,
-    "12": 0.31633838853504126
+    "5": 3.9968028886505635e-15,
+    "6": 2.6645352591003757e-15,
+    "7": 7.993605777301127e-15,
+    "8": 4.884981308350689e-15,
+    "9": 7.549516567451064e-15,
+    "10": 6.661338147750939e-15,
+    "11": 1.2434497875801753e-14,
+    "12": 1.021405182655144e-14
   },
   "solver": {
-    "maxAbsErrorQAtMost4": 1.7763568394002505e-15,
-    "maxAbsErrorQ8": 0.0870591123205613,
+    "maxAbsErrorQAtMost12": 1.2434497875801753e-14,
+    "legacyMaxAbsErrorQAtMost4": 1.7763568394002505e-15,
+    "legacyMaxAbsErrorQ8": 0.0870591123205613,
     "q2Plate": [
-      -2.2360679774997894,
-      2.236067977499789
+      -2.8284271247461894,
+      2.8284271247461903
     ],
     "q2Harper": [
       -2.82842712474619,
       2.82842712474619
     ],
-    "q1Plate": 1,
+    "q2Legacy": [
+      -2.2360679774997894,
+      2.236067977499789
+    ],
+    "q1Plate": 4,
     "q1Harper": 4,
-    "alphaSymmetryPlateMaxAbsQ16": 0.3167411412447163,
-    "alphaSymmetryPlateMaxAbsQAtMost4": 8.881784197001252e-16
+    "q1Legacy": 1,
+    "alphaSymmetryPlateMaxAbsQ16": 9.325873406851315e-15,
+    "alphaSymmetryLegacyMaxAbsQ16": 0.3167411412447163
   },
   "blochSymmetry": {
     "eToMinusE": 3.1086244689504383e-15,
@@ -427,7 +433,7 @@
     }
   ],
   "limits": [
-    "Spectral positions of the plate match a converged diagonalization only for q <= 4 (absolute error below 1e-9). At q = 8 the capped Jacobi is already off by more than 0.01, and from q = 7 it mis-orders eigenvalues, so every legal plate (Q >= 8) paints some Chern integers at the wrong energy.",
+    "The default plate matches a converged diagonalization for every coprime p/q with q <= 12 (absolute error below 1e-9). The capped Jacobi kept for recipes older than v8 is already off by more than 0.01 at q = 8.",
     "The picture is the θ = φ = 0 slice, q points per rational, not the filled magnetic bands.",
     "No disorder, no interactions, no edge transport, and no laboratory quantum Hall datum."
   ]

@@ -325,42 +325,168 @@ void main(){
 
 
   /* ==================== Hofstadter butterfly ==================== */
+  // tools/hofstadter-science.js loads the builders and solvers below.
   function gcd(a,b){ a=Math.abs(a)|0; b=Math.abs(b)|0; while(b){ const t=a%b; a=b; b=t; } return a; }
-  function jacobiEV(A, n) {
-    const maxIter = Math.min(60, 8 + n);
-    for (let it=0; it<maxIter; it++) {
-      let mx=0, p=0, q=1;
-      for (let i=0;i<n;i++) for (let j=i+1;j<n;j++) {
-        const v = Math.abs(A[i*n+j]);
-        if (v>mx) { mx=v; p=i; q=j; }
+  function pythag(a, b) {
+    const x = Math.abs(a), y = Math.abs(b);
+    if (x > y) { const r = y / x; return x * Math.sqrt(1 + r * r); }
+    if (y === 0) return 0;
+    const r = x / y; return y * Math.sqrt(1 + r * r);
+  }
+  // Eigenvalues of a real symmetric row-major matrix, ascending. Householder
+  // tridiagonalization and implicit QL (EISPACK tred2 and tql2, eigenvalues only),
+  // iterated until the subdiagonal is at round-off. Only + - * / and Math.sqrt.
+  function symmetricEV(A, n) {
+    const V = Float64Array.from(A);
+    const d = new Float64Array(n);
+    const e = new Float64Array(n);
+    for (let j = 0; j < n; j++) d[j] = V[(n - 1) * n + j];
+    for (let i = n - 1; i > 0; i--) {
+      let scale = 0, h = 0;
+      for (let k = 0; k < i; k++) scale += Math.abs(d[k]);
+      if (scale === 0) {
+        e[i] = d[i - 1];
+        for (let j = 0; j < i; j++) { d[j] = V[(i - 1) * n + j]; V[i * n + j] = 0; V[j * n + i] = 0; }
+      } else {
+        for (let k = 0; k < i; k++) { d[k] /= scale; h += d[k] * d[k]; }
+        let f = d[i - 1], g = Math.sqrt(h);
+        if (f > 0) g = -g;
+        e[i] = scale * g; h -= f * g; d[i - 1] = f - g;
+        for (let j = 0; j < i; j++) e[j] = 0;
+        for (let j = 0; j < i; j++) {
+          f = d[j]; V[j * n + i] = f; g = e[j] + V[j * n + j] * f;
+          for (let k = j + 1; k <= i - 1; k++) { g += V[k * n + j] * d[k]; e[k] += V[k * n + j] * f; }
+          e[j] = g;
+        }
+        f = 0;
+        for (let j = 0; j < i; j++) { e[j] /= h; f += e[j] * d[j]; }
+        const hh = f / (h + h);
+        for (let j = 0; j < i; j++) e[j] -= hh * d[j];
+        for (let j = 0; j < i; j++) {
+          f = d[j]; g = e[j];
+          for (let k = j; k <= i - 1; k++) V[k * n + j] -= f * e[k] + g * d[k];
+          d[j] = V[(i - 1) * n + j]; V[i * n + j] = 0;
+        }
       }
-      if (mx < 1e-9) break;
-      const app=A[p*n+p], aqq=A[q*n+q], apq=A[p*n+q];
-      const tau = (aqq-app) / (2*apq);
-      const t = (tau>=0?1:-1) / (Math.abs(tau) + Math.sqrt(1+tau*tau));
-      const c = 1/Math.sqrt(1+t*t), s = t*c;
-      for (let k=0;k<n;k++) {
-        if (k===p || k===q) continue;
-        const aik=A[p*n+k], aqk=A[q*n+k];
-        A[p*n+k]=A[k*n+p]= c*aik - s*aqk;
-        A[q*n+k]=A[k*n+q]= s*aik + c*aqk;
-      }
-      A[p*n+p] = c*c*app - 2*s*c*apq + s*s*aqq;
-      A[q*n+q] = s*s*app + 2*s*c*apq + c*c*aqq;
-      A[p*n+q]=A[q*n+p]=0;
+      d[i] = h;
     }
-    const ev = new Float64Array(n);
-    for (let i=0;i<n;i++) ev[i]=A[i*n+i];
-    return ev;
+    for (let i = 0; i < n - 1; i++) {
+      V[(n - 1) * n + i] = V[i * n + i]; V[i * n + i] = 1;
+      const h = d[i + 1];
+      if (h !== 0) {
+        for (let k = 0; k <= i; k++) d[k] = V[k * n + i + 1] / h;
+        for (let j = 0; j <= i; j++) {
+          let g = 0;
+          for (let k = 0; k <= i; k++) g += V[k * n + i + 1] * V[k * n + j];
+          for (let k = 0; k <= i; k++) V[k * n + j] -= g * d[k];
+        }
+      }
+      for (let k = 0; k <= i; k++) V[k * n + i + 1] = 0;
+    }
+    for (let j = 0; j < n; j++) { d[j] = V[(n - 1) * n + j]; V[(n - 1) * n + j] = 0; }
+    V[(n - 1) * n + n - 1] = 1;
+    e[0] = 0;
+    for (let i = 1; i < n; i++) e[i - 1] = e[i];
+    e[n - 1] = 0;
+    let f = 0, tst1 = 0;
+    const eps = Number.EPSILON;
+    for (let l = 0; l < n; l++) {
+      tst1 = Math.max(tst1, Math.abs(d[l]) + Math.abs(e[l]));
+      let m = l;
+      while (m < n) { if (Math.abs(e[m]) <= eps * tst1) break; m++; }
+      if (m > l) {
+        let iter = 0;
+        do {
+          if (++iter > 60) throw new Error('Hofstadter QL did not converge');
+          let g = d[l];
+          let p = (d[l + 1] - g) / (2 * e[l]);
+          let r = pythag(p, 1);
+          if (p < 0) r = -r;
+          d[l] = e[l] / (p + r);
+          d[l + 1] = e[l] * (p + r);
+          const dl1 = d[l + 1];
+          let h = g - d[l];
+          for (let i = l + 2; i < n; i++) d[i] -= h;
+          f += h;
+          p = d[m];
+          let c = 1, c2 = c, c3 = c, s = 0, s2 = 0;
+          const el1 = e[l + 1];
+          for (let i = m - 1; i >= l; i--) {
+            c3 = c2; c2 = c; s2 = s;
+            g = c * e[i]; h = c * p;
+            r = pythag(p, e[i]);
+            e[i + 1] = s * r;
+            s = e[i] / r; c = p / r;
+            p = c * d[i] - s * g;
+            d[i + 1] = h + s * (c * g + s * d[i]);
+          }
+          p = -s * s2 * c3 * el1 * e[l] / dl1;
+          e[l] = s * p; d[l] = c * p;
+        } while (Math.abs(e[l]) > eps * tst1);
+      }
+      d[l] += f; e[l] = 0;
+    }
+    d.sort((a, b) => a - b);
+    return d;
+  }
+  // Harper matrix at flux p/q and zero crystal momentum. Each forward hop is added
+  // together with its conjugate, so a one-site cell (both hops land on the site)
+  // has diagonal 2 cos + 2, and a two-site cell has off-diagonal 2.
+  function harperMatrix(p, q) {
+    const n = q, A = new Float64Array(n * n);
+    for (let i = 0; i < n; i++) {
+      A[i * n + i] = 2 * Math.cos(TAU * p * i / q);
+      const j = (i + 1) % n;
+      A[i * n + j] += 1;
+      A[j * n + i] += 1;
+    }
+    return A;
   }
   function harperEV(p, q) {
-    const n = q, A = new Float64Array(n*n);
-    for (let i=0;i<n;i++) {
-      A[i*n+i] = 2 * Math.cos(TAU * p * i / q);
-      const j = (i+1)%n;
-      A[i*n+j] = 1; A[j*n+i] = 1;
+    return symmetricEV(harperMatrix(p, q), q);
+  }
+  // What recipes made before recipe v7 diagonalized. The hop is assigned, not added,
+  // so q = 1 overwrites the diagonal and q = 2 leaves the off-diagonal at 1.
+  // Jacobi then stops after min(60, 8+q) rotations of the largest pair, which is
+  // not a converged sweep: for q at least 7 the diagonal is still off the spectrum.
+  function harperMatrixLegacy(p, q) {
+    const n = q, A = new Float64Array(n * n);
+    for (let i = 0; i < n; i++) {
+      A[i * n + i] = 2 * Math.cos(TAU * p * i / q);
+      const j = (i + 1) % n;
+      A[i * n + j] = 1; A[j * n + i] = 1;
     }
-    return jacobiEV(A, n);
+    return A;
+  }
+  function jacobiCapped(A, n) {
+    const maxIter = Math.min(60, 8 + n);
+    for (let it = 0; it < maxIter; it++) {
+      let mx = 0, p = 0, q = 1;
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+        const v = Math.abs(A[i * n + j]);
+        if (v > mx) { mx = v; p = i; q = j; }
+      }
+      if (mx < 1e-9) break;
+      const app = A[p * n + p], aqq = A[q * n + q], apq = A[p * n + q];
+      const tau = (aqq - app) / (2 * apq);
+      const t = (tau >= 0 ? 1 : -1) / (Math.abs(tau) + Math.sqrt(1 + tau * tau));
+      const c = 1 / Math.sqrt(1 + t * t), s = t * c;
+      for (let k = 0; k < n; k++) {
+        if (k === p || k === q) continue;
+        const aik = A[p * n + k], aqk = A[q * n + k];
+        A[p * n + k] = A[k * n + p] = c * aik - s * aqk;
+        A[q * n + k] = A[k * n + q] = s * aik + c * aqk;
+      }
+      A[p * n + p] = c * c * app - 2 * s * c * apq + s * s * aqq;
+      A[q * n + q] = s * s * app + 2 * s * c * apq + c * c * aqq;
+      A[p * n + q] = A[q * n + p] = 0;
+    }
+    const ev = new Float64Array(n);
+    for (let i = 0; i < n; i++) ev[i] = A[i * n + i];
+    return ev;
+  }
+  function harperLegacy(p, q) {
+    return jacobiCapped(harperMatrixLegacy(p, q), q);
   }
   Studio.register({
     id: 'hofstadter',
@@ -370,10 +496,13 @@ void main(){
     order: 92,
     equation: 'ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ',
     credit: "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
-    blurb: 'A lattice, a magnetic field, and nothing else. Plot energy against flux and a butterfly appears, identical at every scale. Each wing is a gap, each gap a Chern number, the integer quantum Hall effect written as a moth. Rational fluxes give finite matrices; the irrationals, a Cantor spectrum. This plate diagonalizes the Harper operator at every coprime p/q up to a cutoff and lays the eigenvalues down as density.',
+    blurb: 'A lattice, a magnetic field, and nothing else. Plot energy against flux and a butterfly appears, identical at every scale. Each wing is a gap, each gap a Chern number, the integer quantum Hall effect written as a moth. Rational fluxes give finite matrices; the irrationals, a Cantor spectrum. This plate diagonalizes the Harper operator at every coprime p/q up to a cutoff and lays the eigenvalues down as density. From recipe v8 that diagonalization is a symmetric QL run to convergence, and a one-site or two-site cell counts both hops. A link from before v8 keeps the capped Jacobi solver and reprints the plate it was made as.',
     schema: [
       { group: 'Spectrum', key: 'Q', label: 'Max denominator q', type: 'range', kind: GEOM, min: 12, max: 48, step: 1, fmt: String,
         hint: 'Every coprime p/q with q≤Q is diagonalized. 36 is a fine butterfly; 48 is denser and slower.' },
+      { group: 'Spectrum', key: 'solver', label: 'Solver', type: 'seg', kind: GEOM,
+        options: [['ql', 'Symmetric QL'], ['capped', 'Capped Jacobi']],
+        hint: 'Symmetric QL is Householder reduction plus implicit QL, iterated to round-off. Capped Jacobi is the solver recipes made before recipe v8 used: at most min(60, 8+q) rotations, and the q = 1 and q = 2 matrices overwrite a hop instead of adding it. Flux 0 then sits at energy 1 rather than 4, flux 1/2 at plus or minus sqrt(5) rather than plus or minus 2 sqrt(2), and for q at least 7 the energies are off by tenths, so the Chern colors sit on the wrong rows. Old links keep it so they reprint.' },
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['density','Density'],['chern','Chern']] },
       { group: 'Picture', key: 'tone', label: 'Tone', type: 'seg', kind: PAINT, options: [['log','Log'],['power','Linear']] },
       { group: 'Picture', key: 'exposure', label: 'Exposure', type: 'range', kind: PAINT, min: 0.4, max: 2.4, step: 0.05, fmt: f2 },
@@ -381,14 +510,16 @@ void main(){
       { group: 'Picture', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1','1:1'],['4:5','4:5'],['5:4','5:4']] },
       { group: 'Picture', key: 'grain', label: 'Grain', type: 'range', kind: PAINT, min: 0, max: 0.4, step: 0.02, fmt: pct },
     ],
-    defaults: { Q: 32, view: 'density', tone: 'log', exposure: 1.2, gamma: 0.9, aspect: '1:1', grain: 0.04, seed: 'hofstadter-1976' },
+    defaults: { Q: 32, solver: 'ql', view: 'density', tone: 'log', exposure: 1.2, gamma: 0.9, aspect: '1:1', grain: 0.04, seed: 'hofstadter-1976' },
     presets: {
       classic: pre('Classic', { Q: 36, view: 'density' }, Pal.xray),
       chern: pre('Chern color', { Q: 28, view: 'chern' }, Pal.thermal),
       fine: pre('Fine q=44', { Q: 44, view: 'density' }, Pal.graphite),
       ink: pre('Ink', { Q: 32, view: 'density', exposure: 1.4 }, Pal.ember),
     },
-    hints: { Spectrum: 'q is resolution. The last golden-mean flux is the most broken wing. Chern colors the gaps by the Hall integer of the band below.' },
+    // Recipes older than v8 were made with the capped Jacobi path, including the overwritten q = 1 and q = 2 hops. They keep it, so they reprint.
+    legacy: { 8: { solver: 'capped' } },
+    hints: { Spectrum: 'q is resolution. The last golden-mean flux is the most broken wing. Chern colors the gaps by the Hall integer of the band below. Capped Jacobi is the unconverged solver from before recipe v8; it reprints an old link and it is not the spectrum.' },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors',
     headline: 'Q', headlineLabel: 'max q',
     sanitize(s){ s.Q = U.clamp(Math.round(Number(s.Q)||32), 8, 56); },
@@ -409,7 +540,7 @@ void main(){
             }
             if (q>1 && gcd(p,q)!==1) continue;
             let ev;
-            try { ev = harperEV(p, q); } catch (e) { continue; }
+            try { ev = (s.solver === 'capped' ? harperLegacy : harperEV)(p, q); } catch (e) { continue; }
             const sorted = Array.from(ev).sort((a,b)=>a-b);
             const a = p/q;
             for (let r=0;r<sorted.length;r++) {
@@ -461,7 +592,8 @@ void main(){
           const s=host.getState();
           host.setStatus('<span>diagonalizing Harper matrices…</span>');
           rebuild(s); draw();
-          host.setStatus('<span>q ≤ <b>'+s.Q+'</b></span><span>eigenvalues <b>'+nEV.toLocaleString()+'</b></span>');
+          const how = s.solver === 'capped' ? 'capped Jacobi, unconverged' : 'symmetric QL';
+          host.setStatus('<span>q ≤ <b>'+s.Q+'</b></span><span>eigenvalues <b>'+nEV.toLocaleString()+'</b></span><span>'+how+'</span>');
         },
         repaint(){ draw(); },
         resize(){ draw(); },

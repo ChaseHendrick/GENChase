@@ -2760,7 +2760,7 @@
       "subtitle": "almost-Mathieu spectrum · 1976",
       "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
       "credit": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
-      "blurb": "A lattice, a magnetic field, and nothing else. Plot energy against flux and a butterfly appears, identical at every scale. Each wing is a gap, each gap a Chern number, the integer quantum Hall effect written as a moth. Rational fluxes give finite matrices; the irrationals, a Cantor spectrum. This plate diagonalizes the Harper operator at every coprime p/q up to a cutoff and lays the eigenvalues down as density.",
+      "blurb": "A lattice, a magnetic field, and nothing else. Plot energy against flux and a butterfly appears, identical at every scale. Each wing is a gap, each gap a Chern number, the integer quantum Hall effect written as a moth. Rational fluxes give finite matrices; the irrationals, a Cantor spectrum. This plate diagonalizes the Harper operator at every coprime p/q up to a cutoff and lays the eigenvalues down as density. From recipe v8 that diagonalization is a symmetric QL run to convergence, and a one-site or two-site cell counts both hops. A link from before v8 keeps the capped Jacobi solver and reprints the plate it was made as.",
       "order": 92,
       "seed": "hofstadter-1976",
       "presets": [

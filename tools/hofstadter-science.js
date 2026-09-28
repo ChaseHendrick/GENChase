@@ -25,14 +25,8 @@ const fnEnd = source.indexOf("  Studio.register({\n    id: 'hofstadter'");
 if (fnStart < 0 || fnEnd < fnStart) throw Error('Hofstadter helpers not found in the module');
 const sandbox = { TAU: 2 * Math.PI, Float64Array, Math };
 vm.createContext(sandbox);
-vm.runInContext(source.slice(fnStart, fnEnd) + '\nthis.harperEV = harperEV;\nthis.jacobiEV = jacobiEV;\n', sandbox);
-const { harperEV, jacobiEV } = sandbox;
-
-const matrixAt = source.indexOf('const n = q, A = new Float64Array(n*n);');
-const matrixEnd = source.indexOf('return jacobiEV(A, n);', matrixAt);
-if (matrixAt < 0 || matrixEnd < 0) throw Error('Harper matrix fill not found');
-const moduleMatrix = new Function('p', 'q', 'TAU', 'Float64Array', 'Math',
-  source.slice(matrixAt, matrixEnd) + '\nreturn A;');
+vm.runInContext(source.slice(fnStart, fnEnd) + '\nthis.harperEV = harperEV;\nthis.jacobiEV = jacobiCapped;\nthis.harperLegacy = harperLegacy;\nthis.harperMatrix = harperMatrix;\nthis.harperMatrixLegacy = harperMatrixLegacy;\n', sandbox);
+const { harperEV, jacobiEV, harperLegacy, harperMatrix, harperMatrixLegacy } = sandbox;
 
 const colorAt = source.indexOf('// Chern of gap above band r: r ≡ p C (mod q), smallest |C|');
 const colorEnd = source.indexOf('chern[iy*W+ix] += C;', colorAt);
@@ -299,48 +293,64 @@ function run() {
   const failures = [];
   const check = (ok, why) => { if (!ok) failures.push(why); };
 
-  // Solver versus a converged Jacobi of the matrix the module actually builds.
+  // Default solver versus a converged Jacobi of the matrix the module builds.
   const solverByQ = {};
-  let solverWorstQ4 = 0, solverWorstQ8 = 0;
+  let solverWorst = 0;
   for (const [p, q] of coprimePairs(12)) {
-    const built = moduleMatrix(p, q, 2 * Math.PI, Float64Array, Math);
-    const mod = Array.from(jacobiEV(Float64Array.from(built), q)).sort((a, b) => a - b);
+    const built = harperMatrix(p, q);
+    const mod = Array.from(harperEV(p, q)).sort((a, b) => a - b);
     const ref = convergedJacobi(built, q);
     check(ref.off < 1e-12, 'Reference Jacobi did not converge at ' + p + '/' + q);
     check(mod.length === q && ref.ev.length === q, 'Band count is not q at ' + p + '/' + q);
     const d = maxAbsDiff(mod, ref.ev);
     if (!solverByQ[q] || d > solverByQ[q]) solverByQ[q] = d;
-    if (q <= 4) solverWorstQ4 = Math.max(solverWorstQ4, d);
-    if (q === 8) solverWorstQ8 = Math.max(solverWorstQ8, d);
+    solverWorst = Math.max(solverWorst, d);
   }
-  check(solverWorstQ4 < 1e-9, 'Capped Jacobi should match a converged Jacobi for q <= 4, worst ' + solverWorstQ4);
-  check(solverWorstQ8 > 1e-2, 'Capped Jacobi at q = 8 should still be visibly unconverged, worst ' + solverWorstQ8);
+  check(solverWorst < 1e-9, 'Symmetric QL should match a converged Jacobi for q <= 12, worst ' + solverWorst);
+
+  // The old path, kept so recipes from before recipe v8 reprint. It is not the spectrum.
+  let legacyWorstQ4 = 0, legacyWorstQ8 = 0;
+  for (const [p, q] of coprimePairs(12)) {
+    const built = harperMatrixLegacy(p, q);
+    const mod = Array.from(jacobiEV(Float64Array.from(built), q)).sort((a, b) => a - b);
+    const ref = convergedJacobi(built, q);
+    const d = maxAbsDiff(mod, ref.ev);
+    if (q <= 4) legacyWorstQ4 = Math.max(legacyWorstQ4, d);
+    if (q === 8) legacyWorstQ8 = Math.max(legacyWorstQ8, d);
+  }
+  check(legacyWorstQ4 < 1e-9, 'Capped Jacobi should match a converged Jacobi for q <= 4, worst ' + legacyWorstQ4);
+  check(legacyWorstQ8 > 1e-2, 'Capped Jacobi at q = 8 should still be visibly unconverged, worst ' + legacyWorstQ8);
 
   // Operator versus the Bloch Hamiltonian at θ = φ = 0.
   const q2mod = sortedModule(1, 2);
   const q2ref = Array.from(harper(1, 2, 0, 0, 'tknn').ev);
+  const q2legacy = Array.from(harperLegacy(1, 2)).sort((a, b) => a - b);
   const q3mod = sortedModule(1, 3);
   const q3ref = Array.from(harper(1, 3, 0, 0, 'tknn').ev);
   const q1mod = sortedModule(0, 1);
   const q1ref = Array.from(harper(0, 1, 0, 0, 'tknn').ev);
+  const q1legacy = Array.from(harperLegacy(0, 1));
   check(Math.abs(q2ref[1] - 2 * Math.SQRT2) < 1e-9, 'α = 1/2 band edge should be 2√2, got ' + q2ref[1]);
-  check(Math.abs(q2mod[1] - Math.sqrt(5)) < 1e-9, 'Plate α = 1/2 eigenvalue should be √5 (wrong matrix), got ' + q2mod[1]);
-  check(Math.abs(q2mod[1] - q2ref[1]) > 0.5, 'Plate q = 2 matrix should disagree with the Harper wrap');
+  check(Math.abs(q2mod[1] - 2 * Math.SQRT2) < 1e-9, 'Plate α = 1/2 eigenvalue should be 2√2, got ' + q2mod[1]);
+  check(maxAbsDiff(q2mod, q2ref) < 1e-9, 'Plate q = 2 should match the Harper wrap');
+  check(Math.abs(q2legacy[1] - Math.sqrt(5)) < 1e-9, 'Legacy α = 1/2 should stay at √5, got ' + q2legacy[1]);
   check(maxAbsDiff(q3mod, q3ref) < 1e-12, 'Plate q = 3 θ = 0 slice should match the Harper matrix');
   check(Math.abs(q1ref[0] - 4) < 1e-12, 'α = 0, θ = φ = 0 should be E = 4');
-  check(Math.abs(q1mod[0] - 1) < 1e-12, 'Plate q = 1 overwrites the diagonal and returns 1');
+  check(Math.abs(q1mod[0] - 4) < 1e-12, 'Plate q = 1 should be 4, got ' + q1mod[0]);
+  check(Math.abs(q1legacy[0] - 1) < 1e-12, 'Legacy q = 1 should stay at 1, got ' + q1legacy[0]);
   check(mirrorErr(q3mod) > 0.5, 'The plate θ = 0 slice at q = 3 is not symmetric under E -> -E');
   check(mirrorErr(sortedModule(1, 4)) < 1e-9, 'The plate θ = 0 slice at q = 4 is symmetric under E -> -E');
 
-  let alphaWorst = 0, alphaWorstSmall = 0;
+  let alphaWorst = 0, legacyAlpha = 0;
   for (const [p, q] of coprimePairs(16)) {
     if (p > q - p) continue;
-    const d = maxAbsDiff(sortedModule(p, q), sortedModule(q - p, q));
-    alphaWorst = Math.max(alphaWorst, d);
-    if (q <= 4) alphaWorstSmall = Math.max(alphaWorstSmall, d);
+    alphaWorst = Math.max(alphaWorst, maxAbsDiff(sortedModule(p, q), sortedModule(q - p, q)));
+    legacyAlpha = Math.max(legacyAlpha, maxAbsDiff(
+      Array.from(harperLegacy(p, q)).sort((a, b) => a - b),
+      Array.from(harperLegacy(q - p, q)).sort((a, b) => a - b)));
   }
-  check(alphaWorstSmall < 1e-9, 'Plate spectra at α and 1 - α should agree for q <= 4, worst ' + alphaWorstSmall);
-  check(alphaWorst > 1e-3, 'Unconverged Jacobi should break α -> 1 - α on the plate by q = 16, worst ' + alphaWorst);
+  check(alphaWorst < 1e-9, 'Plate spectra at α and 1 - α should agree, worst ' + alphaWorst);
+  check(legacyAlpha > 1e-3, 'Capped Jacobi should still break α -> 1 - α by q = 16, worst ' + legacyAlpha);
 
   // Symmetries of the Bloch Hamiltonian, not of the single phase the plate draws.
   let eSym = 0, aSym = 0, resid = 0;
@@ -449,18 +459,21 @@ function run() {
     node: process.version,
     claim: 'Independent Harper matrix, TKNN gap integers, and Fukui-Hatsugai-Suzuki band Chern numbers. Not a laboratory quantum Hall measurement.',
     hamiltonian: 'H_j = ψ_{j+1} + ψ_{j-1} + 2 cos(φ + 2π p j / q) ψ_j, with ψ_{n+q} = exp(-i θ) ψ_n. The wrap adds, so q = 2 has off-diagonal 1 + exp(-i θ). θ, φ in [0, 2π). This boundary sign is the one whose lattice Chern numbers match TKNN.',
-    plate: 'The module builds one real q by q matrix per coprime p/q, with diagonal 2 cos(2π p i / q) and off-diagonal 1, including the corner. That is the θ = φ = 0 Harper matrix only for q >= 3. q = 1 overwrites the diagonal (eigenvalue 1 instead of 4). q = 2 stores 1 instead of 1 + 1 (eigenvalues ±√5 instead of ±2√2). jacobiEV stops after min(60, 8 + q) pivots.',
+    plate: 'The module diagonalizes one real q by q Harper matrix per coprime p/q with symmetric QL. Both hops are added, so q = 1 is E = 4 and q = 2 is ±2√2. Recipes older than v8 keep jacobiCapped on the overwritten matrix: q = 1 returns 1, q = 2 returns ±√5, and the diagonal is still off the spectrum for q at least 7.',
     coloring: 'Each sorted eigenvalue index r (0 at the bottom) is painted with the TKNN integer t_r of the gap with r bands filled, smallest |t_r| and negative on a tie. That is the gap below the eigenvalue, not the Chern number of the band and not the gap above it. The source comment says "gap above". Neighboring pixels that only receive the 0.4 density smear are painted as Hall integer 0.',
     solverErrorByQ: solverByQ,
     solver: {
-      maxAbsErrorQAtMost4: solverWorstQ4,
-      maxAbsErrorQ8: solverWorstQ8,
+      maxAbsErrorQAtMost12: solverWorst,
+      legacyMaxAbsErrorQAtMost4: legacyWorstQ4,
+      legacyMaxAbsErrorQ8: legacyWorstQ8,
       q2Plate: q2mod,
       q2Harper: Array.from(q2ref),
+      q2Legacy: q2legacy,
       q1Plate: q1mod[0],
       q1Harper: q1ref[0],
+      q1Legacy: q1legacy[0],
       alphaSymmetryPlateMaxAbsQ16: alphaWorst,
-      alphaSymmetryPlateMaxAbsQAtMost4: alphaWorstSmall,
+      alphaSymmetryLegacyMaxAbsQ16: legacyAlpha,
     },
     blochSymmetry: { eToMinusE: eSym, alphaToOneMinusAlpha: aSym, residual: resid },
     diophantine: {
@@ -479,7 +492,7 @@ function run() {
     },
     cases,
     limits: [
-      'Spectral positions of the plate match a converged diagonalization only for q <= 4 (absolute error below 1e-9). At q = 8 the capped Jacobi is already off by more than 0.01, and from q = 7 it mis-orders eigenvalues, so every legal plate (Q >= 8) paints some Chern integers at the wrong energy.',
+      'The default plate matches a converged diagonalization for every coprime p/q with q <= 12 (absolute error below 1e-9). The capped Jacobi kept for recipes older than v8 is already off by more than 0.01 at q = 8.',
       'The picture is the θ = φ = 0 slice, q points per rational, not the filled magnetic bands.',
       'No disorder, no interactions, no edge transport, and no laboratory quantum Hall datum.',
     ],
