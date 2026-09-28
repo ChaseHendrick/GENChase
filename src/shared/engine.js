@@ -598,6 +598,7 @@ void main(){
     thouless: 'rare',
     causticsea: 'rare',
     cattaneo: 'rare',
+    dptangle: 'rare',
     // unseen
     hyperbolic: 'unseen',
     rotor: 'unseen',

@@ -1,6 +1,6 @@
 # Techniques
 
-134 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
+135 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
 Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -56,6 +56,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Hodgkin-Huxley Membranes**<br><sub>sodium and potassium gates · 1952</sub> | `#hodgkin-huxley/membrane-gates` | C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x | raster | still | Occasional |
 | **Aharonov–Bohm**<br><sub>phase from a field the particle never enters · 1959</sub> | `#aharonov` | Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = \|ψ_L + e^{iΔφ} ψ_R\|² | raster | still | Occasional |
 | **Double pendulum flip time**<br><sub>first flip of a chaotic double pendulum · 1992</sub> | `#pendulum/pendulum-1992` | L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with \|θ₁\| > π or \|θ₂\| > π | raster | still | Ubiquitous |
+| **Double pendulum tangle**<br><sub>homoclinic tangle on the energy section · 2026</sub> | `#dptangle/homoclinic` | H = (p₁² + 2 p₂² − 2 cos(θ₁−θ₂) p₁ p₂) / (2D) − 2 cos θ₁ − cos θ₂,  D = 1 + sin²(θ₁−θ₂);  section θ₁ = 0, θ₁′ > 0 | SVG | still | Rare |
 | **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster | still | Occasional |
 | **FPUT Chain**<br><sub>nonlinear chain and mode energy · 1955</sub> | `#fput` | ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1 = (P_1² + ω_1² Q_1²)/2 | raster | still | Occasional |
 | **Schrödinger**<br><sub>wave packet on a detector · 1926</sub> | `#schrodinger/visscher-1991` | i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps | raster | live | Common |
@@ -240,6 +241,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **Aharonov–Bohm**. Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.
 
 **Double pendulum flip time**. Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.
+
+**Double pendulum tangle**. A computer-assisted proof that the equal double pendulum (m = l = g = 1, bottom rest at energy -3) has a transversal homoclinic orbit at E = -1/2, 0 and 1/2 is drafted in this repository, research/double-pendulum/REPORT.md. It is published as version 1.0.0, doi:10.5281/zenodo.22997540. The horseshoe and the positive entropy are the theorem of Stephen Smale, Diffeomorphisms with many periodic points, in Differential and Combinatorial Topology, Princeton University Press (1965), incorporating the homoclinic construction of George D. Birkhoff, On the periodic motions of dynamical systems, Acta Mathematica 50 (1927) 359-379. This plate is a floating-point picture of that tangle. The proof is the interval computation.
 
 **Anderson**. P. W. Anderson, Phys. Rev. 109, 1492 (1958). A random potential can trap a wave that classical intuition says must spread. Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that in two dimensions all states localise. The plate is imaginary-time relaxation to the ground state of a tight-binding square, not a wave-packet detector (that lives on Schrödinger).
 

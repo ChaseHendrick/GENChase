@@ -1,0 +1,95 @@
+{
+  "source": "src/modules/dptangle.js",
+  "sourceSha256": "d8bde8fca0e94f9df16c1bcd4dbdd0f0a950eaa907d8ce8989c5c7794c837b73",
+  "command": "node tools/dptangle-science.js --write",
+  "integrator": "classical RK4 in the plate (poincare, locate), float64, fixed step, crossing bisected to 1e-14",
+  "pointStep": 0.0005,
+  "fieldErr": 3.736797538067549e-10,
+  "energies": [
+    {
+      "E": -0.5,
+      "p2": -1.244860970917953,
+      "dy": 4.4297898682543746e-13,
+      "halfGap": 4.4297898682543746e-13,
+      "lam": -2.8849046307209125,
+      "lamBox": [
+        -2.8849540256877755,
+        -2.8848631007518595
+      ],
+      "trace": -3.231536539249902,
+      "det": 0.9999999980709084,
+      "T": 3.7047745461828803,
+      "res": 1.5479391236450836e-14,
+      "it": 1
+    },
+    {
+      "E": 0,
+      "p2": -1.4623730924795075,
+      "dy": 3.503863865716994e-13,
+      "halfGap": 3.503863865716994e-13,
+      "lam": -3.5249656785138157,
+      "lamBox": [
+        -3.5250022367484126,
+        -3.5249369852960775
+      ],
+      "trace": -3.8086563688422004,
+      "det": 0.9999999467214469,
+      "T": 2.9534890103973974,
+      "res": 2.5616988839155766e-14,
+      "it": 1
+    },
+    {
+      "E": 0.5,
+      "p2": -1.6270449592026417,
+      "dy": 4.163336342344337e-13,
+      "halfGap": 4.163336342344337e-13,
+      "lam": -2.9994000578258206,
+      "lamBox": [
+        -2.9994337366368864,
+        -2.9993774838497176
+      ],
+      "trace": -3.3328000620391762,
+      "det": 0.9999999919166676,
+      "T": 2.5643622248652194,
+      "res": 1.620978995892562e-14,
+      "it": 1
+    }
+  ],
+  "failureControl": {
+    "description": "same locate() with m1=1, m2=1.001 at E=0; must leave the equal-mass y window of half-width 1e-12 and the trace-implied eigenvalue interval",
+    "m1": 1,
+    "m2": 1.001,
+    "E": 0,
+    "p2": -1.4630145095574238,
+    "dy": -0.0006414170775659311,
+    "lam": -3.527547643976118,
+    "yEnclosureHalfWidth": 1e-12,
+    "lamBox": [
+      -3.5250022367484126,
+      -3.5249369852960775
+    ],
+    "outsideY": true,
+    "outsideLam": true,
+    "res": 1.1428636871348699e-14,
+    "note": "The control fails the equal-mass enclosures. That is the expected result."
+  },
+  "manifoldCalls": 32,
+  "manifoldGenerations": 4,
+  "outsideProof": [
+    {
+      "E": -0.6,
+      "p2": -1.1806665999647787,
+      "lam": -1.8677218938979858,
+      "res": 3.716987137869505e-13,
+      "covered": false
+    },
+    {
+      "E": 0.75,
+      "p2": -1.7005702333114485,
+      "lam": -2.690243040064064,
+      "res": 1.022358207634517e-14,
+      "covered": false
+    }
+  ],
+  "symmetricFamilyEndedBy": -0.75
+}

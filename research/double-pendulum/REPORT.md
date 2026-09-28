@@ -1,6 +1,6 @@
 # The classical double pendulum is chaotic: a computer-assisted proof of a transversal homoclinic orbit
 
-Status: computer-assisted proof, run and rerun in this repository on 2026-09-26. Section 8 records the adversarial check by an independent agent. Nothing here is published.
+Status: computer-assisted proof, run and rerun in this repository on 2026-09-26. Section 8 records the adversarial check by an independent agent. Published as version 1.0.0 at doi:10.5281/zenodo.22997540 (2026-09-27). This line records that deposit; it does not change the proof.
 
 ## 1. Result in one paragraph
 

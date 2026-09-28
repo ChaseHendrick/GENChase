@@ -618,7 +618,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-134 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+135 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -758,6 +758,7 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `neural-field` | Neural-Field Pulse | rare | science only | 2026-09-26 (two entries) and 2026-09-27: prior-article searches for `papers/nf-pulse/`; the tab itself not searched |
 | `cattaneo` | Maxwell-Cattaneo heat | rare | science only | never searched |
 | `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
+| `dptangle` | Double pendulum tangle | rare | logged in research/double-pendulum/PRIOR-ART.md and REPORT.md | no |
 
 ## Notes on the rows that are not `science only`
 
@@ -2027,6 +2028,7 @@ Each study below searched the literature before it computed, and logged the quer
 - Result: nothing found at the classical parameters. A computer-assisted proof (CAPD, interval arithmetic; written lemmas in `research/double-pendulum/REPORT.md`) gives, at E = -1/2, 0, 1/2 (bottom rest state E = -3), a symmetric hyperbolic periodic orbit with a transversal homoclinic orbit, hence a horseshoe, positive topological entropy and no real-analytic integral on the level; at E = 0, 24 verified covering relations give h_top(P) > 0.1016 per return. An independent adversarial check reran and could not break it.
 - Meromorphic non-integrability: Salnikov's loops close on the phase curve only at g = 1, around an order-3 branch point, and there the monodromy is the identity to 3e-38 (numerical; within 4e-9 of I in ball arithmetic along the loop); his printed matrices could not be reproduced. Open (`research/double-pendulum/morales-ramis/NOTES.md`).
 - Re-search: no, unless a week passes; read the printed page of Bolotin-Negrini Theorem 10.1 before any claim that global analytic non-integrability is new.
+- The studio tab `dptangle` draws that tangle in float64 on the energy section. It is an illustration of the interval proof published at doi:10.5281/zenodo.22997540, not a new claim, and a crossing on the plate is not a proof.
 
 ### 2026-09-26  `fisher-kpp`, `cattaneo`  query: "Ebert van Saarloos pulled front velocity correction v(t) = v* - 3/(2 lambda t) + t^{-3/2} Fisher-KPP"; "radially symmetric Fisher-KPP front position 2t - (N+2)/2 log t Gartner Ducrot multidimensional compactly supported"; "Ducrot On the large time behaviour of the multi-dimensional Fisher-KPP equation with compactly supported initial data abstract logarithmic N+2"  (session agent)
 Opened: arXiv:1705.08416 (Berestycki, Brunet and Derrida, J. Phys. A 2018), eqs. (1) and (7): for H_t = H_xx + H - H², the front is at 2t - (3/2) log t + Cst - 3√π/√t + o(t^-1/2), Bramson's term and Ebert and van Saarloos's, the latter proved for compactly supported data by Nolen, Roquejoffre and Ryzhik; arXiv:1702.08146 (Roquejoffre and Roussier-Michon), whose references give Gärtner, Math. Nachr. 105 (1982) and Ducrot, Nonlinearity 28, 1043 (2015) for compactly supported data in R^N.

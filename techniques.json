@@ -3,7 +3,7 @@
   "repository": "https://github.com/ChaseHendrick/GENChase",
   "file": "index.html",
   "portableFile": "dist/studio.html",
-  "count": 134,
+  "count": 135,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -1292,6 +1292,33 @@
       "runningDefault": false,
       "headline": "horizon",
       "hash": "#pendulum/pendulum-1992",
+      "aliases": []
+    },
+    {
+      "id": "dptangle",
+      "source": "src/modules/dptangle.js",
+      "name": "Double pendulum tangle",
+      "tab": "Tangle",
+      "subtitle": "homoclinic tangle on the energy section · 2026",
+      "equation": "H = (p₁² + 2 p₂² − 2 cos(θ₁−θ₂) p₁ p₂) / (2D) − 2 cos θ₁ − cos θ₂,  D = 1 + sin²(θ₁−θ₂);  section θ₁ = 0, θ₁′ > 0",
+      "credit": "A computer-assisted proof that the equal double pendulum (m = l = g = 1, bottom rest at energy -3) has a transversal homoclinic orbit at E = -1/2, 0 and 1/2 is drafted in this repository, research/double-pendulum/REPORT.md. It is published as version 1.0.0, doi:10.5281/zenodo.22997540. The horseshoe and the positive entropy are the theorem of Stephen Smale, Diffeomorphisms with many periodic points, in Differential and Combinatorial Topology, Princeton University Press (1965), incorporating the homoclinic construction of George D. Birkhoff, On the periodic motions of dynamical systems, Acta Mathematica 50 (1927) 359-379. This plate is a floating-point picture of that tangle. The proof is the interval computation.",
+      "blurb": "Two equal masses on equal rods, one hung from the other. The picture is not the rods. It is a slice of their motion: every time the upper rod swings up through the bottom, the lower rod's angle and momentum are marked. At E = -1/2, 0 and 1/2 that slice carries a saddle periodic orbit, and the curve that leaves it crosses the curve that arrives. The crossing is a theorem in an interval computation published as version 1.0.0, doi:10.5281/zenodo.22997540. What is drawn here is the same tangle in ordinary floating point, so a crossing on the plate is a picture, not a proof. The stable curve is the unstable one reflected by the pendulum's time-reversal symmetry, which sends the lower angle to its negative and leaves the momentum alone. Behind the curves, a seeded cloud of other orbits fills the chaotic sea. Any other energy is drawn the same way and labeled as outside the proof.",
+      "order": 51.2,
+      "seed": "homoclinic",
+      "presets": [
+        "zero",
+        "halfDown",
+        "halfUp",
+        "low",
+        "high",
+        "sea"
+      ],
+      "vectors": true,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "energy",
+      "hash": "#dptangle/homoclinic",
       "aliases": []
     },
     {
