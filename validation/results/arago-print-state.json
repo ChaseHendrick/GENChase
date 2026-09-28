@@ -1,0 +1,117 @@
+{
+  "pass": true,
+  "source": "src/modules/arago.js",
+  "sourceSha256": "9c209196dc9bb76e7c29947b79022fdb08b9ec8e3a65803ad7df964eab7cdefc",
+  "harnessSha256": "a9cf96dc507d24fece0f8b168ae0612461a6f9865dcdf32e5c607c684b2626f2",
+  "command": "node tools/arago-print-state.js --write",
+  "scope": "Chromium exportPNG at 8 in and 300 ppi for the default Babinet plate, the low-Fresnel corner, and the pre-v7 cutoff of the default plate.",
+  "criteria": "Zero changed field words and zero PNG channel differences against an independent paint of the field. Babinet metric within 0.01 of 1. The default spot is narrower than a cell, so the center pixel is not that metric. The pre-v7 cutoff fails the same Poisson predicate. A narrow PNG and a post-export mutation are rejected.",
+  "rows": [
+    {
+      "fixture": "default",
+      "propagator": "babinet",
+      "cells": [
+        160,
+        160
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "metric": 1.000269148546626,
+      "F": 207.49257295094813,
+      "spot": 0.04795948405661085,
+      "center": 0.008488588966429234,
+      "nearest": 0.7071067811865476,
+      "inside": 0,
+      "insideMax": 0,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 102299,
+        "changedWords": 0
+      },
+      "pixels": {
+        "channels": 0,
+        "max": 0
+      },
+      "poisson": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    },
+    {
+      "fixture": "low-fresnel",
+      "propagator": "babinet",
+      "cells": [
+        96,
+        96
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "metric": 1.0002654272753184,
+      "F": 3.6171577975430753,
+      "spot": 1.0581232453861402,
+      "center": 0.29289329051971436,
+      "nearest": 0.7071067811865476,
+      "inside": 4,
+      "insideMax": 0.29289329051971436,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 116482,
+        "changedWords": 0
+      },
+      "pixels": {
+        "channels": 0,
+        "max": 0
+      },
+      "poisson": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    },
+    {
+      "fixture": "legacy",
+      "propagator": "pre7",
+      "cells": [
+        160,
+        160
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "metric": 1.8256324041867151,
+      "F": 207.49257295094813,
+      "spot": 0.04795948405661085,
+      "center": 19543508,
+      "nearest": 0.7071067811865476,
+      "inside": 0,
+      "insideMax": 0,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 202185,
+        "changedWords": 0
+      },
+      "pixels": {
+        "channels": 0,
+        "max": 0
+      },
+      "poisson": false,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    }
+  ],
+  "limitations": "State preservation and the on-axis metric. The default sheet does not resolve the spot. Not a vector diffraction result, not every slider, not calibrated color."
+}

@@ -1020,35 +1020,44 @@
   {
     "id": "arago",
     "source": "src/modules/arago.js",
-    "sourceSha256": "63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06",
+    "sourceSha256": "9c209196dc9bb76e7c29947b79022fdb08b9ec8e3a65803ad7df964eab7cdefc",
     "reference": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Nothing about src/modules/arago.js is validated, so the record stays unvalidated with its evidence recorded (in-project contract check, 2026-09-27). The recorded test is a separate radial midpoint quadrature of the textbook on-axis identity for Poisson's spot: a unit-amplitude plane wave has the same intensity on axis behind an opaque circular disk as in the unobstructed beam. The interactive plate is not that object. It uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring, and the tool asserts that its metric is more than 0.2 from 1: 1.83 at the defaults, and 0.67 against 1.38 at R 20, z 0.8, k 1.2 when only the grid changes from 96 to 160.",
-      "The zone-width ladder is not a clean refinement control. Its disk errors are not monotone (width 0.004: 0.0086; 0.002: 0.081; 0.001: 0.0011; 0.0005: 0.0002) because the coarse rows are aliased: the sampled chirp exp(i k rho^2 / 2z) has discrete stationary points where the phase step k rho dr / z is a multiple of 2 pi, at rho = 0.4 m / dr, so the first lies inside the window rho_max = 632.456 at rho = 100, 200 and 400 for widths 0.004, 0.002 and 0.001, while the fine row's first is at 800, beyond it. That a coarser row fails shows aliasing, not convergence. The aperture control (ratio 2.000005 against 4 sin^2(k R^2 / 4z) = 2) is the real failure control.",
-      "No laboratory photometry.",
-      "No print-path evidence. The plate picture was not changed, and the plate is not a converged Poisson-spot solver at its default."
+      "The checked claim is the Fresnel (paraxial) identity for a circular disk and its complementary circular aperture: I_disk(0)/I_open(0) = 1 and I_aperture(0)/I_open(0) = 4 sin^2(k R^2 / 4z). It is not a vector diffraction calculation and not a laboratory plate.",
+      "The open beam is the integral of this kernel over the whole plane, which the prefactor k/(i z) makes exactly 1. The disk is that beam minus a Simpson integral over the disk only (Babinet). The production on-axis sample uses 16 points per shortest cycle; the painted radii use 8. At 16 points the on-axis disk error is 2.7e-4.",
+      "At the defaults the Fresnel number is 207 and the spot's first dark ring is 0.048 cell from the axis, so the painted cells do not resolve the spot. The status line is the on-axis sample, not a cell average. Across the sliders the Fresnel number runs from about 3.6 to about 8000; only the low end is wider than a cell.",
+      "Recipes older than v7 keep the aliased cutoff (propagator pre7). At the defaults its center-to-ring ratio is 1.826, which is not I(0)/I_open, and the status line says so.",
+      "The Chromium print at 2400x2400 matches an independent paint of the field and changes no field word. On the default plate the preserved metric is 1.000269 and the center cell is 0.00849, because the spot radius is 0.048 cell: the pixels are not I(0). At the low-Fresnel corner, F = 3.62, four cells lie inside the first dark ring and the brightest is 0.293, not the on-axis sample. The pre-v7 sheet preserves a center/ring ratio of 1.826 and fails the Poisson predicate."
     ],
     "remaining": [
-      "Validate the module itself: benchmark the plate's propagator and its status-line metric in src/modules/arago.js against a converged reference, with a failure control, before any promotion.",
-      "The 24 by 18 plate sum still compares the center to a ring and cuts the aperture off. Do not read I(0)/I_ring as the on-axis identity.",
-      "Replace the zone-width ladder with rows free of discrete stationary points inside the window (0.4 / dr beyond rho_max), or present it as an aliasing demonstration rather than a refinement control.",
-      "A print-path check is required before any promotion, and only inside a domain limited to a converged propagator."
+      "The painted cells miss the spot over most of the slider range. The widest spot the sliders allow is 1.06 cells, and those cells are not the on-axis sample."
     ],
     "numerical": [
       {
         "test": "tools/arago-science.js",
-        "command": "node tools/arago-science.js",
+        "command": "node tools/arago-science.js --write",
         "results": "validation/results/arago-science.json",
-        "scope": "Independent midpoint quadrature of the on-axis Fresnel radial integral at R = 1, z = 1, k = 5 pi (Fresnel number 2.5), convergence factor exp(-1e-4 rho^2), window rho_max = 632.456. This is the textbook identity, not src/modules/arago.js. The shipped plate is run through tools/science-harness.js and its I(0)/I_ring is recorded, not required to equal 1; the tool asserts it is more than 0.2 from 1.",
-        "criteria": "Disk ratio within 1e-3 of 1 at zone width 0.0005 (1,264,912 zones); the same predicate fails at zone width 0.002, where the absolute error is larger, but that row is aliased (a discrete stationary point of the sampled chirp at rho = 200, inside the window), so this is not a refinement control. Aperture ratio at the fine width within 1e-4 of the separate closed form 4 sin^2(k R^2 / 4z) = 2, and that same |ratio - 1| < 1e-3 predicate fails for the aperture. The fine width with eps = 1e-3 also fails the disk predicate.",
-        "benchmark": "For a unit-amplitude plane wave the on-axis Fresnel integrals from R to infinity and from 0 to infinity differ by a boundary term that cancels in the intensity, so the ratio is 1. The aperture closed form 4 sin^2(k R^2 / 4z) is evaluated from that expression, not from the sum.",
-        "failureControl": "The circular aperture at the same k, R and z has ratio 2.000005 against the closed form 4 sin^2 = 2, so the disk acceptance predicate fails while the aperture quadrature still matches; this is the real control. Zone width 0.002 fails the disk predicate with a larger error, but that row is aliased, not an under-resolved version of the fine one. The same fine width with a tenfold stronger convergence factor (eps = 1e-3, bias about 0.002) fails it as well.",
-        "limitations": "Validates the textbook identity through a separate quadrature, not the module. The interactive plate uses a fixed 24 by 18 angular quadrature and compares to a ring; that number is not this proof. The coarse ladder rows are aliased. No laboratory photometry. No print path."
+        "scope": "The module propagator fresnelAmplitude and renderField, loaded from src/modules/arago.js and called by the plate: on-axis disk and aperture at samples 4, 8, 16 and 32 for the defaults, a low Fresnel point, a mid point, the hard preset and the slider points where the aperture closed form is nearest 0 and nearest 4; two off-axis radii at R=10, z=2.2, k=0.5 against an independent polar quadrature; the default 160x160 Babinet plate and the pre-v7 cutoff plate; regenerate() for both propagators.",
+        "criteria": "At 16 points per cycle, |I_disk(0)/I_open - 1| < 1e-3 and |I_aperture(0)/I_open - 4 sin^2(k R^2/4z)| < 1e-3 on every listed point (measured disk error 2.69e-4 at the defaults, 1.000269). asksForOne, abs(ratio-1) <= 0.01, passes for that disk and fails for the aperture whenever the closed form is more than 0.05 from 1 (defaults aperture 2.0469 against 2.0467). Samples 4 at the defaults fails asksForOne (error 0.0966) and the error falls at each doubling. Off-axis disk errors 1.7e-6 and 5.8e-6. The pre-v7 center/ring ratio is 1.826 and fails asksForOne. J0 absolute error under 1e-8 on the listed arguments.",
+        "limitations": "Fresnel scalar theory, circular stops, the listed parameter points and Node float64. The painted field is a coarser radial table (8 points per cycle). This tool does not print. No laboratory comparison, and no claim that the cells resolve the spot.",
+        "benchmark": "The Fresnel on-axis identities: an opaque circular disk has I(0) equal to the open beam, and a circular aperture has I(0) equal to 4 sin^2(k R^2 / 4z) times the open beam. Off axis, an independent polar Simpson quadrature (240 radial nodes, midpoint trapezoid in angle) at R=10, z=2.2, k=0.5, whose own on-axis value sits 9e-7 from the closed form. J0 against its series values.",
+        "failureControl": "asksForOne demands abs(I/I_open - 1) <= 0.01. The circular aperture fails it (defaults 2.0469, and the slider points nearest 0 and nearest 4) and matches the closed form. The same predicate fails the disk at 4 points per cycle and passes it at 16. The pre-v7 cutoff, center/ring 1.826, fails it and is not the Babinet field."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/arago-print-state.js",
+        "command": "node tools/arago-print-state.js --write",
+        "results": "validation/results/arago-print-state.json",
+        "scope": "Chromium exportPNG at 8 in and 300 ppi (2400x2400) for the default Babinet plate (160x160, R = 26, z = 0.7, k = 1.35), the low-Fresnel corner (96x96, R = 10, z = 2.2, k = 0.5), and the pre-v7 cutoff of the default plate.",
+        "criteria": "Zero changed field words. Zero PNG channel differences against an independent log-view paint of the field. Babinet metric within 0.01 of 1. The default spot is narrower than a cell and the center cell is below 0.05. The low-Fresnel corner has cells inside the first dark ring whose intensity is below 0.5. The pre-v7 metric is above 1.5 and fails the Poisson predicate. A one-pixel-narrow PNG and a post-export field mutation are rejected.",
+        "benchmark": "The preserved on-axis metric against I(0)/I_open = 1, and the PNG against an independent paint of the same field. The spot radius is z j_{0,1} / (k R).",
+        "failureControl": "The pre-v7 cutoff of the same plate has center/ring 1.8256 and fails the Poisson predicate while its own export still preserves the field. A PNG one pixel narrower fails. Mutating one field word after export fails.",
+        "limitations": "Two Babinet fixtures and one legacy control. The sheet does not resolve the spot at the defaults. Not vector diffraction, not a laboratory plate, not every slider, not calibrated color."
+      }
+    ]
   },
   {
     "id": "ust",
