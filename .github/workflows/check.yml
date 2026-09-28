@@ -185,6 +185,7 @@ jobs:
           node tools/chain-science.js
           node tools/rigid-body-audit.js
           node tools/direct-gravity-science.js
+          node tools/dptangle-science.js
           node tools/physarum3d-display-check.js
           node tools/print-smoothing-check.js
           node tools/sharp-sampling-check.js
