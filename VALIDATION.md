@@ -104,7 +104,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [attractors](src/modules/attractors.js) | unvalidated | None registered | Not scientifically validated | none |
 | [airy](src/modules/airy.js) | partially validated | [closed-forms-science.js](tools/closed-forms-science.js) | Not scientifically validated | none |
 | [chirikov](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
-| [hofstadter](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | partially validated | [hofstadter-science.js](tools/hofstadter-science.js) | Limited evidence recorded | none |
+| [hofstadter](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | partially validated | [hofstadter-science.js](tools/hofstadter-science.js), [hofstadter-spectrum.js](tools/hofstadter-spectrum.js) | Limited evidence recorded | none |
 | [weierstrass](src/modules/weierstrass.js) | validated within stated limits | [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
 | [scars](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
 | [kitaev](src/modules/kitaev.js) | validated within stated limits | [kitaev-science.js](tools/kitaev-science.js) | Limited evidence recorded | none |

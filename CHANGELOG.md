@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **The Hofstadter plate diagonalizes the Harper matrix (recipe v8).** Symmetric QL, with both hops added: flux 0 is energy 4 and flux 1/2 is ±2√2. The old capped Jacobi stays for links saved before v8. It still returns 1 and ±√5, and at q = 8 it is off by more than 0.01. The Chern-number check still passes, and a second check covers every coprime p/q through q = 56 (largest error 3.46e-14).
 - **The skin plate draws at most one row per mode (recipe v8).** A chain of 96 sites on the 4:5 sheet draws 96 rows, not 120. The extra rows were copies of earlier modes, plus the wave-number-pi row. Recipes saved before v8 keep the sheet height and the Gram-Schmidt solver. `tools/skin-rows.js` checks the cap. The open-chain length check in `tools/skin-science.js` still passes.
 - **The London disk is solved inside the slider budget.** The plate uses multigrid. Against an independent I0 series the default error is 1.26e-4, and the worst clear-disk corner is 7.66e-4. The old Jacobi loop, kept as a control, still misses I0 by 0.57 and bit-matches the pre-v7 update. A sign flip of the London term misses by 3.6e57.
 - **Spin ice is compared with the 2x2 Boltzmann weights.** `tools/spinice-boltzmann.js` runs the plate's own sweep on the 2x2 torus and scores it against exp(-E/T). The ice-rule count check stays in `tools/spinice-science.js`. Twice the temperature, and a sweep that ignores the energy, both miss the gate.
