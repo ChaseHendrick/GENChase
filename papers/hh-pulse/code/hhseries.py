@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
-"""Taylor series of the Hodgkin-Huxley traveling-wave field in python-flint (arb_series).
+"""Taylor series of the Hodgkin-Huxley travelling-wave field in python-flint (arb_series).
 
 The field is that of hhwave.py: y = (u, w, m, n, h), u' = w, w' = K (w + I), x' = phi (alpha_x (1 - x) - beta_x x).
 Psi(x) = x / (e^x - 1) is evaluated on a series x(t) = x0 + s(t) either as x / (e^x - 1) when the constant term is
@@ -9,7 +9,7 @@ away from 0, or as 1 / G(x) with G(x) = (e^x - 1)/x = sum_n x^n/(n+1)!, whose Ta
 G_k(x0) = sum_{n>=k} C(n, k) x0^(n-k) / (n+1)!, composed with s. With RIGOROUS = True the G_k carry a bound of the
 tail n > N (|x0| <= 1/2: term ratio at most 1/2), so every coefficient is an enclosure.
 
-This module is used by the rigorous integrator (lohner_hh.py), which keeps the balls.
+This module is used by the rigorous integrator (lohner6.py, through hhjet6.py), which keeps the balls.
 """
 from flint import arb, arb_series, ctx, fmpq
 
@@ -37,7 +37,8 @@ def g_coeffs(x0, L, N=NTERMS):
             s += binom * xp / fact[n + 1]
         # tail: term_n = C(n,k) r^(n-k)/(n+1)!; ratio term_{n+1}/term_n = (n+1) r / ((n+1-k)(n+2)) <= 1/2 for n >= N
         # when N >= 2k + 2 and r <= 1/2. Bound the tail by twice the first omitted term.
-        assert N >= 2 * k + 2
+        if not N >= 2 * k + 2:                     # the tail bound below needs it (not an assert: python -O)
+            raise ArithmeticError('Psi series: N = %d < 2k + 2 = %d' % (N, 2 * k + 2))
         bN = arb(1)
         for j in range(k):
             bN = bN * (N + 1 - j) / (j + 1)

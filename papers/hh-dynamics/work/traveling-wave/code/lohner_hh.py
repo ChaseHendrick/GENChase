@@ -18,6 +18,9 @@ One step of length h, order p:
     R' = [B'^-1](y - xbar' + ([J] C - C') R0) + ([B'^-1][J] B) R.
 K, phi and E_l are balls held fixed; the enclosures hold for every value in them.
 """
+import os as _os, sys as _sys
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import math
 from flint import arb, arb_mat, ctx
 import hhjet

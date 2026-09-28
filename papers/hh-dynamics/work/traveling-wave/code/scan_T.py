@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Numerical: sign switches of the shooting classification in K, as the temperature rises (fast pulse, and any
 second switch). Prints each switch bracketed to 1e-10 relative."""
+import os as _os, sys as _sys
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import sys
 import numpy as np
 import hhwave as H

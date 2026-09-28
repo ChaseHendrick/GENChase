@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Numerical (not rigorous) summary: the fast pulse speed at 18.5 C and 6.3 C by shooting, its sensitivity to the
 shooting tolerances and to the leak potential, the eigenvalues of rest, and the unit conversion."""
+import os as _os, sys as _sys
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import numpy as np
 import hhwave as H
 
