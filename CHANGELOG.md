@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Release 0.8.0 now has the paper files.** The notes said the papers were attached. The script had stopped, because eight papers ship different checkers under one file name, so the release went out with only the studio zip. The PDFs, programs and top-level data files are now assets of 0.8.0. A shared file name that is not the same bytes is attached as `<paper-id>--<file name>`. `tools/release-assets.py` stages those copies. It does not use a `#` name: `gh release upload` treats that as a label and keeps the old file name. The Hodgkin-Huxley pulse has no PDF in the repository; its programs are attached, and the manuscript is in the source archive.
+
 ## 0.8.0
 
 The publication date is recorded in the GitHub release notes.
