@@ -44,7 +44,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [film](src/modules/film.js) | unvalidated | None registered | Not scientifically validated | none |
 | [timecrystal](src/modules/timecrystal.js) | unvalidated | None registered | Not scientifically validated | none |
 | [growdomain](src/modules/growdomain.js) | unvalidated | None registered | Not scientifically validated | none |
-| [spinice](src/modules/spinice.js) | partially validated | [spinice-science.js](tools/spinice-science.js) | Not scientifically validated | none |
+| [spinice](src/modules/spinice.js) | partially validated | [spinice-science.js](tools/spinice-science.js), [spinice-boltzmann.js](tools/spinice-boltzmann.js) | Limited evidence recorded | none |
 | [vegetation](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js), [pde-order.js](tools/pde-order.js) | Limited evidence recorded | none |
 | [aztec](src/modules/aztec.js) | validated within stated limits | [aztec-science.js](tools/aztec-science.js) | Limited evidence recorded | none |
 | [skin](src/modules/skin.js) | partially validated | [skin-science.js](tools/skin-science.js) | Limited evidence recorded | none |

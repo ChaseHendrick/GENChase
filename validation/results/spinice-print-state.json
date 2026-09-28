@@ -1,0 +1,68 @@
+{
+  "pass": true,
+  "source": "src/modules/spinice.js",
+  "sourceSha256": "2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f",
+  "harnessSha256": "096ca27552a0f86dd321ff8822ef1e1dd405e072b1537b1b0409d19382105c88",
+  "command": "node tools/spinice-print-state.js --write",
+  "scope": "Chromium exportPNG at 2400x2400 of a 48x48 lattice, warm-up 0, running off. Ice-manifold seed and the monopole-pair seed, charge view.",
+  "criteria": "Arrow words match an independent construction of the seed. Vertex charges match an independent two-in/two-out count. The PNG matches a nearest-neighbor paint of those charges, 0 channel differences. Export changes no arrow. Flipping one arrow after export is visible. The ice seed has ice fraction 1. The pair seed breaks that fraction. Its |Q| = 2 density stays 0: the band makes |Q| = 1 vertices, which this rho does not count.",
+  "rows": [
+    {
+      "fixture": "ice",
+      "init": "ice",
+      "cells": [
+        48,
+        48
+      ],
+      "arrows": 4608,
+      "arrowDiff": 0,
+      "chargeDiff": 0,
+      "iceFrac": 1,
+      "rho": 0,
+      "step": 0,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 92478,
+        "changedArrows": 0
+      },
+      "pixels": {
+        "channels": 0,
+        "max": 0
+      },
+      "failureControls": {
+        "wrongWidthWouldDiffer": true,
+        "flippedArrows": 1
+      }
+    },
+    {
+      "fixture": "pair",
+      "init": "pair",
+      "cells": [
+        48,
+        48
+      ],
+      "arrows": 4608,
+      "arrowDiff": 0,
+      "chargeDiff": 0,
+      "iceFrac": 0.9973958333333334,
+      "rho": 0,
+      "step": 0,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 92529,
+        "changedArrows": 0
+      },
+      "pixels": {
+        "channels": 0,
+        "max": 0
+      },
+      "failureControls": {
+        "wrongWidthWouldDiffer": true,
+        "flippedArrows": 1
+      }
+    }
+  ],
+  "limitations": "Two seeds at 48x48 with no Monte Carlo. Not the 2x2 Boltzmann comparison, not the status-line density, not a warm-up, not pyrochlore."
+}
