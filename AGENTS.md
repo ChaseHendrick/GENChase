@@ -175,11 +175,12 @@ much of the average detail survives at the pixel scale. A plate is soft only whe
 edges nor fine texture. A Penrose tiling is mostly the flat insides of tiles, so any average-based
 measure calls it blurry while its edges are perfectly hard; this one does not.
 
-The last full sweep, over all 130 tabs at 8 in and 300 ppi on 2026-09-24, is in
-[docs/print-audit-2026-09-24/](docs/print-audit-2026-09-24/). Sampling now includes every pixel.
-The 2026-09-24 counts in docs/print-audit-2026-09-24/ were taken with the even-offset sampler and
-are not yet replaced. A rerun of `sh tools/sharpall.sh` (roughly an hour on a software renderer)
-is still required before those counts are authoritative. The verdict requires some hard edge
+The last full sweep, over all 134 tabs at 8 in and 300 ppi on 2026-09-27, is
+[sharpness-sweep-2026-09-27-8in-300ppi.jsonl](docs/print-audit-2026-09-24/sharpness-sweep-2026-09-27-8in-300ppi.jsonl).
+Sampling is every pixel. Verdicts: 60 sharp, 17 ok, 56 soft, and pendulum timed out.
+The 2026-09-24 file beside it is the even-offset sampler (130 tabs: 51 sharp, 17 ok, 59 soft, 3 timed out) and stays as the record of that blind spot.
+Five mosaic plates the old sampler scored featureless are sharp once every pixel is sampled: timecrystal, skin, ssh, kitaev, and loschmidt.
+The verdict requires some hard edge
 before the acuity term can pass a plate, because a plate with no hard edge anywhere reads as blurry
 whatever its acuity. Soft field plates are arithmetic rather than a bug: a 192-cell
 field across 2,400 print pixels is twelve pixels per cell and there is no detail under that. Four things
@@ -193,10 +194,10 @@ follow, and all four are in place.
 - The grid ceilings go to 1024 on the 2D GPU families.
 - **The defaults were raised at recipe v2.** The 16 tabs that magnify a grid, which are the six
   `pdeCreate` tabs, the five `rdxCreate` tabs, `nematic`, and `cortex`, `bec`, `tonertu` and `liesegang`,
-  now default to 512, or 384 on `liesegang`, whose ceiling is lower. Cahn-Hilliard at 512 rather than
-  192 measures edge acutance 0.88 against 0.41, which is the difference between a verdict of SOFT and
-  a verdict of sharp. 512 is the measured knee, not a round number: 384 reaches 0.74 and is still only
-  borderline.
+  now default to 512, or 384 on `liesegang`, whose ceiling is lower. A paired 512-versus-192 measurement
+  gave Cahn-Hilliard edge acutance 0.88 against 0.41. The 2026-09-27 sweep of the default seed at
+  8 in and 300 ppi is a different run: edge 0.36 and acuity 0.099, which is SOFT. 512 is the measured
+  knee of that paired comparison, not a round number: 384 reaches 0.74 and is still only borderline.
 
 Raising a default is dangerous in a way that is easy to miss, so read this before you raise another.
 A hash carries only what differs from the defaults, so the day a default moves, every recipe that never
