@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick
 # SPDX-License-Identifier: Apache-2.0
-"""Load notes/hypotheses.json and scan paper/paper.md for priority phrases.
+"""Load code/hypotheses.json and scan paper/paper.md for priority phrases.
 
 An unread item blocks an unqualified priority phrase. The sentence "we found no
 earlier proof, within them" is the paper's own limit, so that one phrase does
@@ -16,13 +16,24 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
-HYPO = os.path.join(ROOT, "notes", "hypotheses.json")
+HYPO = os.path.join(ROOT, "code", "hypotheses.json")
 PAPER = os.path.join(ROOT, "paper", "paper.md")
 PHRASES = ("no earlier", "first proof", "has not been proved", "for the first time")
 
 
 def main():
     hypotheses = json.load(open(HYPO))
+    missing = []
+    for item in hypotheses:
+        raw = item.get("certificate") or ""
+        for rel in [part.strip() for part in raw.split(",") if part.strip()]:
+            if not os.path.isfile(os.path.join(ROOT, rel)):
+                missing.append("%s -> %s" % (item.get("id"), rel))
+    if missing:
+        print("certificate file missing")
+        for line in missing:
+            print(line)
+        return 1
     text = re.sub(r"\s+", " ", open(PAPER).read())
     found = [p for p in PHRASES if p in text]
     unread = [h["id"] for h in hypotheses if h.get("status") == "unread"]

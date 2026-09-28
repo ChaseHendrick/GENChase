@@ -5,7 +5,7 @@
 field, the gradients of a Taylor coefficient against 200-bit central differences, Psi near its removable singularity,
 and a short Lohner integration of the upstroke against scipy's DOP853."""
 import os as _os, sys as _sys
-# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to papers/hh-pulse/code on 2026-09-27
+# the proof programs (hhwave, hhseries, hhjet, certify_rest_wave, ...) moved to hh-pulse/code on 2026-09-27
 _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', '..', '..', '..', 'hh-pulse', 'code'))
 import sys
 import numpy as np

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Check the Hodgkin–Huxley pulse FAIL certificates against the manuscript.
 
-Quoted from papers/hh-pulse/paper/paper.md, "(H3) The closing block" and
+Quoted from paper/paper.md, "(H3) The closing block" and
 "(H4) The interval run" (the entrance condition at T_enter):
   B0 = {|zeta_1| <= r, |zeta_s|_2 <= rho},
   rho = 0.8, r = 0.84 (18.5 C) and rho = 0.6, r = 0.63 (6.3 C),
@@ -173,7 +173,7 @@ def main():
     def say(text=''):
         lines.append(text)
 
-    say('entrance bounds from papers/hh-pulse/paper/paper.md')
+    say('entrance bounds from paper/paper.md')
     say('  phrase: "(H3) The closing block" and "(H4) The interval run"')
     say('  at T_enter the enclosure lies in the interior of B0: |zeta_1| < r and |zeta_s| < rho')
     for T in (18.5, 6.3):

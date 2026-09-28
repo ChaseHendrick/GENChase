@@ -519,10 +519,10 @@ written. What it does not say: nothing on uniqueness of the pulse or of K*, on s
 inside this project (the tests, the independent block program and the adversarial rereading in Section 5); no one
 outside the project has reviewed them.
 
-**Rerun (2026-09-27, later the same day).** `papers/hh-pulse/code/run.sh all`, started at 14:37 UTC from commit
+**Rerun (2026-09-27, later the same day).** `hh-pulse/code/run.sh all`, started at 14:37 UTC from commit
 391ae68, recomputed this proof from scratch as its last block (18.5 C, no `HH_EL`), after the two printed-leak proofs,
 and ended at 18:41 UTC with every stage passed, both negative controls failed and `hh_block_check_iv.py` passed. The
-certificates `papers/hh-pulse/data/pulse_proof_18.5_*.json` are now its output. The numerical centre came out
+certificates `hh-pulse/data/pulse_proof_18.5_*.json` are now its output. The numerical centre came out
 byte for byte equal to the committed `hp_pulse_18.5.json`. K1 and K2 moved by 8.0e-62 (their last digits
 ...446221386 became ...454212849): the run above took K* from `hp_pulse.py` before its flow was made to keep time
 exactly (commit 02e8ff5), and when the centre was recomputed with the exact-time flow (commit 735486e, the same 58
@@ -630,15 +630,15 @@ summary:
 ## 6. Rerun
 
 **Renamed on 2026-09-27.** `prove_pulse.py` and `block_check_iv.py` are now `hh_prove_pulse.py` and
-`hh_block_check_iv.py`: a release attaches the papers' programs under their file names, and `papers/nf-pulse/code`
+`hh_block_check_iv.py`: a release attaches the papers' programs under their file names, and `nf-pulse/code`
 has different files with the old names. This report uses the new names throughout, also where it records runs made
 before the rename.
 
 **Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
 `hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `hh_prove_pulse.py`,
 `hh_block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
-inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
-repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
+inputs, are now in `hh-pulse/code/` and `hh-pulse/data/`, the folder of the paper and of its companion
+repository; `hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
 other programs stay here and import the moved modules from there. Files named below without a folder are in one of
 the two places.
 
@@ -679,8 +679,8 @@ The rigorous programs exit with status 0 only if every check, including the nega
 **Moved on 2026-09-27.** The programs of the closing step and the modules they share (`hhseries.py`, `hhjet.py`,
 `hhjet6.py`, `hhwave.py`, `certify_rest_wave.py`, `lohner6.py`, `block0.py`, `hp_pulse.py`, `hh_prove_pulse.py`,
 `hh_block_check_iv.py`, `test_lohner6.py`, `pulse_bvp.py`), with the certificates of the three proofs of 4.5-4.7 and their
-inputs, are now in `papers/hh-pulse/code/` and `papers/hh-pulse/data/`, the folder of the paper and of its companion
-repository; `papers/hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
+inputs, are now in `hh-pulse/code/` and `hh-pulse/data/`, the folder of the paper and of its companion
+repository; `hh-pulse/code/run.sh` reruns them. The commands below that use those programs run there; the
 other programs stay here and import the moved modules from there. Files named below without a folder are in one of
 the two places.
 
@@ -828,7 +828,7 @@ components; ours has three gates and exponential rates, and the eigenvalue probl
 1. (E) Essential spectrum: Routh-Hurwitz in ball arithmetic for all k^2 in [0, infinity) (about a day with the
    written argument; seconds of CPU).
 2. (L) No eigenvalues with Re lambda >= 0 and |lambda| > R: an energy estimate for the eigenvalue problem, as in
-   `papers/nf-pulse/ext/stability/large_lambda.py` (about a day).
+   `nf-pulse/ext/stability/large_lambda.py` (about a day).
 3. (T) The tail: a rigorous enclosure of the pulse after T_enter. It lies in B0 intersected with {L <= 0}, and by the
    entrance condition its stable part decays at a certified exponential rate. That bounds Df(pulse) - Df(rest)
    by C e^{-c (y - T_enter)}, but only with a relative uncertainty of order one. The Evans function needs better. So
@@ -856,8 +856,8 @@ theorem); Evans III is in hand. No long run until the owner has seen this plan.
 
 This section replaces the plan of 8.2 where they differ. It was written after reading Evans III in full (the owner's
 scan, pp. 577-593), Arioli and Koch (2015) Sections 3 and 4 (the owner's copy of the preprint), the neural-field
-precedent `papers/nf-pulse/ext/stability/`, and after a few floating-point experiments (labelled **numerical**
-below; their script is `papers/hh-pulse/code/stab_num.py`). Nothing in this section is proved yet.
+precedent `nf-pulse/ext/stability/`, and after a few floating-point experiments (labelled **numerical**
+below; their script is `hh-pulse/code/stab_num.py`). Nothing in this section is proved yet.
 
 **Setting.** The cable equation in u = -V, with x scaled so that the diffusion coefficient a/(2 R_2 C_M) becomes 1, is
 u_t = u_xx - I(u, m, n, h), g_t = phi G(u, g) for the gates g = (m, n, h). In the moving coordinate
@@ -930,7 +930,7 @@ some h with |h| <= P |U(0)|_sup. Nonlinear stability is the subject of the last 
     D^(lambda) = (Z_1 - g . Z_s) / ((M v_u)_1 - (M v_u)_s . g),   Z = M phi^-(T_c; lambda),   |g| <= 1,
   phi^- from the left-tail enclosure at xi = 0 (Gronwall: the pulse is within about 1e-25 of rest for xi <= 0)
   integrated along the record by a Lohner-type method for the linear system with a second-order Taylor model in
-  lambda (the structure of `papers/nf-pulse/ext/stability/evans_rig.py`, generalized to 5 x 5 with the Taylor series
+  lambda (the structure of `nf-pulse/ext/stability/evans_rig.py`, generalized to 5 x 5 with the Taylor series
   of Df along the pulse from `hhjet6.py`). Each segment's enclosure must lie in an open half-plane through 0; the
   argument changes are then read from thin enclosures at the segment ends. Negative controls: the same code on the
   circle |lambda| = 1/20 must give winding 1 (it sees the translation eigenvalue), and the cone exclusion
@@ -952,7 +952,7 @@ and, by (C) and (d), zero-free in the box; D^ has exactly the zeros of D there, 
 quotient above, and D^(conj lambda) = conj D^(lambda). (f) Every eigenvalue in the box is a zero of D (the easy
 direction; no Evans-function multiplicity theorem is used). D(0) = 0 because x' decays at both ends. (g) Winding 1
 then says that 0 is the only zero of D in the box and that D'(0) is not 0; D'(0) = integral psi_0^T E x' (as in
-`papers/nf-pulse/ext/stability/REPORT.md`, Part 3), so a bounded solution Y_1 of Y_1' = A(xi, 0) Y_1 + E x' (the
+`nf-pulse/ext/stability/REPORT.md`, Part 3), so a bounded solution Y_1 of Y_1' = A(xi, 0) Y_1 + E x' (the
 first-order form of Evans's eq. (6)) would give (psi_0^T Y_1)' = psi_0^T E x' with vanishing boundary terms, a
 contradiction: 0 is algebraically simple in Evans's sense. (h) Evans III, Theorem 1, whose hypotheses (f^i of class
 C^2, rest at 0 after a shift, the pulse tends to rest, the critical assumption) are then all checked, gives the
