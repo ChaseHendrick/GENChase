@@ -1,0 +1,19 @@
+[
+  {
+    "id": "theorem-4",
+    "statement": "Strict local minima P_4 = 0.7978967838..., P_5 = 0.7448144569..., P_6 = 0.7136801485..., each below sqrt(3)/2.",
+    "status": "boxed",
+    "certificate": "data/certify-collapses-2026-09-25.txt"
+  },
+  {
+    "id": "theorem-5",
+    "statement": "Eleven vortices at alpha = 2 and sixty SQG vortices collapse with real kappa.",
+    "status": "boxed",
+    "certificate": "data/certify-sqg60-2026-09-25.txt"
+  },
+  {
+    "id": "oneil-2007",
+    "statement": "O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126, was not obtained. It bears on the four-vortex minimum only.",
+    "status": "unread"
+  }
+]

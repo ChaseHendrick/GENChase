@@ -20,8 +20,8 @@ rates close to a Heaviside, provided a Heaviside pulse satisfies conditions veri
 Theorem 2 rests on properties of two solutions (one of the fast system, one of the full system) checked only
 numerically. We give computer-assisted proofs, in ball arithmetic, at explicit parameters, with eps not small for the
 Pinto-Ermentrout field. For the logistic firing rate with gain 20 and threshold 1/4, no recovery decay and the kernel
-e^(-|x|)/2 there is a fast pulse at eps = 1/10, with speed in an interval of width 10^-25 about
-1.10274770973415924914786..., and a slow pulse; a fast pulse exists for every eps in [0.08, 0.13693] and at eps =
+e^(-|x|)/2 there is a fast pulse at eps = 1/10, with speed in (c_1, c_1 + 10^-25) where
+c_1 = 1.1027477097341592491478677, and a slow pulse; a fast pulse exists for every eps in [0.08, 0.13693] and at eps =
 3/20, where it coexists with a slow pulse. A fast pulse also exists for the sigmoid of Pinto and Ermentrout's Fig. 5
 at eps = 3/20 (a saddle-focus at rest) and in Faye's model with synaptic depression at his other parameters for eps =
 1/100, 1/50 and 1/20. For the fast pulse at eps = 1/10 we prove spectral stability for every pulse of a nonempty class
@@ -36,8 +36,8 @@ defined by a speed bracket of width 10^-58 and a condition on the profile. Nonli
 - **Numerical, not proved:** the speed c* to about 58 digits from high-precision shooting, confirmed by two separate
   programs, and the profile in the figure. An earlier version of this README said that a second, slow pulse was not
   found and that the second switch of the shooting, near c = 0.3775, looked like a wave train. The switch is a wave
-  train, but a slow pulse exists nearby: `ext/slow-pulse/` proves it by computer, with speed in an interval of width
-  10^-25 at 0.3775319350688905765075606, at these same parameters.
+  train, but a slow pulse exists nearby: `ext/slow-pulse/` proves it by computer, with speed in
+  (c_a, c_a + 10^-25), c_a = 0.3775319350688905765075606, at these same parameters.
 - **Simulated in the studio:** the Neural-Field Pulse tab (`src/modules/neural-field.js`) runs this model on a periodic
   ring, and its timed front speed converges at fourth order to the enclosures of Theorems 1 and 4
   (`tools/neural-field-science.js`); a simulation, not part of any proof. That it settles on the fast pulse is observed,

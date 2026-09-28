@@ -1,0 +1,24 @@
+[
+  {
+    "id": "theorem-fast",
+    "statement": "The fast pulse at eps = 1/10 has left endpoint c_1 = 1.1027477097341592491478677, the truncated midpoint of the c1 certificate, and speed in (c_1, c_1 + 10^-25). This file is the endpoint, not the whole existence chain.",
+    "status": "boxed",
+    "certificate": "data/proof_c1_final.json"
+  },
+  {
+    "id": "theorem-stab",
+    "statement": "The printed stability class has width 10^-58 inside the fast-pulse interval. winding_bottom.json is the bottom piece of that winding, not the whole spectral proof. Nonlinear stability is not proved.",
+    "status": "boxed",
+    "certificate": "ext/stability/data/winding_bottom.json"
+  },
+  {
+    "id": "enculescu-2004",
+    "statement": "Enculescu, Physica D 196 (2004), was not obtained.",
+    "status": "unread"
+  },
+  {
+    "id": "sandstede-2007",
+    "statement": "Sandstede (2007) is known from its abstract only.",
+    "status": "unread"
+  }
+]
