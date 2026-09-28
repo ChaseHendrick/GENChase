@@ -1,146 +1,455 @@
 {
-  "sourceSha256": "63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06",
-  "model": "paraxial Fresnel on-axis integral of a unit-amplitude plane wave",
-  "validatedObject": "independent radial midpoint quadrature",
-  "notValidated": "src/modules/arago.js 24 by 18 angular sum, compared with a ring",
-  "parameters": {
-    "k": 15.707963267948966,
-    "R": 1,
-    "z": 1,
-    "alpha": 7.853981633974483,
-    "fresnelNumber": 2.5,
-    "theta": 3.9269908169872414,
-    "apertureClosedForm": 1.9999999999999996
+  "date": "2026-09-28",
+  "source": {
+    "path": "src/modules/arago.js",
+    "sha256": "9c209196dc9bb76e7c29947b79022fdb08b9ec8e3a65803ad7df964eab7cdefc"
   },
-  "quadrature": {
-    "rule": "midpoint in rho",
-    "convergenceFactor": "exp(-eps rho^2)",
-    "eps": 0.0001,
-    "tail": "eps rho_max^2 = 40",
-    "acceptance": "|I(0)/I_open(0) - 1| < 1e-3",
-    "regularizationRatio": 0.9998000199986667,
-    "note": "The acceptance target is 1, the undamped identity. The convergence factor alone moves the exact ratio to exp(-2 eps R^2), about 0.9998, which is inside the tolerance. The quadrature does not use the radial antiderivative."
+  "harness": {
+    "path": "tools/arago-science.js",
+    "sha256": "d58a6a9cf0bfa6e20374f3eed127b2297e6812bbddcaf0bdff3e7a318d97534b"
   },
-  "disk": {
-    "converged": {
-      "dr": 0.0005,
-      "eps": 0.0001,
-      "rhoMax": 632.456,
-      "nZones": 1264912,
-      "nEdge": 2000,
-      "nDisk": 1262912,
-      "diskRatio": 0.9998051615942153,
-      "apertureRatio": 2.0000051435898354,
-      "absError": 0.00019483840578471412,
-      "passes": true
+  "node": "v22.23.3",
+  "axisSamples": 16,
+  "fieldSamples": 8,
+  "besselJ0": [
+    {
+      "x": 0,
+      "expected": 1,
+      "got": 1,
+      "absError": 0
     },
-    "coarser": {
-      "dr": 0.002,
-      "eps": 0.0001,
-      "rhoMax": 632.456,
-      "nZones": 316228,
-      "nEdge": 500,
-      "nDisk": 315728,
-      "diskRatio": 1.0807995332145233,
-      "apertureRatio": 0.0015701038953071858,
-      "absError": 0.08079953321452327,
-      "passes": false
+    {
+      "x": 1,
+      "expected": 0.7651976865579666,
+      "got": 0.7651976865579666,
+      "absError": 0
     },
-    "ladder": [
+    {
+      "x": 2.404825557695773,
+      "expected": 0,
+      "got": -9.515739040404587e-17,
+      "absError": 9.515739040404587e-17
+    },
+    {
+      "x": 10,
+      "expected": -0.24593576445134835,
+      "got": -0.2459357644513713,
+      "absError": 2.295386103412511e-14
+    },
+    {
+      "x": 12,
+      "expected": 0.04768931079683354,
+      "got": 0.04768931079661607,
+      "absError": 2.1747187384235644e-13
+    },
+    {
+      "x": 20,
+      "expected": 0.16702466434058316,
+      "got": 0.16702466438581495,
+      "absError": 4.523179053528281e-11
+    },
+    {
+      "x": 50,
+      "expected": 0.055812327669251816,
+      "got": 0.055812327669028064,
+      "absError": 2.2375157282539249e-13
+    },
+    {
+      "x": 100,
+      "expected": 0.019985850304223122,
+      "got": 0.019985850304221984,
+      "absError": 1.1379786002407855e-15
+    }
+  ],
+  "onAxis": [
+    {
+      "name": "defaults",
+      "R": 26,
+      "z": 0.7,
+      "k": 1.35,
+      "fresnelNumber": 207.49257295094813,
+      "spotRadius": 0.04795948405661085,
+      "exactAperture": 2.0466612913364215,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.0966035839821715,
+          "diskError": 0.0966035839821715,
+          "apertureRatio": 2.1461864580029757,
+          "apertureExact": 2.0466612913364215,
+          "apertureError": 0.0995251666665542,
+          "diskAsksForOne": false,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0045642543012012,
+          "diskError": 0.0045642543012012204,
+          "apertureRatio": 2.0513554034523676,
+          "apertureExact": 2.0466612913364215,
+          "apertureError": 0.004694112115946059,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.000269148546626,
+          "diskError": 0.00026914854662596355,
+          "apertureRatio": 2.046937991505539,
+          "apertureExact": 2.0466612913364215,
+          "apertureError": 0.00027670016911729434,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000165887042685,
+          "diskError": 0.00001658870426846093,
+          "apertureRatio": 2.046678343887234,
+          "apertureExact": 2.0466612913364215,
+          "apertureError": 0.00001705255081230206,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    },
+    {
+      "name": "low Fresnel",
+      "R": 10,
+      "z": 2.2,
+      "k": 0.5,
+      "fresnelNumber": 3.6171577975430753,
+      "spotRadius": 1.0581232453861402,
+      "exactAperture": 1.2803840508157585,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.0029794059126136,
+          "diskError": 0.0029794059126135863,
+          "apertureRatio": 1.2830896213665237,
+          "apertureExact": 1.2803840508157585,
+          "apertureError": 0.002705570550765257,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0029794059126136,
+          "diskError": 0.0029794059126135863,
+          "apertureRatio": 1.2830896213665237,
+          "apertureExact": 1.2803840508157585,
+          "apertureError": 0.002705570550765257,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.000265427275319,
+          "diskError": 0.0002654272753190856,
+          "apertureRatio": 1.2806202164407336,
+          "apertureExact": 1.2803840508157585,
+          "apertureError": 0.0002361656249751931,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000163802575448,
+          "diskError": 0.000016380257544801324,
+          "apertureRatio": 1.2803985337817663,
+          "apertureExact": 1.2803840508157585,
+          "apertureError": 0.000014482966007811626,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    },
+    {
+      "name": "mid",
+      "R": 30,
+      "z": 1,
+      "k": 1.2,
+      "fresnelNumber": 171.88733853924697,
+      "spotRadius": 0.06680070993599369,
+      "exactAperture": 0.12396870107577854,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.0963117269894922,
+          "diskError": 0.0963117269894922,
+          "apertureRatio": 0.1323152165467149,
+          "apertureExact": 0.12396870107577854,
+          "apertureError": 0.008346515470936372,
+          "diskAsksForOne": false,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0045525093512828,
+          "diskError": 0.0045525093512828185,
+          "apertureRatio": 0.12426554130027019,
+          "apertureExact": 0.12396870107577854,
+          "apertureError": 0.00029684022449165404,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.0002684766355459,
+          "diskError": 0.00026847663554585566,
+          "apertureRatio": 0.12398589069097014,
+          "apertureExact": 0.12396870107577854,
+          "apertureError": 0.000017189615191606777,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000165717141898,
+          "diskError": 0.00001657171418978365,
+          "apertureRatio": 0.12396976045183694,
+          "apertureExact": 0.12396870107577854,
+          "apertureError": 0.0000010593760584043377,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    },
+    {
+      "name": "hard",
+      "R": 48,
+      "z": 0.25,
+      "k": 2.2,
+      "fresnelNumber": 3226.8983021767967,
+      "spotRadius": 0.005693242324090371,
+      "exactAperture": 3.8987894783039625,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.0966078691482433,
+          "diskError": 0.09660786914824326,
+          "apertureRatio": 4.084987562327164,
+          "apertureExact": 3.8987894783039625,
+          "apertureError": 0.18619808402320182,
+          "diskAsksForOne": false,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0045643542306648,
+          "diskError": 0.004564354230664813,
+          "apertureRatio": 3.9076817981707093,
+          "apertureExact": 3.8987894783039625,
+          "apertureError": 0.008892319866746767,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.0002691537645978,
+          "diskError": 0.00026915376459779594,
+          "apertureRatio": 3.899314122312399,
+          "apertureExact": 3.8987894783039625,
+          "apertureError": 0.0005246440084363257,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000165903481342,
+          "diskError": 0.00001659034813417115,
+          "apertureRatio": 3.898821817829043,
+          "apertureExact": 3.8987894783039625,
+          "apertureError": 0.000032339525080526954,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    },
+    {
+      "name": "aperture near 0",
+      "R": 48,
+      "z": 2.1000000000000005,
+      "k": 2.600000000000001,
+      "fresnelNumber": 454.00084337985237,
+      "spotRadius": 0.04046581467276541,
+      "exactAperture": 0.000007020142615190981,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.096106590346203,
+          "diskError": 0.09610659034620306,
+          "apertureRatio": 0.002210913947315744,
+          "apertureExact": 0.000007020142615190981,
+          "apertureError": 0.0022038938047005533,
+          "diskAsksForOne": false,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0045545427027323,
+          "diskError": 0.004554542702732256,
+          "apertureRatio": 0.000012181928392234906,
+          "apertureExact": 0.000007020142615190981,
+          "apertureError": 0.000005161785777043924,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.000268891010827,
+          "diskError": 0.0002688910108270548,
+          "apertureRatio": 0.000007037619069140917,
+          "apertureExact": 0.000007020142615190981,
+          "apertureError": 1.7476453949935876e-8,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000165820843012,
+          "diskError": 0.00001658208430121988,
+          "apertureRatio": 0.000007020176531621281,
+          "apertureExact": 0.000007020142615190981,
+          "apertureError": 3.391643029930025e-11,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    },
+    {
+      "name": "aperture near 4",
+      "R": 48,
+      "z": 2.1000000000000005,
+      "k": 1.3,
+      "fresnelNumber": 227.00042168992613,
+      "spotRadius": 0.08093162934553083,
+      "exactAperture": 3.999998244963576,
+      "runs": [
+        {
+          "samples": 4,
+          "Iopen": 1,
+          "diskRatio": 1.0955921329259721,
+          "diskError": 0.09559213292597213,
+          "apertureRatio": 4.18900179715917,
+          "apertureExact": 3.999998244963576,
+          "apertureError": 0.18900355219559417,
+          "diskAsksForOne": false,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 8,
+          "Iopen": 1,
+          "diskRatio": 1.0045441103454862,
+          "diskError": 0.004544110345486185,
+          "apertureRatio": 4.009081339349885,
+          "apertureExact": 3.999998244963576,
+          "apertureError": 0.009083094386309387,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 16,
+          "Iopen": 1,
+          "diskRatio": 1.0002685915300376,
+          "diskError": 0.0002685915300375541,
+          "apertureRatio": 4.000535411293528,
+          "apertureExact": 3.999998244963576,
+          "apertureError": 0.0005371663299524876,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        },
+        {
+          "samples": 32,
+          "Iopen": 1,
+          "diskRatio": 1.0000165728872112,
+          "diskError": 0.000016572887211241394,
+          "apertureRatio": 4.00003139074779,
+          "apertureExact": 3.999998244963576,
+          "apertureError": 0.000033145784213761686,
+          "diskAsksForOne": true,
+          "apertureAsksForOne": false
+        }
+      ]
+    }
+  ],
+  "failureControl": {
+    "predicate": "abs(I/I_open - 1) <= 0.01",
+    "defaultsDiskPasses": true,
+    "defaultsAperturePasses": false,
+    "defaultsDiskRatio": 1.000269148546626,
+    "defaultsApertureRatio": 2.046937991505539,
+    "defaultsApertureExact": 2.0466612913364215,
+    "coarseDiskSamples4Passes": false,
+    "note": "The aperture is the wrong object for a predicate that asks for the disk identity. It is checked against 4 sin^2(k R^2 / 4z), not merely rejected."
+  },
+  "offAxis": {
+    "R": 10,
+    "z": 2.2,
+    "k": 0.5,
+    "reference": "independent polar Simpson, 240 radial nodes",
+    "rows": [
       {
-        "dr": 0.004,
-        "nZones": 158114,
-        "rhoMax": 632.456,
-        "diskRatio": 1.0086225449062298,
-        "absError": 0.008622544906229823,
-        "passes": false
+        "r": 2,
+        "Iap": 1.49789921,
+        "Idisk": 0.1033865,
+        "moduleAperture": 1.497905647173718,
+        "moduleDisk": 0.10338822660809391,
+        "apertureError": 0.000006437173718065736,
+        "diskError": 0.0000017266080939021267
       },
       {
-        "dr": 0.002,
-        "nZones": 316228,
-        "rhoMax": 632.456,
-        "diskRatio": 1.0807995332145233,
-        "absError": 0.08079953321452327,
-        "passes": false
-      },
-      {
-        "dr": 0.001,
-        "nZones": 632456,
-        "rhoMax": 632.456,
-        "diskRatio": 1.001086067220591,
-        "absError": 0.0010860672205910138,
-        "passes": false
-      },
-      {
-        "dr": 0.0005,
-        "nZones": 1264912,
-        "rhoMax": 632.456,
-        "diskRatio": 0.9998051615942153,
-        "absError": 0.00019483840578471412,
-        "passes": true
+        "r": 10,
+        "Iap": 0.195065,
+        "Idisk": 0.3188954,
+        "moduleAperture": 0.19506113580129367,
+        "moduleDisk": 0.31890118077011825,
+        "apertureError": 0.000003864198706321487,
+        "diskError": 0.0000057807701182577276
       }
-    ]
-  },
-  "aperture": {
-    "dr": 0.0005,
-    "nEdge": 2000,
-    "ratio": 2.0000051435898354,
-    "closedForm": 1.9999999999999996,
-    "absError": 0.000005143589835832074,
-    "passesDiskPredicate": false
-  },
-  "strongConvergenceFactor": {
-    "eps": 0.001,
-    "dr": 0.0005,
-    "nZones": 400000,
-    "rhoMax": 200,
-    "diskRatio": 0.9980071288189064,
-    "absError": 0.0019928711810935917,
-    "passes": false,
-    "apertureRatio": 2.0000051728279953
+    ],
+    "rimAgreement16vs64": 0.00010301098016379795
   },
   "plate": {
-    "nPhi": 24,
-    "nRad": 18,
-    "comparison": "I(0)/I_ring",
-    "outsideConvergedClaim": true,
-    "shippedDefaults": {
-      "metric": 1.8256324041867154,
-      "F": 207.49257295094813,
-      "W": 160,
-      "H": 160,
-      "fieldMin": 1112.2413330078125,
-      "fieldMax": 53516624,
-      "cells": 25600
+    "grid": "160x160",
+    "defaults": {
+      "R": 26,
+      "z": 0.7,
+      "k": 1.35,
+      "fresnelNumber": 207.49257295094813,
+      "spotRadius": 0.04795948405661085
     },
-    "probe": {
-      "radius": 20,
-      "z": 0.8,
-      "k": 1.2,
-      "grid96": {
-        "metric": 0.6657266882168589,
-        "F": 95.4929658551372,
-        "W": 96,
-        "H": 96,
-        "fieldMin": 115.91402435302734,
-        "fieldMax": 4617841.5,
-        "cells": 9216
-      },
-      "grid160": {
-        "metric": 1.375842447392104,
-        "F": 95.4929658551372,
-        "W": 160,
-        "H": 160,
-        "fieldMin": 1338.888427734375,
-        "fieldMax": 41899372,
-        "cells": 25600
-      }
-    }
+    "babinetOnAxis": 1.000269148546626,
+    "legacyCenterRing": 1.8256324041867154,
+    "legacyFailsAsksForOne": true,
+    "fieldL1Difference": 125369969459.82224,
+    "babinetSeconds": 0.14514792999999998,
+    "legacySeconds": 1.023079367
   },
-  "pass": true,
-  "limitations": [
-    "The interactive plate uses a fixed 24 by 18 angular quadrature and compares I(0) to a ring; that number is not this proof.",
-    "No laboratory photometry.",
-    "No print path. The plate picture was not changed."
-  ]
+  "status": {
+    "babinet": "<span>F <b>207.49</b></span><span class=\"cmp\" data-basis=\"deterministic\">I(0)/I_open <b>1</b> · Poisson 1 · deterministic, no sampling error · spot narrower than a cell</span>",
+    "legacy": "<span>F <b>207.49</b></span><span class=\"cmp\" data-basis=\"deterministic\">center/ring <b>1.83</b> · deterministic, no sampling error · aliased cutoff, not I(0)/I_open</span><span>before v7</span>"
+  },
+  "seconds": 2.276276918,
+  "passed": true
 }

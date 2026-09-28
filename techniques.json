@@ -1110,7 +1110,7 @@
       "subtitle": "Poisson bright spot behind a disk · 1818",
       "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
       "credit": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
-      "blurb": "Poisson said: if light is a wave, the centre of a disk's shadow must glow, which is absurd. Arago looked. It glows. Huygens wavelets from the unobstructed plane meet in phase on axis, so the measured centre intensity sits near the open beam. A geometric shadow would be black there. The status line reports I(0) against a ring just outside the disk.",
+      "blurb": "Poisson said: if light is a wave, the center of a disk's shadow must glow, which is absurd. Arago looked. It glows. Wavelets from the unobstructed plane meet in phase on axis, so a sample taken there equals the open beam. The spot is only as wide as a cell when the Fresnel number is small; at a large Fresnel number the cells miss it and the status line is the one that measures it. Before v7 reprints the old aliased cutoff, which is not that measurement.",
       "order": 49,
       "seed": "",
       "presets": [
