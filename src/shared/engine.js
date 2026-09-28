@@ -695,7 +695,7 @@ void main(){
   // keep the -lap(lap + q) they were made with.
   // v7 (2026-09-27): crapper's profile is Crapper's classical map (denominator 1+A^2+2A cos); older recipes
   // keep the flipped sign they were made with.
-  const RECIPE_V = 7;
+  const RECIPE_V = 8;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },

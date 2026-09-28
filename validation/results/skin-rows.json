@@ -1,0 +1,214 @@
+{
+  "date": "2026-09-28",
+  "command": "node tools/skin-rows.js --write",
+  "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
+  "recipeVersion": 8,
+  "domain": {
+    "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.025, 0.06, 0.08, 0.14} at N=96 and g=0.06 at N=48 and 192, aspects 1:1, 4:5, 5:4 and 16:9. Open disorder at N=48 and 96, g=0.07, W=1.4, seed skin-disorder. Clean periodic chain at g=0.08, N=48 and 96. Periodic disorder at N=48, g=0.07, W=1.4, seed skin-ring. g=0 periodic at N=32 resolves the identity. Legacy rows sheet and solver gram are the failure controls.",
+    "conditions": "Open ends. Right eigenvectors e^{g j} sin(pi n (j+1)/(N+1)), n=1..drawn rows, of (H psi)_i = e^g psi_{i-1} + e^{-g} psi_{i+1}. Skin weight is the mean, over the drawn rows, of the probability on sites j >= floor(0.9 N).",
+    "resolution": "N = 48, 96, 192. Drawn rows = min(max(32, round(N * aspect)), N) for rows modes.",
+    "precision": "Binary64 closed form. The module stores each row as float32 after the same square-then-normalize order. RGBA8 for the node print fixture."
+  },
+  "rowCounts": {
+    "48 1:1": {
+      "N": 48,
+      "sheet": 48,
+      "drawn": 48
+    },
+    "48 4:5": {
+      "N": 48,
+      "sheet": 60,
+      "drawn": 48
+    },
+    "48 5:4": {
+      "N": 48,
+      "sheet": 38,
+      "drawn": 38
+    },
+    "48 16:9": {
+      "N": 48,
+      "sheet": 32,
+      "drawn": 32
+    },
+    "96 1:1": {
+      "N": 96,
+      "sheet": 96,
+      "drawn": 96
+    },
+    "96 4:5": {
+      "N": 96,
+      "sheet": 120,
+      "drawn": 96
+    },
+    "96 5:4": {
+      "N": 96,
+      "sheet": 77,
+      "drawn": 77
+    },
+    "96 16:9": {
+      "N": 96,
+      "sheet": 54,
+      "drawn": 54
+    },
+    "192 1:1": {
+      "N": 192,
+      "sheet": 192,
+      "drawn": 192
+    },
+    "192 4:5": {
+      "N": 192,
+      "sheet": 240,
+      "drawn": 192
+    },
+    "192 5:4": {
+      "N": 192,
+      "sheet": 154,
+      "drawn": 154
+    },
+    "192 16:9": {
+      "N": 192,
+      "sheet": 108,
+      "drawn": 108
+    }
+  },
+  "maxAbsRowDiff": 0,
+  "maxRelativeResidual": 9.60986010103488e-13,
+  "signFlippedHopResidual": 0.2965160490351408,
+  "signFlippedSkinWeight": 8.469737625177616e-7,
+  "offByOneSineL1": 0.0669763125830666,
+  "physicalPairsBitExact": 48,
+  "weights": [
+    {
+      "grid": 96,
+      "aspect": "1:1",
+      "g": 0.06,
+      "rows": 96,
+      "skinWeight": 0.6840748881104446,
+      "rounded3": "0.684"
+    },
+    {
+      "grid": 96,
+      "aspect": "1:1",
+      "g": 0.08,
+      "rows": 96,
+      "skinWeight": 0.7798650098170583,
+      "rounded3": "0.780"
+    },
+    {
+      "grid": 96,
+      "aspect": "4:5",
+      "g": 0.06,
+      "rows": 96,
+      "skinWeight": 0.6840748881104446,
+      "rounded3": "0.684"
+    },
+    {
+      "grid": 96,
+      "aspect": "4:5",
+      "g": 0.08,
+      "rows": 96,
+      "skinWeight": 0.7798650098170583,
+      "rounded3": "0.780"
+    }
+  ],
+  "legacy4x5": {
+    "0.06": {
+      "rows": 120,
+      "skinWeight": 0.6782645402964893,
+      "rounded3": "0.678",
+      "copies": 23,
+      "piNoiseMaxAbsSin": 3.919860126290071e-14
+    },
+    "0.08": {
+      "rows": 120,
+      "skinWeight": 0.7734955338221577,
+      "rounded3": "0.773",
+      "copies": 23,
+      "piNoiseMaxAbsSin": 3.919860126290071e-14
+    }
+  },
+  "printFixture": {
+    "domain": "1:1, N=96, g=0.06, disorder 0, open, rows modes, log view, exposure 1.1, gamma 0.55, ember palette",
+    "sameSizeChannels": 0,
+    "twiceSizeMismatches": 0,
+    "stateUnchanged": true,
+    "rampDiff": 0,
+    "shiftChannels": 20730,
+    "wrongGammaChannels": 24610,
+    "note": "Node canvas mock of the module paint and exportPNG. Not the browser shell and not tools/export.js."
+  },
+  "disorderedRowCap": {
+    "grid": 48,
+    "rows": 48,
+    "aspect": "4:5"
+  },
+  "rightEigenvectors": {
+    "maxOpenDensityDiff": 2.7416108938638217e-8,
+    "maxJacobiResidual": 2.999999024382338e-13,
+    "gramOpenMeanBestL1": 0.5078466601895619,
+    "periodicCleanMaxAbsFromUniform": 6.208817175668013e-10,
+    "gramPeriodicMaxAbsFromUniform": 0.10559242467085521,
+    "periodicHermitianResolution": 4.270987119525671e-9,
+    "periodicDisorderMaxAbs": 2.3727826148345343e-8,
+    "periodicDisorderResidual": 1.2881744870463373e-14,
+    "periodicDisorderOpenBoundaryMaxAbs": 0.8519467524942387,
+    "gramPeriodicDisorderMeanBestL1": 0.5990611289852444,
+    "rows": [
+      {
+        "kind": "open-disorder",
+        "N": 48,
+        "g": 0.07,
+        "disorder": 1.4,
+        "seed": "skin-disorder",
+        "maxAbsDensity": 2.7416108938638217e-8,
+        "jacobiResidual": 4.466516451613475e-14,
+        "skinWeight": 0.12180595243178143
+      },
+      {
+        "kind": "open-disorder",
+        "N": 96,
+        "g": 0.07,
+        "disorder": 1.4,
+        "seed": "skin-disorder",
+        "maxAbsDensity": 2.7416108938638217e-8,
+        "jacobiResidual": 2.999999024382338e-13,
+        "skinWeight": 0.121759707089324
+      },
+      {
+        "kind": "periodic-clean",
+        "N": 48,
+        "g": 0.08,
+        "maxAbsFromUniform": 6.208817175668013e-10,
+        "skinWeight": 0.10416666977107525
+      },
+      {
+        "kind": "periodic-clean",
+        "N": 96,
+        "g": 0.08,
+        "maxAbsFromUniform": 3.1044085878340066e-10,
+        "skinWeight": 0.10416666977107525
+      },
+      {
+        "kind": "periodic-hermitian",
+        "N": 32,
+        "g": 0,
+        "maxAbsResolution": 4.270987119525671e-9,
+        "skinWeight": 0.12500000010570034
+      },
+      {
+        "kind": "periodic-disorder",
+        "N": 48,
+        "g": 0.07,
+        "disorder": 1.4,
+        "seed": "skin-ring",
+        "maxAbsDensity": 2.3727826148345343e-8,
+        "krylovResidual": 1.2881744870463373e-14,
+        "openBoundaryMaxAbs": 0.8519467524942387,
+        "gramMeanBestL1": 0.5990611289852444,
+        "skinWeight": 0.1152653292894298
+      }
+    ]
+  },
+  "pass": true,
+  "failures": []
+}

@@ -85,7 +85,7 @@ assert(Math.abs(besselI0(0) - 1) < 1e-15, 'I0(0)');
 assert(Math.abs(besselI0(1) - I0_AT_1) < 1e-15, 'I0(1) against the published anchor');
 assert(Math.abs(mod.hooks.besselI0(1) - besselI0(1)) < 1e-14, 'module series agrees with the independent series');
 assert(mod.hooks.DEFAULTS.solver === 'mg', 'the plate default is the multigrid');
-assert(fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8').includes('const RECIPE_V = 7;'), 'recipe version 7');
+assert(fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8').includes('const RECIPE_V = 8;'), 'recipe version 8');
 assert(/legacy:\s*\{\s*7:\s*\{\s*solver:\s*'jacobi'\s*\}/.test(mod.source), 'older recipes keep Jacobi');
 
 const { solveLondon, plateSize, DEFAULTS, PRESETS } = mod.hooks;
