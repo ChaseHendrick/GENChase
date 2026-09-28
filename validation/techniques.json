@@ -866,7 +866,7 @@
   {
     "id": "skin",
     "source": "src/modules/skin.js",
-    "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
+    "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
     "status": "partially validated",
@@ -891,6 +891,16 @@
         "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
         "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
         "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. Sheets with more rows than sites are outside the eigenvector comparison; on them rows past n = N are float noise (k = pi) and repeats of the low modes. The probability-length check is a regression test."
+      },
+      {
+        "test": "tools/skin-rows.js",
+        "command": "node tools/skin-rows.js --write",
+        "results": "validation/results/skin-rows.json",
+        "scope": "The plate's own rows. A chain of N sites draws at most N rows on 1:1, 4:5, 5:4 and 16:9, at N = 48, 96 and 192. Open-chain rows are the closed-form right eigenvectors. Recipes older than v8 keep the sheet height and the Gram-Schmidt solver.",
+        "criteria": "Drawn height equals min(N, sheet height). No row index past N. On the clean open chain the drawn density matches the closed form bit for bit, and the residual is under 1e-9. At N = 96 and g = 0.08 the status rounds the capped weight to 0.780 and the sheet-height weight to 0.773. A v7 recipe still fills rows sheet and solver gram. A v8 recipe does not.",
+        "benchmark": "Independent open-chain sine modes and an independent Jacobi solve of the disordered open chain. Max relative residual 9.61e-13. Float32 row match, max abs diff 0.",
+        "failureControl": "The sheet-height drawing repeats 23 modes and adds the wave-number-pi row. Swapping the hop sign drops the skin weight from about 0.78 to under 0.01. The Gram-Schmidt basis on a disordered ring is not the right-eigenvector basis.",
+        "limitations": "Node only. The export check is a canvas mock, not Chromium and not tools/export.js. The existing open-chain length check stays in tools/skin-science.js."
       }
     ],
     "print": [

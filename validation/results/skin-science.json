@@ -1,7 +1,7 @@
 {
   "pass": true,
   "source": "src/modules/skin.js",
-  "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
+  "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
   "harness": "tools/science-harness.js",
   "command": "node tools/skin-science.js --write",
   "solver": "Implicit-shift QL (Wilkinson) on the unit off-diagonal Hermitian chain similar to open Hatano-Nelson, then psi = exp(g j) phi. Residuals are measured by applying the nonsymmetric open chain, not the sine formula.",
