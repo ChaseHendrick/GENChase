@@ -5,7 +5,7 @@ name: timestamps
 # and `ots upgrade` then completes it. This workflow stamps any commitment that reached main without a
 # proof, completes pending proofs, and proposes the changed proof files as a pull request, because main
 # only takes pull requests. A pull request opened with the workflow token does not start other
-# workflows, so the last step starts the check workflow on the proposal's branch.
+# workflows, so the last step starts the check and Pages build workflows on the proposal's branch.
 #
 # Scheduled workflows run from main only. With no commitments the job stops after the checkout.
 
@@ -82,3 +82,4 @@ jobs:
               --body "The timestamps workflow stamped new commitments or completed pending proofs in identities/commitments/. Only .ots files change. Merge it so the proofs are archived with the next release (docs/COMMITMENTS.md)."
           fi
           gh workflow run check.yml --ref "$branch"
+          gh workflow run pages.yml --ref "$branch"

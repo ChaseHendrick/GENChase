@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Automation checks run on bot-created proposals.** The volunteer ledger and timestamp workflows explicitly dispatch the main checks and Pages build. Renamed vortex-result JSON files are re-verified, symlink substitutions are refused, and compute-constant changes refresh the ledger. Eleven local regression fixtures exercise the actual workflow steps.
+- **Preprint archive monitoring.** A read-only weekly/manual workflow downloads the eight registered Zenodo ZIPs, verifies manuscript hashes, checks title capitalization and requires Publication / Preprint classification. Reports are retained even when a check fails.
+
 - **New paper releases must meet the full quality gate.** An existing Zenodo DOI still preserves the archive, but no longer excuses an open quality item when making a new release. Seven unfinished pulse stability and temperature-strip scripts remain in the development repository and are excluded from new companion archives, as the earlier handoff intended. The existence-proof programs and certificates are unchanged.
 
 - **Publication references and citation metadata corrected for all eight preprints.** Rebuilt PDFs name the public companions and immutable checking archives. Preferred citations include a DOI and URL; archive descriptions clarify manuscript and component licensing. Each companion receives a patch release with its PDF in the source ZIP.

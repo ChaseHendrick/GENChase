@@ -19,6 +19,27 @@ import zipfile
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def publication_metadata(paper, record):
+    metadata = record.get("metadata", {})
+    resource = metadata.get("resource_type", {})
+    return {"title": metadata.get("title"), "titleMatches": metadata.get("title") == paper["title"],
+            "version": metadata.get("version"), "resourceType": resource,
+            "preprint": resource.get("type") == "publication" and resource.get("subtype") == "preprint"}
+
+
+def self_test():
+    paper = {"title": "A Preprint"}
+    good = {"title": "A Preprint", "resource_type": {"type": "publication", "subtype": "preprint"}}
+    cases = [(good, True), ({**good, "title": "a preprint"}, False),
+             ({**good, "resource_type": {"type": "software"}}, False),
+             ({**good, "resource_type": {"type": "publication", "subtype": "article"}}, False)]
+    for metadata, expected in cases:
+        result = publication_metadata(paper, {"metadata": metadata})
+        assert (result["titleMatches"] and result["preprint"]) == expected
+    print("Publication metadata self-test passed: 4 cases")
+    return 0
+
+
 def audit(paper):
     result = {"paper": paper["id"], "doi": paper.get("codeDoi"), "ok": False}
     try:
@@ -29,6 +50,7 @@ def audit(paper):
         with urlopen(url, timeout=30) as response:
             record = json.load(response)
         result["record"] = "https://zenodo.org/records/" + match[1]
+        result.update(publication_metadata(paper, record))
         prefix = f"papers/{paper['id']}/"
         pdf = paper.get("pdf")
         if not pdf or not pdf.startswith(prefix):
@@ -53,7 +75,7 @@ def audit(paper):
                              "manuscriptSha256": digest, "matchesRepository": digest == expected})
         result["repositoryPdfSha256"] = expected
         result["archives"] = archives
-        result["ok"] = bool(archives) and all(a["matchesRepository"] for a in archives)
+        result["ok"] = result["preprint"] and result["titleMatches"] and bool(archives) and all(a["matchesRepository"] for a in archives)
     except Exception as exc:
         result["error"] = str(exc)
     return result
@@ -62,8 +84,11 @@ def audit(paper):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--paper")
+    parser.add_argument("--self-test", action="store_true", help="test metadata checks without network access")
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
+    if args.self_test:
+        return self_test()
     papers = [p for p in json.loads((ROOT / "papers/papers.json").read_text())["papers"]
               if p.get("companion") and (not args.paper or p["id"] == args.paper)]
     if not papers:

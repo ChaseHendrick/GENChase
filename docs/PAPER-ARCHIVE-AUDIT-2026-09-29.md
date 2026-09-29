@@ -88,3 +88,19 @@ Two publication safeguards needed correction:
 A fresh review of the mathematics and fresh runs of the long proof integrations are outside this pass.
 The quality records, prior readings and stored certificates are evidence to review, not substitutes for
 those future checks. The old archives remain accessible and unchanged.
+
+## Published GitHub release ZIPs
+
+The eight publication patch releases listed above were published through the companion workflow.
+Their public GitHub source ZIPs were downloaded independently after publication. Every ZIP contains
+the registered PDF with an identical SHA-256 digest and `.zenodo.json` set to Publication / Preprint,
+with the exact registered title. [Download evidence](paper-github-release-audit-2026-09-29.json)
+records each release, ZIP hash and manuscript hash.
+
+The pulse publisher initially stopped on a conflict with an older direct `CITATION.cff` edit. That
+citation was reconciled with the registered title, companion URL and checking-release DOI; a local
+trial merge and source-archive check passed, then the normal publisher was rerun successfully.
+The public tags and previously published archives were not modified.
+
+Zenodo verification is a separate step. A successful GitHub release or a received webhook does not
+establish that the new Zenodo version has finished publishing.

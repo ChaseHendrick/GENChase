@@ -132,6 +132,12 @@ members. Verify the manuscript bytes against the released PDF, then record the v
 read-only download and comparison against the registered repository PDF.
 A PDF attached separately to a GitHub release does not establish that it is in the source ZIP.
 
+The read-only **verify preprint archives** workflow runs weekly and can be dispatched manually. It
+downloads all eight registered Zenodo ZIPs, compares manuscript hashes, verifies exact title capitalization
+and requires Publication / Preprint classification. The JSON report is retained as a workflow artifact,
+including on failure. It never changes or publishes a record. Update the registry after a new release
+has been verified; a PDF mismatch during release preparation means the registered archive is older.
+
 ### Editing a paper after it is public
 
 Edit it in either place.
