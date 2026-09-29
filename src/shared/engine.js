@@ -810,8 +810,9 @@ void main(){
       let rebuilt = false;
       try { rebuilt = flushGeometry(e); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
       finally {
-        if (rebuilt && e !== instances[currentId]) {
-          try { if (e.inst.pause) e.inst.pause(); e.paused = true; } catch (err) { console.warn(err); }
+        if (rebuilt && (e !== instances[currentId] || e.paused)) {
+          // Suspend hidden work without changing the viewer's transport preference.
+          try { if (e.inst.pause) e.inst.pause(); } catch (err) { console.warn(err); }
         }
       }
     }
@@ -1650,7 +1651,8 @@ void main(){
     }
     e.geometryDirty = false;
     if (active) fitCanvas(e);
-    e.paused = false;
+    // An inactive data refresh may compute temporarily, but must retain an explicit pause.
+    if (active) e.paused = false;
     e.scienceWitness = null;
     if (active) renderStatus();
     try { e.inst.regenerate(); } catch (err) { e.geometryDirty = true; showError(err); return false; }

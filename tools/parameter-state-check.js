@@ -35,8 +35,8 @@ const { chromium } = require('playwright'), { glArgs } = require('./lib/gl-args'
         ], sanitize(s) { s.level = Math.min(s.size, s.level); },
         create(host) {
           window.parameterHost = host; let built = 0;
-          return { aspect: () => 1, regenerate() { built = host.getState().size; host.setStatus('fixture built ' + built); calls.push({ type: 'build', built }); },
-            repaint() { calls.push({ type: 'paint', built }); }, live(key, value) { calls.push({ type: 'live', value, state: host.getState()[key] }); }, resize() {}, pause() {}, resume() {},
+          return { aspect: () => 1, regenerate() { built = host.getState().size; window.parameterRunning = true; host.setStatus('fixture built ' + built); calls.push({ type: 'build', built }); },
+            repaint() { calls.push({ type: 'paint', built }); }, live(key, value) { calls.push({ type: 'live', value, state: host.getState()[key] }); }, resize() {}, pause() { window.parameterRunning = false; calls.push({ type: 'pause' }); }, resume() { window.parameterRunning = true; calls.push({ type: 'resume' }); },
             async exportData() { return { arrays: { size: { data: Float64Array.of(built), shape: [1] } }, meta: { built, requested: host.getState().size } }; }
           };
         }
@@ -52,15 +52,26 @@ const { chromium } = require('playwright'), { glArgs } = require('./lib/gl-args'
       const set = (key, value) => { const before = parameterHost.getState(), el = document.querySelector('#p-parameter-fixture-' + key); el.value = value; el.dispatchEvent(new Event('input', { bubbles: true })); if (parameterHost.getState() !== before) throw Error('parameter edit replaced state identity'); };
       const data = async id => { const F = GenChaseDataFormats, zip = F.readZip(new Uint8Array(await (await Studio.exportData(id)).arrayBuffer())); const meta = JSON.parse(new TextDecoder().decode(zip['meta.json'])); if (meta.error) throw Error(meta.error); return meta; };
       set('size', 8); const active = await data();
-      set('size', 12); document.querySelector('.tab[data-id=hopfield]').click(); const inactive = await data('parameter-fixture'), stillOnHopfield = Studio.getRecipe().id === 'hopfield';
+      set('size', 12); document.querySelector('.tab[data-id=hopfield]').click(); const inactive = await data('parameter-fixture'), stillOnHopfield = Studio.getRecipe().id === 'hopfield', hiddenSuspended = !parameterRunning;
       document.querySelector('.tab[data-id=parameter-fixture]').click();
+      const resumedAfterExport = parameterRunning;
       set('size', 14); document.querySelector('.tab[data-id=hopfield]').click(); document.querySelector('.tab[data-id=parameter-fixture]').click(); const returned = await data();
       set('size', 16); set('tint', 3); const painted = await data();
       set('level', 30); const live = parameterCalls.at(-1);
-      return { active: active.grid, inactive: inactive.grid, inactiveId: inactive.provenance.technique.id, stillOnHopfield, returned: returned.grid, painted: painted.grid, live };
+      set('size', 18); document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true }));
+      const explicitlyPaused = !parameterRunning;
+      document.querySelector('.tab[data-id=hopfield]').click(); const pausedExport = await data('parameter-fixture');
+      document.querySelector('.tab[data-id=parameter-fixture]').click(); const pausePreserved = !parameterRunning;
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true })); const userCanResume = parameterRunning;
+      return { active: active.grid, inactive: inactive.grid, inactiveId: inactive.provenance.technique.id, stillOnHopfield, returned: returned.grid, painted: painted.grid, live,
+        hiddenSuspended, resumedAfterExport, explicitlyPaused, pausedExport: pausedExport.grid, pausePreserved, userCanResume };
     });
     for (const [name, n] of [['active', 8], ['inactive', 12], ['returned', 14], ['painted', 16]]) assert.deepEqual(fixture[name], { built: n, requested: n });
     assert.equal(fixture.inactiveId, 'parameter-fixture'); assert.ok(fixture.stillOnHopfield); assert.deepEqual(fixture.live, { type: 'live', value: 16, state: 16 });
+    assert.ok(fixture.hiddenSuspended && fixture.resumedAfterExport, 'Inactive export must suspend hidden work and resume a running tab on return');
+    assert.ok(fixture.explicitlyPaused && fixture.pausePreserved && fixture.userCanResume, 'Inactive export must retain an explicit user pause');
+    assert.deepEqual(fixture.pausedExport, { built: 18, requested: 18 });
+    console.log('PASS hidden export retains automatic resume and explicit pause');
     console.log('PASS queued geometry is applied for active/inactive data exports, tab return and paint; sanitized live value and state identity retained');
     const recipe = Buffer.from(JSON.stringify({ count: 100, steps: 32 })).toString('base64url');
     await page.goto('file://' + studio + '#flow-matching/parameter-state/' + recipe);
