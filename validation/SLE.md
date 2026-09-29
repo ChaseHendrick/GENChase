@@ -99,7 +99,9 @@ The picture the tab draws is a correct numerical solution of the Loewner equatio
 convergent at first order in dt. But at the tab's resolution (N <= 8000), its fractal dimension is not
 that of SLE. It is 0.03 low at kappa = 2 and 0.27 low at kappa = 6. Closing this gap would take an
 adaptive or much finer time step, beyond the tab's O(N^2) budget. This is reported as a disagreement, and
-it keeps the record at partially validated.
+it keeps the record at partially validated. On 2026-09-29 the status line started saying "coarse trace,
+not resolved to dimension min(2, 1+κ/8)". That sentence is the disclosure. It is not a new measurement, and this
+ensemble was not re-run.
 
 **Failure control, doubled variance.** The same seeds are driven with variance 2 kappa while still
 labeled kappa. The measured dimension rises by 0.159 at kappa = 2 (to 1.383, 19.0 sigma) and by 0.193 at

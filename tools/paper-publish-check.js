@@ -20,6 +20,16 @@ const ENV = { ...process.env, GIT_CONFIG_GLOBAL: path.join(tmp, 'gitconfig'), GI
   GIT_AUTHOR_NAME: 'Test', GIT_AUTHOR_EMAIL: 'test@example.com', GIT_COMMITTER_NAME: 'Test', GIT_COMMITTER_EMAIL: 'test@example.com' };
 delete ENV.GH_TOKEN;
 fs.writeFileSync(ENV.GIT_CONFIG_GLOBAL, '[init]\n\tdefaultBranch = main\n');
+// Release existence is independent of Git tags. This stub is the only gh used by local tests.
+const BIN = path.join(tmp, 'bin');
+fs.mkdirSync(BIN);
+fs.writeFileSync(path.join(BIN, 'gh'), '#!/bin/sh\n' +
+  'if [ "$1 $2" != "release view" ]; then echo "unexpected gh call" >&2; exit 99; fi\n' +
+  'case "${FAKE_RELEASE_STATE:-missing}" in\n' +
+  '  published) echo false ;;\n  draft) echo true ;;\n  missing) exit 1 ;;\n  *) exit 2 ;;\nesac\n');
+fs.chmodSync(path.join(BIN, 'gh'), 0o755);
+ENV.PATH = BIN + path.delimiter + ENV.PATH;
+delete ENV.FAKE_RELEASE_STATE;
 
 const git = (cwd, ...a) => execFileSync('git', ['-C', cwd, ...a], { encoding: 'utf8', env: ENV, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const write = (f, s) => { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
@@ -37,14 +47,19 @@ const ok = (cond, what, detail) => { checks++; if (!cond) { failures++; console.
 
 try {
   // A repository shaped like this one, with one ready paper whose companion is o/t.
-  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
+  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh', 'paper-archive-check.py', 'paper-check.js']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
   write(path.join(SRC, 'LICENSE'), 'Apache License\n');
   write(path.join(SRC, 'papers', 'papers.json'), JSON.stringify({ author: { name: 'A B', 'given-names': 'A', 'family-names': 'B', affiliation: 'Independent Researcher', email: 'ab@example.org' },
-    papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t' }] }, null, 2));
+    papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t', pdf: 'papers/t/paper/t.pdf' }] }, null, 2));
   write(path.join(SRC, 'papers', 't', 'README.md'), '# T\n\n## Abstract\n\nIntro.\n');
   write(path.join(SRC, 'papers', 't', 'paper', 't.tex'), 'line one\nline two\nline three\n');
+  write(path.join(SRC, 'papers', 't', 'paper', 't.pdf'), '%PDF-1.7\n<< /Type /Pages /Count 1 >>\n%%EOF\n');
   write(path.join(SRC, 'papers', 't', 'code', 'run.py'), 'print(1)\n');
   write(path.join(SRC, 'papers', 't', 'notes', 'private.md'), 'working note\n');
+  const qualityPath = path.join(SRC, 'papers', 't', 'notes', 'QUALITY.md');
+  const quality = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior article review', 'Adversarial second reading', 'Reproducible']
+    .map((title, i) => '- [x] **' + (i + 1) + '. ' + title + '.** Fixture evidence.').join('\n') + '\n';
+  write(qualityPath, quality);
   git(tmp, 'init', '-q', SRC); commitSrc('start');
   fs.mkdirSync(path.dirname(BARE), { recursive: true }); git(tmp, 'init', '-q', '--bare', BARE);
 
@@ -52,7 +67,7 @@ try {
   let r = run('paper-publish.sh');
   ok(r.status === 0, 'first publish succeeds', r.stdout + r.stderr);
   const files = git(BARE, 'ls-tree', '-r', '--name-only', 'main').split('\n').sort().join(' ');
-  ok(files === '.zenodo.json CITATION.cff LICENSE README.md code/run.py paper/t.tex', 'the companion holds the paper and generated files, not notes/', files);
+  ok(files === '.zenodo.json CITATION.cff LICENSE README.md code/run.py paper/t.pdf paper/t.tex', 'the companion holds the paper and generated files, not notes/', files);
   ok(remoteHead('main') === remoteHead('genchase-sync'), 'main starts at the published snapshot');
   ok(git(BARE, 'log', '-1', '--format=%an <%ae> / %cn <%ce>', 'main') === 'Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com> / Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>',
     'publishing commits carry the project identity, even with another identity in the environment');
@@ -124,7 +139,7 @@ try {
   // 10. A release made before 2026-09-26 keeps its v tag: that tag is taken, to bring its notes up to date
   // from the section written without the v, and the same version under a new plain tag is refused.
   git(OWNER, 'pull', '-q', 'origin', 'main'); git(OWNER, 'tag', 'v0.9.0'); git(OWNER, 'push', '-q', 'origin', 'v0.9.0');
-  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't' });
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't', FAKE_RELEASE_STATE: 'published' });
   ok(r.status === 0, 'the existing tag v0.9.0 is taken, with its notes under "## 0.9.0"', r.stdout + r.stderr);
   const beforeTwin = remoteHead('main');
   write(path.join(SRC, 'papers', 't', 'README.md'), read(path.join(SRC, 'papers', 't', 'README.md')) + '\nAnother change that must not be pushed.\n');
@@ -133,6 +148,71 @@ try {
   ok(r.status !== 0 && /already has 0\.9\.0 as v0\.9\.0/.test(r.stdout + r.stderr), 'a plain tag for a version released under its v tag is refused', r.stdout + r.stderr);
   ok(remoteHead('main') === beforeTwin, 'a release refused as a twin pushes nothing');
   ok(git(BARE, 'tag', '--list').split('\n').join(' ') === 'v0.9.0', 'no tag is made, moved or renamed', git(BARE, 'tag', '--list'));
+  // A new release must contain the actual registered manuscript in its source ZIP, before any push.
+  const beforePdf = remoteHead('main');
+  const registryPath = path.join(SRC, 'papers', 'papers.json');
+  const registered = read(registryPath);
+  const rejectPdf = (what, change, restore) => {
+    change(); commitSrc('plant ' + what);
+    const result = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't' });
+    ok(result.status !== 0 && /paper-archive-check:|missing file/.test(result.stdout + result.stderr), what + ' blocks a release', result.stdout + result.stderr);
+    ok(remoteHead('main') === beforePdf, what + ' pushes nothing');
+    restore(); commitSrc('restore ' + what);
+  };
+  rejectPdf('no registered PDF', () => {
+    const reg = JSON.parse(registered); reg.papers[0].pdf = null; write(registryPath, JSON.stringify(reg));
+  }, () => write(registryPath, registered));
+  const pdfPath = path.join(SRC, 'papers', 't', 'paper', 't.pdf'), pdf = read(pdfPath);
+  rejectPdf('missing PDF', () => fs.unlinkSync(pdfPath), () => write(pdfPath, pdf));
+  rejectPdf('truncated PDF', () => write(pdfPath, '%PDF-1.7\n'), () => write(pdfPath, pdf));
+  const attrs = path.join(SRC, 'papers', 't', '.gitattributes');
+  rejectPdf('export-ignore on the manuscript', () => write(attrs, 'paper/*.pdf export-ignore\n'), () => fs.unlinkSync(attrs));
+  const regWithDoi = JSON.parse(registered); regWithDoi.papers[0].codeDoi = '10.5281/zenodo.12345';
+  write(registryPath, JSON.stringify(regWithDoi));
+  write(qualityPath, quality.replace('[x]', '[ ]')); commitSrc('plant an archived paper with an open quality item');
+  r = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't' });
+  ok(r.status !== 0 && /quality bar is not met/.test(r.stdout), 'an existing archive cannot bypass the new-release quality gate', r.stdout + r.stderr);
+  ok(remoteHead('main') === beforePdf, 'an incomplete quality record pushes nothing');
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't' });
+  ok(r.status !== 0 && /quality bar is not met/.test(r.stdout), 'an existing tag without a published release cannot bypass quality', r.stdout + r.stderr);
+  ok(remoteHead('main') === beforePdf, 'an existing tag refused for quality pushes nothing');
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't', FAKE_RELEASE_STATE: 'published' });
+  ok(r.status === 0, 'an existing published release remains exempt from new-release quality gates', r.stdout + r.stderr);
+  write(qualityPath, quality); write(registryPath, registered); commitSrc('restore quality evidence');
+  r = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't' });
+  ok(r.status === 0 && /"pdf": "paper\/t.pdf"/.test(r.stdout), 'restored PDF passes source ZIP inspection', r.stdout + r.stderr);
+
+  // A draft is neither absent nor a published release, so stop before changing any remote branch.
+  const beforeDraft = remoteHead('main');
+  r = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't', FAKE_RELEASE_STATE: 'draft' });
+  ok(r.status !== 0 && /draft release/.test(r.stdout), 'a draft is explicitly refused', r.stdout + r.stderr);
+  ok(remoteHead('main') === beforeDraft, 'a refused draft pushes nothing');
+  r = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't', FAKE_RELEASE_STATE: 'error' });
+  ok(r.status !== 0 && /Could not inspect/.test(r.stdout), 'an unexpected release lookup failure is refused', r.stdout + r.stderr);
+
+  // Check the actual tag, not the repaired candidate branch, when the tag has no release yet.
+  const releasesPath = path.join(SRC, 'papers', 't', 'RELEASES.md');
+  write(releasesPath, read(releasesPath) + '\n## 1.2.0\n\nMissing PDF fixture.\n\n## 1.3.0\n\nMatching tree fixture.\n');
+  commitSrc('notes for existing tag cases');
+  r = run('paper-publish.sh');
+  ok(r.status === 0, 'stage the reviewed candidate for existing tag cases', r.stdout + r.stderr);
+  git(OWNER, 'pull', '-q', 'origin', 'main');
+  git(OWNER, 'checkout', '-q', '-b', 'missing-pdf');
+  git(OWNER, 'rm', '-q', 'paper/t.pdf'); git(OWNER, 'commit', '-q', '-m', 'tag missing its PDF');
+  git(OWNER, 'tag', '1.2.0'); git(OWNER, 'push', '-q', 'origin', '1.2.0');
+  git(OWNER, 'checkout', '-q', 'main');
+  const beforeTagged = remoteHead('main'), badTag = remoteHead('refs/tags/1.2.0');
+  r = run('paper-publish.sh', [], { RELEASE: '1.2.0', PAPER: 't' });
+  ok(r.status !== 0 && /missing from the source ZIP/.test(r.stdout + r.stderr), 'an unreleased existing tag missing its PDF is refused despite a repaired candidate', r.stdout + r.stderr);
+  ok(remoteHead('main') === beforeTagged && remoteHead('refs/tags/1.2.0') === badTag, 'the refused tag and default branch are unchanged');
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't' });
+  ok(r.status !== 0 && /differs from the reviewed candidate tree/.test(r.stdout), 'an unreleased tag with a PDF but an old tree is refused', r.stdout + r.stderr);
+  git(OWNER, 'tag', '-a', '1.3.0', '-m', 'matching annotated tag'); git(OWNER, 'push', '-q', 'origin', '1.3.0');
+  const matchingTag = remoteHead('refs/tags/1.3.0');
+  r = run('paper-publish.sh', [], { RELEASE: '1.3.0', PAPER: 't' });
+  ok(r.status === 0 && /"pdf": "paper\/t.pdf"/.test(r.stdout), 'an unreleased annotated tag passes only with a matching tree and archived PDF', r.stdout + r.stderr);
+  ok(remoteHead('refs/tags/1.3.0') === matchingTag, 'validating an existing tag never changes it');
+
 } catch (e) {
   failures++; console.log('FAIL ' + (e.stack || e.message) + (e.stderr ? '\n' + e.stderr : ''));
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
