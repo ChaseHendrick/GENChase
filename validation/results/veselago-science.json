@@ -1,8 +1,8 @@
 {
   "pass": true,
   "source": "src/modules/veselago.js",
-  "sourceSha256": "eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59",
-  "harnessSha256": "2eafa5134e67f1648609ffba02e53668a45845bba359da90c1af354c7973e40d",
+  "sourceSha256": "aa1b3db25d4f2af483018bec47649ef82cc3fda80f392bc4a3517543fc2130c5",
+  "harnessSha256": "ba7a2317f1b6ba1e0a877a18f8d0566404ce7662de2aacea7872667383fa6c9a",
   "command": "node tools/veselago-science.js --write",
   "criteria": {
     "geometryTolPx": 1e-9,
@@ -185,8 +185,9 @@
     "minCoverage": 0.857143,
     "lowCoverage": 0,
     "labelRuleViolations": 0,
+    "tirSaidMismatch": 0,
     "tirConfigs": 1536,
-    "seconds": 41.7,
+    "seconds": 44.9,
     "pass": true
   },
   "continuous": {
@@ -422,7 +423,7 @@
       "peakX": 136.79033,
       "peakBehindFace": 38.15033,
       "metric": 0.0737,
-      "label": "Veselago focus",
+      "label": "image behind the slab",
       "allCrossingsInWindow": true,
       "peakInCaustic": true,
       "perRay": [
@@ -577,7 +578,7 @@
       "peakX": 112.695385,
       "peakBehindFace": 14.055385,
       "metric": -0.051795,
-      "label": "Veselago focus",
+      "label": "image behind the slab",
       "allCrossingsInWindow": true,
       "peakInCaustic": true,
       "perRay": [
@@ -732,7 +733,7 @@
       "peakX": 104.663736,
       "peakBehindFace": 6.023736,
       "metric": -0.093626,
-      "label": "Veselago focus",
+      "label": "image behind the slab",
       "allCrossingsInWindow": true,
       "peakInCaustic": true,
       "perRay": [
@@ -887,7 +888,7 @@
       "peakX": 100.647912,
       "peakBehindFace": 2.007912,
       "metric": -0.114542,
-      "label": "Veselago focus",
+      "label": "no image behind the slab",
       "allCrossingsInWindow": false,
       "peakInCaustic": null,
       "perRay": [
@@ -1042,7 +1043,7 @@
       "peakX": 185.984176,
       "peakBehindFace": 87.344176,
       "metric": 0.329918,
-      "label": "shifted",
+      "label": "image behind the slab",
       "allCrossingsInWindow": false,
       "peakInCaustic": null,
       "perRay": [
@@ -1181,7 +1182,7 @@
       "peakX": 100.647912,
       "peakBehindFace": 2.007912,
       "metric": -0.114542,
-      "label": "Veselago focus",
+      "label": "no image behind the slab",
       "allCrossingsInWindow": false,
       "peakInCaustic": null,
       "perRay": [
@@ -1375,25 +1376,25 @@
     "tirBandLow": -0.434966
   },
   "statusLabel": {
-    "toleranceFractionOfWidth": 0.12,
-    "tolerancePxAtGrid192": 23.04,
+    "rule": "Veselago focus only when n = -1, src < L, and at least one unclamped exit line crosses the axis behind the back face; otherwise image behind the slab, or no image behind the slab. Total reflection is named when rays are dropped.",
     "sliderValues": 37,
-    "labelledFocus": 30,
-    "labelledFocusWithoutRealImage": [
+    "labelledFocus": [
+      -1
+    ],
+    "labelledFocusWithoutRealImage": [],
+    "labelledNoImage": [
       -2.2,
       -2.15,
       -2.1,
       -2.05,
       -2
     ],
-    "labelledFocusCrossingsPartlyOutsideWindow": [
+    "labelledImage": [
       -1.95,
       -1.9,
       -1.85,
       -1.8,
-      -1.75
-    ],
-    "labelledFocusImageInWindow": [
+      -1.75,
       -1.7,
       -1.65,
       -1.6,
@@ -1408,14 +1409,11 @@
       -1.15,
       -1.1,
       -1.05,
-      -1,
       -0.95,
       -0.9,
       -0.85,
       -0.8,
-      -0.75
-    ],
-    "labelledShifted": [
+      -0.75,
       -0.7,
       -0.65,
       -0.6,
@@ -1424,33 +1422,26 @@
       -0.45,
       -0.4
     ],
+    "labelledShifted": [],
     "wholeSweep": {
       "imageInWindow": {
         "configs": 24800,
-        "labelledFocus": 15236
+        "labelledFocus": 880
       },
       "crossingsPartlyOutsideWindow": {
-        "configs": 15564,
-        "labelledFocus": 5090
+        "configs": 15536,
+        "labelledFocus": 272
       },
       "noRealImageBehindSlab": {
-        "configs": 16468,
-        "labelledFocus": 11829
+        "configs": 16496,
+        "labelledFocus": 0
       },
-      "labelledFocusNoImageExample": {
-        "n": -2.2,
-        "L": 20,
-        "src": 16,
-        "rays": 12,
-        "grid": 128,
-        "aspect": "1:1",
-        "metric": -0.015573
-      }
+      "labelledFocusNoImageExample": null
     },
     "positiveIndexPlusOne": {
       "n": 1,
       "metric": -0.114542,
-      "label": "Veselago focus",
+      "label": "no image behind the slab",
       "image": "noRealImageBehindSlab",
       "paraxialImageMinus2LminusD": null,
       "raysCrossingBehind": 0,
@@ -1460,7 +1451,7 @@
       {
         "n": -2.2,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": -26.181818,
         "raysCrossingBehind": 0,
@@ -1469,7 +1460,7 @@
       {
         "n": -2.15,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": -25.674419,
         "raysCrossingBehind": 0,
@@ -1478,7 +1469,7 @@
       {
         "n": -2.1,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": -25.142857,
         "raysCrossingBehind": 0,
@@ -1487,7 +1478,7 @@
       {
         "n": -2.05,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": -24.585366,
         "raysCrossingBehind": 0,
@@ -1496,7 +1487,7 @@
       {
         "n": -2,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": -24,
         "raysCrossingBehind": 0,
@@ -1505,7 +1496,7 @@
       {
         "n": -1.95,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": -23.384615,
         "raysCrossingBehind": 16,
@@ -1514,7 +1505,7 @@
       {
         "n": -1.9,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": -22.736842,
         "raysCrossingBehind": 22,
@@ -1523,7 +1514,7 @@
       {
         "n": -1.85,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": -22.054054,
         "raysCrossingBehind": 28,
@@ -1532,7 +1523,7 @@
       {
         "n": -1.8,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": -21.333333,
         "raysCrossingBehind": 28,
@@ -1541,7 +1532,7 @@
       {
         "n": -1.75,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": -20.571429,
         "raysCrossingBehind": 28,
@@ -1550,7 +1541,7 @@
       {
         "n": -1.7,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -19.764706,
         "raysCrossingBehind": 28,
@@ -1559,7 +1550,7 @@
       {
         "n": -1.65,
         "metric": -0.109313,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -18.909091,
         "raysCrossingBehind": 28,
@@ -1568,7 +1559,7 @@
       {
         "n": -1.6,
         "metric": -0.104084,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -18,
         "raysCrossingBehind": 28,
@@ -1577,7 +1568,7 @@
       {
         "n": -1.55,
         "metric": -0.098855,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -17.032258,
         "raysCrossingBehind": 28,
@@ -1586,7 +1577,7 @@
       {
         "n": -1.5,
         "metric": -0.093626,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -16,
         "raysCrossingBehind": 28,
@@ -1595,7 +1586,7 @@
       {
         "n": -1.45,
         "metric": -0.088397,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -14.896552,
         "raysCrossingBehind": 28,
@@ -1604,7 +1595,7 @@
       {
         "n": -1.4,
         "metric": -0.083168,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -13.714286,
         "raysCrossingBehind": 28,
@@ -1613,7 +1604,7 @@
       {
         "n": -1.35,
         "metric": -0.072711,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -12.444444,
         "raysCrossingBehind": 28,
@@ -1622,7 +1613,7 @@
       {
         "n": -1.3,
         "metric": -0.067482,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -11.076923,
         "raysCrossingBehind": 28,
@@ -1631,7 +1622,7 @@
       {
         "n": -1.25,
         "metric": -0.057024,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -9.6,
         "raysCrossingBehind": 28,
@@ -1640,7 +1631,7 @@
       {
         "n": -1.2,
         "metric": -0.051795,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -8,
         "raysCrossingBehind": 28,
@@ -1649,7 +1640,7 @@
       {
         "n": -1.15,
         "metric": -0.041337,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -6.26087,
         "raysCrossingBehind": 28,
@@ -1658,7 +1649,7 @@
       {
         "n": -1.1,
         "metric": -0.030879,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -4.363636,
         "raysCrossingBehind": 28,
@@ -1667,7 +1658,7 @@
       {
         "n": -1.05,
         "metric": -0.015192,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": -2.285714,
         "raysCrossingBehind": 28,
@@ -1685,7 +1676,7 @@
       {
         "n": -0.95,
         "metric": 0.016181,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 2.526316,
         "raysCrossingBehind": 28,
@@ -1694,7 +1685,7 @@
       {
         "n": -0.9,
         "metric": 0.031868,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 5.333333,
         "raysCrossingBehind": 28,
@@ -1703,7 +1694,7 @@
       {
         "n": -0.85,
         "metric": 0.052784,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 8.470588,
         "raysCrossingBehind": 28,
@@ -1712,7 +1703,7 @@
       {
         "n": -0.8,
         "metric": 0.0737,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 12,
         "raysCrossingBehind": 28,
@@ -1721,7 +1712,7 @@
       {
         "n": -0.75,
         "metric": 0.099844,
-        "label": "Veselago focus",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 16,
         "raysCrossingBehind": 28,
@@ -1730,7 +1721,7 @@
       {
         "n": -0.7,
         "metric": 0.125989,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 20.571429,
         "raysCrossingBehind": 28,
@@ -1739,7 +1730,7 @@
       {
         "n": -0.65,
         "metric": 0.152134,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 25.846154,
         "raysCrossingBehind": 28,
@@ -1748,7 +1739,7 @@
       {
         "n": -0.6,
         "metric": 0.183507,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "imageInWindow",
         "paraxialImageMinus2LminusD": 32,
         "raysCrossingBehind": 28,
@@ -1757,7 +1748,7 @@
       {
         "n": -0.55,
         "metric": 0.225339,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": 39.272727,
         "raysCrossingBehind": 28,
@@ -1766,7 +1757,7 @@
       {
         "n": -0.5,
         "metric": 0.26717,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": 48,
         "raysCrossingBehind": 28,
@@ -1775,7 +1766,7 @@
       {
         "n": -0.45,
         "metric": 0.335147,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": 58.666667,
         "raysCrossingBehind": 28,
@@ -1784,7 +1775,7 @@
       {
         "n": -0.4,
         "metric": 0.329918,
-        "label": "shifted",
+        "label": "image behind the slab",
         "image": "crossingsPartlyOutsideWindow",
         "paraxialImageMinus2LminusD": 72,
         "raysCrossingBehind": 24,
@@ -1793,7 +1784,7 @@
       {
         "n": 1,
         "metric": -0.114542,
-        "label": "Veselago focus",
+        "label": "no image behind the slab",
         "image": "noRealImageBehindSlab",
         "paraxialImageMinus2LminusD": null,
         "raysCrossingBehind": 0,
@@ -1811,7 +1802,7 @@
       "peakPredicateAccepted": false,
       "focusPredicateAccepted": false,
       "rejected": true,
-      "label": "Veselago focus",
+      "label": "no image behind the slab",
       "metric": -0.114542
     },
     "wrongSign": {
@@ -1931,7 +1922,7 @@
     "metricAtMinus12": {
       "peakErrorPx": 9.944615,
       "rejected": true,
-      "label": "Veselago focus",
+      "label": "image behind the slab",
       "metric": -0.051795
     }
   },
@@ -1997,7 +1988,7 @@
       "stray": 0,
       "minCoverage": 1,
       "metric": -0.051795,
-      "label": "Veselago focus",
+      "label": "image behind the slab",
       "peakBehindFace": 14.055385
     },
     {
@@ -2244,15 +2235,15 @@
   ],
   "limitations": [
     "Geometric rays only: no wave optics, no evanescent-wave amplification (Pendry), no absorption, dispersion or finite-aperture diffraction; the plate is not a metamaterial simulation.",
-    "Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped entirely at veselago.js:79, including its incident segment from the source; the plate and status line do not say so.",
+    "Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.",
     "n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.",
-    "The status label compares |Δx|/W with 0.12 (veselago.js:152). It is not a focus classifier: it reports \"Veselago focus\" for slabs with no real image behind them and cannot tell n = -1 from nearby n.",
+    "The status label says \"Veselago focus\" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is \"image behind the slab\". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.",
     "Configurations whose back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source) draw a backward exit stub; they are outside this domain.",
     "Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain."
   ],
   "environment": {
-    "node": "v22.22.2",
+    "node": "v22.23.3",
     "platform": "linux"
   },
-  "seconds": 47.1
+  "seconds": 50.5
 }

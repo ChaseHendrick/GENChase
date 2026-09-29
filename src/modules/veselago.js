@@ -53,6 +53,7 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, field, metric = 0, extra = 0, white = 1, peak = 1, buf, img;
+      let focusNote = 'no image behind the slab', dropped = 0;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -71,12 +72,12 @@
           if (xi >= 0 && yi >= 0 && xi < W && yi < H) field[yi * W + xi] += w;
         }
         const yS = H / 2;
-        let peakX = slab1, peakI = 0;
+        let peakX = slab1, peakI = 0, behind = 0, tir = 0;
         for (let r = 0; r < nR; r++) {
           const th = (r / Math.max(1, nR - 1) - 0.5) * 0.9;
           const s1 = Math.sin(th), c1 = Math.cos(th);
           const s2 = (1 / nS) * s1;
-          if (Math.abs(s2) > 1) continue;
+          if (Math.abs(s2) > 1) { tir++; continue; }
           const th2 = Math.asin(s2);
           const tdx = [c1, Math.cos(th2), c1];
           const tdy = [s1, Math.sin(th2), s1];
@@ -99,8 +100,17 @@
             }
             py = py + k * (xEnd - px);
             px = xEnd;
+            if (seg === 1 && Math.abs(s1) > 1e-12) {
+              const xCross = slab1 + (yS - py) * c1 / s1;
+              if (xCross > slab1 + 1e-9) behind++;
+            }
           }
         }
+        dropped = tir;
+        focusNote = behind > 0
+          ? (Math.abs(nS + 1) < 1e-9 && d < L ? 'Veselago focus' : 'image behind the slab')
+          : 'no image behind the slab';
+        if (tir) focusNote += '; ' + tir + ' ray' + (tir === 1 ? '' : 's') + ' removed by total reflection';
         const theory = slab0 + (2 * L - d);
         metric = (peakX - theory) / Math.max(1, W);
         extra = 2 * L - d;
@@ -142,14 +152,16 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      // 2L − d is the exact image only for n = −1 with the source closer than the slab is thick (d < L), so
-      // that a real image forms behind the slab. Otherwise the offset is printed with no reference.
+      // "Veselago focus" is only the textbook image: n = −1 and the source closer than the slab is thick,
+      // and only when a transmitted ray's unclamped exit line crosses the axis behind the back face.
+      // Any other real crossing is "image behind the slab". No such crossing is "no image behind the slab".
+      // |Δx|/W is the brightest point against 2L − d; it does not decide the words. A skipped ray is named.
       function status() {
         const s = host.getState(), perfect = Math.abs(s.n + 1) < 1e-9 && s.src < s.L;
         const offset = perfect
           ? U.stats.compare({ label: 'image Δx/W', measured: metric, expected: 0, reference: 'Veselago image 2L−d', basis: 'deterministic', digits: 3 })
           : '<span>image Δx/W <b>' + f3(metric) + '</b></span>';
-        host.setStatus('<span>n <b>' + f2(s.n) + '</b></span>' + offset + '<span>' + (Math.abs(metric) < 0.12 ? 'Veselago focus' : 'shifted') + '</span>');
+        host.setStatus('<span>n <b>' + f2(s.n) + '</b></span>' + offset + '<span>' + focusNote + '</span>');
       }
 
       return {

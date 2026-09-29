@@ -126,8 +126,8 @@ function inkCheck(field, W, H, rays) {
 // ---------------------------------------------------------------------------------------------------------
 // The production module, with read-only hooks.
 function hookSource(s) {
-  s = replaceOnce(s, '          if (Math.abs(s2) > 1) continue;',
-    '          if (Math.abs(s2) > 1) { if (hooks.drop) hooks.drop(r, th, s2); continue; }');
+  s = replaceOnce(s, '          if (Math.abs(s2) > 1) { tir++; continue; }',
+    '          if (Math.abs(s2) > 1) { tir++; if (hooks.drop) hooks.drop(r, th, s2); continue; }');
   s = replaceOnce(s, '          let px = x0, py = yS;',
     '          let px = x0, py = yS;\n          if (hooks.ray) hooks.ray(r, th, th2, px, py);');
   s = replaceOnce(s, '            const k = tdy[seg] / Math.max(0.05, tdx[seg]);',
@@ -141,7 +141,7 @@ function hookSource(s) {
   s = replaceOnce(s, "        host.setStatus('<span>n <b>'", "        (hooks.setStatus || host.setStatus)('<span>n <b>'");
   return s;
 }
-const CAPTURE = 'field,W,H,metric,extra,peakX,peakI,x0,slab0,slab1,yS';
+const CAPTURE = 'field,W,H,metric,extra,peakX,peakI,x0,slab0,slab1,yS,focusNote,dropped';
 function loadModule(mutate = s => s) {
   return load('veselago', { names: 'sanitize,SCHEMA,DEFAULTS,PRESETS', capture: CAPTURE, mutate: s => mutate(hookSource(s)) });
 }
@@ -157,8 +157,12 @@ function runModule(mod, cfg) {
   mod.hooks.setStatus = h => { statusHtml = h; };
   mod.hooks.status();
   mod.hooks.setStatus = null;
-  const label = /Veselago focus/.test(statusHtml) ? 'Veselago focus' : /shifted/.test(statusHtml) ? 'shifted' : null;
-  return { ...sample, rays, drops, statusHtml, label };
+  const label = /Veselago focus/.test(statusHtml) ? 'Veselago focus'
+    : /no image behind the slab/.test(statusHtml) ? 'no image behind the slab'
+    : /image behind the slab/.test(statusHtml) ? 'image behind the slab'
+    : null;
+  const tirSaid = /removed by total reflection/.test(statusHtml);
+  return { ...sample, rays, drops, statusHtml, label, tirSaid };
 }
 
 // Line-axis intersection of the module's drawn segment, from its own start vertex and slope.
@@ -200,7 +204,7 @@ function crossings(ref) {
   for (const R of ref.rays) {
     if (R.tir || Math.abs(R.th) < 1e-12) continue;
     if (R.innerLineX > g.face0 && R.innerLineX < g.face1) inner.push(R.innerLineX);
-    if (R.outerLineX > g.face1) outer.push(R.outerLineX);
+    if (R.outerLineX > g.face1 + 1e-9) outer.push(R.outerLineX);
   }
   return { inner, outer };
 }
@@ -241,7 +245,7 @@ function main() {
   const sweepAxes = { n: nSteps(), L: [20, 36, 48, 64, 80], src: [8, 16, 24, 36, 50], rays: [12, 28, 48, 64], grid: [128, 144, 192, 224], aspect: aspectOptions };
   const sweep = { configs: 0, inDomain: 0, rays: 0, dropped: 0, maxVertexErr: 0, maxCrossErr: 0, maxLayoutErr: 0, dropMismatch: 0,
     missing: 0, nonfinite: 0, failedGeometry: 0, stray: 0, lit: 0, segmentsChecked: 0, minCoverage: 1, lowCoverage: 0,
-    labelRuleViolations: 0, tirConfigs: 0 };
+    labelRuleViolations: 0, tirSaidMismatch: 0, tirConfigs: 0 };
   // Status label against the independent image, measured over the in-domain sweep (no acceptance criterion: the label is not validated).
   const labelSweep = { imageInWindow: { configs: 0, labelledFocus: 0 }, crossingsPartlyOutsideWindow: { configs: 0, labelledFocus: 0 },
     noRealImageBehindSlab: { configs: 0, labelledFocus: 0 }, labelledFocusNoImageExample: null };
@@ -252,7 +256,11 @@ function main() {
       const cfg = { n, L, src, rays, grid, aspect };
       const m = runModule(mod, cfg), ref = snellTrace(cfg), c = compareRays(m, ref), ink = inkCheck(m.field, m.W, m.H, ref.rays);
       sweep.configs++;
-      if ((Math.abs(m.metric) < 0.12) !== (m.label === 'Veselago focus')) sweep.labelRuleViolations++;
+      const kindAll = imageKind(ref, crossings(ref));
+      const expectLabel = kindAll === 'noRealImageBehindSlab' ? 'no image behind the slab'
+        : (Math.abs(cfg.n + 1) < 1e-9 && cfg.src < cfg.L ? 'Veselago focus' : 'image behind the slab');
+      if (m.label !== expectLabel) sweep.labelRuleViolations++;
+      if (m.tirSaid !== (m.drops.length > 0) || m.dropped !== m.drops.length) sweep.tirSaidMismatch++;
       if (ref.g.face1 > ref.g.xEnd) {
         // Declared outside the domain: the slab's back face lies beyond the last drawn column.
         offPlate.configs++; offPlate.grids[grid] = (offPlate.grids[grid] || 0) + 1; offPlate.maxVertexErr = Math.max(offPlate.maxVertexErr, c.maxVertexErr);
@@ -277,7 +285,8 @@ function main() {
       sweep.minCoverage = Math.min(sweep.minCoverage, ink.minCoverage); sweep.lowCoverage += ink.lowCoverage;
     }
   sweep.seconds = Math.round((performance.now() - sweepTime) / 100) / 10;
-  sweep.pass = sweep.failedGeometry === 0 && sweep.stray === CRITERIA.strayInk && sweep.lowCoverage === 0 && sweep.labelRuleViolations === 0;
+  sweep.pass = sweep.failedGeometry === 0 && sweep.stray === CRITERIA.strayInk && sweep.lowCoverage === 0 &&
+    sweep.labelRuleViolations === 0 && sweep.tirSaidMismatch === 0;
 
   // 2. Continuous values a URL hash can carry, between the slider steps, away from the grazing band n > -0.44.
   const rnd = mulberry32(19680509), cont = { configs: 0, rays: 0, maxVertexErr: 0, maxCrossErr: 0, failedGeometry: 0, stray: 0, lowCoverage: 0, skippedOffPlate: 0 };
@@ -406,7 +415,8 @@ function main() {
   const grazing = { n: r6(clampN), clampedRays, maxVertexErrPx: r6(clampCmp.maxVertexErr), maxCrossErrPx: r6(clampCmp.maxCrossErr),
     clampedRaysAtSliderIndices: clampSlider.length, tirBandLow: r6(-Math.sin(FAN / 2)) }; // every slider n, every ray count 12..64
 
-  // 7. Status label: 12% of the plate width around 2L - d, over the slider n at the default slab and grid.
+  // 7. Status label over the slider n at the default slab and grid. "Veselago focus" only for n = -1
+  // with a real axis crossing behind the slab. Any other real crossing is "image behind the slab".
   const labelRows = nSteps().concat([1]).map(n => {
     const cfg = { ...base, n }, m = runModule(mod, cfg), ref = snellTrace(cfg), X = crossings(ref), g = ref.g;
     const nonTir = ref.rays.filter(R => !R.tir && Math.abs(R.th) > 1e-12).length;
@@ -416,12 +426,12 @@ function main() {
       raysCrossingBehind: X.outer.length, rays: nonTir };
   });
   const labelSummary = {
-    toleranceFractionOfWidth: 0.12, tolerancePxAtGrid192: r6(0.12 * 192),
+    rule: 'Veselago focus only when n = -1, src < L, and at least one unclamped exit line crosses the axis behind the back face; otherwise image behind the slab, or no image behind the slab. Total reflection is named when rays are dropped.',
     sliderValues: labelRows.filter(r => r.n < 0).length,
-    labelledFocus: labelRows.filter(r => r.n < 0 && r.label === 'Veselago focus').length,
+    labelledFocus: labelRows.filter(r => r.n < 0 && r.label === 'Veselago focus').map(r => r.n),
     labelledFocusWithoutRealImage: labelRows.filter(r => r.n < 0 && r.label === 'Veselago focus' && r.image === 'noRealImageBehindSlab').map(r => r.n),
-    labelledFocusCrossingsPartlyOutsideWindow: labelRows.filter(r => r.n < 0 && r.label === 'Veselago focus' && r.image === 'crossingsPartlyOutsideWindow').map(r => r.n),
-    labelledFocusImageInWindow: labelRows.filter(r => r.n < 0 && r.label === 'Veselago focus' && r.image === 'imageInWindow').map(r => r.n),
+    labelledNoImage: labelRows.filter(r => r.n < 0 && r.label === 'no image behind the slab').map(r => r.n),
+    labelledImage: labelRows.filter(r => r.n < 0 && r.label === 'image behind the slab').map(r => r.n),
     labelledShifted: labelRows.filter(r => r.n < 0 && r.label === 'shifted').map(r => r.n),
     wholeSweep: labelSweep,
     positiveIndexPlusOne: labelRows.find(r => r.n === 1),
@@ -506,9 +516,9 @@ function main() {
     printFixtures,
     limitations: [
       'Geometric rays only: no wave optics, no evanescent-wave amplification (Pendry), no absorption, dispersion or finite-aperture diffraction; the plate is not a metamaterial simulation.',
-      'Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped entirely at veselago.js:79, including its incident segment from the source; the plate and status line do not say so.',
+      'Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.',
       'n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.',
-      'The status label compares |Δx|/W with 0.12 (veselago.js:152). It is not a focus classifier: it reports "Veselago focus" for slabs with no real image behind them and cannot tell n = -1 from nearby n.',
+      'The status label says "Veselago focus" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is "image behind the slab". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.',
       'Configurations whose back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source) draw a backward exit stub; they are outside this domain.',
       'Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain.',
     ],

@@ -3,20 +3,25 @@
 The tab traces geometric rays from a point source on the axis through a flat slab of index `n < 0`, with vacuum on
 both sides. The rays are launched over ±0.45 rad, splatted into a Float32 field and printed as a nearest-neighbour
 magnification of that field. The status line reports the brightest point behind the slab as `Δx/W`, and prints
-the reference `2L − d` beside it only for `n = −1` with `d < L`. It prints "Veselago focus" when `|Δx/W| < 0.12`
-and "shifted" otherwise. Here `L` is the slab thickness and `d` is the source distance.
+the reference `2L − d` beside it only for `n = −1` with `d < L`. It prints "Veselago focus" only when `n = −1`,
+the source is closer than the slab is thick, and a transmitted ray's unclamped exit line crosses the axis behind
+the back face. Any other such crossing is "image behind the slab". No such crossing is "no image behind the slab".
+When total reflection drops rays, the same line names the count. Here `L` is the slab thickness and `d` is the
+source distance.
 
 This review was first recorded on 2026-09-23 against an earlier revision of the module. It was re-run on
 2026-09-24 against the revision that puts the Field view's white point at the 95th percentile of lit pixels and
-prints the reference only where it holds. The ray geometry is unchanged: every traced quantity, every label count
-and every field word reproduces the first run exactly. The print colours changed with the white point, so the
-colour-derived numbers in the print results (ink fraction, luminance spread, boundary ties) are from the re-run.
-The harness's status hook was adapted to the new status line; the label it reads is computed as before.
+prints the reference only where it holds. On 2026-09-29 the status words were changed. The ray geometry is
+unchanged from the 2026-09-24 run: every traced vertex still agrees with the independent Snell trace. The print
+colours are from that re-run; the browser was not opened again for the label change, because the field and the
+paint path are the same and the print harness does not read the status words.
 
 **Status: partially validated.** Every ray the module draws agrees with an independent Snell trace over the slider
-domain. The print reproduces the field exactly. Two unfixed defects in `src/modules/veselago.js` block full
-validation: the status label claims a focus where none exists, and an exit segment is drawn backwards when the slab
-runs off the plate. This review did not change the module.
+domain. The print reproduces the field exactly. The status words now match the crossings: "Veselago focus" is not
+printed where no ray crosses the axis behind the slab. One unfixed defect in `src/modules/veselago.js` still
+blocks full validation: an exit segment is drawn backwards when the slab runs off the plate. The words also do
+not say whether an image at `n ≠ −1` sits on the paraxial point `L/|n| − d`. The `Δx/W` number is that
+measurement, and the reference `2L − d` is printed only at `n = −1`.
 
 At `n = −1` perfect refocusing is a geometric identity of the flat slab: every ray crosses the axis at `slab0 + d`
 inside the slab and again at `slab0 + 2L − d` behind it. Those checks are regression checks, not predictions. The
@@ -48,12 +53,12 @@ At the default slab (`L` 48, `d` 24, 28 rays, grid 192, 1:1), with distances in 
 | n | Paraxial `L/|n| − d` | Innermost ray | Marginal ray | Spread | Brightest point | `Δx/W` | Label |
 |---|---|---|---|---|---|---|---|
 | −1 | 24 | 24 | 24 | 0 | 23.09 | −0.0047 | Veselago focus |
-| −0.8 | 36 | 36.0047 | 40.3732 | 4.37 | 38.15 | 0.0737 | Veselago focus |
-| −1.2 | 16 | 15.9983 | 14.6460 | 1.35 | 14.06 | −0.0518 | Veselago focus |
-| −1.5 | 8 | 7.9975 | 6.1079 | 1.89 | 6.02 | −0.0936 | Veselago focus |
-| −2.2 | −2.18 | −2.18 | −3.96 | no real crossing | 2.01 | −0.1145 | Veselago focus |
-| −0.4 | 96 | 96.09 | 289.89 | 193.80 | 87.34 | 0.3299 | shifted |
-| +1.5 | none | — | — | no crossing | 2.01 | −0.1145 | Veselago focus |
+| −0.8 | 36 | 36.0047 | 40.3732 | 4.37 | 38.15 | 0.0737 | image behind the slab |
+| −1.2 | 16 | 15.9983 | 14.6460 | 1.35 | 14.06 | −0.0518 | image behind the slab |
+| −1.5 | 8 | 7.9975 | 6.1079 | 1.89 | 6.02 | −0.0936 | image behind the slab |
+| −2.2 | −2.18 | −2.18 | −3.96 | no real crossing | 2.01 | −0.1145 | no image behind the slab |
+| −0.4 | 96 | 96.09 | 289.89 | 193.80 | 87.34 | 0.3299 | image behind the slab; 4 rays removed by total reflection |
+| +1.5 | none | — | — | no crossing | 2.01 | −0.1145 | no image behind the slab |
 
 The module's crossings agree with the closed form within 4.83e-13 px. The innermost ray lies within twice the
 third-order term of the paraxial image; at `n = −0.8`, for example, the gap is 0.00469 against a bound of 0.00937.
@@ -76,21 +81,25 @@ back towards the slab. There is no real image.
 
 ### Limits and defects found
 
-- **Status label (veselago.js:152).** The label compares `|Δx/W|` with 0.12, which is 23.04 px at grid 192. At the
-  default slab, 30 of the 37 slider values read "Veselago focus". For `n` −2.20 to −2.00 no ray crosses the axis
-  behind the slab at all. From −1.95 to −1.75 some crossings fall outside the search window. Across the whole
-  in-domain sweep, 11,829 of the 16,468 configurations with no real image behind the slab are labelled "Veselago
-  focus". So are `n = +1` and `+1.5`, which lie outside the schema. On the `n = −1.2` preset the label claims the
-  textbook point, while the module's own hint says other `n` focus elsewhere. The label is not validated, and this
-  defect blocks full validation. The `Δx/W` number itself is a real measurement of the brightest point.
-- **Exit segment drawn backwards (veselago.js:84–87).** When `x0 + d + L > W − 2`, the exit segment runs from the
+- **Status words.** The line no longer compares `|Δx/W|` with 0.12. Over the 59,200-configuration sweep it
+  agrees with the independent crossings on every plate, including the 2,368 whose back face is off the plate:
+  "Veselago focus" only for `n = −1` with `d < L` and at least one unclamped exit line past the back face;
+  "image behind the slab" for every other real crossing; "no image behind the slab" otherwise. Of the 16,496
+  in-domain configurations with no real crossing behind the slab, none is labelled a focus. At the default slab
+  the words are "Veselago focus" only at `n = −1`, "no image behind the slab" from −2.20 to −2.00, and "image
+  behind the slab" on the other 31 slider values. At `n = −0.40` the line also says how many rays total
+  reflection removed (2 of 12, 4 of 28, 6 of 48, 6 of 64). The words do not place the image: at `n = −1.2` the
+  brightest point is 9.94 px from `2L − d`, and the line says "image behind the slab", not that it sits at the
+  textbook point. The `Δx/W` number is still the brightest point. A crossing that lands within 1e-9 px of the
+  back face, which is the virtual image at `n = −1` and `d = L` up to float noise, is not counted.
+- **Exit segment drawn backwards (veselago.js).** When `x0 + d + L > W − 2`, the exit segment runs from the
   back face back to `W − 2`, with `steps = max(4, …)` samples. It inks cells that no ray reaches. This happens only
   at grid 128 (1,776 sweep configurations) and grid 144 (592). Of those 2,368, 1,767 carry stray ink, 24,214 cells
   in all. Example: `n = −2.2`, `L` 64, `d` 50, grid 128, where the back face is at 136.86 against a last column of
   126. The domain excludes these plates, and the defect blocks full validation.
-- **Total reflection (veselago.js:79).** At `n = −0.40`, rays with `|sin θ| > 0.4` (critical angle 0.411517 rad)
+- **Total reflection.** At `n = −0.40`, rays with `|sin θ| > 0.4` (critical angle 0.411517 rad)
   are skipped entirely, including their incident segment: 2 of 12, 4 of 28, 6 of 48 and 6 of 64 rays. No other
-  slider value drops rays. Nothing on the plate or status line says so. No Fresnel reflection is drawn anywhere; the
+  slider value drops rays. The status line names the count. No Fresnel reflection is drawn anywhere; the
   plate shows transmitted rays only.
 - **Slope clamp (veselago.js:88).** The clamp `max(0.05, cos θ2)` never acts at a slider `n`, for any ray count
   from 12 to 64. A URL hash can set `n` between −0.43497 and −0.4. At `n = −0.43527`, 2 near-grazing rays are
@@ -138,7 +147,8 @@ pixels, not resolved rays. Colour is not calibrated.
 
 ## What would complete the review
 
-Fix the label so it claims a focus only when rays cross the axis behind the slab. It should compare against the
-paraxial image `L/|n| − d` or use a pixel-scale tolerance. Also guard the exit segment when the slab runs past the
-last column. Then re-run both harnesses; the source fingerprint will change, and the record must be reviewed again.
-The rest of the evidence is in place.
+Guard the exit segment when the slab runs past the last column, or keep the slab on the plate. The label now
+reports a focus only for the textbook case with a real crossing behind the slab. It does not yet compare other
+`n` with the paraxial image `L/|n| − d`. Then re-run the print harness against the new source fingerprint; the
+field path is unchanged, and the 2026-09-24 print results are left as that run. The rest of the numerical
+evidence was re-run on 2026-09-29.
