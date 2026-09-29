@@ -8,11 +8,9 @@ authors:
     affiliation: "Independent Researcher"
     website: "https://github.com/ChaseHendrick"
     orcid: "https://orcid.org/0009-0002-9754-6087"
-# Software DOI: when Zenodo archives a release (docs/PUBLISHING.md), add the concept DOI,
-# which resolves to the latest version, on the next line and delete this comment:
-# doi: 10.5281/zenodo.<number from the Zenodo record>
-version: "0.7.1"
-date-released: "2026-09-25"
+# GENChase is not deposited on Zenodo; cite its numbered GitHub release.
+version: "0.9.0"
+date-released: "2026-09-29"
 repository-code: "https://github.com/ChaseHendrick/GENChase"
 url: "https://github.com/ChaseHendrick/GENChase"
 license: Apache-2.0

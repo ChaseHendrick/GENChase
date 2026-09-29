@@ -898,5 +898,5 @@ WHAT IS RIGHT
 
 - Verification of CM-3 onward and of every finding in the banding, vector, large-format and sheet lanes.
 - A ranked plan across lanes.
-- Re-running the sharpness sweep after the `sharp.js` sampling fix, and replacing the counts in AGENTS.md.
+- The corrected every-pixel sharpness sweep was completed on 2026-09-27 (section 1b); this former rerun item is resolved. Its measurements are print proxies, and the later visual audit separately reviews preview/export agreement.
 

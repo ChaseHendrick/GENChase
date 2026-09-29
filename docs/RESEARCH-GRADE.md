@@ -215,6 +215,11 @@ impossible to miss on the tab itself, if it is not already.
 
 ## Done
 
+**Bounded parameter studies and research notebook (2026-09-29).**
+- [Parameter sweep plans](PARAMETER-SWEEPS.md) run local cases through the native data-export path with bounded budgets, retained failures, requested/resolved settings and raw NPZ files. Seed summaries report sample SD/SEM; paired differences require explicit matching physical conditions and exported state metadata. These summaries do not certify model convergence.
+- The local research notebook opens official literature and AI research services on request, records source/reading notes, exports portable JSON/Markdown and prepares source-grounded review prompts. Browser tests cover unsafe links/text, import/export, reload, mobile layout and stale writes across tabs. It does not silently send notebooks to an AI service or verify a paper's scientific claims.
+
+
 **Section 3, uncertainty as a gate** ([ChaseHendrick/GENChase#146](https://github.com/ChaseHendrick/GENChase/pull/146)).
 - `src/shared/stats.js` is the shared harness: tau_int with Sokal's window, series and field means with
   honest standard errors, blocking, moving-block and slope bootstraps, the Hill estimator, and `compare()`.
