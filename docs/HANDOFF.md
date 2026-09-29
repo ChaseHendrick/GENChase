@@ -1,5 +1,7 @@
 # Handoff: where things stand (2026-09-25)
 
+**Superseded for current work.** Read [HANDOFF-2026-09-29.md](HANDOFF-2026-09-29.md) first. This file is the Claude handoff of 2026-09-25 (through about PR #153). Main has moved. The coverage numbers below are not the current ones.
+
 Read this first when you come back. Newest state at the top of each list.
 
 ## Added on 2026-09-25 (branch claude/optimistic-feynman-agrpck, PR #152)
