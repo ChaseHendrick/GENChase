@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- **The Hodgkin-Huxley pulse is preparing, not ready.** Items 6 and 7 of its quality record are open: there has been no outside reading, and the rerun of the fixed programs has no recorded commit. A paper is published from this catalog only when every item is checked, so the check was red while the record still said ready. The companion releases 1.0.0 and 1.0.1 stay as they are.
+- **The Hodgkin-Huxley pulse archive stays.** Releases 1.0.0 and 1.0.1 are not withdrawn. Items 6 and 7 of its quality record stay open. A paper that already has a Zenodo code DOI reports those open items and does not fail the check. A paper with no archive still cannot be marked ready while an item is open.
+- **The Crapper check loads the constants the module still defines.** `A_UNI` is not in `src/modules/crapper.js`. The loader asked for it and the structure job died there. The steepness bound it uses is computed in the check as `3 - 2√2`.
 
 - **Release 0.8.0 now has the paper files.** The notes said the papers were attached. The script had stopped, because eight papers ship different checkers under one file name, so the release went out with only the studio zip. The PDFs, programs and top-level data files are now assets of 0.8.0. A shared file name that is not the same bytes is attached as `<paper-id>--<file name>`. `tools/release-assets.py` stages those copies. It does not use a `#` name: `gh release upload` treats that as a label and keeps the old file name. The Hodgkin-Huxley pulse has no PDF in the repository; its programs are attached, and the manuscript is in the source archive.
 

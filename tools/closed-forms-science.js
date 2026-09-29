@@ -257,7 +257,7 @@ function airyPeaks(ai, state, mode) {
 }
 
 /* ===================== Crapper ===================== */
-const cr = load('crapper', { names: 'sOfA, posSurf, measure, specFrom, A_UNI, A_STAR, S_STAR' });
+const cr = load('crapper', { names: 'sOfA, posSurf, measure, specFrom, A_STAR, S_STAR' });
 const H = cr.hooks;
 const crapperAs = [0.05, 0.2, 0.36, 0.45, 0.458];
 const closureRows = crapperAs.map(A => {
@@ -283,16 +283,20 @@ if (Math.abs(splash.steepness - splash.formula) > 1e-12) fail('classical height 
 
 const Auni = 3 - 2 * Math.sqrt(2);
 const classProfile = (phi, t, A) => classical(phi, A);
+const flipped = (phi, t, A) => H.posSurf(phi, t, A, 'flipped');
 const plate030 = bracketX(H.posSurf, 0.30);
 const plate015 = bracketX(H.posSurf, 0.15);
+const flip030 = bracketX(flipped, 0.30);
+const flip015 = bracketX(flipped, 0.15);
 const class030 = bracketX(classProfile, 0.30);
 const class046 = bracketX(classProfile, 0.46);
 const classSplashX = bracketX(classProfile, splash.A);
 const fAt = { A030: fSignChanges(0.30), A046: fSignChanges(0.46), splash: fSignChanges(splash.A) };
 const xpAtUni = plateXp0(Auni);
-if (!(Math.abs(xpAtUni) < 1e-12)) fail('plate trough derivative should vanish at A = 3-2*sqrt(2)');
-if (!(plate030.crossed && plate030.gap < 1e-9)) fail('expected the implemented map to self-intersect at A=0.30');
-if (plate015.crossed) fail('implemented map should not cross the symmetry line at A=0.15');
+if (!(Math.abs(xpAtUni) < 1e-12)) fail('flipped trough derivative should vanish at A = 3-2*sqrt(2)');
+if (plate030.crossed || plate015.crossed) fail('classical map should not meet itself at A=0.30 or A=0.15');
+if (!(flip030.crossed && flip030.gap < 1e-9)) fail('flipped sign should self-intersect at A=0.30');
+if (flip015.crossed) fail('flipped sign should not cross the symmetry line at A=0.15');
 if (class030.crossed || fAt.A030 !== 0 || !(class030.minAbs > 1e-2)) fail('classical profile should still be separated at A=0.30');
 if (!(class046.crossed && class046.gap < 1e-8) || fAt.A046 < 1) fail('classical profile should meet near A=0.46');
 if (classSplashX.crossed || fAt.splash !== 0 || !(classSplashX.minAbs < 1e-6)) fail('classical limiting wave should be a tangent touch');
@@ -315,11 +319,11 @@ if (!(wrongSteepMiss > 1e-3)) fail('wrong steepness 4|A|/(pi(1-A)) did not miss 
 
 const signY = load('crapper', {
   names: 'posSurf',
-  mutate: s => s.replace('y: psi - twoPi * B * (c - B) * inv', 'y: psi - twoPi * B * (c + B) * inv'),
+  mutate: s => s.replace('psi - k * B * (B + c) * inv', 'psi - k * B * (B - c) * inv'),
 });
 const signX = load('crapper', {
   names: 'posSurf',
-  mutate: s => s.replace('x: phi - twoPi * B * sn * inv', 'x: -phi - twoPi * B * sn * inv'),
+  mutate: s => s.replace('x: phi - k * B * sn * inv', 'x: -phi - k * B * sn * inv'),
 });
 const signYMiss = Math.abs(crestTrough(signY.hooks.posSurf, 0.2).s - steepnessFormula(0.2));
 const signXClose = closureOf(signX.hooks.posSurf, 0.2, 0.2);
@@ -336,9 +340,9 @@ const crapper = {
   pointwiseDistanceAtA0p2: { maxHypot: mapSep, phi: mapSepPhi,
     note: 'Implemented catalog map versus classical z_A, same A, one period. Recorded disagreement. The plate was not retuned.' },
   plateInjectivity: {
-    note: 'The implemented catalog map (denominator 1+A^2-2A cos) is a different curve from classical z_A (denominator 1+A^2+2A cos). X_phi at the trough vanishes at A = 3-2*sqrt(2). Above that, the catalog map meets itself on the symmetry line. Classical z_A stays separated until the tangent splash solved above.',
+    note: 'posSurf without a profile is the classical map, denominator 1+A^2+2A cos. It stays separated at A=0.30. The flipped sign, denominator 1+A^2-2A cos, is the old plate: its trough derivative vanishes at A = 3-2*sqrt(2), and it meets itself near A=0.30.',
     Auni, steepnessAtAuni: steepnessFormula(Auni), troughXpAtAuni: xpAtUni,
-    plateAtA0p30: plate030, plateAtA0p15Crossed: plate015.crossed,
+    classicalAtA0p30Crossed: plate030.crossed, flippedAtA0p30: flip030, flippedAtA0p15Crossed: flip015.crossed,
     classicalAtA0p30: { crossed: class030.crossed, minAbsX: class030.minAbs, fSignChanges: fAt.A030 },
     classicalAtA0p46: class046,
     classicalSplashTouch: { crossed: classSplashX.crossed, minAbsX: classSplashX.minAbs, minPhi: classSplashX.minPhi, fSignChanges: fAt.splash },
