@@ -4,6 +4,8 @@ Each release of this paper's programs and data is archived on Zenodo with its ow
 
 ## 1.0.1 (2026-09-28)
 
+**DOI:** [10.5281/zenodo.23028523](https://doi.org/10.5281/zenodo.23028523) (2026-09-29). The previous archive is unchanged.
+
 A checking release of the same preprint. The manuscript is unchanged. This archive adds `code/check_main.py`, `code/check_interval.py`, `code/check_horseshoe.py`, `code/check_field.py`, `code/check_abstract.py` and `code/check_hypotheses.py`. The three energies and their cone logs support the printed orbit bounds. The entropy figures 0.1016 and 0.0138 stay strictly under the horseshoe certificate. `code/hypotheses.json` names those three theorems and keeps Bolotin-Negrini and the later Smale-Birkhoff sources unread. Meromorphic non-integrability stays open.
 
 ## 1.0.0 (2026-09-27)

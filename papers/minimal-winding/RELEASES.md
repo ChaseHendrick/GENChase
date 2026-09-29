@@ -5,6 +5,8 @@ has not been peer reviewed.
 
 ## 2.2.1 (2026-09-28)
 
+**DOI:** [10.5281/zenodo.23028524](https://doi.org/10.5281/zenodo.23028524) (2026-09-29). The previous archive is unchanged.
+
 A checking release of the same preprint. The manuscript is unchanged. This archive adds `code/check_quote.py`, `code/check_abstract.py`, `code/check_strong.py` and `code/check_hypotheses.py`. The three short minima chop the certified intervals. The 13-digit circulations and positions are rounded balls. Eleven vortices at alpha = 2 and sixty SQG vortices match the families the logs state. The value at 603 vortices matches a numerical row, not an enclosure. `code/check_strong.py` matches the Step-1 constants, including c/8, to the stored log; it does not re-prove the theorem. `code/hypotheses.json` keeps O'Neil 2007 unread.
 
 ## 2.2.0 (2026-09-27)
