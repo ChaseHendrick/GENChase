@@ -459,6 +459,6 @@ computation (arXiv:1303.4904) with validated complex-time integration.
   was already safe. The manuscript proves the bound with the explicit positive eigenvector v_N = 1,
   v_{M_i} = r^-(22-i) of the graph, and states log r > 0.1016087 and at least 0.0138141 per unit time for the flow.
 - `code/run_all.sh` now creates `data/` before writing to it.
-- Bolotin and Negrini: further snippets and the pages the owner should obtain are in the update of
-  [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md); Szuminski and Kapitaniak read in full and the search for newer work are in
-  the update of [PRIOR-ART.md](PRIOR-ART.md).
+- Bolotin and Negrini: the article will not be obtained (owner decision 2026-09-29). The OCR reading and the sources
+  that do not replace the printed pages are in the update of [BOLOTIN-NEGRINI.md](BOLOTIN-NEGRINI.md); Szuminski and
+  Kapitaniak read in full and the search for newer work are in the update of [PRIOR-ART.md](PRIOR-ART.md).

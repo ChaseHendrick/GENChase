@@ -181,23 +181,16 @@ both quoted above, m1 = m2 = m and l1 = l2 = l give μ² = 6 g m² l³, so 2πμ
 against 2d ≈ 5.33 m √g l^{3/2}: the condition fails by a factor of 2.89 (8.33 after squaring, the 27π²/32 of the
 earlier reading). One caveat remains. The p. 434 snippet renders "2πμ" with a π, while the inequality of Theorem 10.1
 begins "9m2"; if the printed theorem really reads 9 m2 (a misprint for 9π²), its displayed statement would literally
-include the equal case (27 < 32), although its proof does not. Only the printed page settles that.
+include the equal case (27 < 32), although its proof does not. Only the printed page would settle that, and that page will not be obtained.
 
-### What the owner should obtain (library or interlibrary loan)
+### Closed 2026-09-29: the article will not be obtained
 
-S. V. Bolotin and P. Negrini, "A variational criterion for nonintegrability", *Russian Journal of Mathematical
-Physics*, vol. 5, no. 4 (1997), pp. 415-436 (Zbl 0951.37029; no DOI). The pages needed are:
+Owner decision: Bolotin and Negrini, *Russian Journal of Mathematical Physics* 5, no. 4 (1997), 415–436 (Zbl 0951.37029, no DOI), cannot be got. No library copy, interlibrary loan, or author preprint will be pursued. The questions listed here (whether Theorem 10.1 displays 9π² or 9m₂, which energy levels carry h_top > 0, and whether any statement covers m₁ = m₂, l₁ = l₂) stay unanswered by the printed article.
 
-1. pp. 434-435, Section 10: equations (10.1)-(10.3) and the displayed inequality of Theorem 10.1. Question: does it
-   read 9π²(m1 l1² + m2(l1 − l2)²)((m1 + m2) l1 + m2 l2) < 32 m2² (max{l1, l2})³, as its derivation requires?
-2. p. 420 and the pages before it in Section 3: Theorem 3.1, condition (3.1), Proposition 3.1 and the remark that the
-   double pendulum of Section 10 has h_top > 0. Questions: on which energy levels is h_top > 0 claimed, and under
-   which hypothesis?
-3. Anywhere else in the paper: does any statement cover m1 = m2, l1 = l2?
+Three further sources were read on 2026-09-29. None of them is pages 415–436, and none of them removes the caveat above.
 
-The paper is not online anywhere we could find (Zbl 0951.37029); it needs a library copy or interlibrary loan. Ivanov I
-(RCD 4 (1999), ref. [3]) cites it as a 1996 preprint of the Universita degli Studi di Roma La Sapienza, which the authors
-or the department might also supply.
+- The zbMATH review, Zbl 0951.37029, reviewer Samir Musayev, was seen as the review page. It says the double pendulum is proved nonintegrable "in a certain domain of parameters." It does not state the domain.
+- Bolotin's doctoral abstract, *Двухасимптотические траектории и условия интегрируемости гамильтоновых систем*, Moscow State University, defended 5 December 1997, was read in an English OCR. Chapter 4 applies the torus/cylinder criterion to the double mathematical pendulum under an inequality in the masses and lengths, and says Burov had covered only a very special physical pendulum. The inequality line in that OCR is unreadable, so the factor above was not recomputed from it. Item [28] of the abstract is the 1996 Rome preprint with Negrini, then in press in this journal.
+- Bolotin and Rabinowitz, *Journal of Differential Equations* 148 (1998), 364–387, was read. Theorem 1.1 gives chaotic trajectories only for 0 < |h| < δ under conditions (H1)–(H6). Page 368 leaves chaotic trajectories at h = 0 as an open question in that setting. Page 369 says condition (H6) "was verified for a double pendulum in a certain range of parameter values" in their reference [6], which is this paper (their bibliography dates it 1996 and gives pages 415–439; zbMATH has 1997, 415–436).
 
-Until then the novelty statements that depend on this paper (global analytic non-integrability, and chaos in the equal
-double pendulum at any energy) stay conditional on this reading.
+The equal-case exclusion therefore stays an OCR reconstruction: the condition the snippets derive the theorem from fails at m₁ = m₂, l₁ = l₂ by a factor of about 2.89 unsquared (about 8.3 after squaring), and a misprint of 9m₂ for 9π² in the displayed inequality would literally include the equal case even though that derivation does not. The E = 0 horseshoe does not use this paper. Any claim that the equal case had not already been proved stays conditional on these sources.
