@@ -33,7 +33,7 @@
     const means=[];
     for(let k=0;k<s.modes;k++){
       const a=2*Math.PI*k/s.modes+s.turn*Math.PI/180;
-      if(s.layout==='line')means.push([s.radius*(2*k/(s.modes-1)-1),0]);
+      if(s.layout==='line'){const r=s.radius*(2*k/(s.modes-1)-1),turn=s.turn*Math.PI/180;means.push([r*Math.cos(turn),r*Math.sin(turn)]);}
       else{const r=s.radius*(s.layout==='spiral'?(.25+.75*k/(s.modes-1)):1);means.push([r*Math.cos(a),r*Math.sin(a)]);}
     }
     return {means,sigma:s.sigma};
@@ -98,7 +98,11 @@
           if(paths.length<s.count){status();timer=setTimeout(chunk,0);}else{finished=true;timer=0;draw();resolveBuild();resolveBuild=null;}}
         timer=setTimeout(chunk,0);
       }
-      return {aspect:()=>1,regenerate,repaint:draw,resize:draw,pause(){},resume:draw,
+      function pause(){
+        clearTimeout(timer);timer=0;++token;
+        if(resolveBuild){resolveBuild();resolveBuild=null;}
+      }
+      return {aspect:()=>1,regenerate,repaint:draw,resize:draw,pause,dispose:pause,resume(){if(finished)draw();else regenerate();},
         async exportPNG(w,h){await ready;if(!finished)throw Error('Flow is still computing');const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d',{alpha:false,willReadFrequently:true}),w,h);return U.toBlob(c);},
         async exportSVG(w,h){await ready;if(!finished)throw Error('Flow is still computing');let body='';
           marks(w,h,(pts,col,lw)=>{body+='<path d="'+pts.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(3)).join(' ')).join('')+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-opacity="0.6" stroke-linecap="round" stroke-linejoin="round"/>';},(p,col,r)=>{body+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="'+col+'"/>';});return U.svgBlob(w,h,host.getState().bg,body);},

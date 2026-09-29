@@ -1,12 +1,22 @@
 'use strict';
 const R=ResearchNotebook,$=id=>document.getElementById(id),key='genchase-research-notebook-v1';
-let data={version:1,question:'',sources:[]},editing=-1,storageFailed=false;
-try { const saved=localStorage.getItem(key);if(saved)data=R.validate(JSON.parse(saved)); } catch { storageFailed=true; }
+let data={version:1,question:'',sources:[]},editing=-1,storageFailed=false,storageConflict=false,savedRevision=null,saveQueue=Promise.resolve(),pendingSaves=0;
+try { savedRevision=localStorage.getItem(key);if(savedRevision)data=R.validate(JSON.parse(savedRevision)); } catch { storageFailed=true; }
+function saveStatus(){
+  $('save-status').textContent=storageConflict?'Another tab changed the saved notebook. Download JSON to keep this tab’s notes, then reload to load the saved notebook.':storageFailed?'Browser storage is unavailable. Download JSON to keep your notes.':pendingSaves?'Saving in this browser…':'Saved in this browser.';
+}
 function save(){
   data.question=$('question').value;
-  try{localStorage.setItem(key,JSON.stringify(data));storageFailed=false;}catch{storageFailed=true;}
-  $('save-status').textContent=storageFailed?'Browser storage is unavailable. Download JSON to keep your notes.':'Saved in this browser.';
+  const snapshot=JSON.stringify(data);pendingSaves++;saveStatus();
+  // Serialize cooperating tabs with Web Locks. The revision check also refuses
+  // stale writes in older browsers, while retaining this tab's exportable data.
+  const persist=()=>{try{
+    if(storageConflict||localStorage.getItem(key)!==savedRevision){storageConflict=true;saveStatus();return false;}
+    localStorage.setItem(key,snapshot);savedRevision=snapshot;storageFailed=false;
+  }catch{storageFailed=true;}saveStatus();return !storageFailed;};
+  saveQueue=saveQueue.then(()=>navigator.locks?navigator.locks.request(key,persist):persist()).catch(()=>{storageFailed=true;return false;}).then(saved=>{pendingSaves--;saveStatus();return saved;});
   $('prompt').value='';$('copy-prompt').disabled=true;$('copy-status').textContent='';
+  return saveQueue;
 }
 function links(){
   $('providers').replaceChildren(...R.providers.map(p=>{const a=document.createElement('a');a.className='provider';a.href=R.searchURL(p,$('question').value);a.target='_blank';a.rel='noopener noreferrer';const kind=document.createElement('small'),name=document.createElement('strong'),description=document.createElement('span');kind.textContent=p.kind;name.textContent=p.name+' ↗';description.textContent=p.description;a.append(kind,name,description);return a;}));
@@ -38,6 +48,6 @@ $('import').onchange=async()=>{try{
   const file=$('import').files[0];if(!file)return;if(file.size>3000000)throw Error('Notebook must be smaller than 3 MB.');
   const incoming=R.validate(JSON.parse(await file.text()));
   const sources=data.sources.slice();for(const source of incoming.sources)if(!sources.some(s=>JSON.stringify(s)===JSON.stringify(source)))sources.push(source);
-  const question=data.question||incoming.question;data=R.validate({version:1,question,sources});$('question').value=question;resetForm();save();links();render();$('error').textContent='';
-  $('save-status').textContent=(storageFailed?'Imported in memory only; download a backup.':'Imported and saved in this browser.')+(incoming.question&&incoming.question!==question?' Existing question kept; the imported file has a different question.':'');
+  const question=data.question||incoming.question;data=R.validate({version:1,question,sources});$('question').value=question;resetForm();const saved=await save();links();render();$('error').textContent='';
+  if(!storageConflict)$('save-status').textContent=(saved?'Imported and saved in this browser.':'Imported in memory only; download a backup.')+(incoming.question&&incoming.question!==question?' Existing question kept; the imported file has a different question.':'');
 }catch(err){$('error').textContent='Import failed: '+err.message;}finally{$('import').value='';}};

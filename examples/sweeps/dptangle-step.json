@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "technique": "dptangle",
+  "parameters": { "energy": 0, "iterates": 4, "orbits": 6, "orbitReturns": 8, "aspect": "4:5" },
+  "cases": [
+    { "label": "step-0.008", "parameters": { "curveStep": 0.008 } },
+    { "label": "step-0.004", "parameters": { "curveStep": 0.004 } }
+  ],
+  "seeds": ["sweep-example/0", "sweep-example/1"],
+  "sampling": { "waitMs": 0 },
+  "limits": { "caseMs": 60000, "totalMs": 250000 },
+  "metrics": [
+    { "name": "sea_mean_p2", "array": "sea_p2", "reduce": "mean", "units": "canonical momentum" },
+    { "name": "return_time", "path": "grid.returnTime", "units": "sqrt(l/g)" }
+  ],
+  "comparison": {
+    "metric": "sea_mean_p2",
+    "parameter": "curveStep",
+    "physicalConditions": { "energy": 0, "iterates": 4, "orbits": 6, "orbitReturns": 8 },
+    "stateConditions": { "grid.energy": 0, "grid.pointStep": 0.0005, "grid.scheme": "classical RK4, float64, fixed step, section crossing bisected to 1e-14" }
+  }
+}

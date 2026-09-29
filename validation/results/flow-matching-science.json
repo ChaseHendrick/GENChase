@@ -106,7 +106,7 @@
   ],
   "seeds": 8,
   "samplesPerSeed": 2048,
-  "sourceSha256": "c02aa6e66f8897dc8836bab8ff75bb40062405213adcd40450d70f6328f774cc",
+  "sourceSha256": "73849986a1e519f7456a9c371b98a34fd8327968c145febbaf839ca056dd131f",
   "limitations": "Finite selected paths and one mixture, not all parameter values. Six-standard-error bound is a conservative diagnostic, not a simultaneous confidence certificate.",
   "passed": true
 }

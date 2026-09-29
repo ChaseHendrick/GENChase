@@ -207,7 +207,8 @@
         "golden",
         "voronoi",
         "para",
-        "tight"
+        "tight",
+        "open"
       ],
       "vectors": true,
       "familiarity": "common",
@@ -257,7 +258,8 @@
         "lightning",
         "dla",
         "needle",
-        "fern"
+        "fern",
+        "bright"
       ],
       "vectors": true,
       "familiarity": "common",
@@ -3139,7 +3141,8 @@
         "necklace",
         "kissing",
         "dust",
-        "six"
+        "six",
+        "engraved"
       ],
       "vectors": true,
       "familiarity": "common",

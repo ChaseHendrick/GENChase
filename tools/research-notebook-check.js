@@ -14,11 +14,22 @@ const {chromium,webkit}=require('playwright'),{createServer}=require('../apps/va
   await page.fill('#url','10.1073/pnas.79.8.2554');await page.selectOption('#read','abstract');await page.fill('#notes','Only the abstract, no proof checked.');await page.click('#save-source');
   assert.equal(await page.locator('.source img').count(),0);assert.equal(await page.locator('.source').count(),1);
   await page.getByRole('button',{name:'Edit <img src=x onerror=alert(1)>',exact:true}).click();await page.fill('#title','Hopfield (1982)');await page.click('#save-source');
+  await page.waitForFunction(()=>JSON.parse(localStorage.getItem('genchase-research-notebook-v1')).sources[0].title==='Hopfield (1982)');
   await page.reload();assert.equal(await page.inputValue('#question'),'Hopfield & recall?');assert.equal(await page.locator('.source h3').textContent(),'Hopfield (1982)');
   await page.click('#make-prompt');assert.match(await page.inputValue('#prompt'),/Read: abstract/);assert.match(await page.inputValue('#prompt'),/no proof checked/);
   const download=page.waitForEvent('download');await page.click('#export-json');const file=await(await download).path();const saved=JSON.parse(fs.readFileSync(file,'utf8'));assert.equal(saved.sources.length,1);
   await page.getByRole('button',{name:'Remove Hopfield (1982)',exact:true}).click();await page.setInputFiles('#import',file);await page.waitForSelector('.source');assert.equal(await page.locator('.source').count(),1);
   await page.setInputFiles('#import',{name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{"version":2}')});await page.waitForFunction(()=>document.querySelector('#error').textContent.includes('Import failed'));assert.match(await page.textContent('#error'),/Import failed/);assert.equal(await page.locator('.source').count(),1);
+  const other=await context.newPage();await other.goto(page.url());
+  await page.fill('#title','Paper A');await page.fill('#url','https://example.org/a');await page.click('#save-source');
+  await page.waitForFunction(()=>JSON.parse(localStorage.getItem('genchase-research-notebook-v1')).sources.some(s=>s.title==='Paper A'));
+  await other.fill('#title','Paper B');await other.fill('#url','https://example.org/b');await other.click('#save-source');
+  await other.waitForFunction(()=>document.querySelector('#save-status').textContent.includes('Another tab'));
+  assert.equal(await other.locator('.source h3').last().textContent(),'Paper B','conflicting notes remain available');
+  const conflictDownload=other.waitForEvent('download');await other.click('#export-json');
+  const conflictSaved=JSON.parse(fs.readFileSync(await(await conflictDownload).path(),'utf8'));assert(conflictSaved.sources.some(s=>s.title==='Paper B'));
+  await page.reload();assert(await page.getByRole('heading',{name:'Paper A',exact:true}).count());assert.equal(await page.getByRole('heading',{name:'Paper B',exact:true}).count(),0);
+  await other.close();
   for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no horizontal overflow '+width);}
   if(process.env.RESEARCH_SCREENSHOT)await page.screenshot({path:process.env.RESEARCH_SCREENSHOT,fullPage:true});
   assert.deepEqual(errors,[]);assert.deepEqual(external,[]);console.log('Research notebook: real browser edit/reload/import/export, unsafe links/text, mobile layout and zero unsolicited external requests PASS');

@@ -17,7 +17,13 @@ const {glArgs}=require('./lib/gl-args'),{chromium}=require('playwright');
   const paths=doc.querySelectorAll('path').length,circles=doc.querySelectorAll('circle').length;
   if(paths!==(state.trail>0?state.count:0)||circles!==state.count)throw Error('SVG omitted marks');
   inst.regenerate();if(!same((await inst.exportData()).arrays.trajectories.data))throw Error('Replay differed');
-  return {fixture,width:copy.width,height:copy.height,bytes:blob.size,luminanceRange:hi-lo,paths,circles,finiteWords:words.length,statePreserved:true,deterministicReplay:true,mutationRejected:true,status:text};
+  inst.regenerate();inst.pause();const pausedText=text;
+  await new Promise(resolve=>setTimeout(resolve,40));if(text!==pausedText)throw Error('Paused build continued');
+  let refused=false;try{await inst.exportData();}catch{refused=true;}if(!refused)throw Error('Partial paused export was accepted');
+  inst.resume();if(!same((await inst.exportData()).arrays.trajectories.data))throw Error('Resume differed');
+  inst.regenerate();inst.dispose();await new Promise(resolve=>setTimeout(resolve,20));
+  let disposedRefused=false;try{await inst.exportData();}catch{disposedRefused=true;}if(!disposedRefused)throw Error('Disposed partial export was accepted');
+  return {fixture,width:copy.width,height:copy.height,bytes:blob.size,luminanceRange:hi-lo,paths,circles,finiteWords:words.length,statePreserved:true,deterministicReplay:true,mutationRejected:true,pauseResumeAndDispose:true,status:text};
  },fixture);assert(row.bytes>1000&&row.luminanceRange>12);rows.push(row);
  }
  }finally{await browser.close();}

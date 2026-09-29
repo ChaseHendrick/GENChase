@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Pending geometry is now rebuilt before image/data exports, repaint and tab return, including inactive data exports. Live parameters receive sanitized values; convection dependent time-step bounds are enforced after grid, Prandtl and Rayleigh changes. Real-browser regression covers immediate slider-to-export actions.
+- The Rice-Mele evidence comparison accepts tightly bounded runtime rounding while requiring exact model inputs, provenance and predicates. Scientific acceptance thresholds and the archived report are unchanged.
+
+- Add bounded JSON parameter sweeps with raw NPZ data, requested and sanitized recipes, retained failures, seed-replicate summaries and explicit-condition paired differences. Repair segmented overrides in the one-recipe runner and refuse output overwrites.
+- Add optional Engraved pearls, Bright discharge and Open growth presets for clearer framing and contrast while preserving existing defaults and saved recipes.
+- Protect research notes from stale writes by another browser tab. Flow matching now stops background work when paused and rotates line targets with the Rotation control.
+
 - **Flow-matching probability transport.** Seeded particles follow an analytic Gaussian-mixture velocity field with RK4, vector exports and native trajectory data. Exact-solution, refinement, continuity and repeated-seed moment checks accompany the new unvalidated technique. This illustrates the transport target used in generative modeling; no neural model is trained.
 
 - **All eight publication archives verified.** New Zenodo versions are Publication / Preprint records with exact registered titles and manuscript PDFs present in the downloaded source ZIPs. Current DOI links and companion citations now point to those versions; prior archives and manuscript checking references remain unchanged.

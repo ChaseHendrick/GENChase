@@ -807,7 +807,13 @@ void main(){
     const F = window.GenChaseDataFormats;
     let out = null, failure = '';
     if (typeof e.inst.exportData === 'function') {
-      try { out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      let rebuilt = false;
+      try { rebuilt = flushGeometry(e); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      finally {
+        if (rebuilt && e !== instances[currentId]) {
+          try { if (e.inst.pause) e.inst.pause(); e.paused = true; } catch (err) { console.warn(err); }
+        }
+      }
     }
     const members = [], arrays = {};
     for (const [name, a] of Object.entries((out && out.arrays) || {})) {
@@ -1635,25 +1641,34 @@ void main(){
   }
 
   /* ---- lifecycle ---- */
-  function regenerate(opts) {
-    const e = instances[currentId]; if (!e) return;
-    if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
-    clearTimeout(regenTimer);
-    regenTimer = null;
-    pendingRegen = null;
-    fitCanvas(e);
+  function regenerate(opts, target) {
+    const e = target || instances[currentId]; if (!e) return;
+    const active = e === instances[currentId];
+    if (active && !(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
+    if (!target || (pendingRegen && pendingRegen.e === e)) {
+      clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
+    }
+    e.geometryDirty = false;
+    if (active) fitCanvas(e);
     e.paused = false;
     e.scienceWitness = null;
-    renderStatus();
-    try { e.inst.regenerate(); } catch (err) { showError(err); }
-    updateDims();
-    persist(currentId);
-    if (!(opts && opts.skipHistory)) scheduleHistory();
-    resetWitness();
-    scheduleHash();
+    if (active) renderStatus();
+    try { e.inst.regenerate(); } catch (err) { e.geometryDirty = true; showError(err); return false; }
+    if (active) updateDims();
+    persist(e.mod.id);
+    if (active && !(opts && opts.skipHistory)) scheduleHistory();
+    if (active) { resetWitness(); scheduleHash(); }
+    return true;
+  }
+  function flushGeometry(e) {
+    if (!e.geometryDirty) return false;
+    const opts = pendingRegen && pendingRegen.e === e ? pendingRegen.opts : { skipSnap: true, skipHistory: true };
+    if (regenerate(opts, e) === false) throw Error('Could not apply pending geometry before export');
+    return true;
   }
   function repaint() {
     const e = instances[currentId]; if (!e) return;
+    if (e.geometryDirty) { try { flushGeometry(e); } catch (err) { showError(err); } return; }
     fitCanvas(e);
     try { if (e.inst.repaint) e.inst.repaint(); else e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
@@ -1664,6 +1679,7 @@ void main(){
   // A queued preview belongs to its originating entry, never the next tab.
   function scheduleRegen(opts) {
     const e = instances[currentId]; if (!e) return;
+    e.geometryDirty = true;
     pendingRegen = { e, opts };
     if (regenTimer !== null) return;
     regenTimer = setTimeout(() => {
@@ -2201,6 +2217,8 @@ void main(){
     if (!e.started) {
       e.started = true;
       if (!opts.deferRender) regenerate({ skipHistory: true, skipSnap: true });
+    } else if (!opts.deferRender && e.geometryDirty) {
+      regenerate({ skipSnap: true });
     } else if (!opts.deferRender) {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
       if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
@@ -2238,6 +2256,9 @@ void main(){
     e.state[key] = value;
     if (currentId === e.mod.id) renderStatus();
     if (e.mod.onParam) e.mod.onParam(e.state, key);           // e.g. keep min <= max
+    // Reapply dependent stability and range constraints after every edit while
+    // preserving the state object's identity for renderers and hosts.
+    Object.assign(e.state, sanitize(e.mod, e.state));
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();
     const commit = phase !== 'drag';
@@ -2248,7 +2269,7 @@ void main(){
       repaint();
       if (commit) scheduleHistory();
     } else if (kind === 'live') {
-      try { e.inst.live && e.inst.live(key, value); } catch (err) { showError(err); }
+      try { e.inst.live && e.inst.live(key, e.state[key]); } catch (err) { showError(err); }
       persist(e.mod.id);
       if (commit) scheduleHistory();
     } else persist(e.mod.id);
@@ -2964,6 +2985,7 @@ void main(){
   async function doExport() {
     const e = instances[currentId]; if (!e) return;
     if (exportBusy || printFormatBusy) return;
+    try { flushGeometry(e); } catch (err) { showError(err); return; }
     if (!validPrintInputs()) {
       updateDims();
       for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;

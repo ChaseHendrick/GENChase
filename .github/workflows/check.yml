@@ -175,6 +175,7 @@ jobs:
           node tools/hofstadter-science.js
           node tools/aubry-science.js
           node tools/aubry-relaxation.js
+          node tools/sweep-check.js
           node tools/hopfield-science.js
           node tools/flow-matching-science.js
           node tools/closed-forms-science.js
@@ -269,6 +270,7 @@ jobs:
         run: |
           node tools/folder-browser.js
           node tools/engine-api-check.js
+          timeout 180 node tools/parameter-state-check.js
           node tools/colophon-check.js
           node tools/reports-check.js
           node tools/art-only-check.js

@@ -1,6 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto');
 const C=require('../src/modules/flow-matching');
+const rotated=C.modelFor({layout:'line',modes:2,radius:2,sigma:.2,turn:90});
+assert(rotated.means.every(([x,y],i)=>Math.abs(x)<1e-12&&Math.abs(y-(i?2:-2))<1e-12),'Line target must follow Rotation');
 const engine=fs.readFileSync(require.resolve('../src/shared/engine.js'),'utf8');
 const rngFactory=new Function(engine.slice(engine.indexOf('  function makeRng'),engine.indexOf('  function makeNoise'))+';return makeRng;')();
 const endpoint=(z,m,n)=>{const p=C.trajectory(...z,m,n);return [p[p.length-2],p[p.length-1]];};
