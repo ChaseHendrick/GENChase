@@ -103,18 +103,19 @@ def orbit(u0, z, T, n=2):
     x0 = np.concatenate([[u0], z])
     t = np.linspace(0, n * T, 4000)
     sol = solve_ivp(HF.f, [0, n * T], x0, args=(8.0, 10.613), method='DOP853', rtol=1e-12, atol=1e-14, t_eval=t)
+    assert sol.success and np.isfinite(sol.y).all(), sol.message
     return sol.t, sol.y
 
 
 ts, ys = orbit(20.0, zs, Ts)
 tu, yu = orbit(5.0, zu, Tu)
-fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.6), constrained_layout=True)
+fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.9), constrained_layout=True)
 a.plot(ts, ys[0], '-', color=BLUE, lw=1.4, label='stable orbit (spike train)')
 a.plot(tu, yu[0], '--', color=ORANGE, lw=1.4, label='orbit of saddle type')
 a.axhline(ueq, color=AQUA, lw=1.0, label='equilibrium')
 a.set_xlabel('time $t$ (ms)')
 a.set_ylabel('depolarization $u$ (mV)')
-a.legend(loc='upper right', fontsize=7.5, handlelength=2.2)
+fig.legend(*a.get_legend_handles_labels(), loc='outside upper center', ncol=3, fontsize=7.5, handlelength=2.2)
 a.set_title('(a) two periods of each orbit', loc='left', fontsize=8.5, color=INK)
 b.plot(ys[0], ys[3], '-', color=BLUE, lw=1.4)
 b.plot(yu[0], yu[3], '--', color=ORANGE, lw=1.4)
@@ -122,8 +123,8 @@ xeq = np.array([ueq, *HF.gate_inf(ueq)])
 b.plot([xeq[0]], [xeq[3]], 'o', ms=5, color=AQUA, zorder=5)
 for c, col in ((20.0, BLUE), (5.0, ORANGE)):
     b.axvline(c, color=col, lw=0.6, ls=':')
-b.annotate('$u = 20$', (20, 0.62), xytext=(3, 0), textcoords='offset points', fontsize=7.5, color=INK)
-b.annotate('$u = 5$', (5, 0.62), xytext=(-3, 0), textcoords='offset points', fontsize=7.5, color=INK, ha='right')
+b.annotate('$u = 20$', (20, .98), xycoords=b.get_xaxis_transform(), va='top', xytext=(3, 0), textcoords='offset points', fontsize=7.5, color=INK)
+b.annotate('$u = 5$', (5, .98), xycoords=b.get_xaxis_transform(), va='top', xytext=(-3, 0), textcoords='offset points', fontsize=7.5, color=INK, ha='right')
 b.set_xlabel('depolarization $u$ (mV)')
 b.set_ylabel('sodium inactivation $h$')
 b.set_title('(b) projection on the $(u, h)$ plane', loc='left', fontsize=8.5, color=INK)
@@ -134,7 +135,7 @@ plt.close(fig)
 
 # ------------------------------------------------------------------ Figure 3: certified periods; the l1 check
 s4b = BIST[BIST.index('STAGE 4b '):BIST.index('STAGE 5 ')]
-P = re.findall(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, sup\|\|DP\|\|_inf <= ([0-9.]+), '
+P = re.findall(r'E_l in \[([0-9.]+), ([0-9.]+)\]: P\(Z\) in int Z True, runs cover Z x piece True, sup\|\|DP\|\|_inf <= ([0-9.]+), '
                r'T in \[([0-9.]+), ([0-9.]+)\]', s4b)
 assert len(P) == 60
 s2 = BIST[BIST.index('STAGE 2 '):BIST.index('STAGE 3 ')]
@@ -149,7 +150,7 @@ a.set_xlabel(r'leak potential $E_l$ (mV)')
 a.set_ylabel(r'period $T$ (ms)')
 a.set_title('(a) proved period enclosures, $J = 8$', loc='left', fontsize=8.5, color=INK)
 sec = a.secondary_xaxis('top', functions=(lambda E: 8 + 0.3 * (E - 10.613), lambda J: 10.613 + (J - 8) / 0.3))
-sec.set_xlabel(r'equivalent $J$ at $E_l = 10.613$', fontsize=7.5, color=MUTED)
+sec.set_xlabel(r'equivalent $J$ ($\mu$A/cm$^2$) at $E_l=10.613$', fontsize=7.5, color=MUTED)
 sec.tick_params(labelsize=7, colors=MUTED)
 d = np.array([JH[0] - float(J) for J, _ in br])
 r = np.array([float(A) ** 2 for _, A in br]) / d
@@ -157,7 +158,7 @@ b.plot(d, r, 'o', ms=5, mfc='white', mec=BLUE, mew=1.4, label='computed unstable
 b.plot([0, 1.3], [slope, slope], '-', color=ORANGE, lw=1.2, label=r'limit from $\ell_1$ (Hopf normal form)')
 b.set_xlim(0, 1.3)
 b.set_xlabel(r'$J_{H1} - J$ ($\mu$A/cm$^2$)')
-b.set_ylabel(r'(peak-to-peak $u$)$^2$ / $(J_{H1} - J)$')
+b.set_ylabel(r'$A_u^2/(J_{H1}-J)$ (mV$^2$ cm$^2$/$\mu$A)')
 b.legend(loc='upper left', fontsize=7.5)
 b.set_title('(b) numerical check of $\\ell_1$', loc='left', fontsize=8.5, color=INK)
 for ax in (a, b):

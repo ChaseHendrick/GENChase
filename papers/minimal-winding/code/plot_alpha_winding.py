@@ -75,7 +75,7 @@ Y = sol.sol(ts); Z = (Y[:3] + 1j * Y[3:]) - zc
 scale = np.max(np.abs(Z[:, 0]))
 
 plt.rcParams.update({'font.family': 'serif', 'font.serif': ['cmr10'], 'mathtext.fontset': 'cm',
-                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path'})
+                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path', 'pdf.fonttype': 42, 'svg.hashsalt': 'plot_alpha_winding'})
 fig, (ax, bx) = plt.subplots(1, 2, figsize=(6.4, 3.0), gridspec_kw={'width_ratios': [1.25, 1]})
 ax.scatter(cloud_a, cloud_p, s=1.2, color='0.72', lw=0, rasterized=False)
 ax.plot(al, B, color='black', lw=1.5)
@@ -97,3 +97,8 @@ fig.savefig(out, metadata={'Date': None})
 fig.savefig(out[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None})
 below = sum(p < math.sqrt(3 + a) / (2 + a) for a, p in zip(cloud_true, cloud_p))
 print('wrote', out, 'and .pdf;', len(cloud_p), 'sampled triangles,', below, 'below the bound; panel (b) P =', Pb, ', t_c =', tc)
+
+# Keep generated SVG text stable and free of insignificant trailing whitespace.
+from pathlib import Path as _Path
+for _svg in (_Path(__file__).resolve().parents[1] / "paper/figures").glob("*.svg"):
+    _svg.write_text("\n".join(line.rstrip() for line in _svg.read_text().splitlines()) + "\n")

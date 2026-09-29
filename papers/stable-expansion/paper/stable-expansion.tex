@@ -32,7 +32,7 @@
 \newcommand{\R}{\mathbb{R}}
 
 \title{Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches}
-\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
+\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chase@hendrickresearch.com}{\texttt{chase@hendrickresearch.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
 \date{\small Preprint of 26 September 2026. Not peer reviewed.}
 
 \begin{document}
@@ -279,6 +279,15 @@ with $C_e$ depending on $Y$, $\varepsilon$, $M$ and $r$ but not on $T_*$.
 
 \emph{Direct integration} (binary64, DOP853, relative tolerance $10^{-12}$, and $10^{-13}$ for the longest run; not part of the proof). The four-vortex expansion of Corollary~\ref{cor:expansion}, started from the midpoint of the certified enclosure, keeps its shape to $4\cdot10^{-15}$ while its size grows $178$-fold; a random perturbation of $10^{-5}$ in each coordinate (a shape deviation of $3.3\cdot10^{-5}$) stays below $2\cdot10^{-4}$, settling on a nearby member of the family, the neutral direction. Measured against the member with the same energy, found by least squares as Theorem~\ref{thm:nonlinear} prescribes, a perturbation of $10^{-4}$ in each coordinate has a shape deviation (modulo translation, rotation and scaling, so weaker than the quantity in the theorem) that decays like the inverse of the size. Followed from $5$-fold to $5\cdot10^8$-fold growth, deviation times size stays between $3.0\cdot10^{-4}$ and $6.3\cdot10^{-4}$ for four vortices, and between $3.1\cdot10^{-3}$ and $2.1\cdot10^{-2}$ for five, where two oscillating modes of nearly equal frequency beat with a period of about $24$ in $\ln\rho$. The deviation from $\zeta^*$ itself levels off, near $1.1\cdot10^{-3}$ and $5.8\cdot10^{-3}$, and $H$ is conserved to $4\cdot10^{-14}$. The reversal of the unstable four-vortex control, perturbed by $10^{-8}$ in each coordinate, departs from its shape by $1.5\cdot10^{-3}$ when its size has grown eightfold and by $0.3$ at sixteenfold; while the deviation lies between $10^{-7}$ and $10^{-2}$ it grows like the size to a power between $5.9$ and $6.0$, close to the value $5.981\ldots$ of the certified $-k$, and the program checks that each measured power lies within $0.2$ of it. The reversal of the five-vortex control, perturbed in the same way, departs by $2.3\cdot10^{-4}$ at eightfold and by $4\cdot10^{-3}$ at eighteenfold growth. A self-similar collapse, by contrast, departs from self-similarity in binary64 under round-off alone \cite{lk2015, cwr2026}.
 
+Figure~\ref{fig:shape-convergence} displays the stored comparisons with the original shape and with the family member selected by energy.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/stable-expansion-convergence.pdf}
+\caption{Recorded numerical illustrations of expansion after a $10^{-4}$ perturbation in each coordinate: (a) four vortices and (b) five vortices. The relative shape deviation is the Euclidean residual after removing translation and fitting a complex scale (rotation and dilation), divided by the norm of the translated configuration. The size factor is the modulus of that fitted scale relative to the original shape. Both axes are dimensionless. Dots are the ten rounded samples printed for each configuration in \texttt{data/verify-stable-expansion.txt}; lines only join those samples. The comparison with the family member having the perturbed energy decays, while the comparison with the original shape levels off. This diagnostic is weaker than the theorem's estimate and is a binary64 illustration, not an interval proof. The figure is reproduced by \texttt{plot\_stable\_expansion.py}.}
+\label{fig:shape-convergence}
+\end{figure}
+
 \emph{How common.} A least-squares solver from random starts, in binary64 with fixed seeds, gave $342$ converged four-vortex collapses (not checked for duplicates), of which $52$ have $c > 0$, and $543$ converged five-vortex collapses (also not checked for duplicates), of which $32$ have every remaining exponent with positive real part (\texttt{survey\_\allowbreak expansions.py}). This is a sample of what a naive search finds, not a measure on the collapse set. Of the $52$ four-vortex cases, $37$ have the remaining pair on $\re k = 1$, as in Theorem~\ref{thm:four}, and $15$ a real pair $0 < k < 2$. Of the $32$ five-vortex cases, $10$ have both remaining pairs on $\re k = 1$, as in Theorem~\ref{thm:five}, $16$ a quadruple $1 \pm x \pm iy$ with $0 < x < 1$, and $6$ at least one real pair $0 < k < 2$.
 
 \begin{table}[t]
@@ -302,7 +311,7 @@ The theorems give self-similarly expanding configurations of four and five vorti
 The examples are Euler vortices. The $\alpha$-models, where a vortex induces the velocity $\Gamma r^{-\alpha-1}/(2\pi)$, have the same structure after the obvious changes of homogeneity, and we have not treated them. Nor have we asked which fraction of the collapse set reverses into stable expansions, or whether stable expansions exist for every $N \ge 4$; the sample of Section~\ref{sec:numerics} suggests that they are common for $N = 4$ and $5$.
 
 \medskip
-{\raggedright\noindent\textbf{Data availability.} The programs \texttt{verify\_\allowbreak stable\_\allowbreak expansion.py} and \texttt{survey\_\allowbreak expansions.py}, with the modules \texttt{certify\_\allowbreak ball\_\allowbreak ad.py} and \texttt{certify\_\allowbreak pipeline.py} of \cite{mw2026}, their inputs and their output are in the repository \url{https://github.com/ChaseHendrick/stable-expansion}: the programs in \texttt{code/} and their inputs and output in \texttt{data/}. Release 1.0.0 of that repository, which holds the programs and data of this version of the paper, is archived at Zenodo, \url{https://doi.org/10.5281/zenodo.22971173}. Checking release 1.0.1 archives the same proof programs and data with supplementary checks at \url{https://doi.org/10.5281/zenodo.23028532}.\par}
+{\raggedright\noindent\textbf{Data availability.} The programs \texttt{verify\_\allowbreak stable\_\allowbreak expansion.py} and \texttt{survey\_\allowbreak expansions.py}, with the modules \texttt{certify\_\allowbreak ball\_\allowbreak ad.py} and \texttt{certify\_\allowbreak pipeline.py} of \cite{mw2026}, their inputs and their output are in the repository \url{https://github.com/ChaseHendrick/stable-expansion}: the programs in \texttt{code/} and their inputs and output in \texttt{data/}. Release 1.0.0 of that repository, which holds the programs and data of this version of the paper, is archived at Zenodo, \url{https://doi.org/10.5281/zenodo.22971173}. Release 1.0.2 archives the same proof programs and data with supplementary checks at \url{https://doi.org/10.5281/zenodo.23047037}.\par}
 
 \smallskip
 \noindent\textbf{Funding.} This research received no external funding.
@@ -509,6 +518,9 @@ With the same choices, if $T_* < t_0 + t_0^{9/10}$ and (B1)--(B5) hold on $[t_0,
 \begin{proof}
 Here $t_0 \le t \le T_* \le 2t_0$. At $t_0$ the support of $\omega_i$ lies within $2r_{\mathrm{in}}$ of $\bar x_i(t_0)$, so $I_n(t_0) \le (2r_{\mathrm{in}})^nm$. By Lemma~\ref{lem:moments} and $|q| \le Ct^{-1}r^2$, $dI_n/dt \le Cnt^{-1}I_n + |A_n| + |B_n|$. For $n = 2$ this gives $dI_2/dt \le Ct^{-1}I_2 + Ct^{-5/4+2\varepsilon}$, and since $\int_{t_0}^{T_*}Ct^{-1}\,dt \le Ct_0^{-1/10}$, Gronwall's inequality gives $I_2(T_*) \le 2(4r_{\mathrm{in}}^2m + 1) < T_*^{\varepsilon/2}$ for $T$ large. For $n \ge 4$, (B2), (B3) and (B5) give $dI_n/dt \le C_nt^{\ell-1}$, so $I_n(T_*) \le (2r_{\mathrm{in}})^nm + C_nt_0^{9/10}t_0^{\ell-1} < T_*^\ell$. For the support, with $p$, $h$, $\varrho$ and $\varrho_*$ as before and $\varrho(t_0) \le 2r_{\mathrm{in}} < \varrho_*$, let $t_2 = \sup\{s \in [t_0, T_*] : \varrho(s) \le \varrho_*\} > t_0$, so that $\varrho(t_2) \le \varrho_*$. If $t_2 = T_*$ there is nothing to prove. Otherwise $\varrho \ge \varrho_*$ on $[t_2, T_*]$, the bound $|\eta| \le CT_*^{-3/4-5\varepsilon/2}$ holds there as before, and $|\Lambda_ih| \le CT_*^{-1}\varrho_*$, so $\varrho(T_*) \le \varrho_* + T_*^{9/10}C(T_*^{-3/4+\varepsilon}) < 2\varrho_* = \varepsilon T_*^{1/4+\varepsilon}$ for $T$ large.
 \end{proof}
+
+\paragraph{Rights and licenses.}
+Copyright (c) 2026 Chase Hendrick. The manuscript and figures are all rights reserved. Code and data are licensed under Apache License 2.0, subject to their component notices. These notices do not revoke licenses previously granted for earlier material.
 
 \begin{thebibliography}{15}
 

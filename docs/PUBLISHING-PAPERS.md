@@ -15,9 +15,22 @@ section of the paper's README with its TeX turned into plain text, so a README n
 it can be published. A record already on Zenodo keeps the type and description it was archived with until
 you edit it there (Edit, change the field, Publish; the DOI stays the same).
 
-Only you can do the steps that need your accounts (GitHub settings, Zenodo, arXiv, a journal's
-submission system) or your judgment. A Claude session can do everything else: edit the sources,
-rebuild the PDFs, run the checks, update `papers.json`, and draft the messages.
+The manuscripts and their figures currently retain all rights reserved. The verification programs and
+original data use Apache 2.0, with component notices governing exceptions, including the rank-window
+derived outputs under CC BY-NC 4.0. Each PDF states its manuscript policy separately from the abstract.
+These notices do not revoke licenses previously granted for earlier material.
+
+Zenodo's legacy `license` field describes the entire archive. A mixed archive containing an all-rights-reserved
+manuscript uses `other-closed` (Other, not open), with the exact component licenses in the record description
+and companion LICENSE. It remains publicly downloadable as a preprint. If the manuscript policy is changed
+to CC BY 4.0, an otherwise open mixed archive uses `other-open`; rank-window still uses `other-closed` because
+its derived outputs have a noncommercial restriction. The top-level CITATION.cff Apache identifier describes
+the programs, and its preferred citation describes the paper. Never label the whole preprint ZIP Apache 2.0.
+See [Zenodo licenses](https://help.zenodo.org/docs/deposit/describe-records/licenses/) and the
+[legacy API metadata schema](https://developers.zenodo.org/).
+
+Account access and publication decisions depend on your accounts and preferences. The sources,
+builds, audits and metadata can be prepared and checked locally before publication.
 
 ## The order, and why
 
@@ -57,7 +70,7 @@ Then:
 - A second reader in the field has read it. [REVIEWING.md](REVIEWING.md) and
   [REVIEW-REQUEST.md](REVIEW-REQUEST.md) make that one step.
 - `node tools/paper-check.js --paper <id>` passes. It checks that the title is the same in every
-  source; that no email address is in a public file; that the arXiv abstract fits arXiv's 1,920
+  source; that every public contact email matches `author.email` in `papers/papers.json`; that the arXiv abstract fits arXiv's 1,920
   characters and its stated length is right; that the page counts in the metadata match the PDFs;
   and that the Typst and LaTeX reference lists agree entry by entry and cite the same works. It also
   lists the placeholders you still fill by hand.
