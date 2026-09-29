@@ -189,7 +189,7 @@ ${marker}`);
     scope: 'Actual skin exportPNG at 2400 longest edge for two open clean chains, both grid 96, g=0.08, disorder 0, bc open, log view, rows modes: aspect 4:5 (1920x2400, 96 by 96 cells) and aspect 1:1 (2400x2400, 96 by 96 cells). Exact Float32 amp words, skin weight, IPR, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.',
     criteria: 'Zero changed/nonfinite amp words; skin weight, IPR, settings, cells and buffer unchanged across export; exact requested PNG dimensions and >1000-byte blob; luminance spread >12/255; wrong dimensions and deliberate post-export amp+skinW mutation rejected.',
     rows,
-    limitations: 'State preservation and declared dimensions for this one open clean fixture. Does not validate disordered or periodic subspace iteration, calibrated color, or every control.',
+    limitations: 'State preservation and declared dimensions for these two open clean fixtures. Does not validate disordered or periodic subspace iteration, calibrated color, or every control.',
   };
   if (process.argv.includes('--write')) {
     fs.writeFileSync(path.join(root, 'validation/results/skin-print-state.json'), JSON.stringify(result, null, 2) + '\n');

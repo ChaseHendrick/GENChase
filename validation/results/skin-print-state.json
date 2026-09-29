@@ -2,7 +2,7 @@
   "pass": true,
   "source": "src/modules/skin.js",
   "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
-  "harnessSha256": "4d0d75bf38f605f1c2df487cdac6d4a4d7d3e7748f62e8b9b06c459b4d069dd0",
+  "harnessSha256": "5f674b0906d86b1739720a9f2b7eb855111b35d88715264d43345f8a5bdcb4bf",
   "command": "node tools/skin-print-state.js --write",
   "scope": "Actual skin exportPNG at 2400 longest edge for two open clean chains, both grid 96, g=0.08, disorder 0, bc open, log view, rows modes: aspect 4:5 (1920x2400, 96 by 96 cells) and aspect 1:1 (2400x2400, 96 by 96 cells). Exact Float32 amp words, skin weight, IPR, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
   "criteria": "Zero changed/nonfinite amp words; skin weight, IPR, settings, cells and buffer unchanged across export; exact requested PNG dimensions and >1000-byte blob; luminance spread >12/255; wrong dimensions and deliberate post-export amp+skinW mutation rejected.",
@@ -102,5 +102,5 @@
       }
     }
   ],
-  "limitations": "State preservation and declared dimensions for this one open clean fixture. Does not validate disordered or periodic subspace iteration, calibrated color, or every control."
+  "limitations": "State preservation and declared dimensions for these two open clean fixtures. Does not validate disordered or periodic subspace iteration, calibrated color, or every control."
 }
