@@ -80,7 +80,9 @@ This is the largest gap, and most of it is not code.
   - `.zenodo.json` describes the software (done);
   - no separate Zenodo upload of the identities note: by the owner's decision (2026-09-27) the note is
     retired into the minimal-winding paper, release 2.2.0 (done);
-  - the software DOI is in `CITATION.cff`.
+  - the software DOI is not to be obtained. By the owner's decision (2026-09-29) this repository is not
+    archived on Zenodo, the GitHub integration is not to be switched on, and `CITATION.cff` does not get a
+    software DOI. The papers' own archives are unchanged.
 - **Identity:** settled 2026-09-25. Every record uses the author's legal name, Chase Hendrick,
   with ORCID 0009-0002-9754-6087; the GitHub account is ChaseHendrick (formerly SharpMeow).
 
@@ -200,7 +202,7 @@ impossible to miss on the tab itself, if it is not already.
 
 ## Suggested order
 
-1. **Fix the Zenodo metadata (1c):** a few hours.
+1. **The software is not archived on Zenodo** (owner's decision, 2026-09-29). Item 1c stops there.
 2. **Validate the exactly solvable tabs (section 2):** about a week.
 3. **Build the ensemble harness and the uncertainty gate (section 3).**
 4. **Run the suite on real GPUs (4a), then settle half precision (4b).**

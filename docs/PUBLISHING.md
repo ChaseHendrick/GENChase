@@ -15,48 +15,9 @@ other address anywhere.
 
 ## 1. A DOI for the software (RESEARCH-GRADE 1c)
 
-While this repository is private, skip this section: Zenodo archives public repositories only. Each
-paper's programs and data get their DOI from the paper's own public repository instead
-([PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md), section 1).
+**Do not archive this repository on Zenodo.** Owner's decision, 2026-09-29. No agent turns on Zenodo's GitHub integration for `ChaseHendrick/GENChase`, and no agent uploads the software, the studio, or a GitHub release of this repository to Zenodo by hand. `CITATION.cff` stays without a software DOI. The steps that used to sit here are withdrawn. GitHub releases of the studio are a separate matter and are not a Zenodo deposit. The papers keep the archives they already have, in their own repositories. `.zenodo.json` remains in the tree so a count check can read it; it is not an instruction to deposit.
 
-Already done in the repository: `.zenodo.json` describes the software (upload type software,
-Apache-2.0), and `CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (0.7.1,
-2026-09-25) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
-`.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
-
-1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `ChaseHendrick/GENChase`.
-2. **Switch on the repository** in Zenodo's GitHub settings page (under your account menu). Zenodo
-   archives only releases published after the switch is on; 0.6.2 and earlier are not archived.
-   The integration works with public repositories only, so a release made while the repository is
-   private is not archived ([COMMITMENTS.md](COMMITMENTS.md) lists the other costs of going private).
-3. **Prepare the release in a pull request.** Versions are written without a leading v, as
-   `X.Y.Z` (owner's decision, 2026-09-26); the releases made before then keep their tags, which do
-   (`v0.7.1`), and no tag is ever renamed. In `CITATION.cff`, set `version` to the version you are
-   about to release and `date-released` to the release day. Move the `## Unreleased` entries of
-   `CHANGELOG.md` under `## X.Y.Z`: that section becomes the public release notes, and the release
-   stops if it is missing or empty. Reread the description in
-   `.zenodo.json`. Run `node tools/build.js --check`, `node tools/science.js` and
-   `node tools/lint.js`; the release workflow runs all three and stops if any fails. Merge.
-4. **Make the release.** Run the "Publish offline studio" workflow (Actions, run on `main`, version
-   `X.Y.Z`). It needs a green `check` run on that commit, makes the tag `X.Y.Z` and publishes the
-   release; it refuses a version with a leading v, and one already tagged under either spelling.
-   To rewrite the notes of releases that already exist from the current CHANGELOG, run the same
-   workflow with **notes only** ticked and a version, or `all`; a version such as `0.7.1` finds its
-   old tag `v0.7.1`, and nothing is built and no tag or file changes.
-5. **Copy the DOIs.** Zenodo's GitHub page lists the new record. It shows a DOI for this version and
-   a concept DOI that always resolves to the latest version. Check that the record's title, type
-   (Software), license and description are the ones in `.zenodo.json`.
-6. **Record the DOI in a pull request:**
-   - `CITATION.cff`: replace the DOI comment with `doi: <concept DOI>`. Validate with
-     `pip install cffconvert && cffconvert --validate`.
-   - `README.md`: add the DOI, for example a line under the links at the top. The README is
-     maintained by hand.
-   - `docs/RESEARCH-GRADE.md`: move item 1c to **Done** with the pull request link, as that file asks.
-7. **Check:** `https://doi.org/<concept DOI>` opens the Zenodo record, and GitHub's "Cite this
-   repository" box shows the software with its DOI.
-
-If the metadata on a published record is wrong, edit the record on Zenodo and fix `.zenodo.json` in
-the same week, so the next release is right.
+A GitHub release of the studio is not a Zenodo deposit. How one is made is in AGENTS.md and the "Publish offline studio" workflow. It does not get a DOI, and `CITATION.cff` is not given one.
 
 ## 2. An ORCID (optional)
 
@@ -68,8 +29,7 @@ the same week, so the next release is right.
    - `.zenodo.json`, in the creator object:
      `"orcid": "XXXX-XXXX-XXXX-XXXX"` (the bare identifier);
    - `paper/paper.md`, under the author: `orcid: XXXX-XXXX-XXXX-XXXX`.
-3. Records already published on Zenodo are edited on Zenodo; the metadata files only affect future
-   releases.
+3. Records already published on Zenodo are the papers' archives, in their own repositories. This repository is not one of them.
 
 ## 3. The identities note (retired)
 
