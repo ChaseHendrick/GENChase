@@ -357,6 +357,10 @@ did not verify for the 1952 functions.
 
 ## 7. Reproducibility
 
+The companion repository is [ChaseHendrick/hh-pulse](https://github.com/ChaseHendrick/hh-pulse).
+Checking release 1.0.1 archives the exact existence-proof programs, certificates and supplementary checking
+scripts at [doi:10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512).
+
 The programs are in `code/` (Apache-2.0) and need python-flint 0.9.0, mpmath, numpy and scipy
 (`code/requirements.txt`). From the folder of this paper:
 

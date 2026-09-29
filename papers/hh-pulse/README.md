@@ -70,6 +70,13 @@ The orbit leaves rest along its one-dimensional unstable manifold. A validated T
 | [`certify_rest_wave.py`](code/certify_rest_wave.py), [`lohner6.py`](code/lohner6.py), [`hhjet6.py`](code/hhjet6.py), [`hhseries.py`](code/hhseries.py), [`hhjet.py`](code/hhjet.py) | The rest state and Lemmas A and B; the integrator; the Taylor jets of the field | |
 | [`hhwave.py`](code/hhwave.py), [`pulse_bvp.py`](code/pulse_bvp.py) | Double-precision model and the boundary-value solver that made the starting profiles | |
 
+## Exploratory work outside this release
+
+Stability and a temperature strip are not claims of this manuscript. The unfinished stability scripts (except `stab_num.py`),
+`tstrip.py` and `test_tstrip.sh` explorations that were accidentally included in earlier source archives
+are excluded from release 1.0.2 onward. They remain in the development repository. `stab_num.py` is retained because the published `test_field.py` imports its independent Jacobian. The published
+existence-proof programs, certificates and checks are unchanged; earlier archives are retained.
+
 ## Reproduce
 
 From this folder:

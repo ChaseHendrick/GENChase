@@ -1,0 +1,1088 @@
+[
+  {
+    "id": "minimal-winding",
+    "pages": 42,
+    "sha256": "16e578b87817c721790ded004793f58283c96396254525ccab546882462cfffe",
+    "pdfTitle": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CNWRJO+Cmex10",
+        "embedded": false
+      },
+      {
+        "name": "/GTOFFF+Cmmi10",
+        "embedded": false
+      },
+      {
+        "name": "/DAOCBQ+Cmr10",
+        "embedded": false
+      },
+      {
+        "name": "/GHOQOE+Cmsy10",
+        "embedded": false
+      },
+      {
+        "name": "/NITCSQ+LMMathItalic12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/HDCNVI+STIXGeneral-Regular",
+        "embedded": false
+      },
+      {
+        "name": "/BNTEWI+Cmmi10",
+        "embedded": false
+      },
+      {
+        "name": "/GNRYPD+Cmr10",
+        "embedded": false
+      },
+      {
+        "name": "/EOLGNW+Cmsy10",
+        "embedded": false
+      },
+      {
+        "name": "/FKRCUO+Cmmi10",
+        "embedded": false
+      },
+      {
+        "name": "/FWVSAR+Cmr10",
+        "embedded": false
+      },
+      {
+        "name": "/LPOGEQ+LMSans8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMMathItalic5-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman9-Regular",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 105
+  },
+  {
+    "id": "collapse-without-rotation",
+    "pages": 25,
+    "sha256": "e2ceaeeb496b868b958ad7524f0b5d1c5e75c16e4424d7453a4d106af04a817c",
+    "pdfTitle": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+LMMathItalic12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CMDEGX+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/BYLRGV+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/BAKHII+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/FZGUEP+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMRoman9-Regular",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 158
+  },
+  {
+    "id": "stable-expansion",
+    "pages": 20,
+    "sha256": "4fb526c9d0dc9179ba31a0378dae27c422f7375ef9113393b6c3add5e9950bb1",
+    "pdfTitle": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman17-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMSans8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMMathSymbols6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman9-Regular",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 29
+  },
+  {
+    "id": "rank-window",
+    "pages": 16,
+    "sha256": "9b8e6833bb5b7afaca28b1bd0c29c83c2e8b6f47e9cca70aea80e03b2940339b",
+    "pdfTitle": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMMathSymbols6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMMathItalic9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FBDVCJ+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/BVQTTA+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/DSVVPO+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/BBEGJF+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/XKCNTN+LMMathSymbols9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/AIBCOH+LMMathItalic12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/ALHFJP+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DILQTA+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/DHBUPC+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/BKVFOF+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/GJDEEV+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/FBXEDP+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/BYLRGV+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/FXUBCH+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/GXDUII+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/ZXNXFB+LMRoman9-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/BKINPV+LMRoman9-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/KNCMHP+LMMono9-Regular",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 232
+  },
+  {
+    "id": "hh-dynamics",
+    "pages": 30,
+    "sha256": "a4cb383ba0885dc49118520f467362e4cb1844212d944ca9f446f542f605aa41",
+    "pdfTitle": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMMathSymbols6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FGDPDS+DejaVuSerif",
+        "embedded": true
+      },
+      {
+        "name": "/EJTIYF+DejaVuSerif",
+        "embedded": true
+      },
+      {
+        "name": "/FRFHZW+Cmmi10",
+        "embedded": true
+      },
+      {
+        "name": "/EXECGJ+Cmr10",
+        "embedded": true
+      },
+      {
+        "name": "/GLIMFE+Cmsy10",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMMathItalic9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/XKCNTN+LMMathSymbols9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/AIBCOH+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GSGRST+DejaVuSerif",
+        "embedded": true
+      },
+      {
+        "name": "/HGIKJE+Cmmi10",
+        "embedded": true
+      },
+      {
+        "name": "/CHWNNW+Cmr10",
+        "embedded": true
+      },
+      {
+        "name": "/ALHFJP+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/FBXEDP+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/COLRHM+DejaVuSerif",
+        "embedded": true
+      },
+      {
+        "name": "/FKHBVZ+Cmmi10",
+        "embedded": true
+      },
+      {
+        "name": "/FRVQCI+Cmr10",
+        "embedded": true
+      },
+      {
+        "name": "/FPYHOW+Cmsy10",
+        "embedded": true
+      },
+      {
+        "name": "/ZXNXFB+LMMono9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/BKINPV+LMRoman9-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/KNCMHP+LMRoman9-Bold",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 249
+  },
+  {
+    "id": "double-pendulum",
+    "pages": 23,
+    "sha256": "4b281a4cc6a8c375dcc59ed15a82f3f459fd07ea4cbcb7cb066614cf630d278e",
+    "pdfTitle": "Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman17-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMSans8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMMathItalic5-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/XKCNTN+LMMathItalic9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/AIBCOH+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/ALHFJP+LMMathSymbols9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FBXEDP+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/ZXNXFB+LMMathSymbols6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/BKINPV+LMRoman10-Bold",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 123
+  },
+  {
+    "id": "nf-pulse",
+    "pages": 39,
+    "sha256": "009b18ea7a6488bdb5b131cd11b692cc2930dc991d3f9dea36775fcf8a00d740",
+    "pdfTitle": "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": true,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman12-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMMono10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMMathItalic10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMMathItalic7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DDIEWW+LMMathSymbols10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FKPJSN+LMMathSymbols7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/PVTTLK+LMRoman7-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/JAGKKY+LMMathItalic8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/NOMARO+LMMathExtension10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/KPXLOM+MSBM10",
+        "embedded": true
+      },
+      {
+        "name": "/UTACNV+LMMathSymbols8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FZDNHS+LMRoman8-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/DZGKAF+LMRoman10-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/GJMHKB+LMRoman10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/NITCSQ+LMMathSymbols6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/UBBQTN+LMMono10-Italic",
+        "embedded": true
+      },
+      {
+        "name": "/LPOGEQ+LMRoman10-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/GQYLQL+LMRoman6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/WXMALW+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/XKCNTN+LMMono9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/AIBCOH+LMMathItalic9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/ALHFJP+LMRoman9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/FBXEDP+LMMathSymbols9-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/ZXNXFB+LMMathItalic6-Regular",
+        "embedded": true
+      },
+      {
+        "name": "/VSWPVR+DejaVuSans-Oblique",
+        "embedded": false
+      },
+      {
+        "name": "/DOACHQ+DejaVuSans-Oblique",
+        "embedded": false
+      },
+      {
+        "name": "/BQYFOS+DejaVuSans",
+        "embedded": false
+      },
+      {
+        "name": "/BVRYFT+DejaVuSans",
+        "embedded": false
+      }
+    ],
+    "archiveDoiPresent": true,
+    "oldDecimalValuesMissing": [],
+    "comparedDecimalCount": 184
+  },
+  {
+    "id": "hh-pulse",
+    "pages": 14,
+    "sha256": "878a893a8e9dec9b9ad30f532e1b642a331c4dea2aef5e020005623f29290b66",
+    "pdfTitle": "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof",
+    "metadataMatches": true,
+    "visibleTitleMatches": true,
+    "authorPresent": true,
+    "emailPresent": false,
+    "orcidPresent": true,
+    "undefinedReferences": false,
+    "replacementCharacters": false,
+    "emptyTextPages": [],
+    "nearPageEdge": [],
+    "fonts": [
+      {
+        "name": "/IHAIZV+LMRoman17-Regular-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/BZIVMZ+LMRoman12-Regular-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/IXFAWU+LMRoman12-Bold-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/TQTHRL+LMRoman10-Regular-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/YEUUOC+LMMono10-Regular-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/AKHCZK+LMRoman10-Bold-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/VDVGTR+LMRoman10-Italic-Identity-H",
+        "embedded": true
+      }
+    ],
+    "archiveDoiPresent": true
+  }
+]

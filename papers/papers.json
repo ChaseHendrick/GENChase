@@ -163,6 +163,15 @@
       "markdown": "papers/hh-pulse/paper/paper.md",
       "pdf": "papers/hh-pulse/paper/hh-pulse.pdf",
       "companion": "ChaseHendrick/hh-pulse",
+      "companionExclude": [
+        "code/stab_cone.py",
+        "code/stab_ess.py",
+        "code/stab_large.py",
+        "code/stab_record.py",
+        "code/stab_region.py",
+        "code/tstrip.py",
+        "code/test_tstrip.sh"
+      ],
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,

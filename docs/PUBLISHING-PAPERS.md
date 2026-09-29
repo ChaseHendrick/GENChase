@@ -107,12 +107,18 @@ Then:
 
 ### Check the manuscript in the archive
 
+Every new companion release must pass `node tools/paper-check.js --paper <id> --release`, with all
+seven quality items closed even when an older Zenodo archive exists. Keeping a previous archive
+available does not establish that a new version is ready.
+
 Every new companion release must include the registered manuscript PDF in its source ZIP.
 `tools/paper-publish.sh` runs `python3 tools/paper-archive-check.py <id> <companion-checkout> <ref>`
 on the merged companion tree before pushing it. It rejects an absent PDF registration, a missing or
 truncated PDF, or a PDF removed or changed by archive attributes. This is a packaging check, not a
 review of the mathematics or a freshness check of the PDF against its source. Existing releases are
-never withdrawn or replaced.
+never withdrawn or replaced. The optional `companionExclude` list in a paper's registry entry names
+individual tracked exploratory files to keep in the development repository only. It cannot exclude the
+registered manuscript source/PDF, README or release notes; a missing filename is an error.
 
 For the Markdown manuscript `hh-pulse`, `sh tools/paper-build.sh hh-pulse` uses Pandoc and pdflatex.
 To use Tectonic instead, set `PAPER_PDF_ENGINE=tectonic`; both engines require Pandoc on PATH.
