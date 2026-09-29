@@ -1,0 +1,1008 @@
+{
+  "passed": true,
+  "command": "node tools/model-recipe-check.js --write",
+  "scope": "Recipe parsing and NPZ shape regression, not scientific validation.",
+  "environment": {
+    "browser": "154.0.8037.58",
+    "node": "v24.21.0"
+  },
+  "harnessSha256": "1345ebf44eda1fe7252fa7174545615d85f696f4b0ec4d896ed748fa3da955ab",
+  "sourceHashes": {
+    "hopfield": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
+    "flow-matching": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+  },
+  "rows": [
+    {
+      "id": "hopfield",
+      "route": "hash",
+      "name": "fractional",
+      "actual": {
+        "seed": "recipe-regression/fractional",
+        "side": 9,
+        "count": 2,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 3,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            2,
+            9,
+            9
+          ],
+          "length": 162,
+          "finite": true,
+          "digest": "90716e329f2400ea13d929dfd97d8c4c7d2700561e9fa0218abb2310565a0ee7"
+        },
+        "cue.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "1e6adacc9f901fa80d0d984b8e9c21220cfac0f50bb9d00b5e2a821195050c04"
+        },
+        "state.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "9bdbeb81759accc2cfbef476ce76e7a22c40bcc8b4634dfbbad010b0c525f345"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "8f76ffb3f16116182d9ced7ac85feadfe47e61bd3c1ba78a470a439a94d880e7"
+        },
+        "overlaps.npy": {
+          "shape": [
+            2
+          ],
+          "length": 2,
+          "finite": true,
+          "digest": "4197103405df2a2553d594696d9995985d4312bedfb641f95722da77e898a661"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "settings",
+      "name": "fractional",
+      "actual": {
+        "seed": "recipe-regression/fractional",
+        "side": 9,
+        "count": 2,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 3,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            2,
+            9,
+            9
+          ],
+          "length": 162,
+          "finite": true,
+          "digest": "90716e329f2400ea13d929dfd97d8c4c7d2700561e9fa0218abb2310565a0ee7"
+        },
+        "cue.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "1e6adacc9f901fa80d0d984b8e9c21220cfac0f50bb9d00b5e2a821195050c04"
+        },
+        "state.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "9bdbeb81759accc2cfbef476ce76e7a22c40bcc8b4634dfbbad010b0c525f345"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "8f76ffb3f16116182d9ced7ac85feadfe47e61bd3c1ba78a470a439a94d880e7"
+        },
+        "overlaps.npy": {
+          "shape": [
+            2
+          ],
+          "length": 2,
+          "finite": true,
+          "digest": "4197103405df2a2553d594696d9995985d4312bedfb641f95722da77e898a661"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "hash",
+      "name": "malformed",
+      "actual": {
+        "seed": "recipe-regression/malformed",
+        "side": 16,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 12,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            4,
+            16,
+            16
+          ],
+          "length": 1024,
+          "finite": true,
+          "digest": "5c460c6120edcceb33b0ddeede30b3835f87595f2103ab956dc46a4b7426b67f"
+        },
+        "cue.npy": {
+          "shape": [
+            16,
+            16
+          ],
+          "length": 256,
+          "finite": true,
+          "digest": "7180d89f68f243d29b52bf6d826b55ee75a3841f53e494059b85ad27d9a00ce7"
+        },
+        "state.npy": {
+          "shape": [
+            16,
+            16
+          ],
+          "length": 256,
+          "finite": true,
+          "digest": "454977e4114243df7c3b55fbf4f056b2fdb9f8279be02d97f534e502e4333c62"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "cc14941e355846a5806ce2eab4197924257938cf509795976ba70b8c8e0e6e19"
+        },
+        "overlaps.npy": {
+          "shape": [
+            4
+          ],
+          "length": 4,
+          "finite": true,
+          "digest": "1ac7eb55f2748e3a2cd916f731254b3c298c59b85ed969eae0e7cde3430be9b4"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "settings",
+      "name": "malformed",
+      "actual": {
+        "seed": "recipe-regression/malformed",
+        "side": 16,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 12,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            4,
+            16,
+            16
+          ],
+          "length": 1024,
+          "finite": true,
+          "digest": "5c460c6120edcceb33b0ddeede30b3835f87595f2103ab956dc46a4b7426b67f"
+        },
+        "cue.npy": {
+          "shape": [
+            16,
+            16
+          ],
+          "length": 256,
+          "finite": true,
+          "digest": "7180d89f68f243d29b52bf6d826b55ee75a3841f53e494059b85ad27d9a00ce7"
+        },
+        "state.npy": {
+          "shape": [
+            16,
+            16
+          ],
+          "length": 256,
+          "finite": true,
+          "digest": "454977e4114243df7c3b55fbf4f056b2fdb9f8279be02d97f534e502e4333c62"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "cc14941e355846a5806ce2eab4197924257938cf509795976ba70b8c8e0e6e19"
+        },
+        "overlaps.npy": {
+          "shape": [
+            4
+          ],
+          "length": 4,
+          "finite": true,
+          "digest": "1ac7eb55f2748e3a2cd916f731254b3c298c59b85ed969eae0e7cde3430be9b4"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "hash",
+      "name": "bounds",
+      "actual": {
+        "seed": "recipe-regression/bounds",
+        "side": 24,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 0,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            1,
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "f7f7276daeb101668b8a1fd477157f390342891ff13e4fe9cc73126ce02a8715"
+        },
+        "cue.npy": {
+          "shape": [
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "63f38d2c6acc205c73ae62e8e7ff062ed7a8af54ef8b189e4aeb7e7cbf8c373e"
+        },
+        "state.npy": {
+          "shape": [
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "63f38d2c6acc205c73ae62e8e7ff062ed7a8af54ef8b189e4aeb7e7cbf8c373e"
+        },
+        "energy.npy": {
+          "shape": [
+            1
+          ],
+          "length": 1,
+          "finite": true,
+          "digest": "42f22db9c028606bcbf5d8cf6cca2ebf476b78ff49fc4e24e1eb4d6bf75394c0"
+        },
+        "overlaps.npy": {
+          "shape": [
+            1
+          ],
+          "length": 1,
+          "finite": true,
+          "digest": "e514a072d06f6eddcd8339b0365c2b6bd8dd625d0f2a4e07523c249ce0e7324f"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "settings",
+      "name": "bounds",
+      "actual": {
+        "seed": "recipe-regression/bounds",
+        "side": 24,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 0,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            1,
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "f7f7276daeb101668b8a1fd477157f390342891ff13e4fe9cc73126ce02a8715"
+        },
+        "cue.npy": {
+          "shape": [
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "63f38d2c6acc205c73ae62e8e7ff062ed7a8af54ef8b189e4aeb7e7cbf8c373e"
+        },
+        "state.npy": {
+          "shape": [
+            24,
+            24
+          ],
+          "length": 576,
+          "finite": true,
+          "digest": "63f38d2c6acc205c73ae62e8e7ff062ed7a8af54ef8b189e4aeb7e7cbf8c373e"
+        },
+        "energy.npy": {
+          "shape": [
+            1
+          ],
+          "length": 1,
+          "finite": true,
+          "digest": "42f22db9c028606bcbf5d8cf6cca2ebf476b78ff49fc4e24e1eb4d6bf75394c0"
+        },
+        "overlaps.npy": {
+          "shape": [
+            1
+          ],
+          "length": 1,
+          "finite": true,
+          "digest": "e514a072d06f6eddcd8339b0365c2b6bd8dd625d0f2a4e07523c249ce0e7324f"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "hash",
+      "name": "integer",
+      "actual": {
+        "seed": "recipe-regression/integer",
+        "side": 9,
+        "count": 3,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 4,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            3,
+            9,
+            9
+          ],
+          "length": 243,
+          "finite": true,
+          "digest": "58d7e4011f68e50df27072e0841f3530f4724a3df406e285bb695135f4dc7940"
+        },
+        "cue.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "47b263f95ca43015a0233f9e0cfbc561b03e19aefb4ee99962582c5943bda8fc"
+        },
+        "state.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "6ae2bc2735e3f35d30fc9f42b9afcb95e1f485d11b59f9be843807df42dd5339"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "629d120a521861dec9e70ae67b3516ff7b439d357c4e55e385c9a176c0a3b5c3"
+        },
+        "overlaps.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "7a873a793602970acffa72d64dcafd67b585c0e97df70728a5571dfe217e2deb"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "hopfield",
+      "route": "settings",
+      "name": "integer",
+      "actual": {
+        "seed": "recipe-regression/integer",
+        "side": 9,
+        "count": 3,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 4,
+        "aspect": "3:2",
+        "gap": 0.04,
+        "id": "hopfield",
+        "v": 8,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "arrays": {
+        "memories.npy": {
+          "shape": [
+            3,
+            9,
+            9
+          ],
+          "length": 243,
+          "finite": true,
+          "digest": "58d7e4011f68e50df27072e0841f3530f4724a3df406e285bb695135f4dc7940"
+        },
+        "cue.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "47b263f95ca43015a0233f9e0cfbc561b03e19aefb4ee99962582c5943bda8fc"
+        },
+        "state.npy": {
+          "shape": [
+            9,
+            9
+          ],
+          "length": 81,
+          "finite": true,
+          "digest": "6ae2bc2735e3f35d30fc9f42b9afcb95e1f485d11b59f9be843807df42dd5339"
+        },
+        "energy.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "629d120a521861dec9e70ae67b3516ff7b439d357c4e55e385c9a176c0a3b5c3"
+        },
+        "overlaps.npy": {
+          "shape": [
+            3
+          ],
+          "length": 3,
+          "finite": true,
+          "digest": "7a873a793602970acffa72d64dcafd67b585c0e97df70728a5571dfe217e2deb"
+        }
+      },
+      "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b"
+    },
+    {
+      "id": "flow-matching",
+      "route": "hash",
+      "name": "fractional",
+      "actual": {
+        "layout": "ring",
+        "modes": 4,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 101,
+        "steps": 33,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/fractional",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            101,
+            34,
+            2
+          ],
+          "length": 6868,
+          "finite": true,
+          "digest": "f86ad08b6b509c16b579d841a0d5c1c7b9a64a19e1d89239aadb86c4ea345aa2"
+        },
+        "means.npy": {
+          "shape": [
+            4,
+            2
+          ],
+          "length": 8,
+          "finite": true,
+          "digest": "0fbca2b1493b9cac26891e393eac70e77ac585c9ad570bac5fd21cd71be1e906"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "settings",
+      "name": "fractional",
+      "actual": {
+        "layout": "ring",
+        "modes": 4,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 101,
+        "steps": 33,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/fractional",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            101,
+            34,
+            2
+          ],
+          "length": 6868,
+          "finite": true,
+          "digest": "f86ad08b6b509c16b579d841a0d5c1c7b9a64a19e1d89239aadb86c4ea345aa2"
+        },
+        "means.npy": {
+          "shape": [
+            4,
+            2
+          ],
+          "length": 8,
+          "finite": true,
+          "digest": "0fbca2b1493b9cac26891e393eac70e77ac585c9ad570bac5fd21cd71be1e906"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "hash",
+      "name": "malformed",
+      "actual": {
+        "layout": "ring",
+        "modes": 5,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 600,
+        "steps": 128,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/malformed",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            600,
+            129,
+            2
+          ],
+          "length": 154800,
+          "finite": true,
+          "digest": "9a4c03950bc9f846a1b55854d15319ca4f3e5e4822f5a86499dd1082f6ca0c99"
+        },
+        "means.npy": {
+          "shape": [
+            5,
+            2
+          ],
+          "length": 10,
+          "finite": true,
+          "digest": "e9b0c31b680f1ce8556097d1d70738fb1ea90f75391c464c881e9f0db9b78dfc"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "settings",
+      "name": "malformed",
+      "actual": {
+        "layout": "ring",
+        "modes": 5,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 600,
+        "steps": 128,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/malformed",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            600,
+            129,
+            2
+          ],
+          "length": 154800,
+          "finite": true,
+          "digest": "9a4c03950bc9f846a1b55854d15319ca4f3e5e4822f5a86499dd1082f6ca0c99"
+        },
+        "means.npy": {
+          "shape": [
+            5,
+            2
+          ],
+          "length": 10,
+          "finite": true,
+          "digest": "e9b0c31b680f1ce8556097d1d70738fb1ea90f75391c464c881e9f0db9b78dfc"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "hash",
+      "name": "bounds",
+      "actual": {
+        "layout": "ring",
+        "modes": 12,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 100,
+        "steps": 32,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/bounds",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            100,
+            33,
+            2
+          ],
+          "length": 6600,
+          "finite": true,
+          "digest": "d7676a081bbad17183444f2f4e1aa4758e3d0d5c5a0d8fbf3eda57cd61d50162"
+        },
+        "means.npy": {
+          "shape": [
+            12,
+            2
+          ],
+          "length": 24,
+          "finite": true,
+          "digest": "2b20fef756d8441456f804db5ac3c51a52559845491ff0ffacac30f33fdd5ac0"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "settings",
+      "name": "bounds",
+      "actual": {
+        "layout": "ring",
+        "modes": 12,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 100,
+        "steps": 32,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/bounds",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            100,
+            33,
+            2
+          ],
+          "length": 6600,
+          "finite": true,
+          "digest": "d7676a081bbad17183444f2f4e1aa4758e3d0d5c5a0d8fbf3eda57cd61d50162"
+        },
+        "means.npy": {
+          "shape": [
+            12,
+            2
+          ],
+          "length": 24,
+          "finite": true,
+          "digest": "2b20fef756d8441456f804db5ac3c51a52559845491ff0ffacac30f33fdd5ac0"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "hash",
+      "name": "integer",
+      "actual": {
+        "layout": "ring",
+        "modes": 3,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 101,
+        "steps": 33,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/integer",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            101,
+            34,
+            2
+          ],
+          "length": 6868,
+          "finite": true,
+          "digest": "f981dcc4bc94dd62ed99c0f6e3174d7b897ba02c9b792030ad6e31735248da37"
+        },
+        "means.npy": {
+          "shape": [
+            3,
+            2
+          ],
+          "length": 6,
+          "finite": true,
+          "digest": "786ccb65816be4d3906a4afcb30de67d275736b1cbdc173c10b1893c03484e0a"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    },
+    {
+      "id": "flow-matching",
+      "route": "settings",
+      "name": "integer",
+      "actual": {
+        "layout": "ring",
+        "modes": 3,
+        "radius": 2.2,
+        "sigma": 0.24,
+        "turn": 15,
+        "count": 101,
+        "steps": 33,
+        "time": 1,
+        "trail": 1,
+        "extent": 3.8,
+        "weight": 0.7,
+        "points": true,
+        "seed": "recipe-regression/integer",
+        "id": "flow-matching",
+        "v": 8,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "arrays": {
+        "trajectories.npy": {
+          "shape": [
+            101,
+            34,
+            2
+          ],
+          "length": 6868,
+          "finite": true,
+          "digest": "f981dcc4bc94dd62ed99c0f6e3174d7b897ba02c9b792030ad6e31735248da37"
+        },
+        "means.npy": {
+          "shape": [
+            3,
+            2
+          ],
+          "length": 6,
+          "finite": true,
+          "digest": "786ccb65816be4d3906a4afcb30de67d275736b1cbdc173c10b1893c03484e0a"
+        }
+      },
+      "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c"
+    }
+  ]
+}

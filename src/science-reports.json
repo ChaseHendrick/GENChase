@@ -5326,7 +5326,7 @@
   {
     "id": "hopfield",
     "source": "src/modules/hopfield.js",
-    "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+    "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
     "reference": "John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.",
     "equation": "w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j",
     "status": "unvalidated",
@@ -5366,7 +5366,7 @@
 {
   "id": "flow-matching",
   "source": "src/modules/flow-matching.js",
-  "sourceSha256": "73849986a1e519f7456a9c371b98a34fd8327968c145febbaf839ca056dd131f",
+  "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c",
   "reference": "Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.",
   "equation": "X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²",
   "status": "unvalidated",

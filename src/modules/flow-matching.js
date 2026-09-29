@@ -64,6 +64,13 @@
       {group:'Picture',key:'points',label:'Show particles',kind:'paint',type:'toggle'},
     ],
     defaults:{layout:'ring',modes:5,radius:2.2,sigma:.24,turn:15,count:600,steps:128,time:1,trail:1,extent:3.8,weight:.7,points:true,seed:'probability-flow'},
+    // Array dimensions and loop budgets must be integers even in hand-edited recipes.
+    sanitize(s) {
+      for (const [key, min, max, fallback] of [['modes', 2, 12, 5], ['count', 100, 1200, 600], ['steps', 32, 256, 128]]) {
+        const value = Number(s[key]);
+        s[key] = Math.max(min, Math.min(max, Math.round(Number.isFinite(value) ? value : fallback)));
+      }
+    },
     presets:{
       islands:{label:'Five islands',p:{layout:'ring',modes:5,radius:2.2,sigma:.24,time:1,trail:1},palette:P.ember},
       braid:{label:'Spiral target',p:{layout:'spiral',modes:9,radius:2.8,sigma:.2,time:1,trail:1},palette:P.glacier},

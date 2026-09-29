@@ -65,6 +65,13 @@
       { group: 'Picture', key: 'gap', label: 'Cell spacing', type: 'range', kind: PAINT, min: 0, max: 0.2, step: 0.01, fmt: v => v.toFixed(2) }
     ],
     defaults: { seed: 'hopfield-1982', side: 16, count: 4, patterns: 'random', corruption: 20, sweeps: 12, aspect: '3:2', gap: 0.04 },
+    // Array dimensions and loop budgets must be integers even in hand-edited recipes.
+    sanitize(s) {
+      for (const [key, min, max, fallback] of [['side', 8, 24, 16], ['count', 1, 64, 4], ['sweeps', 0, 25, 12]]) {
+        const value = Number(s[key]);
+        s[key] = Math.max(min, Math.min(max, Math.round(Number.isFinite(value) ? value : fallback)));
+      }
+    },
     palette: true, defaultPalette: 'kiln', headline: 'corruption', headlineLabel: 'Cue damage',
     presets: {
       one: { label: 'One memory, recoverable cue', p: { count: 1, corruption: 25, patterns: 'random', sweeps: 12 }, palette: Studio.PALETTES.harbor },

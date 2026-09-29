@@ -2,7 +2,7 @@
   "passed": true,
   "reviewed": "2026-09-29",
   "command": "node tools/hopfield-print-state.js --write",
-  "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+  "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
   "harnessSha256": "6f786f6b135c93ec0f60c16e4e36dbe8fb05fa8348de65dbe8cf42cf450f2973",
   "environment": {
     "browser": "154.0.8037.58",
@@ -19,7 +19,7 @@
       "overlaps.npy"
     ],
     "stateExported": true,
-    "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+    "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
     "status": "unvalidated",
     "shape": [
       16,

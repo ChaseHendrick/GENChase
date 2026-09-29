@@ -19,7 +19,8 @@
       "statePreserved": true,
       "deterministicReplay": true,
       "mutationRejected": true,
-      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 1.00 · complete</span>"
+      "pauseResumeAndDispose": true,
+      "status": "<span>analytic velocity · no neural training</span><span>0 particles · 64 RK4 steps</span><span>t 1.00 · computing</span>"
     },
     {
       "fixture": {
@@ -39,7 +40,8 @@
       "statePreserved": true,
       "deterministicReplay": true,
       "mutationRejected": true,
-      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 0.50 · complete</span>"
+      "pauseResumeAndDispose": true,
+      "status": "<span>analytic velocity · no neural training</span><span>0 particles · 64 RK4 steps</span><span>t 0.50 · computing</span>"
     },
     {
       "fixture": {
@@ -51,7 +53,7 @@
       },
       "width": 2400,
       "height": 2400,
-      "bytes": 132969,
+      "bytes": 132654,
       "luminanceRange": 220.66666666666666,
       "paths": 0,
       "circles": 200,
@@ -59,10 +61,11 @@
       "statePreserved": true,
       "deterministicReplay": true,
       "mutationRejected": true,
-      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 1.00 · complete</span>"
+      "pauseResumeAndDispose": true,
+      "status": "<span>analytic velocity · no neural training</span><span>0 particles · 64 RK4 steps</span><span>t 1.00 · computing</span>"
     }
   ],
   "passed": true,
-  "sourceSha256": "c02aa6e66f8897dc8836bab8ff75bb40062405213adcd40450d70f6328f774cc",
+  "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c",
   "limitations": "Three recipes, one Chrome renderer, no calibrated-color or learned-model claim."
 }

@@ -1,7 +1,7 @@
 {
   "technique": "hopfield",
   "reviewed": "2026-09-29",
-  "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+  "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
   "harnessSha256": "7762fb79076ecc92f273b8a42278759b9bbfe6437f412330e5900ad194eb7aa1",
   "rngSha256": "3a139b7b42c4f70e42ef0664643d62d9c8d769fca1c97220aaf9460071690ab5",
   "reference": "https://doi.org/10.1073/pnas.79.8.2554",
