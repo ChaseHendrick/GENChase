@@ -1,0 +1,7 @@
+# Figure review, 2026-09-29
+
+The three figures were checked against their plotting scripts and captions. The arc minima follow the stated cubic; the two spiral examples also check the initial Biot-Savart velocities and the minimizing root. These are illustrations of the manuscript results, not additional interval proofs.
+
+The alpha-model illustration was regenerated using NumPy 2.4.6, SciPy 1.17.1 and Matplotlib 3.11.2. Its seeded sample contains 24,395 triangles, with none below the bound when compared at their unjittered alpha values. The SQG integration reached its prescribed terminal time, 4.773555064161739, successfully with finite output. The plotting script now refuses solver failure, an incomplete time interval, or non-finite solver/interpolated coordinates. The numerical calculation and plotted values are unchanged; the regenerated PDF and SVG match their previously committed bytes.
+
+The manuscript was rebuilt with `PAPER_PDF_ENGINE=tectonic sh tools/paper-build.sh minimal-winding`. The 43-page PDF passes `node tools/paper-check.js --paper minimal-winding`. Its 23 fonts are embedded, there are no image XObjects, replacement characters or overfull-box warnings, and the public contact and end-matter rights statement remain present. The final Figure 3 page was visually inspected at page scale. Remaining underfull-box warnings do not indicate clipped content. No proof programs or certificates were rerun or changed.
