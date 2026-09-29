@@ -92,8 +92,9 @@ GENChase: the companion repository does not carry `notes/`.
   `BOLOTIN-NEGRINI.md`. Szuminski and Kapitaniak (2025) read in full; no newer proof found on arXiv, zbMATH Open,
   Crossref or Semantic Scholar on 2026-09-27. Bolotin and Negrini (1997) could be read only in snippet view: the paper
   says so (Sects. 1 and 8) and keeps the novelty of Corollary 3 and of chaos in the equal case conditional on that
-  reading; the owner should obtain the printed pages listed in `BOLOTIN-NEGRINI.md` (pp. 418-420 and 434-435; the
-  paper is not online and needs interlibrary loan). Ivanov I (in full), III and IV (their main theorems), from open
+  reading; the owner decided on 2026-09-29 that the printed article will not be obtained (no loan and no preprint
+  request). The comparison stays conditional on the snippets, the zbMATH review, Bolotin's 1997 doctoral abstract, and
+  Bolotin-Rabinowitz, J. Differential Equations 148 (1998) 364-387, as recorded in `BOLOTIN-NEGRINI.md`. Ivanov I (in full), III and IV (their main theorems), from open
   copies of the journal's archive, 2026-09-27: numerical or asymptotic in a small mass ratio, none at equal parameters;
   I states the conjecture of non-integrability for all non-degenerate parameters, which the paper cites. Ivanov II and
   Palis (1969) are free in a browser but were blocked from the session; the owner can read them.

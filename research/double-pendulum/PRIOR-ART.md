@@ -258,7 +258,7 @@ zbMATH reviews read (exact text):
   Then for sufficiently small eps (very large energy): transversal homoclinic point, Bernoulli shift on two
   symbols, no analytic first integral independent of energy. Requires mu small: does not cover mu = 1.
 
-### Bolotin and Negrini, Russ. J. Math. Phys. 5:4 (1997) 415-436: NOT REACHED (only the zbMATH review above and Moauro-Negrini's description). Critical open item.
+### Bolotin and Negrini, Russ. J. Math. Phys. 5:4 (1997) 415-436: NOT REACHED (only the zbMATH review above and Moauro-Negrini's description). Closed 2026-09-29: the article will not be obtained. See the update at the end of this file.
 
 ### Ivanov, Study of the double mathematical pendulum I-IV (RCD 1999, J. Phys. A 2001, RCD 2000, RCD 2001) (mathnet abstracts; full texts not reached, mathnet returned HTML instead of PDF)
 - I (Zbl 0999.70022, mathnet abstract): "The numerical method to find periodic hyperbolic trajectories, homoclinic
@@ -347,9 +347,9 @@ zbMATH reviews read (exact text):
    Moauro-Negrini and Tabanov (mass ratio small).
 3. Salnikov's note is at exactly the classical parameters but is non-interval numerics; later experts state a
    proof is still missing (Stachowiak-Szuminski 2015; Szuminski-Kapitaniak 2025).
-4. Unresolved: Bolotin-Negrini 1997, non-perturbative variational method, "certain domain of parameters",
-   energies "close to the maximum of the potential energy". Must be obtained (Russ. J. Math. Phys. is not open
-   access; try a library copy or the authors) and checked for whether m1 = m2, l1 = l2 is inside the domain.
+4. Bolotin-Negrini 1997, non-perturbative variational method, "certain domain of parameters",
+   energies "close to the maximum of the potential energy". Closed 2026-09-29: the article will not be
+   obtained. The equal-case reading stays the OCR reconstruction in BOLOTIN-NEGRINI.md.
    Also unread: Bolotin 1995 NATO ASI chapter "Variational criteria for nonintegrability and chaos in Hamiltonian
    systems" (Springer, 10.1007/978-1-4899-0964-0_14), Burov-Nechaev 2002, Sumbatov 1982, Ivanov I-IV full texts.
 
@@ -443,3 +443,16 @@ equal case (δ = 1, ε = 1) is not covered. With I, III and IV, none of Ivanov's
   Zgliczynski (2009, forced damped pendulum) cited from its title and abstract. No new search was run for this note.
 - Bolotin and Negrini (1997): the manuscript now says in Sects. 1 and 8 that the paper is known only from search
   snippets and must be read in print before the novelty is relied on (BOLOTIN-NEGRINI.md lists the pages).
+
+## Update 2026-09-29: the article will not be obtained
+
+Owner decision. Bolotin and Negrini, Russ. J. Math. Phys. 5:4 (1997) 415-436, will not be obtained by loan, library, or
+preprint request. The printed page that would settle the 9m2 / 9π² discrepancy stays unread.
+
+Sources actually in hand, none of them the article: the zbMATH review page (Zbl 0951.37029; "a certain domain of
+parameters"); Google Books snippets of pp. 420 and 434-435; Bolotin's 1997 doctoral abstract, whose Chapter 4 states
+the pendulum application under an inequality (the inequality line is unreadable in the OCR we have); Bolotin and
+Rabinowitz, J. Differential Equations 148 (1998) 364-387, read, which cites that verification as "a certain range of
+parameter values" and leaves chaos at h = 0 open in its own theorem. The equal-case exclusion remains the OCR
+reconstruction (the derived condition fails by a factor of about 8.3 after squaring). The E = 0 horseshoe does not
+use this paper. Claims that the equal case had not already been proved stay conditional.

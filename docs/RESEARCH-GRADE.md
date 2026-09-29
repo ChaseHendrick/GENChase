@@ -241,6 +241,7 @@ impossible to miss on the tab itself, if it is not already.
   comparing a finite plate with the limit alone: the Aztec polar fraction is compared with Johansson's
   exact expectation at that order, and the lozenge free area with the exact expectation at that box
   (`src/shared/arctic-exact.js`, held to `research/arctic-finite-size/` by `node tools/arctic-exact-check.js`).
+  The Aztec per-plate error bar is checked from order 40 up; below that the status line says it is not calibrated.
   The lozenge radius is still compared with the limit, and a single plate still reads low on it for a
   finite-size reason. That part was not given an exact expectation.
 
