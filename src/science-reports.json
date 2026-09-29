@@ -3406,7 +3406,7 @@
   {
     "id": "veselago",
     "source": "src/modules/veselago.js",
-    "sourceSha256": "170f42b207f27ac2d79f3e0a51ba240278f45d4c185fc236d4451eee2846f68f",
+    "sourceSha256": "97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if \u03b5 and \u03bc were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
     "equation": "n\u2081 sin \u03b8\u2081 = n\u2082 sin \u03b8\u2082,   n\u2082 = \u22121  \u21d2  \u03b8\u2082 = \u2212\u03b8\u2081,   image at 2L \u2212 d",
     "status": "partially validated",

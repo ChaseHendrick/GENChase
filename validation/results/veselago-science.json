@@ -1,7 +1,7 @@
 {
   "pass": true,
   "source": "src/modules/veselago.js",
-  "sourceSha256": "170f42b207f27ac2d79f3e0a51ba240278f45d4c185fc236d4451eee2846f68f",
+  "sourceSha256": "97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3",
   "harnessSha256": "777fb5038b5ba8df3a11a8649b316932644636606b0593518e10cf5bb1c745d1",
   "command": "node tools/veselago-science.js --write",
   "criteria": {
@@ -189,7 +189,7 @@
     "tirConfigs": 1536,
     "causticMismatch": 0,
     "causticChecked": 40768,
-    "seconds": 44.6,
+    "seconds": 30,
     "pass": true
   },
   "continuous": {
@@ -2227,8 +2227,8 @@
     "Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain."
   ],
   "environment": {
-    "node": "v22.23.3",
-    "platform": "linux"
+    "node": "v24.21.0",
+    "platform": "darwin"
   },
-  "seconds": 49.8
+  "seconds": 33.2
 }

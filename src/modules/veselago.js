@@ -1,6 +1,6 @@
 
 /* modules/veselago.js */
-/* GENChase: Veselago negative-index slab. Light bends the wrong way. At n = −1 the rays meet at 2L − d. At any other n they do not meet at one point. */
+/* GENChase: Veselago negative-index slab. Light bends the wrong way. At n = −1 and d < L the rays meet behind the slab at 2L − d. At any other n they do not meet at one point. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -42,10 +42,10 @@
     order: 94,
     equation: 'n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d',
     credit: 'V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.',
-    blurb: 'Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell\'s law says it must. At n = −1 the rays meet again behind the slab, at 2L − d. At any other n they still cross the axis, but not at one point: the status line gives the nearest and farthest crossings and the paraxial point L/|n| − d.',
+    blurb: 'Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell\'s law says it must. At n = −1, when the source distance d is less than the slab thickness L, the rays meet behind the slab at 2L − d. At other negative indices they do not meet at one point. When axis crossings lie behind the slab, the status line gives the nearest and farthest crossings and the paraxial point L/|n| − d.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
-      Slab: 'n = −1 is Veselago\'s perfect lens: every ray meets at one point. Any other negative n still bends the rays the same way, and they do not meet at one point.',
+      Slab: 'At n = −1 the rays meet behind the slab only when the source distance d is less than the thickness L. Other negative indices do not bring the rays to one point; the crossing range is shown only when crossings lie behind the slab.',
       Picture: 'Brightness counts ray crossings. Exposure 1 puts white at the 95th percentile of lit pixels, so the source and the foci, where every ray crosses, clip. Log shows them unclipped.',
     },
     palette: true, defaultPalette: 'glacier', surprise, sanitize,
