@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **The equal double pendulum was rerun as one job.** On 2026-09-29, against CAPD at the pinned commit 03dc562, on two threads, in 39 minutes. Every proof passed and every control failed for its stated reason. The reports match the committed files, except two whose parallel lines are in a different order. The Arb cross-checks were not repeated. Bolotin and Negrini (1997) are still unread in print, and meromorphic non-integrability stays open.
 - **The Hodgkin-Huxley pulse archive stays.** Releases 1.0.0 and 1.0.1 are not withdrawn. A second in-project reading of the fixes found no must-fix. The Consistency paragraph now quotes the printed-leak run, the table times are labelled wall-clock, and the numerical speed parameter at 18.5 C is no longer split across a line. Item 7 records that the 6.3 C certificates match the current proof programs and that phi encloses 1. No outside review. A paper that already has a Zenodo code DOI reports an open item and does not fail the check. A paper with no archive still cannot be marked ready while an item is open.
 - **The Crapper check loads the constants the module still defines.** `A_UNI` is not in `src/modules/crapper.js`. The loader asked for it and the structure job died there. The steepness bound it uses is computed in the check as `3 - 2√2`. The default map is the classical one. The flipped sign is what meets itself near amplitude 0.30.
 - **The skin export check uses the mode rows.** The field is 96 by 96 when rows is modes. The check had still required the taller sheet, 96 by 120.

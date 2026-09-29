@@ -133,5 +133,8 @@ GENChase: the companion repository does not carry `notes/`.
   two threads), and the three near-miss horseshoe controls (19, 31 and 44 seconds cumulative); every report is in
   `data/`, and each near-miss report contains the pattern `run_all.sh` requires. `prove` and `horseshoe_check` were
   not rerun: since their reports, their code changed only by a round-to-nearest guard around the parsing of decimal
-  constants, which does not change the doubles parsed on this build. A full rerun of `run_all.sh` (about 85 minutes)
-  would confirm the whole file set together.
+  constants, which does not change the doubles parsed on this build. On 2026-09-29 the whole of `run_all.sh` was run
+  together from the programs as they stand, against CAPD at the pinned commit 03dc562, on two threads (39 minutes,
+  exit status 0). Every proof passed and every control failed for its stated reason. The reports match the committed
+  files in `data/`, except `E0.txt` and `E0_interval.txt`, which differ only in the order of lines printed by parallel
+  threads. The committed files were left as they are. The Arb cross-checks were not repeated that day.
