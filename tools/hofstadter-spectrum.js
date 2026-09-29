@@ -174,7 +174,7 @@ assert.ok(wrongFluxErr > 0.1, 'wrong flux did not fail: ' + wrongFluxErr);
 const result = {
   source: MODULE,
   sourceSha256,
-  harness: 'tools/hofstadter-science.js',
+  harness: 'tools/hofstadter-spectrum.js',
   harnessSha256: sha(fs.readFileSync(__filename)),
   command: 'node tools/hofstadter-spectrum.js --write',
   scope: 'Every coprime p/q with q from 1 to 56. The plate builds the Harper matrix at zero crystal momentum and diagonalizes it with symmetric QL. The reference builds that matrix by adding each site\'s own forward and backward hop and diagonalizes it with cyclic Jacobi. The capped Jacobi failure control is compared through q = 24, where it was already shown to miss.',

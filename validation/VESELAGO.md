@@ -20,9 +20,9 @@ paint path are the same and the print harness does not read the status words.
 domain. The print reproduces the field exactly on the nine fixtures, none of which has the back face off the
 plate. The status words match the crossings: "Veselago focus" is not printed where no ray crosses the axis
 behind the slab. When the back face lies past the last drawn column the ray stops, and those 2,368 plates
-have no stray ink. The words do not say whether an image at `n ≠ −1` sits on the paraxial point `L/|n| − d`.
-The `Δx/W` number is that measurement, and the reference `2L − d` is printed only at `n = −1`. Reflected rays
-are not drawn.
+have no stray ink. At `n ≠ −1` the line does not call the crossings one image: it prints the nearest and the
+farthest, and the paraxial point `L/|n| − d` beside them. At `n = −1` the `Δx/W` number is still the brightest
+point against `2L − d`. Reflected rays are not drawn.
 
 At `n = −1` perfect refocusing is a geometric identity of the flat slab: every ray crosses the axis at `slab0 + d`
 inside the slab and again at `slab0 + 2L − d` behind it. Those checks are regression checks, not predictions. The
@@ -89,9 +89,12 @@ back towards the slab. There is no real image.
   in-domain configurations with no real crossing behind the slab, none is labelled a focus. At the default slab
   the words are "Veselago focus" only at `n = −1`, "no image behind the slab" from −2.20 to −2.00, and "image
   behind the slab" on the other 31 slider values. At `n = −0.40` the line also says how many rays total
-  reflection removed (2 of 12, 4 of 28, 6 of 48, 6 of 64). The words do not place the image: at `n = −1.2` the
-  brightest point is 9.94 px from `2L − d`, and the line says "image behind the slab", not that it sits at the
-  textbook point. The `Δx/W` number is still the brightest point. A crossing that lands within 1e-9 px of the
+  reflection removed (2 of 12, 4 of 28, 6 of 48, 6 of 64). At `n ≠ −1`, on every one of the 40,768 sweep plates
+  that has a crossing behind the slab, the nearest and farthest match the independent trace to 1e-9 px, and
+  the paraxial number is `L/|n| − d`. At the default slab those ranges are 36.00–40.37 px at `n = −0.8`
+  (paraxial 36), 14.65–16.00 px at `n = −1.2` (paraxial 16), 6.11–8.00 px at `n = −1.5` (paraxial 8) and
+  96.09–289.89 px at `n = −0.40` (paraxial 96). The line does not say the rays meet at the paraxial point.
+  `Δx/W` is printed only at `n = −1`. A crossing that lands within 1e-9 px of the
   back face, which is the virtual image at `n = −1` and `d = L` up to float noise, is not counted.
 - **Back face past the plate.** When `x0 + d + L > W − 2` the exit target lies behind the ray. The segment
   used to walk backwards to `W − 2` and ink cells no ray reaches: 1,767 of 2,368 such sweep plates, 24,214
@@ -148,8 +151,8 @@ pixels, not resolved rays. Colour is not calibrated.
 
 ## What would complete the review
 
-The label reports a focus only for the textbook case with a real crossing behind the slab, and the exit ray
-no longer walks backwards off the plate. The words do not yet compare other `n` with the paraxial image
-`L/|n| − d`. Reflected rays are not drawn. The print harness has not been re-run against this source
-fingerprint; its nine fixtures keep the back face on the plate, so their fields are unchanged. The numerical
-sweep was re-run on 2026-09-29.
+The label reports a focus only for the textbook case with a real crossing behind the slab. At every other `n`
+the line gives the crossing range and the paraxial point, and does not call them one image. The exit ray no
+longer walks backwards off the plate. Reflected rays are not drawn. The print harness has not been re-run
+against this source fingerprint; its nine fixtures keep the back face on the plate, and this change does not
+touch the field. The numerical sweep was re-run on 2026-09-29.

@@ -551,7 +551,7 @@ void main(){
               dens[iy*W+ix] += 1;
               if (ix+1<W) dens[iy*W+ix+1] += 0.4;
               if (ix>0) dens[iy*W+ix-1] += 0.4;
-              // Chern of gap above band r: r ≡ p C (mod q), smallest |C|
+              // Hall integer of the gap below this eigenvalue: r bands filled, r ≡ p C (mod q), smallest |C|.
               let C = 0, best=1e9;
               for (let c=-q;c<=q;c++) {
                 let m = r - p*c;

@@ -126,7 +126,7 @@ Completed follow-ups: [positive peakon fields and prints](PEAKON-FIELD-REVIEW.md
 
 The [complete PDE field review](PDE-FIELD-REVIEW.md) checks six finite solvers and all their print views. The [spanning-tree review](UST.md) combines exact graph enumeration, measured sampling frequencies, and independent print geometry.
 
-The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), section 2, each have a review of the same kind: [Ising](ISING.md) against Yang's magnetization, Onsager's energy and the Binder cumulant; [random matrices](RMT.md) against exact moments, the semicircle and the Gaudin-Mehta spacing law; [SLE](SLE.md) against closed-form drivers and the dimension 1 + kappa/8; the [Aztec diamond](AZTEC.md) and [lozenge tilings](LOZENGE.md) against exact counts, uniformity and the arctic limit shapes. Each states the disagreements it found.
+The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), section 2, each have a review of the same kind: [Ising](ISING.md) against Yang's magnetization, Onsager's energy and the Binder cumulant; [random matrices](RMT.md) against exact moments, the semicircle and the Gaudin-Mehta spacing law; [SLE](SLE.md) against closed-form drivers and the dimension min(2, 1 + kappa/8) (the tab now says the drawn trace is not resolved to that dimension); the [Aztec diamond](AZTEC.md) and [lozenge tilings](LOZENGE.md) against exact counts, uniformity and the arctic limit shapes. Each states the disagreements it found.
 
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.
@@ -137,10 +137,10 @@ defects: the P3 matching arcs are not a valid decoration, and the grout inset mo
 
 The [Veselago lens review](VESELAGO.md) checks every ray of the actual module against an
 independent negative-index Snell trace across the slider domain, and checks every print pixel
-against the field. It stays partially validated because the status words do not place an image at
-`n ≠ −1` on `L/|n| − d`, and reflected rays are not drawn. A back face past the plate no longer
-inks a backward exit ray. The status line does not call a plate a focus when no ray crosses the
-axis behind the slab.
+against the field. It stays partially validated because reflected rays are not drawn. At `n ≠ −1`
+the status line gives the crossing range and the paraxial point `L/|n| − d`, and does not call
+that one image. A back face past the plate no longer inks a backward exit ray. The status line
+does not call a plate a focus when no ray crosses the axis behind the slab.
 
 Two tabs added on 2026-09-26 carry evidence while their records stay unvalidated: [Fisher-KPP fronts](FISHER-KPP.md) (logistic benchmark, straight-front speed against Bramson and Ebert-van Saarloos, fourth-order refinement at D dt/h² = 1/6, the plate's front-speed witness, a wrong-diffusion-sign control, print agreement) and [Maxwell-Cattaneo heat](CATTANEO.md) (Fourier modes against the exact dispersion relation, the relaxation limit, second-order refinement, the step bound, ring speed, a wrong-relaxation-sign control, print agreement).
 
@@ -149,7 +149,6 @@ The [London disk](MEISSNER.md) compares the current multigrid solver with an ind
 The [Arago spot](ARAGO.md) record also carries evidence while it stays unvalidated: an independent radial quadrature of the on-axis Fresnel identity for an opaque disk, with a circular-aperture control against 4 sin²(kR²/4z). It tests the textbook identity, not the module, whose 24 by 18 plate sum compares I(0) with a ring and is recorded as outside the claim.
 
 The [Hatano-Nelson skin review](SKIN.md) checks the open clean chain's spectrum and right eigenvectors against an
-independent QL diagonalization and the tab's densities against them at aspect 1:1. It stays partially validated
-because of a recorded plate defect: a sheet with more rows than sites (the default 4:5 sheet, the only print
-fixture) draws rows past n = N that are float noise and repeats of the low modes, and the status-line skin weight
-averages them in.
+independent QL diagonalization and the tab's densities against them. The default plate draws at most one
+row per mode, and the 4:5 and 1:1 prints are both 96 by 96 with the same skin weight. Recipes before v8,
+and the disordered and periodic paths, stay outside that claim.
