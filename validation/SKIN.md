@@ -2,7 +2,7 @@
 
 The `skin` tab draws every row of an open directed-hopping chain. On a clean open chain (on-site disorder below 0.04 and open ends) those rows are the closed form, row-normalized `|psi|^2`. The tab does not diagonalize that case. Disorder and periodic ends use subspace iteration with Gram-Schmidt. That path is not an eigensolver, and it is not part of this validation.
 
-Reviewed 2026-09-27. Status in `validation/techniques.json` is **partially validated** (in-project contract check, 2026-09-27). The numerical evidence below holds for the domain it states, but the only print fixture is the default 4:5 sheet, which lies outside the 1:1 eigenvector domain, and the plate has a recorded defect on that sheet (see Print). Under the precedent of the tilings and Veselago records, a recorded plate defect keeps the status at partially validated. Promotion needs the plate to draw at most N rows and a 1:1 print fixture inside the numerical domain.
+Reviewed 2026-09-29. Status in `validation/techniques.json` is **validated within stated limits**. The claim is the open clean chain, one row per eigenmode. On 2026-09-29 the default 4:5 sheet was printed again: it draws 96 rows for 96 modes, skin weight 0.780, the same modes as the new 1:1 fixture. Recipes before v8 still draw the old sheet height, and they are outside the claim. Disorder and periodic ends stay outside it.
 
 ## Operator
 
@@ -86,15 +86,14 @@ All three are asserted inside `tools/skin-science.js`. A control that still sati
 
 `node tools/skin-print-state.js --write` writes [results/skin-print-state.json](results/skin-print-state.json).
 
-One fixture: open chain, grid 96, aspect `4:5` (120 rows), `g = 0.08`, disorder 0, log view. `exportPNG` at longest edge 2400 is 1920 by 2400 pixels (118,079 bytes). Float32 `amp` words, skin weight, IPR, cells, buffer size and settings are unchanged. Regenerate is deterministic. The reduced raster has luminance spread 226. Wrong dimensions are rejected. Mutating `amp[0]` and the skin weight after export is rejected by the same predicate the real export passes (1 word changed, skin weight changed). The fixture's skin weight is 0.773.
+Two fixtures, both on this source: open chain, grid 96, `g = 0.08`, disorder 0, log view. Aspect `4:5` exports at 1920 by 2400 (111,595 bytes). Aspect `1:1` exports at 2400 by 2400 (128,100 bytes). Both fields are 96 by 96, and both report skin weight 0.779865. Float32 `amp` words, skin weight, IPR, cells, buffer size and settings are unchanged. Regenerate is deterministic. The reduced raster has luminance spread 226. Wrong dimensions are rejected. Mutating `amp[0]` and the skin weight after export is rejected.
 
-That sheet has more rows than sites. Rows past `n = N` continue the sine formula and are not eigenpairs. They are inside the print-state check and outside the eigenvector comparison, which uses aspect `1:1`.
-
-This is a plate defect. At grid 96 and aspect `4:5` the plate draws 120 rows for 96 modes. Row 97 has `k = pi`, where `sin(pi (j+1))` is float noise; the row normalization turns that noise, times `e^{2 g j}`, into a skin-shaped row (right-tenth weight 0.868). Rows 98 to 120 have `k = pi + pi m / 97`, so their `|psi|^2` rows are bit-exact repeats of modes 1 to 23. The status-line skin weight averages all 120 rows: 0.773 on this sheet, against 0.780 over the 96 modes at `1:1`. The print check therefore preserves a sheet outside the numerical domain, and no print fixture lies inside it.
+The earlier print of this preset, from source `7a522072`, was 96 by 120 and skin weight 0.773. That was the sheet-height count: row 97 was float noise at `k = pi`, and rows 98 to 120 repeated modes 1 to 23. The default plate no longer draws those rows. `node tools/skin-rows.js` still measures them on a recipe from before v8, which the status line names, and which this claim does not cover.
 
 ## Limits
 
-- Partially validated: the only print fixture is the default 4:5 sheet, outside the 1:1 eigenvector domain, and on that sheet the plate draws 24 rows past `n = N` (float noise at `k = pi` and repeats of modes 1 to 23) that the skin weight averages in.
+- Validated within stated limits: the open clean chain, one row per mode. The 4:5 and 1:1 prints are both 96 by 96 and agree on the skin weight.
+- Recipes before v8 still draw the sheet height. At grid 96 and aspect 4:5 that is 120 rows, skin weight 0.773, including the wave-number-pi row and 23 repeated modes. The status line says so. They are not part of the claim.
 - Open chain, disorder below 0.04, only. Periodic ends and disordered subspace iteration are excluded.
 - Finite `N`, up to 96 for the tab comparison and 48 for the strict cosine and eigenvector tolerances.
 - The probability length `1/(2|g|)` is a regression test forced by the closed form, not an independent prediction.

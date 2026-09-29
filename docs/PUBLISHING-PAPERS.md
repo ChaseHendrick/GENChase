@@ -105,6 +105,33 @@ Then:
    the workflow updates the companion. Make a `1.0.1` release if you want the archived copy to carry
    the DOI in its own PDF too.
 
+### Check the manuscript in the archive
+
+Every new companion release must pass `node tools/paper-check.js --paper <id> --release`, with all
+seven quality items closed even when an older Zenodo archive exists. Keeping a previous archive
+available does not establish that a new version is ready.
+
+Every new companion release must include the registered manuscript PDF in its source ZIP.
+`tools/paper-publish.sh` runs `python3 tools/paper-archive-check.py <id> <companion-checkout> <ref>`
+on the merged companion tree before pushing it. It rejects an absent PDF registration, a missing or
+truncated PDF, or a PDF removed or changed by archive attributes. This is a packaging check, not a
+review of the mathematics or a freshness check of the PDF against its source. Existing releases are
+never withdrawn or replaced. The optional `companionExclude` list in a paper's registry entry names
+individual tracked exploratory files to keep in the development repository only. It cannot exclude the
+registered manuscript source/PDF, README or release notes; a missing filename is an error.
+
+For the Markdown manuscript `hh-pulse`, `sh tools/paper-build.sh hh-pulse` uses Pandoc and pdflatex.
+To use Tectonic instead, set `PAPER_PDF_ENGINE=tectonic`; both engines require Pandoc on PATH.
+The Markdown remains the canonical text. Long literal equations wrap in the PDF.
+The same build command reads the registered LaTeX filename and its included fragments for other papers,
+including `rank-window`'s `note.tex`. LaTeX builds also accept `PAPER_PDF_ENGINE=tectonic`.
+
+After Zenodo archives a new version, download the ZIP named by that record's API and inspect its
+members. Verify the manuscript bytes against the released PDF, then record the version DOI.
+`python3 tools/paper-zenodo-check.py --paper <id> --out /tmp/archive-check.json` performs this
+read-only download and comparison against the registered repository PDF.
+A PDF attached separately to a GitHub release does not establish that it is in the source ZIP.
+
 ### Editing a paper after it is public
 
 Edit it in either place.

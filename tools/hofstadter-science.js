@@ -28,7 +28,7 @@ vm.createContext(sandbox);
 vm.runInContext(source.slice(fnStart, fnEnd) + '\nthis.harperEV = harperEV;\nthis.jacobiEV = jacobiCapped;\nthis.harperLegacy = harperLegacy;\nthis.harperMatrix = harperMatrix;\nthis.harperMatrixLegacy = harperMatrixLegacy;\n', sandbox);
 const { harperEV, jacobiEV, harperLegacy, harperMatrix, harperMatrixLegacy } = sandbox;
 
-const colorAt = source.indexOf('// Chern of gap above band r: r ≡ p C (mod q), smallest |C|');
+const colorAt = source.indexOf('// Hall integer of the gap below this eigenvalue: r bands filled, r ≡ p C (mod q), smallest |C|');
 const colorEnd = source.indexOf('chern[iy*W+ix] += C;', colorAt);
 if (colorAt < 0 || colorEnd < 0) throw Error('Chern coloring loop not found');
 const plateC = new Function('p', 'q', 'r', source.slice(colorAt, colorEnd) + '\nreturn C;');
@@ -453,14 +453,14 @@ function run() {
 
   const result = {
     tool: 'tools/hofstadter-science.js',
-    reviewed: '2026-09-27',
+    reviewed: '2026-09-29',
     source: sourcePath,
     sourceSha256,
     node: process.version,
     claim: 'Independent Harper matrix, TKNN gap integers, and Fukui-Hatsugai-Suzuki band Chern numbers. Not a laboratory quantum Hall measurement.',
     hamiltonian: 'H_j = ψ_{j+1} + ψ_{j-1} + 2 cos(φ + 2π p j / q) ψ_j, with ψ_{n+q} = exp(-i θ) ψ_n. The wrap adds, so q = 2 has off-diagonal 1 + exp(-i θ). θ, φ in [0, 2π). This boundary sign is the one whose lattice Chern numbers match TKNN.',
     plate: 'The module diagonalizes one real q by q Harper matrix per coprime p/q with symmetric QL. Both hops are added, so q = 1 is E = 4 and q = 2 is ±2√2. Recipes older than v8 keep jacobiCapped on the overwritten matrix: q = 1 returns 1, q = 2 returns ±√5, and the diagonal is still off the spectrum for q at least 7.',
-    coloring: 'Each sorted eigenvalue index r (0 at the bottom) is painted with the TKNN integer t_r of the gap with r bands filled, smallest |t_r| and negative on a tie. That is the gap below the eigenvalue, not the Chern number of the band and not the gap above it. The source comment says "gap above". Neighboring pixels that only receive the 0.4 density smear are painted as Hall integer 0.',
+    coloring: 'Each sorted eigenvalue index r (0 at the bottom) is painted with the TKNN integer t_r of the gap with r bands filled, smallest |t_r| and negative on a tie. That is the gap below the eigenvalue, not the Chern number of the band. The source comment says so. Neighboring pixels that only receive the 0.4 density smear are painted as Hall integer 0.',
     solverErrorByQ: solverByQ,
     solver: {
       maxAbsErrorQAtMost12: solverWorst,

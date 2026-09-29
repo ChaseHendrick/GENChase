@@ -83,6 +83,7 @@ function checkPaper(root, p, opts = {}) {
   const bad = m => problems.push(m), note = m => notes.push(m);
   if (!ORDER.includes(p.status)) bad('status "' + p.status + '" is not one of ' + ORDER.join(', '));
   const rank = ORDER.indexOf(p.status);
+  if (opts.requireCompleteQuality && rank < ORDER.indexOf('ready')) bad('a new release needs status ready or later');
   if (rank >= ORDER.indexOf('on-arxiv') && p.arxiv && !/^\d{4}\.\d{4,5}(v\d+)?$/.test(p.arxiv.id || '')) bad('status ' + p.status + ' needs arxiv.id (for example 2610.01234)');
   if (rank >= ORDER.indexOf('submitted') && p.journal && !/^\d{4}-\d{2}-\d{2}$/.test(p.journal.submitted || '')) bad('status ' + p.status + ' needs journal.submitted as YYYY-MM-DD');
   if (p.status === 'published' && p.journal && !/^10\.\d{4,}\//.test(p.journal.doi || '')) bad('status published needs journal.doi');
@@ -101,7 +102,7 @@ function checkPaper(root, p, opts = {}) {
         const msg = q.file + ': the quality bar is not met (open: item ' + open.join(', ') + ')';
         // A Zenodo code DOI means the archive already exists. Open items stay in the record and are
         // reported, and they do not fail the check: the release is not withdrawn from here.
-        if (due && /^10\.5281\/zenodo\.\d+$/.test(p.codeDoi || '')) note(msg + '; the Zenodo archive already exists and is not withdrawn');
+        if (due && !opts.requireCompleteQuality && /^10\.5281\/zenodo\.\d+$/.test(p.codeDoi || '')) note(msg + '; the Zenodo archive already exists and is not withdrawn');
         else say(msg + (due ? '; a paper is "ready" or later only when every item is checked' : ''));
       } else if (q.items.length >= BAR.length) note(q.file + ': the quality bar is met');
     }
@@ -178,7 +179,7 @@ function latexPages(root, tex) {
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
-function run(root, only) {
+function run(root, only, requireCompleteQuality = false) {
   const reg = JSON.parse(read(root, 'papers/papers.json'));
   const papers = reg.papers.filter(p => !only || p.id === only);
   if (only && !papers.length) throw new Error('No paper ' + only + ' in papers/papers.json');
@@ -188,7 +189,7 @@ function run(root, only) {
   for (const p of papers) {
     if (ids.has(p.id)) { console.log('FAIL duplicate id ' + p.id); failed++; }
     ids.add(p.id);
-    const { problems, notes } = checkPaper(root, p, { emails });
+    const { problems, notes } = checkPaper(root, p, { emails, requireCompleteQuality });
     // A paper goes public as its own repository (tools/paper-sync.js); from "ready" on it must stage cleanly.
     if (p.companion && !problems.some(m => m.startsWith('missing file'))) {
       const found = require('./paper-sync.js').check(root, p.id), due = ORDER.indexOf(p.status) >= ORDER.indexOf('ready');
@@ -218,9 +219,9 @@ function selfTest() {
   };
   const paper = () => ({ id: 't', title: 'A Test Paper', status: 'preparing', typst: 'p.typ', latex: 'p.tex', pdf: 'p.pdf', arxiv: { metadata: 'meta.md', id: null }, journal: { coverLetter: 'letter.md', submitted: null, doi: null } });
   const opts = { latexPages: () => 3, emails: ['author@real-domain.org'] };
-  const expect = (want, what, mutate) => {
+  const expect = (want, what, mutate, extra = {}) => {
     base(); const p = paper(); if (mutate) mutate(p);
-    const r = checkPaper(tmp, p, opts), ok = want ? r.problems.length === 0 : r.problems.length > 0;
+    const r = checkPaper(tmp, p, { ...opts, ...extra }), ok = want ? r.problems.length === 0 : r.problems.length > 0;
     checks++; if (!ok) { failures++; console.log('FAIL ' + what + (r.problems.length ? ': ' + r.problems.join('; ') : ': no problem found')); }
   };
   try {
@@ -249,6 +250,9 @@ function selfTest() {
     expect(true, 'ready with every item of the bar checked', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([])); });
     expect(false, 'ready with an open item', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(true, 'an archived paper keeps an open item on the record', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([6])); });
+    expect(false, 'an existing DOI cannot excuse an open item for a new release', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([6])); }, { requireCompleteQuality: true });
+    expect(true, 'a new release passes with complete quality evidence', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([])); }, { requireCompleteQuality: true });
+    expect(false, 'a draft cannot make a new release even with complete evidence', p => { p.status = 'draft'; w('papers/t/notes/QUALITY.md', record([])); }, { requireCompleteQuality: true });
     expect(false, 'a ready paper with an open item and a DOI that is not Zenodo', p => { p.status = 'ready'; p.codeDoi = '10.1000/not-an-archive'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior work')); });
     // Item 5 was "Prior art" until the owner renamed it (2026-09-26): GENChase is also an art studio.
@@ -266,7 +270,7 @@ function main() {
   if (argv.includes('--help') || argv.includes('-h')) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 15).map(s => s.replace(/^\/\/ ?/, '')).join('\n')); return; }
   if (argv.includes('--self-test')) process.exit(selfTest() ? 1 : 0);
   const i = argv.indexOf('--paper'), root = path.resolve(__dirname, '..');
-  try { process.exit(run(root, i >= 0 ? argv[i + 1] : null) ? 1 : 0); }
+  try { process.exit(run(root, i >= 0 ? argv[i + 1] : null, argv.includes('--release')) ? 1 : 0); }
   catch (e) { console.error('paper-check: ' + e.message); process.exit(2); }
 }
 

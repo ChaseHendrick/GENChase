@@ -43,8 +43,8 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
   out every estimate for any number of patches; the other patches act on a patch only through the strain of their
   field, and two slips of his arXiv version are corrected there.
 - **Numerical:** the direct integrations and the random sample of Section 6.
-- **Checked:** independent adversarial readings of every section and of the programs, signed off by the owner
-  (`notes/QUALITY.md`, item 6).
+- **Checked:** independent adversarial readings of every section and of the programs within the project, signed
+  off by the owner. The review records remain in the development records and are not included in this companion archive.
 - **Limitation:** the section, theorem and equation numbers of Zbarsky's paper cited here, and the two slips
   corrected in Appendix A, are those of arXiv:1912.10862v2; the published CMP version was not accessible for
   comparison.
