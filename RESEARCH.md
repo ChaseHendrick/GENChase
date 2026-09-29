@@ -618,7 +618,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-135 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+136 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -759,6 +759,7 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `cattaneo` | Maxwell-Cattaneo heat | rare | science only | never searched |
 | `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
 | `dptangle` | Double pendulum tangle | rare | logged in research/double-pendulum/PRIOR-ART.md and REPORT.md | no |
+| `hopfield` | Hopfield Memory | common | science only | 2026-09-29: primary Hopfield 1982 source; established associative memory, no novelty claim |
 
 ## Notes on the rows that are not `science only`
 
@@ -2178,3 +2179,7 @@ Re-search: no, unless a week passes; read Enculescu (2004) and Sandstede (2007) 
 - Searched: arXiv full text '"Hodgkin-Huxley" "Evans function"' (0 hits) and '"Hodgkin-Huxley" stability "traveling wave"' (1, not relevant); the zbMATH Open API, '"Hodgkin-Huxley" & stability & (pulse | travelling | traveling | impulse)' (30 hits); two web searches (only this project's pull requests).
 - Found: the stability theory of Evans (Indiana Univ. Math. J. 21-24, 1972-75; paper III read in full from the owner's scan, papers I, II and IV not reached); Evans and Feroe, Math. Biosci. 37 (1977) 23-50, Zbl 0377.92003 (title and venue only; numerical stability computations according to later citations; not read); Ikeda, Mimura and Tsujikawa (1989), stability for the epsilon-modified system; Rinzel (1975), neutrally stable waves; Rottmann-Matthes, Dyn. PDE 9 (2012) 29-62 (nonlinear stability of parabolic-hyperbolic waves in general; not read). No proof of stability of the unmodified pulse, as expected, since its existence was not proved before this project's Theorem 1.
 - Re-search: no, except to read Evans and Feroe (1977) and Rottmann-Matthes (2012) before any claim of priority for the stability result.
+
+## 2026-09-29: Hopfield associative memory
+
+The new `hopfield` tab implements the established bipolar zero-threshold Hebbian specialization. Primary citation checked at PubMed (PMID6953413), DOI10.1073/pnas.79.8.2554 and the Caltech-hosted Hopfield82.pdf scan. The PMC landing page intermittently returned a browser challenge. This is source identification for a known model, not a novelty search. No paper text or scan is redistributed. Explicit model assumptions and bounded independent numerical and print checks are in [validation/HOPFIELD.md](validation/HOPFIELD.md). The scientific label remains unvalidated.

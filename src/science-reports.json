@@ -5312,5 +5312,45 @@
       }
     ],
     "print": []
+  },
+  {
+    "id": "hopfield",
+    "source": "src/modules/hopfield.js",
+    "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+    "reference": "John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.",
+    "equation": "w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j",
+    "status": "unvalidated",
+    "limitations": [
+      "Finite binary associative memory, not a general AI model or a capacity claim.",
+      "Random and correlated geometric memories have different recall behavior; descent does not guarantee target recovery.",
+      "Numerical checks cover bounded fixtures; full parameter and independent scientific review remain open."
+    ],
+    "remaining": [
+      "Review the bipolar specialization and assumptions against the primary model.",
+      "Extend independent finite-size and basin statistics with honest uncertainty.",
+      "Review browser print evidence across supported engines."
+    ],
+    "numerical": [
+      {
+        "test": "tools/hopfield-science.js",
+        "scope": "21 finite 8x8 seeded recipes and five exhaustive positive-overlap N=4 cues.",
+        "criteria": "Exact state updates; dense field and energy within 1e-8, nonincreasing energy within 1e-9, single-memory recall for M>1.",
+        "limitations": "No capacity estimate or basin coverage beyond the explicit fixtures.",
+        "benchmark": "Independent dense Hebbian matrix and full quadratic energy; analytic single-memory positive-overlap recovery.",
+        "failureControl": "Reverse-sign updates and missing diagonal subtraction rejected; overloaded and inverse-memory misses retained.",
+        "command": "node tools/hopfield-science.js --write",
+        "results": "validation/results/hopfield-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/hopfield-print-state.js",
+        "scope": "Default, all six presets and a 24x24 portrait fixture, 2400px longest edge.",
+        "criteria": "Correct PNG dimensions; three SVG cells per neuron; exact PNG cell-center colors from exported binary data; square cells; unchanged and deterministic state.",
+        "limitations": "These fixtures only; direct module paths, with real UI exports checked separately.",
+        "command": "node tools/hopfield-print-state.js --write",
+        "results": "validation/results/hopfield-print-state.json"
+      }
+    ]
   }
 ]

@@ -1,0 +1,528 @@
+{
+  "technique": "hopfield",
+  "reviewed": "2026-09-29",
+  "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+  "harnessSha256": "7762fb79076ecc92f273b8a42278759b9bbfe6437f412330e5900ad194eb7aa1",
+  "rngSha256": "3a139b7b42c4f70e42ef0664643d62d9c8d769fca1c97220aaf9460071690ab5",
+  "reference": "https://doi.org/10.1073/pnas.79.8.2554",
+  "node": "v24.21.0",
+  "platform": "darwin",
+  "passed": true,
+  "exhaustivePositiveOverlapCues": 5,
+  "failureControls": {
+    "mutationRejected": true,
+    "diagonalRejected": true,
+    "badEnergyIncrease": 1.5
+  },
+  "fixtures": [
+    {
+      "label": "one",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -7.5,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "four",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -10.46875,
+        -30.78125,
+        -30.78125
+      ]
+    },
+    {
+      "label": "overloaded",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 64,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 21,
+      "fixedPoint": true,
+      "sweeps": 4,
+      "updates": 256,
+      "energyError": 0,
+      "energy": [
+        -0.8125,
+        -43.4375,
+        -52.1875,
+        -55.6875,
+        -55.6875
+      ]
+    },
+    {
+      "label": "inverse",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 80,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 64,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -10.78125,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "geometric",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 6,
+        "patterns": "stripes",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -6.625,
+        -31,
+        -31
+      ]
+    },
+    {
+      "label": "untouched",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 0,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 1,
+      "updates": 64,
+      "energyError": 0,
+      "energy": [
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "noUpdates",
+      "seed": "hopfield-audit/0",
+      "parameters": {
+        "seed": "hopfield-audit/0",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 40,
+        "sweeps": 0,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 26,
+      "fixedPoint": false,
+      "sweeps": 0,
+      "updates": 0,
+      "energyError": 0,
+      "energy": [
+        0.21875
+      ]
+    },
+    {
+      "label": "one",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -7.5,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "four",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -9.9375,
+        -30.4375,
+        -30.4375
+      ]
+    },
+    {
+      "label": "overloaded",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 64,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 27,
+      "fixedPoint": true,
+      "sweeps": 4,
+      "updates": 256,
+      "energyError": 0,
+      "energy": [
+        1.4375,
+        -34.5625,
+        -60.0625,
+        -67.1875,
+        -67.1875
+      ]
+    },
+    {
+      "label": "inverse",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 80,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 64,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -10.78125,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "geometric",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 6,
+        "patterns": "stripes",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -5.875,
+        -31,
+        -31
+      ]
+    },
+    {
+      "label": "untouched",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 0,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 1,
+      "updates": 64,
+      "energyError": 0,
+      "energy": [
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "noUpdates",
+      "seed": "hopfield-audit/1",
+      "parameters": {
+        "seed": "hopfield-audit/1",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 40,
+        "sweeps": 0,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 26,
+      "fixedPoint": false,
+      "sweeps": 0,
+      "updates": 0,
+      "energyError": 0,
+      "energy": [
+        -0.1875
+      ]
+    },
+    {
+      "label": "one",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -7.5,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "four",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 20,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -10.375,
+        -30.625,
+        -30.625
+      ]
+    },
+    {
+      "label": "overloaded",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 64,
+        "patterns": "random",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 35,
+      "fixedPoint": true,
+      "sweeps": 6,
+      "updates": 384,
+      "energyError": 0,
+      "energy": [
+        -11.96875,
+        -39.59375,
+        -58.21875,
+        -59.03125,
+        -59.21875,
+        -59.28125,
+        -59.28125
+      ]
+    },
+    {
+      "label": "inverse",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 80,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 64,
+      "fixedPoint": true,
+      "sweeps": 2,
+      "updates": 128,
+      "energyError": 0,
+      "energy": [
+        -10.78125,
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "geometric",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 6,
+        "patterns": "stripes",
+        "corruption": 25,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 9,
+      "fixedPoint": true,
+      "sweeps": 3,
+      "updates": 192,
+      "energyError": 0,
+      "energy": [
+        -6.75,
+        -27.5,
+        -28.1875,
+        -28.1875
+      ]
+    },
+    {
+      "label": "untouched",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 1,
+        "patterns": "random",
+        "corruption": 0,
+        "sweeps": 25,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 0,
+      "fixedPoint": true,
+      "sweeps": 1,
+      "updates": 64,
+      "energyError": 0,
+      "energy": [
+        -31.5,
+        -31.5
+      ]
+    },
+    {
+      "label": "noUpdates",
+      "seed": "hopfield-audit/2",
+      "parameters": {
+        "seed": "hopfield-audit/2",
+        "side": 8,
+        "count": 4,
+        "patterns": "random",
+        "corruption": 40,
+        "sweeps": 0,
+        "aspect": "3:2",
+        "gap": 0.04
+      },
+      "mismatches": 26,
+      "fixedPoint": false,
+      "sweeps": 0,
+      "updates": 0,
+      "energyError": 0,
+      "energy": [
+        -0.875
+      ]
+    }
+  ],
+  "limitations": [
+    "Bounded finite fixtures, not a capacity curve or general basin-volume estimate.",
+    "Energy descent is an invariant of symmetric asynchronous dynamics, not proof of correct recall.",
+    "Overloaded and negative-overlap failures remain in the report."
+  ]
+}

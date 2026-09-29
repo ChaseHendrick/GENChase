@@ -472,6 +472,7 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    hopfield: 'common',
     'direct-gravity': 'common',
     'volume-wave': 'common',
     surfaces: 'common',

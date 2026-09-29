@@ -1,6 +1,6 @@
 # Techniques
 
-135 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
+136 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
 Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -65,6 +65,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Excitable Media**<br><sub>spirals, targets and wave turbulence · 1991</sub> | `#excitable/barkley-1991` | Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b) | raster | live | Common |
 | **KdV Soliton**<br><sub>a wave that will not disperse · 1834 / 1965</sub> | `#soliton` | u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2) | raster | still | Common |
 | **Cyclic Automaton**<br><sub>cyclic and Greenberg-Hastings excitable automata · 1991</sub> | `#cyclicca/griffeath-1991` | cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0 | raster | live | Common |
+| **Hopfield Memory**<br><sub>Associative neural memory · 1982</sub> | `#hopfield/hopfield-1982` | w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j | SVG | still | Common |
 | **Chimera States**<br><sub>identical oscillators that split into synchrony and chaos · 2004</sub> | `#chimera` | dθi/dt = ω − (1/N) Σj G(\|i−j\|) sin(θi − θj + α) | raster | still | Occasional |
 | **SSH Edges**<br><sub>states in a gap that the bulk forbade · 1979</sub> | `#ssh` | H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open) | raster | still | Rare |
 | **Swarmalators**<br><sub>oscillators that sync and swarm · 2017</sub> | `#swarm/okeeffe-2017` | ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ | raster | live | Occasional |
@@ -259,6 +260,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **KdV Soliton**. J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.
 
 **Cyclic Automaton**. Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.
+
+**Hopfield Memory**. John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.
 
 **Chimera States**. Yoshiki Kuramoto and Dorjsuren Battogtokh found a ring of identical, identically coupled oscillators splitting into a coherent and an incoherent domain in 2002 — a state everyone had assumed impossible. Daniel Abrams and Steven Strogatz named it the chimera state in 2004, after the Greek beast assembled from mismatched animals.
 

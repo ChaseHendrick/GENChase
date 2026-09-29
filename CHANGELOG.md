@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Hopfield associative memory.** Seeded asynchronous bipolar recall, crisp cell/vector exports, native state data, and independent dense-matrix replay checks. Overloaded and inverse-memory outcomes remain visible; the new technique is unvalidated.
+
 - **Keep the plate responsive while editing.** Geometry sliders coalesce preview updates during continuous drags and render the final value on release. Pending work is cancelled on a technique switch. Recent-frame thumbnails have a separate persistent Hide/Show frames button, and compact readouts give the plate more room.
 
 - **Automation checks run on bot-created proposals.** The volunteer ledger and timestamp workflows explicitly dispatch the main checks and Pages build. Renamed vortex-result JSON files are re-verified, symlink substitutions are refused, and compute-constant changes refresh the ledger. Eleven local regression fixtures exercise the actual workflow steps.

@@ -10,7 +10,9 @@ Open the browser studio immediately, or unzip the offline bundle and double-clic
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 135 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+A folder-based studio with one shared engine and 136 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+
+The Hopfield associative-memory technique explores seeded recall from damaged cues, including overloaded memories and wrong basins. It has independent finite-case checks and native state exports; its scientific status remains unvalidated.
 
 Geometry sliders update the preview while you drag. Use **Hide frames** to hide the recent-frame thumbnails; that preference survives a reload. The scientific readout and Live/Still badge remain available.
 

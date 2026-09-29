@@ -1,0 +1,401 @@
+{
+  "passed": true,
+  "reviewed": "2026-09-29",
+  "command": "node tools/hopfield-print-state.js --write",
+  "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+  "harnessSha256": "6f786f6b135c93ec0f60c16e4e36dbe8fb05fa8348de65dbe8cf42cf450f2973",
+  "environment": {
+    "browser": "154.0.8037.58",
+    "node": "v24.21.0",
+    "platform": "darwin"
+  },
+  "dataPackage": {
+    "members": [
+      "meta.json",
+      "memories.npy",
+      "cue.npy",
+      "state.npy",
+      "energy.npy",
+      "overlaps.npy"
+    ],
+    "stateExported": true,
+    "sourceSha256": "b2261e56dd24c602a88b61adf8491314ce9811b17af3393be7fe8bf1ea29d547",
+    "status": "unvalidated",
+    "shape": [
+      16,
+      16
+    ],
+    "dtype": "|i1",
+    "memoryShape": [
+      4,
+      16,
+      16
+    ],
+    "meta": {
+      "tab": "hopfield",
+      "neurons": 256,
+      "memories": 4,
+      "corruptedCells": 51,
+      "sweeps": 2,
+      "fixedPoint": true,
+      "flips": 51,
+      "weights": "w_ij=sum_mu xi_mu_i*xi_mu_j/N for i!=j; w_ii=0",
+      "update": "seeded shuffled asynchronous; ties retain sign; zero threshold",
+      "energy": "-s^T W s/2",
+      "panels": [
+        "memory zero",
+        "cue",
+        "recall"
+      ],
+      "spatialBoundary": "none: fully connected",
+      "seed": "hopfield-print-state"
+    }
+  },
+  "rows": [
+    {
+      "key": "default",
+      "seed": "hopfield-print-state/default",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 104396,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 0,
+      "arrayShapes": {
+        "memories": [
+          4,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          4
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "one",
+      "seed": "hopfield-print-state/one",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 104482,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 0,
+      "arrayShapes": {
+        "memories": [
+          1,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          1
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "four",
+      "seed": "hopfield-print-state/four",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 104257,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 0,
+      "arrayShapes": {
+        "memories": [
+          4,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          4
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "crowded",
+      "seed": "hopfield-print-state/crowded",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 88551,
+      "svgCells": 192,
+      "expectedCells": 192,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 21,
+      "arrayShapes": {
+        "memories": [
+          64,
+          8,
+          8
+        ],
+        "cue": [
+          8,
+          8
+        ],
+        "state": [
+          8,
+          8
+        ],
+        "energy": [
+          6
+        ],
+        "overlaps": [
+          64
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "inverse",
+      "seed": "hopfield-print-state/inverse",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 103839,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 256,
+      "arrayShapes": {
+        "memories": [
+          1,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          1
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "geometric",
+      "seed": "hopfield-print-state/geometric",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 103036,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 0,
+      "arrayShapes": {
+        "memories": [
+          6,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          6
+        ]
+      },
+      "fixedPoint": true
+    },
+    {
+      "key": "cue",
+      "seed": "hopfield-print-state/cue",
+      "requested": [
+        2400,
+        1600
+      ],
+      "actual": [
+        2400,
+        1600
+      ],
+      "bytes": 102389,
+      "svgCells": 768,
+      "expectedCells": 768,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 102,
+      "arrayShapes": {
+        "memories": [
+          4,
+          16,
+          16
+        ],
+        "cue": [
+          16,
+          16
+        ],
+        "state": [
+          16,
+          16
+        ],
+        "energy": [
+          1
+        ],
+        "overlaps": [
+          4
+        ]
+      },
+      "fixedPoint": false
+    },
+    {
+      "key": "portrait",
+      "seed": "hopfield-print-state/portrait",
+      "requested": [
+        1920,
+        2400
+      ],
+      "actual": [
+        1920,
+        2400
+      ],
+      "bytes": 146494,
+      "svgCells": 1728,
+      "expectedCells": 1728,
+      "wrongColors": 0,
+      "squareError": 0,
+      "unchanged": true,
+      "deterministic": true,
+      "mismatches": 0,
+      "arrayShapes": {
+        "memories": [
+          4,
+          24,
+          24
+        ],
+        "cue": [
+          24,
+          24
+        ],
+        "state": [
+          24,
+          24
+        ],
+        "energy": [
+          3
+        ],
+        "overlaps": [
+          4
+        ]
+      },
+      "fixedPoint": true
+    }
+  ],
+  "failureControls": {
+    "wrongDimensionsRejected": true,
+    "wrongPixelRejected": true,
+    "stateMutationRejected": true
+  },
+  "limitations": [
+    "Cell-center color and geometry, dimensions and state preservation checks; not color calibration or general model validation.",
+    "Direct module PNG/SVG/data paths here; tools/export.js separately exercises the real studio print button."
+  ]
+}

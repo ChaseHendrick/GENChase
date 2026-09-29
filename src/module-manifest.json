@@ -1410,6 +1410,31 @@
       "headline": "k"
     },
     {
+      "id": "hopfield",
+      "source": "src/modules/hopfield.js",
+      "name": "Hopfield Memory",
+      "tab": "Hopfield",
+      "subtitle": "Associative neural memory · 1982",
+      "equation": "w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j",
+      "credit": "John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.",
+      "blurb": "A small recurrent neural network stores binary patterns in symmetric connections. Start it with a damaged copy and each neuron takes its turn responding to all the others. The three panels show the first stored memory, the damaged cue and the resulting recall. More memories interfere; a badly damaged cue can settle into a different pattern or the inverse memory. Energy descent does not guarantee correct recall. These are finite binary associative memories, with no language model or remote service.",
+      "order": 54.82,
+      "seed": "hopfield-1982",
+      "presets": [
+        "one",
+        "four",
+        "crowded",
+        "inverse",
+        "geometric",
+        "cue"
+      ],
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "corruption"
+    },
+    {
       "id": "chimera",
       "source": "src/modules/chimera.js",
       "name": "Chimera States",
