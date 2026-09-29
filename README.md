@@ -1,8 +1,10 @@
 # GENChase
 
-**Generative art from real simulations you can check and print.**
+**A development and research working environment, with an art and print studio.**
 
-**[Make art in your browser](https://chasehendrick.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/ChaseHendrick/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://chasehendrick.github.io/GENChase/start.html#help)**
+The repository is where the simulations, the checks and the papers are written. The studio is the part that turns a seeded simulation into a plate.
+
+**[Open the studio](https://chasehendrick.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/ChaseHendrick/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://chasehendrick.github.io/GENChase/start.html#help)**
 
 Open the browser studio immediately, or unzip the offline bundle and double-click `START-HERE.html`. No account, Node.js or Python is needed to make art. Device support and practical simulation sizes vary.
 
@@ -42,6 +44,8 @@ Images you generate are yours, whoever you are. Sell them. The source is [Apache
 ---
 
 ## Why this exists
+
+This repository is a working environment for development and research. The simulations, the checks and the papers are written here. The studio is how a seeded run becomes a plate.
 
 GENChase brings many scientific models into one workspace for exploring patterns and making prints. A shared interface provides seeds, saved settings, palettes and export controls, so each simulation does not need its own application.
 

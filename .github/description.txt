@@ -1,1 +1,1 @@
-135 seeded scientific simulations in a modular studio with a portable HTML build. Explore, derive, and test mathematical formulas against classical sources.
+A development and research working environment for the simulations, the checks and the papers, with an art and print studio of 135 seeded scientific simulations and a portable HTML build.
