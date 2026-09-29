@@ -4,8 +4,8 @@ name: timestamps
 # `ots stamp` makes a proof that stays pending until a Bitcoin block confirms it, a few hours later,
 # and `ots upgrade` then completes it. This workflow stamps any commitment that reached main without a
 # proof, completes pending proofs, and proposes the changed proof files as a pull request, because main
-# only takes pull requests. A pull request opened with the workflow token does not start other
-# workflows, so the last step starts the check and Pages build workflows on the proposal's branch.
+# only takes pull requests. An optional repository-scoped AUTOMATION_TOKEN starts normal PR checks.
+# Without it, manual dispatch verifies the branch but cannot satisfy PR-required check contexts.
 #
 # Scheduled workflows run from main only. With no commitments the job stops after the checkout.
 
@@ -33,6 +33,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || github.token }}
       - name: Find commitments
         id: need
         run: |
@@ -66,7 +68,8 @@ jobs:
       - name: Propose the proofs
         if: steps.need.outputs.count != '0'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN || github.token }}
+          HAS_AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN != '' }}
         run: |
           if [ -z "$(git status --porcelain -- identities/commitments)" ]; then echo "No proof changed."; exit 0; fi
           branch=automation/timestamps
@@ -81,5 +84,10 @@ jobs:
             gh pr create --base main --head "$branch" --title "OpenTimestamps proofs for the commitment ledger" \
               --body "The timestamps workflow stamped new commitments or completed pending proofs in identities/commitments/. Only .ots files change. Merge it so the proofs are archived with the next release (docs/COMMITMENTS.md)."
           fi
-          gh workflow run check.yml --ref "$branch"
-          gh workflow run pages.yml --ref "$branch"
+          if [[ "${HAS_AUTOMATION_TOKEN:-false}" == true ]]; then
+            echo 'The repository-scoped automation token starts the normal pull_request checks.'
+          else
+            echo '::warning::AUTOMATION_TOKEN is absent. Dispatched checks verify this branch but do not satisfy required PR check contexts. See docs/AUTOMATIONS.md.'
+            gh workflow run check.yml --ref "$branch"
+            gh workflow run pages.yml --ref "$branch"
+          fi

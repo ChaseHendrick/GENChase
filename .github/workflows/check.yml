@@ -271,6 +271,7 @@ jobs:
           node tools/folder-browser.js
           node tools/engine-api-check.js
           timeout 180 node tools/parameter-state-check.js
+          timeout 180 node tools/check-replay-check.js
           node tools/colophon-check.js
           node tools/reports-check.js
           node tools/art-only-check.js

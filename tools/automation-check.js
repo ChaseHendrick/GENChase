@@ -51,8 +51,10 @@ try {
   ]) {
     const workflow = fs.readFileSync(path.join(root, '.github/workflows', fixture.file), 'utf8');
     assert.match(workflow, /actions: write/, fixture.file + ' must be allowed to dispatch workflows');
+    assert.match(workflow, /token: \$\{\{ secrets\.AUTOMATION_TOKEN \|\| github\.token \}\}/, 'Checkout must use the same configured credential as PR creation');
+    assert.match(workflow, /GH_TOKEN: \$\{\{ secrets\.AUTOMATION_TOKEN \|\| github\.token \}\}/);
     const script = stepScript(workflow, fixture.step);
-    for (const scenario of ['unchanged', 'new PR', 'existing PR', 'dispatch failure']) {
+    for (const scenario of ['unchanged', 'new PR', 'existing PR', 'dispatch failure', 'configured new PR', 'configured existing PR']) {
       const cwd = path.join(tmp, 'case-' + ++cases), remote = path.join(tmp, 'remote-' + cases + '.git');
       fs.mkdirSync(cwd); git(cwd, 'init', '-q'); git(cwd, 'init', '-q', '--bare', remote);
       for (const file of fixture.files) put(path.join(cwd, file), 'initial\n');
@@ -64,7 +66,8 @@ try {
       const result = cp.spawnSync('bash', ['--noprofile', '--norc', '-e', '-o', 'pipefail', '-c', script], {
         cwd, encoding: 'utf8', timeout: 20000,
         env: { ...env, GH_TOKEN: 'fixture', GH_CALLS: log, GITHUB_STEP_SUMMARY: summary, GITHUB_RUN_ID: '123',
-          OPEN_PR: scenario === 'existing PR' ? 'yes' : 'no', FAIL_WORKFLOW: scenario === 'dispatch failure' ? 'check.yml' : '' },
+          HAS_AUTOMATION_TOKEN: scenario.startsWith('configured') ? 'true' : 'false',
+          OPEN_PR: scenario.includes('existing PR') ? 'yes' : 'no', FAIL_WORKFLOW: scenario === 'dispatch failure' ? 'check.yml' : '' },
       });
       const calls = fs.readFileSync(log, 'utf8').trim().split('\n').filter(Boolean).map(line => JSON.parse(line));
       assert.equal(result.status, scenario === 'dispatch failure' ? 1 : 0, fixture.file + ': ' + scenario + '\n' + result.stdout + result.stderr);
@@ -74,10 +77,12 @@ try {
         continue;
       }
       assert.equal(git(remote, 'show', fixture.branch + ':' + fixture.files[0]), 'updated', 'Checks target a pushed candidate');
-      assert.equal(calls.filter(args => args[0] === 'pr' && args[1] === 'create').length, scenario === 'existing PR' ? 0 : 1);
+      assert.equal(calls.filter(args => args[0] === 'pr' && args[1] === 'create').length, scenario.includes('existing PR') ? 0 : 1);
       assert.deepEqual(calls.filter(args => args[0] === 'workflow'),
-        (scenario === 'dispatch failure' ? ['check.yml'] : ['check.yml', 'pages.yml'])
+        (scenario.startsWith('configured') ? [] : scenario === 'dispatch failure' ? ['check.yml'] : ['check.yml', 'pages.yml'])
           .map(file => ['workflow', 'run', file, '--ref', fixture.branch]));
+      if (scenario.startsWith('configured')) assert.match(result.stdout, /starts the normal pull_request checks/);
+      else assert.match(result.stdout, /do not satisfy required PR check contexts/, 'Fallback must disclose the merge-check limitation');
     }
   }
   // A rename within the submission tree must be treated as a newly added result. The verifier must
@@ -119,5 +124,5 @@ try {
     assert(fs.existsSync(log), change + ' result must be re-verified');
     assert.deepEqual(JSON.parse(fs.readFileSync(log, 'utf8')), ['--verify', newFile, '--strict']);
   }
-  console.log('PASS automation workflows: ' + cases + ' local cases covering PR creation/update/no-op, dispatch failures, trusted verification of added/renamed results, and symlink refusal.');
+  console.log('PASS automation workflows: ' + cases + ' local cases covering configured/fallback PR creation/update/no-op, dispatch failures, trusted verification of added/renamed results, and symlink refusal.');
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
