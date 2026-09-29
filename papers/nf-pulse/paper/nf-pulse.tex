@@ -10,6 +10,8 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 
 \hypersetup{
@@ -43,7 +45,7 @@
 \DeclareUrlCommand\file{\urlstyle{tt}}
 
 \title{\Large\bfseries Traveling Pulses in a Neural Field with a Smooth Firing Rate:\\ Computer-Assisted Existence and Spectral Stability}
-\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
+\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chase@hendrickresearch.com}{\texttt{chase@hendrickresearch.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
 \date{}
 
 \begin{document}
@@ -200,7 +202,7 @@ there is a traveling pulse of \eqref{eq:field} whose orbit leaves the rest state
 \[
   \Bigl|\frac1c - q_k - s_k\,\frac{\eps - e_k}{h_k}\Bigr| \le |d_k| ;
 \]
-in particular $c \in [c_1(E_k), c_2(E_k)]$ with the bounds listed in those files. At $\eps = 1/10$ a pulse of (a) can be chosen with speed in $[1.1027337393, 1.1027617086]$, and at $\eps = 3/20$ one with speed in $[1.0343501717, 1.0343715699]$.
+in particular $c \in [c_1(E_k), c_2(E_k)]$ with the bounds listed in those files. At $\eps = 1/10$ a pulse of (a) can be chosen with speed in $[1.1027337393, 1.1027617086]$, and at $\eps = 3/20$ one with speed in $[1.0343501717,\allowbreak 1.0343715699]$.
 \end{enumerate}
 \end{theorem}
 
@@ -245,7 +247,7 @@ Let $\beta = 20$, $\theta = 1/4$, $\gamma = 0$ and $w(x) = e^{-|x|}/2$, and let
 \end{theorem}
 
 \begin{corollary}[computer-assisted]\label{cor:two}
-Let $\beta = 20$, $\theta = 1/4$, $\gamma = 0$ and $w(x) = e^{-|x|}/2$. At $\eps = 3/20$, \eqref{eq:field} has at least two traveling pulses: a pulse given by Theorem~\ref{thm:range} with speed in $[1.0343501717, 1.0343715699]$, and a pulse given by Theorem~\ref{thm:slow}(b). At $\eps = 1/10$ the same holds for pulses given by Theorems~\ref{thm:fast} and~\ref{thm:slow}(a).
+Let $\beta = 20$, $\theta = 1/4$, $\gamma = 0$ and $w(x) = e^{-|x|}/2$. At $\eps = 3/20$, \eqref{eq:field} has at least two traveling pulses: a pulse given by Theorem~\ref{thm:range} with speed in $[1.0343501717,\allowbreak 1.0343715699]$, and a pulse given by Theorem~\ref{thm:slow}(b). At $\eps = 1/10$ the same holds for pulses given by Theorems~\ref{thm:fast} and~\ref{thm:slow}(a).
 \end{corollary}
 
 At $\eps = 3/20$ Pinto and Ermentrout show a fast and a slow pulse for the Heaviside rate \cite[Figs.~7 and~8]{pe2001}; Corollary~\ref{cor:two} gives the same pair for the logistic rate with $\beta = 20$.
@@ -285,7 +287,7 @@ For each $\eps$ in Table~\ref{tab:faye} there is a traveling pulse $u = U(x + ct
 For the stability theorem fix the parameters of Theorem~\ref{thm:fast} and the block $B$ of Section~\ref{sec:proof-fast}: $y = T(x - \xs)$ and $B = \{|y_1| \le r, |y'| \le \rho\}$ as in Section~\ref{sec:block}, where $T$ is the matrix of double-precision numbers (exact dyadic rationals) recorded in \file{data/block_certificate.json}, $\rho$ is the dyadic number recorded there (\texttt{rho\_mantissa\_exponent}) and $r = 4\rho$. (The programs recompute $T$ from a floating-point eigendecomposition at each run; check~P3 of Table~\ref{tab:stabchecks} compares the recomputed pulse records, which contain $T$, exactly with the stored ones, so the runs of record used the recorded $T$.) For $c > 0$ let $x_c$ be the solution of \eqref{eq:wave} through the point $\Phi_{1/c}(1/4)$ of the parametrized unstable manifold (Section~\ref{sec:manifold}) at $\xi = 0$; by Lemma~\ref{lem:branch} every pulse with speed $c$ that leaves the rest state on the branch on which $U$ increases is a translate of $x_c$.
 
 \begin{definition}\label{def:class}
-Let $c_{\mathrm{lo}} = 1.1027477097341592491478677357466217332550533837818208789272$ and $c_{\mathrm{hi}} = c_{\mathrm{lo}} + 10^{-58}$. The class $\Pcl$ consists of the traveling pulses of \eqref{eq:field}, with the parameters of Theorem~\ref{thm:fast}, whose speed $c$ lies in $[c_{\mathrm{lo}}, c_{\mathrm{hi}}]$, which leave the rest state on the branch on which $U$ increases, and for which $x_c(\xi) \in B$ for every $\xi \ge 110$.
+Let $c_{\mathrm{lo}} = 1.1027477097\allowbreak 3415924914\allowbreak 7867735746\allowbreak 6217332550\allowbreak 5338378182\allowbreak 08789272$ and $c_{\mathrm{hi}} = c_{\mathrm{lo}} + 10^{-58}$. The class $\Pcl$ consists of the traveling pulses of \eqref{eq:field}, with the parameters of Theorem~\ref{thm:fast}, whose speed $c$ lies in $[c_{\mathrm{lo}}, c_{\mathrm{hi}}]$, which leave the rest state on the branch on which $U$ increases, and for which $x_c(\xi) \in B$ for every $\xi \ge 110$.
 \end{definition}
 
 The bracket $[c_{\mathrm{lo}}, c_{\mathrm{hi}}]$ lies inside the bracket $(c_1, c_2)$ of Theorem~\ref{thm:fast}. Linearizing \eqref{eq:field} about a pulse in the frame $\xi = x + ct$ gives the operator
@@ -467,7 +469,7 @@ The program \file{code/run_all.sh} runs the steps below and prints one line per 
 \end{tabular}
 \end{table}
 
-\emph{Rest state} (check~1). The program encloses $S(0)$ and $s_0 = 0.1329611334158\ldots < 1$, isolates four sign changes of $p$ on a grid for all $\kappa \in \Kset$ at once, and refines them by bisection with certified signs: the roots lie in balls of radius below $10^{-24}$ about $0.9687611605793217870553652$, $-0.124653132559362267515550$, $-0.583109889199161753091305$ and $-1.167823871645100102751750$ (\file{data/rest_certificate.json}). Lemma~\ref{lem:rest} applies.
+\emph{Rest state} (check~1). The program encloses $S(0)$ and $s_0 = 0.1329611334158\ldots < 1$, isolates four sign changes of $p$ on a grid for all $\kappa \in \Kset$ at once, and refines them by bisection with certified signs: the roots lie in balls of radius below $10^{-24}$ about $0.9687611605\allowbreak 7932178705\allowbreak 53652$, $-0.1246531325\allowbreak 5936226751\allowbreak 5550$, $-0.5831098891\allowbreak 9916175309\allowbreak 1305$ and $-1.1678238716\allowbreak 4510010275\allowbreak 1750$ (\file{data/rest_certificate.json}). Lemma~\ref{lem:rest} applies.
 
 \emph{Unstable manifold} (checks~3--5). \file{code/manifold.py} computes $a_1, \dots, a_{80}$ for $\kappa \in \Kset$ with $\sigma = 1/7$, and checks the hypotheses of Lemma~\ref{lem:manifold} with $\zeta_0 = 81\min\mu \approx 78.5$, $G_0 \le 5.8\cdot 10^{-26}$ and $G = 1.16\cdot 10^{-25}$; the tail radii $R_i$ are below $1.5\cdot 10^{-27}$. The enclosure of $\Phi_\kappa(1/4)$ has radius about $10^{-75}$ at $c_1$ and $c_2$ and $10^{-25}$ over $\Kset$. By Lemma~\ref{lem:branch}, $x_\kappa$ is defined for $\kappa \in \Kset$, lies on $Y = S(U)$, and leaves $\xs$ on the branch where $U$ increases; $(\kappa, \xi) \mapsto x_\kappa(\xi)$ is continuous, since the flow of \eqref{eq:wave} with $\kappa$ adjoined as a variable with $\kappa' = 0$ is continuous on its domain \cite[Theorem~6.1]{teschl2012}, which here is all of $\R \times \R^4 \times (0, \infty)$: for each $\kappa$ the field of \eqref{eq:wave} is globally Lipschitz in $x$, since $|S'| \le \beta/4$, so every solution exists on $\R$ \cite[Theorem~2.17]{teschl2012}.
 
@@ -838,12 +840,14 @@ The pulses found agree with the picture Pinto and Ermentrout drew for the Heavis
 \end{enumerate}
 
 \medskip
-{\raggedright\noindent\textbf{Data availability.} The programs of this paper and their output are in its folder: the base proof in \texttt{code/} and \texttt{data/}, the extensions in \texttt{ext/slow-pulse/}, \texttt{ext/gain-12/}, \texttt{ext/eps-range/}, \texttt{ext/faye-model/} and \texttt{ext/stability/}, each with a report, and the project's checks in \texttt{review/}. These files are available in the companion repository, \url{https://github.com/ChaseHendrick/nf-pulse}. Checking release 1.0.2 archives the exact proof programs, outputs and supplementary checks at \url{https://doi.org/10.5281/zenodo.23028520}.\par}
+{\raggedright\noindent\textbf{Data availability.} The programs of this paper and their output are in its folder: the base proof in \texttt{code/} and \texttt{data/}, the extensions in \texttt{ext/slow-pulse/}, \texttt{ext/gain-12/}, \texttt{ext/eps-range/}, \texttt{ext/faye-model/} and \texttt{ext/stability/}, each with a report, and the project's checks in \texttt{review/}. These files are available in the companion repository, \url{https://github.com/ChaseHendrick/nf-pulse}. Release 1.0.3 archives the exact proof programs, outputs and supplementary checks at \url{https://doi.org/10.5281/zenodo.23047061}.\par}
 
 \noindent\textbf{Funding.} This research received no external funding.
 
 \smallskip
 \noindent{\footnotesize This work was prepared with AI assistance. The author takes full responsibility for its content.}
+
+{\raggedright\noindent\textbf{Rights.} Copyright (c) 2026 Chase Hendrick. The manuscript and figures are all rights reserved. Code and data are licensed under Apache-2.0, subject to component notices. These notices do not revoke licenses previously granted for earlier material.\par}
 
 \begin{thebibliography}{40}
 \small

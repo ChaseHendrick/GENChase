@@ -69,13 +69,18 @@ if k0.real > 0:                                   # take the collapsing orientat
     z = np.conj(z); zc = (G @ z) / G.sum()
     y0 = np.concatenate([z.real, z.imag]); k0 = (rhs(0, y0)[0] + 1j * rhs(0, y0)[3]) / (z[0] - zc)
 tc = -1 / (2 * beta * k0.real); Pb = abs(k0.imag) / (2 * abs(k0.real))
-sol = solve_ivp(rhs, [0, tc * (1 - 1e-6)], np.concatenate([z.real, z.imag]), method='DOP853', rtol=1e-11, atol=1e-13, dense_output=True)
+terminal_time = tc * (1 - 1e-6)
+sol = solve_ivp(rhs, [0, terminal_time], np.concatenate([z.real, z.imag]), method='DOP853', rtol=1e-11, atol=1e-13, dense_output=True)
+if not sol.success or sol.t[-1] != terminal_time or not np.isfinite(sol.y).all():
+    raise RuntimeError('SQG illustration did not reach its finite terminal state: ' + sol.message)
 ts = tc * (1 - np.geomspace(1, 1e-6, 3000))
 Y = sol.sol(ts); Z = (Y[:3] + 1j * Y[3:]) - zc
+if not np.isfinite(Y).all():
+    raise RuntimeError('SQG illustration contains non-finite interpolated coordinates')
 scale = np.max(np.abs(Z[:, 0]))
 
 plt.rcParams.update({'font.family': 'serif', 'font.serif': ['cmr10'], 'mathtext.fontset': 'cm',
-                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path'})
+                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path', 'pdf.fonttype': 42, 'svg.hashsalt': 'plot_alpha_winding'})
 fig, (ax, bx) = plt.subplots(1, 2, figsize=(6.4, 3.0), gridspec_kw={'width_ratios': [1.25, 1]})
 ax.scatter(cloud_a, cloud_p, s=1.2, color='0.72', lw=0, rasterized=False)
 ax.plot(al, B, color='black', lw=1.5)
@@ -97,3 +102,8 @@ fig.savefig(out, metadata={'Date': None})
 fig.savefig(out[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None})
 below = sum(p < math.sqrt(3 + a) / (2 + a) for a, p in zip(cloud_true, cloud_p))
 print('wrote', out, 'and .pdf;', len(cloud_p), 'sampled triangles,', below, 'below the bound; panel (b) P =', Pb, ', t_c =', tc)
+
+# Keep generated SVG text stable and free of insignificant trailing whitespace.
+from pathlib import Path as _Path
+for _svg in (_Path(__file__).resolve().parents[1] / "paper/figures").glob("*.svg"):
+    _svg.write_text("\n".join(line.rstrip() for line in _svg.read_text().splitlines()) + "\n")

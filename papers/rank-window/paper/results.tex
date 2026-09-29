@@ -17,7 +17,7 @@ The four 4D sets are alike (Table~\ref{tab:geometry}), with participation ratios
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.94\textwidth]{figures/fig1.pdf}
+\includegraphics[width=\textwidth]{figures/fig1.pdf}
 \caption{Ranks 11--500 window exponent of noise-free Mat\'ern codes (infinitely many neurons) on the real stimulus coordinates, against the tuning length scale. Lines: median over the stimulus sets; bands: range over the sets. Arrowheads on the right: $\alpha_\infty = 1 + 2\nu/d$. Dashed line: the bound $1 + 2/d$. Deterministic. Table~\ref{tab:sens} gives the effect of finite populations, the rank window, the metric and the number of stimuli.}\label{fig:window}
 \end{figure}
 
@@ -59,8 +59,8 @@ For $\nu = 0.75$ the expected squared gradient diverges and $\alpha_\infty = 1 +
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.94\textwidth]{figures/fig2.pdf}
-\caption{Left: ranks 5--30 window exponent (the window of the Methods of \cite{stringer2019}; the text gives ranks 11--30, the window of their deposited code) for 32 equally spaced directions (solid) and for the operator spectrum without sampling (dotted), against the bandwidth $\kappa$ of the tuning; arrowheads: $\alpha_\infty = 1 + 2\nu$; dashed: the bound 3. Right: the numerical example of Proposition~\ref{prop:window}. Two codes share the differentiable $\nu = 1.5$, $\kappa = 1$ spectrum up to frequency 1,000 and continue as $n^{-2}$ (not differentiable) or $n^{-5}$ (differentiable). Lines: operator spectra; markers: their 32-direction spectra, which coincide; both have window exponent \PropWSmoothA{} over ranks 5--30 and \PropWSmoothAEleven{} over ranks 11--30, above the bound 3.}\label{fig:d1}
+\includegraphics[width=\textwidth]{figures/fig2.pdf}
+\caption{Left: ranks 5--30 window exponent (the window of the Methods of \cite{stringer2019}; the text gives ranks 11--30, the window of their deposited code) for 32 equally spaced directions (solid) and for the operator spectrum without sampling (dotted), against the bandwidth $\kappa$ of the tuning; arrowheads: $\alpha_\infty = 1 + 2\nu$; dashed: the bound 3. Right: the numerical example of Proposition~\ref{prop:window}. Two codes share the differentiable $\nu = 1.5$, $\kappa = 1$ spectrum up to frequency 1,000 and continue as $n^{-2}$ (not differentiable) or $n^{-5}$ (differentiable). Lines: operator spectra, with the far tails shown down to $10^{-24}$; markers: their 32-direction spectra, which are indistinguishable at this scale; both have window exponent \PropWSmoothA{} over ranks 5--30 and \PropWSmoothAEleven{} over ranks 11--30, above the bound 3.}\label{fig:d1}
 \end{figure}
 
 We give each number for ranks 5--30 and, in parentheses, for ranks 11--30. For every code of the family $c_k = (1 + k^2/\kappa^2)^{-(\nu + 1/2)}$ that we computed, the 32-direction window exponent lies below $\alpha_\infty$, by \GratShortMin{} to \GratShortMax{} (\GratShortMinEleven{} to \GratShortMaxEleven{}) (Figure~\ref{fig:d1}). The shortfall has two parts. The operator spectrum is itself shallower than $\alpha_\infty$ over the window, by \GratPreMin{} to \GratPreMax{} (\GratPreMinEleven{} to \GratPreMaxEleven{}), because it is flat for frequencies below $\kappa$ and because each frequency carries two equal eigenvalues; even an exact power law $c_k = k^{-3}$ gives \StairThree{} (\StairThreeEleven{}). Sampling at 32 directions folds the frequencies above 16 onto lower ones and lowers the exponent by a further \GratAliasMin{} to \GratAliasMax{} (\GratAliasMinEleven{} to \GratAliasMaxEleven{}) (aliasing). The border codes give \GratBorderMin{} to \GratBorderMax{} (\GratBorderMinEleven{} to \GratBorderMaxEleven{}), all below 3, while differentiable codes with $\nu = 1.5$ give \GratNuOnePointFiveMin{} to \GratNuOnePointFiveMax{} (\GratNuOnePointFiveMinEleven{} to \GratNuOnePointFiveMaxEleven{}) and exceed 3 for $\kappa \le \GratSmoothAboveKappaMax{}$ in both windows. Within this family and over the bandwidths computed, a 32-direction exponent above 3, such as 3.43, comes only from differentiable codes, in either window. Outside the family it does not. In the example of Figure~\ref{fig:d1}, two codes share the $\nu = 1.5$, $\kappa = 1$ spectrum up to frequency 1,000 and continue as $n^{-2}$ (not differentiable, Section~\ref{sec:theory}) or $n^{-5}$; their tail masses are \PropTailSmoothA{} and \PropTailSmoothB{}, their 32-direction eigenvalues differ by at most \PropRelSmooth{} of the 30th eigenvalue, and both have window exponent \PropWSmoothA{} (\PropWSmoothAEleven{}), the value of the family code: a non-differentiable code gives a 32-direction exponent above the bound in either window. Finite populations of 8,704 neurons changed the 32-direction exponent by at most \GratFinShiftMax{} (\GratFinShiftMaxEleven{}) on average, with a standard deviation of at most \GratFinSDMax{} (\GratFinSDMaxEleven{}).
@@ -69,7 +69,7 @@ We give each number for ranks 5--30 and, in parentheses, for ranks 11--30. For e
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.94\textwidth]{figures/fig3.pdf}
+\includegraphics[width=\textwidth]{figures/fig3.pdf}
 \caption{Left: the base spectrum, a broken power law with exponents 0.5 and 1.25, and variants that agree with it up to rank 500; shaded: ranks 11--500. Right: MEME $\alpha_2$ (diagonal weights) for each spectrum; squares and bars, mean and 2.5th--97.5th percentiles over 20 simulated data sets with common random numbers; circles, the fit to the exact moments. Dashed: the base tail exponent 1.25.}\label{fig:meme}
 \end{figure}
 

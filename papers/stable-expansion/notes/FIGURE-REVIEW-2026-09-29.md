@@ -1,0 +1,7 @@
+# Figure review, 2026-09-29
+
+The convergence figure was checked against `code/plot_stable_expansion.py`, the `shape_dev` and `energy_run` definitions in `code/verify_stable_expansion.py`, and the stored output in `data/verify-stable-expansion.txt`. Both panels use all ten rounded samples printed for their configuration. Every sample is inside the displayed axes. Translation is removed using the circulation-weighted centre; a complex least-squares scale removes rotation and dilation. The relative residual and growth-factor descriptions agree with that computation.
+
+The caption now specifies independent Gaussian perturbations of the real and imaginary coordinates with standard deviation 10^-4, matching the seeded normal draws in `energy_run`. The curves compare the original shape with the family member selected by the perturbed energy. The caption explicitly identifies these as binary64 numerical illustrations, weaker than the theorem's estimate and not interval proofs. The plotted data and vector figure files are unchanged.
+
+The manuscript was rebuilt with `PAPER_PDF_ENGINE=tectonic sh tools/paper-build.sh stable-expansion`. The 21-page PDF passes `node tools/paper-check.js --paper stable-expansion`. Its 23 fonts are embedded, there are no image XObjects, replacement characters or overfull-box warnings, and the public contact and end-matter rights statement remain present. Figure 1 on page 12 was visually inspected at page scale. Remaining underfull-box warnings do not indicate clipped content. No proof programs or certificates were rerun or changed.

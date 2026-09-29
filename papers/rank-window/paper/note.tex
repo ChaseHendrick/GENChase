@@ -29,7 +29,7 @@
 \input{numbers}
 
 \title{\Large\bfseries A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound}
-\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chasewhendrick@gmail.com}{\texttt{chasewhendrick@gmail.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
+\author{Chase Hendrick\\[0.2em] {\small Independent Researcher}\\ {\small\href{mailto:chase@hendrickresearch.com}{\texttt{chase@hendrickresearch.com}}}\\ {\small ORCID \href{https://orcid.org/0009-0002-9754-6087}{0009-0002-9754-6087}}}
 \date{}
 
 \begin{document}
@@ -112,37 +112,40 @@ where $K_\nu$ is the modified Bessel function of the second kind; with infinitel
 \input{discussion}
 
 \medskip
-{\raggedright\noindent\textbf{Data and code availability.} The stimulus image files are part of the deposit of Stringer et al.\ on figshare, \url{https://doi.org/10.25378/janelia.6845348} (license CC BY-NC 4.0). The companion repository, \url{https://github.com/ChaseHendrick/rank-window}, lists the image files used, with their checksums, and holds the Python programs that produce every number, table and figure, their derived outputs and the commands to rerun them. Checking release 1.0.1 archives these exact programs and derived outputs at \url{https://doi.org/10.5281/zenodo.23028535}; the experimental inputs are obtained separately from the figshare deposit.\par}
+{\raggedright\noindent\textbf{Data and code availability.} The stimulus image files are part of the deposit of Stringer et al.\ on figshare, \url{https://doi.org/10.25378/janelia.6845348} (license CC BY-NC 4.0). The companion repository, \url{https://github.com/ChaseHendrick/rank-window}, lists the image files used, with their checksums, and holds the Python programs that produce every number, table and figure, their derived outputs and the commands to rerun them. Release 1.0.2 archives these exact programs and derived outputs at \url{https://doi.org/10.5281/zenodo.23047040}; the experimental inputs are obtained separately from the figshare deposit.\par}
 
 \noindent\textbf{Funding.} This research received no external funding.
 
 \smallskip
 \noindent{\footnotesize This work was prepared with AI assistance. The author takes full responsibility for its content.}
 
+\medskip
+\noindent\textbf{Rights and licenses.} Copyright \textcopyright\ 2026 Chase Hendrick. The manuscript and figures are all rights reserved, subject to component notices. The programs in \texttt{code/} are licensed under the Apache License, Version 2.0. The derived outputs in \texttt{out/} remain licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0); the source deposit and component notices apply. These notices do not revoke licenses previously granted for earlier material.
+
 \begin{thebibliography}{10}
 \footnotesize\raggedright
 
-\bibitem{stringer2019} C. Stringer, M. Pachitariu, N. Steinmetz, M. Carandini and K. D. Harris, High-dimensional geometry of population responses in visual cortex, \emph{Nature} \textbf{571} (2019) 361--365; doi:10.1038/s41586-019-1346-5. Author manuscript PMC6642054; Supplementary Information read in part (Thms.~1, 2, 4, 5; \S\S2.1, 2.7, 3.5).
+\bibitem{stringer2019} C. Stringer, M. Pachitariu, N. Steinmetz, M. Carandini and K. D. Harris, High-dimensional geometry of population responses in visual cortex, \emph{Nature} \textbf{571} (2019) 361--365; doi:10.1038/s41586-019-1346-5. Author manuscript PMC6642054.
 
 \bibitem{stringerdata} C. Stringer, M. Pachitariu, M. Carandini and K. Harris, Responses of ten thousand neurons to 2,800 natural images, figshare (2018); doi:10.25378/janelia.6845348.v3 (reference [36] of \cite{stringer2019}).
 
-\bibitem{stringercode} MouseLand, \texttt{stringer-pachitariu-et-al-2018b}, \url{github.com/MouseLand/stringer-pachitariu-et-al-2018b}, commit 58443d1 (read: \texttt{python/utils.py}, \texttt{processResp/compileResps.m}, \texttt{powerlaws/get\_powerlaw.m}, and the fitting windows in \texttt{mainfigs/fig3.m} and \texttt{powerlaws/statsShuffledPCA.m}).
+\bibitem{stringercode} MouseLand, \texttt{stringer-pachitariu-et-al-2018b}, \url{github.com/MouseLand/stringer-pachitariu-et-al-2018b}, commit 58443d1.
 
-\bibitem{pp2025} D. A. Pospisil and J. W. Pillow, Revisiting the high-dimensional geometry of population responses in the visual cortex, \emph{Proc. Natl. Acad. Sci. USA} \textbf{122} (2025) e2506535122; doi:10.1073/pnas.2506535122. Correction: e2533074122. SI Appendix read in part (captions of Figs.~S1, S2).
+\bibitem{pp2025} D. A. Pospisil and J. W. Pillow, Revisiting the high-dimensional geometry of population responses in the visual cortex, \emph{Proc. Natl. Acad. Sci. USA} \textbf{122} (2025) e2506535122; doi:10.1073/pnas.2506535122. Correction: e2533074122.
 
 \bibitem{dr2022} I. A. Davidovich and Y. Roudi, Bayesian interpolation for power laws in neural data analysis, preprint, arXiv:2204.08525 (2022).
 
-\bibitem{kg2000} V. Koltchinskii and E. Gin\'e, Random matrix approximation of spectra of integral operators, \emph{Bernoulli} \textbf{6} (2000) 113--167 (abstract read).
+\bibitem{kg2000} V. Koltchinskii and E. Gin\'e, Random matrix approximation of spectra of integral operators, \emph{Bernoulli} \textbf{6} (2000) 113--167.
 
 \bibitem{braun2006} M. L. Braun, Accurate error bounds for the eigenvalues of the kernel matrix, \emph{J. Mach. Learn. Res.} \textbf{7} (2006) 2303--2328.
 
-\bibitem{stwck2005} J. Shawe-Taylor, C. K. I. Williams, N. Cristianini and J. Kandola, On the eigenspectrum of the Gram matrix and the generalization error of kernel-PCA, \emph{IEEE Trans. Inf. Theory} \textbf{51} (2005) 2510--2522 (read: Sects.~I--III).
+\bibitem{stwck2005} J. Shawe-Taylor, C. K. I. Williams, N. Cristianini and J. Kandola, On the eigenspectrum of the Gram matrix and the generalization error of kernel-PCA, \emph{IEEE Trans. Inf. Theory} \textbf{51} (2005) 2510--2522.
 
-\bibitem{kv2017} W. Kong and G. Valiant, Spectrum estimation from samples, \emph{Ann. Statist.} \textbf{45} (2017) 2218--2247 (read: arXiv:1602.00061v5, Sects.~1 and~3, Algorithm~1).
+\bibitem{kv2017} W. Kong and G. Valiant, Spectrum estimation from samples, \emph{Ann. Statist.} \textbf{45} (2017) 2218--2247; arXiv:1602.00061v5.
 
-\bibitem{sgw2020} S. Spigler, M. Geiger and M. Wyart, Asymptotic learning curves of kernel methods: empirical data versus teacher--student paradigm, preprint, arXiv:1905.10843v8 (2020) (read: Sects.~1 and~7).
+\bibitem{sgw2020} S. Spigler, M. Geiger and M. Wyart, Asymptotic learning curves of kernel methods: empirical data versus teacher--student paradigm, preprint, arXiv:1905.10843v8 (2020).
 
-\bibitem{ppcode} D. A. Pospisil, \texttt{revisit\_hid\_geom}, \url{github.com/dapospisil/revisit_hid_geom}, commit afcd301 (read: \texttt{src/eig\_mom.py}).
+\bibitem{ppcode} D. A. Pospisil, \texttt{revisit\_hid\_geom}, \url{github.com/dapospisil/revisit_hid_geom}, commit afcd301.
 
 \end{thebibliography}
 

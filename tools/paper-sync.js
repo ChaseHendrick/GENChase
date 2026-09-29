@@ -120,14 +120,16 @@ function zenodo(reg, p, paragraphs) {
   const manuscriptLicense = p.textLicense === 'CC-BY-4.0'
     ? 'The manuscript in paper/, including its figures, is licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).'
     : 'The manuscript in paper/, including its figures, is all rights reserved.';
-  const componentLicenses = manuscriptLicense + ' The Apache-2.0 license identifier applies to the programs in code/ and the data in data/, not to the manuscript. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.' +
+  const componentLicenses = manuscriptLicense + ' The programs in code/ and the data in data/ are licensed under the Apache License 2.0; that license does not apply to the manuscript or its figures. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.' +
     (p.id === 'rank-window' ? ' The derived outputs in out/ are licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0), as stated in out/LICENSE.md.' : '');
   return JSON.stringify({
     // Each companion release is the paper's preprint on Zenodo (owner's decision, 2026-09-25): the manuscript with
     // the programs that check it, typed Publication / Preprint so indexes list it as the paper.
     title: p.title, upload_type: 'publication', publication_type: 'preprint',
     description: [...(paragraphs || []), holds, componentLicenses].map(x => '<p>' + html(x) + '</p>').join(''),
-    creators: [creator], license: 'Apache-2.0', ...(related.length ? { related_identifiers: related } : {}),
+    // The legacy Zenodo license field applies to the whole ZIP. Use its mixed
+    // rights category, with each component's actual grant in the description.
+    creators: [creator], license: p.textLicense === 'CC-BY-4.0' && p.id !== 'rank-window' ? 'other-open' : 'other-closed', ...(related.length ? { related_identifiers: related } : {}),
   }, null, 2) + '\n';
 }
 
@@ -218,7 +220,7 @@ function selfTest() {
     checks++; if (!/^The manuscript in paper\/.*All rights reserved\./.test(lic) || !/Apache License/.test(lic)) { failures++; console.log('FAIL LICENSE:\n' + lic); }
     const zen = JSON.parse(fs.readFileSync(path.join(out, '.zenodo.json'), 'utf8')), desc = zen.description;
     checks++; if (zen.upload_type !== 'publication' || zen.publication_type !== 'preprint') { failures++; console.log('FAIL .zenodo.json type: ' + zen.upload_type + ' / ' + zen.publication_type); }
-    checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p><p>The manuscript in paper/, including its figures, is all rights reserved. The Apache-2.0 license identifier applies to the programs in code/ and the data in data/, not to the manuscript. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
+    checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p><p>The manuscript in paper/, including its figures, is all rights reserved. The programs in code/ and the data in data/ are licensed under the Apache License 2.0; that license does not apply to the manuscript or its figures. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
     // GitHub reads preferred-citation separately from the top-level software fields. The exact
     // archived program DOI remains top-level even when a later paper DOI becomes preferred.
     const archiveDoi = '10.5281/zenodo.1234567', journalDoi = '10.1234/published-paper';
@@ -243,11 +245,15 @@ function selfTest() {
       const r = reg(), metadata = JSON.parse(zenodo(r, { ...r.papers[0], id: 'rank-window', textLicense }, []));
       const expectedManuscript = textLicense === 'CC-BY-4.0' ? 'licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)' : 'all rights reserved';
       checks++;
-      if (metadata.license !== 'Apache-2.0' || !metadata.description.includes(expectedManuscript) ||
+      if (metadata.license !== 'other-closed' || !metadata.description.includes(expectedManuscript) ||
           !metadata.description.includes('Specific component notices and directory licenses govern any exceptions') ||
           !metadata.description.includes('outputs in out/ are licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)')) {
         failures++; console.log('FAIL component license disclosure for ' + textLicense + ': ' + metadata.description);
       }
+    }
+    for (const [textLicense, expected] of [['all-rights-reserved', 'other-closed'], ['CC-BY-4.0', 'other-open']]) {
+      const r = reg(), metadata = JSON.parse(zenodo(r, { ...r.papers[0], textLicense }, []));
+      checks++; if (metadata.license !== expected) { failures++; console.log('FAIL whole-archive license for ' + textLicense); }
     }
     expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/ChaseHendrick/GENChase\n'));
     expect(false, 'a GENChase link under the old account name', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));

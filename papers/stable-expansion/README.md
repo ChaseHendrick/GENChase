@@ -2,11 +2,11 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.1 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23028532](https://doi.org/10.5281/zenodo.23028532)); release 1.0.0 remains at [doi:10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173). Not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
+**Preprint**, release 1.0.2 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23047037](https://doi.org/10.5281/zenodo.23047037)); release 1.0.0 remains at [doi:10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173). Not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
-**[Read the preprint (PDF, 20 pages)](paper/stable-expansion.pdf)**
+**[Read the preprint (PDF, 21 pages)](paper/stable-expansion.pdf)**
 
 ## Abstract
 
@@ -60,6 +60,7 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
 | [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified enclosures, the stability numbers and the simplicity of the eigenvalues on Re k = 1; for Theorem 3, the exact vanishing of the sum of pairwise products of the circulations and the monotonicity of the energy along the family; two negative controls (an unstable four-vortex collapse, and an unstable five-vortex collapse that the stability test must refuse) and a positive three-vortex control, with their side conditions; controls of the five-vortex trace recipe (on the four- and three-vortex matrices) and of the Krawczyk test (a box without the zero, where it must fail); direct integrations (binary64) | 62 in ball or exact arithmetic (5 of them regression tests, identities that hold for every configuration), 8 in binary64 | seconds |
+| [`plot_stable_expansion.py`](code/plot_stable_expansion.py) | Figure 1, from the rounded binary64 samples in the stored verification report; no proof computation | | seconds |
 | [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 6 (numerical) | | 10 min |
 
 ## Reproduce
@@ -70,10 +71,13 @@ From this folder:
 python3 -m pip install -r code/requirements.txt
 python3 code/verify_stable_expansion.py
 python3 code/survey_expansions.py
+python3 code/plot_stable_expansion.py
 cd paper && pdflatex stable-expansion.tex && pdflatex stable-expansion.tex && pdflatex stable-expansion.tex
 ```
 
-Each program writes its report to `data/`; the verification program exits with an error if any check fails.
+The plot can be regenerated directly from the stored report without rerunning the verification or survey. Its lines connect recorded samples and do not represent certified error bounds.
+
+Each verification or survey program writes its report to `data/`; the verification program exits with an error if any check fails.
 
 ## Cite
 
@@ -85,7 +89,7 @@ Until the paper is published in a journal:
   title  = {Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches},
   year   = {2026},
   note   = {Preprint},
-  doi    = {10.5281/zenodo.23028532},
+  doi    = {10.5281/zenodo.23047037},
   url    = {https://github.com/ChaseHendrick/stable-expansion}
 }
 ```

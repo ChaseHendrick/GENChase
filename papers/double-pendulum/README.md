@@ -2,9 +2,9 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint** of 27 September 2026, not peer reviewed and not submitted anywhere; release 1.0.1 of its programs and data
+**Preprint** of 27 September 2026, not peer reviewed and not submitted anywhere; release 1.0.2 of its programs and data
 is in the companion repository [ChaseHendrick/double-pendulum](https://github.com/ChaseHendrick/double-pendulum),
-archived on Zenodo ([doi:10.5281/zenodo.23028523](https://doi.org/10.5281/zenodo.23028523)). Release 1.0.0 remains at [doi:10.5281/zenodo.22997540](https://doi.org/10.5281/zenodo.22997540).
+archived on Zenodo ([doi:10.5281/zenodo.23047057](https://doi.org/10.5281/zenodo.23047057)). Release 1.0.0 remains at [doi:10.5281/zenodo.22997540](https://doi.org/10.5281/zenodo.22997540).
 
 **[Read the preprint (PDF, 23 pages)](paper/double-pendulum.pdf)**
 
@@ -95,3 +95,19 @@ byte. The committed files are the ones `run_all.sh` checks.
 The manuscript in `paper/` is Copyright (c) 2026 Chase Hendrick, all rights reserved. The programs in `code/`, the
 configurations in `configs/` and the reports in `data/` are under the Apache License 2.0. CAPD (GPL) is not included:
 `code/build.sh` fetches it at a pinned commit. See `NOTICE`.
+
+### Rebuild the manuscript figure
+
+The vector figure `paper/figures/section-enclosures.pdf` displays the E = 0 h-set centres from
+`configs/horseshoe_E0.cfg` and the two candidate image enclosures from `data/E0.txt`.
+It does not integrate an orbit or rerun the proof. Centres are numerical design values;
+rectangle endpoints are copied from the stored interval report. The plotted boxes alone
+are not a test of transversality. The caption gives the coordinate scales and these limits.
+
+```sh
+python3 -m pip install -r code/requirements-figures.txt
+python3 code/make_figures.py
+```
+
+The generator also writes `paper/figures/section-enclosures-sources.json` with input SHA-256
+hashes, parsed enclosure endpoints and plotting-library versions.

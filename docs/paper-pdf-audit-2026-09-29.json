@@ -1,8 +1,8 @@
 [
   {
     "id": "minimal-winding",
-    "pages": 42,
-    "sha256": "16e578b87817c721790ded004793f58283c96396254525ccab546882462cfffe",
+    "pages": 43,
+    "sha256": "1940be75aac927dc997b38429a6536d0adbc3e73da4e53a3e590b12ce698e684",
     "pdfTitle": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -88,19 +88,19 @@
       },
       {
         "name": "/CNWRJO+Cmex10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/GTOFFF+Cmmi10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/DAOCBQ+Cmr10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/GHOQOE+Cmsy10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/NITCSQ+LMMathItalic12-Regular",
@@ -112,27 +112,27 @@
       },
       {
         "name": "/HDCNVI+STIXGeneral-Regular",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/BNTEWI+Cmmi10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/GNRYPD+Cmr10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/EOLGNW+Cmsy10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/FKRCUO+Cmmi10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/FWVSAR+Cmr10",
-        "embedded": false
+        "embedded": true
       },
       {
         "name": "/LPOGEQ+LMSans8-Regular",
@@ -149,12 +149,16 @@
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 105
+    "comparedDecimalCount": 105,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 3
   },
   {
     "id": "collapse-without-rotation",
     "pages": 25,
-    "sha256": "e2ceaeeb496b868b958ad7524f0b5d1c5e75c16e4424d7453a4d106af04a817c",
+    "sha256": "bcfce5554cb78b7613292227e1df4331671d524cd057ec5032f832ac56bae098",
     "pdfTitle": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -269,12 +273,16 @@
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 158
+    "comparedDecimalCount": 158,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 1
   },
   {
     "id": "stable-expansion",
-    "pages": 20,
-    "sha256": "4fb526c9d0dc9179ba31a0378dae27c422f7375ef9113393b6c3add5e9950bb1",
+    "pages": 21,
+    "sha256": "b7dabdb95fdd74f334961b6178283f41cefe2aa56c4bb6ec3d4c73ad277780fc",
     "pdfTitle": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -375,18 +383,30 @@
         "embedded": true
       },
       {
+        "name": "/CIIWSM+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/GXDUII+DejaVuSans",
+        "embedded": true
+      },
+      {
         "name": "/WXMALW+LMRoman9-Regular",
         "embedded": true
       }
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 29
+    "comparedDecimalCount": 29,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 1
   },
   {
     "id": "rank-window",
-    "pages": 16,
-    "sha256": "9b8e6833bb5b7afaca28b1bd0c29c83c2e8b6f47e9cca70aea80e03b2940339b",
+    "pages": 17,
+    "sha256": "34e94bbe8ffaa166eb12bf2fc269637c87956b00829d747fe51a7228b77d4c2f",
     "pdfTitle": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -491,11 +511,11 @@
         "embedded": true
       },
       {
-        "name": "/BVQTTA+DejaVuSans-Oblique",
+        "name": "/HEAHNP+DejaVuSans-Oblique",
         "embedded": true
       },
       {
-        "name": "/DSVVPO+DejaVuSans",
+        "name": "/DDHILC+DejaVuSans",
         "embedded": true
       },
       {
@@ -527,11 +547,11 @@
         "embedded": true
       },
       {
-        "name": "/BKVFOF+DejaVuSans",
+        "name": "/BQZQZC+DejaVuSans",
         "embedded": true
       },
       {
-        "name": "/GJDEEV+DejaVuSans",
+        "name": "/SLFROE+DejaVuSans",
         "embedded": true
       },
       {
@@ -543,34 +563,42 @@
         "embedded": true
       },
       {
-        "name": "/FXUBCH+DejaVuSans",
+        "name": "/DYTEVM+DejaVuSans",
         "embedded": true
       },
       {
-        "name": "/GXDUII+DejaVuSans",
+        "name": "/DSRLVY+DejaVuSans",
         "embedded": true
       },
       {
-        "name": "/ZXNXFB+LMRoman9-Italic",
+        "name": "/ZXNXFB+LMRoman10-Regular",
         "embedded": true
       },
       {
-        "name": "/BKINPV+LMRoman9-Bold",
+        "name": "/BKINPV+LMRoman9-Italic",
         "embedded": true
       },
       {
-        "name": "/KNCMHP+LMMono9-Regular",
+        "name": "/KNCMHP+LMRoman9-Bold",
+        "embedded": true
+      },
+      {
+        "name": "/BSJFPS+LMMono9-Regular",
         "embedded": true
       }
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 232
+    "comparedDecimalCount": 232,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 3
   },
   {
     "id": "hh-dynamics",
     "pages": 30,
-    "sha256": "a4cb383ba0885dc49118520f467362e4cb1844212d944ca9f446f542f605aa41",
+    "sha256": "e08d64cb2b659067fb351aa1253d3121dac4db5d319ef0404cedd57a7259861d",
     "pdfTitle": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -711,7 +739,7 @@
         "embedded": true
       },
       {
-        "name": "/CHWNNW+Cmr10",
+        "name": "/FVNMCL+Cmr10",
         "embedded": true
       },
       {
@@ -723,11 +751,11 @@
         "embedded": true
       },
       {
-        "name": "/COLRHM+DejaVuSerif",
+        "name": "/DDCVLO+DejaVuSerif",
         "embedded": true
       },
       {
-        "name": "/FKHBVZ+Cmmi10",
+        "name": "/UJNKVT+Cmmi10",
         "embedded": true
       },
       {
@@ -753,12 +781,16 @@
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 249
+    "comparedDecimalCount": 249,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 3
   },
   {
     "id": "double-pendulum",
-    "pages": 23,
-    "sha256": "4b281a4cc6a8c375dcc59ed15a82f3f459fd07ea4cbcb7cb066614cf630d278e",
+    "pages": 24,
+    "sha256": "6718544c0492ee8a56754235fe1a511f2f598ed85a859f299b932316a3a34d06",
     "pdfTitle": "Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -859,6 +891,22 @@
         "embedded": true
       },
       {
+        "name": "/DMCRIG+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/KSSRUI+DejaVuSans-Oblique",
+        "embedded": true
+      },
+      {
+        "name": "/DEMCAF+DejaVuSans",
+        "embedded": true
+      },
+      {
+        "name": "/DSRLVY+DejaVuSans",
+        "embedded": true
+      },
+      {
         "name": "/WXMALW+LMRoman6-Regular",
         "embedded": true
       },
@@ -889,12 +937,16 @@
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 123
+    "comparedDecimalCount": 123,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 1
   },
   {
     "id": "nf-pulse",
     "pages": 39,
-    "sha256": "009b18ea7a6488bdb5b131cd11b692cc2930dc991d3f9dea36775fcf8a00d740",
+    "sha256": "72bc8d4b0bed50357b29cb5784e60fd34603cb0d0dd954d573fa55547e7bd9ea",
     "pdfTitle": "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -1019,35 +1071,43 @@
         "embedded": true
       },
       {
-        "name": "/VSWPVR+DejaVuSans-Oblique",
-        "embedded": false
+        "name": "/CKABJU+DejaVuSerif",
+        "embedded": true
       },
       {
-        "name": "/DOACHQ+DejaVuSans-Oblique",
-        "embedded": false
+        "name": "/HKHVYU+DejaVuSerif",
+        "embedded": true
       },
       {
-        "name": "/BQYFOS+DejaVuSans",
-        "embedded": false
+        "name": "/FVUHYO+Cmmi10",
+        "embedded": true
       },
       {
-        "name": "/BVRYFT+DejaVuSans",
-        "embedded": false
+        "name": "/GRHCTF+Cmr10",
+        "embedded": true
+      },
+      {
+        "name": "/CCKSIF+Cmsy10",
+        "embedded": true
       }
     ],
     "archiveDoiPresent": true,
     "oldDecimalValuesMissing": [],
-    "comparedDecimalCount": 184
+    "comparedDecimalCount": 184,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 1
   },
   {
     "id": "hh-pulse",
-    "pages": 14,
-    "sha256": "878a893a8e9dec9b9ad30f532e1b642a331c4dea2aef5e020005623f29290b66",
+    "pages": 15,
+    "sha256": "4a4890baeaa11782ec3d480c89067a1ef644a4c49dbf5f0b61bf73f78cea0be1",
     "pdfTitle": "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof",
     "metadataMatches": true,
     "visibleTitleMatches": true,
     "authorPresent": true,
-    "emailPresent": false,
+    "emailPresent": true,
     "orcidPresent": true,
     "undefinedReferences": false,
     "replacementCharacters": false,
@@ -1081,8 +1141,32 @@
       {
         "name": "/VDVGTR+LMRoman10-Italic-Identity-H",
         "embedded": true
+      },
+      {
+        "name": "/CAFSZL+LatinModernMath-Regular-Identity-H",
+        "embedded": true
+      },
+      {
+        "name": "/GYBAIW+DejaVuSerif",
+        "embedded": true
+      },
+      {
+        "name": "/ETTUWF+Cmmi10",
+        "embedded": true
+      },
+      {
+        "name": "/FTVKIH+Cmr10",
+        "embedded": true
+      },
+      {
+        "name": "/FPYHOW+Cmsy10",
+        "embedded": true
       }
     ],
-    "archiveDoiPresent": true
+    "archiveDoiPresent": true,
+    "manuscriptRightsPresent": true,
+    "previousGrantsPreserved": true,
+    "referenceReadingNotesAbsent": true,
+    "figurePdfCount": 1
   }
 ]
