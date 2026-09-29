@@ -1,4 +1,4 @@
-# A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound
+# A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 

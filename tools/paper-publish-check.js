@@ -37,12 +37,13 @@ const ok = (cond, what, detail) => { checks++; if (!cond) { failures++; console.
 
 try {
   // A repository shaped like this one, with one ready paper whose companion is o/t.
-  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
+  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh', 'paper-archive-check.py']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
   write(path.join(SRC, 'LICENSE'), 'Apache License\n');
   write(path.join(SRC, 'papers', 'papers.json'), JSON.stringify({ author: { name: 'A B', 'given-names': 'A', 'family-names': 'B', affiliation: 'Independent Researcher', email: 'ab@example.org' },
-    papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t' }] }, null, 2));
+    papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t', pdf: 'papers/t/paper/t.pdf' }] }, null, 2));
   write(path.join(SRC, 'papers', 't', 'README.md'), '# T\n\n## Abstract\n\nIntro.\n');
   write(path.join(SRC, 'papers', 't', 'paper', 't.tex'), 'line one\nline two\nline three\n');
+  write(path.join(SRC, 'papers', 't', 'paper', 't.pdf'), '%PDF-1.7\n<< /Type /Pages /Count 1 >>\n%%EOF\n');
   write(path.join(SRC, 'papers', 't', 'code', 'run.py'), 'print(1)\n');
   write(path.join(SRC, 'papers', 't', 'notes', 'private.md'), 'working note\n');
   git(tmp, 'init', '-q', SRC); commitSrc('start');
@@ -52,7 +53,7 @@ try {
   let r = run('paper-publish.sh');
   ok(r.status === 0, 'first publish succeeds', r.stdout + r.stderr);
   const files = git(BARE, 'ls-tree', '-r', '--name-only', 'main').split('\n').sort().join(' ');
-  ok(files === '.zenodo.json CITATION.cff LICENSE README.md code/run.py paper/t.tex', 'the companion holds the paper and generated files, not notes/', files);
+  ok(files === '.zenodo.json CITATION.cff LICENSE README.md code/run.py paper/t.pdf paper/t.tex', 'the companion holds the paper and generated files, not notes/', files);
   ok(remoteHead('main') === remoteHead('genchase-sync'), 'main starts at the published snapshot');
   ok(git(BARE, 'log', '-1', '--format=%an <%ae> / %cn <%ce>', 'main') === 'Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com> / Chase Hendrick <326338179+ChaseHendrick@users.noreply.github.com>',
     'publishing commits carry the project identity, even with another identity in the environment');
@@ -133,6 +134,28 @@ try {
   ok(r.status !== 0 && /already has 0\.9\.0 as v0\.9\.0/.test(r.stdout + r.stderr), 'a plain tag for a version released under its v tag is refused', r.stdout + r.stderr);
   ok(remoteHead('main') === beforeTwin, 'a release refused as a twin pushes nothing');
   ok(git(BARE, 'tag', '--list').split('\n').join(' ') === 'v0.9.0', 'no tag is made, moved or renamed', git(BARE, 'tag', '--list'));
+  // A new release must contain the actual registered manuscript in its source ZIP, before any push.
+  const beforePdf = remoteHead('main');
+  const registryPath = path.join(SRC, 'papers', 'papers.json');
+  const registered = read(registryPath);
+  const rejectPdf = (what, change, restore) => {
+    change(); commitSrc('plant ' + what);
+    const result = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't' });
+    ok(result.status !== 0 && /paper-archive-check:/.test(result.stderr), what + ' blocks a release', result.stdout + result.stderr);
+    ok(remoteHead('main') === beforePdf, what + ' pushes nothing');
+    restore(); commitSrc('restore ' + what);
+  };
+  rejectPdf('no registered PDF', () => {
+    const reg = JSON.parse(registered); reg.papers[0].pdf = null; write(registryPath, JSON.stringify(reg));
+  }, () => write(registryPath, registered));
+  const pdfPath = path.join(SRC, 'papers', 't', 'paper', 't.pdf'), pdf = read(pdfPath);
+  rejectPdf('missing PDF', () => fs.unlinkSync(pdfPath), () => write(pdfPath, pdf));
+  rejectPdf('truncated PDF', () => write(pdfPath, '%PDF-1.7\n'), () => write(pdfPath, pdf));
+  const attrs = path.join(SRC, 'papers', 't', '.gitattributes');
+  rejectPdf('export-ignore on the manuscript', () => write(attrs, 'paper/*.pdf export-ignore\n'), () => fs.unlinkSync(attrs));
+  r = run('paper-publish.sh', [], { RELEASE: '1.1.0', PAPER: 't' });
+  ok(r.status === 0 && /"pdf": "paper\/t.pdf"/.test(r.stdout), 'restored PDF passes source ZIP inspection', r.stdout + r.stderr);
+
 } catch (e) {
   failures++; console.log('FAIL ' + (e.stack || e.message) + (e.stderr ? '\n' + e.stderr : ''));
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }

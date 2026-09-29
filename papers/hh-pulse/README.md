@@ -1,10 +1,10 @@
-# The propagated action potential of Hodgkin and Huxley at their 1952 constants: a computer-assisted existence proof
+# The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 **Preprint**, release 1.0.1 (2026-09-29), [doi:10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512). Release 1.0.0 remains at [doi:10.5281/zenodo.23013935](https://doi.org/10.5281/zenodo.23013935). Not peer reviewed. The GitHub release is [1.0.1](https://github.com/ChaseHendrick/hh-pulse/releases/tag/1.0.1).
 
-**[Read the manuscript](paper/paper.md)**
+**[Read the manuscript (PDF)](paper/hh-pulse.pdf)** · [Markdown source](paper/paper.md)
 
 ## Abstract
 
@@ -53,7 +53,7 @@ The orbit leaves rest along its one-dimensional unstable manifold. A validated T
 
 | Folder | What is in it |
 |---|---|
-| [`paper/`](paper/) | The manuscript, [`paper.md`](paper/paper.md) |
+| [`paper/`](paper/) | The manuscript, [`hh-pulse.pdf`](paper/hh-pulse.pdf), and its source, [`paper.md`](paper/paper.md) |
 | [`code/`](code/) | The programs, [`run.sh`](code/run.sh) to rerun everything, and [`requirements.txt`](code/requirements.txt) |
 | [`data/`](data/) | The certificates of the three proofs (`pulse_proof_*.json`) and their summaries, the numerical centres (`hp_pulse_*.json`), the closing blocks, the reports of the independent block check and of the tests, and the starting profiles |
 
@@ -90,7 +90,7 @@ summary, which checks the hashes of every certificate, accepted them all.
 ```bibtex
 @misc{hendrick2026hhpulse,
   author = {Hendrick, Chase},
-  title  = {The propagated action potential of {Hodgkin} and {Huxley} at their 1952 constants: a computer-assisted existence proof},
+  title  = {The Propagated Action Potential of {Hodgkin} and {Huxley} at Their 1952 Constants: A Computer-Assisted Existence Proof},
   year   = {2026},
   doi    = {10.5281/zenodo.23028512},
   url    = {https://doi.org/10.5281/zenodo.23028512}

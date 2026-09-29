@@ -3,6 +3,12 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.2 (2026-09-29)
+
+Adds `paper/hh-pulse.pdf`, a printable rendering of the existing Markdown manuscript, to the source ZIP. The title is capitalized consistently in the PDF, Markdown, README and citation metadata. The Markdown remains the canonical text. No theorem, proof program, certificate or scientific claim changes. Releases 1.0.0 and 1.0.1 stay available with their original DOIs.
+
+The manuscript PDF can be rebuilt with Pandoc and a TeX PDF engine; the source and the proof programs remain included. The release publisher now checks that the registered manuscript PDF is present and unchanged in the companion's Git source ZIP before pushing a new release's tree.
+
 ## 1.0.1 (2026-09-28)
 
 **DOI:** [10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512) (2026-09-29). The previous archive is unchanged.

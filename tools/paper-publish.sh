@@ -124,6 +124,12 @@ while read -r id repo; do
     git checkout -q -B "$branch" "$SYNC"
   fi
 
+  # Inspect the merged tree before pushing anything. A tracked PDF can still be omitted by
+  # export-ignore. Existing releases remain immutable and may have predated the PDF requirement.
+  if [ -n "${RELEASE:-}" ] && [ "$id" = "${PAPER:-}" ] && ! echo "$tags" | grep -qxF "$RELEASE"; then
+    python3 "$ROOT/tools/paper-archive-check.py" "$id" "$work/repo" "$branch"
+  fi
+
   if [ "$(git rev-parse "$branch")" = "$had_main" ] && [ "$(git rev-parse "$SYNC")" = "$had_sync" ]; then
     echo "$repo is already up to date."
   else

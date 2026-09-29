@@ -12,6 +12,7 @@ on:
       - 'LICENSE'
       - 'tools/paper-sync.js'
       - 'tools/paper-publish.sh'
+      - 'tools/paper-archive-check.py'
       - 'tools/paper-pull.sh'
       - '.github/workflows/papers.yml'
   schedule:

@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.2 (2026-09-29)
+
+Capitalizes the manuscript title consistently in the PDF, LaTeX source, README, notice and citation metadata: *A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound*. The rebuilt `paper/note.pdf` remains inside the source ZIP. No result, proof, program or derived dataset changes. Releases 1.0.0 and 1.0.1 stay available with their original DOIs.
+
 ## 1.0.1 (2026-09-28)
 
 **DOI:** [10.5281/zenodo.23028535](https://doi.org/10.5281/zenodo.23028535) (2026-09-29). The previous archive is unchanged.

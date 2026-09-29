@@ -1,5 +1,5 @@
 ---
-title: "The propagated action potential of Hodgkin and Huxley at their 1952 constants: a computer-assisted existence proof"
+title: "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof"
 author: "Chase Hendrick, Independent Researcher (ORCID 0009-0002-9754-6087)"
 status: "Release 1.0.0, 2026-09-28."
 ---
