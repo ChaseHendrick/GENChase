@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "previewCadenceMs": 150,
+  "baselineSourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
+  "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14",
+  "rows": [
+    {
+      "name": "before",
+      "partial": {
+        "building": true,
+        "sweepNo": 48,
+        "range": 0,
+        "status": "lattice 320\u00d7320 torussweep 48 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.508 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+      },
+      "canvas": [
+        [
+          472,
+          472
+        ]
+      ],
+      "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+      "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+      "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+    },
+    {
+      "name": "fixed",
+      "partial": {
+        "building": true,
+        "sweepNo": 44,
+        "range": 172.6528,
+        "status": "lattice 320\u00d7320 torussweep 44 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.488 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+      },
+      "canvas": [
+        [
+          472,
+          472
+        ]
+      ],
+      "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+      "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+      "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+    },
+    {
+      "name": "corrupt-control",
+      "partial": {
+        "building": true,
+        "sweepNo": 44,
+        "range": 172.6528,
+        "status": "lattice 320\u00d7320 torussweep 44 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.468 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+      },
+      "canvas": [
+        [
+          472,
+          472
+        ]
+      ],
+      "stateSha256": "ae25314ebd8475a8ad66c4a35ec1c7deb1b0f56d1e664a2c727cbe41b52c3ce7",
+      "pixelPngSha256": "7041669f949ff5633a6705a3fd377c6ac94851dbfd631a9a1a39774b7c785903",
+      "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00016 \u00b1 0.00077 sites/sweepc -0.00006 \u00b1 0.00076 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.1\u03c3 lowseed check-potts"
+    }
+  ],
+  "buildSha256": "8b96fba6f75fa59927c074b582a26a2d3e1af7409804b98f2f665d72802f93b5",
+  "renderer": "ANGLE Metal Renderer: Apple M1 Pro",
+  "scope": "Seed check-potts, foam preset, normal motion, viewport resize while coarsening; exact final arrays, fit and preview PNG comparison at sweep 900.",
+  "finalBuiltComparison": {
+    "result": {
+      "passed": true,
+      "previewCadenceMs": 150,
+      "baselineSourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
+      "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14",
+      "rows": [
+        {
+          "name": "before",
+          "partial": {
+            "building": true,
+            "sweepNo": 49,
+            "range": 0,
+            "status": "lattice 320\u00d7320 torussweep 49 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.528 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+          },
+          "canvas": [
+            [
+              472,
+              472
+            ]
+          ],
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+          "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+        },
+        {
+          "name": "fixed",
+          "partial": {
+            "building": true,
+            "sweepNo": 42,
+            "range": 172.6528,
+            "status": "lattice 320\u00d7320 torussweep 42 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.5 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+          },
+          "canvas": [
+            [
+              472,
+              472
+            ]
+          ],
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+          "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+        },
+        {
+          "name": "corrupt-control",
+          "partial": {
+            "building": true,
+            "sweepNo": 45,
+            "range": 172.6528,
+            "status": "lattice 320\u00d7320 torussweep 45 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.424 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+          },
+          "canvas": [
+            [
+              472,
+              472
+            ]
+          ],
+          "stateSha256": "387973264f84563c705651d939bfe66e7e53c2c149159891d0ee19ef274fa638",
+          "pixelPngSha256": "ce4d4dc9682947f35f806682b8a2a214db3264e26c4cacffd5137f85ead33f1b",
+          "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.376 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k -0.00030 \u00b1 0.00081 sites/sweepc 0.00011 \u00b1 0.00081 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.1\u03c3 highseed check-potts"
+        }
+      ]
+    },
+    "studioSha256": "fac0a313d8501a981e23921c2bca5485958aa8f40280ea570277fbfa484b71ee",
+    "harnessSha256": "79de9bb1d1271375ac1d66a9c402e9adef70c8002b69c009ac071b8b8fd6ef83",
+    "logSha256": "b73f62e9ad0ddb9b87e2077be06b467d7becf0652a5cfdf96fcc542a61e4f8c0"
+  }
+}

@@ -236,6 +236,10 @@ jobs:
       - name: Reaction-diffusion family GPU benchmarks
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/rdx-science.js
+      - name: RDX asynchronous readback and print preservation
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 4
+        run: timeout 180 node tools/rdx-readback-check.js
       - name: Reuleaux geometry and actual print preservation
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/reuleaux-science.js
@@ -254,6 +258,10 @@ jobs:
       - name: Hatano-Nelson open-chain print preserves mode weights
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/skin-print-state.js
+      - name: Skin native data preserves probabilities and legacy recipes
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 3
+        run: timeout 120 node tools/skin-data-check.js
       - name: Hofstadter Chern paint and print path
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/hofstadter-print-state.js

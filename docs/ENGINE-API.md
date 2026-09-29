@@ -129,6 +129,8 @@ graphics hardware; it is recorded because precision and driver differences are p
 file. `node tools/provenance-check.js` reads every one back through the real export buttons.
 `node tools/run.js <hash> --out plate.npz --steps N` runs a recipe headlessly through `Studio.exportData()`.
 
+Skin exports its computed dimensionless site probabilities as `probability.npy`, shaped `[drawn rows, sites]`, with effective solver and boundary metadata. Every returned field is a copy. The [Skin data contract](SKIN-DATA-EXPORT.md) distinguishes current eigenvectors from legacy basis and repeated-row recipes.
+
 ## Text controls and typed formulas
 
 These are additive API version 1 surfaces (2026-09-25). Existing schemas, recipes and

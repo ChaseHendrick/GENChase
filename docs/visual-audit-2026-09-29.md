@@ -1,8 +1,8 @@
 # GENChase visual and export audit
 
-All 135 techniques produced a live preview and an actual 1200 × 1200 PNG through the studio's print UI. The audit also exercised 38 additional supported Grid 256 settings, for 173 cases total. Every PNG export completed, with no recorded page exceptions. This establishes bounded local rendering coverage, not scientific accuracy or all-device compatibility.
+All 137 techniques produced a live preview and an actual 1200 × 1200 PNG through the studio's print UI. Coverage includes 137 defaults, 38 additional supported Grid 256 settings, and 11 additional Hopfield/Flow Matching presets, for 186 cases total. Every PNG export completed, with no recorded page exceptions. This establishes bounded local rendering coverage, not scientific accuracy or all-device compatibility.
 
-The local deliverable includes a searchable gallery and all 173 captures. The reproducible focused regression is `node tools/vector-preview-check.js`.
+The local deliverable includes a searchable gallery and all 186 captures. The reproducible focused regression is `node tools/vector-preview-check.js`.
 
 ## Confirmed fixes
 
@@ -31,8 +31,14 @@ Several defaults deserve a separate aesthetic pass:
 
 Tests used installed Chrome on Apple M1 Pro with ANGLE Metal and float32 support, a 1440 × 1040 viewport at device scale factor 1, and the normal maximum compute mode. Seeds were fixed to each module's declared seed, or `blur-audit` where none was declared. Remote requests were blocked. Exports used the real custom 4 × 4 inch, 300 ppi controls, with normal aspect-fit behavior.
 
-Initial BEC, Potts and rotor snapshots were retaken after their finite warmups completed. BEC reached its 16,000-step warmup; Potts reached 700/700 sweeps; rotor completed its ladder. Dynamic simulations remain snapshots, not convergence certificates or exact equal-time comparisons. The seven focused parity cases are deterministic static fixtures. All 135 preview thumbnails, all 135 export thumbnails and all 38 grid pairs were inspected; representative defects were inspected at full size. Not every pixel of every plate, every preset, or every parameter boundary was reviewed.
+Initial BEC, Potts and rotor snapshots were retaken after their finite warmups completed. BEC reached its 16,000-step warmup; Potts reached 700/700 sweeps; rotor completed its ladder. Dynamic simulations remain snapshots, not convergence certificates or exact equal-time comparisons. The seven focused parity cases are deterministic static fixtures. The original 135 preview thumbnails, 135 export thumbnails and 38 grid pairs were inspected; representative defects were inspected at full size. Not every pixel of every plate, every preset, or every parameter boundary was reviewed.
 
 The separate local visual-audit deliverable preserves baseline and corrected images; the repository records the method and regression here.
 
 Build consistency, lint, the sharp-sampling regression, and diff whitespace checks pass. The scientific inventory source-file hashes were refreshed after reviewing the scoped changes. A component comparison confirms that only HL and Smectic registrations changed; the ten neighboring registrations, including their function source strings, are unchanged. No scientific status was promoted.
+
+## Added-model coverage
+
+A later capture of the corrected `cc6d47b` build adds Hopfield and Flow Matching: both defaults and all 11 of their additional presets. The frozen portable studio SHA-256 is `8b96fba6f75fa59927c074b582a26a2d3e1af7409804b98f2f665d72802f93b5`. These 13 cases used the same 1440 × 1040 viewport and actual 4 × 4 inch, 300 ppi print controls on Apple M1 Pro / Metal. All completed without page exceptions.
+
+Both preview/export contact sheets were visually inspected. Hopfield's memory, cue and recall panels retain crisp cell boundaries and consistent coloring. Its geometric cue demonstrates the intended corrupted-input and recalled-output views. Flow Matching retains the corresponding paths, clusters and palette in the exports, with the cloud preset intentionally sparse and pale. Aspect-fit margins differ between the wide preview and square print. This inspection does not establish pixel identity, review every output pixel, or validate scientific results. The original 173 capture records and pre-fix HL/Smectic images remain unchanged.

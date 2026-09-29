@@ -1,7 +1,7 @@
 {
   "pass": true,
   "source": "src/modules/skin.js",
-  "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
+  "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
   "harness": "tools/science-harness.js",
   "command": "node tools/skin-science.js --write",
   "solver": "Implicit-shift QL (Wilkinson) on the unit off-diagonal Hermitian chain similar to open Hatano-Nelson, then psi = exp(g j) phi. Residuals are measured by applying the nonsymmetric open chain, not the sine formula.",
@@ -451,7 +451,7 @@
           "xiProbability": 4.166666666666348,
           "target": 4.166666666666667,
           "relativeError": 7.652545264136279e-14,
-          "meanRightDistance": 10.33707483144141,
+          "meanRightDistance": 10.337074831441411,
           "pairs": 30
         },
         {
@@ -469,7 +469,7 @@
           "xiProbability": 4.166666666666655,
           "target": 4.166666666666667,
           "relativeError": 2.7711166694643904e-15,
-          "meanRightDistance": 6.554585545511311,
+          "meanRightDistance": 6.554585545511312,
           "pairs": 30
         },
         {
@@ -529,7 +529,7 @@
     {
       "grid": 48,
       "g": 0.15,
-      "ampError": 2.1431851737752083e-8,
+      "ampError": 2.1431851848774386e-8,
       "skinW": 0.7443276689737104,
       "ipr": 0.19201397374842843,
       "rightTenth": 0.7443276689737104,
@@ -715,9 +715,9 @@
     "wrongSignLengthRejected": true
   },
   "limitations": [
-    "Open chain with on-site disorder below 0.04 only. The disordered and periodic paths use subspace iteration with Gram-Schmidt and are not eigenpairs of H.",
+    "Clean open chain with disorder exactly 0 only. The current nonzero-disorder open-chain QL and periodic Francis QR/inverse-iteration paths are outside this comparison; the legacy pre-v8 Gram-Schmidt path is also excluded.",
     "Finite N. Eigenvalue and eigenvector tolerances above are for N <= 48; the tab comparison also covers grids 64 and 96 at the listed g.",
     "No laboratory measurement. The similarity that skins the chain is not unitary, so the right eigenvectors are not an orthonormal energy basis.",
-    "Sheets with more rows than sites draw the sine formula past n = N. Those rows are not eigenvectors and are outside this comparison (aspect 1:1 keeps one row per mode)."
+    "The current rows modes path caps the drawn rows at N. Legacy rows sheet recipes can draw the sine formula past n = N; those extra rows are not eigenvectors and are outside this comparison (aspect 1:1 keeps one row per mode)."
   ]
 }

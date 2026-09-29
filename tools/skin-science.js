@@ -435,10 +435,10 @@ const result = {
     wrongSignLengthRejected: true,
   },
   limitations: [
-    'Open chain with on-site disorder below 0.04 only. The disordered and periodic paths use subspace iteration with Gram-Schmidt and are not eigenpairs of H.',
+    'Clean open chain with disorder exactly 0 only. The current nonzero-disorder open-chain QL and periodic Francis QR/inverse-iteration paths are outside this comparison; the legacy pre-v8 Gram-Schmidt path is also excluded.',
     'Finite N. Eigenvalue and eigenvector tolerances above are for N <= 48; the tab comparison also covers grids 64 and 96 at the listed g.',
     'No laboratory measurement. The similarity that skins the chain is not unitary, so the right eigenvectors are not an orthonormal energy basis.',
-    'Sheets with more rows than sites draw the sine formula past n = N. Those rows are not eigenvectors and are outside this comparison (aspect 1:1 keeps one row per mode).',
+    'The current rows modes path caps the drawn rows at N. Legacy rows sheet recipes can draw the sine formula past n = N; those extra rows are not eigenvectors and are outside this comparison (aspect 1:1 keeps one row per mode).',
   ],
 };
 

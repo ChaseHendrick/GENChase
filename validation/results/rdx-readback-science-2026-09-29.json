@@ -1,0 +1,2717 @@
+{
+  "schema": 1,
+  "date": "2026-09-29",
+  "source": {
+    "path": "src/modules/rdx.js",
+    "sha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd"
+  },
+  "harness": {
+    "path": "tools/rdx-science.js",
+    "sha256": "d7d7d76ea7412580361b085707874a92b6c50577ef1cf09da9a14da0f82ddc1a"
+  },
+  "backend": "154.0.8037.58",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+  "stencil": [
+    {
+      "id": "excitable",
+      "case": "excitable/barkley 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 1.0524100846343032e-7
+    },
+    {
+      "id": "excitable",
+      "case": "excitable/barkley 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 9.674931200631676e-8
+    },
+    {
+      "id": "excitable",
+      "case": "excitable/fhn 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 8.710208909690209e-8
+    },
+    {
+      "id": "excitable",
+      "case": "excitable/fhn 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 1.0217841983628517e-7
+    },
+    {
+      "id": "turing",
+      "case": "turing/schnak 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.0000014079765648933318
+    },
+    {
+      "id": "turing",
+      "case": "turing/schnak 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.0000014978676063925889
+    },
+    {
+      "id": "turing",
+      "case": "turing/bruss 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.0000037038588329707522
+    },
+    {
+      "id": "turing",
+      "case": "turing/bruss 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.000003697827266613274
+    },
+    {
+      "id": "turing",
+      "case": "turing/gm 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.000002026728614268336
+    },
+    {
+      "id": "turing",
+      "case": "turing/gm 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.0000020139005627584083
+    },
+    {
+      "id": "turing",
+      "case": "turing/le 5-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.000001416377762630816
+    },
+    {
+      "id": "turing",
+      "case": "turing/le 9-point",
+      "dt": 0.004,
+      "steps": 10,
+      "maxAbsError": 0.00000151087086930346
+    },
+    {
+      "id": "cyclic",
+      "case": "cyclic 5-point",
+      "dt": 0.05,
+      "steps": 10,
+      "maxAbsError": 5.3018119561265564e-8
+    },
+    {
+      "id": "cyclic",
+      "case": "cyclic 9-point",
+      "dt": 0.05,
+      "steps": 10,
+      "maxAbsError": 6.824361731272433e-8
+    },
+    {
+      "id": "chemotaxis",
+      "case": "chemotaxis 5-point",
+      "dt": 0.01,
+      "steps": 10,
+      "maxAbsError": 0.0000011206271697261627
+    },
+    {
+      "id": "chemotaxis",
+      "case": "chemotaxis 9-point",
+      "dt": 0.01,
+      "steps": 10,
+      "maxAbsError": 0.000001287785105219541
+    },
+    {
+      "id": "vegetation",
+      "case": "vegetation 5-point",
+      "dt": 0.01,
+      "steps": 10,
+      "maxAbsError": 0.0000010393319098689346
+    },
+    {
+      "id": "vegetation",
+      "case": "vegetation 9-point",
+      "dt": 0.01,
+      "steps": 10,
+      "maxAbsError": 0.0000011222364706409138
+    }
+  ],
+  "diffusion": [
+    {
+      "id": "excitable",
+      "case": "FHN recovery v, eps = 0",
+      "laplacian": 5,
+      "D": 1.5,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.016666666666666666,
+          "steps": 36,
+          "measured": 0.06328858016766756,
+          "exactDiscrete": 0.06328863859402058,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 9.231728524961014e-7,
+          "discreteRelErrorUnroundedDenominator": 9.231728524961014e-7,
+          "continuumRelError": 0.01590095950763648
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.004166666666666667,
+          "steps": 144,
+          "measured": 0.06252611945500613,
+          "exactDiscrete": 0.06252638276568588,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 0.000004211193229131105,
+          "discreteRelErrorUnroundedDenominator": 0.000004211193229131105,
+          "continuumRelError": 0.003662028447285026
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0010416666666666667,
+          "steps": 576,
+          "measured": 0.06235274475942461,
+          "exactDiscrete": 0.062353922948670246,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 0.000018895190389334182,
+          "discreteRelErrorUnroundedDenominator": 0.000018895190389334182,
+          "continuumRelError": 0.0008790379120415803
+        }
+      ],
+      "orders": [
+        2.118398920921822,
+        2.0586457044462083
+      ]
+    },
+    {
+      "id": "excitable",
+      "case": "FHN recovery v, eps = 0",
+      "laplacian": 9,
+      "D": 1.5,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.016666666666666666,
+          "steps": 36,
+          "measured": 0.0670494676145133,
+          "exactDiscrete": 0.06704953464248803,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 9.996784479104903e-7,
+          "discreteRelErrorUnroundedDenominator": 9.996784479104903e-7,
+          "continuumRelError": 0.07627028926237012
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.004166666666666667,
+          "steps": 144,
+          "measured": 0.06342773153492702,
+          "exactDiscrete": 0.06342778985035512,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 9.193987089428646e-7,
+          "discreteRelErrorUnroundedDenominator": 9.193987089428646e-7,
+          "continuumRelError": 0.018134601140000317
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0010416666666666667,
+          "steps": 576,
+          "measured": 0.0625765711489684,
+          "exactDiscrete": 0.06257692885627963,
+          "continuum": 0.06229798247098891,
+          "discreteRelError": 0.000005716281028300685,
+          "discreteRelErrorUnroundedDenominator": 0.000005716281028300685,
+          "continuumRelError": 0.004471873196041809
+        }
+      ],
+      "orders": [
+        2.072376156907941,
+        2.019793829451797
+      ]
+    },
+    {
+      "id": "excitable",
+      "case": "Barkley recovery v at u = 0",
+      "laplacian": 5,
+      "D": 0.8,
+      "alpha": 1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.010714285714285714,
+          "steps": 56,
+          "measured": 0.128191090250875,
+          "exactDiscrete": 0.12819105594712507,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 2.675986219280446e-7,
+          "discreteRelErrorUnroundedDenominator": 2.675986219280446e-7,
+          "continuumRelError": 0.0265538587398384
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.0026905829596412553,
+          "steps": 223,
+          "measured": 0.12568670789307412,
+          "exactDiscrete": 0.12568671404925671,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 4.8980376643470436e-8,
+          "discreteRelErrorUnroundedDenominator": 4.8980376643470436e-8,
+          "continuumRelError": 0.006498772476595471
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0006749156355455568,
+          "steps": 889,
+          "measured": 0.12507615749444556,
+          "exactDiscrete": 0.12507628668412676,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 0.0000010328870854170447,
+          "discreteRelErrorUnroundedDenominator": 0.0000010328870854170447,
+          "continuumRelError": 0.0016094867513496425
+        }
+      ],
+      "orders": [
+        2.03068238015175,
+        2.0135665386305233
+      ]
+    },
+    {
+      "id": "excitable",
+      "case": "Barkley recovery v at u = 0",
+      "laplacian": 9,
+      "D": 0.8,
+      "alpha": 1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.010714285714285714,
+          "steps": 56,
+          "measured": 0.13204175776244265,
+          "exactDiscrete": 0.1320417357069146,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 1.6703452065947033e-7,
+          "discreteRelErrorUnroundedDenominator": 1.6703452065947033e-7,
+          "continuumRelError": 0.05738999239770726
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.0026905829596412553,
+          "steps": 223,
+          "measured": 0.12664026046986337,
+          "exactDiscrete": 0.1266403198388631,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 4.688001403740927e-7,
+          "discreteRelErrorUnroundedDenominator": 4.688001403740927e-7,
+          "continuumRelError": 0.014134818595702647
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0006749156355455568,
+          "steps": 889,
+          "measured": 0.12531393298464352,
+          "exactDiscrete": 0.12531407335850728,
+          "continuum": 0.12487517255863993,
+          "discreteRelError": 0.0000011201763695511957,
+          "discreteRelErrorUnroundedDenominator": 0.0000011201763695511957,
+          "continuumRelError": 0.0035135921497730926
+        }
+      ],
+      "orders": [
+        2.0215458153551378,
+        2.0082347267029474
+      ]
+    },
+    {
+      "id": "turing",
+      "case": "Schnakenberg inhibitor, a = b = u = 0",
+      "laplacian": 5,
+      "D": 1.2,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.020689655172413793,
+          "steps": 29,
+          "measured": 0.10998170422111135,
+          "exactDiscrete": 0.1099817511995735,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 4.27147791692839e-7,
+          "discreteRelErrorUnroundedDenominator": 4.27147791692839e-7,
+          "continuumRelError": 0.013307505021115995
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.005172413793103448,
+          "steps": 116,
+          "measured": 0.10887169566939406,
+          "exactDiscrete": 0.10887169576923049,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 9.170100234712208e-10,
+          "discreteRelErrorUnroundedDenominator": 9.170100234712208e-10,
+          "continuumRelError": 0.0030805313252777466
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0013015184381778742,
+          "steps": 461,
+          "measured": 0.10861563520803037,
+          "exactDiscrete": 0.10861555725966866,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 7.17653747539515e-7,
+          "discreteRelErrorUnroundedDenominator": 7.17653747539515e-7,
+          "continuumRelError": 0.0007213390480118598
+        }
+      ],
+      "orders": [
+        2.1109889993099284,
+        2.0944297782107024
+      ]
+    },
+    {
+      "id": "turing",
+      "case": "Schnakenberg inhibitor, a = b = u = 0",
+      "laplacian": 9,
+      "D": 1.2,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.020689655172413793,
+          "steps": 29,
+          "measured": 0.11517702837273033,
+          "exactDiscrete": 0.11517699565656296,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 2.8405123075891936e-7,
+          "discreteRelErrorUnroundedDenominator": 2.8405123075891936e-7,
+          "continuumRelError": 0.06117420240624738
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.005172413793103448,
+          "steps": 116,
+          "measured": 0.11012529815521391,
+          "exactDiscrete": 0.11012536012702681,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 5.627387990037036e-7,
+          "discreteRelErrorUnroundedDenominator": 5.627387990037036e-7,
+          "continuumRelError": 0.014630496077965738
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0013015184381778742,
+          "steps": 461,
+          "measured": 0.1089263336895839,
+          "exactDiscrete": 0.10892621241691866,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 0.000001113346939751736,
+          "discreteRelErrorUnroundedDenominator": 0.000001113346939751736,
+          "continuumRelError": 0.0035839342895249704
+        }
+      ],
+      "orders": [
+        2.0639446985255736,
+        2.029362596614028
+      ]
+    },
+    {
+      "id": "turing",
+      "case": "Lengyel-Epstein inhibitor (sigma D), a = u = 0",
+      "laplacian": 5,
+      "D": 1.2,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.020689655172413793,
+          "steps": 29,
+          "measured": 0.10998170422111135,
+          "exactDiscrete": 0.1099817511995735,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 4.27147791692839e-7,
+          "discreteRelErrorUnroundedDenominator": 4.27147791692839e-7,
+          "continuumRelError": 0.013307505021115995
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.005172413793103448,
+          "steps": 116,
+          "measured": 0.10887184529951328,
+          "exactDiscrete": 0.10887169576923049,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 0.0000013734541539633938,
+          "discreteRelErrorUnroundedDenominator": 0.0000013734541539633938,
+          "continuumRelError": 0.0030819099302363817
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0013015184381778742,
+          "steps": 461,
+          "measured": 0.10861563520803037,
+          "exactDiscrete": 0.10861555725966866,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 7.17653747539515e-7,
+          "discreteRelErrorUnroundedDenominator": 7.17653747539515e-7,
+          "continuumRelError": 0.0007213390480118598
+        }
+      ],
+      "orders": [
+        2.1103435062373355,
+        2.0950752712832954
+      ]
+    },
+    {
+      "id": "turing",
+      "case": "Lengyel-Epstein inhibitor (sigma D), a = u = 0",
+      "laplacian": 9,
+      "D": 1.2,
+      "alpha": 0,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.020689655172413793,
+          "steps": 29,
+          "measured": 0.11517703866248682,
+          "exactDiscrete": 0.11517699565656296,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 3.7338987368684684e-7,
+          "discreteRelErrorUnroundedDenominator": 3.7338987368684684e-7,
+          "continuumRelError": 0.06117429721008372
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.005172413793103448,
+          "steps": 116,
+          "measured": 0.11012532129686572,
+          "exactDiscrete": 0.11012536012702681,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 3.5259962860578753e-7,
+          "discreteRelErrorUnroundedDenominator": 3.5259962860578753e-7,
+          "continuumRelError": 0.014630709291696409
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0013015184381778742,
+          "steps": 461,
+          "measured": 0.1089263336895839,
+          "exactDiscrete": 0.10892621241691866,
+          "continuum": 0.10853734298436829,
+          "discreteRelError": 0.000001113346939751736,
+          "discreteRelErrorUnroundedDenominator": 0.000001113346939751736,
+          "continuumRelError": 0.0035839342895249704
+        }
+      ],
+      "orders": [
+        2.063925909731756,
+        2.0293836212019083
+      ]
+    },
+    {
+      "id": "cyclic",
+      "case": "species w near 0 (linear growth rate 1), u = v = 0",
+      "laplacian": 5,
+      "D": 0.9,
+      "alpha": -1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.02727272727272727,
+          "steps": 22,
+          "measured": 0.36156859125842783,
+          "exactDiscrete": 0.3615694151135882,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.000002278553234646985,
+          "discreteRelErrorUnroundedDenominator": 0.000002278553234646985,
+          "continuumRelError": 0.049372354675420116
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.006896551724137931,
+          "steps": 87,
+          "measured": 0.3486280967897252,
+          "exactDiscrete": 0.34862868369332417,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.0000016834633134177324,
+          "discreteRelErrorUnroundedDenominator": 0.0000016834633134177324,
+          "continuumRelError": 0.011815449901075414
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0017341040462427746,
+          "steps": 346,
+          "measured": 0.3455612189389577,
+          "exactDiscrete": 0.3455620474592337,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.0000023976020575577905,
+          "discreteRelErrorUnroundedDenominator": 0.0000023976020575577905,
+          "continuumRelError": 0.002914519594710674
+        }
+      ],
+      "orders": [
+        2.063028887628759,
+        2.0193445581441214
+      ]
+    },
+    {
+      "id": "cyclic",
+      "case": "species w near 0 (linear growth rate 1), u = v = 0",
+      "laplacian": 9,
+      "D": 0.9,
+      "alpha": -1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.02727272727272727,
+          "steps": 22,
+          "measured": 0.37392329640665695,
+          "exactDiscrete": 0.3739241030330484,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.000002157192823148968,
+          "discreteRelErrorUnroundedDenominator": 0.000002157192823148968,
+          "continuumRelError": 0.0852291363377724
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.006896551724137931,
+          "steps": 87,
+          "measured": 0.3516133801429528,
+          "exactDiscrete": 0.35161415527394374,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.0000022044931334841422,
+          "discreteRelErrorUnroundedDenominator": 0.0000022044931334841422,
+          "continuumRelError": 0.020479570340427244
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0017341040462427746,
+          "steps": 346,
+          "measured": 0.3463010289300743,
+          "exactDiscrete": 0.3463017554599605,
+          "continuum": 0.3445570008086063,
+          "discreteRelError": 0.000002097967667591405,
+          "discreteRelErrorUnroundedDenominator": 0.000002097967667591405,
+          "continuumRelError": 0.005061653419826451
+        }
+      ],
+      "orders": [
+        2.0571612648536193,
+        2.016504815925517
+      ]
+    },
+    {
+      "id": "chemotaxis",
+      "case": "attractant v at u = 0",
+      "laplacian": 5,
+      "D": 1.1,
+      "alpha": 0.2,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.014285714285714285,
+          "steps": 42,
+          "measured": 0.11990440559053044,
+          "exactDiscrete": 0.1199044343070112,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 2.3949473537676624e-7,
+          "discreteRelErrorUnroundedDenominator": 2.3949473537676624e-7,
+          "continuumRelError": 0.035149058244460685
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.003614457831325301,
+          "steps": 166,
+          "measured": 0.11679814506474087,
+          "exactDiscrete": 0.11679817828555472,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 2.8442921229387963e-7,
+          "discreteRelErrorUnroundedDenominator": 2.8442921229387963e-7,
+          "continuumRelError": 0.008332340025501983
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0009063444108761329,
+          "steps": 662,
+          "measured": 0.1160709551486353,
+          "exactDiscrete": 0.11607103907795206,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 7.230857708151461e-7,
+          "discreteRelErrorUnroundedDenominator": 7.230857708151461e-7,
+          "continuumRelError": 0.0020544226035836832
+        }
+      ],
+      "orders": [
+        2.0766924163247413,
+        2.0199887331988253
+      ]
+    },
+    {
+      "id": "chemotaxis",
+      "case": "attractant v at u = 0",
+      "laplacian": 9,
+      "D": 1.1,
+      "alpha": 0.2,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.02142857142857143,
+          "steps": 28,
+          "measured": 0.12167080964801089,
+          "exactDiscrete": 0.12167081462710494,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 4.092266558952673e-8,
+          "discreteRelErrorUnroundedDenominator": 4.092266558952673e-8,
+          "continuumRelError": 0.05039863550206647
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.005405405405405405,
+          "steps": 111,
+          "measured": 0.11721435169670677,
+          "exactDiscrete": 0.11721437103597898,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 1.6499062394093045e-7,
+          "discreteRelErrorUnroundedDenominator": 1.6499062394093045e-7,
+          "continuumRelError": 0.011925501602782829
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0013605442176870747,
+          "steps": 441,
+          "measured": 0.11617067964594445,
+          "exactDiscrete": 0.11617078856402228,
+          "continuum": 0.11583298524550636,
+          "discreteRelError": 9.375685504631193e-7,
+          "discreteRelErrorUnroundedDenominator": 9.375685504631193e-7,
+          "continuumRelError": 0.0029153561027746022
+        }
+      ],
+      "orders": [
+        2.0793347253589096,
+        2.0323059286631566
+      ]
+    },
+    {
+      "id": "vegetation",
+      "case": "water w at n = 0, no rain, flat",
+      "laplacian": 5,
+      "D": 1.3,
+      "alpha": 1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.01875,
+          "steps": 32,
+          "measured": 0.05058319358902309,
+          "exactDiscrete": 0.05058315533924645,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 7.561761694585556e-7,
+          "discreteRelErrorUnroundedDenominator": 0.000002253973706567436,
+          "continuumRelError": 0.021814708386840076
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.0048,
+          "steps": 125,
+          "measured": 0.04973405394827524,
+          "exactDiscrete": 0.04973396929641061,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 0.0000017020934752753902,
+          "discreteRelErrorUnroundedDenominator": 0.000006423977512159951,
+          "continuumRelError": 0.004661513564068853
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0012,
+          "steps": 500,
+          "measured": 0.049560945089247826,
+          "exactDiscrete": 0.04956107257464849,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 0.000002572288976931958,
+          "discreteRelErrorUnroundedDenominator": 0.00001704999779983396,
+          "continuumRelError": 0.001164597577635984
+        }
+      ],
+      "orders": [
+        2.2264308182409622,
+        2.000966941848571
+      ]
+    },
+    {
+      "id": "vegetation",
+      "case": "water w at n = 0, no rain, flat",
+      "laplacian": 9,
+      "D": 1.3,
+      "alpha": 1,
+      "rows": [
+        {
+          "N": 16,
+          "h": 0.5,
+          "dt": 0.01875,
+          "steps": 32,
+          "measured": 0.053172949396912125,
+          "exactDiscrete": 0.053172922885262715,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 4.985930426304463e-7,
+          "discreteRelErrorUnroundedDenominator": 0.0000019963901924935357,
+          "continuumRelError": 0.07412952656798222
+        },
+        {
+          "N": 32,
+          "h": 0.25,
+          "dt": 0.0048,
+          "steps": 125,
+          "measured": 0.05035479098557143,
+          "exactDiscrete": 0.05035474395741735,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 9.339369122507435e-7,
+          "discreteRelErrorUnroundedDenominator": 0.00000565581732625553,
+          "continuumRelError": 0.01720082138047685
+        },
+        {
+          "N": 64,
+          "h": 0.125,
+          "dt": 0.0012,
+          "steps": 500,
+          "measured": 0.04971450524325187,
+          "exactDiscrete": 0.049714653965248025,
+          "continuum": 0.04950329367335084,
+          "discreteRelError": 0.0000029915122462531585,
+          "discreteRelErrorUnroundedDenominator": 0.000016630766345171466,
+          "continuumRelError": 0.004266616506261478
+        }
+      ],
+      "orders": [
+        2.1075708388507186,
+        2.0113131101369564
+      ]
+    }
+  ],
+  "excitable": {
+    "nagumoFront": {
+      "v0": -0.2,
+      "roots": [
+        -0.8788850662499731,
+        -0.2091488484413163,
+        1.0880339146912896
+      ],
+      "exactSpeed": 0.4436717070306368,
+      "levels": [
+        {
+          "scale": 4,
+          "h": 0.25,
+          "dt": 0.00625,
+          "steps": 2560,
+          "speed": 0.442275773264376,
+          "vFrozenMaxDev": 0,
+          "relError": 0.003146321354596582
+        },
+        {
+          "scale": 8,
+          "h": 0.125,
+          "dt": 0.0015625,
+          "steps": 10240,
+          "speed": 0.4433228874794863,
+          "vFrozenMaxDev": 0,
+          "relError": 0.0007862109429629394
+        },
+        {
+          "scale": 16,
+          "h": 0.0625,
+          "dt": 0.000390625,
+          "steps": 40960,
+          "speed": 0.4435781185957524,
+          "vFrozenMaxDev": 0,
+          "relError": 0.00021094073253113965
+        }
+      ],
+      "orders": [
+        2.0006776809366187,
+        1.8980787386159492
+      ]
+    },
+    "barkleyKinetics": {
+      "params": {
+        "a": 0.75,
+        "b": 0.01,
+        "eps": 0.02
+      },
+      "start": [
+        0.1,
+        0
+      ],
+      "times": [
+        0.1,
+        0.2,
+        0.25,
+        0.3,
+        0.35,
+        0.4
+      ],
+      "reference": "Float64 RK4, dt = 1e-5",
+      "referenceSensitivity": 2.7755575615628914e-15,
+      "levels": [
+        {
+          "dt": 0.002,
+          "maxError": 0.014891953961928328
+        },
+        {
+          "dt": 0.001,
+          "maxError": 0.0074424166422562
+        },
+        {
+          "dt": 0.0005,
+          "maxError": 0.0037489552241043445
+        }
+      ],
+      "orders": [
+        1.0006899982934043,
+        0.9892825630454516
+      ]
+    },
+    "barkleySaturationFinding": {
+      "start": [
+        0.6,
+        0.05
+      ],
+      "gpu": [
+        {
+          "t": 3,
+          "u": 0.999998927116394,
+          "v": 0.9519708752632141
+        },
+        {
+          "t": 6,
+          "u": 0.999998927116394,
+          "v": 0.9976109862327576
+        }
+      ],
+      "note": "u = 1 is a root of the Barkley reaction for every v, so near it the Euler increment dt u(1 - u)(u - (v + b)/a)/eps falls below half a float32 ulp of 1 and is lost (stagnation). A uniform excited cell therefore stays excited after (v + b)/a exceeds 1, where the exact ODE recovers. In space, diffusion from neighbours below 1 supplies increments above the rounding floor."
+    }
+  },
+  "turing": {
+    "rest": [
+      {
+        "model": "schnak",
+        "u0": 1,
+        "v0": 0.9,
+        "relDrift": 2.6490953208835322e-8
+      },
+      {
+        "model": "bruss",
+        "u0": 4.5,
+        "v0": 2,
+        "relDrift": 3.1789143883909077e-7
+      },
+      {
+        "model": "gm",
+        "u0": 1.52,
+        "v0": 1.5402666666666667,
+        "relDrift": 7.968199881025484e-7
+      },
+      {
+        "model": "le",
+        "u0": 2,
+        "v0": 5,
+        "relDrift": 7.629394531694089e-7
+      }
+    ],
+    "growth": [
+      {
+        "model": "schnak",
+        "params": {
+          "tmodel": "schnak",
+          "D": 100,
+          "sa": 0.1,
+          "sb": 0.9
+        },
+        "kFastest": 0.3439425,
+        "wavelength": 18.268127106070306,
+        "cellsPerWavelength": 16,
+        "dt": 0.002346500165368646,
+        "measured": 0.5453495569565436,
+        "discrete": 0.545485388806917,
+        "lattice": 0.5471154445017916,
+        "continuum": 0.547142090030837,
+        "relErrorToDiscrete": 0.0002490109784066788,
+        "roundBound": 0.002556999606713163
+      },
+      {
+        "model": "bruss",
+        "params": {
+          "tmodel": "bruss",
+          "D": 8,
+          "ba": 4.5,
+          "bb": 9
+        },
+        "kFastest": 1.4490975000000001,
+        "wavelength": 4.3359299889618095,
+        "cellsPerWavelength": 16,
+        "dt": 0.001652369138892629,
+        "measured": 1.1080119086003768,
+        "discrete": 1.109236866756778,
+        "lattice": 1.1258786522791198,
+        "continuum": 1.1260665257727744,
+        "relErrorToDiscrete": 0.0011043251384014986,
+        "roundBound": 0.003631149879754489
+      },
+      {
+        "model": "gm",
+        "params": {
+          "tmodel": "gm",
+          "D": 40,
+          "ga": 0.02,
+          "gb": 1,
+          "gc": 1.5,
+          "gK": 0
+        },
+        "kFastest": 0.47123000000000004,
+        "wavelength": 13.333585101075029,
+        "cellsPerWavelength": 16,
+        "dt": 0.003125118017243144,
+        "measured": 0.4768133809951957,
+        "discrete": 0.4771815606571851,
+        "lattice": 0.4790102714124709,
+        "continuum": 0.47905233718666196,
+        "relErrorToDiscrete": 0.0007715714360008191,
+        "roundBound": 0.0019199274929440787
+      },
+      {
+        "model": "le",
+        "params": {
+          "tmodel": "le",
+          "D": 1.5,
+          "la": 10,
+          "lb": 0.2,
+          "lsig": 20
+        },
+        "kFastest": 0.7213125,
+        "wavelength": 8.710767257159118,
+        "cellsPerWavelength": 16,
+        "dt": 0.001778378114259267,
+        "measured": 0.29127306841186745,
+        "discrete": 0.291847830131295,
+        "lattice": 0.2945818427322937,
+        "continuum": 0.29468014677340015,
+        "relErrorToDiscrete": 0.0019693883595741707,
+        "roundBound": 0.003373860683445899
+      }
+    ],
+    "spatial": {
+      "model": "schnak",
+      "k": 0.257956875,
+      "kOverKFastest": 0.75,
+      "sigmaContinuum": 0.5130655735920757,
+      "levels": [
+        {
+          "W": 6,
+          "h": 4.059583801348958,
+          "dt": 0.02966439715231474,
+          "sigma": 0.4834172623660701,
+          "discrete": 0.4835877040014811,
+          "error": 0.02964831122600564,
+          "roundBound": 0.00020226266420289666
+        },
+        {
+          "W": 12,
+          "h": 2.029791900674479,
+          "dt": 0.007416099288078685,
+          "sigma": 0.5054757365397008,
+          "discrete": 0.5056483622515885,
+          "error": 0.007589837052374926,
+          "roundBound": 0.0008090506568115866
+        },
+        {
+          "W": 24,
+          "h": 1.0148959503372394,
+          "dt": 0.0018540248220196712,
+          "sigma": 0.5110146398961267,
+          "discrete": 0.5112079997313775,
+          "error": 0.0020509336959489977,
+          "roundBound": 0.0032362026272463465
+        }
+      ],
+      "richardson": {
+        "order": 1.9936607289515393,
+        "extrapolated": 0.5128717977322053
+      },
+      "extrapolatedRelError": 0.0003776824442025539
+    },
+    "threshold": {
+      "Dc": 8.567627457812103,
+      "kc": 0.5845004589389763,
+      "runs": [
+        {
+          "D": 8.139246084921497,
+          "dt": 0.00998247851653851,
+          "measured": -0.020379471748495744,
+          "discrete": -0.020345138244722154,
+          "lattice": -0.020546146670150423,
+          "continuum": -0.02031543187444962,
+          "roundBound": 0.0020373223172464976
+        },
+        {
+          "D": 8.996008830702708,
+          "dt": 0.009031766276868174,
+          "measured": 0.018289734363219356,
+          "discrete": 0.01840955427792014,
+          "lattice": 0.018577369463329774,
+          "continuum": 0.01846206726993027,
+          "roundBound": 0.0006643218852293573
+        }
+      ]
+    },
+    "spectrum": {
+      "grid": [
+        128,
+        128
+      ],
+      "scale": 0.6,
+      "dt": 0.008333333333333333,
+      "spectralBin": 0.02945243112740431,
+      "linearTime": 7.310715210695195,
+      "linearMaxRelDeviation": 0.023444652557373047,
+      "kMeasuredLinear": 0.33115492080809517,
+      "kFastestContinuum": 0.3439425,
+      "kFastestLatticeAxis": 0.3493669621798516,
+      "kFastestLatticeDiagonal": 0.3493669621798516,
+      "patternTime": 30,
+      "kMeasuredPattern": 0.40787143830502215,
+      "cells": {
+        "measuredLinear": 11.384131557243027,
+        "fastestLattice": 10.790691715054123,
+        "measuredPattern": 9.242890848092348,
+        "statusLine": 12,
+        "onsetCritical": 11.92150591895532
+      },
+      "note": "The status line reports 2 pi (Du Dv/det)^(1/4), the critical wavelength at onset. Far above onset (D = 100 against D_c = 8.57) the fastest-growing and the saturated wavelengths are shorter."
+    },
+    "stable": {
+      "D": 7.710864712030893,
+      "time": 100,
+      "rmsRatio": 0.018775418525635537
+    }
+  },
+  "cyclic": {
+    "neutral": {
+      "a": 0.6,
+      "b": 1.4,
+      "start": [
+        0.5,
+        0.2,
+        0.1
+      ],
+      "levels": [
+        {
+          "dt": 0.04,
+          "sumError": 0.0010337832616720277,
+          "invariantRelDrift": 0.02251519636030841
+        },
+        {
+          "dt": 0.02,
+          "sumError": 0.0005148354219350892,
+          "invariantRelDrift": 0.011246735898863713
+        },
+        {
+          "dt": 0.01,
+          "sumError": 0.00025688142050839247,
+          "invariantRelDrift": 0.00562034108080578
+        }
+      ],
+      "sumOrders": [
+        1.0057505254011132,
+        1.0030087698732955
+      ],
+      "invariantOrders": [
+        1.001392706001652,
+        1.000776762979193
+      ]
+    },
+    "monotone": [
+      {
+        "a": 0.6,
+        "b": 1.6,
+        "expectedSign": -1,
+        "ratioStart": 0.01880135977298417,
+        "ratioEnd": 0.0010784724294388382
+      },
+      {
+        "a": 0.5,
+        "b": 1.3,
+        "expectedSign": 1,
+        "ratioStart": 0.02025319927851833,
+        "ratioEnd": 0.035425761003068594
+      }
+    ],
+    "focus": [
+      {
+        "a": 0.6,
+        "b": 1.6,
+        "fixedPoint": 0.3125,
+        "lambda": [
+          0.03125000000000003,
+          0.27063293868263705
+        ],
+        "levels": [
+          {
+            "dt": 0.04,
+            "measured": [
+              0.032804079187687324,
+              0.27023510011887025
+            ],
+            "eulerExact": [
+              0.03269158811023495,
+              0.2702845385293829
+            ],
+            "continuum": [
+              0.03125000000000003,
+              0.27063293868263705
+            ],
+            "errorContinuum": 0.001604193767729707,
+            "errorEuler": 0.00012287554248267916
+          },
+          {
+            "dt": 0.02,
+            "measured": [
+              0.032079841378490286,
+              0.2704143343981267
+            ],
+            "eulerExact": [
+              0.03197173494550695,
+              0.2704612608416896
+            ],
+            "continuum": [
+              0.03125000000000003,
+              0.27063293868263705
+            ],
+            "errorContinuum": 0.0008581518202864237,
+            "errorEuler": 0.00011785199174321601
+          },
+          {
+            "dt": 0.01,
+            "measured": [
+              0.03171388089284207,
+              0.2705025223636641
+            ],
+            "eulerExact": [
+              0.03161109902800596,
+              0.27054773220703393
+            ],
+            "continuum": [
+              0.03125000000000003,
+              0.27063293868263705
+            ],
+            "errorContinuum": 0.0004818650215551852,
+            "errorEuler": 0.00011228553636471072
+          }
+        ],
+        "orders": [
+          0.9025436024907535,
+          0.8326038252424058
+        ]
+      },
+      {
+        "a": 0.5,
+        "b": 1.3,
+        "fixedPoint": 0.35714285714285715,
+        "lambda": [
+          -0.035714285714285705,
+          0.24743582965269675
+        ],
+        "levels": [
+          {
+            "dt": 0.04,
+            "measured": [
+              -0.034512982675809795,
+              0.2478159011472419
+            ],
+            "eulerExact": [
+              -0.03451188470548876,
+              0.24778170131804325
+            ],
+            "continuum": [
+              -0.035714285714285705,
+              0.24743582965269675
+            ],
+            "errorContinuum": 0.0012599933853863,
+            "errorEuler": 0.000034217449584122366
+          },
+          {
+            "dt": 0.02,
+            "measured": [
+              -0.03510930176900476,
+              0.2476408391126971
+            ],
+            "eulerExact": [
+              -0.035113933940119815,
+              0.24761067167497589
+            ],
+            "continuum": [
+              -0.035714285714285705,
+              0.24743582965269675
+            ],
+            "errorContinuum": 0.0006387757452638093,
+            "errorEuler": 0.00003052099781957883
+          },
+          {
+            "dt": 0.01,
+            "measured": [
+              -0.035434973086364695,
+              0.2475450659593953
+            ],
+            "eulerExact": [
+              -0.03541432449754991,
+              0.24752372565317696
+            ],
+            "continuum": [
+              -0.035714285714285705,
+              0.24743582965269675
+            ],
+            "errorContinuum": 0.00029991351222857316,
+            "errorEuler": 0.000029694660960087247
+          }
+        ],
+        "orders": [
+          0.9800347211787517,
+          1.0907630112138285
+        ]
+      }
+    ]
+  },
+  "chemotaxis": {
+    "massBalance": [
+      {
+        "laplacian": 5,
+        "mass": 1273.2586697898805,
+        "residual": 8.337967607948988e-12
+      },
+      {
+        "laplacian": 9,
+        "mass": 1273.2586697898805,
+        "residual": 6.68982929202635e-10
+      }
+    ],
+    "rest": {
+      "u0": 1,
+      "v0": 5,
+      "relDrift": 0
+    },
+    "threshold": {
+      "a": 0.2,
+      "D": 0.2,
+      "cStar": 1.5999999999999999,
+      "kc": 1,
+      "runs": [
+        {
+          "c": 1.5199999999999998,
+          "dt": 0.01451791965379907,
+          "measured": -0.016397296299149405,
+          "discrete": -0.016691981009680154,
+          "lattice": -0.016689958665257798,
+          "continuum": -0.016784043380076774
+        },
+        {
+          "c": 1.68,
+          "dt": 0.013823835845649312,
+          "measured": 0.016808186364951648,
+          "discrete": 0.016430627598200836,
+          "lattice": 0.016432493719216845,
+          "continuum": 0.016552506059643868
+        }
+      ]
+    },
+    "growth": {
+      "c": 3.5,
+      "kFastest": 1.4513875,
+      "kRefinement": 1.088540625,
+      "sigmaContinuum": 0.3735153820494983,
+      "spatial": [
+        {
+          "W": 6,
+          "h": 0.9620197236061793,
+          "dt": 0.05373766153203734,
+          "sigma": 0.3557482174791604,
+          "discrete": 0.35558937241915123,
+          "lattice": 0.3590085130706706,
+          "error": 0.01776716457033789,
+          "relErrorToDiscrete": 0.00044670924479133233
+        },
+        {
+          "W": 12,
+          "h": 0.48100986180308963,
+          "dt": 0.013434415383009334,
+          "sigma": 0.3692611326555453,
+          "discrete": 0.3691126240955288,
+          "lattice": 0.3700293188210926,
+          "error": 0.004254249393953025,
+          "relErrorToDiscrete": 0.0004023394225011233
+        },
+        {
+          "W": 24,
+          "h": 0.24050493090154482,
+          "dt": 0.0033586038457523336,
+          "sigma": 0.3727162565290015,
+          "discrete": 0.37241990793951707,
+          "lattice": 0.3726529185276215,
+          "error": 0.000799125520496824,
+          "relErrorToDiscrete": 0.0007957377765437182
+        }
+      ],
+      "richardson": {
+        "order": 1.967529604294687,
+        "extrapolated": 0.37390318521158916
+      },
+      "extrapolatedRelError": 0.0010382521864640282
+    },
+    "hint": {
+      "text": "Chemotactic strength. Patterns need c/2 − D − a > 2√(aD); at the defaults that is c > 1.6. Around 3.3 to 3.6 the aggregates are spots and short worms.",
+      "stated": 1.6,
+      "derived": 1.5999999999999999
+    }
+  },
+  "vegetation": {
+    "states": [
+      {
+        "a": 1.1,
+        "w": 0.23377223398316205,
+        "n": 1.924950591148529,
+        "relDrift": 6.73979766441235e-8
+      },
+      {
+        "a": 1.6,
+        "w": 0.13856217223385237,
+        "n": 3.247639617258106,
+        "relDrift": 1.1949844669345566e-8
+      }
+    ],
+    "desert": {
+      "a": 0.8,
+      "twoM": 0.9,
+      "final": [
+        0.7999972105026245,
+        1.6392433156183797e-37
+      ]
+    },
+    "flatOnset": {
+      "a": 1.1,
+      "m": 0.45,
+      "Dn": 1,
+      "DwCritical": 42.3814793048686,
+      "kc": 0.41168815117699203,
+      "runs": [
+        {
+          "Dw": 40.26240533962517,
+          "dt": 0.004067764710353076,
+          "measured": -0.009174178339081435,
+          "discrete": -0.00899431380152371,
+          "lattice": -0.009006536948131583,
+          "continuum": -0.008963393987346358
+        },
+        {
+          "Dw": 44.50055327011203,
+          "dt": 0.003680358547462306,
+          "measured": 0.008405299063726552,
+          "discrete": 0.008411045806630062,
+          "lattice": 0.00842206656663258,
+          "continuum": 0.008412753067902123
+        }
+      ]
+    },
+    "slope": {
+      "params": {
+        "a": 1.1,
+        "slope": 40,
+        "Dw": 1,
+        "Dn": 1
+      },
+      "kFastest": 0.28807,
+      "continuum": [
+        0.26419533323891553,
+        -0.23935909505400677
+      ],
+      "phaseVelocityContinuum": 0.830906012615013,
+      "fastest": {
+        "W": 32,
+        "dt": 0.010699160062143382,
+        "measured": [
+          0.24793104003285413,
+          -0.22149071728587771
+        ],
+        "discrete": [
+          0.24806392552018144,
+          -0.2214480262866719
+        ],
+        "lattice": [
+          0.24929189327108192,
+          -0.2233901477464535
+        ],
+        "phaseVelocity": 0.7688781104796671,
+        "relErrorToDiscrete": 0.00041973781224472265
+      },
+      "refinement": {
+        "k": 0.21605249999999998,
+        "continuum": [
+          0.24410026435241727,
+          -0.28447515932624423
+        ],
+        "levels": [
+          {
+            "W": 16,
+            "dt": 0.03101083830118874,
+            "sigma": 0.2157120333076919,
+            "omega": -0.23646673823494097,
+            "discrete": [
+              0.21579346128225343,
+              -0.23645030861038574
+            ],
+            "relErrorToDiscrete": 0.00025949468537817883
+          },
+          {
+            "W": 32,
+            "dt": 0.014736914691945165,
+            "sigma": 0.22911654570470683,
+            "omega": -0.2596897045523964,
+            "discrete": [
+              0.2292187945285545,
+              -0.25965584178803514
+            ],
+            "relErrorToDiscrete": 0.0003109815631212273
+          },
+          {
+            "W": 64,
+            "dt": 0.006703916788583969,
+            "sigma": 0.23638521294853077,
+            "omega": -0.2720055231145734,
+            "discrete": [
+              0.23650090976087476,
+              -0.2719568024508522
+            ],
+            "relErrorToDiscrete": 0.0003483192081829523
+          }
+        ],
+        "richardsonSigma": {
+          "order": 0.8829559745198542,
+          "extrapolated": 0.24499584802525898
+        },
+        "richardsonOmega": {
+          "order": 0.9150397436612292,
+          "extrapolated": -0.2859119439552608
+        },
+        "extrapolatedRelError": 0.004516631706363114
+      }
+    },
+    "water": {
+      "params": {
+        "a": 0,
+        "slope": 12,
+        "Dw": 0.5,
+        "Dn": 1
+      },
+      "rows": [
+        {
+          "W": 32,
+          "h": 0.3125,
+          "dt": 0.005172413793103448,
+          "steps": 58,
+          "measured": [
+            -0.37068061240668776,
+            0.45241523912466775
+          ],
+          "exactDiscrete": [
+            -0.370679076244963,
+            0.45241336239011254
+          ],
+          "continuum": [
+            -0.4450636972234151,
+            0.5379895926486826
+          ],
+          "discreteError": 0.000004146630998384093,
+          "continuumError": 0.16238877703156648
+        },
+        {
+          "W": 64,
+          "h": 0.15625,
+          "dt": 0.002586206896551724,
+          "steps": 116,
+          "measured": [
+            -0.4070332845248147,
+            0.49262192597537346
+          ],
+          "exactDiscrete": [
+            -0.4070348944967337,
+            0.4926237980413301
+          ],
+          "continuum": [
+            -0.4450636972234151,
+            0.5379895926486826
+          ],
+          "discreteError": 0.000003863901353602741,
+          "continuumError": 0.0847855002234877
+        },
+        {
+          "W": 128,
+          "h": 0.078125,
+          "dt": 0.0012195121951219512,
+          "steps": 246,
+          "measured": [
+            -0.42554975991458005,
+            0.5143143662577039
+          ],
+          "exactDiscrete": [
+            -0.42554900856896,
+            0.5143136814759811
+          ],
+          "continuum": [
+            -0.4450636972234151,
+            0.5379895926486826
+          ],
+          "discreteError": 0.0000015228819113205842,
+          "continuumError": 0.04394126858408238
+        }
+      ],
+      "orders": [
+        0.9375624634567963,
+        0.9482410392995995
+      ]
+    }
+  },
+  "checks": [
+    {
+      "technique": "excitable",
+      "name": "independent Float64 update, excitable/barkley 5-point",
+      "value": 1.0524100846343032e-7,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "independent Float64 update, excitable/barkley 9-point",
+      "value": 9.674931200631676e-8,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "independent Float64 update, excitable/fhn 5-point",
+      "value": 8.710208909690209e-8,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "independent Float64 update, excitable/fhn 9-point",
+      "value": 1.0217841983628517e-7,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/schnak 5-point",
+      "value": 0.0000014079765648933318,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/schnak 9-point",
+      "value": 0.0000014978676063925889,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/bruss 5-point",
+      "value": 0.0000037038588329707522,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/bruss 9-point",
+      "value": 0.000003697827266613274,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/gm 5-point",
+      "value": 0.000002026728614268336,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/gm 9-point",
+      "value": 0.0000020139005627584083,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/le 5-point",
+      "value": 0.000001416377762630816,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "independent Float64 update, turing/le 9-point",
+      "value": 0.00000151087086930346,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "independent Float64 update, cyclic 5-point",
+      "value": 5.3018119561265564e-8,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "independent Float64 update, cyclic 9-point",
+      "value": 6.824361731272433e-8,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "independent Float64 update, chemotaxis 5-point",
+      "value": 0.0000011206271697261627,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "independent Float64 update, chemotaxis 9-point",
+      "value": 0.000001287785105219541,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "independent Float64 update, vegetation 5-point",
+      "value": 0.0000010393319098689346,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "independent Float64 update, vegetation 9-point",
+      "value": 0.0000011222364706409138,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0, 5-point: exact discrete mode factor",
+      "value": 0.000018895190389334182,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0586457044462083,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0008790379120415803
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0, 9-point: exact discrete mode factor",
+      "value": 0.000005716281028300685,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.019793829451797,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.004471873196041809
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0, 5-point: exact discrete mode factor",
+      "value": 0.0000010328870854170447,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0135665386305233,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0016094867513496425
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0, 9-point: exact discrete mode factor",
+      "value": 0.0000011201763695511957,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.0082347267029474,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0035135921497730926
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0, 5-point: exact discrete mode factor",
+      "value": 7.17653747539515e-7,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0944297782107024,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0007213390480118598
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0, 9-point: exact discrete mode factor",
+      "value": 0.000001113346939751736,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.029362596614028,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0035839342895249704
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0, 5-point: exact discrete mode factor",
+      "value": 0.0000013734541539633938,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0950752712832954,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0007213390480118598
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0, 9-point: exact discrete mode factor",
+      "value": 0.000001113346939751736,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.0293836212019083,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0035839342895249704
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0, 5-point: exact discrete mode factor",
+      "value": 0.0000023976020575577905,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0193445581441214,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.002914519594710674
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0, 9-point: exact discrete mode factor",
+      "value": 0.0000022044931334841422,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.016504815925517,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.005061653419826451
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0, 5-point: exact discrete mode factor",
+      "value": 7.230857708151461e-7,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0, 5-point: continuum convergence order (formal 2)",
+      "value": 2.0199887331988253,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0020544226035836832
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0, 9-point: exact discrete mode factor",
+      "value": 9.375685504631193e-7,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0, 9-point: continuum convergence order (formal 2)",
+      "value": 2.0323059286631566,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.0029153561027746022
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat, 5-point: exact discrete mode factor",
+      "value": 0.000002572288976931958,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat, 5-point: continuum convergence order (formal 2)",
+      "value": 2.000966941848571,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.001164597577635984
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat, 9-point: exact discrete mode factor",
+      "value": 0.0000029915122462531585,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat, 9-point: continuum convergence order (formal 2)",
+      "value": 2.0113131101369564,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "finestRelError": 0.004266616506261478
+    },
+    {
+      "technique": "excitable",
+      "name": "reference self-check: exact Nagumo profile satisfies the traveling-wave ODE (Float64, no GPU)",
+      "value": 1.0512641851478932e-7,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Nagumo front speed against exact c = (u1 + u3 - 2u2)/sqrt(2), h = 1/16",
+      "value": 0.00021094073253113965,
+      "tolerance": 0.005,
+      "pass": true,
+      "measured": 0.4435781185957524,
+      "exact": 0.4436717070306368
+    },
+    {
+      "technique": "excitable",
+      "name": "Nagumo front speed convergence order (formal 2)",
+      "value": 1.8980787386159492,
+      "tolerance": [
+        1.7,
+        2.3
+      ],
+      "pass": true,
+      "orders": [
+        2.0006776809366187,
+        1.8980787386159492
+      ]
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley upstroke kinetics: forward Euler order against RK4 (formal 1)",
+      "value": 0.9892825630454516,
+      "tolerance": [
+        0.85,
+        1.2
+      ],
+      "pass": true,
+      "levels": [
+        {
+          "dt": 0.002,
+          "maxError": 0.014891953961928328
+        },
+        {
+          "dt": 0.001,
+          "maxError": 0.0074424166422562
+        },
+        {
+          "dt": 0.0005,
+          "maxError": 0.0037489552241043445
+        }
+      ]
+    },
+    {
+      "technique": "turing",
+      "name": "schnak: analytic uniform steady state held for 2000 steps",
+      "value": 2.6490953208835322e-8,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "bruss: analytic uniform steady state held for 2000 steps",
+      "value": 3.1789143883909077e-7,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "gm: analytic uniform steady state held for 2000 steps",
+      "value": 7.968199881025484e-7,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "le: analytic uniform steady state held for 2000 steps",
+      "value": 7.629394531694089e-7,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "turing",
+      "name": "schnak: fastest-mode growth rate equals the exact discrete linear rate",
+      "value": 0.0002490109784066788,
+      "tolerance": 0.01,
+      "pass": true,
+      "measured": 0.5453495569565436,
+      "discrete": 0.545485388806917,
+      "lattice": 0.5471154445017916,
+      "continuum": 0.547142090030837
+    },
+    {
+      "technique": "turing",
+      "name": "bruss: fastest-mode growth rate equals the exact discrete linear rate",
+      "value": 0.0011043251384014986,
+      "tolerance": 0.01,
+      "pass": true,
+      "measured": 1.1080119086003768,
+      "discrete": 1.109236866756778,
+      "lattice": 1.1258786522791198,
+      "continuum": 1.1260665257727744
+    },
+    {
+      "technique": "turing",
+      "name": "gm: fastest-mode growth rate equals the exact discrete linear rate",
+      "value": 0.0007715714360008191,
+      "tolerance": 0.01,
+      "pass": true,
+      "measured": 0.4768133809951957,
+      "discrete": 0.4771815606571851,
+      "lattice": 0.4790102714124709,
+      "continuum": 0.47905233718666196
+    },
+    {
+      "technique": "turing",
+      "name": "le: fastest-mode growth rate equals the exact discrete linear rate",
+      "value": 0.0019693883595741707,
+      "tolerance": 0.01,
+      "pass": true,
+      "measured": 0.29127306841186745,
+      "discrete": 0.291847830131295,
+      "lattice": 0.2945818427322937,
+      "continuum": 0.29468014677340015
+    },
+    {
+      "technique": "turing",
+      "name": "schnak, k = 0.75 k_max: observed order of the growth rate (formal 2) and extrapolated limit = continuum within 2e-3",
+      "value": 1.9936607289515393,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "extrapolatedRelError": 0.0003776824442025539
+    },
+    {
+      "technique": "turing",
+      "name": "schnak: D = 0.95 D_c critical mode decays (exact discrete rate within 5%)",
+      "value": 0.00003433350377358979,
+      "tolerance": 0.0010172569122361079,
+      "pass": true,
+      "measured": -0.020379471748495744,
+      "discrete": -0.020345138244722154,
+      "continuum": -0.02031543187444962
+    },
+    {
+      "technique": "turing",
+      "name": "schnak: D = 1.05 D_c critical mode grows (exact discrete rate within 5%)",
+      "value": 0.00011981991470078404,
+      "tolerance": 0.000920477713896007,
+      "pass": true,
+      "measured": 0.018289734363219356,
+      "discrete": 0.01840955427792014,
+      "continuum": 0.01846206726993027
+    },
+    {
+      "technique": "turing",
+      "name": "schnak default: dominant FFT wavenumber in the linear regime against the fastest-growing lattice mode",
+      "value": 0.018212041371756416,
+      "tolerance": 0.02945243112740431,
+      "pass": true,
+      "kMeasured": 0.33115492080809517,
+      "kPredicted": 0.3493669621798516,
+      "maxRelDeviation": 0.023444652557373047
+    },
+    {
+      "technique": "turing",
+      "name": "schnak: D = 0.9 D_c, noise decays (no pattern)",
+      "value": 0.018775418525635537,
+      "tolerance": 0.1,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "reference self-check: S and ln(P/S^3) identities at 1000 random points (Float64, no GPU)",
+      "value": 1.6792123247455493e-15,
+      "tolerance": 1e-12,
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "a + b = 2: total population follows the exact logistic solution (Euler order 1)",
+      "value": 1.0030087698732955,
+      "tolerance": [
+        0.85,
+        1.2
+      ],
+      "pass": true,
+      "finestError": 0.00025688142050839247
+    },
+    {
+      "technique": "cyclic",
+      "name": "a + b = 2: first integral uvw/(u+v+w)^3 conserved (drift order 1)",
+      "value": 1.000776762979193,
+      "tolerance": [
+        0.85,
+        1.2
+      ],
+      "pass": true,
+      "finestRelDrift": 0.00562034108080578
+    },
+    {
+      "technique": "cyclic",
+      "name": "a + b = 2.2: uvw/(u+v+w)^3 decreases monotonically",
+      "value": 0.05736140590152975,
+      "tolerance": "< 1",
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "a + b = 1.8: uvw/(u+v+w)^3 increases monotonically",
+      "value": 1.7491439508346283,
+      "tolerance": "> 1",
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "a = 0.6, b = 1.6: fixed-point eigenvalue matches exact Euler recurrence",
+      "value": 0.00012287554248267916,
+      "tolerance": 0.0002,
+      "pass": true,
+      "lambda": [
+        0.03125000000000003,
+        0.27063293868263705
+      ],
+      "type": "unstable focus"
+    },
+    {
+      "technique": "cyclic",
+      "name": "a = 0.6, b = 1.6: eigenvalue converges to -x*(1 + a w + b w^2) (formal order 1)",
+      "value": 0.8326038252424058,
+      "tolerance": [
+        0.8,
+        1.25
+      ],
+      "pass": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "a = 0.5, b = 1.3: fixed-point eigenvalue matches exact Euler recurrence",
+      "value": 0.000034217449584122366,
+      "tolerance": 0.0002,
+      "pass": true,
+      "lambda": [
+        -0.035714285714285705,
+        0.24743582965269675
+      ],
+      "type": "stable focus"
+    },
+    {
+      "technique": "cyclic",
+      "name": "a = 0.5, b = 1.3: eigenvalue converges to -x*(1 + a w + b w^2) (formal order 1)",
+      "value": 1.0907630112138285,
+      "tolerance": [
+        0.8,
+        1.25
+      ],
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "discrete mass balance sum(du) = dt sum u(1-u), 5-point",
+      "value": 8.337967607948988e-12,
+      "tolerance": 0.000001,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "discrete mass balance sum(du) = dt sum u(1-u), 9-point",
+      "value": 6.68982929202635e-10,
+      "tolerance": 0.000001,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "uniform steady state (1, 1/a) held for 2000 steps",
+      "value": 0,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "c = 0.95 c*: critical mode decays (exact discrete rate within 5%)",
+      "value": 0.00029468471053074874,
+      "tolerance": 0.0008345990504840077,
+      "pass": true,
+      "measured": -0.016397296299149405,
+      "discrete": -0.016691981009680154,
+      "continuum": -0.016784043380076774
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "c = 1.05 c*: critical mode grows (exact discrete rate within 5%)",
+      "value": 0.0003775587667508122,
+      "tolerance": 0.0008215313799100418,
+      "pass": true,
+      "measured": 0.016808186364951648,
+      "discrete": 0.016430627598200836,
+      "continuum": 0.016552506059643868
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "c = 3.5, k = 0.75 k_max: growth rate equals the exact discrete linear rate",
+      "value": 0.0007957377765437182,
+      "tolerance": 0.01,
+      "pass": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "c = 3.5, k = 0.75 k_max: observed order of the growth rate (formal 2) and extrapolated limit = continuum within 2e-3",
+      "value": 1.967529604294687,
+      "tolerance": [
+        1.75,
+        2.25
+      ],
+      "pass": true,
+      "extrapolatedRelError": 0.0010382521864640282
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "UI hint threshold at the defaults equals c* = 2(sqrt a + sqrt D)^2",
+      "value": 1.6,
+      "tolerance": 1.5999999999999999,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "a = 1.1: vegetated uniform state n = (a + sqrt(a^2 - 4m^2))/2m held",
+      "value": 6.73979766441235e-8,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "a = 1.6: vegetated uniform state n = (a + sqrt(a^2 - 4m^2))/2m held",
+      "value": 1.1949844669345566e-8,
+      "tolerance": 0.00001,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "a = 0.8 < 2m: cover collapses to the desert state (a, 0)",
+      "value": 0.00000278949737553269,
+      "tolerance": 0.0001,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "flat ground, Dw = 0.95 Dw_c: critical mode decays (exact discrete rate within 5%)",
+      "value": 0.0001798645375577241,
+      "tolerance": 0.00044971569007618554,
+      "pass": true,
+      "measured": -0.009174178339081435,
+      "discrete": -0.00899431380152371,
+      "continuum": -0.008963393987346358
+    },
+    {
+      "technique": "vegetation",
+      "name": "flat ground, Dw = 1.05 Dw_c: critical mode grows (exact discrete rate within 5%)",
+      "value": 0.00000574674290351046,
+      "tolerance": 0.0004205522903315031,
+      "pass": true,
+      "measured": 0.008405299063726552,
+      "discrete": 0.008411045806630062,
+      "continuum": 0.008412753067902123
+    },
+    {
+      "technique": "vegetation",
+      "name": "slope v = 40: fastest mode complex rate equals the exact discrete rate",
+      "value": 0.00041973781224472265,
+      "tolerance": 0.01,
+      "pass": true,
+      "measured": [
+        0.24793104003285413,
+        -0.22149071728587771
+      ],
+      "discrete": [
+        0.24806392552018144,
+        -0.2214480262866719
+      ]
+    },
+    {
+      "technique": "vegetation",
+      "name": "slope v = 40: fastest mode grows and migrates uphill (+x, against the water)",
+      "value": 0.7688781104796671,
+      "tolerance": "> 0",
+      "pass": true,
+      "measuredPhaseVelocity": 0.7688781104796671,
+      "continuumPhaseVelocity": 0.830906012615013
+    },
+    {
+      "technique": "vegetation",
+      "name": "slope v = 40, k = 0.75 k_max: observed order of the complex rate (formal 1, upwind) and extrapolated limit = continuum within 1%",
+      "value": 0.8829559745198542,
+      "tolerance": [
+        0.8,
+        1.25
+      ],
+      "pass": true,
+      "omegaOrder": 0.9150397436612292,
+      "extrapolatedRelError": 0.004516631706363114
+    },
+    {
+      "technique": "vegetation",
+      "name": "water advection-diffusion-loss: exact discrete mode factor",
+      "value": 0.000004146630998384093,
+      "tolerance": 0.00002,
+      "pass": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "water advection-diffusion-loss: continuum convergence (formal order 1, upwind), phase moving downhill (-x)",
+      "value": 0.9482410392995995,
+      "tolerance": [
+        0.8,
+        1.25
+      ],
+      "pass": true
+    }
+  ],
+  "controls": [
+    {
+      "technique": "excitable",
+      "name": "reaction sign flip against the independent update",
+      "mutant": [
+        "(v + u_b) / u_a",
+        "(v - u_b) / u_a"
+      ],
+      "value": 0.015320208323422735,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "reaction sign flip against the independent update",
+      "mutant": [
+        "(L.r + a + u * u * v)) / (1.0 + u_dt);",
+        "(L.r + a - u * u * v)) / (1.0 + u_dt);"
+      ],
+      "value": 0.13159769047566616,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "reaction sign flip against the independent update",
+      "mutant": [
+        "u * (1.0 - u - u_a * v - u_b * x)",
+        "u * (1.0 - u + u_a * v - u_b * x)"
+      ],
+      "value": 0.11848086813289588,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "reaction sign flip against the independent update",
+      "mutant": [
+        "float fu = L.r - divF",
+        "float fu = L.r + divF"
+      ],
+      "value": 1.9213446651250599,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "reaction sign flip against the independent update",
+      "mutant": [
+        "wa * pl * pl + u_Dn",
+        "-wa * pl * pl + u_Dn"
+      ],
+      "value": 0.3164826944795718,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "fv = u_D * L.g",
+        "fv = 1.05 * u_D * L.g"
+      ],
+      "value": 0.13065988338791246,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "excitable",
+      "name": "FHN recovery v, eps = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 3.3083574752605003,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "fv = u_D * L.g + u - v",
+        "fv = 1.05 * u_D * L.g + u - v"
+      ],
+      "value": 0.07124802714479406,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley recovery v at u = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 1.1680558737779663,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "(v + u_dt * (u_D * L.g + b)) / (1.0 + u_dt * u * u)",
+        "(v + u_dt * (1.05 * u_D * L.g + b)) / (1.0 + u_dt * u * u)"
+      ],
+      "value": 0.10595507244419622,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "Schnakenberg inhibitor, a = b = u = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 2.2166162506046208,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "u_sig * (u_D * L.g + b * u)",
+        "u_sig * (1.05 * u_D * L.g + b * u)"
+      ],
+      "value": 0.10595458614064512,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "Lengyel-Epstein inhibitor (sigma D), a = u = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 2.216618165322237,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "float fx = u_D * L.b",
+        "float fx = 1.05 * u_D * L.b"
+      ],
+      "value": 0.08003092441187531,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "cyclic",
+      "name": "species w near 0 (linear growth rate 1), u = v = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 1.3872876966426424,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0: diffusion coefficient 5% high",
+      "mutant": [
+        "float fv = u_D * L.g",
+        "float fv = 1.05 * u_D * L.g"
+      ],
+      "value": 0.09698450825702487,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "attractant v at u = 0: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 1.9046586084012893,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat: diffusion coefficient 5% high",
+      "mutant": [
+        "u_v * wx + u_Dw * L.r",
+        "u_v * wx + 1.05 * u_Dw * L.r"
+      ],
+      "value": 0.11427136526164394,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "vegetation",
+      "name": "water w at n = 0, no rain, flat: 5-point stencil centre weight -3.9",
+      "mutant": [
+        "return (n + s + e + w - 4.0 * c) * u_c2;",
+        "return (n + s + e + w - 3.9 * c) * u_c2;"
+      ],
+      "value": 2.545892323330211,
+      "tolerance": 0.00002,
+      "detected": true
+    },
+    {
+      "technique": "excitable",
+      "name": "Nagumo front: recovery coupling sign flipped (+v)",
+      "mutant": [
+        "fu = L.r + u - u * u * u - v;",
+        "fu = L.r + u - u * u * u + v;"
+      ],
+      "value": 1.7487247376435033,
+      "tolerance": 0.005,
+      "detected": true,
+      "measuredSpeed": -0.33218798244635883
+    },
+    {
+      "technique": "excitable",
+      "name": "Nagumo front: activator diffusion 10% high",
+      "mutant": [
+        "fu = L.r + u - u * u * u - v;",
+        "fu = 1.1 * L.r + u - u * u * u - v;"
+      ],
+      "value": 0.04860416094001829,
+      "tolerance": 0.005,
+      "detected": true,
+      "measuredSpeed": 0.46523599808368654
+    },
+    {
+      "technique": "excitable",
+      "name": "Barkley upstroke kinetics: threshold sign flipped (v - b)",
+      "mutant": "(v + u_b) -> (v - u_b)",
+      "value": 0.26395875027363735,
+      "tolerance": 0.037489552241043445,
+      "detected": true
+    },
+    {
+      "technique": "turing",
+      "name": "D = 1.05 D_c critical mode with equal diffusivities (inhibitor D replaced by 1)",
+      "mutant": "u_D * L.g -> L.g (Schnakenberg)",
+      "value": 0.01454098498898352,
+      "tolerance": 0.000920477713896007,
+      "detected": true,
+      "measured": 0.0038685692889366204,
+      "discrete": 0.01840955427792014
+    },
+    {
+      "technique": "cyclic",
+      "name": "a and b swapped for species w only (breaks the cyclic symmetry)",
+      "mutant": [
+        "x * (1.0 - x - u_a * u - u_b * v)",
+        "x * (1.0 - x - u_b * u - u_a * v)"
+      ],
+      "value": 0.9999968982249022,
+      "tolerance": 0.02,
+      "detected": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "non-conservative flux (sensitivity at the cell, not the face)",
+      "mutant": "chiAt(0.5 * (c.r + X.r)) -> chiAt(c.r)",
+      "value": 0.000977272607664937,
+      "tolerance": 0.000001,
+      "detected": true
+    },
+    {
+      "technique": "chemotaxis",
+      "name": "c = 1.05 c*: chemotactic flux sign flipped (chemorepulsion)",
+      "mutant": "L.r - divF -> L.r + divF",
+      "value": 0.016430627598200836,
+      "tolerance": 0.0008215313799100418,
+      "detected": true,
+      "measured": 0,
+      "discrete": 0.016430627598200836
+    },
+    {
+      "technique": "vegetation",
+      "name": "water advected the wrong way (downhill becomes +x)",
+      "mutant": "(e.r - c.r) -> (w.r - c.r)",
+      "value": -0.7688704423284086,
+      "tolerance": "> 0 and within 1% of the discrete rate",
+      "detected": true,
+      "measuredPhaseVelocity": -0.7688704423284086
+    }
+  ],
+  "summary": {
+    "checks": 90,
+    "passed": 90,
+    "controls": 27,
+    "detected": 27
+  },
+  "passed": true
+}

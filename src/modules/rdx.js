@@ -485,6 +485,9 @@ void main(){
         pass.draw(reduceT, Object.assign(viewUniforms(s), { u_block: [gw / RED, gh / RED], u_span: measSpan }));
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+        // Give this readback fresh storage after the previous result was collected.
+        // Reusing STREAM_READ storage retains a fenced shadow allocation in Chromium.
+        gl.bufferData(gl.PIXEL_PACK_BUFFER, redBuf.byteLength, gl.STREAM_READ);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, 0);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);

@@ -1,0 +1,184 @@
+{
+  "passed": true,
+  "scope": "Data contract and bounded analytic regressions, not a scientific status promotion.",
+  "command": "node tools/skin-data-check.js --write",
+  "environment": {
+    "browser": "154.0.8037.58",
+    "node": "v24.21.0"
+  },
+  "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+  "harnessSha256": "5e84726f3daa4ab700c6bafc851d7a9a029ac21a08df38fd9c01df2228230e64",
+  "negativeControls": [
+    "incorrect shape",
+    "normalized periodic corruption",
+    "disordered case ineligible for uniform reference"
+  ],
+  "rows": [
+    {
+      "name": "clean-open",
+      "payload": {
+        "grid": 96,
+        "g": 0.08,
+        "disorder": 0,
+        "bc": "open",
+        "aspect": "4:5"
+      },
+      "seed": "skin-data/clean-open",
+      "grid": {
+        "sites": 96,
+        "modes": 96,
+        "solver": "right",
+        "method": "analytic-open",
+        "boundary": "open",
+        "rowMode": "modes",
+        "aspect": "4:5",
+        "g": 0.08,
+        "disorder": 0,
+        "seed": "skin-data/clean-open",
+        "skinWeight": 0.7798650098170583,
+        "skinStartSite": 86,
+        "meanIPR": 0.11016157876514364,
+        "normalization": "Each row sums to one; probabilities are squared magnitudes, not amplitudes."
+      },
+      "shape": [
+        96,
+        96
+      ],
+      "measures": {
+        "maxUniformError": 0.26336299379666644,
+        "rows": 96,
+        "sites": 96,
+        "maxAnalyticOpenError": 1.4797207348316022e-8
+      },
+      "dataSha256": "1913d1220188945af633c3370450feb8e5e3ab658ecc94501e2e5361d8490468",
+      "provenanceSourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+      "isolated": true,
+      "settingsAndPixelsPreserved": true,
+      "pausePreserved": true
+    },
+    {
+      "name": "clean-periodic",
+      "payload": {
+        "grid": 96,
+        "g": 0.08,
+        "disorder": 0,
+        "bc": "periodic",
+        "view": "modes"
+      },
+      "seed": "skin-data/clean-periodic",
+      "grid": {
+        "sites": 96,
+        "modes": 96,
+        "solver": "right",
+        "method": "periodic-right",
+        "boundary": "periodic",
+        "rowMode": "modes",
+        "aspect": "4:5",
+        "g": 0.08,
+        "disorder": 0,
+        "seed": "skin-data/clean-periodic",
+        "skinWeight": 0.10416666977107525,
+        "skinStartSite": 86,
+        "meanIPR": 0.010416667287548392,
+        "normalization": "Each row sums to one; probabilities are squared magnitudes, not amplitudes."
+      },
+      "shape": [
+        96,
+        96
+      ],
+      "measures": {
+        "maxUniformError": 3.1044085878340066e-10,
+        "rows": 96,
+        "sites": 96
+      },
+      "dataSha256": "b41e298f307f05940216d3b45c377d3b3497a99610b22e2c2266d9d05fd57c3c",
+      "provenanceSourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+      "isolated": true,
+      "settingsAndPixelsPreserved": true,
+      "pausePreserved": true
+    },
+    {
+      "name": "disordered-open",
+      "payload": {
+        "grid": 48,
+        "g": 0.08,
+        "disorder": 0.6,
+        "bc": "open",
+        "aspect": "1:1"
+      },
+      "seed": "skin-data/disordered-open",
+      "grid": {
+        "sites": 48,
+        "modes": 48,
+        "solver": "right",
+        "method": "open-right",
+        "boundary": "open",
+        "rowMode": "modes",
+        "aspect": "1:1",
+        "g": 0.08,
+        "disorder": 0.6,
+        "seed": "skin-data/disordered-open",
+        "skinWeight": 0.2965281279337036,
+        "skinStartSite": 43,
+        "meanIPR": 0.13448918255157608,
+        "normalization": "Each row sums to one; probabilities are squared magnitudes, not amplitudes."
+      },
+      "shape": [
+        48,
+        48
+      ],
+      "measures": {
+        "maxUniformError": 0.4344712297121684,
+        "rows": 48,
+        "sites": 48
+      },
+      "dataSha256": "4a96c473aafa1dcc3c791bb550d057243398bc7afd254d998ef26bb1bbdca179",
+      "provenanceSourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+      "isolated": true,
+      "settingsAndPixelsPreserved": true,
+      "pausePreserved": true
+    },
+    {
+      "name": "legacy-sheet-gram",
+      "payload": {
+        "v": 7,
+        "grid": 48,
+        "g": 0.08,
+        "disorder": 0.6,
+        "bc": "open",
+        "aspect": "4:5"
+      },
+      "seed": "skin-data/legacy-sheet-gram",
+      "grid": {
+        "sites": 48,
+        "modes": 60,
+        "solver": "gram",
+        "method": "legacy-gram-basis",
+        "boundary": "open",
+        "rowMode": "sheet",
+        "aspect": "4:5",
+        "g": 0.08,
+        "disorder": 0.6,
+        "seed": "skin-data/legacy-sheet-gram",
+        "skinWeight": 0.09233863880832362,
+        "skinStartSite": 43,
+        "meanIPR": 0.10988415164306588,
+        "normalization": "Each row sums to one; probabilities are squared magnitudes, not amplitudes."
+      },
+      "shape": [
+        60,
+        48
+      ],
+      "measures": {
+        "maxUniformError": 0.4388846556345622,
+        "rows": 60,
+        "sites": 48
+      },
+      "dataSha256": "c00061a2b6258ffa3fa1b67aa0d8d471bee1110465d53b49de144f921474998d",
+      "provenanceSourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+      "isolated": true,
+      "settingsAndPixelsPreserved": true,
+      "pausePreserved": true
+    }
+  ]
+}

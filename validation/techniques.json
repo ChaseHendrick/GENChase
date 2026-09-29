@@ -246,7 +246,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "\u2202u/\u2202t = D\u2207\u00b2u + u(1 \u2212 u \u2212 a v \u2212 b w),  \u2202v/\u2202t = D\u2207\u00b2v + v(1 \u2212 v \u2212 a w \u2212 b u),  \u2202w/\u2202t = D\u2207\u00b2w + w(1 \u2212 w \u2212 a u \u2212 b v)",
     "status": "validated within stated limits",
@@ -348,7 +348,7 @@
   {
     "id": "potts",
     "source": "src/modules/potts.js",
-    "sourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
+    "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14",
     "reference": "The extended, area-constrained Potts model is Fran\u00e7ois Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n \u2212 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
     "equation": "H = \u03a3_\u27e8ij\u27e9 J(1 \u2212 \u03b4_{\u03c3i \u03c3j}) + \u03bb \u03a3_c (a_c \u2212 A)\u00b2;   accept a copy with min(1, e^{\u2212\u0394H/T})",
     "status": "unvalidated",
@@ -751,7 +751,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n\u00b2, because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "\u2202w/\u2202t = a \u2212 w \u2212 w n\u00b2 + v \u2202w/\u2202x + D_w\u2207\u00b2w,   \u2202n/\u2202t = w n\u00b2 \u2212 m n + \u2207\u00b2n",
     "status": "validated within stated limits",
@@ -864,19 +864,19 @@
   {
     "id": "skin",
     "source": "src/modules/skin.js",
-    "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
+    "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H\u2020.",
-    "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{\u2212g},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
+    "equation": "(H\u03c8)_j = e^{g} \u03c8_{j\u22121} + e^{\u2212g} \u03c8_{j+1},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
     "status": "validated within stated limits",
     "limitations": [
-      "Evidence is the open chain with on-site disorder below 0.04, where the plate is the closed form and not a diagonalization. Disordered and periodic paths use subspace iteration with Gram-Schmidt and are not right eigenvectors. They are excluded.",
+      "Evidence is limited to the open clean chain (disorder 0), where the plate uses the closed form. The current right-eigenvector solver uses symmetric QL for disordered open chains and Francis QR with inverse iteration for periodic chains; these paths are outside this validation. The legacy Gram-Schmidt path is not a right-eigenvector solver and is also excluded.",
       "Finite N only. Eigenvalues must match 2 cos(pi n/(N+1)) to 1e-8 and sign-aligned right eigenvectors must match the closed form to 1e-6, both checked for N <= 48. The tab's Float32 densities match that ED reference to 1e-6 on grids 48, 64 and 96. No infinite-volume or laboratory claim.",
       "The probability length 1/(2|g|) is a regression test, not a prediction: once the right eigenvectors match e^{g j} sin(pi n j/(N+1)), the log ratio of |psi|^2 on sine-conjugate sites is forced by the closed form, so the length follows. It is read from the log slope of |psi|^2 on sine-conjugate sites, not the amplitude length 1/|g| and not the mean distance from the right end. That mean is shifted by the boundary node (14.41 sites for N=64, g=0.08, mode 1, against a probability length of 6.25).",
       "The default plate draws at most one row per mode. On this source, grid 96 and aspect 4:5 is 96 rows and skin weight 0.780, the same modes as aspect 1:1 (validation/results/skin-rows.json). Recipes before v8 keep the sheet height, 120 rows and weight 0.773 on that sheet, and the status line says so. Those old recipes are outside this claim.",
       "The Chromium print covers two open clean fixtures on this source, both grid 96, g = 0.08, disorder 0, log view, 96 by 96 cells: aspect 4:5 at 1920 by 2400 (111595 bytes) and aspect 1:1 at 2400 by 2400 (128100 bytes). Both report skin weight 0.779865. Colour is not calibrated. Disordered and periodic paths are not printed."
     ],
     "remaining": [
-      "A right-eigenvector treatment of on-site disorder and of periodic ends is still open. The Gram-Schmidt path is not validated."
+      "Validate the current disordered open-chain and periodic right-eigenvector paths against independent references. The legacy Gram-Schmidt path remains outside this claim."
     ],
     "numerical": [
       {
@@ -887,7 +887,7 @@
         "criteria": "Max abs eigenvalue error < 1e-8 (measured 2.83e-15). Sign-aligned eigenvector max abs error < 1e-6 (measured 2.08e-14). Nonsymmetric residual < 1e-8 (measured 5.22e-15). Tab amp versus ED |psi|^2 max abs error < 1e-6 (measured 2.64e-8). Probability length within 1 percent of 1/(2|g|) (largest relative error about 3e-13; N=64, g=0.08 gives 6.25 sites), a regression test forced by the closed form once the eigenvectors match. g=0.08 on grid 96 piles on the right (right tenth 0.780, left tenth 8.5e-7).",
         "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
         "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
-        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
+        "limitations": "Open clean chain only. Disordered, periodic and legacy Gram-Schmidt paths are not tested here. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
       },
       {
         "test": "tools/skin-rows.js",
@@ -916,7 +916,7 @@
     "results": "validation/results/skin-science.json",
     "domain": {
       "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1, and the row cap at N 48, 96 and 192 on 1:1, 4:5, 5:4 and 16:9. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixtures: grid 96, g=0.08, disorder 0, open ends, log view, aspects 4:5 and 1:1, both 96 by 96 cells.",
-      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, disorder at or above 0.04, and recipes before v8 (sheet height, Gram-Schmidt) are outside the domain. Exports must preserve amp.",
+      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, nonzero disorder, and recipes before v8 (sheet height, Gram-Schmidt) are outside the validated domain. Exports must preserve amp.",
       "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Drawn rows = min(N, sheet height). Prints: 1920 by 2400 and 2400 by 2400, longest edge 2400.",
       "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json and validation/results/skin-rows.json."
     }
@@ -1402,7 +1402,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: \u2202u/\u2202t = \u2207\u00b2u + u(1\u2212u)(u \u2212 (v+b)/a)/\u03b5,  \u2202v/\u2202t = u \u2212 v;   FHN: \u2202u/\u2202t = \u2207\u00b2u + u \u2212 u\u00b3 \u2212 v,  \u2202v/\u2202t = D\u2207\u00b2v + \u03b5(u \u2212 a v \u2212 b)",
     "status": "validated within stated limits",
@@ -2556,7 +2556,7 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and Ren\u00e9 Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. Istv\u00e1n Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry. Typed reaction terms follow VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "Schnakenberg: \u2202u/\u2202t = \u2207\u00b2u + a \u2212 u + u\u00b2v,  \u2202v/\u2202t = D\u2207\u00b2v + b \u2212 u\u00b2v;   Brusselator: \u2202u/\u2202t = \u2207\u00b2u + a \u2212 (b+1)u + u\u00b2v,  \u2202v/\u2202t = D\u2207\u00b2v + bu \u2212 u\u00b2v",
     "status": "validated within stated limits",
@@ -2944,7 +2944,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2\u221a(aD) < c/2 \u2212 D \u2212 a.",
     "equation": "\u2202u/\u2202t = \u2207\u00b2u \u2212 \u2207\u00b7(\u03c7(u)\u2207v) + u(1 \u2212 u),   \u2202v/\u2202t = D\u2207\u00b2v + u \u2212 a v,   \u03c7(u) = c u/(1 + u\u00b2)",
     "status": "validated within stated limits",
