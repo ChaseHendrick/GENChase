@@ -245,7 +245,8 @@ impossible to miss on the tab itself, if it is not already.
   The lozenge radius is still compared with the limit, and a single plate still reads low on it for a
   finite-size reason. That part was not given an exact expectation. The Veselago status line no longer
   calls a plate a focus when no ray crosses the axis behind the slab, and a back face past the plate
-  no longer draws the exit ray backwards. The words still do not place an image at other n.
+  no longer draws the exit ray backwards. At any n other than −1 the line gives the nearest and farthest
+  crossings and the paraxial point, and does not call them one image.
 
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe

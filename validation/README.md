@@ -137,10 +137,10 @@ defects: the P3 matching arcs are not a valid decoration, and the grout inset mo
 
 The [Veselago lens review](VESELAGO.md) checks every ray of the actual module against an
 independent negative-index Snell trace across the slider domain, and checks every print pixel
-against the field. It stays partially validated because the status words do not place an image at
-`n ≠ −1` on `L/|n| − d`, and reflected rays are not drawn. A back face past the plate no longer
-inks a backward exit ray. The status line does not call a plate a focus when no ray crosses the
-axis behind the slab.
+against the field. It stays partially validated because reflected rays are not drawn. At `n ≠ −1`
+the status line gives the crossing range and the paraxial point `L/|n| − d`, and does not call
+that one image. A back face past the plate no longer inks a backward exit ray. The status line
+does not call a plate a focus when no ray crosses the axis behind the slab.
 
 Two tabs added on 2026-09-26 carry evidence while their records stay unvalidated: [Fisher-KPP fronts](FISHER-KPP.md) (logistic benchmark, straight-front speed against Bramson and Ebert-van Saarloos, fourth-order refinement at D dt/h² = 1/6, the plate's front-speed witness, a wrong-diffusion-sign control, print agreement) and [Maxwell-Cattaneo heat](CATTANEO.md) (Fourier modes against the exact dispersion relation, the relaxation limit, second-order refinement, the step bound, ring speed, a wrong-relaxation-sign control, print agreement).
 
