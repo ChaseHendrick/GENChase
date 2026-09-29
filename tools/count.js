@@ -106,7 +106,7 @@ function stampRepo(fs, path, root, n, mods) {
     return next;
   });
 
-  const desc = num + ' seeded scientific simulations in a modular studio with a portable HTML build. Explore, derive, and test mathematical formulas against classical sources.\n';
+  const desc = 'A development and research working environment for the simulations, the checks and the papers, with an art and print studio of ' + num + ' seeded scientific simulations and a portable HTML build.\n';
   fs.writeFileSync(path.join(root, '.github', 'description.txt'), desc);
 
   return { n, spelled: num, low: num };

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **The repository is a working environment first.** The front page and the GitHub description say so. The art and print studio is the part that turns a seeded simulation into a plate. The studio page itself is unchanged.
 - **The front page counts eight preprints.** The 1952 pulse is one of them, at [10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512). Two lines had been left saying release 1.0.0 next to the 1.0.1 DOIs of the collapse and expansion papers. They now say 1.0.1.
 
 - **The eight checking releases have Zenodo DOIs.** Assigned 2026-09-29. hh-pulse 1.0.1 is [10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512). hh-dynamics 1.0.2 is [10.5281/zenodo.23028513](https://doi.org/10.5281/zenodo.23028513). nf-pulse 1.0.2 is [10.5281/zenodo.23028520](https://doi.org/10.5281/zenodo.23028520). double-pendulum 1.0.1 is [10.5281/zenodo.23028523](https://doi.org/10.5281/zenodo.23028523). minimal-winding 2.2.1 is [10.5281/zenodo.23028524](https://doi.org/10.5281/zenodo.23028524). collapse-without-rotation 1.0.1 is [10.5281/zenodo.23028527](https://doi.org/10.5281/zenodo.23028527). stable-expansion 1.0.1 is [10.5281/zenodo.23028532](https://doi.org/10.5281/zenodo.23028532). rank-window 1.0.1 is [10.5281/zenodo.23028535](https://doi.org/10.5281/zenodo.23028535). The earlier version DOIs still name the proofs. No manuscript changed.
