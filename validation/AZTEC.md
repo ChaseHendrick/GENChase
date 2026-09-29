@@ -235,7 +235,7 @@ controls and the five print recipes behave as in sections 4 and 5.
 **Status.** Every numerical check passes, both failure controls fail as they must, and the print path is
 checked, so the record is now "validated within stated limits" for its domain: exhaustive uniformity at orders 1
 to 5, the arctic statistics and the bar calibration at orders 40 to 320, and the five print recipes. The bar is
-not calibrated below order 40 (the UI starts at 8), the extrapolation depends on the stated form, and the print
+not calibrated below order 40 (the UI starts at 8); the status line says so at those orders. The extrapolation depends on the stated form, and the print
 evidence covers one renderer.
 
 ## Exact finite-order reference (2026-09-26)

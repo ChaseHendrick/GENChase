@@ -221,7 +221,8 @@
         return U.stats.compare({ label: 'polar regions', measured: f, expected: exact, reference: 'exact at this order', basis: 'sampled',
           uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the free cells are spread evenly over the sectors, so they give no spread',
           method: 'free cells counted in ' + NB + ' angular sectors; standard error of their sum from the integrated autocorrelation time, τ ' + st.tau.toFixed(1) + ', floored at 2',
-          note: 'Johansson’s Krawtchouk expectation at order ' + order + '; the limit 1 − π/4 is for n → ∞' });
+          note: 'Johansson’s Krawtchouk expectation at order ' + order + '; the limit 1 − π/4 is for n → ∞' +
+            (order < 40 ? '; the error bar is not calibrated below order 40' : '') });
       }
       function status(extra) {
         host.setStatus('<span>order <b>' + order + '</b> · ' + (2 * order * (order + 1)).toLocaleString() + ' cells</span>' +

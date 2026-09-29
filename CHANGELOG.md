@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **Bolotin and Negrini (1997) will not be obtained.** Owner's decision, 2026-09-29. The printed article is not online and will not be sought by loan or preprint. The equal-pendulum reading stays the Google Books reconstruction, and the horseshoe at E = 0 does not use that paper. The zbMATH review, Bolotin's 1997 doctoral abstract, and Bolotin and Rabinowitz, J. Differential Equations 148 (1998) 364–387, were read; none of them is pages 415–436.
+- **The Aztec error bar says when it is uncalibrated.** Orders 8 to 39 are in the UI, and the bar was checked only from order 40 up. The status line now says so. The number and the bar are unchanged.
 
 - **Aztec and lozenge plates are compared with the exact finite-size expectation.** The polar fraction is Johansson's Krawtchouk expectation at that order, and the free area is the Hahn expectation at that box. Both used to be compared with the limit, so a correct plate read several of its own error bars off. The lozenge radius is still compared with the limit. Outside review is set aside for now, by the owner's decision.
 
