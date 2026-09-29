@@ -867,16 +867,15 @@
     "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H\u2020.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{\u2212g},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Evidence is the open chain with on-site disorder below 0.04, where the plate is the closed form and not a diagonalization. Disordered and periodic paths use subspace iteration with Gram-Schmidt and are not right eigenvectors. They are excluded.",
       "Finite N only. Eigenvalues must match 2 cos(pi n/(N+1)) to 1e-8 and sign-aligned right eigenvectors must match the closed form to 1e-6, both checked for N <= 48. The tab's Float32 densities match that ED reference to 1e-6 on grids 48, 64 and 96. No infinite-volume or laboratory claim.",
       "The probability length 1/(2|g|) is a regression test, not a prediction: once the right eigenvectors match e^{g j} sin(pi n j/(N+1)), the log ratio of |psi|^2 on sine-conjugate sites is forced by the closed form, so the length follows. It is read from the log slope of |psi|^2 on sine-conjugate sites, not the amplitude length 1/|g| and not the mean distance from the right end. That mean is shifted by the boundary node (14.41 sites for N=64, g=0.08, mode 1, against a probability length of 6.25).",
-      "Plate defect, which blocks full validation under the tilings and veselago precedent: a sheet with more rows than sites draws rows past n = N, and they are not eigenpairs. At grid 96 and aspect 4:5 the plate draws 120 rows for 96 modes. Row 97 has k = pi, where sin(pi (j+1)) is float noise that the row normalization turns into a skin-shaped row (right-tenth weight 0.868). Rows 98 to 120 are bit-exact repeats of modes 1 to 23. The status-line skin weight averages them in: 0.773 on that sheet against 0.780 over the 96 modes at 1:1.",
-      "The only print fixture is the default 4:5 sheet (grid 96, with the Skinned preset's g = 0.08), which is outside the 1:1 eigenvector domain and carries the defect above. The print check is state preservation of that sheet, not a print of the validated domain and not a pixel proof of the spectrum."
+      "The default plate draws at most one row per mode. On this source, grid 96 and aspect 4:5 is 96 rows and skin weight 0.780, the same modes as aspect 1:1 (validation/results/skin-rows.json). Recipes before v8 keep the sheet height, 120 rows and weight 0.773 on that sheet, and the status line says so. Those old recipes are outside this claim.",
+      "The Chromium print covers two open clean fixtures on this source, both grid 96, g = 0.08, disorder 0, log view, 96 by 96 cells: aspect 4:5 at 1920 by 2400 (111595 bytes) and aspect 1:1 at 2400 by 2400 (128100 bytes). Both report skin weight 0.779865. Colour is not calibrated. Disordered and periodic paths are not printed."
     ],
     "remaining": [
-      "Draw at most N rows (a sheet taller than the chain has no further eigenmodes), so the plate and the skin weight contain only eigenpairs; then add a 1:1 print fixture inside the numerical domain and re-review for full promotion.",
       "A right-eigenvector treatment of on-site disorder and of periodic ends is still open. The Gram-Schmidt path is not validated."
     ],
     "numerical": [
@@ -888,7 +887,7 @@
         "criteria": "Max abs eigenvalue error < 1e-8 (measured 2.83e-15). Sign-aligned eigenvector max abs error < 1e-6 (measured 2.08e-14). Nonsymmetric residual < 1e-8 (measured 5.22e-15). Tab amp versus ED |psi|^2 max abs error < 1e-6 (measured 2.64e-8). Probability length within 1 percent of 1/(2|g|) (largest relative error about 3e-13; N=64, g=0.08 gives 6.25 sites), a regression test forced by the closed form once the eigenvectors match. g=0.08 on grid 96 piles on the right (right tenth 0.780, left tenth 8.5e-7).",
         "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
         "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
-        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. Sheets with more rows than sites are outside the eigenvector comparison; on them rows past n = N are float noise (k = pi) and repeats of the low modes. The probability-length check is a regression test."
+        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
       },
       {
         "test": "tools/skin-rows.js",
@@ -906,20 +905,20 @@
         "test": "tools/skin-print-state.js",
         "command": "node tools/skin-print-state.js --write",
         "results": "validation/results/skin-print-state.json",
-        "scope": "One open clean fixture: grid 96, aspect 4:5 (96 by 120), g=0.08, disorder 0, bc open, log view. Actual exportPNG at longest edge 2400, which is 1920 by 2400.",
-        "criteria": "Zero changed or nonfinite Float32 amp words across export; skin weight, IPR, cells, buffer size and settings unchanged; deterministic regenerate; PNG dimensions exact and blob > 1000 bytes; luminance spread > 12/255. Measured skin weight 0.773, 118079 bytes, luminance spread 226, 0 changed words.",
+        "scope": "Two open clean fixtures on the current module: grid 96, g=0.08, disorder 0, bc open, log view, rows modes. Aspect 4:5 exports at 1920 by 2400. Aspect 1:1 exports at 2400 by 2400. Both fields are 96 by 96.",
+        "criteria": "Zero changed or nonfinite Float32 amp words across export; skin weight, IPR, cells, buffer size and settings unchanged; deterministic regenerate; PNG dimensions exact and blob > 1000 bytes; luminance spread > 12/255. Both fixtures draw 96 by 96 and report skin weight 0.779865. The 4:5 PNG is 111595 bytes and the 1:1 PNG is 128100 bytes. Luminance spread 226 on both. 0 changed words.",
         "benchmark": "Exact Float32 readback of amp before and after the real exportPNG path, plus the declared 2400 longest-edge plate.",
-        "failureControl": "A width one pixel short of the request, and a post-export mutation of amp[0] plus the skin weight, are both rejected by the same acceptance predicate the real export passes (the mutation changes 1 word and the skin weight).",
-        "limitations": "State preservation and declared dimensions for this one fixture, the default 4:5 sheet, which is outside the 1:1 eigenvector domain. Its 24 rows past n=N are not eigenpairs: row 97 is float noise normalized into a skin-shaped row and rows 98 to 120 repeat modes 1 to 23, and the skin weight 0.773 averages them in. Does not validate disordered or periodic paths, calibrated color, or every control."
+        "failureControl": "A width one pixel short of the request, and a post-export mutation of amp[0] plus the skin weight, are both rejected by the same acceptance predicate the real export passes (the mutation changes 1 word and the skin weight). The two aspects must report the same skin weight, because they draw the same modes.",
+        "limitations": "State preservation and declared dimensions for these two fixtures. Colour is not calibrated. Does not validate disordered or periodic paths, legacy sheet-height recipes, or every control."
       }
     ],
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/skin-science.json",
     "domain": {
-      "parameters": "Open chain, disorder 0, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixture grid 96, aspect 4:5, g=0.08, disorder 0, open ends, log view; that sheet is outside the 1:1 eigenvector domain, so no print fixture lies inside the numerical domain.",
-      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries and disorder at or above 0.04 are outside the domain. Exports must preserve amp.",
-      "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Print field 96 by 120, exported at 1920 by 2400 pixels (longest edge 2400).",
-      "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json."
+      "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1, and the row cap at N 48, 96 and 192 on 1:1, 4:5, 5:4 and 16:9. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixtures: grid 96, g=0.08, disorder 0, open ends, log view, aspects 4:5 and 1:1, both 96 by 96 cells.",
+      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, disorder at or above 0.04, and recipes before v8 (sheet height, Gram-Schmidt) are outside the domain. Exports must preserve amp.",
+      "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Drawn rows = min(N, sheet height). Prints: 1920 by 2400 and 2400 by 2400, longest edge 2400.",
+      "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json and validation/results/skin-rows.json."
     }
   },
   {
