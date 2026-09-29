@@ -97,8 +97,13 @@ function checkPaper(root, p, opts = {}) {
         else if (!it.done) open.push(i + 1);
         else if (!it.evidence) say(q.file + ': item ' + (i + 1) + ' is checked but gives no evidence');
       });
-      if (open.length) say(q.file + ': the quality bar is not met (open: item ' + open.join(', ') + ')' + (due ? '; a paper is "ready" or later only when every item is checked' : ''));
-      else if (q.items.length >= BAR.length) note(q.file + ': the quality bar is met');
+      if (open.length) {
+        const msg = q.file + ': the quality bar is not met (open: item ' + open.join(', ') + ')';
+        // A Zenodo code DOI means the archive already exists. Open items stay in the record and are
+        // reported, and they do not fail the check: the release is not withdrawn from here.
+        if (due && /^10\.5281\/zenodo\.\d+$/.test(p.codeDoi || '')) note(msg + '; the Zenodo archive already exists and is not withdrawn');
+        else say(msg + (due ? '; a paper is "ready" or later only when every item is checked' : ''));
+      } else if (q.items.length >= BAR.length) note(q.file + ': the quality bar is met');
     }
   }
   const files = [p.typst, p.latex, p.markdown, p.pdf, p.arxiv && p.arxiv.metadata, p.journal && p.journal.coverLetter, p.zenodo && p.zenodo.metadata].filter(Boolean);
@@ -243,6 +248,8 @@ function selfTest() {
     expect(false, 'ready without a quality record', p => { p.status = 'ready'; });
     expect(true, 'ready with every item of the bar checked', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([])); });
     expect(false, 'ready with an open item', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([6])); });
+    expect(true, 'an archived paper keeps an open item on the record', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([6])); });
+    expect(false, 'a ready paper with an open item and a DOI that is not Zenodo', p => { p.status = 'ready'; p.codeDoi = '10.1000/not-an-archive'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior work')); });
     // Item 5 was "Prior art" until the owner renamed it (2026-09-26): GENChase is also an art studio.
     expect(false, 'ready with item 5 under its old name', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior art')); });

@@ -157,7 +157,7 @@
       "id": "hh-pulse",
       "title": "The propagated action potential of Hodgkin and Huxley at their 1952 constants: a computer-assisted existence proof",
       "status": "ready",
-      "note": "Release 1.0.0 is the companion repository ChaseHendrick/hh-pulse, archived at doi:10.5281/zenodo.23013935 (2026-09-28). This copy matches that release, including the corrected 6.3 C speed. The earlier branch quoted the speed from the run at the float 6.3 C; that number is not this paper. No outside review. No journal chosen.",
+      "note": "Release 1.0.0 is the companion repository ChaseHendrick/hh-pulse, archived at doi:10.5281/zenodo.23013935 (2026-09-28), and 1.0.1 is the checking release. The archive is not withdrawn. notes/QUALITY.md items 6 and 7 stay open: the in-project reading is notes/review-1.md, and it has not been repeated on the fixes; the rerun of the fixed programs has no recorded commit. This copy matches release 1.0.1, including the corrected 6.3 C speed. The earlier branch quoted the speed from the run at the float 6.3 C; that number is not this paper. No journal chosen.",
       "typst": null,
       "latex": null,
       "markdown": "papers/hh-pulse/paper/paper.md",

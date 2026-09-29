@@ -1,5 +1,6 @@
 // Actual skin exportPNG state preservation; not calibrated color.
 // One open Hatano-Nelson fixture: g = 0.08, disorder 0, grid 96, longest edge 2400.
+// rows is modes, so the field is min(sheet, N) by N, not the taller sheet.
 // node tools/skin-print-state.js [--write]
 const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
@@ -64,7 +65,9 @@ ${marker}`);
             reducedMotion: () => true, requestRepaint() {}, fault(msg) { throw Error(msg); },
           });
           instance.regenerate();
-          const expectedH = Math.max(32, Math.round(state.grid * ({ '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 }[state.aspect] || 1)));
+          const aspect = ({ '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 }[state.aspect] || 1);
+          const sheet = Math.max(32, Math.round(state.grid * aspect));
+          const expectedH = state.rows === 'sheet' ? sheet : Math.min(sheet, state.grid);
           const cells = instance.fieldCells();
           if (!cells || cells[0] !== state.grid || cells[1] !== expectedH) throw Error('Grid dimensions wrong: ' + JSON.stringify(cells));
 
