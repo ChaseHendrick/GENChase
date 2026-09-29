@@ -11,7 +11,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
 - 3a0c7b1: M4.
 - 5efe380: the programs renamed; the summary recomputes verdicts.
 - 05a740b: the text fixes.
-- RERUN_COMMIT: the certificates of the rerun of the fixed programs, Theorem 2 restated, and the tables.
+- 3af23a2: the certificates of the rerun of the fixed programs entered this repository. On 2026-09-29 their program hash, c179fc191094c44a, still matches the eight proof programs.
 
 ## Must-fix
 
@@ -25,7 +25,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
     The summary checks that phi encloses 3^((T - 6.3)/10) for the decimal temperature, recomputed at 512 bits.
   - `test_temperature.py` is the regression test, run by `run.sh tests`. Its negative control is the old float path,
     whose phi excludes 1.
-  - The 6.3 C proof was rerun from scratch with the fixed programs (RERUN_COMMIT). Theorem 2, the abstract, README and
+  - The 6.3 C proof was rerun from scratch with the fixed programs (3af23a2). Theorem 2, the abstract, README and
     RELEASES quote the new digits.
 - **M2, max u (00ee62c, 3a0c7b1).** Theorem 1 says max u > 90.57 mV, and 90.578 is certified. The bound is now
   rounded down explicitly before it is stored.
@@ -34,7 +34,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
     and the run times.
   - 5efe380 added `code/tables.py`. It generates the table rows and the quoted theorem values from the
     certificates, and `--check` requires each of them to appear verbatim in the manuscript.
-  - RERUN_COMMIT regenerated the tables from the new certificates, and `tables.py --check` passes.
+  - The tables in 3af23a2 were regenerated from those certificates, and `tables.py --check` passes.
   - "zeta_1 = -86" had no certificate and is dropped. What remains is the difference of the two recorded 6.3 C
     centres, `hp_pulse_6.3_El10.613_tol1.json` and `hp_pulse_6.3_El10.613.json`.
 - **M4, stale certificates (3a0c7b1, 5efe380).**
@@ -84,7 +84,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
 - **m4 (05a740b).** The title of Czechowski and Zgliczynski is corrected, with doi:10.1137/15M1007707.
 - **m5 (e86e2c8, 3a0c7b1).** The docstrings of `certify_rest_wave.py` and `hh_prove_pulse.py` now match the paper.
   This covers the printed leak potential, the hypotheses (H1) to (H5) and the factor 1 + 1e-12 (u - u*)^2.
-- **m6, consistency (RERUN_COMMIT).** The paragraph now uses the printed-E_l runs of the theorems, from their
+- **m6, consistency (3af23a2).** The paragraph now uses the printed-E_l runs of the theorems, from their
   certificates.
 - **m7 (e86e2c8).** `hh_block_check_iv.py` checks that its bisection zero lies within the window where Lemma B.1
   proves uniqueness. The check applies for HH_EL = 10.613; for the zero-current case rest is exactly u = 0.

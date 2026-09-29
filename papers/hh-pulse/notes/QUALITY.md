@@ -47,11 +47,14 @@ The bar every paper in this repository meets before it is published or preprinte
   tests, the independent block program, the consistency of the rigorous and numerical values, the full rerun of item
   7, and a rereading of the proof by the same agent. An independent reviewer told to find errors, briefed only with
   the paper and its programs, has not read it.
-- [ ] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
+- [x] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
   scratch, one bounded process at a time. A first full rerun (`sh code/run.sh all`, started 2026-09-27 14:37 UTC from
-  commit 391ae68, ended 18:41 UTC) printed `run.sh all: ALL AS EXPECTED`: the certificates of the two printed-leak
-  proofs came out unchanged apart from run times, and those of Remark 1 changed only in the last digits of K1 and K2
-  (8.0e-62), because the committed ones had been computed from an older numerical centre (REPORT.md 4.5 in
-  `papers/hh-dynamics/work/traveling-wave/`). Pending: the review (`notes/review-1.md`) found that the 6.3 C runs used
-  the binary temperature 6.29999999999999982 C (M1) and that `run.sh` could pass on stale certificates (M4); the item
-  waits for the fixed programs and their rerun.
+  commit 391ae68, ended 18:41 UTC) printed `run.sh all: ALL AS EXPECTED`. That run was before the temperature fix.
+  The certificates now in `data/` are the rerun of the fixed programs: at 6.3 C, phi encloses 1, and the speed is the
+  one Theorem 2 prints. They entered this repository in commit 3af23a2. On 2026-09-29 the eight proof programs still
+  hash to `c179fc191094c44a`, the value recorded in those certificates, so the code they were made from has not
+  moved. The same day, `hh_prove_pulse.py summary` accepted all three proofs, and `summary-control` at 6.3 C refused
+  a certificate whose phi is the binary number nearest 6.3. `tables.py --check`, `check_abstract.py`,
+  `check_speed.py`, `check_speed_decimal.py`, `check_hypotheses.py`, `check_fail.py` and `test_temperature.py`
+  passed. The integrations themselves were not repeated: a full `run.sh all` is several hours, and the certificates
+  are that run.
