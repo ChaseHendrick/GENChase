@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **All eight publication archives verified.** The downloaded source ZIPs include the registered manuscript PDFs, with exact titles and Publication / Preprint classification. Current DOI links and citations name these versions; earlier archives remain unchanged.
+
 - **The Hatano–Nelson plate is validated for the open clean chain.** The default sheet already drew at most one row per mode; the record still described the old 120-row defect. The Chromium print was re-run on this source: aspect 4:5 and a new 1:1 fixture are both 96 by 96, skin weight 0.780. Recipes before v8 still draw the extra rows, and they stay outside the claim. Disorder and periodic ends stay outside it.
 - **The SLE status line says the trace is not resolved to dimension min(2, 1+κ/8).** The plate draws a uniform-capacity-time discretization. Box counting of that curve sits below Beffara's dimension at every tested point (κ = 2, 4 and 6, up to 8,000 steps), and the line now says so instead of leaving it in the review. The record stays partially validated. The trace ensemble was not re-run: the solver is unchanged.
 - **New paper releases must meet the full quality gate.** An existing Zenodo DOI still preserves the archive, but no longer excuses an open quality item when making a new release. Seven unfinished pulse stability and temperature-strip scripts remain in the development repository and are excluded from new companion archives, as the earlier handoff intended. The existence-proof programs and certificates are unchanged.

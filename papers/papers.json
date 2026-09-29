@@ -22,7 +22,7 @@
       "id": "minimal-winding",
       "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
       "status": "ready",
-      "note": "Ready again (2026-09-25). The parts merged in from the alpha-model draft (Sections 4 to 8) had two recorded adversarial second readings, and their must-fix findings are fixed; release 2.1.0 of the companion carries the corrected paper, and the paper's data availability paragraph cites its DOI, doi:10.5281/zenodo.22966989. By the owner's decision (2026-09-25) arXiv is deferred until an endorsement. By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Earlier releases of the companion: 1.0.0, doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge), and 2.0.0, doi:10.5281/zenodo.22963796. Release 2.2.0, prepared on 2026-09-27 and not yet made, adds the explicit forms and examples of the identities note, which by the owner's decision (2026-09-27) is retired and gets no record of its own (identities/README.md), and the credits to Chen, Walsh and Wheeler and to Yudovich; its additions had four in-project adversarial readings on 2026-09-27, the third and the fourth briefed only with the paper and its programs (the third: minor revision, no must-fix; the fourth, narrow, of the newest passages: one must-fix and two should-fix findings), whose confirmed findings are fixed and recorded in notes/QUALITY.md, item 6, notes/review-identities-2026-09-27.md, notes/review-identities-3-2026-09-27.md and notes/review-identities-4-2026-09-27.md (42 pages; 152 checks in verify_general_mu.py and 103 in verify_central_vortex.py); none is an outside review, and the quality record, notes/QUALITY.md, is complete. Release 2.2.0 is archived at doi:10.5281/zenodo.22994932 (2026-09-27). Release 2.2.1, the checking release, is archived at doi:10.5281/zenodo.23028524 (2026-09-29). Release 2.2.0 remains doi:10.5281/zenodo.22994932.",
+      "note": "Ready again (2026-09-25). The parts merged in from the alpha-model draft (Sections 4 to 8) had two recorded adversarial second readings, and their must-fix findings are fixed; release 2.1.0 of the companion carries the corrected paper, and the paper's data availability paragraph cites its DOI, doi:10.5281/zenodo.22966989. By the owner's decision (2026-09-25) arXiv is deferred until an endorsement. By the owner's decision (2026-09-25) the alpha-model draft (formerly alpha-winding) is merged into this paper, which also carries the computer-assisted proofs for four or more vortices; the title changed with the merge. Earlier releases of the companion: 1.0.0, doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result and the merge), and 2.0.0, doi:10.5281/zenodo.22963796. Release 2.2.0, published on 2026-09-27, adds the explicit forms and examples of the identities note, which by the owner's decision (2026-09-27) is retired and gets no record of its own (identities/README.md), and the credits to Chen, Walsh and Wheeler and to Yudovich; its additions had four in-project adversarial readings on 2026-09-27, the third and the fourth briefed only with the paper and its programs (the third: minor revision, no must-fix; the fourth, narrow, of the newest passages: one must-fix and two should-fix findings), whose confirmed findings are fixed and recorded in notes/QUALITY.md, item 6, notes/review-identities-2026-09-27.md, notes/review-identities-3-2026-09-27.md and notes/review-identities-4-2026-09-27.md (42 pages; 152 checks in verify_general_mu.py and 103 in verify_central_vortex.py); none is an outside review, and the quality record, notes/QUALITY.md, is complete. Release 2.2.0 is archived at doi:10.5281/zenodo.22994932 (2026-09-27). Release 2.2.1, the checking release, is archived at doi:10.5281/zenodo.23028524 (2026-09-29). Release 2.2.0 remains doi:10.5281/zenodo.22994932. Release 2.2.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047024 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
@@ -43,14 +43,14 @@
         "submitted": null,
         "doi": null
       },
-      "codeDoi": "10.5281/zenodo.23028524",
+      "codeDoi": "10.5281/zenodo.23047024",
       "commitments": []
     },
     {
       "id": "collapse-without-rotation",
       "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
       "status": "ready",
-      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44, read in full (2026-09-25) and credited in Section 6; a second reader has checked the draft and its corrections are in. Ready for its first release in its companion repository, archived on Zenodo for a DOI (owner's decision, 2026-09-25); Aref et al., Vortex crystals (2003), read and cited; O'Neil 2013 read in summary only. No journal chosen yet. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028527 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22969841.",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25), with the registry's author block as for minimal-winding, which it cites as its companion paper. O'Neil, Theor. Comput. Fluid Dyn. 24 (2010) 39-44, read in full (2026-09-25) and credited in Section 6; a second reader has checked the draft and its corrections are in. Ready for its first release in its companion repository, archived on Zenodo for a DOI (owner's decision, 2026-09-25); Aref et al., Vortex crystals (2003), read and cited; O'Neil 2013 read in summary only. No journal chosen yet. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028527 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22969841. Release 1.0.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047025 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/collapse-without-rotation/paper/collapse-without-rotation.tex",
       "pdf": "papers/collapse-without-rotation/paper/collapse-without-rotation.pdf",
@@ -58,14 +58,14 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028527",
+      "codeDoi": "10.5281/zenodo.23047025",
       "commitments": []
     },
     {
       "id": "stable-expansion",
       "title": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
       "status": "ready",
-      "note": "Drafted in this repository by the owner's decision (2026-09-25): computer-assisted proof that four and five Euler vortices have self-similarly expanding configurations that are stable modulo rotation and their family, linearly and nonlinearly (orbital asymptotic stability with the rate 1/size, the limit fixed by the energy, and an a priori estimate for forced motions), and Zbarsky's vortex-patch confinement theorem carried over to them. By the owner's decision (2026-09-25) it gets its first release in its companion repository, archived on Zenodo for a DOI, once its quality record is complete. Theorem 4 is proved in full in Appendix A (2026-09-26); independent readings of every section and of the programs are recorded in notes/QUALITY.md with their fixes; the owner signed off and the quality bar is met (2026-09-26). Zbarsky is cited by the section and equation numbers of arXiv:1912.10862v2; the published CMP version was not accessible. Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701, is cited for background from its abstract. Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read and cited. No journal chosen yet. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028532 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22971173.",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25): computer-assisted proof that four and five Euler vortices have self-similarly expanding configurations that are stable modulo rotation and their family, linearly and nonlinearly (orbital asymptotic stability with the rate 1/size, the limit fixed by the energy, and an a priori estimate for forced motions), and Zbarsky's vortex-patch confinement theorem carried over to them. By the owner's decision (2026-09-25) it gets its first release in its companion repository, archived on Zenodo for a DOI, once its quality record is complete. Theorem 4 is proved in full in Appendix A (2026-09-26); independent readings of every section and of the programs are recorded in notes/QUALITY.md with their fixes; the owner signed off and the quality bar is met (2026-09-26). Zbarsky is cited by the section and equation numbers of arXiv:1912.10862v2; the published CMP version was not accessible. Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701, is cited for background from its abstract. Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read and cited. No journal chosen yet. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028532 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22971173. Release 1.0.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047037 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/stable-expansion/paper/stable-expansion.tex",
       "pdf": "papers/stable-expansion/paper/stable-expansion.pdf",
@@ -73,14 +73,14 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028532",
+      "codeDoi": "10.5281/zenodo.23047037",
       "commitments": []
     },
     {
       "id": "rank-window",
       "title": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
       "status": "ready",
-      "note": "Drafted in this repository by the owner's standing decision (2026-09-26): a methods note showing that exponents fitted over a finite rank window cannot test the eigenspectrum smoothness bound of Stringer et al. (2019); three in-project referee readings, the fixes of the third not read again; a full rerun from the downloaded inputs on 2026-09-27 reproduces every stored value (notes/rerun-2026-09-27.md). Release 1.0.0 is archived at doi:10.5281/zenodo.22994835 (2026-09-27). Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028535 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22994835.",
+      "note": "Drafted in this repository by the owner's standing decision (2026-09-26): a methods note showing that exponents fitted over a finite rank window cannot test the eigenspectrum smoothness bound of Stringer et al. (2019); three in-project referee readings, the fixes of the third not read again; a full rerun from the downloaded inputs on 2026-09-27 reproduces every stored value (notes/rerun-2026-09-27.md). Release 1.0.0 is archived at doi:10.5281/zenodo.22994835 (2026-09-27). Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028535 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22994835. Release 1.0.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047040 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/rank-window/paper/note.tex",
       "pdf": "papers/rank-window/paper/note.pdf",
@@ -88,14 +88,14 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028535",
+      "codeDoi": "10.5281/zenodo.23047040",
       "commitments": []
     },
     {
       "id": "hh-dynamics",
       "title": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
       "status": "ready",
-      "note": "Computer-assisted proofs, for every leak potential in [10.59, 10.62], of the unique equilibrium for J in [0, 200], its two Hopf points (subcritical and supercritical, first Lyapunov coefficients enclosed) and bistability of rest and repetitive firing at J = 8. Six in-project readings by separate agents (2026-09-27), every must-fix finding fixed (notes/referee-2026-09-27-*.md), and a mutation study of the programs (data/mutation_study.txt). Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its first page could be read, and no priority is claimed for the equilibria, the Hopf points or their criticality. Release 1.0.0 is archived at doi:10.5281/zenodo.22996260 and release 1.0.1 (American spelling) at doi:10.5281/zenodo.23002943 (2026-09-27). Release 1.0.2, the checking release, is archived at doi:10.5281/zenodo.23028513 (2026-09-29). Release 1.0.1 remains doi:10.5281/zenodo.23002943.",
+      "note": "Computer-assisted proofs, for every leak potential in [10.59, 10.62], of the unique equilibrium for J in [0, 200], its two Hopf points (subcritical and supercritical, first Lyapunov coefficients enclosed) and bistability of rest and repetitive firing at J = 8. Six in-project readings by separate agents (2026-09-27), every must-fix finding fixed (notes/referee-2026-09-27-*.md), and a mutation study of the programs (data/mutation_study.txt). Du and Hassard (2001) computed Hopf coefficients of the model in interval arithmetic; only its first page could be read, and no priority is claimed for the equilibria, the Hopf points or their criticality. Release 1.0.0 is archived at doi:10.5281/zenodo.22996260 and release 1.0.1 (American spelling) at doi:10.5281/zenodo.23002943 (2026-09-27). Release 1.0.2, the checking release, is archived at doi:10.5281/zenodo.23028513 (2026-09-29). Release 1.0.1 remains doi:10.5281/zenodo.23002943. Release 1.0.3, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047046 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/hh-dynamics/paper/hh-dynamics.tex",
       "pdf": "papers/hh-dynamics/paper/hh-dynamics.pdf",
@@ -103,7 +103,7 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028513",
+      "codeDoi": "10.5281/zenodo.23047046",
       "commitments": []
     },
     {
@@ -127,7 +127,7 @@
       "id": "double-pendulum",
       "title": "Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof",
       "status": "ready",
-      "note": "Drafted in this repository by the owner's standing decision (2026-09-26) from research/double-pendulum/: a computer-assisted proof (CAPD, interval arithmetic) that the equal double pendulum has a hyperbolic periodic orbit with a transversal homoclinic orbit at E = -1/2, 0, 1/2 and for every E in [-1e-10, 1e-10], hence no analytic invariant function on these levels and no real-analytic integral independent of the energy near the level E = 0; explicit topological horseshoes from covering relations at E = -1/2, 0, 1/2 (entropy above 0.0906, 0.1016, 0.0906 per return); Smale's 1965 proof does not apply as written to an area-preserving map, and later forms of the Smale-Birkhoff theorem (not read here, not used) are discussed in Remark 2. Novelty checks of 2026-09-27 (RESEARCH.md): Szuminski and Kapitaniak (2025) read in full, no newer proof found; Bolotin and Negrini (1997) known only from search snippets, so the novelty of global non-integrability and of chaos in the equal case is stated conditionally, and the printed pages to obtain are listed in research/double-pendulum/BOLOTIN-NEGRINI.md. The local unstable manifold and the local lambda-lemma are proved in the paper from certified cone conditions (Lemmas 5 and 8), so no theorem stated for diffeomorphisms of a whole manifold is applied to the return map. An in-project adversarial reading (notes/review-1.md, verdict minor revision) found one must-fix (a hypothesis checked by no program, now checked by code/cones.cpp) and should-fix items, all fixed and answered in its Response section; the quality bar is met (notes/QUALITY.md). On 2026-09-29 the whole of run_all.sh was run again against CAPD at the pinned commit 03dc562, on two threads, in 39 minutes: every proof passed, every control failed for its stated reason, and the reports match the committed files except for the order of parallel lines in E0.txt and E0_interval.txt. The Arb cross-checks were run again the same day and match the committed reports apart from their times. Release 1.0.0 is in the companion repository ChaseHendrick/double-pendulum, archived at doi:10.5281/zenodo.22997540 (2026-09-27). Meromorphic non-integrability remains open. No outside review. No journal chosen. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028523 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22997540.",
+      "note": "Drafted in this repository by the owner's standing decision (2026-09-26) from research/double-pendulum/: a computer-assisted proof (CAPD, interval arithmetic) that the equal double pendulum has a hyperbolic periodic orbit with a transversal homoclinic orbit at E = -1/2, 0, 1/2 and for every E in [-1e-10, 1e-10], hence no analytic invariant function on these levels and no real-analytic integral independent of the energy near the level E = 0; explicit topological horseshoes from covering relations at E = -1/2, 0, 1/2 (entropy above 0.0906, 0.1016, 0.0906 per return); Smale's 1965 proof does not apply as written to an area-preserving map, and later forms of the Smale-Birkhoff theorem (not read here, not used) are discussed in Remark 2. Novelty checks of 2026-09-27 (RESEARCH.md): Szuminski and Kapitaniak (2025) read in full, no newer proof found; Bolotin and Negrini (1997) known only from search snippets, so the novelty of global non-integrability and of chaos in the equal case is stated conditionally, and the printed pages to obtain are listed in research/double-pendulum/BOLOTIN-NEGRINI.md. The local unstable manifold and the local lambda-lemma are proved in the paper from certified cone conditions (Lemmas 5 and 8), so no theorem stated for diffeomorphisms of a whole manifold is applied to the return map. An in-project adversarial reading (notes/review-1.md, verdict minor revision) found one must-fix (a hypothesis checked by no program, now checked by code/cones.cpp) and should-fix items, all fixed and answered in its Response section; the quality bar is met (notes/QUALITY.md). On 2026-09-29 the whole of run_all.sh was run again against CAPD at the pinned commit 03dc562, on two threads, in 39 minutes: every proof passed, every control failed for its stated reason, and the reports match the committed files except for the order of parallel lines in E0.txt and E0_interval.txt. The Arb cross-checks were run again the same day and match the committed reports apart from their times. Release 1.0.0 is in the companion repository ChaseHendrick/double-pendulum, archived at doi:10.5281/zenodo.22997540 (2026-09-27). Meromorphic non-integrability remains open. No outside review. No journal chosen. Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028523 (2026-09-29). Release 1.0.0 remains doi:10.5281/zenodo.22997540. Release 1.0.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047057 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/double-pendulum/paper/double-pendulum.tex",
       "pdf": "papers/double-pendulum/paper/double-pendulum.pdf",
@@ -135,14 +135,14 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028523",
+      "codeDoi": "10.5281/zenodo.23047057",
       "commitments": []
     },
     {
       "id": "nf-pulse",
       "title": "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
       "status": "ready",
-      "note": "Ready (2026-09-27): the quality record, notes/QUALITY.md, is complete. Drafted in this repository by the owner's decision (2026-09-26): computer-assisted proofs in ball arithmetic of traveling pulses of the Pinto-Ermentrout neural field with a logistic firing rate at explicit, non-small recovery rates (a fast and a slow pulse at eps = 1/10 and 3/20, a fast pulse on [0.08, 0.13693] and five further intervals, the Fig. 5 sigmoid of Pinto and Ermentrout, Faye's model with synaptic depression at eps = 1/100, 1/50 and 1/20) and spectral stability of the fast pulse at eps = 1/10; nonlinear stability not proved (39 pages). The programs and certificates are in papers/nf-pulse/ (code/, ext/); every check script was rerun on 2026-09-27 with the present programs (review/RERUNS.md). All checks were made within the project by separate AI agent sessions, none of them an outside review: review/, ext/*/REPORT.md, three readings of the manuscript on 2026-09-27, then a fourth and a fifth reading of the proofs written in response and a review of the stability controls, with a response to each finding in notes/referee-2026-09-27-*.md. Enculescu (2004) could not be reached and is unread, and Sandstede (2007) is known from its abstract only; the manuscript says what the works read contain and makes no claim to be first. Release 1.0.0 is in the companion repository ChaseHendrick/nf-pulse, archived at doi:10.5281/zenodo.22998376; release 1.0.1 (American spelling) at doi:10.5281/zenodo.23002938 (2026-09-27). No journal chosen. Release 1.0.2, the checking release, is archived at doi:10.5281/zenodo.23028520 (2026-09-29). Release 1.0.1 remains doi:10.5281/zenodo.23002938.",
+      "note": "Ready (2026-09-27): the quality record, notes/QUALITY.md, is complete. Drafted in this repository by the owner's decision (2026-09-26): computer-assisted proofs in ball arithmetic of traveling pulses of the Pinto-Ermentrout neural field with a logistic firing rate at explicit, non-small recovery rates (a fast and a slow pulse at eps = 1/10 and 3/20, a fast pulse on [0.08, 0.13693] and five further intervals, the Fig. 5 sigmoid of Pinto and Ermentrout, Faye's model with synaptic depression at eps = 1/100, 1/50 and 1/20) and spectral stability of the fast pulse at eps = 1/10; nonlinear stability not proved (39 pages). The programs and certificates are in papers/nf-pulse/ (code/, ext/); every check script was rerun on 2026-09-27 with the present programs (review/RERUNS.md). All checks were made within the project by separate AI agent sessions, none of them an outside review: review/, ext/*/REPORT.md, three readings of the manuscript on 2026-09-27, then a fourth and a fifth reading of the proofs written in response and a review of the stability controls, with a response to each finding in notes/referee-2026-09-27-*.md. Enculescu (2004) could not be reached and is unread, and Sandstede (2007) is known from its abstract only; the manuscript says what the works read contain and makes no claim to be first. Release 1.0.0 is in the companion repository ChaseHendrick/nf-pulse, archived at doi:10.5281/zenodo.22998376; release 1.0.1 (American spelling) at doi:10.5281/zenodo.23002938 (2026-09-27). No journal chosen. Release 1.0.2, the checking release, is archived at doi:10.5281/zenodo.23028520 (2026-09-29). Release 1.0.1 remains doi:10.5281/zenodo.23002938. Release 1.0.3, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047061 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": "papers/nf-pulse/paper/nf-pulse.tex",
       "pdf": "papers/nf-pulse/paper/nf-pulse.pdf",
@@ -150,14 +150,14 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028520",
+      "codeDoi": "10.5281/zenodo.23047061",
       "commitments": []
     },
     {
       "id": "hh-pulse",
       "title": "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof",
       "status": "ready",
-      "note": "Release 1.0.0 is the companion repository ChaseHendrick/hh-pulse, archived at doi:10.5281/zenodo.23013935 (2026-09-28). Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028512 (2026-09-29). The archive is not withdrawn. notes/QUALITY.md items 6 and 7 are closed in-project: review-2 found no must-fix, and the 6.3 C certificates match the current proof programs (sha256 prefix c179fc191094c44a, phi encloses 1). No outside review. No journal chosen.",
+      "note": "Release 1.0.0 is the companion repository ChaseHendrick/hh-pulse, archived at doi:10.5281/zenodo.23013935 (2026-09-28). Release 1.0.1, the checking release, is archived at doi:10.5281/zenodo.23028512 (2026-09-29). The archive is not withdrawn. notes/QUALITY.md items 6 and 7 are closed in-project: review-2 found no must-fix, and the 6.3 C certificates match the current proof programs (sha256 prefix c179fc191094c44a, phi encloses 1). No outside review. No journal chosen. Release 1.0.2, the publication metadata and PDF-packaging update, is archived as Publication / Preprint at doi:10.5281/zenodo.23047089 (2026-09-29). Its downloaded Zenodo source ZIP contains the registered manuscript PDF byte for byte; all earlier archives remain unchanged.",
       "typst": null,
       "latex": null,
       "markdown": "papers/hh-pulse/paper/paper.md",
@@ -175,7 +175,7 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23028512",
+      "codeDoi": "10.5281/zenodo.23047089",
       "commitments": []
     }
   ]

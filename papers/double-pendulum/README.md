@@ -2,9 +2,9 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint** of 27 September 2026, not peer reviewed and not submitted anywhere; release 1.0.1 of its programs and data
+**Preprint** of 27 September 2026, not peer reviewed and not submitted anywhere; release 1.0.2 of its programs and data
 is in the companion repository [ChaseHendrick/double-pendulum](https://github.com/ChaseHendrick/double-pendulum),
-archived on Zenodo ([doi:10.5281/zenodo.23028523](https://doi.org/10.5281/zenodo.23028523)). Release 1.0.0 remains at [doi:10.5281/zenodo.22997540](https://doi.org/10.5281/zenodo.22997540).
+archived on Zenodo ([doi:10.5281/zenodo.23047057](https://doi.org/10.5281/zenodo.23047057)). Release 1.0.0 remains at [doi:10.5281/zenodo.22997540](https://doi.org/10.5281/zenodo.22997540).
 
 **[Read the preprint (PDF, 23 pages)](paper/double-pendulum.pdf)**
 
