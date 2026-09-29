@@ -137,11 +137,13 @@ function hookSource(s) {
   // stats harness, which the headless loader does not provide, so that span is replaced by plain text.
   s = replaceOnce(s, '      function status() {\n',
     '      hooks.status = () => status();\n      function status() {\n');
-  s = replaceOnce(s, '          ? U.stats.compare({', '          ? (o => \'<span>\' + o.label + \' <b>\' + f3(o.measured) + \'</b></span>\')({');
+  const cmp = 'U.stats.compare({';
+  if (s.split(cmp).length < 3) throw new Error('expected the n = −1 comparison and the crossing comparisons');
+  s = s.replaceAll(cmp, '(o => \'<span>\' + o.label + \' <b>\' + (Number.isFinite(o.measured) ? Number(o.measured).toFixed(o.digits == null ? 3 : o.digits) : \'?\') + \'</b></span>\')({');
   s = replaceOnce(s, "        host.setStatus('<span>n <b>'", "        (hooks.setStatus || host.setStatus)('<span>n <b>'");
   return s;
 }
-const CAPTURE = 'field,W,H,metric,extra,peakX,peakI,x0,slab0,slab1,yS,focusNote,dropped';
+const CAPTURE = 'field,W,H,metric,extra,peakX,peakI,x0,slab0,slab1,yS,focusNote,dropped,crossLo,crossHi,paraxialBehind';
 function loadModule(mutate = s => s) {
   return load('veselago', { names: 'sanitize,SCHEMA,DEFAULTS,PRESETS', capture: CAPTURE, mutate: s => mutate(hookSource(s)) });
 }
@@ -245,7 +247,7 @@ function main() {
   const sweepAxes = { n: nSteps(), L: [20, 36, 48, 64, 80], src: [8, 16, 24, 36, 50], rays: [12, 28, 48, 64], grid: [128, 144, 192, 224], aspect: aspectOptions };
   const sweep = { configs: 0, inDomain: 0, rays: 0, dropped: 0, maxVertexErr: 0, maxCrossErr: 0, maxLayoutErr: 0, dropMismatch: 0,
     missing: 0, nonfinite: 0, failedGeometry: 0, stray: 0, lit: 0, segmentsChecked: 0, minCoverage: 1, lowCoverage: 0,
-    labelRuleViolations: 0, tirSaidMismatch: 0, tirConfigs: 0 };
+    labelRuleViolations: 0, tirSaidMismatch: 0, tirConfigs: 0, causticMismatch: 0, causticChecked: 0 };
   // Status label against the independent image, measured over the in-domain sweep (no acceptance criterion: the label is not validated).
   const labelSweep = { imageInWindow: { configs: 0, labelledFocus: 0 }, crossingsPartlyOutsideWindow: { configs: 0, labelledFocus: 0 },
     noRealImageBehindSlab: { configs: 0, labelledFocus: 0 }, labelledFocusNoImageExample: null };
@@ -256,11 +258,23 @@ function main() {
       const cfg = { n, L, src, rays, grid, aspect };
       const m = runModule(mod, cfg), ref = snellTrace(cfg), c = compareRays(m, ref), ink = inkCheck(m.field, m.W, m.H, ref.rays);
       sweep.configs++;
-      const kindAll = imageKind(ref, crossings(ref));
+      const Xall = crossings(ref);
+      const kindAll = imageKind(ref, Xall);
       const expectLabel = kindAll === 'noRealImageBehindSlab' ? 'no image behind the slab'
         : (Math.abs(cfg.n + 1) < 1e-9 && cfg.src < cfg.L ? 'Veselago focus' : 'image behind the slab');
       if (m.label !== expectLabel) sweep.labelRuleViolations++;
       if (m.tirSaid !== (m.drops.length > 0) || m.dropped !== m.drops.length) sweep.tirSaidMismatch++;
+      const perfect = Math.abs(cfg.n + 1) < 1e-9 && cfg.src < cfg.L;
+      if (Xall.outer.length && !perfect) {
+        sweep.causticChecked++;
+        const lo = Math.min(...Xall.outer) - ref.g.face1, hi = Math.max(...Xall.outer) - ref.g.face1;
+        const par = cfg.L / Math.abs(cfg.n) - cfg.src;
+        const nums = Math.abs(m.crossLo - lo) <= 1e-9 && Math.abs(m.crossHi - hi) <= 1e-9 && Math.abs(m.paraxialBehind - par) <= 1e-9;
+        const words = /nearest crossing/.test(m.statusHtml) && /farthest/.test(m.statusHtml) && /paraxial/.test(m.statusHtml) && !/image Δx/.test(m.statusHtml);
+        if (!nums || !words) sweep.causticMismatch++;
+      } else if (perfect) {
+        if (!/image Δx/.test(m.statusHtml) || /nearest crossing|paraxial/.test(m.statusHtml)) sweep.causticMismatch++;
+      } else if (/nearest crossing|paraxial|image Δx/.test(m.statusHtml)) sweep.causticMismatch++;
       if (ref.g.face1 > ref.g.xEnd) {
         // Declared outside the domain: the slab's back face lies beyond the last drawn column.
         offPlate.configs++; offPlate.grids[grid] = (offPlate.grids[grid] || 0) + 1; offPlate.maxVertexErr = Math.max(offPlate.maxVertexErr, c.maxVertexErr);
@@ -269,7 +283,7 @@ function main() {
       }
       sweep.inDomain++;
       {
-        const X = crossings(ref), kind = imageKind(ref, X), row = labelSweep[kind];
+        const X = Xall, kind = imageKind(ref, X), row = labelSweep[kind];
         row.configs++;
         if (m.label === 'Veselago focus') {
           row.labelledFocus++;
@@ -286,7 +300,7 @@ function main() {
     }
   sweep.seconds = Math.round((performance.now() - sweepTime) / 100) / 10;
   sweep.pass = sweep.failedGeometry === 0 && sweep.stray === CRITERIA.strayInk && sweep.lowCoverage === 0 &&
-    sweep.labelRuleViolations === 0 && sweep.tirSaidMismatch === 0 && offPlate.strayCells === 0;
+    sweep.labelRuleViolations === 0 && sweep.tirSaidMismatch === 0 && offPlate.strayCells === 0 && sweep.causticMismatch === 0;
 
   // 2. Continuous values a URL hash can carry, between the slider steps, away from the grazing band n > -0.44.
   const rnd = mulberry32(19680509), cont = { configs: 0, rays: 0, maxVertexErr: 0, maxCrossErr: 0, failedGeometry: 0, stray: 0, lowCoverage: 0, skippedOffPlate: 0 };
@@ -518,7 +532,7 @@ function main() {
       'Geometric rays only: no wave optics, no evanescent-wave amplification (Pendry), no absorption, dispersion or finite-aperture diffraction; the plate is not a metamaterial simulation.',
       'Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.',
       'n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.',
-      'The status label says "Veselago focus" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is "image behind the slab". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.',
+      'At n = -1 the status line gives the brightest point against 2L - d. At every other n with a crossing behind the slab it gives the nearest and farthest crossings and the paraxial point L/|n| - d. Those rays do not meet at one point, and the line does not say they do.',
       'A back face past the last drawn column stops the ray there. The exit segment is not walked backwards onto the plate.',
       'Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain.',
     ],
