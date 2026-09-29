@@ -2,7 +2,7 @@
   {
     "id": "minimal-winding",
     "pages": 43,
-    "sha256": "d46347ad8a940710aa22fa57277fe5dbfa0bed72950b3291132c8c1ef9bd8bdd",
+    "sha256": "1940be75aac927dc997b38429a6536d0adbc3e73da4e53a3e590b12ce698e684",
     "pdfTitle": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -282,7 +282,7 @@
   {
     "id": "stable-expansion",
     "pages": 21,
-    "sha256": "5cdf4d0f287590e56e804ad58b5701c9e11bc9f2d29025a4a76508bc26ff92f1",
+    "sha256": "b7dabdb95fdd74f334961b6178283f41cefe2aa56c4bb6ec3d4c73ad277780fc",
     "pdfTitle": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
     "metadataMatches": true,
     "visibleTitleMatches": true,
@@ -406,7 +406,7 @@
   {
     "id": "rank-window",
     "pages": 17,
-    "sha256": "2861f667d492b17ad63b8cdf92c2fbcdfe9ba53ad4a6b2ab1b8901f7a679c0c4",
+    "sha256": "34e94bbe8ffaa166eb12bf2fc269637c87956b00829d747fe51a7228b77d4c2f",
     "pdfTitle": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
     "metadataMatches": true,
     "visibleTitleMatches": true,

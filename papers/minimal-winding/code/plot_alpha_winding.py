@@ -69,9 +69,14 @@ if k0.real > 0:                                   # take the collapsing orientat
     z = np.conj(z); zc = (G @ z) / G.sum()
     y0 = np.concatenate([z.real, z.imag]); k0 = (rhs(0, y0)[0] + 1j * rhs(0, y0)[3]) / (z[0] - zc)
 tc = -1 / (2 * beta * k0.real); Pb = abs(k0.imag) / (2 * abs(k0.real))
-sol = solve_ivp(rhs, [0, tc * (1 - 1e-6)], np.concatenate([z.real, z.imag]), method='DOP853', rtol=1e-11, atol=1e-13, dense_output=True)
+terminal_time = tc * (1 - 1e-6)
+sol = solve_ivp(rhs, [0, terminal_time], np.concatenate([z.real, z.imag]), method='DOP853', rtol=1e-11, atol=1e-13, dense_output=True)
+if not sol.success or sol.t[-1] != terminal_time or not np.isfinite(sol.y).all():
+    raise RuntimeError('SQG illustration did not reach its finite terminal state: ' + sol.message)
 ts = tc * (1 - np.geomspace(1, 1e-6, 3000))
 Y = sol.sol(ts); Z = (Y[:3] + 1j * Y[3:]) - zc
+if not np.isfinite(Y).all():
+    raise RuntimeError('SQG illustration contains non-finite interpolated coordinates')
 scale = np.max(np.abs(Z[:, 0]))
 
 plt.rcParams.update({'font.family': 'serif', 'font.serif': ['cmr10'], 'mathtext.fontset': 'cm',
