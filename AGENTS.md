@@ -1,6 +1,6 @@
 # AGENTS
 
-GENChase is a folder-based generative art studio. Maintained source lives in `src/`; `node tools/build.js` generates the thin `index.html`, the local module manifest and optional portable `dist/studio.html`. The shared engine stays in `src/shared/engine.js`. Users do not install a package. Humans opening a pull request follow `CONTRIBUTING.md`; this file is the contract for the change itself.
+GENChase is a development and research working environment, with a folder-based art and print studio. Maintained source lives in `src/`; `node tools/build.js` generates the thin `index.html`, the local module manifest and optional portable `dist/studio.html`. The shared engine stays in `src/shared/engine.js`. Users do not install a package. Humans opening a pull request follow `CONTRIBUTING.md`; this file is the contract for the change itself.
 
 Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print export. Generated images belong to the human, always and at any company size. The source is Apache-2.0. The separate OUTPUT-RIGHTS.md preserves the output grant.
 
