@@ -1034,6 +1034,8 @@ void main(){
             if (s.view!=='layers') {
               g.save(); g.translate(cx,cy); g.rotate(c.th);
               g.beginPath(); g.ellipse(0,0,R,R*(0.55+c.e*0.3),0,0,TAU); g.stroke();
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              g.beginPath(); g.moveTo(-f,-R*1.1); g.quadraticCurveTo(0,0,f,R*1.1); g.stroke();
               g.restore();
             }
           }
@@ -1042,20 +1044,23 @@ void main(){
         exportSVG(w,h){
           const s=host.getState();
           const W=w||1000, H=h||W, sc=Math.min(W,H);
-          const pal=s.palette||['#111'];
-          const lw=Math.max(0.35, s.lw*sc/900).toFixed(2);
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=k=>{ const li=((k%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const lw=Math.max(0.6, s.lw*sc/900).toFixed(2);
           let body='';
           for (let i=0;i<circles.length;i++) {
-            const c=circles[i], cx=(c.x*W).toFixed(2), cy=(c.y*H).toFixed(2), col=U.svgEsc(pal[i%pal.length]);
+            const c=circles[i], cx=(c.x*W).toFixed(2), cy=(c.y*H).toFixed(2), col=U.svgEsc(colour(i*0.17));
             const R=c.r*sc;
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R; r>1.2; r-=pitch)
+              for (let r=R; r>1.5; r-=pitch)
                 body+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
             }
             if (s.view!=='layers') {
               const ry=R*(0.55+c.e*0.3);
               body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R.toFixed(2)+'" ry="'+ry.toFixed(2)+'" transform="rotate('+(c.th*180/Math.PI).toFixed(2)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              body+='<path d="M '+(-f).toFixed(2)+' '+(-R*1.1).toFixed(2)+' Q 0 0 '+f.toFixed(2)+' '+(R*1.1).toFixed(2)+'" transform="translate('+cx+' '+cy+') rotate('+(c.th*180/Math.PI).toFixed(2)+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-linecap="round"/>\n';
             }
           }
           return U.svgBlob(W,H,s.bg,body);
@@ -1224,17 +1229,19 @@ void main(){
           const W=w||1000, H=h||W;
           let m=0; for (let i=0;i<boundary.length;i++) m=Math.max(m, Math.hypot(boundary[i][0], boundary[i][1]));
           const sc=0.44*Math.min(W,H)/Math.max(m,1), cx=W/2, cy=H/2;
-          const pal=s.palette||['#111'], ink=pal[0]||'#111', fill=pal[Math.min(pal.length-1,2)]||ink;
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=t=>{ const li=((t%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const ink=s.view==='outline'?U.inkFor(s.bg):colour(0.12), fill=colour(0.72);
           const dOf=arr=>{
             let d=''; for (let i=0;i<arr.length;i++) d+=(i?'L':'M')+(cx+arr[i][0]*sc).toFixed(2)+' '+(cy+arr[i][1]*sc).toFixed(2);
             return d+'Z';
           };
           let body='';
-          const lw=Math.max(0.4, s.lw*Math.min(W,H)/900).toFixed(2);
+          const lw=Math.max(0.8, s.lw*Math.min(W,H)/800).toFixed(2);
           if (s.view==='age' && rings.length) {
             for (let r=0;r<rings.length;r++) {
-              const col=pal[r%pal.length];
-              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" d="'+dOf(rings[r])+'"/>\n';
+              const col=colour(r/Math.max(1,rings.length-1));
+              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" stroke-linejoin="round" stroke-linecap="round" d="'+dOf(rings[r])+'"/>\n';
             }
           }
           if (s.view!=='outline') body+='<path fill="'+U.svgEsc(fill)+'" fill-opacity="'+(s.view==='age'?'0.18':'0.92')+'" stroke="none" d="'+dOf(boundary)+'"/>\n';

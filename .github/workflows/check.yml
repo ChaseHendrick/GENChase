@@ -258,6 +258,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
           node tools/ui.js
+          node tools/vector-preview-check.js
           node tools/formula-chooser-check.js
       - name: Folder loading, recipes, witness and recovery
         if: needs.pde-plan.outputs.browser_required != 'false'
