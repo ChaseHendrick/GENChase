@@ -1,12 +1,11 @@
 
 /* modules/veselago.js */
-/* GENChase: Veselago negative-index slab. Light bends the wrong way and a slab focuses. Image location is measured against 2L − d. */
+/* GENChase: Veselago negative-index slab. Light bends the wrong way. At n = −1 and d < L the rays meet behind the slab at 2L − d. At any other n they do not meet at one point. */
 (function () {
   'use strict';
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -43,10 +42,10 @@
     order: 94,
     equation: 'n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d',
     credit: 'V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.',
-    blurb: 'Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell\'s law says it must. A source in front of n = −1 focuses inside the slab and again behind it, as if the slab were a lens with no curved surface. The status line reports the brightest point behind the slab against 2L − d.',
+    blurb: 'Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell\'s law says it must. At n = −1, when the source distance d is less than the slab thickness L, the rays meet behind the slab at 2L − d. At other negative indices they do not meet at one point. When axis crossings lie behind the slab, the status line gives the nearest and farthest crossings and the paraxial point L/|n| − d.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
-      Slab: 'n = −1 is Veselago\'s perfect lens. Other negative n still focuses, just not at the textbook point.',
+      Slab: 'At n = −1 the rays meet behind the slab only when the source distance d is less than the thickness L. Other negative indices do not bring the rays to one point; the crossing range is shown only when crossings lie behind the slab.',
       Picture: 'Brightness counts ray crossings. Exposure 1 puts white at the 95th percentile of lit pixels, so the source and the foci, where every ray crosses, clip. Log shows them unclipped.',
     },
     palette: true, defaultPalette: 'glacier', surprise, sanitize,
@@ -54,6 +53,7 @@
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, field, metric = 0, extra = 0, white = 1, peak = 1, buf, img;
       let focusNote = 'no image behind the slab', dropped = 0;
+      let crossLo = NaN, crossHi = NaN, paraxialBehind = NaN;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -73,6 +73,7 @@
         }
         const yS = H / 2;
         let peakX = slab1, peakI = 0, behind = 0, tir = 0;
+        crossLo = Infinity; crossHi = -Infinity;
         for (let r = 0; r < nR; r++) {
           const th = (r / Math.max(1, nR - 1) - 0.5) * 0.9;
           const s1 = Math.sin(th), c1 = Math.cos(th);
@@ -103,11 +104,18 @@
             px = xEnd;
             if (seg === 1 && Math.abs(s1) > 1e-12) {
               const xCross = slab1 + (yS - py) * c1 / s1;
-              if (xCross > slab1 + 1e-9) behind++;
+              if (xCross > slab1 + 1e-9) {
+                behind++;
+                const z = xCross - slab1;
+                if (z < crossLo) crossLo = z;
+                if (z > crossHi) crossHi = z;
+              }
             }
           }
         }
         dropped = tir;
+        if (!behind) { crossLo = NaN; crossHi = NaN; }
+        paraxialBehind = L / Math.abs(nS) - d;
         focusNote = behind > 0
           ? (Math.abs(nS + 1) < 1e-9 && d < L ? 'Veselago focus' : 'image behind the slab')
           : 'no image behind the slab';
@@ -155,13 +163,18 @@
 
       // "Veselago focus" is only the textbook image: n = −1 and the source closer than the slab is thick,
       // and only when a transmitted ray's unclamped exit line crosses the axis behind the back face.
-      // Any other real crossing is "image behind the slab". No such crossing is "no image behind the slab".
-      // |Δx|/W is the brightest point against 2L − d; it does not decide the words. A skipped ray is named.
+      // Any other real crossing is "image behind the slab", and the numbers are the nearest and farthest
+      // of those crossings plus the paraxial point L/|n| − d. They are not one image. No crossing is
+      // "no image behind the slab". At n = −1, Δx/W is the brightest point against 2L − d.
       function status() {
         const s = host.getState(), perfect = Math.abs(s.n + 1) < 1e-9 && s.src < s.L;
         const offset = perfect
           ? U.stats.compare({ label: 'image Δx/W', measured: metric, expected: 0, reference: 'Veselago image 2L−d', basis: 'deterministic', digits: 3 })
-          : '<span>image Δx/W <b>' + f3(metric) + '</b></span>';
+          : (Number.isFinite(crossLo)
+            ? U.stats.compare({ label: 'nearest crossing', measured: crossLo, units: 'px', basis: 'deterministic', digits: 4, note: 'behind the back face' })
+              + U.stats.compare({ label: 'farthest', measured: crossHi, units: 'px', basis: 'deterministic', digits: 4 })
+              + U.stats.compare({ label: 'paraxial', measured: paraxialBehind, units: 'px', basis: 'exact', digits: 4, note: 'L/|n|−d' })
+            : '');
         host.setStatus('<span>n <b>' + f2(s.n) + '</b></span>' + offset + '<span>' + focusNote + '</span>');
       }
 

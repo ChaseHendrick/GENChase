@@ -2890,7 +2890,7 @@
       "subtitle": "a slab that focuses because n is negative · 1968",
       "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
       "credit": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
-      "blurb": "Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell's law says it must. A source in front of n = −1 focuses inside the slab and again behind it, as if the slab were a lens with no curved surface. The status line reports the brightest point behind the slab against 2L − d.",
+      "blurb": "Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell's law says it must. At n = −1, when the source distance d is less than the slab thickness L, the rays meet behind the slab at 2L − d. At other negative indices they do not meet at one point. When axis crossings lie behind the slab, the status line gives the nearest and farthest crossings and the paraxial point L/|n| − d.",
       "order": 94,
       "seed": "",
       "presets": [

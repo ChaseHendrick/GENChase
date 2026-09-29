@@ -62,15 +62,20 @@ function trackedFiles(root, id) {
 function citation(reg, p, year) {
   const a = reg.author, who = ['  - given-names: ' + yaml(a['given-names']), '    family-names: ' + yaml(a['family-names']), '    affiliation: ' + yaml(a.affiliation)];
   if (a.orcid) who.push('    orcid: ' + yaml('https://orcid.org/' + a.orcid));
+  const arxivDoi = p.arxiv && p.arxiv.id ? '10.48550/arXiv.' + p.arxiv.id.replace(/v\d+$/, '') : null;
+  const preferredDoi = (p.journal && p.journal.doi) || arxivDoi || p.codeDoi;
+  const preferredUrl = p.arxiv && p.arxiv.id ? 'https://arxiv.org/abs/' + p.arxiv.id : 'https://github.com/' + p.companion;
   const ids = [];
-  if (p.arxiv && p.arxiv.id) ids.push('    - type: doi', '      value: ' + yaml('10.48550/arXiv.' + p.arxiv.id.replace(/v\d+$/, '')));
+  if (arxivDoi) ids.push('    - type: doi', '      value: ' + yaml(arxivDoi));
   if (p.journal && p.journal.doi) ids.push('    - type: doi', '      value: ' + yaml(p.journal.doi));
   return ['cff-version: 1.2.0', 'message: "If you use these programs or data, please cite the paper."',
     'title: ' + yaml(p.title), 'type: software', 'authors:', ...who,
     'license: Apache-2.0', 'repository-code: ' + yaml('https://github.com/' + p.companion),
     ...(p.codeDoi ? ['doi: ' + yaml(p.codeDoi)] : []),
     'preferred-citation:', '  type: article', '  title: ' + yaml(p.title), '  authors:', ...who.map(l => '  ' + l), '  year: ' + year,
-    ...(p.arxiv && p.arxiv.id ? ['  url: ' + yaml('https://arxiv.org/abs/' + p.arxiv.id), '  identifiers:', ...ids.map(l => '  ' + l)] : []),
+    '  url: ' + yaml(preferredUrl),
+    ...(preferredDoi ? ['  doi: ' + yaml(preferredDoi)] : []),
+    ...(ids.length ? ['  identifiers:', ...ids.map(l => '  ' + l)] : []),
     ''].join('\n');
 }
 
@@ -112,11 +117,16 @@ function zenodo(reg, p, paragraphs) {
   const creator = { name: reg.author['family-names'] + ', ' + reg.author['given-names'], affiliation: reg.author.affiliation };
   if (reg.author.orcid) creator.orcid = reg.author.orcid;
   const holds = 'This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.';
+  const manuscriptLicense = p.textLicense === 'CC-BY-4.0'
+    ? 'The manuscript in paper/, including its figures, is licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).'
+    : 'The manuscript in paper/, including its figures, is all rights reserved.';
+  const componentLicenses = manuscriptLicense + ' The Apache-2.0 license identifier applies to the programs in code/ and the data in data/, not to the manuscript. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.' +
+    (p.id === 'rank-window' ? ' The derived outputs in out/ are licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0), as stated in out/LICENSE.md.' : '');
   return JSON.stringify({
     // Each companion release is the paper's preprint on Zenodo (owner's decision, 2026-09-25): the manuscript with
     // the programs that check it, typed Publication / Preprint so indexes list it as the paper.
     title: p.title, upload_type: 'publication', publication_type: 'preprint',
-    description: [...(paragraphs || []), holds].map(x => '<p>' + html(x) + '</p>').join(''),
+    description: [...(paragraphs || []), holds, componentLicenses].map(x => '<p>' + html(x) + '</p>').join(''),
     creators: [creator], license: 'Apache-2.0', ...(related.length ? { related_identifiers: related } : {}),
   }, null, 2) + '\n';
 }
@@ -153,7 +163,12 @@ function stage(root, id, dir, opts = {}) {
   if (!p || !p.companion) throw new Error('paper ' + id + ' has no companion repository in papers/papers.json');
   if (fs.existsSync(dir) && fs.readdirSync(dir).length) throw new Error(dir + ' is not empty');
   const year = opts.year || new Date().getUTCFullYear();
-  for (const f of (opts.files || trackedFiles(root, id)).filter(f => !PRIVATE_DIRS.some(d => f.startsWith(d)))) {
+  const files = opts.files || trackedFiles(root, id), exclude = p.companionExclude || [];
+  const required = ['README.md', 'RELEASES.md', ...[p.pdf, p.latex, p.markdown, p.typst].filter(Boolean).map(f => f.replace('papers/' + id + '/', ''))];
+  if (!Array.isArray(exclude) || exclude.some(f => typeof f !== 'string' || !files.includes(f) || required.includes(f))) {
+    throw new Error('companionExclude must list tracked, non-manuscript files relative to papers/' + id + '/');
+  }
+  for (const f of files.filter(f => !PRIVATE_DIRS.some(d => f.startsWith(d)) && !exclude.includes(f))) {
     fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
     fs.copyFileSync(path.join(root, 'papers', id, f), path.join(dir, f));
   }
@@ -203,7 +218,37 @@ function selfTest() {
     checks++; if (!/^The manuscript in paper\/.*All rights reserved\./.test(lic) || !/Apache License/.test(lic)) { failures++; console.log('FAIL LICENSE:\n' + lic); }
     const zen = JSON.parse(fs.readFileSync(path.join(out, '.zenodo.json'), 'utf8')), desc = zen.description;
     checks++; if (zen.upload_type !== 'publication' || zen.publication_type !== 'preprint') { failures++; console.log('FAIL .zenodo.json type: ' + zen.upload_type + ' / ' + zen.publication_type); }
-    checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
+    checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p><p>The manuscript in paper/, including its figures, is all rights reserved. The Apache-2.0 license identifier applies to the programs in code/ and the data in data/, not to the manuscript. Specific component notices and directory licenses govern any exceptions; see LICENSE and NOTICE.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
+    // GitHub reads preferred-citation separately from the top-level software fields. The exact
+    // archived program DOI remains top-level even when a later paper DOI becomes preferred.
+    const archiveDoi = '10.5281/zenodo.1234567', journalDoi = '10.1234/published-paper';
+    const citationCases = [
+      ['no DOI yet', {}, null, 'https://github.com/o/t'],
+      ['archive without arXiv', { codeDoi: archiveDoi }, archiveDoi, 'https://github.com/o/t'],
+      ['arXiv before journal', { codeDoi: archiveDoi, arxiv: { id: '2610.12345v2' } }, '10.48550/arXiv.2610.12345', 'https://arxiv.org/abs/2610.12345v2'],
+      ['journal before arXiv and archive', { codeDoi: archiveDoi, arxiv: { id: '2610.12345v2' }, journal: { doi: journalDoi } }, journalDoi, 'https://arxiv.org/abs/2610.12345v2'],
+      ['journal without arXiv', { codeDoi: archiveDoi, journal: { doi: journalDoi } }, journalDoi, 'https://github.com/o/t'],
+    ];
+    for (const [name, fields, doi, url] of citationCases) {
+      const r = reg(), p = { ...r.papers[0], ...fields };
+      const generated = citation(r, p, 2026), [software, preferred] = generated.split('preferred-citation:\n');
+      const actualDoi = /^  doi: "([^"]+)"$/m.exec(preferred), actualUrl = /^  url: "([^"]+)"$/m.exec(preferred);
+      checks++;
+      if ((actualDoi ? actualDoi[1] : null) !== doi || !actualUrl || actualUrl[1] !== url ||
+          (p.codeDoi && !software.includes('doi: ' + yaml(p.codeDoi)))) {
+        failures++; console.log('FAIL preferred citation ' + name + ':\n' + generated);
+      }
+    }
+    for (const textLicense of ['all-rights-reserved', 'CC-BY-4.0']) {
+      const r = reg(), metadata = JSON.parse(zenodo(r, { ...r.papers[0], id: 'rank-window', textLicense }, []));
+      const expectedManuscript = textLicense === 'CC-BY-4.0' ? 'licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)' : 'all rights reserved';
+      checks++;
+      if (metadata.license !== 'Apache-2.0' || !metadata.description.includes(expectedManuscript) ||
+          !metadata.description.includes('Specific component notices and directory licenses govern any exceptions') ||
+          !metadata.description.includes('outputs in out/ are licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)')) {
+        failures++; console.log('FAIL component license disclosure for ' + textLicense + ': ' + metadata.description);
+      }
+    }
     expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/ChaseHendrick/GENChase\n'));
     expect(false, 'a GENChase link under the old account name', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));
     expect(false, 'a research/ path in the code', () => w('papers/t/code/run.py', "open('research/generalizations/x.json')\n"));
@@ -215,6 +260,11 @@ function selfTest() {
     expect(false, 'a README without an abstract', () => w('papers/t/README.md', '# T\n\nIntro.\n'));
     expect(false, 'an abstract with TeX that has no plain-text form', () => w('papers/t/README.md', '# T\n\n## Abstract\n\nThe bound is $\\mathcal{O}(1)$.\n'));
     expect(false, 'an unknown text license', r => { r.papers[0].textLicense = 'MIT'; });
+    expect(true, 'an explicit exploratory file can stay out of the companion', r => { r.papers[0].companionExclude = ['code/run.py']; });
+    expect(false, 'the README cannot be excluded', r => { r.papers[0].companionExclude = ['README.md']; });
+    expect(false, 'the manuscript cannot be excluded', r => { r.papers[0].latex = 'papers/t/paper/t.tex'; r.papers[0].companionExclude = ['paper/t.tex']; });
+    expect(false, 'an exclusion cannot silently name a missing file', r => { r.papers[0].companionExclude = ['code/typo.py']; });
+    expect(false, 'exclusions must be a list', r => { r.papers[0].companionExclude = 'code/run.py'; });
     const listed = ready(reg()).map(p => p.id).join(' ');
     checks++; if (listed !== 't') { failures++; console.log('FAIL --list gave "' + listed + '", not "t"'); }
     checks++; try { ready(reg(), 'u'); failures++; console.log('FAIL a draft was listed'); } catch (_) { /* refused, as it should be */ }

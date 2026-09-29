@@ -13,6 +13,8 @@
 #            files are never replaced. A release made before 2026-09-26 keeps its tag with the v:
 #            RELEASE=v2.1.0 updates its notes from "## 2.1.0". A new tag with a leading v is refused, and
 #            so is a plain tag whose version the companion already has under its v tag.
+#            A tag with no published release must pass the new-release checks and match the reviewed
+#            candidate tree. A draft release is refused before any repository content is changed.
 #
 # Direct edits are kept. The branch genchase-sync holds exactly what this repository published, one
 # commit per change, and each run merges it into the companion's default branch. Edits the owner makes
@@ -62,6 +64,22 @@ if [ -n "${RELEASE:-}" ]; then
           echo "::error::$repo already has $RELEASE as v$RELEASE. Run with RELEASE=v$RELEASE to update its notes; a tag is never renamed."; exit 1
         fi ;;
   esac
+  # A Git tag alone is not a published release. Only published releases are exempt from
+  # the new-release gates. Refuse drafts explicitly rather than publishing one by accident.
+  published_release=false
+  if release_state=$(gh release view "$RELEASE" -R "$repo" --json isDraft --jq .isDraft 2>/dev/null); then
+    case $release_state in
+      false) published_release=true ;;
+      true) echo "::error::$repo has a draft release $RELEASE. Resolve that draft before running this publisher; no draft is published or edited here."; exit 1 ;;
+      *) echo "::error::Could not determine whether $repo release $RELEASE is published."; exit 1 ;;
+    esac
+  else
+    release_status=$?
+    [ "$release_status" = 1 ] || { echo "::error::Could not inspect $repo release $RELEASE (gh exit $release_status)."; exit 1; }
+  fi
+  if [ "$published_release" = false ]; then
+    node "$ROOT/tools/paper-check.js" --paper "$PAPER" --release
+  fi
 fi
 
 warn() { echo "::warning::$1"; }
@@ -124,6 +142,19 @@ while read -r id repo; do
     git checkout -q -B "$branch" "$SYNC"
   fi
 
+  # Inspect the merged tree before pushing anything. A tracked PDF can still be omitted by
+  # export-ignore. Existing releases remain immutable and may have predated the PDF requirement.
+  candidate=$(git rev-parse "$branch")
+  if [ -n "${RELEASE:-}" ] && [ "$id" = "${PAPER:-}" ] && [ "$published_release" = false ]; then
+    archive_ref=$candidate
+    if git rev-parse -q --verify "refs/tags/$RELEASE" >/dev/null; then archive_ref="refs/tags/$RELEASE"; fi
+    python3 "$ROOT/tools/paper-archive-check.py" "$id" "$work/repo" "$archive_ref"
+    if [ "$(git rev-parse "$archive_ref^{tree}")" != "$(git rev-parse "$candidate^{tree}")" ]; then
+      echo "::error::$repo tag $RELEASE differs from the reviewed candidate tree. Choose a new version; existing tags are never changed."
+      exit 1
+    fi
+  fi
+
   if [ "$(git rev-parse "$branch")" = "$had_main" ] && [ "$(git rev-parse "$SYNC")" = "$had_sync" ]; then
     echo "$repo is already up to date."
   else
@@ -135,7 +166,7 @@ while read -r id repo; do
     lock "$repo"
     if [ -n "${RELEASE:-}" ] && [ "$id" = "${PAPER:-}" ]; then
       notes_for "$id" "$RELEASE" > "$work/notes.md"
-      if gh release view "$RELEASE" -R "$repo" >/dev/null 2>&1; then
+      if [ "$published_release" = true ]; then
         if [ "$(gh release view "$RELEASE" -R "$repo" --json body --jq .body)" = "$(cat "$work/notes.md")" ]; then
           echo "$repo already has the release $RELEASE with these notes; the tag and its files are never replaced."
         else
@@ -143,7 +174,7 @@ while read -r id repo; do
           echo "Updated the notes of $RELEASE in $repo from papers/$id/RELEASES.md; the tag and its files are unchanged. Zenodo keeps the description it archived."
         fi
       else
-        gh release create "$RELEASE" -R "$repo" --target "$branch" --title "$RELEASE" --notes-file "$work/notes.md"
+        gh release create "$RELEASE" -R "$repo" --target "$candidate" --title "$RELEASE" --notes-file "$work/notes.md"
         echo "Released $RELEASE of $repo. If Zenodo is switched on for it, the DOI appears on Zenodo within minutes."
       fi
     fi

@@ -1,8 +1,8 @@
 {
   "pass": true,
   "source": "src/modules/veselago.js",
-  "sourceSha256": "005afe80ea7da44f1673baf149998a2149c561cb6d2d3efbca2f031daf347844",
-  "harnessSha256": "9d9ed23db7ef9f6127bd7e78ad95f63d9b33f05236f3c1e7ae2b138dd3dd8c84",
+  "sourceSha256": "97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3",
+  "harnessSha256": "777fb5038b5ba8df3a11a8649b316932644636606b0593518e10cf5bb1c745d1",
   "command": "node tools/veselago-science.js --write",
   "criteria": {
     "geometryTolPx": 1e-9,
@@ -187,7 +187,9 @@
     "labelRuleViolations": 0,
     "tirSaidMismatch": 0,
     "tirConfigs": 1536,
-    "seconds": 44.6,
+    "causticMismatch": 0,
+    "causticChecked": 40768,
+    "seconds": 30,
     "pass": true
   },
   "continuous": {
@@ -2220,13 +2222,13 @@
     "Geometric rays only: no wave optics, no evanescent-wave amplification (Pendry), no absorption, dispersion or finite-aperture diffraction; the plate is not a metamaterial simulation.",
     "Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.",
     "n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.",
-    "The status label says \"Veselago focus\" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is \"image behind the slab\". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.",
+    "At n = -1 the status line gives the brightest point against 2L - d. At every other n with a crossing behind the slab it gives the nearest and farthest crossings and the paraxial point L/|n| - d. Those rays do not meet at one point, and the line does not say they do.",
     "A back face past the last drawn column stops the ray there. The exit segment is not walked backwards onto the plate.",
     "Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain."
   ],
   "environment": {
-    "node": "v22.23.3",
-    "platform": "linux"
+    "node": "v24.21.0",
+    "platform": "darwin"
   },
-  "seconds": 49.9
+  "seconds": 33.2
 }

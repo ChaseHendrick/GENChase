@@ -496,18 +496,17 @@
   {
     "id": "sle",
     "source": "src/modules/sle.js",
-    "sourceSha256": "26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8",
+    "sourceSha256": "acf2da32a624b7929a0ca999d221d85207f67b2533413f625769a4cdf4db998f",
     "reference": "Oded Schramm, Israel Journal of Mathematics 118, 221 (2000), 'Scaling limits of loop-erased random walks and uniform spanning trees'. Charles Loewner's 1923 equation grows a curve into the upper half plane from a real driving function; Schramm showed that the only conformally invariant random curves with the domain Markov property come from driving it with Brownian motion of variance \u03ba, and identified \u03ba with the critical models whose interfaces they describe. Gregory Lawler, Schramm and Wendelin Werner computed the exponents; Stanislav Smirnov proved the percolation case. The curve is computed here as a composition of vertical slit maps, after Tom Kennedy, Journal of Statistical Physics 137, 839 (2009).",
     "equation": "\u2202g_t/\u2202t = 2 / (g_t(z) \u2212 \u221a\u03ba B_t),   \u03b3(t) = g_t\u207b\u00b9(\u221a\u03ba B_t);   \u03ba = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve",
     "status": "partially validated",
     "limitations": [
-      "The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model.",
+      "The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model. The status line says the plate is a coarse trace, not resolved to dimension min(2, 1+κ/8). It does not print a measured dimension for the curve on screen.",
       "Numerical agreement is established for the Loewner solver (zero, linear and square-root drivers, first order in dt, N 300-8000) and for the driver variance (kappa 2, 4, 6); the random curve's law beyond its box-counting dimension is not tested.",
       "Print evidence covers five recipes (kappa 2, 6, 8, the sweep and a 12-seed bundle) on one Chromium build; kappa values other than 2, 4, 6 appear only in print recipes.",
       "Finite samples from one seeded PRNG; error bars assume independent seeds."
     ],
     "remaining": [
-      "Resolve the trace finely enough for its fractal dimension to converge (adaptive capacity steps or a much larger N, as in Kennedy 2009), then repeat the box-counting test; or state in the tab that the plate is a coarse discretization whose dimension is below 1 + kappa/8.",
       "Test a distributional property of the trace (for example Schramm's left-passage probability) at kappa 8/3 and 6.",
       "Extend the dimension ensemble to kappa 8/3 and 8 once the resolution is adequate."
     ],
@@ -868,16 +867,15 @@
     "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H\u2020.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{\u2212g},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Evidence is the open chain with on-site disorder below 0.04, where the plate is the closed form and not a diagonalization. Disordered and periodic paths use subspace iteration with Gram-Schmidt and are not right eigenvectors. They are excluded.",
       "Finite N only. Eigenvalues must match 2 cos(pi n/(N+1)) to 1e-8 and sign-aligned right eigenvectors must match the closed form to 1e-6, both checked for N <= 48. The tab's Float32 densities match that ED reference to 1e-6 on grids 48, 64 and 96. No infinite-volume or laboratory claim.",
       "The probability length 1/(2|g|) is a regression test, not a prediction: once the right eigenvectors match e^{g j} sin(pi n j/(N+1)), the log ratio of |psi|^2 on sine-conjugate sites is forced by the closed form, so the length follows. It is read from the log slope of |psi|^2 on sine-conjugate sites, not the amplitude length 1/|g| and not the mean distance from the right end. That mean is shifted by the boundary node (14.41 sites for N=64, g=0.08, mode 1, against a probability length of 6.25).",
-      "Plate defect, which blocks full validation under the tilings and veselago precedent: a sheet with more rows than sites draws rows past n = N, and they are not eigenpairs. At grid 96 and aspect 4:5 the plate draws 120 rows for 96 modes. Row 97 has k = pi, where sin(pi (j+1)) is float noise that the row normalization turns into a skin-shaped row (right-tenth weight 0.868). Rows 98 to 120 are bit-exact repeats of modes 1 to 23. The status-line skin weight averages them in: 0.773 on that sheet against 0.780 over the 96 modes at 1:1.",
-      "The only print fixture is the default 4:5 sheet (grid 96, with the Skinned preset's g = 0.08), which is outside the 1:1 eigenvector domain and carries the defect above. The print check is state preservation of that sheet, not a print of the validated domain and not a pixel proof of the spectrum."
+      "The default plate draws at most one row per mode. On this source, grid 96 and aspect 4:5 is 96 rows and skin weight 0.780, the same modes as aspect 1:1 (validation/results/skin-rows.json). Recipes before v8 keep the sheet height, 120 rows and weight 0.773 on that sheet, and the status line says so. Those old recipes are outside this claim.",
+      "The Chromium print covers two open clean fixtures on this source, both grid 96, g = 0.08, disorder 0, log view, 96 by 96 cells: aspect 4:5 at 1920 by 2400 (111595 bytes) and aspect 1:1 at 2400 by 2400 (128100 bytes). Both report skin weight 0.779865. Colour is not calibrated. Disordered and periodic paths are not printed."
     ],
     "remaining": [
-      "Draw at most N rows (a sheet taller than the chain has no further eigenmodes), so the plate and the skin weight contain only eigenpairs; then add a 1:1 print fixture inside the numerical domain and re-review for full promotion.",
       "A right-eigenvector treatment of on-site disorder and of periodic ends is still open. The Gram-Schmidt path is not validated."
     ],
     "numerical": [
@@ -889,7 +887,7 @@
         "criteria": "Max abs eigenvalue error < 1e-8 (measured 2.83e-15). Sign-aligned eigenvector max abs error < 1e-6 (measured 2.08e-14). Nonsymmetric residual < 1e-8 (measured 5.22e-15). Tab amp versus ED |psi|^2 max abs error < 1e-6 (measured 2.64e-8). Probability length within 1 percent of 1/(2|g|) (largest relative error about 3e-13; N=64, g=0.08 gives 6.25 sites), a regression test forced by the closed form once the eigenvectors match. g=0.08 on grid 96 piles on the right (right tenth 0.780, left tenth 8.5e-7).",
         "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
         "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
-        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. Sheets with more rows than sites are outside the eigenvector comparison; on them rows past n = N are float noise (k = pi) and repeats of the low modes. The probability-length check is a regression test."
+        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
       },
       {
         "test": "tools/skin-rows.js",
@@ -907,20 +905,20 @@
         "test": "tools/skin-print-state.js",
         "command": "node tools/skin-print-state.js --write",
         "results": "validation/results/skin-print-state.json",
-        "scope": "One open clean fixture: grid 96, aspect 4:5 (96 by 120), g=0.08, disorder 0, bc open, log view. Actual exportPNG at longest edge 2400, which is 1920 by 2400.",
-        "criteria": "Zero changed or nonfinite Float32 amp words across export; skin weight, IPR, cells, buffer size and settings unchanged; deterministic regenerate; PNG dimensions exact and blob > 1000 bytes; luminance spread > 12/255. Measured skin weight 0.773, 118079 bytes, luminance spread 226, 0 changed words.",
+        "scope": "Two open clean fixtures on the current module: grid 96, g=0.08, disorder 0, bc open, log view, rows modes. Aspect 4:5 exports at 1920 by 2400. Aspect 1:1 exports at 2400 by 2400. Both fields are 96 by 96.",
+        "criteria": "Zero changed or nonfinite Float32 amp words across export; skin weight, IPR, cells, buffer size and settings unchanged; deterministic regenerate; PNG dimensions exact and blob > 1000 bytes; luminance spread > 12/255. Both fixtures draw 96 by 96 and report skin weight 0.779865. The 4:5 PNG is 111595 bytes and the 1:1 PNG is 128100 bytes. Luminance spread 226 on both. 0 changed words.",
         "benchmark": "Exact Float32 readback of amp before and after the real exportPNG path, plus the declared 2400 longest-edge plate.",
-        "failureControl": "A width one pixel short of the request, and a post-export mutation of amp[0] plus the skin weight, are both rejected by the same acceptance predicate the real export passes (the mutation changes 1 word and the skin weight).",
-        "limitations": "State preservation and declared dimensions for this one fixture, the default 4:5 sheet, which is outside the 1:1 eigenvector domain. Its 24 rows past n=N are not eigenpairs: row 97 is float noise normalized into a skin-shaped row and rows 98 to 120 repeat modes 1 to 23, and the skin weight 0.773 averages them in. Does not validate disordered or periodic paths, calibrated color, or every control."
+        "failureControl": "A width one pixel short of the request, and a post-export mutation of amp[0] plus the skin weight, are both rejected by the same acceptance predicate the real export passes (the mutation changes 1 word and the skin weight). The two aspects must report the same skin weight, because they draw the same modes.",
+        "limitations": "State preservation and declared dimensions for these two fixtures. Colour is not calibrated. Does not validate disordered or periodic paths, legacy sheet-height recipes, or every control."
       }
     ],
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/skin-science.json",
     "domain": {
-      "parameters": "Open chain, disorder 0, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixture grid 96, aspect 4:5, g=0.08, disorder 0, open ends, log view; that sheet is outside the 1:1 eigenvector domain, so no print fixture lies inside the numerical domain.",
-      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries and disorder at or above 0.04 are outside the domain. Exports must preserve amp.",
-      "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Print field 96 by 120, exported at 1920 by 2400 pixels (longest edge 2400).",
-      "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json."
+      "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1, and the row cap at N 48, 96 and 192 on 1:1, 4:5, 5:4 and 16:9. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixtures: grid 96, g=0.08, disorder 0, open ends, log view, aspects 4:5 and 1:1, both 96 by 96 cells.",
+      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, disorder at or above 0.04, and recipes before v8 (sheet height, Gram-Schmidt) are outside the domain. Exports must preserve amp.",
+      "resolution": "One site per column. Eigenvalue and eigenvector checks at N <= 48. Tab density checks at N = 48, 64, 96. Drawn rows = min(N, sheet height). Prints: 1920 by 2400 and 2400 by 2400, longest edge 2400.",
+      "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues < 1e-8, eigenvectors < 1e-6, tab versus ED < 1e-6, probability length relative error < 0.01. Measured errors are in validation/results/skin-science.json and validation/results/skin-rows.json."
     }
   },
   {
@@ -3403,21 +3401,20 @@
   {
     "id": "veselago",
     "source": "src/modules/veselago.js",
-    "sourceSha256": "005afe80ea7da44f1673baf149998a2149c561cb6d2d3efbca2f031daf347844",
+    "sourceSha256": "97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if \u03b5 and \u03bc were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
     "equation": "n\u2081 sin \u03b8\u2081 = n\u2082 sin \u03b8\u2082,   n\u2082 = \u22121  \u21d2  \u03b8\u2082 = \u2212\u03b8\u2081,   image at 2L \u2212 d",
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "Evidence covers only the documented domain in validation/VESELAGO.md and the veselago-science / veselago-print-state results artifacts: the geometric ray trace, the drawn rays, the n = \u22121 image metric and the print path.",
-      "The status line reports a focus only for the textbook image. It reads \"Veselago focus\" when n = \u22121, the source is closer than the slab is thick, and an unclamped exit line crosses the axis behind the back face. Any other real crossing is \"image behind the slab\". No such crossing is \"no image behind the slab\". Over the 59,200-configuration sweep this agrees with the independent crossings, including the 16,496 in-domain plates with no crossing behind the slab (none labelled a focus). The words do not say whether an image at n \u2260 \u22121 sits on L/|n| \u2212 d. The \u0394x/W number is the brightest point against 2L \u2212 d, and that reference is printed only at n = \u22121.",
+      "The status line reports a focus only for the textbook image. It reads \"Veselago focus\" when n = \u22121, the source is closer than the slab is thick, and an unclamped exit line crosses the axis behind the back face. Any other real crossing is \"image behind the slab\". No such crossing is \"no image behind the slab\". Over the 59,200-configuration sweep this agrees with the independent crossings, including the 16,496 in-domain plates with no crossing behind the slab (none labelled a focus). At n \u2260 \u22121, on all 40,768 sweep plates with a crossing behind the slab, the line gives the nearest and farthest of those crossings (within 1e-9 px of the independent trace) and the paraxial point L/|n| \u2212 d. It does not say the rays meet there. The \u0394x/W number is the brightest point against 2L \u2212 d, and it is printed only at n = \u22121.",
       "When the back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source: 2,368 sweep plates), the ray stops instead of walking backwards to W \u2212 2. Those plates have no stray ink. They stay outside the vertex comparison, because the end point at W \u2212 2 is not drawn.",
       "Transmitted geometric rays only: no Fresnel reflection, wave optics, evanescent-wave amplification (Pendry), absorption or dispersion. At n = \u22120.40, rays with |sin \u03b8| > 0.4 have no transmitted ray and are skipped entirely, incident segment included: 2 of 12, 4 of 28, 6 of 48 and 6 of 64 rays. The status line names that count. The reflected rays are not drawn.",
       "Refocusing at n = \u22121 (slab0 + d inside, slab0 + 2L \u2212 d behind) is a geometric identity of the flat slab. It is recorded as a regression check, not a prediction.",
       "Hash-only indices between \u22120.43497 and \u22120.4 reach the 0.05 slope clamp (veselago.js:88) for near-grazing rays: 322.85 px vertex error at n = \u22120.43527. These indices are outside the domain."
     ],
     "remaining": [
-      "Say where an image at n \u2260 \u22121 sits, against the paraxial image L/|n| \u2212 d, or keep the present words and the \u0394x/W number as the measurement.",
       "Draw the reflected rays, or leave total reflection as a count on the status line.",
       "Extend print fixtures to more exposures, palettes and hardware; the plate does not depend on the seed."
     ],
@@ -3430,7 +3427,7 @@
         "criteria": "Vertices, crossings and layout within 1e-9 px of the reference. Identical total-reflection sets. Zero lit cells more than half a cell from every traced ray, and every ray segment inks at least 70% of its eligible columns. n = \u22121: every crossing within 1e-9 px of slab0 + d and slab0 + 2L \u2212 d, and no crossing behind the slab when d > L. Where L \u2212 d \u2265 5 and the image lies at or before W \u2212 5, the brightest point is within 2.5 px of slab0 + 2L \u2212 d and the recorded peak equals the independent window maximum. n \u2260 \u22121: crossings within 1e-9 px of the closed form. The innermost ray is within twice the third-order term of the paraxial image L/|n| \u2212 d. The aberration has the sign of 1/n\u00b2 \u2212 1, and the brightest point lies inside the crossing range \u00b1 2.5 px.",
         "benchmark": "Independent vector Snell refraction at both faces. The tangential wavevector is continuous, n1 sin \u03b81 = n2 sin \u03b82, so n2 < 0 puts the refracted ray on the incident side of the normal while energy leaves the interface. Line-plane and line-axis intersections, and the closed-form flat-slab crossing L|tan \u03b82|/|tan \u03b8| \u2212 d with paraxial limit L/|n| \u2212 d.",
         "failureControl": "n = +1 is rejected: no ray crosses the axis behind the slab, and the brightest point is 21.99 px from 2L \u2212 d. A wrong-sign refraction (46.37 px vertex error at n = \u22121) and an exit ray that keeps the slab angle (88.26 px) are rejected at every tested n. An inverted index ratio (sin \u03b82 = n sin \u03b8) is identical at n = \u22121 and rejected only at n \u22120.8, \u22121.2 and \u22121.5 (10.70 to 26.78 px), which is why n = \u22121 alone is not evidence. The n = \u22121.2 preset is 9.94 px from 2L \u2212 d and fails the 2.5 px image predicate.",
-        "limitations": "Geometric transmitted rays only. The n = \u22121 images are an identity (regression check). The status words name a real crossing behind the slab, and call it a Veselago focus only at n = \u22121 with d < L; they do not place an image at other n. A back face past the last drawn column stops the ray; those plates are outside the vertex comparison. Hash-only near-grazing indices are outside the domain."
+        "limitations": "Geometric transmitted rays only. The n = \u22121 images are an identity (regression check). The status words name a real crossing behind the slab, and call it a Veselago focus only at n = \u22121 with d < L. At other n the line gives the crossing range and the paraxial point L/|n| \u2212 d, and does not call that one image. A back face past the last drawn column stops the ray; those plates are outside the vertex comparison. Hash-only near-grazing indices are outside the domain."
       }
     ],
     "print": [
