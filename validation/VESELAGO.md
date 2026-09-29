@@ -17,11 +17,12 @@ colours are from that re-run; the browser was not opened again for the label cha
 paint path are the same and the print harness does not read the status words.
 
 **Status: partially validated.** Every ray the module draws agrees with an independent Snell trace over the slider
-domain. The print reproduces the field exactly. The status words now match the crossings: "Veselago focus" is not
-printed where no ray crosses the axis behind the slab. One unfixed defect in `src/modules/veselago.js` still
-blocks full validation: an exit segment is drawn backwards when the slab runs off the plate. The words also do
-not say whether an image at `n ≠ −1` sits on the paraxial point `L/|n| − d`. The `Δx/W` number is that
-measurement, and the reference `2L − d` is printed only at `n = −1`.
+domain. The print reproduces the field exactly on the nine fixtures, none of which has the back face off the
+plate. The status words match the crossings: "Veselago focus" is not printed where no ray crosses the axis
+behind the slab. When the back face lies past the last drawn column the ray stops, and those 2,368 plates
+have no stray ink. The words do not say whether an image at `n ≠ −1` sits on the paraxial point `L/|n| − d`.
+The `Δx/W` number is that measurement, and the reference `2L − d` is printed only at `n = −1`. Reflected rays
+are not drawn.
 
 At `n = −1` perfect refocusing is a geometric identity of the flat slab: every ray crosses the axis at `slab0 + d`
 inside the slab and again at `slab0 + 2L − d` behind it. Those checks are regression checks, not predictions. The
@@ -92,11 +93,11 @@ back towards the slab. There is no real image.
   brightest point is 9.94 px from `2L − d`, and the line says "image behind the slab", not that it sits at the
   textbook point. The `Δx/W` number is still the brightest point. A crossing that lands within 1e-9 px of the
   back face, which is the virtual image at `n = −1` and `d = L` up to float noise, is not counted.
-- **Exit segment drawn backwards (veselago.js).** When `x0 + d + L > W − 2`, the exit segment runs from the
-  back face back to `W − 2`, with `steps = max(4, …)` samples. It inks cells that no ray reaches. This happens only
-  at grid 128 (1,776 sweep configurations) and grid 144 (592). Of those 2,368, 1,767 carry stray ink, 24,214 cells
-  in all. Example: `n = −2.2`, `L` 64, `d` 50, grid 128, where the back face is at 136.86 against a last column of
-  126. The domain excludes these plates, and the defect blocks full validation.
+- **Back face past the plate.** When `x0 + d + L > W − 2` the exit target lies behind the ray. The segment
+  used to walk backwards to `W − 2` and ink cells no ray reaches: 1,767 of 2,368 such sweep plates, 24,214
+  cells, only at grid 128 (1,776 plates) and grid 144 (592). The ray now stops when the next face is behind
+  it. The same 2,368 plates have no stray ink. They stay outside the vertex comparison, because the reference
+  still names an end point at `W − 2` that the plate no longer draws.
 - **Total reflection.** At `n = −0.40`, rays with `|sin θ| > 0.4` (critical angle 0.411517 rad)
   are skipped entirely, including their incident segment: 2 of 12, 4 of 28, 6 of 48 and 6 of 64 rays. No other
   slider value drops rays. The status line names the count. No Fresnel reflection is drawn anywhere; the
@@ -147,8 +148,8 @@ pixels, not resolved rays. Colour is not calibrated.
 
 ## What would complete the review
 
-Guard the exit segment when the slab runs past the last column, or keep the slab on the plate. The label now
-reports a focus only for the textbook case with a real crossing behind the slab. It does not yet compare other
-`n` with the paraxial image `L/|n| − d`. Then re-run the print harness against the new source fingerprint; the
-field path is unchanged, and the 2026-09-24 print results are left as that run. The rest of the numerical
-evidence was re-run on 2026-09-29.
+The label reports a focus only for the textbook case with a real crossing behind the slab, and the exit ray
+no longer walks backwards off the plate. The words do not yet compare other `n` with the paraxial image
+`L/|n| − d`. Reflected rays are not drawn. The print harness has not been re-run against this source
+fingerprint; its nine fixtures keep the back face on the plate, so their fields are unchanged. The numerical
+sweep was re-run on 2026-09-29.

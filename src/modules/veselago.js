@@ -85,6 +85,7 @@
           const xs = [slab0, slab1, W - 2];
           for (let seg = 0; seg < 3; seg++) {
             const xEnd = xs[seg];
+            if (xEnd < px) break; // the back face is already past the plate; do not walk the ray backwards
             const steps = Math.max(4, (xEnd - px) | 0);
             const k = tdy[seg] / Math.max(0.05, tdx[seg]);
             for (let i = 0; i <= steps; i++) {

@@ -286,7 +286,7 @@ function main() {
     }
   sweep.seconds = Math.round((performance.now() - sweepTime) / 100) / 10;
   sweep.pass = sweep.failedGeometry === 0 && sweep.stray === CRITERIA.strayInk && sweep.lowCoverage === 0 &&
-    sweep.labelRuleViolations === 0 && sweep.tirSaidMismatch === 0;
+    sweep.labelRuleViolations === 0 && sweep.tirSaidMismatch === 0 && offPlate.strayCells === 0;
 
   // 2. Continuous values a URL hash can carry, between the slider steps, away from the grazing band n > -0.44.
   const rnd = mulberry32(19680509), cont = { configs: 0, rays: 0, maxVertexErr: 0, maxCrossErr: 0, failedGeometry: 0, stray: 0, lowCoverage: 0, skippedOffPlate: 0 };
@@ -519,7 +519,7 @@ function main() {
       'Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.',
       'n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.',
       'The status label says "Veselago focus" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is "image behind the slab". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.',
-      'Configurations whose back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source) draw a backward exit stub; they are outside this domain.',
+      'A back face past the last drawn column stops the ray there. The exit segment is not walked backwards onto the plate.',
       'Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain.',
     ],
     environment: { node: process.version, platform: process.platform },

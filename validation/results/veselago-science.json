@@ -1,8 +1,8 @@
 {
   "pass": true,
   "source": "src/modules/veselago.js",
-  "sourceSha256": "aa1b3db25d4f2af483018bec47649ef82cc3fda80f392bc4a3517543fc2130c5",
-  "harnessSha256": "ba7a2317f1b6ba1e0a877a18f8d0566404ce7662de2aacea7872667383fa6c9a",
+  "sourceSha256": "005afe80ea7da44f1673baf149998a2149c561cb6d2d3efbca2f031daf347844",
+  "harnessSha256": "9d9ed23db7ef9f6127bd7e78ad95f63d9b33f05236f3c1e7ae2b138dd3dd8c84",
   "command": "node tools/veselago-science.js --write",
   "criteria": {
     "geometryTolPx": 1e-9,
@@ -187,7 +187,7 @@
     "labelRuleViolations": 0,
     "tirSaidMismatch": 0,
     "tirConfigs": 1536,
-    "seconds": 44.9,
+    "seconds": 44.6,
     "pass": true
   },
   "continuous": {
@@ -208,27 +208,10 @@
       "128": 1776,
       "144": 592
     },
-    "withStray": 1767,
-    "strayCells": 24214,
-    "maxVertexErr": 9.66e-13,
-    "example": {
-      "n": -2.2,
-      "L": 64,
-      "src": 50,
-      "rays": 12,
-      "grid": 128,
-      "aspect": "1:1",
-      "W": 128,
-      "H": 128,
-      "face1": 136.86,
-      "xEnd": 126,
-      "stray": 7,
-      "firstStray": [
-        126,
-        58,
-        1.399999976158142
-      ]
-    }
+    "withStray": 0,
+    "strayCells": 0,
+    "maxVertexErr": 0,
+    "example": null
   },
   "fixtures": [
     {
@@ -2238,12 +2221,12 @@
     "Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped at veselago.js, incident segment included. The status line names the count.",
     "n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.",
     "The status label says \"Veselago focus\" only for n = -1 with the source closer than the slab is thick, and only when an unclamped exit line crosses the axis behind the back face. Any other real crossing is \"image behind the slab\". It does not say whether that image sits at 2L - d; the Δx/W number is that measurement, and the reference is printed only at n = -1.",
-    "Configurations whose back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source) draw a backward exit stub; they are outside this domain.",
+    "A back face past the last drawn column stops the ray there. The exit segment is not walked backwards onto the plate.",
     "Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain."
   ],
   "environment": {
     "node": "v22.23.3",
     "platform": "linux"
   },
-  "seconds": 50.5
+  "seconds": 49.9
 }
