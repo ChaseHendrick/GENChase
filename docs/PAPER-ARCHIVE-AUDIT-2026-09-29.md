@@ -1,12 +1,12 @@
 # Manuscript PDFs in the Zenodo source archives
 
-Checked 2026-09-29 by downloading the ZIP from each of the eight version records, opening it,
+Initial archive inspection on 2026-09-29 downloaded the ZIP from each of the eight version records, opening it,
 and comparing its manuscript PDF with the registered repository PDF at main commit `1a0f5df`.
 Seven contain the PDF and match byte for byte. The hh-pulse 1.0.1 ZIP contains no manuscript PDF. Its existing releases stay up.
 GENChase itself is not archived on Zenodo.
 
 The original missing-PDF defect affects hh-pulse only. The broader publication audit also found stale
-archive references and incomplete citation metadata. All eight therefore receive a patch release with
+archive references and incomplete citation metadata. All eight therefore received a patch release with
 a rebuilt PDF and corrected publication metadata: minimal-winding 2.2.2, hh-dynamics and nf-pulse 1.0.3,
 and the other five companions 1.0.2. These changes do not alter the scientific claims.
 
@@ -104,3 +104,20 @@ The public tags and previously published archives were not modified.
 
 Zenodo verification is a separate step. A successful GitHub release or a received webhook does not
 establish that the new Zenodo version has finished publishing.
+
+## Verified new Zenodo versions
+
+All eight publication updates are published. Each actual Zenodo ZIP was downloaded and checked against the rebuilt manuscript hash. Exact titles and Publication / Preprint classification also pass. The [final archive audit](paper-zenodo-release-audit-2026-09-29.json) records URLs and SHA-256 digests.
+
+| Paper | Version | Verified Zenodo DOI |
+|---|---|---|
+| minimal-winding | 2.2.2 | [10.5281/zenodo.23047024](https://doi.org/10.5281/zenodo.23047024) |
+| collapse-without-rotation | 1.0.2 | [10.5281/zenodo.23047025](https://doi.org/10.5281/zenodo.23047025) |
+| stable-expansion | 1.0.2 | [10.5281/zenodo.23047037](https://doi.org/10.5281/zenodo.23047037) |
+| rank-window | 1.0.2 | [10.5281/zenodo.23047040](https://doi.org/10.5281/zenodo.23047040) |
+| hh-dynamics | 1.0.3 | [10.5281/zenodo.23047046](https://doi.org/10.5281/zenodo.23047046) |
+| double-pendulum | 1.0.2 | [10.5281/zenodo.23047057](https://doi.org/10.5281/zenodo.23047057) |
+| nf-pulse | 1.0.3 | [10.5281/zenodo.23047061](https://doi.org/10.5281/zenodo.23047061) |
+| hh-pulse | 1.0.2 | [10.5281/zenodo.23047089](https://doi.org/10.5281/zenodo.23047089) |
+
+The manuscript PDFs still cite the immutable checking archives used for their scientific content. Updating current landing-page citations does not alter those PDFs or create another release. GENChase itself remains outside Zenodo.

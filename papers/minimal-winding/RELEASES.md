@@ -5,6 +5,8 @@ has not been peer reviewed.
 
 ## 2.2.2 (2026-09-29)
 
+**DOI:** [10.5281/zenodo.23047024](https://doi.org/10.5281/zenodo.23047024). Publication / Preprint; the downloaded archive ZIP contains the registered manuscript PDF.
+
 Publication metadata and packaging update. The manuscript now identifies the public companion and its immutable checking-release archive. The source ZIP includes the rebuilt manuscript PDF. Citation metadata includes a usable publication locator and explains the component license terms. No theorem, proof program, certificate or scientific claim changes. Earlier archives remain available unchanged.
 
 ## 2.2.1 (2026-09-28)

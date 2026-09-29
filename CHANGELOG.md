@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **All eight publication archives verified.** New Zenodo versions are Publication / Preprint records with exact registered titles and manuscript PDFs present in the downloaded source ZIPs. Current DOI links and companion citations now point to those versions; prior archives and manuscript checking references remain unchanged.
+
 - **Restore preview/export agreement.** HL vector exports use the contrasting outline ink shown in the preview; Smectic exports preserve the palette ramp and focal-defect curve. Existing recipes now export these corrected details. A real-browser regression rejects the previous output.
 
 - **Tighter scientific evidence.** Refresh the 16 London-disk numerical fixtures and three actual prints, limiting the claim to tested recipes. Independently audit Aubry relaxation: finite-step propagation agrees, but none of the 36 fixtures meets the ground-state criteria. Describe the displayed state as finite relaxation and retain its unvalidated status.

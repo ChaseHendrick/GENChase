@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint. Release 2.2.1 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23028524](https://doi.org/10.5281/zenodo.23028524)). Release 2.2.0 remains at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). Not yet peer reviewed.
+Preprint. Release 2.2.2 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23047024](https://doi.org/10.5281/zenodo.23047024)). Release 2.2.0 remains at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). Not yet peer reviewed.
 
 **[Read the paper (PDF, 42 pages)](paper/minimal-winding.pdf)**
 
@@ -87,12 +87,12 @@ Until the paper is published in a journal:
   title  = {Minimal Winding in the Self-Similar Collapse of Point Vortices},
   year   = {2026},
   note   = {Preprint},
-  doi    = {10.5281/zenodo.23028524},
+  doi    = {10.5281/zenodo.23047024},
   url    = {https://github.com/ChaseHendrick/minimal-winding}
 }
 ```
 
-This version is release 2.2.1, archived at [doi:10.5281/zenodo.23028524](https://doi.org/10.5281/zenodo.23028524). Release
+This version is release 2.2.2, archived at [doi:10.5281/zenodo.23047024](https://doi.org/10.5281/zenodo.23047024). Release
 2.2.0 is archived at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). The previous version, release
 2.1.0, is archived at [doi:10.5281/zenodo.22966989](https://doi.org/10.5281/zenodo.22966989).
 
