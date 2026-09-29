@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint. Release 2.2.2 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23047024](https://doi.org/10.5281/zenodo.23047024)). Release 2.2.0 remains at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). Not yet peer reviewed.
+Preprint. Release 2.2.3 is archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23048226](https://doi.org/10.5281/zenodo.23048226)). Release 2.2.0 remains at [doi:10.5281/zenodo.22994932](https://doi.org/10.5281/zenodo.22994932). Not yet peer reviewed.
 
 **[Read the paper (PDF, 43 pages)](paper/minimal-winding.pdf)**
 
