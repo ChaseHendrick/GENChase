@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Publication figures and manuscript rights audited.** All eight rebuilt preprints use the public research contact and include end-matter manuscript rights. Three papers gained evidence-backed vector figures; existing plots gained readable labels, units and full tail ranges. The legacy Zenodo archive license category now reflects mixed rights, while verification code keeps Apache 2.0 and prior grants remain intact.
+
 - **All eight publication archives verified.** The downloaded source ZIPs include the registered manuscript PDFs, with exact titles and Publication / Preprint classification. Current DOI links and citations name these versions; earlier archives remain unchanged.
 
 - **The Hatano–Nelson plate is validated for the open clean chain.** The default sheet already drew at most one row per mode; the record still described the old 120-row defect. The Chromium print was re-run on this source: aspect 4:5 and a new 1:1 fixture are both 96 by 96, skin weight 0.780. Recipes before v8 still draw the extra rows, and they stay outside the claim. Disorder and periodic ends stay outside it.
