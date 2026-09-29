@@ -153,6 +153,7 @@ jobs:
       - name: Generated build and scientific coverage
         run: |
           npm test
+          timeout 90 node tools/automation-check.js
           node tools/maxwell-search-check.js
           node tools/maxwell-robust.js --check
           node tools/molecular-memory.js --controls

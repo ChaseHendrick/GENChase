@@ -1,0 +1,35 @@
+name: verify preprint archives
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 6 * * 0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paper-archive-audit
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check the verifier without network access
+        run: python3 tools/paper-zenodo-check.py --self-test
+      - name: Download and inspect all eight registered preprint archives
+        run: python3 tools/paper-zenodo-check.py --out paper-archive-report.json
+      - name: Preserve the archive report, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-archive-report
+          path: paper-archive-report.json
+          if-no-files-found: warn
+          retention-days: 30
