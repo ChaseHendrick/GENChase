@@ -81,6 +81,8 @@ Advanced print tools and Maximum throughput start enabled for new users; saved p
 
 ## Contribute your own computing power
 
+The [research notebook](apps/research/) brings together literature search, AI research services and a local source-review ledger. Keep reading status and supporting pages with each source, then export notes or prepare a prompt for an AI assistant. Nothing is sent to an external service automatically. See the [research tools guide](apps/research/README.md).
+
 The optional [local validation app](apps/validate/README.md) runs official checks and bounded research experiments on your computer without model calls, API tokens or an account. Run `npm run setup:checks` once to install the optional browser test tools, then `npm run validator` from a checkout, then open `http://127.0.0.1:8787`. It provides logs, heat/power preferences, supported checkpoints, pseudonymous hardware cards and downloadable result bundles. Keep the server terminal open and the computer awake; the browser can close while a job continues.
 
 **Prefer a terminal?** Follow the [headless contribution guide](apps/validate/HEADLESS.md) for copyable commands, power controls and a reviewed GitHub upload. Start with `npm run validator:headless -- --mode inventory --machine m1pro`. Results stay local unless you choose to share them. You can review and upload files directly, or opt in to automatic sharing for a run.

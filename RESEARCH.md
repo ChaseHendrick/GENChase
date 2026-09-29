@@ -2183,3 +2183,17 @@ Re-search: no, unless a week passes; read Enculescu (2004) and Sandstede (2007) 
 ## 2026-09-29: Hopfield associative memory
 
 The new `hopfield` tab implements the established bipolar zero-threshold Hebbian specialization. Primary citation checked at PubMed (PMID6953413), DOI10.1073/pnas.79.8.2554 and the Caltech-hosted Hopfield82.pdf scan. The PMC landing page intermittently returned a browser challenge. This is source identification for a known model, not a novelty search. No paper text or scan is redistributed. Explicit model assumptions and bounded independent numerical and print checks are in [validation/HOPFIELD.md](validation/HOPFIELD.md). The scientific label remains unvalidated.
+
+
+## 2026-09-29: Research tools and AI method gaps
+
+Inspected the existing catalog and validator: CPPNs are random untrained networks, and the prior-article
+panel supplied only Google Scholar links tied to candidate jobs. Added a separate local source notebook
+and an external research-engine directory. Primary provider references and access limitations are in
+[the research tools guide](apps/research/README.md). Ai2 Asta and the August 2026 Elicit Research Agent
+announcement were inspected for current capabilities. Provider descriptions are not independent
+evaluations. No accounts, paid services, model calls, or automatic manuscript uploads were enabled.
+
+Local AI-model candidates are associative memory and generative probability flow, implemented only
+with explicit equations, seeded state, source credits and independent checks. They are established
+methods, not originality claims; new technique records start unvalidated.

@@ -29,6 +29,7 @@ def package(output, version):
     names += ['gallery/' + x + '.jpg' for x in ['tilings', 'snowflake', 'hyperbolic']]
     names += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'validation').glob('*.md'))]
     names += ['validation/techniques.json']
+    names += ['apps/research/' + name for name in ['index.html', 'app.js', 'model.js', 'style.css', 'README.md']]
     names += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'validation/results').glob('*.json')) if not p.name.startswith('witnesses-')]
     # Read only tracked evidence, never volunteer submissions, credentials, .git, or local runs.
     tracked = set(subprocess.check_output(['git', 'ls-files'], cwd=ROOT, text=True).splitlines())
@@ -39,6 +40,8 @@ def package(output, version):
         if file.is_symlink() or not file.is_file():
             raise ValueError('Expected a regular file: ' + name)
         data[name] = file.read_bytes()
+        if name == 'apps/research/index.html':
+            data[name] = data[name].replace(b'href="../../"', b'href="../../START-HERE.html"')
     start = (ROOT/'start.html').read_text().replace('./index.html', './dist/studio.html')
     start = start.replace('Runs in your browser. No account, installation, or payment.', 'Your offline copy. Open the studio directly from this folder.')
     data['START-HERE.html'] = start.encode()

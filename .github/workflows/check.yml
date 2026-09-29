@@ -318,6 +318,7 @@ jobs:
           node tools/studio-navigation-check.js
           node tools/print-smoothing-browser.js
           node tools/validator-ui-check.js
+          timeout 90 node tools/research-notebook-check.js
       - name: Validator usability and accessibility
         if: needs.pde-plan.outputs.browser_required != 'false' && (matrix.browser == 'chromium')
         run: node tools/validator-ux-check.js
