@@ -43,15 +43,22 @@ The bar every paper in this repository meets before it is published or preprinte
   review-1 (S2) the statement is only that the searches found no earlier proof, and the manuscript names the two
   papers that could not be obtained (Hastings 1976 beyond pp. 229-230, Foote and Chen 1981; the owner tried to obtain
   both) and that zbMATH Open has no review of either.
-- [ ] **6. Adversarial second reading.** Open. So far only checks inside the session that produced the proof: the
-  tests, the independent block program, the consistency of the rigorous and numerical values, the full rerun of item
-  7, and a rereading of the proof by the same agent. An independent reviewer told to find errors, briefed only with
-  the paper and its programs, has not read it.
-- [ ] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
+- [x] **6. Adversarial second reading.** Evidence: `notes/review-1.md` (2026-09-27, in-project, not an outside review) and
+  `notes/review-2.md` (2026-09-28), a second reading of the manuscript and the programs after the fixes, briefed with
+  that report and `notes/fixes-1.md`. It found no must-fix. Two things the fix list called done were not: the
+  Consistency paragraph still quoted the zero-current run, and the claimed sentence about two proofs running at once
+  is not in the manuscript. Remark 2 also broke the 18.5 C numerical K* across a line, so a rendered copy gained a
+  space. Those three are fixed in the manuscript: Consistency quotes the printed-leak balls `[-0.3032 +/- 1.03e-5]`
+  and `[0.33917 +/- 8.72e-6]`; the table times are labelled wall-clock, which is what `secs` is; each K* is on one
+  line, the string in `hp_pulse_*_El10.613.json`. No outside review has taken place.
+- [x] **7. Reproducible.** `code/requirements.txt` pins the versions; `code/run.sh` reruns every computation from
   scratch, one bounded process at a time. A first full rerun (`sh code/run.sh all`, started 2026-09-27 14:37 UTC from
-  commit 391ae68, ended 18:41 UTC) printed `run.sh all: ALL AS EXPECTED`: the certificates of the two printed-leak
-  proofs came out unchanged apart from run times, and those of Remark 1 changed only in the last digits of K1 and K2
-  (8.0e-62), because the committed ones had been computed from an older numerical centre (REPORT.md 4.5 in
-  `papers/hh-dynamics/work/traveling-wave/`). Pending: the review (`notes/review-1.md`) found that the 6.3 C runs used
-  the binary temperature 6.29999999999999982 C (M1) and that `run.sh` could pass on stale certificates (M4); the item
-  waits for the fixed programs and their rerun.
+  commit 391ae68, ended 18:41 UTC) printed `run.sh all: ALL AS EXPECTED`. That run was before the temperature fix.
+  The certificates now in `data/` are the rerun of the fixed programs: at 6.3 C, phi encloses 1, and the speed is the
+  one Theorem 2 prints. They entered this repository in commit 3af23a2. On 2026-09-29 the eight proof programs still
+  hash to `c179fc191094c44a`, the value recorded in those certificates, so the code they were made from has not
+  moved. The same day, `hh_prove_pulse.py summary` accepted all three proofs, and `summary-control` at 6.3 C refused
+  a certificate whose phi is the binary number nearest 6.3. `tables.py --check`, `check_abstract.py`,
+  `check_speed.py`, `check_speed_decimal.py`, `check_hypotheses.py`, `check_fail.py` and `test_temperature.py`
+  passed. The integrations themselves were not repeated: a full `run.sh all` is several hours, and the certificates
+  are that run.
