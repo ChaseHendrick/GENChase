@@ -618,7 +618,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-136 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+137 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -760,6 +760,7 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
 | `dptangle` | Double pendulum tangle | rare | logged in research/double-pendulum/PRIOR-ART.md and REPORT.md | no |
 | `hopfield` | Hopfield Memory | common | science only | 2026-09-29: primary Hopfield 1982 source; established associative memory, no novelty claim |
+| `flow-matching` | Flow matching | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -2197,3 +2198,8 @@ evaluations. No accounts, paid services, model calls, or automatic manuscript up
 Local AI-model candidates are associative memory and generative probability flow, implemented only
 with explicit equations, seeded state, source credits and independent checks. They are established
 methods, not originality claims; new technique records start unvalidated.
+
+
+## 2026-09-29: flow-matching illustration
+
+Read the MIT 6.S184 2026 course and Holderrieth-Erives notes, Section 3, Eq. (18), (20), (29), from https://diffusion.csail.mit.edu/ and https://diffusion.csail.mit.edu/docs/lecture-notes.pdf; checked the record https://arxiv.org/abs/2506.02070 and Lipman et al.'s original method https://arxiv.org/abs/2210.02747. The local addition analytically marginalizes a finite Gaussian-mixture target and integrates its common probability-flow field with RK4. This is a pedagogical specialization of a published method, not a trained network or originality claim. Details and bounded tests: docs/FLOW-MATCHING.md. Initial status unvalidated.

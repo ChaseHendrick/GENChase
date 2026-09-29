@@ -20,7 +20,7 @@ license-url: "https://github.com/ChaseHendrick/GENChase/blob/main/LICENSE"
 abstract: >-
   GENChase is a development and research working environment. Its art and print
   studio is a folder-based browser studio with one shared engine and
-  136 pattern-forming systems from physics, chemistry, biology and mathematics,
+  137 pattern-forming systems from physics, chemistry, biology and mathematics,
   each implemented as a real simulation rather than as a style applied to
   noise. A portable single-file HTML build is also included. Every plate is
   deterministic from a seed, reconstructible from a URL hash, and exportable at

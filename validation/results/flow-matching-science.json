@@ -1,0 +1,112 @@
+{
+  "scope": "Analytic Gaussian-mixture marginal flow: exact single-Gaussian trajectories, RK4 step refinement, finite-difference continuity residual, and 8 independent seeds of2048 particles compared with closed-form target moments. Not neural training or image-generator quality.",
+  "refinement": [
+    {
+      "steps": 16,
+      "error": 0.000002367725420032009
+    },
+    {
+      "steps": 32,
+      "error": 1.2078270003173975e-7
+    },
+    {
+      "steps": 64,
+      "error": 6.685781997299759e-9
+    }
+  ],
+  "residual": 1.1650402864660236e-9,
+  "signFlippedResidual": 1.574417701764169,
+  "gaps": [
+    {
+      "steps": 32,
+      "gap": 0.000001178852567240636
+    },
+    {
+      "steps": 64,
+      "gap": 7.498036665313302e-8
+    },
+    {
+      "steps": 128,
+      "gap": 4.709081812447639e-9
+    }
+  ],
+  "moments": [
+    {
+      "moment": "x",
+      "target": -0.12574896921187154,
+      "mean": -0.12230422341397,
+      "standardErrorAcrossSeeds": 0.006599289019853237,
+      "z": 0.5219874122103754
+    },
+    {
+      "moment": "y",
+      "target": -0.32758726459036336,
+      "mean": -0.33605224888753366,
+      "standardErrorAcrossSeeds": 0.00890413856962786,
+      "z": 0.9506797576179324
+    },
+    {
+      "moment": "x2",
+      "target": 1.0167421379830672,
+      "mean": 1.0191439379850418,
+      "standardErrorAcrossSeeds": 0.007554435452644915,
+      "z": 0.3179324275162927
+    },
+    {
+      "moment": "y2",
+      "target": 1.3941953620169332,
+      "mean": 1.4100670916996343,
+      "standardErrorAcrossSeeds": 0.007796077355748366,
+      "z": 2.035860979624355
+    },
+    {
+      "moment": "xy",
+      "target": -0.23132148260562285,
+      "mean": -0.2491991633241058,
+      "standardErrorAcrossSeeds": 0.007615442833770343,
+      "z": 2.3475562890716173
+    }
+  ],
+  "negativeMoments": [
+    {
+      "moment": "x",
+      "target": -0.12574896921187154,
+      "mean": -0.0014094676177945267,
+      "standardErrorAcrossSeeds": 0.007405568377301835,
+      "z": 16.790001153075465
+    },
+    {
+      "moment": "y",
+      "target": -0.32758726459036336,
+      "mean": -0.00552545661114699,
+      "standardErrorAcrossSeeds": 0.008400052000386557,
+      "z": 38.3404540786647
+    },
+    {
+      "moment": "x2",
+      "target": 1.0167421379830672,
+      "mean": 0.9970415706007392,
+      "standardErrorAcrossSeeds": 0.014479543200078642,
+      "z": 1.360579343568039
+    },
+    {
+      "moment": "y2",
+      "target": 1.3941953620169332,
+      "mean": 1.0110813559397023,
+      "standardErrorAcrossSeeds": 0.01264285640687582,
+      "z": 30.302804504595517
+    },
+    {
+      "moment": "xy",
+      "target": -0.23132148260562285,
+      "mean": -0.016890312365870956,
+      "standardErrorAcrossSeeds": 0.005131327572023342,
+      "z": 41.7886340776329
+    }
+  ],
+  "seeds": 8,
+  "samplesPerSeed": 2048,
+  "sourceSha256": "c02aa6e66f8897dc8836bab8ff75bb40062405213adcd40450d70f6328f774cc",
+  "limitations": "Finite selected paths and one mixture, not all parameter values. Six-standard-error bound is a conservative diagnostic, not a simultaneous confidence certificate.",
+  "passed": true
+}

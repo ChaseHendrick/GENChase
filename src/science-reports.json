@@ -5362,5 +5362,44 @@
         "results": "validation/results/hopfield-print-state.json"
       }
     ]
-  }
+  },
+{
+  "id": "flow-matching",
+  "source": "src/modules/flow-matching.js",
+  "sourceSha256": "c02aa6e66f8897dc8836bab8ff75bb40062405213adcd40450d70f6328f774cc",
+  "reference": "Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.",
+  "equation": "X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²",
+  "status": "unvalidated",
+  "limitations": [
+    "Analytic Gaussian-mixture marginal vector field, not a trained neural model or an image generator.",
+    "Finite Float64 RK4 trajectories; selected convergence and ensemble moment checks do not establish uniform error over every recipe.",
+    "Aesthetic trajectory framing may crop points; the data export retains the full sample."
+  ],
+  "remaining": [
+    "Independent review of the analytic marginalization and finite numerical tests.",
+    "Broader small-width, many-mode and extreme-tail convergence coverage before any status promotion."
+  ],
+  "numerical": [
+    {
+      "test": "tools/flow-matching-science.js",
+      "command": "node tools/flow-matching-science.js --write",
+      "results": "validation/results/flow-matching-science.json",
+      "scope": "Selected exact single-Gaussian paths, one five-component spiral mixture, continuity residual, RK4 refinement, eight independent seeds of2048 particles.",
+      "criteria": "Exact path error below1e-6 at64 steps with refinement ratios above10; continuity residual below1e-7; mixture refinement ratios above8; five target moments within6 standard errors across8 seeds.",
+      "benchmark": "Exact single-Gaussian trajectory t*mu+sqrt((1-t)^2+t^2*sigma^2)*z; closed-form Gaussian-mixture density, mean and second moments.",
+      "failureControl": "Sign-flipped velocity fails the continuity residual; untransported standard-normal samples fail the identical target-moment acceptance predicate.",
+      "limitations": "One mixture and selected paths, no learned model or physical experiment. Conservative six-standard-error moment gate is not a simultaneous confidence certificate."
+    }
+  ],
+  "print": [
+    {
+      "test": "tools/flow-matching-print.js",
+      "command": "node tools/flow-matching-print.js --write",
+      "results": "validation/results/flow-matching-print.json",
+      "scope": "Three static recipes, actual2400 square pixel module PNG/SVG exports, every Float64 trajectory word, finite values, recipe and deterministic replay. The default and five presets also pass tools/export.js through the real UI.",
+      "criteria": "Dimensions2400x2400, nonblank raster, exact data/state preservation and replay, one circle perparticle plus one path perparticle when trails are enabled; deliberate changed trajectory must fail.",
+      "limitations": "One Chrome renderer and three recipes; no calibrated-color, scientific generalization or learned-model-quality claim."
+    }
+  ]
+}
 ]

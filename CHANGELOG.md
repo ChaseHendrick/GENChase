@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Flow-matching probability transport.** Seeded particles follow an analytic Gaussian-mixture velocity field with RK4, vector exports and native trajectory data. Exact-solution, refinement, continuity and repeated-seed moment checks accompany the new unvalidated technique. This illustrates the transport target used in generative modeling; no neural model is trained.
+
 - **All eight publication archives verified.** New Zenodo versions are Publication / Preprint records with exact registered titles and manuscript PDFs present in the downloaded source ZIPs. Current DOI links and companion citations now point to those versions; prior archives and manuscript checking references remain unchanged.
 
 - **Restore preview/export agreement.** HL vector exports use the contrasting outline ink shown in the preview; Smectic exports preserve the palette ramp and focal-defect curve. Existing recipes now export these corrected details. A real-browser regression rejects the previous output.

@@ -1,0 +1,68 @@
+{
+  "scope": "Actual module PNG/SVG exports at2400px for three static recipes; full Float64 trajectory preservation, replay, finite values and vector marks. tools/export.js separately exercises all six actual UI exports.",
+  "rows": [
+    {
+      "fixture": {
+        "layout": "ring",
+        "modes": 5,
+        "sigma": 0.24,
+        "time": 1,
+        "trail": 1
+      },
+      "width": 2400,
+      "height": 2400,
+      "bytes": 911468,
+      "luminanceRange": 221.33333333333331,
+      "paths": 200,
+      "circles": 200,
+      "finiteWords": 26000,
+      "statePreserved": true,
+      "deterministicReplay": true,
+      "mutationRejected": true,
+      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 1.00 · complete</span>"
+    },
+    {
+      "fixture": {
+        "layout": "spiral",
+        "modes": 9,
+        "sigma": 0.2,
+        "time": 0.5,
+        "trail": 0.4
+      },
+      "width": 2400,
+      "height": 2400,
+      "bytes": 332292,
+      "luminanceRange": 220.66666666666666,
+      "paths": 200,
+      "circles": 200,
+      "finiteWords": 26000,
+      "statePreserved": true,
+      "deterministicReplay": true,
+      "mutationRejected": true,
+      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 0.50 · complete</span>"
+    },
+    {
+      "fixture": {
+        "layout": "line",
+        "modes": 2,
+        "sigma": 0.3,
+        "time": 1,
+        "trail": 0
+      },
+      "width": 2400,
+      "height": 2400,
+      "bytes": 132969,
+      "luminanceRange": 220.66666666666666,
+      "paths": 0,
+      "circles": 200,
+      "finiteWords": 26000,
+      "statePreserved": true,
+      "deterministicReplay": true,
+      "mutationRejected": true,
+      "status": "<span>analytic velocity · no neural training</span><span>200 particles · 64 RK4 steps</span><span>t 1.00 · complete</span>"
+    }
+  ],
+  "passed": true,
+  "sourceSha256": "c02aa6e66f8897dc8836bab8ff75bb40062405213adcd40450d70f6328f774cc",
+  "limitations": "Three recipes, one Chrome renderer, no calibrated-color or learned-model claim."
+}

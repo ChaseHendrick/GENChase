@@ -175,6 +175,8 @@ jobs:
           node tools/hofstadter-science.js
           node tools/aubry-science.js
           node tools/aubry-relaxation.js
+          node tools/hopfield-science.js
+          node tools/flow-matching-science.js
           node tools/closed-forms-science.js
           node tools/thouless-science.js
           node tools/klein-science.js
@@ -259,6 +261,8 @@ jobs:
         run: |
           node tools/ui.js
           node tools/vector-preview-check.js
+          node tools/hopfield-print-state.js
+          node tools/flow-matching-print.js
           node tools/formula-chooser-check.js
       - name: Folder loading, recipes, witness and recovery
         if: needs.pde-plan.outputs.browser_required != 'false'

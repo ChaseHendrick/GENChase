@@ -3,7 +3,7 @@
   "repository": "https://github.com/ChaseHendrick/GENChase",
   "file": "index.html",
   "portableFile": "dist/studio.html",
-  "count": 136,
+  "count": 137,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -3759,6 +3759,32 @@
       "runningDefault": false,
       "headline": "time",
       "hash": "#double-triangle-bound/double-triangle",
+      "aliases": []
+    },
+    {
+      "id": "flow-matching",
+      "source": "src/modules/flow-matching.js",
+      "name": "Flow matching",
+      "tab": "Generative flow",
+      "subtitle": "analytic Gaussian-mixture transport · MIT 2026",
+      "equation": "X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²",
+      "credit": "Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.",
+      "blurb": "A cloud of Gaussian noise separates into a chosen collection of Gaussian islands. Every colored thread follows the same time-dependent probability-flow field, rather than being assigned a destination in advance. This is an exactly specified transport target of the kind learned by flow-matching generative models. Here the target is a small, known Gaussian mixture, so its velocity can be calculated analytically. The trajectories are numerical RK4 approximations. No neural training, learned image generator or large-model benchmark is claimed.",
+      "order": 125,
+      "seed": "probability-flow",
+      "presets": [
+        "islands",
+        "braid",
+        "split",
+        "midway",
+        "cloud"
+      ],
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "modes",
+      "hash": "#flow-matching/probability-flow",
       "aliases": []
     }
   ]
