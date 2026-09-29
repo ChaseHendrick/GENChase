@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **The Veselago status line no longer calls a missing image a focus.** It says "Veselago focus" only for n = −1 with the source closer than the slab is thick, and only when a transmitted ray crosses the axis behind the slab. Other real crossings say "image behind the slab". None says "no image behind the slab". At n = −0.40 it also says how many rays total reflection removed. The plate stays partially validated: the exit segment is still drawn backwards when the slab runs off the plate. The 2026-09-24 print was not reopened; the field is the same.
 - **Bolotin and Negrini (1997) will not be obtained.** Owner's decision, 2026-09-29. The printed article is not online and will not be sought by loan or preprint. The equal-pendulum reading stays the Google Books reconstruction, and the horseshoe at E = 0 does not use that paper. The zbMATH review, Bolotin's 1997 doctoral abstract, and Bolotin and Rabinowitz, J. Differential Equations 148 (1998) 364–387, were read; none of them is pages 415–436.
 - **The Aztec error bar says when it is uncalibrated.** Orders 8 to 39 are in the UI, and the bar was checked only from order 40 up. The status line now says so. The number and the bar are unchanged.
 

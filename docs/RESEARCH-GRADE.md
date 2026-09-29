@@ -243,7 +243,9 @@ impossible to miss on the tab itself, if it is not already.
   (`src/shared/arctic-exact.js`, held to `research/arctic-finite-size/` by `node tools/arctic-exact-check.js`).
   The Aztec per-plate error bar is checked from order 40 up; below that the status line says it is not calibrated.
   The lozenge radius is still compared with the limit, and a single plate still reads low on it for a
-  finite-size reason. That part was not given an exact expectation.
+  finite-size reason. That part was not given an exact expectation. The Veselago status line no longer
+  calls a plate a focus when no ray crosses the axis behind the slab. The exit segment drawn backwards
+  off the plate is still open.
 
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe
