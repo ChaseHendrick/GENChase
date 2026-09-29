@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.2 (2026-09-28)
 
+**DOI:** [10.5281/zenodo.23028520](https://doi.org/10.5281/zenodo.23028520) (2026-09-29). The previous archive is unchanged.
+
 A checking release. The manuscript is unchanged. The README no longer says the fast speed is about a longer prefix: the speed is the open bracket (c_1, c_1 + 10^-25), and the slow speed is the same kind of bracket. This archive adds `code/check_quote.py`, `code/check_abstract.py`, `code/check_fast.py`, `code/check_class.py`, `code/check_gain.py`, `code/check_faye.py` and `code/check_hypotheses.py`. The ledger names the fast endpoint, the slow endpoints, the gain-12 endpoint, Faye's three rows, and the bottom piece of the stability winding. Those files are not the whole proofs. The epsilon-range theorem is not in the ledger. Nonlinear stability is not proved. Enculescu 2004 and Sandstede 2007 stay unread.
 
 ## 1.0.1 (2026-09-27)

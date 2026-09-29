@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.2 (2026-09-28)
 
+**DOI:** [10.5281/zenodo.23028513](https://doi.org/10.5281/zenodo.23028513) (2026-09-29). The previous archive is unchanged.
+
 A checking release of the same preprint. The manuscript is unchanged. This archive adds `code/check_quote.py`, `code/check_abstract.py` and `code/check_hypotheses.py`. The Hopf intervals and the period from 16.0058 to 16.0140 are the outward roundings of the certificates. The zero-current leak is a prefix of the digits the two ends share. Stability stays off the Hopf points. `code/hypotheses.json` names Theorems 1, 2 and 4 and keeps Du-Hassard, Hassard 1978 and Rinzel-Miller unread.
 
 ## 1.0.1 (2026-09-27)
