@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Aztec and lozenge plates are compared with the exact finite-size expectation.** The polar fraction is Johansson's Krawtchouk expectation at that order, and the free area is the Hahn expectation at that box. Both used to be compared with the limit, so a correct plate read several of its own error bars off. The lozenge radius is still compared with the limit. Outside review is set aside for now, by the owner's decision.
+
 - **GENChase itself is not archived on Zenodo.** Owner's decision, 2026-09-29. The GitHub integration is not to be switched on, and the software is not uploaded by hand. `CITATION.cff` stays without a software DOI. The papers keep the archives they already have. Nothing was deposited.
 - **The same name is on the other doors.** The agent contract, the contributor page, the citation, the Zenodo metadata for the next software archive, and the note for language models now call the repository a development and research working environment, with the art and print studio as the part that makes a plate. The studio page is unchanged. The Zenodo record already online keeps its old title until the next software archive.
 - **The front page counts eight preprints.** The 1952 pulse is one of them, at [10.5281/zenodo.23028512](https://doi.org/10.5281/zenodo.23028512). Two lines had been left saying release 1.0.0 next to the 1.0.1 DOIs of the collapse and expansion papers. They now say 1.0.1.

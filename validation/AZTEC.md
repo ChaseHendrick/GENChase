@@ -315,12 +315,4 @@ The expansion is checked against the exact values, not proved.
 **Not covered.** The axis radius is a joint event on neighboring lines. It would need the extended Krawtchouk kernel,
 so it was not computed exactly here. Its comparison is unchanged from section 3 and the 2026-09-24 note.
 
-**Proposed module change (not made).** Print the polar fraction against the exact expectation at the plate's order
-rather than against 1 - pi/4 with a finite-size note. The printed line would read "polar fraction <value> ± <bar>
-against <exact> at order n", with the existing per-plate sector bar and the basis `sampled`.
-
-The expectations for orders 8 to 320 are 313 numbers. They can be tabulated from
-`research/arctic-finite-size/aztec_exact.py`, or the module can compute them itself: an (n+1)-point tridiagonal
-eigenproblem per line and a small Cholesky factorization, a few seconds at order 320 in single-threaded numpy. The limit and the
-constant C would stay in the hint. That turns the status line's comparison from a known finite-size miss into a
-check that can fail on every plate.
+**Status line (2026-09-29).** The proposed change is made. The polar fraction on the plate is compared with the exact expectation at that order, computed in `src/shared/arctic-exact.js` by the same Krawtchouk formula. `node tools/arctic-exact-check.js` holds it to the values in `research/arctic-finite-size/data/aztec_exact.json` within 1e-5, which is below the sampling error of a plate. The limit 1 − π/4 stays in the note. The axis radius is still not an exact expectation, as the paragraph above says.

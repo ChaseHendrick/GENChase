@@ -370,9 +370,4 @@ of the frozen counts, so its expectation was not computed exactly. The radius co
 The n^(1/3) scale noted as "assumed by analogy" is now derived for these lines and checked against the exact one-line
 laws. The 11·11·11 and 48·48·8 hint shapes can be computed with the same code; they were not part of this comparison.
 
-**Proposed module change (not made).** Print the free area against the exact expectation for the box on screen,
-instead of against the ellipse with a finite-size note. The expectation takes 2a + b small tridiagonal
-eigenproblems (one per line) and Cholesky factorizations of at most about a hundred sites, for sides up to about 64. That is
-milliseconds in plain JavaScript, with no table. The comparison would keep the tab's own free-area bar and basis
-`sampled`, and the ellipse would stay in the hint as the limit. Every plate would then carry a check that can miss;
-today the status line says only that the plate reads low for a finite-size reason.
+**Status line (2026-09-29).** The proposed change is made for the free area, and only when the frozen test is the rim-connected one. A local test still compares the free area with the ellipse, because the exact expectation is for the rim-connected count. `src/shared/arctic-exact.js` computes it, and `node tools/arctic-exact-check.js` holds the regular boxes 2·2·2, 12·12·12 and 16·16·16, and the skewed box 12·20·24, to the values in `research/arctic-finite-size/` within 1e-9. The radius is unchanged, as the paragraph above says.
