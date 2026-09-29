@@ -149,7 +149,6 @@ The [London disk](MEISSNER.md) relaxes the module's Jacobi update to a residual 
 The [Arago spot](ARAGO.md) record also carries evidence while it stays unvalidated: an independent radial quadrature of the on-axis Fresnel identity for an opaque disk, with a circular-aperture control against 4 sin²(kR²/4z). It tests the textbook identity, not the module, whose 24 by 18 plate sum compares I(0) with a ring and is recorded as outside the claim.
 
 The [Hatano-Nelson skin review](SKIN.md) checks the open clean chain's spectrum and right eigenvectors against an
-independent QL diagonalization and the tab's densities against them at aspect 1:1. It stays partially validated
-because of a recorded plate defect: a sheet with more rows than sites (the default 4:5 sheet, the only print
-fixture) draws rows past n = N that are float noise and repeats of the low modes, and the status-line skin weight
-averages them in.
+independent QL diagonalization and the tab's densities against them. The default plate draws at most one
+row per mode, and the 4:5 and 1:1 prints are both 96 by 96 with the same skin weight. Recipes before v8,
+and the disordered and periodic paths, stay outside that claim.

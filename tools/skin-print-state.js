@@ -1,6 +1,6 @@
 // Actual skin exportPNG state preservation; not calibrated color.
-// One open Hatano-Nelson fixture: g = 0.08, disorder 0, grid 96, longest edge 2400.
-// rows is modes, so the field is min(sheet, N) by N, not the taller sheet.
+// Two open Hatano-Nelson fixtures, grid 96, g = 0.08, disorder 0, longest edge 2400:
+// aspect 4:5 and aspect 1:1. rows is modes, so both fields are 96 by 96.
 // node tools/skin-print-state.js [--write]
 const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
@@ -36,6 +36,7 @@ ${marker}`);
 
   const fixtures = [
     { name: 'open-skin', aspect: '4:5', overlay: { grid: 96, g: 0.08, disorder: 0, bc: 'open', view: 'log' } },
+    { name: 'open-square', aspect: '1:1', overlay: { grid: 96, g: 0.08, disorder: 0, bc: 'open', view: 'log' } },
   ];
 
   const browser = await chromium.launch({ args: glArgs() });
@@ -173,7 +174,10 @@ ${marker}`);
     assert.equal(row.failureControls.mutatingExportRejected, true);
     assert(row.export.nonblank);
     assert(row.skinW > 0.45, 'open g=0.08 fixture should report a right-end pile');
+    assert.deepEqual(row.cells, [96, 96], row.fixture + ' should draw one row per mode');
   }
+  const weights = rows.map(r => r.skinW);
+  assert(Math.abs(weights[0] - weights[1]) < 1e-12, '4:5 and 1:1 draw the same modes, so the skin weight matches');
 
   const hash = v => crypto.createHash('sha256').update(v).digest('hex');
   const result = {
@@ -182,7 +186,7 @@ ${marker}`);
     sourceSha256: hash(original),
     harnessSha256: hash(fs.readFileSync(__filename)),
     command: 'node tools/skin-print-state.js --write',
-    scope: 'Actual skin exportPNG at 2400 longest edge for one open clean chain: grid 96, aspect 4:5, g=0.08, disorder 0, bc open, log view (1920x2400). Exact Float32 amp words, skin weight, IPR, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.',
+    scope: 'Actual skin exportPNG at 2400 longest edge for two open clean chains, both grid 96, g=0.08, disorder 0, bc open, log view, rows modes: aspect 4:5 (1920x2400, 96 by 96 cells) and aspect 1:1 (2400x2400, 96 by 96 cells). Exact Float32 amp words, skin weight, IPR, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.',
     criteria: 'Zero changed/nonfinite amp words; skin weight, IPR, settings, cells and buffer unchanged across export; exact requested PNG dimensions and >1000-byte blob; luminance spread >12/255; wrong dimensions and deliberate post-export amp+skinW mutation rejected.',
     rows,
     limitations: 'State preservation and declared dimensions for this one open clean fixture. Does not validate disordered or periodic subspace iteration, calibrated color, or every control.',
