@@ -242,3 +242,10 @@ are reported explicitly, without substituting Live/Still motion for validity.
 The [module browser](BROWSING-AND-LAYOUT.md) uses catalog metadata for searching and sorting without instantiating every simulation. Reference-year ordering and editorial familiarity categories do not change module IDs or recipe interpretation. Favorites are a local presentation preference.
 
 Zoom/pan transform the complete preview sheet so caption text scales with the artwork. Status and scientific witness text occupy their own panel below the art viewport. These are shared presentation changes; they do not alter numerical parameters, the recipe version or the physical print dimensions. Catalog/layout changes require `tools/studio-navigation-check.js` in Chromium and WebKit in addition to affected engine, recipe and print regressions.
+
+
+### Interactive preview preferences
+
+The recent-frame thumbnail strip has a persistent **Hide frames / Show frames** button. It is a local viewing preference, separate from the Live/Still badge, scientific status and recipe. Hidden frames are not captured. A saved link therefore describes the same technique regardless of this preference.
+
+Geometry sliders coalesce input with an 80 ms deadline that is not restarted by later input. The next update reads the latest state, and release immediately regenerates the final value. Queued work belongs to its original technique and is cancelled on navigation. Paint and live controls keep their immediate path. Undo records one pre-drag recipe; intermediate previews do not add timeline entries. Computationally expensive techniques still take their actual solve or warm-up time; this scheduling change does not shorten a scientific computation or alter its resolution.

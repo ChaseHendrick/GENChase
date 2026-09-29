@@ -475,6 +475,68 @@ const { chromium } = require('playwright');
   const returnedStep = await p.$eval('#status', el => Number(/step\s+([\d,]+)/.exec(el.textContent)?.[1].replace(/,/g, '') || 0));
   t('custom potential advances after hash re-entry with a new coefficient', await advances(Math.max(100, returnedStep)), await p.$eval('#status', el => el.textContent));
 
+  // Recent-frame cards have their own persistent preference, independent of the
+  // scientific badge, sidebar and recipe. A reload must not reveal them again.
+  await p.goto('file://' + studio + '#tilings/frames-ui');
+  await p.evaluate(() => Studio.ready);
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'tilings');
+  await p.evaluate(() => { const b = document.querySelector('#btn-witness-frames'); if (b.getAttribute('aria-expanded') !== 'true') b.click(); });
+  const frameRecipe = await p.evaluate(() => JSON.stringify(Studio.getRecipe()));
+  await p.locator('#btn-witness-frames').click();
+  t('frame cards hide separately from the live badge', await p.evaluate(() => document.querySelector('#witness-strip').hidden && getComputedStyle(document.querySelector('#live-badge')).display !== 'none'));
+  t('frame preference leaves recipe unchanged', await p.evaluate(() => JSON.stringify(Studio.getRecipe())) === frameRecipe);
+  await p.reload(); await p.evaluate(() => Studio.ready);
+  t('hidden frames persist on reload with visible recovery button', await p.evaluate(() => document.querySelector('#witness-strip').hidden && document.querySelector('#btn-witness-frames').textContent === 'Show frames'));
+  await p.locator('#btn-witness-frames').focus(); await p.keyboard.press('Enter');
+  t('keyboard restores recent frames', await p.evaluate(() => !document.querySelector('#witness-strip').hidden && document.querySelector('#btn-witness-frames').getAttribute('aria-expanded') === 'true'));
+  await p.setViewportSize({width: 390, height: 844});
+  t('frame toggle remains available on mobile', await p.locator('#btn-witness-frames').evaluate(el => { const r = el.getBoundingClientRect(); return r.width > 40 && r.height >= 44 && r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight && document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('#btn-witness-frames') === el; }));
+  await p.setViewportSize({width: 1400, height: 900});
+
+  // A tiny module exercises the real shell event path without coupling timing to
+  // any simulation's workload. A continuous input stream must draw before change.
+  await p.evaluate(() => {
+    window.__previewCalls = [];
+    for (const id of ['ui-preview-fixture', 'ui-preview-other']) Studio.register({
+      id, name: id, tab: id, defaults: {size: 1, tint: 1, moving: false}, palette: false,
+      schema: [{group:'Preview',key:'size',label:'Size',type:'range',kind:'geom',min:1,max:40,step:1},
+        {group:'Preview',key:'tint',label:'Tint',type:'range',kind:'paint',min:1,max:40,step:1},
+        {group:'Preview',key:'moving',label:'Moving',type:'toggle',kind:'live'}],
+      create(host) {
+        const draw = kind => { const s = host.getState(); window.__previewCalls.push({id,kind,size:s.size,tint:s.tint,moving:s.moving}); const g=host.canvas.getContext('2d');g.fillStyle='rgb('+s.size*5+','+s.tint*5+',0)';g.fillRect(0,0,host.canvas.width,host.canvas.height);host.setStatus('Preview '+s.size); };
+        return {aspect:()=>1,regenerate(){draw('geom');},repaint(){draw('paint');},live(){draw('live');},pause(){},resume(){}};
+      }
+    });
+    location.hash = 'ui-preview-fixture/drag-preview';
+  });
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'ui-preview-fixture');
+  const liveDrag = await p.evaluate(async () => {
+    const input = document.querySelector('#p-ui-preview-fixture-size');
+    window.__previewCalls = [];
+    input.dispatchEvent(new PointerEvent('pointerdown', {bubbles:true}));
+    for (let v=2;v<=20;v++) { input.value=v;input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,20)); }
+    const beforeCommit=window.__previewCalls.filter(x=>x.kind==='geom');
+    input.dispatchEvent(new Event('change',{bubbles:true}));
+    input.dispatchEvent(new PointerEvent('pointerup',{bubbles:true}));
+    return {beforeCommit, final:window.__previewCalls.at(-1)};
+  });
+  t('continuous geometry drag updates before pointer release', liveDrag.beforeCommit.length >= 2, liveDrag);
+  t('release draws exact final slider value', liveDrag.final.size === 20, liveDrag.final);
+  await p.locator('#stage').focus(); await p.keyboard.press('z');
+  t('one Undo restores the pre-drag recipe', await p.evaluate(() => ({...Studio.modules['ui-preview-fixture'].defaults,...Studio.getRecipe()}).size) === 1);
+  const instant = await p.evaluate(() => {
+    const input=document.querySelector('#p-ui-preview-fixture-tint');input.value=7;input.dispatchEvent(new Event('input',{bubbles:true}));
+    const paint=window.__previewCalls.at(-1);
+    document.querySelector('#p-ui-preview-fixture-moving').click();
+    return {paint,live:window.__previewCalls.at(-1)};
+  });
+  t('paint slider and live switch update immediately', instant.paint.kind==='paint' && instant.paint.tint===7 && instant.live.kind==='live' && instant.live.moving, instant);
+  await p.evaluate(() => { const input=document.querySelector('#p-ui-preview-fixture-size');input.value=30;input.dispatchEvent(new Event('input',{bubbles:true}));location.hash='ui-preview-other/switch-during-drag'; });
+  await p.waitForFunction(() => Studio.getRecipe()?.id === 'ui-preview-other');
+  await p.waitForTimeout(160);
+  const otherCalls=await p.evaluate(() => window.__previewCalls.filter(x=>x.id==='ui-preview-other'&&x.kind==='geom'));
+  t('queued slider work cannot regenerate the next technique', otherCalls.length === 1, otherCalls);
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');

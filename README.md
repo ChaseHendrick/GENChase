@@ -12,6 +12,8 @@ Generative art from real scientific simulations, built to leave the screen. Ever
 
 A folder-based studio with one shared engine and 135 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
 
+Geometry sliders update the preview while you drag. Use **Hide frames** to hide the recent-frame thumbnails; that preference survives a reload. The scientific readout and Live/Still badge remain available.
+
 <p align="center">
   <a href="docs/trailer/genchase-trailer.mp4"><img src="docs/trailer/poster.jpg" width="80%" alt="GENChase trailer: 45 seconds of real simulations from the studio, with an original score" /></a><br />
   <a href="docs/trailer/genchase-trailer.mp4"><b>Watch the 45-second trailer</b></a> (every clip is a real plate; <a href="docs/trailer/README.md">how it was made</a>)

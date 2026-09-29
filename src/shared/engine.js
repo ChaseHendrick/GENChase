@@ -895,7 +895,7 @@ void main(){
   let currentId = null;
   const instances = Object.create(null);        // id -> { inst, canvas, state, anim... }
   const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
-  let regenTimer = null, historyTimer = null;
+  let regenTimer = null, pendingRegen = null, historyTimer = null;
   let downloads = null;
   let hashSilent = false;
   // The hash the studio last wrote or applied. A hash that differs from it was set from outside (the address bar,
@@ -1637,6 +1637,8 @@ void main(){
     const e = instances[currentId]; if (!e) return;
     if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
     clearTimeout(regenTimer);
+    regenTimer = null;
+    pendingRegen = null;
     fitCanvas(e);
     e.paused = false;
     e.scienceWitness = null;
@@ -1655,7 +1657,19 @@ void main(){
     updateDims();
     persist(currentId);
   }
-  function scheduleRegen(opts) { clearTimeout(regenTimer); regenTimer = setTimeout(() => regenerate(opts), 120); }
+  // Keep the first deadline while a slider moves. Resetting a debounce on every
+  // input postponed the picture indefinitely during a continuous drag.
+  // A queued preview belongs to its originating entry, never the next tab.
+  function scheduleRegen(opts) {
+    const e = instances[currentId]; if (!e) return;
+    pendingRegen = { e, opts };
+    if (regenTimer !== null) return;
+    regenTimer = setTimeout(() => {
+      regenTimer = null;
+      const pending = pendingRegen; pendingRegen = null;
+      if (pending && instances[currentId] === pending.e) regenerate(pending.opts);
+    }, 80);
+  }
   function showError(err) {
     const entry = instances[currentId];
     if (entry) { entry.scienceWitness = null; renderStatus(); }
@@ -1731,10 +1745,30 @@ void main(){
   // to see in the corner.
   const WITNESS_MODES = ['full', 'quiet', 'off'];
   let witnessMode = 'full';
+  let witnessFramesVisible = true;
+  function applyWitnessFrames() {
+    const strip = $('witness-strip'), button = $('btn-witness-frames');
+    const shown = witnessFramesVisible && witnessMode === 'full';
+    if (strip) strip.hidden = !shown;
+    if (button) {
+      button.textContent = shown ? 'Hide frames' : 'Show frames';
+      button.setAttribute('aria-expanded', String(shown));
+      button.title = shown ? 'Hide the recent frame thumbnails' : 'Show the recent frame thumbnails';
+    }
+  }
+  function setWitnessFrames(on) {
+    witnessFramesVisible = !!on;
+    if (on && witnessMode !== 'full') setWitnessMode('full', false);
+    applyWitnessFrames();
+    try { localStorage.setItem(STORE + 'witness-frames', on ? 'show' : 'hide'); } catch (err) { /* private window */ }
+    if (!on) { const strip = $('witness-strip'); if (strip) strip.replaceChildren(); }
+    else { const e = instances[currentId]; if (e) pushWitnessFrame(e.canvas); }
+  }
   function applyWitnessMode() {
     const w = $('witness'); if (!w) return;
     w.classList.toggle('w-quiet', witnessMode === 'quiet');
     w.classList.toggle('w-off', witnessMode === 'off');
+    applyWitnessFrames();
   }
   function setWitnessMode(mode, announce) {
     witnessMode = WITNESS_MODES.indexOf(mode) < 0 ? 'full' : mode;
@@ -1903,7 +1937,7 @@ void main(){
     markPokeable();
   }
   function pushWitnessFrame(canvas) {
-    const strip = $('witness-strip'); if (!strip || !canvas.width) return;
+    const strip = $('witness-strip'); if (!strip || !canvas.width || !witnessFramesVisible || witnessMode !== 'full') return;
     try {
       const c = document.createElement('canvas');
       c.width = 80; c.height = 80;
@@ -2119,6 +2153,7 @@ void main(){
   async function switchTo(id, opts = {}) {
     if (!byId[id]) id = modules[0].id;
     const ticket = ++navigation;
+    clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
     clearTimeout(hashTimer);
     loadingId = id;
     $('stage').setAttribute('aria-busy', 'true');
@@ -2204,7 +2239,6 @@ void main(){
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();
     const commit = phase !== 'drag';
-    const fromSlider = phase === 'drag' || phase === 'commit';
     if (kind === 'geom') {
       if (commit) regenerate({ skipSnap: true });
       else scheduleRegen({ skipSnap: true, skipHistory: true });
@@ -3841,8 +3875,10 @@ void main(){
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
     })();
     try { panelSide = localStorage.getItem(STORE + 'panel') === 'right' ? 'right' : 'left'; } catch (err) { panelSide = 'left'; }
+    try { witnessFramesVisible = localStorage.getItem(STORE + 'witness-frames') !== 'hide'; } catch (err) { witnessFramesVisible = true; }
     try { setWitnessMode(localStorage.getItem(STORE + 'witness') || 'full', false); } catch (err) { setWitnessMode('full', false); }
     const lb = $('live-badge'); if (lb) lb.addEventListener('click', cycleWitness);
+    $('btn-witness-frames').addEventListener('click', () => setWitnessFrames(!(witnessFramesVisible && witnessMode === 'full')));
     applyPanelSide();
     renderHistory();
     (function witnessLoop() {
