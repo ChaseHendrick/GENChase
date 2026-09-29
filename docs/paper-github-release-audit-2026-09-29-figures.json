@@ -1,0 +1,257 @@
+{
+  "publicationCommit": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3",
+  "papers": [
+    {
+      "paper": "minimal-winding",
+      "version": "2.2.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:55:02Z",
+        "tagName": "2.2.3",
+        "url": "https://github.com/ChaseHendrick/minimal-winding/releases/tag/2.2.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/minimal-winding/zipball/2.2.3",
+      "zipSha256": "1778d2f707ecfa72ade12cc8909e3ed1e32868247eceedd56e1f3d9b9e660035",
+      "manuscript": "ChaseHendrick-minimal-winding-6c56231/paper/minimal-winding.pdf",
+      "manuscriptSha256": "1940be75aac927dc997b38429a6536d0adbc3e73da4e53a3e590b12ce698e684",
+      "repositoryPdfSha256": "1940be75aac927dc997b38429a6536d0adbc3e73da4e53a3e590b12ce698e684",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:55:43.386328+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "collapse-without-rotation",
+      "version": "1.0.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:55:39Z",
+        "tagName": "1.0.3",
+        "url": "https://github.com/ChaseHendrick/collapse-without-rotation/releases/tag/1.0.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/collapse-without-rotation/zipball/1.0.3",
+      "zipSha256": "7a84853753af6ad8be213030d68f2326f522e336f2a711635f5e4e195b3f050a",
+      "manuscript": "ChaseHendrick-collapse-without-rotation-79c612a/paper/collapse-without-rotation.pdf",
+      "manuscriptSha256": "bcfce5554cb78b7613292227e1df4331671d524cd057ec5032f832ac56bae098",
+      "repositoryPdfSha256": "bcfce5554cb78b7613292227e1df4331671d524cd057ec5032f832ac56bae098",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:55:48.545308+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "stable-expansion",
+      "version": "1.0.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:56:07Z",
+        "tagName": "1.0.3",
+        "url": "https://github.com/ChaseHendrick/stable-expansion/releases/tag/1.0.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/stable-expansion/zipball/1.0.3",
+      "zipSha256": "b96ece09562ea3b85a279e9d959291487e46572b0d134aa7ad37379dc03e3c1a",
+      "manuscript": "ChaseHendrick-stable-expansion-ad3d05d/paper/stable-expansion.pdf",
+      "manuscriptSha256": "b7dabdb95fdd74f334961b6178283f41cefe2aa56c4bb6ec3d4c73ad277780fc",
+      "repositoryPdfSha256": "b7dabdb95fdd74f334961b6178283f41cefe2aa56c4bb6ec3d4c73ad277780fc",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:56:21.230185+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "rank-window",
+      "version": "1.0.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:56:40Z",
+        "tagName": "1.0.3",
+        "url": "https://github.com/ChaseHendrick/rank-window/releases/tag/1.0.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/rank-window/zipball/1.0.3",
+      "zipSha256": "b0273887a401288fe18025c61fbd51566de19bc4fea7d4afe9df892eccb3739f",
+      "manuscript": "ChaseHendrick-rank-window-17eb3d2/paper/note.pdf",
+      "manuscriptSha256": "34e94bbe8ffaa166eb12bf2fc269637c87956b00829d747fe51a7228b77d4c2f",
+      "repositoryPdfSha256": "34e94bbe8ffaa166eb12bf2fc269637c87956b00829d747fe51a7228b77d4c2f",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:56:53.582104+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "hh-dynamics",
+      "version": "1.0.4",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:58:53Z",
+        "tagName": "1.0.4",
+        "url": "https://github.com/ChaseHendrick/hh-dynamics/releases/tag/1.0.4"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/hh-dynamics/zipball/1.0.4",
+      "zipSha256": "d3805bea06e5614dc339273f7cc386bbb8ef3884e785fde85cf898cd04c597eb",
+      "manuscript": "ChaseHendrick-hh-dynamics-035c5b2/paper/hh-dynamics.pdf",
+      "manuscriptSha256": "e08d64cb2b659067fb351aa1253d3121dac4db5d319ef0404cedd57a7259861d",
+      "repositoryPdfSha256": "e08d64cb2b659067fb351aa1253d3121dac4db5d319ef0404cedd57a7259861d",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:59:04.604223+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "double-pendulum",
+      "version": "1.0.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T22:59:22Z",
+        "tagName": "1.0.3",
+        "url": "https://github.com/ChaseHendrick/double-pendulum/releases/tag/1.0.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/double-pendulum/zipball/1.0.3",
+      "zipSha256": "03db73095554d7e79d151eeb98d77f978c5b62dff9b967e5a5f41565c470f1e4",
+      "manuscript": "ChaseHendrick-double-pendulum-f5ac60c/paper/double-pendulum.pdf",
+      "manuscriptSha256": "6718544c0492ee8a56754235fe1a511f2f598ed85a859f299b932316a3a34d06",
+      "repositoryPdfSha256": "6718544c0492ee8a56754235fe1a511f2f598ed85a859f299b932316a3a34d06",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T22:59:44.897509+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "nf-pulse",
+      "version": "1.0.4",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T23:00:14Z",
+        "tagName": "1.0.4",
+        "url": "https://github.com/ChaseHendrick/nf-pulse/releases/tag/1.0.4"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/nf-pulse/zipball/1.0.4",
+      "zipSha256": "648de78f41f22ce837be0077cf870519ffd141423e9bace7622946326c9f62a0",
+      "manuscript": "ChaseHendrick-nf-pulse-d2f11b8/paper/nf-pulse.pdf",
+      "manuscriptSha256": "72bc8d4b0bed50357b29cb5784e60fd34603cb0d0dd954d573fa55547e7bd9ea",
+      "repositoryPdfSha256": "72bc8d4b0bed50357b29cb5784e60fd34603cb0d0dd954d573fa55547e7bd9ea",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T23:00:25.019777+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    },
+    {
+      "paper": "hh-pulse",
+      "version": "1.0.3",
+      "release": {
+        "isDraft": false,
+        "isPrerelease": false,
+        "publishedAt": "2026-09-29T23:00:45Z",
+        "tagName": "1.0.3",
+        "url": "https://github.com/ChaseHendrick/hh-pulse/releases/tag/1.0.3"
+      },
+      "sourceZip": "https://api.github.com/repos/ChaseHendrick/hh-pulse/zipball/1.0.3",
+      "zipSha256": "a5e231d0549ba42fcf0bda78b68a6e6b7ec7c49cd5dccd5a17f27fca90bc8e62",
+      "manuscript": "ChaseHendrick-hh-pulse-0876b5b/paper/hh-pulse.pdf",
+      "manuscriptSha256": "4a4890baeaa11782ec3d480c89067a1ef644a4c49dbf5f0b61bf73f78cea0be1",
+      "repositoryPdfSha256": "4a4890baeaa11782ec3d480c89067a1ef644a4c49dbf5f0b61bf73f78cea0be1",
+      "matchesRepository": true,
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof",
+      "titleMatches": true,
+      "resourceType": {
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "ok": true,
+      "checkedAt": "2026-09-29T23:01:00.723102+00:00",
+      "repositoryHead": "94d4dfdf7cb051d12fed0aa883c680c5a352d7d3"
+    }
+  ],
+  "checkedAt": "2026-09-29T23:02:44.483600+00:00",
+  "pullRequest": "https://github.com/ChaseHendrick/GENChase/pull/252",
+  "allGitHubArchivesVerified": true,
+  "zenodoVerification": "pending"
+}

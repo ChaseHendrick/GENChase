@@ -5,6 +5,8 @@ has not been peer reviewed.
 
 ## 2.2.3 (2026-09-29)
 
+**DOI:** [10.5281/zenodo.23048226](https://doi.org/10.5281/zenodo.23048226). Publication / Preprint; both the actual GitHub source ZIP and the downloaded Zenodo ZIP contain the reviewed manuscript PDF byte for byte.
+
 Publication figures, contact and rights update. Improves all three vector figures, captions and margin layout. The manuscript uses the updated public research contact. Manuscript rights are stated outside the scientific abstract, preserving the existing policy and earlier license grants. Archive metadata identifies mixed component rights rather than applying the code license to the whole preprint ZIP. Reference-list reading-status annotations have been removed where present. No theorem, proof program or certificate changes. The release includes its rebuilt manuscript PDF; previous archives remain unchanged.
 
 ## 2.2.2 (2026-09-29)

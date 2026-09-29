@@ -8,7 +8,8 @@ authors:
     affiliation: "Independent Researcher"
     website: "https://github.com/ChaseHendrick"
     orcid: "https://orcid.org/0009-0002-9754-6087"
-# GENChase is not deposited on Zenodo; cite its numbered GitHub release.
+# GENChase itself is not deposited on Zenodo and has no software DOI.
+# Paper preprint DOIs belong in the references below.
 version: "0.9.0"
 date-released: "2026-09-29"
 repository-code: "https://github.com/ChaseHendrick/GENChase"
@@ -61,5 +62,5 @@ references:
         orcid: "https://orcid.org/0009-0002-9754-6087"
     year: 2026
     url: "https://github.com/ChaseHendrick/minimal-winding"
-    doi: "10.5281/zenodo.22994932"
-    notes: "The DOI is that of release 2.2.0 of the paper's repository, with its programs and data."
+    doi: "10.5281/zenodo.23048226"
+    notes: "The DOI is that of release 2.2.3 of the paper's repository, with its programs and data."
