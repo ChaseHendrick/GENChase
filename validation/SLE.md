@@ -100,7 +100,7 @@ convergent at first order in dt. But at the tab's resolution (N <= 8000), its fr
 that of SLE. It is 0.03 low at kappa = 2 and 0.27 low at kappa = 6. Closing this gap would take an
 adaptive or much finer time step, beyond the tab's O(N^2) budget. This is reported as a disagreement, and
 it keeps the record at partially validated. On 2026-09-29 the status line started saying "coarse trace,
-not resolved to dimension 1+κ/8". That sentence is the disclosure. It is not a new measurement, and this
+not resolved to dimension min(2, 1+κ/8)". That sentence is the disclosure. It is not a new measurement, and this
 ensemble was not re-run.
 
 **Failure control, doubled variance.** The same seeds are driven with variance 2 kappa while still

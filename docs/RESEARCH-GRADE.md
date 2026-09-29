@@ -244,7 +244,7 @@ impossible to miss on the tab itself, if it is not already.
   The Aztec per-plate error bar is checked from order 40 up; below that the status line says it is not calibrated.
   The lozenge radius is still compared with the limit, and a single plate still reads low on it for a
   finite-size reason. That part was not given an exact expectation. The SLE status line now says the
-  drawn curve is a coarse trace, not resolved to dimension 1+κ/8. The Veselago status line no longer
+  drawn curve is a coarse trace, not resolved to dimension min(2, 1+κ/8). The Veselago status line no longer
   calls a plate a focus when no ray crosses the axis behind the slab, and a back face past the plate
   no longer draws the exit ray backwards. At any n other than −1 the line gives the nearest and farthest
   crossings and the paraxial point, and does not call them one image.

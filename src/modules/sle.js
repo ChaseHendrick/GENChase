@@ -182,7 +182,7 @@
         const s = host.getState();
         const phase = s.kappa <= 4 ? 'simple' : (s.kappa < 8 ? 'self-touching' : 'space filling');
         const head = s.mode === 'sweep' ? '<span>κ <b>1 to 8</b> · one driving path</span>' : '<span>κ <b>' + f1(s.kappa) + '</b> · ' + phase + '</span>';
-        host.setStatus(head + '<span>' + traces.length + (traces.length === 1 ? ' curve' : ' curves') + ' · ' + s.N.toLocaleString() + ' steps</span><span>coarse trace, not resolved to dimension 1+κ/8</span>' + (extra ? '<span>' + extra + '</span>' : ''));
+        host.setStatus(head + '<span>' + traces.length + (traces.length === 1 ? ' curve' : ' curves') + ' · ' + s.N.toLocaleString() + ' steps</span><span>coarse trace, not resolved to dimension min(2, 1+κ/8)</span>' + (extra ? '<span>' + extra + '</span>' : ''));
       }
 
       return {

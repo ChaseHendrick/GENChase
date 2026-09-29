@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- **The SLE status line says the trace is not resolved to dimension 1+κ/8.** The plate draws a uniform-capacity-time discretization. Box counting of that curve sits below Beffara's dimension at every tested point (κ = 2, 4 and 6, up to 8,000 steps), and the line now says so instead of leaving it in the review. The record stays partially validated. The trace ensemble was not re-run: the solver is unchanged.
+- **The SLE status line says the trace is not resolved to dimension min(2, 1+κ/8).** The plate draws a uniform-capacity-time discretization. Box counting of that curve sits below Beffara's dimension at every tested point (κ = 2, 4 and 6, up to 8,000 steps), and the line now says so instead of leaving it in the review. The record stays partially validated. The trace ensemble was not re-run: the solver is unchanged.
 - **New paper releases must meet the full quality gate.** An existing Zenodo DOI still preserves the archive, but no longer excuses an open quality item when making a new release. Seven unfinished pulse stability and temperature-strip scripts remain in the development repository and are excluded from new companion archives, as the earlier handoff intended. The existence-proof programs and certificates are unchanged.
 
 - **Publication references and citation metadata corrected for all eight preprints.** Rebuilt PDFs name the public companions and immutable checking archives. Preferred citations include a DOI and URL; archive descriptions clarify manuscript and component licensing. Each companion receives a patch release with its PDF in the source ZIP.
