@@ -84,8 +84,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
 - **m4 (05a740b).** The title of Czechowski and Zgliczynski is corrected, with doi:10.1137/15M1007707.
 - **m5 (e86e2c8, 3a0c7b1).** The docstrings of `certify_rest_wave.py` and `hh_prove_pulse.py` now match the paper.
   This covers the printed leak potential, the hypotheses (H1) to (H5) and the factor 1 + 1e-12 (u - u*)^2.
-- **m6, consistency (3af23a2).** The paragraph now uses the printed-E_l runs of the theorems, from their
-  certificates.
+- **m6, consistency.** `notes/review-2.md` found that this paragraph still quoted the zero-current run. It now quotes the printed-E_l balls at 18.5 C.
 - **m7 (e86e2c8).** `hh_block_check_iv.py` checks that its bisection zero lies within the window where Lemma B.1
   proves uniqueness. The check applies for HH_EL = 10.613; for the zero-current case rest is exactly u = 0.
 - **m8 (e86e2c8).** The negative control of `hh_block_check_iv.py` now uses the depth limit of the check itself.
@@ -101,9 +100,7 @@ Commits, all on branch hh-pulse, 2026-09-27:
   - a K1 PASS that never reaches the cone.
 - **Code freeze.** Rerun2 started at 19:08 UTC from 5efe380. After that no program in `code/` was edited until its
   certificates were committed.
-- **CPU times under load.** Section 7 says the rerun ran two proofs in parallel on four cores that also carried other
-  work, so the recorded times were measured under that load. The proofs write disjoint files, so no result is
-  affected.
+- **CPU times under load.** `notes/review-2.md` found no such sentence, and none was added. `run.sh` runs one process at a time. The stored `secs` values are wall-clock, and the tables now say so. Nothing in `data/` records the load of the later run.
 
 ## Not in the review
 
