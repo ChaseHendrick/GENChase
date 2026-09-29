@@ -1,6 +1,8 @@
 {
   "tool": "tools/hofstadter-print-state.js",
-  "reviewed": "2026-09-27",
+  "reviewed": "2026-09-29",
+  "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+  "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
   "chromium": "153.0.8010.12",
   "node": "v22.23.3",
   "rows": [
@@ -13,17 +15,17 @@
       "wrongIndexDistinct": 122,
       "colorErrors": 0,
       "paintMismatch": 0,
-      "ink": 356,
+      "ink": 352,
       "spread": 193.2592,
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 200701,
+        "bytes": 199096,
         "type": "image/png",
         "pixelDrift": 0
       },
       "mutated": {
-        "index": 36558,
+        "index": 0,
         "changedChannels": 3
       },
       "problems": []
@@ -37,17 +39,17 @@
       "wrongIndexDistinct": 374,
       "colorErrors": 0,
       "paintMismatch": 0,
-      "ink": 1022,
+      "ink": 1044,
       "spread": 230.41819999999998,
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 351391,
+        "bytes": 363247,
         "type": "image/png",
         "pixelDrift": 0
       },
       "mutated": {
-        "index": 27572,
+        "index": 0,
         "changedChannels": 3
       },
       "problems": []
@@ -61,17 +63,17 @@
       "wrongIndexDistinct": 4548,
       "colorErrors": 0,
       "paintMismatch": 0,
-      "ink": 9788,
+      "ink": 10498,
       "spread": 230.41819999999998,
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 1798459,
+        "bytes": 1900311,
         "type": "image/png",
         "pixelDrift": 0
       },
       "mutated": {
-        "index": 19221,
+        "index": 0,
         "changedChannels": 3
       },
       "problems": []
@@ -85,12 +87,12 @@
       "wrongIndexDistinct": 0,
       "colorErrors": 0,
       "paintMismatch": 0,
-      "ink": 1063,
+      "ink": 1084,
       "spread": 254.99999999999997,
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 262282,
+        "bytes": 264712,
         "type": "image/png",
         "pixelDrift": 0
       },

@@ -195,7 +195,9 @@ function sameCount(a, b) {
   }
   const out = {
     tool: 'tools/hofstadter-print-state.js',
-    reviewed: '2026-09-27',
+    reviewed: '2026-09-29',
+    source: 'src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js',
+    sourceSha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js'))).digest('hex'),
     chromium: browser.version(),
     node: process.version,
     rows,
