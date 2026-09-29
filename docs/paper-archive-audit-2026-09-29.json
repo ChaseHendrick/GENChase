@@ -1,0 +1,157 @@
+{
+  "checkedAt": "2026-09-29T20:03:51.864437+00:00",
+  "papers": [
+    {
+      "paper": "minimal-winding",
+      "doi": "10.5281/zenodo.23028524",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028524",
+      "repositoryPdfSha256": "d73412533d5076ad6067598f3b8734dec59e8696e01715ef746318404c682960",
+      "archives": [
+        {
+          "file": "ChaseHendrick/minimal-winding-2.2.1.zip",
+          "url": "https://zenodo.org/api/records/23028524/files/ChaseHendrick/minimal-winding-2.2.1.zip/content",
+          "zipSha256": "6b0291de9723e0836a1228c8cfda0e213c61b408aa5a071d8551ba89bff32ce2",
+          "manuscript": [
+            "ChaseHendrick-minimal-winding-c27a589/paper/minimal-winding.pdf"
+          ],
+          "manuscriptSha256": "d73412533d5076ad6067598f3b8734dec59e8696e01715ef746318404c682960",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "collapse-without-rotation",
+      "doi": "10.5281/zenodo.23028527",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028527",
+      "repositoryPdfSha256": "f258bd26ea57bcd55a9ed7802f7c6afbc6e450ed2d68532b582d9e4dd7bc593a",
+      "archives": [
+        {
+          "file": "ChaseHendrick/collapse-without-rotation-1.0.1.zip",
+          "url": "https://zenodo.org/api/records/23028527/files/ChaseHendrick/collapse-without-rotation-1.0.1.zip/content",
+          "zipSha256": "7412292ae0ff73a9dedf857cc66ea6cc464f115302d4c37c12e1054dfdd11036",
+          "manuscript": [
+            "ChaseHendrick-collapse-without-rotation-7861d19/paper/collapse-without-rotation.pdf"
+          ],
+          "manuscriptSha256": "f258bd26ea57bcd55a9ed7802f7c6afbc6e450ed2d68532b582d9e4dd7bc593a",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "stable-expansion",
+      "doi": "10.5281/zenodo.23028532",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028532",
+      "repositoryPdfSha256": "6ba9d0efb26e166af595059eded8e3c554438ad979e03bd5c3661992ad914848",
+      "archives": [
+        {
+          "file": "ChaseHendrick/stable-expansion-1.0.1.zip",
+          "url": "https://zenodo.org/api/records/23028532/files/ChaseHendrick/stable-expansion-1.0.1.zip/content",
+          "zipSha256": "80fb6c18f411ea8328242f656db1dbd7470b882712d86a39e765b68418bf3f59",
+          "manuscript": [
+            "ChaseHendrick-stable-expansion-9768c5d/paper/stable-expansion.pdf"
+          ],
+          "manuscriptSha256": "6ba9d0efb26e166af595059eded8e3c554438ad979e03bd5c3661992ad914848",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "rank-window",
+      "doi": "10.5281/zenodo.23028535",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028535",
+      "repositoryPdfSha256": "3650bbbafcf24c4d67b6a49491fd710e9e4d7115f063c9d6f41802434789cd8e",
+      "archives": [
+        {
+          "file": "ChaseHendrick/rank-window-1.0.1.zip",
+          "url": "https://zenodo.org/api/records/23028535/files/ChaseHendrick/rank-window-1.0.1.zip/content",
+          "zipSha256": "6b8948c8668795f7ae3debcc5a78b78797900975fbd7df661fd37399f60c1979",
+          "manuscript": [
+            "ChaseHendrick-rank-window-df992fe/paper/note.pdf"
+          ],
+          "manuscriptSha256": "3650bbbafcf24c4d67b6a49491fd710e9e4d7115f063c9d6f41802434789cd8e",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "hh-dynamics",
+      "doi": "10.5281/zenodo.23028513",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028513",
+      "repositoryPdfSha256": "10b8da348785b73be6be26de18ecc840d7a3d7f3edc263ccd9c423eecf31535f",
+      "archives": [
+        {
+          "file": "ChaseHendrick/hh-dynamics-1.0.2.zip",
+          "url": "https://zenodo.org/api/records/23028513/files/ChaseHendrick/hh-dynamics-1.0.2.zip/content",
+          "zipSha256": "c9e6ede7573698856f39bdede9a006ebab7903c654b494b29cdfbc0ab350c998",
+          "manuscript": [
+            "ChaseHendrick-hh-dynamics-6381587/paper/hh-dynamics.pdf"
+          ],
+          "manuscriptSha256": "10b8da348785b73be6be26de18ecc840d7a3d7f3edc263ccd9c423eecf31535f",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "double-pendulum",
+      "doi": "10.5281/zenodo.23028523",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028523",
+      "repositoryPdfSha256": "564bef001d265d33310d58a3a43fd352b1f6e98f906cab5fab3fd113b09e55e0",
+      "archives": [
+        {
+          "file": "ChaseHendrick/double-pendulum-1.0.1.zip",
+          "url": "https://zenodo.org/api/records/23028523/files/ChaseHendrick/double-pendulum-1.0.1.zip/content",
+          "zipSha256": "cf2841dcd6adaa525b523be8b4925abfc6c6d4b7fe68e232e4382b4c20ec47ed",
+          "manuscript": [
+            "ChaseHendrick-double-pendulum-635ed05/paper/double-pendulum.pdf"
+          ],
+          "manuscriptSha256": "564bef001d265d33310d58a3a43fd352b1f6e98f906cab5fab3fd113b09e55e0",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "nf-pulse",
+      "doi": "10.5281/zenodo.23028520",
+      "ok": true,
+      "record": "https://zenodo.org/records/23028520",
+      "repositoryPdfSha256": "dcf537bbadfa9ddf0501b1960817016b09132654f91b0ffcccb60e59ffd2c9c3",
+      "archives": [
+        {
+          "file": "ChaseHendrick/nf-pulse-1.0.2.zip",
+          "url": "https://zenodo.org/api/records/23028520/files/ChaseHendrick/nf-pulse-1.0.2.zip/content",
+          "zipSha256": "519c442fcbabfdbb75a720f934e853b7c1ff01a15704ac6824d8539e598765a7",
+          "manuscript": [
+            "ChaseHendrick-nf-pulse-b46ef63/paper/nf-pulse.pdf"
+          ],
+          "manuscriptSha256": "dcf537bbadfa9ddf0501b1960817016b09132654f91b0ffcccb60e59ffd2c9c3",
+          "matchesRepository": true
+        }
+      ]
+    },
+    {
+      "paper": "hh-pulse",
+      "doi": "10.5281/zenodo.23028512",
+      "ok": false,
+      "record": "https://zenodo.org/records/23028512",
+      "repositoryPdfSha256": "5cc1b0ee162cd41481b39c97e4312b6cb5230385b5e79f7ef2fb0bc37bde6e37",
+      "archives": [
+        {
+          "file": "ChaseHendrick/hh-pulse-1.0.1.zip",
+          "url": "https://zenodo.org/api/records/23028512/files/ChaseHendrick/hh-pulse-1.0.1.zip/content",
+          "zipSha256": "1c15a243076947f9507146186b94e42dfb886e7e6a16369fa88d637c48779272",
+          "manuscript": [],
+          "manuscriptSha256": null,
+          "matchesRepository": false
+        }
+      ]
+    }
+  ],
+  "comparedSourceCommit": "1a0f5dfab726b9f6abe91872b855592c27414ba0",
+  "note": "Audit before the title-capitalization edits and new releases. hh-pulse PDF was newly built locally and absent from the existing 1.0.1 archive."
+}

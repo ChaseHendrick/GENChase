@@ -1,11 +1,11 @@
-# A finite rank window cannot show that a neural population code satisfies the eigenspectrum smoothness bound
+# A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.1 archived on Zenodo with its programs ([doi:10.5281/zenodo.23028535](https://doi.org/10.5281/zenodo.23028535)); release 1.0.0 remains at [doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835). Not peer reviewed. Three independent referee readings were made in the project
-(`notes/review-1.md`, verdict major revision; `notes/review-2.md` and `notes/review-3.md`, verdict minor revision
-each). The fixes of the first two are applied; of the third, the findings that further readers confirmed are fixed
-and the others are answered (`notes/review-3.md`, "Response"). The fixes of the third have not been read again.
+**Preprint**, release 1.0.1 archived on Zenodo with its programs ([doi:10.5281/zenodo.23028535](https://doi.org/10.5281/zenodo.23028535)); release 1.0.0 remains at [doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835). Not peer reviewed. Three independent referee readings were made in the project: the first recommended major revision and the second
+and third recommended minor revision. The fixes of the first two are applied; of the third, the findings that
+further readers confirmed are fixed and the others are answered. The fixes of the third have not been read again.
+The review reports remain in the development records and are not included in this companion archive.
 
 **[Read the draft (PDF, 16 pages)](paper/note.pdf)**
 
@@ -63,7 +63,6 @@ satisfies it or lies close to it.
 | `code/` | The programs. `common.py` (stimulus coordinates, Matern kernel, the Stringer window fit), `matern_window.py`, `matern_finiteN.py`, `matern_extra.py` (whitened, subsets, Kong-Valiant eigenmoments), `nn_dim.py`, `circle_d1.py`, `meme_sim.py`, `meme_analyze.py`, `snr_cv.py`, `precision_check.py`, `tails.py`, `est.py`, `sim.py`, `make_numbers.py`, `make_figures.py`, `verify_independent.py`, `check_quotes.py`, and in `code/stage1/` the stage-1 programs that make the simulator's calibration (`calib.py`, `spec.py`, `run_sim.py`) |
 | `out/` | Every output the note's numbers come from (JSON, NPZ, per-set checkpoints). The run logs the commands below write are not tracked (`*.log` is ignored by the repository). Licensed CC BY-NC 4.0, see `out/LICENSE.md` |
 | `data/` | Not tracked: the stimulus files and the calibration inputs are downloaded or regenerated (below) |
-| `notes/` | `QUALITY.md`, the three referee reports `review-1.md`, `review-2.md` and `review-3.md` (with the response to the third), and `signoff.md`, the session lead reader's sign-off |
 
 ## Inputs (not in this repository)
 
@@ -144,7 +143,7 @@ and nu = 0.75 at ell = 2, 4 and 8 where not already computed) with 5 replicates.
 draw in every run (a generator seeded [20260926, 7, r]), so the stage that computes a cell sets only its replicate
 count, not its values.
 
-The full rerun of 2026-09-27 (`notes/rerun-2026-09-27.md`) ran these commands from the downloaded inputs and
+The full in-project rerun of 2026-09-27 ran these commands from the downloaded inputs and
 reproduced every committed output, and `make_numbers.py` then reproduced `paper/numbers.tex`, the tables and
 `out/numbers.json` byte for byte. The one exception is the last bits of the `matern_window.py` outputs. They were
 computed with two BLAS threads, and one thread gives spectra within 1e-8 relative of them (window exponents within
