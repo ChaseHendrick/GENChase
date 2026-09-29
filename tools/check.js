@@ -109,7 +109,27 @@ async function settle(p, maxMs, seed) {
   return 'timeout';                                          // never settled inside the budget
 }
 
-(async () => {
+// Replay must compare nonblank plates at the same size and computation state. A matching
+// fingerprint alone is insufficient: an unchanged preview can hide unfinished computation.
+function compareReplay(first, second, firstSettle, secondSettle) {
+  const stepOf = m => {
+    const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
+    return s ? Number(s.replace(/,/g, '')) : null;
+  };
+  const steps = [stepOf(first), stepOf(second)];
+  const sameStep = steps[0] !== null && steps[0] === steps[1];
+  const noCounters = steps.every(s => s === null);
+  const still = firstSettle === 'still' && secondSettle === 'still';
+  const valid = !first.err && !second.err && !flat(first) && !flat(second);
+  const comparable = valid && first.canvas === second.canvas && (sameStep || (noCounters && still));
+  return { comparable, same: comparable && first.fp === second.fp, steps,
+    reason: 'steps ' + steps.join(' and ') + ', settle ' + firstSettle + ' and ' + secondSettle +
+      ', canvas ' + first.canvas + ' and ' + second.canvas + (valid ? '' : ', blank or missing plate') };
+}
+
+module.exports = { measure, settle, compareReplay };
+
+if (require.main === module) (async () => {
   const id = process.argv[2], wait = +(process.argv[3] || 8000);
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
@@ -117,8 +137,8 @@ async function settle(p, maxMs, seed) {
   const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const fails = [];
   const errs = [];
-  const open = async hash => {
-    const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
+  const open = async (hash, reducedMotion = 'no-preference') => {
+    const p = await b.newPage({ viewport: { width: 1400, height: 900 }, reducedMotion });
     // Normalise the layout before the shell boots. file:// pages share one localStorage, so the
     // timeline strip fills up as the run proceeds and changes the stage height, which changes the
     // canvas size, which changes every pixel. Two loads of one recipe were being compared at
@@ -187,6 +207,10 @@ async function settle(p, maxMs, seed) {
     try { return JSON.parse(raw); } catch (e) { return null; }
   });
 
+  // Read the registered contract, not persisted recipe keys. An injected running:false key
+  // cannot pause a technique whose implementation never declared or reads that control.
+  const pausable = await p.evaluate(me => Object.prototype.hasOwnProperty.call(Studio.modules[me].defaults, 'running'), id);
+
   // 2. every preset
   const presets = await p.evaluate(() => [...document.querySelectorAll('#preset option')].map(o => o.value).filter(Boolean));
   for (const key of presets) {
@@ -200,8 +224,10 @@ async function settle(p, maxMs, seed) {
   }
   if (!presets.length) fails.push('no presets registered');
 
-  // 3. same hash twice must give the same plate (running:false so living fields stop after warm-up)
-  const stillRecipe = fullRecipe ? Object.assign({}, fullRecipe, { running: false }) : { running: false };
+  // 3. Replay the same hash at a supported stopping point: pause when declared, otherwise
+  // use the supported reduced-motion lifecycle. Default and preset checks remain normal motion.
+  const stillRecipe = Object.assign({}, fullRecipe || {}, pausable ? { running: false } : {});
+  const replayMode = pausable ? 'no-preference' : 'reduce';
   const still = id + '/' + seed + '/' + b64url(stillRecipe);
   if (!fullRecipe) console.log('determinism: could not read the settings JSON, falling back to a partial recipe');
   // Determinism gets its own, larger budget. It is a pass/fail claim about the product rather than a
@@ -217,42 +243,15 @@ async function settle(p, maxMs, seed) {
   // size. That is what 725x725 against 727x727 was, and clearing history in the init script could not
   // fix it because the other page wrote again afterwards. Nothing below needs this page.
   await p.close();
-  const a1 = await open(still); const r1 = await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
-  const a2 = await open(still); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
-  // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
-  // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
-  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
-  const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
-  const s1 = stepOf(m1), s2 = stepOf(m2);
-  // Two captures at different step counts (a chunked computation still running, or a living plate with no pause key)
-  // say nothing about determinism; two captures at the same step count must match exactly.
-  // Two captures say something about determinism only when we know they were taken at the same point
-  // in the computation. A plate reporting no step count gives no way to know that, so a difference
-  // there is not evidence of anything. This read the other way round and failed such plates.
-  // Equal canvas size as well: the plate is resolution-independent by design, so the same recipe
-  // drawn at a different size is legitimately different pixels and says nothing about determinism.
-  // Two captures say something about determinism only when we know they were taken at the same point,
-  // and there are two ways to know it. Either both report the same step count, or both were observed to
-  // go STILL: settle() returns 'still' only once the fingerprint stopped changing across samples, and a
-  // plate that has stopped changing is at a point by definition. That second route is what a technique
-  // with no step counter needs, and leaving it out was a real bug in the first version of this rule.
-  // fractal and attractors report no step, so on a slow runner every mismatch fell through to a hard
-  // failure the harness had no evidence for. Comparability is now established rather than assumed.
-  const settled = r1 === 'still' && r2 === 'still';
-  const sameStep = s1 !== null && s2 !== null && s1 === s2;
-  const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && (sameStep || settled));
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable, settle: [r1, r2] }));
-  // Two loads drawn at different canvas sizes are legitimately different pixels: the plate is
-  // resolution-independent by design, and a scrollbar appearing on one load is enough to move the
-  // size by two pixels. That case keeps its excuse and must not reach the warm-up failure below.
-  const sizeMismatch = m1.canvas !== m2.canvas;
-  if (m1.fp !== m2.fp && sizeMismatch) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
-  if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
-  // Not comparable is a real answer rather than a dodge, but it has to say what was missing, so a reader
-  // can tell an untested plate from a passing one.
-  else if (m1.fp !== m2.fp) console.log('determinism not comparable: steps ' + s1 + ' and ' + s2 +
-    ', settle ' + r1 + ' and ' + r2 + (pausable ? '' : ' (living plate without a pause key)') +
-    '. Neither load reached a state this harness can compare; raise DET_WAIT if the plate needs longer.');
+  const a1 = await open(still, replayMode); const r1 = await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
+  const a2 = await open(still, replayMode); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
+  const replay = compareReplay(m1, m2, r1, r2);
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: replay.same,
+    steps: replay.steps, canvas: [m1.canvas, m2.canvas], pausable, reducedMotion: replayMode,
+    settle: [r1, r2], comparable: replay.comparable }));
+  if (!replay.comparable) console.log('determinism not comparable: ' + replay.reason +
+    '. Neither load reached a state this harness can compare.');
+  else if (!replay.same) fails.push('same hash loaded twice gave different plates');
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);
