@@ -3,8 +3,8 @@
   "reviewed": "2026-09-29",
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
   "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
-  "chromium": "153.0.8010.12",
-  "node": "v22.23.3",
+  "chromium": "154.0.8037.58",
+  "node": "v24.21.0",
   "rows": [
     {
       "name": "chern Q=8",
@@ -20,7 +20,7 @@
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 199096,
+        "bytes": 199046,
         "type": "image/png",
         "pixelDrift": 0
       },
@@ -44,7 +44,7 @@
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 363247,
+        "bytes": 362903,
         "type": "image/png",
         "pixelDrift": 0
       },
@@ -68,7 +68,7 @@
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 1900311,
+        "bytes": 1900235,
         "type": "image/png",
         "pixelDrift": 0
       },
@@ -92,7 +92,7 @@
       "sheet": {
         "width": 2400,
         "height": 2400,
-        "bytes": 264712,
+        "bytes": 265034,
         "type": "image/png",
         "pixelDrift": 0
       },

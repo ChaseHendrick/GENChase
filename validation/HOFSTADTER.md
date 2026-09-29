@@ -75,7 +75,7 @@ Failure control, same lowest band of `α = 1/3`: the passing Chern number is `1`
 
 ## Paint
 
-`tools/hofstadter-print-state.js` loads the module in Chromium (153.0.8010.12, SwiftShader) and exports the real `exportPNG`. On the Chern view at `Q = 8` (124 eigenvalues), `Q = 12` (376) and the Chern preset `Q = 28` (4550), every recorded integer equals `t_r`, and every pixel of the 640 by 640 export matches the ramp `clamp(C / 8 + 0.5, 0, 1)` of the field. A 2400 by 2400 sheet is a PNG of that size, deterministic, and does not change the field. Shifting one Chern sample changes the export. The density view at `Q = 12` is checked for a nonblank sheet and an unchanged field, not for Chern colors.
+`tools/hofstadter-print-state.js` loads the module in Chromium (latest rerun: 154.0.8037.58, SwiftShader) and exports the real `exportPNG`. On the Chern view at `Q = 8` (124 eigenvalues), `Q = 12` (376) and the Chern preset `Q = 28` (4550), every recorded integer equals `t_r`, and every pixel of the 640 by 640 export matches the ramp `clamp(C / 8 + 0.5, 0, 1)` of the field. A 2400 by 2400 sheet is a PNG of that size, deterministic, and does not change the field. Shifting one Chern sample changes the export. The density view at `Q = 12` is checked for a nonblank sheet and an unchanged field, not for Chern colors.
 
 The plate coloring was compared. It matches `t_r` on eigenvalue index `r`. It does not match the band Chern number. The Chern sheets were re-exported on this symmetric-QL source: at `Q = 8`, `Q = 12` and the preset `Q = 28` every recorded integer equals `t_r`.
 

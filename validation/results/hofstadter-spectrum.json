@@ -1,8 +1,8 @@
 {
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
   "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
-  "harness": "tools/hofstadter-science.js",
-  "harnessSha256": "66eea50810be08574df4900ee5e62e03221b3f8033c33ee84c455ca829bd96ec",
+  "harness": "tools/hofstadter-spectrum.js",
+  "harnessSha256": "1b16236ec35393f916b4a872a6ebbaf3918deb11ce6c67d704f4956cc692c1ee",
   "command": "node tools/hofstadter-spectrum.js --write",
   "scope": "Every coprime p/q with q from 1 to 56. The plate builds the Harper matrix at zero crystal momentum and diagonalizes it with symmetric QL. The reference builds that matrix by adding each site's own forward and backward hop and diagonalizes it with cyclic Jacobi. The capped Jacobi failure control is compared through q = 24, where it was already shown to miss.",
   "roundoffGate": 1e-8,
@@ -234,7 +234,7 @@
     {
       "q": 32,
       "matrices": 16,
-      "maxAbsError": 1.2434497875801753e-14,
+      "maxAbsError": 1.2878587085651816e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -255,7 +255,7 @@
     {
       "q": 35,
       "matrices": 24,
-      "maxAbsError": 2.3092638912203256e-14,
+      "maxAbsError": 2.2648549702353193e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -269,14 +269,14 @@
     {
       "q": 37,
       "matrices": 36,
-      "maxAbsError": 1.5987211554602254e-14,
+      "maxAbsError": 1.0658141036401503e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
     {
       "q": 38,
       "matrices": 18,
-      "maxAbsError": 1.2878587085651816e-14,
+      "maxAbsError": 9.325873406851315e-15,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -290,7 +290,7 @@
     {
       "q": 40,
       "matrices": 16,
-      "maxAbsError": 1.3322676295501878e-14,
+      "maxAbsError": 1.1102230246251565e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -332,14 +332,14 @@
     {
       "q": 46,
       "matrices": 22,
-      "maxAbsError": 2.042810365310288e-14,
+      "maxAbsError": 1.4654943925052066e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
     {
       "q": 47,
       "matrices": 46,
-      "maxAbsError": 1.4654943925052066e-14,
+      "maxAbsError": 1.5987211554602254e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -395,7 +395,7 @@
     {
       "q": 55,
       "matrices": 40,
-      "maxAbsError": 2.1760371282653068e-14,
+      "maxAbsError": 1.9984014443252818e-14,
       "legacyMaxAbsError": null,
       "legacyWorstP": null
     },
@@ -468,5 +468,5 @@
     "legacyMaxAbsError": 0.14324900926566642,
     "legacyWorstP": 3
   },
-  "elapsedMs": 1541
+  "elapsedMs": 1290
 }
