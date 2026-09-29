@@ -67,7 +67,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [ssh](src/modules/ssh.js) | validated within stated limits | [ssh-science.js](tools/ssh-science.js) | Limited evidence recorded | none |
 | [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
 | [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js), [half-float-check.js](tools/half-float-check.js) | Limited evidence recorded | none |
-| [aubry](src/modules/aubry.js) | unvalidated | [aubry-science.js](tools/aubry-science.js) | Limited evidence recorded | none |
+| [aubry](src/modules/aubry.js) | unvalidated | [aubry-science.js](tools/aubry-science.js), [aubry-relaxation.js](tools/aubry-relaxation.js) | Limited evidence recorded | none |
 | [cahn](src/modules/pde.js) | validated within stated limits | [pde-science.js](tools/pde-science.js), [pde-convergence.js](tools/pde-convergence.js), [pde-stability.js](tools/pde-stability.js), [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
 | [ohta](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
 | [hopf](src/modules/hopf.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
@@ -321,8 +321,8 @@ No record has an outside review yet; every review so far was done inside the pro
 
 ### aubry
 
-- Status is unvalidated. tools/aubry-science.js hashes src/modules/aubry.js and never executes it. The evidence is an independent transfer-matrix Lyapunov exponent of the textbook almost Mathieu operator, recorded in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.
-- The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation, its ground-state claim, and the status-line IPR are outside the measurement. The print check preserves a field whose correctness is untested.
+- Status is unvalidated. The actual fixed-step module now agrees with an independent spectral propagation on 36 finite periodic fixtures, but zero fixtures pass the declared converged-ground-state criteria (residual <= 1e-6, energy error <= 1e-6, density L1 error <= 1e-3). This verifies its finite iteration, not the ground-state claim.
+- The drawn state is fixed-step imaginary-time relaxation from one Gaussian start. At the default over three stated seeds, eigenvector residual is 0.238 to 0.285 and energy excess is 0.162 to 0.234 above the independently diagonalized finite-ring ground energy. Browser export preserves an unconverged state. The credit, blurb and status line say so.
 - Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.
 - At λ = 1 the exponent is reported and is not asserted to equal 0 at these lengths.
 - The λ = 1 self-dual correction matches the potential the plate uses. That label fix is not a validation of the relaxation.
@@ -427,8 +427,8 @@ No record has an outside review yet; every review so far was done inside the pro
 
 ### meissner
 
-- Catalog equation and citation are review targets, not verified paper equivalence.
-- Complete evidence covers only the disk that clears the frame (R < min(W, H)/2 - 1) at slider settings, multigrid, Relax 40 to 240, as measured in validation/results/meissner-science.json, and the three printed fixtures in validation/results/meissner-print-state.json.
+- Verification is of the constant-parameter London disk boundary-value problem via the order-zero modified Bessel equation and independent I0 series (NIST DLMF 10.25). No laboratory material or full experimental equivalence is claimed.
+- Evidence covers only the 16 enumerated numerical fixtures in validation/results/meissner-science.json and the three source-matched browser fixtures in validation/results/meissner-print-state.json. Every circle clears the frame (R < min(W, H)/2 - 1). It is not a sweep of all slider combinations.
 - From recipe v7 the plate solves the London disk with cell-centred multigrid and a Shortley-Weller rim. Max \|B - B0 I0(r/λ)/I0(R/λ)\| on the tested plates is 7.664241e-4 (grid 96, λ = 4, R = 16). The default is 1.264776e-4 in 14 cycles. The gap shrinks as 1/λ² (order 1.95 when λ and R double).
 - A disk that runs into the frame is a different boundary and is outside this comparison. Recipes older than v7 keep Jacobi, which at 240 sweeps is still 0.575 from I0 on the default disk, and are outside this domain.
 - The print check is field preservation and the I0 bound on three fixtures. It is not calibrated color, and it does not cover every slider.

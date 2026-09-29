@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Tighter scientific evidence.** Refresh the 16 London-disk numerical fixtures and three actual prints, limiting the claim to tested recipes. Independently audit Aubry relaxation: finite-step propagation agrees, but none of the 36 fixtures meets the ground-state criteria. Describe the displayed state as finite relaxation and retain its unvalidated status.
+
 - **Hopfield associative memory.** Seeded asynchronous bipolar recall, crisp cell/vector exports, native state data, and independent dense-matrix replay checks. Overloaded and inverse-memory outcomes remain visible; the new technique is unvalidated.
 
 - **Keep the plate responsive while editing.** Geometry sliders coalesce preview updates during continuous drags and render the final value on release. Pending work is cancelled on a technique switch. Recent-frame thumbnails have a separate persistent Hide/Show frames button, and compact readouts give the plate more room.

@@ -1701,19 +1701,19 @@
   {
     "id": "aubry",
     "source": "src/modules/aubry.js",
-    "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
-    "reference": "S. Aubry and G. Andr\u00e9, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past \u03bb = 1 every eigenstate localizes. With unit hopping the potential is 2\u03bb cos(2\u03c0 \u03b2 n), and the model is self-dual: momentum-space at \u03bb is real-space at 1/\u03bb, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
+    "sourceSha256": "f12d138b2bf3ca3ac5404020ad6deb421859f83c08afe3e35a3295cf6e338c73",
+    "reference": "S. Aubry and G. Andr\u00e9, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past \u03bb = 1 every eigenstate localizes. With unit hopping the potential is 2\u03bb cos(2\u03c0 \u03b2 n), and the model is self-dual: momentum-space at \u03bb is real-space at 1/\u03bb, so the transition sits exactly at 1. The plate shows a finite periodic golden-ratio chain after a fixed number of imaginary-time steps; convergence to its ground state is not established.",
     "equation": "\u03c8_{n+1}+\u03c8_{n-1} + 2\u03bb cos(2\u03c0 \u03b2 n) \u03c8_n = E \u03c8_n,   \u03b2 = (\u221a5-1)/2,   localized for \u03bb>1",
     "status": "unvalidated",
     "limitations": [
-      "Status is unvalidated. tools/aubry-science.js hashes src/modules/aubry.js and never executes it. The evidence is an independent transfer-matrix Lyapunov exponent of the textbook almost Mathieu operator, recorded in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.",
-      "The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation, its ground-state claim, and the status-line IPR are outside the measurement. The print check preserves a field whose correctness is untested.",
+      "Status is unvalidated. The actual fixed-step module now agrees with an independent spectral propagation on 36 finite periodic fixtures, but zero fixtures pass the declared converged-ground-state criteria (residual <= 1e-6, energy error <= 1e-6, density L1 error <= 1e-3). This verifies its finite iteration, not the ground-state claim.",
+      "The drawn state is fixed-step imaginary-time relaxation from one Gaussian start. At the default over three stated seeds, eigenvector residual is 0.238 to 0.285 and energy excess is 0.162 to 0.234 above the independently diagonalized finite-ring ground energy. Browser export preserves an unconverged state. The credit, blurb and status line say so.",
       "Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.",
       "At \u03bb = 1 the exponent is reported and is not asserted to equal 0 at these lengths.",
       "The \u03bb = 1 self-dual correction matches the potential the plate uses. That label fix is not a validation of the relaxation."
     ],
     "remaining": [
-      "Promoting the record needs a test that executes the plate's own relaxation and can fail if that field is wrong.",
+      "Converge a user-reachable finite-ring ground state and verify its residual, energy and density against the independent Jacobi oracle before any promotion. A solver change must preserve existing recipes.",
       "Review the transfer-matrix evidence in validation/AUBRY.md on its own. It does not validate the drawn chain."
     ],
     "numerical": [
@@ -1726,6 +1726,16 @@
         "failureControl": "Rational \u03b2=1/3 at \u03bb=2 and \u03bb=3, same tolerance 0.012 and the same transfer length: the in-band exponent and the E=0 exponent must both fail |\u03b3-log(\u03bb)| < 0.012. A potential \u03bb cos (the other convention) and an un-normalized product must fail that test too.",
         "command": "node tools/aubry-science.js --write",
         "results": "validation/results/aubry-science.json"
+      },
+      {
+        "test": "tools/aubry-relaxation.js",
+        "command": "node tools/aubry-relaxation.js --write",
+        "results": "validation/results/aubry-relaxation.json",
+        "scope": "Execute actual maintained compute with the engine RNG on nine finite periodic recipes and four explicit seeds each. Compare finite Euler evolution, Rayleigh energy, eigenvector residual and density with independent dense-matrix Jacobi eigenpairs.",
+        "criteria": "Spectral propagation L2 error below 1e-10, reference eigenpair residual below 1e-10, normalized state and correct IPR/display diagnostics. Separately report ground-state acceptance: residual <= 1e-6, energy error <= 1e-6, density L1 <= 1e-3. All 36 finite evolutions pass; all 36 ground-state criteria fail.",
+        "benchmark": "Independently assembled periodic even-ring A = 2I - adjacency + diag(2 lambda cos(2 pi beta n)), beta=(sqrt(5)-1)/2, diagonalized by tools/lib/ssh-reference.js. Exact free-ring ground energy and uniform density anchor the oracle. Spectral application of (I-dt A)^steps independently checks the module loop.",
+        "failureControl": "An exact reference ground vector passes and its one-site shift fails the same ground-state predicate. Flipping the actual module hopping sign fails independent finite propagation (L2 0.474 against 1e-10).",
+        "limitations": "A completed audit records failed scientific criteria and does not promote the technique. Explicit seeds are fixtures, not confidence intervals. Finite periodic chain only; not infinite-line localization, the thermodynamic limit or experiment."
       }
     ],
     "print": [
@@ -1740,7 +1750,7 @@
         "limitations": "State preservation and declared dimensions only. The plate is a fixed-step imaginary-time relaxation and its IPR is not the transfer-matrix measurement."
       }
     ],
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/aubry-science.json",
     "domain": {
       "parameters": "\u03bb in {0.3, 0.6, 1, 1.5, 2, 3}, \u03b2=(\u221a5-1)/2, phase 0, potential 2\u03bb cos(2\u03c0 \u03b2 n), unit hopping. Failure controls: \u03b2=1/3 at \u03bb in {2, 3}, and potential factor 1 instead of 2 at \u03bb in {2, 3}.",
@@ -2822,8 +2832,8 @@
     "equation": "\u2207\u00b2B = B/\u03bb\u00b2,   B(r) = B0 I0(r/\u03bb) / I0(R/\u03bb)   (cylinder)",
     "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Complete evidence covers only the disk that clears the frame (R < min(W, H)/2 - 1) at slider settings, multigrid, Relax 40 to 240, as measured in validation/results/meissner-science.json, and the three printed fixtures in validation/results/meissner-print-state.json.",
+      "Verification is of the constant-parameter London disk boundary-value problem via the order-zero modified Bessel equation and independent I0 series (NIST DLMF 10.25). No laboratory material or full experimental equivalence is claimed.",
+      "Evidence covers only the 16 enumerated numerical fixtures in validation/results/meissner-science.json and the three source-matched browser fixtures in validation/results/meissner-print-state.json. Every circle clears the frame (R < min(W, H)/2 - 1). It is not a sweep of all slider combinations.",
       "From recipe v7 the plate solves the London disk with cell-centred multigrid and a Shortley-Weller rim. Max |B - B0 I0(r/\u03bb)/I0(R/\u03bb)| on the tested plates is 7.664241e-4 (grid 96, \u03bb = 4, R = 16). The default is 1.264776e-4 in 14 cycles. The gap shrinks as 1/\u03bb\u00b2 (order 1.95 when \u03bb and R double).",
       "A disk that runs into the frame is a different boundary and is outside this comparison. Recipes older than v7 keep Jacobi, which at 240 sweeps is still 0.575 from I0 on the default disk, and are outside this domain.",
       "The print check is field preservation and the I0 bound on three fixtures. It is not calibrated color, and it does not cover every slider."
@@ -2856,12 +2866,12 @@
       }
     ],
     "domain": {
-      "parameters": "Multigrid, recipe v7. Slider ranges grid 96 to 224, \u03bb 4 to 40, R 16 to 80, Relax 40 to 240, aspects 1:1, 4:5, 5:4 and 16:9, only where R < min(W, H)/2 - 1. The printed fixtures are the default (grid 160, 1:1, \u03bb 10, R 48, Relax 90), portrait (160, 4:5, \u03bb 10, R 48, Relax 40) and wide (224, 16:9, \u03bb 10, R 40, Relax 40).",
-      "conditions": "Cell-centred disk, B = B0 on the rim, Shortley-Weller boundary, homogeneous Dirichlet outside the circle. Interior compared with B0 I0(r/\u03bb)/I0(R/\u03bb). Print: real exportPNG at 8 in and 300 ppi on the longest edge; field words, metric, cycle count and settings preserved; wrong-dimension and post-export mutation rejected.",
+      "parameters": "Multigrid, recipes v7 and later. The 16 numerical fixtures are default, default-at-cap-floor, expel, thin, deep, log, small, tight, min-grid, deep-large, portrait, landscape, wide, refine-8, refine-16 and refine-20, with exact parameters in validation/results/meissner-science.json. The three print fixtures are default (grid 160, 1:1, lambda 10, R 48, Relax 90), portrait (160, 4:5, lambda 10, R 48, Relax 40) and wide (224, 16:9, lambda 10, R 40, Relax 40). Unlisted combinations are outside this evidence.",
+      "conditions": "Cell-centred disk, B = B0 on the rim, Shortley-Weller boundary, nonzero Dirichlet value B/B0 = 1 on the circle. Interior compared with B0 I0(r/\u03bb)/I0(R/\u03bb). Print: real exportPNG at 8 in and 300 ppi on the longest edge; field words, metric, cycle count and settings preserved; wrong-dimension and post-export mutation rejected.",
       "resolution": "Max |B - I0| is 7.664241e-4 over the numerical fixtures and 1.337704e-4 on the printed wide plate. The default print is 1.264805e-4 in 14 cycles, 160x160 cells, PNG 2400x2400, zero changed words (validation/results/meissner-science.json, validation/results/meissner-print-state.json).",
       "precision": "Float64 multigrid stored in a Float32 field. RGBA8 PNG. The I0 series is independent and cut at 1e-18 of the sum."
     },
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/meissner-science.json"
   },
   {

@@ -1,54 +1,117 @@
 {
   "pass": true,
-  "date": "2026-09-27",
+  "reviewed": "2026-09-29",
+  "environment": {
+    "chromium": "154.0.8037.58",
+    "node": "v24.21.0",
+    "platform": "darwin"
+  },
   "source": "src/modules/meissner.js",
-  "sourceSha256": "18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7",
+  "sourceSha256": "34a6a410c7b900c77ee4b78389d36dc4f19fb659753e5fbfec847346edf58d94",
+  "harnessSha256": "9525461e9d8f3701038fee40786bf1c035ee296e24f86b5244ad35c91c46d3be",
   "command": "node tools/meissner-print-state.js --write",
-  "scope": "Actual meissner exportPNG at 2400x2400 (8 in, 300 ppi) for the default recipe and the Expelled preset. Float32 field words, centre metric, Bessel reference, cells and settings preserved. Deterministic regenerate. Wrong width and a post-export field mutation rejected.",
-  "criteria": "Zero changed field words. Exact 2400x2400 PNG larger than 1000 bytes. Luminance spread above 12/255 on a 64px downsample. Wrong width and post-export mutation fail the same predicate.",
+  "scope": "Actual meissner exportPNG at 8 in and 300 ppi on the longest edge for the default 1:1 disk, the 4:5 portrait corner and the 16:9 wide corner. Exact Float32 field words, core metric, I0 mean, cycle count and settings preserved. Each printed field is the converged London disk.",
+  "criteria": "Zero changed or nonfinite field words. Scalars and settings unchanged across export. Exact requested PNG size and a luminance spread above 12. max |B - I0(r/λ)/I0(R/λ)| at most 1e-3 on the open disk, which clears the frame. A one-pixel-narrow PNG and a post-export field mutation are rejected.",
   "rows": [
     {
       "fixture": "default",
+      "aspect": "1:1",
+      "lambda": 10,
+      "R": 48,
+      "relax": 90,
+      "solver": "mg",
+      "requested": [
+        2400,
+        2400
+      ],
       "cells": [
         160,
         160
       ],
-      "center": 0.8351196755739126,
-      "bessel": 0.04387181394343033,
-      "export": {
+      "cycles": 14,
+      "maxAbs": 0.0001264805289789006,
+      "n": 7232,
+      "png": {
         "width": 2400,
         "height": 2400,
-        "bytes": 108370,
+        "bytes": 114282,
+        "spread": 219.89860000000002,
         "changedWords": 0,
-        "nonblank": true
+        "nonfinite": 0
       },
+      "replayUnchanged": true,
       "failureControls": {
-        "wrongDimensionsRejected": true,
+        "wrongPngDimensionsRejected": true,
         "mutatingExportRejected": true,
         "changedWords": 1
       }
     },
     {
-      "fixture": "expel",
+      "fixture": "portrait",
+      "aspect": "4:5",
+      "lambda": 10,
+      "R": 48,
+      "relax": 40,
+      "solver": "mg",
+      "requested": [
+        1920,
+        2400
+      ],
       "cells": [
         160,
-        160
+        200
       ],
-      "center": 0.7087246222134312,
-      "bessel": 0.009407969797034689,
-      "export": {
-        "width": 2400,
+      "cycles": 14,
+      "maxAbs": 0.0001264805289789006,
+      "n": 7232,
+      "png": {
+        "width": 1920,
         "height": 2400,
-        "bytes": 110753,
+        "bytes": 98025,
+        "spread": 219.89860000000002,
         "changedWords": 0,
-        "nonblank": true
+        "nonfinite": 0
       },
+      "replayUnchanged": true,
       "failureControls": {
-        "wrongDimensionsRejected": true,
+        "wrongPngDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1
+      }
+    },
+    {
+      "fixture": "wide",
+      "aspect": "16:9",
+      "lambda": 10,
+      "R": 40,
+      "relax": 40,
+      "solver": "mg",
+      "requested": [
+        2400,
+        1350
+      ],
+      "cells": [
+        224,
+        126
+      ],
+      "cycles": 14,
+      "maxAbs": 0.00013377039977402472,
+      "n": 5024,
+      "png": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 67952,
+        "spread": 219.89860000000002,
+        "changedWords": 0,
+        "nonfinite": 0
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
         "mutatingExportRejected": true,
         "changedWords": 1
       }
     }
   ],
-  "limitations": "State preservation and dimensions only. The default plate is not the converged London solution; that claim is tools/meissner-science.js. No calibrated color and no claim about every slider."
+  "limitations": "State preservation, dimensions and the I0 bound on these three fixtures only. Not calibrated color, not a disk cut by the frame, not a pre-v7 Jacobi recipe, not every slider."
 }
