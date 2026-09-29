@@ -49,6 +49,9 @@ This is the largest gap, and most of it is not code.
 **1a. Independent review of validation records.**
 - **Finding:** every record was reviewed inside the project. The contract itself says a
   reviewer must run the test before a status is promoted.
+- **Set aside:** by the owner's decision (2026-09-29), outside review is not being pursued for now.
+  The item stays here. It is not done, and a record is not to be marked reviewed by someone outside
+  the project unless that person has actually run it.
 - **Done when:** at least one named outside domain expert has run the command and signed off
   for each flagship family:
   - a phase-field specialist for `cahn`, `ohta` and `pfc`;
@@ -208,7 +211,7 @@ impossible to miss on the tab itself, if it is not already.
 4. **Run the suite on real GPUs (4a), then settle half precision (4b).**
 5. **Add data export, provenance and the headless API (section 5).** These are prerequisites for
    a JOSS submission.
-6. **Pursue external review and the papers (1a, 1b, 1d) alongside the rest.**
+6. **Outside review is set aside for now** (owner's decision, 2026-09-29). The papers are unchanged.
 
 ## Done
 
@@ -234,7 +237,12 @@ impossible to miss on the tab itself, if it is not already.
   Bogoliubov-de Gennes spectrum and its edge modes) and `ssh` (Jacobi spectra, open-chain end weights
   and export state preservation; winding on the status line is w > v).
 - Partially validated, each for its stated reason: `aztec`, `lozenge` and `sle`.
-- Still open: the Aztec and lozenge frozen-region readouts are being reworked.
+- The frozen-region definition was replaced on 2026-09-24. On 2026-09-29 the status line stopped
+  comparing a finite plate with the limit alone: the Aztec polar fraction is compared with Johansson's
+  exact expectation at that order, and the lozenge free area with the exact expectation at that box
+  (`src/shared/arctic-exact.js`, held to `research/arctic-finite-size/` by `node tools/arctic-exact-check.js`).
+  The lozenge radius is still compared with the limit, and a single plate still reads low on it for a
+  finite-size reason. That part was not given an exact expectation.
 
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe

@@ -18,6 +18,7 @@ const read = rel => fs.readFileSync(path.join(root, rel), 'utf8');
 const sha256 = x => crypto.createHash('sha256').update(x).digest('hex');
 const engine = read('src/shared/engine.js');
 const stats = require('../../src/shared/stats.js');
+require('../../src/shared/arctic-exact.js');
 
 function engineUtil() {
   const start = engine.indexOf('  function makeRng');

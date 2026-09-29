@@ -38,7 +38,7 @@
   // with this reason and no verdict.
   const NOSPREAD = 'no spread over the sectors: the free tiles are none, or the same in every sector';
   // Why the rim-connected measurement reads away from the limit shape on one plate; see whyOff().
-  const FINITE_RIM = 'finite size: the frozen regions reach past the ellipse, by about one tile at 12 a side and 1.4 at 48, a distance that grows only as n^(1/3), so the radius and the free area read low by a term that shrinks as n^(−2/3); averaged over many seeds the free area of a regular hexagon reads 0.752 at 12 a side and 0.847 at 48, and extrapolated in the size it reaches π/(2√3) = 0.907 within its error (validation/LOZENGE.md)';
+  const FINITE_RIM = 'finite size, and it is the radius: the frozen regions reach past the ellipse, so the radius reads low by a term that shrinks as n^(−2/3). The free area on this line is compared with the exact expectation at this box, not with the ellipse. The ellipse is the limit, π/(2√3) = 0.907 when the three sides are equal (validation/LOZENGE.md)';
 
   const rot = (P, k) => { const n = P.length, i = ((k % n) + n) % n; return P.slice(i).concat(P.slice(0, i)); };
 
@@ -768,15 +768,17 @@
           // independent ones; then the summed sector counts over a number of triangles the box fixes,
           // with the same autocorrelation treatment. A local frozen test (recipes before v4) is named
           // as such, because it is not the arctic boundary.
+          const local = meas.ring > 0;
+          const freeExpected = local ? meas.predDisFrac : ArcticExact.freeFraction(s.a, s.b, s.c);
           const zr = sigmas(meas.rMean, meas.rSe, 1);
-          const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
-          const local = meas.ring > 0 ? ' · local frozen test ' + meas.ring + ', not the arctic boundary' : '';
+          const zf = sigmas(meas.disFrac, meas.disSe, freeExpected);
           out += U.stats.compare({ label: 'arctic radius', measured: meas.rMean, expected: 1, reference: 'limit shape', basis: 'sampled',
             uncertainty: meas.rSe, note: meas.nSect + ' sectors, ~' + Math.round(meas.neff) + ' independent', pending: NOSPREAD,
             method: 'mean of ' + meas.nSect + ' sector radii; standard error from their integrated autocorrelation time, τ ' +
               meas.tau.toFixed(1) + ', floored at 2' });
-          out += U.stats.compare({ label: 'free area', measured: meas.disFrac, expected: meas.predDisFrac, reference: 'limit shape', basis: 'sampled',
-            uncertainty: meas.disSe, note: 'of n = ' + meas.nTot.toLocaleString() + ' triangles' + local, pending: NOSPREAD,
+          out += U.stats.compare({ label: 'free area', measured: meas.disFrac, expected: freeExpected,
+            reference: local ? 'limit shape' : 'exact at this box', basis: 'sampled',
+            uncertainty: meas.disSe, note: (local ? 'local frozen test ' + meas.ring + ', not the arctic boundary · ' : 'Johansson’s Hahn expectation · ') + 'of n = ' + meas.nTot.toLocaleString() + ' triangles', pending: NOSPREAD,
             method: 'sum of the ' + meas.nSect + ' sector counts; standard error from their integrated autocorrelation time, τ ' +
               meas.tauF.toFixed(1) + ', floored at 2' });
           let sp = '';

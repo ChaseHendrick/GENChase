@@ -211,27 +211,17 @@
           }
         });
       }
-      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The share is one
-      // minus the free cells over the cells of the diamond, a number the order fixes, and the free cells are the
-      // sum of the NB sector counts. Those counts are correlated around the circle, so the error bar is the
-      // standard error of their sum from the integrated autocorrelation time, sd sqrt(NB tau).
-      //
-      // It used to be the spread of the four polar regions, four times each region's share taken as four estimates
-      // of the total. That assumed the regions fluctuate independently, and they do not: the shares of two
-      // neighboring regions are anticorrelated (correlation -0.31 at order 40, -0.12 at 320, over 1,950 training
-      // plates), presumably because neighbors trade area where they meet near the circle's tangency points. The
-      // spread therefore overstated the error by a factor that changes with the order: the scatter over seeds was
-      // 0.65 to 0.98 of it at orders 40 to 320, furthest off at the small orders. Counting free cells by angle does
-      // not ask which region a frozen cell belongs to, so a trade between neighbors does not enter it.
-      // tools/aztec-science.js checks this bar against the scatter over seeds and validation/AZTEC.md gives the
-      // ratios. At finite n the frozen boundary sits inside the circle by about n^(1/3) cells, so the share exceeds
-      // the limit by a term that shrinks as n^(-2/3).
+      // The share of the diamond in the polar regions, against Johansson's exact expectation at this order.
+      // The limit 1 - pi/4 is what that expectation tends to, and it is named in the note, not used as the comparison:
+      // at finite n the boundary sits inside the circle by about n^(1/3) cells, so the share exceeds the limit by a
+      // term that shrinks as n^(-2/3), and a plate compared with the limit reads high for that reason alone.
       function polarCompare() {
         const D = list.length, f = polarByType.reduce((a, b) => a + b, 0) / D, st = acTime(freeBins), se = st.sd * Math.sqrt(NB * st.tau) / (2 * D);
-        return U.stats.compare({ label: 'polar regions', measured: f, expected: 1 - Math.PI / 4, reference: '1 − π/4, n → ∞', basis: 'sampled',
+        const exact = ArcticExact.polarFraction(order);
+        return U.stats.compare({ label: 'polar regions', measured: f, expected: exact, reference: 'exact at this order', basis: 'sampled',
           uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the free cells are spread evenly over the sectors, so they give no spread',
-          method: 'free cells counted in ' + NB + ' angular sectors; standard error of their sum from the integrated autocorrelation time, τ ' + st.tau.toFixed(1) + ', floored at 2', digits: 3,
-          note: 'finite n: the excess shrinks as n^(−2/3)' });
+          method: 'free cells counted in ' + NB + ' angular sectors; standard error of their sum from the integrated autocorrelation time, τ ' + st.tau.toFixed(1) + ', floored at 2',
+          note: 'Johansson’s Krawtchouk expectation at order ' + order + '; the limit 1 − π/4 is for n → ∞' });
       }
       function status(extra) {
         host.setStatus('<span>order <b>' + order + '</b> · ' + (2 * order * (order + 1)).toLocaleString() + ' cells</span>' +
