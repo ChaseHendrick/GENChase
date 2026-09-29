@@ -70,7 +70,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
   const llms = `# GENChase
 
-A folder-based studio of seeded scientific simulations. The shared engine loads a technique source when needed. index.html is the default entry point; dist/studio.html is a portable all-inline build. Both are generated from maintained sources in src/. Recipes preserve settings and seed, but historical reproduction also depends on the studio version, precision, browser, hardware and output dimensions. Generated images belong to the human. The source is Apache-2.0.
+A development and research working environment, with a folder-based art and print studio of seeded scientific simulations. The shared engine loads a technique source when needed. index.html is the default entry point; dist/studio.html is a portable all-inline build. Both are generated from maintained sources in src/. Recipes preserve settings and seed, but historical reproduction also depends on the studio version, precision, browser, hardware and output dimensions. Generated images belong to the human. The source is Apache-2.0.
 
 ## Do not
 

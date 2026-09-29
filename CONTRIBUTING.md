@@ -1,6 +1,6 @@
 # Contributing
 
-You can help without writing code: [make art and share a recipe](https://chasehendrick.github.io/GENChase/start.html), [report a problem](https://github.com/ChaseHendrick/GENChase/issues/new?template=bug.yml), or [run checks on your computer](apps/validate/README.md). For the local checker, run `npm run setup:checks` once, then `npm run validator`. Review result files before upload, or opt in to automatic sharing for a run.
+GENChase is a development and research working environment. The studio is where a seeded simulation becomes a plate. You can help without writing code: [make a plate and share a recipe](https://chasehendrick.github.io/GENChase/start.html), [report a problem](https://github.com/ChaseHendrick/GENChase/issues/new?template=bug.yml), or [run checks on your computer](apps/validate/README.md). For the local checker, run `npm run setup:checks` once, then `npm run validator`. Review result files before upload, or opt in to automatic sharing for a run.
 
 Fork the repository, edit the engine or one module, run the build and catalog update, run `npm test`, then open a pull request. Start with `src/shared/engine.js` for shared behavior or a file in `src/modules/` for a technique. [Draft contributor tasks](docs/CONTRIBUTOR-TASKS.md) offer small starting points.
 
