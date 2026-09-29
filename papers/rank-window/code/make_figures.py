@@ -1,5 +1,5 @@
 # Figures of the note, from the outputs in ../out/.  Writes paper/figures/fig{1,2,3}.pdf.
-import sys, os, json, numpy as np
+import sys, os, json, hashlib, numpy as np
 sys.path.insert(0, os.path.dirname(__file__))
 import matplotlib
 matplotlib.use('Agg')
@@ -25,7 +25,6 @@ def style(ax):
 
 
 W = json.load(open(f'{OUT}/matern_window.json'))
-FN = json.load(open(f'{OUT}/matern_finiteN.json'))['res']
 
 
 def by(rows, d, nu, key):
@@ -50,22 +49,22 @@ def panel_matern(ax, rows, d, key, title, ylab):
     ax.set_xscale('log', base=2)
     ax.set_xticks(x); ax.set_xticklabels(['1/8', '1/4', '1/2', '1', '2', '4', '8'])
     ax.set_xlim(x[0] / 1.2, x[-1] * 1.45)
-    ax.set_xlabel('tuning length scale $\\ell$ / median stimulus distance')
+    ax.set_xlabel('Tuning length / median distance')
     ax.set_ylabel(ylab); ax.set_title(title, fontsize=9, color=INK)
     style(ax)
 
 
 # Figure 1: window exponents of Matern codes on the real stimulus coordinates
-fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.75), sharey=False)
-panel_matern(axs[0], W, 8, 'w11_500', 'the six 8D stimulus sets', 'window exponent, ranks 11-500')
-panel_matern(axs[1], W, 4, 'w11_500', 'the four 4D stimulus sets', 'window exponent, ranks 11-500')
+fig, axs = plt.subplots(1, 2, figsize=(6.5, 3.0), sharey=False)
+panel_matern(axs[0], W, 8, 'w11_500', '(a) Six 8D stimulus sets', 'window exponent, ranks 11-500')
+panel_matern(axs[1], W, 4, 'w11_500', '(b) Four 4D stimulus sets', 'window exponent, ranks 11-500')
 axs[0].set_ylim(0.1, 3.75); axs[1].set_ylim(0.5, 4.0)
-axs[0].legend(loc='upper left', fontsize=6.8); axs[1].legend(loc='upper left', fontsize=6.8)
-fig.tight_layout(); fig.savefig(f'{FIG}/fig1.pdf'); plt.close(fig)
+axs[0].legend(loc='upper left', fontsize=7.2); axs[1].legend(loc='upper left', fontsize=7.2)
+fig.tight_layout(pad=0.8); fig.savefig(f'{FIG}/fig1.pdf', metadata={'CreationDate': None, 'ModDate': None}); plt.close(fig)
 
 # Figure 2: d = 1
 C = json.load(open(f'{OUT}/circle_d1.json'))
-fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.65))
+fig, axs = plt.subplots(1, 2, figsize=(6.5, 3.0))
 ax = axs[0]
 for nu in (0.5, 1.0, 1.5, 2.0):
     rr = [r for r in C['rows'] if r['nu'] == nu]
@@ -79,7 +78,7 @@ ax.set_xscale('log', base=2); ax.set_xticks(kap); ax.set_xticklabels([f'{k:g}' f
 ax.set_xlim(kap[0] / 1.6, kap[-1] * 1.2)
 ax.set_xlabel('bandwidth $\\kappa$ (tuning width $\\sim 2\\pi/\\kappa$)')
 ax.set_ylabel('window exponent, ranks 5-30')
-ax.set_title('32 directions (solid) and no sampling (dotted)', fontsize=9)
+ax.set_title('(a) Finite-window exponents', fontsize=9)
 ax.legend(fontsize=7, loc='upper right'); style(ax)
 ax = axs[1]
 k = np.arange(1, 2 ** 17 + 1, dtype=float)
@@ -88,22 +87,22 @@ base = (1 + (k / kap) ** 2) ** -(nu_h + 0.5)
 for a, col, lab in ((2.0, COL[0.5], 'tail $n^{-2}$ (not differentiable)'), (5.0, COL[1.5], 'tail $n^{-5}$ (differentiable)')):
     c = base.copy(); m = k > 1000; c[m] = base[999] * (k[m] / 1000) ** -a
     op = np.repeat(c, 2)
-    ax.loglog(np.arange(1, len(op) + 1), op, color=col, lw=1.3, label=f'operator, {lab}')
+    ax.loglog(np.arange(1, len(op) + 1), op, color=col, lw=1.3, label=f'operator, $n^{{-{int(a)}}}$')
     mu = np.array(C['prop1'][f'nu{nu_h}_kappa{kap}_a{a}']['mu'])
     ax.loglog(np.arange(1, 32), mu, ls='none', marker='o' if a == 2 else 'x', color=col, ms=7 if a == 2 else 4,
               mfc='none' if a == 2 else col, label=f'32 directions, {lab.split(" (")[0]}')
 ax.axvspan(5, 30, color=GRID, alpha=0.5, lw=0)
 ax.axvspan(11, 30, color=GRID, alpha=0.6, lw=0)              # darker: ranks 11-30, the window of the deposited code
-ax.text(12, 3e-12, 'ranks 5-30\n(darker: 11-30)', ha='center', va='bottom', fontsize=7, color=INK2)
+ax.text(12, 3e-23, 'ranks 5-30\n(darker: 11-30)', ha='center', va='bottom', fontsize=7, color=INK2)
 ax.set_xlabel('rank $n$'); ax.set_ylabel('eigenvalue')
 ex_ = C['prop1']['nu1.5_kappa1.0_a2.0']
-ax.set_title(f'Two codes, one sampled spectrum\n(window {ex_["w"]:.2f} over ranks 5-30, {ex_["w_11_30"]:.2f} over 11-30)', fontsize=9)
-ax.set_ylim(1e-13, 1e2); ax.legend(fontsize=6.5, loc='upper right'); style(ax)
-fig.tight_layout(); fig.savefig(f'{FIG}/fig2.pdf'); plt.close(fig)
+ax.set_title('(b) Shared window, different far tails', fontsize=9)
+ax.set_ylim(1e-24, 1e2); ax.set_yticks([1, 1e-6, 1e-12, 1e-18, 1e-24]); ax.legend(fontsize=6.5, loc='upper right'); style(ax)
+fig.tight_layout(pad=0.8); fig.savefig(f'{FIG}/fig2.pdf', metadata={'CreationDate': None, 'ModDate': None}); plt.close(fig)
 
 # Figure 3: MEME alpha2 under far-tail changes
 M = json.load(open(f'{OUT}/meme.json'))
-fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.65), gridspec_kw={'width_ratios': [1, 1.15]})
+fig, axs = plt.subplots(1, 2, figsize=(6.5, 3.0), gridspec_kw={'width_ratios': [1, 1.15]})
 ax = axs[0]
 V = variants(1.25)
 show = [('base', INK, 'base: BPL 0.5 / 1.25'), ('tail500_0.8', COL[0.5], 'beyond 500: 0.8'),
@@ -117,7 +116,7 @@ ax.loglog([2800], [lam[2799]], ls='none', marker='|', ms=9, mew=1.5, color=INK, 
 ax.axvspan(11, 500, color=GRID, alpha=0.5, lw=0)
 ax.text(75, 1.5e2, 'ranks 11-500', ha='center', va='center', fontsize=7, color=INK2)
 ax.set_xlabel('rank $n$'); ax.set_ylabel('signal eigenvalue'); ax.set_ylim(1e-5, 800)
-ax.set_title('Spectra that agree up to rank 500', fontsize=9); ax.legend(fontsize=6.5, loc='lower left'); style(ax)
+ax.set_title('(a) Spectra sharing ranks 1-500', fontsize=9); ax.legend(fontsize=6.5, loc='lower left'); style(ax)
 ax = axs[1]
 names = ['base', 'tail500_0.8', 'tail500_1.0', 'tail500_2.0', 'tail500_3.0', 'rank2800']
 labels = ['base', 'exp. 0.8', 'exp. 1.0', 'exp. 2.0', 'exp. 3.0', 'zero\n> 2800']
@@ -127,13 +126,23 @@ b = SIM['base']['mean']
 for yi, nm in zip(y, names):
     s = SIM[nm]; v = np.array(s['alpha2'])
     ax.plot([np.percentile(v, 2.5), np.percentile(v, 97.5)], [yi, yi], color=COL[1.0], lw=1.2)
-    ax.plot(s['mean'], yi, 's', color=COL[1.0], ms=5, label='simulated: mean, 2.5-97.5%' if nm == 'base' else None)
+    ax.plot(s['mean'], yi, 's', color=COL[1.0], ms=5, label='mean; 2.5-97.5%' if nm == 'base' else None)
     ax.plot(s['exact_alpha2'], yi + 0.22, 'o', color=COL[0.5], ms=4, mfc='none', label='exact moments' if nm == 'base' else None)
 ax.axvline(1.25, color=INK, lw=1.0, ls='--')
 ax.set_yticks(y); ax.set_yticklabels(labels); ax.set_ylim(-0.6, len(names) + 0.9)
 ax.set_ylabel('change beyond rank 500'); ax.set_xlabel('MEME tail exponent $\\alpha_2$')
-ax.set_title('$\\alpha_2$ (tail exponent 1.25 up to rank 500; 20 data sets)', fontsize=9)
-ax.legend(fontsize=6.5, loc='upper center', ncol=2, handletextpad=0.3, columnspacing=0.8); style(ax)
-fig.tight_layout(); fig.savefig(f'{FIG}/fig3.pdf'); plt.close(fig)
+ax.set_title('(b) MEME fits to 20 data sets', fontsize=9)
+ax.legend(fontsize=6.5, loc='upper center', ncol=2, handletextpad=0.3, columnspacing=0.8, frameon=True, facecolor='white', edgecolor='none', framealpha=1); style(ax)
+fig.tight_layout(pad=0.8); fig.savefig(f'{FIG}/fig3.pdf', metadata={'CreationDate': None, 'ModDate': None}); plt.close(fig)
 
+# Record the unchanged evidence inputs and the actual plotting environment.
+source_files = ['out/matern_window.json', 'out/circle_d1.json', 'out/meme.json',
+                'code/common.py', 'code/tails.py', 'code/make_figures.py']
+manifest = {'description': 'Display-only regeneration from stored numerical outputs; no scientific rerun.',
+            'inputs': {name: hashlib.sha256(open(os.path.join(ROOT, name), 'rb').read()).hexdigest()
+                       for name in source_files},
+            'matplotlib': matplotlib.__version__, 'numpy': np.__version__}
+with open(os.path.join(FIG, 'sources.json'), 'w') as f:
+    json.dump(manifest, f, indent=2)
+    f.write('\n')
 print('figures written to', FIG)

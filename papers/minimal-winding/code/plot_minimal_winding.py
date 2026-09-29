@@ -49,7 +49,7 @@ lo, hi = zip(*(arc_minima(m) for m in mus))
 mus.append(1.0); lo = list(lo) + [math.sqrt(2)]; hi = list(hi) + [math.sqrt(2)]
 
 plt.rcParams.update({'font.family': 'serif', 'font.serif': ['cmr10'], 'mathtext.fontset': 'cm',
-                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path'})
+                     'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path', 'pdf.fonttype': 42, 'svg.hashsalt': 'plot_minimal_winding'})
 fig, ax = plt.subplots(figsize=(5.2, 3.1))
 ax.plot(mus, hi, color='0.45', lw=1.3, label=r'minimum on $\mathcal{A}_+$')
 ax.plot(mus, lo, color='black', lw=1.6, label=r'minimum on $\mathcal{A}_-$ (least $P$)')
@@ -137,3 +137,8 @@ out2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'paper', '
 fig.savefig(out2, metadata={'Date': None}, bbox_inches='tight', pad_inches=0.02)
 fig.savefig(out2[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None}, bbox_inches='tight', pad_inches=0.02)
 print('wrote', out2, 'and .pdf')
+
+# Keep generated SVG text stable and free of insignificant trailing whitespace.
+from pathlib import Path as _Path
+for _svg in (_Path(__file__).resolve().parents[1] / "paper/figures").glob("*.svg"):
+    _svg.write_text("\n".join(line.rstrip() for line in _svg.read_text().splitlines()) + "\n")

@@ -315,7 +315,7 @@ Each tab names its scientific sources. The validation inventory records which im
 
 ## License
 
-[Apache License 2.0](LICENSE). Fork, modify and redistribute the software, including commercially, under its standard terms. Preserve the required notices. There is no company-size or revenue restriction. Bundled fonts retain their [SIL OFL licenses](licenses/).
+[Apache License 2.0](LICENSE). Fork, modify and redistribute the software, including commercially, under its standard terms. Preserve the required notices. There is no company-size or revenue restriction. Bundled fonts retain their [SIL OFL licenses](licenses/). Manuscripts and figures under `papers/` have their own rights notices; the current manuscripts retain all rights reserved. Component notices also govern research data, including derived outputs with separate licenses. These notices do not revoke licenses previously granted for earlier material.
 
 **The artwork is yours.** The licensor's separate [output grant](OUTPUT-RIGHTS.md) preserves your freedom to sell and license generated images, animations and vector files.
 
