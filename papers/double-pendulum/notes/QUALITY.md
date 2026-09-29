@@ -137,4 +137,6 @@ GENChase: the companion repository does not carry `notes/`.
   together from the programs as they stand, against CAPD at the pinned commit 03dc562, on two threads (39 minutes,
   exit status 0). Every proof passed and every control failed for its stated reason. The reports match the committed
   files in `data/`, except `E0.txt` and `E0_interval.txt`, which differ only in the order of lines printed by parallel
-  threads. The committed files were left as they are. The Arb cross-checks were not repeated that day.
+  threads. The committed files were left as they are. Later the same day the three Arb cross-checks were run again
+  (`otherE.py`, `edges_nr.py`, `kraw3.py`, python-flint 0.9.0). Their reports match `data/crosscheck_*.txt` apart
+  from the recorded times.
