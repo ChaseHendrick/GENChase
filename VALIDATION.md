@@ -195,7 +195,7 @@ No record has an outside review yet; every review so far was done inside the pro
 
 ### sle
 
-- The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model.
+- The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model. The status line says the plate is a coarse trace, not resolved to dimension min(2, 1+κ/8). It does not print a measured dimension for the curve on screen.
 - Numerical agreement is established for the Loewner solver (zero, linear and square-root drivers, first order in dt, N 300-8000) and for the driver variance (kappa 2, 4, 6); the random curve's law beyond its box-counting dimension is not tested.
 - Print evidence covers five recipes (kappa 2, 6, 8, the sweep and a 12-seed bundle) on one Chromium build; kappa values other than 2, 4, 6 appear only in print recipes.
 - Finite samples from one seeded PRNG; error bars assume independent seeds.
