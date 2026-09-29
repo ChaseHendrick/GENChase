@@ -11,7 +11,7 @@
     "test:solvers": "node tools/verify.js --all",
     "test:print": "node tools/verify.js --print --all",
     "test:all": "npm test && npm run build:check && npm run lint && npm run science && node tools/verify.js --print --all",
-    "test:engine": "node tools/engine-api-check.js && node tools/parameter-state-check.js && node tools/check-replay-check.js && node tools/folder-browser.js",
+    "test:engine": "node tools/engine-api-check.js && node tools/parameter-state-check.js && node tools/model-recipe-check.js && node tools/check-replay-check.js && node tools/folder-browser.js",
     "test:ui": "node tools/ui.js && node tools/formula-chooser-check.js && node tools/colophon-check.js && node tools/reports-check.js && node tools/art-only-check.js",
     "test:formats": "node tools/print-formats-check.js",
     "test:smoothing": "node tools/print-smoothing-check.js && node tools/print-smoothing-browser.js",

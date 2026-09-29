@@ -4,6 +4,8 @@
 
 ## 0.9.0
 
+- Integer dimensions and budgets in Hopfield and flow-matching recipes are sanitized before computation, including imported hashes and Settings JSON, preventing invalid NPZ shapes. Exporting a hidden dirty technique now suspends its work without changing the user's pause choice; returning resumes it when appropriate.
+
 - **Scientific figures across all eight preprints.** Fourteen vector figures cover the main results, with readable labels, units, captions and source provenance. New illustrations distinguish recorded numerical samples, design centres and certified enclosures. Rebuilt PDFs include the current research contact, consistent titles and explicit manuscript rights outside the abstracts.
 
 - Pending geometry is now rebuilt before image/data exports, repaint and tab return, including inactive data exports. Live parameters receive sanitized values; convection dependent time-step bounds are enforced after grid, Prandtl and Rayleigh changes. Real-browser regression covers immediate slider-to-export actions.
