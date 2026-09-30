@@ -96,9 +96,9 @@ jobs:
       max-parallel: 4
       matrix: ${{ fromJSON(needs.pde-plan.outputs.matrix) }}
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -135,7 +135,7 @@ jobs:
               exit 1
             fi
             if [[ "$BROWSER_REQUIRED" == false ]]; then
-              echo "Documentation-only PR: PDE browser evidence is not applicable; coverage planning passed."
+              echo "Proven documentation or publication metadata: PDE browser evidence is not applicable; coverage planning passed."
             else
               echo "All PDE verification workers passed."
             fi
@@ -208,9 +208,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 15
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -291,9 +291,9 @@ jobs:
       matrix:
         browser: [chromium, webkit]
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -331,9 +331,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -358,9 +358,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -383,9 +383,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -408,9 +408,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 20
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -436,9 +436,9 @@ jobs:
     needs: [lint, pde-plan]
     timeout-minutes: 45
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -471,9 +471,9 @@ jobs:
         # identity plate whose check must fail off Gröbli's L=0 circle.
         id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, three-vortex-bound, maxwell, molecular, tennis]
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5
@@ -505,9 +505,9 @@ jobs:
         # One raster technique, one vector technique, and the identity plate (SVG spirals).
         id: [cahn, tilings, three-vortex-bound, maxwell, molecular, tennis]
     steps:
-      - name: Documentation-only change
+      - name: Documentation or publication metadata change
         if: needs.pde-plan.outputs.browser_required == 'false'
-        run: echo 'Browser checks are not applicable to this documentation-only PR. Structural and distribution checks still run.'
+        run: echo 'Browser checks are not applicable to this proven documentation or publication-metadata PR. Structural and distribution checks still run.'
       - uses: actions/checkout@v5
         if: needs.pde-plan.outputs.browser_required != 'false'
       - uses: actions/setup-node@v5

@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.4 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23048253](https://doi.org/10.5281/zenodo.23048253)); release 1.0.1 remains at [doi:10.5281/zenodo.23002938](https://doi.org/10.5281/zenodo.23002938). Not peer reviewed. The manuscript is [`paper/nf-pulse.tex`](paper/nf-pulse.tex), built to
+**Preprint**, release 1.0.5 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23050600](https://doi.org/10.5281/zenodo.23050600)); release 1.0.1 remains at [doi:10.5281/zenodo.23002938](https://doi.org/10.5281/zenodo.23002938). Not peer reviewed. The manuscript is [`paper/nf-pulse.tex`](paper/nf-pulse.tex), built to
 `paper/nf-pulse.pdf` (39 pages); it writes out the proofs of all six theorems. This folder holds the manuscript, the
 verification programs and their output. The checks made of it, all within the project by separate AI agent sessions
 instructed to find errors, are in `review/` and in the `REPORT.md` of each folder under `ext/`; `review/RERUNS.md`

@@ -44,6 +44,7 @@
         "doi": null
       },
       "codeDoi": "10.5281/zenodo.23050561",
+      "archiveVersion": "2.2.4",
       "commitments": []
     },
     {
@@ -59,6 +60,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050575",
+      "archiveVersion": "1.0.4",
       "commitments": []
     },
     {
@@ -74,6 +76,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050580",
+      "archiveVersion": "1.0.4",
       "commitments": []
     },
     {
@@ -89,6 +92,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050586",
+      "archiveVersion": "1.0.4",
       "commitments": []
     },
     {
@@ -104,6 +108,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050587",
+      "archiveVersion": "1.0.5",
       "commitments": []
     },
     {
@@ -136,6 +141,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050590",
+      "archiveVersion": "1.0.4",
       "commitments": []
     },
     {
@@ -151,6 +157,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050600",
+      "archiveVersion": "1.0.5",
       "commitments": []
     },
     {
@@ -176,6 +183,7 @@
       "arxiv": null,
       "journal": null,
       "codeDoi": "10.5281/zenodo.23050604",
+      "archiveVersion": "1.0.4",
       "commitments": []
     }
   ]

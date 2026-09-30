@@ -1,6 +1,12 @@
 name: verify preprint archives
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'papers/papers.json'
+      - 'tools/paper-zenodo-check.py'
+      - '.github/workflows/paper-archives.yml'
   workflow_dispatch:
   schedule:
     - cron: '23 6 * * 0'
