@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 report = (ROOT / "data/verify-stable-expansion.txt").read_text()
 plt.rcParams.update({"font.size": 9, "pdf.fonttype": 42,
                      "svg.fonttype": "path", "svg.hashsalt": "stable-expansion"})
-fig, axes = plt.subplots(1, 2, figsize=(6.5, 3.2), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(6.5, 3.55), sharey=True)
 for ax, name, panel in zip(axes, ("four", "five"), ("a", "b")):
     lines = [line for line in report.splitlines()
              if line.lstrip().startswith(name + " vortices expanding, perturbed 1e-4,")]
@@ -56,10 +56,11 @@ for ax, name, panel in zip(axes, ("four", "five"), ("a", "b")):
     ax.set_xticks([1, 1e3, 1e6, 1e9])
     ax.grid(which="major", color="0.88", lw=0.5)
     ax.spines[["top", "right"]].set_visible(False)
-    ax.legend(loc="lower left", fontsize=8, frameon=False)
     print(name, "vortices:", len(samples), "stored rounded samples")
 axes[0].set_ylabel("Relative shape deviation (dimensionless)")
-fig.tight_layout(w_pad=1.4)
+fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=2,
+           bbox_to_anchor=(0.55, 0.01), fontsize=8, frameon=False)
+fig.subplots_adjust(left=0.115, right=0.965, bottom=0.225, top=0.90, wspace=0.17)
 out = ROOT / "paper/figures"
 out.mkdir(exist_ok=True)
 fig.savefig(out / "stable-expansion-convergence.pdf", metadata={"CreationDate": None, "ModDate": None})
