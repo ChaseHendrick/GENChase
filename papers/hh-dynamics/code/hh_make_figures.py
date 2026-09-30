@@ -62,24 +62,23 @@ us, Js = us[keep], Js[keep]
 lead = np.array([np.linalg.eigvals(HF.jac(np.array([u, *HF.gate_inf(u)]), J)).real.max() for u, J in zip(us, Js)])
 stable = lead < 0
 
-fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.5), constrained_layout=True)
+fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 3.05), constrained_layout=True)
 for seg_mask, ls, lab in ((stable, '-', 'asymptotically stable'), (~stable, '--', 'two eigenvalues in Re > 0')):
     y = np.where(seg_mask, us, np.nan)
     a.plot(Js, y, ls, color=BLUE, lw=1.6, label=lab)
     b.plot(Js, np.where(seg_mask, lead, np.nan), ls, color=BLUE, lw=1.6)
 for k, (J, u, name) in enumerate(zip(JH, uH, ('H1, subcritical', 'H2, supercritical'))):
-    a.plot([J], [u], 'o', ms=5, mfc='white', mec=ORANGE, mew=1.4, zorder=5)
-    a.annotate(name, (J, u), xytext=(8, -12) if k == 0 else (-8, 6), textcoords='offset points',
-               ha='left' if k == 0 else 'right', color=INK, fontsize=8)
-    b.plot([J], [0], 'o', ms=5, mfc='white', mec=ORANGE, mew=1.4, zorder=5)
-a.axvline(8, color=AQUA, lw=1.0)
-a.annotate('$J = 8$', (8, 23), xytext=(3, 0), textcoords='offset points', color=INK, fontsize=8)
+    fill = 'white' if k == 0 else ORANGE
+    a.plot([J], [u], 'o', ms=5, mfc=fill, mec=ORANGE, mew=1.4, zorder=5, label=name)
+    b.plot([J], [0], 'o', ms=5, mfc=fill, mec=ORANGE, mew=1.4, zorder=5)
+a.axvline(8, color=AQUA, lw=1.0, label='$J = 8$')
 b.axhline(0, color=MUTED, lw=0.6)
 a.set_xlabel(r'applied current $J$ ($\mu$A/cm$^2$)')
 a.set_ylabel(r'equilibrium $u^*$ (mV)')
 b.set_xlabel(r'applied current $J$ ($\mu$A/cm$^2$)')
 b.set_ylabel(r'$\max\,\mathrm{Re}\,\lambda$ (1/ms)')
-a.legend(loc='center right', fontsize=7.5, handlelength=2.2)
+fig.legend(*a.get_legend_handles_labels(), loc='outside upper center', ncol=2,
+           fontsize=7.5, handlelength=2.2)
 a.set_title('(a) the branch of equilibria', loc='left', fontsize=8.5, color=INK)
 b.set_title('(b) the leading eigenvalues', loc='left', fontsize=8.5, color=INK)
 for ax in (a, b):
@@ -109,22 +108,23 @@ def orbit(u0, z, T, n=2):
 
 ts, ys = orbit(20.0, zs, Ts)
 tu, yu = orbit(5.0, zu, Tu)
-fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.9), constrained_layout=True)
+fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 3.15), constrained_layout=True)
 a.plot(ts, ys[0], '-', color=BLUE, lw=1.4, label='stable orbit (spike train)')
 a.plot(tu, yu[0], '--', color=ORANGE, lw=1.4, label='orbit of saddle type')
 a.axhline(ueq, color=AQUA, lw=1.0, label='equilibrium')
 a.set_xlabel('time $t$ (ms)')
 a.set_ylabel('depolarization $u$ (mV)')
-fig.legend(*a.get_legend_handles_labels(), loc='outside upper center', ncol=3, fontsize=7.5, handlelength=2.2)
 a.set_title('(a) two periods of each orbit', loc='left', fontsize=8.5, color=INK)
 b.plot(ys[0], ys[3], '-', color=BLUE, lw=1.4)
 b.plot(yu[0], yu[3], '--', color=ORANGE, lw=1.4)
 xeq = np.array([ueq, *HF.gate_inf(ueq)])
 b.plot([xeq[0]], [xeq[3]], 'o', ms=5, color=AQUA, zorder=5)
 for c, col in ((20.0, BLUE), (5.0, ORANGE)):
-    b.axvline(c, color=col, lw=0.6, ls=':')
-b.annotate('$u = 20$', (20, .98), xycoords=b.get_xaxis_transform(), va='top', xytext=(3, 0), textcoords='offset points', fontsize=7.5, color=INK)
-b.annotate('$u = 5$', (5, .98), xycoords=b.get_xaxis_transform(), va='top', xytext=(-3, 0), textcoords='offset points', fontsize=7.5, color=INK, ha='right')
+    b.axvline(c, color=col, lw=0.6, ls=':', label='section $u = %g$ mV' % c)
+ha, la = a.get_legend_handles_labels()
+hb, lb = b.get_legend_handles_labels()
+fig.legend(ha + hb, la + lb, loc='outside upper center', ncol=3,
+           fontsize=7.5, handlelength=2.2)
 b.set_xlabel('depolarization $u$ (mV)')
 b.set_ylabel('sodium inactivation $h$')
 b.set_title('(b) projection on the $(u, h)$ plane', loc='left', fontsize=8.5, color=INK)
@@ -143,7 +143,7 @@ br = re.findall(r'unstable branch towards the Hopf point: J = (' + NUM + r'), .*
 assert len(br) == 5
 slope = mid(r'16 \|q_u\|\^2 Re\(d lambda/dJ\)/\(omega l1\) in \[(' + NUM + '), (' + NUM + ')', HOPF)
 
-fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.5), constrained_layout=True)
+fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.9), constrained_layout=True)
 for lo_, hi_, _, tlo, thi in P:
     a.fill_between([float(lo_), float(hi_)], float(tlo), float(thi), color=BLUE, lw=0)
 a.set_xlabel(r'leak potential $E_l$ (mV)')
@@ -159,7 +159,7 @@ b.plot([0, 1.3], [slope, slope], '-', color=ORANGE, lw=1.2, label=r'limit from $
 b.set_xlim(0, 1.3)
 b.set_xlabel(r'$J_{H1} - J$ ($\mu$A/cm$^2$)')
 b.set_ylabel(r'$A_u^2/(J_{H1}-J)$ (mV$^2$ cm$^2$/$\mu$A)')
-b.legend(loc='upper left', fontsize=7.5)
+fig.legend(*b.get_legend_handles_labels(), loc='outside lower center', ncol=2, fontsize=7.5)
 b.set_title('(b) numerical check of $\\ell_1$', loc='left', fontsize=8.5, color=INK)
 for ax in (a, b):
     style(ax)

@@ -2,6 +2,10 @@
 
 Each release of this paper's programs and data is archived on Zenodo with its own DOI.
 
+## 1.0.4 (2026-09-29)
+
+Figure layout update. Replaces h-set labels inside the section plot with distinct point markers and an external key above both panels. The key also identifies the enclosure rectangles, preserving their exact endpoints and styles; N retains its star marker. The vector figure and manuscript PDF were rebuilt and inspected at manuscript scale. Stored centres, coordinate transforms and numerical input hashes are unchanged. Scientific captions, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.3 (2026-09-29)
 
 **DOI:** [10.5281/zenodo.23048242](https://doi.org/10.5281/zenodo.23048242). Publication / Preprint; both the actual GitHub source ZIP and the downloaded Zenodo ZIP contain the reviewed manuscript PDF byte for byte.

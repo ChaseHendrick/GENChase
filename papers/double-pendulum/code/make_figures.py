@@ -39,19 +39,19 @@ for segment, theta, momentum, slope in rows:
 plt.rcParams.update({'font.size': 9, 'axes.titlesize': 9, 'legend.fontsize': 8,
                      'pdf.fonttype': 42, 'axes.spines.top': False, 'axes.spines.right': False,
                      'axes.linewidth': .6, 'savefig.facecolor': 'white'})
-fig, axes = plt.subplots(1, 2, figsize=(6.5, 3.25), layout='constrained')
+fig, axes = plt.subplots(1, 2, figsize=(6.5, 3.65), layout='constrained')
 ax = axes[0]
+named_markers = {'M7': 's', 'M8': '^', 'M9': 'o', 'M10': 'v', 'M11': 'D'}
 for name, (theta, momentum, *_) in sets.items():
     wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
     if name == 'N':
-        ax.plot(wrapped, momentum, marker='*', color='#222222', ms=9, zorder=4)
+        ax.plot(wrapped, momentum, marker='*', color='#222222', ms=9, zorder=4,
+                linestyle='None', label='$N$')
+    elif name in named_markers:
+        ax.plot(wrapped, momentum, marker=named_markers[name], color='#2166ac', ms=4,
+                linestyle='None', label=name)
     else:
-        ax.plot(wrapped, momentum, marker='o', color='#2166ac', ms=4)
-    if name in ('M7', 'M8', 'M9', 'M10', 'M11'):
-        dx, dy = {'M7': (8, -13), 'M8': (-28, 8), 'M9': (8, -5), 'M10': (5, 8), 'M11': (-28, -13)}[name]
-        ax.annotate(name, (wrapped, momentum), xytext=(dx, dy), textcoords='offset points', fontsize=8)
-ax.annotate('$N$ and nearby $M_i$', (0, sets['N'][1]), xytext=(0.04, .24), textcoords='axes fraction',
-            arrowprops={'arrowstyle': '-', 'color': '#555', 'lw': .6}, fontsize=8)
+        ax.plot(wrapped, momentum, marker='o', color='#2166ac', ms=4, linestyle='None')
 ax.axvline(0, color='#777', lw=.7, ls='--', zorder=0)
 ax.set(xlabel=r'$\theta_2$ mod $2\pi$ (rad)', ylabel=r'$p_2$ (dimensionless)',
        title='(a) Stored h-set centres, $E=0$', xlim=(-.65, .65), ylim=(-1.75, 1.08))
@@ -68,7 +68,10 @@ for i, box in enumerate(boxes):
 ax.axvline(0, color='#222', lw=.8)
 ax.set(xlim=(-10, 10), ylim=(-1.3, 1.55), xlabel=r'$\theta_2 / 10^{-5}$ (rad)',
        ylabel=r'$(p_2-0.82215)/10^{-4}$', title='(b) Certified image enclosures')
-ax.legend(loc='upper center', fontsize=7.5)
+ha, la = axes[0].get_legend_handles_labels()
+hb, lb = axes[1].get_legend_handles_labels()
+fig.legend(ha + hb, la + lb, loc='outside upper center', ncol=4, fontsize=7.5,
+           columnspacing=1.4, handlelength=1.8, frameon=False)
 for ax in axes:
     ax.grid(color='#ddd', lw=.4)
     ax.set_axisbelow(True)
