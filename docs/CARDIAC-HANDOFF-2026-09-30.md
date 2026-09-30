@@ -1,5 +1,7 @@
 # Cardiac Study Handoff, September 30, 2026
 
+**Paused at the owner's explicit request.** Read [CARDIAC-PAUSED-HANDOFF-2026-09-30.md](CARDIAC-PAUSED-HANDOFF-2026-09-30.md) before continuing. It supersedes the active-run snapshots below and records preserved partial attempts, cleanup, completed reviews and the exact resumption order. Do not restart automatically.
+
 This current note supersedes the unsuccessful-certification status in earlier handoffs. The historical handoff is preserved as HANDOFF-BEFORE-CERTIFICATE.md. Do not repeat successful solver runs just to regenerate status records. The finite eight-site ring has certified existence, fundamental period and local orbital asymptotic stability. The sixteen-site ring now also has certified existence, fundamental period and local orbital asymptotic stability, with its new joint assembly independently reviewed. The thirty-two-site point return has completed and passed independent residual replay, but its error bound exceeds the original search-box radius. A genuinely new larger-box C1 integration is authorized; no thirty-two-site root is yet established. The bounded sixty-four-site full-direction step pilot has completed and passed independent review, with no complete return or theorem yet. The portable fixed-cell source candidate has passed prepared-source and retained-arithmetic review; fresh builds and integration remain open. Later sections retain the attempt history and exact evidence hashes.
 
 ## Current result
