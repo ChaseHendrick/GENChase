@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.5 (2026-09-29)
+
+Figure layout update. Places the profile-field and proof-block key above both pulse panels and the phase-plane key below them, with reserved figure margins. Line styles, the nullcline, the rest marker and the shaded proof-block range are preserved. The vector figure, raster preview and manuscript PDF were rebuilt and inspected at manuscript scale. All 523 displayed samples come from the unchanged stored orbit. Scientific captions, numerical results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.4 (2026-09-29)
 
 **DOI:** [10.5281/zenodo.23048253](https://doi.org/10.5281/zenodo.23048253). Publication / Preprint; both the actual GitHub source ZIP and the downloaded Zenodo ZIP contain the reviewed manuscript PDF byte for byte.

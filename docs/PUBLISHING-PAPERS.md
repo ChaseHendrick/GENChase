@@ -67,6 +67,11 @@ meet item 6.
 
 Then:
 
+- Figure legends, numerical notes and point labels sit outside the data panels, in reserved margins,
+  a shared legend or the caption. Check axis labels, ticks, panel titles and captions for collisions
+  after regeneration, then inspect each figure in the rebuilt manuscript at its final size. Preserve
+  the plotted values and scientific meaning when changing layout. The
+  [September 29 figure audit](FIGURE-LAYOUT-AUDIT-2026-09-29.md) records the current eight-paper check.
 - A second reader in the field has read it. [REVIEWING.md](REVIEWING.md) and
   [REVIEW-REQUEST.md](REVIEW-REQUEST.md) make that one step.
 - `node tools/paper-check.js --paper <id>` passes. It checks that the title is the same in every

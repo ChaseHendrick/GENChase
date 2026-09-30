@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.5 (2026-09-29)
+
+Figure layout update. Moves the branch, Hopf/current, orbit-section and normal-form keys outside all data panels, with reserved space above or below the graphs. The H1 and H2 markers and the section reference lines retain their meanings. All three vector figures and the manuscript PDF were rebuilt and inspected at manuscript scale. Numerical inputs and stored report hashes match the previous layout. Scientific captions, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.4 (2026-09-29)
 
 **DOI:** [10.5281/zenodo.23048238](https://doi.org/10.5281/zenodo.23048238). Publication / Preprint; both the actual GitHub source ZIP and the downloaded Zenodo ZIP contain the reviewed manuscript PDF byte for byte.

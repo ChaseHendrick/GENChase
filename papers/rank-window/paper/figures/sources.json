@@ -6,7 +6,7 @@
     "out/meme.json": "0764de7d79efbfaf479c64d544e2c60efb72951c2710285e6a339ddeec228844",
     "code/common.py": "4bb60c7d2355dc078fa3093b10acaaee8ad96dbe7f5760a2a1d3ae8a47037033",
     "code/tails.py": "8e74518da793dbd46710ff86c6f22c762da97c0b22f3d0a2260dde44bfa5eff9",
-    "code/make_figures.py": "637a330cee5e5ff0245fd0082b75bce24c2f558c741824c18e9774dc7cdd5ebc"
+    "code/make_figures.py": "bb13e466302a44d7d8cc2c032a041ad0d25b0800412e95521a667def48c43755"
   },
   "matplotlib": "3.11.2",
   "numpy": "2.4.6"

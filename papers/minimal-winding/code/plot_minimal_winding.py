@@ -50,18 +50,17 @@ mus.append(1.0); lo = list(lo) + [math.sqrt(2)]; hi = list(hi) + [math.sqrt(2)]
 
 plt.rcParams.update({'font.family': 'serif', 'font.serif': ['cmr10'], 'mathtext.fontset': 'cm',
                      'axes.formatter.use_mathtext': True, 'font.size': 10, 'svg.fonttype': 'path', 'pdf.fonttype': 42, 'svg.hashsalt': 'plot_minimal_winding'})
-fig, ax = plt.subplots(figsize=(5.2, 3.1))
+fig, ax = plt.subplots(figsize=(5.2, 3.5))
 ax.plot(mus, hi, color='0.45', lw=1.3, label=r'minimum on $\mathcal{A}_+$')
 ax.plot(mus, lo, color='black', lw=1.6, label=r'minimum on $\mathcal{A}_-$ (least $P$)')
-ax.axhline(math.sqrt(3) / 2, color='black', lw=0.6, ls=(0, (4, 3)))
-ax.axhline(math.sqrt(2), color='black', lw=0.6, ls=(0, (1, 2)))
-ax.text(0.62, math.sqrt(3) / 2 - 0.17, r'$\sqrt{3}/2$', fontsize=10)
-ax.text(0.03, math.sqrt(2) + 0.06, r'$\sqrt{2}$', fontsize=10)
+ax.axhline(math.sqrt(3) / 2, color='black', lw=0.6, ls=(0, (4, 3)), label=r'$\sqrt{3}/2$')
+ax.axhline(math.sqrt(2), color='black', lw=0.6, ls=(0, (1, 2)), label=r'$\sqrt{2}$')
 ax.plot([0.5, 0.5], [lo[124], hi[124]], 'o', color='black', ms=3)
 ax.set_xlim(0, 1.0); ax.set_ylim(0.6, 4.0)
 ax.set_xlabel(r'circulation ratio $\mu$'); ax.set_ylabel(r'$P = |\omega_0|\, t_c$')
-ax.legend(frameon=False, loc='upper right')
-fig.tight_layout()
+fig.legend(*ax.get_legend_handles_labels(), frameon=False, loc='upper center',
+           bbox_to_anchor=(0.55, 0.99), ncol=2, fontsize=9, columnspacing=1.5)
+fig.subplots_adjust(left=0.13, right=0.98, bottom=0.15, top=0.76)
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'paper', 'figures', 'minimal-winding.svg')
 fig.savefig(out, metadata={'Date': None})
 fig.savefig(out[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None})
@@ -105,34 +104,37 @@ cases = [(0.5, r'(a) $\mu = 1/2$', [r'$\Gamma_1 = 1$', r'$\Gamma_2 = 1/2$', r'$\
          (0.05, r'(b) $\mu = 0.05$', [r'$\Gamma_1 = 1$', r'$\Gamma_2 = 0.05$', r'$\Gamma_3 = -1/21$'],
           [(0.0, -0.17, 'center'), (0.93, -0.15, 'left'), (1.05, 0.08, 'left')])]
 styles = [dict(color='black', lw=0.9), dict(color='0.55', lw=0.9), dict(color='black', lw=0.9, ls=(0, (3.5, 2)))]
-fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.9))
+fig, axes = plt.subplots(1, 2, figsize=(6.4, 3.6))
 for ax, (mu, title, labels, where) in zip(axes, cases):
     P, z = minimizer_lower_arc(mu)
-    for zj, st in zip(z, styles):
-        ax.plot(*spiral(zj, P), **st, zorder=2)
+    for zj, st, label in zip(z, styles, labels):
+        ax.plot(*spiral(zj, P), **st, label=label, zorder=2)
     tri = z + [z[0]]
     ax.plot([w.real for w in tri], [w.imag for w in tri], color='0.6', lw=0.6, zorder=1)
     for j, zj in enumerate(z):                            # filled: positive circulation; open: negative
         ax.plot(zj.real, zj.imag, 'o', ms=4.2, mec='black', mew=0.8, mfc='black' if j < 2 else 'white', zorder=4)
-        ax.text(where[j][0], where[j][1], labels[j], fontsize=8.5, ha=where[j][2], va='center')
     ax.plot(0, 0, '+', color='black', ms=9, mew=0.7, zorder=5)      # the collision point
     ang = math.degrees(math.atan(2 * P)); L = math.sqrt(1 + 4 * P * P)
     ax.set_title(title + r',  $P = %.4f\ldots$' % P, fontsize=9.5)
     # vortex 3: the segment r0 to the collision point, its initial velocity, and the angle arctan 2P between them
     z3 = z[2]
-    ax.plot([0, z3.real], [0, z3.imag], color='black', lw=0.6, ls=(0, (1, 1.5)), zorder=1)
-    ax.text(0.55, -0.075, r'$r_0$', fontsize=9, ha='center', va='center')
+    ax.plot([0, z3.real], [0, z3.imag], color='black', lw=0.6, ls=(0, (1, 1.5)),
+            label=r'$r_0$ (third vortex)', zorder=1)
     vdir = complex(-0.5, P) / abs(complex(-0.5, P))            # direction of (1/2 - iP)(-z3)
     ax.add_patch(FancyArrowPatch((z3.real, z3.imag), (z3.real + 0.36 * vdir.real, z3.imag + 0.36 * vdir.imag),
                                  arrowstyle='-|>', mutation_scale=7, lw=0.8, color='black', zorder=5))
     ax.add_patch(Arc((z3.real, z3.imag), 0.34, 0.34, theta1=180 - ang, theta2=180, lw=0.6, color='black'))
-    ax.text(1.02, 0.30, r'$\arctan 2P$' + '\n' + r'$= %.1f^\circ > 60^\circ$' % ang, fontsize=8.5, ha='left', va='center',
-            linespacing=1.4)
-    ax.text(0.02, 0.58, r'path length $r_0\sqrt{1 + 4P^2} = %s\,r_0 > 2r_0$' % (('%.2f' if mu == 0.5 else '%.3f') % L),
-            fontsize=8.5, ha='left', va='bottom')
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.03), frameon=False,
+              fontsize=8.5, ncol=2, handlelength=1.5, columnspacing=0.8)
+    center = 0.255 if mu == 0.5 else 0.745
+    fig.text(center, 0.145, r'$\arctan 2P = %.1f^\circ > 60^\circ$' % ang,
+             fontsize=8.5, ha='center')
+    fig.text(center, 0.075,
+             r'path length $r_0\sqrt{1 + 4P^2} = %s\,r_0 > 2r_0$' % (('%.2f' if mu == 0.5 else '%.3f') % L),
+             fontsize=8.5, ha='center')
     ax.set_aspect('equal'); ax.set_xlim(-0.62, 1.45); ax.set_ylim(-0.42, 0.78); ax.axis('off')
     print('Figure 2, mu = %s: P = %.13f, arctan 2P = %.2f degrees, path length %.4f r0' % (mu, P, ang, L))
-fig.tight_layout(w_pad=0.5)
+fig.subplots_adjust(left=0.015, right=0.985, bottom=0.32, top=0.88, wspace=0.1)
 out2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'paper', 'figures', 'minimal-winding-paths.svg')
 fig.savefig(out2, metadata={'Date': None}, bbox_inches='tight', pad_inches=0.02)
 fig.savefig(out2[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None}, bbox_inches='tight', pad_inches=0.02)
