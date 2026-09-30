@@ -122,7 +122,7 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
     "equation": "x\u1d62 \u2190 growth\u00b7x\u1d62; new primordium near argmin_\u03b8 \u03a3\u1d62 1/(|r\u2080(cos\u03b8,sin\u03b8)\u2212x\u1d62|\u00b2+\u03bb\u00b2)",
     "status": "validated within stated limits",
@@ -170,7 +170,7 @@
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. \u03b1=0 grows a disk; \u03b1=2 is DLA-like; the transition at \u03b1=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "\u03a6\u2099 = \u03a6\u2099\u208b\u2081 \u2218 f_{\u03b8\u2099,c\u2099},   c\u2099 \u221d |\u03a6\u2032(e^{i\u03b8})|^{\u2212\u03b1}",
     "status": "unvalidated",
@@ -189,7 +189,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to \u03b7, is the attachment probability. \u03b7=1 is DLA; \u03b7\u2192\u221e is a ballistic needle; lightning lives in between.",
     "equation": "\u2207\u00b2\u03c6 = 0,   P(i) \u221d \u03c6\u1d62^\u03b7  on the growth interface",
     "status": "unvalidated",
@@ -208,7 +208,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses \u2014 vapor, quasi-liquid, ice \u2014 that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya\u2019s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on A\u1d9c;  freeze \u03ba;  attach by (n, b, \u03b1, \u03b2, \u03b8);  melt \u03bc, \u03b3",
     "status": "unvalidated",
@@ -1331,7 +1331,7 @@
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
+    "sourceSha256": "f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287",
     "reference": "Erwin Schr\u00f6dinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re\u00b2 + Im\u208b Im\u208a is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i \u2202\u03c8/\u2202t = \u2212\u00bd \u2207\u00b2\u03c8 + V \u03c8   (\u0127 = m = 1);   Re \u03c8 on integer steps, Im \u03c8 on half steps",
     "status": "validated within stated limits",
@@ -2145,7 +2145,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (\u2207\u00b2+1)\u00b2(\u2207\u00b2+q\u00b2)\u00b2 and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(\u03c0/12) \u2248 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "\u2202t\u03c8 = \u03b5\u03c8 \u2212 (\u2207\u00b2+1)\u00b2(\u2207\u00b2+q\u00b2)\u00b2\u03c8 + \u03b1 \u03c8\u00b2 \u2212 \u03c8\u00b3,   q = 2 cos(\u03c0/12)",
     "status": "unvalidated",
@@ -2202,7 +2202,7 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "The complex Ginzburg\u2013Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969\u201371). The (\u03b1, \u03b2) plane was mapped by Aranson and Kramer: Benjamin\u2013Feir when 1+\u03b1\u03b2<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "\u2202A/\u2202t = \u03bcA + (1 + i\u03b1) \u2207\u00b2A \u2212 (1 + i\u03b2) |A|\u00b2 A",
     "status": "validated within stated limits",
@@ -3005,7 +3005,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains \u2014 an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse\u2013hyperbola pair",
     "status": "unvalidated",
@@ -3239,7 +3239,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux \u03b1 (in flux quanta per plaquette) has a spectrum that is a fractal in the (\u03b1, E) plane \u2014 the butterfly. Gaps carry Chern numbers; Avron colored them. At rational \u03b1=p/q the Harper matrix is q\u00d7q.",
     "equation": "\u03c8\u2099\u208a\u2081 + \u03c8\u2099\u208b\u2081 + 2 cos(2\u03c0 n \u03b1) \u03c8\u2099 = E \u03c8\u2099",
     "status": "validated within stated limits",
@@ -3345,7 +3345,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic \u2014 and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "\u2207\u00b2\u03c8 + k\u00b2 \u03c8 = 0  on \u03a9,   \u03c8 = 0 on \u2202\u03a9",
     "status": "unvalidated",
@@ -3413,7 +3413,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Michael V. Berry\u2019s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s \u2207h(x),   I(X) = \u03a3 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -3533,7 +3533,7 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d\u00b2/\u03bb and as a half-period image at z_T/2 = d\u00b2/\u03bb. Depth on this plate is in units of d\u00b2/\u03bb, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
     "equation": "I(x,z) = |\u03a3\u2099 a\u2099 exp(i 2\u03c0 n x/d \u2212 i \u03c0 n\u00b2 z)|\u00b2,   z in d\u00b2/\u03bb, revival at 2,   z_T = 2 d\u00b2/\u03bb",
     "status": "validated within stated limits",
@@ -3650,7 +3650,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "\u0393 = \u27e8a, b\u27e9  Schottky,   \u039b(\u0393) = \u2229 g\u2208\u0393 g(\u0108 \\ \u03a9)",
     "status": "unvalidated",
@@ -3751,7 +3751,7 @@
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
+    "sourceSha256": "f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287",
     "reference": "Henri B\u00e9nard, Revue g\u00e9n\u00e9rale des Sciences pures et appliqu\u00e9es 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for \u03c8, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "\u2202\u03c9/\u2202t + u\u00b7\u2207\u03c9 = \u221a(Pr/Ra) \u2207\u00b2\u03c9 + \u2202T/\u2202x,   \u2202T/\u2202t + u\u00b7\u2207T = \u2207\u00b2T/\u221a(Ra Pr),   \u2207\u00b2\u03c8 = \u2212\u03c9,   u = \u2202\u03c8/\u2202y, v = \u2212\u2202\u03c8/\u2202x",
     "status": "validated within stated limits",

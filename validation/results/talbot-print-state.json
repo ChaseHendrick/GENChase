@@ -2,7 +2,7 @@
   "test": "tools/talbot-print-state.js",
   "command": "node tools/talbot-print-state.js --write",
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-  "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+  "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
   "phase": "TAU*n*u - PI*n*n*z",
   "inches": 8,
   "dpi": 300,
@@ -16,25 +16,25 @@
   "png": {
     "width": 2087,
     "height": 2400,
-    "bytes": 9370382,
+    "bytes": 9370420,
     "note": "2,087 × 2,400 px, 8.9 MB. Rendered at print pixels with 2× supersampling. If the download button does nothing, right-click the image and save it."
   },
   "screen": {
     "before": {
-      "width": 283,
-      "height": 326
+      "width": 360,
+      "height": 414
     },
     "after": {
-      "width": 199,
-      "height": 229
+      "width": 276,
+      "height": 317
     }
   },
   "regenerate": {
     "equal": true,
     "changedBytes": 0,
     "maxDelta": 0,
-    "width": 283,
-    "height": 326
+    "width": 360,
+    "height": 414
   },
   "afterExport": {
     "fixedChanged": 0,
@@ -58,9 +58,9 @@
     "corruptFraction": 0.9773248792270531
   },
   "environment": {
-    "node": "v22.23.3",
-    "chromium": "153.0.8010.12",
-    "platform": "linux"
+    "node": "v24.19.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
   },
   "passed": true
 }

@@ -2,9 +2,9 @@
   "tool": "tools/hofstadter-print-state.js",
   "reviewed": "2026-09-29",
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-  "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
-  "chromium": "154.0.8037.58",
-  "node": "v24.21.0",
+  "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
+  "chromium": "145.0.7632.6",
+  "node": "v24.19.0",
   "rows": [
     {
       "name": "chern Q=8",

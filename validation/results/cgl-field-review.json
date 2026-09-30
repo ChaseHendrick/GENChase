@@ -1,8 +1,8 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-30",
   "scope": "Four complete deterministic noise-free CGL lattice fields and prints at physical time 1; no continuum or chaotic-statistics claim.",
-  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
-  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
+  "engineSha256": "bc60e2ab4580794425fe633ccb12c956ff942a9b7bd7fd6cb56f3159291b2b03",
   "kernel": {
     "refinement": [
       {
@@ -81,7 +81,7 @@
           "contrast": 1,
           "grain": 0,
           "seed": "cgl-field-review-0",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#2C0F4A",
             "#8A1C6B",
@@ -129,7 +129,7 @@
           "contrast": 1,
           "grain": 0,
           "seed": "cgl-field-review-1",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#2C0F4A",
             "#8A1C6B",
@@ -177,7 +177,7 @@
           "contrast": 1,
           "grain": 0,
           "seed": "cgl-field-review-2",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#2C0F4A",
             "#8A1C6B",
@@ -225,7 +225,7 @@
           "contrast": 1,
           "grain": 0,
           "seed": "cgl-field-review-3",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#2C0F4A",
             "#8A1C6B",
@@ -240,7 +240,7 @@
     }
   ],
   "environment": {
-    "node": "v24.21.0",
+    "node": "v24.19.0",
     "chromium": "145.0.7632.6",
     "platform": "darwin",
     "backend": "SwiftShader RGBA32F"

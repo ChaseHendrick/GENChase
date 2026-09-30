@@ -959,6 +959,12 @@ void main(){
     create(host) {
       const canvas=host.canvas, ctx=canvas.getContext('2d');
       let circles=[];
+      // Use the same two-arc path for Canvas and SVG. Their native circle primitives can
+      // tessellate differently across renderers, displacing thin layers in the print.
+      function layerPath(cx,cy,r) {
+        return 'M '+(cx+r)+' '+cy+' A '+r+' '+r+' 0 0 1 '+(cx-r)+' '+cy+
+          ' A '+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z';
+      }
       function pack(s) {
         const rng=U.makeRng(s.seed+'/smec');
         circles=[];
@@ -989,7 +995,7 @@ void main(){
           if (s.view!=='ellipses') {
             const pitch=s.pitch*sc;
             for (let r=R; r>1.5; r-=pitch) {
-              ctx.beginPath(); ctx.arc(cx,cy,r,0,TAU); ctx.stroke();
+              ctx.stroke(new Path2D(layerPath(cx,cy,r)));
             }
           }
           if (s.view!=='layers') {
@@ -1029,7 +1035,7 @@ void main(){
             g.strokeStyle=col(i*0.17); g.lineWidth=Math.max(0.6, s.lw*sc/900);
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R;r>1.5;r-=pitch){ g.beginPath(); g.arc(cx,cy,r,0,TAU); g.stroke(); }
+              for (let r=R;r>1.5;r-=pitch) g.stroke(new Path2D(layerPath(cx,cy,r)));
             }
             if (s.view!=='layers') {
               g.save(); g.translate(cx,cy); g.rotate(c.th);
@@ -1046,21 +1052,21 @@ void main(){
           const W=w||1000, H=h||W, sc=Math.min(W,H);
           const lut=U.makeRampLUT(s.palette,null,256);
           const colour=k=>{ const li=((k%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
-          const lw=Math.max(0.6, s.lw*sc/900).toFixed(2);
+          const lw=Math.max(0.6, s.lw*sc/900);
           let body='';
           for (let i=0;i<circles.length;i++) {
-            const c=circles[i], cx=(c.x*W).toFixed(2), cy=(c.y*H).toFixed(2), col=U.svgEsc(colour(i*0.17));
+            const c=circles[i], cx=c.x*W, cy=c.y*H, col=U.svgEsc(colour(i*0.17));
             const R=c.r*sc;
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
               for (let r=R; r>1.5; r-=pitch)
-                body+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+                body+='<path d="'+layerPath(cx,cy,r)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
             }
             if (s.view!=='layers') {
               const ry=R*(0.55+c.e*0.3);
-              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R.toFixed(2)+'" ry="'+ry.toFixed(2)+'" transform="rotate('+(c.th*180/Math.PI).toFixed(2)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R+'" ry="'+ry+'" transform="rotate('+(c.th*180/Math.PI)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
               const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
-              body+='<path d="M '+(-f).toFixed(2)+' '+(-R*1.1).toFixed(2)+' Q 0 0 '+f.toFixed(2)+' '+(R*1.1).toFixed(2)+'" transform="translate('+cx+' '+cy+') rotate('+(c.th*180/Math.PI).toFixed(2)+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-linecap="round"/>\n';
+              body+='<path d="M '+(-f)+' '+(-R*1.1)+' Q 0 0 '+f+' '+(R*1.1)+'" transform="translate('+cx+' '+cy+') rotate('+(c.th*180/Math.PI)+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-linecap="round"/>\n';
             }
           }
           return U.svgBlob(W,H,s.bg,body);

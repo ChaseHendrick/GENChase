@@ -4,9 +4,13 @@
 
 ## 0.9.0
 
+- Convection regeneration clears the previous fluid scratch texture. A real GPU regression deliberately contaminates it, requires exact recovery after regeneration, and retains the existing export-state and solver-advance checks. Both software and Apple M1 Pro Metal print-state runs pass; the bounded numerical evidence and scientific tolerances are unchanged.
+
+- Smectic preview, PNG and SVG exports share full-precision layer paths, reducing thin-stroke rasterization differences while preserving the packing and seeded geometry. The original preview/export comparison, blank control, presets and print checks pass locally; browser runtime pinning alone did not resolve the earlier Linux failure.
+
 - Reaction-diffusion preset changes immediately publish fresh pending progress before their first asynchronous measurement. A held-fence browser regression rejects the previous preset's stale status and verifies unchanged completed fields and PNG pixels.
 
-- Align the remaining browser CI jobs and build instructions with the release's tested Playwright 1.58.2 runtime. The same Smectic export comparison fails in Chromium 131 and passes in Chromium 145; its thresholds and negative control are unchanged. Structured progress markers keep Ising's scientific coarsening caveat distinct from unfinished finite work, and early-progress logs now report each preset's own target.
+- Align the remaining browser CI jobs and build instructions with the release's tested Playwright 1.58.2 runtime. The historical macOS Smectic browser comparison and subsequent rendering correction are recorded in `docs/BROWSER-CHECK-RUNTIME.md`; thresholds and negative controls are unchanged. Structured progress markers keep Ising's scientific coarsening caveat distinct from unfinished finite work, and early-progress logs now report each preset's own target.
 
 - Release asset enumeration supports Python 3.9 while preserving the exact ordered asset manifest, file names and content hashes.
 

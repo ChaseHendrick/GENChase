@@ -1,7 +1,7 @@
 {
-  "date": "2026-09-22",
-  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
-  "componentSha256": "6d6e4222920e3f9f97dd1d30630ef7d5a18a390eb394e24430b3ccfa32f2fa5d",
+  "date": "2026-09-30",
+  "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
+  "componentSha256": "6f4ef0c62c25f2b640275433e2dcc935da515b175caa38399f58fc8bb82e5196",
   "scope": "Three finite greedy inhibitory-growth recipes; every insertion independently minimized, all printed circles/links or raster cells checked. No biological or golden-angle universality claim.",
   "cases": [
     {
@@ -279,7 +279,7 @@
           "grain": 0,
           "running": false,
           "seed": "phyllotaxis-review-0",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#D94F30",
             "#F2A541",
@@ -807,7 +807,7 @@
           "grain": 0,
           "running": false,
           "seed": "phyllotaxis-review-1",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#D94F30",
             "#F2A541",
@@ -1575,7 +1575,7 @@
           "grain": 0,
           "running": false,
           "seed": "phyllotaxis-review-2",
-          "v": 2,
+          "v": 8,
           "palette": [
             "#D94F30",
             "#F2A541",
@@ -1590,7 +1590,7 @@
     }
   ],
   "environment": {
-    "node": "v24.21.0",
+    "node": "v24.19.0",
     "chromium": "145.0.7632.6",
     "platform": "darwin"
   },

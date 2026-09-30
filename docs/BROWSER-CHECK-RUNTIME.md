@@ -6,4 +6,6 @@ A controlled comparison on 2026-09-30 kept the studio, Smectic source, recipe, d
 
 This demonstrates a browser-version effect in the canvas/SVG comparison; it does not identify the browser implementation defect or promise pixel identity in older releases. The [fingerprinted record](../validation/results/browser-export-runtime-2026-09-30.json) retains the failed and passed measurements. Fresh GitHub checks remain the gate for the changed CI configuration.
 
+PR #255 subsequently failed the Smectic comparison on Linux with the pinned Chromium 145 runtime, so pinning alone did not resolve the cross-platform discrepancy. The [shared-path correction and bounded rendering review](SMECTIC-VECTOR-REVIEW-2026-09-29.md) uses the same full-precision layer path in Canvas and SVG and retains the original acceptance thresholds. Its local results supplement the historical browser comparison above; fresh Linux CI remains the gate for that correction.
+
 Turing's earlier CI warmup incompleteness is a separate issue. Three isolated fixed-work runs completed all 2200 steps, and old/current PBO allocation on Chromium 131 produced identical fields and pixels. Those runs did not demonstrate a PBO slowdown or a speedup from Chromium 145. The earlier incomplete CI result remains part of the audit.

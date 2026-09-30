@@ -1128,6 +1128,9 @@ void main(){
         const s = host.getState();
         ensureGrid(s);
         rig.upload(F.read, seedField(s));
+        // The next advection pass overwrites this scratch field. Reset it explicitly so a
+        // paused initial state cannot retain allocation contents or an earlier trajectory.
+        F.write.clear(0, 0, 0, 1);
         PSI.read.clear(0, 0, 0, 1); PSI.write.clear(0, 0, 0, 1); velT.clear(0, 0, 0, 1);
         // a deeper first solve so the warm start has something to start from
         solvePsi(s, 40);

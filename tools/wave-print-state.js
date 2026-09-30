@@ -10,6 +10,10 @@ function instrument(source, stateName, targets, scalars) {
   const marker = `      exportPNG(w, h) { if (!${stateName})`;
   assert.equal(source.split(marker).length, 2, `Expected one ${stateName} export hook`);
   const hook = `      auditAdvance(n) { rig.stop(); step(n); },
+      auditPoisonScratch() {
+        const pixels = new Float32Array(gw * gh * 4); pixels.fill(NaN);
+        rig.upload(${stateName}.write, pixels);
+      },
       auditSnapshot() {
         if (rig.texType !== 'rgba32f') throw Error('Print-state benchmark requires float32');
         const targets = { ${targets} }, fields = {};
@@ -47,24 +51,25 @@ ${marker}`;
             const names = Object.keys(before.fields);
             if (JSON.stringify(names) !== JSON.stringify(Object.keys(after.fields))) throw Error('Field set changed');
             let changedWords = 0, nonfinite = 0, checkedWords = 0;
-            const changedFields = [];
+            const changedFields = [], nonfiniteFields = [];
             for (const name of names) {
               const a = before.fields[name], b = after.fields[name];
               if (a.length !== b.length) throw Error('Field size changed: ' + name);
               const ab = new Uint32Array(a.buffer), bb = new Uint32Array(b.buffer);
-              let changed = false;
+              let changed = false, hasNonfinite = false;
               for (let i = 0; i < a.length; i++) {
                 if (ab[i] !== bb[i]) { changedWords++; changed = true; }
-                if (!Number.isFinite(a[i]) || !Number.isFinite(b[i])) nonfinite++;
+                if (!Number.isFinite(a[i]) || !Number.isFinite(b[i])) { nonfinite++; hasNonfinite = true; }
               }
               checkedWords += a.length;
               if (changed) changedFields.push(name);
+              if (hasNonfinite) nonfiniteFields.push(name);
             }
             const metadataChanged = JSON.stringify(before.metadata) !== JSON.stringify(after.metadata);
             const metadataNonfinite = [...Object.values(before.metadata), ...Object.values(after.metadata)].filter(value => typeof value === 'number' && !Number.isFinite(value)).length;
             const cellsChanged = JSON.stringify(before.cells) !== JSON.stringify(after.cells);
             const settingsChanged = before.settings !== after.settings;
-            return { changedWords, nonfinite, checkedWords, changedFields, metadataChanged, metadataNonfinite, cellsChanged, settingsChanged };
+            return { changedWords, nonfinite, checkedWords, changedFields, nonfiniteFields, metadataChanged, metadataNonfinite, cellsChanged, settingsChanged };
           }
           function accept(result) {
             return result.width === 2400 && result.height === 2400 && result.bytes > 1000 &&
@@ -79,6 +84,18 @@ ${marker}`;
           instance.regenerate(); instance.pause();
           const initial = instance.auditSnapshot();
           if (initial.cells[0] !== grid || initial.cells[1] !== grid) throw Error('Requested square grid was not retained');
+          let resetControl = null;
+          if (id === 'convection') {
+            // Regeneration must erase an earlier invalid scratch field before any solver step.
+            // Testing a real GPU upload makes this fail even on devices with zeroed allocations.
+            instance.auditPoisonScratch();
+            const poisoned = compare(initial, instance.auditSnapshot());
+            if (poisoned.nonfinite !== grid * grid * 4 || JSON.stringify(poisoned.nonfiniteFields) !== JSON.stringify(['fluidPrevious'])) throw Error('Scratch contamination control was not established');
+            instance.regenerate(); instance.pause();
+            const recovered = compare(initial, instance.auditSnapshot());
+            if (recovered.changedWords || recovered.nonfinite || recovered.metadataChanged || recovered.metadataNonfinite || recovered.cellsChanged || recovered.settingsChanged) throw Error('Regeneration retained stale scratch state: ' + JSON.stringify(recovered));
+            resetControl = { description: 'NaNs uploaded to the actual convection scratch texture, followed by regeneration without a solver step', contaminatedWords: poisoned.nonfinite, recovered: true, comparison: recovered };
+          }
           const views = id === 'schrodinger' ? ['detector', 'density', 'phase'] : ['temp', 'vort', 'schlieren', 'etched'];
           const exports = [];
           for (const steps of [0, 16]) {
@@ -111,7 +128,7 @@ ${marker}`;
           const negative = { width: bitmap.width, height: bitmap.height, bytes: blob.size, comparison: compare(before, instance.auditSnapshot()) };
           bitmap.close(); instance.pause();
           if (accept(negative) || !negative.comparison.changedWords) throw Error('State-mutating export failure control escaped detection');
-          return { id, requestedGrid: grid, cells: initial.cells, precision: 'rgba32f', dt: state.dt, seed: state.seed, fields: Object.keys(initial.fields), metadataFields: Object.keys(initial.metadata), detectorDose, exports, failureControl: { description: 'Export wrapper advances the actual solver one step after producing the PNG', rejected: !accept(negative), comparison: negative.comparison } };
+          return { id, requestedGrid: grid, cells: initial.cells, precision: 'rgba32f', dt: state.dt, seed: state.seed, fields: Object.keys(initial.fields), metadataFields: Object.keys(initial.metadata), detectorDose, resetControl, exports, failureControl: { description: 'Export wrapper advances the actual solver one step after producing the PNG', rejected: !accept(negative), comparison: negative.comparison } };
         }, { id, grid }));
       } finally { await page.close(); }
     }
@@ -120,9 +137,10 @@ ${marker}`;
     assert.deepEqual(row.cells, [row.requestedGrid, row.requestedGrid]);
     assert([128, 192].includes(row.requestedGrid));
     assert.equal(row.failureControl.rejected, true);
+    if (row.id === 'convection') assert.equal(row.resetControl.recovered, true);
   }
   console.log(JSON.stringify({
-    scope: 'Actual module exportPNG to 2400x2400 pixels (8 inches at 300 ppi), on initial and 16-step evolved paused square fields at 128 and 192 cells per side, for every current view. Compares exact float32 words in both ping-pong textures and all other solver textures, plus settings, solver time, counters and measurement scalars; includes nonzero Schrodinger detector history and a state-mutating export failure control.',
+    scope: 'Actual module exportPNG to 2400x2400 pixels (8 inches at 300 ppi), on initial and 16-step evolved paused square fields at 128 and 192 cells per side, for every current view. Compares exact float32 words in both ping-pong textures and all other solver textures, plus settings, solver time, counters and measurement scalars; includes nonzero Schrodinger detector history, a poisoned convection scratch reset regression and a state-mutating export failure control.',
     limitations: 'Preservation and dimensions only, not numerical PDE accuracy, print color fidelity, pixel-level renderer correctness or added physical resolution. Fixed default physical parameters and seeds, square aspect, float32 SwiftShader; no running exports, float16 fallback, other devices, longer trajectories, other parameters or aspect ratios.',
     rows,
   }, null, 2));
