@@ -172,7 +172,8 @@
         "golden",
         "voronoi",
         "para",
-        "tight"
+        "tight",
+        "open"
       ],
       "vectors": true,
       "familiarity": "common",
@@ -218,7 +219,8 @@
         "lightning",
         "dla",
         "needle",
-        "fern"
+        "fern",
+        "bright"
       ],
       "vectors": true,
       "familiarity": "common",
@@ -903,9 +905,9 @@
       "name": "Skin Effect",
       "tab": "Skin",
       "subtitle": "non-Hermitian skin, Hatano–Nelson · 1996 / 2018",
-      "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
+      "equation": "(Hψ)_j = e^{g} ψ_{j−1} + e^{−g} ψ_{j+1},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
       "credit": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
-      "blurb": "Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|, mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.",
+      "blurb": "Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|², mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.",
       "order": 47,
       "seed": "",
       "presets": [
@@ -1410,6 +1412,31 @@
       "headline": "k"
     },
     {
+      "id": "hopfield",
+      "source": "src/modules/hopfield.js",
+      "name": "Hopfield Memory",
+      "tab": "Hopfield",
+      "subtitle": "Associative neural memory · 1982",
+      "equation": "w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j",
+      "credit": "John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.",
+      "blurb": "A small recurrent neural network stores binary patterns in symmetric connections. Start it with a damaged copy and each neuron takes its turn responding to all the others. The three panels show the first stored memory, the damaged cue and the resulting recall. More memories interfere; a badly damaged cue can settle into a different pattern or the inverse memory. Energy descent does not guarantee correct recall. These are finite binary associative memories, with no language model or remote service.",
+      "order": 54.82,
+      "seed": "hopfield-1982",
+      "presets": [
+        "one",
+        "four",
+        "crowded",
+        "inverse",
+        "geometric",
+        "cue"
+      ],
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "corruption"
+    },
+    {
       "id": "chimera",
       "source": "src/modules/chimera.js",
       "name": "Chimera States",
@@ -1517,8 +1544,8 @@
       "tab": "Aubry",
       "subtitle": "localization without disorder · 1980",
       "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localized for λ>1",
-      "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
-      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 1 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.",
+      "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate shows a finite periodic golden-ratio chain after a fixed number of imaginary-time steps; convergence to its ground state is not established.",
+      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. The infinite quasiperiodic model changes from extended to localized at λ = 1. This finite periodic plate shows a fixed-step relaxation, which has not converged to its ground state in the tested presets. Its inverse participation ratio is compared with 1/N as an unconverged diagnostic.",
       "order": 56,
       "seed": "",
       "presets": [
@@ -2865,7 +2892,8 @@
         "necklace",
         "kissing",
         "dust",
-        "six"
+        "six",
+        "engraved"
       ],
       "vectors": true,
       "familiarity": "common",
@@ -3440,6 +3468,30 @@
       "liveCapable": true,
       "runningDefault": false,
       "headline": "time"
+    },
+    {
+      "id": "flow-matching",
+      "source": "src/modules/flow-matching.js",
+      "name": "Flow matching",
+      "tab": "Generative flow",
+      "subtitle": "analytic Gaussian-mixture transport · MIT 2026",
+      "equation": "X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²",
+      "credit": "Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.",
+      "blurb": "A cloud of Gaussian noise separates into a chosen collection of Gaussian islands. Every colored thread follows the same time-dependent probability-flow field, rather than being assigned a destination in advance. This is an exactly specified transport target of the kind learned by flow-matching generative models. Here the target is a small, known Gaussian mixture, so its velocity can be calculated analytically. The trajectories are numerical RK4 approximations. No neural training, learned image generator or large-model benchmark is claimed.",
+      "order": 125,
+      "seed": "probability-flow",
+      "presets": [
+        "islands",
+        "braid",
+        "split",
+        "midway",
+        "cloud"
+      ],
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "modes"
     }
   ]
 }

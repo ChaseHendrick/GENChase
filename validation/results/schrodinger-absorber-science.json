@@ -1,9 +1,9 @@
 {
   "scope": "Actual float32 SCH_STEP_FS with uniform and production-shaped edge absorbers (pot.b weight, damp=exp(-dt*damp*b)), plus long-time free/uniform-V phase. Independent Float64 stencil twin and modal damped recurrence on SwiftShader RGBA32F. No scattering coefficients, hard walls, float16, arbitrary packets or print certification.",
-  "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
+  "sourceSha256": "f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287",
   "backend": {
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.33 Safari/537.36",
-    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
   },
   "uniform": [
     {
@@ -313,7 +313,7 @@
     "maxAbsPsi": 3.040141587389436
   },
   "command": "node tools/schrodinger-absorber-science.js",
-  "harnessSha256": "1b4d91ddddc7e2b3f011c1672113efa8781ad4b12d85c2a7753e00addde54f01",
+  "harnessSha256": "b2ff11299f3a8476d3f15a90b96018ffb8256ee665a0dba52c57a50c604c51a7",
   "pass": true,
   "limitations": [
     "Uniform and production-shaped edge absorbers on periodic float32 grids only; wrap still couples opposite edges through the absorber layer.",

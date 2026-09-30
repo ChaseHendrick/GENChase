@@ -1,0 +1,234 @@
+{
+  "reviewed": "2026-09-29",
+  "scope": "Eight seeded regenerations per rdx technique at grid128/warmup32. Runtime/readback/export regression only; no scientific status change. Paired evidence assembled from preserved baseline and repaired reports.",
+  "browser": "154.0.8037.58",
+  "baselineSourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+  "repairedSourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
+  "baselineReportSha256": "4435dbe74bc69c4c2b984a0b99474d197387a1287109c87e23a8544afe019d50",
+  "repairedReportSha256": "4890cfad722028fcb022d8f5b94323edbfb639d87bb301bb3f0dc5c76d1565c2",
+  "baselineStudioSha256": "b3359ef5990ace37f75bc1af00ebe3197a047a090315a010a6f51e170b868a4f",
+  "repairedStudioSha256": "b23a81211a4f921c4930cf964573ef552f0f25c1808a8b634b5e5cf974035e20",
+  "baselineWarnings": 115,
+  "repairedWarnings": 0,
+  "rows": [
+    {
+      "id": "excitable",
+      "collectedMeasurements": 24,
+      "pendingOverwrite": 0,
+      "fieldSha256": "8be544d62952fd2e393ab79a9b65aec3d878982f60e67c6623f15a873dc19930",
+      "pixelSha256": "ab0ebe904e4bbc083a04e43bf8d802808d9177a1a37dfd8ffddbc2c345cfc21c",
+      "fieldMatchesBaseline": true,
+      "pixelsMatchBaseline": true,
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+    },
+    {
+      "id": "turing",
+      "collectedMeasurements": 24,
+      "pendingOverwrite": 0,
+      "fieldSha256": "6e57d0c5773128008f501d4ae45703590ac4ebae11d15fbe67262fcc6bf3203c",
+      "pixelSha256": "aec4c89f8522acfbb3aec20fe82d092ba0bf4b9dbe22069b96eb1158a7c06162",
+      "fieldMatchesBaseline": true,
+      "pixelsMatchBaseline": true,
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+    },
+    {
+      "id": "cyclic",
+      "collectedMeasurements": 24,
+      "pendingOverwrite": 0,
+      "fieldSha256": "acdc97a588da17c417f15cfa9962fe9e4ad79ab9c1a8876dc9ca664cfc419753",
+      "pixelSha256": "6ef74044bc8bd1cddaaed60e2be17069596dcf27719862a007857d442dd7b438",
+      "fieldMatchesBaseline": true,
+      "pixelsMatchBaseline": true,
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+    },
+    {
+      "id": "chemotaxis",
+      "collectedMeasurements": 24,
+      "pendingOverwrite": 0,
+      "fieldSha256": "ade7fcb21e693371bd3fa40c86b5597f1130571ccfcfc876ba1df2b82ea7b8bd",
+      "pixelSha256": "13e08034c78e585666aa1dc0ba71ccf9edd53019207447623424f05ddff2adf9",
+      "fieldMatchesBaseline": true,
+      "pixelsMatchBaseline": true,
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+    },
+    {
+      "id": "vegetation",
+      "collectedMeasurements": 24,
+      "pendingOverwrite": 0,
+      "fieldSha256": "975c6d7a1cc9f3435f74375b0e9d7660e1b67a200d3a7abdc392203196180521",
+      "pixelSha256": "12af6c1635c089da4e6f53459244aac56fc0632eb608a6e7c48b7570fcac2bee",
+      "fieldMatchesBaseline": true,
+      "pixelsMatchBaseline": true,
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+    }
+  ],
+  "cyclicCatalog": {
+    "passed": true,
+    "counter": [
+      1500,
+      1500
+    ],
+    "fingerprints": [
+      "c9164800",
+      "c9164800"
+    ],
+    "logSha256": "bae37e7f8d472372f6c9e48f1fec744c5db7fce4d200ca67390f367a061211a9"
+  },
+  "finalBuiltStudioCheck": {
+    "browser": "154.0.8037.58",
+    "studioSha256": "1ba98a0a3d5de9b02e45b7063ec5cd2d9ca568593f7b54058963f38baae34776",
+    "harnessSha256": "cd9e3e9ff73c9722ec867c204f85904d430329794e56428fe249613d54c20eed",
+    "scope": "Eight seeded regenerations per rdx tab at grid128, warmup32; actual asynchronous GL measurements, finite state, exact state preservation and 1200px PNG exports.",
+    "rows": [
+      {
+        "id": "excitable",
+        "cycles": 8,
+        "measurements": {
+          "writes": 24,
+          "reads": 24,
+          "pendingOverwrite": 0
+        },
+        "finite": true,
+        "shape": [
+          128,
+          128,
+          2
+        ],
+        "fieldHash": "8be544d62952fd2e393ab79a9b65aec3d878982f60e67c6623f15a873dc19930",
+        "statePreserved": true,
+        "pixelHash": "ab0ebe904e4bbc083a04e43bf8d802808d9177a1a37dfd8ffddbc2c345cfc21c",
+        "dimensions": [
+          1200,
+          1200
+        ],
+        "range": 255,
+        "glError": 0,
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+      },
+      {
+        "id": "turing",
+        "cycles": 8,
+        "measurements": {
+          "writes": 24,
+          "reads": 24,
+          "pendingOverwrite": 0
+        },
+        "finite": true,
+        "shape": [
+          128,
+          128,
+          2
+        ],
+        "fieldHash": "6e57d0c5773128008f501d4ae45703590ac4ebae11d15fbe67262fcc6bf3203c",
+        "statePreserved": true,
+        "pixelHash": "aec4c89f8522acfbb3aec20fe82d092ba0bf4b9dbe22069b96eb1158a7c06162",
+        "dimensions": [
+          1200,
+          1200
+        ],
+        "range": 244,
+        "glError": 0,
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+      },
+      {
+        "id": "cyclic",
+        "cycles": 8,
+        "measurements": {
+          "writes": 24,
+          "reads": 24,
+          "pendingOverwrite": 0
+        },
+        "finite": true,
+        "shape": [
+          128,
+          128,
+          3
+        ],
+        "fieldHash": "acdc97a588da17c417f15cfa9962fe9e4ad79ab9c1a8876dc9ca664cfc419753",
+        "statePreserved": true,
+        "pixelHash": "6ef74044bc8bd1cddaaed60e2be17069596dcf27719862a007857d442dd7b438",
+        "dimensions": [
+          1200,
+          1200
+        ],
+        "range": 212,
+        "glError": 0,
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+      },
+      {
+        "id": "chemotaxis",
+        "cycles": 8,
+        "measurements": {
+          "writes": 24,
+          "reads": 24,
+          "pendingOverwrite": 0
+        },
+        "finite": true,
+        "shape": [
+          128,
+          128,
+          2
+        ],
+        "fieldHash": "ade7fcb21e693371bd3fa40c86b5597f1130571ccfcfc876ba1df2b82ea7b8bd",
+        "statePreserved": true,
+        "pixelHash": "13e08034c78e585666aa1dc0ba71ccf9edd53019207447623424f05ddff2adf9",
+        "dimensions": [
+          1200,
+          1200
+        ],
+        "range": 225,
+        "glError": 0,
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+      },
+      {
+        "id": "vegetation",
+        "cycles": 8,
+        "measurements": {
+          "writes": 24,
+          "reads": 24,
+          "pendingOverwrite": 0
+        },
+        "finite": true,
+        "shape": [
+          128,
+          128,
+          2
+        ],
+        "fieldHash": "975c6d7a1cc9f3435f74375b0e9d7660e1b67a200d3a7abdc392203196180521",
+        "statePreserved": true,
+        "pixelHash": "12af6c1635c089da4e6f53459244aac56fc0632eb608a6e7c48b7570fcac2bee",
+        "dimensions": [
+          1200,
+          1200
+        ],
+        "range": 223,
+        "glError": 0,
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)"
+      }
+    ],
+    "warnings": [],
+    "warningCount": 0,
+    "errors": [],
+    "reportSha256": "ec691e3479faa42c04ab0816e4f84ae666ae597808e839ac2ecd9ef77dabd7e7"
+  }
+}

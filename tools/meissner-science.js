@@ -178,11 +178,11 @@ const result = {
   refinement: { order8to16: order816, ratio16to20: ratio1620, expectedRatio16to20: expect1620 },
   plates,
   outsideDomain: outside,
-  print: { executed: false, reason: 'No browser step. The default and every preset above are inside the converged disk, which is the fixture a later print would have to use.' },
+  print: { executed: false, reason: 'This numerical command does not launch a browser. Separate source-matched print evidence is recorded by tools/meissner-print-state.js.' },
   limitations: [
     'The circle must clear the frame (R < min(W, H)/2 - 1). A disk that runs into the edge is a different boundary and is outside this comparison.',
     'Agreement is the 5-point Shortley-Weller disk at h = 1 cell, not a continuum limit past the slider. The observed gap is second order in 1/λ.',
-    'Print was not executed. Status stays partially validated.',
+    'This command does not test print output. Read validation/results/meissner-print-state.json for separate browser evidence.',
     'Recipes older than v7 keep Jacobi and are not in this domain.',
   ],
   environment: { node: process.version, platform: process.platform },

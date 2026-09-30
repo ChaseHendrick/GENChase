@@ -2,7 +2,7 @@
   "test": "tools/talbot-science.js",
   "command": "node tools/talbot-science.js --write",
   "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-  "sourceSha256": "795192f3fb4edd7e39d9bcd0a85a9f86b474dee47aaea174e99947d4c35bfd53",
+  "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
   "phase": "TAU*n*u - PI*n*n*z",
   "phaseCount": 1,
   "unit": "d^2/lambda",

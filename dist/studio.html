@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="135 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="137 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="135 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="137 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 135 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 137 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -549,6 +549,14 @@
     100% { box-shadow: 0 0 0 0 rgba(61, 186, 106, 0); }
   }
   .witness-strip { display: flex; gap: 3px; pointer-events: none; }
+  .witness-strip[hidden] { display: none !important; }
+  .witness-frames-toggle {
+    pointer-events: auto; min-height: 32px; padding: 5px 9px;
+    color: var(--ink-2); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; font: inherit; font-size: 11px; cursor: pointer;
+  }
+  .witness-frames-toggle:hover { border-color: var(--accent); color: var(--ink); }
+  .witness-frames-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .witness-strip img {
     width: 40px; height: 40px; object-fit: cover; border-radius: 3px;
     border: 1px solid var(--line-strong); background: var(--stage); display: block;
@@ -920,7 +928,7 @@
 .stage { display: flex; flex-direction: column; padding: 0; align-items: stretch; justify-content: flex-start; }
 .art-viewport { position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 60px 20px 16px; }
 .stage-readout { flex: 0 0 auto; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; border-top: 1px solid var(--line-strong); background: var(--panel); padding: 12px 16px; z-index: 5; }
-.stage-readout .status { position: static; grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 7px 18px; min-width: 0; height: 116px; overflow: auto; color: var(--ink); font-size: 12px; line-height: 1.55; letter-spacing: 0; pointer-events: auto; overflow-wrap: anywhere; }
+.stage-readout .status { position: static; grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 7px 18px; min-width: 0; min-height: 28px; max-height: 116px; overflow: auto; color: var(--ink); font-size: 12px; line-height: 1.55; letter-spacing: 0; pointer-events: auto; overflow-wrap: anywhere; }
 .stage-readout .status b { color: var(--ink); font-weight: 650; }
 .stage-readout .science-witness { flex: 1 0 100%; border-top: 1px solid var(--line); padding-top: 7px; }
 .stage-readout .witness { position: static; max-width: none; min-width: 0; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 8px; }
@@ -928,7 +936,7 @@
 .stage-readout .viewpad { position: static; align-self: end; }
 .app.focus .stage-readout { display: none; }
 .app.focus .art-viewport { padding: 12px; }
-@media(max-width:900px) { .stage { padding: 0; } .art-viewport { flex: none; height: min(46dvh,480px); min-height: 240px; padding: 58px 14px 12px; } .stage-readout { padding: 10px 12px; gap: 8px; } .stage-readout .status { height: auto; max-height: none; } .stage-readout .witness-strip { display: none; } .app.focus .art-viewport { height: calc(100dvh - 24px); } }
+@media(max-width:900px) { .stage { padding: 0; } .art-viewport { flex: none; height: min(46dvh,480px); min-height: 240px; padding: 58px 14px 12px; } .stage-readout { padding: 10px 12px; gap: 8px; } .stage-readout .status { height: auto; max-height: none; } .witness-frames-toggle { position: absolute; top: 8px; right: 12px; z-index: 6; min-height: 44px; } .app.focus .art-viewport { height: calc(100dvh - 24px); } }
 @media print { .art-viewport { display: contents; } .stage-readout { display: none !important; } }
 
 /* Short compositor-friendly interface transitions; no simulation timing changes. */
@@ -1598,6 +1606,7 @@ shall not be misrepresented as the original profile.
           <span class="live-fp" id="live-fp">——</span>
         </button>
         <div class="witness-strip" id="witness-strip" aria-hidden="true"></div>
+        <button class="witness-frames-toggle" id="btn-witness-frames" type="button" aria-controls="witness-strip" aria-expanded="true" title="Hide the recent frame thumbnails">Hide frames</button>
         <p class="witness-hint" id="witness-hint"></p>
       </div>
       <div class="viewpad" id="viewpad" role="toolbar" aria-label="Move around the plate">
@@ -1659,7 +1668,7 @@ shall not be misrepresented as the original profile.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. The equal-pair three-vortex collapse, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 135 sciences share one control surface,
+      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. The equal-pair three-vortex collapse, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 137 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1802,7 +1811,7 @@ shall not be misrepresented as the original profile.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 135 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 137 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
         Start a launcher in run/ to serve the folder on your own computer. No package installation,
@@ -2067,7 +2076,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
     "equation": "x\u1d62 \u2190 growth\u00b7x\u1d62; new primordium near argmin_\u03b8 \u03a3\u1d62 1/(|r\u2080(cos\u03b8,sin\u03b8)\u2212x\u1d62|\u00b2+\u03bb\u00b2)",
     "status": "validated within stated limits",
@@ -2115,7 +2124,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. \u03b1=0 grows a disk; \u03b1=2 is DLA-like; the transition at \u03b1=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "\u03a6\u2099 = \u03a6\u2099\u208b\u2081 \u2218 f_{\u03b8\u2099,c\u2099},   c\u2099 \u221d |\u03a6\u2032(e^{i\u03b8})|^{\u2212\u03b1}",
     "status": "unvalidated",
@@ -2134,7 +2143,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to \u03b7, is the attachment probability. \u03b7=1 is DLA; \u03b7\u2192\u221e is a ballistic needle; lightning lives in between.",
     "equation": "\u2207\u00b2\u03c6 = 0,   P(i) \u221d \u03c6\u1d62^\u03b7  on the growth interface",
     "status": "unvalidated",
@@ -2153,7 +2162,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses \u2014 vapor, quasi-liquid, ice \u2014 that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya\u2019s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on A\u1d9c;  freeze \u03ba;  attach by (n, b, \u03b1, \u03b2, \u03b8);  melt \u03bc, \u03b3",
     "status": "unvalidated",
@@ -2191,7 +2200,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "\u2202u/\u2202t = D\u2207\u00b2u + u(1 \u2212 u \u2212 a v \u2212 b w),  \u2202v/\u2202t = D\u2207\u00b2v + v(1 \u2212 v \u2212 a w \u2212 b u),  \u2202w/\u2202t = D\u2207\u00b2w + w(1 \u2212 w \u2212 a u \u2212 b v)",
     "status": "validated within stated limits",
@@ -2293,7 +2302,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "potts",
     "source": "src/modules/potts.js",
-    "sourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
+    "sourceSha256": "05aca9a79aab33dcdf0444082c985776fd86f29ba55da0384a2e1e202c5ef7b7",
     "reference": "The extended, area-constrained Potts model is Fran\u00e7ois Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n \u2212 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
     "equation": "H = \u03a3_\u27e8ij\u27e9 J(1 \u2212 \u03b4_{\u03c3i \u03c3j}) + \u03bb \u03a3_c (a_c \u2212 A)\u00b2;   accept a copy with min(1, e^{\u2212\u0394H/T})",
     "status": "unvalidated",
@@ -2696,7 +2705,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n\u00b2, because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "\u2202w/\u2202t = a \u2212 w \u2212 w n\u00b2 + v \u2202w/\u2202x + D_w\u2207\u00b2w,   \u2202n/\u2202t = w n\u00b2 \u2212 m n + \u2207\u00b2n",
     "status": "validated within stated limits",
@@ -2809,19 +2818,19 @@ shall not be misrepresented as the original profile.
   {
     "id": "skin",
     "source": "src/modules/skin.js",
-    "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
+    "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H\u2020.",
-    "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{\u2212g},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
+    "equation": "(H\u03c8)_j = e^{g} \u03c8_{j\u22121} + e^{\u2212g} \u03c8_{j+1},   \u03c8_n(j) \u221d e^{g j} sin(\u03c0 n j / (N+1))",
     "status": "validated within stated limits",
     "limitations": [
-      "Evidence is the open chain with on-site disorder below 0.04, where the plate is the closed form and not a diagonalization. Disordered and periodic paths use subspace iteration with Gram-Schmidt and are not right eigenvectors. They are excluded.",
+      "Evidence is limited to the open clean chain (disorder 0), where the plate uses the closed form. The current right-eigenvector solver uses symmetric QL for disordered open chains and Francis QR with inverse iteration for periodic chains; these paths are outside this validation. The legacy Gram-Schmidt path is not a right-eigenvector solver and is also excluded.",
       "Finite N only. Eigenvalues must match 2 cos(pi n/(N+1)) to 1e-8 and sign-aligned right eigenvectors must match the closed form to 1e-6, both checked for N \u003c= 48. The tab's Float32 densities match that ED reference to 1e-6 on grids 48, 64 and 96. No infinite-volume or laboratory claim.",
       "The probability length 1/(2|g|) is a regression test, not a prediction: once the right eigenvectors match e^{g j} sin(pi n j/(N+1)), the log ratio of |psi|^2 on sine-conjugate sites is forced by the closed form, so the length follows. It is read from the log slope of |psi|^2 on sine-conjugate sites, not the amplitude length 1/|g| and not the mean distance from the right end. That mean is shifted by the boundary node (14.41 sites for N=64, g=0.08, mode 1, against a probability length of 6.25).",
       "The default plate draws at most one row per mode. On this source, grid 96 and aspect 4:5 is 96 rows and skin weight 0.780, the same modes as aspect 1:1 (validation/results/skin-rows.json). Recipes before v8 keep the sheet height, 120 rows and weight 0.773 on that sheet, and the status line says so. Those old recipes are outside this claim.",
       "The Chromium print covers two open clean fixtures on this source, both grid 96, g = 0.08, disorder 0, log view, 96 by 96 cells: aspect 4:5 at 1920 by 2400 (111595 bytes) and aspect 1:1 at 2400 by 2400 (128100 bytes). Both report skin weight 0.779865. Colour is not calibrated. Disordered and periodic paths are not printed."
     ],
     "remaining": [
-      "A right-eigenvector treatment of on-site disorder and of periodic ends is still open. The Gram-Schmidt path is not validated."
+      "Validate the current disordered open-chain and periodic right-eigenvector paths against independent references. The legacy Gram-Schmidt path remains outside this claim."
     ],
     "numerical": [
       {
@@ -2832,7 +2841,7 @@ shall not be misrepresented as the original profile.
         "criteria": "Max abs eigenvalue error \u003c 1e-8 (measured 2.83e-15). Sign-aligned eigenvector max abs error \u003c 1e-6 (measured 2.08e-14). Nonsymmetric residual \u003c 1e-8 (measured 5.22e-15). Tab amp versus ED |psi|^2 max abs error \u003c 1e-6 (measured 2.64e-8). Probability length within 1 percent of 1/(2|g|) (largest relative error about 3e-13; N=64, g=0.08 gives 6.25 sites), a regression test forced by the closed form once the eigenvectors match. g=0.08 on grid 96 piles on the right (right tenth 0.780, left tenth 8.5e-7).",
         "benchmark": "Eigenvalues 2 cos(pi n/(N+1)) and right eigenvectors proportional to e^{g j} sin(pi n j/(N+1)), compared with an independent symmetric-tridiagonal QL after the diagonal similarity. The tab is the subject. exactModes is not the reference.",
         "failureControl": "On the real module, g -> -g moves the pile to the left tenth and fails the piles-on-the-right predicate (right tenth > 0.45 and greater than the left) that g=+0.08 passes. g=0 fails the same predicate (right tenth 0.104, near the site fraction 0.1). replaceOnce of Math.exp(gg * j) by Math.exp(-gg * j) at g=0.08 misses the ED probabilities by 0.274 and so fails the 1e-6 match. A sign-flipped envelope also fails the positive probability-length predicate.",
-        "limitations": "Open clean chain only. Disordered and periodic Gram-Schmidt paths are not eigenpairs and are not tested. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
+        "limitations": "Open clean chain only. Disordered, periodic and legacy Gram-Schmidt paths are not tested here. Finite N. The probability-length check is a regression test. New recipes draw at most N rows; the sheet-height count is a legacy recipe and is outside this comparison."
       },
       {
         "test": "tools/skin-rows.js",
@@ -2861,7 +2870,7 @@ shall not be misrepresented as the original profile.
     "results": "validation/results/skin-science.json",
     "domain": {
       "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.02, 0.03, 0.05, 0.08, 0.12, 0.15}. Spectrum N in {12, 24, 32, 48}. Tab grids 48, 64 and 96 at aspect 1:1, and the row cap at N 48, 96 and 192 on 1:1, 4:5, 5:4 and 16:9. Probability length at N in {48, 64}, g in {0.03, 0.08, 0.12}, modes 1, 2, 3 and round(N/8). Print fixtures: grid 96, g=0.08, disorder 0, open ends, log view, aspects 4:5 and 1:1, both 96 by 96 cells.",
-      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, disorder at or above 0.04, and recipes before v8 (sheet height, Gram-Schmidt) are outside the domain. Exports must preserve amp.",
+      "conditions": "Open ends, zero diagonal, rightward hop e^{g} and leftward hop e^{-g}, no on-site disorder. One row per eigenmode. Initial state is the full set of right eigenmodes, not a time-evolved wave packet. Periodic boundaries, nonzero disorder, and recipes before v8 (sheet height, Gram-Schmidt) are outside the validated domain. Exports must preserve amp.",
       "resolution": "One site per column. Eigenvalue and eigenvector checks at N \u003c= 48. Tab density checks at N = 48, 64, 96. Drawn rows = min(N, sheet height). Prints: 1920 by 2400 and 2400 by 2400, longest edge 2400.",
       "precision": "Binary64 QL reference and residuals. The tab stores row-normalized |psi|^2 in Float32. Acceptance: eigenvalues \u003c 1e-8, eigenvectors \u003c 1e-6, tab versus ED \u003c 1e-6, probability length relative error \u003c 0.01. Measured errors are in validation/results/skin-science.json and validation/results/skin-rows.json."
     }
@@ -3276,7 +3285,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "schrodinger",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
+    "sourceSha256": "f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287",
     "reference": "Erwin Schr\u00f6dinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re\u00b2 + Im\u208b Im\u208a is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979. Typed formula entry follows VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "i \u2202\u03c8/\u2202t = \u2212\u00bd \u2207\u00b2\u03c8 + V \u03c8   (\u0127 = m = 1);   Re \u03c8 on integer steps, Im \u03c8 on half steps",
     "status": "validated within stated limits",
@@ -3347,7 +3356,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: \u2202u/\u2202t = \u2207\u00b2u + u(1\u2212u)(u \u2212 (v+b)/a)/\u03b5,  \u2202v/\u2202t = u \u2212 v;   FHN: \u2202u/\u2202t = \u2207\u00b2u + u \u2212 u\u00b3 \u2212 v,  \u2202v/\u2202t = D\u2207\u00b2v + \u03b5(u \u2212 a v \u2212 b)",
     "status": "validated within stated limits",
@@ -3540,7 +3549,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "swarm",
     "source": "src/modules/swarm.js",
-    "sourceSha256": "f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c",
+    "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
     "reference": "Kevin P. O\u2019Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
     "equation": "\u1e8b\u1d62 = (1/N) \u03a3\u2c7c [ (x\u2c7c\u2212x\u1d62)/r\u1d62\u2c7c \u00b7 (1 + J cos \u0394\u03b8) \u2212 (x\u2c7c\u2212x\u1d62)/r\u1d62\u2c7c\u00b2 ],   \u03b8\u0307\u1d62 = (K/N) \u03a3\u2c7c sin(\u0394\u03b8)/r\u1d62\u2c7c",
     "status": "unvalidated",
@@ -3644,19 +3653,19 @@ shall not be misrepresented as the original profile.
   {
     "id": "aubry",
     "source": "src/modules/aubry.js",
-    "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
-    "reference": "S. Aubry and G. Andr\u00e9, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past \u03bb = 1 every eigenstate localizes. With unit hopping the potential is 2\u03bb cos(2\u03c0 \u03b2 n), and the model is self-dual: momentum-space at \u03bb is real-space at 1/\u03bb, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
+    "sourceSha256": "f12d138b2bf3ca3ac5404020ad6deb421859f83c08afe3e35a3295cf6e338c73",
+    "reference": "S. Aubry and G. Andr\u00e9, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past \u03bb = 1 every eigenstate localizes. With unit hopping the potential is 2\u03bb cos(2\u03c0 \u03b2 n), and the model is self-dual: momentum-space at \u03bb is real-space at 1/\u03bb, so the transition sits exactly at 1. The plate shows a finite periodic golden-ratio chain after a fixed number of imaginary-time steps; convergence to its ground state is not established.",
     "equation": "\u03c8_{n+1}+\u03c8_{n-1} + 2\u03bb cos(2\u03c0 \u03b2 n) \u03c8_n = E \u03c8_n,   \u03b2 = (\u221a5-1)/2,   localized for \u03bb>1",
     "status": "unvalidated",
     "limitations": [
-      "Status is unvalidated. tools/aubry-science.js hashes src/modules/aubry.js and never executes it. The evidence is an independent transfer-matrix Lyapunov exponent of the textbook almost Mathieu operator, recorded in validation/AUBRY.md. It is not a check of the on-screen inverse participation ratio.",
-      "The drawn plate is a fixed-step imaginary-time relaxation of one Gaussian start. That relaxation, its ground-state claim, and the status-line IPR are outside the measurement. The print check preserves a field whose correctness is untested.",
+      "Status is unvalidated. The actual fixed-step module now agrees with an independent spectral propagation on 36 finite periodic fixtures, but zero fixtures pass the declared converged-ground-state criteria (residual \u003c= 1e-6, energy error \u003c= 1e-6, density L1 error \u003c= 1e-3). This verifies its finite iteration, not the ground-state claim.",
+      "The drawn state is fixed-step imaginary-time relaxation from one Gaussian start. At the default over three stated seeds, eigenvector residual is 0.238 to 0.285 and energy excess is 0.162 to 0.234 above the independently diagonalized finite-ring ground energy. Browser export preserves an unconverged state. The credit, blurb and status line say so.",
       "Finite transfer lengths 256 and 2048, one phase, and the inverse golden ratio. Not a proof, not every irrational, and not the periodic ring the plate draws.",
       "At \u03bb = 1 the exponent is reported and is not asserted to equal 0 at these lengths.",
       "The \u03bb = 1 self-dual correction matches the potential the plate uses. That label fix is not a validation of the relaxation."
     ],
     "remaining": [
-      "Promoting the record needs a test that executes the plate's own relaxation and can fail if that field is wrong.",
+      "Converge a user-reachable finite-ring ground state and verify its residual, energy and density against the independent Jacobi oracle before any promotion. A solver change must preserve existing recipes.",
       "Review the transfer-matrix evidence in validation/AUBRY.md on its own. It does not validate the drawn chain."
     ],
     "numerical": [
@@ -3669,6 +3678,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Rational \u03b2=1/3 at \u03bb=2 and \u03bb=3, same tolerance 0.012 and the same transfer length: the in-band exponent and the E=0 exponent must both fail |\u03b3-log(\u03bb)| \u003c 0.012. A potential \u03bb cos (the other convention) and an un-normalized product must fail that test too.",
         "command": "node tools/aubry-science.js --write",
         "results": "validation/results/aubry-science.json"
+      },
+      {
+        "test": "tools/aubry-relaxation.js",
+        "command": "node tools/aubry-relaxation.js --write",
+        "results": "validation/results/aubry-relaxation.json",
+        "scope": "Execute actual maintained compute with the engine RNG on nine finite periodic recipes and four explicit seeds each. Compare finite Euler evolution, Rayleigh energy, eigenvector residual and density with independent dense-matrix Jacobi eigenpairs.",
+        "criteria": "Spectral propagation L2 error below 1e-10, reference eigenpair residual below 1e-10, normalized state and correct IPR/display diagnostics. Separately report ground-state acceptance: residual \u003c= 1e-6, energy error \u003c= 1e-6, density L1 \u003c= 1e-3. All 36 finite evolutions pass; all 36 ground-state criteria fail.",
+        "benchmark": "Independently assembled periodic even-ring A = 2I - adjacency + diag(2 lambda cos(2 pi beta n)), beta=(sqrt(5)-1)/2, diagonalized by tools/lib/ssh-reference.js. Exact free-ring ground energy and uniform density anchor the oracle. Spectral application of (I-dt A)^steps independently checks the module loop.",
+        "failureControl": "An exact reference ground vector passes and its one-site shift fails the same ground-state predicate. Flipping the actual module hopping sign fails independent finite propagation (L2 0.474 against 1e-10).",
+        "limitations": "A completed audit records failed scientific criteria and does not promote the technique. Explicit seeds are fixtures, not confidence intervals. Finite periodic chain only; not infinite-line localization, the thermodynamic limit or experiment."
       }
     ],
     "print": [
@@ -3683,7 +3702,7 @@ shall not be misrepresented as the original profile.
         "limitations": "State preservation and declared dimensions only. The plate is a fixed-step imaginary-time relaxation and its IPR is not the transfer-matrix measurement."
       }
     ],
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/aubry-science.json",
     "domain": {
       "parameters": "\u03bb in {0.3, 0.6, 1, 1.5, 2, 3}, \u03b2=(\u221a5-1)/2, phase 0, potential 2\u03bb cos(2\u03c0 \u03b2 n), unit hopping. Failure controls: \u03b2=1/3 at \u03bb in {2, 3}, and potential factor 1 instead of 2 at \u03bb in {2, 3}.",
@@ -4080,7 +4099,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (\u2207\u00b2+1)\u00b2(\u2207\u00b2+q\u00b2)\u00b2 and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(\u03c0/12) \u2248 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "\u2202t\u03c8 = \u03b5\u03c8 \u2212 (\u2207\u00b2+1)\u00b2(\u2207\u00b2+q\u00b2)\u00b2\u03c8 + \u03b1 \u03c8\u00b2 \u2212 \u03c8\u00b3,   q = 2 cos(\u03c0/12)",
     "status": "unvalidated",
@@ -4137,7 +4156,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "The complex Ginzburg\u2013Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969\u201371). The (\u03b1, \u03b2) plane was mapped by Aranson and Kramer: Benjamin\u2013Feir when 1+\u03b1\u03b2\u003c0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "\u2202A/\u2202t = \u03bcA + (1 + i\u03b1) \u2207\u00b2A \u2212 (1 + i\u03b2) |A|\u00b2 A",
     "status": "validated within stated limits",
@@ -4491,7 +4510,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and Ren\u00e9 Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. Istv\u00e1n Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry. Typed reaction terms follow VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "Schnakenberg: \u2202u/\u2202t = \u2207\u00b2u + a \u2212 u + u\u00b2v,  \u2202v/\u2202t = D\u2207\u00b2v + b \u2212 u\u00b2v;   Brusselator: \u2202u/\u2202t = \u2207\u00b2u + a \u2212 (b+1)u + u\u00b2v,  \u2202v/\u2202t = D\u2207\u00b2v + bu \u2212 u\u00b2v",
     "status": "validated within stated limits",
@@ -4765,8 +4784,8 @@ shall not be misrepresented as the original profile.
     "equation": "\u2207\u00b2B = B/\u03bb\u00b2,   B(r) = B0 I0(r/\u03bb) / I0(R/\u03bb)   (cylinder)",
     "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Complete evidence covers only the disk that clears the frame (R \u003c min(W, H)/2 - 1) at slider settings, multigrid, Relax 40 to 240, as measured in validation/results/meissner-science.json, and the three printed fixtures in validation/results/meissner-print-state.json.",
+      "Verification is of the constant-parameter London disk boundary-value problem via the order-zero modified Bessel equation and independent I0 series (NIST DLMF 10.25). No laboratory material or full experimental equivalence is claimed.",
+      "Evidence covers only the 16 enumerated numerical fixtures in validation/results/meissner-science.json and the three source-matched browser fixtures in validation/results/meissner-print-state.json. Every circle clears the frame (R \u003c min(W, H)/2 - 1). It is not a sweep of all slider combinations.",
       "From recipe v7 the plate solves the London disk with cell-centred multigrid and a Shortley-Weller rim. Max |B - B0 I0(r/\u03bb)/I0(R/\u03bb)| on the tested plates is 7.664241e-4 (grid 96, \u03bb = 4, R = 16). The default is 1.264776e-4 in 14 cycles. The gap shrinks as 1/\u03bb\u00b2 (order 1.95 when \u03bb and R double).",
       "A disk that runs into the frame is a different boundary and is outside this comparison. Recipes older than v7 keep Jacobi, which at 240 sweeps is still 0.575 from I0 on the default disk, and are outside this domain.",
       "The print check is field preservation and the I0 bound on three fixtures. It is not calibrated color, and it does not cover every slider."
@@ -4799,12 +4818,12 @@ shall not be misrepresented as the original profile.
       }
     ],
     "domain": {
-      "parameters": "Multigrid, recipe v7. Slider ranges grid 96 to 224, \u03bb 4 to 40, R 16 to 80, Relax 40 to 240, aspects 1:1, 4:5, 5:4 and 16:9, only where R \u003c min(W, H)/2 - 1. The printed fixtures are the default (grid 160, 1:1, \u03bb 10, R 48, Relax 90), portrait (160, 4:5, \u03bb 10, R 48, Relax 40) and wide (224, 16:9, \u03bb 10, R 40, Relax 40).",
-      "conditions": "Cell-centred disk, B = B0 on the rim, Shortley-Weller boundary, homogeneous Dirichlet outside the circle. Interior compared with B0 I0(r/\u03bb)/I0(R/\u03bb). Print: real exportPNG at 8 in and 300 ppi on the longest edge; field words, metric, cycle count and settings preserved; wrong-dimension and post-export mutation rejected.",
+      "parameters": "Multigrid, recipes v7 and later. The 16 numerical fixtures are default, default-at-cap-floor, expel, thin, deep, log, small, tight, min-grid, deep-large, portrait, landscape, wide, refine-8, refine-16 and refine-20, with exact parameters in validation/results/meissner-science.json. The three print fixtures are default (grid 160, 1:1, lambda 10, R 48, Relax 90), portrait (160, 4:5, lambda 10, R 48, Relax 40) and wide (224, 16:9, lambda 10, R 40, Relax 40). Unlisted combinations are outside this evidence.",
+      "conditions": "Cell-centred disk, B = B0 on the rim, Shortley-Weller boundary, nonzero Dirichlet value B/B0 = 1 on the circle. Interior compared with B0 I0(r/\u03bb)/I0(R/\u03bb). Print: real exportPNG at 8 in and 300 ppi on the longest edge; field words, metric, cycle count and settings preserved; wrong-dimension and post-export mutation rejected.",
       "resolution": "Max |B - I0| is 7.664241e-4 over the numerical fixtures and 1.337704e-4 on the printed wide plate. The default print is 1.264805e-4 in 14 cycles, 160x160 cells, PNG 2400x2400, zero changed words (validation/results/meissner-science.json, validation/results/meissner-print-state.json).",
       "precision": "Float64 multigrid stored in a Float32 field. RGBA8 PNG. The I0 series is independent and cut at 1e-18 of the sum."
     },
-    "reviewed": "2026-09-27",
+    "reviewed": "2026-09-29",
     "results": "validation/results/meissner-science.json"
   },
   {
@@ -4879,7 +4898,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2\u221a(aD) \u003c c/2 \u2212 D \u2212 a.",
     "equation": "\u2202u/\u2202t = \u2207\u00b2u \u2212 \u2207\u00b7(\u03c7(u)\u2207v) + u(1 \u2212 u),   \u2202v/\u2202t = D\u2207\u00b2v + u \u2212 a v,   \u03c7(u) = c u/(1 + u\u00b2)",
     "status": "validated within stated limits",
@@ -4940,7 +4959,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains \u2014 an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse\u2013hyperbola pair",
     "status": "unvalidated",
@@ -5134,26 +5153,47 @@ shall not be misrepresented as the original profile.
   {
     "id": "chirikov",
     "source": "src/modules/swarm.js",
-    "sourceSha256": "f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c",
+    "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
     "reference": "Boris V. Chirikov, Physics Reports 52, 263 (1979); the map itself in 1969. The Chirikov\u2013Taylor standard map is the Poincar\u00e9 section of a kicked rotor, and the textbook picture of Kolmogorov\u2013Arnold\u2013Moser theory: as K grows, invariant curves break, islands shrink, and a chaotic sea floods the torus. The last golden KAM curve dies at K \u2248 0.971635.",
     "equation": "p\u2099\u208a\u2081 = p\u2099 + K sin \u03b8\u2099,   \u03b8\u2099\u208a\u2081 = \u03b8\u2099 + p\u2099\u208a\u2081   (mod 2\u03c0)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Paused fixed-work replay and PNG preservation are checked in docs/CHIRIKOV-REPLAY.md; live accumulation and historical wall-clock initialization are not recipe checkpoints. No KAM threshold or asymptotic Lyapunov validation is claimed."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/chirikov-replay-check.js",
+        "command": "node tools/chirikov-replay-check.js --write",
+        "results": "validation/results/chirikov-replay-check.json",
+        "scope": "Five finite paused fixtures against an independent map/tangent/histogram transcription; exact iteration and burn counts, zero kick, seed/work/sign controls. Not a primary-source or asymptotic chaos validation.",
+        "benchmark": "Independent transcription of the standard-map momentum/angle and tangent updates, with all walker fields and Float32 bin sums compared for five finite fixtures.",
+        "failureControl": "Wrong kick sign changes the oracle density; altered seed and iteration count change state; any wall-clock access during paused initialization throws.",
+        "criteria": "Exact walker-state and density/Lyapunov/orbit-color histogram equality, count=orbits*iters and hits=orbits*max(0,iters-burn), integer budgets, finite orbit fallback and K=0 retained.",
+        "limitations": "Five finite recipes at 400 orbits and 40 to 220 kicks; no primary-source equivalence, KAM threshold, long-time convergence or Lyapunov uncertainty claim."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/chirikov-print-state.js",
+        "command": "node tools/chirikov-print-state.js --write",
+        "results": "validation/results/chirikov-print-state.json",
+        "scope": "Actual paused hash replay, changed seed/work, iteration control, reduced motion and shell PNG with exact accumulated state preservation on one Chromium renderer.",
+        "criteria": "Exact same-hash pixels and three accumulated fields on reload; changed seed/work must change pixels; PNG leaves histograms and all walkers unchanged; reduced motion agrees; iteration control restores same state.",
+        "limitations": "One Chromium renderer and a paused 400-orbit, 80-kick recipe, with adjacent work/seed controls. Live accumulation is not a checkpoint; no calibrated-color or cross-platform pixel guarantee."
+      }
+    ]
   },
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux \u03b1 (in flux quanta per plaquette) has a spectrum that is a fractal in the (\u03b1, E) plane \u2014 the butterfly. Gaps carry Chern numbers; Avron colored them. At rational \u03b1=p/q the Harper matrix is q\u00d7q.",
     "equation": "\u03c8\u2099\u208a\u2081 + \u03c8\u2099\u208b\u2081 + 2 cos(2\u03c0 n \u03b1) \u03c8\u2099 = E \u03c8\u2099",
     "status": "validated within stated limits",
@@ -5259,7 +5299,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic \u2014 and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "\u2207\u00b2\u03c8 + k\u00b2 \u03c8 = 0  on \u03a9,   \u03c8 = 0 on \u2202\u03a9",
     "status": "unvalidated",
@@ -5327,7 +5367,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "Michael V. Berry\u2019s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s \u2207h(x),   I(X) = \u03a3 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -5447,7 +5487,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T = 2 d\u00b2/\u03bb and as a half-period image at z_T/2 = d\u00b2/\u03bb. Depth on this plate is in units of d\u00b2/\u03bb, so slider value 2 is one Talbot length and 1 is the half-period image. Between them the near field is a carpet of fractional revivals.",
     "equation": "I(x,z) = |\u03a3\u2099 a\u2099 exp(i 2\u03c0 n x/d \u2212 i \u03c0 n\u00b2 z)|\u00b2,   z in d\u00b2/\u03bb, revival at 2,   z_T = 2 d\u00b2/\u03bb",
     "status": "validated within stated limits",
@@ -5564,7 +5604,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6",
+    "sourceSha256": "4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "\u0393 = \u27e8a, b\u27e9  Schottky,   \u039b(\u0393) = \u2229 g\u2208\u0393 g(\u0108 \\ \u03a9)",
     "status": "unvalidated",
@@ -5665,7 +5705,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "convection",
     "source": "src/modules/wavesflow.js",
-    "sourceSha256": "29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b",
+    "sourceSha256": "f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287",
     "reference": "Henri B\u00e9nard, Revue g\u00e9n\u00e9rale des Sciences pures et appliqu\u00e9es 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for \u03c8, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "\u2202\u03c9/\u2202t + u\u00b7\u2207\u03c9 = \u221a(Pr/Ra) \u2207\u00b2\u03c9 + \u2202T/\u2202x,   \u2202T/\u2202t + u\u00b7\u2207T = \u2207\u00b2T/\u221a(Ra Pr),   \u2207\u00b2\u03c8 = \u2212\u03c9,   u = \u2202\u03c8/\u2202y, v = \u2212\u2202\u03c8/\u2202x",
     "status": "validated within stated limits",
@@ -7251,9 +7291,88 @@ shall not be misrepresented as the original profile.
       }
     ],
     "print": []
-  }
+  },
+  {
+    "id": "hopfield",
+    "source": "src/modules/hopfield.js",
+    "sourceSha256": "c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b",
+    "reference": "John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.",
+    "equation": "w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i \u003c- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j",
+    "status": "unvalidated",
+    "limitations": [
+      "Finite binary associative memory, not a general AI model or a capacity claim.",
+      "Random and correlated geometric memories have different recall behavior; descent does not guarantee target recovery.",
+      "Numerical checks cover bounded fixtures; full parameter and independent scientific review remain open."
+    ],
+    "remaining": [
+      "Review the bipolar specialization and assumptions against the primary model.",
+      "Extend independent finite-size and basin statistics with honest uncertainty.",
+      "Review browser print evidence across supported engines."
+    ],
+    "numerical": [
+      {
+        "test": "tools/hopfield-science.js",
+        "scope": "21 finite 8x8 seeded recipes and five exhaustive positive-overlap N=4 cues.",
+        "criteria": "Exact state updates; dense field and energy within 1e-8, nonincreasing energy within 1e-9, single-memory recall for M>1.",
+        "limitations": "No capacity estimate or basin coverage beyond the explicit fixtures.",
+        "benchmark": "Independent dense Hebbian matrix and full quadratic energy; analytic single-memory positive-overlap recovery.",
+        "failureControl": "Reverse-sign updates and missing diagonal subtraction rejected; overloaded and inverse-memory misses retained.",
+        "command": "node tools/hopfield-science.js --write",
+        "results": "validation/results/hopfield-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/hopfield-print-state.js",
+        "scope": "Default, all six presets and a 24x24 portrait fixture, 2400px longest edge.",
+        "criteria": "Correct PNG dimensions; three SVG cells per neuron; exact PNG cell-center colors from exported binary data; square cells; unchanged and deterministic state.",
+        "limitations": "These fixtures only; direct module paths, with real UI exports checked separately.",
+        "command": "node tools/hopfield-print-state.js --write",
+        "results": "validation/results/hopfield-print-state.json"
+      }
+    ]
+  },
+{
+  "id": "flow-matching",
+  "source": "src/modules/flow-matching.js",
+  "sourceSha256": "67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c",
+  "reference": "Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.",
+  "equation": "X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²",
+  "status": "unvalidated",
+  "limitations": [
+    "Analytic Gaussian-mixture marginal vector field, not a trained neural model or an image generator.",
+    "Finite Float64 RK4 trajectories; selected convergence and ensemble moment checks do not establish uniform error over every recipe.",
+    "Aesthetic trajectory framing may crop points; the data export retains the full sample."
+  ],
+  "remaining": [
+    "Independent review of the analytic marginalization and finite numerical tests.",
+    "Broader small-width, many-mode and extreme-tail convergence coverage before any status promotion."
+  ],
+  "numerical": [
+    {
+      "test": "tools/flow-matching-science.js",
+      "command": "node tools/flow-matching-science.js --write",
+      "results": "validation/results/flow-matching-science.json",
+      "scope": "Selected exact single-Gaussian paths, one five-component spiral mixture, continuity residual, RK4 refinement, eight independent seeds of2048 particles.",
+      "criteria": "Exact path error below1e-6 at64 steps with refinement ratios above10; continuity residual below1e-7; mixture refinement ratios above8; five target moments within6 standard errors across8 seeds.",
+      "benchmark": "Exact single-Gaussian trajectory t*mu+sqrt((1-t)^2+t^2*sigma^2)*z; closed-form Gaussian-mixture density, mean and second moments.",
+      "failureControl": "Sign-flipped velocity fails the continuity residual; untransported standard-normal samples fail the identical target-moment acceptance predicate.",
+      "limitations": "One mixture and selected paths, no learned model or physical experiment. Conservative six-standard-error moment gate is not a simultaneous confidence certificate."
+    }
+  ],
+  "print": [
+    {
+      "test": "tools/flow-matching-print.js",
+      "command": "node tools/flow-matching-print.js --write",
+      "results": "validation/results/flow-matching-print.json",
+      "scope": "Three static recipes, actual2400 square pixel module PNG/SVG exports, every Float64 trajectory word, finite values, recipe and deterministic replay. The default and five presets also pass tools/export.js through the real UI.",
+      "criteria": "Dimensions2400x2400, nonblank raster, exact data/state preservation and replay, one circle perparticle plus one path perparticle when trails are enabled; deliberate changed trajectory must fail.",
+      "limitations": "One Chrome renderer and three recipes; no calibrated-color, scientific generalization or learned-model-quality claim."
+    }
+  ]
+}
 ]</script>
-<script type="application/json" id="build-info">{"build":"8faed5fdde0d","fingerprint":"8faed5fdde0d722610373b275e4e40b1097410cd0b2a923a90474a28c9511679","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/arctic-exact.js":"456d3e0f3eecd9092923092ed367b14d971643a965916b7f3959d7e498dd42a7","src/shared/expr.js":"817d9354c12df378314589983eb40955cef1fac3a93f4590a4a4b5a6076480a2","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"45ff178b3bc170e80f080381b33f2afea505726537935dbbe9dd4491f84c341c","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"cb59394cd305ba4f8733f2f6fc6558347378deedee95c27025eff1981fa134f6","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"29e96bc1043f62343c7383da51a0bf9df6785bf9d0049a54cfbbdf746550bf2b","src/modules/dynamics.js":"2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee","src/modules/rdx.js":"f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b","src/modules/aztec.js":"d45f78d9015863c56efa31b81add791fbf3f4a6a5893d4aa48d8a57bf9c0f436","src/modules/sle.js":"acf2da32a624b7929a0ca999d221d85207f67b2533413f625769a4cdf4db998f","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"3aa51b57d93a508f7571bfb953f68895dae8a8ad3bf106ec5f98d618b36c6f50","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"9c209196dc9bb76e7c29947b79022fdb08b9ec8e3a65803ad7df964eab7cdefc","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"1d07c1199bde099a1fe85c071b49c98a45321a73006535792de938c201e9816b","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"34a6a410c7b900c77ee4b78389d36dc4f19fb659753e5fbfec847346edf58d94","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"abc48f1c2e319fdb8a9489d7a9a556c010f1f574fc2ab34b182dfb6adc342894","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"fc890ab432a44d9dc96c5dc7f82c014ca9ed78e1931868014750e67d8b059b7f","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"8e3fed41a6ee5628190f560c90d66b844e337894c4cd4989b3aef05fde41c66f","src/modules/parallelogram-lock.js":"299fc7d917ef3d3c322e5fc26aabbc0ed5f02085a7194ea44eb007633b5d52b1","src/modules/quincunx-lock.js":"c0b5b895627738df2bd7f54108a4764d145daa4606c7c0c2ba54d384b8ac4805","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/neural-field.js":"8b9f41aafe788dbeba9cbdffcbd094df95f7aefb7b2c7a348b2127e993da8b9d","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/modules/fisher-kpp.js":"d40a71d9e8920f4300b502ebf896b194f7364676f3c93d98c1db1a9b5af15934","src/modules/cattaneo.js":"3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e","src/modules/dptangle.js":"d8bde8fca0e94f9df16c1bcd4dbdd0f0a950eaa907d8ce8989c5c7794c837b73","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","phase":"src/modules/dynamics.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","neural-field":"src/modules/neural-field.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","dptangle":"src/modules/dptangle.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","cattaneo":"src/modules/cattaneo.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","fisher-kpp":"src/modules/fisher-kpp.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"partially validated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"validated within stated limits","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"partially validated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"validated within stated limits","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","phase":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"validated within stated limits","meissner":"validated within stated limits","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"partially validated","chirikov":"unvalidated","hofstadter":"validated within stated limits","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"validated within stated limits","orbitals":"partially validated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","neural-field":"partially validated","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits","fisher-kpp":"unvalidated","cattaneo":"unvalidated","dptangle":"unvalidated"}}</script>
+<script type="application/json" id="build-info">{"build":"1239ade6c504","fingerprint":"1239ade6c504bc4c47c05552361afc6c1c5aee689bba74c741dfd3c41eaf9f07","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/arctic-exact.js":"456d3e0f3eecd9092923092ed367b14d971643a965916b7f3959d7e498dd42a7","src/shared/expr.js":"817d9354c12df378314589983eb40955cef1fac3a93f4590a4a4b5a6076480a2","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"bc60e2ab4580794425fe633ccb12c956ff942a9b7bd7fd6cb56f3159291b2b03","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"996d7f967ab599b00f78d5b06f328dfc6316f01876e0847ff20b8099fd97b564","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"935a84b1ce0788bf5c486b312444316a7ed0ca265277f8b79a5e4f4c4694c9da","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"4827d6046aa06a8f0dacba2b7a46174dd0a52d11dfa5e548cdaa6c2e381f6ae3","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"f86c1cffc75f75b365ae47d844e8fa4927bf6401d8a759b8624bf6f2898c1287","src/modules/dynamics.js":"2be0dd45c8f45264d3769a9c6a816c64d5667f1c98965bd4b8ac8cae373408ee","src/modules/rdx.js":"54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99","src/modules/aztec.js":"d45f78d9015863c56efa31b81add791fbf3f4a6a5893d4aa48d8a57bf9c0f436","src/modules/sle.js":"acf2da32a624b7929a0ca999d221d85207f67b2533413f625769a4cdf4db998f","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"05aca9a79aab33dcdf0444082c985776fd86f29ba55da0384a2e1e202c5ef7b7","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"3aa51b57d93a508f7571bfb953f68895dae8a8ad3bf106ec5f98d618b36c6f50","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"9c209196dc9bb76e7c29947b79022fdb08b9ec8e3a65803ad7df964eab7cdefc","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"f12d138b2bf3ca3ac5404020ad6deb421859f83c08afe3e35a3295cf6e338c73","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"1d07c1199bde099a1fe85c071b49c98a45321a73006535792de938c201e9816b","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"34a6a410c7b900c77ee4b78389d36dc4f19fb659753e5fbfec847346edf58d94","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"97cef6e87d1be5c94cf06d71e66f61935f3c17309eb966b5e31e20543ea013f3","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"abc48f1c2e319fdb8a9489d7a9a556c010f1f574fc2ab34b182dfb6adc342894","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"fc890ab432a44d9dc96c5dc7f82c014ca9ed78e1931868014750e67d8b059b7f","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"8e3fed41a6ee5628190f560c90d66b844e337894c4cd4989b3aef05fde41c66f","src/modules/parallelogram-lock.js":"299fc7d917ef3d3c322e5fc26aabbc0ed5f02085a7194ea44eb007633b5d52b1","src/modules/quincunx-lock.js":"c0b5b895627738df2bd7f54108a4764d145daa4606c7c0c2ba54d384b8ac4805","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/neural-field.js":"8b9f41aafe788dbeba9cbdffcbd094df95f7aefb7b2c7a348b2127e993da8b9d","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/modules/fisher-kpp.js":"d40a71d9e8920f4300b502ebf896b194f7364676f3c93d98c1db1a9b5af15934","src/modules/cattaneo.js":"3689020328e0d7afd746d272a18e31d2f0b853552bd845b27e682a7a0e24d54e","src/modules/dptangle.js":"d8bde8fca0e94f9df16c1bcd4dbdd0f0a950eaa907d8ce8989c5c7794c837b73","src/modules/flow-matching.js":"67154766afc0a720ff879edb529f5a883d66b37cd2cae8499d7df2d33634584c","src/modules/hopfield.js":"c80897694c3228ca3e31d195e68586e25b4171e2f61210f9df834c2904d9fc7b","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","phase":"src/modules/dynamics.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","neural-field":"src/modules/neural-field.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","dptangle":"src/modules/dptangle.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","hopfield":"src/modules/hopfield.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","cattaneo":"src/modules/cattaneo.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","fisher-kpp":"src/modules/fisher-kpp.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js","flow-matching":"src/modules/flow-matching.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"partially validated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"validated within stated limits","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"partially validated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"validated within stated limits","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","phase":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"validated within stated limits","meissner":"validated within stated limits","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"partially validated","chirikov":"unvalidated","hofstadter":"validated within stated limits","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"validated within stated limits","orbitals":"partially validated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","neural-field":"partially validated","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits","fisher-kpp":"unvalidated","cattaneo":"unvalidated","dptangle":"unvalidated","hopfield":"unvalidated","flow-matching":"unvalidated"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -9200,6 +9319,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    'flow-matching': 'occasional',
+    hopfield: 'common',
     'direct-gravity': 'common',
     'volume-wave': 'common',
     surfaces: 'common',
@@ -9533,7 +9654,14 @@ void main(){
     const F = window.GenChaseDataFormats;
     let out = null, failure = '';
     if (typeof e.inst.exportData === 'function') {
-      try { out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      const rebuilt = !!e.geometryDirty;
+      try { flushGeometry(e, true); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      finally {
+        if (rebuilt && (e !== instances[currentId] || e.paused)) {
+          // Suspend hidden work without changing the viewer's transport preference.
+          try { if (e.inst.pause) e.inst.pause(); } catch (err) { console.warn(err); }
+        }
+      }
     }
     const members = [], arrays = {};
     for (const [name, a] of Object.entries((out && out.arrays) || {})) {
@@ -9623,7 +9751,7 @@ void main(){
   let currentId = null;
   const instances = Object.create(null);        // id -> { inst, canvas, state, anim... }
   const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
-  let regenTimer = null, historyTimer = null;
+  let regenTimer = null, pendingRegen = null, historyTimer = null;
   let downloads = null;
   let hashSilent = false;
   // The hash the studio last wrote or applied. A hash that differs from it was set from outside (the address bar,
@@ -10361,29 +10489,54 @@ void main(){
   }
 
   /* ---- lifecycle ---- */
-  function regenerate(opts) {
-    const e = instances[currentId]; if (!e) return;
-    if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
-    clearTimeout(regenTimer);
-    fitCanvas(e);
-    e.paused = false;
+  function regenerate(opts, target) {
+    const e = target || instances[currentId]; if (!e) return;
+    const active = e === instances[currentId];
+    if (active && !(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
+    if (!target || (pendingRegen && pendingRegen.e === e)) {
+      clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
+    }
+    e.geometryDirty = false;
+    if (active) fitCanvas(e);
+    // An export refresh may compute temporarily, but must retain the transport preference.
+    if (active && !(opts && opts.preservePause)) e.paused = false;
     e.scienceWitness = null;
-    renderStatus();
-    try { e.inst.regenerate(); } catch (err) { showError(err); }
-    updateDims();
-    persist(currentId);
-    if (!(opts && opts.skipHistory)) scheduleHistory();
-    resetWitness();
-    scheduleHash();
+    if (active) renderStatus();
+    try { e.inst.regenerate(); } catch (err) { e.geometryDirty = true; showError(err); return false; }
+    if (active) updateDims();
+    persist(e.mod.id);
+    if (active && !(opts && opts.skipHistory)) scheduleHistory();
+    if (active) { resetWitness(); scheduleHash(); }
+    return true;
+  }
+  function flushGeometry(e, preservePause = false) {
+    if (!e.geometryDirty) return false;
+    const opts = pendingRegen && pendingRegen.e === e ? pendingRegen.opts : { skipSnap: true, skipHistory: true };
+    if (regenerate({ ...opts, preservePause }, e) === false) throw Error('Could not apply pending geometry before export');
+    return true;
   }
   function repaint() {
     const e = instances[currentId]; if (!e) return;
+    if (e.geometryDirty) { try { flushGeometry(e); } catch (err) { showError(err); } return; }
     fitCanvas(e);
     try { if (e.inst.repaint) e.inst.repaint(); else e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
   }
-  function scheduleRegen(opts) { clearTimeout(regenTimer); regenTimer = setTimeout(() => regenerate(opts), 120); }
+  // Keep the first deadline while a slider moves. Resetting a debounce on every
+  // input postponed the picture indefinitely during a continuous drag.
+  // A queued preview belongs to its originating entry, never the next tab.
+  function scheduleRegen(opts) {
+    const e = instances[currentId]; if (!e) return;
+    e.geometryDirty = true;
+    pendingRegen = { e, opts };
+    if (regenTimer !== null) return;
+    regenTimer = setTimeout(() => {
+      regenTimer = null;
+      const pending = pendingRegen; pendingRegen = null;
+      if (pending && instances[currentId] === pending.e) regenerate(pending.opts);
+    }, 80);
+  }
   function showError(err) {
     const entry = instances[currentId];
     if (entry) { entry.scienceWitness = null; renderStatus(); }
@@ -10459,10 +10612,30 @@ void main(){
   // to see in the corner.
   const WITNESS_MODES = ['full', 'quiet', 'off'];
   let witnessMode = 'full';
+  let witnessFramesVisible = true;
+  function applyWitnessFrames() {
+    const strip = $('witness-strip'), button = $('btn-witness-frames');
+    const shown = witnessFramesVisible && witnessMode === 'full';
+    if (strip) strip.hidden = !shown;
+    if (button) {
+      button.textContent = shown ? 'Hide frames' : 'Show frames';
+      button.setAttribute('aria-expanded', String(shown));
+      button.title = shown ? 'Hide the recent frame thumbnails' : 'Show the recent frame thumbnails';
+    }
+  }
+  function setWitnessFrames(on) {
+    witnessFramesVisible = !!on;
+    if (on && witnessMode !== 'full') setWitnessMode('full', false);
+    applyWitnessFrames();
+    try { localStorage.setItem(STORE + 'witness-frames', on ? 'show' : 'hide'); } catch (err) { /* private window */ }
+    if (!on) { const strip = $('witness-strip'); if (strip) strip.replaceChildren(); }
+    else { const e = instances[currentId]; if (e) pushWitnessFrame(e.canvas); }
+  }
   function applyWitnessMode() {
     const w = $('witness'); if (!w) return;
     w.classList.toggle('w-quiet', witnessMode === 'quiet');
     w.classList.toggle('w-off', witnessMode === 'off');
+    applyWitnessFrames();
   }
   function setWitnessMode(mode, announce) {
     witnessMode = WITNESS_MODES.indexOf(mode) < 0 ? 'full' : mode;
@@ -10631,7 +10804,7 @@ void main(){
     markPokeable();
   }
   function pushWitnessFrame(canvas) {
-    const strip = $('witness-strip'); if (!strip || !canvas.width) return;
+    const strip = $('witness-strip'); if (!strip || !canvas.width || !witnessFramesVisible || witnessMode !== 'full') return;
     try {
       const c = document.createElement('canvas');
       c.width = 80; c.height = 80;
@@ -10847,6 +11020,7 @@ void main(){
   async function switchTo(id, opts = {}) {
     if (!byId[id]) id = modules[0].id;
     const ticket = ++navigation;
+    clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
     clearTimeout(hashTimer);
     loadingId = id;
     $('stage').setAttribute('aria-busy', 'true');
@@ -10892,6 +11066,8 @@ void main(){
     if (!e.started) {
       e.started = true;
       if (!opts.deferRender) regenerate({ skipHistory: true, skipSnap: true });
+    } else if (!opts.deferRender && e.geometryDirty) {
+      regenerate({ skipSnap: true });
     } else if (!opts.deferRender) {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
       if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
@@ -10929,10 +11105,12 @@ void main(){
     e.state[key] = value;
     if (currentId === e.mod.id) renderStatus();
     if (e.mod.onParam) e.mod.onParam(e.state, key);           // e.g. keep min <= max
+    // Reapply dependent stability and range constraints after every edit while
+    // preserving the state object's identity for renderers and hosts.
+    Object.assign(e.state, sanitize(e.mod, e.state));
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();
     const commit = phase !== 'drag';
-    const fromSlider = phase === 'drag' || phase === 'commit';
     if (kind === 'geom') {
       if (commit) regenerate({ skipSnap: true });
       else scheduleRegen({ skipSnap: true, skipHistory: true });
@@ -10940,7 +11118,7 @@ void main(){
       repaint();
       if (commit) scheduleHistory();
     } else if (kind === 'live') {
-      try { e.inst.live && e.inst.live(key, value); } catch (err) { showError(err); }
+      try { e.inst.live && e.inst.live(key, e.state[key]); } catch (err) { showError(err); }
       persist(e.mod.id);
       if (commit) scheduleHistory();
     } else persist(e.mod.id);
@@ -11661,6 +11839,11 @@ void main(){
       for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
       return;
     }
+    const rebuilt = !!e.geometryDirty;
+    try { flushGeometry(e, true); } catch (err) {
+      if (rebuilt && e.paused) { try { e.inst.pause && e.inst.pause(); } catch (pauseError) { console.warn(pauseError); } }
+      showError(err); return;
+    }
     exportBusy = true;
     if (colophon && document.fonts) { try { await document.fonts.ready; } catch (err) { /* fallback fonts */ } }
     const sp = printSpec();
@@ -11837,6 +12020,10 @@ void main(){
         note.classList.add('err');
       }
     } finally {
+      if (rebuilt && (e !== instances[currentId] || e.paused)) {
+        // A dirty export may finish a rebuild, but does not release the user's pause.
+        try { e.inst.pause && e.inst.pause(); } catch (err) { console.warn(err); }
+      }
       clearInterval(tick);
       exportBusy = false;
       for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = false;
@@ -12569,8 +12756,10 @@ void main(){
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
     })();
     try { panelSide = localStorage.getItem(STORE + 'panel') === 'right' ? 'right' : 'left'; } catch (err) { panelSide = 'left'; }
+    try { witnessFramesVisible = localStorage.getItem(STORE + 'witness-frames') !== 'hide'; } catch (err) { witnessFramesVisible = true; }
     try { setWitnessMode(localStorage.getItem(STORE + 'witness') || 'full', false); } catch (err) { setWitnessMode('full', false); }
     const lb = $('live-badge'); if (lb) lb.addEventListener('click', cycleWitness);
+    $('btn-witness-frames').addEventListener('click', () => setWitnessFrames(!(witnessFramesVisible && witnessMode === 'full')));
     applyPanelSide();
     renderHistory();
     (function witnessLoop() {
@@ -24372,11 +24561,17 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       chaos: pre('Global chaos', { K: 4, view: 'density', orbits: 2000, iters: 160, exposure: 1.3 }, Pal.ember),
     },
     hints: {
-      Map: 'K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colors chaos versus order.',
+      Map: 'Iters / orbit sets the exact initial kicks per seeded orbit, including burn-in. Turn Accumulate off to reproduce the fixed initial plate; enabling it continues beyond that state. K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colors chaos versus order.',
     },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors',
     headline: 'K', headlineLabel: 'kick K',
-    sanitize(s) { s.K = U.clamp(Number(s.K) || 1.2, 0, 8); s.orbits = U.clamp(Math.round(Number(s.orbits) / 200) * 200, 400, 8000); },
+    sanitize(s) {
+      const K = Number(s.K); s.K = U.clamp(Number.isFinite(K) ? K : 1.2, 0, 8);
+      const orbits = Number(s.orbits); s.orbits = U.clamp(Math.round((Number.isFinite(orbits) ? orbits : 2400) / 200) * 200, 400, 8000);
+      for (const [key, min, max, fallback] of [['iters', 40, 800, 220], ['burn', 0, 80, 12]]) {
+        const value = Number(s[key]); s[key] = U.clamp(Math.round(Number.isFinite(value) ? value : fallback), min, max);
+      }
+    },
     surprise(rng) {
       return {
         K: rng.pick([0.4, 0.8, 0.97, 1.2, 1.6, 2.5, 4]),
@@ -24437,18 +24632,24 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         orbitC[i] += w.hue;
         hits++;
       }
-      function accumulate(s, budgetMs) {
-        const t0 = performance.now(), K = s.K, burn = s.burn | 0, per = 24;
-        while (performance.now() - t0 < budgetMs) {
+      // Fixed initialization uses the declared total kicks per orbit, including burn-in.
+      // Keep the former 24-kick walker ordering so histogram sums have a fixed order.
+      function advance(s, iterations) {
+        for (let done = 0; done < iterations;) {
+          const per = Math.min(24, iterations - done);
           for (let i = 0; i < walkers.length; i++) {
             const w = walkers[i];
             for (let k = 0; k < per; k++) {
-              kick(w, K);
-              if (w.n > burn) plot(w);
+              kick(w, s.K);
+              if (w.n > s.burn) plot(w);
             }
           }
-          count += walkers.length * per;
+          count += walkers.length * per; done += per;
         }
+      }
+      function accumulate(s, budgetMs) {
+        const t0 = performance.now();
+        while (performance.now() - t0 < budgetMs) advance(s, 24);
       }
       function tone(s, rgba, W, H) {
         const lut = U.makeRampLUT(s.palette, s.bg, 256);
@@ -24499,7 +24700,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         const s = host.getState();
         const k = s.K;
         const kind = k < 0.8 ? 'KAM' : k < 1.05 ? 'critical' : k < 2.2 ? 'mixed' : 'chaotic';
-        host.setStatus('<span>K <b>' + k.toFixed(2) + '</b> · ' + kind + '</span><span>hits <b>' + (hits / 1e6).toFixed(2) + 'M</b></span>');
+        host.setStatus('<span>K <b>' + k.toFixed(2) + '</b> · ' + kind + '</span><span>hits <b>' + hits.toLocaleString('en-US') + '</b></span><span>kicks <b>' + count.toLocaleString('en-US') + '</b> total · initial ' + s.iters + '/orbit</span>');
       }
       function stop() { cancelAnimationFrame(raf); raf = 0; }
       function frame() {
@@ -24519,7 +24720,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         regenerate() {
           stop();
           reset(host.getState());
-          accumulate(host.getState(), host.reducedMotion() ? 80 : 40);
+          advance(host.getState(), host.getState().iters);
           draw(); status(); start();
         },
         repaint() { draw(); },
@@ -25516,6 +25717,12 @@ void main(){
     create(host) {
       const canvas=host.canvas, ctx=canvas.getContext('2d');
       let circles=[];
+      // Use the same two-arc path for Canvas and SVG. Their native circle primitives can
+      // tessellate differently across renderers, displacing thin layers in the print.
+      function layerPath(cx,cy,r) {
+        return 'M '+(cx+r)+' '+cy+' A '+r+' '+r+' 0 0 1 '+(cx-r)+' '+cy+
+          ' A '+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z';
+      }
       function pack(s) {
         const rng=U.makeRng(s.seed+'/smec');
         circles=[];
@@ -25546,7 +25753,7 @@ void main(){
           if (s.view!=='ellipses') {
             const pitch=s.pitch*sc;
             for (let r=R; r>1.5; r-=pitch) {
-              ctx.beginPath(); ctx.arc(cx,cy,r,0,TAU); ctx.stroke();
+              ctx.stroke(new Path2D(layerPath(cx,cy,r)));
             }
           }
           if (s.view!=='layers') {
@@ -25586,11 +25793,13 @@ void main(){
             g.strokeStyle=col(i*0.17); g.lineWidth=Math.max(0.6, s.lw*sc/900);
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R;r>1.5;r-=pitch){ g.beginPath(); g.arc(cx,cy,r,0,TAU); g.stroke(); }
+              for (let r=R;r>1.5;r-=pitch) g.stroke(new Path2D(layerPath(cx,cy,r)));
             }
             if (s.view!=='layers') {
               g.save(); g.translate(cx,cy); g.rotate(c.th);
               g.beginPath(); g.ellipse(0,0,R,R*(0.55+c.e*0.3),0,0,TAU); g.stroke();
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              g.beginPath(); g.moveTo(-f,-R*1.1); g.quadraticCurveTo(0,0,f,R*1.1); g.stroke();
               g.restore();
             }
           }
@@ -25599,20 +25808,23 @@ void main(){
         exportSVG(w,h){
           const s=host.getState();
           const W=w||1000, H=h||W, sc=Math.min(W,H);
-          const pal=s.palette||['#111'];
-          const lw=Math.max(0.35, s.lw*sc/900).toFixed(2);
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=k=>{ const li=((k%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const lw=Math.max(0.6, s.lw*sc/900);
           let body='';
           for (let i=0;i<circles.length;i++) {
-            const c=circles[i], cx=(c.x*W).toFixed(2), cy=(c.y*H).toFixed(2), col=U.svgEsc(pal[i%pal.length]);
+            const c=circles[i], cx=c.x*W, cy=c.y*H, col=U.svgEsc(colour(i*0.17));
             const R=c.r*sc;
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R; r>1.2; r-=pitch)
-                body+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              for (let r=R; r>1.5; r-=pitch)
+                body+='<path d="'+layerPath(cx,cy,r)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
             }
             if (s.view!=='layers') {
               const ry=R*(0.55+c.e*0.3);
-              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R.toFixed(2)+'" ry="'+ry.toFixed(2)+'" transform="rotate('+(c.th*180/Math.PI).toFixed(2)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R+'" ry="'+ry+'" transform="rotate('+(c.th*180/Math.PI)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              body+='<path d="M '+(-f)+' '+(-R*1.1)+' Q 0 0 '+f+' '+(R*1.1)+'" transform="translate('+cx+' '+cy+') rotate('+(c.th*180/Math.PI)+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-linecap="round"/>\n';
             }
           }
           return U.svgBlob(W,H,s.bg,body);
@@ -25781,17 +25993,19 @@ void main(){
           const W=w||1000, H=h||W;
           let m=0; for (let i=0;i<boundary.length;i++) m=Math.max(m, Math.hypot(boundary[i][0], boundary[i][1]));
           const sc=0.44*Math.min(W,H)/Math.max(m,1), cx=W/2, cy=H/2;
-          const pal=s.palette||['#111'], ink=pal[0]||'#111', fill=pal[Math.min(pal.length-1,2)]||ink;
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=t=>{ const li=((t%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const ink=s.view==='outline'?U.inkFor(s.bg):colour(0.12), fill=colour(0.72);
           const dOf=arr=>{
             let d=''; for (let i=0;i<arr.length;i++) d+=(i?'L':'M')+(cx+arr[i][0]*sc).toFixed(2)+' '+(cy+arr[i][1]*sc).toFixed(2);
             return d+'Z';
           };
           let body='';
-          const lw=Math.max(0.4, s.lw*Math.min(W,H)/900).toFixed(2);
+          const lw=Math.max(0.8, s.lw*Math.min(W,H)/800).toFixed(2);
           if (s.view==='age' && rings.length) {
             for (let r=0;r<rings.length;r++) {
-              const col=pal[r%pal.length];
-              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" d="'+dOf(rings[r])+'"/>\n';
+              const col=colour(r/Math.max(1,rings.length-1));
+              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" stroke-linejoin="round" stroke-linecap="round" d="'+dOf(rings[r])+'"/>\n';
             }
           }
           if (s.view!=='outline') body+='<path fill="'+U.svgEsc(fill)+'" fill-opacity="'+(s.view==='age'?'0.18':'0.92')+'" stroke="none" d="'+dOf(boundary)+'"/>\n';
@@ -25828,6 +26042,7 @@ void main(){
       voronoi: pre('Voronoi', { lam: 0.14, N: 180, view: 'voronoi' }, Pal.graphite),
       para: pre('Parastichies', { lam: 0.12, N: 280, view: 'para' }, Pal.ember),
       tight: pre('Tight λ', { lam: 0.08, N: 600, view: 'dots', size: 1.6 }, Pal.meadow),
+      open: pre('Open growth', { N:80, lam:0.14, growth:1.024, r0:0.06, view:'para', size:1.6, grain:0, running:false }, { bg:'#F4F0E8', colors:['#173D42','#28666A','#8C472B','#AD5B35','#563622'] }),
     },
     hints: { Meristem: 'Inhibition λ, Growth and Meristem radius jointly set the discrete geometry. The displayed divergence is a finite-history mean, not proof of a universal golden-angle attractor.' },
     palette: true, defaultPalette: 'tram', paletteLabel: 'Colors',
@@ -26022,6 +26237,7 @@ void main(){
       kissing: pre('Kissing', { n:4, gap:0.02, twist:0, depth:8, view:'both' }, Pal.graphite),
       dust: pre('Schottky dust', { n:5, gap:0.28, twist:0.35, depth:9, minR:0.0008, view:'fill' }, Pal.ember),
       six: pre('Six generators', { n:6, gap:0.14, twist:0.1, depth:7, view:'stroke' }, Pal.nightshade),
+      engraved: pre('Engraved pearls', { n:4, gap:0.08, twist:0.16, depth:9, minR:0.0008, view:'stroke', lw:1.5, grain:0 }, { bg:'#F4F0E8', colors:['#183A45','#285A65','#8B4B32','#354C62','#694333'] }),
     },
     hints: { Group: 'Gap is the whole phase diagram. Kissing circles make a connected limit set. Twist shears the pairing so the necklace kinks.' },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Inks',
@@ -26143,6 +26359,7 @@ void main(){
       dla: pre('DLA η=1', { eta:1, N:2400, seedAt:'center', view:'age' }, Pal.graphite),
       needle: pre('Needle η=7', { eta:7, N:1600, view:'tree' }, Pal.xray),
       fern: pre('Fern', { eta:3.2, N:3200, grid:160, view:'age' }, Pal.meadow),
+      bright: pre('Bright discharge', { eta:4.5, N:1200, grid:96, seedAt:'edge', view:'tree', lw:1.8, grain:0 }, { bg:'#101820', colors:['#EEF8FF','#C9EDFF','#9AD9F4','#FFDDA5','#FFC56B'] }),
     },
     hints: { Discharge: 'η is the whole look. Grid and steps are resolution. Edge seed is a strike from the ground; center is a bush.' },
     palette: true, defaultPalette: 'ember', paletteLabel: 'Discharge',
@@ -29169,6 +29386,9 @@ void main(){
         const s = host.getState();
         ensureGrid(s);
         rig.upload(F.read, seedField(s));
+        // The next advection pass overwrites this scratch field. Reset it explicitly so a
+        // paused initial state cannot retain allocation contents or an earlier trajectory.
+        F.write.clear(0, 0, 0, 1);
         PSI.read.clear(0, 0, 0, 1); PSI.write.clear(0, 0, 0, 1); velT.clear(0, 0, 0, 1);
         // a deeper first solve so the warm start has something to start from
         solvePsi(s, 40);
@@ -31074,6 +31294,9 @@ void main(){
         pass.draw(reduceT, Object.assign(viewUniforms(s), { u_block: [gw / RED, gh / RED], u_span: measSpan }));
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+        // Give this readback fresh storage after the previous result was collected.
+        // Reusing STREAM_READ storage retains a fenced shadow allocation in Chromium.
+        gl.bufferData(gl.PIXEL_PACK_BUFFER, redBuf.byteLength, gl.STREAM_READ);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, 0);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -31201,6 +31424,9 @@ void main(){
           Object.assign(cust, { bound: null, boundKey: '', at: -1, halt: null, time: 0 });
           span = 16;
           if (typed(s) && customPass(s)) estimate(s, 0);
+          // The first measurement is asynchronous. Retire the previous plate's status
+          // now, without reusing its measured range or scientific diagnostics.
+          host.setStatus('<span>grid <b>' + gw + '×' + gh + '</b></span><span>step <b>0</b></span><span>computing</span>');
           settle(() => { render(); if (s.warmup > 0 && !halted(s)) burst(s.warmup); else { status(); startLoop(); } });
         },
         repaint() {
@@ -35615,6 +35841,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         init(s);
         const rng = U.makeRng(s.seed + '/potts/mc');
         const markAt = Math.max(1, Math.floor(s.sweeps * 0.75));
+        let lastPreview = -Infinity;
         (function chunk() {
           const t0 = performance.now();
           while (sweepNo < s.sweeps && performance.now() - t0 < 45) {
@@ -35622,7 +35849,14 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
             sweepNo++;
             if (sweepNo === markAt) areaAt = Float64Array.from(area);
           }
-          if (sweepNo < s.sweeps) { countSides(s); status('coarsening'); timer = setTimeout(chunk, 0); }
+          if (sweepNo < s.sweeps) {
+            // Refresh derived diagnostics with the partial plate, at most once per 150 ms.
+            // These read the current labels and areas without advancing the solver or RNG.
+            if (performance.now() - lastPreview >= 150) {
+              countSides(s); status('coarsening'); render(); lastPreview = performance.now();
+            }
+            timer = setTimeout(chunk, 0);
+          }
           else {
             countSides(s);
             fitMullins(s.sweeps - markAt, s.seed);
@@ -35719,7 +35953,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           build(s, () => { render(); status(); });
         },
         repaint() { if (!building) render(); },
-        resize() { if (!building) render(); },
+        resize() { if (lab) render(); },
         pause() {}, resume() { if (!building) render(); },
         async exportPNG(w, h) {
           if (!lab) throw new Error('nothing to export');
@@ -44124,7 +44358,7 @@ void main(){
 </script>
 <script>
 /* modules/skin.js */
-/* GENChase: Hatano-Nelson chain. A similarity transform skins every eigenmode onto one boundary. The plate is |ψ_n(x)|. Skin weight is measured from the spectrum. */
+/* GENChase: Hatano-Nelson chain. A similarity transform skins every eigenmode onto one boundary. The plate is |ψ_n(x)|². Skin weight is measured from the spectrum. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -44187,9 +44421,9 @@ void main(){
     tab: 'Skin',
     subtitle: 'non-Hermitian skin, Hatano–Nelson · 1996 / 2018',
     order: 47,
-    equation: 'H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))',
+    equation: '(Hψ)_j = e^{g} ψ_{j−1} + e^{−g} ψ_{j+1},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))',
     credit: 'N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.',
-    blurb: 'Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|, mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.',
+    blurb: 'Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|², mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.',
     schema: SCHEMA,
     defaults: DEFAULTS,
     // Recipes older than v7 drew one cell-row per sheet row, past the N eigenmodes on a tall sheet.
@@ -44208,7 +44442,7 @@ void main(){
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, amp, skinW = 0, ipr = 0, buf, img;
+      let W = 0, H = 0, amp, skinW = 0, ipr = 0, buf, img, computed;
 
       function sizeFrom(s) {
         const aspect = ASPECTS[s.aspect] || 1;
@@ -44677,6 +44911,13 @@ void main(){
         }
         skinW = w / H;
         ipr = p / H;
+        computed = {
+          sites: W, modes: H, solver: s.solver,
+          method: cleanOpen ? 'analytic-open' : s.solver === 'gram' ? 'legacy-gram-basis' : periodic ? 'periodic-right' : 'open-right',
+          boundary: s.bc, rowMode: s.rows, aspect: s.aspect, g: s.g, disorder: s.disorder, seed: s.seed,
+          skinWeight: skinW, skinStartSite: cut, meanIPR: ipr,
+          normalization: 'Each row sums to one; probabilities are squared magnitudes, not amplitudes.',
+        };
         buf = document.createElement('canvas');
         buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -44748,6 +44989,8 @@ void main(){
                   pending: 'Gram–Schmidt basis is orthonormal, not the right eigenvectors' })
               : U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'deterministic', digits: 3, note: 'right eigenvectors' })) +
           '<span>' + verdict + '</span>'
+          + (s.solver === 'right' && s.bc === 'periodic' && s.disorder === 0 && s.g !== 0 && s.rows === 'modes'
+            ? '<span>periodic plane waves have uniform probability density, so this plate has one color</span>' : '')
         );
         void ipr;
       }
@@ -44760,6 +45003,16 @@ void main(){
         resize() { paint(); },
         pause() {},
         resume() { paint(); },
+        exportData() {
+          if (!amp || !computed) throw new Error('nothing to export');
+          return {
+            arrays: { probability: {
+              data: amp.slice(), shape: [H, W], units: 'dimensionless',
+              description: 'Site probability |psi|^2, row-major [drawn row, site]. Legacy Gram rows are basis vectors, not eigenvectors; sheet rows may repeat modes.',
+            } },
+            meta: { ...computed },
+          };
+        },
         async exportPNG(w, h) {
           if (!buf) throw new Error('nothing to export');
           const s = host.getState();
@@ -46491,8 +46744,8 @@ void main(){
     subtitle: 'localization without disorder · 1980',
     order: 56,
     equation: 'ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localized for λ>1',
-    credit: 'S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.',
-    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 1 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.',
+    credit: 'S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 1 every eigenstate localizes. With unit hopping the potential is 2λ cos(2π β n), and the model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 1. The plate shows a finite periodic golden-ratio chain after a fixed number of imaginary-time steps; convergence to its ground state is not established.',
+    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. The infinite quasiperiodic model changes from extended to localized at λ = 1. This finite periodic plate shows a fixed-step relaxation, which has not converged to its ground state in the tested presets. Its inverse participation ratio is compared with 1/N as an unconverged diagnostic.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Chain: 'The golden ratio keeps the potential from ever repeating. λ = 1 is the self-dual critical line.' },
     palette: true, defaultPalette: 'nightshade', surprise, sanitize,
@@ -62489,6 +62742,263 @@ void main(){
         },
       };
     },
+  });
+})();
+</script>
+<script>/* Analytic marginal flow, not a trained neural model. Original implementation. */
+(function () {
+  'use strict';
+  // X_t=(1-t) epsilon+t Z, epsilon~N(0,I), Z~sum_k N(mu_k,sigma^2 I)/K.
+  // Integrating out both Z and the component label gives this nonsingular field,
+  // including t=1. It is the marginalization construction of Holderrieth & Erives.
+  function variance(t, sigma) { return (1-t)*(1-t)+t*t*sigma*sigma; }
+  function velocity(x, y, t, model) {
+    const v=variance(t,model.sigma), a=(t*model.sigma*model.sigma-(1-t))/v;
+    let maximum=-Infinity;
+    for(const m of model.means) maximum=Math.max(maximum,-((x-t*m[0])**2+(y-t*m[1])**2)/(2*v));
+    let total=0,mx=0,my=0;
+    for(const m of model.means){const w=Math.exp(-((x-t*m[0])**2+(y-t*m[1])**2)/(2*v)-maximum);total+=w;mx+=w*m[0];my+=w*m[1];}
+    return [a*x+(1-a*t)*mx/total,a*y+(1-a*t)*my/total];
+  }
+  function density(x,y,t,model){
+    const v=variance(t,model.sigma);let sum=0;
+    for(const m of model.means)sum+=Math.exp(-((x-t*m[0])**2+(y-t*m[1])**2)/(2*v));
+    return sum/(model.means.length*2*Math.PI*v);
+  }
+  function trajectory(x,y,model,steps){
+    const points=new Float64Array(2*(steps+1)),dt=1/steps;points[0]=x;points[1]=y;
+    for(let j=0;j<steps;j++){
+      const t=j*dt,k1=velocity(x,y,t,model),k2=velocity(x+dt*k1[0]/2,y+dt*k1[1]/2,t+dt/2,model);
+      const k3=velocity(x+dt*k2[0]/2,y+dt*k2[1]/2,t+dt/2,model),k4=velocity(x+dt*k3[0],y+dt*k3[1],t+dt,model);
+      x+=dt*(k1[0]+2*k2[0]+2*k3[0]+k4[0])/6;y+=dt*(k1[1]+2*k2[1]+2*k3[1]+k4[1])/6;
+      points[2*j+2]=x;points[2*j+3]=y;
+    }
+    return points;
+  }
+  function normalPair(rng){const r=Math.sqrt(-2*Math.log(Math.max(1e-15,rng()))),a=2*Math.PI*rng();return [r*Math.cos(a),r*Math.sin(a)];}
+  function modelFor(s){
+    const means=[];
+    for(let k=0;k<s.modes;k++){
+      const a=2*Math.PI*k/s.modes+s.turn*Math.PI/180;
+      if(s.layout==='line'){const r=s.radius*(2*k/(s.modes-1)-1),turn=s.turn*Math.PI/180;means.push([r*Math.cos(turn),r*Math.sin(turn)]);}
+      else{const r=s.radius*(s.layout==='spiral'?(.25+.75*k/(s.modes-1)):1);means.push([r*Math.cos(a),r*Math.sin(a)]);}
+    }
+    return {means,sigma:s.sigma};
+  }
+  const core={variance,velocity,density,trajectory,normalPair,modelFor};
+  if(typeof module!=='undefined'&&module.exports)module.exports=core;
+  if(typeof Studio==='undefined')return;
+  const U=Studio.util,P=Studio.PALETTES;
+  const range=(group,key,label,kind,min,max,step,fmt=String)=>({group,key,label,kind,min,max,step,fmt,type:'range'});
+  Studio.register({
+    id:'flow-matching',name:'Flow matching',tab:'Generative flow',order:125,familiarity:'occasional',
+    subtitle:'analytic Gaussian-mixture transport · MIT 2026',
+    equation:'X_t=(1−t)ε+tZ; v_t(x)=Σ_k r_k(x,t)[μ_k+(s′_t/s_t)(x−tμ_k)], s_t²=(1−t)²+t²σ²',
+    credit:'Peter Holderrieth and Ezra Erives, An Introduction to Flow Matching and Diffusion Models, MIT 6.S184 (2026), Section 3, marginalization Eq. (18) and Gaussian conditional paths Eq. (20); arXiv:2506.02070. This plate analytically integrates the Gaussian-mixture target distribution in that construction and samples its marginal ODE with RK4. It does not train a neural network.',
+    blurb:'A cloud of Gaussian noise separates into a chosen collection of Gaussian islands. Every colored thread follows the same time-dependent probability-flow field, rather than being assigned a destination in advance. This is an exactly specified transport target of the kind learned by flow-matching generative models. Here the target is a small, known Gaussian mixture, so its velocity can be calculated analytically. The trajectories are numerical RK4 approximations. No neural training, learned image generator or large-model benchmark is claimed.',
+    schema:[
+      {group:'Target',key:'layout',label:'Mixture layout',type:'seg',kind:'geom',options:[['ring','Ring'],['spiral','Spiral'],['line','Line']]},
+      range('Target','modes','Gaussian islands','geom',2,12,1),
+      range('Target','radius','Spread','geom',.5,3,.1,v=>v.toFixed(1)),
+      range('Target','sigma','Island width σ','geom',.12,.8,.02,v=>v.toFixed(2)),
+      range('Target','turn','Rotation','geom',0,360,5,v=>v+'°'),
+      range('Sampling','count','Particles','geom',100,1200,100),
+      range('Sampling','steps','RK4 steps','geom',32,256,16),
+      range('Picture','time','Transport time','paint',0,1,.01,v=>v.toFixed(2)),
+      range('Picture','trail','Trail duration','paint',0,1,.05,v=>v.toFixed(2)),
+      range('Picture','extent','View half-width','paint',2,6,.1,v=>v.toFixed(1)),
+      range('Picture','weight','Line weight','paint',.3,2.4,.1,v=>v.toFixed(1)),
+      {group:'Picture',key:'points',label:'Show particles',kind:'paint',type:'toggle'},
+    ],
+    defaults:{layout:'ring',modes:5,radius:2.2,sigma:.24,turn:15,count:600,steps:128,time:1,trail:1,extent:3.8,weight:.7,points:true,seed:'probability-flow'},
+    // Array dimensions and loop budgets must be integers even in hand-edited recipes.
+    sanitize(s) {
+      for (const [key, min, max, fallback] of [['modes', 2, 12, 5], ['count', 100, 1200, 600], ['steps', 32, 256, 128]]) {
+        const value = Number(s[key]);
+        s[key] = Math.max(min, Math.min(max, Math.round(Number.isFinite(value) ? value : fallback)));
+      }
+    },
+    presets:{
+      islands:{label:'Five islands',p:{layout:'ring',modes:5,radius:2.2,sigma:.24,time:1,trail:1},palette:P.ember},
+      braid:{label:'Spiral target',p:{layout:'spiral',modes:9,radius:2.8,sigma:.2,time:1,trail:1},palette:P.glacier},
+      split:{label:'Two destinations',p:{layout:'line',modes:2,radius:2.4,sigma:.3,time:1,trail:1},palette:P.graphite},
+      midway:{label:'Halfway',p:{layout:'ring',modes:8,radius:2.5,sigma:.2,time:.5,trail:.5},palette:P.nightshade},
+      cloud:{label:'Generated samples',p:{layout:'spiral',modes:7,radius:2.6,sigma:.38,time:1,trail:0,points:true},palette:P.meadow},
+    },
+    hints:{Target:'Equal-weight isotropic Gaussian components. The target is known analytically; this is a demonstration of the transport field, not a trained model.',Sampling:'RK4 integrates from t=0 to t=1. More steps refine these same trajectories. Samples are independent seeded standard-normal starting points.',Picture:'Time changes which part of the computed paths is shown. Cropping changes the view only. The full finite sample stays in the data export.'},
+    palette:true,defaultPalette:'ember',paletteLabel:'Paths',headline:'modes',headlineLabel:'islands',
+    surprise(rng){return {layout:rng.pick(['ring','spiral','line']),modes:rng.int(3,10),radius:rng.range(1.4,2.8),sigma:rng.range(.18,.55),turn:rng.int(0,72)*5,time:1,trail:rng.pick([.5,1]),points:true};},
+    create(host){
+      const canvas=host.canvas,ctx=canvas.getContext('2d',{alpha:false,willReadFrequently:true});let paths=[],model=null,timer=0,token=0,resolveBuild=null,ready=Promise.resolve(),finished=false;
+      function status(){const s=host.getState();host.setStatus('<span>analytic velocity · no neural training</span><span>'+paths.length+' particles · '+s.steps+' RK4 steps</span><span>t '+s.time.toFixed(2)+' · '+(finished?'complete':'computing')+'</span>');}
+      function marks(w,h,line,point){
+        if(!finished)return;
+        const s=host.getState(),scale=Math.min(w,h)/(2*s.extent),lut=U.makeRampLUT(s.palette,null,256),last=s.time*s.steps,first=Math.max(0,last-s.trail*s.steps);
+        const at=(p,t)=>{const j=Math.floor(t),f=t-j,k=Math.min(s.steps,j+1);return [U.lerp(p[2*j],p[2*k],f)*scale+w/2,h/2-U.lerp(p[2*j+1],p[2*k+1],f)*scale];};
+        for(let i=0;i<paths.length;i++){
+          const p=paths[i],end=at(p,last),angle=Math.atan2(p[p.length-1],p[p.length-2]),ci=Math.floor((angle/(2*Math.PI)+1)%1*255)*3,col='rgb('+lut[ci]+','+lut[ci+1]+','+lut[ci+2]+')';
+          if(last>first){const pts=[at(p,first)];for(let j=Math.floor(first)+1;j<last;j++)pts.push(at(p,j));pts.push(end);line(pts,col,Math.max(.3,s.weight*Math.min(w,h)/900));}
+          if(s.points)point(end,col,Math.max(.75,1.6*Math.min(w,h)/900));
+        }
+      }
+      function paint(ctx,w,h){const s=host.getState();ctx.fillStyle=s.bg;ctx.fillRect(0,0,w,h);ctx.lineJoin=ctx.lineCap='round';
+        marks(w,h,(pts,col,lw)=>{ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.globalAlpha=.6;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke();ctx.globalAlpha=1;},(p,col,r)=>{ctx.fillStyle=col;ctx.beginPath();ctx.arc(...p,r,0,2*Math.PI);ctx.fill();});}
+      function draw(){paint(ctx,canvas.width,canvas.height);status();}
+      function regenerate(){
+        clearTimeout(timer);if(resolveBuild)resolveBuild();const generation=++token,s={...host.getState()};paths=[];finished=false;model=modelFor(s);const rng=U.makeRng(s.seed+'/flow');
+        ready=new Promise(resolve=>{resolveBuild=resolve;});draw();
+        function chunk(){if(generation!==token)return;const end=performance.now()+10;
+          do{const z=normalPair(rng);paths.push(trajectory(z[0],z[1],model,s.steps));}while(paths.length<s.count&&performance.now()<end);
+          if(paths.length<s.count){status();timer=setTimeout(chunk,0);}else{finished=true;timer=0;draw();resolveBuild();resolveBuild=null;}}
+        timer=setTimeout(chunk,0);
+      }
+      function pause(){
+        clearTimeout(timer);timer=0;++token;
+        if(resolveBuild){resolveBuild();resolveBuild=null;}
+      }
+      return {aspect:()=>1,regenerate,repaint:draw,resize:draw,pause,dispose:pause,resume(){if(finished)draw();else regenerate();},
+        async exportPNG(w,h){await ready;if(!finished)throw Error('Flow is still computing');const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d',{alpha:false,willReadFrequently:true}),w,h);return U.toBlob(c);},
+        async exportSVG(w,h){await ready;if(!finished)throw Error('Flow is still computing');let body='';
+          marks(w,h,(pts,col,lw)=>{body+='<path d="'+pts.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(3)).join(' ')).join('')+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-opacity="0.6" stroke-linecap="round" stroke-linejoin="round"/>';},(p,col,r)=>{body+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="'+col+'"/>';});return U.svgBlob(w,h,host.getState().bg,body);},
+        async exportData(){await ready;if(!finished)throw Error('Flow is still computing');const s=host.getState(),values=new Float64Array(paths.length*(s.steps+1)*2);paths.forEach((p,i)=>values.set(p,i*p.length));return {arrays:{trajectories:{data:values,shape:[paths.length,s.steps+1,2],units:'dimensionless',description:'Particle, time j/steps, x/y. Full paths, including any cropped points.'},means:{data:new Float64Array(model.means.flat()),shape:[model.means.length,2],units:'dimensionless'}},meta:{method:'RK4 analytic Gaussian-mixture marginal velocity; no neural training',sigma:model.sigma,steps:s.steps,time:s.time,seed:s.seed,precision:'Float64',equalMixtureWeights:true}};}
+      };
+    }
+  });
+})();
+</script>
+<script>/* Bipolar, zero-threshold Hopfield memory. Integer overlaps implement the dense
+ * symmetric Hebbian matrix exactly without storing N*N floating-point weights. */
+(() => {
+  'use strict';
+  const U = Studio.util, GEOM = 'geom', PAINT = 'paint';
+  const RANGE = (group, key, label, min, max, step, fmt) => ({ group, key, label, type: 'range', kind: GEOM, min, max, step, fmt });
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  function memories(s) {
+    const N = s.side * s.side, rng = U.makeRng(s.seed + '/hopfield/memories');
+    return Array.from({ length: s.count }, (_, m) => Int8Array.from({ length: N }, (_, i) => {
+      if (s.patterns === 'random') return rng() < 0.5 ? -1 : 1;
+      // Deliberately correlated geometric memories, not independent capacity samples.
+      const x = i % s.side, y = Math.floor(i / s.side), k = 2 + Math.floor(m / 4);
+      return (m % 4 === 0 ? x % (2 * k) < k : m % 4 === 1 ? y % (2 * k) < k :
+        m % 4 === 2 ? (x + y) % (2 * k) < k : Math.abs(x - y) < k) ? 1 : -1;
+    }));
+  }
+  function shuffle(a, rng) {
+    for (let i = a.length - 1; i > 0; i--) { const j = rng.int(0, i); [a[i], a[j]] = [a[j], a[i]]; }
+  }
+  function recall(patterns, cue, sweeps, rng, visit) {
+    const N = cue.length, P = patterns.length, state = new Int8Array(cue);
+    const overlaps = patterns.map(p => p.reduce((v, x, i) => v + x * state[i], 0));
+    const energy = () => -(overlaps.reduce((v, x) => v + x * x, 0) - P * N) / (2 * N);
+    const energies = [energy()], order = Array.from({ length: N }, (_, i) => i);
+    let done = 0, settled = false, flips = 0;
+    for (let t = 0; t < sweeps; t++) {
+      shuffle(order, rng); let changed = 0;
+      for (const i of order) {
+        // N*h_i = sum_mu xi_mu_i * overlap_mu - P*s_i removes w_ii.
+        let field = -P * state[i];
+        for (let m = 0; m < P; m++) field += patterns[m][i] * overlaps[m];
+        const next = field > 0 ? 1 : field < 0 ? -1 : state[i], delta = next - state[i];
+        if (delta) {
+          state[i] = next; changed++; flips++;
+          for (let m = 0; m < P; m++) overlaps[m] += patterns[m][i] * delta;
+        }
+        if (visit) visit(i, state, field, energy());
+      }
+      done++; energies.push(energy());
+      if (!changed) { settled = true; break; }
+    }
+    return { state, energies, overlaps, sweeps: done, settled, flips };
+  }
+  function simulate(s) {
+    const patterns = memories(s), cue = new Int8Array(patterns[0]), ids = Array.from(cue.keys());
+    shuffle(ids, U.makeRng(s.seed + '/hopfield/cue'));
+    const corrupted = Math.round(cue.length * s.corruption / 100);
+    for (let i = 0; i < corrupted; i++) cue[ids[i]] *= -1;
+    return { patterns, cue, corrupted, ...recall(patterns, cue, s.sweeps, U.makeRng(s.seed + '/hopfield/updates')) };
+  }
+  Studio.register({
+    id: 'hopfield', name: 'Hopfield Memory', tab: 'Hopfield', order: 54.82, familiarity: 'common',
+    subtitle: 'Associative neural memory · 1982',
+    equation: 'w_ij = (1/N) sum_mu xi_i^mu xi_j^mu, w_ii = 0; s_i <- sign(sum_j w_ij s_j); E = -1/2 sum_ij w_ij s_i s_j',
+    credit: 'John J. Hopfield, Neural networks and physical systems with emergent collective computational abilities, PNAS 79, 2554-2558 (1982), doi:10.1073/pnas.79.8.2554. This tab uses the bipolar, zero-threshold Hebbian specialization with sequential updates.',
+    blurb: 'A small recurrent neural network stores binary patterns in symmetric connections. Start it with a damaged copy and each neuron takes its turn responding to all the others. The three panels show the first stored memory, the damaged cue and the resulting recall. More memories interfere; a badly damaged cue can settle into a different pattern or the inverse memory. Energy descent does not guarantee correct recall. These are finite binary associative memories, with no language model or remote service.',
+    schema: [
+      RANGE('Memory', 'side', 'Cells per side', 8, 24, 2, String),
+      RANGE('Memory', 'count', 'Stored memories', 1, 64, 1, String),
+      { group: 'Memory', key: 'patterns', label: 'Pattern family', type: 'seg', kind: GEOM, options: [['random', 'Random'], ['stripes', 'Geometric']] },
+      RANGE('Recall', 'corruption', 'Flipped cue cells', 0, 100, 1, v => v + '%'),
+      RANGE('Recall', 'sweeps', 'Maximum sweeps', 0, 25, 1, String),
+      { group: 'Picture', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: Object.keys(ASPECTS).map(k => [k, k]) },
+      { group: 'Picture', key: 'gap', label: 'Cell spacing', type: 'range', kind: PAINT, min: 0, max: 0.2, step: 0.01, fmt: v => v.toFixed(2) }
+    ],
+    defaults: { seed: 'hopfield-1982', side: 16, count: 4, patterns: 'random', corruption: 20, sweeps: 12, aspect: '3:2', gap: 0.04 },
+    // Array dimensions and loop budgets must be integers even in hand-edited recipes.
+    sanitize(s) {
+      for (const [key, min, max, fallback] of [['side', 8, 24, 16], ['count', 1, 64, 4], ['sweeps', 0, 25, 12]]) {
+        const value = Number(s[key]);
+        s[key] = Math.max(min, Math.min(max, Math.round(Number.isFinite(value) ? value : fallback)));
+      }
+    },
+    palette: true, defaultPalette: 'kiln', headline: 'corruption', headlineLabel: 'Cue damage',
+    presets: {
+      one: { label: 'One memory, recoverable cue', p: { count: 1, corruption: 25, patterns: 'random', sweeps: 12 }, palette: Studio.PALETTES.harbor },
+      four: { label: 'Four memories', p: { count: 4, corruption: 20, patterns: 'random', sweeps: 12 }, palette: Studio.PALETTES.kiln },
+      crowded: { label: 'Overloaded small network', p: { side: 8, count: 64, corruption: 25, patterns: 'random', sweeps: 25 }, palette: Studio.PALETTES.risograph },
+      inverse: { label: 'Across the wrong basin', p: { count: 1, corruption: 80, patterns: 'random', sweeps: 12 }, palette: Studio.PALETTES.nightshade },
+      geometric: { label: 'Correlated geometric memories', p: { count: 6, corruption: 25, patterns: 'stripes', sweeps: 12 }, palette: Studio.PALETTES.verdigris },
+      cue: { label: 'Before the first update', p: { count: 4, corruption: 40, patterns: 'random', sweeps: 0 }, palette: Studio.PALETTES.ember }
+    },
+    hints: { Memory: 'Every cell connects to every other cell. The picture places neurons on a square for display; it adds no spatial coupling. Geometric memories can be correlated or repeated.', Recall: 'One sweep visits every neuron once in a seeded shuffled order. A zero local field keeps its previous sign. Reaching a fixed point can still mean the wrong memory.', Picture: 'Left to right: stored memory, damaged cue, recall. In portrait format the panels run top to bottom. Colors encode the two signs, not confidence.' },
+    closedGroups: ['Picture'],
+    surprise: rng => ({ side: rng.pick([12, 16, 20]), count: rng.int(1, 16), patterns: 'random', corruption: rng.int(5, 45), sweeps: 12, gap: 0.04 }),
+    create(host) {
+      let result = null;
+      function tiles(w, h) {
+        const s = host.getState(), vertical = h > w, margin = Math.min(w, h) * 0.06;
+        const cell = Math.min((w - 2 * margin) / (vertical ? s.side : 3 * s.side + 2), (h - 2 * margin) / (vertical ? 3 * s.side + 2 : s.side));
+        const bw = cell * (vertical ? s.side : 3 * s.side + 2), bh = cell * (vertical ? 3 * s.side + 2 : s.side);
+        return { cell, x: (w - bw) / 2, y: (h - bh) / 2, vertical };
+      }
+      function marks(w, h, rect) {
+        if (!result) return;
+        const s = host.getState(), layout = tiles(w, h), { cell, x, y, vertical } = layout;
+        [result.patterns[0], result.cue, result.state].forEach((values, panel) => {
+          for (let i = 0; i < values.length; i++) {
+            const px = x + cell * (i % s.side + (vertical ? 0 : panel * (s.side + 1)));
+            const py = y + cell * (Math.floor(i / s.side) + (vertical ? panel * (s.side + 1) : 0));
+            rect(px + cell * s.gap / 2, py + cell * s.gap / 2, cell * (1 - s.gap), values[i] > 0 ? s.palette[0] : (s.palette[1] || s.bg));
+          }
+        });
+      }
+      function paint(canvas) {
+        const ctx = canvas.getContext('2d'); ctx.fillStyle = host.getState().bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        marks(canvas.width, canvas.height, (x, y, size, color) => { ctx.fillStyle = color; ctx.fillRect(x, y, size, size); });
+      }
+      function regenerate() {
+        const s = host.getState(); result = simulate(s); paint(host.canvas);
+        const mismatch = result.state.reduce((n, x, i) => n + (x !== result.patterns[0][i]), 0);
+        host.setStatus('<span>memory · cue · recall <b>' + s.side + '×' + s.side + '</b></span><span>target mismatch <b>' + mismatch + '/' + result.state.length + '</b> · stored ' + s.count + '</span><span>energy <b>' + result.energies.at(-1).toFixed(3) + '</b></span><span>sweep <b>' + result.sweeps + '</b> · ' + (result.settled ? 'fixed point' : 'budget reached; fixed point not checked') + '</span>');
+      }
+      return {
+        aspect: s => ASPECTS[s.aspect] || 1, regenerate, repaint: () => paint(host.canvas), resize: () => paint(host.canvas), pause() {}, resume() {},
+        async exportPNG(w, h) { const out = document.createElement('canvas'); out.width = w; out.height = h; paint(out); return U.toBlob(out); },
+        exportSVG(w, h) {
+          const body = []; marks(w, h, (x, y, size, color) => body.push('<rect x="' + x + '" y="' + y + '" width="' + size + '" height="' + size + '" fill="' + U.svgEsc(color) + '"/>'));
+          return U.svgDoc(w, h, host.getState().bg, body.join(''));
+        },
+        async exportData() {
+          const s = host.getState(), N = result.state.length;
+          return { arrays: {
+            memories: { data: Int8Array.from(result.patterns.flatMap(p => Array.from(p))), shape: [s.count, s.side, s.side], description: 'Stored bipolar patterns; target is memory zero.' },
+            cue: { data: new Int8Array(result.cue), shape: [s.side, s.side] },
+            state: { data: new Int8Array(result.state), shape: [s.side, s.side] },
+            energy: { data: Float64Array.from(result.energies), shape: [result.energies.length], description: 'Initial energy, then energy after each complete sweep.' },
+            overlaps: { data: Float64Array.from(result.overlaps, v => v / N), shape: [s.count] }
+          }, meta: { tab: 'hopfield', neurons: N, memories: s.count, corruptedCells: result.corrupted, sweeps: result.sweeps, fixedPoint: result.settled, flips: result.flips, weights: 'w_ij=sum_mu xi_mu_i*xi_mu_j/N for i!=j; w_ii=0', update: 'seeded shuffled asynchronous; ties retain sign; zero threshold', energy: '-s^T W s/2', panels: ['memory zero', 'cue', 'recall'], spatialBoundary: 'none: fully connected', seed: s.seed } };
+        }
+      };
+    }
   });
 })();
 </script>

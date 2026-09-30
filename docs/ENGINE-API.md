@@ -129,6 +129,8 @@ graphics hardware; it is recorded because precision and driver differences are p
 file. `node tools/provenance-check.js` reads every one back through the real export buttons.
 `node tools/run.js <hash> --out plate.npz --steps N` runs a recipe headlessly through `Studio.exportData()`.
 
+Skin exports its computed dimensionless site probabilities as `probability.npy`, shaped `[drawn rows, sites]`, with effective solver and boundary metadata. Every returned field is a copy. The [Skin data contract](SKIN-DATA-EXPORT.md) distinguishes current eigenvectors from legacy basis and repeated-row recipes.
+
 ## Text controls and typed formulas
 
 These are additive API version 1 surfaces (2026-09-25). Existing schemas, recipes and
@@ -242,3 +244,16 @@ are reported explicitly, without substituting Live/Still motion for validity.
 The [module browser](BROWSING-AND-LAYOUT.md) uses catalog metadata for searching and sorting without instantiating every simulation. Reference-year ordering and editorial familiarity categories do not change module IDs or recipe interpretation. Favorites are a local presentation preference.
 
 Zoom/pan transform the complete preview sheet so caption text scales with the artwork. Status and scientific witness text occupy their own panel below the art viewport. These are shared presentation changes; they do not alter numerical parameters, the recipe version or the physical print dimensions. Catalog/layout changes require `tools/studio-navigation-check.js` in Chromium and WebKit in addition to affected engine, recipe and print regressions.
+
+
+### Interactive preview preferences
+
+The recent-frame thumbnail strip has a persistent **Hide frames / Show frames** button. It is a local viewing preference, separate from the Live/Still badge, scientific status and recipe. Hidden frames are not captured. A saved link therefore describes the same technique regardless of this preference.
+
+Geometry sliders coalesce input with an 80 ms deadline that is not restarted by later input. The next update reads the latest state, and release immediately regenerates the final value. Queued work belongs to its original technique and is cancelled on navigation. Paint and live controls keep their immediate path. Undo records one pre-drag recipe; intermediate previews do not add timeline entries. Computationally expensive techniques still take their actual solve or warm-up time; this scheduling change does not shorten a scientific computation or alter its resolution.
+
+Pending geometry is rebuilt before repaint, image export, data export or returning to a technique. An inactive data export rebuilds its own technique without changing the selected plate, and pauses its background work after the export finishes. Every parameter edit reapplies the module sanitizer while retaining the state object, and live callbacks receive the sanitized value.
+
+### Bounded research sweeps
+
+`npm run research:sweep -- plan.json --out new-directory` uses the same `Studio.exportData()` path for parameter cases and seed replicates. [Plan and report contract](PARAMETER-SWEEPS.md). `tools/run.js --set key=value` applies overrides atomically through the recipe hash, including segmented controls; `--report new.json` records the fully resolved sanitized recipe. A counter threshold is a lower bound and does not freeze the simulation at an exact time.

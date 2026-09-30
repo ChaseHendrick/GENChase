@@ -1,6 +1,6 @@
 # Hatano-Nelson skin effect: open clean chain
 
-The `skin` tab draws every row of an open directed-hopping chain. On a clean open chain (on-site disorder below 0.04 and open ends) those rows are the closed form, row-normalized `|psi|^2`. The tab does not diagonalize that case. Disorder and periodic ends use subspace iteration with Gram-Schmidt. That path is not an eigensolver, and it is not part of this validation.
+The `skin` tab draws rows of a directed-hopping chain. This validation covers the clean open chain at disorder 0, where the rows are the closed form, row-normalized `|psi|^2`; the tab does not diagonalize that case. The current right-eigenvector solver uses symmetric QL for disordered open chains and Francis QR with inverse iteration for periodic chains. Those paths remain outside this validation. Recipes before v8 retain subspace iteration with Gram-Schmidt, which gives an orthonormal basis rather than the right eigenvectors and is also excluded.
 
 Reviewed 2026-09-29. Status in `validation/techniques.json` is **validated within stated limits**. The claim is the open clean chain, one row per eigenmode. On 2026-09-29 the default 4:5 sheet was printed again: it draws 96 rows for 96 modes, skin weight 0.780, the same modes as the new 1:1 fixture. Recipes before v8 still draw the old sheet height, and they are outside the claim. Disorder and periodic ends stay outside it.
 
@@ -12,7 +12,7 @@ Sites `j = 1..N`, zero diagonal, open ends. The rightward hop, from `j` to `j+1`
 (Hv)_j = e^{g} v_{j-1} + e^{-g} v_{j+1}
 ```
 
-with `v_0 = v_{N+1} = 0`. The catalog line writes `H_{j,j+1} = e^{g}` for that rightward hop. The matrix element that multiplies `v_{j+1}` is the leftward hop `e^{-g}`.
+with `v_0 = v_{N+1} = 0`. The displayed equation now states this component action directly. In conventional row-column matrix notation, `H_{j,j-1} = e^{g}` and `H_{j,j+1} = e^{-g}`. The earlier catalog indices reversed those two coefficients; the numerical operator and plate have not changed.
 
 The eigenvalues are exactly `2 cos(pi n / (N+1))` for `n = 1..N`, independent of `g`. The right eigenvectors are proportional to
 
@@ -94,7 +94,7 @@ The earlier print of this preset, from source `7a522072`, was 96 by 120 and skin
 
 - Validated within stated limits: the open clean chain, one row per mode. The 4:5 and 1:1 prints are both 96 by 96 and agree on the skin weight.
 - Recipes before v8 still draw the sheet height. At grid 96 and aspect 4:5 that is 120 rows, skin weight 0.773, including the wave-number-pi row and 23 repeated modes. The status line says so. They are not part of the claim.
-- Open chain, disorder below 0.04, only. Periodic ends and disordered subspace iteration are excluded.
+- Open chain at disorder 0 only. Current disordered and periodic right-eigenvector paths, and legacy Gram-Schmidt paths, are excluded from this claim.
 - Finite `N`, up to 96 for the tab comparison and 48 for the strict cosine and eigenvector tolerances.
 - The probability length `1/(2|g|)` is a regression test forced by the closed form, not an independent prediction.
 - No experiment, and no claim about the non-Hermitian skin effect in a laboratory sample.

@@ -36,7 +36,7 @@ function createServer({ root = ROOT, data, port = 8787, shareRequest } = {}) {
       const origin = 'http://127.0.0.1:' + server.address().port;
       if (req.headers.host !== '127.0.0.1:' + server.address().port || (req.headers.origin && req.headers.origin !== origin)) return reply(res, 403, { error: 'Loopback origin required.' });
       const url = new URL(req.url, origin);
-      const assets = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'] };
+      const assets = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/research/': ['../research/index.html', 'text/html'], '/research/model.js': ['../research/model.js', 'text/javascript'], '/research/app.js': ['../research/app.js', 'text/javascript'], '/research/style.css': ['../research/style.css', 'text/css'] };
       if (req.method === 'GET' && assets[url.pathname]) {
         const [file, type] = assets[url.pathname]; return reply(res, 200, fs.readFileSync(path.join(__dirname, file), 'utf8'), type);
       }

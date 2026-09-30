@@ -618,7 +618,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-135 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+137 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-article status.
 
@@ -759,6 +759,8 @@ Familiarity is listed so you do not confuse it with prior-article status.
 | `cattaneo` | Maxwell-Cattaneo heat | rare | science only | never searched |
 | `fisher-kpp` | Fisher-KPP | occasional | science only | never searched |
 | `dptangle` | Double pendulum tangle | rare | logged in research/double-pendulum/PRIOR-ART.md and REPORT.md | no |
+| `hopfield` | Hopfield Memory | common | science only | 2026-09-29: primary Hopfield 1982 source; established associative memory, no novelty claim |
+| `flow-matching` | Flow matching | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -2178,3 +2180,26 @@ Re-search: no, unless a week passes; read Enculescu (2004) and Sandstede (2007) 
 - Searched: arXiv full text '"Hodgkin-Huxley" "Evans function"' (0 hits) and '"Hodgkin-Huxley" stability "traveling wave"' (1, not relevant); the zbMATH Open API, '"Hodgkin-Huxley" & stability & (pulse | travelling | traveling | impulse)' (30 hits); two web searches (only this project's pull requests).
 - Found: the stability theory of Evans (Indiana Univ. Math. J. 21-24, 1972-75; paper III read in full from the owner's scan, papers I, II and IV not reached); Evans and Feroe, Math. Biosci. 37 (1977) 23-50, Zbl 0377.92003 (title and venue only; numerical stability computations according to later citations; not read); Ikeda, Mimura and Tsujikawa (1989), stability for the epsilon-modified system; Rinzel (1975), neutrally stable waves; Rottmann-Matthes, Dyn. PDE 9 (2012) 29-62 (nonlinear stability of parabolic-hyperbolic waves in general; not read). No proof of stability of the unmodified pulse, as expected, since its existence was not proved before this project's Theorem 1.
 - Re-search: no, except to read Evans and Feroe (1977) and Rottmann-Matthes (2012) before any claim of priority for the stability result.
+
+## 2026-09-29: Hopfield associative memory
+
+The new `hopfield` tab implements the established bipolar zero-threshold Hebbian specialization. Primary citation checked at PubMed (PMID6953413), DOI10.1073/pnas.79.8.2554 and the Caltech-hosted Hopfield82.pdf scan. The PMC landing page intermittently returned a browser challenge. This is source identification for a known model, not a novelty search. No paper text or scan is redistributed. Explicit model assumptions and bounded independent numerical and print checks are in [validation/HOPFIELD.md](validation/HOPFIELD.md). The scientific label remains unvalidated.
+
+
+## 2026-09-29: Research tools and AI method gaps
+
+Inspected the existing catalog and validator: CPPNs are random untrained networks, and the prior-article
+panel supplied only Google Scholar links tied to candidate jobs. Added a separate local source notebook
+and an external research-engine directory. Primary provider references and access limitations are in
+[the research tools guide](apps/research/README.md). Ai2 Asta and the August 2026 Elicit Research Agent
+announcement were inspected for current capabilities. Provider descriptions are not independent
+evaluations. No accounts, paid services, model calls, or automatic manuscript uploads were enabled.
+
+Local AI-model candidates are associative memory and generative probability flow, implemented only
+with explicit equations, seeded state, source credits and independent checks. They are established
+methods, not originality claims; new technique records start unvalidated.
+
+
+## 2026-09-29: flow-matching illustration
+
+Read the MIT 6.S184 2026 course and Holderrieth-Erives notes, Section 3, Eq. (18), (20), (29), from https://diffusion.csail.mit.edu/ and https://diffusion.csail.mit.edu/docs/lecture-notes.pdf; checked the record https://arxiv.org/abs/2506.02070 and Lipman et al.'s original method https://arxiv.org/abs/2210.02747. The local addition analytically marginalizes a finite Gaussian-mixture target and integrates its common probability-flow field with RK4. This is a pedagogical specialization of a published method, not a trained network or originality claim. Details and bounded tests: docs/FLOW-MATCHING.md. Initial status unvalidated.

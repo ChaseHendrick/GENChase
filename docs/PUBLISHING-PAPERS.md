@@ -116,12 +116,14 @@ Then:
    to bring that release's notes up to date; the tag and its files never change, and Zenodo keeps the
    description it archived. A release made before 2026-09-26 keeps its tag with the v (for example
    `v2.1.0` of minimal-winding): run with that tag, and its notes come from `## 2.1.0`; the same
-   version under a plain tag is refused, so it is never released twice. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+   version under a plain tag is refused, so it is never released twice. Zenodo imports releases asynchronously and shows two DOIs after publication. In the owner's observed workflow, imports can take one to two hours. A successful GitHub workflow or a Zenodo **Received** status is not a completed archive. Wait for publication and download the new ZIP before claiming that its manuscript is archived; do not create duplicate releases while an accepted import is pending. Cite the **version DOI**, because
    it names exactly the programs you used; the concept DOI always points to the newest release.
-5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
-   source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
-   the workflow updates the companion. Make a `1.0.1` release if you want the archived copy to carry
-   the DOI in its own PDF too.
+5. After verifying the archive, set `codeDoi` in `papers.json` and update the companion citation,
+   README and release record through a reviewed change. The manuscript may retain a prior immutable
+   version DOI for the exact checking programs it used. Do not rebuild an otherwise unchanged PDF
+   solely to cite its own new archive DOI. If the manuscript or checking material actually changes,
+   update the relevant data-availability references, rebuild with `sh tools/paper-build.sh <id>` and
+   publish a new version whose ZIP is checked again.
 
 ### Check the manuscript in the archive
 
@@ -149,6 +151,12 @@ members. Verify the manuscript bytes against the released PDF, then record the v
 `python3 tools/paper-zenodo-check.py --paper <id> --out /tmp/archive-check.json` performs this
 read-only download and comparison against the registered repository PDF.
 A PDF attached separately to a GitHub release does not establish that it is in the source ZIP.
+
+The read-only **verify preprint archives** workflow runs weekly and can be dispatched manually. It
+downloads all eight registered Zenodo ZIPs, compares manuscript hashes, verifies exact title capitalization
+and requires Publication / Preprint classification. The JSON report is retained as a workflow artifact,
+including on failure. It never changes or publishes a record. Update the registry after a new release
+has been verified; a PDF mismatch during release preparation means the registered archive is older.
 
 ### Editing a paper after it is public
 

@@ -10,8 +10,8 @@ authors:
     orcid: "https://orcid.org/0009-0002-9754-6087"
 # GENChase itself is not deposited on Zenodo and has no software DOI.
 # Paper preprint DOIs belong in the references below.
-version: "0.7.1"
-date-released: "2026-09-25"
+version: "0.9.0"
+date-released: "2026-09-30"
 repository-code: "https://github.com/ChaseHendrick/GENChase"
 url: "https://github.com/ChaseHendrick/GENChase"
 license: Apache-2.0
@@ -19,7 +19,7 @@ license-url: "https://github.com/ChaseHendrick/GENChase/blob/main/LICENSE"
 abstract: >-
   GENChase is a development and research working environment. Its art and print
   studio is a folder-based browser studio with one shared engine and
-  135 pattern-forming systems from physics, chemistry, biology and mathematics,
+  137 pattern-forming systems from physics, chemistry, biology and mathematics,
   each implemented as a real simulation rather than as a style applied to
   noise. A portable single-file HTML build is also included. Every plate is
   deterministic from a seed, reconstructible from a URL hash, and exportable at

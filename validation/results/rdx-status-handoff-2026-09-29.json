@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-29",
+  "passed": true,
+  "scope": "One actual same-seed UI transition from CIMA to relief at grid 128; original preset warmups 2000 and 1500; initial measurement fence deliberately held for 200 ms.",
+  "source": "src/modules/rdx.js",
+  "sourceSha256": "54ac3e5f8d53aa3c3de9f77be9680ada721496ff5bce0172e70ecf2dfb0c0b99",
+  "oldSourceSha256": "3e051bdb7015d6b16e8a7d19f9284a9493f74e262d54fddd65cbf5863da489dd",
+  "test": "tools/rdx-status-check.js",
+  "testSha256": "15f0633f565c22415bb56a2e1e151feb4bd3d4d8cd684c52c2630eccc7eaa863",
+  "command": "node tools/rdx-status-check.js --write=rdx-status-report.json",
+  "browser": "145.0.7632.6",
+  "playwright": "1.58.2",
+  "backend": "ANGLE SwiftShader, cached Chromium headless shell on macOS",
+  "runtimeCapSeconds": 180,
+  "before": {
+    "exitCode": 1,
+    "elapsedSeconds": 28.538,
+    "studioSha256": "b456bfe27a04f862ebcfb3a917bafa010c1588805c72bdfdb26e8686d4b06c10",
+    "reportSha256": "b615ee436375d74e7efcc7b566259b8fd1c54a6255107e08333b6a4224ea9c3b",
+    "logSha256": "ba6767276026adbabbef3ff4d544a18e979c3ee5b43958f7e4d86cf3e0832cfd",
+    "heldPolls": 45,
+    "initialStatus": "grid 128\u00d7128 Lengyel-Epstein \u00b7 D 1.5 \u03bb \u2248 10 cells step 2,000 paused dt 0.008 seed status-handoff",
+    "heldStatus": "grid 128\u00d7128 Lengyel-Epstein \u00b7 D 1.5 \u03bb \u2248 10 cells step 2,000 paused dt 0.008 seed status-handoff",
+    "freshPending": false,
+    "failure": "Previous CIMA status remained visible during the new relief initial measurement."
+  },
+  "after": {
+    "exitCode": 0,
+    "elapsedSeconds": 15.777,
+    "studioSha256": "3e2772baf7d2d31103c560d269539b83359907993a1e7197a839ff178974acba",
+    "reportSha256": "3eafc591e1966d120308d60c165e946cd734ffe1acd0a94af7563a36945e8aac",
+    "logSha256": "3eafc591e1966d120308d60c165e946cd734ffe1acd0a94af7563a36945e8aac",
+    "heldPolls": 46,
+    "initialStatus": "grid 128\u00d7128 step 0 computing dt 0.008 seed status-handoff",
+    "heldStatus": "grid 128\u00d7128 step 0 computing dt 0.008 seed status-handoff",
+    "completionStatus": "grid 128\u00d7128 Schnakenberg \u00b7 D 100.0 \u03bb \u2248 12 cells step 1,500 paused dt 0.008 seed status-handoff",
+    "freshPending": true
+  },
+  "paired": {
+    "exactSpeciesAndMetadata": true,
+    "exactPngPixels": true,
+    "shape": [
+      128,
+      128,
+      2
+    ],
+    "steps": 1500,
+    "fieldSha256": "cb9eb552bd2df9fce267ff33d2458ae5c771617a695c625c38df1c57ca6a4baa",
+    "pngPixelSha256": "29db225a2adcb11281932805ad769c50ab80919bfa897bf5fd2ee8fa6397da4a",
+    "pngDimensions": [
+      1200,
+      1200
+    ],
+    "exportPreservedField": true,
+    "finite": true,
+    "pageErrors": []
+  },
+  "reproduction": "After the coordinated build, run the command above. The fixture checks the maintained RDX source is embedded, holds clientWaitSync during the UI preset transition, then releases it and checks completion and a real shell PNG. STUDIO and RDX_SOURCE select a matching old-source scratch fixture for the negative control. Raw reports and logs remain in workspace work/rdx-status/.",
+  "limitations": [
+    "This is a status handoff and state-preservation regression, not a performance speedup or scientific-status promotion.",
+    "The old and new source comparison changes only the initial status publication; equations, RNG, recipes, numerical work and timers are unchanged.",
+    "Runtime measurements are single local runs, not controlled performance benchmarks.",
+    "The broader numerical suite is recorded separately after the coordinated build; this record does not claim that rerun."
+  ]
+}

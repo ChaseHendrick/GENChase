@@ -238,6 +238,7 @@
         init(s);
         const rng = U.makeRng(s.seed + '/potts/mc');
         const markAt = Math.max(1, Math.floor(s.sweeps * 0.75));
+        let lastPreview = -Infinity;
         (function chunk() {
           const t0 = performance.now();
           while (sweepNo < s.sweeps && performance.now() - t0 < 45) {
@@ -245,7 +246,14 @@
             sweepNo++;
             if (sweepNo === markAt) areaAt = Float64Array.from(area);
           }
-          if (sweepNo < s.sweeps) { countSides(s); status('coarsening'); timer = setTimeout(chunk, 0); }
+          if (sweepNo < s.sweeps) {
+            // Refresh derived diagnostics with the partial plate, at most once per 150 ms.
+            // These read the current labels and areas without advancing the solver or RNG.
+            if (performance.now() - lastPreview >= 150) {
+              countSides(s); status('coarsening'); render(); lastPreview = performance.now();
+            }
+            timer = setTimeout(chunk, 0);
+          }
           else {
             countSides(s);
             fitMullins(s.sweeps - markAt, s.seed);
@@ -342,7 +350,7 @@
           build(s, () => { render(); status(); });
         },
         repaint() { if (!building) render(); },
-        resize() { if (!building) render(); },
+        resize() { if (lab) render(); },
         pause() {}, resume() { if (!building) render(); },
         async exportPNG(w, h) {
           if (!lab) throw new Error('nothing to export');

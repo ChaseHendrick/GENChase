@@ -1,6 +1,6 @@
 
 /* modules/skin.js */
-/* GENChase: Hatano-Nelson chain. A similarity transform skins every eigenmode onto one boundary. The plate is |ψ_n(x)|. Skin weight is measured from the spectrum. */
+/* GENChase: Hatano-Nelson chain. A similarity transform skins every eigenmode onto one boundary. The plate is |ψ_n(x)|². Skin weight is measured from the spectrum. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -63,9 +63,9 @@
     tab: 'Skin',
     subtitle: 'non-Hermitian skin, Hatano–Nelson · 1996 / 2018',
     order: 47,
-    equation: 'H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))',
+    equation: '(Hψ)_j = e^{g} ψ_{j−1} + e^{−g} ψ_{j+1},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))',
     credit: 'N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.',
-    blurb: 'Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|, mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.',
+    blurb: 'Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction, right hop e^g and left hop e^{-g}, and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|², mode index down the page, at most one row per mode. A taller sheet stretches those rows. Recipes made before recipe v8 keep the old sheet-height count, which repeats modes, and the Gram–Schmidt basis, which is not the eigenvectors. The status line says so. The status line reports the weight on the last tenth of the chain. Periodic boundaries are not the open-chain similarity, and the skin weight drops.',
     schema: SCHEMA,
     defaults: DEFAULTS,
     // Recipes older than v7 drew one cell-row per sheet row, past the N eigenmodes on a tall sheet.
@@ -84,7 +84,7 @@
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, amp, skinW = 0, ipr = 0, buf, img;
+      let W = 0, H = 0, amp, skinW = 0, ipr = 0, buf, img, computed;
 
       function sizeFrom(s) {
         const aspect = ASPECTS[s.aspect] || 1;
@@ -553,6 +553,13 @@
         }
         skinW = w / H;
         ipr = p / H;
+        computed = {
+          sites: W, modes: H, solver: s.solver,
+          method: cleanOpen ? 'analytic-open' : s.solver === 'gram' ? 'legacy-gram-basis' : periodic ? 'periodic-right' : 'open-right',
+          boundary: s.bc, rowMode: s.rows, aspect: s.aspect, g: s.g, disorder: s.disorder, seed: s.seed,
+          skinWeight: skinW, skinStartSite: cut, meanIPR: ipr,
+          normalization: 'Each row sums to one; probabilities are squared magnitudes, not amplitudes.',
+        };
         buf = document.createElement('canvas');
         buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -624,6 +631,8 @@
                   pending: 'Gram–Schmidt basis is orthonormal, not the right eigenvectors' })
               : U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'deterministic', digits: 3, note: 'right eigenvectors' })) +
           '<span>' + verdict + '</span>'
+          + (s.solver === 'right' && s.bc === 'periodic' && s.disorder === 0 && s.g !== 0 && s.rows === 'modes'
+            ? '<span>periodic plane waves have uniform probability density, so this plate has one color</span>' : '')
         );
         void ipr;
       }
@@ -636,6 +645,16 @@
         resize() { paint(); },
         pause() {},
         resume() { paint(); },
+        exportData() {
+          if (!amp || !computed) throw new Error('nothing to export');
+          return {
+            arrays: { probability: {
+              data: amp.slice(), shape: [H, W], units: 'dimensionless',
+              description: 'Site probability |psi|^2, row-major [drawn row, site]. Legacy Gram rows are basis vectors, not eigenvectors; sheet rows may repeat modes.',
+            } },
+            meta: { ...computed },
+          };
+        },
         async exportPNG(w, h) {
           if (!buf) throw new Error('nothing to export');
           const s = host.getState();

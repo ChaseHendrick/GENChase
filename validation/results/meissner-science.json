@@ -1,10 +1,10 @@
 {
   "pass": true,
-  "date": "2026-09-28",
+  "date": "2026-09-29",
   "source": "src/modules/meissner.js",
   "sourceSha256": "34a6a410c7b900c77ee4b78389d36dc4f19fb659753e5fbfec847346edf58d94",
   "harness": "tools/meissner-science.js",
-  "harnessSha256": "2fdfc9e58b882ec0820de6229eb6fd4a20ad39df6aa8f501137ab9df251a8f56",
+  "harnessSha256": "99ab419f6efb7134e0ca5a92b367028def84cc7680dac98a583ba00965693096",
   "command": "node tools/meissner-science.js --write",
   "criteria": {
     "maxAbs": 0.001,
@@ -46,7 +46,7 @@
       "mode": "mg",
       "cycles": 14,
       "residual": 2.494542e-10,
-      "ms": 64.8,
+      "ms": 29.4,
       "maxAbs": 0.0001264776,
       "n": 7232,
       "pass": true
@@ -63,7 +63,7 @@
       "mode": "mg",
       "cycles": 14,
       "residual": 2.494542e-10,
-      "ms": 29.7,
+      "ms": 13.6,
       "maxAbs": 0.0001264776,
       "n": 7232,
       "pass": true
@@ -80,7 +80,7 @@
       "mode": "mg",
       "cycles": 13,
       "residual": 2.09611e-10,
-      "ms": 22.2,
+      "ms": 14.1,
       "maxAbs": 0.0001857118,
       "n": 8492,
       "pass": true
@@ -97,7 +97,7 @@
       "mode": "mg",
       "cycles": 12,
       "residual": 4.899499e-10,
-      "ms": 19.2,
+      "ms": 14.5,
       "maxAbs": 0.0004502455,
       "n": 9856,
       "pass": true
@@ -114,7 +114,7 @@
       "mode": "mg",
       "cycles": 15,
       "residual": 3.703389e-10,
-      "ms": 20.3,
+      "ms": 11.4,
       "maxAbs": 0.00002035866,
       "n": 5024,
       "pass": true
@@ -131,7 +131,7 @@
       "mode": "mg",
       "cycles": 16,
       "residual": 4.578062e-10,
-      "ms": 20.5,
+      "ms": 15.6,
       "maxAbs": 0.0001509018,
       "n": 7860,
       "pass": true
@@ -148,7 +148,7 @@
       "mode": "mg",
       "cycles": 12,
       "residual": 3.838148e-10,
-      "ms": 8.3,
+      "ms": 5.3,
       "maxAbs": 0.0001827494,
       "n": 1528,
       "pass": true
@@ -165,7 +165,7 @@
       "mode": "mg",
       "cycles": 14,
       "residual": 4.017124e-10,
-      "ms": 23.1,
+      "ms": 17.7,
       "maxAbs": 0.0003192205,
       "n": 11304,
       "pass": true
@@ -182,7 +182,7 @@
       "mode": "mg",
       "cycles": 11,
       "residual": 6.91724e-10,
-      "ms": 3.1,
+      "ms": 2.1,
       "maxAbs": 0.0007664241,
       "n": 812,
       "pass": true
@@ -199,7 +199,7 @@
       "mode": "mg",
       "cycles": 15,
       "residual": 9.36148e-10,
-      "ms": 47.1,
+      "ms": 37.6,
       "maxAbs": 0.00001183145,
       "n": 20108,
       "pass": true
@@ -216,7 +216,7 @@
       "mode": "mg",
       "cycles": 14,
       "residual": 3.456604e-10,
-      "ms": 20.6,
+      "ms": 14.1,
       "maxAbs": 0.0001264775,
       "n": 7232,
       "pass": true
@@ -233,7 +233,7 @@
       "mode": "mg",
       "cycles": 13,
       "residual": 7.56939e-10,
-      "ms": 12,
+      "ms": 10.4,
       "maxAbs": 0.0001021278,
       "n": 5024,
       "pass": true
@@ -250,7 +250,7 @@
       "mode": "mg",
       "cycles": 14,
       "residual": 6.821113e-10,
-      "ms": 14.4,
+      "ms": 11.1,
       "maxAbs": 0.0001337776,
       "n": 5024,
       "pass": true
@@ -267,7 +267,7 @@
       "mode": "mg",
       "cycles": 12,
       "residual": 7.771312e-10,
-      "ms": 5.9,
+      "ms": 4.9,
       "maxAbs": 0.0002069513,
       "n": 3228,
       "pass": true
@@ -284,7 +284,7 @@
       "mode": "mg",
       "cycles": 16,
       "residual": 3.099796e-10,
-      "ms": 28.9,
+      "ms": 21.9,
       "maxAbs": 0.0000535986,
       "n": 12892,
       "pass": true
@@ -301,7 +301,7 @@
       "mode": "mg",
       "cycles": 15,
       "residual": 2.820082e-10,
-      "ms": 45.2,
+      "ms": 33.8,
       "maxAbs": 0.00003462406,
       "n": 20108,
       "pass": true
@@ -316,16 +316,16 @@
   },
   "print": {
     "executed": false,
-    "reason": "No browser step. The default and every preset above are inside the converged disk, which is the fixture a later print would have to use."
+    "reason": "This numerical command does not launch a browser. Separate source-matched print evidence is recorded by tools/meissner-print-state.js."
   },
   "limitations": [
     "The circle must clear the frame (R < min(W, H)/2 - 1). A disk that runs into the edge is a different boundary and is outside this comparison.",
     "Agreement is the 5-point Shortley-Weller disk at h = 1 cell, not a continuum limit past the slider. The observed gap is second order in 1/λ.",
-    "Print was not executed. Status stays partially validated.",
+    "This command does not test print output. Read validation/results/meissner-print-state.json for separate browser evidence.",
     "Recipes older than v7 keep Jacobi and are not in this domain."
   ],
   "environment": {
-    "node": "v22.23.3",
-    "platform": "linux"
+    "node": "v24.21.0",
+    "platform": "darwin"
   }
 }

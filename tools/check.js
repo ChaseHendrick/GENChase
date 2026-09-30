@@ -1,9 +1,8 @@
 // node tools/check.js <id> [waitMs=8000]
 // Full check for one tab: default plate, every preset, the same hash loaded twice, and a tab switch away and back.
 // Set STUDIO=path/to/studio.html to check a test copy built with tools/inject.js.
-const { glArgs } = require('./lib/gl-args');
+const { checkUniformSkin } = require('./lib/check-uniform-skin');
 const path = require('path');
-const { chromium } = require('playwright');
 
 // Environment noise under file:// and swiftshader, not defects in the page.
 const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/, /GL Driver Message.*Performance/];
@@ -18,6 +17,8 @@ async function measure(p) {
     // beyond any fixed character limit; truncating it makes settle() wait for a seed
     // it can never see, even after the plate has finished.
     const status = st ? st.innerText.replace(/\s+/g, ' ') : null;
+    // Keep direct measurement spans separate from explanatory scientific prose.
+    const statusParts = st ? [...st.children].map(child => child.textContent.replace(/\s+/g, ' ').trim()) : [];
     // The status line is rendered by the technique and lags its state: the shell applies the hash
     // immediately but the text is not rewritten until the technique next reports. The seed field is
     // updated synchronously, so that is what says which plate this actually is.
@@ -70,7 +71,7 @@ async function measure(p) {
     let ink = 0; for (let i = 0; i < L2.length; i++) if (Math.abs(L2[i] - p50) > 10) ink++;
     return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16), nyq, seedField,
       lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L2.length).toFixed(4) },
-      status };
+      status, statusParts };
   });
 }
 // Alive either as a broad tonal field (percentile spread) or as marks on a ground (range plus enough ink).
@@ -78,6 +79,35 @@ const flat = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lu
 // Strongly negative neighbour correlation at the grid scale means the plate is the integrator blowing up, not a pattern.
 const NYQ = -0.35;
 const checker = m => m.nyq !== null && m.nyq !== undefined && m.nyq < NYQ;
+
+// A finite solve is not a finished plate while its declared counter target is unmet.
+function pendingWork(m) {
+  const status = m.status || '';
+  const match = /\b(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)\s*\/\s*([\d,]+)/i.exec(status);
+  if (match) {
+    const at = Number(match[1].replace(/,/g, '')), target = Number(match[2].replace(/,/g, ''));
+    if (at < target) return { pending: true, reason: 'finite progress ' + at + '/' + target };
+  }
+  // Producers use standalone spans or middle-dot phase components. A word inside
+  // a diagnostic sentence (for example Ising's Yang-comparison caveat) is not a
+  // finite-work marker. Retain explicit Kitaev/SLE and neural-field formats.
+  const parts = Array.isArray(m.statusParts) && m.statusParts.length ? m.statusParts : [status];
+  const phases = parts.flatMap(part => part.split('·').map(value => value.trim()));
+  const marker = /^(?:relaxing|warming(?: up)?|computing(?: [\d,]+ quasiparticle modes| \d+(?:\.\d+)?%)?|building|coarsening|initial forces|preparing, computing|[\d,]+ queued)(?:…|\.{3})?$/i;
+  if (phases.some(part => marker.test(part)))
+    return { pending: true, reason: 'status reports unfinished work' };
+  return { pending: false, reason: '' };
+}
+
+// Actual faults retain priority over incomplete work. A finite solver may paint a
+// partial field, but a missing canvas or Nyquist instability is still a failure.
+function classifyPlate(m) {
+  if (m.err) return { kind: 'fail', reason: m.err };
+  if (checker(m)) return { kind: 'fail', reason: 'grid-scale checkerboard (neighbour correlation ' + m.nyq + ')' };
+  const pending = pendingWork(m);
+  if (pending.pending) return { kind: 'incomplete', reason: pending.reason };
+  return { kind: flat(m) ? 'flat' : 'ready', reason: '' };
+}
 
 // Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
 // stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
@@ -96,29 +126,65 @@ async function settle(p, maxMs, seed) {
     if (seed && m.status && m.status.indexOf(seed) < 0) { last = ''; same = 0; continue; }
     // A progressive solver may leave its preview unchanged while a work batch runs.
     // That is not a completed still plate and cannot establish replay agreement.
-    if (/\b(?:relaxing|warming|computing|initial forces)\b|\b\d+\s+queued\b/i.test(m.status || '')) {
+    if (pendingWork(m).pending) {
       last = ''; same = 0; continue;
     }
     same = m.fp === last ? same + 1 : 0; last = m.fp;
     if (same >= 2) return 'still';                           // the pixels stopped changing
     const st = m.status || '';
-    const step = (st.match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
+    const step = (st.match(/(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)/) || [])[1];
     const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
     if (step && warm && Number(step.replace(/,/g, '')) >= warm) return 'warmed';   // living plate past its warm-up
   }
   return 'timeout';                                          // never settled inside the budget
 }
 
-(async () => {
+// Replay must compare nonblank plates at the same size and computation state. A matching
+// fingerprint alone is insufficient: an unchanged preview can hide unfinished computation.
+function compareReplay(first, second, firstSettle, secondSettle) {
+  const countersOf = m => {
+    const counters = {};
+    const regex = /\b(steps?|sweeps?|iterations?|iters?|grains|particles|kicks|hits)\s+([\d,]+)(?![\d,.]|\s*[kKmM]\b)/g;
+    for (const match of (m.status || '').matchAll(regex)) {
+      const label = match[1].replace(/s$/, '');
+      counters[label] = Number(match[2].replace(/,/g, ''));
+    }
+    return counters;
+  };
+  const counters = [countersOf(first), countersOf(second)];
+  const keys = [...new Set(counters.flatMap(value => Object.keys(value)))].sort();
+  const sameStep = keys.length > 0 && keys.every(key => counters[0][key] !== undefined && counters[0][key] === counters[1][key]);
+  const steps = counters.map(value => value.step ?? value.sweep ?? value.iteration ?? value.iter ?? value.grain ?? value.particle ?? value.kick ?? value.hit ?? null);
+  const noCounters = keys.length === 0;
+  const still = firstSettle === 'still' && secondSettle === 'still';
+  const plateValid = !first.err && !second.err && !flat(first) && !flat(second) && !checker(first) && !checker(second);
+  const pending = [pendingWork(first), pendingWork(second)];
+  const valid = plateValid && !pending.some(result => result.pending);
+  const invalidReason = first.err || second.err ? ', missing plate' :
+    checker(first) || checker(second) ? ', grid-scale checkerboard' :
+    !plateValid ? ', blank plate' :
+    pending.some(result => result.pending) ? ', unfinished computation: ' + pending.map(result => result.reason || 'finished').join(' and ') : '';
+  const comparable = valid && first.canvas === second.canvas && (sameStep || (noCounters && still));
+  return { comparable, same: comparable && first.fp === second.fp, steps, counters,
+    reason: 'counters ' + counters.map(value => JSON.stringify(value)).join(' and ') + ', settle ' + firstSettle + ' and ' + secondSettle +
+      ', canvas ' + first.canvas + ' and ' + second.canvas + invalidReason };
+}
+
+module.exports = { measure, settle, compareReplay, pendingWork, classifyPlate };
+
+if (require.main === module) (async () => {
+  const { glArgs } = require('./lib/gl-args');
+  const { chromium } = require('playwright');
   const id = process.argv[2], wait = +(process.argv[3] || 8000);
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const url = 'file://' + studio;
   const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const fails = [];
+  const incomplete = [];
   const errs = [];
-  const open = async hash => {
-    const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
+  const open = async (hash, reducedMotion = 'no-preference') => {
+    const p = await b.newPage({ viewport: { width: 1400, height: 900 }, reducedMotion });
     // Normalise the layout before the shell boots. file:// pages share one localStorage, so the
     // timeline strip fills up as the run proceeds and changes the stage height, which changes the
     // canvas size, which changes every pixel. Two loads of one recipe were being compared at
@@ -157,24 +223,30 @@ async function settle(p, maxMs, seed) {
   // near-uniform haze at step 300 and is a field of rippling voids by step 2,800. Say so next to the
   // numbers rather than leaving a low reading to be misread as a dead plate.
   const progressNote = (m, target) => {
-    const st = (m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/);
+    const st = (m.status || '').match(/(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)/);
     if (!st || !target) return '';
     const at = Number(st[1].replace(/,/g, ''));
     return at < target * 0.5 ? ' judged early: step ' + at.toLocaleString() + ' of ' + target.toLocaleString() : '';
   };
-  const runTarget = await p.evaluate(() => {
+  const runTargetOf = () => p.evaluate(() => {
     try {
       const st = JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}');
       return Number(st.stopAfter) || Number(st.warmup) || 0;
     } catch (e) { return 0; }
   });
+  const runTarget = await runTargetOf();
 
   await settle(p, wait, seed);
   const def = await measure(p);
   console.log('default', JSON.stringify(def) + progressNote(def, runTarget));
-  if (def.err) fails.push('default: ' + def.err);
-  else if (flat(def)) fails.push('default plate is flat');
-  else if (checker(def)) fails.push('default plate is the grid-scale checkerboard (neighbour correlation ' + def.nyq + '): the integrator is unstable');
+  const defOutcome = classifyPlate(def);
+  if (defOutcome.kind === 'fail') fails.push('default: ' + defOutcome.reason);
+  else if (defOutcome.kind === 'incomplete') incomplete.push('default: ' + defOutcome.reason);
+  else if (defOutcome.kind === 'flat') {
+    const uniform = id === 'skin' ? await checkUniformSkin(p) : { accepted: false };
+    if (uniform.accepted) console.log('expected uniform default', JSON.stringify(uniform));
+    else fails.push('default plate is flat' + (uniform.reason ? ': ' + uniform.reason : ''));
+  }
 
   // Capture the full recipe of the default plate before the preset loop mutates the persisted state.
   // The determinism check used to load "id/seed/{running:false}", which pins only that one key and
@@ -187,21 +259,32 @@ async function settle(p, maxMs, seed) {
     try { return JSON.parse(raw); } catch (e) { return null; }
   });
 
+  // Read the registered contract, not persisted recipe keys. An injected running:false key
+  // cannot pause a technique whose implementation never declared or reads that control.
+  const pausable = await p.evaluate(me => Object.prototype.hasOwnProperty.call(Studio.modules[me].defaults, 'running'), id);
+
   // 2. every preset
   const presets = await p.evaluate(() => [...document.querySelectorAll('#preset option')].map(o => o.value).filter(Boolean));
   for (const key of presets) {
     await p.evaluate(k => { const s = document.querySelector('#preset'); s.value = k; s.dispatchEvent(new Event('change', { bubbles: true })); }, key);
     await settle(p, wait, seed);
     const m = await measure(p);
-    console.log('preset ' + key, JSON.stringify(m) + progressNote(m, runTarget));
-    if (m.err) fails.push('preset ' + key + ': ' + m.err);
-    else if (flat(m)) fails.push('preset ' + key + ' is flat');
-    else if (checker(m)) fails.push('preset ' + key + ' is the grid-scale checkerboard (neighbour correlation ' + m.nyq + ')');
+    console.log('preset ' + key, JSON.stringify(m) + progressNote(m, await runTargetOf()));
+    const outcome = classifyPlate(m);
+    if (outcome.kind === 'fail') fails.push('preset ' + key + ': ' + outcome.reason);
+    else if (outcome.kind === 'incomplete') incomplete.push('preset ' + key + ': ' + outcome.reason);
+    else if (outcome.kind === 'flat') {
+      const uniform = id === 'skin' ? await checkUniformSkin(p) : { accepted: false };
+      if (uniform.accepted) console.log('expected uniform preset ' + key, JSON.stringify(uniform));
+      else fails.push('preset ' + key + ' is flat' + (uniform.reason ? ': ' + uniform.reason : ''));
+    }
   }
   if (!presets.length) fails.push('no presets registered');
 
-  // 3. same hash twice must give the same plate (running:false so living fields stop after warm-up)
-  const stillRecipe = fullRecipe ? Object.assign({}, fullRecipe, { running: false }) : { running: false };
+  // 3. Replay the same hash at a supported stopping point: pause when declared, otherwise
+  // use the supported reduced-motion lifecycle. Default and preset checks remain normal motion.
+  const stillRecipe = Object.assign({}, fullRecipe || {}, pausable ? { running: false } : {});
+  const replayMode = pausable ? 'no-preference' : 'reduce';
   const still = id + '/' + seed + '/' + b64url(stillRecipe);
   if (!fullRecipe) console.log('determinism: could not read the settings JSON, falling back to a partial recipe');
   // Determinism gets its own, larger budget. It is a pass/fail claim about the product rather than a
@@ -217,42 +300,19 @@ async function settle(p, maxMs, seed) {
   // size. That is what 725x725 against 727x727 was, and clearing history in the init script could not
   // fix it because the other page wrote again afterwards. Nothing below needs this page.
   await p.close();
-  const a1 = await open(still); const r1 = await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
-  const a2 = await open(still); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
-  // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
-  // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
-  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
-  const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
-  const s1 = stepOf(m1), s2 = stepOf(m2);
-  // Two captures at different step counts (a chunked computation still running, or a living plate with no pause key)
-  // say nothing about determinism; two captures at the same step count must match exactly.
-  // Two captures say something about determinism only when we know they were taken at the same point
-  // in the computation. A plate reporting no step count gives no way to know that, so a difference
-  // there is not evidence of anything. This read the other way round and failed such plates.
-  // Equal canvas size as well: the plate is resolution-independent by design, so the same recipe
-  // drawn at a different size is legitimately different pixels and says nothing about determinism.
-  // Two captures say something about determinism only when we know they were taken at the same point,
-  // and there are two ways to know it. Either both report the same step count, or both were observed to
-  // go STILL: settle() returns 'still' only once the fingerprint stopped changing across samples, and a
-  // plate that has stopped changing is at a point by definition. That second route is what a technique
-  // with no step counter needs, and leaving it out was a real bug in the first version of this rule.
-  // fractal and attractors report no step, so on a slow runner every mismatch fell through to a hard
-  // failure the harness had no evidence for. Comparability is now established rather than assumed.
-  const settled = r1 === 'still' && r2 === 'still';
-  const sameStep = s1 !== null && s2 !== null && s1 === s2;
-  const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && (sameStep || settled));
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable, settle: [r1, r2] }));
-  // Two loads drawn at different canvas sizes are legitimately different pixels: the plate is
-  // resolution-independent by design, and a scrollbar appearing on one load is enough to move the
-  // size by two pixels. That case keeps its excuse and must not reach the warm-up failure below.
-  const sizeMismatch = m1.canvas !== m2.canvas;
-  if (m1.fp !== m2.fp && sizeMismatch) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
-  if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
-  // Not comparable is a real answer rather than a dodge, but it has to say what was missing, so a reader
-  // can tell an untested plate from a passing one.
-  else if (m1.fp !== m2.fp) console.log('determinism not comparable: steps ' + s1 + ' and ' + s2 +
-    ', settle ' + r1 + ' and ' + r2 + (pausable ? '' : ' (living plate without a pause key)') +
-    '. Neither load reached a state this harness can compare; raise DET_WAIT if the plate needs longer.');
+  const a1 = await open(still, replayMode); const r1 = await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
+  const a2 = await open(still, replayMode); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
+  const replay = compareReplay(m1, m2, r1, r2);
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: replay.same,
+    steps: replay.steps, counters: replay.counters, canvas: [m1.canvas, m2.canvas], pausable, reducedMotion: replayMode,
+    settle: [r1, r2], comparable: replay.comparable }));
+  if (!replay.comparable) {
+    if (m1.err || m2.err || checker(m1) || checker(m2)) fails.push('determinism: ' + replay.reason);
+    else incomplete.push('determinism: ' + replay.reason);
+    console.log('determinism not comparable: ' + replay.reason +
+      '. Neither load reached a state this harness can compare.');
+  }
+  else if (!replay.same) fails.push('same hash loaded twice gave different plates');
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);
@@ -271,6 +331,8 @@ async function settle(p, maxMs, seed) {
 
   const uniq = [...new Set(errs)];
   if (uniq.length) { console.log('console errors:\n  ' + uniq.join('\n  ')); fails.push(uniq.length + ' console error(s)'); }
-  console.log(fails.length ? 'FAIL ' + id + ': ' + fails.join('; ') : 'PASS ' + id);
-  process.exit(fails.length ? 1 : 0);
+  if (incomplete.length) console.log('INCOMPLETE ' + id + ': ' + incomplete.join('; '));
+  if (fails.length) console.log('FAIL ' + id + ': ' + fails.join('; '));
+  else if (!incomplete.length) console.log('PASS ' + id);
+  process.exit(fails.length ? 1 : incomplete.length ? 2 : 0);
 })();

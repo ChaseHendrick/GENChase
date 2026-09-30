@@ -1,0 +1,7 @@
+# Integer model recipes
+
+Hopfield memory and analytic flow matching accept recipes from both share links and the Settings JSON dialog. Integer array dimensions and iteration budgets are rounded to the nearest integer and clamped to their declared bounds. Valid integer recipes retain their values, including values between slider increments. Nonfinite or nonnumeric inputs use the declared defaults through the shared recipe sanitizer. Continuous model parameters retain their existing behavior.
+
+The regression is reproducible with `node tools/model-recipe-check.js --write` after building the studio. It uses an actual browser, opens the Settings dialog through its button handler, applies JSON through the dialog, and exports NPZ files through `Studio.exportData()`. Its 16 cases cover fractional values, malformed values, bounds, and valid integers/numeric strings for both import routes. Every array must contain finite values and have integer dimensions whose product matches its length. Hash and JSON imports of the same seeded recipe must export identical arrays. The report is `validation/results/model-recipe-check.json` and includes source and harness fingerprints.
+
+Before this repair, `side: 8.5` in Hopfield and `steps: 32.5` in flow matching could reach their simulation loops and make NPZ export fail with `Invalid .npy shape`. This check concerns recipe handling and data integrity. It does not promote either technique's scientific validation status. The separate numerical and 2400px print harnesses are rerun when their source fingerprints change.

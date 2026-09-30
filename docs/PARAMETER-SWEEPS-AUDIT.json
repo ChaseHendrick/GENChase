@@ -1,0 +1,131 @@
+{
+  "reviewed": "2026-09-29",
+  "scope": "Research runner regression only; no scientific evidence label changes.",
+  "commands": [
+    "node tools/sweep-check.js",
+    "node tools/sweep.js examples/sweeps/dptangle-step.json --out NEW_DIRECTORY",
+    "node tools/run.js #dptangle/override-check --set aspect=16:9 --set orbits=1 --set orbitReturns=8 --set iterates=4 --set curveStep=0.008 --wait 0 --timeout 60000 --out NEW.npz --report NEW.json"
+  ],
+  "environment": {
+    "platform": "darwin",
+    "node": "v24.21.0",
+    "browser": "installed Google Chrome 154.0.8037.58",
+    "compute": "CPU"
+  },
+  "sourceFingerprints": {
+    "tools/run.js": "c4f8cead0c047b1132e80009dffaf83b89f11a79a8f51e0dd6992cd354f4acda",
+    "tools/sweep.js": "06ae4d47242fe7ab2bf0b4f6617146a2fbe798716f351dc51b1bcc28f9fa4fbb",
+    "tools/sweep-check.js": "caa2468f928dfce89a9f89fb8f0a49f088a15e8665b92bfee8d4a7ec37d875ef",
+    "src/modules/dptangle.js": "d8bde8fca0e94f9df16c1bcd4dbdd0f0a950eaa907d8ce8989c5c7794c837b73"
+  },
+  "successfulCases": 4,
+  "elapsedMs": 53214,
+  "aggregates": [
+    {
+      "case": "step-0.008",
+      "total": 2,
+      "failed": 0,
+      "compatible": true,
+      "metrics": {
+        "sea_mean_p2": {
+          "n": 2,
+          "mean": -0.03014777148448583,
+          "sampleSD": 0.15317352565581535,
+          "SEM": 0.10831003868947864
+        },
+        "return_time": {
+          "n": 2,
+          "mean": 2.9534890103973903,
+          "sampleSD": 0,
+          "SEM": 0
+        }
+      }
+    },
+    {
+      "case": "step-0.004",
+      "total": 2,
+      "failed": 0,
+      "compatible": true,
+      "metrics": {
+        "sea_mean_p2": {
+          "n": 2,
+          "mean": -0.020191019613217308,
+          "sampleSD": 0.14486067461169325,
+          "SEM": 0.10243196534518623
+        },
+        "return_time": {
+          "n": 2,
+          "mean": 2.9534890103973903,
+          "sampleSD": 0,
+          "SEM": 0
+        }
+      }
+    }
+  ],
+  "pairedDifferences": [
+    {
+      "seed": "sweep-example/0",
+      "from": "step-0.008",
+      "to": "step-0.004",
+      "eligible": true,
+      "reason": null,
+      "difference": 0.01583482521556094,
+      "interpretation": "Paired scalar difference only; no inferred convergence order, error bound or validation verdict."
+    },
+    {
+      "seed": "sweep-example/1",
+      "from": "step-0.008",
+      "to": "step-0.004",
+      "eligible": true,
+      "reason": null,
+      "difference": 0.004078678526976104,
+      "interpretation": "Paired scalar difference only; no inferred convergence order, error bound or validation verdict."
+    }
+  ],
+  "npzSha256": {
+    "001.npz": "d10f6a29d0ff2c5ea1fdfad503320a10d31ab1a4100df20e5c9e92582271036f",
+    "002.npz": "d12d5b6721627785ac9dcab68e9009c02a1ec2362e83605b4e0f452fef9a4459",
+    "003.npz": "af862a2335699a6a9fbb540463fe4f4778164b054962a1abceec3e0cc24f613a",
+    "004.npz": "129055089ef58f770a2fb160fdc6a18f02dd9266576d67e8d6082b1708c2ec33"
+  },
+  "independentReadback": [
+    {
+      "file": "001.npz",
+      "samples": 54,
+      "pythonMean": -0.1384578101739645,
+      "reportedMean": -0.13845781017396447
+    },
+    {
+      "file": "002.npz",
+      "samples": 54,
+      "pythonMean": 0.07816226720499275,
+      "reportedMean": 0.07816226720499281
+    },
+    {
+      "file": "003.npz",
+      "samples": 54,
+      "pythonMean": -0.12262298495840354,
+      "reportedMean": -0.12262298495840353
+    },
+    {
+      "file": "004.npz",
+      "samples": 54,
+      "pythonMean": 0.0822409457319689,
+      "reportedMean": 0.08224094573196891
+    }
+  ],
+  "controls": {
+    "segmentedOverride": "actual aspect 16:9",
+    "sanitizedOverride": "requested orbits 1, actual 6",
+    "caseTimeout": "unreachable technique killed at 2000 ms cap; failed case retained; outer wall 2265 ms",
+    "overwrite": "existing result directory refused by dependency-free fixture",
+    "bufferRegression": "Node Buffer NPY offsets covered by fixture",
+    "comparisonRefusal": "unequal physical settings, exported times or array shapes are refused by fixtures"
+  },
+  "limitations": [
+    "Two seeds demonstrate the workflow and are insufficient for a substantive statistical claim.",
+    "This comparison is a paired orbit-cloud scalar difference, not proof of convergence.",
+    "Browser smoke ran on macOS Chrome, not all supported platforms.",
+    "Raw NPZ files are not bundled; hashes and reproducible commands are recorded, with independent Python readback of each array mean."
+  ]
+}

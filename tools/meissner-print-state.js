@@ -196,6 +196,8 @@ ${marker}`);
   const hash = v => crypto.createHash('sha256').update(v).digest('hex');
   const result = {
     pass: true,
+    reviewed: '2026-09-29',
+    environment: { chromium: browser.version(), node: process.version, platform: process.platform },
     source: 'src/modules/meissner.js',
     sourceSha256: hash(original),
     harnessSha256: hash(fs.readFileSync(__filename)),

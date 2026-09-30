@@ -58,7 +58,7 @@ subject to browser restrictions on clipboard and local storage. End users do not
 The full scientific CI remains in place. Tests using Chromium need the development harness:
 
 ```sh
-npm install --no-save --package-lock=false playwright@1.49.1
+npm install --no-save --package-lock=false playwright@1.58.2
 npx playwright install chromium
 ```
 

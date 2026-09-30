@@ -860,7 +860,7 @@ function run() {
       recipeVersion: pieces.recipeV,
       domain: {
         parameters: 'Open chain, disorder 0, rows modes, g in {0, 0.025, 0.06, 0.08, 0.14} at N=96 and g=0.06 at N=48 and 192, aspects 1:1, 4:5, 5:4 and 16:9. Open disorder at N=48 and 96, g=0.07, W=1.4, seed skin-disorder. Clean periodic chain at g=0.08, N=48 and 96. Periodic disorder at N=48, g=0.07, W=1.4, seed skin-ring. g=0 periodic at N=32 resolves the identity. Legacy rows sheet and solver gram are the failure controls.',
-        conditions: 'Open ends. Right eigenvectors e^{g j} sin(pi n (j+1)/(N+1)), n=1..drawn rows, of (H psi)_i = e^g psi_{i-1} + e^{-g} psi_{i+1}. Skin weight is the mean, over the drawn rows, of the probability on sites j >= floor(0.9 N).',
+        conditions: 'The closed-form row comparison applies to the clean open subset only: right eigenvectors e^{g j} sin(pi n (j+1)/(N+1)), n=1..drawn rows, of (H psi)_i = e^g psi_{i-1} + e^{-g} psi_{i+1}. Listed nonzero-disorder open and periodic fixtures are separate solver comparisons, not general validation of those parameter domains. Skin weight is the mean, over the drawn rows, of the probability on sites j >= floor(0.9 N).',
         resolution: 'N = 48, 96, 192. Drawn rows = min(max(32, round(N * aspect)), N) for rows modes.',
         precision: 'Binary64 closed form. The module stores each row as float32 after the same square-then-normalize order. RGBA8 for the node print fixture.',
       },

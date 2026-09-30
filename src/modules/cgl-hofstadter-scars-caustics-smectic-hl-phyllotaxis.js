@@ -959,6 +959,12 @@ void main(){
     create(host) {
       const canvas=host.canvas, ctx=canvas.getContext('2d');
       let circles=[];
+      // Use the same two-arc path for Canvas and SVG. Their native circle primitives can
+      // tessellate differently across renderers, displacing thin layers in the print.
+      function layerPath(cx,cy,r) {
+        return 'M '+(cx+r)+' '+cy+' A '+r+' '+r+' 0 0 1 '+(cx-r)+' '+cy+
+          ' A '+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z';
+      }
       function pack(s) {
         const rng=U.makeRng(s.seed+'/smec');
         circles=[];
@@ -989,7 +995,7 @@ void main(){
           if (s.view!=='ellipses') {
             const pitch=s.pitch*sc;
             for (let r=R; r>1.5; r-=pitch) {
-              ctx.beginPath(); ctx.arc(cx,cy,r,0,TAU); ctx.stroke();
+              ctx.stroke(new Path2D(layerPath(cx,cy,r)));
             }
           }
           if (s.view!=='layers') {
@@ -1029,11 +1035,13 @@ void main(){
             g.strokeStyle=col(i*0.17); g.lineWidth=Math.max(0.6, s.lw*sc/900);
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R;r>1.5;r-=pitch){ g.beginPath(); g.arc(cx,cy,r,0,TAU); g.stroke(); }
+              for (let r=R;r>1.5;r-=pitch) g.stroke(new Path2D(layerPath(cx,cy,r)));
             }
             if (s.view!=='layers') {
               g.save(); g.translate(cx,cy); g.rotate(c.th);
               g.beginPath(); g.ellipse(0,0,R,R*(0.55+c.e*0.3),0,0,TAU); g.stroke();
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              g.beginPath(); g.moveTo(-f,-R*1.1); g.quadraticCurveTo(0,0,f,R*1.1); g.stroke();
               g.restore();
             }
           }
@@ -1042,20 +1050,23 @@ void main(){
         exportSVG(w,h){
           const s=host.getState();
           const W=w||1000, H=h||W, sc=Math.min(W,H);
-          const pal=s.palette||['#111'];
-          const lw=Math.max(0.35, s.lw*sc/900).toFixed(2);
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=k=>{ const li=((k%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const lw=Math.max(0.6, s.lw*sc/900);
           let body='';
           for (let i=0;i<circles.length;i++) {
-            const c=circles[i], cx=(c.x*W).toFixed(2), cy=(c.y*H).toFixed(2), col=U.svgEsc(pal[i%pal.length]);
+            const c=circles[i], cx=c.x*W, cy=c.y*H, col=U.svgEsc(colour(i*0.17));
             const R=c.r*sc;
             if (s.view!=='ellipses') {
               const pitch=s.pitch*sc;
-              for (let r=R; r>1.2; r-=pitch)
-                body+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              for (let r=R; r>1.5; r-=pitch)
+                body+='<path d="'+layerPath(cx,cy,r)+'" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
             }
             if (s.view!=='layers') {
               const ry=R*(0.55+c.e*0.3);
-              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R.toFixed(2)+'" ry="'+ry.toFixed(2)+'" transform="rotate('+(c.th*180/Math.PI).toFixed(2)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              body+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+R+'" ry="'+ry+'" transform="rotate('+(c.th*180/Math.PI)+' '+cx+' '+cy+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
+              const f=R*Math.sqrt(Math.max(0,1-(0.55+c.e*0.3)**2));
+              body+='<path d="M '+(-f)+' '+(-R*1.1)+' Q 0 0 '+f+' '+(R*1.1)+'" transform="translate('+cx+' '+cy+') rotate('+(c.th*180/Math.PI)+')" fill="none" stroke="'+col+'" stroke-width="'+lw+'" stroke-linecap="round"/>\n';
             }
           }
           return U.svgBlob(W,H,s.bg,body);
@@ -1224,17 +1235,19 @@ void main(){
           const W=w||1000, H=h||W;
           let m=0; for (let i=0;i<boundary.length;i++) m=Math.max(m, Math.hypot(boundary[i][0], boundary[i][1]));
           const sc=0.44*Math.min(W,H)/Math.max(m,1), cx=W/2, cy=H/2;
-          const pal=s.palette||['#111'], ink=pal[0]||'#111', fill=pal[Math.min(pal.length-1,2)]||ink;
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const colour=t=>{ const li=((t%1)*255|0)*3; return 'rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; };
+          const ink=s.view==='outline'?U.inkFor(s.bg):colour(0.12), fill=colour(0.72);
           const dOf=arr=>{
             let d=''; for (let i=0;i<arr.length;i++) d+=(i?'L':'M')+(cx+arr[i][0]*sc).toFixed(2)+' '+(cy+arr[i][1]*sc).toFixed(2);
             return d+'Z';
           };
           let body='';
-          const lw=Math.max(0.4, s.lw*Math.min(W,H)/900).toFixed(2);
+          const lw=Math.max(0.8, s.lw*Math.min(W,H)/800).toFixed(2);
           if (s.view==='age' && rings.length) {
             for (let r=0;r<rings.length;r++) {
-              const col=pal[r%pal.length];
-              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" d="'+dOf(rings[r])+'"/>\n';
+              const col=colour(r/Math.max(1,rings.length-1));
+              body+='<path fill="none" stroke="'+U.svgEsc(col)+'" stroke-width="'+lw+'" stroke-linejoin="round" stroke-linecap="round" d="'+dOf(rings[r])+'"/>\n';
             }
           }
           if (s.view!=='outline') body+='<path fill="'+U.svgEsc(fill)+'" fill-opacity="'+(s.view==='age'?'0.18':'0.92')+'" stroke="none" d="'+dOf(boundary)+'"/>\n';
@@ -1271,6 +1284,7 @@ void main(){
       voronoi: pre('Voronoi', { lam: 0.14, N: 180, view: 'voronoi' }, Pal.graphite),
       para: pre('Parastichies', { lam: 0.12, N: 280, view: 'para' }, Pal.ember),
       tight: pre('Tight λ', { lam: 0.08, N: 600, view: 'dots', size: 1.6 }, Pal.meadow),
+      open: pre('Open growth', { N:80, lam:0.14, growth:1.024, r0:0.06, view:'para', size:1.6, grain:0, running:false }, { bg:'#F4F0E8', colors:['#173D42','#28666A','#8C472B','#AD5B35','#563622'] }),
     },
     hints: { Meristem: 'Inhibition λ, Growth and Meristem radius jointly set the discrete geometry. The displayed divergence is a finite-history mean, not proof of a universal golden-angle attractor.' },
     palette: true, defaultPalette: 'tram', paletteLabel: 'Colors',
@@ -1465,6 +1479,7 @@ void main(){
       kissing: pre('Kissing', { n:4, gap:0.02, twist:0, depth:8, view:'both' }, Pal.graphite),
       dust: pre('Schottky dust', { n:5, gap:0.28, twist:0.35, depth:9, minR:0.0008, view:'fill' }, Pal.ember),
       six: pre('Six generators', { n:6, gap:0.14, twist:0.1, depth:7, view:'stroke' }, Pal.nightshade),
+      engraved: pre('Engraved pearls', { n:4, gap:0.08, twist:0.16, depth:9, minR:0.0008, view:'stroke', lw:1.5, grain:0 }, { bg:'#F4F0E8', colors:['#183A45','#285A65','#8B4B32','#354C62','#694333'] }),
     },
     hints: { Group: 'Gap is the whole phase diagram. Kissing circles make a connected limit set. Twist shears the pairing so the necklace kinks.' },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Inks',
@@ -1586,6 +1601,7 @@ void main(){
       dla: pre('DLA η=1', { eta:1, N:2400, seedAt:'center', view:'age' }, Pal.graphite),
       needle: pre('Needle η=7', { eta:7, N:1600, view:'tree' }, Pal.xray),
       fern: pre('Fern', { eta:3.2, N:3200, grid:160, view:'age' }, Pal.meadow),
+      bright: pre('Bright discharge', { eta:4.5, N:1200, grid:96, seedAt:'edge', view:'tree', lw:1.8, grain:0 }, { bg:'#101820', colors:['#EEF8FF','#C9EDFF','#9AD9F4','#FFDDA5','#FFC56B'] }),
     },
     hints: { Discharge: 'η is the whole look. Grid and steps are resolution. Edge seed is a strike from the ground; center is a bush.' },
     palette: true, defaultPalette: 'ember', paletteLabel: 'Discharge',

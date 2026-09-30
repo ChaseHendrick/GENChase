@@ -1,8 +1,7 @@
 # Publishing: the owner's checklist
 
 This is the part of [RESEARCH-GRADE.md](RESEARCH-GRADE.md), section 1, that needs a person with the
-project's accounts. For a manuscript (arXiv, a journal), follow [PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md). Everything that could be done inside the repository is done; each step below is
-one action, and says how to check it worked.
+project's accounts. For a manuscript (arXiv, a journal), follow [PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md). The sections below record publication steps and the current scope decisions.
 
 **The name on publications is Chase Hendrick, Independent Researcher** (decided 2026-09-24). The software
 metadata (`CITATION.cff`, `.zenodo.json`, `paper/paper.md`) and the manuscripts
@@ -34,7 +33,7 @@ A GitHub release of the studio is not a Zenodo deposit. How one is made is in AG
 ## 3. The identities note (retired)
 
 There is no step here any more: by the owner's decision (2026-09-27) the note is retired. Its results are proved
-in the minimal-winding paper, release 2.2.0 (prepared), and the note gets no record of its own
+in the minimal-winding paper, release 2.2.0, and the note gets no record of its own
 ([identities/README.md](../identities/README.md), "The note is retired").
 
 ## 4. The software paper (RESEARCH-GRADE 1d)
@@ -53,7 +52,7 @@ Before submitting:
    Sokal's automatic windowing and the Hill estimator (the repository does not record their
    bibliographic details), the AI-assistance statement, and funding in the acknowledgements.
 3. Update the dated figures (validation counts, the survey) from `VALIDATION.md` and `RESEARCH.md`.
-4. Make sure the software has its DOI (section 1).
+4. Software-paper submission remains deferred under the current no-software-DOI decision in section 1. Do not create a software Zenodo deposit to satisfy this former checklist item.
 5. Submit through the journal's own site.
 
 ## 5. The vortex paper (RESEARCH-GRADE 1b)
@@ -61,7 +60,9 @@ Before submitting:
 See [papers/minimal-winding/submission/CHECKLIST.md](../papers/minimal-winding/submission/CHECKLIST.md): what is ready, what is
 missing and the order of the remaining steps (endorsement, arXiv, journal).
 
-## 6. Outside review (RESEARCH-GRADE 1a)
+## 6. Outside review (deferred; RESEARCH-GRADE 1a)
+
+Outside review is set aside until the owner asks for it again. The following procedure applies only after that request.
 
 Send [REVIEW-REQUEST.md](REVIEW-REQUEST.md) to one prospective reviewer per family, with the
 family's section of [REVIEWING.md](REVIEWING.md). A reviewer reports on the "Outside review" issue

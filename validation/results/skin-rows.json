@@ -1,11 +1,11 @@
 {
-  "date": "2026-09-28",
+  "date": "2026-09-29",
   "command": "node tools/skin-rows.js --write",
-  "sourceSha256": "e8fb1f97913279c7920a5ff36a6b9f9db61fa4004db8f5ffdc67d7b39b44fe60",
+  "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
   "recipeVersion": 8,
   "domain": {
     "parameters": "Open chain, disorder 0, rows modes, g in {0, 0.025, 0.06, 0.08, 0.14} at N=96 and g=0.06 at N=48 and 192, aspects 1:1, 4:5, 5:4 and 16:9. Open disorder at N=48 and 96, g=0.07, W=1.4, seed skin-disorder. Clean periodic chain at g=0.08, N=48 and 96. Periodic disorder at N=48, g=0.07, W=1.4, seed skin-ring. g=0 periodic at N=32 resolves the identity. Legacy rows sheet and solver gram are the failure controls.",
-    "conditions": "Open ends. Right eigenvectors e^{g j} sin(pi n (j+1)/(N+1)), n=1..drawn rows, of (H psi)_i = e^g psi_{i-1} + e^{-g} psi_{i+1}. Skin weight is the mean, over the drawn rows, of the probability on sites j >= floor(0.9 N).",
+    "conditions": "The closed-form row comparison applies to the clean open subset only: right eigenvectors e^{g j} sin(pi n (j+1)/(N+1)), n=1..drawn rows, of (H psi)_i = e^g psi_{i-1} + e^{-g} psi_{i+1}. Listed nonzero-disorder open and periodic fixtures are separate solver comparisons, not general validation of those parameter domains. Skin weight is the mean, over the drawn rows, of the probability on sites j >= floor(0.9 N).",
     "resolution": "N = 48, 96, 192. Drawn rows = min(max(32, round(N * aspect)), N) for rows modes.",
     "precision": "Binary64 closed form. The module stores each row as float32 after the same square-then-normalize order. RGBA8 for the node print fixture."
   },
@@ -144,13 +144,13 @@
   },
   "rightEigenvectors": {
     "maxOpenDensityDiff": 2.7416108938638217e-8,
-    "maxJacobiResidual": 2.999999024382338e-13,
+    "maxJacobiResidual": 3.4413325606689474e-13,
     "gramOpenMeanBestL1": 0.5078466601895619,
     "periodicCleanMaxAbsFromUniform": 6.208817175668013e-10,
     "gramPeriodicMaxAbsFromUniform": 0.10559242467085521,
     "periodicHermitianResolution": 4.270987119525671e-9,
     "periodicDisorderMaxAbs": 2.3727826148345343e-8,
-    "periodicDisorderResidual": 1.2881744870463373e-14,
+    "periodicDisorderResidual": 1.5592805626777078e-14,
     "periodicDisorderOpenBoundaryMaxAbs": 0.8519467524942387,
     "gramPeriodicDisorderMeanBestL1": 0.5990611289852444,
     "rows": [
@@ -171,7 +171,7 @@
         "disorder": 1.4,
         "seed": "skin-disorder",
         "maxAbsDensity": 2.7416108938638217e-8,
-        "jacobiResidual": 2.999999024382338e-13,
+        "jacobiResidual": 3.4413325606689474e-13,
         "skinWeight": 0.121759707089324
       },
       {
@@ -202,7 +202,7 @@
         "disorder": 1.4,
         "seed": "skin-ring",
         "maxAbsDensity": 2.3727826148345343e-8,
-        "krylovResidual": 1.2881744870463373e-14,
+        "krylovResidual": 1.5592805626777078e-14,
         "openBoundaryMaxAbs": 0.8519467524942387,
         "gramMeanBestL1": 0.5990611289852444,
         "skinWeight": 0.1152653292894298

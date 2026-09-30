@@ -472,6 +472,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    'flow-matching': 'occasional',
+    hopfield: 'common',
     'direct-gravity': 'common',
     'volume-wave': 'common',
     surfaces: 'common',
@@ -805,7 +807,14 @@ void main(){
     const F = window.GenChaseDataFormats;
     let out = null, failure = '';
     if (typeof e.inst.exportData === 'function') {
-      try { out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      const rebuilt = !!e.geometryDirty;
+      try { flushGeometry(e, true); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      finally {
+        if (rebuilt && (e !== instances[currentId] || e.paused)) {
+          // Suspend hidden work without changing the viewer's transport preference.
+          try { if (e.inst.pause) e.inst.pause(); } catch (err) { console.warn(err); }
+        }
+      }
     }
     const members = [], arrays = {};
     for (const [name, a] of Object.entries((out && out.arrays) || {})) {
@@ -895,7 +904,7 @@ void main(){
   let currentId = null;
   const instances = Object.create(null);        // id -> { inst, canvas, state, anim... }
   const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
-  let regenTimer = null, historyTimer = null;
+  let regenTimer = null, pendingRegen = null, historyTimer = null;
   let downloads = null;
   let hashSilent = false;
   // The hash the studio last wrote or applied. A hash that differs from it was set from outside (the address bar,
@@ -1633,29 +1642,54 @@ void main(){
   }
 
   /* ---- lifecycle ---- */
-  function regenerate(opts) {
-    const e = instances[currentId]; if (!e) return;
-    if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
-    clearTimeout(regenTimer);
-    fitCanvas(e);
-    e.paused = false;
+  function regenerate(opts, target) {
+    const e = target || instances[currentId]; if (!e) return;
+    const active = e === instances[currentId];
+    if (active && !(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
+    if (!target || (pendingRegen && pendingRegen.e === e)) {
+      clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
+    }
+    e.geometryDirty = false;
+    if (active) fitCanvas(e);
+    // An export refresh may compute temporarily, but must retain the transport preference.
+    if (active && !(opts && opts.preservePause)) e.paused = false;
     e.scienceWitness = null;
-    renderStatus();
-    try { e.inst.regenerate(); } catch (err) { showError(err); }
-    updateDims();
-    persist(currentId);
-    if (!(opts && opts.skipHistory)) scheduleHistory();
-    resetWitness();
-    scheduleHash();
+    if (active) renderStatus();
+    try { e.inst.regenerate(); } catch (err) { e.geometryDirty = true; showError(err); return false; }
+    if (active) updateDims();
+    persist(e.mod.id);
+    if (active && !(opts && opts.skipHistory)) scheduleHistory();
+    if (active) { resetWitness(); scheduleHash(); }
+    return true;
+  }
+  function flushGeometry(e, preservePause = false) {
+    if (!e.geometryDirty) return false;
+    const opts = pendingRegen && pendingRegen.e === e ? pendingRegen.opts : { skipSnap: true, skipHistory: true };
+    if (regenerate({ ...opts, preservePause }, e) === false) throw Error('Could not apply pending geometry before export');
+    return true;
   }
   function repaint() {
     const e = instances[currentId]; if (!e) return;
+    if (e.geometryDirty) { try { flushGeometry(e); } catch (err) { showError(err); } return; }
     fitCanvas(e);
     try { if (e.inst.repaint) e.inst.repaint(); else e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
   }
-  function scheduleRegen(opts) { clearTimeout(regenTimer); regenTimer = setTimeout(() => regenerate(opts), 120); }
+  // Keep the first deadline while a slider moves. Resetting a debounce on every
+  // input postponed the picture indefinitely during a continuous drag.
+  // A queued preview belongs to its originating entry, never the next tab.
+  function scheduleRegen(opts) {
+    const e = instances[currentId]; if (!e) return;
+    e.geometryDirty = true;
+    pendingRegen = { e, opts };
+    if (regenTimer !== null) return;
+    regenTimer = setTimeout(() => {
+      regenTimer = null;
+      const pending = pendingRegen; pendingRegen = null;
+      if (pending && instances[currentId] === pending.e) regenerate(pending.opts);
+    }, 80);
+  }
   function showError(err) {
     const entry = instances[currentId];
     if (entry) { entry.scienceWitness = null; renderStatus(); }
@@ -1731,10 +1765,30 @@ void main(){
   // to see in the corner.
   const WITNESS_MODES = ['full', 'quiet', 'off'];
   let witnessMode = 'full';
+  let witnessFramesVisible = true;
+  function applyWitnessFrames() {
+    const strip = $('witness-strip'), button = $('btn-witness-frames');
+    const shown = witnessFramesVisible && witnessMode === 'full';
+    if (strip) strip.hidden = !shown;
+    if (button) {
+      button.textContent = shown ? 'Hide frames' : 'Show frames';
+      button.setAttribute('aria-expanded', String(shown));
+      button.title = shown ? 'Hide the recent frame thumbnails' : 'Show the recent frame thumbnails';
+    }
+  }
+  function setWitnessFrames(on) {
+    witnessFramesVisible = !!on;
+    if (on && witnessMode !== 'full') setWitnessMode('full', false);
+    applyWitnessFrames();
+    try { localStorage.setItem(STORE + 'witness-frames', on ? 'show' : 'hide'); } catch (err) { /* private window */ }
+    if (!on) { const strip = $('witness-strip'); if (strip) strip.replaceChildren(); }
+    else { const e = instances[currentId]; if (e) pushWitnessFrame(e.canvas); }
+  }
   function applyWitnessMode() {
     const w = $('witness'); if (!w) return;
     w.classList.toggle('w-quiet', witnessMode === 'quiet');
     w.classList.toggle('w-off', witnessMode === 'off');
+    applyWitnessFrames();
   }
   function setWitnessMode(mode, announce) {
     witnessMode = WITNESS_MODES.indexOf(mode) < 0 ? 'full' : mode;
@@ -1903,7 +1957,7 @@ void main(){
     markPokeable();
   }
   function pushWitnessFrame(canvas) {
-    const strip = $('witness-strip'); if (!strip || !canvas.width) return;
+    const strip = $('witness-strip'); if (!strip || !canvas.width || !witnessFramesVisible || witnessMode !== 'full') return;
     try {
       const c = document.createElement('canvas');
       c.width = 80; c.height = 80;
@@ -2119,6 +2173,7 @@ void main(){
   async function switchTo(id, opts = {}) {
     if (!byId[id]) id = modules[0].id;
     const ticket = ++navigation;
+    clearTimeout(regenTimer); regenTimer = null; pendingRegen = null;
     clearTimeout(hashTimer);
     loadingId = id;
     $('stage').setAttribute('aria-busy', 'true');
@@ -2164,6 +2219,8 @@ void main(){
     if (!e.started) {
       e.started = true;
       if (!opts.deferRender) regenerate({ skipHistory: true, skipSnap: true });
+    } else if (!opts.deferRender && e.geometryDirty) {
+      regenerate({ skipSnap: true });
     } else if (!opts.deferRender) {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
       if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
@@ -2201,10 +2258,12 @@ void main(){
     e.state[key] = value;
     if (currentId === e.mod.id) renderStatus();
     if (e.mod.onParam) e.mod.onParam(e.state, key);           // e.g. keep min <= max
+    // Reapply dependent stability and range constraints after every edit while
+    // preserving the state object's identity for renderers and hosts.
+    Object.assign(e.state, sanitize(e.mod, e.state));
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();
     const commit = phase !== 'drag';
-    const fromSlider = phase === 'drag' || phase === 'commit';
     if (kind === 'geom') {
       if (commit) regenerate({ skipSnap: true });
       else scheduleRegen({ skipSnap: true, skipHistory: true });
@@ -2212,7 +2271,7 @@ void main(){
       repaint();
       if (commit) scheduleHistory();
     } else if (kind === 'live') {
-      try { e.inst.live && e.inst.live(key, value); } catch (err) { showError(err); }
+      try { e.inst.live && e.inst.live(key, e.state[key]); } catch (err) { showError(err); }
       persist(e.mod.id);
       if (commit) scheduleHistory();
     } else persist(e.mod.id);
@@ -2933,6 +2992,11 @@ void main(){
       for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
       return;
     }
+    const rebuilt = !!e.geometryDirty;
+    try { flushGeometry(e, true); } catch (err) {
+      if (rebuilt && e.paused) { try { e.inst.pause && e.inst.pause(); } catch (pauseError) { console.warn(pauseError); } }
+      showError(err); return;
+    }
     exportBusy = true;
     if (colophon && document.fonts) { try { await document.fonts.ready; } catch (err) { /* fallback fonts */ } }
     const sp = printSpec();
@@ -3109,6 +3173,10 @@ void main(){
         note.classList.add('err');
       }
     } finally {
+      if (rebuilt && (e !== instances[currentId] || e.paused)) {
+        // A dirty export may finish a rebuild, but does not release the user's pause.
+        try { e.inst.pause && e.inst.pause(); } catch (err) { console.warn(err); }
+      }
       clearInterval(tick);
       exportBusy = false;
       for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = false;
@@ -3841,8 +3909,10 @@ void main(){
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
     })();
     try { panelSide = localStorage.getItem(STORE + 'panel') === 'right' ? 'right' : 'left'; } catch (err) { panelSide = 'left'; }
+    try { witnessFramesVisible = localStorage.getItem(STORE + 'witness-frames') !== 'hide'; } catch (err) { witnessFramesVisible = true; }
     try { setWitnessMode(localStorage.getItem(STORE + 'witness') || 'full', false); } catch (err) { setWitnessMode('full', false); }
     const lb = $('live-badge'); if (lb) lb.addEventListener('click', cycleWitness);
+    $('btn-witness-frames').addEventListener('click', () => setWitnessFrames(!(witnessFramesVisible && witnessMode === 'full')));
     applyPanelSide();
     renderHistory();
     (function witnessLoop() {

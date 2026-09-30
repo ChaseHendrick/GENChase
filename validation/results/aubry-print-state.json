@@ -1,8 +1,14 @@
 {
   "pass": true,
+  "reviewed": "2026-09-29",
+  "environment": {
+    "chromium": "154.0.8037.58",
+    "node": "v24.21.0",
+    "platform": "darwin"
+  },
   "source": "src/modules/aubry.js",
-  "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
-  "harnessSha256": "db3cd90ae4627983c0600eeda377c9537e6fb542ebdcab6ed46e83a7b81ffd70",
+  "sourceSha256": "f12d138b2bf3ca3ac5404020ad6deb421859f83c08afe3e35a3295cf6e338c73",
+  "harnessSha256": "58cd6a08c6b10c9cc7d24a0a2f344ef67d3f32948d6709ff31ebf119d1202baa",
   "command": "node tools/aubry-print-state.js --write",
   "scope": "Actual aubry exportPNG at the default recipe (grid 128, aspect 4:5, lambda 2.4, 140 relax steps, intensity view, exposure 1.05), longest edge 2400 (1920x2400). Exact Float32 field words, IPR metric, lambda extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
   "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and a blob over 1000 bytes; luminance spread over 12/255; wrong dimensions and a deliberate post-export field and metric mutation rejected.",

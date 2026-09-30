@@ -10,7 +10,15 @@ Open the browser studio immediately, or unzip the offline bundle and double-clic
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 135 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+A folder-based studio with one shared engine and 137 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
+
+The analytic flow-matching plate transports Gaussian noise into a chosen Gaussian mixture, with RK4 refinement checks and raw trajectory exports. It computes a known target directly and does not train a neural model.
+
+Run bounded local parameter studies with `npm run research:sweep -- plan.json --out new-results`. [Sweep plans](docs/PARAMETER-SWEEPS.md) retain settings, raw data, failures and uncertainty across seeds.
+
+The Hopfield associative-memory technique explores seeded recall from damaged cues, including overloaded memories and wrong basins. It has independent finite-case checks and native state exports; its scientific status remains unvalidated.
+
+Geometry sliders update the preview while you drag. Use **Hide frames** to hide the recent-frame thumbnails; that preference survives a reload. The scientific readout and Live/Still badge remain available.
 
 <p align="center">
   <a href="docs/trailer/genchase-trailer.mp4"><img src="docs/trailer/poster.jpg" width="80%" alt="GENChase trailer: 45 seconds of real simulations from the studio, with an original score" /></a><br />
@@ -76,6 +84,8 @@ are opportunities to investigate; they do not by themselves establish new mathem
 Advanced print tools and Maximum throughput start enabled for new users; saved preferences take priority. Zoom enlarges the complete sheet, including its caption. Scientific measurements occupy a separate readable panel below the artwork. [The browsing guide](docs/BROWSING-AND-LAYOUT.md) explains the controls and tested browser scope.
 
 ## Contribute your own computing power
+
+The [research notebook](apps/research/) brings together literature search, AI research services and a local source-review ledger. Keep reading status and supporting pages with each source, then export notes or prepare a prompt for an AI assistant. Nothing is sent to an external service automatically. See the [research tools guide](apps/research/README.md).
 
 The optional [local validation app](apps/validate/README.md) runs official checks and bounded research experiments on your computer without model calls, API tokens or an account. Run `npm run setup:checks` once to install the optional browser test tools, then `npm run validator` from a checkout, then open `http://127.0.0.1:8787`. It provides logs, heat/power preferences, supported checkpoints, pseudonymous hardware cards and downloadable result bundles. Keep the server terminal open and the computer awake; the browser can close while a job continues.
 

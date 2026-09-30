@@ -2,11 +2,11 @@
   "pass": true,
   "reviewed": "2026-09-27",
   "source": "src/modules/aubry.js",
-  "sourceSha256": "bb612624fe745085688b64881150bfec75c60bcaac208a49e42fb6e5838f5993",
+  "sourceSha256": "f12d138b2bf3ca3ac5404020ad6deb421859f83c08afe3e35a3295cf6e338c73",
   "harness": "tools/aubry-science.js",
   "harnessSha256": "b3af3b2636a402aea903e993e3e007552c9a9ca220a32c68ff25e2101edf8b7d",
   "command": "node tools/aubry-science.js --write",
-  "elapsedMs": 171,
+  "elapsedMs": 106,
   "model": {
     "equation": "psi(n+1)+psi(n-1)+2*lambda*cos(2*pi*beta*n)*psi(n) = E*psi(n)",
     "hopping": 1,

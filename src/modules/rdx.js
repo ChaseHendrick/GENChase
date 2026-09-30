@@ -485,6 +485,9 @@ void main(){
         pass.draw(reduceT, Object.assign(viewUniforms(s), { u_block: [gw / RED, gh / RED], u_span: measSpan }));
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+        // Give this readback fresh storage after the previous result was collected.
+        // Reusing STREAM_READ storage retains a fenced shadow allocation in Chromium.
+        gl.bufferData(gl.PIXEL_PACK_BUFFER, redBuf.byteLength, gl.STREAM_READ);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, 0);
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -612,6 +615,9 @@ void main(){
           Object.assign(cust, { bound: null, boundKey: '', at: -1, halt: null, time: 0 });
           span = 16;
           if (typed(s) && customPass(s)) estimate(s, 0);
+          // The first measurement is asynchronous. Retire the previous plate's status
+          // now, without reusing its measured range or scientific diagnostics.
+          host.setStatus('<span>grid <b>' + gw + '×' + gh + '</b></span><span>step <b>0</b></span><span>computing</span>');
           settle(() => { render(); if (s.warmup > 0 && !halted(s)) burst(s.warmup); else { status(); startLoop(); } });
         },
         repaint() {

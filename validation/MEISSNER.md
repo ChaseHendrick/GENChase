@@ -1,31 +1,48 @@
-# London disk: Jacobi relaxation against the modified Bessel profile
+# London disk: multigrid against the modified Bessel profile
 
-The `meissner` tab relaxes ∇²B = B/λ² on a pixel disk, with B = 1 outside the radius R. The steady solution of that continuum problem is B(r) = I0(r/λ) / I0(R/λ). The plate's own update is Jacobi with a step of 0.2, and it stores the field in Float32. The default slider stops at 90 sweeps, which is not this review: those sweeps have not reached the steady field.
+The `meissner` tab solves ∇²B = B/λ² inside a circular cross-section with B = 1 on the rim. From recipe v7 it uses cell-centred multigrid and a Shortley-Weller boundary. Its Float64 solution is stored as a Float32 display field. Earlier recipes retain their Jacobi sweeps.
 
-## Status
+## Review and reference
 
-The record is partially validated, not validated within stated limits (in-project contract check, 2026-09-27). The numerical claim needs 8,000 to 45,000 Jacobi sweeps, but the shell's `sanitize` clamps `relax` to its schema range of 40 to 240, so no recipe a user can make, by slider, preset, hash or settings, is in the converged domain. The two print fixtures, the default (relax 90) and Expelled (relax 110), lie outside it. The numerical and print evidence therefore cover disjoint recipes. Promotion needs a recipe a user can reach that is in the converged domain, printed through the same print-state check.
+Reviewed 2026-09-29. The existing status remains **validated within stated limits** for the enumerated numerical and print fixtures below. This refresh repairs an inconsistency: the registry and numerical harness already described multigrid, but this note and the stored print artifact still described the old Jacobi source. The browser export has now been rerun on the current source. Source and harness SHA-256 values are recorded in both artifacts.
 
-## Benchmark
+For an axial field invariant along the cylinder, the radial equation is B'' + B'/r = B/λ². With z = r/λ it is the order-zero modified Bessel equation. The solution regular at the centre and equal to 1 at R is I0(r/λ)/I0(R/λ). The independent series follows [NIST DLMF 10.25.1 and 10.25.2](https://dlmf.nist.gov/10.25); the singular second solution is excluded by regularity at zero ([DLMF 10.30](https://dlmf.nist.gov/10.30)). These identities verify the stated boundary-value problem, not a laboratory material or the full Meissner and Ochsenfeld experiment.
 
-`node tools/meissner-science.js --write` runs the module's update through `tools/science-harness.js` and compares the field to an independent power series for I0. The physical disk is fixed at R/λ = 2. Refinement means more cells per λ, which is the mesh size. Each run is stopped only once the discrete residual of ∇²B − B/λ² is below 1e-6. On the stored Float32 field the residual sits near 2e-7, the float32 rounding floor, well under the discretization error.
+## Numerical evidence
 
-| λ (cells) | R | grid | sweeps | max \|B − I0\| | centre | 1/I0(R/λ) | interior truncation | observed order |
-|---|---|---|---|---|---|---|---|---|
-| 8 | 16 | 96 | 8000 | 0.0483 | 0.4248 | 0.4387 | 1.19e-5 |  |
-| 16 | 32 | 96 | 22000 | 0.0275 | 0.4315 | 0.4387 | 8.38e-7 | 0.82 |
-| 24 | 48 | 160 | 45000 | 0.0179 | 0.4346 | 0.4387 | 1.74e-7 | 1.05 |
+```sh
+node tools/meissner-science.js --write
+node tools/meissner-print-state.js --write
+```
 
-The 5-point stencil applied to the exact I0, three cells inside the rim, has a residual that falls faster than h² in cell units (truncation ratios 14.2 and 4.83 against h² factors 4 and 2.25). That is the units, not a superconvergent stencil: the cell-unit stencil is h² times the physical Laplacian, so its residual carries an extra h². In physical units (residual times λ², since h = 1/λ) the truncation is about 7.6e-4, 2.1e-4 and 1.0e-4, observed orders about 1.83 and 1.88, which is about h², as a second-order stencil should give. The `truncation` and `truncationRatio` values in the results file are in cell units. The solved field approaches I0 only about linearly. The rim is a staircase, so the global error is the boundary error, not the interior truncation. The plate's series for the centre value 1/I0(R/λ) matches the independent series to 1e-12. That comparison is a precision check of the series, not a prediction. The field comparison is a real residual of the relaxation.
+The numerical command executes the maintained `solveLondon` and compares every interior sample against an independently summed I0 series, cut at 1e-18 of its sum and anchored at I0(1) = 1.2660658777520084. The [numerical artifact](results/meissner-science.json) enumerates 16 fixtures: the default, its Relax-floor variant, all six presets, and eight domain/refinement corners. Grids are 96, 160 and 224; aspects include 1:1, 4:5, 5:4 and 16:9. This is a finite set, not every combination of those slider ranges.
 
-## Failure control
+Acceptance is max |B − I0(r/λ)/I0(R/λ)| ≤ 1e-3, operator residual below 1e-8 and cycles within the specified Relax cap. Every fixture passes in 11 to 16 cycles. The largest field error is 7.664241e-4, at grid 96, λ = 4, R = 16. The default error is 1.264776e-4 in 14 cycles. Thus a user-reachable default now lies inside the numerical domain.
 
-The update `lap − B/λ²` was replaced by `lap + B/λ²`, which is ∇²B = −B/λ². On the coarsest disk the max deviation from I0 rises from 0.048 to 4.79. The same acceptance the real update meets is failed.
+At fixed R/λ = 4, refining λ = 8, 16, 20 cells gives:
 
-## Print
+| λ | R | grid | max field error |
+|---|---|---|---|
+| 8 | 32 | 96 | 2.069513e-4 |
+| 16 | 64 | 160 | 5.359860e-5 |
+| 20 | 80 | 224 | 3.462406e-5 |
 
-`node tools/meissner-print-state.js --write` calls the module's `exportPNG` at 2400×2400, which is 8 in at 300 ppi. The Float32 field, the centre metric, the Bessel number, the cell counts and the settings are unchanged. A second regenerate matches. A width of 2399 is rejected, and adding 1 to the first field word after export is rejected by the same predicate. This says the sheet is the field that was computed. It does not say the default 90-sweep field is the Bessel profile. Neither fixture is in the converged domain of the numerical claim, so no sheet checked here is a field the numerical claim covers.
+The first refinement has order 1.949; the second error ratio is 1.548 against the second-order ratio 1.5625. The physical disk and penetration-depth ratio are fixed; the outer rectangle may differ because the circular Dirichlet boundary defines the tested problem.
 
-## Domain
+The sign-flipped source, ∇²B = −B/λ², fails the same field/residual acceptance by a large margin. The legacy Jacobi solver at 240 sweeps matches an independent copy of the old loop exactly, but misses the Bessel profile by 0.57456. Those legacy recipes remain outside the validation domain.
 
-Parameters: R/λ = 2 at λ = 8, 16, 24 cells, grids 96 and 160, the module's Jacobi coefficient 0.2, residual below 1e-6. Boundary: B = 1 for pixel centres with r ≥ R, and the outer frame of the grid is never updated. The default recipe (λ = 10, R = 48, 90 sweeps) is outside the converged claim, and so is every recipe the studio accepts, since `relax` is clamped to 40 to 240. Precision: Float64 update, Float32 storage, independent Float64 I0 series. No laboratory Meissner effect.
+## Browser export
+
+The [print artifact](results/meissner-print-state.json) records a fresh actual `exportPNG` run and its browser environment. All three fixtures also occur in the numerical run:
+
+| Fixture | cells | λ | R | Relax | PNG pixels | max Float32 field error |
+|---|---|---|---|---|---|---|
+| default | 160×160 | 10 | 48 | 90 | 2400×2400 | 1.2648053e-4 |
+| portrait | 160×200 | 10 | 48 | 40 | 1920×2400 | 1.2648053e-4 |
+| wide | 224×126 | 10 | 40 | 40 | 2400×1350 | 1.3377040e-4 |
+
+The longest edge is 8 inches at 300 ppi. Every export preserves all Float32 field words, core metric, independent I0 mean, cycle count and settings; regenerate is deterministic. A PNG one pixel too narrow and a deliberate post-export field/scalar mutation fail the same acceptance predicate. The output is nonblank. This checks the field being printed, state preservation and dimensions; it does not independently calibrate the palette or compare every raster pixel against a reference.
+
+## Limits
+
+Only the 16 enumerated numerical fixtures and three print fixtures are covered. The circle must clear the frame: R < min(W,H)/2 − 1. A circle cut by the frame is a different boundary-value problem and is excluded. The rim value is nonzero Dirichlet B = 1, not homogeneous zero boundary data. Precision is Float64 multigrid, Float32 display field and RGBA8 PNG. There is no claim about all slider combinations, legacy Jacobi convergence, material parameters, external review or a hardware sweep.

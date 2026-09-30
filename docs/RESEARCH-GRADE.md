@@ -137,6 +137,7 @@ Status: done, see **Done**. The findings below are kept as the audit that motiva
 - **Finding:** 61 scripts in `tools/` launch Chromium with SwiftShader, a software renderer, and
   CI runs them on GitHub-hosted `ubuntu-latest` runners. The GPU science has not been measured on
   a physical GPU.
+- **Progress, 2026-09-29:** the reaction-diffusion family now has [Apple M1 Pro / ANGLE Metal evidence](../validation/results/rdx-readback-science-2026-09-29.json): all 90 existing numerical checks and 27 failure controls passed with their original tolerances. [Paired readback checks](RDX-READBACK-CHECKS.md) preserve the tested fields and print pixels. The full catalog's runtime audit is recorded [separately](ENGINE-CHECKS-2026-09-29.md); rendering and replay checks do not validate its mathematics. NVIDIA and AMD or Intel coverage, and the half-precision review below, remain open.
 - **Why it matters:** this repository has already met a renderer-specific floating-point failure.
   The 2026-09-22 GL field review found artificial amplitude loss from SwiftShader's small-angle
   trigonometry. Physical GPUs differ in fused multiply-add, denormal flushing and transcendental
@@ -214,6 +215,13 @@ impossible to miss on the tab itself, if it is not already.
 6. **Outside review is set aside for now** (owner's decision, 2026-09-29). The papers are unchanged.
 
 ## Done
+
+**Bounded parameter studies and research notebook (2026-09-29, [PR #255](https://github.com/ChaseHendrick/GENChase/pull/255)).**
+- [Parameter sweep plans](PARAMETER-SWEEPS.md) run local cases through the native data-export path with bounded budgets, retained failures, requested/resolved settings and raw NPZ files. Seed summaries report sample SD/SEM; paired differences require explicit matching physical conditions and exported state metadata. These summaries do not certify model convergence.
+- The local research notebook opens official literature and AI research services on request, records source/reading notes, exports portable JSON/Markdown and prepares source-grounded review prompts. Browser tests cover unsafe links/text, import/export, reload, mobile layout and stale writes across tabs. It does not silently send notebooks to an AI service or verify a paper's scientific claims.
+
+**Preprint archive integrity (2026-09-29, [PR #253](https://github.com/ChaseHendrick/GENChase/pull/253) and [PR #254](https://github.com/ChaseHendrick/GENChase/pull/254)).** All eight new preprint source ZIPs contain their reviewed manuscript PDFs, with exact title capitalization and component-rights metadata. [The publication report](PAPER-RELEASE-STATUS-2026-09-29.md) records the downloaded archives and hashes. A weekly/manual read-only monitor repeats these checks. Journal submission and outside scientific review remain separate open items.
+
 
 **Section 3, uncertainty as a gate** ([ChaseHendrick/GENChase#146](https://github.com/ChaseHendrick/GENChase/pull/146)).
 - `src/shared/stats.js` is the shared harness: tau_int with Sokal's window, series and field means with

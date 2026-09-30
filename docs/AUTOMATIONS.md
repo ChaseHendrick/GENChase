@@ -19,3 +19,13 @@ The read-only preprint monitor downloads all eight registered Zenodo source arch
 The [independent regression record](../validation/results/automation-regression-2026-09-29.json) preserves source fingerprints and bounded outcomes. One sandboxed run timed out at 90 seconds; the diagnostic and unchanged-suite retests passed all 31 cases in 44 and 34 seconds within the same cap. The timeout's cause was not established, and no wait budget or criterion was changed.
 
 With the owner's approval, `AUTOMATION_TOKEN` was configured on 2026-09-29. GitHub's form confirmed one selected repository, Contents and Pull requests write access, and required Metadata read access. The encrypted repository-secret listing confirms it was saved; `PAPERS_TOKEN` was not changed. It expires on **2026-10-29** and must be rotated before then. Token creation and storage are distinct from verifying a live automation-created PR's check events.
+
+## Live checks on 2026-09-30 UTC
+
+Three manual workflows ran on main commit `d3c8bcbfc3c515c5553c339811491f8a250a274d`:
+
+- [Preprint archive run 36648640947](https://github.com/ChaseHendrick/GENChase/actions/runs/36648640947) passed all eight archives. Its retained `paper-archive-report` artifact records the title, preprint classification, component rights and manuscript PDF checks.
+- [Timestamp run 36648669520](https://github.com/ChaseHendrick/GENChase/actions/runs/36648669520) succeeded with zero commitments in the ledger. Stamping, branch preparation and proposal steps were skipped; it did not create a PR or exercise a proof update.
+- [Volunteer refresh run 36649989956](https://github.com/ChaseHendrick/GENChase/actions/runs/36649989956) successfully prepared the branch and regenerated the real leaderboard and compute ledger. There was no nonempty refresh proposal, and no PR was created.
+
+These are live workflow outcomes, but neither proposal workflow exercised an automation-token-authored PR creation or synchronization event. They do not establish that the configured token can push a changed proposal or that its PR events start the required checks. That must be observed when genuine generated changes exist; no artificial changes were made to manufacture a proposal. The local fixtures continue to cover those branch and event-selection paths separately.

@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-09-30T00:28:45.686918+00:00",
+  "passed": true,
+  "scope": "Python 3.9-compatible release asset enumeration only; no staging, bundle build or publication.",
+  "source": "tools/release-assets.py",
+  "sourceSha256": "7b1a9df7fe117ad1285a5f2a4b797715a48c89b7a9aa3f1b192d2bef414d6d12",
+  "baselineSourceSha256": "ea33926ec0837795720c9be09c3ee165b35b0e027b564a3f6022522ccb5cfdd2",
+  "orderedManifestSha256": "be7f91eff0b1a2265c17a7051873562760514049c01dacae6088d9370a846a14",
+  "assetCount": 285,
+  "pdfCount": 8,
+  "renamedAssets": 23,
+  "dataFoldersLeftToSourceArchive": [
+    "papers/collapse-without-rotation/data/continuum",
+    "papers/collapse-without-rotation/data/minimal-winding",
+    "papers/collapse-without-rotation/data/phase-diagram",
+    "papers/collapse-without-rotation/data/searches",
+    "papers/minimal-winding/data/certify-inputs"
+  ],
+  "totalAssetBytes": 6262704,
+  "runs": [
+    {
+      "python": "3.9.6",
+      "check": "release-assets: 285 files to attach, 23 under a paper-id name; 5 folders left to the source archive (papers/collapse-without-rotation/data/continuum, papers/collapse-without-rotation/data/minimal-winding, papers/collapse-without-rotation/data/phase-diagram, papers/collapse-without-rotation/data/searches, papers/minimal-winding/data/certify-inputs)",
+      "orderedManifestAndHashesMatchBaseline": true
+    },
+    {
+      "python": "3.12.14",
+      "check": "release-assets: 285 files to attach, 23 under a paper-id name; 5 folders left to the source archive (papers/collapse-without-rotation/data/continuum, papers/collapse-without-rotation/data/minimal-winding, papers/collapse-without-rotation/data/phase-diagram, papers/collapse-without-rotation/data/searches, papers/minimal-winding/data/certify-inputs)",
+      "orderedManifestAndHashesMatchBaseline": true
+    }
+  ]
+}

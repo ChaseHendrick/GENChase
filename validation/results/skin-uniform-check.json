@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "result": {
+    "accepted": true,
+    "reason": "clean periodic plane-wave density and painted canvas checked",
+    "sites": 96,
+    "modes": 96,
+    "maxDeviation": 3.1044085878340066e-10,
+    "maxNormalizationError": 2.9802322387695312e-08,
+    "skinWeight": 0.10416666977107525,
+    "expectedWeight": 0.10416666666666667
+  },
+  "controls": [
+    "corrupted density rejected",
+    "cleared live canvas rejected with unchanged data",
+    "disordered live recipe rejected"
+  ],
+  "sourceSha256": "5b24901aca7d7c9eae0bcadf707c214da0e05105df96e0cba9c636e092810fa6",
+  "scope": "N=96, g=0.08, disorder=0, periodic boundaries, right solver, modes rows and view, live studio NPZ and canvas",
+  "corruption": "Transfer 0.001 probability between two non-edge sites, preserving normalization and skin weight."
+}

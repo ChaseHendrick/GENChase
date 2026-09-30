@@ -705,8 +705,13 @@ if (process.argv.includes('--sweep')) {
   const text = JSON.stringify(result, null, 2) + '\n';
   if (process.argv.includes('--write')) fs.writeFileSync(outPath, text);
   else {
-    const stored = fs.readFileSync(outPath, 'utf8');
-    assert.equal(stored, text, 'validation/results/thouless-science.json is stale; run node tools/thouless-science.js --write');
+    const stored = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+    // Math transcendental functions vary slightly across V8/platform versions.
+    // Keep model inputs exact, while bounding derived rounding far below the
+    // scientific tolerances asserted by run(). Source hashes remain exact.
+    require('./lib/evidence-check').compareEvidence(result, stored, {
+      absolute: 5e-11, relative: 1e-11, exact: ['model', 'schemaVersion']
+    });
   }
   const e = result.enclosing;
   const t = result.trivial;
