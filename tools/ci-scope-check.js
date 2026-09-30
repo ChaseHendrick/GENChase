@@ -103,8 +103,8 @@ for (const text of ['{', '{"papers":[],"papers":[]}', '{"papers":[],"pa\\u0070er
   checkMetadata(true, baseline, text, 'Malformed, duplicate or nonfinite JSON: ' + text);
 }
 checkMetadata(true, '{', updated, 'Malformed old registry cannot receive the shortcut');
-checkMetadata(true, json(baseline).replace('{', '{"other":9007199254740992,'), json(updated).replace('{', '{"other":9007199254740993,'), 'Unsafe integer rounding cannot hide a nonallowed field change');
-checkMetadata(true, json(baseline).replace('{', '{"other":1.1,'), json(updated).replace('{', '{"other":1.1000000000000001,'), 'Decimal rounding cannot hide a nonallowed field change');
+checkMetadata(true, '{"other":9007199254740992,' + json(baseline).slice(1), '{"other":9007199254740993,' + json(updated).slice(1), 'Unsafe integer rounding cannot hide a nonallowed field change');
+checkMetadata(true, '{"other":1.1,' + json(baseline).slice(1), '{"other":1.1000000000000001,' + json(updated).slice(1), 'Decimal rounding cannot hide a nonallowed field change');
 const oldMissingNote = clone(baseline); delete oldMissingNote.papers[0].note;
 checkMetadata(true, oldMissingNote, updated, 'New note fields do not expand the metadata boundary');
 const oldMissingDoi = clone(baseline); delete oldMissingDoi.papers[0].codeDoi;
