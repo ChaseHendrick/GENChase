@@ -79,15 +79,23 @@ runner queues and machine speed can change the elapsed time.
 
 ## Avoiding unnecessary CI waits
 
-Pull requests that change only allowlisted Markdown documentation take a shorter browser
-path. The scope check reads the actual checkout merge against its first parent, including
-both sides of renames. It accepts only ordinary text files in the explicit documentation
-allowlist in `tools/ci-scope.js`. Source, workflow, tool, application, validation-data,
-generated-file and unknown-path changes run the full suite. Binary files, symlinks,
-malformed diffs and unavailable merge history also run the full suite. Pushes to `main`
-and manual runs always run the full suite, even for documentation changes.
+Pull requests limited to allowlisted Markdown or strictly parsed publication metadata
+take a shorter browser path. The scope check reads the actual checkout merge against its
+first parent, including both sides of renames. It permits changes to `note`, `codeDoi`
+and `archiveVersion` for the eight known preprint companions only when every paper's
+identity, order and other registry fields remain unchanged. Notes must be plain text,
+DOIs must be canonical Zenodo identifiers, and archive versions must be plain semver.
+Regular JSON audit additions or updates must match the known eight-paper report schema
+and `docs/paper-zenodo-release-audit-YYYY-MM-DD-{layout,figures}.json` filename family with
+a valid calendar date. The recognized schema is the current layout report; older figures
+report envelopes run the full suite. Audit deletion and registry addition or deletion
+run the full suite.
+Source, figure, manuscript, workflow, tool, application, validation-data, generated-file
+and unknown-path changes run the full suite. Binary or executable files, symlinks,
+duplicate or malformed JSON, malformed diffs and unavailable history also run the full
+suite. Pushes to `main` and manual runs always run the full suite.
 
-Every browser job and matrix check keeps its existing name. On a documentation-only PR,
+Every browser job and matrix check keeps its existing name. On a qualifying inert PR,
 it reports that browser work is not applicable and skips browser installation and execution.
 Structural, distribution, native-science and print-production checks still run. This keeps
 required checks from waiting for matrix entries that never appear; it does not claim that

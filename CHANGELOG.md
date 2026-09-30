@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Preprint automation verifies exact archive versions.** Registry updates now trigger the archive audit. It requires each registered version and downloaded manuscript PDF to match, and retains failure reports. Companion publishing has a 20-minute limit. Strictly parsed DOI, archive-version and history updates avoid unrelated browser checks while structural and offline-distribution checks still run.
+
+- **Companion README and citation versions follow the verified archive.** Current release headers and recommended BibTeX entries now point to the eight rebuilt figure archives. Staging uses the registered DOI/version pair for each header and citation version, even when a newer release is still being prepared. The double-pendulum README reports the rebuilt PDF's 24 pages.
+
 - **Publication figures and manuscript rights audited.** All eight rebuilt preprints use the public research contact and include end-matter manuscript rights. Three papers gained evidence-backed vector figures; existing plots gained readable labels, units and full tail ranges. The legacy Zenodo archive license category now reflects mixed rights, while verification code keeps Apache 2.0 and prior grants remain intact.
 
 - **All eight publication archives verified.** The downloaded source ZIPs include the registered manuscript PDFs, with exact titles and Publication / Preprint classification. Current DOI links and citations name these versions; earlier archives remain unchanged.

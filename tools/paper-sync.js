@@ -39,6 +39,50 @@ const TEXT_LICENSES = {
 const registry = root => JSON.parse(fs.readFileSync(path.join(root, 'papers/papers.json'), 'utf8'));
 const yaml = s => JSON.stringify(String(s));
 
+function archiveCitation(p) {
+  if (!Object.prototype.hasOwnProperty.call(p, 'archiveVersion')) return null;
+  if (typeof p.archiveVersion !== 'string' ||
+      !/^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?![\s\S])/.test(p.archiveVersion) ||
+      typeof p.codeDoi !== 'string' || !/^10\.5281\/zenodo\.[1-9][0-9]{0,20}(?![\s\S])/.test(p.codeDoi)) {
+    throw new Error('archiveVersion of ' + p.id + ' needs a plain release version and its registered Zenodo DOI');
+  }
+  return { version: p.archiveVersion, doi: p.codeDoi };
+}
+
+// The verified registry pair is independent of any newer, not-yet-archived RELEASES heading.
+// Replace only the existing current locator, retaining historical clauses and their DOIs.
+function companionReadme(readme, p) {
+  const archive = archiveCitation(p);
+  if (!archive) return readme;
+  const section = readme.search(/^## /m), at = section < 0 ? readme.length : section;
+  const prefix = readme.slice(0, at), release = /\b[Rr]elease\s+/.exec(prefix);
+  const versionAt = release ? release.index + release[0].length : -1;
+  const version = release && /^((?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*))(?=$|[\s),;\]]|\.(?=$|\s))/.exec(prefix.slice(versionAt));
+  const locator = /\[doi:(10\.5281\/zenodo\.\d+)\]\(https:\/\/doi\.org\/\1\)/.exec(prefix);
+  const firstDoi = /10\.5281\/zenodo\.\d+/.exec(prefix);
+  const nextRelease = version && /\b[Rr]elease\s+/.exec(prefix.slice(versionAt + version[1].length));
+  if (!version || !locator || versionAt >= locator.index || !firstDoi || firstDoi.index !== locator.index + '[doi:'.length ||
+      (nextRelease && locator.index >= versionAt + version[1].length + nextRelease.index)) {
+    throw new Error('README of ' + p.id + ' needs its release version and matching Zenodo DOI link before the first section');
+  }
+  const replacement = '[doi:' + archive.doi + '](https://doi.org/' + archive.doi + ')';
+  const withDoi = prefix.slice(0, locator.index) + replacement + prefix.slice(locator.index + locator[0].length);
+  const withVersion = withDoi.slice(0, versionAt) + archive.version + withDoi.slice(versionAt + version[1].length);
+  const auxiliary = /\[([^\]\r\n]+)\]\((https:\/\/github\.com\/[^/\s)]+\/[^/\s)]+\/releases\/tag\/[^\s)]+)\)/g;
+  const withAuxiliary = withVersion.replace(auxiliary, (link, label, url) => {
+    const releaseUrl = 'https://github.com/' + p.companion + '/releases/tag/';
+    if (!url.startsWith(releaseUrl)) return link;
+    const labelPrefix = /^(?:[Rr]elease\s+)?/.exec(label)[0];
+    const tag = url.slice(releaseUrl.length), currentLabel = labelPrefix + version[1];
+    if (label !== currentLabel && tag !== version[1]) return link;
+    if (tag !== version[1] || label !== currentLabel) {
+      throw new Error('README of ' + p.id + ' needs its GitHub release label and URL to match the current companion release');
+    }
+    return '[' + labelPrefix + archive.version + '](' + releaseUrl + archive.version + ')';
+  });
+  return withAuxiliary + readme.slice(at);
+}
+
 function ready(reg, only) {
   const out = [];
   for (const p of reg.papers) {
@@ -60,6 +104,7 @@ function trackedFiles(root, id) {
 }
 
 function citation(reg, p, year) {
+  const archive = archiveCitation(p);
   const a = reg.author, who = ['  - given-names: ' + yaml(a['given-names']), '    family-names: ' + yaml(a['family-names']), '    affiliation: ' + yaml(a.affiliation)];
   if (a.orcid) who.push('    orcid: ' + yaml('https://orcid.org/' + a.orcid));
   const arxivDoi = p.arxiv && p.arxiv.id ? '10.48550/arXiv.' + p.arxiv.id.replace(/v\d+$/, '') : null;
@@ -71,6 +116,7 @@ function citation(reg, p, year) {
   return ['cff-version: 1.2.0', 'message: "If you use these programs or data, please cite the paper."',
     'title: ' + yaml(p.title), 'type: software', 'authors:', ...who,
     'license: Apache-2.0', 'repository-code: ' + yaml('https://github.com/' + p.companion),
+    ...(archive ? ['version: ' + yaml(archive.version)] : []),
     ...(p.codeDoi ? ['doi: ' + yaml(p.codeDoi)] : []),
     'preferred-citation:', '  type: article', '  title: ' + yaml(p.title), '  authors:', ...who.map(l => '  ' + l), '  year: ' + year,
     '  url: ' + yaml(preferredUrl),
@@ -175,9 +221,12 @@ function stage(root, id, dir, opts = {}) {
     fs.copyFileSync(path.join(root, 'papers', id, f), path.join(dir, f));
   }
   if (!fs.existsSync(path.join(dir, 'README.md'))) throw new Error('papers/' + id + '/README.md is missing');
+  const readmePath = path.join(dir, 'README.md');
+  const readme = companionReadme(fs.readFileSync(readmePath, 'utf8'), p);
+  fs.writeFileSync(readmePath, readme);
   fs.writeFileSync(path.join(dir, 'LICENSE'), license(root, reg, p, year));
   fs.writeFileSync(path.join(dir, 'CITATION.cff'), citation(reg, p, year));
-  const abs = abstractOf(fs.readFileSync(path.join(dir, 'README.md'), 'utf8'));
+  const abs = abstractOf(readme);
   fs.writeFileSync(path.join(dir, '.zenodo.json'), zenodo(reg, p, abs.paragraphs));
   return [...abs.problems, ...problems(dir, reg)];
 }
@@ -207,6 +256,10 @@ function selfTest() {
     try { got = check(tmp, 't', { registry: r, files, year: 2026 }); } catch (e) { got = [e.message]; }
     const ok = want ? got.length === 0 : got.length > 0;
     checks++; if (!ok) { failures++; console.log('FAIL ' + what + (got.length ? ': ' + got.join('; ') : ': no problem found')); }
+  };
+  const refuses = (what, run) => {
+    checks++;
+    try { run(); failures++; console.log('FAIL ' + what + ': no problem found'); } catch (_) { /* refused */ }
   };
   try {
     expect(true, 'a clean paper stages, with its private notes and letters left out');
@@ -241,6 +294,77 @@ function selfTest() {
         failures++; console.log('FAIL preferred citation ' + name + ':\n' + generated);
       }
     }
+    // A proposed release must not relabel the previous verified DOI as its own archive.
+    base();
+    const archived = reg();
+    Object.assign(archived.papers[0], { archiveVersion: '1.0.0', codeDoi: archiveDoi });
+    const historical = ' Release 0.9.0 remains at [doi:10.5281/zenodo.999999](https://doi.org/10.5281/zenodo.999999).\n\n';
+    const originalReadme = ABSTRACT.replace('# T\n\n', '# T\n\nPreprint. Release 0.9.1 is archived at [doi:10.5281/zenodo.999998](https://doi.org/10.5281/zenodo.999998).' + historical);
+    w('papers/t/README.md', originalReadme);
+    w('papers/t/RELEASES.md', '# Releases\n\n## 2.0.0\n\nProposed, not yet archived.\n');
+    const archiveOut = path.join(tmp, 'archive-out');
+    stage(tmp, 't', archiveOut, { registry: archived, files: [...files, 'RELEASES.md'], year: 2026 });
+    const archiveReadme = fs.readFileSync(path.join(archiveOut, 'README.md'), 'utf8');
+    const archiveCff = fs.readFileSync(path.join(archiveOut, 'CITATION.cff'), 'utf8');
+    checks++;
+    if (!archiveReadme.includes('Preprint. Release 1.0.0 is archived at [doi:' + archiveDoi + ']') ||
+        archiveReadme.includes('Preprint. Release 2.0.0') || !/^version: "1.0.0"$/m.test(archiveCff) ||
+        !fs.readFileSync(path.join(archiveOut, 'RELEASES.md'), 'utf8').includes('## 2.0.0')) {
+      failures++; console.log('FAIL a proposed newer release changed the verified archive citation');
+    }
+    checks++;
+    if (!archiveReadme.includes(historical) || fs.readFileSync(path.join(tmp, 'papers/t/README.md'), 'utf8') !== originalReadme ||
+        companionReadme(archiveReadme, archived.papers[0]) !== archiveReadme) {
+      failures++; console.log('FAIL archive header history, canonical source preservation or idempotence');
+    }
+    checks++;
+    if (archiveCitation({ ...reg().papers[0], codeDoi: archiveDoi }) !== null) {
+      failures++; console.log('FAIL absent archiveVersion changed legacy citation behavior');
+    }
+    for (const version of [undefined, null, false, 0, '', [], ['1.0.0'], {}, '01.0.0', '1.00.0', '1.0.00',
+      'v1.0.0', '1.0.0-beta', '1.0.0+build', '1.0.0.1', '1.0.0\n', '1.0.0\r', ' 1.0.0', '1.0.0 ']) {
+      refuses('invalid archiveVersion ' + JSON.stringify(version), () => archiveCitation({ ...archived.papers[0], archiveVersion: version }));
+    }
+    for (const doi of [undefined, null, false, 0, '', [archiveDoi], {}, '10.5281/zenodo.0', '10.5281/zenodo.0123',
+      archiveDoi + '\n', archiveDoi + '\r', archiveDoi + ' ', ' ' + archiveDoi, 'https://doi.org/' + archiveDoi, journalDoi]) {
+      refuses('invalid archived DOI ' + JSON.stringify(doi), () => archiveCitation({ ...archived.papers[0], codeDoi: doi }));
+    }
+    for (const version of ['0.9.1-beta', '0.9.1+build', '0.9.1.4', '0.9.1extra', '00.9.1', 'v0.9.1']) {
+      refuses('invalid first README release ' + version, () => companionReadme(originalReadme.replace('Release 0.9.1', 'Release ' + version), archived.papers[0]));
+    }
+    refuses('a missing current DOI cannot rewrite a later historical locator', () => companionReadme(
+      ABSTRACT.replace('# T\n\n', '# T\n\nRelease 0.9.1 is current.' + historical), archived.papers[0]));
+    const oldGitHub = '[0.9.1](https://github.com/o/t/releases/tag/0.9.1)';
+    const historicalGitHub = '[release 0.9.0](https://github.com/o/t/releases/tag/0.9.0)';
+    const unrelatedGitHub = '[0.9.1](https://github.com/other/t/releases/tag/0.9.1)';
+    const auxiliaryReadme = originalReadme.replace(historical, historical.trimEnd() + ' The GitHub release is ' + oldGitHub +
+      '. Older release: ' + historicalGitHub + '. Related project: ' + unrelatedGitHub + '.\n\n') +
+      '\n## Historical methods\n\n' + oldGitHub + '\n';
+    const auxiliaryUpdated = companionReadme(auxiliaryReadme, archived.papers[0]);
+    checks++;
+    if (!auxiliaryUpdated.includes('The GitHub release is [1.0.0](https://github.com/o/t/releases/tag/1.0.0).') ||
+        !auxiliaryUpdated.includes('\n## Historical methods\n\n' + oldGitHub + '\n') || !auxiliaryUpdated.includes(historical.trimEnd()) ||
+        !auxiliaryUpdated.includes(historicalGitHub) || !auxiliaryUpdated.includes(unrelatedGitHub) ||
+        companionReadme(auxiliaryUpdated, archived.papers[0]) !== auxiliaryUpdated) {
+      failures++; console.log('FAIL auxiliary release link pairing, body/history preservation or idempotence');
+    }
+    checks++;
+    if (!companionReadme(originalReadme.replace(historical, ' GitHub [release 0.9.1](https://github.com/o/t/releases/tag/0.9.1).' + historical), archived.papers[0])
+      .includes('[release 1.0.0](https://github.com/o/t/releases/tag/1.0.0)')) {
+      failures++; console.log('FAIL a release-prefixed GitHub link lost its paired label');
+    }
+    for (const bad of ['[0.9.0](https://github.com/o/t/releases/tag/0.9.1)', '[0.9.1](https://github.com/o/t/releases/tag/0.9.0)',
+      '[0.9.1](https://github.com/o/t/releases/tag/0.9.1-beta)']) {
+      refuses('an auxiliary GitHub release cannot disagree with the current locator', () => companionReadme(auxiliaryReadme.replace(oldGitHub, bad), archived.papers[0]));
+    }
+    expect(false, 'an archive version cannot be paired with a missing DOI', r => { r.papers[0].archiveVersion = '1.0.0'; });
+    expect(false, 'an archive version cannot use a leading v', r => { r.papers[0].archiveVersion = 'v1.0.0'; r.papers[0].codeDoi = archiveDoi; });
+    expect(false, 'an archive header cannot use an unrelated DOI', r => { r.papers[0].archiveVersion = '1.0.0'; r.papers[0].codeDoi = journalDoi; });
+    expect(false, 'an archived README without a recognized locator is refused', r => { r.papers[0].archiveVersion = '1.0.0'; r.papers[0].codeDoi = archiveDoi; });
+    expect(false, 'a malformed current DOI link cannot rewrite a historical locator', r => {
+      r.papers[0].archiveVersion = '1.0.0'; r.papers[0].codeDoi = archiveDoi;
+      w('papers/t/README.md', ABSTRACT.replace('# T\n\n', '# T\n\nPreprint. Release 0.9.1 [doi:10.5281/zenodo.999998](https://doi.org/10.5281/zenodo.999997).' + historical));
+    });
     for (const textLicense of ['all-rights-reserved', 'CC-BY-4.0']) {
       const r = reg(), metadata = JSON.parse(zenodo(r, { ...r.papers[0], id: 'rank-window', textLicense }, []));
       const expectedManuscript = textLicense === 'CC-BY-4.0' ? 'licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)' : 'all rights reserved';

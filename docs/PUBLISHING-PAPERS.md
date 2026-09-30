@@ -146,8 +146,19 @@ including `rank-window`'s `note.tex`. LaTeX builds also accept `PAPER_PDF_ENGINE
 
 After Zenodo archives a new version, download the ZIP named by that record's API and inspect its
 members. Verify the manuscript bytes against the released PDF, then record the version DOI.
+Set `archiveVersion` in the same registry entry to the exact verified release version at `codeDoi`.
+Keep both fields on the verified archive when preparing a newer release; advance them together only
+after that new archive has passed the download check. A new `RELEASES.md` heading is not evidence
+that Zenodo imported it.
+The companion synchronizer uses this verified pair for the README's current archive locator and
+the citation file's archive version. Update recommended BibTeX entries in the canonical README at
+the same time; earlier archive links remain as history.
 `python3 tools/paper-zenodo-check.py --paper <id> --out /tmp/archive-check.json` performs this
-read-only download and comparison against the registered repository PDF.
+read-only download and comparison against the registered repository PDF, and requires the record's
+version, title, Preprint classification and component rights to match the registry.
+The archive audit runs weekly, on request, and after changes to the registry, verifier or audit workflow
+on `main`. It retains its report even when a check fails. Companion publishing has a 20-minute job
+limit; a timeout requires inspection of the run and existing releases before another dispatch.
 A PDF attached separately to a GitHub release does not establish that it is in the source ZIP.
 
 ### Editing a paper after it is public
