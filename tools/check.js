@@ -17,6 +17,8 @@ async function measure(p) {
     // beyond any fixed character limit; truncating it makes settle() wait for a seed
     // it can never see, even after the plate has finished.
     const status = st ? st.innerText.replace(/\s+/g, ' ') : null;
+    // Keep direct measurement spans separate from explanatory scientific prose.
+    const statusParts = st ? [...st.children].map(child => child.textContent.replace(/\s+/g, ' ').trim()) : [];
     // The status line is rendered by the technique and lags its state: the shell applies the hash
     // immediately but the text is not rewritten until the technique next reports. The seed field is
     // updated synchronously, so that is what says which plate this actually is.
@@ -69,7 +71,7 @@ async function measure(p) {
     let ink = 0; for (let i = 0; i < L2.length; i++) if (Math.abs(L2[i] - p50) > 10) ink++;
     return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16), nyq, seedField,
       lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L2.length).toFixed(4) },
-      status };
+      status, statusParts };
   });
 }
 // Alive either as a broad tonal field (percentile spread) or as marks on a ground (range plus enough ink).
@@ -86,7 +88,13 @@ function pendingWork(m) {
     const at = Number(match[1].replace(/,/g, '')), target = Number(match[2].replace(/,/g, ''));
     if (at < target) return { pending: true, reason: 'finite progress ' + at + '/' + target };
   }
-  if (/\b(?:relaxing|warming|computing|building|coarsening|initial forces)\b|\b\d+\s+queued\b/i.test(status))
+  // Producers use standalone spans or middle-dot phase components. A word inside
+  // a diagnostic sentence (for example Ising's Yang-comparison caveat) is not a
+  // finite-work marker. Retain explicit Kitaev/SLE and neural-field formats.
+  const parts = Array.isArray(m.statusParts) && m.statusParts.length ? m.statusParts : [status];
+  const phases = parts.flatMap(part => part.split('·').map(value => value.trim()));
+  const marker = /^(?:relaxing|warming(?: up)?|computing(?: [\d,]+ quasiparticle modes| \d+(?:\.\d+)?%)?|building|coarsening|initial forces|preparing, computing|[\d,]+ queued)(?:…|\.{3})?$/i;
+  if (phases.some(part => marker.test(part)))
     return { pending: true, reason: 'status reports unfinished work' };
   return { pending: false, reason: '' };
 }
@@ -220,12 +228,13 @@ if (require.main === module) (async () => {
     const at = Number(st[1].replace(/,/g, ''));
     return at < target * 0.5 ? ' judged early: step ' + at.toLocaleString() + ' of ' + target.toLocaleString() : '';
   };
-  const runTarget = await p.evaluate(() => {
+  const runTargetOf = () => p.evaluate(() => {
     try {
       const st = JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}');
       return Number(st.stopAfter) || Number(st.warmup) || 0;
     } catch (e) { return 0; }
   });
+  const runTarget = await runTargetOf();
 
   await settle(p, wait, seed);
   const def = await measure(p);
@@ -260,7 +269,7 @@ if (require.main === module) (async () => {
     await p.evaluate(k => { const s = document.querySelector('#preset'); s.value = k; s.dispatchEvent(new Event('change', { bubbles: true })); }, key);
     await settle(p, wait, seed);
     const m = await measure(p);
-    console.log('preset ' + key, JSON.stringify(m) + progressNote(m, runTarget));
+    console.log('preset ' + key, JSON.stringify(m) + progressNote(m, await runTargetOf()));
     const outcome = classifyPlate(m);
     if (outcome.kind === 'fail') fails.push('preset ' + key + ': ' + outcome.reason);
     else if (outcome.kind === 'incomplete') incomplete.push('preset ' + key + ': ' + outcome.reason);

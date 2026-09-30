@@ -1,0 +1,178 @@
+{
+  "date": "2026-09-30",
+  "scope": "Seven real UI PNG exports at 1200x1200 against same-size canvas painting; HL outline on dark/light backgrounds, age and fill; smectic layers, defects and both. Grain disabled. No scientific or calibrated-color validation.",
+  "baselineCommit": "9ed948fb41090fa30ee54a79c5831f6233f9ea29",
+  "studioSha256": "b456bfe27a04f862ebcfb3a917bafa010c1588805c72bdfdb26e8686d4b06c10",
+  "moduleSourceSha256": "5eeff410e2ce5ac05d6a595440a3579625b6f3103c3ba4307188f67e0f2a2acf",
+  "testSha256": "9d01b02ab8199cf122a11918751c6317c74c1f5b6d8633d46c33debe38a46ac5",
+  "processCapSeconds": 120,
+  "platform": "macOS arm64",
+  "browserArgs": [
+    "--use-gl=angle",
+    "--use-angle=swiftshader",
+    "--enable-unsafe-swiftshader"
+  ],
+  "runs": [
+    {
+      "playwright": "1.49.1",
+      "browser": "Chromium 131.0.6778.33",
+      "exitCode": 1,
+      "elapsedSeconds": 10.188,
+      "logSha256": "f39e7f44891283eba9f959c392f56c4b29dde05ccac2c9c37faaa8b926308b70",
+      "failedRow": {
+        "id": "smectic",
+        "view": "layers",
+        "bg": "#090c10",
+        "width": 1200,
+        "height": 1200,
+        "vector": true,
+        "relativeError": 0.17966621575684877,
+        "inkRatio": 0.9989588368489516,
+        "negative": {
+          "relativeError": 1,
+          "inkRatio": 0
+        },
+        "modulePng": {
+          "relativeError": 0,
+          "inkRatio": 1
+        }
+      }
+    },
+    {
+      "playwright": "1.58.2",
+      "browser": "Google Chrome for Testing 145.0.7632.6",
+      "exitCode": 0,
+      "elapsedSeconds": 12.895,
+      "logSha256": "7277311fd9c05c6aa4ab5760967780a333d4769d88c4c892065396f3339e09ac",
+      "rows": [
+        {
+          "id": "hl",
+          "view": "outline",
+          "bg": "#121110",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.006902595253952712,
+          "inkRatio": 0.9990128269032384,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": null
+        },
+        {
+          "id": "hl",
+          "view": "outline",
+          "bg": "#f4f0e8",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.006914555845621957,
+          "inkRatio": 0.9990122063077683,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": null
+        },
+        {
+          "id": "hl",
+          "view": "age",
+          "bg": "#121110",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.0018238960257038511,
+          "inkRatio": 1.0000375734351288,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": null
+        },
+        {
+          "id": "hl",
+          "view": "fill",
+          "bg": "#121110",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.00020103995201052743,
+          "inkRatio": 0.9999779331816262,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": null
+        },
+        {
+          "id": "smectic",
+          "view": "layers",
+          "bg": "#090c10",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.007667413498832201,
+          "inkRatio": 0.9973807948441042,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": {
+            "relativeError": 0,
+            "inkRatio": 1
+          }
+        },
+        {
+          "id": "smectic",
+          "view": "ellipses",
+          "bg": "#f4f0e8",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.009452050099344937,
+          "inkRatio": 0.9972855411312963,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": {
+            "relativeError": 0,
+            "inkRatio": 1
+          }
+        },
+        {
+          "id": "smectic",
+          "view": "both",
+          "bg": "#090c10",
+          "width": 1200,
+          "height": 1200,
+          "vector": true,
+          "relativeError": 0.00769069377303607,
+          "inkRatio": 0.9971121220233277,
+          "negative": {
+            "relativeError": 1,
+            "inkRatio": 0
+          },
+          "modulePng": {
+            "relativeError": 0,
+            "inkRatio": 1
+          }
+        }
+      ]
+    }
+  ],
+  "ciBaseline": {
+    "head": "9ed948fb41090fa30ee54a79c5831f6233f9ea29",
+    "jobId": 109680456784,
+    "smecticLayersRelativeError": 0.17967845497249038,
+    "conclusion": "failure"
+  },
+  "limitations": [
+    "Browser implementation root cause was not isolated.",
+    "This checks rendering parity, not mathematics or calibrated color.",
+    "No browser-version timing fix is claimed for Turing.",
+    "The initial sandbox launch failed before any test; bounded comparisons ran outside the sandbox.",
+    "No threshold, fixture expectation, solver or wait budget changed between these two export runs."
+  ]
+}

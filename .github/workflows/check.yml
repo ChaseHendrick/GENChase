@@ -226,7 +226,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Cahn-Hilliard GPU numerical benchmark
         if: needs.pde-plan.outputs.browser_required != 'false'
@@ -241,6 +241,10 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 4
         run: timeout 180 node tools/rdx-readback-check.js
+      - name: RDX preset status handoff
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 4
+        run: timeout 180 node tools/rdx-status-check.js
       - name: Reuleaux geometry and actual print preservation
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: node tools/reuleaux-science.js
@@ -421,7 +425,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Numerical benchmarks and shared print-state checks
         if: needs.pde-plan.outputs.browser_required != 'false'
@@ -446,7 +450,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Independent benchmarks and print-state checks
         if: needs.pde-plan.outputs.browser_required != 'false'
@@ -474,7 +478,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       # Every `legacy:` declaration in studio.html becomes five assertions, so a default that moves
       # without declaring what it used to be fails here rather than silently rewriting old plates.
@@ -509,7 +513,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Plate check
         if: needs.pde-plan.outputs.browser_required != 'false'
@@ -543,7 +547,7 @@ jobs:
         if: needs.pde-plan.outputs.browser_required != 'false'
         timeout-minutes: 5
         run: |
-          npm install --no-save playwright@1.49.1
+          npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Export at 8 in, 300 ppi
         if: needs.pde-plan.outputs.browser_required != 'false'

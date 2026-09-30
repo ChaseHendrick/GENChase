@@ -37,7 +37,7 @@ def paper_id(rel):
 def assets(stage):
     chosen, groups, skipped = [], {}, []
     for pattern in PATTERNS:
-        for rel in sorted(glob.glob(pattern, root_dir=ROOT)):
+        for rel in sorted(os.path.relpath(path, ROOT) for path in glob.glob(os.path.join(glob.escape(ROOT), pattern))):
             path = os.path.join(ROOT, rel)
             if not os.path.isfile(path):
                 skipped.append(rel)

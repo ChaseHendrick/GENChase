@@ -13,6 +13,35 @@ for (const status of ['sweep 897 / 900 coarsening', 'sweeps 1,200 / 1,400', 'ste
 }
 for (const status of ['sweep 900 / 900', 'step 300 / 300', 'step 100 running'])
   assert.equal(pendingWork(plate(status)).pending, false, status);
+// Actual status producer shapes: standalone spans or a middle-dot phase.
+for (const parts of [
+  ['sweep 900 / 900', 'coarsening'], // Potts phase remains authoritative at a target.
+  ['grid 256×256 · dx 0.1', 'step 2,000', 'relaxing'], // BEC
+  ['step 100', 'warming up'], // RDX
+  ['dt 1.0e-3 · 128 queued'], // volume-wave
+  ['step 0/100 · initial forces'], // direct-gravity
+  ['step 100', 'building…'], // Sandpile
+  ['checksum 12 · building'], // Growdomain
+  ['t 0.50 · computing'], // Flow matching
+  ['t 5.0/10 · step 50 · preparing, computing'], // neural-field
+  ['computing 50%'], // SLE
+  ['computing 1,024 quasiparticle modes'] // Kitaev
+]) {
+  const m = { ...plate(parts.join(' ')), statusParts: parts };
+  assert.equal(pendingWork(m).pending, true, JSON.stringify(parts));
+  assert.equal(compareReplay(m, m, 'still', 'still').comparable, false);
+}
+// This is explanatory prose from the failed Ising CI capture, not a finite target.
+const isingParts = ['grid 256×256', 'T 1.20 · 0.53 Tc · ordered', 'm +0.12',
+  '|m| 0.1501 · error bar pending: run shorter than 50 τ_int (τ_int ≈ 42 sweeps) · not a Yang comparison: a hot or split start is still coarsening; start Cold to compare',
+  'sweep 1,408', 'seed check-ising'];
+const ising = { ...plate(isingParts.join(' ')), statusParts: isingParts };
+assert.equal(pendingWork(ising).pending, false);
+assert.equal(classifyPlate(ising).kind, 'ready');
+assert.equal(compareReplay(ising, ising, 'warmed', 'warmed').same, true);
+assert.equal(compareReplay(ising, { ...ising, status: ising.status.replace('1,408', '1,409') }, 'warmed', 'warmed').comparable, false);
+for (const status of ['coarsening changes the physical morphology', 'error bar pending: the field is still relaxing', 'not computing a validated comparison'])
+  assert.equal(pendingWork(plate(status)).pending, false, status);
 const finished = plate('sweep 900 / 900');
 assert.equal(compareReplay(finished, finished, 'still', 'still').same, true);
 assert.equal(compareReplay(finished, { ...finished, fp: 'changed-state' }, 'still', 'still').same, false);

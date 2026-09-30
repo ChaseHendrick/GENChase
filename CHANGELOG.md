@@ -4,6 +4,12 @@
 
 ## 0.9.0
 
+- Reaction-diffusion preset changes immediately publish fresh pending progress before their first asynchronous measurement. A held-fence browser regression rejects the previous preset's stale status and verifies unchanged completed fields and PNG pixels.
+
+- Align the remaining browser CI jobs and build instructions with the release's tested Playwright 1.58.2 runtime. The same Smectic export comparison fails in Chromium 131 and passes in Chromium 145; its thresholds and negative control are unchanged. Structured progress markers keep Ising's scientific coarsening caveat distinct from unfinished finite work, and early-progress logs now report each preset's own target.
+
+- Release asset enumeration supports Python 3.9 while preserving the exact ordered asset manifest, file names and content hashes.
+
 - **Preserve explicit pause during exports.** Pending geometry now rebuilds for active data and PNG exports without releasing Pause. Actual browser checks cover successful and failed PNG exports, hidden-tab transport and explicit Generate resuming. The prior active-data failure and source-fingerprinted passing evidence are recorded in `docs/ACTIVE-PAUSE-CHECK.md`.
 - **Reproduce the initial Chirikov plate.** Iters / orbit now sets the exact initial kick count, including burn-in, instead of a device-dependent time budget. Paused seed loads, integer work controls, zero kick strength and actual PNG state preservation have bounded independent checks. Earlier wall-clock plates cannot be reconstructed exactly from their recipes; live accumulation remains time-dependent. See `docs/CHIRIKOV-REPLAY.md`.
 
