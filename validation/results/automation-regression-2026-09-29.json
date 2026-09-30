@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-29",
+  "command": "node tools/automation-check.js",
+  "overallCapSeconds": 90,
+  "passedCases": 31,
+  "scope": "Actual workflow shell blocks and branch helper against local Git remotes and a mock GitHub CLI; no network/account writes or live credential-event validation.",
+  "sourceHashes": {
+    "tools/automation-check.js": "eafa07aebd97af1b557b1200e7be4f8bfbb7af44999efe1e50dafcef39b8cf4d",
+    "tools/automation-branch.js": "6322773a25d7dabf2419efe11b1a9749c391739a9c1617f1c692db82bd320adc",
+    ".github/workflows/timestamps.yml": "648e57655e1c4866b229d9c52f0e5f99f19b08e44cb18ebb6bf57a9ae1362695",
+    ".github/workflows/volunteer-results.yml": "092b0e3be80673d6cfc9a04467773034e54e8aeaa26c3a01f6ac43f2d22d139d"
+  },
+  "runs": [
+    {
+      "mode": "sandboxed",
+      "outcome": "overall timeout",
+      "elapsedCapSeconds": 90,
+      "stdoutBytes": 0
+    },
+    {
+      "mode": "timing-instrumented diagnostic, outside sandbox",
+      "outcome": "31 cases passed",
+      "elapsedSeconds": 43.919230125000006,
+      "logSha256": "c4e2fcd4371f0c333ee0808aaf4af50303eab9b313657e46eeb89b97bac9e913"
+    },
+    {
+      "mode": "unchanged actual suite, outside sandbox",
+      "outcome": "31 cases passed",
+      "elapsedSeconds": 33.626138208,
+      "logSha256": "ff95e3afd969080a1499a26002d942a06f6b823cd68cb479158e3970e6b50294"
+    }
+  ],
+  "limitations": [
+    "The one timeout is retained as a failed bounded run; its cause was not conclusively established. No command budget or test criteria changed.",
+    "Successful local fixtures do not establish live automation-created PR check events or the saved token permissions."
+  ]
+}

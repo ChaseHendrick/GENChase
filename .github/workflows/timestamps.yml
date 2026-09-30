@@ -4,8 +4,9 @@ name: timestamps
 # `ots stamp` makes a proof that stays pending until a Bitcoin block confirms it, a few hours later,
 # and `ots upgrade` then completes it. This workflow stamps any commitment that reached main without a
 # proof, completes pending proofs, and proposes the changed proof files as a pull request, because main
-# only takes pull requests. A pull request opened with the workflow token does not start other
-# workflows, so the last step starts the check workflow on the proposal's branch.
+# only takes pull requests. An optional repository-scoped AUTOMATION_TOKEN starts normal PR checks.
+# Without it, approve the approval-required PR runs in GitHub to start required-context checks.
+# Manual dispatch also verifies the branch but cannot satisfy PR-required check contexts.
 #
 # Scheduled workflows run from main only. With no commitments the job stops after the checkout.
 
@@ -33,6 +34,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || github.token }}
+          fetch-depth: 0
       - name: Find commitments
         id: need
         run: |
@@ -48,6 +52,10 @@ jobs:
         if: steps.need.outputs.count != '0'
         with:
           python-version: '3.x'
+      - name: Prepare the generated proof branch
+        if: steps.need.outputs.count != '0'
+        run: |
+          node tools/automation-branch.js prepare timestamps
       - name: Stamp new commitments and complete pending proofs
         if: steps.need.outputs.count != '0'
         run: |
@@ -66,19 +74,23 @@ jobs:
       - name: Propose the proofs
         if: steps.need.outputs.count != '0'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN || github.token }}
+          HAS_AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN != '' }}
         run: |
-          if [ -z "$(git status --porcelain -- identities/commitments)" ]; then echo "No proof changed."; exit 0; fi
           branch=automation/timestamps
-          # The project identity from AGENTS.md; it is the only commit author this repository uses.
-          git config user.name 'Chase Hendrick'
-          git config user.email '326338179+ChaseHendrick@users.noreply.github.com'
-          git switch -c "$branch"
-          git add identities/commitments
-          git commit -q -m "OpenTimestamps proofs for the commitment ledger" -m "Made by the timestamps workflow, run $GITHUB_RUN_ID."
-          git push --force origin "$branch"
+          result=$(node tools/automation-branch.js finish timestamps)
+          if [ "$result" = unchanged ] || [ "$result" = empty ]; then echo "No new nonempty proof proposal update to check."; exit 0; fi
           if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
             gh pr create --base main --head "$branch" --title "OpenTimestamps proofs for the commitment ledger" \
               --body "The timestamps workflow stamped new commitments or completed pending proofs in identities/commitments/. Only .ots files change. Merge it so the proofs are archived with the next release (docs/COMMITMENTS.md)."
+          elif [ "$result" = existing ]; then
+            echo 'The existing proposal is unchanged; no new checks are needed.'
+            exit 0
           fi
-          gh workflow run check.yml --ref "$branch"
+          if [[ "${HAS_AUTOMATION_TOKEN:-false}" == true ]]; then
+            echo 'The repository-scoped automation token starts the normal pull_request checks.'
+          else
+            echo '::warning::AUTOMATION_TOKEN is absent. Dispatched checks verify this branch but do not satisfy required PR check contexts. For approval-required PR runs, select Approve workflows to run in the pull request to start the required checks. See docs/AUTOMATIONS.md.'
+            gh workflow run check.yml --ref "$branch"
+            gh workflow run pages.yml --ref "$branch"
+          fi
