@@ -178,6 +178,7 @@ jobs:
           node tools/sweep-check.js
           node tools/hopfield-science.js
           node tools/flow-matching-science.js
+          timeout 30 node tools/chirikov-replay-check.js
           node tools/closed-forms-science.js
           node tools/thouless-science.js
           node tools/klein-science.js
@@ -273,6 +274,10 @@ jobs:
           node tools/hopfield-print-state.js
           node tools/flow-matching-print.js
           node tools/formula-chooser-check.js
+      - name: Chirikov fixed-work replay and PNG state
+        if: needs.pde-plan.outputs.browser_required != 'false'
+        timeout-minutes: 3
+        run: timeout 180 node tools/chirikov-print-state.js
       - name: Folder loading, recipes, witness and recovery
         if: needs.pde-plan.outputs.browser_required != 'false'
         run: |
@@ -281,6 +286,7 @@ jobs:
           timeout 180 node tools/parameter-state-check.js
           timeout 180 node tools/model-recipe-check.js
           timeout 180 node tools/check-replay-check.js
+          timeout 180 node tools/check-uniform-skin-browser-check.js
           node tools/colophon-check.js
           node tools/reports-check.js
           node tools/art-only-check.js

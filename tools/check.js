@@ -1,9 +1,8 @@
 // node tools/check.js <id> [waitMs=8000]
 // Full check for one tab: default plate, every preset, the same hash loaded twice, and a tab switch away and back.
 // Set STUDIO=path/to/studio.html to check a test copy built with tools/inject.js.
-const { glArgs } = require('./lib/gl-args');
+const { checkUniformSkin } = require('./lib/check-uniform-skin');
 const path = require('path');
-const { chromium } = require('playwright');
 
 // Environment noise under file:// and swiftshader, not defects in the page.
 const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/, /GL Driver Message.*Performance/];
@@ -79,6 +78,29 @@ const flat = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lu
 const NYQ = -0.35;
 const checker = m => m.nyq !== null && m.nyq !== undefined && m.nyq < NYQ;
 
+// A finite solve is not a finished plate while its declared counter target is unmet.
+function pendingWork(m) {
+  const status = m.status || '';
+  const match = /\b(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)\s*\/\s*([\d,]+)/i.exec(status);
+  if (match) {
+    const at = Number(match[1].replace(/,/g, '')), target = Number(match[2].replace(/,/g, ''));
+    if (at < target) return { pending: true, reason: 'finite progress ' + at + '/' + target };
+  }
+  if (/\b(?:relaxing|warming|computing|building|coarsening|initial forces)\b|\b\d+\s+queued\b/i.test(status))
+    return { pending: true, reason: 'status reports unfinished work' };
+  return { pending: false, reason: '' };
+}
+
+// Actual faults retain priority over incomplete work. A finite solver may paint a
+// partial field, but a missing canvas or Nyquist instability is still a failure.
+function classifyPlate(m) {
+  if (m.err) return { kind: 'fail', reason: m.err };
+  if (checker(m)) return { kind: 'fail', reason: 'grid-scale checkerboard (neighbour correlation ' + m.nyq + ')' };
+  const pending = pendingWork(m);
+  if (pending.pending) return { kind: 'incomplete', reason: pending.reason };
+  return { kind: flat(m) ? 'flat' : 'ready', reason: '' };
+}
+
 // Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
 // stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
 async function settle(p, maxMs, seed) {
@@ -96,13 +118,13 @@ async function settle(p, maxMs, seed) {
     if (seed && m.status && m.status.indexOf(seed) < 0) { last = ''; same = 0; continue; }
     // A progressive solver may leave its preview unchanged while a work batch runs.
     // That is not a completed still plate and cannot establish replay agreement.
-    if (/\b(?:relaxing|warming|computing|initial forces)\b|\b\d+\s+queued\b/i.test(m.status || '')) {
+    if (pendingWork(m).pending) {
       last = ''; same = 0; continue;
     }
     same = m.fp === last ? same + 1 : 0; last = m.fp;
     if (same >= 2) return 'still';                           // the pixels stopped changing
     const st = m.status || '';
-    const step = (st.match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
+    const step = (st.match(/(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)/) || [])[1];
     const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
     if (step && warm && Number(step.replace(/,/g, '')) >= warm) return 'warmed';   // living plate past its warm-up
   }
@@ -112,30 +134,46 @@ async function settle(p, maxMs, seed) {
 // Replay must compare nonblank plates at the same size and computation state. A matching
 // fingerprint alone is insufficient: an unchanged preview can hide unfinished computation.
 function compareReplay(first, second, firstSettle, secondSettle) {
-  const stepOf = m => {
-    const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
-    return s ? Number(s.replace(/,/g, '')) : null;
+  const countersOf = m => {
+    const counters = {};
+    const regex = /\b(steps?|sweeps?|iterations?|iters?|grains|particles|kicks|hits)\s+([\d,]+)(?![\d,.]|\s*[kKmM]\b)/g;
+    for (const match of (m.status || '').matchAll(regex)) {
+      const label = match[1].replace(/s$/, '');
+      counters[label] = Number(match[2].replace(/,/g, ''));
+    }
+    return counters;
   };
-  const steps = [stepOf(first), stepOf(second)];
-  const sameStep = steps[0] !== null && steps[0] === steps[1];
-  const noCounters = steps.every(s => s === null);
+  const counters = [countersOf(first), countersOf(second)];
+  const keys = [...new Set(counters.flatMap(value => Object.keys(value)))].sort();
+  const sameStep = keys.length > 0 && keys.every(key => counters[0][key] !== undefined && counters[0][key] === counters[1][key]);
+  const steps = counters.map(value => value.step ?? value.sweep ?? value.iteration ?? value.iter ?? value.grain ?? value.particle ?? value.kick ?? value.hit ?? null);
+  const noCounters = keys.length === 0;
   const still = firstSettle === 'still' && secondSettle === 'still';
-  const valid = !first.err && !second.err && !flat(first) && !flat(second);
+  const plateValid = !first.err && !second.err && !flat(first) && !flat(second) && !checker(first) && !checker(second);
+  const pending = [pendingWork(first), pendingWork(second)];
+  const valid = plateValid && !pending.some(result => result.pending);
+  const invalidReason = first.err || second.err ? ', missing plate' :
+    checker(first) || checker(second) ? ', grid-scale checkerboard' :
+    !plateValid ? ', blank plate' :
+    pending.some(result => result.pending) ? ', unfinished computation: ' + pending.map(result => result.reason || 'finished').join(' and ') : '';
   const comparable = valid && first.canvas === second.canvas && (sameStep || (noCounters && still));
-  return { comparable, same: comparable && first.fp === second.fp, steps,
-    reason: 'steps ' + steps.join(' and ') + ', settle ' + firstSettle + ' and ' + secondSettle +
-      ', canvas ' + first.canvas + ' and ' + second.canvas + (valid ? '' : ', blank or missing plate') };
+  return { comparable, same: comparable && first.fp === second.fp, steps, counters,
+    reason: 'counters ' + counters.map(value => JSON.stringify(value)).join(' and ') + ', settle ' + firstSettle + ' and ' + secondSettle +
+      ', canvas ' + first.canvas + ' and ' + second.canvas + invalidReason };
 }
 
-module.exports = { measure, settle, compareReplay };
+module.exports = { measure, settle, compareReplay, pendingWork, classifyPlate };
 
 if (require.main === module) (async () => {
+  const { glArgs } = require('./lib/gl-args');
+  const { chromium } = require('playwright');
   const id = process.argv[2], wait = +(process.argv[3] || 8000);
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const url = 'file://' + studio;
   const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const fails = [];
+  const incomplete = [];
   const errs = [];
   const open = async (hash, reducedMotion = 'no-preference') => {
     const p = await b.newPage({ viewport: { width: 1400, height: 900 }, reducedMotion });
@@ -177,7 +215,7 @@ if (require.main === module) (async () => {
   // near-uniform haze at step 300 and is a field of rippling voids by step 2,800. Say so next to the
   // numbers rather than leaving a low reading to be misread as a dead plate.
   const progressNote = (m, target) => {
-    const st = (m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/);
+    const st = (m.status || '').match(/(?:steps?|sweeps?|iterations?|iters?|grains|particles)\s+([\d,]+)/);
     if (!st || !target) return '';
     const at = Number(st[1].replace(/,/g, ''));
     return at < target * 0.5 ? ' judged early: step ' + at.toLocaleString() + ' of ' + target.toLocaleString() : '';
@@ -192,9 +230,14 @@ if (require.main === module) (async () => {
   await settle(p, wait, seed);
   const def = await measure(p);
   console.log('default', JSON.stringify(def) + progressNote(def, runTarget));
-  if (def.err) fails.push('default: ' + def.err);
-  else if (flat(def)) fails.push('default plate is flat');
-  else if (checker(def)) fails.push('default plate is the grid-scale checkerboard (neighbour correlation ' + def.nyq + '): the integrator is unstable');
+  const defOutcome = classifyPlate(def);
+  if (defOutcome.kind === 'fail') fails.push('default: ' + defOutcome.reason);
+  else if (defOutcome.kind === 'incomplete') incomplete.push('default: ' + defOutcome.reason);
+  else if (defOutcome.kind === 'flat') {
+    const uniform = id === 'skin' ? await checkUniformSkin(p) : { accepted: false };
+    if (uniform.accepted) console.log('expected uniform default', JSON.stringify(uniform));
+    else fails.push('default plate is flat' + (uniform.reason ? ': ' + uniform.reason : ''));
+  }
 
   // Capture the full recipe of the default plate before the preset loop mutates the persisted state.
   // The determinism check used to load "id/seed/{running:false}", which pins only that one key and
@@ -218,9 +261,14 @@ if (require.main === module) (async () => {
     await settle(p, wait, seed);
     const m = await measure(p);
     console.log('preset ' + key, JSON.stringify(m) + progressNote(m, runTarget));
-    if (m.err) fails.push('preset ' + key + ': ' + m.err);
-    else if (flat(m)) fails.push('preset ' + key + ' is flat');
-    else if (checker(m)) fails.push('preset ' + key + ' is the grid-scale checkerboard (neighbour correlation ' + m.nyq + ')');
+    const outcome = classifyPlate(m);
+    if (outcome.kind === 'fail') fails.push('preset ' + key + ': ' + outcome.reason);
+    else if (outcome.kind === 'incomplete') incomplete.push('preset ' + key + ': ' + outcome.reason);
+    else if (outcome.kind === 'flat') {
+      const uniform = id === 'skin' ? await checkUniformSkin(p) : { accepted: false };
+      if (uniform.accepted) console.log('expected uniform preset ' + key, JSON.stringify(uniform));
+      else fails.push('preset ' + key + ' is flat' + (uniform.reason ? ': ' + uniform.reason : ''));
+    }
   }
   if (!presets.length) fails.push('no presets registered');
 
@@ -247,10 +295,14 @@ if (require.main === module) (async () => {
   const a2 = await open(still, replayMode); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
   const replay = compareReplay(m1, m2, r1, r2);
   console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: replay.same,
-    steps: replay.steps, canvas: [m1.canvas, m2.canvas], pausable, reducedMotion: replayMode,
+    steps: replay.steps, counters: replay.counters, canvas: [m1.canvas, m2.canvas], pausable, reducedMotion: replayMode,
     settle: [r1, r2], comparable: replay.comparable }));
-  if (!replay.comparable) console.log('determinism not comparable: ' + replay.reason +
-    '. Neither load reached a state this harness can compare.');
+  if (!replay.comparable) {
+    if (m1.err || m2.err || checker(m1) || checker(m2)) fails.push('determinism: ' + replay.reason);
+    else incomplete.push('determinism: ' + replay.reason);
+    console.log('determinism not comparable: ' + replay.reason +
+      '. Neither load reached a state this harness can compare.');
+  }
   else if (!replay.same) fails.push('same hash loaded twice gave different plates');
 
   // 4. switch to another tab and back: exactly one visible canvas
@@ -270,6 +322,8 @@ if (require.main === module) (async () => {
 
   const uniq = [...new Set(errs)];
   if (uniq.length) { console.log('console errors:\n  ' + uniq.join('\n  ')); fails.push(uniq.length + ' console error(s)'); }
-  console.log(fails.length ? 'FAIL ' + id + ': ' + fails.join('; ') : 'PASS ' + id);
-  process.exit(fails.length ? 1 : 0);
+  if (incomplete.length) console.log('INCOMPLETE ' + id + ': ' + incomplete.join('; '));
+  if (fails.length) console.log('FAIL ' + id + ': ' + fails.join('; '));
+  else if (!incomplete.length) console.log('PASS ' + id);
+  process.exit(fails.length ? 1 : incomplete.length ? 2 : 0);
 })();

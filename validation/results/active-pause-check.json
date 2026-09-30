@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "scope": "Explicit active pause across dirty-geometry NPZ and actual shell PNG exports, with hidden transport and explicit Generate controls.",
+  "source": "src/shared/engine.js",
+  "sourceSha256": "bc60e2ab4580794425fe633ccb12c956ff942a9b7bd7fd6cb56f3159291b2b03",
+  "test": "tools/parameter-state-check.js",
+  "testSha256": "3380edb23ef71dc5f7d3029fd56c2b55b792e487da359aae1825f412315db65c",
+  "command": "GENCHASE_GL=hardware node --require <installed-Chrome preload> tools/parameter-state-check.js",
+  "runtimeCapSeconds": 180,
+  "runtime": {
+    "node": "v24.21.0",
+    "browser": "Google Chrome 154.0.8037.58",
+    "renderer": "hardware",
+    "workers": 1
+  },
+  "negativeControl": {
+    "sourceSha256": "73dfad740bfbca6697bc5d6ceef2133793d7bf8c21dd4eac67d9caeb44e66901",
+    "log": "active-pause-repro.log",
+    "logSha256": "323fe3723952cd7ab22cf894b2231dbfbd81f3f16e71848a282ea2b132f6ee89",
+    "observed": {
+      "pausedBefore": true,
+      "pausedAfter": false,
+      "data": {
+        "built": 17,
+        "requested": 17
+      }
+    },
+    "interpretation": "Old engine regenerated correct geometry but incorrectly resumed explicit active pause."
+  },
+  "maintainedBuild": {
+    "log": "parameter-state-maintained.log",
+    "logSha256": "ab04434edc9f0ad8e6479eb3c015188be2cda7f9aa3c1414ba352d673fb1d15a",
+    "exitCode": 0,
+    "checks": [
+      "PASS actual convection grid/Pr/logRa/dt controls enforce diffusion ceiling [{\"label\":\"grid\",\"grid\":256,\"Pr\":1,\"logRa\":5.6,\"dt\":0.006171033737397359,\"ceiling\":0.006171033737397359},{\"label\":\"Pr\",\"grid\":256,\"Pr\":10,\"logRa\":5.6,\"dt\":0.001951452212791705,\"ceiling\":0.001951452212791705},{\"label\":\"logRa\",\"grid\":256,\"Pr\":10,\"logRa\":3,\"dt\":0.0000978042936084894,\"ceiling\":0.0000978042936084894},{\"label\":\"dt\",\"grid\":256,\"Pr\":10,\"logRa\":3,\"dt\":0.0000978042936084894,\"ceiling\":0.0000978042936084894}]",
+      "PASS active data export retains explicit pause and user resume",
+      "PASS hidden export retains automatic resume and explicit pause",
+      "PASS queued geometry is applied for active/inactive data exports, tab return and paint; sanitized live value and state identity retained",
+      "PASS actual active PNG success/failure retains pause; explicit Generate resumes",
+      "PASS immediate flow export after a 32 to 256 step drag contains the regenerated trajectories, no zero padding"
+    ]
+  },
+  "limitations": [
+    "One installed Chromium runtime; no claim for every module-specific pause implementation.",
+    "PNG success and intentional exporter failure were exercised. Cancellation and regeneration failure cleanup were reviewed statically, not induced by this regression.",
+    "Explicit Generate intentionally resumes. The paused choice is a shell transport state, not a saved trajectory checkpoint."
+  ]
+}

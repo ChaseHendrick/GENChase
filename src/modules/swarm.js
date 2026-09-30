@@ -299,11 +299,17 @@
       chaos: pre('Global chaos', { K: 4, view: 'density', orbits: 2000, iters: 160, exposure: 1.3 }, Pal.ember),
     },
     hints: {
-      Map: 'K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colors chaos versus order.',
+      Map: 'Iters / orbit sets the exact initial kicks per seeded orbit, including burn-in. Turn Accumulate off to reproduce the fixed initial plate; enabling it continues beyond that state. K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colors chaos versus order.',
     },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors',
     headline: 'K', headlineLabel: 'kick K',
-    sanitize(s) { s.K = U.clamp(Number(s.K) || 1.2, 0, 8); s.orbits = U.clamp(Math.round(Number(s.orbits) / 200) * 200, 400, 8000); },
+    sanitize(s) {
+      const K = Number(s.K); s.K = U.clamp(Number.isFinite(K) ? K : 1.2, 0, 8);
+      const orbits = Number(s.orbits); s.orbits = U.clamp(Math.round((Number.isFinite(orbits) ? orbits : 2400) / 200) * 200, 400, 8000);
+      for (const [key, min, max, fallback] of [['iters', 40, 800, 220], ['burn', 0, 80, 12]]) {
+        const value = Number(s[key]); s[key] = U.clamp(Math.round(Number.isFinite(value) ? value : fallback), min, max);
+      }
+    },
     surprise(rng) {
       return {
         K: rng.pick([0.4, 0.8, 0.97, 1.2, 1.6, 2.5, 4]),
@@ -364,18 +370,24 @@
         orbitC[i] += w.hue;
         hits++;
       }
-      function accumulate(s, budgetMs) {
-        const t0 = performance.now(), K = s.K, burn = s.burn | 0, per = 24;
-        while (performance.now() - t0 < budgetMs) {
+      // Fixed initialization uses the declared total kicks per orbit, including burn-in.
+      // Keep the former 24-kick walker ordering so histogram sums have a fixed order.
+      function advance(s, iterations) {
+        for (let done = 0; done < iterations;) {
+          const per = Math.min(24, iterations - done);
           for (let i = 0; i < walkers.length; i++) {
             const w = walkers[i];
             for (let k = 0; k < per; k++) {
-              kick(w, K);
-              if (w.n > burn) plot(w);
+              kick(w, s.K);
+              if (w.n > s.burn) plot(w);
             }
           }
-          count += walkers.length * per;
+          count += walkers.length * per; done += per;
         }
+      }
+      function accumulate(s, budgetMs) {
+        const t0 = performance.now();
+        while (performance.now() - t0 < budgetMs) advance(s, 24);
       }
       function tone(s, rgba, W, H) {
         const lut = U.makeRampLUT(s.palette, s.bg, 256);
@@ -426,7 +438,7 @@
         const s = host.getState();
         const k = s.K;
         const kind = k < 0.8 ? 'KAM' : k < 1.05 ? 'critical' : k < 2.2 ? 'mixed' : 'chaotic';
-        host.setStatus('<span>K <b>' + k.toFixed(2) + '</b> · ' + kind + '</span><span>hits <b>' + (hits / 1e6).toFixed(2) + 'M</b></span>');
+        host.setStatus('<span>K <b>' + k.toFixed(2) + '</b> · ' + kind + '</span><span>hits <b>' + hits.toLocaleString('en-US') + '</b></span><span>kicks <b>' + count.toLocaleString('en-US') + '</b> total · initial ' + s.iters + '/orbit</span>');
       }
       function stop() { cancelAnimationFrame(raf); raf = 0; }
       function frame() {
@@ -446,7 +458,7 @@
         regenerate() {
           stop();
           reset(host.getState());
-          accumulate(host.getState(), host.reducedMotion() ? 80 : 40);
+          advance(host.getState(), host.getState().iters);
           draw(); status(); start();
         },
         repaint() { draw(); },

@@ -128,5 +128,249 @@
     "studioSha256": "fac0a313d8501a981e23921c2bca5485958aa8f40280ea570277fbfa484b71ee",
     "harnessSha256": "79de9bb1d1271375ac1d66a9c402e9adef70c8002b69c009ac071b8b8fd6ef83",
     "logSha256": "b73f62e9ad0ddb9b87e2077be06b467d7becf0652a5cfdf96fcc542a61e4f8c0"
+  },
+  "diagnosticThrottledComparison": {
+    "passed": true,
+    "previewCadenceMs": 150,
+    "baselineHasPreview": true,
+    "baselineSourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14",
+    "sourceSha256": "05aca9a79aab33dcdf0444082c985776fd86f29ba55da0384a2e1e202c5ef7b7",
+    "rows": [
+      {
+        "name": "before",
+        "partial": {
+          "building": true,
+          "sweepNo": 47,
+          "range": 172.6528,
+          "status": "lattice 320\u00d7320 torussweep 47 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.424 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+        },
+        "canvas": [
+          [
+            472,
+            472
+          ]
+        ],
+        "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+        "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+        "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+      },
+      {
+        "name": "fixed",
+        "partial": {
+          "building": true,
+          "sweepNo": 48,
+          "range": 172.6528,
+          "status": "lattice 320\u00d7320 torussweep 41 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.504 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+        },
+        "canvas": [
+          [
+            472,
+            472
+          ]
+        ],
+        "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+        "pixelPngSha256": "d6ff73e758c9adb7518d54c4fadf6f9401d8e2df6611e2cebf08e4884e31696e",
+        "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.356 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.00177 \u00b1 0.00079 sites/sweepc -0.00063 \u00b1 0.00073 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.9\u03c3 lowseed check-potts"
+      },
+      {
+        "name": "corrupt-control",
+        "partial": {
+          "building": true,
+          "sweepNo": 44,
+          "range": 172.6528,
+          "status": "lattice 320\u00d7320 torussweep 40 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.508 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed check-potts"
+        },
+        "canvas": [
+          [
+            472,
+            472
+          ]
+        ],
+        "stateSha256": "6da848afdba7d3951f592f5f53fe404cc2bd4f2d9a4d1acb3ae8f3ea9c214bdc",
+        "pixelPngSha256": "1d2008e0a31c4495c0d08d3c78d5eec14717978a2d97dabc52cd10a91ec9738c",
+        "status": "lattice 320\u00d7320 torussweep 900 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.396 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k -0.00087 \u00b1 0.00077 sites/sweepc 0.00034 \u00b1 0.00077 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.4\u03c3 highseed check-potts"
+      }
+    ],
+    "buildSha256": "b3602c80f4398fad9565734ace51fad18597d419d7f2df2b210b4be02b332b5e",
+    "harnessSha256": "756ea795cece029214bdf33358524edd778803514df34d9623239cad98255dd2",
+    "elapsedSeconds": 50.52,
+    "overallCapSeconds": 540,
+    "completionCapMs": 150000,
+    "command": "node tools/potts-preview-check.js <potts source from 6c9d664> --baseline-has-preview",
+    "environment": {
+      "browser": "installed Google Chrome",
+      "glMode": "hardware (Metal flags)",
+      "viewport": [
+        1460,
+        1000
+      ]
+    },
+    "recipe": {
+      "id": "potts",
+      "seed": "check-potts",
+      "preset": "foam",
+      "grid": 320,
+      "sweeps": 900,
+      "mode": "foam",
+      "lam": 0.6,
+      "targetScale": 1,
+      "seeds": 500,
+      "T": 8,
+      "view": "flat",
+      "wallW": 1.2,
+      "v": 8
+    },
+    "scope": "Actual-browser state and final preview PNG preservation for the diagnostic throttle, with deliberately corrupting-render negative control. No numerical validation promotion or wall-time speedup claim.",
+    "nodeProfile": {
+      "scope": "Node actual solver/count/status code, actual engine RNG and shared stats; rendering replaced by counter and DOM updates stubbed, so not browser settle timing.",
+      "rows": [
+        {
+          "kind": "baseline",
+          "elapsedMs": 15892.318209,
+          "countMs": 1350.4237839999955,
+          "countCalls": 236,
+          "statusMs": 78.59858399999742,
+          "statusCalls": 237,
+          "renderCalls": 82,
+          "rngCounts": {
+            "check-potts/potts": 1000,
+            "check-potts/potts/mc": 195322907
+          },
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "fit": {
+            "k": 0.0017706427433158251,
+            "c": -0.0006303488166204337,
+            "n": 500,
+            "kSe": 0.0007866482508419945,
+            "cSe": 0.0007264615257035611
+          },
+          "sweeps": 900,
+          "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14"
+        },
+        {
+          "kind": "throttled",
+          "elapsedMs": 16716.245166,
+          "countMs": 779.098918000007,
+          "countCalls": 84,
+          "statusMs": 22.926418000008198,
+          "statusCalls": 85,
+          "renderCalls": 84,
+          "rngCounts": {
+            "check-potts/potts": 1000,
+            "check-potts/potts/mc": 195322907
+          },
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "fit": {
+            "k": 0.0017706427433158251,
+            "c": -0.0006303488166204337,
+            "n": 500,
+            "kSe": 0.0007866482508419945,
+            "cSe": 0.0007264615257035611
+          },
+          "sweeps": 900,
+          "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14"
+        },
+        {
+          "kind": "throttled",
+          "elapsedMs": 12506.898249999998,
+          "countMs": 469.42566700001044,
+          "countCalls": 68,
+          "statusMs": 8.842958000004728,
+          "statusCalls": 69,
+          "renderCalls": 68,
+          "rngCounts": {
+            "check-potts/potts": 1000,
+            "check-potts/potts/mc": 195322907
+          },
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "fit": {
+            "k": 0.0017706427433158251,
+            "c": -0.0006303488166204337,
+            "n": 500,
+            "kSe": 0.0007866482508419945,
+            "cSe": 0.0007264615257035611
+          },
+          "sweeps": 900,
+          "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14"
+        },
+        {
+          "kind": "baseline",
+          "elapsedMs": 12563.40075,
+          "countMs": 964.1411289999887,
+          "countCalls": 207,
+          "statusMs": 18.340507999950205,
+          "statusCalls": 208,
+          "renderCalls": 71,
+          "rngCounts": {
+            "check-potts/potts": 1000,
+            "check-potts/potts/mc": 195322907
+          },
+          "stateSha256": "34a58c1db6dd2957a608fdfe4aedea5fe32bb3e5bee9d3a125aa657a68e4d54e",
+          "fit": {
+            "k": 0.0017706427433158251,
+            "c": -0.0006303488166204337,
+            "n": 500,
+            "kSe": 0.0007866482508419945,
+            "cSe": 0.0007264615257035611
+          },
+          "sweeps": 900,
+          "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14"
+        }
+      ]
+    },
+    "namedChecks": {
+      "overallCapSeconds": 900,
+      "elapsedSeconds": 202.308,
+      "runs": [
+        {
+          "command": "node tools/check-next.js potts 12000",
+          "exitCode": 2,
+          "elapsedSeconds": 122.035,
+          "logSha256": "a32299d884cf8783811d48895869a9cc9307e2568fcf667180ec9dd68f30d442"
+        },
+        {
+          "command": "node tools/export.js potts 8 300",
+          "exitCode": 0,
+          "elapsedSeconds": 80.271,
+          "logSha256": "3c0076b9e6741933018789490ac52344d7e93b665cccb1123fe755349ae7dd14"
+        }
+      ],
+      "smokeOutcome": "INCOMPLETE: foam829/900 and area957/1000 at unchanged12000ms settle budget; default replay700/700 exact8d7f6bbe and tab return passed.",
+      "printOutcome": "PASS: eight nonblank2400x2400 sheets through real UI at8in300ppi; readiness observations include unfinished finite work, so this is artifact integrity, not completion or numerical validation.",
+      "exportObservations": [
+        {
+          "case": "(default)",
+          "status": "lattice 320\u00d7320 torussweep 700 / 700182 cells of 600 \u00b7 mean area 563mean sides 6.077 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.340 \u00b1 0.042 sites/sweepc 0.113 \u00b1 0.053 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 2.1\u03c3 highseed export-potts"
+        },
+        {
+          "case": "coarse",
+          "status": "lattice 320\u00d7320 torussweep 732 / 900177 cells of 600 \u00b7 mean area 579mean sides 6.09 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed export-potts"
+        },
+        {
+          "case": "sides",
+          "status": "lattice 320\u00d7320 torussweep 700 / 700181 cells of 700 \u00b7 mean area 566mean sides 6.155 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.386 \u00b1 0.029 sites/sweepc 0.065 \u00b1 0.059 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 1.1\u03c3 highseed export-potts"
+        },
+        {
+          "case": "foam",
+          "status": "lattice 320\u00d7320 torussweep 678 / 900500 cells of 500 \u00b7 mean area 205mean sides 6.392 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed export-potts"
+        },
+        {
+          "case": "walls",
+          "status": "lattice 320\u00d7320 torussweep 635 / 800190 cells of 500 \u00b7 mean area 539mean sides 6.211 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed export-potts"
+        },
+        {
+          "case": "young",
+          "status": "lattice 320\u00d7320 torussweep 150 / 150564 cells of 1,200 \u00b7 mean area 182mean sides 6.333 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictiondA/dt = k\u00b7(n\u22126) + c, k 0.405 \u00b1 0.029 sites/sweepc -0.010 \u00b1 0.053 sites/sweep \u00b7 von Neumann\u2013Mullins 0 \u00b7 0.2\u03c3 lowseed export-potts"
+        },
+        {
+          "case": "hot",
+          "status": "lattice 320\u00d7320 torussweep 594 / 700155 cells of 500 \u00b7 mean area 661mean sides 6.542 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed export-potts"
+        },
+        {
+          "case": "area",
+          "status": "lattice 320\u00d7320 torussweep 616 / 1000199 cells of 700 \u00b7 mean area 515mean sides 6.191 \u00b7 Euler 6 \u00b7 true by construction; a regression test, not a predictioncoarseningseed export-potts"
+        }
+      ]
+    }
   }
 }

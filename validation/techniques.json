@@ -348,7 +348,7 @@
   {
     "id": "potts",
     "source": "src/modules/potts.js",
-    "sourceSha256": "3955e9f2fb779c1b1f73a543ac3d0f824a40d99df84b0845f4a85007b3f09f14",
+    "sourceSha256": "05aca9a79aab33dcdf0444082c985776fd86f29ba55da0384a2e1e202c5ef7b7",
     "reference": "The extended, area-constrained Potts model is Fran\u00e7ois Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n \u2212 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
     "equation": "H = \u03a3_\u27e8ij\u27e9 J(1 \u2212 \u03b4_{\u03c3i \u03c3j}) + \u03bb \u03a3_c (a_c \u2212 A)\u00b2;   accept a copy with min(1, e^{\u2212\u0394H/T})",
     "status": "unvalidated",
@@ -1595,7 +1595,7 @@
   {
     "id": "swarm",
     "source": "src/modules/swarm.js",
-    "sourceSha256": "f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c",
+    "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
     "reference": "Kevin P. O\u2019Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
     "equation": "\u1e8b\u1d62 = (1/N) \u03a3\u2c7c [ (x\u2c7c\u2212x\u1d62)/r\u1d62\u2c7c \u00b7 (1 + J cos \u0394\u03b8) \u2212 (x\u2c7c\u2212x\u1d62)/r\u1d62\u2c7c\u00b2 ],   \u03b8\u0307\u1d62 = (K/N) \u03a3\u2c7c sin(\u0394\u03b8)/r\u1d62\u2c7c",
     "status": "unvalidated",
@@ -3199,21 +3199,42 @@
   {
     "id": "chirikov",
     "source": "src/modules/swarm.js",
-    "sourceSha256": "f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c",
+    "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
     "reference": "Boris V. Chirikov, Physics Reports 52, 263 (1979); the map itself in 1969. The Chirikov\u2013Taylor standard map is the Poincar\u00e9 section of a kicked rotor, and the textbook picture of Kolmogorov\u2013Arnold\u2013Moser theory: as K grows, invariant curves break, islands shrink, and a chaotic sea floods the torus. The last golden KAM curve dies at K \u2248 0.971635.",
     "equation": "p\u2099\u208a\u2081 = p\u2099 + K sin \u03b8\u2099,   \u03b8\u2099\u208a\u2081 = \u03b8\u2099 + p\u2099\u208a\u2081   (mod 2\u03c0)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Paused fixed-work replay and PNG preservation are checked in docs/CHIRIKOV-REPLAY.md; live accumulation and historical wall-clock initialization are not recipe checkpoints. No KAM threshold or asymptotic Lyapunov validation is claimed."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/chirikov-replay-check.js",
+        "command": "node tools/chirikov-replay-check.js --write",
+        "results": "validation/results/chirikov-replay-check.json",
+        "scope": "Five finite paused fixtures against an independent map/tangent/histogram transcription; exact iteration and burn counts, zero kick, seed/work/sign controls. Not a primary-source or asymptotic chaos validation.",
+        "benchmark": "Independent transcription of the standard-map momentum/angle and tangent updates, with all walker fields and Float32 bin sums compared for five finite fixtures.",
+        "failureControl": "Wrong kick sign changes the oracle density; altered seed and iteration count change state; any wall-clock access during paused initialization throws.",
+        "criteria": "Exact walker-state and density/Lyapunov/orbit-color histogram equality, count=orbits*iters and hits=orbits*max(0,iters-burn), integer budgets, finite orbit fallback and K=0 retained.",
+        "limitations": "Five finite recipes at 400 orbits and 40 to 220 kicks; no primary-source equivalence, KAM threshold, long-time convergence or Lyapunov uncertainty claim."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/chirikov-print-state.js",
+        "command": "node tools/chirikov-print-state.js --write",
+        "results": "validation/results/chirikov-print-state.json",
+        "scope": "Actual paused hash replay, changed seed/work, iteration control, reduced motion and shell PNG with exact accumulated state preservation on one Chromium renderer.",
+        "criteria": "Exact same-hash pixels and three accumulated fields on reload; changed seed/work must change pixels; PNG leaves histograms and all walkers unchanged; reduced motion agrees; iteration control restores same state.",
+        "limitations": "One Chromium renderer and a paused 400-orbit, 80-kick recipe, with adjacent work/seed controls. Live accumulation is not a checkpoint; no calibrated-color or cross-platform pixel guarantee."
+      }
+    ]
   },
   {
     "id": "hofstadter",

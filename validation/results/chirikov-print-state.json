@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "source": "src/modules/swarm.js",
+  "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
+  "command": "node tools/chirikov-print-state.js --write",
+  "scope": "Actual paused UI loads, iters control regeneration and shell PNG. Not an asymptotic chaos or convergence validation.",
+  "first": {
+    "density": "c66f685af5cbf6b7611d006f55586a3b3da03e39f9f85078048c88cf09bda29b",
+    "lyap": "3d1f163cd83d903852eafc5fb3cd7cdab35148f87262d2ece54a2069c8bd2686",
+    "orbit": "7f600cc49a2057d02d6bb0b13a9ec5102025374f4b915d621159b8c1e352c5da",
+    "pixels": "a761eb26ca956bc8d1a3393c6278bc414461e04ffed97517fcc8c227527cf99b",
+    "count": 32000,
+    "hits": 27200,
+    "recipe": {
+      "id": "chirikov",
+      "v": 8,
+      "orbits": 400,
+      "iters": 80,
+      "grain": 0,
+      "running": false,
+      "seed": "fixed-work",
+      "palette": [
+        "#1D2A3A",
+        "#3F6B8E",
+        "#88B7D5",
+        "#E0F2FF",
+        "#FFFFFF"
+      ],
+      "bg": "#000000"
+    },
+    "status": "K 1.20 · mixedhits 27,200kicks 32,000 total · initial 80/orbitseed fixed-work"
+  },
+  "printed": {
+    "width": 6000,
+    "height": 6000,
+    "bytes": 14566591,
+    "count": 32000,
+    "hits": 27200,
+    "statePreserved": true,
+    "walkersPreserved": true
+  },
+  "controls": {
+    "changedSeed": true,
+    "changedWork": true,
+    "reducedMotionSame": true,
+    "zeroKick": true
+  },
+  "limitations": "One Chromium renderer; live accumulation remains elapsed-time dependent and a running recipe is not a trajectory checkpoint."
+}

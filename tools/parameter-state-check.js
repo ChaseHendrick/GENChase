@@ -37,6 +37,13 @@ const { chromium } = require('playwright'), { glArgs } = require('./lib/gl-args'
           window.parameterHost = host; let built = 0;
           return { aspect: () => 1, regenerate() { built = host.getState().size; window.parameterRunning = true; host.setStatus('fixture built ' + built); calls.push({ type: 'build', built }); },
             repaint() { calls.push({ type: 'paint', built }); }, live(key, value) { calls.push({ type: 'live', value, state: host.getState()[key] }); }, resize() {}, pause() { window.parameterRunning = false; calls.push({ type: 'pause' }); }, resume() { window.parameterRunning = true; calls.push({ type: 'resume' }); },
+            async exportPNG(w, h) {
+              calls.push({ type: 'png', built });
+              if (window.parameterFailPNG) throw Error('intentional fixture export failure');
+              const out = document.createElement('canvas'); out.width = w; out.height = h;
+              const ctx = out.getContext('2d'); ctx.fillStyle = '#123456'; ctx.fillRect(0, 0, w, h); ctx.fillStyle = '#fedcba'; ctx.fillRect(0, 0, w / 2, h / 2);
+              return Studio.util.toBlob(out);
+            },
             async exportData() { return { arrays: { size: { data: Float64Array.of(built), shape: [1] } }, meta: { built, requested: host.getState().size } }; }
           };
         }
@@ -58,21 +65,45 @@ const { chromium } = require('playwright'), { glArgs } = require('./lib/gl-args'
       set('size', 14); document.querySelector('.tab[data-id=hopfield]').click(); document.querySelector('.tab[data-id=parameter-fixture]').click(); const returned = await data();
       set('size', 16); set('tint', 3); const painted = await data();
       set('level', 30); const live = parameterCalls.at(-1);
+      set('size', 17); document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true }));
+      const activePauseBefore = !parameterRunning, activePausedData = await data(), activePauseAfter = !parameterRunning;
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true })); const activeResume = parameterRunning;
       set('size', 18); document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true }));
       const explicitlyPaused = !parameterRunning;
       document.querySelector('.tab[data-id=hopfield]').click(); const pausedExport = await data('parameter-fixture');
       document.querySelector('.tab[data-id=parameter-fixture]').click(); const pausePreserved = !parameterRunning;
       document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true })); const userCanResume = parameterRunning;
       return { active: active.grid, inactive: inactive.grid, inactiveId: inactive.provenance.technique.id, stillOnHopfield, returned: returned.grid, painted: painted.grid, live,
-        hiddenSuspended, resumedAfterExport, explicitlyPaused, pausedExport: pausedExport.grid, pausePreserved, userCanResume };
+        activePauseBefore, activePauseAfter, activePausedData: activePausedData.grid, activeResume, hiddenSuspended, resumedAfterExport, explicitlyPaused, pausedExport: pausedExport.grid, pausePreserved, userCanResume };
     });
     for (const [name, n] of [['active', 8], ['inactive', 12], ['returned', 14], ['painted', 16]]) assert.deepEqual(fixture[name], { built: n, requested: n });
     assert.equal(fixture.inactiveId, 'parameter-fixture'); assert.ok(fixture.stillOnHopfield); assert.deepEqual(fixture.live, { type: 'live', value: 16, state: 16 });
     assert.ok(fixture.hiddenSuspended && fixture.resumedAfterExport, 'Inactive export must suspend hidden work and resume a running tab on return');
     assert.ok(fixture.explicitlyPaused && fixture.pausePreserved && fixture.userCanResume, 'Inactive export must retain an explicit user pause');
     assert.deepEqual(fixture.pausedExport, { built: 18, requested: 18 });
+    assert.ok(fixture.activePauseBefore && fixture.activePauseAfter && fixture.activeResume, 'Active data export must retain an explicit pause and allow user resume');
+    assert.deepEqual(fixture.activePausedData, { built: 17, requested: 17 });
+    console.log('PASS active data export retains explicit pause and user resume');
     console.log('PASS hidden export retains automatic resume and explicit pause');
     console.log('PASS queued geometry is applied for active/inactive data exports, tab return and paint; sanitized live value and state identity retained');
+    for (const fail of [false, true]) {
+      await page.evaluate(fail => {
+        window.parameterFailPNG = fail;
+        const input = document.querySelector('#p-parameter-fixture-size'); input.value = fail ? 20 : 19; input.dispatchEvent(new Event('input', { bubbles: true }));
+        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true }));
+        if (parameterRunning) throw Error('Fixture must be paused before PNG export');
+        document.querySelector('#btn-export').click();
+      }, fail);
+      await page.waitForFunction(fail => !Studio.exportJob && (fail ? document.querySelector('#export-note').classList.contains('err') : !document.querySelector('#export-download').hidden), fail);
+      const print = await page.evaluate(() => ({ paused: !parameterRunning, rendered: parameterCalls.filter(c => c.type === 'png').at(-1), url: document.querySelector('#export-download').href }));
+      assert.ok(print.paused, 'Active PNG export must retain explicit pause, including failure');
+      assert.equal(print.rendered.built, fail ? 20 : 19, 'PNG must use refreshed geometry');
+      if (!fail) assert.ok(await page.evaluate(async url => (await (await fetch(url)).blob()).size > 1000, print.url), 'Actual encoded PNG exists');
+      await page.keyboard.press('Escape');
+      const generated = await page.evaluate(() => { document.querySelector('#btn-generate').click(); return parameterRunning; });
+      assert.ok(generated, 'Explicit Generate still resumes the simulation');
+    }
+    console.log('PASS actual active PNG success/failure retains pause; explicit Generate resumes');
     const recipe = Buffer.from(JSON.stringify({ count: 100, steps: 32 })).toString('base64url');
     await page.goto('file://' + studio + '#flow-matching/parameter-state/' + recipe);
     await page.waitForFunction(() => document.querySelector('#status').textContent.includes('complete'));

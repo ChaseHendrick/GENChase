@@ -247,10 +247,11 @@
             if (sweepNo === markAt) areaAt = Float64Array.from(area);
           }
           if (sweepNo < s.sweeps) {
-            countSides(s); status('coarsening');
-            // Show the computed partial plate at most once per 150 ms. Painting reads the
-            // current labels and areas; it does not advance the RNG, solver or fitted law.
-            if (performance.now() - lastPreview >= 150) { render(); lastPreview = performance.now(); }
+            // Refresh derived diagnostics with the partial plate, at most once per 150 ms.
+            // These read the current labels and areas without advancing the solver or RNG.
+            if (performance.now() - lastPreview >= 150) {
+              countSides(s); status('coarsening'); render(); lastPreview = performance.now();
+            }
             timer = setTimeout(chunk, 0);
           }
           else {

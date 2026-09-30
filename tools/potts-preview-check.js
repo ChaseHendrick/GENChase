@@ -4,7 +4,8 @@
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');const {glArgs}=require('./lib/gl-args');
 const root=path.resolve(__dirname,'..'),before=process.argv[2];
-if(!before)throw Error('usage: node tools/potts-preview-check.js <pre-change-potts.js>');
+if(!before)throw Error('usage: node tools/potts-preview-check.js <pre-change-potts.js> [--baseline-has-preview]');
+const baselineHasPreview=process.argv.includes('--baseline-has-preview');
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const baseline=fs.readFileSync(before,'utf8'),fixed=fs.readFileSync(path.join(root,'src/modules/potts.js'),'utf8');
 const studio=fs.readFileSync(process.env.STUDIO||path.join(root,'dist/studio.html'),'utf8');
@@ -41,7 +42,7 @@ function html(name,source){
      return {...__pottsProgress(),range:max-min,status:document.getElementById('status').textContent};
     });
     assert(partial.building&&partial.sweepNo<900,'The partial capture must precede finite completion');assert.match(partial.status,/coarsening/);
-    if(name==='before')assert(partial.range<1,'Old-source blank partial-plate control did not reproduce');
+    if(name==='before'&&!baselineHasPreview)assert(partial.range<1,'Old-source blank partial-plate control did not reproduce');
     else assert(partial.range>40,'New-source partial plate is blank');
     await page.waitForFunction(()=>!__pottsProgress().building&&__pottsProgress().sweepNo===900,null,{timeout:150000});
     await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
@@ -52,6 +53,6 @@ function html(name,source){
   assert.equal(rows[0].stateSha256,rows[1].stateSha256,'Painting changed the finished scientific arrays or fit');
   assert.equal(rows[0].pixelPngSha256,rows[1].pixelPngSha256,'Finished preview pixels changed');
   assert.notEqual(rows[0].stateSha256,rows[2].stateSha256,'Corrupting render control escaped the scientific-state comparison');
-  console.log(JSON.stringify({passed:true,previewCadenceMs:150,baselineSourceSha256:sha(baseline),sourceSha256:sha(fixed),rows},null,2));
+  console.log(JSON.stringify({passed:true,previewCadenceMs:150,baselineHasPreview,baselineSourceSha256:sha(baseline),sourceSha256:sha(fixed),rows},null,2));
  }finally{await browser.close();fs.rmSync(directory,{recursive:true,force:true});}
 })().catch(error=>{console.error(error);process.exitCode=1;});

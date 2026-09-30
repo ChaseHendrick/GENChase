@@ -103,7 +103,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [percolation](src/modules/lattice.js) | validated within stated limits | [percolation-science.js](tools/percolation-science.js) | Limited evidence recorded | none |
 | [attractors](src/modules/attractors.js) | unvalidated | None registered | Not scientifically validated | none |
 | [airy](src/modules/airy.js) | partially validated | [closed-forms-science.js](tools/closed-forms-science.js) | Not scientifically validated | none |
-| [chirikov](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
+| [chirikov](src/modules/swarm.js) | unvalidated | [chirikov-replay-check.js](tools/chirikov-replay-check.js) | Limited evidence recorded | none |
 | [hofstadter](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [hofstadter-science.js](tools/hofstadter-science.js), [hofstadter-spectrum.js](tools/hofstadter-spectrum.js) | Limited evidence recorded | none |
 | [weierstrass](src/modules/weierstrass.js) | validated within stated limits | [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
 | [scars](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
@@ -473,6 +473,12 @@ No record has an outside review yet; every review so far was done inside the pro
 - Precision check of the real-argument Ai that airy.js actually evaluates (80-step RK4 on [-10, 8], one-term asymptotic for z>8, leading oscillation for z<-10). Not a check of the catalog factor Ai(x - z^2/4 + i a), and not a print audit.
 - On [-4, 4] the module matches an independent power series to 7.23e-7. The RK4 bridge has the wrong sign at arguments 6 to 8: at z=6 the module returns -1.200e-4 against the series +9.948e-6, and at z=8 it returns -0.07551 against 4.74e-8. The switch to the asymptotic is z>8, so z=8 is still on that bridge. At span 14 the plate coordinate xx reaches span*0.48, about 6.7, so those arguments are on the sheet.
 - The plate multiplies real Ai by exp(a x - a z^2/2). That is not the finite-energy factor Ai(xi + i a) named in the credit. At a=0.08, \|Ai(xi+ia)\|/\|Ai(xi)\| is 1.0017 at xi=0 and 1.030 at xi=-2. The tracked peaks match the real formula, but the mean \|peak x - z^2/4\| is about 0.89 to 0.95 because the maximum of Ai is near argument -1.02, not 0.
+
+### chirikov
+
+- Catalog equation and citation are review targets, not verified paper equivalence.
+- No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.
+- Paused fixed-work replay and PNG preservation are checked in docs/CHIRIKOV-REPLAY.md; live accumulation and historical wall-clock initialization are not recipe checkpoints. No KAM threshold or asymptotic Lyapunov validation is claimed.
 
 ### hofstadter
 

@@ -1,0 +1,101 @@
+{
+  "started": "2026-09-29T23:38:07.392564+00:00",
+  "studio_sha256": "fac0a313d8501a981e23921c2bca5485958aa8f40280ea570277fbfa484b71ee",
+  "check_file": "tools/check-next.js",
+  "check_sha256": "a8468b03887d9f3e61044b4e8351849aaf5672007a871aeaad44f782f73274d4",
+  "helper_sha256": {
+    "tools/lib/check-uniform-skin.js": "4cbcb3c18763c103ac5e2810a7dc80b4cdee99eae1cebedbbbb25beadd1b4778"
+  },
+  "concurrency": 1,
+  "export_sha256": "9bb82f0b824c59b52e4570d50189ad0589aec7105956986b6b2679f8dc70396b",
+  "source_commit": "b977e425fabecddc9241b220a22155208ee2431c",
+  "per_case_timeout_s": 900,
+  "overall_deadline_s": 3600,
+  "results": {
+    "cyclic-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 50.5,
+      "log": "cyclic-check.log"
+    },
+    "turing-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 48.8,
+      "log": "turing-check.log"
+    },
+    "excitable-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 40.1,
+      "log": "excitable-check.log"
+    },
+    "chemotaxis-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 50.2,
+      "log": "chemotaxis-check.log"
+    },
+    "vegetation-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 50.3,
+      "log": "vegetation-check.log"
+    },
+    "skin-check": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 62.8,
+      "log": "skin-check.log"
+    },
+    "potts-check": {
+      "status": "incomplete",
+      "exit_code": 2,
+      "elapsed_s": 138.5,
+      "log": "potts-check.log"
+    },
+    "cyclic-export": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 96.3,
+      "log": "cyclic-export.log",
+      "sheets": 7
+    },
+    "turing-export": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 112.3,
+      "log": "turing-export.log",
+      "sheets": 8
+    },
+    "excitable-export": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 114.8,
+      "log": "excitable-export.log",
+      "sheets": 8
+    },
+    "chemotaxis-export": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 124.8,
+      "log": "chemotaxis-export.log",
+      "sheets": 7
+    },
+    "vegetation-export": {
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_s": 117.2,
+      "log": "vegetation-export.log",
+      "sheets": 8
+    }
+  },
+  "active": [],
+  "done": true,
+  "elapsed_s": 1006.9,
+  "snapshot_sha256": "fac0a313d8501a981e23921c2bca5485958aa8f40280ea570277fbfa484b71ee",
+  "ending_check_sha256": "a8468b03887d9f3e61044b4e8351849aaf5672007a871aeaad44f782f73274d4",
+  "ending_helper_sha256": {
+    "tools/lib/check-uniform-skin.js": "4cbcb3c18763c103ac5e2810a7dc80b4cdee99eae1cebedbbbb25beadd1b4778"
+  }
+}

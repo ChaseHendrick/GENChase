@@ -1,0 +1,119 @@
+{
+  "passed": true,
+  "source": "src/modules/swarm.js",
+  "sourceSha256": "27a4aba776deb819e4a0de7681e9da12d3a0df1123b8696995872aac916e3522",
+  "command": "node tools/chirikov-replay-check.js --write",
+  "scope": "Paused fixed-work initialization only; independent map, tangent and histogram transcription. Not a KAM threshold or asymptotic Lyapunov validation.",
+  "rows": [
+    {
+      "parameters": {
+        "K": 0,
+        "orbits": 400,
+        "iters": 40,
+        "burn": 0,
+        "view": "density",
+        "tone": "log",
+        "exposure": 1.15,
+        "gamma": 0.95,
+        "aspect": "1:1",
+        "grain": 0.05,
+        "running": false,
+        "seed": "chirikov-fixed-work"
+      },
+      "kicks": 16000,
+      "hits": 16000,
+      "densitySha256": "441815d73468e4089327c4084371b3ede5b88a28974c6f012c957a1c4916872a",
+      "independentStateMatch": true
+    },
+    {
+      "parameters": {
+        "K": 0.5,
+        "orbits": 400,
+        "iters": 53,
+        "burn": 12,
+        "view": "density",
+        "tone": "log",
+        "exposure": 1.15,
+        "gamma": 0.95,
+        "aspect": "1:1",
+        "grain": 0.05,
+        "running": false,
+        "seed": "chirikov-fixed-work"
+      },
+      "kicks": 21200,
+      "hits": 16400,
+      "densitySha256": "e23769e537ad315fd2453d53cb5db6cc39eebeece64f035759bf9a0d7d91fdb3",
+      "independentStateMatch": true
+    },
+    {
+      "parameters": {
+        "K": 1.2,
+        "orbits": 400,
+        "iters": 220,
+        "burn": 12,
+        "view": "density",
+        "tone": "log",
+        "exposure": 1.15,
+        "gamma": 0.95,
+        "aspect": "1:1",
+        "grain": 0.05,
+        "running": false,
+        "seed": "chirikov-fixed-work"
+      },
+      "kicks": 88000,
+      "hits": 83200,
+      "densitySha256": "8cab1b5627ff62c43cf1e6fa20276f7156c5699924835d0f8b7a9eeb6e89ce57",
+      "independentStateMatch": true
+    },
+    {
+      "parameters": {
+        "K": 4,
+        "orbits": 400,
+        "iters": 80,
+        "burn": 80,
+        "view": "density",
+        "tone": "log",
+        "exposure": 1.15,
+        "gamma": 0.95,
+        "aspect": "1:1",
+        "grain": 0.05,
+        "running": false,
+        "seed": "chirikov-fixed-work"
+      },
+      "kicks": 32000,
+      "hits": 0,
+      "densitySha256": "11283ef755895422e6f28b93f3d78cad7539891cf2893c9fdccefb923c5bf70b",
+      "independentStateMatch": true
+    },
+    {
+      "parameters": {
+        "K": 1.2,
+        "orbits": 400,
+        "iters": 80,
+        "burn": 0,
+        "view": "density",
+        "tone": "log",
+        "exposure": 1.15,
+        "gamma": 0.95,
+        "aspect": "4:5",
+        "grain": 0.05,
+        "running": false,
+        "seed": "chirikov-fixed-work"
+      },
+      "kicks": 32000,
+      "hits": 32000,
+      "densitySha256": "ab0bbe2ee5595fca6337d0ce77a8e324ddc829ecba7bc8eb3ebe482631b9ade6",
+      "independentStateMatch": true
+    }
+  ],
+  "zeroKickMaxError": 4.263256414560601e-14,
+  "controls": {
+    "wallClockForbidden": true,
+    "changedSeed": true,
+    "changedIterations": true,
+    "wrongKickSignRejected": true,
+    "integerBudgets": true,
+    "zeroKickPreserved": true,
+    "invalidOrbitFallback": true
+  }
+}

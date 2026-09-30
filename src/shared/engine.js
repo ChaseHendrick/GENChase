@@ -807,8 +807,8 @@ void main(){
     const F = window.GenChaseDataFormats;
     let out = null, failure = '';
     if (typeof e.inst.exportData === 'function') {
-      let rebuilt = false;
-      try { rebuilt = flushGeometry(e); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+      const rebuilt = !!e.geometryDirty;
+      try { flushGeometry(e, true); out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
       finally {
         if (rebuilt && (e !== instances[currentId] || e.paused)) {
           // Suspend hidden work without changing the viewer's transport preference.
@@ -1651,8 +1651,8 @@ void main(){
     }
     e.geometryDirty = false;
     if (active) fitCanvas(e);
-    // An inactive data refresh may compute temporarily, but must retain an explicit pause.
-    if (active) e.paused = false;
+    // An export refresh may compute temporarily, but must retain the transport preference.
+    if (active && !(opts && opts.preservePause)) e.paused = false;
     e.scienceWitness = null;
     if (active) renderStatus();
     try { e.inst.regenerate(); } catch (err) { e.geometryDirty = true; showError(err); return false; }
@@ -1662,10 +1662,10 @@ void main(){
     if (active) { resetWitness(); scheduleHash(); }
     return true;
   }
-  function flushGeometry(e) {
+  function flushGeometry(e, preservePause = false) {
     if (!e.geometryDirty) return false;
     const opts = pendingRegen && pendingRegen.e === e ? pendingRegen.opts : { skipSnap: true, skipHistory: true };
-    if (regenerate(opts, e) === false) throw Error('Could not apply pending geometry before export');
+    if (regenerate({ ...opts, preservePause }, e) === false) throw Error('Could not apply pending geometry before export');
     return true;
   }
   function repaint() {
@@ -2987,11 +2987,15 @@ void main(){
   async function doExport() {
     const e = instances[currentId]; if (!e) return;
     if (exportBusy || printFormatBusy) return;
-    try { flushGeometry(e); } catch (err) { showError(err); return; }
     if (!validPrintInputs()) {
       updateDims();
       for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
       return;
+    }
+    const rebuilt = !!e.geometryDirty;
+    try { flushGeometry(e, true); } catch (err) {
+      if (rebuilt && e.paused) { try { e.inst.pause && e.inst.pause(); } catch (pauseError) { console.warn(pauseError); } }
+      showError(err); return;
     }
     exportBusy = true;
     if (colophon && document.fonts) { try { await document.fonts.ready; } catch (err) { /* fallback fonts */ } }
@@ -3169,6 +3173,10 @@ void main(){
         note.classList.add('err');
       }
     } finally {
+      if (rebuilt && (e !== instances[currentId] || e.paused)) {
+        // A dirty export may finish a rebuild, but does not release the user's pause.
+        try { e.inst.pause && e.inst.pause(); } catch (err) { console.warn(err); }
+      }
       clearInterval(tick);
       exportBusy = false;
       for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = false;
