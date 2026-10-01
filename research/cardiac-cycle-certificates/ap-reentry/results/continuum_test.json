@@ -1,0 +1,7 @@
+[
+ {"note": "printed output of continuum_test.py (RL, dt 0.01 ms, D 0.154 mm^2/ms, h 0.25 mm), t_end 2500 ms for L 60/100 and 3000 ms for L 150/200; not converged",
+  "L_mm": 60.0, "N": 240, "c": 2.464, "died": true, "rotations": 0, "cv_mm_per_ms": 0.6294},
+ {"L_mm": 100.0, "N": 400, "c": 2.464, "died": true, "rotations": 0, "cv_mm_per_ms": 0.643},
+ {"L_mm": 150.0, "N": 600, "c": 2.464, "died": false, "rotations": 10, "periods_tail": [295.43, 290.68, 287.78, 291.62, 288.74, 289.67], "cv_mm_per_ms": 0.5156},
+ {"L_mm": 200.0, "N": 800, "c": 2.464, "died": false, "rotations": 8, "periods_tail": [344.71, 340.19, 345.23, 342.26, 344.09, 343.71], "cv_mm_per_ms": 0.5826}
+]

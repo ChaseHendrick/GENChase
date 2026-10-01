@@ -109,7 +109,15 @@ the shared CAPD build. Until then every certificate here is conditional on that 
 ## Status (2026-10-01)
 
 * Model translation: checked (see above).
-* Fixed cell at G_Ks = 0.0275: candidate located (section time 53.585519339 ms, largest nontrivial multiplier
-  0.997477, consistent with the other pipeline's certificate [53.58551856, 53.58552012] ms and bound 0.999);
-  rigorous verification in progress.
-* Everything else: not started.
+* **Fixed cell at G_Ks = 0.0275: verified** (`results/cell-gks0.0275.json`, 755 s). A unique fixed point of the first
+  return map in the certified ball; period in [53.5855190480, 53.5855196307] ms (exact bounds in the record), inside
+  the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet multipliers of modulus at most
+  0.998642; locally orbitally asymptotically stable. Conditional on the open CAPD issue above.
+* Rings N = 8 and N = 16: candidates located (periods 53.58797098 and 53.58806910 ms, inside the other pipeline's
+  certified intervals); double-interval derivative enclosures measured with Perron roots 0.99996225 (N = 8) and
+  0.99997284 (N = 16), below one; the minimal-period gate passes for N = 8; certification runs in progress. A
+  128-bit centre uses about 4.7 GB at N = 8 and would need about 19 GB at N = 16 with CAPD's Lohner sets, so N >= 16
+  needs a lighter high-precision centre.
+* N = 32, 64: CAPD's generic C1 method needs memory proportional to N^2 (about 6 GB at N = 32, 22 GB at N = 64);
+  approach under design.
+* G_Ks interval (rec 2): not started.
