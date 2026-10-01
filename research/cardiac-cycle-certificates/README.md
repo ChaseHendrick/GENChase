@@ -99,12 +99,12 @@ folder. The untrusted helpers (`orbit_newton.cpp`, `frame.py`) only propose a ce
 certificate driver (`proofs/certify.py`) checks that the frame's parameters are the intended ones and records the
 hashes of the inputs and of the verifier binary.
 
-Known CAPD issue, open: in `PoincareMap::crossSectionInOneStep` (PoincareMap_templateMembers.h, lines 260-273) the
-crossing-point bound is trimmed with the endpoints of the previous Newton window while monotonicity was checked on
-the current one. This is sound when the Newton loop exits by convergence and can drop true values only if it stops
-at its 10-iteration cap without converging. A one-line local patch (use the current window's endpoints) is prepared
-in `proofs/capd-6.1.0-genchase.patch` but NOT applied; applying it needs the owner's approval because it modifies
-the shared CAPD build. Until then every certificate here is conditional on that loop converging, and says so.
+CAPD patch (applied 2026-10-01 with the owner's approval): in `PoincareMap::crossSectionInOneStep`
+(PoincareMap_templateMembers.h, lines 260-266) upstream trims the crossing-point bound with the endpoints of the
+previous Newton window while monotonicity was checked on the current one, which is unsound if the Newton loop stops
+at its 10-iteration cap without converging. The local build uses the current window's endpoints
+(`proofs/capd-6.1.0-genchase.patch`, a header-only change). Certificates record the hash of the patched header;
+records made before the patch say "conditional on the CAPD crossing issue" and are superseded by reruns.
 
 ## Status (2026-10-01)
 

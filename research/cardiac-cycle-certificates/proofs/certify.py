@@ -15,6 +15,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 STUDY = os.path.dirname(HERE)
 SOURCES = ["proofs/verify.cpp", "model/tp06_capd.hpp", "model/setup.hpp", "model/scales.txt"]
 CAPD_COMMIT = "03dc5628203334b214bb7d9fd63788a175521005"
+CAPD_PATCHED_HEADER = "/tmp/claude-0/-home-user-GENChase/8e652c2a-6f64-5009-9ee8-187ba6394e5c/scratchpad/ext/capd-install/include/capd/poincare/PoincareMap_templateMembers.h"
 
 
 def sha(path):
@@ -69,6 +70,8 @@ def main():
         "hashes": {"frame": sha(a.frame), "verify_binary": sha(a.binary),
                    **{s: sha(os.path.join(STUDY, s)) for s in SOURCES}},
         "repository_commit": commit, "working_tree_dirty": dirty, "capd_commit": CAPD_COMMIT,
+        "capd_patch": {"file": "proofs/capd-6.1.0-genchase.patch", "applied_header_sha256": sha(CAPD_PATCHED_HEADER) if os.path.exists(CAPD_PATCHED_HEADER) else None,
+                       "applied": os.path.exists(CAPD_PATCHED_HEADER) and b"GENChase patch" in open(CAPD_PATCHED_HEADER, "rb").read()},
         "verifier": verify,
         "stdout_tail": stdout[-2000:], "stderr_tail": stderr[-3000:],
     }
