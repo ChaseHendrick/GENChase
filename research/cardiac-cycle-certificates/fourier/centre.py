@@ -377,13 +377,21 @@ def load(path):
     K = int(rec["K"])
     om = text_to_dyadic(rec["omega"])
     A = [[None] * (2 * K + 1) for _ in range(DIM)]
-    for i in range(DIM):
-        for m in range(K + 1):
-            re, im = (text_to_dyadic(t) for t in rec["a"][i][m])
-            if m == 0 and not im.is_zero():
-                raise ValueError("a_0 must be real")
-            A[i][K + m] = acb(re, im)
-            A[i][K - m] = acb(re, -im)
+    old = ctx.prec
+    ctx.prec = 1024             # negation must not round (the mantissas have at most ~256 bits)
+    try:
+        for i in range(DIM):
+            for m in range(K + 1):
+                re, im = (text_to_dyadic(t) for t in rec["a"][i][m])
+                if m == 0 and not im.is_zero():
+                    raise ValueError("a_0 must be real")
+                nim = -im
+                if not (nim.is_exact() and re.is_exact()):
+                    raise ValueError("inexact coefficient")
+                A[i][K + m] = acb(re, im)
+                A[i][K - m] = acb(re, nim)
+    finally:
+        ctx.prec = old
     return int(rec["N"]), K, om, A, rec
 
 
