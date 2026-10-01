@@ -56,5 +56,10 @@
   "notes": [
     "Workspace root is not a git repo; cardiac GitHub track is ChaseHendrick/GENChase @ codex/handoff-2026-09-30.",
     "No ring_flow / K port / pilots started by this commit-push job."
+  ],
+  "receiptCommitShaFull": "8c3c37e312dc3b14b89c5212cfab238db5fbce44",
+  "allCommitShas": [
+    "479ec8d10ccb0b2856e21d5f8c73b66882978972",
+    "8c3c37e312dc3b14b89c5212cfab238db5fbce44"
   ]
 }
