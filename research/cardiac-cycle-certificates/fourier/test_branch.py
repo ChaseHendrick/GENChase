@@ -44,6 +44,12 @@ from fractions import Fraction
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+# Pin BLAS to one thread BEFORE numpy loads, as branch.py does: A_fin is a float inverse (untrusted, section 8), and a
+# multithreaded LAPACK changes its last bits, which changes the (equally rigorous) bounds in their last bits too. The
+# acceptance test compares exact hex bounds with the run's, so it must use the run's single-threaded float inverse.
+for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")
+
 import numpy as np  # noqa: E402
 from flint import acb, arb, fmpq  # noqa: E402
 

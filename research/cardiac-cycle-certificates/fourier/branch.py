@@ -2145,11 +2145,13 @@ def collect(K=12, write=True, log=print):
         status="computed; awaiting adversarial review",
         theorem=theorem_text(lo_all, hi_all),
         g_covered=[lo_all, hi_all], connected_pieces=n_conn, n_pieces=len(pieces),
-        largest_g_reached=hi_all, hopf_point_erhardt=str(G_HOPF),
+        largest_g_reached=hi_all, hopf_point_erhardt=_dstr(G_HOPF),
         distance_to_hopf=float(G_HOPF - Fraction(hi_all)),
         pieces=table, gluing=glue_recs, stability=stab, stability_uniform=False,
         stability_uniform_attempt=[r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "uniform_attempt"],
-        stability_note=("Stage S was run at one exact g per group (pointwise). Uniform stability on a piece is NOT "
+        stability_note=("Stage S was run pointwise, at the exact G_Ks listed under 'stability' (stability_points); "
+                        "only those whose orbit passed the ball-inclusion check (point_on_branch) are statements about "
+                        "the branch orbit, the others are isolated results. Uniform stability on a piece is NOT "
                         "claimed: see fourier/branch.py section 6 for what it would need."),
         comparison_stage_E=cmp_, failures_split=len(fails),
         groups=[{k: v for k, v in g.items() if k != "MH_float"} for g in groups],
@@ -2157,6 +2159,8 @@ def collect(K=12, write=True, log=print):
         sources_sha256={p: sha256(os.path.join(ROOT, p)) for p in SOURCES},
         run_log=os.path.relpath(runlog, ROOT), run_log_sha256=sha256(runlog),
         centres_file=os.path.relpath(cpath, ROOT), centres_sha256=sha256(cpath),
+        points_log=os.path.relpath(POINTS_LOG.format(K=K), ROOT), points_log_sha256=sha256(POINTS_LOG.format(K=K)),
+        point_centres_file=os.path.relpath(POINT_CENTRES, ROOT), point_centres_sha256=sha256(POINT_CENTRES),
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_piece_wall_s=round(sum(r["wall"] for r in pieces), 1))
@@ -2172,7 +2176,11 @@ def collect(K=12, write=True, log=print):
 def _piece_stability(p, gs_ok, points, member):
     """The stability statement of one piece (section 6): never uniform; pointwise at the listed g, if any."""
     if gs_ok:
+        byg = {r["g"]: r for r in points}
         return dict(uniform=False, kind="pointwise", certified_at=gs_ok,
+                    delta_per_ms={g: byg[g]["stability"]["delta"] for g in gs_ok},
+                    multiplier_bound_full_period={g: byg[g]["stability"]["multiplier_bound_full_period"]
+                                                  for g in gs_ok},
                     statement=f"Stage S certifies the orbit x*(g) of this piece linearly stable (every nontrivial "
                               f"Floquet multiplier of modulus < 1) at G_Ks = {', '.join(gs_ok)} only; not at the other "
                               f"G_Ks of the piece")

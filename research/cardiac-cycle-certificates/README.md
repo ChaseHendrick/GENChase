@@ -173,4 +173,41 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     and RESEARCH.md.
 * Rings, CAPD route: the N = 8 and 16 candidates and Perron roots below 1 are as before. The 128-bit centre is too
   heavy at N >= 8 on this machine. This route would be a second, time-domain proof only.
-* G_Ks interval (rec 2): in progress on the Fourier route (`fourier/branch.py`).
+* **G_Ks interval (rec 2), Fourier route: computed; awaiting adversarial review** (`fourier/branch.py`, record
+  `results/fourier-branch-gks.json`, logs in `fourier/data/branch/`). Nobody has yet given it the second reading that
+  Stage E and Stage S had.
+  - Theorem, as computed. Take the single cell (N = 1) and any G_Ks in [0.027499735464, 0.027619866374]. Then there is
+    a real periodic orbit z(t) = phi*(omega* t), with phi* 2 pi periodic and analytic on |Im theta| < 1/4, the phase
+    fixed by Im a_{1,V} = 0. It is the only zero of F(.; G_Ks) in the uniqueness ball of each piece containing G_Ks.
+    The norm is that of C x (l^1_nu)^18 with nu = e^{1/4} and the piece's dyadic weights. The minimal period lies in
+    the piece's T enclosure, from [53.58455, 53.58649] ms on the first piece to [53.30480, 53.30740] ms on the last.
+    G_Ks -> (omega*, phi*) is continuous, Lipschitz on each piece. The interval is covered by 232 pieces, 5.2e-7 to
+    6.6e-7 wide, in 17 groups. Consecutive pieces overlap by a tenth of a piece and are glued by ball inclusion
+    (Theorem B3), so the orbits form one connected branch. The bounds hold for every G_Ks of a piece, not only for
+    sampled values: Theorem B1 uses the mean value theorem in G_Ks, and Lemma B2 gives Z2 through Hessian enclosures.
+    On every piece Z1 <= 0.106, Z2 is 490 to 526, the contraction factor at the uniqueness radius is at most 0.914,
+    and the existence radius is 3.8e-4 to 5.3e-4 in the weighted norm. The piece containing 0.0275 encloses Stage E's
+    N = 1 period.
+  - Stability is pointwise only. Stage S certifies the orbit at G_Ks = 0.0275, 0.02755 and 0.0276, with
+    delta = 4.0e-5 per ms, so every nontrivial multiplier has modulus at most 0.99786. At each of these three values
+    a ball-inclusion check in Arb shows that the stable orbit is the branch orbit. Nothing is certified at the other
+    G_Ks of the range. The uniform attempt (Stage S fed with a piece's existence radius) fails as documented in
+    `branch.py` section 6 (theta_T about 1e13). The record also holds point proofs at 0.02765 to 0.0279, beyond the
+    branch. These are existence and stability at those values only: the program does not prove that those orbits
+    continue the branch.
+  - Reach toward Erhardt's Hopf point 0.027907858929580: the branch covers 29 per cent of the way from 0.0275 and
+    stops 2.88e-4 short. The run stopped because a container restart killed the builder during group 17, after that
+    group's centres were written and before any of its pieces were. There are no failed, split or bridged pieces in
+    the logs, so the method did not fail. The pieces must shrink toward the Hopf point (branch.py section 8b; the
+    float-predicted admissible half-width is 5.3e-6 at 0.0275 and 3.2e-8 at 0.0279), and nothing is claimed at the
+    Hopf point itself.
+  - Cost: 144 to 238 s of wall time per group of 12 or 16 pieces on 3 worker processes, about 33 s per piece; 7,675 s
+    of piece time in all.
+  - Checks made at finalization (2026-10-01):
+    - an independent script re-derived every piece's inequalities and all 231 gluings from the stored exact numbers;
+    - the last piece of every group was re-proved from its stored centre and reproduced the logged Y0 and Z1 bit for
+      bit;
+    - `fourier/test_branch.py` passes, including the overlap with Stage E N = 1 at 0.0275 and the negative controls.
+  - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
+    `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
+    --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
