@@ -163,7 +163,7 @@ import os
 import platform
 import sys
 import time
-from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal, getcontext
+from decimal import Context, Decimal
 from fractions import Fraction
 
 import numpy as np
@@ -251,20 +251,23 @@ def to_fraction(x):
 
 
 def dec(x, direction, digits=25):
-    """Decimal string rounded outward (direction 'up' or 'down') of an exact arb."""
+    """Decimal string, `digits` significant digits, rounded outward ('up' toward +inf, 'down' toward -inf), of an
+    exact arb. Pure integer arithmetic on the exact rational value."""
     fr = to_fraction(x)
-    getcontext().prec = digits + 10
     if fr == 0:
         return "0"
-    d = Decimal(fr.numerator) / Decimal(fr.denominator)   # correctly rounded to prec digits; fix below
-    q = Decimal(10) ** (d.adjusted() - digits + 1)
-    v = d.quantize(q, rounding=ROUND_CEILING if direction == "up" else ROUND_FLOOR)
-    fv = Fraction(v)
-    # Decimal division above is rounded; enforce outwardness exactly.
-    while (direction == "up" and fv < fr) or (direction == "down" and fv > fr):
-        v = v + q if direction == "up" else v - q
-        fv = Fraction(v)
-    return str(v)
+    e = len(str(abs(fr.numerator) // fr.denominator)) - 1 if abs(fr) >= 1 else \
+        -len(str(fr.denominator // abs(fr.numerator)))
+    while abs(fr) >= Fraction(10) ** (e + 1):
+        e += 1
+    while abs(fr) < Fraction(10) ** e:
+        e -= 1
+    sh = digits - 1 - e                       # value = n * 10^(-sh)
+    y = fr * Fraction(10) ** sh
+    n = -((-y.numerator) // y.denominator) if direction == "up" else y.numerator // y.denominator
+    out = str(Decimal(n).scaleb(-sh, context=Context(prec=digits + 5)))
+    assert (Fraction(Decimal(out)) >= fr) if direction == "up" else (Fraction(Decimal(out)) <= fr)
+    return out
 
 
 def bound_rec(x, direction="up"):

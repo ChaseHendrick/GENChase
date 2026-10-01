@@ -173,7 +173,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 7.95,
+   "seconds": 7.65,
    "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
    "S_over_L_max": 17.029263118666425
   },
@@ -194,7 +194,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 3.15,
+   "seconds": 3.28,
    "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
    "S_over_L_max": Infinity
   },
@@ -215,7 +215,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 7.43,
+   "seconds": 7.63,
    "phi_digest": "afe0a733148b4890f72c1784a9ad957cbc6c690bd188e254b24942489c0d4d3c",
    "S_over_L_max": Infinity
   },
@@ -241,29 +241,29 @@
   "eta": null
  },
  "timings_s": {
-  "strip_g": 7.97,
-  "strip_J": 3.18,
-  "strip_polydisc": 7.44,
+  "strip_g": 7.67,
+  "strip_J": 3.31,
+  "strip_polydisc": 7.65,
   "dft_g": 0.19,
-  "dft_J": 0.71,
-  "build_Jfin": 0.47,
-  "A_fin": 5.34,
-  "product A_fin J_fin": 48.56,
-  "Z1 finite": 2.75,
-  "Z1 finite x tail": 32.19,
-  "tail resolvents": 12.13,
-  "Z1": 0.04,
-  "Y0": 0.27,
+  "dft_J": 0.8,
+  "build_Jfin": 0.46,
+  "A_fin": 4.59,
+  "product A_fin J_fin": 46.68,
+  "Z1 finite": 2.69,
+  "Z1 finite x tail": 29.44,
+  "tail resolvents": 10.64,
+  "Z1": 0.02,
+  "Y0": 0.2,
   "Z2": 0.0,
   "corollaries": 0.0
  },
- "wall_s": 121.24,
+ "wall_s": 114.35,
  "status": "computed; awaiting adversarial review",
  "theorem": "For the single cell (N = 1) of Erhardt's 18-state TP06 endocardial model at G_Ks = 0.0275, there are omega* > 0 and a real 2 pi periodic phi*, analytic on |Im theta| < rho0, such that z_j(t) = phi*(omega* t + 2 pi j / N) solves the ring ODE and phi*_V(0) = s (s the double nearest 0.2 mV); (omega*, Fourier coefficients of phi*) is the only zero of F in the ball of radius r_uniqueness about the centre in X = C x (l^1_nu)^18 (norm in the module docstring) and lies within r_existence of it; T = 2 pi / omega* lies in T_ms; phi* has minimal period 2 pi (a*_{1,V} != 0), so the solution has minimal period T.",
  "centre_file": "fourier/data/centre_N1_K32.json",
  "centre_sha256": "e1d2c0a811b8b9a0741d019709e5a5f0591a3d1bee4232d18c9e781d8e6ecd79",
  "sources_sha256": {
-  "fourier/existence.py": "4b5ae59d5dd3afbff8b597ec052758fbf11ac339e7aef28aa67599e9f32a6d5d",
+  "fourier/existence.py": "d1a7cfb22e2ee7814d487ae95ace4beb63f0f21b42752bac3843ca016b638ee7",
   "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
