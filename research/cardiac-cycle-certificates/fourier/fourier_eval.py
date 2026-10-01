@@ -52,10 +52,22 @@ branch point sits strictly inside the strip (g = 1/(b - cos theta) with rho > ar
 holomorphic on the strip and the Cauchy estimate below is false. The interior boxes certify holomorphy; the sup
 itself would follow from the edges by the maximum principle once holomorphy is known.
 
-Adaptive refinement: a leaf B is refined while it is non-finite, or while abs_upper(Y_{B,i}) >
-max((1 + rtol) L_i, atol) for some i, where L_i = max over all evaluated boxes of abs_lower(Y_{B,i}) is a rigorous
-lower bound for sup_R |g_i| (every value g_i(theta), theta in B, lies in Y_{B,i}). Refinement stops at a budget;
-leaves then accepted only make S looser, never wrong. A non-finite leaf that cannot be refined further stops the
+Centred (mean-value) form, optional. If a derivative black box DF is supplied (DF(X) returns (Y, J) with the same
+contract for Y and, when finite, Df(z) in J for every z in X; component 1's arbmodel.f_and_df is one, by forward-mode
+dual numbers in ball arithmetic), each box also gets the bound
+    g_i(theta) in G_i(theta_c) + (sum_j J_ij(Phi_B) Phi'_j(B)) * (Theta_B - theta_c),   theta in B,
+where theta_c is the exact centre of B, G(theta_c) = F(Phi(theta_c)) and Phi'_B = sum_m i m a_m w^m. Proof: Y_B finite
+gives holomorphy of g near B (Lemma 1); the segment from theta_c to theta lies in the convex B, so
+g(theta) - g(theta_c) = (theta - theta_c) int_0^1 g'(theta_c + t (theta - theta_c)) dt, and
+g'(s) = Df(phi(s)) phi'(s) lies in the convex ball J(Phi_B) Phi'_B for every s in B, hence so does the average.
+The box bound used is the smaller of abs_upper of this and of Y_B (both are upper bounds of |g_i| on B). The naive
+Y_B carries the dependency of f's formula over the whole box (in the cardiac model, (m_inf(V) - m) / tau_m cancels to
+1e-5 of its terms); the centred form's width is about |g'| times the box size.
+
+Adaptive refinement: every box is also evaluated at its centre (a thin ball), and L_i, the largest abs_lower of
+these values (and of the box balls), is a rigorous lower bound for sup_R |g_i|. A leaf B is refined while it is
+non-finite, or while its bound exceeds max((1 + rtol) L_i, atol) for some i. Refinement stops at a budget; leaves
+then accepted only make S looser, never wrong. A non-finite leaf that cannot be refined further stops the
 computation with StripCoverError: holomorphy on the strip is then not certified.
 
 2. Cauchy estimate (Lemma 2)
@@ -213,6 +225,12 @@ class TrigPoly:
             for t, c in enumerate(r):
                 C[t, i] = c
         self._C = C  # (2K+1) x n
+        Cd = acb_mat(L, self.n)  # coefficients of phi' = sum i m a_m e^{i m theta} (exact up to 256 + 6 bits)
+        with precision(max(ctx.prec, 256)):
+            for i, r in enumerate(self.coeffs):
+                for t, c in enumerate(r):
+                    Cd[t, i] = c * acb(0, t - self.K)
+        self._Cd = Cd
 
     def coeff(self, i: int, m: int) -> acb:
         return self.coeffs[i][m + self.K] if abs(m) <= self.K else acb(0)
@@ -229,12 +247,12 @@ class TrigPoly:
             pw[K - m] = pw[K - m + 1] * wi
         return pw
 
-    def eval_rows(self, rows: List[List[acb]]) -> List[List[acb]]:
-        """rows[b] = [e^{i m theta_b}]_{m=-K..K}; returns phi(theta_b) for each b (acb_mat product)."""
+    def eval_rows(self, rows: List[List[acb]], derivative: bool = False) -> List[List[acb]]:
+        """rows[b] = [e^{i m theta_b}]_{m=-K..K}; returns phi(theta_b) (or phi'(theta_b)) for each b."""
         if not rows:
             return []
         P = acb_mat(rows)
-        Q = P * self._C
+        Q = P * (self._Cd if derivative else self._C)
         return [[Q[b, i] for i in range(self.n)] for b in range(len(rows))]
 
     def eval(self, theta) -> List[acb]:
@@ -280,45 +298,94 @@ class StripSup:
 _CATCH = (ArithmeticError, ValueError)
 
 
-def _evaluate_boxes(f, phi: TrigPoly, boxes, two_pi: arb, rho_a: arb, p_expected):
-    """Evaluate F(phi(box)) for each box (xl, xr, yl, yr). Returns list of (Y or None, error text)."""
-    rows, thetas = [], []
+def _theta_ball(lo: fmpq, hi: fmpq, scale: arb) -> arb:
+    """Ball containing [scale lo, scale hi] (the union of two balls contains their convex hull)."""
+    return (scale * arb(lo)).union(scale * arb(hi))
+
+
+def _call(F, z):
+    """F(z) as a list of finite acb balls, or (None, reason)."""
+    try:
+        Y = list(F(z))
+    except _CATCH as e:  # contract: an exception means "not certified here"
+        return None, f"{type(e).__name__}: {e}"
+    if not all(isinstance(y, acb) and y.is_finite() for y in Y):
+        return None, "F returned a non-finite ball"
+    return Y, ""
+
+
+def _evaluate_boxes(f, df, phi: "TrigPoly", boxes, two_pi: arb, rho_a: arb):
+    """For each box (xl, xr, yl, yr): (u, l, reason) with u[i] an exact upper bound of |g_i| on the box (None if not
+    certified) and l[i] a lower bound of sup_box |g_i|. Section 1 of the module docstring."""
+    rows_b, rows_c, thetas, centres = [], [], [], []
     for (xl, xr, yl, yr) in boxes:
-        re = (two_pi * arb(xl)).union(two_pi * arb(xr))
-        im = (rho_a * arb(yl)).union(rho_a * arb(yr))
-        th = acb(re, im)
+        th = acb(_theta_ball(xl, xr, two_pi), _theta_ball(yl, yr, rho_a))
+        tc = acb(two_pi * arb((xl + xr) / 2), rho_a * arb((yl + yr) / 2))
         thetas.append(th)
-        rows.append(phi.powers(th))
-    vals = phi.eval_rows(rows)
+        centres.append(tc)
+        rows_b.append(phi.powers(th))
+        rows_c.append(phi.powers(tc))
+    vals_b = phi.eval_rows(rows_b)
+    vals_c = phi.eval_rows(rows_c)
+    ders_b = phi.eval_rows(rows_b, derivative=True) if df is not None else [None] * len(boxes)
     out = []
-    for z in vals:
-        if not all(v.is_finite() for v in z):
-            out.append((None, "phi ball not finite"))
+    for th, tc, zb, zc, dz in zip(thetas, centres, vals_b, vals_c, ders_b):
+        if not all(v.is_finite() for v in zb):
+            out.append((None, None, "phi ball not finite"))
             continue
-        try:
-            Y = list(f(z))
-        except _CATCH as e:  # contract: an exception means "not certified on this box"
-            out.append((None, f"{type(e).__name__}: {e}"))
+        Yc, why = _call(f, zc)
+        if Yc is None:
+            out.append((None, None, "at the centre: " + why))
             continue
-        if p_expected is not None and len(Y) != p_expected:
-            raise ValueError(f"F returned {len(Y)} components, expected {p_expected}")
-        if not all(isinstance(y, acb) and y.is_finite() for y in Y):
-            out.append((None, "F returned a non-finite ball"))
+        if df is None:
+            Yb, why = _call(f, zb)
+            J = None
+        else:
+            try:
+                Yb, J = df(zb)
+                Yb = list(Yb)
+            except _CATCH as e:
+                Yb, why = None, f"{type(e).__name__}: {e}"
+            if Yb is not None and not all(isinstance(y, acb) and y.is_finite() for y in Yb):
+                Yb, why = None, "DF returned a non-finite value ball"
+        if Yb is None:
+            out.append((None, None, why))
             continue
-        out.append((Y, ""))
+        if len(Yb) != len(Yc):
+            raise ValueError("F and DF disagree on the number of components")
+        u = [y.abs_upper() for y in Yb]
+        if J is not None:
+            if not isinstance(J, acb_mat):
+                J = acb_mat([list(r) for r in J])
+            if J.nrows() != len(Yb) or J.ncols() != phi.n:
+                raise ValueError("DF's Jacobian has the wrong shape")
+            Gp = J * acb_mat([[v] for v in dz])            # g'(B) enclosure, p x 1
+            d = th - tc                                     # contains theta - theta_c for theta in B
+            for i in range(len(Yb)):
+                gi = Gp[i, 0]
+                if not gi.is_finite():
+                    continue
+                ui = (Yc[i] + gi * d).abs_upper()
+                if ui < u[i]:
+                    u[i] = ui
+        l = [a if a > b else b for a, b in ((yc.abs_lower(), yb.abs_lower()) for yc, yb in zip(Yc, Yb))]
+        out.append((u, l, ""))
     return out
 
 
-def sup_over_rectangles(f: Callable, phi: TrigPoly, rho, rects, *, rtol: float = 1.0, atol: float = 0.0,
-                        nx: Optional[int] = None, max_evals: int = 200000, min_width: float = 2.0 ** -24,
-                        batch: int = 64, prec: int = 53, keep_leaves: bool = False) -> StripSup:
+def sup_over_rectangles(f: Callable, phi: "TrigPoly", rho, rects, *, df: Optional[Callable] = None,
+                        rtol: float = 1.0, atol: float = 0.0, nx: Optional[int] = None, max_evals: int = 200000,
+                        min_width: float = 2.0 ** -24, batch: int = 64, prec: int = 53,
+                        keep_leaves: bool = False) -> StripSup:
     """Rigorous upper bounds for sup |f_i(phi(theta))| over a union of closed rectangles.
 
     rects: list of (xl, xr, yl, yr), rationals with Re theta in [2 pi xl, 2 pi xr] and Im theta in [rho yl, rho yr]
     (degenerate rectangles, e.g. yl == yr, are allowed). Only strip_sup's full rectangle certifies Lemma 1; other
     covers exist for diagnostics and for the negative controls in the tests. See the module docstring, section 1.
+    df (optional): derivative black box z -> (f(z) balls, Jacobian acb_mat p x n) for the centred form.
     rtol, atol, nx, max_evals, min_width and batch steer the refinement and affect only how tight S is (and the
     cost), never its validity. nx is the number of initial boxes per period in Re theta (default max(16, 4K)).
+    One box evaluation costs two calls (F at the centre, and F or DF on the box).
     """
     t0 = time.time()
     with precision(prec):
@@ -340,48 +407,47 @@ def sup_over_rectangles(f: Callable, phi: TrigPoly, rho, rects, *, rtol: float =
                     boxes.append((xl + (xr - xl) * fmpq(a, kx), xl + (xr - xl) * fmpq(a + 1, kx),
                                   yl + (yr - yl) * fmpq(b, ky), yl + (yr - yl) * fmpq(b + 1, ky)))
 
-        st = SimpleNamespace(L=None, p=None, n_evals=0, n_bad=0, last_err="", counter=0)
-        heap = []          # (-priority, counter, box, Y); Y None marks a non-finite box
-        accepted = []      # (box, Y, unresolved_flag)
+        st = SimpleNamespace(L=None, n_evals=0, n_bad=0, last_err="", counter=0)
+        heap = []          # (-priority, counter, box, u); u None marks a non-finite box
+        accepted = []      # (box, u, unresolved_flag)
 
         def width(box):
             xl, xr, yl, yr = box
             return max(float(xr - xl) * 2 * math.pi, float(yr - yl) * rho_f)
 
-        def priority(Y):
+        def priority(u):
             """0 if the box meets the tolerance, else how far it is above it (inf for non-finite)."""
-            if Y is None or st.L is None:
+            if u is None or st.L is None:
                 return math.inf
             worst = 0.0
-            for i, y in enumerate(Y):
-                u = float(y.abs_upper().mid())
+            for i, ui in enumerate(u):
+                uf = float(ui.mid())
                 thr = max((1.0 + rtol) * float(st.L[i].mid()), atol)
-                if u > thr:
-                    worst = max(worst, u / thr if thr > 0 else math.inf)
+                if uf > thr:
+                    worst = max(worst, uf / thr if thr > 0 else math.inf)
             return worst
 
         def evaluate(bx):
-            res = _evaluate_boxes(f, phi, bx, two_pi, rho_a, st.p)
+            res = _evaluate_boxes(f, df, phi, bx, two_pi, rho_a)
             st.n_evals += len(bx)
-            for (Y, err) in res:
-                if Y is None:
+            for (u, l, why) in res:
+                if u is None:
                     st.n_bad += 1
-                    st.last_err = err
+                    st.last_err = why
                     continue
-                if st.p is None:
-                    st.p = len(Y)
-                lows = [y.abs_lower() for y in Y]
-                st.L = lows if st.L is None else [b if b > a else a for a, b in zip(st.L, lows)]
+                if st.L is not None and len(l) != len(st.L):
+                    raise ValueError("F returned a varying number of components")
+                st.L = l if st.L is None else [b if b > a else a for a, b in zip(st.L, l)]
             return res
 
         def file(bx, res):
-            for box, (Y, err) in zip(bx, res):
+            for box, (u, l, why) in zip(bx, res):
                 st.counter += 1
-                pr = priority(Y)
+                pr = priority(u)
                 if pr > 0:
-                    heapq.heappush(heap, (-pr, st.counter, box, Y))
+                    heapq.heappush(heap, (-pr, st.counter, box, u))
                 else:
-                    accepted.append((box, Y, False))
+                    accepted.append((box, u, False))
 
         first = []
         for s in range(0, len(boxes), batch):
@@ -393,16 +459,16 @@ def sup_over_rectangles(f: Callable, phi: TrigPoly, rho, rects, *, rtol: float =
         while heap and st.n_evals < max_evals:
             take = []
             while heap and len(take) < batch:
-                _, _, box, Y = heapq.heappop(heap)
-                if priority(Y) <= 0:   # L only grows, so a stale entry may now meet the tolerance
-                    accepted.append((box, Y, False))
+                _, _, box, u = heapq.heappop(heap)
+                if priority(u) <= 0:   # L only grows, so a stale entry may now meet the tolerance
+                    accepted.append((box, u, False))
                     continue
                 if width(box) < min_width:
-                    if Y is None:
+                    if u is None:
                         raise StripCoverError(
                             f"non-finite box at minimum width {min_width:g}: {box} ({st.last_err}); "
                             f"f o phi is not certified holomorphic on the cover at rho = {rho}")
-                    accepted.append((box, Y, True))
+                    accepted.append((box, u, True))
                     continue
                 take.append(box)
             if not take:
@@ -417,35 +483,39 @@ def sup_over_rectangles(f: Callable, phi: TrigPoly, rho, rects, *, rtol: float =
                     kids += [(xl, xr, yl, ym), (xl, xr, ym, yr)]
             file(kids, evaluate(kids))
 
-        for (_, _, box, Y) in heap:   # budget exhausted: what is left are leaves, and all must be finite
-            if Y is None:
-                raise StripCoverError(f"budget of {max_evals} evaluations exhausted with non-finite boxes left "
+        for (_, _, box, u) in heap:   # budget exhausted: what is left are leaves, and all must be finite
+            if u is None:
+                raise StripCoverError(f"budget of {max_evals} box evaluations exhausted with non-finite boxes left "
                                       f"(e.g. {box}: {st.last_err}); holomorphy is not certified")
-            accepted.append((box, Y, True))
+            accepted.append((box, u, True))
+        if st.L is None:
+            raise StripCoverError("no box could be evaluated")
 
-        S = [arb(0)] * st.p
+        p = len(st.L)
+        S = [arb(0)] * p
         minw = math.inf
         unresolved = 0
-        for box, Y, flag in accepted:
+        for box, u, flag in accepted:
             unresolved += int(flag)
             minw = min(minw, width(box))
-            for i, y in enumerate(Y):
-                u = y.abs_upper()
-                if u > S[i]:
-                    S[i] = u
+            for i in range(p):
+                if u[i] > S[i]:
+                    S[i] = u[i]
         full = (len(rects) == 1 and tuple(fmpq(v) for v in rects[0]) == (fmpq(0), fmpq(1), fmpq(-1), fmpq(1)))
         return StripSup(S=S, L=st.L, rho=rho_a, full_strip=full, n_evals=st.n_evals, n_leaves=len(accepted),
                         n_nonfinite_evals=st.n_bad, n_unresolved=unresolved, min_leaf_width=minw,
                         seconds=time.time() - t0, prec=prec,
-                        params=dict(rtol=rtol, atol=atol, nx=nx, max_evals=max_evals, min_width=min_width),
+                        params=dict(rtol=rtol, atol=atol, nx=nx, max_evals=max_evals, min_width=min_width,
+                                    centred=df is not None),
                         leaves=[b for b, _, _ in accepted] if keep_leaves else None)
 
 
-def strip_sup(f: Callable, phi: TrigPoly, rho, **kw) -> StripSup:
+def strip_sup(f: Callable, phi: "TrigPoly", rho, **kw) -> StripSup:
     """Lemma 1: rigorous S_i >= sup_{|Im theta| <= rho} |f_i(phi(theta))| and a certificate of holomorphy there.
 
     Covers the whole rectangle [0, 2 pi] x [-rho, rho] (periodicity gives the strip). Raises StripCoverError if
-    some box stays non-finite (a singularity of f o phi in or near the strip). Keywords as sup_over_rectangles."""
+    some box stays non-finite (a singularity of f o phi in or near the strip). Keywords as sup_over_rectangles,
+    in particular df= for the centred form."""
     return sup_over_rectangles(f, phi, rho, [(0, 1, -1, 1)], **kw)
 
 
