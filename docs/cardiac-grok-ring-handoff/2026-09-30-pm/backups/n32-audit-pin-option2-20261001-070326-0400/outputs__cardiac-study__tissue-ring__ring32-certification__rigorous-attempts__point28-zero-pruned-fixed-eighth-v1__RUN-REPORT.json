@@ -20,11 +20,11 @@
     "originalBaseHeader": "inputs/CellwiseRingMap.hpp",
     "originalBaseHeaderSha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
     "sourceAudit": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
       "sha256": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603"
     },
     "allSitesControls": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/ALL-SITES-CONTROLS-REPORT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/ALL-SITES-CONTROLS-REPORT.json",
       "sha256": "48eba3f17050f8f730fee1076fe106382bbbaaa652237fa09ba98b36e408c7f2"
     }
   },
@@ -36,22 +36,22 @@
     "-O2",
     "-frounding-math",
     "-D__USE_NATIVE__",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdExt/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdAux/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdAlg/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdDynSys/include",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/ring_flow.cpp",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/libcapd.a",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdExt/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdAux/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdAlg/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/headers/capdDynSys/include",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/ring_flow.cpp",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/libcapd.a",
     "-o",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow"
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow"
   ],
   "compile_exit": 0,
   "compile_seconds": 3.3440340409288183,
   "command": [
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow",
     "--point",
     "0",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/TUBES.jsonl",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/TUBES.jsonl",
     "28",
     "3595",
     "0.125",
@@ -87,10 +87,10 @@
   "flow_seconds": 1448.4092604999896,
   "resource_control": {
     "command": [
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/ring_flow",
       "--point",
       "0",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/TUBES.jsonl",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/TUBES.jsonl",
       "28",
       "3595",
       "0.125",

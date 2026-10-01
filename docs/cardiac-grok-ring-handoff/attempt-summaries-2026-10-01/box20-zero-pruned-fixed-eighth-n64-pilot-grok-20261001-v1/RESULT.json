@@ -9,14 +9,14 @@
     "-O2",
     "-frounding-math",
     "-D__USE_NATIVE__",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdExt/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdAux/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdAlg/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdDynSys/include",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/large_step_zero_pruned_eighth.cpp",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/libcapd.a",
+    "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdExt/include",
+    "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdAux/include",
+    "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdAlg/include",
+    "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/headers/capdDynSys/include",
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/large_step_zero_pruned_eighth.cpp",
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/inputs/libcapd.a",
     "-o",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/large_step"
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/large_step"
   ],
   "compile_exit": 0,
   "matched_input_controls_sha256": "bd1ce897e96212fe022884ddbb56392cfe97fc9a636bda40449fa124f166b934",
@@ -27,8 +27,8 @@
   "spatial_stability_certified": false,
   "run": {
     "command": [
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/large_step",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/RAW-STEP.json",
+      "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/large_step",
+      "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1/RAW-STEP.json",
       "4096"
     ],
     "exit_code": 0,

@@ -57,7 +57,7 @@
   },
   "box_linux_feasibility_crossref": {
     "box_path": "/workspace/cardiac-grok-linux-feasibility-2026-09-30.json",
-    "mac_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/BOX-LINUX-FEASIBILITY.json",
+    "mac_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/BOX-LINUX-FEASIBILITY.json",
     "ready_to_run_native_on_box_now": false,
     "mac_binaries_do_not_admit_linux_build": true
   },

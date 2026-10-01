@@ -3,7 +3,7 @@
   "orchestrator_pid": 2353,
   "tag": "20260930-v3",
   "start_from": "C2",
-  "log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/azero-controls-orchestrator-20260930-v3.log",
+  "log": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/azero-controls-orchestrator-20260930-v3.log",
   "started_et": "2026-09-30 09:56:40 ET",
   "fix": "Harness fix: C2/C5-coeff compare Cellwise-sparse vs AZero-sparse (not batch). Hexfloat equality retained. No prototype/header change."
 }

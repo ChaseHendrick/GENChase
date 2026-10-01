@@ -46,7 +46,7 @@ The cardiac manuscript has no public companion, release, DOI or Zenodo record. F
 
 ## Workspace and process state
 
-All cardiac work is under /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote, outside the GENChase checkout. Bundled Python is /Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3. SciPy and plotting/PDF modules use the existing work/figuredeps directory. The sixteen-site native solver and strict wrapper have finished. New bounded arithmetic and larger-ring optimization controls are coordinated by their retained run reports; reopen those reports before starting or reporting processes. No recurring continuation was scheduled.
+All cardiac work is under <workspace>, outside the GENChase checkout. Bundled Python is <codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3. SciPy and plotting/PDF modules use the existing work/figuredeps directory. The sixteen-site native solver and strict wrapper have finished. New bounded arithmetic and larger-ring optimization controls are coordinated by their retained run reports; reopen those reports before starting or reporting processes. No recurring continuation was scheduled.
 
 The existing eight preprints have their own verified archives; their publication success does not establish cardiac publication. PR255/application sweep and the GENChase0.9 release remain separate work in the GENChase handoff. Preserve all evidence and binary/library hashes before rebuilds.
 

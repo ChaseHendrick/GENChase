@@ -3,7 +3,7 @@
 **Status:** design-only. No production headers modified. No competing heavy CAPD/native jobs launched.
 **Written:** 2026-09-30 09:28:32 ET
 **Agent:** Grok-only executor
-**MachineId:** `056ff109-1c8e-49fc-9983-1c1caa02e796`
+**MachineId:** `<redacted>`
 **PM dir:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
 
 Companion machine-readable file: `SPEED-DESIGN-v1.json` (same directory).

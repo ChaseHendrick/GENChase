@@ -29,11 +29,11 @@
   "approvedPointRunnerSha256": "da36afc463909ea8bd6aca9481b500201b787943f1522c36e1621e3fdb58d86f",
   "previousOrder20AdmissionChanged": false,
   "previousOrder20Admission": {
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+    "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
     "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2"
   },
   "independentControls": {
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/CONTROLS-REVIEW.json",
+    "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/CONTROLS-REVIEW.json",
     "sha256": "bdda58507d0b869f24eba17fb3d0d61b2a051ea11c943ae48a99d6614219902f"
   },
   "independentExactLinearEnclosures": 356400,
@@ -64,75 +64,75 @@
   "scientificTheoremClaimed": false,
   "artifacts": [
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/point28-admission-preparation-v1/REQUEST.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/point28-admission-preparation-v1/REQUEST.json",
       "sha256": "1f92a3fc62a05f84e30350764cdaabe6718fc50db73dabbddb31d02723034171"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/point28-admission-preparation-v1/MANIFEST.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/point28-admission-preparation-v1/MANIFEST.json",
       "sha256": "a753271764ae4ca65518d6d969bf0d4861474ddbc8e75decfb8656a5b703ea8f"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/CONTROLS-REVIEW.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/CONTROLS-REVIEW.json",
       "sha256": "bdda58507d0b869f24eba17fb3d0d61b2a051ea11c943ae48a99d6614219902f"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/CellwiseRingMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/CellwiseRingMap.hpp",
       "sha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/HighOrderEnclosure.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/HighOrderEnclosure.h",
       "sha256": "0fcaa8a283997726049f275c57ede3dd5b0f0f423de23d2c86a77bc00867ddd5"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/OdeSolver.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/OdeSolver.h",
       "sha256": "771845829da030b19cf5730bca904ba4456c9c83fe493495c4f02f717712e068"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/OdeSolver.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/OdeSolver.hpp",
       "sha256": "8e3d83c41b3573e6a107c65ba73bc81acbb633d8af569bbd842369560ca76629"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ZeroPrunedCellwiseRingMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ZeroPrunedCellwiseRingMap.hpp",
       "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ZeroPrunedSparseMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ZeroPrunedSparseMap.hpp",
       "sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/build_large_point28_zero_pruned.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/build_large_point28_zero_pruned.py",
       "sha256": "de4bc9043ff98858c0b632b3873a29ec35a453b6f9ba00c9b355235fbc4217cd"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/c0_event_zero_pruned_order28.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/c0_event_zero_pruned_order28.cpp",
       "sha256": "0ae105407e5c21d2c93c314857c4c96efc772cad8b3d275087caa6029d9fdbae"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/c0_step_zero_pruned_order28.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/c0_step_zero_pruned_order28.cpp",
       "sha256": "7641d20eb4c568d229c52084a329dcc1872604248d75c2cc7ce99d8ed2e2f8a5"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/linear_zero_pruned_order29.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/linear_zero_pruned_order29.cpp",
       "sha256": "7c563e1ccee0ff72b21721f92cb0b32ccb757679bbb90769900e02bf1a0255c4"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ring_point28_zero_pruned.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ring_point28_zero_pruned.cpp",
       "sha256": "55825daa3f2a04fb2dbb3edab2316578a654f6f6d5817bc289f65bbf376f52b6"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_c0_order28_controls.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_c0_order28_controls.py",
       "sha256": "a48a98f32019d5f97c37824e76ab840a04a219c67a9ad14d9fd0949b7bbf8d77"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_inspection.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_inspection.py",
       "sha256": "af33387ef1c5d0000125d5f5a8b3f63775592c4090d0106db804b0d45901197b"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_large_point28_zero_pruned.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_large_point28_zero_pruned.py",
       "sha256": "da36afc463909ea8bd6aca9481b500201b787943f1522c36e1621e3fdb58d86f"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_linear_zero_pruned_order29.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_linear_zero_pruned_order29.py",
       "sha256": "2facbbff3b300aa9ed294728d7021220d475e8acdcde17ea2f5e779d4f3c79ca"
     }
   ]

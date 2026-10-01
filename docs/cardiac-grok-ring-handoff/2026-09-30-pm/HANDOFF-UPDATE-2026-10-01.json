@@ -3,7 +3,7 @@
   "writtenAtET": "2026-10-01T08:22:00-0400 (ET)",
   "writtenAtUTC": "2026-10-01T12:22:00Z",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "purpose": "Absorb 2026-10-01 ET FixedQuarter / N32 C1+IC / N64 pilot / pause standing into canonical handoff files from PM receipts; no compute launched",
   "lanePaused": true,
   "laneIdleConfirmed": true,
@@ -12,27 +12,27 @@
   "livePrefSha256_verified": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
   "filesTouched": [
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
       "role": "canonical_narrative_status_append",
       "sha256": "ada81972b3de34521dea61509fa7d800f057189ae77c696d9be6577e083705b4"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
       "role": "canonical_bindings",
       "sha256": "c9552f44399cd81c7a9dff901279728ffa5d0b9e34c26c1914d088e04ced75cf"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/PAUSED-HANDOFF-2026-10-01.md",
+      "path": "<workspace>/outputs/cardiac-study/PAUSED-HANDOFF-2026-10-01.md",
       "role": "paused_handoff_primary",
       "sha256": "8e04b504249ae6c0f4151998b5268248aff4d68909b3f9f1c6418fba54171ed3"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/PAUSED-HANDOFF-2026-10-01.md",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/PAUSED-HANDOFF-2026-10-01.md",
       "role": "paused_handoff_mirror_beside_grok",
       "sha256": "8e04b504249ae6c0f4151998b5268248aff4d68909b3f9f1c6418fba54171ed3"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/PAUSED-HANDOFF-2026-09-30.md",
+      "path": "<workspace>/outputs/cardiac-study/PAUSED-HANDOFF-2026-09-30.md",
       "role": "historical_paused_supersession_banner_only",
       "sha256": "c4711e675e13e43bcd7afd43c6be88dfdb6beb8393052ac4b2c1b807e5f28b65"
     }

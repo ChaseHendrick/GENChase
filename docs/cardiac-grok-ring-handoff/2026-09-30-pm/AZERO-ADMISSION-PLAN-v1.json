@@ -2,7 +2,7 @@
   "schema": "azero-admission-plan-v1",
   "version": "v1",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "machine_label": "Chases-MacBook-Pro",
   "writtenAtET": "2026-09-30 09:32:45 ET",
   "writtenAtUTC": "2026-09-30T13:32:45Z",
@@ -29,28 +29,28 @@
     "note": "H64 products finished successfully. Status noted only. Did NOT start full H replay / re-run."
   },
   "admission_root": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok",
-  "admission_root_abs": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok",
+  "admission_root_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok",
   "links": {
     "A_ZERO_PROPOSAL_V1": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
       "rel": "work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
       "sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
       "live_sha256_verified": true
     },
     "ROLE_06_azero_small_tests": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
       "rel": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
       "sha256": "6c0d547707696499ce79a55b224bdc1ba215842c486c42b757a0a4ddb64232e9",
       "live_sha256_verified": true
     },
     "DESIGN_CONTROL_PLAN": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
       "rel": "work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
       "sha256": "9b4f9d19bcb7919cdaae0b8f93ceff8d799f6e1f70a15a00f889b7b5ab48631d",
       "live_sha256_verified": true
     },
     "SPEED_DESIGN_v1": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/SPEED-DESIGN-v1.md",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/SPEED-DESIGN-v1.md",
       "rel": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/SPEED-DESIGN-v1.md",
       "note": "User priority AFTER H64: A-zero C1\u2013C6 BEFORE any fixed-quarter speed pilot; SPEED-DESIGN's recommended h=1/4 pilot is deferred until A-zero gate clears or is explicitly waived by user"
     }

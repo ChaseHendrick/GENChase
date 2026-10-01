@@ -44,47 +44,47 @@
   ],
   "artifacts": [
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/STEP-LINEAR-REVIEW.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/STEP-LINEAR-REVIEW.json",
       "sha256": "6ed2beb1547c4b2b6a34c759189e42e49c108703455098198f0060bf2ccbc393"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/EVENT-REVIEW.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/EVENT-REVIEW.json",
       "sha256": "657c7b9809afb5a440526cd9777d67151444f1a43522b44cbfba4995780ceda4"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/zero-pruned-runner-negative-controls-v2/RESULT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/zero-pruned-runner-negative-controls-v2/RESULT.json",
       "sha256": "426ce838298ade1dbc75f467e3d0b6efad663c059c77f498a656d6f513b4cc4d"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1/RESULT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1/RESULT.json",
       "sha256": "2b9787ca1bb0722b956ec3f83cdae6b224d2877cdde7d9124138ffa046086347"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
       "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
       "sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
       "sha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/large_step_zero_pruned.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/large_step_zero_pruned.cpp",
       "sha256": "0796a345c749abec84b7520c1071d04d0e65569277266c1909b1ef53ee09d0d9"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_step.py",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_step.py",
       "sha256": "af8378f6a3bfa4f23a78d5d9d0bd6cfccbdf8ea837d55ab2468539cea319a874"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
       "sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py",
       "sha256": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
     }
   ]

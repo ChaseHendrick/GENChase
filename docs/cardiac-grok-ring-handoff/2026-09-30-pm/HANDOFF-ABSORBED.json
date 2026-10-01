@@ -3,16 +3,16 @@
   "written_utc": "2026-09-30T13:00:18Z",
   "written_et": "2026-09-30T09:00:18-0400 (ET)",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "handoff_files": {
     "GROK-HANDOFF.md": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
       "sha256": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
       "sha256_expected": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
       "verified": true
     },
     "HANDOFF-BINDINGS.json": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
       "sha256": "5cec92ebe438eca4bba9ba5c210d30b85b5a39e19957064826b4ce126196503b",
       "sha256_expected": "5cec92ebe438eca4bba9ba5c210d30b85b5a39e19957064826b4ce126196503b",
       "verified": true
@@ -104,7 +104,7 @@
     "native_pgid": 79423,
     "native_alive": true,
     "matches_LAUNCH_json": true,
-    "cleanup_doc": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/CLEANUP-DUAL-PGID.json"
+    "cleanup_doc": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/CLEANUP-DUAL-PGID.json"
   },
   "constraints_honored": {
     "no_capd_starts": true,

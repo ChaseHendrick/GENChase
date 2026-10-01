@@ -8,7 +8,7 @@
   "neighborCoefficient": "2/125",
   "qTestExact": "499995373/500000000",
   "qMetricExact": "499993841/500000000",
-  "nativeInputsPath": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32",
+  "nativeInputsPath": "<workspace>/work/cardiac-study/tissue-certification32",
   "nativeInputSha256": {
     "INPUTS.json": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0",
     "ring_model.h": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6",
@@ -24,7 +24,7 @@
   "acceptedSupplierAuditSha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
   "spatialExistenceCertified": false,
   "spatialStabilityCertified": false,
-  "acceptedSupplierAuditPath": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+  "acceptedSupplierAuditPath": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
   "acceptedHarnessSha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
   "acceptedRunnerSha256": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935",
   "nativeAllSitesControlsSha256": "48eba3f17050f8f730fee1076fe106382bbbaaa652237fa09ba98b36e408c7f2",
@@ -476,8 +476,8 @@
   "supplierHeaderSha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
   "supplierBaseHeaderSha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
   "auditedFullReturnSources": {
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
   },
   "supplierPruningArgument": "Only an entire outward J_l coefficient equal exactly[0,0] is skipped. Ascending local-input indices preserve the remaining original per-l convolution association. Every global variation column and nonzero uncertain Taylor/remainder term is retained. All C0/field/Jacobian/curve/event/set operations, time dependencies, parameter scales and exact periodic voltage coupling remain inherited from the source-reviewed supplier. Thus the exact finite real variational recurrence is unchanged, and outward interval enclosure follows by the same induction.",
   "supplierAuditLimits": [
@@ -505,14 +505,14 @@
   "parentV4TargetSha256": "a10ff0a07ba6075666faac19eeea54d41f08df7fcb02ae98a64a84097412613f",
   "parentV4RuntimeManifestSha256": "778c2a77bb39a9bac3effeeeb2ae5fef8695bce41be0b1bb522c60dcc7d587d6",
   "acceptedPointSupplierAuditSha256": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
-  "acceptedPointSupplierAuditPath": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+  "acceptedPointSupplierAuditPath": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
   "acceptedPointHarnessSha256": "55825daa3f2a04fb2dbb3edab2316578a654f6f6d5817bc289f65bbf376f52b6",
   "acceptedPointRunnerSha256": "da36afc463909ea8bd6aca9481b500201b787943f1522c36e1621e3fdb58d86f",
   "acceptedBoxBoundaryAuditSha256": "03a82b02cddb600bb09d399676cbd3d549f63f670d9f4b41f36671584e96a6c2",
-  "acceptedBoxBoundaryAuditPath": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json",
+  "acceptedBoxBoundaryAuditPath": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json",
   "auditedPointReturnSources": {
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ring_point28_zero_pruned.cpp": "55825daa3f2a04fb2dbb3edab2316578a654f6f6d5817bc289f65bbf376f52b6",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_large_point28_zero_pruned.py": "da36afc463909ea8bd6aca9481b500201b787943f1522c36e1621e3fdb58d86f"
+    "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/ring_point28_zero_pruned.cpp": "55825daa3f2a04fb2dbb3edab2316578a654f6f6d5817bc289f65bbf376f52b6",
+    "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/approved-sources/run_large_point28_zero_pruned.py": "da36afc463909ea8bd6aca9481b500201b787943f1522c36e1621e3fdb58d86f"
   },
   "pointExactOrder": 28,
   "boxMaximumOrder": 20,

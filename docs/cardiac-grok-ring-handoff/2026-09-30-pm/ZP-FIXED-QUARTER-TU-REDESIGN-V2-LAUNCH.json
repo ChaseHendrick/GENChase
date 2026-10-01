@@ -4,7 +4,7 @@
   "writtenAtET": "2026-10-01T03:01:28-0400 (ET)",
   "writtenAtUTC": "2026-10-01T07:01:28Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "continues_from": "v1 stuck in ILastTerms::init spectralRadius 576-dim; zero tubes",
   "redesign": {
     "FixedQuarterStepControl": "empty/pin init + 3-arg computeNextTimeStep -> 1/4",
@@ -16,7 +16,7 @@
   "production_ring_flow_zero_pruned_untouched": true,
   "wall_s_budget": 300,
   "step": "0.25",
-  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v2",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v2",
   "admitted_for_proof": false,
   "G8": false,
   "G9": false

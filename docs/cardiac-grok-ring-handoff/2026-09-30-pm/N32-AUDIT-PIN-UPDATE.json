@@ -1,15 +1,15 @@
 {
   "schema": "n32-audit-pin-update-v1",
   "status": "APPLIED",
-  "authorization": "AUTHORIZED_BY_SHARPIE_GO_OPTION_2",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_OPTION_2",
   "gate": "N32-AUDIT-PIN-UPDATE",
   "writtenAtET": "2026-10-01T07:04:09-0400 (ET)",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "strategy": "alternate_audited_path_to_frozen_adaptive_snapshot",
   "strategyNote": "Narrowest honest pin that accepts C1 without mutating FixedQuarter prod: retarget auditedFullReturnSources + audit artifact paths from live PREF ring_flow_zero_pruned.cpp to V5 executed-sources-v5/ring_flow_zero_pruned.cpp which remains sha 5b85695c\u2026 (adaptive TU used for C1). Did NOT set expected sha to e9081f21\u2026 because that would claim FixedQuarter as the audited full-return source while C1/harness pin remain adaptive 5b85695c\u2026.",
   "fixedQuarterLivePref": {
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+    "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
     "sha256_before": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
     "sha256_after": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
     "unchanged": true,
@@ -17,120 +17,120 @@
     "must_stay": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911"
   },
   "alternateAuditedPath": {
-    "from": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
-    "to": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp",
+    "from": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+    "to": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp",
     "sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
     "role": "frozen adaptive TU snapshot matching acceptedHarnessSha256 and C1 inputs/ring_flow.cpp"
   },
   "acceptedHarnessSha256_unchanged": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
-  "backupsDir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400",
+  "backupsDir": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400",
   "filesTouched": [
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
       "before_sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
       "after_sha256": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json",
       "before_sha256": "03a82b02cddb600bb09d399676cbd3d549f63f670d9f4b41f36671584e96a6c2",
       "after_sha256": "720042d984f392d12441ffa113be26c926730e27b8642a2ea1870fdc089d3c43",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-large-return-v4-review-v2__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-large-return-v4-review-v2__SUPPLIER-SOURCE-AUDIT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
       "before_sha256": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
       "after_sha256": "0aef4b9558161869c4f937a5be50a5b9e1cda6a29eb20fa5dd3ed888d3cd063e",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__point28-C0-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__point28-C0-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json",
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json",
       "before_sha256": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06",
       "after_sha256": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__TARGET.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__TARGET.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json",
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json",
       "before_sha256": "666572778628ff760a1816889476157c2bee9ca45084f3fcc48008d275d43de0",
       "after_sha256": "3ca3a06dc3395d656c5ac636f305a8c70f94f9d57653a346e19f73e16f0be2b7",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__EXECUTED-SOURCE-MANIFEST.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__EXECUTED-SOURCE-MANIFEST.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json",
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json",
       "before_sha256": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06",
       "after_sha256": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__executed-sources-v5__TARGET.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__executed-sources-v5__TARGET.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
       "before_sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
       "after_sha256": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json",
       "before_sha256": "d0a1365e05e6e0d7fc949b434b6dde039476aa96ce2483c27d4b8e115b07cf74",
       "after_sha256": "44a29c8723e94c38a79b7d77cd42d63415337d4b7fb45f9bbc6d681ff8a3ddd9",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__RUN-REPORT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__RUN-REPORT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
       "before_sha256": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
       "after_sha256": "0aef4b9558161869c4f937a5be50a5b9e1cda6a29eb20fa5dd3ed888d3cd063e",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__point28-zero-pruned-fixed-eighth-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__point28-zero-pruned-fixed-eighth-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
     },
     {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/RUN-REPORT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/RUN-REPORT.json",
       "before_sha256": "07a7240b363407b19f192f6f9cbcc5faf6cb3534f9757c8861fc62921b280ddb",
       "after_sha256": "af90868eb2a06df396a98bc01c9d1e2442918b073cccfc9e0f2d70cb69a92710",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__point28-zero-pruned-fixed-eighth-v1__RUN-REPORT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__point28-zero-pruned-fixed-eighth-v1__RUN-REPORT.json"
     }
   ],
   "before": {
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": {
+    "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": {
       "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json": {
+    "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json": {
       "sha256": "03a82b02cddb600bb09d399676cbd3d549f63f670d9f4b41f36671584e96a6c2",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-large-return-v4-review-v2__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__zero-pruned-large-return-v4-review-v2__SUPPLIER-SOURCE-AUDIT.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": {
+    "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": {
       "sha256": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__point28-C0-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__tissue-proof-review__point28-C0-supplier-review-v1__SUPPLIER-SOURCE-AUDIT.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json": {
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json": {
       "sha256": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__TARGET.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__TARGET.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json": {
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json": {
       "sha256": "666572778628ff760a1816889476157c2bee9ca45084f3fcc48008d275d43de0",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__EXECUTED-SOURCE-MANIFEST.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__EXECUTED-SOURCE-MANIFEST.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json": {
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json": {
       "sha256": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__executed-sources-v5__TARGET.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/work__cardiac-study__ring32-checker-supplier-v5__executed-sources-v5__TARGET.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json": {
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json": {
       "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__inputs__SUPPLIER-SOURCE-AUDIT.json"
     },
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json": {
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json": {
       "sha256": "d0a1365e05e6e0d7fc949b434b6dde039476aa96ce2483c27d4b8e115b07cf74",
-      "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__RUN-REPORT.json"
+      "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/n32-audit-pin-option2-20261001-070326-0400/outputs__cardiac-study__tissue-ring__ring32-certification__rigorous-attempts__box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1__RUN-REPORT.json"
     }
   },
   "after_shas": {
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json": "720042d984f392d12441ffa113be26c926730e27b8642a2ea1870fdc089d3c43",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": "0aef4b9558161869c4f937a5be50a5b9e1cda6a29eb20fa5dd3ed888d3cd063e",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json": "3ca3a06dc3395d656c5ac636f305a8c70f94f9d57653a346e19f73e16f0be2b7",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json": "44a29c8723e94c38a79b7d77cd42d63415337d4b7fb45f9bbc6d681ff8a3ddd9",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
+    "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
+    "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/SUPPLIER-SOURCE-AUDIT.json": "720042d984f392d12441ffa113be26c926730e27b8642a2ea1870fdc089d3c43",
+    "<workspace>/work/cardiac-study/tissue-proof-review/point28-C0-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": "0aef4b9558161869c4f937a5be50a5b9e1cda6a29eb20fa5dd3ed888d3cd063e",
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/TARGET.json": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/EXECUTED-SOURCE-MANIFEST.json": "3ca3a06dc3395d656c5ac636f305a8c70f94f9d57653a346e19f73e16f0be2b7",
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/TARGET.json": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json": "44a29c8723e94c38a79b7d77cd42d63415337d4b7fb45f9bbc6d681ff8a3ddd9",
+    "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
   },
   "sha_transitions": {
     "acceptedSupplierAuditSha256": {
@@ -160,12 +160,12 @@
   },
   "auditedFullReturnSources": {
     "before": {
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
+      "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+      "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
     },
     "after": {
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
+      "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935",
+      "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
     }
   },
   "c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",

@@ -2,8 +2,8 @@
 import hashlib, json, time
 from pathlib import Path
 
-PM = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm")
-PREF = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight")
+PM = Path("<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm")
+PREF = Path("<workspace>/work/cardiac-study/tissue-scalability-preflight")
 HANDOFF = PM.parent / "GROK-HANDOFF.md"
 BINDINGS = PM.parent / "HANDOFF-BINDINGS.json"
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -41,7 +41,7 @@ A("")
 A("**Status:** DESIGN ONLY. Next action = **await user go**. Do **not** start a 32 C1, A-zero native pilot, or production header swap from this document alone.")
 A(f"**Written:** {NOW_ET}")
 A("**Agent:** Grok-only executor")
-A("**MachineId:** `056ff109-1c8e-49fc-9983-1c1caa02e796`")
+A("**MachineId:** `<redacted>`")
 A("**PM dir:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`")
 A("")
 A("Companion: `AZERO-C1-SPEED-ADMISSION-PLAN-v1.json` (same directory).")
@@ -273,7 +273,7 @@ plan = {
   "designOnly": True,
   "writtenAtET": NOW_ET,
   "writtenAtUTC": NOW_UTC,
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "pmDir": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/",
   "noClaude": True,
   "noProductionHeaderModification": True,
@@ -393,7 +393,7 @@ role = {
   "roleId": "ROLE-AZERO-C1-SPEED-REVIEW",
   "aliases": ["ROLE-07-extension", "independent_reviewer"],
   "writtenAtET": NOW_ET,
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "notImplementer": True,
   "scope": "Independent review of A-zero C1 speed admission gates G3–G7; must not rubber-stamp implementer; must not authorize G8 header swap without explicit user go naming G8",
   "mustVerify": [

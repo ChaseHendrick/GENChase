@@ -5,7 +5,7 @@
   "identity": "Grok Bot independent reviewer/replay (NOT the R64-H-products implementer)",
   "notImplementer": true,
   "didNotRubberStamp": true,
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "writtenAtET": "2026-09-30T09:46:19-0400 (ET)",
   "writtenAtUTC": "2026-09-30T13:46:19Z",
   "verdict": "pass",
@@ -25,16 +25,16 @@
     "implementerBackend": "admitted multiply_v5 workers=4 (not used by this independent replay)"
   },
   "independentReplay": {
-    "directory": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
+    "directory": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
     "mirroredFrom": "work/cardiac-study/tissue-proof-review/ring32-H-positivity-independent-v1",
     "algorithm": "original scalar GMP four-corner pinned multiply binary; independent of threaded v5 backend",
     "INDEPENDENT-REPLAY.json": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
       "sha256": "f439bd5e7748836a884f1247b1e4b951eca70592b7e93aa70b3e77484380baa5",
       "bytes": 196451
     },
     "replay.py": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/replay.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/replay.py",
       "sha256": "b554b7e87a92acaecb02e267ea0829655b9302a390d01f8fdb4f8e33f6a04bc3",
       "bytes": 16529
     },
@@ -164,10 +164,10 @@
     "No orbital stability claim"
   ],
   "paths": {
-    "independentReplayDir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
-    "independentReplayJson": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
-    "implementerProductsDir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
-    "implementerResult": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1/RESULT.json",
-    "pmRoleFile": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-h64-products-REPLAY.json"
+    "independentReplayDir": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
+    "independentReplayJson": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
+    "implementerProductsDir": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
+    "implementerResult": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1/RESULT.json",
+    "pmRoleFile": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-h64-products-REPLAY.json"
   }
 }

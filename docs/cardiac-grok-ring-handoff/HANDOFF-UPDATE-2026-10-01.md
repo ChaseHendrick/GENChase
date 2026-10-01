@@ -1,6 +1,6 @@
 # Grok ring handoff update — 2026-10-01 (ET)
 
-Status at write: **Mac cardiac lane PAUSED** (Sharpie in class; no N=32 K port / no full-64 return until explicit go).
+Status at write: **Mac cardiac lane PAUSED** (owner away; no N=32 K port / no full-64 return until explicit go).
 
 This file updates `GROK-HANDOFF.md` / `HANDOFF-BINDINGS.json` with Grok Bot + Botty (formerly Project Manager) work on 2026-10-01. Prior Codex pause evidence and 8/16 certificates remain unchanged. `admitted_for_proof` stays **false**. No G8/G9.
 
@@ -37,13 +37,13 @@ Unblock for later: audited N=32 K native port from ring8/16, then resume Gate2/3
 | Item | Status |
 | --- | --- |
 | Fixed h=1/8 one-step pilot | **PASS**. Tag `box20-zero-pruned-fixed-eighth-n64-pilot-grok-20261001-v1`; binary `12a3033b…`; wall ~1241s; peak RSS ~1.71 GiB (budget 2400s / 4 GiB); step exact `0x1p-3`; `step_completed=true`. |
-| Full 64 return | Still **NOT** authorized (`full64ReturnBudgetAuthorizedByPilot: false`). Needs separate Sharpie budget go after cost review. |
+| Full 64 return | Still **NOT** authorized (`full64ReturnBudgetAuthorizedByPilot: false`). Needs separate owner budget go after cost review. |
 
 Receipts under `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/` (N32-* / N64-* / ZP-FIXED-QUARTER-* family).
 
 ## Lane policy (current)
 
-- Mac cardiac lane: **PAUSED / idle** until Sharpie go.
+- Mac cardiac lane: **PAUSED / idle** until the owner's go.
 - Do not auto-start N=32 K port or full-64 return.
 - Do not append to interrupted 2026-09-30 directories; NEW tags only.
 - Do not claim theorem / proof admission from flow or IC alone.

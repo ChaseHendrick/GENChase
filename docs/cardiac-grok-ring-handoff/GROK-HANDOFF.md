@@ -65,7 +65,7 @@ These are local workspace-relative paths. Before external execution, the coordin
 **Bindings:** `outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json`  
 **PM receipts:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
 
-Lane is **PAUSED / idle** per Sharpie ~08:19 ET 2026-10-01. Do **not** start N=32 K native port, N=64 full return, `ring_flow`, or any other Mac heavy job until further go. FixedQuarter live PREF remains **`e9081f21…`**. No proof admit.
+Lane is **PAUSED / idle** per the owner ~08:19 ET 2026-10-01. Do **not** start N=32 K native port, N=64 full return, `ring_flow`, or any other Mac heavy job until further go. FixedQuarter live PREF remains **`e9081f21…`**. No proof admit.
 
 ### Key pins absorbed 2026-10-01 (receipt-verified)
 

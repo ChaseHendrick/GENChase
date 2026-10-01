@@ -5,7 +5,7 @@
   "G9": false,
   "status": "COMPLETE",
   "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
-  "authorization": "AUTHORIZED_BY_SHARPIE_GO_OPTION_2",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_OPTION_2",
   "finishedAtET": "2026-10-01T07:09:53-0400 (ET)",
   "wrap_elapsed_seconds": 55.056975542,
   "root_gate_elapsed_seconds": 266.842316584,
@@ -2919,9 +2919,9 @@
   },
   "root_arithmetic_passed": true,
   "artifacts": {
-    "FLOW": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
-    "MATRICES": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json",
-    "ARITHMETIC": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-ARITHMETIC.json",
+    "FLOW": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "MATRICES": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json",
+    "ARITHMETIC": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-ARITHMETIC.json",
     "flow_sha256": "27062f121f81b1f807cd7052426c936908d97cd183e10617660df0165131cc58",
     "matrix_sha256": "c29020e9974649a6ec5e2c029dfbf6be48cb4a275e743d4545d5081bf0bd89a4",
     "arithmetic_sha256": "54404c3a50b2bd16078a2f89dc0ee6e7089e52d5da6a62e29dde2fb4abc1c8eb"

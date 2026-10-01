@@ -8,7 +8,7 @@
   "stranded_orphan_proven": false,
   "codex_jobs_untouched": true,
   "launch_json_reference": {
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
     "supervisor_pid": 79385,
     "pgid_documented_as_supervisor": 79385,
     "native_pid": 79423,
@@ -23,8 +23,8 @@
       "lstart": "Wed Sep 30 08:55:44 2026",
       "etime": "04:34",
       "rss_kib": 5744,
-      "cwd": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight",
-      "command": "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py --sites 32 --mode box --radius 3e-10 --order 20 --budget 10800 --rss-mib 2048 --step adaptive --tag box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1 --source-audit /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "cwd": "<workspace>/work/cardiac-study/tissue-scalability-preflight",
+      "command": "<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3 <workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py --sites 32 --mode box --radius 3e-10 --order 20 --budget 10800 --rss-mib 2048 --step adaptive --tag box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1 --source-audit <workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
       "identity_vs_launch": {
         "match": true,
         "reasons": [
@@ -40,8 +40,8 @@
       "lstart": "Wed Sep 30 08:55:48 2026",
       "etime": "04:30",
       "rss_kib": 251392,
-      "cwd": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight",
-      "command": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/ring_flow --box 3e-10 /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/TUBES.jsonl 20 10795 adaptive 2048",
+      "cwd": "<workspace>/work/cardiac-study/tissue-scalability-preflight",
+      "command": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/TUBES.jsonl 20 10795 adaptive 2048",
       "identity_vs_launch": {
         "match": true,
         "reasons": [

@@ -3,7 +3,7 @@
   "writtenAtET": "2026-09-30T15:50:27-0400 (ET)",
   "writtenAtUTC": "2026-09-30T19:50:27Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "user_go": "fixed h=1/4 ZeroPruned N=32 speed pilot after AZero P1",
   "final_verdict": "BLOCKED_FIXED_QUARTER_NOT_HONORED_BY_POINCARE_FLOW_TU",
   "did_not_auto_start_h_eighth": true,

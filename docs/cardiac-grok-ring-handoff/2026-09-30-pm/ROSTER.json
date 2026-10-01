@@ -97,14 +97,14 @@
       "partial_tubes_are_not_certificate": true
     },
     "launch_json_present": true,
-    "launch_json_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+    "launch_json_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
     "supervisor_pid": 79385,
     "pgid": 79385,
     "native_pid": 79423,
     "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
     "library_sha256": "4d1e200060068f972a8740d204822355086f1e5159b73d1a5d46eecf8cc34d94",
     "utc_start": "2026-09-30T12:55:44Z",
-    "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+    "machineId": "<redacted>",
     "source_audit_sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
     "launch_fill_note": "PIDs/hashes filled from existing OUT_MAC/LAUNCH.json (written_utc 2026-09-30T12:56:23Z). Observed still running at roster write; not started or stopped by roster writer."
   },

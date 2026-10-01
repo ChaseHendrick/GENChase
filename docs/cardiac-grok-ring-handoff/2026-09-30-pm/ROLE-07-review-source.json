@@ -5,7 +5,7 @@
   "utc": "2026-09-30T12:58:05Z",
   "scope": {
     "active_attempt": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
-    "active_attempt_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "active_attempt_path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
     "h64_prep": "ring64-H-positivity-preparation-v1 + ring64-H-positivity-source-review-v1",
     "sources_modified": false,
     "new_admissions_issued": false
