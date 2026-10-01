@@ -999,7 +999,14 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         Ainv = np.linalg.inv(Jmid)
         Afin = acb_mat([[acb(complex(v)) for v in row] for row in Ainv])
         Bfin = ex._identity(n) - Afin * Jfin
-        ADfin = Afin * Dfin
+        # d_g Df vanishes identically outside a few rows (here the V row: g_Ks enters only dV/dt); the zero rows are
+        # exact zero balls, so A_fin D_fin = A_fin[:, R] D_fin[R, :] exactly (R = the rows of the nonzero components)
+        nzr = [i for i in range(DIM) if any(not D1[nn][i][k].is_zero() for nn in D1 for k in range(DIM))]
+        Rrows = [lay.idx(i, m) for i in nzr for m in range(-K, K + 1)]
+        Arows = Afin.tolist()
+        Asub = acb_mat([[row[c] for c in Rrows] for row in Arows]) if Rrows else None
+        Drows = Dfin.tolist()
+        ADfin = Asub * acb_mat([Drows[r] for r in Rrows]) if Rrows else acb_mat(n, n)
     finally:
         ctx.prec = old_prec
     clk.mark("A_fin, I - A_fin J_fin, A_fin D_fin")
@@ -1011,6 +1018,7 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         WROW = ex._weight_rows(lay, nupow)
         Z1_ff = ex._block_colsup(WROW * ex._abs_mat(Bfin), comp_of, mode_of, nupow)
         Aabs = ex._abs_mat(Afin)
+        Aabs_rows = Aabs.tolist()
         colA = WROW * Aabs
         N0 = ex._block_colsup(colA, comp_of, mode_of, nupow)
         N1 = ex._block_colsup(colA, comp_of, mode_of, nupow, scale_by_mode=True)
@@ -1023,25 +1031,31 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         cols_b = [(k, s * mb) for k in range(DIM) for s in (1, -1)]
         erho = (-rho).exp()
 
-        def finite_tail(C, SC):
-            Wm = acb_mat(n, len(cols_exact))
+        def finite_tail(C, SC, rows=None):
+            """rows: the components j whose coefficients C[.][j][.] and SC[j][.] may be nonzero (None: all); the
+            other rows of the column vectors are exact zeros and are skipped (exact)."""
+            comps = list(range(DIM)) if rows is None else rows
+            ridx = [lay.idx(j, m) for j in comps for m in range(-K, K + 1)]
+            Wm = acb_mat(len(ridx), len(cols_exact))
             for t, (k, mp) in enumerate(cols_exact):
-                for j in range(DIM):
-                    for m in range(-K, K + 1):
-                        Wm[lay.idx(j, m), t] = -C[m - mp][j][k]
+                for q, j in enumerate(comps):
+                    for mi, m in enumerate(range(-K, K + 1)):
+                        Wm[q * lay.L + mi, t] = -C[m - mp][j][k]
+            AS = acb_mat([[row[c] for c in ridx] for row in Arows])     # column 0 (omega) meets a zero row
             with fe.precision(PM):
-                AW = Afin * Wm
+                AW = AS * Wm
             colW = WROW * ex._abs_mat(AW)
             out = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
             for t, (k, mp) in enumerate(cols_exact):
                 for c in range(DIM + 1):
                     out[c][1 + k] = amax(out[c][1 + k], up(colW[c, t] / nupow[abs(mp)]))
-            Wb = arb_mat(n, len(cols_b))
+            Wb = arb_mat(len(ridx), len(cols_b))
             for t, (k, mp) in enumerate(cols_b):
-                for j in range(DIM):
-                    for m in range(-K, K + 1):
-                        Wb[lay.idx(j, m), t] = up(SC[j][k] * erho ** abs(m - mp))
-            colWb = WROW * (Aabs * Wb)
+                for q, j in enumerate(comps):
+                    for mi, m in enumerate(range(-K, K + 1)):
+                        Wb[q * lay.L + mi, t] = up(SC[j][k] * erho ** abs(m - mp))
+            AabsS = arb_mat([[row[c] for c in ridx] for row in Aabs_rows])
+            colWb = WROW * (AabsS * Wb)
             for t, (k, mp) in enumerate(cols_b):
                 for c in range(DIM + 1):
                     out[c][1 + k] = amax(out[c][1 + k], up(colWb[c, t] / nupow[abs(mp)]))
@@ -1049,7 +1063,10 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
 
         Z1_ft = finite_tail(J, SJ)
         Zg_ff = ex._block_colsup(WROW * ex._abs_mat(ADfin), comp_of, mode_of, nupow)
-        Zg_ft = finite_tail(D1, SD)
+        for j in range(DIM):           # the row restriction is exact only if S_D vanishes off those rows too
+            if j not in nzr and not all(SD[j][k].is_zero() for k in range(DIM)):
+                raise ProofFailure("S_D nonzero on a row where D1 vanishes (internal error)")
+        Zg_ft = finite_tail(D1, SD, rows=nzr)
         clk.mark("Z1 finite x tail")
 
         J0hat = acb_mat([[acb(J[0][r][c].real.mid()) for c in range(DIM)] for r in range(DIM)])
@@ -1141,7 +1158,7 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         clk.mark("Y0 parts")
     finally:
         ctx.prec = old_prec
-    return dict(g_lo=str(g_lo), g_hi=str(g_hi), g_c=str(gc), K=K, Kp=Kp, M=Mn, settings=st, label=label,
+    return dict(g_lo=str(g_lo), g_hi=str(g_hi), g_c=_dstr(gc), K=K, Kp=Kp, M=Mn, settings=st, label=label,
                 om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, B1g=B1g, N0=N0, N1=N1, Abar0=Abar0,
                 Abar1=Abar1, Y0p=Y0p, Y0g=Y0g, J=J, SJ=SJ, tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))),
                 strips=dict(g=ex._strip_rec(strip_g), J=ex._strip_rec(strip_J), dg_f=ex._strip_rec(strip_d),
@@ -1521,10 +1538,42 @@ def _piece_job(job):
         return dict(ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-2000:], wall=time.time() - t0)
 
 
-def run(K=16, g_stop="0.02790", n_per_group=8, workers=2, budget_s=3300, factor0=0.2, log=print):
+def _extra_pieces(K, specs, centres, cpath, eta, rstar, Rs, workers, log):
+    """Prove extra pieces (splits or bridges) given as [(g_lo, g_hi, label)], with one Hessian cover of their own.
+    Returns [(job, out)] (out["ok"] may be False)."""
+    import multiprocessing as mp
+    plan = []
+    for lo_, hi_, label in specs:
+        gc = (lo_ + hi_) / 2
+        om, A = trk_at_any(K, centres, gc)
+        crec = centre_record(_dstr(gc), om, A, [])
+        centres[crec["g"]] = crec
+        _append(cpath, crec)
+        plan.append(dict(kind="piece", hess=1, g_lo=_dstr(lo_), g_hi=_dstr(hi_), centre=crec, label=label))
+    hb2 = HessBound([centre_from_record(p["centre"]) for p in plan], min(p["g_lo"] for p in plan),
+                    max((p["g_hi"] for p in plan), key=Fraction), Rs, "1", None, log=lambda *a, **k: None)
+    if Fraction(min((p["g_lo"] for p in plan), key=Fraction)) < Fraction(hb2.g_lo):
+        raise RuntimeError("internal: hull g range")
+    state = dict(hess={1: hb2}, eta=eta, rstar=rstar)
+    with mp.get_context("fork").Pool(min(workers, len(plan)), initializer=_worker_init, initargs=(state,)) as pool:
+        outs = pool.map(_piece_job, plan, chunksize=1)
+    for o in outs:
+        o["hess_record"] = hb2.record()
+    return list(zip(plan, outs))
+
+
+def _glue_jobs(ja, oa, jb, ob, centres):
+    pa, pb = oa["rec"], ob["rec"]
+    ga = obj_from_record(pa, centres[_dstr(Fraction(pa["centre_g"]))])
+    gb = obj_from_record(pb, centres[_dstr(Fraction(pb["centre_g"]))])
+    return glue(dict(pa, _obj=ga), dict(pb, _obj=gb))
+
+
+def run(K=16, g_stop="0.02790", n_per_group=9, workers=3, budget_s=3300, factor0=0.11, u_target=0.4, log=print):
     """Adaptive branch run, resumable from the run log. Each group: centres (float continuation), blocks of the first
-    piece, weights eta (float search on the rigorous blocks), r_*, radii R, one Hessian cover, then all pieces (and one
-    point proof with Stage S) in worker processes; failed pieces are split and retried with their own cover."""
+    piece, weights eta (float search on the rigorous blocks), r_*, radii R, one Hessian cover, then all pieces in
+    worker processes; failed pieces are split, and consecutive pieces that do not glue get a bridge piece between
+    them (each with a cover of its own). Untrusted choices only; every claim is re-checked by collect()."""
     import multiprocessing as mp
     T0 = time.time()
     runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
@@ -1534,34 +1583,33 @@ def run(K=16, g_stop="0.02790", n_per_group=8, workers=2, budget_s=3300, factor0
     centres = {r["g"]: r for r in _read_jsonl(cpath)}
     pieces = [r for r in recs if r["type"] == "piece"]
     groups = [r for r in recs if r["type"] == "group"]
+    prev_last = None
     if pieces:
         last = max(pieces, key=lambda r: Fraction(r["rec"]["g_hi"]))
-        c = centres[last["rec"]["centre_g"]]
+        c = centres[_dstr(Fraction(last["rec"]["centre_g"]))]
         om, A = centre_from_record(c)
         trk = FloatTrack(K, Fraction(c["g"]), float(om), centre_float(A))
-        next_lo = Fraction(last["rec"]["g_hi"]) - Fraction(groups[-1]["overlap_frac"]) * \
-            (Fraction(last["rec"]["g_hi"]) - Fraction(last["rec"]["g_lo"]))
-        next_lo = _dec_round(next_lo, down=True)
+        next_lo = _dec_round(Fraction(last["rec"]["g_hi"]) - Fraction(groups[-1]["overlap_frac"]) *
+                             (Fraction(last["rec"]["g_hi"]) - Fraction(last["rec"]["g_lo"])), down=True)
         factor = groups[-1]["factor_next"]
         eta_prev = np.array([float(Fraction(e)) for e in groups[-1]["eta"]])
         MH_prev = np.array(groups[-1]["MH_float"])
         first = False
+        prev_last = (None, dict(ok=True, rec=last["rec"]))
     else:
         trk = FloatTrack(K)
         factor, eta_prev, MH_prev, first, next_lo = factor0, None, None, True, None
     ovl = Fraction(1, 10)
     gid = len(groups)
-    while Fraction(next_lo or 0) < Fraction(g_stop) and time.time() - T0 < budget_s:
+    while (next_lo is None or next_lo < Fraction(g_stop)) and time.time() - T0 < budget_s:
         tg = time.time()
-        # ---- plan the group's pieces
         plan = []
         lo_ = next_lo
         for j in range(n_per_group):
             if first and j == 0:
                 gc = Fraction(G_STAGE_E)
                 hw = _dec_round(factor * hwf(gc), down=True)
-                lo_ = gc - hw
-                hi_ = gc + hw
+                lo_, hi_ = gc - hw, gc + hw
             else:
                 hw = _dec_round(factor * hwf(lo_), down=True)
                 hi_ = lo_ + 2 * hw
@@ -1578,11 +1626,10 @@ def run(K=16, g_stop="0.02790", n_per_group=8, workers=2, budget_s=3300, factor0
             centres[crec["g"]] = crec
             _append(cpath, crec)
             p["centre"] = crec
-        # ---- weights and radii from the first piece's rigorous blocks
         om0, A0 = centre_from_record(plan[0]["centre"])
         bl0 = piece_blocks(om0, A0, _dstr(plan[0]["g_lo"]), _dstr(plan[0]["g_hi"]), log=lambda *a, **k: None)
         if MH_prev is None:
-            fp = FloatPoint(trk.om, trk.a, float(plan[0]["g_c"]))
+            fp = FloatPoint(float(om0), centre_float(A0), float(plan[0]["g_c"]))
             MH_est = 2.5 * fp.H
         else:
             MH_est = MH_prev
@@ -1597,85 +1644,119 @@ def run(K=16, g_stop="0.02790", n_per_group=8, workers=2, budget_s=3300, factor0
         Rs = [f"{max(1, int(32 * float(Fraction(eta[1 + i])) * rs * 2 ** 60))}/{2 ** 60}" for i in range(DIM)]
         hb = HessBound([centre_from_record(p["centre"]) for p in plan], _dstr(plan[0]["g_lo"]),
                        _dstr(plan[-1]["g_hi"]), Rs, "1", None, log=lambda *a, **k: None)
-        # ---- all pieces and one point proof (+ Stage S) in workers
-        fp0 = FloatPoint(*(lambda c: (float(c[0]), centre_float(c[1])))(centre_from_record(plan[0]["centre"])),
-                         float(plan[0]["g_c"]), need_hess=False)
-        lead = fp0.leading_nontrivial()[0]
-        delta_s = f"{0.85 * abs(lead):.3e}"
         jobs = [dict(kind="piece", hess=0, g_lo=_dstr(p["g_lo"]), g_hi=_dstr(p["g_hi"]), centre=p["centre"],
                      label=f"G{gid}P{j}") for j, p in enumerate(plan)]
-        jobs.append(dict(kind="point", hess=0, g_lo=_dstr(plan[0]["g_c"]), g_hi=_dstr(plan[0]["g_c"]),
-                         centre=plan[0]["centre"], label=f"G{gid}point", delta=delta_s))
         state = dict(hess={0: hb}, eta=eta, rstar=rstar)
-        ctxp = mp.get_context("fork")
-        with ctxp.Pool(workers, initializer=_worker_init, initargs=(state,)) as pool:
+        with mp.get_context("fork").Pool(workers, initializer=_worker_init, initargs=(state,)) as pool:
             outs = pool.map(_piece_job, jobs, chunksize=1)
-        # ---- failures: split once, with a cover of their own
-        done = []
-        for j, (job, o) in enumerate(zip(jobs[:-1], outs[:-1])):
+        for o in outs:
+            o["hess_record"] = None
+        done, nsplit, nbridge = [], 0, 0
+        for job, o in zip(jobs, outs):
             if o["ok"]:
                 done.append((job, o))
                 continue
+            nsplit += 1
             log(f"  piece {job['label']} [{job['g_lo']}, {job['g_hi']}] FAILED: {o['why'][:160]}; splitting")
             _append(runlog, dict(type="failure", group=gid, job={k: v for k, v in job.items() if k != "centre"},
                                  why=o["why"], diag=o.get("diag")))
             lo1, hi2 = Fraction(job["g_lo"]), Fraction(job["g_hi"])
-            w = hi2 - lo1
-            mid = (lo1 + hi2) / 2
-            subs = [(lo1, _dec_round(mid + w / 20, down=False)), (_dec_round(mid - w / 20, down=True), hi2)]
-            sub_plan = []
-            for a_, b_ in subs:
-                gc = (a_ + b_) / 2
-                om, A = trk_at_any(K, centres, gc)
-                crec = centre_record(_dstr(gc), om, A, [])
-                centres[crec["g"]] = crec
-                _append(cpath, crec)
-                sub_plan.append(dict(kind="piece", hess=1, g_lo=_dstr(a_), g_hi=_dstr(b_), centre=crec,
-                                     label=job["label"] + "s" + str(len(sub_plan))))
-            hb2 = HessBound([centre_from_record(p["centre"]) for p in sub_plan], sub_plan[0]["g_lo"],
-                            sub_plan[-1]["g_hi"], Rs, "1", None, log=lambda *a, **k: None)
-            state2 = dict(hess={1: hb2}, eta=eta, rstar=rstar)
-            with ctxp.Pool(workers, initializer=_worker_init, initargs=(state2,)) as pool:
-                outs2 = pool.map(_piece_job, sub_plan, chunksize=1)
-            for sj, so in zip(sub_plan, outs2):
+            w, mid = hi2 - lo1, (lo1 + hi2) / 2
+            subs = [(lo1, _dec_round(mid + w / 10, down=False), job["label"] + "a"),
+                    (_dec_round(mid - w / 10, down=True), hi2, job["label"] + "b")]
+            for sj, so in _extra_pieces(K, subs, centres, cpath, eta, rstar, Rs, workers, log):
                 if not so["ok"]:
                     _append(runlog, dict(type="failure", group=gid, job={k: v for k, v in sj.items() if k != "centre"},
                                          why=so["why"], diag=so.get("diag")))
                     raise RuntimeError(f"piece {sj['label']} failed after splitting: {so['why'][:200]}")
-                so["hess_record"] = hb2.record()
                 done.append((sj, so))
+        done.sort(key=lambda t: Fraction(t[0]["g_lo"]))
+        # ---- gluing check (rigorous; repeated by collect) and bridges where it fails
+        chain = ([prev_last] if prev_last is not None else []) + done
+        k = 0
+        while k < len(chain) - 1:
+            (ja, oa), (jb, ob) = chain[k], chain[k + 1]
+            gl = _glue_jobs(ja, oa, jb, ob, centres)
+            if gl["glued"]:
+                k += 1
+                continue
+            if Fraction(oa["rec"]["g_hi"]) - Fraction(ob["rec"]["g_lo"]) <= 0:
+                raise RuntimeError("consecutive pieces do not overlap")
+            ca, cb = Fraction(oa["rec"]["centre_g"]), Fraction(ob["rec"]["centre_g"])
+            hwb = min(Fraction(oa["rec"]["g_hi"]) - Fraction(oa["rec"]["g_lo"]),
+                      Fraction(ob["rec"]["g_hi"]) - Fraction(ob["rec"]["g_lo"])) / 4
+            m = (ca + cb) / 2
+            spec = [(_dec_round(m - hwb, down=True), _dec_round(m + hwb, down=False),
+                     f"G{gid}bridge{nbridge}")]
+            nbridge += 1
+            if nbridge > 2 * n_per_group:
+                raise RuntimeError("too many bridges")
+            log(f"  pieces {oa['rec']['label']} and {ob['rec']['label']} do not glue "
+                f"({gl['lhs']['approx']:.3e} > {gl['r_uniqueness_b']['approx']:.3e}); bridge {spec[0][:2]}")
+            (sj, so), = _extra_pieces(K, spec, centres, cpath, eta, rstar, Rs, workers, log)
+            if not so["ok"]:
+                raise RuntimeError(f"bridge failed: {so['why'][:200]}")
+            chain.insert(k + 1, (sj, so))
+            done.append((sj, so))
         done.sort(key=lambda t: Fraction(t[0]["g_lo"]))
         for job, o in done:
             _append(runlog, dict(type="piece", group=gid, rec=o["rec"], wall=o["wall"],
                                  hess_record=o.get("hess_record")))
-        pt = outs[-1]
-        _append(runlog, dict(type="point", group=gid, ok=pt["ok"], g=jobs[-1]["g_lo"], delta_requested=delta_s,
-                             float_leading_exponent=lead, rec=pt.get("rec"), stability=pt.get("stability"),
-                             why=pt.get("why"), wall=pt["wall"]))
-        # ---- adapt the width factor to the achieved Y0 / cap
         us = []
         for job, o in done:
             dg = o["rec"]["diag"]
-            cap = (1 - dg["Z1"]) ** 2 / (2 * dg["Z2"])
-            us.append(dg["Y0"] / cap)
+            us.append(dg["Y0"] / ((1 - dg["Z1"]) ** 2 / (2 * dg["Z2"])))
         umax = max(us)
-        fails = sum(1 for o in outs[:-1] if not o["ok"])
-        factor_next = factor * min(1.4, max(0.6, 0.55 / umax)) * (0.8 if fails else 1.0)
+        factor_next = factor * min(1.4, max(0.6, u_target / umax)) * (0.85 if (nsplit or nbridge) else 1.0)
         MHf = MH_float(hb)
         _append(runlog, dict(type="group", group=gid, g_lo=_dstr(plan[0]["g_lo"]), g_hi=_dstr(plan[-1]["g_hi"]),
-                             n_pieces=len(done), failures=fails, eta=eta, r_star=rstar, R=Rs,
+                             n_pieces=len(done), splits=nsplit, bridges=nbridge, eta=eta, r_star=rstar, R=Rs,
                              hess=hb.record(), MH_float=MHf.tolist(), factor=factor, factor_next=factor_next,
                              overlap_frac=str(ovl), Y0_over_cap=us, predicted=pred, wall_s=round(time.time() - tg, 1)))
-        log(f"group {gid}: [{_dstr(plan[0]['g_lo'])}, {_dstr(plan[-1]['g_hi'])}] {len(done)} pieces, {fails} split, "
-            f"Y0/cap max {umax:.2f}, factor {factor:.3f} -> {factor_next:.3f}, point stability "
-            f"{'ok' if pt['ok'] else 'FAILED: ' + str(pt.get('why'))[:120]}, {time.time() - tg:.0f} s")
+        print(f"group {gid}: [{_dstr(plan[0]['g_lo'])}, {_dstr(plan[-1]['g_hi'])}] {len(done)} pieces "
+              f"({nsplit} split, {nbridge} bridges), Y0/cap max {umax:.2f}, factor {factor:.3f} -> "
+              f"{factor_next:.3f}, {time.time() - tg:.0f} s, total {time.time() - T0:.0f} s", flush=True)
         factor, eta_prev, MH_prev, first = factor_next, np.array([float(Fraction(e)) for e in eta]), MHf, False
-        lastp = done[-1][0]
+        prev_last = max(done, key=lambda t: Fraction(t[1]["rec"]["g_hi"]))
+        lastp = prev_last[1]["rec"]
         next_lo = _dec_round(Fraction(lastp["g_hi"]) - ovl * (Fraction(lastp["g_hi"]) - Fraction(lastp["g_lo"])), True)
         gid += 1
         if Fraction(lastp["g_hi"]) >= Fraction(g_stop):
             break
     return gid
+
+
+def stability_points(gs, K=32, log=print):
+    """Pointwise stability (section 6): at each exact decimal g in gs, a K = 32 centre (float continuation from the
+    Stage E centre, Arb chord refinement at 256 bits), a point proof (Theorem B1 with g_lo = g_hi = g, so r_lo is at
+    the truncation level), then Stage S with delta = 0.85 |float leading nontrivial exponent|. Appends to the run log."""
+    runlog = RUN_LOG.format(K=16)
+    trk = FloatTrack(K)
+    out = []
+    for g in sorted(Fraction(x) for x in gs):
+        t0 = time.time()
+        trk.at(g)
+        omb, A, hist = refine_centre(trk.om, trk.a, _dstr(g), prec=256, log=log)
+        fp = FloatPoint(float(omb), centre_float(A), float(g), need_hess=False)
+        lead = fp.leading_nontrivial()[0]
+        delta_s = f"{0.85 * abs(lead):.3e}"
+        eta = ["1"] * (DIM + 1)
+        hb = HessBound([(omb, A)], _dstr(g), _dstr(g), ["1/4096"] * DIM, "1", None, log=log)
+        rec = dict(type="point", g=_dstr(g), K=K, delta_requested=delta_s, float_leading_exponent=lead,
+                   centre_refinement=hist)
+        try:
+            pp = prove_piece(omb, A, _dstr(g), _dstr(g), eta=eta, r_star="1/1099511627776", hess=hb, log=log)
+            rec.update(ok_existence=True, rec=_public(pp))
+            st = stability_point(pp, delta_s, log=log)
+            rec.update(ok=True, stability=st)
+        except (ProofFailure, ArithmeticError, ValueError) as e:
+            rec.update(ok=False, why=f"{type(e).__name__}: {e}")
+        rec["wall"] = round(time.time() - t0, 1)
+        _append(runlog, rec)
+        log(f"stability point g = {_dstr(g)}: {'ok' if rec.get('ok') else 'FAILED ' + rec.get('why', '')[:200]} "
+            f"({rec['wall']} s)")
+        out.append(rec)
+    return out
 
 
 def trk_at_any(K, centres, gc):
@@ -1716,8 +1797,8 @@ def collect(K=16, write=True, log=print):
     connected_to = None
     for i in range(len(pieces) - 1):
         pa, pb = pieces[i]["rec"], pieces[i + 1]["rec"]
-        oa = obj_from_record(pa, centres[pa["centre_g"]])
-        ob = obj_from_record(pb, centres[pb["centre_g"]])
+        oa = obj_from_record(pa, centres[_dstr(Fraction(pa["centre_g"]))])
+        ob = obj_from_record(pb, centres[_dstr(Fraction(pb["centre_g"]))])
         g = glue(dict(pa, _obj=oa), dict(pb, _obj=ob))
         glue_recs.append(g)
         if not g["glued"] and connected_to is None:
@@ -1810,6 +1891,7 @@ def main():
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--per-group", type=int, default=8)
     ap.add_argument("--budget", type=float, default=3300)
+    ap.add_argument("--stability", default="", help="comma-separated exact decimals g for pointwise Stage S")
     a = ap.parse_args()
     if a.explore:
         out = explore(EXPLORE_GRID, K=a.K)
@@ -1821,6 +1903,8 @@ def main():
         print("wrote", path)
     if a.run:
         run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget)
+    if a.stability:
+        stability_points(a.stability.split(","))
     if a.collect:
         collect(K=a.K)
 
