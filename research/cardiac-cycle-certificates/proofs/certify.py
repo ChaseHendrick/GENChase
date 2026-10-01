@@ -9,7 +9,7 @@ Usage: python3 certify.py <verify binary> <frame file> <record.json> --N 8 --gks
        [--coupling 64/64000] [--env KEY=VALUE ...] [--timeout SECONDS]
 The coupling defaults to N^2/64000 (D = 1/64000 per ms, ring of unit length).
 """
-import argparse, hashlib, json, os, subprocess, sys, time
+import argparse, hashlib, json, os, subprocess, sys, tempfile, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STUDY = os.path.dirname(HERE)
@@ -42,7 +42,7 @@ def main():
     for kv in a.env:
         k, v = kv.split("=", 1)
         env[k] = v; settings[k] = v
-    out_json = a.record + ".verify.json"
+    out_json = os.path.join(tempfile.mkdtemp(prefix="certify-"), "verify.json")
     t0 = time.time()
     try:
         r = subprocess.run([a.binary, a.frame, out_json], env=env, capture_output=True, text=True, timeout=a.timeout)
