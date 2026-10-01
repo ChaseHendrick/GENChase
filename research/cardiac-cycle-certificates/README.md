@@ -1,8 +1,12 @@
 # Cardiac cycle certificates (independent pipeline)
 
 Status: work in progress, drafted in this repository under the owner's standing decision of 2026-09-26 (AGENTS.md).
-Nothing here is reviewed by anyone outside the project. No claim in this folder is a theorem until its
-`results/*.json` record says `"verified": true` and the run is reproducible from the commands below.
+A claim counts as a theorem here only in one of two cases:
+* a CAPD record in `results/*.json` says `"verified": true`;
+* a Fourier-route record is listed in `results/fourier-review-status.json` as having passed this project's
+  adversarial review.
+
+In both cases the run must be reproducible from the commands below. What each review checked is in `reviews/`.
 
 ## What this is
 
@@ -145,7 +149,7 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   (`reviews/fix-second-reading-2026-10-01.md`) found nothing unsound. The outcome, **passed in-project adversarial
   review**, is recorded in `results/fourier-review-status.json`, outside the hashed records: the records keep the
   status the programs wrote, and the Stage S records hash the Stage E records. `fourier/check_records.py` rechecks
-  every stored hash. No outside review has taken place.
+  every stored hash. What was and was not checked is stated in the review files.
   - Existence (`results/fourier-existence-N*.json`):
     - each N has a unique rotating 1-wave within about 1.6e-28 (scaled l^1_nu) of the centre;
     - the period is enclosed to about 1e-26 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
