@@ -53,7 +53,7 @@ IVector centreMP(const IVector& xc, const IMatrix& Aaff, const IVector& cshift, 
   MpInterval g = gLo == gHi ? tp06::decimalEnclosureT<MpInterval>(gLo)
                             : intervalHull(tp06::decimalEnclosureT<MpInterval>(gLo), tp06::decimalEnclosureT<MpInterval>(gHi));
   (void)gks;
-  MpInterval c = toMp(coupling);  // coupling = cNum/cDen; re-derived exactly below when representable
+  MpInterval c = toMp(coupling);  // double enclosure of cNum/cDen (cNum, cDen < 2^53 are exact), widened to MP
   tp06::setParameters(f, p, c, &g);
   MpIOdeSolver solver(f, order);
   // Step-control tolerance for the multiprecision run (any value is rigorous; it only sets the step size).
@@ -78,6 +78,13 @@ static std::string iv(const interval& v) {
   std::ostringstream o; o << std::setprecision(17) << "[" << v.leftBound() << ", " << v.rightBound() << "]"; return o.str();
 }
 static double up(const interval& v) { return v.rightBound(); }
+// Exact bounds (hexadecimal floating point); decimal renderings above are rounded to nearest and are for reading only.
+static std::string ivhex(const interval& v) { return "[\"" + hexd(v.leftBound()) + "\", \"" + hexd(v.rightBound()) + "\"]"; }
+static std::string jsonEscape(const std::string& s) {
+  std::string o;
+  for (char c : s) { if (c == '"' || c == '\\') { o += '\\'; o += c; } else if (c == '\n') o += "\\n"; else if (c >= 32) o += c; }
+  return o;
+}
 
 // Upper bound of the spectral norm of a 2x2 interval matrix [[a,b],[c,d]].
 static double norm2x2(interval a, interval b, interval c, interval d) {
@@ -138,6 +145,7 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
   IMap f(tp06::ringField<N>, dim, dim, tp06::P_MAX);
   tp06::Physical p;
   interval gks = intervalHull(tp06::decimalEnclosure(gLo), tp06::decimalEnclosure(gHi));
+  if (cNum < 0 || cDen <= 0 || cNum > (1L << 53) || cDen > (1L << 53)) throw std::runtime_error("coupling numerator/denominator out of exact range");
   interval coupling = interval(double(cNum)) / interval(double(cDen));
   tp06::setParameters(f, p, coupling, &gks);
   // Integration settings (recorded in the output). Defaults can be overridden for experiments; any setting is
@@ -223,6 +231,8 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
   for (int j = 0; j < N; ++j) for (int i = 0; i < 18; ++i) cshift[18 * ((j + N - 1) % N) + i] = xc[18 * j + i];
   interval Tc = 0;
   const int mpBits = std::getenv("VERIFY_MP_BITS") ? std::atoi(std::getenv("VERIFY_MP_BITS")) : 128;
+  // Below 53 bits the conversions toMp / decimalEnclosureT<MpInterval> would round the double inputs, so refuse.
+  if (mpBits != 0 && mpBits < 64) throw std::runtime_error("VERIFY_MP_BITS must be 0 (double centre) or at least 64");
   const int mpOrder = std::getenv("VERIFY_MP_ORDER") ? std::atoi(std::getenv("VERIFY_MP_ORDER")) : 30;
   IVector Gfull(dim);
   if (mpBits > 0) {
@@ -332,7 +342,13 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
     periodOk = periodGate<N>(f, order, xc, A, r, level, T.rightBound(), grid, gatePieces, gateWhy);
     std::cerr << "period gate: " << (periodOk ? "passed" : "FAILED: " + gateWhy) << " (" << gatePieces << " pieces)\n";
   }
-  bool ok = q < 1.0 && total < 1.0 && periodOk;
+  // Every quantity entering the decision must be finite (a NaN would be skipped by the comparisons above).
+  if (!std::isfinite(q) || !std::isfinite(total) || !std::isfinite(r0)) throw std::runtime_error("non-finite norm bound");
+  for (int b = 0; b < nb; ++b) if (!std::isfinite(rowSum[b])) throw std::runtime_error("non-finite row sum");
+  // The centre run and the box run must resolve the same crossing: the centre's section time lies in the box's.
+  const bool sameCrossing = subset(Tc, T);
+  if (!sameCrossing) std::cerr << "centre section time " << iv(Tc) << " not inside box section time " << iv(T) << "\n";
+  bool ok = q < 1.0 && total < 1.0 && periodOk && sameCrossing;
 
   out << std::setprecision(17);
   out << "{\n  \"schema\": \"cardiac-cycle-contraction-v1\",\n  \"N\": " << N << ",\n  \"dimension\": " << dim
@@ -350,6 +366,14 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
       << ",\n  \"r0_upper\": " << r0 << ",\n  \"max_block_residual_plus_row_sum_upper\": " << total
       << ",\n  \"section_map_time\": \"" << iv(T) << "\",\n  \"section_map_time_centre\": \"" << iv(Tc) << "\""
       << ",\n  \"period\": \"" << iv(T * interval(double(N))) << "\""
+      << ",\n  \"period_exact\": " << ivhex(T * interval(double(N)))
+      << ",\n  \"section_map_time_exact\": " << ivhex(T)
+      << ",\n  \"centre_section_time_exact\": " << ivhex(Tc)
+      << ",\n  \"centre_time_inside_box_time\": " << (sameCrossing ? "true" : "false")
+      << ",\n  \"floquet_bound_full_period_upper\": " << up(power(interval(q), N))
+      << ",\n  \"settings\": {\"order\": " << order << ", \"fixed_step\": " << fixedStep << ", \"c1_set\": \"" << (ho ? "C1HORect2Set" : "C1Rect2Set")
+      << "\", \"mp_bits\": " << mpBits << ", \"mp_order\": " << mpOrder << ", \"mp_tol\": \"" << (std::getenv("VERIFY_MP_TOL") ? std::getenv("VERIFY_MP_TOL") : "default")
+      << "\", \"gate_grid\": " << (std::getenv("VERIFY_GATE_GRID") ? std::getenv("VERIFY_GATE_GRID") : "8") << "}"
       << ",\n  \"minimal_period_and_nonsynchrony_gate\": " << (N == 1 ? "\"not needed (first return)\"" : (periodOk ? "\"passed\"" : "\"failed\""))
       << ",\n  \"gate_pieces\": " << gatePieces
       << ",\n  \"verified\": " << (ok ? "true" : "false") << "\n}\n";
@@ -374,7 +398,7 @@ int main(int argc, char** argv) {
     }
   } catch (std::exception& e) {
     std::cout << "NOT VERIFIED: " << e.what() << "\n";
-    out << "{\"verified\": false, \"error\": \"" << e.what() << "\"}\n";
+    out << "{\"verified\": false, \"error\": \"" << jsonEscape(e.what()) << "\"}\n";
     return 1;
   }
   return 2;

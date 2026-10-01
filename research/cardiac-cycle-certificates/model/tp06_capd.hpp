@@ -31,6 +31,12 @@ inline int decimalIndex(const std::string& s) {
   return P_BASE + int(r.size()) - 1;
 }
 
+// Checked logarithm: log(a) = 2 log(sqrt(a)), the same function for a > 0. Interval sqrt refuses an argument with a
+// negative part in both arithmetics used here (filib throws; CAPD's MpInterval sqrt throws), whereas CAPD's
+// MpInterval log would return NaN bounds for a nonpositive argument and continue. So an evaluation set that left the
+// model's domain stops the run instead of passing silently.
+inline Node clog(const Node& a) { return 2.0 * log(sqrt(a)); }
+
 // Constants shared by every cell, built once per vector-field evaluation so the ring DAG does not repeat them.
 struct Consts {
   Node RTF, E_K, sqrtKo, FF, V_c, V_ss, V_sr, K_o, P_kna, Cm, Ki, gKr, gKs, gNa, gK1, gCaL;
@@ -45,7 +51,7 @@ Consts makeConsts(Node params[], KF K) {
   c.K_o = K("5.4");
   c.P_kna = K("0.03");
   c.Ki = params[P_KI];
-  c.E_K = c.RTF * log(c.K_o / c.Ki);
+  c.E_K = c.RTF * clog(c.K_o / c.Ki);
   c.sqrtKo = sqrt(c.K_o / K("5.4"));
   c.V_c = K("0.016404");
   c.V_ss = K("0.00005468");
@@ -64,9 +70,9 @@ void cell(const Consts& C, KF K, const Node* x, Node* out, const Node* iExtra) {
   Node fCass = x[10], s = x[11], r = x[12], Rp = x[13], Ca_i = x[14], Ca_sr = x[15], Ca_ss = x[16], Na_i = x[17];
   const Node& RTF = C.RTF;
   const Node& E_K = C.E_K;
-  Node E_Na = RTF * log(Na_o / Na_i);
-  Node E_Ks = RTF * log((C.K_o + C.P_kna * Na_o) / (C.Ki + C.P_kna * Na_i));
-  Node E_Ca = K("0.5") * RTF * log(Ca_o / Ca_i);
+  Node E_Na = RTF * clog(Na_o / Na_i);
+  Node E_Ks = RTF * clog((C.K_o + C.P_kna * Na_o) / (C.Ki + C.P_kna * Na_i));
+  Node E_Ca = K("0.5") * RTF * clog(Ca_o / Ca_i);
   Node alpha_K1 = K("0.1") / (1.0 + exp(K("0.06") * (V - E_K - 200.0)));
   Node beta_K1 = (3.0 * exp(K("0.0002") * (V - E_K + 100.0)) + exp(K("0.1") * (V - E_K - 10.0))) /
                  (1.0 + exp(-K("0.5") * (V - E_K)));

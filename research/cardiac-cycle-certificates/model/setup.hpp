@@ -18,7 +18,13 @@ inline Decimal parseDecimal(const std::string& text) {
   if (!s.empty() && (s[0] == '-' || s[0] == '+')) { neg = s[0] == '-'; s = s.substr(1); }
   int exp10 = 0;
   size_t e = s.find_first_of("eE");
-  if (e != std::string::npos) { exp10 = std::stoi(s.substr(e + 1)); s = s.substr(0, e); }
+  if (e != std::string::npos) {
+    std::string es = s.substr(e + 1);
+    size_t used = 0;
+    exp10 = std::stoi(es, &used);
+    if (used != es.size()) throw std::runtime_error("bad exponent in decimal: " + text);
+    s = s.substr(0, e);
+  }
   size_t dot = s.find('.');
   std::string digits = s;
   if (dot != std::string::npos) { exp10 -= int(s.size() - dot - 1); digits = s.substr(0, dot) + s.substr(dot + 1); }

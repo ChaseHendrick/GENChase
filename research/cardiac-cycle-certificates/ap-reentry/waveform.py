@@ -1,11 +1,11 @@
 """Record one rotation of cell 0 of a circulating ring state (results/ring_N{N}_c{c}.json) as a waveform, and build
 rotating-wave initial states for other ring sizes by sampling that waveform at phases j/N' (cell j lags cell 0 by
 j T/N', as in a rotating wave travelling 0 -> 1 -> 2 ...).
-Usage: python3 waveform.py N c [state.json | state.npy] [out.npz]   (default out results/waveform_N{N}_c{c}.npz)"""
+Usage: python3 waveform.py N c [state.json | state.npy] [out.npz]   (default out work/waveform_N{N}_c{c}.npz)"""
 import sys, json
 import numpy as np
 import tp06_19d as M
-from hybrid import Ring, run
+from hybrid import Ring, run, work
 
 
 def record(N, c, y, rtol=1e-8, conv="author"):
@@ -39,4 +39,4 @@ if __name__ == "__main__":
     yin = np.load(src) if src.endswith(".npy") else np.array(json.load(open(src))["y_final"])
     T, wt, wy, y0 = record(N, c, yin)
     print("rotation period T = %.6f ms, %d samples" % (T, len(wt)))
-    np.savez(sys.argv[4] if len(sys.argv) > 4 else "results/waveform_N%d_c%g.npz" % (N, c), T=T, wt=wt, wy=wy, y0=y0)
+    np.savez(sys.argv[4] if len(sys.argv) > 4 else work("waveform_N%d_c%g.npz" % (N, c)), T=T, wt=wt, wy=wy, y0=y0)

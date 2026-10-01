@@ -1,13 +1,14 @@
-"""Long RL run from a saved RL final state (results/rl_final_N{N}_c{c}.npy) to follow the slow drift of the
+"""Long RL run from a saved RL final state (work/rl_final_N{N}_c{c}.npy) to follow the slow drift of the
 rotation period.  Usage: python3 long_rl.py N c t_end dt [in.npy] [out.npy]"""
 import sys, json, time
 import numpy as np
 from scan_rl import simulate
 import tp06_19d as M
+from hybrid import work
 
 N, c, t_end, dt = int(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])
-src = sys.argv[5] if len(sys.argv) > 5 else "results/rl_final_N%d_c%g.npy" % (N, c)
-dst = sys.argv[6] if len(sys.argv) > 6 else "results/rl_long_N%d_c%g.npy" % (N, c)
+src = sys.argv[5] if len(sys.argv) > 5 else work("rl_final_N%d_c%g.npy" % (N, c))
+dst = sys.argv[6] if len(sys.argv) > 6 else work("rl_long_N%d_c%g.npy" % (N, c))
 y0 = np.load(src)
 t0 = time.time()
 acts, y, died = simulate(y0, N, c, t_end, dt)

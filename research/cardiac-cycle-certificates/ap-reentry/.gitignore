@@ -1,0 +1,7 @@
+# binary intermediates (states, Jacobians, waveforms) live outside the repository; see hybrid.WORK
+work/
+*.npy
+*.npz
+*.so
+ring_rl
+__pycache__/

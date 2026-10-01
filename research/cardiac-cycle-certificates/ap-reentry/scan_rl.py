@@ -4,6 +4,7 @@ Usage: python3 scan_rl.py waveform.npz t_end dt "N1,N2" "c1,c2" [binary]"""
 import sys, os, json, subprocess, tempfile, time
 import numpy as np
 from waveform import initial_state
+from hybrid import work
 
 BIN = os.environ.get("RING_RL", "./ring_rl")
 
@@ -45,6 +46,6 @@ if __name__ == "__main__":
                        periods_tail=[round(x, 3) for x in per[-8:].tolist()])
             print(json.dumps(res), flush=True)
             rows.append(res)
-            np.save("results/rl_final_N%d_c%g.npy" % (N, c), y)
+            np.save(work("rl_final_N%d_c%g.npy" % (N, c)), y)
     tag = "%s_%s_dt%g" % (sys.argv[4].replace(",", "-"), sys.argv[5].replace(",", "-"), dt)
     json.dump(rows, open("results/scan_rl_%s.json" % tag, "w"), indent=1)

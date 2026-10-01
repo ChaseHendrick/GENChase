@@ -12,6 +12,15 @@ from scipy.integrate import solve_ivp
 from scipy.sparse import lil_matrix
 import tp06_19d as M
 
+# large binary intermediates (states, Jacobians, waveforms) go here, not into results/ (small JSON summaries only)
+WORK = os.environ.get("AP_REENTRY_WORK", os.path.join(os.path.dirname(os.path.abspath(__file__)), "work"))
+
+
+def work(name):
+    os.makedirs(WORK, exist_ok=True)
+    return os.path.join(WORK, name)
+
+
 SCALE = np.array([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1e-4, 1, 1e-4, 10, 100], dtype=float)
 
 
