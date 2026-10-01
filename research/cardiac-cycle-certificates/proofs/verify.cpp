@@ -56,6 +56,9 @@ IVector centreMP(const IVector& xc, const IMatrix& Aaff, const IVector& cshift, 
   MpInterval c = toMp(coupling);  // coupling = cNum/cDen; re-derived exactly below when representable
   tp06::setParameters(f, p, c, &g);
   MpIOdeSolver solver(f, order);
+  // Step-control tolerance for the multiprecision run (any value is rigorous; it only sets the step size).
+  const char* tolEnv = std::getenv("VERIFY_MP_TOL");
+  if (tolEnv) { double tol = std::atof(tolEnv); solver.setAbsoluteTolerance(tol); solver.setRelativeTolerance(tol); }
   MpICoordinateSection section(dim, END, MpInterval(level));
   MpIPoincareMap pm(solver, section, poincare::MinusPlus);
   MpIVector x(dim), cs(dim);
@@ -187,6 +190,12 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
   for (int i = 0; i < n; ++i) G0[i] = Gfull[i + 1];
   IVector Pc = Gfull;  // reported in the diagnostics only
 
+  if (std::getenv("VERIFY_CENTRE_ONLY")) {  // tuning aid: report the centre residual and stop (never verifies)
+    double gmax = 0;
+    for (int i = 0; i < n; ++i) gmax = std::max(gmax, abs(G0[i]).rightBound());
+    std::cout << "CENTRE ONLY  max |G0_i| <= " << gmax << "  section time " << iv(Tc) << "\n";
+    return 1;
+  }
   // 2. C1 over the whole box.
   interval T = 0;
   const bool ho = std::getenv("VERIFY_HO") != nullptr;

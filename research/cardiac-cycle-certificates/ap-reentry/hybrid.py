@@ -55,13 +55,16 @@ class Ring:
 
 
 def run(ring, y0, t0, t1, pulses=(), rtol=1e-8, method="Radau", record=False, max_step=np.inf,
-        weight_schedule=(), first_step=None):
+        weight_schedule=(), first_step=None, lo0=None, stop=None):
     """Integrate from t0 to t1.  pulses: list of (ta, tb, istim array (N,)).  weight_schedule: list of
-    (t_switch, weights) applied at t_switch.  Returns dict with final state, crossing events and optional record."""
+    (t_switch, weights) applied at t_switch.  lo0: initial branch mask (default V < -40).  stop(event) -> bool ends
+    the integration at the first crossing event (time, cell, direction) for which it is true (out["stopped"]).
+    Returns dict with final state, crossing events and optional record."""
     N = ring.N
     y = np.array(y0, float).ravel()
     t = float(t0)
-    lo = y[:N] < -40
+    lo = (y[:N] < -40) if lo0 is None else np.array(lo0, bool)
+    stopped = False
     breaks = sorted({t1} | {ta for ta, tb, _ in pulses if t0 < ta < t1} | {tb for ta, tb, _ in pulses if t0 < tb < t1}
                     | {ts for ts, _ in weight_schedule if t0 < ts < t1})
     events = []  # (time, cell, +1 up / -1 down)
@@ -104,9 +107,14 @@ def run(ring, y0, t0, t1, pulses=(), rtol=1e-8, method="Radau", record=False, ma
                 i = int(np.argmin(vals))
                 lo[i] = not lo[i]
                 events.append((t, i, +1 if not lo[i] else -1))
+                if stop is not None and stop(events[-1]):
+                    stopped = True
+                    break
+        if stopped:
+            break
     if record:
         rec_t.append(np.array([t])); rec_y.append(y[:, None])
-    out = dict(t=t, y=y, lo=lo, events=events)
+    out = dict(t=t, y=y, lo=lo, events=events, stopped=stopped)
     if record:
         out["rec_t"] = np.concatenate(rec_t)
         out["rec_y"] = np.concatenate(rec_y, axis=1)
