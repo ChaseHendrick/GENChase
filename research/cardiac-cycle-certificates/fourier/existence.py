@@ -657,9 +657,10 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             omega={"lower": bound_rec(om_ball, "down"), "upper": bound_rec(om_ball, "up")},
             Y0=bound_rec(Y0), Z1=bound_rec(Z1), Z2=bound_rec(Z2), r_star=bound_rec(r_star),
             r_existence=bound_rec(r_lo), r_uniqueness=bound_rec(r_hi),
-            r_uniqueness_is_r_star=bool((r_hi - r_star).is_zero()),
-            r_uniqueness_note=("r_uniqueness = min(the large root of p, r_*) with r_* the hand-set validity radius "
-                               "of Z2 (settings.r_star); it is a certified contraction ball, not the largest one"),
+            r_uniqueness_set_by_r_star=bool(abs(float(r_hi) - float(r_star)) <= 1e-14 * float(r_star)),
+            r_uniqueness_note=("r_uniqueness = min(the large root of p, r_*), rounded to a double <= r_*, with r_* the "
+                               "hand-set validity radius of Z2 (settings.r_star); when r_uniqueness_set_by_r_star is "
+                               "true it is that chosen radius, a certified contraction ball, not the largest one"),
             p_at_r_existence=bound_rec(Y0 + (Z1 - 1) * r_lo + Z2 * r_lo * r_lo / 2),
             p_at_r_uniqueness=bound_rec(Y0 + (Z1 - 1) * r_hi + Z2 * r_hi * r_hi / 2),
             contraction_at_r_uniqueness=bound_rec(Z1 + Z2 * r_hi),
