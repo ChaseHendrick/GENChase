@@ -75,8 +75,9 @@ GENChase: the companion repository does not carry `notes/`.
   cyclic-shift symmetry; they are cited next to the sentence, as are Arioli-Koch 2015, Kuehn-Queirolo and Church et
   al. 2026), and the draft credits Erhardt for the oscillation and equivariant Hopf theory for
   the expectation of rotating waves. The ledger lists readings to do before submission (Paullet-Ermentrout, Ashwin-Swift,
-  Hoppensteadt-Izhikevich Theorem 9.2, papers citing Erhardt 2025, the full text of Di Marco et al.); the draft says
-  so in Section 9.
+  Hoppensteadt-Izhikevich Theorem 9.2, papers citing Erhardt 2025, the full text of Di Marco et al.); they are tracked
+  here, not in the draft, which states only how far each work was read and that the papers citing Erhardt were not
+  checked for a continuation of the first Hopf branch (Section 9, 2026-10-01).
 - [x] **6. Adversarial second reading.** Two in-project readings of the manuscript with its programs, each by a
   separate AI agent session told to find errors; no outside review has taken place. Reading 1
   (`review/manuscript-reading-1-2026-10-01.md`): no false theorem; its findings E1 to E6, G1 to G6, C1 to C4, A1 and
@@ -84,7 +85,8 @@ GENChase: the companion repository does not carry `notes/`.
   bound, the link of the two cell proofs proved as Lemma 6.1 with `code/fourier/link_cell.py`, epsilon in the
   coordinates S at both radii, the Y0/Z1 assembly with the codomain of F, coefficient enclosures beyond n_A, the CAPD
   argument of Section 6, the ball B_c in the proof of Theorem 5.17(iii), what is certified and the rerun
-  differences, reading status, citations and novelty wording, no review labels in the draft; X9 kept by choice).
+  differences, reading status, citations and novelty wording, no review labels in the draft; X9 removed on 2026-10-01: the toy-model parenthesis and the draft history are gone, and the half-open strip
+  remark keeps only its mathematics).
   Reading 2 (`review/manuscript-reading-2-2026-10-01.md`), of the revised passages, with a rerun of the link: nothing
   unsound, the link confirmed; two wrong numbers in statements (R1, delta for N = 1; R2, the period width) and
   gaps R3 to R6, citations R7 to R9 and exposition items, all fixed; where each is fixed is recorded in

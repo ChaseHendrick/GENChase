@@ -3,8 +3,8 @@
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 **Draft** (status "draft" in `papers/papers.json`).
-The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex); no PDF has been built yet (no TeX toolchain
-was available when it was drafted). The programs and records come from `research/cardiac-cycle-certificates/` in
+The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex), and its PDF
+[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (26 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
 GENChase, their canonical location; the copies here are byte-identical, and the hashes stored in the records refer to
 paths relative to that folder, which `code/` reproduces. The quality record is [`notes/QUALITY.md`](notes/QUALITY.md).
 
@@ -121,8 +121,7 @@ edit it to point at your CAPD installation, or the record will say that the patc
 unchanged so that it matches the canonical file.
 
 The manuscript is built with `sh tools/paper-build.sh cardiac-rings` from the GENChase root (pdflatex, three runs),
-once `pdf` in `papers/papers.json` is set to `papers/cardiac-rings/paper/cardiac-rings.pdf` (it is null while no PDF
-exists, because `paper-check` refuses a listed file that is missing).
+which writes `paper/cardiac-rings.pdf`, the file registered as `pdf` in `papers/papers.json`.
 
 ## License
 
