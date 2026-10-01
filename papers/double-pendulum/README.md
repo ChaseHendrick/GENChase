@@ -46,8 +46,9 @@ their output accompany the paper. Meromorphic non-integrability in the sense of 
   crossing without error control.
 - **Limitations:** the proof trusts CAPD's rigorous integrator and Poincaré map (and our reading of its code for sets
   that start on the section), the compiler and the floating-point rounding. Bolotin and Negrini (Russ. J. Math. Phys.
-  5, 1997) were read only in snippet view; the statement that the global non-integrability and the chaos had not been
-  proved rests on that reading (Section 8 of the paper). Only the stated energies are covered. Meromorphic
+  5, 1997) are known from the passages of Sections 3 and 10 that the journal volume's open full-text search displays;
+  the statement that the global non-integrability and the chaos had not been proved rests on those passages (Section 8
+  of the paper). Only the stated energies are covered. Meromorphic
   non-integrability is not proved.
 
 ## Contents
