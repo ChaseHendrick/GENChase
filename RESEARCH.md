@@ -2226,3 +2226,20 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
   - No computer-assisted proof of a rotating wave in a ring of coupled cells, and no numerical study of rings of self-oscillating TP06 cells, was found.
 - Result: no change to the entry above. Use "no earlier computer-assisted proof found in the logged searches", never a "first" claim.
 - Re-search: no. Before any priority wording, read Bayer-Leine 2026, the Floquet section of Gameiro-Lessard 2017, Di Marco et al., JMAA 434 (2016) 798-836, and Hua-Liu, ZAMP 77 (2026) 196 (scope unknown).
+
+### 2026-10-01  cardiac rings: the four open readings (Bayer-Leine, Gameiro-Lessard, Di Marco et al., Hua-Liu)  (session agent; `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`)
+
+- Read:
+  - Bayer-Leine arXiv:2503.21318v2: Sections 1-4, 6 and 7 in full.
+  - Gameiro-Lessard, author PDF: Sections 1, 7 and 8.
+  - Hua-Liu: abstract and reference list.
+  - Di Marco et al.: search snippets only, since the full text was blocked.
+- Found:
+  - Bayer-Leine (Theorem 4) give an a priori floating-point bound on the monodromy truncation, (2e^{-b})^N (e^{4at} - 1) with b > ln 2. Multipliers are located only by pseudospectra, with no count and no interval arithmetic. It is not a proof framework.
+  - Gameiro-Lessard enclose individual Floquet exponents, which proves instability. In their Section 1 they state that their method cannot prove stability, and they have no exclusion step.
+  - Di Marco et al. (doi:10.1016/j.jmaa.2015.08.072): analytic multipliers of an unstable rotating wave in a piecewise-linear Chua-Yang ring. This is unverified against the full text.
+  - Hua-Liu: an analytic existence proof for periodic traveling waves in a continuum Chua model, with no stability result. It is not a precedent.
+  - arXiv:2105.05544 is almost certainly the preprint of Erhardt-Solem, SIADS 2022.
+  - Golubitsky-Stewart-Schaeffer Vol. II: the ring is treated in Chapter XVIII, Section 4.
+- Result: no precedent found for exclusion with counting of a Hill operator's spectrum in ball arithmetic. Credit wording for each source is in the note.
+- Re-search: no. Read the full text of Di Marco et al. before submission.
