@@ -81,7 +81,8 @@ exponents, and the weights.
 Test-only hooks (`controls`, never used by the driver; recorded in the output when used): damping_sign = -1
 (anti-diffusion), drop = [n, ...] (coefficients A_{+-n} set to zero in the proof data and, unless drop_proof_only,
 in the floating-point data that choose V, U_r, S), omega_lo (replaces Stage E's
-omega_lo), Ke (absolute window), skip_sanity.
+omega_lo), Ke (absolute window), skip_sanity, skip_count (the run then cannot certify:
+the final check of the count is repeated below).
 """
 import argparse
 import hashlib
@@ -616,7 +617,7 @@ def _certify(N, inp, st, controls, log, mark, prec):
     if nonpos:
         raise ProofFailure(f"(C3) dist_j = 0 for {len(nonpos)} window eigenvalues (on Gamma)")
     in_list = [complex(lam[j]) for j in range(nW) if inside[j]]
-    if count != 1:
+    if count != 1 and not controls.get("skip_count"):
         raise ProofFailure(f"(C5) count of window eigenvalues in Omega is {count}, not 1: {in_list[:6]}")
     mark("distances, count")
 
@@ -748,6 +749,9 @@ def _certify(N, inp, st, controls, log, mark, prec):
         bad = [j for j in range(nW) if ratio[j] >= 1]
         raise ProofFailure(f"(SC) fails for {len(bad)} window columns, e.g. lambda = {complex(lam[bad[0]])}")
     mark("small gain")
+
+    if count != 1:
+        raise ProofFailure(f"(C5) count of window eigenvalues in Omega is {count}, not 1 (skip_count control)")
 
     # ---- 10. conclusions
     Tlo = lo(2 * arb.pi() / om_hi)

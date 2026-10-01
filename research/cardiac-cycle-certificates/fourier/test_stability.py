@@ -121,8 +121,15 @@ def test_neg_S_identity():
 
 
 def test_neg_drop_A1_detected():
-    _expect_failure(8, "A_{+-1} dropped everywhere (sanity check)", {"delta": "5e-6", "S_exps": _S(8)},
-                    {"drop": [1]}, allow=(sb.InputMismatch,), expect_text=["trivial-eigenvector"])
+    # dropped in the proof data and in the data choosing V, U_r: the operator changes consistently; the count (C5)
+    # (checked first) or, failing that, the trivial-eigenvector sanity check must stop the run
+    _expect_failure(8, "A_{+-1} dropped everywhere", {"delta": "5e-6", "S_exps": _S(8)},
+                    {"drop": [1]}, allow=(sb.ProofFailure, sb.InputMismatch))
+    # the sanity check on its own: the count failure is deferred (test hook skip_count), so the run reaches the
+    # trivial-eigenvector check, which must stop it
+    _expect_failure(8, "A_{+-1} dropped everywhere, count forced (sanity check must detect)",
+                    {"delta": "5e-6", "S_exps": _S(8)}, {"drop": [1], "skip_count": True},
+                    allow=(sb.InputMismatch,), expect_text=["trivial-eigenvector"])
 
 
 def test_neg_drop_A1_proof_only():
@@ -210,7 +217,7 @@ if __name__ == "__main__":
         print(t.__name__)
         try:
             t()
-        except AssertionError as e:
+        except Exception as e:  # noqa: BLE001 (an unexpected exception is a failed test)
             failed.append(t.__name__)
             print(f"  FAILED: {e}")
     print(f"{len(ALL) - len(failed)} of {len(ALL)} passed ({time.time() - t0:.0f} s)" +
