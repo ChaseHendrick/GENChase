@@ -7,7 +7,7 @@ stays in GENChase.
 
 ## Record (2026-09-26; updated 2026-09-27 with the manuscript and after its readings)
 
-- [x] **1. Complete proofs.** Evidence: the manuscript `paper/nf-pulse.tex` (39 pages) writes out the proofs of
+- [x] **1. Complete proofs.** Evidence: the manuscript `paper/nf-pulse.tex` (38 pages since 2026-10-01; 39 before) writes out the proofs of
   Theorems 1 to 6 and of the corollary: the reduction to the wave ODE and the invariant surface Y = S(U) (Section 2),
   the rest state for every c and every eps (Lemmas 2.4 and 2.5), the validated unstable manifold, the local unstable
   manifold and the branch (Lemmas 4.1 to 4.3), the block lemma and its form for the wave equation, and the
