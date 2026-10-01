@@ -76,7 +76,7 @@ From this folder (needs g++ with OpenMP, cmake, git and Python 3):
 
 ```
 python3 -m pip install -r code/requirements.txt
-sh code/run_all.sh            # builds CAPD at the pinned commit and the programs; about 85 minutes on 2 threads
+sh code/run_all.sh            # builds CAPD at the pinned commit and the programs; 39 minutes on 2 threads in the run of 2026-09-29
 cd code/crosscheck && for c in kraw3 otherE edges_nr; do python3 $c.py > ../../data/crosscheck_$c.txt; done; cd ../..
 cd paper && pdflatex double-pendulum.tex && pdflatex double-pendulum.tex && pdflatex double-pendulum.tex
 ```

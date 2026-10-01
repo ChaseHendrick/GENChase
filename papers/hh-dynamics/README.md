@@ -33,7 +33,7 @@ inequalities are decided in ball arithmetic by a program named here), **proved**
 computation), **cited** (a published theorem used as stated, with its hypotheses checked), or **numerical** (no error
 control; never used in a proof).
 
-- **Computer-assisted** (`code/certify_equilibria_hopf.py`, 40 checks: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks; about 10 seconds):
+- **Computer-assisted** (`code/certify_equilibria_hopf.py`, 40 checks: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks; about 7 seconds):
   - Theorem 1: exactly one equilibrium for every J in [0, 200] and every E_l in [10.59, 10.62].
   - Theorem 2: the equilibrium is asymptotically stable for J < J_H1 and J > J_H2, unstable with exactly two
     eigenvalues in Re > 0 in between; at J_Hi a simple pair crosses transversally; J_H1 and J_H2 enclosed to 1e-12

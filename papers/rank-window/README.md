@@ -7,7 +7,7 @@ and third recommended minor revision. The fixes of the first two are applied; of
 further readers confirmed are fixed and the others are answered. The fixes of the third have not been read again.
 The review reports remain in the development records and are not included in this companion archive.
 
-**[Read the draft (PDF, 16 pages)](paper/note.pdf)**
+**[Read the preprint (PDF, 17 pages)](paper/note.pdf)**
 
 ## Abstract
 

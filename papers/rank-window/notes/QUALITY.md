@@ -43,10 +43,10 @@ GENChase: the companion repository does not carry `notes/`.
   Shawe-Taylor et al. (2005), Sects. I-III; Kong and Valiant (arXiv:1602.00061v5, Sects. 1 and 3); Spigler, Geiger and
   Wyart (arXiv:1905.10843, Sects. 1 and 7); Stringer's deposited code at 58443d1 in the files the bibliography names
   (the fitting windows of `mainfigs/fig3.m` and `powerlaws/statsShuffledPCA.m`, and `powerlaws/get_powerlaw.m`, read
-  for `review-3.md`, M2). Only the abstract of Koltchinskii and Gine (2000), cited as such; Widom (1963) is not cited;
+  for `review-3.md`, M2). Only the abstract of Koltchinskii and Gine (2000); the note says so where it cites it; Widom (1963) is not cited;
   the note states the Matern tail-rate assumption instead. Koltchinskii and Gine is background only
-  (the convergence of kernel-matrix eigenvalues as P grows); no proof step uses it, the bibliography marks it
-  "abstract read", and RESEARCH.md records it as "Only the abstract". That meets this item as the bar states it (every
+  (the convergence of kernel-matrix eigenvalues as P grows); no proof step uses it, the note states that the cited
+  statement is taken from its abstract, and RESEARCH.md records it as "Only the abstract". That meets this item as the bar states it (every
   source a proof step depends on read in full; background recorded with how far it was read), so the item is checked
   (2026-09-27); an earlier version of this record held it open until the paper was read in full or dropped, which is
   stricter than the bar. The one proof source, Braun (2006), was read in the lemmas the proof adapts.
@@ -88,5 +88,5 @@ GENChase: the companion repository does not carry `notes/`.
   replicates, 58 with 5). `make_numbers.py` reproduces `paper/numbers.tex`, the five tables, `out/tab_grating.tex`
   and `out/numbers.json` byte for byte from the committed `out/` and from the rerun `out/`. The figures are identical
   pixel for pixel, the rebuilt PDF text is identical, and `verify_independent.py` passes all 17 checks.
-  `paper-check` passes (16 pages), and `paper-sync --check rank-window` passes against the companion
+  `paper-check` passes (16 pages then; 17 since the figure update of release 1.0.3), and `paper-sync --check rank-window` passes against the companion
   repository `ChaseHendrick/rank-window` (2026-09-27).
