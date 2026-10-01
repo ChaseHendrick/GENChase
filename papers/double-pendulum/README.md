@@ -13,8 +13,8 @@ archived on Zenodo ([doi:10.5281/zenodo.23050590](https://doi.org/10.5281/zenodo
 The planar double pendulum with two equal point masses on two equal massless rods is the standard example of chaos in
 classical mechanics, but, as far as we could find, neither its chaos nor its non-integrability has been proved at these
 parameters: the known proofs need a small parameter (a weak coupling, a small mass ratio, a special link geometry), and
-the one variational criterion that needs none has been applied only under a parameter condition that, in the text
-available to us, the equal case does not satisfy. We give a computer-assisted proof. At each of the energies
+the one variational criterion that needs none has been applied only under a parameter condition that, in the openly
+searchable text of that paper, the equal case does not satisfy. We give a computer-assisted proof. At each of the energies
 $E = -1/2$, $0$ and $1/2$, in units in which the lower rest state has $E = -3$ and $E = 0$ is the energy of releasing
 both arms from rest in the horizontal position, the flow on the energy level has a hyperbolic periodic orbit with a
 transversal homoclinic orbit, and the same holds simultaneously for every energy in $[-10^{-10}, 10^{-10}]$.

@@ -56,8 +56,8 @@ with the extrapolation of the finite family.
   and the direct continuum solution are not in his paper. A second reader has checked the draft (2026-09-25) and
   its corrections are in. Aref, Newton, Stremler, Tokieda and Vainchtein, *Vortex crystals* (2003), has been read for the construction of
   Lemma 1: it gives the translating equilateral triangle and, for circulations of equal magnitude, the restriction to
-  triangular numbers, both now cited, and not the construction. O'Neil, Nonlinearity 26 (2013), is read in summary
-  only (paywalled), as the paper says.
+  triangular numbers, both now cited, and not the construction. O'Neil, Nonlinearity 26 (2013), is cited from its
+  summary, as the paper says.
 
 ## Contents
 

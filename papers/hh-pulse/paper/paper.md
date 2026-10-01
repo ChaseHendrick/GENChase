@@ -54,10 +54,10 @@ interval of width 3e-45 at 18.5 C and 2.8e-61 at 6.3 C. [Computer-assisted.] The
 potential that makes the resting current exactly zero (Remark 1). [Computer-assisted.]
 
 **Earlier work, as far as the search reached.** The searches summarized in Appendix C (2026-09-25 to 2026-09-27)
-are recorded there. They are not a claim of priority. Two papers could not be obtained in full: Hastings (1976), of
-which we read pp. 229-230 of its 29 pages, and Foote and Chen, "Traveling wave properties of the Hodgkin-Huxley
-equations", Chinese J. Math. 9 (1981) 1-23, which we could not read at all. zbMATH Open has no review of either
-(Zbl 0374.35004, Zbl 0472.35048), and MathSciNet was not reachable. Carpenter (1977) was read in full.
+are recorded there. They are not a claim of priority. Hastings (1976) is known from pp. 229-230 of its 29 pages, and Foote and Chen,
+"Traveling wave properties of the Hodgkin-Huxley equations", Chinese J. Math. 9 (1981) 1-23, from its title; zbMATH
+Open lists both without a review (Zbl 0374.35004, Zbl 0472.35048), and the statement on earlier work extends to them
+only that far. Carpenter (1977) was read in full.
 
 **What the proof rests on.** Besides the computations, the proof uses only Hodgkin and Huxley's equations and constants
 (1952, pp. 519-528 and Table 3, read in a scan of the paper) and standard facts about ordinary differential equations,
@@ -356,8 +356,8 @@ epsilon > 0"; Theorem 4.2 (p. 357) restores m as a fast variable "for all small 
 (pp. 357-358) shows that the pulse is lost when epsilon or delta is too large. Her method, isolating blocks and a
 Wazewski-type shooting in the speed around a singular orbit, is the same kind of topological argument as ours, applied
 where the small parameters make the orbit computable by hand; ours applies it to a validated numerical orbit at
-epsilon = delta = 1. zbMATH lists her lecture notes "Nerve impulse equations" (Carpenter 1976) next to the 1977 paper;
-we have not read them. Hastings's theorem (pp. 229-230, read) needs n and h slowed by a small epsilon and hypotheses he
+epsilon = delta = 1. zbMATH lists her lecture notes "Nerve impulse equations" (Carpenter 1976) next to the 1977 paper,
+and they are cited from that listing. Hastings's theorem (pp. 229-230, read) needs n and h slowed by a small epsilon and hypotheses he
 did not verify for the 1952 functions.
 
 ## 7. Reproducibility
@@ -510,9 +510,9 @@ homoclinic, nerve, excitable or conductance-based. Positive controls: the comput
 Result: no proof, with or without a computer, of the existence of the pulse of the unmodified 1952 equations, and no
 computer-assisted travelling-wave result for Hodgkin-Huxley or any conductance-based model. Every existence proof
 found (Hastings 1976; Carpenter 1977; Ikeda, Mimura and Tsujikawa 1987 and 1989, from their abstracts) uses artificial
-small parameters. Not read: Hastings (1976) beyond pp. 229-230, Foote and Chen (1981), Huxley (1959), and the
-MathSciNet reviews (not reachable); Google Scholar was not reachable. Hastings (1976) beyond pp. 229-230 and Foote and
-Chen (1981) could not be obtained. These are the limits of the statement on earlier work in Section 1: we found no
+small parameters. Known in part or not read: Hastings (1976), from pp. 229-230;
+Foote and Chen (1981), from its title and its zbMATH entry; Huxley (1959), not read, cited only for what is not
+claimed. MathSciNet and Google Scholar are not among the databases searched. These are the limits of the statement on earlier work in Section 1: we found no
 earlier proof, within them.
 
 **Rights.** Copyright (c) 2026 Chase Hendrick. The manuscript and figures are all rights reserved. Code and data are licensed under Apache-2.0, subject to component notices. These notices do not revoke licenses previously granted for earlier material.

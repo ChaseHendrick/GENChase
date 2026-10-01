@@ -46,8 +46,8 @@ $543$ converged five-vortex collapses, not checked for duplicates, reverse into 
 - **Checked:** independent adversarial readings of every section and of the programs within the project, signed
   off by the owner. The review records remain in the development records and are not included in this companion archive.
 - **Limitation:** the section, theorem and equation numbers of Zbarsky's paper cited here, and the two slips
-  corrected in Appendix A, are those of arXiv:1912.10862v2; the published CMP version was not accessible for
-  comparison.
+  corrected in Appendix A, are those of arXiv:1912.10862v2; they have not been compared with the published CMP
+  version.
 
 ## Contents
 

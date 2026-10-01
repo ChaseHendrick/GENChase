@@ -61,7 +61,7 @@ GENChase: the companion repository does not carry `notes/`.
   (1976) for three standard facts (not checked against a copy), and on the library contracts of Arb and CAPD (trust
   base, not citations). Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
   and `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`: Erhardt (2025) read in full;
-  Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. (2016) known from search snippets only;
+  Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. (2016) known from excerpts of its abstract;
   the reading status of every cited background work is listed in Section 9 of the paper ("How far the background
   sources were read"). Kato must be read for item 4 to close.
 - [x] **5. Prior article review.** RESEARCH.md, entries "2026-09-30 cardiac ring wave certification and next

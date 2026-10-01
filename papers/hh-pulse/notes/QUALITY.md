@@ -41,8 +41,8 @@ The bar every paper in this repository meets before it is published or preprinte
 - [x] **5. Prior article review.** Evidence: RESEARCH.md entries of 2026-09-25, 2026-09-26 and 2026-09-27 and
   `papers/hh-dynamics/work/traveling-wave/prior-art-log.md` (A)-(J), summarized in Appendix C of the manuscript. After
   review-1 (S2) the statement is only that the searches found no earlier proof, and the manuscript names the two
-  papers that could not be obtained (Hastings 1976 beyond pp. 229-230, Foote and Chen 1981; the owner tried to obtain
-  both) and that zbMATH Open has no review of either.
+  papers known only in part (Hastings 1976 from pp. 229-230, Foote and Chen 1981 from its title; the owner tried to
+  obtain both) and that zbMATH Open has no review of either.
 - [x] **6. Adversarial second reading.** Evidence: `notes/review-1.md` (2026-09-27, in-project, not an outside review) and
   `notes/review-2.md` (2026-09-28), a second reading of the manuscript and the programs after the fixes, briefed with
   that report and `notes/fixes-1.md`. It found no must-fix. Two things the fix list called done were not: the

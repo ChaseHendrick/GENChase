@@ -188,6 +188,12 @@ Edit it in either place.
   the same pull request as that paper's next release, not on its own. Then strike it from this list.
   `cardiac-rings` was written with the new form. `double-pendulum` and `hh-pulse` print no statement yet; add one
   at their next release.
+- **Sources that could not be obtained** (owner's instruction, 2026-10-01, for every manuscript): do not apologize
+  for them. Cite such a source for what is known of it, stated positively ("Their abstract describes ...",
+  "According to the zbMATH review ..."), state its reading basis once, as a plain fact, in the paper's sources or
+  limitations section ("Known from its abstract: X."), and keep any priority limitation that depends on it as a scope
+  statement ("as far as the abstract describes it"); never drop the citation, and never claim a reading that did not
+  take place.
 - **A new version of record:** a change to a paper already on arXiv is a replacement there (v2, v1
   stays visible), and a new release of the companion (for example `1.1.0`) gives Zenodo a new
   version DOI. The concept DOI always resolves to the newest.

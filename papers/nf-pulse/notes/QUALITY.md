@@ -69,19 +69,22 @@ stays in GENChase.
   and Simon, which the project had not read, are no longer cited. Faye (2013), whose traveling-wave system Section 4.8
   uses and rederives, and Pinto and Ermentrout (2001), whose model and figures the theorems take, were read in full
   (entries of 2026-09-26). Every background citation is recorded in the same entry with how far it was read, from
-  read in full to not read (bibliographic data checked against Crossref); Enculescu (2004) is unread and Sandstede
-  (2007) is known from its abstract only, both unreachable here, and the manuscript says so where it cites them. Zhang,
+  read in full to not read (bibliographic data checked against Crossref); Enculescu (2004) is known from its title and citing
+  contexts and Sandstede (2007) from its abstract (closed access), and the manuscript states this as a plain fact, as a
+  scope of its "Earlier work" paragraph and in its Sources paragraph (since 2026-10-01, by the owner's rule against
+  apologizing for sources that cannot be retrieved). Zhang,
   J. Differential Equations 197 (2004), downloaded by the owner, was read in the parts listed there (Heaviside rate
   throughout; pulses only for sufficiently small eps, with proofs deferred). No proof step depends on a source that
   was not read.
 - [x] **5. Prior article review.** Evidence: the searches are logged in RESEARCH.md (entries of 2026-09-26, two, and
   2026-09-27, three, the last with Ermentrout, Jalics and Rubin (2010) read in the parts listed: their pulses are
   formal and assume an unstimulated pulse, "not fully rigorous", p. 3049), with `review/lead/priorart/PRIORART.md` and
-  `review/PRIOR-ART.md`. Enculescu (2004) and Sandstede (2007) could not be reached on 2026-09-27 (closed access; no
-  legal open copy found), so the manuscript no longer makes a statement of priority: its paragraph "Earlier work"
+  `review/PRIOR-ART.md`. Enculescu (2004) and Sandstede (2007) are closed access, with no legal open copy found on
+  2026-09-27, so the manuscript no longer makes a statement of priority: its paragraph "Earlier work"
   (Section 1) says what the works read contain (no proof found of a pulse of this field for a given smooth rate at an
   explicit recovery rate that is not assumed small, and no computer-assisted proof of a pulse in a neural field), claims
-  no "first", names the two unread works and says that nothing is stated about their contents, and names the works
+  no "first", names the two works known from titles, citing contexts and an abstract and says that nothing more is stated about
+  their contents, and names the works
   known only from first pages or abstracts; the Sources paragraph (Section 9) and the README say the same. No
   statement of the manuscript or the README goes beyond what the searches reached.
 - [x] **6. Adversarial second reading.** Evidence: all readings below were in-project readings by independent AI agent

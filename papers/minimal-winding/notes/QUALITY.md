@@ -95,7 +95,7 @@ GENChase: the companion repository does not carry `notes/`.
   form for every triple of circulations and describes the possible shapes, but does not discuss the extremum; this
   narrows the wording and adds no claim.
   Open: O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126 (four-vortex collapse configurations at a fixed rate) is
-  unread (paywalled); it bears on the four-vortex minimum of Theorem 4 only. Release 2.2.0 adds no novelty
+  known from its abstract (subscription only); it bears on the four-vortex minimum of Theorem 4 only. Release 2.2.0 adds no novelty
   statement: the sentence after Proposition 3 still says that the sources give the rates and none minimizes or
   bounds their ratio, now naming them, and the expansion of F_n carries no claim, since no prior-article search
   for it is logged. The identification of the Chen-Walsh-Wheeler configurations claims nothing new about them.
