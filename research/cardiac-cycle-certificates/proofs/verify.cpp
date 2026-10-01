@@ -87,6 +87,51 @@ static double norm2x2(interval a, interval b, interval c, interval d) {
   return up(sqrt(interval(up(lam))));
 }
 
+// Period gate for rings (N > 1). Over [0, Thi] (Thi >= the section time of every point of the box) and for every cell
+// j = 0..N-2, show that V_j never crosses the level s upward: on each time piece either V_j - s excludes 0, or
+// dV_j/dt < 0 on the enclosure (only downward crossings), or (cell 0 only) the piece belongs to the initial stretch on
+// which dV_0/dt > 0 from V_0(0) = s. With x_j(t) = phi(t + j tau), the cells' trajectories on [0, tau] cover phi on
+// [0, N tau]; so phi has exactly one upward s-crossing in [0, N tau), and the minimal period is N tau (a period p < N tau
+// would give an upward crossing at p). Nonsynchrony follows from the guard V_{N-1}(0) < s = V_0(0).
+template <int N>
+bool periodGate(IMap& f, int order, const IVector& xc, const IMatrix& A, const IVector& r, double level, double Thi,
+                int grid, long& pieces, std::string& why) {
+  IOdeSolver solver(f, order);
+  ITimeMap tm(solver);
+  tm.stopAfterStep(true);
+  C0Rect2Set s(xc, A, r);
+  interval prev(0.0);
+  bool rising0 = true;  // cell 0 still on its initial monotone rise
+  pieces = 0;
+  do {
+    tm(interval(Thi), s);
+    interval h = solver.getStep();
+    const IOdeSolver::SolutionCurve& curve = solver.getCurve();
+    for (int g = 0; g < grid; ++g) {
+      interval piece = interval(g, g + 1) * h / grid;
+      intersection(interval(0.0, 1.0) * h, piece, piece);
+      IVector y = curve(piece);
+      IVector dy = f(y);
+      ++pieces;
+      for (int j = 0; j < N - 1; ++j) {
+        interval w = y[18 * j] - interval(level), v = dy[18 * j];
+        if (j == 0 && rising0) {
+          if (v.leftBound() > 0) continue;  // still rising from s: V_0 > s on this piece's interior part
+          rising0 = false;
+          if (w.leftBound() <= 0) { why = "cell 0 stops rising before leaving the level"; return false; }
+        }
+        if (!(w.contains(0.0))) continue;
+        if (v.rightBound() < 0) continue;
+        std::ostringstream o; o << "cell " << j << " may cross upward near t = " << iv(prev + piece);
+        why = o.str();
+        return false;
+      }
+    }
+    prev = tm.getCurrentTime();
+  } while (!tm.completed());
+  return true;
+}
+
 template <int N>
 int run(std::istream& in, const std::string& gLo, const std::string& gHi, long cNum, long cDen, std::ofstream& out) {
   const int dim = 18 * N, END = 18 * (N - 1), n = dim - 1;
@@ -279,7 +324,15 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
     }
     for (int i = 0; i < dim; ++i) d << Pc[i].leftBound() << " " << Pc[i].rightBound() << (i + 1 < dim ? " " : "\n");
   }
-  bool ok = q < 1.0 && total < 1.0;
+  bool periodOk = true;
+  long gatePieces = 0;
+  std::string gateWhy;
+  if (N > 1) {
+    const int grid = std::getenv("VERIFY_GATE_GRID") ? std::atoi(std::getenv("VERIFY_GATE_GRID")) : 8;
+    periodOk = periodGate<N>(f, order, xc, A, r, level, T.rightBound(), grid, gatePieces, gateWhy);
+    std::cerr << "period gate: " << (periodOk ? "passed" : "FAILED: " + gateWhy) << " (" << gatePieces << " pieces)\n";
+  }
+  bool ok = q < 1.0 && total < 1.0 && periodOk;
 
   out << std::setprecision(17);
   out << "{\n  \"schema\": \"cardiac-cycle-contraction-v1\",\n  \"N\": " << N << ",\n  \"dimension\": " << dim
@@ -297,6 +350,8 @@ int run(std::istream& in, const std::string& gLo, const std::string& gHi, long c
       << ",\n  \"r0_upper\": " << r0 << ",\n  \"max_block_residual_plus_row_sum_upper\": " << total
       << ",\n  \"section_map_time\": \"" << iv(T) << "\",\n  \"section_map_time_centre\": \"" << iv(Tc) << "\""
       << ",\n  \"period\": \"" << iv(T * interval(double(N))) << "\""
+      << ",\n  \"minimal_period_and_nonsynchrony_gate\": " << (N == 1 ? "\"not needed (first return)\"" : (periodOk ? "\"passed\"" : "\"failed\""))
+      << ",\n  \"gate_pieces\": " << gatePieces
       << ",\n  \"verified\": " << (ok ? "true" : "false") << "\n}\n";
   std::cout << (ok ? "VERIFIED" : "NOT VERIFIED") << "  q <= " << q << "  r0 <= " << r0 << "  max_b(g0_b/rho_b + rowsum_b) <= " << total
             << "  period in " << iv(T * interval(double(N))) << "\n";
