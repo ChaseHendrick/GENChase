@@ -74,10 +74,9 @@ control; never used in a proof).
 - **Earlier work:** Guckenheimer and Labouriau (1993, p. 941) state the unique equilibrium for every current, without
   proof; Labouriau's thesis (1983, Chapter IV) computes the Hopf points and the directions of bifurcation in floating
   point; Labouriau (1985, 1989) and Hassard and Shiau (1989, 1991, 1996) studied the degenerate Hopf bifurcations of
-  the model. Du and Hassard (2001) computed Hopf bifurcation coefficients of the model in interval arithmetic; only
-  its first page could be read, so no priority is claimed for Theorems 1 and 2 or Corollary 3. The novelty claimed is
-  limited to a stable periodic orbit of large amplitude away from the Hopf points and to bistability, and is limited
-  by the unread part of Du and Hassard as well. The searches, and what they did not reach, are in the manuscript's
+  the model. Du and Hassard (2001) computed Hopf bifurcation coefficients of the model in interval arithmetic, a
+  local method, so no priority is claimed for Theorems 1 and 2 or Corollary 3. The novelty claimed is limited to a
+  stable periodic orbit of large amplitude away from the Hopf points and to bistability. The searches, and what they did not reach, are in the manuscript's
   Section 10.
 - **Checks made within the project**, by separate AI agent sessions (none is an outside review): on 2026-09-27,
   readings of the manuscript's mathematics, of its computations (with 15 deliberate mutations of the programs) and of

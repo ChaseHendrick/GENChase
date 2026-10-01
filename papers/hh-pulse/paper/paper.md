@@ -517,6 +517,8 @@ earlier proof, within them.
 
 **Rights.** Copyright (c) 2026 Chase Hendrick. The manuscript and figures are all rights reserved. Code and data are licensed under Apache-2.0, subject to component notices. These notices do not revoke licenses previously granted for earlier material.
 
+**Use of AI.** This work was prepared with AI assistance. The author takes full responsibility for its content.
+
 ## References
 
 - Arioli, G., Koch, H. Existence and stability of traveling pulse solutions of the FitzHugh-Nagumo equation. Nonlinear

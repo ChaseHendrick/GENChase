@@ -178,6 +178,16 @@ Edit it in either place.
   generated LICENSE, CITATION.cff and .zenodo.json), lists any file you deleted there, and leaves the
   result for you to review and merge. Do the same when the workflow reports a conflict: keep the
   version you want in `papers/<id>/`, merge, and the next run publishes it.
+- **The AI statement** (owner's decision, 2026-10-01): every manuscript ends its end matter with a labelled
+  statement at the body's own size, beside Funding, never in small type:
+
+      \noindent\textbf{Use of AI.} This work was prepared with AI assistance. The author takes full responsibility for its content.
+
+  Six released manuscripts still print it as `{\footnotesize ...}` under Funding: `minimal-winding`,
+  `collapse-without-rotation`, `stable-expansion`, `rank-window`, `hh-dynamics` and `nf-pulse`. Change each one in
+  the same pull request as that paper's next release, not on its own. Then strike it from this list.
+  `cardiac-rings` was written with the new form. `double-pendulum` and `hh-pulse` print no statement yet; add one
+  at their next release.
 - **A new version of record:** a change to a paper already on arXiv is a replacement there (v2, v1
   stays visible), and a new release of the companion (for example `1.1.0`) gives Zenodo a new
   version DOI. The concept DOI always resolves to the newest.
