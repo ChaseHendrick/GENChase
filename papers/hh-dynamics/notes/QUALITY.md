@@ -71,7 +71,7 @@ GENChase: the companion repository does not carry `notes/`.
   the manuscript's Section 10 and bibliography say the same. Read today besides: Labouriau's thesis, Chapter IV (the
   open copy at WRAP), Hassard and Shiau (1996) in full (a copy the owner downloaded; not in the repository), the
   first page of Du and Hassard (2001) again. Known from abstracts, reviews or citing papers rather than the full text: Du
-  and Hassard beyond its first page, Hassard (1978),
+  and Hassard (2001; abstract and zbMATH review, full text by subscription only), Hassard (1978),
   Rinzel and Miller (1980), Hassard and Shiau (1989), Shiau and Hassard (1991), Labouriau (1985, 1989); none of them
   is a source of a proof step.
 - [x] **5. Prior article review.** RESEARCH.md, entries of 2026-09-25 (survey and neuroscience scout), 2026-09-26 (the
