@@ -16,7 +16,7 @@ import argparse
 import numpy as np
 import scipy.linalg as sl
 
-SLOW = 0.3
+SLOW = 1e-6  # default; eigenvalues with modulus below this go to the Schur part (see --slow)
 
 
 def block_norm(M, bi, bj):
@@ -28,7 +28,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("orbit"); ap.add_argument("glo"); ap.add_argument("ghi"); ap.add_argument("cn"); ap.add_argument("cd")
     ap.add_argument("dst"); ap.add_argument("--diag"); ap.add_argument("--rho0", type=float, default=1e-9)
-    ap.add_argument("--floor", type=float, default=1e-13); ap.add_argument("--safety", type=float, default=1.5); ap.add_argument("--frame-from")
+    ap.add_argument("--floor", type=float, default=1e-13); ap.add_argument("--safety", type=float, default=1.5); ap.add_argument("--slow", type=float, default=SLOW); ap.add_argument("--frame-from")
     a = ap.parse_args()
     L = open(a.orbit).read().split("\n")
     N = int(L[0].split()[0]); T = L[0].split()[1]
@@ -45,7 +45,7 @@ def main():
         W = np.diag(1 / s) @ At
     else:
         Bs = np.diag(1 / s) @ B @ np.diag(s)
-        Tm, Q, k = sl.schur(Bs, output="real", sort=lambda re, im: np.hypot(re, im) >= SLOW)
+        Tm, Q, k = sl.schur(Bs, output="real", sort=lambda re, im: np.hypot(re, im) >= a.slow)
         T11 = Tm[:k, :k]
         w, Y = np.linalg.eig(T11)
         order = np.argsort(-np.abs(w)); w = w[order]; Y = Y[:, order]
