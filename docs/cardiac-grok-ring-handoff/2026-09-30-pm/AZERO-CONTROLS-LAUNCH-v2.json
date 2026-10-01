@@ -1,0 +1,10 @@
+{
+  "schema": "azero-controls-launch-v2",
+  "orchestrator_pid": 99844,
+  "pgid": 99844,
+  "nice": 19,
+  "tag": "20260930-v2",
+  "log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/azero-controls-orchestrator-20260930-v2.log",
+  "started_et": "2026-09-30 09:51:54 ET",
+  "prior_v1": "retained compile failure under 20260930-v1"
+}

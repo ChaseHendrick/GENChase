@@ -1,0 +1,232 @@
+{
+  "schema": "grok-speed-design-v1",
+  "agent": "Grok-only",
+  "designOnly": true,
+  "writtenAtET": "2026-09-30 09:28:32 ET",
+  "writtenAtUTC": "2026-09-30T13:28:32Z",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "pmDir": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm",
+  "noClaude": true,
+  "noProductionHeaderModification": true,
+  "noCompetingHeavyJobsStarted": true,
+  "sourcesConsulted": {
+    "GROK-HANDOFF.md_sha256": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
+    "HANDOFF-BINDINGS.json_path": "outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
+    "measuredC1Tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "aZeroProposal_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+    "role04_r64_pilot_notes": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-04-r64-pilot-notes.json",
+    "role06_azero_small_tests": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
+    "boxLinuxFeasibility": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/BOX-LINUX-FEASIBILITY.json",
+    "q32": "499995373/500000000",
+    "q64": "249998827/250000000"
+  },
+  "costModel": {
+    "observedFixedStepMs": 0.12109375,
+    "observedFixedStepHex": "0x1.fp-4",
+    "firstAdaptiveStepMs": 0.1125445449076334,
+    "physicalPeriodMs": 53.5880941303358,
+    "physicalPeriodMsApprox": 53.6,
+    "tau32Ms": 1.6746279415729937,
+    "tubesForFullPeriodApprox": 440,
+    "tubesForFullPeriodExactRatio": 442.5339386247085,
+    "wallMinPerTubePlanning": 5.0,
+    "wallHoursFullPeriodPlanning": 36.7,
+    "wallHoursFullPeriodApproxLabel": "~37h",
+    "measuredC1": {
+      "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+      "tubeCount": 7,
+      "flowSeconds": 1807.055594625068,
+      "flowExit": -15,
+      "flowSucceeded": false,
+      "secondsPerTubeObserved": 258.151,
+      "minPerTubeObserved": 4.3,
+      "lastTimeEndMs": 0.8391070449076334,
+      "coordsPerTube": 576,
+      "guardsPerTube": 4384,
+      "order": 20,
+      "radius": "3e-10",
+      "mode": "box",
+      "supplier": "ZeroPrunedSparseMap-full-C1-v1",
+      "binarySha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+      "tubesSha256": "91cb182c00684aedf0ede38c8a30216d5be2bedbb6ce07cdef4291746f002d1a"
+    },
+    "extrapolationOptimisticHoursAtObservedRate": 31.73,
+    "tubesToApprox1ms": 8.3,
+    "bottleneck": [
+      "C1 all 576 directions",
+      "CAPD order20",
+      "sparse-J vs dense (ZeroPruned only; not A-zero)",
+      "Mac single core / sequential validated flow"
+    ],
+    "prior64": {
+      "h_1_over_64": {
+        "directory": "work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-n64-full-step-2400s-v1/",
+        "wallSeconds": 1263.95,
+        "peakRssGiBApprox": 1.44,
+        "coordinates": 1152,
+        "derivativeIntervals": 1327104,
+        "guards": 26304,
+        "isReturn": false
+      },
+      "h_1_over_8": {
+        "directory": "work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-n64-fixed-eighth-full-step-2400s-v1/",
+        "interruptedAfterSeconds": 290.42,
+        "completedStep": false,
+        "methodSourceAdmitted": true,
+        "nativeExit": -9
+      }
+    },
+    "point28Residual": {
+      "maxAbsPreconditionedResidual": 2.2485982053408272e-10,
+      "exceedsRadius2e10": true,
+      "fitsRadius3e10": true,
+      "independentReplaySha256": "552c9c251eeb00f1cdc0e8d9354f0967745380881100026822179a7b443ab1a0"
+    }
+  },
+  "optionsRanked": [
+    {
+      "rank": 1,
+      "id": "larger_validated_fixed_step",
+      "title": "Larger validated fixed step with strict remainder inclusion",
+      "rigorRisk": "low_to_medium",
+      "speedupEstimate": {
+        "h_1_over_8_vs_adaptive_0p121": "~1.03x tube-count (near-redundant)",
+        "h_1_over_4_vs_adaptive_0p121": "~2x tube-count if remainder/domain hold",
+        "note": "Analog: 64 1/64 completed vs 1/8 method admitted but step interrupted"
+      },
+      "admitStatusNow": "admit_able_on_ZeroPruned_C1_order20_step_policy_only",
+      "recommendedForPilot": true
+    },
+    {
+      "rank": 2,
+      "id": "order_reduction_where_proven_safe",
+      "title": "Order reduction only where proven safe",
+      "rigorRisk": "medium",
+      "speedupEstimate": "speculative ~1.3-2x if a lower order were ever remainder-admitted",
+      "admitStatusNow": "not_proven_safe_for_C1",
+      "recommendedForPilot": false
+    },
+    {
+      "rank": 3,
+      "id": "a_zero_exact_zero_A_prune",
+      "title": "Admitted A-zero / exact-zero-A prune",
+      "rigorRisk": "high_until_controls",
+      "speedupEstimate": "potentially large per-tube; unquantified until admitted harness",
+      "admitStatusNow": "NOT_admitted",
+      "missingAdmissions": [
+        "C1-signed-zero-serialization",
+        "C2-dense-initial-matrices",
+        "C3-every-variation-column",
+        "C4-rigorous-remainders",
+        "C5-exact-linear-coefficient-step-event",
+        "C6-independent-source-audit"
+      ],
+      "predicateUnitOnly": {
+        "passed": 14,
+        "failed": 0,
+        "admittedForProof": false
+      },
+      "recommendedForPilot": false
+    },
+    {
+      "rank": 4,
+      "id": "point_then_box",
+      "title": "Point return first then box",
+      "rigorRisk": "low_for_sequencing",
+      "speedupEstimate": "does not remove box C1 wall; point28 already complete",
+      "admitStatusNow": "point_done_box_still_required",
+      "point28ResidualBlocksRadius2e10": true,
+      "recommendedForPilot": false
+    },
+    {
+      "rank": 5,
+      "id": "parallel_tube",
+      "title": "Parallel tube",
+      "rigorRisk": "high_if_forced",
+      "speedupEstimate": "usually none (sequential flow)",
+      "admitStatusNow": "usually_no",
+      "recommendedForPilot": false
+    },
+    {
+      "rank": 6,
+      "id": "linux_box_fresh_capd",
+      "title": "Linux box fresh CAPD build",
+      "rigorRisk": "medium_port_readmission",
+      "speedupEstimate": "hardware-dependent; not ready now",
+      "admitStatusNow": "not_ready_mac_binaries_do_not_admit",
+      "recommendedForPilot": false
+    },
+    {
+      "rank": 7,
+      "id": "radius_strategy_keep_gates",
+      "title": "Radius/strategy changes that keep proof gates",
+      "rigorRisk": "low_if_gates_identical",
+      "speedupEstimate": "radius already 3e-10; fixed-step covered under option 1",
+      "admitStatusNow": "radius3e10_authorized",
+      "recommendedForPilot": false
+    }
+  ],
+  "explicitNonOptions": [
+    "floating_eigenvalues_as_stability_proof",
+    "reduced_model",
+    "sync_only_in_place_of_full_dynamics_or_nonsynchrony",
+    "continuum_or_PDE_claims_from_finite_ring",
+    "replacing_accepted_headers_without_admission",
+    "infer_full64_return_budget_from_one_step_pilot",
+    "resume_or_append_interrupted_run_as_checkpoint",
+    "partial_tubes_or_boolean_alone_as_theorem"
+  ],
+  "recommendedNextExperiment": {
+    "id": "n32_c1_fixed_quarter_speed_pilot",
+    "rationale": "Highest expected speedup (~2x tube-count) among options that remain admit-able on the accepted ZeroPruned C1 order20 supplier without new header admission. Adaptive plateau already ~0.121 ms so h=1/8 is near-redundant; A-zero/order-cut/Linux are not admit-ready.",
+    "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v1",
+    "sites": 32,
+    "mode": "box",
+    "radius": "3e-10",
+    "order": 20,
+    "stepPolicy": "fixed_0.25_quarter_ms",
+    "supplier": "ZeroPrunedSparseMap-full-C1-v1 (accepted; no AZero)",
+    "retainAllDirections": true,
+    "expectedCoords": 576,
+    "expectedGuardsPerTube": 4384,
+    "remainderInclusion": "strict_fail_closed",
+    "budgetWallSeconds": 3600,
+    "budgetRssMiB": 2048,
+    "stopWhen": [
+      "physical_time_ge_approx_1ms",
+      "wall_or_rss_budget",
+      "remainder_or_domain_failure"
+    ],
+    "baselineCompareTag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "launchRequiresCoordinatorApproval": true,
+    "doNotStartIfHeavyCapdOrH64Live": true,
+    "fallbackIfFailClosed": {
+      "tag": "box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1",
+      "stepPolicy": "fixed_0.125_eighth_ms",
+      "note": "Low-speedup calibration near adaptive plateau; then stop and reassess without weakening gates"
+    },
+    "deferredHigherUpsideNotAdmitableYet": [
+      "A-zero C1-C6 + source audit then isolated harness benchmark",
+      "Linux fresh CAPD after immutable bundle",
+      "64 fixed-eighth one-step retry under admitted 2400s/4GiB (separate lane)"
+    ],
+    "isTheorem": false,
+    "authorizesFullPeriodRun": false
+  },
+  "successMetric": {
+    "wallToApprox1ms": "required primary measurement",
+    "wallToFullPeriodExtrapolation": "required secondary; label as extrapolation using pilot s/tube * tubes_at_h",
+    "mustKeepAllDirections": true,
+    "mustKeepGuards": true,
+    "mustKeepStrictRemainder": true,
+    "passSpeedupTargetVsAdaptiveEarlyWindow": ">=~1.5x toward ~2x from h 0.121->0.25",
+    "failClosedStillValuable": true,
+    "pilotAloneIsNotCertificate": true
+  },
+  "laneStatusAtDesignTime": {
+    "measuredC1Incomplete": true,
+    "h64ProductsRunning": false,
+    "h64ProductsExecuted": false,
+    "liveRingFlowObservedWhileWriting": false
+  }
+}

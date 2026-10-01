@@ -1,0 +1,182 @@
+{
+  "schema": "ring64-fixed-H-independent-source-admission-review-v1",
+  "role": "independent_reviewer",
+  "reviewRoles": [
+    "Review-source",
+    "Review-thm"
+  ],
+  "roleIds": [
+    7,
+    8
+  ],
+  "identity": "Grok Bot independent reviewer (not the R64-H implementer)",
+  "notImplementer": true,
+  "implementerIdentityReviewed": {
+    "identity": "Grok Bot",
+    "role": "R64-H",
+    "roleNumber": 5,
+    "distinctFromThisReviewer": true
+  },
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "utc": "2026-09-30T13:05:53Z",
+  "localTimeET": "2026-09-30 09:05:53 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "rejected": false,
+  "admissionScope": "Formal source admission of the pinned ring64 fixed-H positivity source only. Not an arithmetic result, not H SPD, not a theorem.",
+  "didNotRubberStampImplementerAccepted": true,
+  "implementerAcceptedTrueIgnoredAsEvidence": true,
+  "implementerAdmissionStatus": "provisional_pending_review",
+  "subject": {
+    "directory": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1",
+    "SOURCE-ADMISSION.json": {
+      "sha256": "76a3b9aba2d03aa300d7a3cde6c4ae1da96fbe87a87b49c41606b8a9a7d43198",
+      "bytes": 20718
+    },
+    "BUDGET.json": {
+      "sha256": "e088e0691ced38cb27f36752624a82254e6e83a0521e19418f90d4dcafcc7cdc",
+      "bytes": 3258,
+      "matchesClaimedBudgetSha256": true
+    },
+    "README.md": {
+      "sha256": "6cef482acfdaa998e8f9b70bb54dca50fa155c5914d132a3b5c47e1425bccbc2",
+      "bytes": 564
+    },
+    "pmBudgetSummary": {
+      "path": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-05-h64-admission-budget.json",
+      "sha256": "2c11efe5654bd18dad6470c7a9e8da83daa3714944be3fb8c73c24e9787a5f20",
+      "bytes": 2006,
+      "byteIdenticalToBUDGET": false,
+      "budgetSha256FieldMatchesLiveBUDGET": true,
+      "sourceAdmissionSha256FieldMatchesLiveSOURCE_ADMISSION": true,
+      "note": "PM file is a summary copy, not a byte clone. Caps and budget hash agree with BUDGET.json."
+    }
+  },
+  "checklist": [
+    {
+      "id": "source_transformation",
+      "passed": true,
+      "evidence": "Applied SOURCE-PREPARATION.changes in order to parent run_fixed_H.py (sha c1c2b1628104ffe738388d2302dea40c1fd13ef6c05bacb9176bdb38e6743f26). Every before-count matched. Result byte-identical to ring64 run_fixed_H.py sha f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0. Unified diff contains only the declared N/path/hash/sites/q/canonical/schema/cap substitutions."
+    },
+    {
+      "id": "pins_live_hash_match",
+      "passed": true,
+      "evidence": "Recomputed sha256 now. All six PINS, parent source, SOURCE-PREPARATION, PRELAUNCH-CONTROLS, CONTROLS-REVIEW, replay_source_controls.py, and H32 RESULT match the receipt. Zero mismatches."
+    },
+    {
+      "id": "reviewed_sources_byte_identical",
+      "passed": true,
+      "evidence": "reviewed-sources copies of run_fixed_H.py (14592), SOURCE-PREPARATION.json (3911), and PRELAUNCH-CONTROLS.json (991) are byte-identical to the preparation tree."
+    },
+    {
+      "id": "dimensions_and_canonicals",
+      "passed": true,
+      "evidence": "Proposal sites=64, matrix_dimensions=[1151,1151], H is 1151x1151 and symmetric under Fraction read. Congruence dimension=1151, sites=64, q_test_exact=249998827/250000000, originalMatrixProposal sha256 equals live PROPOSED-MATRICES.json. Recomputed canonical(H)=72c195a0e6f0128a20f82bf4ac05d96cf95d194caaf48ea80510e6d5b2241c4f and canonical(RH)=ed818bd07a2518d0b9730d603b422bd7962d4c324b5620c58957dab9bf980861 using dyadic.read_matrix(..., Fraction) and the source canonical encoding. fullGramIntervalEntries=1151*1151=1324801. SCALE=1<<256."
+    },
+    {
+      "id": "controls_reexecuted",
+      "passed": true,
+      "evidence": "Re-executed fixed.controls on the pinned dyadic kernel: 8/8 (positive identity, positive strict DD, semidefinite, indefinite, negative, zero, nonsymmetric, rectangular). Recomputed additional margins: uncertain strict DD [2,2] predicate true; lower diagonal reaches zero [0,2] predicate false; DD equality [0,0] predicate false; singular 2x2 RH gram minimum margin 0 so strict positivity fails. These are in-process 2x2 checks, not saved booleans and not native products. Did not re-execute the prior supervisor seven-control suite; verified runner-controls-v3/RESULT.json sha b1346298f5105be7a27143b10ca8056679843dee4a49ff0d54b1376dc7221b88 records status=passed, count=7, runnerSourceSha256 equal to live supervisor source."
+    },
+    {
+      "id": "backend_admission",
+      "passed": true,
+      "evidence": "Live SOURCE-AUDIT schema reviewed-exact-product-backend-admission-v1, accepted=true, maxDimension=1152>=1151, integerBits=256, maxOperandBits=512, manifest sha and kernel sha match PINS. Live caller sha 473b6c96c0fd814e981f2fed8336a7fed36685bca65d933572cf35f899c906b3 and parser sha a8212de3362a71f8420beb980c3f938dd745517a198291d3919806e13756858e match the admission. BUILD-MANIFEST build_exit=0 (int) and every listed file/binary sha matches live bytes. This is not an H64 product receipt."
+    },
+    {
+      "id": "rounding_notes",
+      "passed": true,
+      "evidence": "Positivity predicate in run_fixed_H.py is min(integer strict DD margins)>0 after outward dyadic products and symmetric_intersection. float(Q(...)) is only minimumMarginDisplayOnly / stdout. SCALE remains 1<<256."
+    },
+    {
+      "id": "no_full_products",
+      "passed": true,
+      "evidence": "This review did not launch run_fixed_H.py, native products, or any CAPD/ring_flow job, and did not replace headers. Receipt flags nativeProductsExecuted=false, largeMetricParsedOrTested=false, fixedHSPDProved=false remain correct."
+    },
+    {
+      "id": "budget_recorded_before_products",
+      "passed": true,
+      "evidence": "BUDGET.json sha e088e0691ced38cb27f36752624a82254e6e83a0521e19418f90d4dcafcc7cdc matches the field inside SOURCE-ADMISSION.json. Caps match the source literals: wall 1200s, pythonRss 3221225472 (3*1024**3), ownedTree 4294967296 (4*1024**3), native wall 600s, native RSS 2147483648 (2*1024**3). full1151SquareProductsExecuted=false."
+    }
+  ],
+  "checklistAllPassed": true,
+  "defects": [],
+  "liveHashesRecomputed": {
+    "run_fixed_H.py": "f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0",
+    "parent_run_fixed_H.py": "c1c2b1628104ffe738388d2302dea40c1fd13ef6c05bacb9176bdb38e6743f26",
+    "SOURCE-PREPARATION.json": "b16cd43e114d2a8b20a57cee8e89e29b037cae0e154ef21fd433a17a375606b5",
+    "PRELAUNCH-CONTROLS.json": "b20c05462c7f78400633008a34c68222a855b45117e860d2cff32e55d717fc87",
+    "CONTROLS-REVIEW.json": "bee2ebf86957790e46b1214b38123e96c12750fa4b2455337e10b94b3094a465",
+    "replay_source_controls.py": "b58170917d2f0bfe8b52c8ae9c0bfa02fa0929e5f24038b21a6ce81a1b7b60aa",
+    "matrixProposal": "f7f6de354154e2b709fb150bab959493e5560cf1d20789a9d0bdd6081a98ba9b",
+    "congruenceProposal": "a4b19531e91416bbf67e259db39ee7104b19dec2b17a08fdad6f819155c8935d",
+    "backendManifest": "16aee34abb1ca745987e44cd65c00501d7e62bb1eb4fdbee502b995d0bb09b88",
+    "backendAdmission": "a69999bcc801f626bebef97809939096e0d7295fa5986bcb47e724f9cce0f434",
+    "supervisorSource": "7e0655a9ba4e8c50cdcf341fcc025911bc54591822fca42254cbb245525498e0",
+    "kernel": "70c8bd4e227e8f521d099737897e4c01858a8ff473116706f6d42940b51baf36",
+    "H32_RESULT": "735a27cfa11622ffc438bf2980ab85a84c0f1b373fb426182310db85856b41b1",
+    "H32_RUN_REPORT": "0d58cfbd4820e168b3ce072555420202c451ca2b0e9f94f15032155710f6d181",
+    "metricCanonicalSha256_recomputed": "72c195a0e6f0128a20f82bf4ac05d96cf95d194caaf48ea80510e6d5b2241c4f",
+    "metricCongruenceRHCanonicalSha256_recomputed": "ed818bd07a2518d0b9730d603b422bd7962d4c324b5620c58957dab9bf980861"
+  },
+  "budgetSanity": {
+    "sane": true,
+    "fullProductsMustNotRunFromThisReview": true,
+    "recordedCaps": {
+      "wallSeconds": 1200,
+      "pythonRssCapBytes": 3221225472,
+      "ownedTreeRssCapBytes": 4294967296,
+      "nativeProductWallCapSeconds": 600,
+      "nativeProductRssCapBytes": 2147483648,
+      "diskBudgetBytes": 8589934592,
+      "sampling": "sampled retained process-tree RSS every 0.1s, not instantaneous allocation enforcement"
+    },
+    "h32EvidenceReopened": {
+      "runReportElapsedSeconds": 37.172909958986565,
+      "workerElapsedSeconds": 37.033057707943954,
+      "sampledOwnedTreePeakRssBytes": 365395968,
+      "sampledOwnedTreePeakRssMiBExact": 348.46875,
+      "receiptMiBRounded": 348.469,
+      "nativeProductWallSeconds": [
+        13.934196750051342,
+        15.194838708965108
+      ],
+      "nativeProductPeakRssBytes": [
+        112508928,
+        110919680
+      ],
+      "treeBytes": 377825845
+    },
+    "scale": {
+      "linearRatio": 2.0017391304347827,
+      "quadraticRatio": 4.0069595463138,
+      "cubicRatio": 8.020887717925538,
+      "expectedWallSeconds_cubic": 298.15973692958727,
+      "expectedOwnedPeakRssBytes_quadratic": 1464126862.1621716,
+      "expectedNativeWallSeconds_cubic": [
+        111.76462757164475,
+        121.87609517659777
+      ],
+      "expectedDiskBytes_quadratic": 1513932876.466828
+    },
+    "margins": "Expected cubic wall ~298s is about 4.0x under 1200s. Expected owned RSS ~1.36 GiB is about 2.9x under 4 GiB. Expected native walls ~112s and ~122s are about 5x under 600s. Expected native RSS ~428 MiB is about 4.9x under 2 GiB. Expected disk ~1.41 GiB is under the documentary 8 GiB budget.",
+    "caveat": "The two native 600s caps are not jointly feasible under the 1200s outer cap (no slack if both products run to their own caps). Expected native sum is ~234s, so the recorded budget is still sane for the extrapolated job. Disk budget is not enforced by run_fixed_H.py. Receipt RSS/disk figures 1464126862 and 1513932876 drop a fraction of a byte from the exact products; immaterial. Sampling is not an instantaneous allocator cap."
+  },
+  "proof_flags": {
+    "existence": false,
+    "stability": false,
+    "H_admitted": false,
+    "H64_SPD_proved": false,
+    "native_products_executed": false,
+    "formal_source_admission_accepted_by_independent_reviewer": true,
+    "complete_64_return": false,
+    "theorem": false
+  },
+  "nonActions": [
+    "No native CAPD or ring_flow job",
+    "No full 1151-square H products",
+    "No header replacement",
+    "No manuscript/certificate/release edits"
+  ],
+  "nextGate": "Source admission is accepted for a later, separately authorized isolated actual-fixed-H run under these caps. H_admitted and H64_SPD_proved stay false until an independent arithmetic replay of a complete RESULT. This review does not authorize launching that run."
+}

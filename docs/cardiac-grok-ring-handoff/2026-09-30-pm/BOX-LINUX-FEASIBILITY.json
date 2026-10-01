@@ -1,0 +1,139 @@
+{
+  "schema": "grok-box-linux-feasibility-v1",
+  "role_support": "R64-pilot (role 4)",
+  "utc_written": "2026-09-30T12:57:22Z",
+  "hostname": "grok-bot-vm-434647732",
+  "os": {
+    "pretty": "Debian GNU/Linux 13 (trixie)",
+    "kernel": "6.12.94+",
+    "arch": "x86_64",
+    "platform": "Linux-6.12.94+-x86_64-with-glibc2.41"
+  },
+  "resources": {
+    "cpu_count": 8,
+    "cpu_model": "Intel(R) Xeon(R) Processor",
+    "mem_total_bytes": 16791158784,
+    "mem_total_gib_approx": 15.64,
+    "mem_available_bytes": 3970187264,
+    "mem_available_gib_approx": 3.7,
+    "swap_total_gib_approx": 15,
+    "disk_total_bytes": 135152996352,
+    "disk_free_bytes": 101380313088,
+    "disk_free_gib_approx": 94.42,
+    "loadavg_1_5_15": [
+      0.21,
+      0.13,
+      0.05
+    ],
+    "note": "Available RAM was ~3.7Gi at inventory; shared multi-agent box. Disk free typically ~95Gi as stated."
+  },
+  "toolchain_inventory": {
+    "capd": {
+      "present": false,
+      "headers_found": false,
+      "libs_found": false,
+      "search_paths_checked": [
+        "/usr/local/include",
+        "/usr/include",
+        "/opt",
+        "/home/box",
+        "/workspace"
+      ],
+      "apt_cache_hits": []
+    },
+    "clangpp": {
+      "present": false,
+      "path": null
+    },
+    "clang": {
+      "present": false,
+      "path": null
+    },
+    "gpp": {
+      "present": false,
+      "path": null,
+      "note": "g++ and build-essential packages not installed"
+    },
+    "gcc": {
+      "present": true,
+      "path": "/usr/bin/gcc",
+      "version": "gcc (Debian 14.2.0-19) 14.2.0"
+    },
+    "make": {
+      "present": false
+    },
+    "cmake": {
+      "present": false
+    },
+    "pkg_config": {
+      "present": false
+    },
+    "gmp": {
+      "runtime_libgmp10": true,
+      "runtime_version": "2:6.3.0+dfsg-3",
+      "dev_headers": false,
+      "header_paths_checked": [
+        "/usr/include/gmp.h",
+        "/usr/local/include/gmp.h"
+      ]
+    },
+    "mpfr": {
+      "runtime_libmpfr6": true,
+      "runtime_version": "4.2.2-1",
+      "dev_headers": false,
+      "header_paths_checked": [
+        "/usr/include/mpfr.h",
+        "/usr/local/include/mpfr.h"
+      ]
+    },
+    "python3": {
+      "present": true,
+      "version": "Python 3.13.5",
+      "path": "/usr/bin/python3"
+    }
+  },
+  "mac_binary_portability": {
+    "mac_binary_hashes_admit_linux_build": false,
+    "statement": "Mac binary hashes do NOT admit a Linux build. A Mach-O/macOS-linked ring_flow or libcapd.a cannot be executed or treated as a verified Linux artifact. Fresh Linux compile from audited sources is mandatory, with independent rounding, source, and runtime controls.",
+    "required_before_any_linux_native": [
+      "Install or stage clang++ or g++, make/cmake as needed",
+      "Install libgmp-dev and libmpfr-dev (headers + linkable libs)",
+      "Provide CAPD sources or a Linux-built libcapd.a + matching 440 headers with recorded hashes",
+      "Rebuild ring_flow / large_step on Linux with -frounding-math (or documented equivalent) and record binary/library SHAs",
+      "Replay source-audit / INPUTS / controls hashes; do not trust Mac-compiled artifacts",
+      "Independent runtime RSS/wall watchdog semantics must be re-validated on Linux"
+    ]
+  },
+  "bundle_acceptance": {
+    "could_accept_source_input_bundle_later": true,
+    "conditions": [
+      "Immutable hashed bundle: INPUTS.json, headers, supplier sources, CAPD headers/library (Linux-buildable), audits",
+      "No credentials in bundle",
+      "Coordinator approval before any native CAPD compile or run",
+      "No overwrite of interrupted Mac receipts; new immutable tags only"
+    ],
+    "bundle_not_present_now": true
+  },
+  "compute_policy": {
+    "paid_compute": false,
+    "included_capacity_only": true,
+    "no_capd_started_by_this_assessment": true,
+    "competing_native_capd_on_box": false,
+    "note": "Feasibility inventory only. Do not start CAPD native on box or Mac from this role."
+  },
+  "feasibility_verdict": {
+    "ready_to_compile_now": false,
+    "ready_to_run_native_now": false,
+    "blockers": [
+      "CAPD absent",
+      "clang++/g++ absent",
+      "make/cmake absent",
+      "GMP/MPFR -dev headers absent (runtime .so only)",
+      "No Linux source/input bundle staged yet",
+      "Mac binaries/hashes are not transferable certificates of a Linux build"
+    ],
+    "path_forward": "After coordinator supplies an immutable Linux-admissible source bundle and approves installs within included capacity, perform fresh Linux compile with rounding/source/runtime controls, then bounded pilot only\u2014never infer a 64-site theorem from one step."
+  },
+  "mirrored_from_box_path": "/workspace/cardiac-grok-linux-feasibility-2026-09-30.json",
+  "substance_match_note": "Same inventory substance as box file; utc_written is this Mac write timestamp."
+}

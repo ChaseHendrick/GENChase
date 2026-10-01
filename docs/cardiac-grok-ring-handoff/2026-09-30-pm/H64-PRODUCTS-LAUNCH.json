@@ -1,0 +1,83 @@
+{
+  "schema": "h64-products-launch-v1",
+  "tag": "ring64-H-products-grok-20260930-v1",
+  "role": "R64-H-products",
+  "agent": "grok",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machine_label": "Chases-MacBook-Pro",
+  "utc_start": "2026-09-30T13:27:13Z",
+  "local_start_label": "2026-09-30T09:27:13-0400 (ET)",
+  "sites": 64,
+  "dimension": 1151,
+  "wall_seconds_budget": 1200,
+  "python_rss_cap_mib": 3072,
+  "owned_tree_rss_cap_mib": 4096,
+  "native_product_wall_cap_seconds": 600,
+  "native_product_rss_cap_mib": 2048,
+  "rss_semantics": "sampled_retained_process_tree_RSS every 0.1s; not instantaneous allocation enforcement",
+  "supervisor_pid": 88117,
+  "pgid": 88117,
+  "nice": 19,
+  "worker_pid": 88119,
+  "worker_pgid": 88119,
+  "owned_process_groups": {
+    "supervisor_group": {
+      "pgid": 88117,
+      "leader_pid": 88117,
+      "ppid": 1,
+      "nice": 19,
+      "note": "fork+setsid; PGID==PID; PPID->1 after launcher exit"
+    },
+    "worker_group": {
+      "pgid": 88119,
+      "leader_pid": 88119,
+      "ppid": 88117,
+      "nice": 19,
+      "note": "run_fixed_H Popen(start_new_session=True); separate PGID"
+    }
+  },
+  "paths": {
+    "script": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
+    "script_sha256": "f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0",
+    "python": "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "output": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
+    "supervisor_log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ring64-H-products-grok-20260930-v1-supervisor.log",
+    "admission_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1",
+    "budget": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/BUDGET.json",
+    "source_admission": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/SOURCE-ADMISSION.json",
+    "independent_review": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/INDEPENDENT-REVIEW.json",
+    "prep": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1"
+  },
+  "command_argv": [
+    "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
+    "--output",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1"
+  ],
+  "authorization": {
+    "source_admission_accepted": true,
+    "independent_review_verdict": "accept",
+    "budget_recorded_before_products": true,
+    "budget_receipt_itself_authorized_products": false,
+    "coordinator_resource_authorization": "user_task_PART_B_h64_products_finite_budget_already_admitted_after_C1_stop",
+    "c1_stopped_before_launch": true,
+    "did_not_invent_extra_auth_artifact": true,
+    "script_requires_auth_file": false,
+    "script_requires_nice19": true
+  },
+  "non_actions": [
+    "Did not replace headers",
+    "Did not restart 32 C1",
+    "Did not start 64 full C1 return",
+    "Did not edit manuscript/certificates",
+    "proof_flags.H_admitted remains false until RESULT+replay"
+  ],
+  "notes": [
+    "Unique NEW output tag under preparation tree (parallel to H32 actual-fixed-H-v1 naming, grok-dated).",
+    "Caps enforced inside run_fixed_H.py supervisor (wall 1200s, python 3GiB, owned-tree 4GiB, native 600s/2GiB).",
+    "Independent review accepted source admission but did not itself authorize launch; user PART B after C1 stop supplies that authorization under admitted BUDGET."
+  ],
+  "written_utc": "2026-09-30T13:27:39Z",
+  "corrected_worker_pid_note": "Initial LAUNCH briefly raced launcher PID 88101; corrected to live worker 88119 after settle.",
+  "live_verified_et": "2026-09-30T09:27:31-0400 (ET)"
+}

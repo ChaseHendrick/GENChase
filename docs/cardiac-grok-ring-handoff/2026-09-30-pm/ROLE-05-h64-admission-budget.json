@@ -1,0 +1,31 @@
+{
+  "schema": "role-05-h64-admission-budget-summary-v1",
+  "copiedFrom": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/BUDGET.json",
+  "budgetSha256": "e088e0691ced38cb27f36752624a82254e6e83a0521e19418f90d4dcafcc7cdc",
+  "sourceAdmissionPath": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/SOURCE-ADMISSION.json",
+  "sourceAdmissionSha256": "76a3b9aba2d03aa300d7a3cde6c4ae1da96fbe87a87b49c41606b8a9a7d43198",
+  "admissionStatus": "provisional_pending_review",
+  "H_admitted": false,
+  "wallSeconds": 1200,
+  "pythonRssCapMiB": 3072,
+  "ownedTreeRssCapMiB": 4096,
+  "nativeProductWallCapSeconds": 600,
+  "nativeProductRssCapMiB": 2048,
+  "diskBudgetGiB": 8,
+  "peakRssSamplingSemantics": {
+    "kind": "sampled_retained_process_tree_RSS",
+    "samplingSeconds": 0.1,
+    "notInstantaneousAllocationEnforcement": true,
+    "scopeNote": "Matches bounded-ring*-fixed-H-only-run resourceScope: sampled retained process-tree RSS, not instantaneous allocation enforcement."
+  },
+  "rationale": "Finite exact-arithmetic budget selected BEFORE any full 1151-square H products. Scaled from completed H32 actual-fixed-H-v1 (elapsed\u224837.17s, owned-tree peak\u2248348.5 MiB, native products \u224813.9\u201315.2s at \u2248106\u2013107 MiB) using dim ratio 1151/575\u22482.0017 (quadratic for RSS/disk, cubic for dense multiply wall). Also consistent with small positivity controls (PRELAUNCH \u22480.20s; CONTROLS-REVIEW 12/12 passed). Caps intentionally identical to already-declared SOURCE-PREPARATION values; this receipt records them as the authorized budget, not a launch.",
+  "scalingBasisSummary": {
+    "H32_elapsedSeconds": 37.172909958986565,
+    "H32_sampledOwnedTreePeakRssMiB": 348.469,
+    "expectedWallSeconds_cubicScale": 298.15973692958727,
+    "expectedOwnedPeakRssBytes_quadraticScale": 1464126862,
+    "expectedDiskBytes_quadraticScale": 1513932876
+  },
+  "fullProductsExecuted": false,
+  "utc": "2026-09-30T13:01:25Z"
+}

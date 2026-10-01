@@ -1,0 +1,7 @@
+{
+  "schema": "n32-root-contraction-v1",
+  "uniform_root_contraction_strict": true,
+  "contraction_bound_exact": "485318790728117816144500317985245934608803921498101838787696654423015171059/57896044618658097711785492504343953926634992332820282019728792003956564819968",
+  "preconditioner_nonsingular_implied": true,
+  "admitted_for_proof": false
+}

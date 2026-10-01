@@ -1,0 +1,61 @@
+{
+  "schema": "cardiac-ring32-native-K-harness-derivation-v1",
+  "writtenAtET": "2026-10-01T10:30:23-0400 (ET)",
+  "agent": "Grok-only-executor",
+  "authorization": "AUTHORIZED_BY_SHARPIE_CONTINUE_WITH_THE_PROOFS",
+  "derived_from": {
+    "ring16_root_field_k.cpp": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/root_field_k.cpp",
+      "sha256": "91a3640141d0a98b11eab08f8d6dda71712283af2988bc943f5f5ea193697f50"
+    },
+    "ring16_ring_flow_k.cpp": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/ring_flow_k.cpp",
+      "sha256": "78ff1455f279c6ef0c426b8b8d9a85a796630cf5e2754d5466fd1d1701dfa3cc"
+    },
+    "ring16_run_root_field_k.py": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/run_root_field_k.py",
+      "sha256": "1862af144bb0dccdd957f460eedcf5adc59353ce2ef7802de4cffa5ac16cb961"
+    },
+    "ring16_run_flow_k.py": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/run_flow_k.py",
+      "sha256": "942c1141a101039adc04eff708d0fdcf8ca14cc564d20b0fe4ae9bc6740ac81f"
+    },
+    "ring16_HARNESS-DERIVATION_note": "ring16 itself derived from ring8; N-parametric END=18*(N-1); event window and dim labels are the N-dependent edits"
+  },
+  "n32_model_pins": {
+    "INPUTS.json": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0",
+    "ring_model.h": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6",
+    "N": 32,
+    "DIM": 576,
+    "section": 575,
+    "TIME_PROPOSAL": "1.6746279415729937",
+    "q32": "499995373/500000000"
+  },
+  "changes_from_ring16": [
+    "root_field_k.cpp: JSON keys normalizedField288/physicalField288 -> normalizedField576/physicalField576 (wrap_initial_field.py already expects physicalField576)",
+    "ring_flow_k.cpp: error text all288 -> all576",
+    "ring_flow_k.cpp: event-time window hard 3..3.8 replaced by TIME_PROPOSAL*[4/5,6/5] matching N32 adaptive existence TU",
+    "ring_flow_k.cpp: supervisor budget ceiling 3600 -> 10800 (authorized N32 C1 cap)",
+    "run_root_field_k.py: N32 paths, CAPD snapshot from finished C1 inputs, require --k-inputs/--k-header (do not bake ring16 K offsets)",
+    "run_flow_k.py: sites=32 / DIM=576 metadata; ring32 rigorous-attempts OUT; require --k-inputs/--k-header; budget default 10800",
+    "DIM/N/END/CENTERS/K_LO/K_HI remain parametric via ring_model.h + generated root_k_offsets.h"
+  ],
+  "explicit_non_changes": [
+    "FixedQuarter live PREF ring_flow_zero_pruned.cpp left at e9081f21\u2026 (not used by K field harness)",
+    "No ZeroPruned map in K field (matches ring8/16 template: dense IMap ringModel for field eval)",
+    "No proof admit / G8 / G9",
+    "No silent widening of model/q/H"
+  ],
+  "derived_hashes": {
+    "root_field_k.cpp": "34077f7734312878e05c0fd13d2782e5a90356192dd3ce1a0735035e3abd9776",
+    "ring_flow_k.cpp": "a7e4c85852700c9b9b0c09676ce4e11f8df7a432c673167e5acd24ab959635a0",
+    "run_root_field_k.py": "b7aca1ebe48c81ca97e5809c14077c4ec69a919b5257f0d821d3825b9da6b016",
+    "run_flow_k.py": "09467935875943ede2c071a57cad6a7c369d2cf9f30a65657ce4c4135c2b29b5"
+  },
+  "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "fixedQuarter_untouched": true,
+  "admitted_for_proof": false,
+  "spatial_existence_certified": false,
+  "spatial_stability_certified": false,
+  "native_run_yet": false
+}

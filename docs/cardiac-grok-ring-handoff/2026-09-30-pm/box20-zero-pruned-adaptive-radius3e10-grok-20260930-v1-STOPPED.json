@@ -1,0 +1,76 @@
+{
+  "schema": "interrupted-receipt-v1",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+  "reason": "user_stop_pivot_h64",
+  "status": "stopped",
+  "agent": "grok",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+  "attempt_dir_preserved": true,
+  "did_not_overwrite_prior_codex_interrupted_dirs": true,
+  "utc_start": "2026-09-30T12:55:44Z",
+  "local_start_label": "2026-09-30T08:55:44-0400 (ET)",
+  "utc_stop": "2026-09-30T13:25:59Z",
+  "local_stop_label": "2026-09-30T09:25:59-0400 (ET)",
+  "elapsed_seconds": 1815.0,
+  "elapsed_human": "30m15s",
+  "tube_count": 7,
+  "last_stepIndex": 7,
+  "last_timeEnd": {
+    "lo": "0x1.ad9f70477166fp-1",
+    "hi": "0x1.ad9f70477167p-1"
+  },
+  "last_timeEnd_decimal_approx": {
+    "lo": 0.8391070449076333,
+    "hi": 0.8391070449076334,
+    "mid": 0.8391070449076334
+  },
+  "last_timeStart": {
+    "lo": "0x1.6f9f70477166fp-1",
+    "hi": "0x1.6f9f70477167p-1"
+  },
+  "pids": {
+    "supervisor_pid": 79385,
+    "supervisor_pgid": 79385,
+    "native_pid": 79423,
+    "native_pgid": 79423
+  },
+  "identity_verified_before_signal": {
+    "supervisor": {
+      "pid": 79385,
+      "pgid": 79385,
+      "lstart": "Wed Sep 30 08:55:44 2026",
+      "cwd": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight",
+      "command_contains_tag": true,
+      "match_LAUNCH": true
+    },
+    "native_ring_flow": {
+      "pid": 79423,
+      "pgid": 79423,
+      "lstart": "Wed Sep 30 08:55:48 2026",
+      "cwd": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight",
+      "command_contains_tag_path": true,
+      "match_LAUNCH": true
+    },
+    "excluded": "Did not target Codex/Zoom/Chrome/unrelated processes"
+  },
+  "cleanup_order": [
+    "verify identities",
+    "killpg(native_pgid=79423, SIGTERM) \u2014 exited after TERM; no SIGKILL needed",
+    "supervisor PGID 79385 already exited (observed gone when checked after native TERM; no signal needed)",
+    "re-ps: no residual tag or ring_flow"
+  ],
+  "signals": {
+    "native_pgid_79423": "SIGTERM (sufficient; process exited)",
+    "supervisor_pgid_79385": "none_needed_already_exited_after_native_term"
+  },
+  "confirmed_gone": true,
+  "residual_tag_or_ring_flow": false,
+  "watch_note": "cardiac-32-c1-watch is moot after user_stop_pivot_h64; parent may delete routine",
+  "no_manuscript_edits": true,
+  "no_certificate_edits": true,
+  "launch_json": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+  "cleanup_dual_pgid_json": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/CLEANUP-DUAL-PGID.json",
+  "written_utc": "2026-09-30T13:26:13Z",
+  "written_et": "2026-09-30T09:26:13-0400 (ET)"
+}

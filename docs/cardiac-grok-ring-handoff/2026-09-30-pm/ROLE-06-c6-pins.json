@@ -1,0 +1,53 @@
+{
+  "schema": "grok-ring-handoff-role-06-c6-pins-v1",
+  "status": "PIN PREPARATION ONLY; C6 not admitted",
+  "agent": "Grok-only",
+  "role": "Opt-deriv",
+  "roleId": 6,
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "writtenAtET": "2026-09-30 09:35:45 ET",
+  "writtenAtUTC": "2026-09-30T13:35:45Z",
+  "admitted_for_proof": false,
+  "pins_path": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-pins-grok-20260930-v1/PINS.json",
+  "pins_sha256": "9766dc4eb8b053ddad346b0afe0e30f19e92d65f6424e24a9cf462aa7e29ec69",
+  "recomputed_sha256": {
+    "A-ZERO-PROPOSAL-V1.json": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+    "ROLE-06-azero-small-tests.json": "6c0d547707696499ce79a55b224bdc1ba215842c486c42b757a0a4ddb64232e9",
+    "ROLE-06-opt-deriv-status.json": "ab3246f564a7bac073b9fba25c7b000ecf23d0cb347c1798ded342d1f84077dd",
+    "a-zero-small-tests/RESULT.json": "ba88e28e4d1acf68ff21d6d0e2b6229d7bedd7917f5da4a6c53e748a0d7ed95e",
+    "a-zero-small-tests/src/azero_skip_predicate_unit.cpp": "ede8e15956c986d8da63c5e470a9d083616315c513b4b8ab90d71681698fb8b5",
+    "a-zero-small-tests/results/predicate-RESULT.json": "45084733609f281c67d6c756dcf406c9dbca9364bab5dbe6123c0bd40bcaa2a1",
+    "a-zero-small-tests/results/azero_skip_predicate_unit": "f173ad6240f2b4f9a4c1dfc0a3ef1b91d52107229919bddea7cd766f3e575d8a",
+    "a-zero-small-tests/src/linear_azero_controls_DEFERRED.cpp": "55b49bebbaa6ae85e8b28c39c1b07d832b0b4778a7f2b28a0abf41223bac0f06",
+    "a-zero-small-tests/DESIGN-CONTROL-PLAN.md": "9b4f9d19bcb7919cdaae0b8f93ceff8d799f6e1f70a15a00f889b7b5ab48631d"
+  },
+  "checklist_summary": {
+    "proposal_and_prototype_pins": "PASS",
+    "production_baseline_pins": "PASS_NO_REPLACEMENT",
+    "ROLE-06_artifact_pins": "PASS",
+    "C1_to_C5_acceptance": "PENDING",
+    "independent_source_review": "PENDING",
+    "sourceAuditPassed": false,
+    "proof_reliance_allowed": false
+  },
+  "semantic_gate": "Skip a J*A product only for complete outward A=[0,0] with both J endpoints finite; otherwise preserve existing multiplication and order; nonfinite J does not trigger omission.",
+  "retention_flags": {
+    "fullColumnsRetained": true,
+    "fullStatesRetained": true,
+    "denseWidthA0Retained": true,
+    "allRemainderCallsRetained": true,
+    "signed_zero_serialization_remains_control_requirement": true
+  },
+  "non_actions": [
+    "No compile.",
+    "No CAPD compile or run.",
+    "No native A-zero harness.",
+    "No production ZeroPruned or Cellwise header replacement.",
+    "No proof reliance or admission claim."
+  ]
+}

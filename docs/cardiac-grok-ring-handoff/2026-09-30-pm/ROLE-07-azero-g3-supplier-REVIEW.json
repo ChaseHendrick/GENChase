@@ -1,0 +1,51 @@
+{
+  "schema": "azero-g3-supplier-audit-review-role-07-v1",
+  "role": "independent_reviewer",
+  "roleId": 7,
+  "roleContract": "ROLE-AZERO-C1-SPEED-REVIEW",
+  "notImplementer": true,
+  "writtenAtET": "2026-09-30 10:11:21 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "checks": [
+    {
+      "id": "pins_live_match",
+      "passed": true
+    },
+    {
+      "id": "diff_declared_scope_only",
+      "passed": true
+    },
+    {
+      "id": "sparse_override_present",
+      "passed": true
+    },
+    {
+      "id": "C1_to_C6_pass_linked",
+      "passed": true
+    },
+    {
+      "id": "G2_build_pass_linked",
+      "passed": true
+    },
+    {
+      "id": "accepted_isolated_runner_only",
+      "passed": true
+    },
+    {
+      "id": "admitted_for_proof_false",
+      "passed": true
+    },
+    {
+      "id": "no_production_header_swap",
+      "passed": true
+    },
+    {
+      "id": "ZeroPruned_untouched",
+      "passed": true
+    }
+  ],
+  "audit_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/azero-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+  "audit_sha256": "9a575362f7c95bee5caea5cf09f64d1edef965815f07831e018bb5cf89be858c",
+  "checklistAllPassed": true
+}

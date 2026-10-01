@@ -1,0 +1,90 @@
+{
+  "role": "R64-H",
+  "role_id": 5,
+  "status": "formal_source_admission_provisional_pending_review",
+  "utc": "2026-09-30T13:01:37Z",
+  "paths_read": [
+    "work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/",
+    "work/cardiac-study/tissue-proof-review/ring64-H-positivity-source-review-v1/"
+  ],
+  "hashes_checked": {
+    "run_fixed_H.py": "f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0",
+    "SOURCE-PREPARATION.json": "b16cd43e114d2a8b20a57cee8e89e29b037cae0e154ef21fd433a17a375606b5",
+    "PRELAUNCH-CONTROLS.json": "b20c05462c7f78400633008a34c68222a855b45117e860d2cff32e55d717fc87",
+    "CONTROLS-REVIEW.json": "bee2ebf86957790e46b1214b38123e96c12750fa4b2455337e10b94b3094a465",
+    "replay_source_controls.py": "b58170917d2f0bfe8b52c8ae9c0bfa02fa0929e5f24038b21a6ce81a1b7b60aa",
+    "bindings": {
+      "matrixProposal": "f7f6de354154e2b709fb150bab959493e5560cf1d20789a9d0bdd6081a98ba9b",
+      "congruenceProposal": "a4b19531e91416bbf67e259db39ee7104b19dec2b17a08fdad6f819155c8935d",
+      "backendManifest": "16aee34abb1ca745987e44cd65c00501d7e62bb1eb4fdbee502b995d0bb09b88",
+      "backendAdmission": "a69999bcc801f626bebef97809939096e0d7295fa5986bcb47e724f9cce0f434",
+      "supervisorSource": "7e0655a9ba4e8c50cdcf341fcc025911bc54591822fca42254cbb245525498e0",
+      "kernel": "70c8bd4e227e8f521d099737897e4c01858a8ff473116706f6d42940b51baf36"
+    }
+  },
+  "findings": {
+    "ready": [
+      "Source prepared: N=1151, SCALE=1<<256; parent ring32 source hash-pinned; only documented site/path/cap diffs.",
+      "PRELAUNCH-CONTROLS: allPinsMatched=true; 8 positivity controls passed; duration~0.20s; nativeArithmeticLaunched=false.",
+      "CONTROLS-REVIEW: passed=true; declaredChangesFullyReconstructed=true; 12 small controls passed; backendDimensionAndIntegerBoundsAccepted=true; all six bindings reopened and live-hash match.",
+      "reviewed-sources/ copies byte-identical to preparation tree for run_fixed_H.py, SOURCE-PREPARATION.json, PRELAUNCH-CONTROLS.json.",
+      "Backend admission (reviewed-exact-product-backend-admission-v1) accepted=true separately \u2014 not an H64 launch receipt.",
+      "Formal SOURCE-ADMISSION receipt written (provisional_pending_review); live hashes recomputed; BUDGET recorded before products."
+    ],
+    "blocked": [
+      "Full 1151-square H arithmetic not run (and must not be run until independent reviewer sign-off + coordinator authorization).",
+      "SOURCE-PREPARATION.reviewRequired / PRELAUNCH.independentSourceReviewRequired historical flags left unchanged; new formal receipt supersedes the missing-receipt gap.",
+      "nativeProductsExecuted=false; largeMetricParsedOrTested=false; fixedHSPDProved=false; no actual-fixed-H-v1 RESULT."
+    ],
+    "formal_source_admission_receipt_exists": true,
+    "dimension": 1151,
+    "fullGramIntervalEntries": 1324801,
+    "wallCapSeconds_declared": 1200,
+    "ownedTreeRssCapBytes_declared": 4294967296
+  },
+  "next_gate_steps_without_full_arithmetic": [
+    "1. Issue formal ring64-H source-admission receipt (SOURCE-AUDIT-style, accepted=true) pinning run_fixed_H.py sha f112ac5ed1..., bindings, caps, and scope (fixed metric positivity only; no flow/root/stability claim).",
+    "2. Resource-authorize 1151-dim native products under declared caps (wallCapSeconds=1200, ownedTreeRssCapBytes=4GiB, native product wall/RSS as in SOURCE-PREPARATION).",
+    "3. Only after (1)+(2): launch actual fixed-H arithmetic into an isolated actual-fixed-H-v1 (or equivalent) retaining full product inputs/outputs/hashes/margins \u2014 not by this Review/R64-H read role.",
+    "4. Independent arithmetic replay (scalar/original product path) producing RESULT.json byte-identical endpoints/margins before any proof gate consumes H64 SPD.",
+    "5. Keep proof_flags false until that RESULT exists; do not rewrite prep reviewRequired flags; add new receipt instead (ring32-H pattern)."
+  ],
+  "proof_flags": {
+    "existence": false,
+    "stability": false,
+    "H_admitted": false,
+    "H64_SPD_proved": false,
+    "native_products_executed": false,
+    "formal_source_admission_receipt": true,
+    "independent_reviewer_signed_off": false
+  },
+  "blockers": [
+    "Independent reviewer sign-off still required before H_admitted.",
+    "Full 1151 H arithmetic not authorized/executed under this Grok R64-H implementer turn.",
+    "Cannot claim fixedHSPDProved or spatial existence/stability."
+  ],
+  "controls_run_this_role": [],
+  "formal_source_admission": {
+    "dir": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/",
+    "SOURCE-ADMISSION.json": {
+      "path": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/SOURCE-ADMISSION.json",
+      "sha256": "76a3b9aba2d03aa300d7a3cde6c4ae1da96fbe87a87b49c41606b8a9a7d43198"
+    },
+    "BUDGET.json": {
+      "path": "work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/BUDGET.json",
+      "sha256": "e088e0691ced38cb27f36752624a82254e6e83a0521e19418f90d4dcafcc7cdc"
+    },
+    "pmBudgetCopy": {
+      "path": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-05-h64-admission-budget.json",
+      "sha256": "2c11efe5654bd18dad6470c7a9e8da83daa3714944be3fb8c73c24e9787a5f20"
+    },
+    "admissionStatus": "provisional_pending_review",
+    "checklistAllPassed": true,
+    "liveHashesRecomputed": true
+  },
+  "non_actions": [
+    "Did not run full 1151-square H products",
+    "Did not start second heavy Mac CAPD/native job",
+    "Did not compete with live 32-site ring_flow (observed running: box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1)"
+  ]
+}

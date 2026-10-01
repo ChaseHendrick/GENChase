@@ -1,0 +1,173 @@
+{
+  "schema": "role-07-h64-products-independent-replay-v1",
+  "role": "ROLE-07",
+  "roleName": "h64-products-REPLAY",
+  "identity": "Grok Bot independent reviewer/replay (NOT the R64-H-products implementer)",
+  "notImplementer": true,
+  "didNotRubberStamp": true,
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "writtenAtET": "2026-09-30T09:46:19-0400 (ET)",
+  "writtenAtUTC": "2026-09-30T13:46:19Z",
+  "verdict": "pass",
+  "accepted": true,
+  "rejected": false,
+  "passFail": "pass",
+  "implementerClaim": {
+    "tag": "ring64-H-products-grok-20260930-v1",
+    "statusClaimed": "strict complete congruence DD passed",
+    "fixedHSPDProvedClaimed": true,
+    "resultSha256Claimed": "5be88e88287c62714e33efc751958e9548b855fd561e2ee3fed8ebb9a9b3f5db",
+    "resultSha256RecomputedLive": "5be88e88287c62714e33efc751958e9548b855fd561e2ee3fed8ebb9a9b3f5db",
+    "resultSha256MatchesClaim": true,
+    "runReportSha256RecomputedLive": "6231856ccf1269f6a03f4998ab6fd47b026ae22dd9d3c77d8fed13701137403d",
+    "completeGramSha256RecomputedLive": "2d40d3f65264af5b3c48577a7fea04fb3452f525aa586311e8905e025eef7681",
+    "implementerElapsedSeconds": 186.1605867500184,
+    "implementerBackend": "admitted multiply_v5 workers=4 (not used by this independent replay)"
+  },
+  "independentReplay": {
+    "directory": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
+    "mirroredFrom": "work/cardiac-study/tissue-proof-review/ring32-H-positivity-independent-v1",
+    "algorithm": "original scalar GMP four-corner pinned multiply binary; independent of threaded v5 backend",
+    "INDEPENDENT-REPLAY.json": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
+      "sha256": "f439bd5e7748836a884f1247b1e4b951eca70592b7e93aa70b3e77484380baa5",
+      "bytes": 196451
+    },
+    "replay.py": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/replay.py",
+      "sha256": "b554b7e87a92acaecb02e267ea0829655b9302a390d01f8fdb4f8e33f6a04bc3",
+      "bytes": 16529
+    },
+    "elapsed_seconds": 364.20510608295444,
+    "overall_wall_cap_seconds": 1200,
+    "product_wall_cap_seconds": 600,
+    "product_rss_cap_bytes": 2147483648,
+    "product_elapsed_seconds": [
+      153.43026516702957,
+      150.73161175008863
+    ],
+    "product_sampled_owned_peak_rss_bytes": [
+      132022272,
+      186875904
+    ],
+    "complete_gram_entries_independently_matched": 1324801,
+    "strict_rows_independently_recomputed": 1151,
+    "independent_output_sha256": {
+      "product-00": "829f0139105eb4982c0ac561b58b82d15e6ecabde641af77f091b05d8392e39b",
+      "product-01": "068299f93c52562dd4b75f35f1f594934f20595230c7be83855d947f38c26919"
+    },
+    "implementer_output_sha256": {
+      "product-0000": "829f0139105eb4982c0ac561b58b82d15e6ecabde641af77f091b05d8392e39b",
+      "product-0001": "068299f93c52562dd4b75f35f1f594934f20595230c7be83855d947f38c26919"
+    },
+    "every_integer_endpoint_identical_both_products": true,
+    "artifact_bindings_reopened": 23
+  },
+  "recomputed": {
+    "sites": 64,
+    "dimension": 1151,
+    "fixedHSPDProved": true,
+    "fixed_exact_H_SPD_proved": true,
+    "square_RH_invertibility_implied": true,
+    "minimum_margin_exact": "115792088976534588079438221007310638944777435283709353202390102146686591795237/115792089237316195423570985008687907853269984665640564039457584007913129639936",
+    "minimum_margin_matches_implementer": true,
+    "row_margins_exact_match_implementer": true,
+    "status_implementer": "strict complete congruence DD passed",
+    "metricCanonicalSha256": "72c195a0e6f0128a20f82bf4ac05d96cf95d194caaf48ea80510e6d5b2241c4f",
+    "metricCongruenceRHCanonicalSha256": "ed818bd07a2518d0b9730d603b422bd7962d4c324b5620c58957dab9bf980861"
+  },
+  "flags": {
+    "stabilityDerivativeOrInequalityTested": false,
+    "spatial_existence_certified": false,
+    "spatial_stability_certified": false,
+    "solverReintegrationPerformed": false,
+    "flow_reintegrated": false,
+    "orbital_stability_claimed": false,
+    "A_zero_started": false,
+    "header_swap_performed": false,
+    "C1_32_or_64_touched": false
+  },
+  "H_admitted": {
+    "previous": false,
+    "may_set_true_after_this_accept": true,
+    "recommended_value_after_accept": true,
+    "scope_if_set_true": "fixed-metric positivity only of this exact rational ring64 H (sites=64, dimension=1151, SCALE=2^256 dyadic congruence DD). Square RH invertible implied; unchanged exact H is SPD.",
+    "narrow_documentation": "After this independent accept, proof_flags.H_admitted / H_admitted may be set true solely for fixed-metric positivity of the pinned ring64 H. This does NOT admit orbital stability, stability derivative/inequality, spatial existence/stability, ionic return, root, flow, A-zero, or any C1 certificate.",
+    "does_not_authorize": [
+      "orbital stability",
+      "stability derivative or inequality",
+      "spatial_existence_certified",
+      "spatial_stability_certified",
+      "A-zero launch",
+      "header swap",
+      "32-site or 64-site C1",
+      "flow reintegration"
+    ],
+    "did_not_mutate_SOURCE-ADMISSION_in_this_step": true,
+    "note": "This ROLE receipt documents eligibility. Coordinator/implementer proof_flags update is separate; this reviewer did not rewrite SOURCE-ADMISSION.json."
+  },
+  "checklist": [
+    {
+      "id": "mirror_h32_independent_pattern",
+      "passed": true,
+      "evidence": "New unique dir ring64-H-products-independent-replay-grok-20260930-v1 mirrors ring32-H-positivity-independent-v1 (pinned prep RESULT/RUN-REPORT, scalar multiply binary/cpp, owned-cleanup helper, operand validation, byte-identical outputs, Gram+margins)."
+    },
+    {
+      "id": "implementer_result_sha_live",
+      "passed": true,
+      "evidence": "Live sha256 of implementer RESULT.json is 5be88e88287c62714e33efc751958e9548b855fd561e2ee3fed8ebb9a9b3f5db as claimed."
+    },
+    {
+      "id": "independent_scalar_products",
+      "passed": true,
+      "evidence": "Both 1151^3 products replayed with pinned original scalar multiply; outputs sha-identical to implementer OUTPUT.txt (829f01... and 068299...). Caps: 600s/2GiB per product, 1200s overall; elapsed 364.2s."
+    },
+    {
+      "id": "operands_match_exact_proposals",
+      "passed": true,
+      "evidence": "Product-0 INPUT matched enclose(H), enclose(R); product-1 INPUT matched enclose(R^T) and independent product-0 endpoints."
+    },
+    {
+      "id": "gram_and_margins",
+      "passed": true,
+      "evidence": "All 1324801 symmetry-intersected Gram intervals matched COMPLETE-H-GRAM.json; all 1151 rowMarginsExact matched; min margin > 0 and equals implementer minimumMarginExact."
+    },
+    {
+      "id": "fixedHSPDProved_independent",
+      "passed": true,
+      "evidence": "Independent strict DD with positive diagonal => RH^T H RH SPD => square RH invertible => exact H SPD. fixedHSPDProved=true set by this replay, not copied from implementer as sole evidence."
+    },
+    {
+      "id": "stability_and_spatial_remain_false",
+      "passed": true,
+      "evidence": "stabilityDerivativeOrInequalityTested=false; spatial_*=false; no orbital stability claim."
+    },
+    {
+      "id": "no_azero_no_header_no_c1",
+      "passed": true,
+      "evidence": "Did not start A-zero, did not swap headers, did not touch 32/64 C1."
+    },
+    {
+      "id": "identity_separation",
+      "passed": true,
+      "evidence": "Reviewer identity distinct from R64-H-products implementer; didNotRubberStamp=true."
+    }
+  ],
+  "checklistAllPassed": true,
+  "defects": [],
+  "nonActions": [
+    "No A-zero",
+    "No header swap",
+    "No 32/64 C1",
+    "No SOURCE-ADMISSION mutation",
+    "No manuscript/certificate edit",
+    "No orbital stability claim"
+  ],
+  "paths": {
+    "independentReplayDir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1",
+    "independentReplayJson": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-products-independent-replay-grok-20260930-v1/INDEPENDENT-REPLAY.json",
+    "implementerProductsDir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
+    "implementerResult": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1/RESULT.json",
+    "pmRoleFile": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-h64-products-REPLAY.json"
+  }
+}

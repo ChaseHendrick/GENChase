@@ -1,0 +1,20 @@
+{
+  "tag": "box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1",
+  "gate": "ZP-FIXED-QUARTER-PROD-PATCH-VERIFY",
+  "status": "STARTED",
+  "start_et": "2026-10-01T05:06:32-0400 (ET)",
+  "start_utc": "2026-10-01T09:06:32Z",
+  "pre_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "post_sha": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "binary_sha": "abf2d352d4b3a776a6f7a6a0f2b17f44ba0019bb1004357c8cdadc159024643d",
+  "STEP": "0.25",
+  "N": 32,
+  "order": 20,
+  "radius": "3e-10",
+  "wall_s": 900,
+  "need_consecutive_quarter": 3,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "prod_patch_applied": true
+}

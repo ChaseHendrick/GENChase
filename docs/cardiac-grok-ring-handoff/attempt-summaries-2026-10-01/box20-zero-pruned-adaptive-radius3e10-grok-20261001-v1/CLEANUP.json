@@ -1,0 +1,17 @@
+{
+  "order": [
+    "verify",
+    "kill native PGID first",
+    "await",
+    "supervisor exits"
+  ],
+  "stop_reason": "native_exited",
+  "native_pid": 36864,
+  "native_pgid": 36864,
+  "supervisor_pid": 36858,
+  "supervisor_pgid": 36858,
+  "native_signal": "already_exited",
+  "native_exit": 0,
+  "confirmed_native_gone": true,
+  "confirmed_supervisor_will_exit": true
+}

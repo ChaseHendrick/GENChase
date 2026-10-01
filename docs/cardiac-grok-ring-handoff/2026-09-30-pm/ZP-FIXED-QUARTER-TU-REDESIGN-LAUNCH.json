@@ -1,0 +1,40 @@
+{
+  "schema": "zp-fixed-quarter-tu-redesign-probe-launch-v1",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v1",
+  "writtenAtET": "2026-10-01T02:57:28-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T06:57:28Z",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "user_go": "Redesign Poincare TU so fixed h=1/4 is actually honored on N=32 ZeroPruned ring_flow",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "isolated_attempt_only": true,
+  "awaiting_user_for_prod_patch": false,
+  "production_ring_flow_zero_pruned_untouched": true,
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "ZeroPrunedSparseMap_sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+  "binary_sha256": "bb4ffa37bcfc86e2c56b512b1a513e6f92dade856704fbc06ccb6b7e634cbd1e",
+  "redesign": {
+    "forceFixedQuarter_before_every_move": true,
+    "calls": [
+      "setMaxStep(I(1)/I(4))",
+      "setStep(I(1)/I(4))",
+      "adjustTimeStep(I(1)/I(4))"
+    ],
+    "why_adjustTimeStep": "CAPD setStep sets m_fixedTimeStep + turnOffStepControl but does NOT set m_step; Poincare ILastTerms::init uses adjustTimeStep(Lipschitz) to seed m_step~0.112545; approveRemainder then setMaxStep(min(max,2*m_step))~0.225",
+    "FixedStepControl_tried": "ABI incompatible (4-arg computeNextTimeStep vs OdeSolver 3-arg); kept default ILastTerms"
+  },
+  "step": "0.25",
+  "sites": 32,
+  "mode": "box",
+  "radius": "3e-10",
+  "order": 20,
+  "wall_s_budget": 300,
+  "rss_mib": 2048,
+  "stop_policy": "Stop early once >=3 consecutive tubes with step mid == 0.25 within rel 1e-12 (or exact hex of I(1)/I(4)); wall<=300s; dual PGID cleanup",
+  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v1",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_AZero_swap": true
+}

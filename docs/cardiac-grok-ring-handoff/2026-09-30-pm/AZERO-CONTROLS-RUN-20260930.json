@@ -1,0 +1,262 @@
+{
+  "schema": "azero-controls-run-20260930-v3-primary",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machine_label": "Chases-MacBook-Pro",
+  "writtenAtET": "2026-09-30 09:59:38 ET",
+  "writtenAtUTC": "2026-09-30T13:59:38Z",
+  "admitted_for_proof": false,
+  "production_header_replacement": false,
+  "proof_reliance": false,
+  "h64_positivity_rerun": false,
+  "claude_involved": false,
+  "controlling_plan": {
+    "md": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-ADMISSION-PLAN-v1.md",
+    "md_sha256": "5f7ab523875723c8b42565dfabce11ac4924d631049e25e2d4c0afc8aee48dbc",
+    "json": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-ADMISSION-PLAN-v1.json",
+    "json_sha256": "42d8ba485d762725d735b810a3b7e36fb11eb83615578142de73df8f90bcc0f8"
+  },
+  "tag_series": "20260930-v3",
+  "prior_v2_c2_failure": {
+    "tag": "c2-dense-a0-grok/20260930-v2",
+    "mismatches": 3240,
+    "root_cause": "C2 harness compared AZero-sparse vs Cellwise-batch; Cellwise-sparse vs batch alone = 3240 mismatches; AZero == Cellwise-sparse",
+    "fix": "harness-only: cell.computeODECoefficientsSparse in C2 and C5-coeff; hexfloat equality retained; prototypes unchanged"
+  },
+  "c1_retained": "c1-signed-zero-capd-serialization-grok/20260930-v2",
+  "controls": [
+    {
+      "id": "C1",
+      "tag": "c1-signed-zero-capd-serialization-grok/20260930-v2",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "1d8d24e76515c3117b512030482fb9727c6c7ebee1debbc4628886955a6e1859",
+      "retained_from_prior_tag": true,
+      "evidence": {
+        "schema": "azero-c1-result-v1",
+        "control": "C1",
+        "all_passed": true,
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sites": 3,
+        "dimension": 54,
+        "order": 20,
+        "signed_zero_serialization": {
+          "skip_identical_across_signed_forms": true,
+          "round_trip_skip_ok": true,
+          "plus_plus_left_eq0": true,
+          "plus_plus_right_eq0": true,
+          "minus_minus_left_eq0": true,
+          "minus_minus_right_eq0": true,
+          "plus_minus_left_eq0": true,
+          "plus_minus_right_eq0": true
+        },
+        "enclosure_vs_zeropruned": {
+          "entries_checked": 62370,
+          "identical": 62370,
+          "mismatches": 0
+        },
+        "peak_rss_bytes": 19496960
+      }
+    },
+    {
+      "id": "C2",
+      "tag": "c2-dense-a0-grok/20260930-v3",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "892e98f7ba69a1fada43a27b71846e1f87dd60f15bfa93fe4d30609a83dc14d7",
+      "elapsed_s": 2.316578334,
+      "evidence": {
+        "schema": "azero-c2-result-v1",
+        "control": "C2",
+        "all_passed": true,
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sites": 3,
+        "dimension": 54,
+        "order": 20,
+        "box": true,
+        "dense_a0_entries": 2916,
+        "dense_a0_bad": 0,
+        "enclosure_vs_cellwise": {
+          "entries_checked": 62370,
+          "mismatches": 0,
+          "cellwise_path": "computeODECoefficientsSparse",
+          "azero_path": "computeODECoefficientsSparse"
+        },
+        "nonfinite_J_never_omits": true,
+        "peak_rss_bytes": 26542080
+      }
+    },
+    {
+      "id": "C3",
+      "tag": "c3-every-variation-column-grok/20260930-v3",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "a8410274dcd17d9e5db520e848e19695cdcaa48f46c2e8918543842da06c0599",
+      "elapsed_s": 1.9302277089999995,
+      "evidence": {
+        "schema": "azero-c3-result-v1",
+        "control": "C3",
+        "all_passed": true,
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sites": 3,
+        "dimension": 54,
+        "order": 20,
+        "entries_checked": 124740,
+        "mismatches": 0,
+        "fullColumnsRetained": true,
+        "peak_rss_bytes": 28262400
+      }
+    },
+    {
+      "id": "C4",
+      "tag": "c4-rigorous-remainders-grok/20260930-v3",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "d9dbe340caa69bf3d4101ac41a1de8e43cec4eb232334680a32f12b82266768a",
+      "elapsed_s": 2.5805929159999996,
+      "evidence": {
+        "schema": "azero-c4-result-v1",
+        "control": "C4",
+        "all_passed": true,
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sites": 3,
+        "dimension": 54,
+        "order": 20,
+        "step": "1/8",
+        "entries_checked": 3024,
+        "mismatches": 0,
+        "allRemainderCallsRetained": true,
+        "peak_rss_bytes": 34963456
+      }
+    },
+    {
+      "id": "C5",
+      "tag": "c5-exact-linear-coeff-step-event-grok/20260930-v3",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "1017d2eced7724265dfee393f948871129b76107cf46efb241000be51cfed2e9",
+      "elapsed_s": 4.987581875000001,
+      "evidence": {
+        "schema": "azero-c5-result-v1",
+        "control": "C5",
+        "compile_exit": 0,
+        "compile_command": [
+          "/usr/bin/clang++",
+          "-std=c++17",
+          "-O2",
+          "-frounding-math",
+          "-D__USE_NATIVE__",
+          "-pthread",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdExt/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAux/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAlg/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdDynSys/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/src/c5_exact_linear_coefficients.cpp",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/libcapd.a",
+          "-o",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/bin/c5_exact_linear_bundle"
+        ],
+        "compile_step_exit": 0,
+        "compile_step_command": [
+          "/usr/bin/clang++",
+          "-std=c++17",
+          "-O2",
+          "-frounding-math",
+          "-D__USE_NATIVE__",
+          "-pthread",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdExt/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAux/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAlg/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdDynSys/include",
+          "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/src/c5_exact_linear_step.cpp",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/libcapd.a",
+          "-o",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/bin/c5_exact_linear_step"
+        ],
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sub": {
+          "coeff": {
+            "exit": 0,
+            "all_passed": true,
+            "sha256": "22bd2c2c1ee81475e36de621e5e37467e69172cf618aa0a7aedfd3ed0dcfa533"
+          },
+          "step": {
+            "exit": 0,
+            "all_passed": true,
+            "sha256": "552abd3cc2d434cb58e6ee787ccd3bb809b72e1991a9214d2703a047ce57a90e"
+          },
+          "event": {
+            "exit": 0,
+            "all_passed": true,
+            "documented_na": true,
+            "sha256": "24037a7748c6837d3d64be1137a3965aef1c4152ebfa974c50fe44537873fc5b"
+          }
+        },
+        "coefficientControlsPassed": true,
+        "fullStepControlsPassed": true,
+        "fullEventControlsPassed": false,
+        "fullEventControlsDocumentedNA": true,
+        "negative_controls_passed": true,
+        "all_passed": true
+      }
+    },
+    {
+      "id": "C6",
+      "tag": "c6-independent-source-audit-grok/20260930-v3",
+      "status": "ACCEPT",
+      "all_passed": true,
+      "result_sha256": "1721498b893aa82e18f6eb625378b02538717e57cf447392af60623ecf46cb83",
+      "independent_review_sha256": "a848f1a67466da2e23a5ff993b7f6872b9b561d4f42165d16621036ad85c6946",
+      "evidence": {
+        "verdict": "accept",
+        "accepted": true
+      }
+    }
+  ],
+  "stopped_on_failure": false,
+  "overall_all_passed": true,
+  "admit_recommendation": "CONTROLS_PASS_BUT_NOT_ADMITTED_FOR_PROOF",
+  "admit_recommendation_detail": "C1\u2013C5 PASS; C6 ACCEPT for source-audit control gate. A-zero still NOT admitted for proof; no production header swap; no proof reliance.",
+  "live_header_sha256": {
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+    "A-ZERO-PROPOSAL-V1.json": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644"
+  },
+  "pin_match": {
+    "AZeroPrunedCellwiseRingMap.hpp": true,
+    "AZeroPrunedSparseMap.hpp": true,
+    "ZeroPrunedCellwiseRingMap.hpp": true,
+    "ZeroPrunedSparseMap.hpp": true,
+    "CellwiseRingMap.hpp": true,
+    "A-ZERO-PROPOSAL-V1.json": true
+  },
+  "artifact_sha256": {
+    "C1-RESULT": "1d8d24e76515c3117b512030482fb9727c6c7ebee1debbc4628886955a6e1859",
+    "C2-RESULT": "892e98f7ba69a1fada43a27b71846e1f87dd60f15bfa93fe4d30609a83dc14d7",
+    "C3-RESULT": "a8410274dcd17d9e5db520e848e19695cdcaa48f46c2e8918543842da06c0599",
+    "C4-RESULT": "d9dbe340caa69bf3d4101ac41a1de8e43cec4eb232334680a32f12b82266768a",
+    "C5-RESULT": "1017d2eced7724265dfee393f948871129b76107cf46efb241000be51cfed2e9",
+    "C6-RESULT": "1721498b893aa82e18f6eb625378b02538717e57cf447392af60623ecf46cb83",
+    "INDEPENDENT-REVIEW": "a848f1a67466da2e23a5ff993b7f6872b9b561d4f42165d16621036ad85c6946",
+    "LIVE-HASHES": "08df580b2951570825cf65fdec31e1f2de7eb915c6935efdb916ddfd500aa3a3",
+    "SOURCE-DIFF": "f8fbf864949ddec24be9559e610f0687d1fc6e0beb898500063e429e80a8a0b0",
+    "coeff_harness": "ebb0504bcc1cf4837cf915adab18a6ba918d0682d13b2ac39a097a4963de1f4a"
+  },
+  "harness_fix_note": "azero_admission_coeff_harness.cpp C2+C5-coeff now call Cellwise.computeODECoefficientsSparse",
+  "supersedes": "prior AZERO-CONTROLS-RUN-20260930.json C2-FAIL v2 series"
+}

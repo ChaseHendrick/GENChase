@@ -1,0 +1,69 @@
+{
+  "schema": "azero-g4-sparse-c1-equivalence-receipt-v1",
+  "gate": "G4",
+  "verdict": "PASS",
+  "all_passed": true,
+  "writtenAtET": "2026-09-30 10:11:21 ET",
+  "writtenAtUTC": "2026-09-30T14:11:21Z",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "tag": "g4-sparse-c1-equivalence-grok/20260930-v1",
+  "result_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/g4-sparse-c1-equivalence-grok/20260930-v1/results/G4-RESULT.json",
+  "result_sha256": "61899915f2ce70ad1b65b60f619c2384a98b4410cbedfeff870948eb12faaa56",
+  "stdout_sha256": "dc2e3ff48b2e91f27a819f41047d7a434d16e16beecd686550106ad8eb2a1ec6",
+  "compile_log_sha256": "a2a32bed20d1beaea1cfa4c3cd1392e1a14a3b90bb3ab7b75096566cd4cc0ca5",
+  "src_sha256": "576709b3a3ab6172c1f506858bedb0b4bd27f159424fb620a9efdb7172d54bdf",
+  "native_exit": 0,
+  "elapsed_s": 0.5928387499999999,
+  "evidence": {
+    "schema": "azero-g4-sparse-c1-equivalence-result-v1",
+    "control": "G4",
+    "all_passed": true,
+    "admitted_for_proof": false,
+    "fixture_only": true,
+    "flow_attempted": false,
+    "sites": 3,
+    "dimension": 54,
+    "order": 20,
+    "path": "AZeroSparseLinear_vs_ZeroPrunedSparseLinear_sparse_override",
+    "hexfloat_equality": true,
+    "modes": {
+      "coeff_point": {
+        "entries_checked": 62370,
+        "mismatches": 0,
+        "base_mm": 0,
+        "dir_mm": 0
+      },
+      "coeff_box": {
+        "entries_checked": 62370,
+        "mismatches": 0,
+        "base_mm": 0,
+        "dir_mm": 0
+      },
+      "coeff_dense_a0": {
+        "entries_checked": 62370,
+        "mismatches": 0,
+        "base_mm": 0,
+        "dir_mm": 0
+      },
+      "ode_step_h_1_8": {
+        "entries_checked": 3024,
+        "mismatches": 0
+      }
+    },
+    "nonfinite_J_never_omits": true,
+    "fullColumnsRetained": true,
+    "peak_rss_bytes": 42287104
+  },
+  "review_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-azero-g4-equivalence-REVIEW.json",
+  "review_sha256": "bc5798a5f7c3700189b34ac0f2d9b599d5204ca45e73e791a1630a5bc24d9dcb",
+  "production_headers_untouched": true,
+  "P0_started": false,
+  "live_pins": {
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
+  }
+}

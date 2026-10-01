@@ -1,0 +1,115 @@
+{
+  "schema": "handoff-absorbed-v1",
+  "written_utc": "2026-09-30T13:00:18Z",
+  "written_et": "2026-09-30T09:00:18-0400 (ET)",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "handoff_files": {
+    "GROK-HANDOFF.md": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
+      "sha256": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
+      "sha256_expected": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
+      "verified": true
+    },
+    "HANDOFF-BINDINGS.json": {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
+      "sha256": "5cec92ebe438eca4bba9ba5c210d30b85b5a39e19957064826b4ce126196503b",
+      "sha256_expected": "5cec92ebe438eca4bba9ba5c210d30b85b5a39e19957064826b4ce126196503b",
+      "verified": true
+    }
+  },
+  "exact_q": {
+    "32_sites": {
+      "total_states": 576,
+      "section_coordinates": 575,
+      "coupling": "2/125",
+      "ordinary_relative_time_ms": 1.6746279415729937,
+      "exact_proposed_q_relative_derivative": "499995373/500000000"
+    },
+    "64_sites": {
+      "total_states": 1152,
+      "section_coordinates": 1151,
+      "coupling": "8/125",
+      "ordinary_relative_time_ms": 0.8373140690363405,
+      "exact_proposed_q_relative_derivative": "249998827/250000000"
+    },
+    "note": "Both exact q^N are below 9999/10000."
+  },
+  "source_pins": {
+    "literal_ionic_source_sha256": "a50f6c08b4360dd257cce389a39ae72fda51e3642641bf5b8e5fced6c2225670",
+    "common_exact_parameters": {
+      "gKr": ".0153",
+      "gKs": ".0275",
+      "gNa": "14.838",
+      "gK1": "5.405",
+      "gCaL": ".000199",
+      "Cm": "1",
+      "Ki": "138.3"
+    },
+    "state_order": "V,xr1,xr2,xs,m,h,j,d,f,f2,fCass,s,r,Rprime,Ca_i,Ca_SR,Ca_ss,Na_i",
+    "diffusion": "voltage-only periodic NN; length1; D=1/64000; neighbor coeff DN^2",
+    "bindings_from_HANDOFF_BINDINGS": {
+      "work/cardiac-study/tissue-certification32/INPUTS.json": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0",
+      "work/cardiac-study/tissue-certification32/ring_model.h": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6",
+      "work/cardiac-study/tissue-certification64/INPUTS.json": "b2710c3348722a0e5ca960fb194e63729c3ae048a9fa29fdef8116a586c3c793",
+      "work/cardiac-study/tissue-certification64/ring_model.h": "ab2e7ff9945c0d393bec09bb9b2373c086a86933ce0ad35cb5c6161599762388",
+      "zero-pruned-per-stage-V5 SUPPLIER-SOURCE-AUDIT": "1d70419f93f0e5f8393dd9db80ac3f0939bcd08f023080793845661b8ee967d6",
+      "zero-pruned-supplier-review-v1 SUPPLIER-SOURCE-AUDIT": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+      "point28-C0-supplier-review-v1 SUPPLIER-SOURCE-AUDIT": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
+      "actual32-point-residual-independent-v2 RESULT": "552c9c251eeb00f1cdc0e8d9354f0967745380881100026822179a7b443ab1a0",
+      "fixed-eighth64-step-source-review-v2 SUPPLIER-SOURCE-AUDIT": "4dff5efd89491062e8dcf529ff773106c0eed27f2fb5391a838fab54aed55eb2",
+      "paused-owner-handoff-20260930-v1 MANIFEST": "531b45887b2595d34e40f54a405128c1617a8fa22fac221690cef1939a2947e6",
+      "combined-data-v1 SUMMARY": "496aae7726ea84dbb7788c4119789cdce4dbea640219066d7d05a7fa15c41f8d"
+    }
+  },
+  "proof_obligations": [
+    "existence of rotating phase-wave candidates in finite modified ionic rings (32 and 64)",
+    "fundamental physical period T=N*tau with earlier-return exclusion",
+    "nonsynchrony (disjoint initial voltage boxes; not existence/period alone)",
+    "local orbital asymptotic stability: exact H SPD and q^2 H - DP^T H DP SPD with justified congruences/LDL/weighted dominance; H positivity alone insufficient",
+    "all 18 states/cell and all transverse perturbations remain dynamic",
+    "strict componentwise K inclusion + contraction bound <1 with consistent F=I-P; C convention (I-DP)^-1",
+    "full event correction before 575/1151-coordinate restriction; cyclic equivariance at root",
+    "complete matched actual joint gates + independent replay + source/argument audit before theorem declaration",
+    "partial flow / source admission / numerical candidate / positive metric / saved Boolean is NOT a theorem",
+    "AZeroPruned proposal unexecuted/unaudited/inadmissible until exact-linear + all 8 controls + independent source review",
+    "radius 3e-10 new box for 32: prioritize repair over known radius 2e-10 inclusion blocker (point residual ~2.2485982053408272e-10)",
+    "64: no full return authorized by one-step pilot budget; separate finite full-return budget required; full64ReturnBudgetAuthorizedByPilot=false",
+    "restart into NEW immutable tags only; never append/overwrite interrupted runs"
+  ],
+  "grok_vs_paused_codex_distinction": {
+    "grok_live_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "grok_is_fresh_separately_owned_launch": true,
+    "grok_does_not_resume_or_change_preserved_interrupted_dirs": true,
+    "codex_larger_ring_and_ap_jobs_remain_paused": true,
+    "codex_holds_long_build_integration_lane": true,
+    "grok_uses_heavy_mac_lane": true,
+    "paused_preserved_dirs": [
+      "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius2e10-v1/",
+      "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-v1/",
+      "work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-n64-fixed-eighth-full-step-2400s-v1/"
+    ],
+    "paused_ledger": "work/cardiac-study/tissue-scalability-preflight/paused-owner-handoff-20260930-v1/",
+    "accepted_unchanged": "fixed-cell, 8-site, 16-site proofs; Codex combined preprint only certified cell/8/16",
+    "certificates_established": {
+      "grok32": false,
+      "grok64": false
+    }
+  },
+  "live_run_pid_status_at_absorb": {
+    "supervisor_pid": 79385,
+    "supervisor_pgid": 79385,
+    "supervisor_alive": true,
+    "native_pid": 79423,
+    "native_pgid": 79423,
+    "native_alive": true,
+    "matches_LAUNCH_json": true,
+    "cleanup_doc": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/CLEANUP-DUAL-PGID.json"
+  },
+  "constraints_honored": {
+    "no_capd_starts": true,
+    "no_manuscript_edits": true,
+    "no_kills": true,
+    "record_only_cleanup": true
+  }
+}

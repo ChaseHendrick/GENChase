@@ -219,3 +219,17 @@ The isolated sixty-four-site fixed-eighth-step proposal is receiving its specifi
 The separate unpublished fixed-cell V4 portable source companion has completed independent prepared-source and retained-arithmetic review. It contains 254 files and a 14,338,241-byte transport ZIP with the unchanged manuscript PDF, successful solver/generator sources, pinned CAPD/GMP/MPFR source archives and component notices. ZIP SHA256 is `39afa378ba6dc7f01f7dbf5e351c1d64be8af8ed9f63f5cc6c249cdb46c44542`. Independent review SHA256 is `f4f4cf99298c329961eb670d64db6bafb455d01d990be0ce5f8140c5e95c74b8`; all 253 manifest-covered files, twelve mathematical pins, three source archives and exact settings match, all 76 packaging controls pass, and the original 192-bit retained arithmetic reproduces from a separate working directory. Read `work/cardiac-study/portable-companion-preparation-v4/FINAL-REPORT.md` for precise inventory and remaining gaps.
 
 This completes source-package preparation and bounded frontend review. It does not establish a clean dependency build, complete upstream MPFR suite, fresh integration, a new supplier or a new certificate. A separate V5 operational candidate is being prepared for owned process-tree cleanup and sampled whole-tree memory/disk limits before any clean-build attempt. The unchanged V4 bundle, old receipts and all accepted proof/manuscript artifacts remain preserved. Public component terms, release metadata and actual publication checks remain pending; no cardiac release, DOI or Zenodo deposit has been made.
+
+
+## 2026-10-01 FixedQuarter / N32 / N64 Continuation (Paused Again)
+
+See the canonical [paused handoff for 2026-10-01](CARDIAC-PAUSED-HANDOFF-2026-10-01.md) and the receipt tree under [docs/cardiac-grok-ring-handoff/](cardiac-grok-ring-handoff/).
+
+Recorded on disk (not a new theorem; `admitted_for_proof` remains false):
+
+- FixedQuarter prod patch into live PREF `ring_flow_zero_pruned.cpp` (sha256 `e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911`) with speed pilot PASS_REACHED_1MS.
+- N=32 adaptive C1 tag `box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1` FLOW_SUCCESS; Inclusion+Contraction PASS on tag `…-inclusion-contraction-grok-20261001-v1`.
+- N=32 matched K HARD_FAIL_BLOCKED on `MISSING_N32_NATIVE_K_HARNESS`; transverse stability and period/nonsynchrony skipped after that fail.
+- N=64 fixed-eighth one-step pilot PASS; `full64ReturnBudgetAuthorizedByPilot` remains false.
+
+Mac lane paused idle again at the owner's request. Do not start `ring_flow`, N=32 K port, or N=64 full return without a new explicit go. Existing 8/16-site certificates and the fixed-cell manuscript remain unchanged. There is still no cardiac release, DOI or Zenodo deposit.

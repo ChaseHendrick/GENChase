@@ -1,0 +1,50 @@
+{
+  "schema": "zp-fixed-quarter-speed-receipt-v1",
+  "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v2",
+  "verdict": "ABORT_NOT_TRUE_QUARTER_MAXSTEP_CAP",
+  "writtenAtET": "2026-09-30T15:16:12-0400 (ET)",
+  "writtenAtUTC": "2026-09-30T19:16:12Z",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "supplier": "ZeroPrunedSparseMap",
+  "step_argv": "0.25",
+  "observed_steps_ms": [
+    0.1125445449076334,
+    0.125,
+    0.125
+  ],
+  "blocker": "AuditedSolver in ring_flow_zero_pruned.cpp sets setMaxStep(I(4)/I(N))=0.125 for N=32; CAPD clamps fixed 0.25 \u2192 ~0.125. Observed tubes were h\u22480.1125 then 0.125 \u2014 NOT h=1/4.",
+  "tubes_before_abort": 3,
+  "physical_ms_at_abort": 0.36254454490763344,
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.1125445449076334,
+      "step_mid": 0.1125445449076334
+    },
+    {
+      "stepIndex": 2,
+      "timeEnd_mid": 0.23754454490763338,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 3,
+      "timeEnd_mid": 0.36254454490763344,
+      "step_mid": 0.125
+    }
+  ],
+  "production_ring_flow_zero_pruned_untouched": true,
+  "did_not_auto_start_h_eighth_as_named_pilot": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "next_recommendation": "Isolated attempt-local TU with setMaxStep>=0.25 (frozen copy only; do not edit production source in place); retry as -v3. If true quarter remainder-fails: report only, no h=1/8 auto.",
+  "cleanup": {
+    "schema": "zp-fixed-quarter-v2-stop-cleanup-v1",
+    "reason": "NOT_TRUE_QUARTER: AuditedSolver setMaxStep(4/N)=0.125 capped steps to ~0.125; observed tubes steps 0.1125/0.125 \u2014 abort before mislabeling as h=1/4",
+    "native_pgid_killed": 44906,
+    "supervisor_pgid_killed": 44902,
+    "confirmed_gone": true,
+    "did_not_auto_start_h_eighth_as_named_pilot": true
+  }
+}

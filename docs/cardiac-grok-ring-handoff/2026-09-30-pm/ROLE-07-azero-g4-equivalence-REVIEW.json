@@ -1,0 +1,55 @@
+{
+  "schema": "azero-g4-sparse-c1-equivalence-review-role-07-v1",
+  "role": "independent_reviewer",
+  "roleId": 7,
+  "roleContract": "ROLE-AZERO-C1-SPEED-REVIEW",
+  "notImplementer": true,
+  "writtenAtET": "2026-09-30 10:11:21 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "checks": [
+    {
+      "id": "sparse_override_adapters_used",
+      "passed": true
+    },
+    {
+      "id": "not_batch_cellwise_compare",
+      "passed": true
+    },
+    {
+      "id": "hexfloat_equality_retained",
+      "passed": true
+    },
+    {
+      "id": "coeff_point_zero_mm",
+      "passed": true
+    },
+    {
+      "id": "coeff_box_zero_mm",
+      "passed": true
+    },
+    {
+      "id": "coeff_dense_a0_zero_mm",
+      "passed": true
+    },
+    {
+      "id": "ode_step_zero_mm",
+      "passed": true
+    },
+    {
+      "id": "nonfinite_J_never_omits",
+      "passed": true
+    },
+    {
+      "id": "ZeroPruned_pins_untouched",
+      "passed": true
+    },
+    {
+      "id": "no_P0_started",
+      "passed": true
+    }
+  ],
+  "result_sha256": "61899915f2ce70ad1b65b60f619c2384a98b4410cbedfeff870948eb12faaa56",
+  "native_exit": 0,
+  "checklistAllPassed": true
+}

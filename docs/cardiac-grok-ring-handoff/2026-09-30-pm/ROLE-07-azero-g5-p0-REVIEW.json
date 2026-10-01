@@ -1,0 +1,50 @@
+{
+  "schema": "azero-g5-p0-speed-bench-review-role-07-v1",
+  "role": "independent_reviewer",
+  "roleId": 7,
+  "roleContract": "ROLE-AZERO-C1-SPEED-REVIEW",
+  "notImplementer": true,
+  "writtenAtET": "2026-09-30 10:15:12 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "checks": [
+    {
+      "id": "sparse_override_path",
+      "passed": true
+    },
+    {
+      "id": "fair_comparison",
+      "passed": true
+    },
+    {
+      "id": "ZeroPruned_untouched",
+      "passed": true
+    },
+    {
+      "id": "no_header_swap",
+      "passed": true
+    },
+    {
+      "id": "no_P1_auto",
+      "passed": true
+    },
+    {
+      "id": "no_32_c1",
+      "passed": true
+    },
+    {
+      "id": "v1_domain_fail_documented",
+      "passed": true
+    },
+    {
+      "id": "material_threshold_evaluated",
+      "passed": true,
+      "primary_speedup": 1.0669428924972584
+    }
+  ],
+  "primary_speedup": 1.0669428924972584,
+  "speed_path_material": true,
+  "planning_target_met": false,
+  "result_sha256": "405910c8e843e636d75feb517c1bad41f280986d61c42e6e6a415f8777ba5920",
+  "checklistAllPassed": true
+}

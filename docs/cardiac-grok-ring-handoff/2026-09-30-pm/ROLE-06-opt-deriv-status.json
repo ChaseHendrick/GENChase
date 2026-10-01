@@ -1,0 +1,99 @@
+{
+  "schema": "grok-ring-handoff-role-contract-v1",
+  "role": "Opt-deriv",
+  "roleId": 6,
+  "agent": "Grok-only",
+  "stage": "PREPARATION/CONTRACT",
+  "writtenAt": "2026-09-30 08:58:09 ET",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "noNativeCapdFlowJobs": true,
+  "noPrototypeCompileOrRunAsProduction": true,
+  "admitted": false,
+  "gateRunnableNow": false,
+  "status": "NOT admitted",
+  "proposal": {
+    "path": "work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+    "sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+    "schema": "exact-zero-variation-product-source-proposal-v1",
+    "statusFromProposal": "unexecuted prototype; not admitted",
+    "baseSourceSha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "prototypeSha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "selectorSha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "semantics": "Skip a J*A product only for complete outward A=[0,0] with both J endpoints finite. Otherwise preserve the existing multiplication and order; nonfinite J does not trigger omission.",
+    "flagsFromProposal": {
+      "fullColumnsRetained": true,
+      "fullStatesRetained": true,
+      "denseWidthA0Retained": true,
+      "allRemainderCallsRetained": true,
+      "possibleSignedZeroSerializationDifferenceRetainedAsControlRequirement": true,
+      "coefficientControlsPassed": false,
+      "fullStepControlsPassed": false,
+      "fullEventControlsPassed": false,
+      "sourceAuditPassed": false,
+      "largePilotLaunched": false,
+      "existingSourcesModified": false
+    }
+  },
+  "relatedPrototypeHeaders": [
+    {
+      "path": "work/cardiac-study/tissue-scalability-preflight/AZeroPrunedCellwiseRingMap.hpp",
+      "sha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+      "headerNote": "Experimental full-direction MapT adapter. Not an audited flow supplier."
+    },
+    {
+      "path": "work/cardiac-study/tissue-scalability-preflight/AZeroPrunedSparseMap.hpp",
+      "sha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8"
+    },
+    {
+      "path": "work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
+      "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+      "role": "accepted base zero-J-pruned header (skip only exact [0,0] J); MUST NOT be replaced by AZero prototype"
+    },
+    {
+      "path": "work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
+      "role": "accepted sparse selector companion; do not replace"
+    },
+    {
+      "path": "work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
+      "role": "accepted cellwise map baseline"
+    }
+  ],
+  "requiredControlsBeforeAnyBenchmark": [
+    {
+      "id": "C1-signed-zero-serialization",
+      "requirement": "Independent controls proving signed-zero / +0/-0 serialization differences cannot change accepted enclosures or remainder inclusion (proposal flag possibleSignedZeroSerializationDifferenceRetainedAsControlRequirement=true)."
+    },
+    {
+      "id": "C2-dense-initial-matrices",
+      "requirement": "Controls with arbitrary dense initial A (including nonzero dense width) proving omission triggers only for complete outward A=[0,0] with both J endpoints finite; denseWidthA0Retained must remain true."
+    },
+    {
+      "id": "C3-every-variation-column",
+      "requirement": "All variation columns retained (fullColumnsRetained); no column/mode deletion; compare byte-level or exact enclosure equality against accepted ZeroPruned baseline on representative column sets."
+    },
+    {
+      "id": "C4-rigorous-remainders",
+      "requirement": "All remainder calls retained (allRemainderCallsRetained); CAPD state/matrix remainder inclusion unchanged; no dropped remainder."
+    },
+    {
+      "id": "C5-exact-linear-and-coefficient-step-event",
+      "requirement": "Separate exact-linear controls plus all coefficient/step/event controls (proposal currently coefficientControlsPassed=false, fullStepControlsPassed=false, fullEventControlsPassed=false)."
+    },
+    {
+      "id": "C6-independent-source-audit",
+      "requirement": "Independent source audit (sourceAuditPassed=false today) before any large pilot or production path admission."
+    }
+  ],
+  "productionPathPolicy": {
+    "replaceAcceptedHeaders": false,
+    "compileOrRunPrototypeAsProduction": false,
+    "useForActiveR32C1": false,
+    "note": "Active and future R32/R64 flows must continue to use admitted ZeroPruned / V5 suppliers. AZero remains an unexecuted prototype until every required control and source audit pass."
+  },
+  "documentationOnlyRunnable": true,
+  "explicitNonActions": [
+    "Did not replace accepted headers",
+    "Did not compile or run the AZero prototype as a production path",
+    "Did not launch benchmarks"
+  ]
+}

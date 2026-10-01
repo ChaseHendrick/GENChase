@@ -1,0 +1,21 @@
+{
+  "schema": "exact-zero-variation-product-source-proposal-v1",
+  "status": "unexecuted prototype; not admitted",
+  "baseSourceSha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+  "prototypeSha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+  "selectorSha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+  "semantics": "Skip a J*A product only for complete outward A=[0,0] with both J endpoints finite. Otherwise preserve the existing multiplication and order; nonfinite J does not trigger omission.",
+  "fullColumnsRetained": true,
+  "fullStatesRetained": true,
+  "denseWidthA0Retained": true,
+  "allRemainderCallsRetained": true,
+  "possibleSignedZeroSerializationDifferenceRetainedAsControlRequirement": true,
+  "coefficientControlsPassed": false,
+  "fullStepControlsPassed": false,
+  "fullEventControlsPassed": false,
+  "sourceAuditPassed": false,
+  "largePilotLaunched": false,
+  "existingSourcesModified": false,
+  "spatialExistenceCertified": false,
+  "spatialStabilityCertified": false
+}

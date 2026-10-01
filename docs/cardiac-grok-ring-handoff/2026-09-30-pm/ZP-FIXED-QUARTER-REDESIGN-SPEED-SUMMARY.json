@@ -1,0 +1,64 @@
+{
+  "schema": "zp-fixed-quarter-redesign-speed-summary-v1",
+  "writtenAtET": "2026-10-01T04:58:43-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T08:58:43Z",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1",
+  "verdict": "PASS_REACHED_1MS",
+  "supplier": "ZeroPrunedSparseMap",
+  "step": "0.25",
+  "all_tubes_exact_quarter": true,
+  "observed_steps_ms": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "observed_steps_hex": [
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    }
+  ],
+  "wall_s_elapsed": 817.890286541,
+  "physical_ms_reached": 1.0,
+  "tubes": 4,
+  "s_per_tube": 204.47257163525,
+  "s_per_ms": 817.890286541,
+  "speedup_vs_adaptive_zp_s_per_tube": 1.2625204308216795,
+  "speedup_vs_adaptive_zp_s_per_ms": 2.633049939630938,
+  "speedup_vs_azero_p1_s_per_tube": 1.1591945057476112,
+  "speedup_vs_azero_p1_s_per_ms": 2.412097286734136,
+  "speedup_vs_fixed_eighth_s_per_tube": 1.1486713554106094,
+  "speedup_vs_fixed_eighth_s_per_ms": 2.32306253399359,
+  "speedup_vs_redesign_v3_short_probe_s_per_tube": 1.013905925785923,
+  "redesign_v3_short_probe_caveat": "3 tubes only",
+  "stop_reason": "stop_physical_ms_reached",
+  "remainder_or_domain_fail_closed": false,
+  "did_not_auto_start_anything_else": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_prod_patch": true,
+  "prod_untouched": true,
+  "receipt_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-REDESIGN-SPEED-RECEIPT.json",
+  "receipt_sha256": "b7024e5a3178110c66abc360fb8879bcec1ff5f645bdc42aa950af7dca18c917",
+  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1",
+  "next_recommendation": "Isolated redesign fixed h=1/4 reached ~1ms with all-tube exact-quarter gate. Compare speedups. No G8/G9/prod-patch/auto-start.",
+  "binary_sha256": "9833fd2e16c04894b68068f857872f0cff67aabee113b2b601f7751915b52931",
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "production_ring_flow_zero_pruned_untouched": true
+}

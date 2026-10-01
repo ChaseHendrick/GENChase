@@ -1,0 +1,130 @@
+{
+  "schema": "n32-inclusion-contraction-blocked-v1",
+  "status": "BLOCKED",
+  "gate": "N32-EXACT-INCLUSION-CONTRACTION",
+  "requested_source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "suggested_new_tag_not_created": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "verdict": "CANNOT_START",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_G8_G9_proof_admit": true,
+  "no_64_full_return": true,
+  "prod_fixedquarter_untouched": true,
+  "c1_products_not_overwritten": true,
+  "inclusion_started": false,
+  "contraction_started": false,
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "agent": "Grok-only-executor",
+  "writtenAtET": "2026-10-01T06:54:16-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T10:54:16Z",
+  "lane_clear": true,
+  "lane_note": "no competing ring_flow at check time",
+  "c1_status": {
+    "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+    "verdict": "FLOW_SUCCESS",
+    "tubes": 16,
+    "returnTime_mid": 1.674627941572726,
+    "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+    "admitted_for_proof": false,
+    "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+    "harness_bypassed": true,
+    "harness_bypass_reason": "run_large_zero_pruned_flow.py copies live FixedQuarter PREF source; C1 used policy A copy adaptive binary"
+  },
+  "c1_products_present": {
+    "RAW-FLOW.json": true,
+    "TUBES.jsonl": true,
+    "inputs/": true,
+    "ring_flow": true,
+    "RUN-REPORT.json": false,
+    "BUILD.log": false,
+    "SUMMARY.json": true,
+    "LAUNCH.json": true
+  },
+  "point28_available": true,
+  "point28_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+  "blocker": {
+    "id": "MISSING_C1_RUN_REPORT_AND_BUILD_LOG",
+    "severity": "hard",
+    "detail": "ROLE-02 concreteInputFilesRequired.futureMatchedBoxC1 and V5 wrap_native.load_run require RUN-REPORT.json (mode=box, compile_exit=0, flow_exit=0, flow_succeeded=true, artifact_sha256, compile_command with -frounding-math, supplier.sourceAudit) and BUILD.log. Finished C1 tag box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1 has FLOW_SUCCESS RAW-FLOW+TUBES but was launched via SUPERVISOR harness bypass and never wrote RUN-REPORT.json or BUILD.log.",
+    "missing": [
+      "RUN-REPORT.json",
+      "BUILD.log"
+    ],
+    "present_ok": [
+      "RAW-FLOW.json",
+      "TUBES.jsonl",
+      "inputs/",
+      "ring_flow",
+      "SUMMARY.json",
+      "LAUNCH.json"
+    ]
+  },
+  "secondary_gaps": [
+    {
+      "id": "NO_RING32_RUN_ACTUAL_ROOT_RUNNER",
+      "detail": "ring16 has run_actual_root.py; ring32-checker and ring32-checker-supplier-v5 have wrap_native/joint_gate/from_flow but no dedicated run_actual_root.py. Documented path still starts at wrap_native which hard-requires RUN-REPORT."
+    }
+  ],
+  "documented_procedure_located": {
+    "primary_path": "work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py --point <point28> --box <C1> then joint_gate/from_flow/root arithmetic",
+    "mirror_of": "ring16: wrap_native.py then run_actual_root.py / joint_gate.py (inclusion+contraction)",
+    "role_contract": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-02-r32-root-contract.json",
+    "role_required_box_files": [
+      "RUN-REPORT.json",
+      "RAW-FLOW.json",
+      "TUBES.jsonl",
+      "BUILD.log",
+      "inputs/",
+      "ring_flow binary"
+    ],
+    "wrap_native_cli": [
+      "python3",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py",
+      "--point",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+      "--box",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+      "--output",
+      "<NEW-TAG>/ACTUAL-RADIUS3E10-FLOW.json",
+      "--matrices-output",
+      "<NEW-TAG>/ACTUAL-RADIUS3E10-MATRICES.json",
+      "--arithmetic-output",
+      "<NEW-TAG>/ACTUAL-RADIUS3E10-ARITHMETIC.json"
+    ],
+    "ring32_run_actual_root_exists": false,
+    "ring16_run_actual_root": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring16-checker/run_actual_root.py"
+  },
+  "what_was_not_done": [
+    "Did not invent a synthetic RUN-REPORT.json",
+    "Did not invent a ring32 run_actual_root.py",
+    "Did not overwrite C1 products",
+    "Did not touch FixedQuarter prod TU",
+    "Did not start inclusion/contraction arithmetic",
+    "Did not set admitted_for_proof / G8 / G9",
+    "Did not start any 64-site return"
+  ],
+  "unblock_options_for_coordinator_not_executed": [
+    {
+      "option": "A_posthoc_RUN_REPORT_builder_authorized",
+      "note": "Would need explicit owner go to write a RUN-REPORT matching harness schema from existing C1 products + copied-binary provenance (same binary sha as 20260930-v1 compile), plus BUILD.log provenance policy. Not invented here."
+    },
+    {
+      "option": "B_re_run_C1_via_harness_that_writes_RUN_REPORT_without_touching_FixedQuarter_prod",
+      "note": "Requires a harness variant that does not copy live FixedQuarter PREF; out of scope for this go."
+    },
+    {
+      "option": "C_authorize_alternate_adapter_path_taking_RAW_FLOW_plus_LAUNCH_SUMMARY",
+      "note": "Would be a new audited adapter; not present; do not invent."
+    }
+  ],
+  "artifact_hashes_checked": {
+    "N32-C1-SUMMARY.json": "da485eceb4d339c3a410b1bb2995fd529d469d9d1d44b02b816214901614ea0d",
+    "C1-RAW-FLOW.json": "dce3d0b0484d38101802ce6157a904bedd4eefc6fb0c15700916177339251d35",
+    "C1-TUBES.jsonl": "4fdf2fb700b6570c7bdad8f853e6f2520efde8ee68f7aa69119934c450dae115",
+    "C1-ring_flow": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+    "V5-wrap_native.py": "7ec5458a80255828fccafada24361dcd40ca6ce6094be2124f3a52f889dd3099",
+    "V5-joint_gate.py": "e9b536a358384ba56d368be1af82bc632ce547a276532c2a12f240e13dcee39a",
+    "ROLE-02-r32-root-contract.json": "c2f61801f45da8b6b2174b4ee7b2366b84c2c7079861a552c0dbf8d06a763a64"
+  }
+}

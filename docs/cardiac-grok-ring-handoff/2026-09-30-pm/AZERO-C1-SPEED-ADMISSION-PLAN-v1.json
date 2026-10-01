@@ -1,0 +1,272 @@
+{
+  "schema": "azero-c1-speed-admission-plan-v1",
+  "agent": "Grok-only",
+  "designOnly": true,
+  "writtenAtET": "2026-09-30 10:03:24 ET",
+  "writtenAtUTC": "2026-09-30T14:03:24Z",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "pmDir": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/",
+  "noClaude": true,
+  "noProductionHeaderModification": true,
+  "noFull32C1Started": true,
+  "noPilotStarted": true,
+  "nextAction": "await_user_go",
+  "goal": "Rigorous 32-then-64 C1 orbital-return path materially faster than ZeroPruned adaptive ~h=1/8 plateau (~31-37h extrapolated), without weakening gates; A-zero as per-tube lever after controls pass.",
+  "azeroStatus": {
+    "controlsTag": "20260930-v3",
+    "C1_to_C5": "PASS",
+    "C6": "ACCEPT",
+    "ROLE07": "accept",
+    "verdict": "CONTROLS_PASS_BUT_NOT_ADMITTED_FOR_PROOF",
+    "admitted_for_proof": false,
+    "productionHeadersUnchanged": true,
+    "c2RootCause": "harness Cellwise-batch vs AZero-sparse; not A-zero skip bug",
+    "proposalFlagsStillFalseInFile": true
+  },
+  "costBaseline": {
+    "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "sites": 32,
+    "radius": "3e-10",
+    "order": 20,
+    "plateau_h_ms": 0.12109375,
+    "s_per_tube_observed": 258.2,
+    "s_per_tube_planning": 300,
+    "tubes_per_period_approx": 440,
+    "full_period_hours_obs_to_plan": [
+      31.7,
+      36.7
+    ],
+    "period_T_ms": 53.588,
+    "coords": 576,
+    "guards_per_tube": 4384
+  },
+  "gaps": [
+    {
+      "id": 1,
+      "name": "no_ring_flow_azero"
+    },
+    {
+      "id": 2,
+      "name": "no_azero_build_launch_runner"
+    },
+    {
+      "id": 3,
+      "name": "no_azero_supplier_source_audit"
+    },
+    {
+      "id": 4,
+      "name": "sparse_path_consistency"
+    },
+    {
+      "id": 5,
+      "name": "proposal_ledger_stale"
+    },
+    {
+      "id": 6,
+      "name": "no_speed_measurement"
+    },
+    {
+      "id": 7,
+      "name": "V5_supplier_scope"
+    },
+    {
+      "id": 8,
+      "name": "dual_pgid_ops"
+    },
+    {
+      "id": 9,
+      "name": "pilot_neq_theorem"
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "name": "design_accept_await_go",
+      "stopOnFail": true
+    },
+    {
+      "id": "G1",
+      "name": "ledger_reconcile",
+      "review": "ROLE-07",
+      "stopOnFail": true
+    },
+    {
+      "id": "G2",
+      "name": "isolated_ring_flow_azero_build",
+      "mapTypeRequired": "AZeroPrunedSparseMap",
+      "stopOnFail": true
+    },
+    {
+      "id": "G3",
+      "name": "azero_supplier_source_audit",
+      "review": "ROLE-07",
+      "stopOnFail": true
+    },
+    {
+      "id": "G4",
+      "name": "sparse_c1_equivalence_n3",
+      "review": "ROLE-07",
+      "stopOnFail": true
+    },
+    {
+      "id": "G5",
+      "name": "micro_speed_bench",
+      "review": "ROLE-07",
+      "stopOnFail": true
+    },
+    {
+      "id": "G6",
+      "name": "n32_azero_speed_pilot",
+      "review": "ROLE-07",
+      "stopOnFail": true,
+      "doesNotProve": [
+        "full_period",
+        "existence",
+        "stability",
+        "header_swap"
+      ]
+    },
+    {
+      "id": "G7",
+      "name": "joint_pilot_supplier_review",
+      "stopOnFail": true
+    },
+    {
+      "id": "G8",
+      "name": "named_production_admission",
+      "stopOnFail": true,
+      "defaultUntilGo": "production remains ZeroPruned"
+    },
+    {
+      "id": "G9",
+      "name": "full_32_then_64_returns",
+      "stopOnFail": true
+    }
+  ],
+  "recommendedFirstPilot": {
+    "id": "P0",
+    "gate": "G5",
+    "tagPattern": "azero-n3-c1-sparse-speed-bench-grok-YYYYMMDD-v1",
+    "sites": 3,
+    "order": 20,
+    "maps": [
+      "AZeroPrunedSparseMap",
+      "ZeroPrunedSparseMap"
+    ],
+    "tubesOrWall": "8-16 tubes or wall<=300s",
+    "rssCapMiB": 768,
+    "successMetric": "AZero s/tube materially lower than ZeroPruned (planning >=1.2x)",
+    "doesNotProve": [
+      "n32_return",
+      "n64_return",
+      "header_swap",
+      "theorems",
+      "continuum"
+    ],
+    "requiresPriorGates": [
+      "G0",
+      "G2",
+      "G4"
+    ]
+  },
+  "recommendedSecondPilot": {
+    "id": "P1",
+    "gate": "G6",
+    "tagPattern": "box20-azero-adaptive-radius3e10-speed-pilot-grok-YYYYMMDD-v1",
+    "sites": 32,
+    "mode": "box",
+    "radius": "3e-10",
+    "order": 20,
+    "supplierBinary": "ring_flow_azero / AZeroPrunedSparseMap",
+    "wall_s": 3600,
+    "rss_mib": 2048,
+    "stopPhysicalTimeMs": 1.0,
+    "retainDirs": 576,
+    "retainGuardsPerTube": 4384,
+    "baselineCompare": "ZeroPruned adaptive ~258 s/tube early window",
+    "requires": "P0 material speedup OR explicit user prioritize-32"
+  },
+  "fallback": {
+    "source": "SPEED-DESIGN-v1",
+    "description": "N=32 ZeroPruned fixed h=1/4 radius 3e-10 order20 speed pilot",
+    "tagPattern": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-YYYYMMDD-v1",
+    "when": [
+      "G4 fail",
+      "G5 speedup <~1.05x",
+      "G6 remainder fail",
+      "user prefers admit-able lever"
+    ]
+  },
+  "nonActions": [
+    "no production ZeroPruned->AZero header replacement until G8",
+    "no 32/64 theorem claims from pilots",
+    "no continuum/PDE/sync-only/eigenvalue proofs",
+    "no Claude",
+    "one heavy native at a time",
+    "dual PGID: kill native first",
+    "never resume interrupted dirs",
+    "no batch-vs-sparse admission compares",
+    "no order/direction drop for speed",
+    "do not start pilot without user go"
+  ],
+  "codebaseBlockers": [
+    {
+      "id": "no_ring_flow_azero",
+      "severity": "high"
+    },
+    {
+      "id": "run_large_zero_pruned_asserts_zp_pins",
+      "severity": "high"
+    },
+    {
+      "id": "proposal_flags_stale",
+      "severity": "medium"
+    },
+    {
+      "id": "no_azero_supplier_audit_dir",
+      "severity": "high"
+    },
+    {
+      "id": "c5_step_used_batch_map",
+      "severity": "high"
+    },
+    {
+      "id": "azero_s_per_tube_unknown",
+      "severity": "medium"
+    },
+    {
+      "id": "linux_box_not_ready",
+      "severity": "low"
+    }
+  ],
+  "wallRssExpectations": {
+    "G2_compile_min": "<=3",
+    "G4_G5_min": "5-15 (mark measured)",
+    "G6_cap_s": 3600,
+    "G6_rss_mib": 2048,
+    "full_period_azero_h": "unknown until G5/G6",
+    "full_period_zeropruned_h": [
+      31.7,
+      36.7
+    ]
+  },
+  "sourcesConsultedSha256": {
+    "AZERO-ADMISSION-PLAN-v1.md": "5f7ab523875723c8b42565dfabce11ac4924d631049e25e2d4c0afc8aee48dbc",
+    "AZERO-CONTROLS-RUN-20260930.json": "bfeca3db0e017df7258ffba53168bdc58c8edc42f4ef6af7cf1aac7826083cd0",
+    "AZERO-CONTROLS-RUN-20260930-v2.json": "cd5c43069cf387e783eee56a13da1f1358e7b270f55a2d7ca48d1db1e7cfd86c",
+    "ROLE-07-azero-controls-REVIEW.json": "48f61278fffe3355b53499d0c703db2fae8da94643cfa7f763e9baad7b6cc8ef",
+    "SPEED-DESIGN-v1.md": "e33bab12191c719106c0c40a7e2f156d4197b6a79663e396f5d662cfc8a82316",
+    "SPEED-DESIGN-v1.json": "20581f867263aac3fdab61a1e2665af65c1a387508e2155279f89355ff99e62e",
+    "CLEANUP-DUAL-PGID.json": "42555563a498ee62a4fbbdad0a446ed1b3f8b33f64aa5ef6ffb0111822ca1b91",
+    "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1-STOPPED.json": "f681b7da2603a38fc35fb9853c3aee5dbc0d1366867d763bac6a6eefec509544",
+    "GROK-HANDOFF.md": "e70918bf2501a008ad131ecfd9289eb83a4f1ed172a858c10ed66cac1e16ed57",
+    "HANDOFF-BINDINGS.json": "5cec92ebe438eca4bba9ba5c210d30b85b5a39e19957064826b4ce126196503b",
+    "A-ZERO-PROPOSAL-V1.json": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "ring_flow_zero_pruned.cpp": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
+  },
+  "roleReviewContractPath": "ROLE-AZERO-C1-SPEED-REVIEW-CONTRACT.json"
+}

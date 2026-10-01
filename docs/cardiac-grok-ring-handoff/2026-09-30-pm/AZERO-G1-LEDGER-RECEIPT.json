@@ -1,0 +1,49 @@
+{
+  "schema": "azero-g1-ledger-reconcile-receipt-v1",
+  "gate": "G1",
+  "verdict": "PASS",
+  "all_passed": true,
+  "writtenAtET": "2026-09-30 10:05:40 ET",
+  "writtenAtUTC": "2026-09-30T14:05:40Z",
+  "agent": "Grok-only",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "proposal_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+  "proposal_before_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+  "proposal_after_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624",
+  "backup_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
+  "backup_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+  "flags_set": {
+    "coefficientControlsPassed": true,
+    "fullStepControlsPassed": true,
+    "fullEventControlsPassed": false,
+    "fullEventControlsDocumentedNA": true,
+    "sourceAuditPassed": true,
+    "admitted_for_proof": false,
+    "largePilotLaunched": false,
+    "existingSourcesModified": false,
+    "spatialExistenceCertified": false,
+    "spatialStabilityCertified": false
+  },
+  "artifact_sha256": {
+    "C5-RESULT": "1017d2eced7724265dfee393f948871129b76107cf46efb241000be51cfed2e9",
+    "C5-COEFF-RESULT": "22bd2c2c1ee81475e36de621e5e37467e69172cf618aa0a7aedfd3ed0dcfa533",
+    "C5-STEP-RESULT": "552abd3cc2d434cb58e6ee787ccd3bb809b72e1991a9214d2703a047ce57a90e",
+    "C5-EVENT-RESULT": "24037a7748c6837d3d64be1137a3965aef1c4152ebfa974c50fe44537873fc5b",
+    "C6-INDEPENDENT-REVIEW": "a848f1a67466da2e23a5ff993b7f6872b9b561d4f42165d16621036ad85c6946",
+    "C6-RESULT": "1721498b893aa82e18f6eb625378b02538717e57cf447392af60623ecf46cb83",
+    "C6-SOURCE-ADMISSION": "7888b168edda885b13c0f4aa34661a94053805d5031102906d2d026e916e7319",
+    "ROLE-07-azero-controls-REVIEW": "48f61278fffe3355b53499d0c703db2fae8da94643cfa7f763e9baad7b6cc8ef",
+    "AZERO-CONTROLS-RUN-20260930-v2": "cd5c43069cf387e783eee56a13da1f1358e7b270f55a2d7ca48d1db1e7cfd86c"
+  },
+  "live_pins": {
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
+  },
+  "review_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-azero-g1-ledger-REVIEW.json",
+  "review_sha256": "eda854e64f46e8cd267b2176ad0b2cff15779fc2a0dc3bb789c2e9631f834f7a",
+  "stop_on_fail_honored": true,
+  "production_headers_untouched": true
+}

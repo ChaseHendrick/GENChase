@@ -1,0 +1,64 @@
+{
+  "schema": "handoff-update-2026-10-01-v1",
+  "writtenAtET": "2026-10-01T08:22:00-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T12:22:00Z",
+  "agent": "Grok-only-executor",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "purpose": "Absorb 2026-10-01 ET FixedQuarter / N32 C1+IC / N64 pilot / pause standing into canonical handoff files from PM receipts; no compute launched",
+  "lanePaused": true,
+  "laneIdleConfirmed": true,
+  "noJobsStarted": true,
+  "fixedQuarterPrefUntouchedDuringThisUpdate": true,
+  "livePrefSha256_verified": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "filesTouched": [
+    {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md",
+      "role": "canonical_narrative_status_append",
+      "sha256": "ada81972b3de34521dea61509fa7d800f057189ae77c696d9be6577e083705b4"
+    },
+    {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json",
+      "role": "canonical_bindings",
+      "sha256": "c9552f44399cd81c7a9dff901279728ffa5d0b9e34c26c1914d088e04ced75cf"
+    },
+    {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/PAUSED-HANDOFF-2026-10-01.md",
+      "role": "paused_handoff_primary",
+      "sha256": "8e04b504249ae6c0f4151998b5268248aff4d68909b3f9f1c6418fba54171ed3"
+    },
+    {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/PAUSED-HANDOFF-2026-10-01.md",
+      "role": "paused_handoff_mirror_beside_grok",
+      "sha256": "8e04b504249ae6c0f4151998b5268248aff4d68909b3f9f1c6418fba54171ed3"
+    },
+    {
+      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/PAUSED-HANDOFF-2026-09-30.md",
+      "role": "historical_paused_supersession_banner_only",
+      "sha256": "c4711e675e13e43bcd7afd43c6be88dfdb6beb8393052ac4b2c1b807e5f28b65"
+    }
+  ],
+  "sourceReceiptSha256": {
+    "N32-C1-SUMMARY.json": "da485eceb4d339c3a410b1bb2995fd529d469d9d1d44b02b816214901614ea0d",
+    "N32-INCLUSION-CONTRACTION-SUMMARY.json": "fa18357fc08f07afce74f69e8dfbcce9ea283463df21e5c6db5dfd44bf91480d",
+    "N32-MATCHED-K-BLOCKED.json": "195b04fb583d568ef07c9a47676e0350231bb51c41e508f245ce854ba8240b9f",
+    "N32-POST-IC-GATES-SUMMARY.json": "ccf77a71afa286c6ea54c9aed20db152a5efeed6f0a82d9a825d9d373af005ea",
+    "N64-FIXED-EIGHTH-PILOT-SUMMARY.json": "37a17f2c70876fb138dc29934f0b2cd48a135906eeeaf64d68659ff5591c1a96",
+    "N32-AUDIT-PIN-UPDATE.json": "186e9f6ba59dee5a027e036012784138ccd2c94ab56ae981d0abfcb76bda11c3",
+    "ZP-FIXED-QUARTER-PROD-PATCH-SUMMARY.json": "fb60d33077278ccab79fd074917bca1c1d7f8a42b473ab4be6ed395fdea58c23",
+    "ZP-FIXED-QUARTER-PROD-SPEED-SUMMARY.json": "d5dc2997b16d686914baa89c5721c41c1edbdc5415b1f422d593310cc6cc46d8",
+    "ZP-FIXED-QUARTER-REDESIGN-SPEED-SUMMARY.json": "796e42855d301d8b58ec99e030e1d4a46f479b3405cde66fd26583f318407434",
+    "N32-POSTHOC-RUN-REPORT.json": "0ebc73a53d218157247b938450e0074d654af86b6312fdb411ebc59a3e5aca07"
+  },
+  "summaryBullets": [
+    "FixedQuarter prod PREF e9081f21\u2026; PASS_THREE_CONSECUTIVE_QUARTER + PASS_REACHED_1MS (~207.6 s/tube)",
+    "N32 C1 FLOW_SUCCESS tag \u2026-grok-20261001-v1; 16 tubes; returnTime mid ~1.6746 ms; wall ~3679 s",
+    "N32 IC Inclusion+Contraction strict PASS; admitted_for_proof=false",
+    "Matched K HARD_FAIL_BLOCKED MISSING_N32_NATIVE_K_HARNESS; later gates SKIPPED_AFTER_FAIL",
+    "N64 fixed-eighth pilot PASS; full64ReturnBudgetAuthorizedByPilot=false",
+    "Mac lane PAUSED idle; no heavy jobs started by this handoff update"
+  ],
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "thisReceiptSha256": "6991e36be1d188f751a54aa1bccc0c6275c8197c94eb0f90f294aa7c49ac37f1"
+}

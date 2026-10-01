@@ -1,0 +1,50 @@
+{
+  "schema": "azero-g1-ledger-review-role-07-v1",
+  "role": "independent_reviewer",
+  "roleId": 7,
+  "writtenAtET": "2026-09-30 10:05:40 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "checks": [
+    {
+      "id": "flags_from_artifacts_only",
+      "passed": true
+    },
+    {
+      "id": "coefficientControlsPassed_true",
+      "passed": true
+    },
+    {
+      "id": "fullStepControlsPassed_true",
+      "passed": true
+    },
+    {
+      "id": "fullEventControlsPassed_remains_false_with_NA",
+      "passed": true
+    },
+    {
+      "id": "sourceAuditPassed_true",
+      "passed": true
+    },
+    {
+      "id": "proof_spatial_flags_false",
+      "passed": true
+    },
+    {
+      "id": "largePilot_and_existingSources_false",
+      "passed": true
+    },
+    {
+      "id": "ZeroPruned_pins_unchanged",
+      "passed": true
+    },
+    {
+      "id": "no_production_header_swap",
+      "passed": true
+    }
+  ],
+  "proposal_before_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+  "proposal_after_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624",
+  "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
+  "checklistAllPassed": true
+}

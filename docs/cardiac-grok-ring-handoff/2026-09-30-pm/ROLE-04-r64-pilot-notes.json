@@ -1,0 +1,71 @@
+{
+  "schema": "grok-role-04-r64-pilot-notes-v1",
+  "role": {
+    "id": 4,
+    "name": "R64-pilot",
+    "kind": "implementer",
+    "status": "queued_after_lane"
+  },
+  "utc_written": "2026-09-30T12:57:22Z",
+  "funding": "grok-bot-executors-only",
+  "lane_policy": {
+    "queued_after_active_32_native": true,
+    "active_32_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "native_capd_jobs_max": 1,
+    "do_not_start_capd_until_coordinator_approval_and_lane_clear": true
+  },
+  "prior_accepted_one_over_64_step": {
+    "accepted": true,
+    "step": "1/64",
+    "sites": 64,
+    "directory": "work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-n64-full-step-2400s-v1/",
+    "wall_seconds_receipt": 1263.95,
+    "wall_seconds_approx_handoff_phrase": 1265.9,
+    "sampled_peak_rss_bytes": 1543208960,
+    "sampled_peak_rss_gib_approx": 1.44,
+    "retained": {
+      "coordinates": 1152,
+      "derivative_intervals": 1327104,
+      "guards": 26304
+    },
+    "is_a_return": false,
+    "is_a_theorem": false,
+    "note": "Independently reviewed completed one-step pilot. One step \u2260 theorem. Does not authorize a full 64 return budget by itself."
+  },
+  "prior_interrupted_one_over_8_pilot": {
+    "step": "1/8",
+    "sites": 64,
+    "directory": "work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-n64-fixed-eighth-full-step-2400s-v1/",
+    "interrupted_after_seconds": 290.42,
+    "completed_step": false,
+    "truncated_raw_step_preserved_exactly": true,
+    "native_exit": -9,
+    "supervisor_exit": 0,
+    "method_source_admitted_but_step_interrupted": true,
+    "spatial_existence_certified": false,
+    "spatial_stability_certified": false
+  },
+  "next_plan": {
+    "sequence": [
+      "Wait for 32-site native lane to clear (or coordinator explicit approval for a separate machine/capacity).",
+      "Run a bounded pilot (finite wall/RSS) under coordinator-approved scope.",
+      "Measure actual wall and sampled RSS from that pilot.",
+      "Only then propose a separate finite full-return budget from measurement\u2014never infer full-return cost from the prior 1/64 step alone."
+    ],
+    "admitted_scope_hint_from_handoff": "A fresh fixed-eighth step may use the admitted 2400s/4GiB scope only after coordinator approval.",
+    "one_step_neq_theorem": true
+  },
+  "box_linux_feasibility_crossref": {
+    "box_path": "/workspace/cardiac-grok-linux-feasibility-2026-09-30.json",
+    "mac_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/BOX-LINUX-FEASIBILITY.json",
+    "ready_to_run_native_on_box_now": false,
+    "mac_binaries_do_not_admit_linux_build": true
+  },
+  "constraints": [
+    "no manuscript/certificate/release edits",
+    "no 32/64 publish",
+    "preserve interrupted receipts",
+    "Grok only",
+    "do not start CAPD native from these notes"
+  ]
+}

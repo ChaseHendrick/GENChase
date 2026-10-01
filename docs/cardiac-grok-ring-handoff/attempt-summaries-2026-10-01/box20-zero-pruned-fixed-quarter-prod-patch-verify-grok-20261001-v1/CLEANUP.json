@@ -1,0 +1,15 @@
+{
+  "order": [
+    "verify",
+    "native already gone after pass signal path",
+    "supervisor exited without receipt \u2014 reconstructed from TUBES+HEARTBEAT"
+  ],
+  "stop_reason": "probe_pass_three_consecutive_quarter",
+  "native_pid": 31411,
+  "native_pgid": 31411,
+  "supervisor_pid": 31408,
+  "supervisor_pgid": 31408,
+  "confirmed_native_gone": true,
+  "confirmed_supervisor_gone": true,
+  "receipt_reconstructed": true
+}

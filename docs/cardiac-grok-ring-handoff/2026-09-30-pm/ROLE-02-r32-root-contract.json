@@ -1,0 +1,314 @@
+{
+  "schema": "grok-ring-handoff-role-contract-v1",
+  "role": "R32-root",
+  "roleId": 2,
+  "agent": "Grok-only",
+  "stage": "PREPARATION/CONTRACT",
+  "writtenAt": "2026-09-30 08:58:09 ET",
+  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "noNativeCapdFlowJobs": true,
+  "noRootSolverExecutedByThisRole": true,
+  "gateRunnableNow": false,
+  "blockedOn": [
+    "complete matched 32-site point+box C1 return at radius 3e-10 (or justified successor)",
+    "strict V5 adapter binding of actual radius, initial coverage, sources, model, scales, endpoint event, all 576 directions, every whole-tube guard"
+  ],
+  "context": {
+    "sites": 32,
+    "totalDynamicStates": 576,
+    "sectionDimension": 575,
+    "endIndex": 558,
+    "neighborCoefficient": "2/125",
+    "activeC1Attempt": "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "activeC1Launch": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+    "point28ResidualMaxApprox": "2.24859820534e-10",
+    "oldRadius": "2e-10",
+    "authorizedNewRadius": "3e-10",
+    "interruptedPriorC1NotResumable": true,
+    "H32PositivityAccepted": true,
+    "stabilityAccepted": false
+  },
+  "locatedScriptsAndPaths": {
+    "ring8_exactRootAndReplay": {
+      "dir": "work/cardiac-study/tissue-certification",
+      "scripts": [
+        {
+          "path": "work/cardiac-study/tissue-certification/replay_root_existence.py",
+          "sha256": "9fa09c8bc98c63b094a4d9d6edafbb7f05055a583b1ed0550e3977d8dc07fd85"
+        },
+        {
+          "path": "work/cardiac-study/tissue-certification/check_first_period.py",
+          "sha256": "31f7cc78062b80d9293aec3d13c93fd96895b7e1db4d108b24e50ec37e05fadc"
+        },
+        {
+          "path": "work/cardiac-study/tissue-certification-checker/root_enclosure.py",
+          "note": "8-site checker enclosure"
+        },
+        {
+          "path": "work/cardiac-study/tissue-certification-checker/joint_gate / from_flow equivalents under tissue-certification-checker/",
+          "note": "joint existence gate path family"
+        }
+      ],
+      "certifiedOutputs": [
+        "outputs/cardiac-study/tissue-ring/CERTIFIED-TISSUE-RING-EXISTENCE-V2.json",
+        "outputs/cardiac-study/tissue-ring/CERTIFIED-TISSUE-RING-V1.json"
+      ]
+    },
+    "ring16_exactRootInclusionContraction": {
+      "dir": "work/cardiac-study/ring16-checker",
+      "primaryScripts": [
+        {
+          "path": "work/cardiac-study/ring16-checker/run_actual_root.py",
+          "sha256": "f60f61d262497f94f8c984dec9eb71b922a56dce9668c429150fadba8374374e"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/root_enclosure.py",
+          "sha256": "c205f3fe640a906fbfb23e28b09669c10fb18af2f93f0e663ec5d81a031b50b7"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/joint_gate.py",
+          "sha256": "c699e0308b791ab2513bef59753c60f14873fd8c6af09291d6a467f452a47ef3"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/root_pipeline_controls.py",
+          "sha256": "f5a75eb0b3697b4f00b2ad4aec9e0ff07214f1ccb2ca2b570e9411c2a0831090"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/from_flow.py",
+          "note": "flow adapter"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/wrap_native.py",
+          "note": "native wrap"
+        },
+        {
+          "path": "work/cardiac-study/ring16-checker/root_c1_flow.py",
+          "note": "C1 flow bind"
+        }
+      ],
+      "executedSourceSnapshot": {
+        "dir": "work/cardiac-study/ring16-checker/root-pipeline-executed-sources-v1",
+        "manifestSha256": "041cd744a68ff9ada3be0bde5fd8cfb3b260a2d17ca09dd4962c1214dd5d38d9"
+      },
+      "successfulRootGateExample": {
+        "dir": "work/cardiac-study/ring16-checker/actual-radius2e10-root-gate-v1",
+        "resultSha256": "a905d257cca1c01ed18085b7527663c129df2aee23bb7f63f83e54e0be09a085",
+        "independentReview": {
+          "path": "work/cardiac-study/tissue-proof-review/ring16-actual-root-review-v1/RESULT.json",
+          "sha256": "abfbed5068446729b315af2cf1028b81a55625dbbaf908726be2e85b08c577f1"
+        }
+      },
+      "artifactNamesUsedBy16": [
+        "ACTUAL-RADIUS2E10-FLOW.json",
+        "ACTUAL-RADIUS2E10-MATRICES.json",
+        "ACTUAL-RADIUS2E10-ARITHMETIC.json",
+        "actual-radius2e10-root-gate-v1/RESULT.json"
+      ]
+    },
+    "ring32_portedChecker": {
+      "dir": "work/cardiac-study/ring32-checker",
+      "target": {
+        "path": "work/cardiac-study/ring32-checker/TARGET.json",
+        "sites": 32,
+        "sectionDimension": 575,
+        "endIndex": 558,
+        "neighborCoefficient": "2/125",
+        "qTestExact": "499995373/500000000"
+      },
+      "scripts": [
+        {
+          "path": "work/cardiac-study/ring32-checker/root_enclosure.py",
+          "sha256": "f0663508f881548ab92a72bfba95a9c17d6cf0fe1e1516480483e1a8399f4d18"
+        },
+        {
+          "path": "work/cardiac-study/ring32-checker/joint_gate.py",
+          "sha256": "e9b536a358384ba56d368be1af82bc632ce547a276532c2a12f240e13dcee39a"
+        },
+        {
+          "path": "work/cardiac-study/ring32-checker/root_pipeline_controls.py",
+          "sha256": "9669da368477a160be2db27ca37bcf0e48facf200a2be7e27749e7f3e675503d"
+        },
+        {
+          "path": "work/cardiac-study/ring32-checker/root_c1_flow.py",
+          "sha256": "94d2e10e1271ddffc76e7236043ccabb253d6b23c1ad25467ed366153b485c61"
+        },
+        {
+          "path": "work/cardiac-study/ring32-checker/root_stability.py",
+          "sha256": "97f102a4374e9171a6a7c37019b36257d788486232bf5461b7eb2fe92b520e6e"
+        }
+      ],
+      "syntheticControlsOnly": {
+        "path": "work/cardiac-study/ring32-checker/ROOT-PIPELINE-CONTROLS-V1.json",
+        "note": "17 synthetic/initial-input controls passed; no actual32 ionic return or theorem"
+      },
+      "supplierV5": "work/cardiac-study/ring32-checker-supplier-v5/"
+    },
+    "fundamentalPeriodExclusion": {
+      "ring8": [
+        {
+          "path": "work/cardiac-study/tissue-certification/check_first_period.py",
+          "sha256": "31f7cc78062b80d9293aec3d13c93fd96895b7e1db4d108b24e50ec37e05fadc"
+        },
+        {
+          "path": "work/cardiac-study/tissue-proof-review/period-exclusion-review-v1/check_first_period.py",
+          "sha256": "31f7cc78062b80d9293aec3d13c93fd96895b7e1db4d108b24e50ec37e05fadc"
+        },
+        {
+          "path": "work/cardiac-study/tissue-proof-review/period-exclusion-review-v1/replay_period.py",
+          "sha256": "3ebe69fcb8545a8b8231627c99df26c7ab16cefe42a05f3967d4cb1e778e6a48"
+        },
+        {
+          "path": "work/cardiac-study/tissue-proof-review/period-exclusion-review-v1/RESULT.json",
+          "sha256": "b7d527f38a717ccaaff006a7535035c912395a33a27aa4cb59b5cd7968c14a10"
+        }
+      ],
+      "ring16": [
+        {
+          "path": "work/cardiac-study/tissue-proof-review/ring16-actual-period-review-v1/replay_period.py"
+        },
+        {
+          "path": "work/cardiac-study/tissue-proof-review/ring16-actual-period-review-v1/RESULT.json",
+          "sha256": "87bc6f5c57be1cc12f584219f809c69a91e6a46bd725f52c14216cef75f3b6d1"
+        }
+      ],
+      "rule": "T=N*tau is a physical period once the root exists; fundamental period requires earlier ascending-section return exclusion plus cyclic equivariance. Standalone period review does not certify without accepted exact cyclic root."
+    }
+  },
+  "gateChecklistAfterCompleteMatchedPointBoxReturn": [
+    {
+      "id": "G1-matched-suppliers",
+      "requirement": "Reopen complete point28 (or matched point) and full-box C1 receipts; bind identical model, scales, center, endpoint event V31=1/5 ascending (endIndex 558), all 576 state/variation columns, and every whole-tube domain guard via admitted V5 adapter.",
+      "unchanged": true
+    },
+    {
+      "id": "G2-radius-coverage",
+      "requirement": "Search box radius must match the actual completed C1 coverage (authorized 3e-10 unless a justified new attempt is uniquely named). Point residual max ~2.24859820534e-10 already exceeds old 2e-10; do not reuse 2e-10 cube.",
+      "unchanged": true
+    },
+    {
+      "id": "G3-uniform-derivative-only-for-existence",
+      "requirement": "Existence uses the uniform full-box C1 derivative over X. Root-only / conditional K derivative MUST NOT enter the existence gate.",
+      "unchanged": true
+    },
+    {
+      "id": "G4-strict-inclusion",
+      "requirement": "Exact G(u)=u-C(u-P(u)) image of X lies strictly inside X componentwise (all 575 offsets); minimum inclusion margin > 0. Saved success Booleans are untrusted.",
+      "unchanged": true
+    },
+    {
+      "id": "G5-weighted-contraction",
+      "requirement": "Weighted infinity-norm contraction bound of C(I-DP) strictly below 1 with consistent F=I-P sign; implies unique root by Banach and C nonsingular by Neumann.",
+      "unchanged": true
+    },
+    {
+      "id": "G6-tube-domain-guards",
+      "requirement": "Every complete tube must retain all 576 physical coordinates and all 4,384 native expression-domain guards (137 per site x 32) with correct site/local identity; incomplete/old8/old16 guard sets rejected.",
+      "unchanged": true
+    },
+    {
+      "id": "G7-event-transversality",
+      "requirement": "Initial positive slab, ascending endpoint section, positive endpoint transversality, complete crossing tubes, and audited CAPD MinusPlus first-event contract unchanged.",
+      "unchanged": true
+    },
+    {
+      "id": "G8-first-period-physical",
+      "requirement": "One-site return time enclosure and N-fold physical period T=32*tau recorded from complete tubes; not yet a fundamental-period claim.",
+      "unchanged": true
+    },
+    {
+      "id": "G9-fundamental-period-exclusion",
+      "requirement": "Exclude all earlier nonendpoint ascending site-zero (and equivariant) section returns via complete-tube voltage/slope audits; cyclic equivariance implies any earlier full-state period would require such a return.",
+      "unchanged": true
+    },
+    {
+      "id": "G10-nonsynchrony",
+      "requirement": "Disjoint initial voltage boxes exclude synchrony throughout X; positive initial V0 derivative excludes equilibrium. Nonsynchrony alone is not existence or period.",
+      "unchanged": true
+    },
+    {
+      "id": "G11-independent-replay",
+      "requirement": "Independent exact dyadic/GMP four-corner residual and inclusion/contraction replay must match; reject Python-O, rounded, point-only, wrong-shift, or stale sources.",
+      "unchanged": true
+    },
+    {
+      "id": "G12-no-stability-claim-here",
+      "requirement": "This root gate does not prove stability. H32 positivity already accepted separately is insufficient for orbital stability.",
+      "unchanged": true
+    }
+  ],
+  "concreteInputFilesRequired": {
+    "frozenModelAndInputs": [
+      {
+        "path": "work/cardiac-study/tissue-certification32/INPUTS.json",
+        "sha256": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/ring_model.h",
+        "sha256": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/cardiac_model.h",
+        "sha256": "83d30316fe2e96063d25bf8af9e17a8bb74b377be2189a289e5b89aea03bcd37"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/cardiac_scaled_model.h",
+        "sha256": "e5077913ebea61636b72d930264f1b7b543a9e799c132b62a833eeda5068b136"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/PROPOSED-MATRICES.json",
+        "sha256": "5a1b38f9cbd057a091f3157a0f4b80c954b43b59798f4cc6be589ce1c1116163"
+      }
+    ],
+    "completedPointReceipt": [
+      {
+        "path": "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1/",
+        "note": "completed point28 C0 return"
+      },
+      {
+        "path": "work/cardiac-study/ring32-checker-supplier-v5/actual-point28-residual-v1/RESULT.json",
+        "sha256": "880165eaf51da3dac62b3ef30b9c09f7777c57cbe571ddb851239d223ff8e43b"
+      },
+      {
+        "path": "work/cardiac-study/tissue-proof-review/actual32-point-residual-independent-v2/RESULT.json",
+        "sha256": "552c9c251eeb00f1cdc0e8d9354f0967745380881100026822179a7b443ab1a0"
+      }
+    ],
+    "futureMatchedBoxC1": [
+      "FUTURE uniquely named attempt under outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/<UNIQUE-TAG>/",
+      "required files inside that attempt: RUN-REPORT.json, RAW-FLOW.json (nonempty on success), TUBES.jsonl, BUILD.log, inputs/, ring_flow binary"
+    ],
+    "checkerSources": [
+      "work/cardiac-study/ring32-checker/ (ported from frozen16 root-pipeline-executed-sources-v1)",
+      "work/cardiac-study/ring32-checker-supplier-v5/"
+    ]
+  },
+  "expectedOutputArtifactsUnderFutureUniqueAttemptDir": {
+    "attemptDirPattern": "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/<UNIQUE-TAG>/",
+    "exampleUniqueTagStyle": "actual-radius3e10-root-gate-<YYYYMMDDTHHMMSSZ>-v1",
+    "doNotOverwriteInterruptedDirs": [
+      "box20-zero-pruned-adaptive-radius2e10-v1",
+      "box20-zero-pruned-adaptive-radius3e10-v1",
+      "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1"
+    ],
+    "expectedNames": [
+      "ACTUAL-RADIUS3E10-FLOW.json",
+      "ACTUAL-RADIUS3E10-MATRICES.json",
+      "ACTUAL-RADIUS3E10-ARITHMETIC.json",
+      "RESULT.json",
+      "ROOT-INCLUSION.json",
+      "ROOT-CONTRACTION.json",
+      "K-ROOT-ENCLOSURE-OFFSETS.json",
+      "PERIOD-ONE-SITE.json",
+      "FUNDAMENTAL-PERIOD-EXCLUSION.json",
+      "NONSYNCHRONY.json",
+      "EXECUTED-SOURCE-MANIFEST.json",
+      "INDEPENDENT-REPLAY/RESULT.json"
+    ],
+    "note": "Exact radius token in filenames must match the admitted completed box radius. Names mirror ring16 ACTUAL-RADIUS2E10-* pattern."
+  },
+  "explicitNonActions": [
+    "Did not run the root solver",
+    "Did not launch or resume any native CAPD flow",
+    "Did not modify accepted 8/16 certificates or headers"
+  ]
+}
