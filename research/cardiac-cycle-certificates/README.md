@@ -125,6 +125,10 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     weighted cell coordinates, certifies two things: H_0 has exactly one eigenvalue (0, algebraically simple) in
     Re mu > -delta per period strip, and the multiplier 1 is simple.
   - Stage E's ball enters through Lemma 4.1.
+* **Trust boundary (Fourier route).** Arb and FLINT through python-flint 0.9.0 (the wheel's SHA-256 is pinned and
+  checked by `fourier/test_arbmodel.py`), CPython, the programs in `fourier/` and `model/`, and the written lemmas
+  (`fourier/LEMMAS-stability.md` and the docstrings of `fourier_eval.py` and `existence.py`). numpy and LAPACK only
+  propose centres, eigenvectors and weights, and every bound that uses them is checked in Arb.
 
 ## Status (2026-10-01)
 
@@ -134,11 +138,14 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   (exact bounds in the record), inside the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet
   multipliers of modulus at most 0.998642; locally orbitally asymptotically stable. The unpatched run gave the same
   bounds.
-* **Rings, Fourier route (Stage E plus Stage S): computed for N = 1, 8, 16, 32, 64.** Each stage had an in-project
+* **Rings, Fourier route (Stage E plus Stage S): proved for N = 1, 8, 16, 32, 64, subject to the trust base below.** Each stage had an in-project
   adversarial review, and every finding was fixed (`reviews/fourier-stage1-review-2026-10-01.md`,
   `reviews/stability-lemmas-review-2026-10-01.md`, `reviews/stageE-existence-review-2026-10-01.md`,
-  `reviews/stageS-stability-review-2026-10-01.md`). A second reading of the fixes is pending; the records say
-  "computed; awaiting adversarial review" until it ends. No outside review has taken place.
+  `reviews/stageS-stability-review-2026-10-01.md`). A second reading of the fixes
+  (`reviews/fix-second-reading-2026-10-01.md`) found nothing unsound. The outcome, **passed in-project adversarial
+  review**, is recorded in `results/fourier-review-status.json`, outside the hashed records: the records keep the
+  status the programs wrote, and the Stage S records hash the Stage E records. `fourier/check_records.py` rechecks
+  every stored hash. No outside review has taken place.
   - Existence (`results/fourier-existence-N*.json`):
     - each N has a unique rotating 1-wave within about 1.6e-28 (scaled l^1_nu) of the centre;
     - the period is enclosed to about 1e-26 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
