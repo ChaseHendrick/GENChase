@@ -32,22 +32,37 @@ enclosure [J_0] (which now also contains the g-width). A does not depend on g.
 
 3. Uniform bounds (Theorem B1)
 ------------------------------
-The parameter enters every model evaluation as an Arb ball containing [g_lo, g_hi] (arbmodel.params(g_Ks=(lo, hi)),
-the interval hull of the two exact decimals). Every Arb evaluation of f, Df or D^2 f on a box therefore contains the
-values for every point of the box and EVERY g in G. Consequently:
-  * the strip sups S_g, S_J (fourier_eval Lemma 1) bound sup over the strip and over g in G; the DFT enclosures
-    (Lemma 3, Theorem 4) of g_m and J_n contain the true coefficients for every g in G (for each fixed g, f(.; g)
-    o phibar is holomorphic near the strip with the same S, so the aliasing bound holds for each g);
-  * Y0 (E.5, finite part plus tails, with the phase row as above) bounds sup_{g in G} ||A F(xbar; g)||;
-  * Z1 (E.5) bounds sup_{g in G} ||I - A DF(xbar; g)||: the finite block I - A_fin J_fin is formed with the interval
-    J_fin; the tail rows use A_m (i omega_bar m - J0hat) = I and J'_0 = [J_0] - J0hat, which contains J_0(g) - J0hat
-    for every g; the finite-rows x tail-columns block uses [J_n] or the strip majorant, which hold for every g. The
-    phase functional does not touch modes |m'| > K (K >= 1), so its tail-column entries are 0 (Stage E has 1 there).
-  * Z2 (section 4) holds for every g in G.
+Let G = [g_lo, g_hi], g_c its midpoint (an exact decimal), delta = (g_hi - g_lo) / 2. Every Arb evaluation made "over
+G" uses an Arb ball containing [g_lo, g_hi] for g_Ks (arbmodel.params(g_Ks=(lo, hi)), the interval hull of the two
+exact decimals), hence contains the values for EVERY g in G. The parameter is handled by the mean value theorem in g
+(evaluating F(xbar; g) or DF(xbar; g) directly with the interval ball is also valid, but adds |A| times the ball radii
+with no cancellation, which made Z1 = 221 on a 4e-6 wide piece):
+  * Y0. For each g in G, A F(xbar; g) = A F(xbar; g_c) + (g - g_c) int_0^1 A d_gF(xbar; g_c + t (g - g_c)) dt, and
+    d_gF(xbar; xi) = (0, (-[d_g f(phibar; xi)]_m)_m) (the phase row and i omega m a_m do not depend on g). So, per output
+    component c, ||(A F(xbar; g))_c|| <= Y0p_c + delta Y0g_c, where Y0p is the Stage E Y0 computation (E.5: finite part
+    A_fin F_fin, tail rows -A_m g_m, Cauchy tail) for the point g_c, and Y0g the same computation for the vector
+    d_gF(xbar; xi) with the Fourier enclosures of d_g f o phibar taken over xi in G (strip sup and aliased DFT,
+    fourier_eval Lemmas 1-3, of the black box dg_flat; the integral average lies in the convex ball enclosure).
+    Y0 := max_c (Y0p_c + delta Y0g_c) / eta_c >= sup_{g in G} ||A F(xbar; g)||.
+  * Z1. I - A DF(xbar; g) = [I - A DF(xbar; g_c)] - (g - g_c) int_0^1 A d_gDF(xbar; g_c + t (g - g_c)) dt, where
+    d_gDF(xbar; xi) y = (0, (-[(d_g Df)(phibar; xi) y]_m)_m) is the convolution operator with the Fourier coefficients
+    D1_n of d_g Df o phibar (enclosed over xi in G; black box dgJ_flat, the mixed second derivatives from Hess with g as
+    a 19th variable). Block bounds B1 (the Stage E Z1 blocks for I - A DF(xbar; g_c): finite x finite, finite rows x tail
+    columns with the strip majorant, tail rows sum_n A_m J'_n) and B1g (the same three parts for A d_gDF: |A_fin D_fin|,
+    A_fin times the tail columns of D1 with its majorant S_D, and tail rows |A_m D1_n| <= Abar0 |D1_n| plus the Cauchy
+    tail Abar0 S_D tailK) give, for every g in G,
+        ||I - A DF(xbar; g)|| <= Z1 := max_c (1/eta_c) sum_c' eta_c' (B1_{cc'} + delta B1g_{cc'}).
+    d_g Df vanishes identically outside the V row (G_Ks enters only dV/dt); the code restricts the products to the
+    rows where the enclosures are not exact zeros, which is exact (an exact zero ball contributes nothing), and checks
+    that S_D vanishes on the other rows.
+  * Z2 (section 4) holds for every g in G (sup of |D^2 f| over the polydisc family with g in the group's interval).
+  * A (A_fin = double inverse of the midpoint of the Galerkin matrix at g_c, A_m from J0hat = mid [J_0(g_c)]) does not
+    depend on g; it is injective because Z1 < 1 (E.2).
 For each fixed g in G define T_g(x) = x - A F(x; g). As in E.3: if p(r) = Y0 + (Z1 - 1) r + Z2 r^2 / 2 < 0 and
 Z1 + Z2 r < 1 at r = r_lo, and at r = r_hi <= r_* (both certified in Arb, existence._radii), then for every g in G,
 T_g maps B_{r_lo}(xbar) into itself, is a (Z1 + Z2 r_hi)-contraction on B_{r_hi}(xbar), and F(.; g) has exactly one
-zero x*(g) in B_{r_hi}(xbar), which lies in B_{r_lo}(xbar).
+zero x*(g) in B_{r_hi}(xbar), which lies in B_{r_lo}(xbar). (The proof is split into piece_blocks, every weight-free
+rigorous ingredient, and assemble, which applies the weights eta chosen in floating point and decides the inequalities.)
 
 4. Z2 from second derivatives (Lemma B2; replaces E.6)
 -----------------------------------------------------
@@ -110,19 +125,22 @@ connected curve of real periodic orbits.
 
 6. Stability along the branch (pointwise only)
 ----------------------------------------------
-fourier/stability.py (Stage S) certifies, for one zero x* with a radius r = ||x* - xbar||, that every nontrivial
-Floquet multiplier has modulus <= e^{-delta T}. It accepts an input dictionary, so it is run here with J enclosures
-taken over the parameter interval; but its perturbation term eps (Lemma 4.1 of LEMMAS-stability.md: Cauchy, M_k / R
-times (P - 1), linear in r / R) must be far below the margin delta (about 4e-5), while on a piece r_lo is
-||dx/dg|| (g_hi - g_lo) / 2, about 1e-3 in these units: the uniform run cannot close (recorded per group as an
-attempt). What is run instead: at selected exact points g_s, a point proof (this program with g_lo = g_hi = g_s,
-which is Stage E's theorem at g_s with the Fourier phase condition and the Hessian Z2), whose r_lo is at the level of
-the Galerkin truncation, then Stage S with that r and delta chosen per point from the float leading exponent. These
-give stability at those points only. What uniform stability on a piece would need: an eps for the Hill operator that
-is of the size of the true variation of J along the piece (about |H| ||dx/dg|| |g - g_c|, already 0.1 for 1e-6
-wide pieces) is still 2e3 times the margin, so either pieces about 1e-10 wide, or a perturbation bound for the
-critical Floquet exponents that uses the structure (the exponent moves by d mu/dg |g - g_c|, small) rather than the
-norm of the perturbation.
+fourier/stability.py (Stage S) certifies, for one zero x* with a radius r >= ||x* - xbar||, that every nontrivial
+Floquet multiplier has modulus <= e^{-delta T}. It accepts an input dictionary (certify(N, inp=...)), so it can be fed
+J enclosures over a parameter interval; but its perturbation term eps (Lemma 4.1 of LEMMAS-stability.md: Cauchy,
+M_k / R times (P - 1), about linear in r / R, then multiplied by the cell scalings 2^{e_l - e_k} up to 2^30) must stay
+far below the margin delta (about 4e-5). On a piece r_lo is about ||dx/dg|| (g_hi - g_lo) / 2, 1e-4 to 1e-3 in these
+units, so the run with the piece's data cannot close; this is recorded once (stability_uniform_attempt in the record).
+What is run instead (stability_points): at selected exact decimals g_s, a point proof (prove_piece with
+g_lo = g_hi = g_s, K = 32, a 256-bit Arb-refined centre, weights 1, Stage E's precisions POINT_SETTINGS, so r_lo is
+about 1e-28; a K = 12 double centre gives r = 4e-14 and theta_T = 540 in Stage S), then Stage S with
+delta = 0.85 |float leading nontrivial exponent| at g_s. These give stability at those points only. Points beyond the
+certified interval are recorded as isolated results (existence and stability at that g; that the orbit is the
+continuation of the branch is not proved there). What uniform stability on a piece would need: an eps of the size of
+the true variation of J along the piece (about |D^2 f| ||dx/dg|| |g - g_c|, already about 0.1 for 1e-6 wide pieces)
+is still 2e3 times the margin, so either pieces about 1e-10 wide, or a perturbation bound for the critical Floquet
+exponents that uses the structure (they move by about |d mu / dg| |g - g_c|, tiny) rather than the norm of the
+perturbation of the Hill operator.
 
 7. Real solution, period, phase (as E.7, with the new phase functional)
 ----------------------------------------------------------------------
@@ -136,9 +154,13 @@ z(t) = phi*(omega* t) has minimal period T = 2 pi / omega*, with T in [2 pi / (o
 
 8. Untrusted inputs
 -------------------
-Centres (float Galerkin-Newton with the Fourier phase, continuation in g, then an Arb chord refinement at the exact
-decimal g_c, aliasing ignored), A_fin, the weights eta, r_*, R_i and the piece boundaries are chosen by floating-point
-code; they are exact numbers whose quality only decides whether the inequalities hold.
+Centres of the pieces: float Galerkin-Newton (K = 12, Fourier phase, continuation in g with the tangent predictor),
+rounded to exact doubles with Im a_{1,V} set to exactly 0 and exact conjugate symmetry (their residual, about 1e-15,
+is negligible next to the parameter-width term of Y0). Centres of the point proofs (section 6): K = 32, refined by an
+Arb chord iteration at 256 bits at the exact decimal g_s. A_fin, the weights eta (a float search on the rigorous
+weight-free blocks), r_*, the radii R_i = 32 eta_i r_*, the piece boundaries (multiples of 1e-12), the bridges and
+splits are chosen by floating-point code; they are exact numbers whose quality only decides whether the
+inequalities hold.
 
 9. Float exploration (non-rigorous, `explore`)
 -----------------------------------------------
@@ -1444,6 +1466,7 @@ EXPLORE_GRID = ([round(0.0275 + 2.5e-5 * i, 7) for i in range(15)] +
                 [round(0.02785 + 1e-5 * i, 7) for i in range(1, 6)] + [0.027905])
 RUN_LOG = os.path.join(DATA, "run_K{K}.jsonl")
 CENTRES = os.path.join(DATA, "centres_K{K}.jsonl")
+POINTS_LOG = os.path.join(DATA, "points_K{K}.jsonl")
 GRID = Fraction(1, 10 ** 12)          # piece endpoints are multiples of 1e-12 (exact decimals)
 
 
@@ -1751,7 +1774,7 @@ def stability_points(gs, K=32, run_K=12, log=print):
     """Pointwise stability (section 6): at each exact decimal g in gs, a K = 32 centre (float continuation from the
     Stage E centre, Arb chord refinement at 256 bits), a point proof (Theorem B1 with g_lo = g_hi = g, so r_lo is at
     the truncation level), then Stage S with delta = 0.85 |float leading nontrivial exponent|. Appends to the run log."""
-    runlog = RUN_LOG.format(K=run_K)
+    runlog = POINTS_LOG.format(K=run_K)
     trk = FloatTrack(K)
     out = []
     for g in sorted(Fraction(x) for x in gs):
@@ -1813,7 +1836,7 @@ def collect(K=12, write=True, log=print):
     centres = {r["g"]: r for r in _read_jsonl(cpath)}
     pieces = sorted([r for r in recs if r["type"] == "piece"], key=lambda r: Fraction(r["rec"]["g_lo"]))
     groups = [r for r in recs if r["type"] == "group"]
-    points = [r for r in recs if r["type"] == "point"]
+    points = [r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "point"]
     fails = [r for r in recs if r["type"] == "failure"]
     glue_recs = []
     connected_to = None
@@ -1839,9 +1862,12 @@ def collect(K=12, write=True, log=print):
                           label=p["label"], wall_s=r["wall"]))
     stab = []
     for r in points:
-        d = dict(g=r["g"], ok=r["ok"], delta_requested=r["delta_requested"],
+        on = Fraction(lo_all) <= Fraction(r["g"]) <= Fraction(hi_all)
+        d = dict(g=r["g"], ok=r["ok"], on_certified_branch=on, delta_requested=r["delta_requested"],
                  float_leading_exponent=r["float_leading_exponent"], wall_s=r["wall"], uniform=False,
-                 note="pointwise: Stage S at this single g only (section 6)")
+                 note=("pointwise: Stage S at this single g only (section 6)" if on else
+                       "isolated point beyond the certified branch: existence (point proof) and Stage S at this g "
+                       "only; that this orbit continues the branch is NOT proved (float continuation only)"))
         if r["ok"]:
             s = r["stability"]
             d.update(delta=s["delta"], multiplier_bound_full_period=s["multiplier_bound_full_period"],
@@ -1871,6 +1897,7 @@ def collect(K=12, write=True, log=print):
         largest_g_reached=hi_all, hopf_point_erhardt=str(G_HOPF),
         distance_to_hopf=float(G_HOPF - Fraction(hi_all)),
         pieces=table, gluing=glue_recs, stability=stab, stability_uniform=False,
+        stability_uniform_attempt=[r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "uniform_attempt"],
         stability_note=("Stage S was run at one exact g per group (pointwise). Uniform stability on a piece is NOT "
                         "claimed: see fourier/branch.py section 6 for what it would need."),
         comparison_stage_E=cmp_, failures_split=len(fails),

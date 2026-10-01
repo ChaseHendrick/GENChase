@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft** (status "draft" in `papers/papers.json`). Not peer reviewed, and not reviewed by anyone outside the project.
+**Draft** (status "draft" in `papers/papers.json`).
 The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex); no PDF has been built yet (no TeX toolchain
 was available when it was drafted). The programs and records come from `research/cardiac-cycle-certificates/` in
 GENChase, their canonical location; the copies here are byte-identical, and the hashes stored in the records refer to
@@ -15,9 +15,11 @@ cell model, with reduced repolarization reserve and the slow delayed rectifier c
 value about 1.5% below the supercritical Hopf point that Erhardt computed numerically for this model. For the single
 cell we give two computer-assisted proofs, sharing no library, that a periodic orbit exists and is locally orbitally
 asymptotically stable: a time-domain proof with CAPD, which encloses the period in [53.5855190480139,
-53.585519630722438] ms and bounds all 17 nontrivial Floquet multipliers in modulus by 0.998642, and a space-time
-Fourier proof in Arb ball arithmetic, which encloses the period in an interval of width 1e-26 ms and bounds the same
-multipliers by 0.99785888. For rings of N = 8, 16, 32 and 64 identical cells with voltage-only diffusive coupling of
+53.585519630722438] ms and bounds the 17 nontrivial Floquet multipliers of its orbit in modulus by 0.998642, and a
+space-time Fourier proof in Arb ball arithmetic, which encloses the period of its orbit in an interval of width
+1e-26 ms and bounds its 17 nontrivial multipliers by 0.99785888. An exact rational check shows that a point of the
+second orbit lies in the ball in which the first proof shows its fixed point unique, so the two proofs are about the
+same orbit. For rings of N = 8, 16, 32 and 64 identical cells with voltage-only diffusive coupling of
 strength N^2/64000 per ms we prove, in Fourier space, that a rotating 1-wave x_j(t) = phi(omega t + 2 pi j/N)
 exists, is locally unique, has minimal period enclosed in an interval of width 1e-26 ms, is not synchronous, and is
 locally exponentially orbitally stable with asymptotic phase: the Floquet multiplier 1 is algebraically simple, and
@@ -34,8 +36,12 @@ Hopf branch is numerical, and nothing is claimed for a continuum cable or for ti
 - **Computer-assisted** (written proofs in `paper/cardiac-rings.tex`, inequalities decided in interval or ball
   arithmetic):
   - Theorem A(i), the cell by CAPD: record `data/cell-gks0.0275.json` (verified; 732 s).
+  - Theorem A(iii), the two cell proofs enclose the same orbit: `code/fourier/link_cell.py` (exact rationals,
+    standard library), output `data/link_cell.txt`; it assumes that the CAPD and Arb translations of Erhardt's source
+    define the same function, which the tests support at points but do not prove.
   - Theorem A(ii) and Theorem B, the cell and the rings N = 8, 16, 32, 64 in Fourier space: records
-    `data/fourier-existence-N*.json` (Stage E) and `data/fourier-stability-N*.json` (Stage S).
+    `data/fourier-existence-N*.json` (Stage E, the existence proof) and `data/fourier-stability-N*.json` (Stage S,
+    the stability proof).
   - The records keep the status their programs wrote ("computed; awaiting adversarial review"). The in-project review
     outcome, "passed in-project adversarial review", is recorded in `data/fourier-review-status.json`, outside the
     hashed records, so that recording it does not break the hash chain from Stage S to Stage E.
@@ -49,8 +55,8 @@ Hopf branch is numerical, and nothing is claimed for a continuum cable or for ti
   tissue, other N or uniformity in N. A certified branch on an interval of G_Ks (the project's "rec 2") is in progress
   in `research/cardiac-cycle-certificates/fourier/branch.py`; no result of it is used here.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
-  of their fixes, are copied in [`review/`](review/README.md). None of them read this manuscript, and nobody outside
-  the project has reviewed any of it. On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
+  of their fixes, are copied in [`review/`](review/README.md), with one reading of this manuscript
+  (`review/manuscript-reading-1-2026-10-01.md`), whose findings are addressed in the present draft. On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
   (`notes/rerun-2026-10-01.md`).
 - **Novelty:** the project's logged searches (RESEARCH.md of GENChase, entries of 2026-09-30 and 2026-10-01 on
   cardiac work) found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model
@@ -73,11 +79,12 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 | Path | What it is |
 |---|---|
-| `code/run_all.sh` | Provenance check of the copies against the records' hashes, and an optional rerun of Stage E and Stage S in a scratch folder with a comparison against `data/` |
+| `code/run_all.sh` | Provenance check of the copies against the records' hashes, the link of the two cell proofs, and an optional rerun of Stage E and Stage S in a scratch folder with a comparison against `data/` |
 | `code/fourier/arbmodel.py`, `code/fourier/tp06_18d_arb.py` | The exact Arb model: every decimal of the reference translation as an exact rational (generated file, freshness checked) |
 | `code/fourier/fourier_eval.py` | Strip covers, Cauchy estimate, aliased DFT with its error bound (Section 4.1) |
 | `code/fourier/existence.py` | Stage E: the radii-polynomial existence proof (Section 4) |
 | `code/fourier/stability.py` | Stage S: the Hill-operator certificate (Section 5) |
+| `code/fourier/link_cell.py` | The exact check that the Fourier cell orbit's section point lies in the CAPD ball (Lemma 6.1) |
 | `code/fourier/LEMMAS-stability.md` | The stability lemmas as they were reviewed; Section 5 of the paper writes them out |
 | `code/fourier/centre.py`, `code/fourier/data/` | Untrusted Newton solver for the centres, and the centres as exact dyadic numbers |
 | `code/fourier/check_records.py` | Rechecks every hash stored in the Fourier records |
@@ -92,14 +99,16 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 From this folder, with python-flint 0.9.0 (`pip install -r code/requirements.txt`):
 
 ```
-sh code/run_all.sh                 # provenance only: "90 hashes checked; all match"
+sh code/run_all.sh                 # provenance ("90 hashes checked; all match") and the link ("LINKED")
 sh code/run_all.sh 1,8             # rerun Stage E and Stage S for N = 1 and 8 (about 5 minutes)
 sh code/run_all.sh 1,8,16,32,64    # all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)
 ```
 
 The script stages `code/` in a scratch folder, because the programs write their records to `<root>/results`, and never
 touches `data/`. Expect the period enclosures and the stability bounds to agree exactly with `data/`, and the binary
-values of Y0, Z1, Z2 and r_existence to differ in their last digits (`notes/rerun-2026-10-01.md`).
+values of Y0, Z1, Z2 and r_existence to differ in their last digits (`notes/rerun-2026-10-01.md`): `existence.py` does
+not pin BLAS threads, so its untrusted floating-point inverse is not bit-reproducible (a fix is queued in the project).
+What is certified are the stored records in `data/`; the Stage S records hash the Stage E records they read.
 
 The CAPD certificate of Theorem A(i) needs CAPD 6.1.0 at commit 03dc5628203334b214bb7d9fd63788a175521005, built with
 multiprecision (GMP and MPFR), with `git apply code/proofs/capd-6.1.0-genchase.patch` from the CAPD source root, and

@@ -143,8 +143,8 @@ All four confirmed (Crossref record or the publisher PDF seen):
   identical cells coupled in a ring" (chapter number from a search snippet, not verified in the book). M. Golubitsky,
   I. Stewart, The Symmetry Perspective, Progress in Math. 200, Birkhauser, 2002, ISBN 3-7643-6609-5; its chapter
   "Hopf bifurcation with symmetry" is pp. 87-122, doi:10.1007/978-3-0348-8167-8_4 (Crossref).
-- Symmetry-adapted Floquet: A. M. Rucklidge, M. Silber, "Instabilities of periodic orbits with spatio-temporal
-  symmetries", Nonlinearity 11 (1998) 1435-1455, doi:10.1088/0951-7715/11/5/015, arXiv:patt-sol/9704002. Abstract:
+- Symmetry-adapted Floquet: A. M. Rucklidge, M. Silber, "Bifurcations of periodic orbits with spatio-temporal
+  symmetries" (title corrected on 2026-10-01 against Crossref; an earlier version of this note had "Instabilities"), Nonlinearity 11 (1998) 1435-1455, doi:10.1088/0951-7715/11/5/015, arXiv:patt-sol/9704002. Abstract:
   Z_n spatio-temporal symmetry forces the return map to be M = G^n. B. de Wolff, "Equivariant Pyragas control of
   discrete waves", SIAM J. Math. Anal. 55 (2023) 6707-6739, doi:10.1137/22M1527143, arXiv:2210.02211 (abstract:
   "an adaptation of Floquet theory to systems with symmetries" for discrete waves).

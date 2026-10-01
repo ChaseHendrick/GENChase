@@ -1,9 +1,10 @@
 # Reviews
 
-Copies of the in-project adversarial readings of the programs and lemmas this paper rests on. The canonical files
-are in `research/cardiac-cycle-certificates/reviews/` of GENChase; they were copied unchanged on 2026-10-01. Each was
+Copies of the in-project adversarial readings of the programs and lemmas this paper rests on, and of the manuscript. The canonical files
+are in `research/cardiac-cycle-certificates/reviews/` of GENChase; they were copied unchanged on 2026-10-01. The manuscript reading was written for this folder. Each was
 made inside the project by a separate AI agent session instructed to find errors. None is an outside review, and
-none of them read the manuscript `paper/cardiac-rings.tex`, which was drafted after them.
+none of the first six read the manuscript `paper/cardiac-rings.tex`, which was drafted after them; the seventh is a
+reading of the manuscript itself.
 
 | File | What was read | Outcome |
 |---|---|---|
@@ -13,6 +14,7 @@ none of them read the manuscript `paper/cardiac-rings.tex`, which was drafted af
 | `stageS-stability-review-2026-10-01.md` | `fourier/stability.py`, its tests and records | no unsound finding; one provenance gap, weak tests, five minor items, addressed |
 | `fix-second-reading-2026-10-01.md` | the fixes to Stage E and Stage S | no fix unsound; records may be labelled as having passed in-project adversarial review; N1 to N4 open or minor |
 | `verifier-review-2026-10-01.json` | the CAPD verifier `proofs/verify.cpp` (Theorem A(i)), five lenses | led to the hardening of the verifier and to the CAPD crossing patch |
+| `manuscript-reading-1-2026-10-01.md` | the first draft of `paper/cardiac-rings.tex`, with `data/` and the review files | no false theorem; 6 errors (rounding and wording, E1 to E6), 6 gaps (G1 to G6), 4 citation items, one AGENTS.md item and exposition and typesetting items; all addressed in the draft of 2026-10-01 (list in `notes/QUALITY.md`, item 6), not yet read again |
 
 The outcome for the Fourier route is recorded in `data/fourier-review-status.json`, outside the hashed records.
 The paths in these files are relative to the canonical study folder, and "scratchpad" refers to the session

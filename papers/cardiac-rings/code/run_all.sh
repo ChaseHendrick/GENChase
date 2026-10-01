@@ -23,7 +23,12 @@ cp -R "$HERE/code/." "$WORK/check/"
 cp "$HERE"/data/fourier-*.json "$WORK/check/results/"
 (cd "$WORK/check" && timeout 120 python3 fourier/check_records.py)
 
-[ -n "$NS" ] || { echo "OK (provenance only; pass a list of N to rerun the proofs)"; exit 0; }
+echo "== link of the two cell certificates (Lemma 6.1): the Fourier orbit's section point lies in the CAPD ball"
+cp "$HERE/data/cell-gks0.0275.json" "$WORK/check/results/"
+(cd "$WORK/check" && timeout 300 python3 fourier/link_cell.py > link.txt) || { cat "$WORK/check/link.txt"; echo "FAIL: link"; exit 1; }
+tail -3 "$WORK/check/link.txt"
+
+[ -n "$NS" ] || { echo "OK (provenance and link only; pass a list of N to rerun the proofs)"; exit 0; }
 
 echo "== rerun Stage E and Stage S for N = $NS"
 mkdir -p "$WORK/run/results"

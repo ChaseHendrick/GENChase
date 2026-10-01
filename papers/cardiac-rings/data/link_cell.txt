@@ -1,0 +1,29 @@
+PASS CAPD cell record says verified
+PASS frame file is the one the CAPD record hashes
+PASS centre file is the one the Fourier record hashes
+PASS Fourier record is the single cell
+PASS Fourier period interval lies inside the CAPD period interval
+PASS frame header: N = 1, G_Ks = 0.0275, no coupling
+PASS frame file fully read
+PASS blocks cover the 17 free coordinates
+PASS blocks and radii equal those in the CAPD record
+PASS xhat_V = s / sigma_V exactly (the section level)
+  (centre only, not used: |phibar_V(0) - s/sigma_V| = 6.377e-45)
+  r_ex = 1.707295e-28; |pbar - xhat|_inf over free components = 4.327e-13
+PASS block  0 (size 1): ||y_b||_2 <= 3.935e-13 < rho_b = 8.354e-11  (ratio <= 4.710e-03)
+PASS block  1 (size 1): ||y_b||_2 <= 8.471e-17 < rho_b = 1.180e-11  (ratio <= 7.177e-06)
+PASS block  2 (size 2): ||y_b||_2 <= 5.928e-14 < rho_b = 5.325e-12  (ratio <= 1.113e-02)
+PASS block  3 (size 1): ||y_b||_2 <= 1.221e-15 < rho_b = 4.419e-13  (ratio <= 2.762e-03)
+PASS block  4 (size 2): ||y_b||_2 <= 4.281e-14 < rho_b = 7.557e-12  (ratio <= 5.666e-03)
+PASS block  5 (size 1): ||y_b||_2 <= 2.588e-15 < rho_b = 4.990e-13  (ratio <= 5.186e-03)
+PASS block  6 (size 1): ||y_b||_2 <= 1.528e-13 < rho_b = 1.157e-12  (ratio <= 1.321e-01)
+PASS block  7 (size 1): ||y_b||_2 <= 1.616e-13 < rho_b = 1.157e-12  (ratio <= 1.396e-01)
+PASS block  8 (size 1): ||y_b||_2 <= 2.697e-15 < rho_b = 1.392e-13  (ratio <= 1.937e-02)
+PASS block  9 (size 1): ||y_b||_2 <= 2.753e-15 < rho_b = 1.162e-13  (ratio <= 2.368e-02)
+PASS block 10 (size 1): ||y_b||_2 <= 1.409e-16 < rho_b = 1.132e-13  (ratio <= 1.244e-03)
+PASS block 11 (size 1): ||y_b||_2 <= 1.173e-15 < rho_b = 1.150e-13  (ratio <= 1.020e-02)
+PASS block 12 (size 2): ||y_b||_2 <= 1.798e-15 < rho_b = 1.197e-13  (ratio <= 1.503e-02)
+PASS block 13 (size 1): ||y_b||_2 <= 4.002e-17 < rho_b = 1.132e-13  (ratio <= 3.534e-04)
+  worst ratio ||y_b|| / rho_b <= 1.396e-01
+PASS negative control: with every radius divided by 10 the test fails (2 block(s))
+LINKED: the Fourier orbit's section point lies in the CAPD ball; the two certificates enclose the same orbit

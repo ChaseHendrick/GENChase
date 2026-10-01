@@ -142,6 +142,9 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   (exact bounds in the record), inside the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet
   multipliers of modulus at most 0.998642; locally orbitally asymptotically stable. The unpatched run gave the same
   bounds.
+  `fourier/link_cell.py` (exact rationals, 2026-10-01) checks that the section point of the Fourier N = 1 orbit lies in
+  this certified ball, so the CAPD and Fourier cell certificates enclose the same orbit (assuming the two translations
+  of the model define the same function).
 * **Rings, Fourier route (Stage E plus Stage S): proved for N = 1, 8, 16, 32, 64, subject to the trust base below.** Each stage had an in-project
   adversarial review, and every finding was fixed (`reviews/fourier-stage1-review-2026-10-01.md`,
   `reviews/stability-lemmas-review-2026-10-01.md`, `reviews/stageE-existence-review-2026-10-01.md`,
