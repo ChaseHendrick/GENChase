@@ -68,7 +68,10 @@ and entrywise |B0| <= G0 := |J0hat| + dmax E, dmax >= every d_m (dmax = 4 c). Wi
     |A_m| <= (1/y) sum_k (G0/y)^k <= (1/Y) S_G,   |m A_m| = (y / omega_bar) |A_m| <= (1/omega_bar) S_G,
     S_G := I + G + G^2 + theta^3 / (1 - theta) * ones   (each entry of sum_{k>=3} G^k is <= its row sum <= theta^3/(1-theta)),
 and |A_m J'_n| <= |A_m| |J'_n|. m_max is the least integer with theta <= theta_target (setting). The sup bounds
-Abar0 = sup_{|m|>K} |A_m|, Abar1 = sup |m A_m|, C_n = sup |A_m J'_n| are entrywise maxima over both ranges.
+Abar0 = sup_{|m|>K} |A_m|, Abar1 = sup |m A_m|, C_n = sup |A_m J'_n| are entrywise maxima over both ranges. Negative m:
+A_{-m} = conj(A_m), so |A_{-m}| = |A_m| and |A_{-m} J'_n| = |A_m conj(J'_n)|, bounded by an explicit product with the
+conjugated enclosure. For |n| <= n_explicit the products A_m J'_n (m and -m) are formed explicitly for K < m <= m_max;
+for n_explicit < |n| <= K' the bound C_n = Abar0 |J'_n| (entrywise, |A_m J'_n| <= |A_m| |J'_n| <= Abar0 |J'_n|) is used.
 
 5. Y0 and Z1
 ------------
@@ -79,17 +82,18 @@ q := nu e^{-rho} < 1, sum_{|n| > K'} (nu e^{-rho})^{|n|} = 2 q^{K'+1} / (1 - q).
 
 Y0. F(xbar) has finite part (phase, |m| <= K): computed in Arb (enclosures of g_m); A F(xbar) finite = A_fin F_fin.
 Tail rows m (|m| > K): F_m(xbar) = -g_m (abar_m = 0 there), so (A F)_m = -A_m g_m: for K < |m| <= K' with the
-computed A_m and the g_m enclosure; for |m| > K', |A_m g_m| <= Abar0 S_g e^{-rho |m|}, summed in closed form.
+computed A_m (or Abar0 |g_m| if m > m_max) and the g_m enclosure; for |m| > K', |A_m g_m| <= Abar0 S_g e^{-rho |m|},
+summed in closed form.
 Y0 = max_c (1/eta_c) (||(A F)_c, finite||_nu + ||(A F)_c, tail||_nu).
 
 Z1. B := I - A DF(xbar). Columns of B indexed by (k, m'):
   * finite rows (phase / |m| <= K), finite columns: I - A_fin J_fin, an Arb matrix product (prec P_mat);
   * finite rows, tail columns (|m'| > K): -A_fin w^{(k,m')}, w^{(k,m')} = (phase: delta_{kV}; row (j,m): -J_{m-m',jk})
     (the phase functional sums over all m, and the convolution reaches across). For K < |m'| <= K + L, |m - m'| <= K'
-    and the J enclosures are used. For |m'| >= K + L + 1, |J_{m-m'}| <= S_J e^{-rho (|m'| - |m|)}... precisely
-    |J_{m-m',jk}| <= S_{J,jk} e^{-rho |m - m'|} with |m - m'| >= |m'| - |m|; every term of the weighted column sum then
-    carries the factor (e^{-rho} / nu)^{|m'|} or nu^{-|m'|}, decreasing in |m'|, so the sup over |m'| >= K + L + 1 is at
-    most the value of the bound at |m'| = K + L + 1 (computed with |A_fin| and the majorant column).
+    and the J enclosures are used (exact product A_fin w). For |m'| >= K + L + 1, |J_{m-m',jk}| <= S_{J,jk} e^{-rho |m - m'|}
+    and |m - m'| = |m'| - sgn(m') m (|m| <= K < |m'|), so |A_fin w| <= |A_fin| wbar(m') entrywise, and the weighted column
+    sum of |A_fin| wbar(m') divided by nu^{|m'|} is a sum of terms each proportional to nu^{-|m'|} (phase entry) or
+    (e^{-rho} / nu)^{|m'|}: decreasing in |m'|. So its value at |m'| = K + L + 1 bounds the sup over all |m'| >= K + L + 1.
   * tail rows m (|m| > K), all columns: since A_m (i omega_bar m - J0hat + d_m E) = I,
         (B y)_m = A_m [ (J_0 - J0hat) y_m + sum_{n != 0} J_n y_{m-n} ] = sum_n A_m J'_n y_{m-n},
     (y_om does not enter: i y_om m abar_m = 0 for |m| > K) and, using nu^{|m|} <= nu^{|m-n|} nu^{|n|},
@@ -199,7 +203,7 @@ DEFAULTS = dict(
     r_star="1e-12",        # Z2 validity radius (decimal; converted to an exact dyadic upper value)
     strip_nx=32,
     strip_rtol=3.0,
-    strip_max_evals=40000,
+    strip_max_evals=8000,  # budget only affects how tight S is (leaves left unresolved make S looser, never wrong)
     eta=None,              # component weights (19 values: omega, then 18 components); None = all 1
 )
 
@@ -368,7 +372,7 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
     with fe.precision(Pg):
         A_infl = [row[:] for row in A]
         for i in range(DIM):
-            A_infl[i][K] = acb(arb(A[i][K].real, Rk), arb(0, Rk))
+            A_infl[i][K] = acb(A[i][K].real + Rk * arb(0, 1), Rk * arb(0, 1))   # box of half-width >= R_k
     phi_infl = fe.TrigPoly(A_infl)
     strip_P = fe.strip_sup(f53, phi_infl, rho2, **skw)
     log(f"  polydisc sup (R = {st['R']}, rho2 = {st['rho2']}): max M = {float(strip_P.S_max()):.3e} "
@@ -448,7 +452,8 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             for j in range(DIM):
                 for m in range(-K, K + 1):
                     Wm[lay.idx(j, m), t] = -J[m - mp][j][k]
-        AW = Afin * Wm
+        with fe.precision(PM):
+            AW = Afin * Wm
         AWabs = _abs_mat(AW)
         colW = WROW * AWabs
         Z1_ft = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
@@ -480,7 +485,8 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
         for nn in range(-Kp, Kp + 1):
             Jp[nn] = acb_mat([[J[nn][r][c] - (J0hat[r, c] if nn == 0 else 0) for c in range(DIM)]
                               for r in range(DIM)])
-        tail = _tail_bounds(K, Kp, om_bar, J0hat, Jp, dm, Nd, st, nupow, log)
+        with fe.precision(PM):
+            tail = _tail_bounds(K, Kp, om_bar, J0hat, Jp, dm, Nd, st, nupow, log)
         clk.mark("tail resolvents")
         Abar0, Abar1, Cn = tail["Abar0"], tail["Abar1"], tail["C"]
 
@@ -534,16 +540,20 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             c = 0 if comp_of[r] is None else 1 + comp_of[r]
             Y0c[c] = Y0c[c] + AF[r, 0].abs_upper() * nupow[abs(mode_of[r])]
         Y0_fin_max = max(float(v) for v in Y0c)
-        for m, Am in tail["A_explicit"].items():          # K < m <= K' (and -m by conjugation)
-            if m > Kp:
-                continue
+        Ab0 = arb_mat(Abar0)
+        for m in range(K + 1, Kp + 1):                    # K < |m| <= K'
+            Am = tail["A_explicit"].get(m)
             for sgn in (1, -1):
                 mm = sgn * m
                 gv = acb_mat([[enc_g.c[k][mm + Kp]] for k in range(DIM)])
-                Amm = Am if sgn == 1 else Am.conjugate()
-                v = Amm * gv
+                if Am is not None:                        # A_{-m} = conj(A_m)
+                    v = (Am if sgn == 1 else Am.conjugate()) * gv
+                    vals = [v[c, 0].abs_upper() for c in range(DIM)]
+                else:                                     # m > m_max: |A_m g_m| <= Abar0 |g_m|
+                    v = Ab0 * arb_mat([[gv[k, 0].abs_upper()] for k in range(DIM)])
+                    vals = [up(v[c, 0]) for c in range(DIM)]
                 for c in range(DIM):
-                    Y0c[1 + c] = Y0c[1 + c] + v[c, 0].abs_upper() * nupow[m]
+                    Y0c[1 + c] = Y0c[1 + c] + vals[c] * nupow[m]
         for c in range(DIM):
             s = arb(0)
             for k in range(DIM):
@@ -592,7 +602,7 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
 
         # ---- corollaries ---------------------------------------------------------------------------------
         dom = ETA[0] * r_lo
-        om_ball = arb(om_bar, up(dom))
+        om_ball = om_bar + up(dom) * arb(0, 1)            # contains [om_bar - dom, om_bar + dom]
         if not om_ball > 0:
             raise ProofFailure("omega not certainly positive")
         Tball = 2 * arb.pi() / om_ball

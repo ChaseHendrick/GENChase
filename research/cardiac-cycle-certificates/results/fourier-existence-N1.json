@@ -1,0 +1,299 @@
+{
+ "N": 1,
+ "N_damping": 1,
+ "K": 32,
+ "Kprime": 80,
+ "M": 192,
+ "label": null,
+ "omega_bar": "0x3c08e27722071085d514fe6bf1f2ca4a4cbfbp-149",
+ "T_ms": {
+  "lower": {
+   "hex": "0x1acaf24c36dda9e5296edcc7e52f7p-107",
+   "dec": "53.58551933936116920991898",
+   "approx": 53.58551933936117
+  },
+  "upper": {
+   "hex": "0xd6579261b6ed4f294b76e8a7d9a05p-110",
+   "dec": "53.58551933936116920991899",
+   "approx": 53.58551933936117
+  }
+ },
+ "omega": {
+  "lower": {
+   "hex": "0x3c08e27722071085d514fe159537764a4cbfbp-149",
+   "dec": "0.1172552843500068756237191",
+   "approx": 0.11725528435000687
+  },
+  "upper": {
+   "hex": "0x3c08e27722071085d514fec24eae1e4a4cbfbp-149",
+   "dec": "0.1172552843500068756237192",
+   "approx": 0.11725528435000687
+  }
+ },
+ "Y0": {
+  "hex": "0x44c61beb0142244dd39b3a0397c71c150b98a54b5e01480f8878ec9602765049p-345",
+  "dec": "4.340240976957345406186250E-28",
+  "approx": 4.340240976957345e-28
+ },
+ "Z1": {
+  "hex": "0x6845c6f449f17853a97ef21d2b2f207951176e56dcc6b5a8f467fa7ca623de6bp-257",
+  "dec": "0.2036573575214530329919112",
+  "approx": 0.20365735752145303
+ },
+ "Z2": {
+  "hex": "0x3bb2ff03d1550b35322c403b521289ca0eee05f70cb70433d6438b62548f49c9p-218",
+  "dec": "64101531892.33305056685191",
+  "approx": 64101531892.33305
+ },
+ "r_star": {
+  "hex": "0x8cbccc096f5088cbf93f87b7442e45d3f598fa3b657ba08d4319c3f4e16e9a45p-295",
+  "dec": "1.000000000000000000000001E-12",
+  "approx": 1e-12
+ },
+ "r_existence": {
+  "hex": "0x15972ed49c760dp-143",
+  "dec": "5.450223163517978394279816E-28",
+  "approx": 5.450223163517978e-28
+ },
+ "r_uniqueness": {
+  "hex": "0x119799812dea11p-92",
+  "dec": "9.999999999999999798866477E-13",
+  "approx": 1e-12
+ },
+ "p_at_r_existence": {
+  "hex": "-0x898c37d6434a489e85fbb57835889fd83508b6f5f109f1a4212d3a789bdca405p-366",
+  "dec": "-4.139176347192025631996933E-34",
+  "approx": -4.1391763471920256e-34
+ },
+ "p_at_r_uniqueness": {
+  "hex": "-0x35c84229376d77fc47575879ee1b7f115332e3013680965c0d2c522e3267e927p-294",
+  "dec": "-7.642918765323799929727417E-13",
+  "approx": -7.6429187653238e-13
+ },
+ "contraction_at_r_uniqueness": {
+  "hex": "0x8917b1727db11b148d5b183b8db43142f7579f8a11186d141c514ba628605e37p-257",
+  "dec": "0.2677588894137860822694664",
+  "approx": 0.26775888941378606
+ },
+ "abs_a1V_lower": {
+  "hex": "0xec8f32de3b36bbdc7ac7ed4f40749b41dda055c609afbdf280e5b1e852a12d4dp-259",
+  "dec": "0.1155075048513042252165136",
+  "approx": 0.11550750485130422
+ },
+ "a1V_margin": {
+  "hex": "0x7647996f1d9b5dee3d63f6211ba1f106464df4b59c6ca709ba3a0b4ed8bec075p-258",
+  "dec": "0.1155075048513042252165136",
+  "approx": 0.11550750485130422
+ },
+ "Z1_by_output_component": [
+  6.744606803601979e-13,
+  0.06781085587747913,
+  0.004417956841388759,
+  0.004421455048777656,
+  0.004408726519832763,
+  0.00463302246926146,
+  0.00980863575644877,
+  0.005665613372534543,
+  0.008447788999347746,
+  0.00441376667214944,
+  0.0045218001390016985,
+  0.0098452423623146,
+  0.004527689023010446,
+  0.00467259508848274,
+  0.004570423726033953,
+  0.00488638207627404,
+  0.004493384531390323,
+  0.20365735752145303,
+  0.004408243060041028
+ ],
+ "Y0_by_output_component": [
+  1.0479922683541798e-42,
+  2.32295257229412e-28,
+  1.2519563116387946e-29,
+  1.4107790077924704e-29,
+  1.2529217092606319e-29,
+  1.2568570973002775e-29,
+  5.964451903555176e-29,
+  3.082641980972304e-29,
+  1.4764627123011174e-29,
+  1.288783932751933e-29,
+  1.2560444220313702e-29,
+  2.746836125263436e-29,
+  1.579199593195987e-29,
+  2.0380207376903613e-29,
+  1.6127947848159564e-29,
+  1.8826417032198103e-29,
+  1.3676165429602463e-29,
+  4.340240976957345e-28,
+  1.2520251112597376e-29
+ ],
+ "Z2_by_output_component": [
+  888499956.7100074,
+  64101531892.33305,
+  9854350.896011528,
+  490515967.25808203,
+  57370398.82672382,
+  10435077.926816443,
+  4774805487.084864,
+  4682636471.380562,
+  404795523.46417546,
+  281005525.3428242,
+  22318108.532767247,
+  2910895940.506151,
+  1342352071.4547482,
+  2599275516.1846213,
+  1314101162.4182525,
+  3178142153.077179,
+  635337991.3706087,
+  27660998456.37941,
+  1381295589.861318
+ ],
+ "tail": {
+  "m_max": 391,
+  "theta": 0.4963749884090537,
+  "Abar0_max": 0.31022723769382626,
+  "Abar1_max": 15.170686618479195,
+  "T_max_row_sum": 0.15736179046794282
+ },
+ "strips": {
+  "g": {
+   "S_max": 0.07101359110362679,
+   "n_evals": 8032,
+   "n_leaves": 4192,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 4192,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.58,
+   "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
+   "S_over_L_max": 16.532701888911085
+  },
+  "J": {
+   "S_max": 17.772231405946954,
+   "n_evals": 352,
+   "n_leaves": 352,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 0,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 10.0,
+    "atol": 1.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 1.32,
+   "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
+   "S_over_L_max": Infinity
+  },
+  "polydisc": {
+   "S_max": 0.11225968091779709,
+   "n_evals": 8032,
+   "n_leaves": 4192,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 4192,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.34,
+   "phi_digest": "6189896a4e429ce990dfd45590f97f94ce79bf08c1314f47ccf161e9d20bbb2e",
+   "S_over_L_max": Infinity
+  },
+  "S_source_g": "strip",
+  "S_source_J": "strip"
+ },
+ "settings": {
+  "rho0": "1/4",
+  "rho": "1",
+  "rho2": "1",
+  "R": "1/1024",
+  "L": 16,
+  "M": 192,
+  "prec_g": 256,
+  "prec_J": 128,
+  "prec_mat": 128,
+  "theta_target": "1/2",
+  "n_explicit": 12,
+  "r_star": "1e-12",
+  "strip_nx": 32,
+  "strip_rtol": 3.0,
+  "strip_max_evals": 8000,
+  "eta": null
+ },
+ "timings_s": {
+  "strip_g": 7.6,
+  "strip_J": 1.34,
+  "strip_polydisc": 7.37,
+  "dft_g": 0.21,
+  "dft_J": 0.92,
+  "build_Jfin": 0.42,
+  "A_fin": 5.1,
+  "product A_fin J_fin": 49.77,
+  "Z1 finite": 2.63,
+  "Z1 finite x tail": 30.79,
+  "tail resolvents": 10.43,
+  "Z1": 0.02,
+  "Y0": 0.3,
+  "Z2": 0.0,
+  "corollaries": 0.0
+ },
+ "wall_s": 116.92,
+ "status": "computed; awaiting adversarial review",
+ "theorem": "For the single cell (N = 1) of Erhardt's 18-state TP06 endocardial model at G_Ks = 0.0275, there are omega* > 0 and a real 2 pi periodic phi*, analytic on |Im theta| < rho0, such that z_j(t) = phi*(omega* t + 2 pi j / N) solves the ring ODE and phi*_V(0) = s (s the double nearest 0.2 mV); (omega*, Fourier coefficients of phi*) is the only zero of F in the ball of radius r_uniqueness about the centre in X = C x (l^1_nu)^18 (norm in the module docstring) and lies within r_existence of it; T = 2 pi / omega* lies in T_ms; phi* has minimal period 2 pi (a*_{1,V} != 0), so the solution has minimal period T.",
+ "centre_file": "fourier/data/centre_N1_K32.json",
+ "centre_sha256": "e1d2c0a811b8b9a0741d019709e5a5f0591a3d1bee4232d18c9e781d8e6ecd79",
+ "sources_sha256": {
+  "fourier/existence.py": "7498f3d1511d27151b3b5362c71e33bb3b289267c62f33ec6c15d4e0dfd56744",
+  "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+  "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+  "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+  "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+  "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+  "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+ },
+ "python_flint": "0.9.0",
+ "FLINT": "3.6.0",
+ "python": "3.11.15",
+ "machine": "x86_64",
+ "date": "2026-10-01",
+ "comparison": [
+  {
+   "reference": "other pipeline",
+   "interval": [
+    "53.58551856",
+    "53.58552012"
+   ],
+   "overlaps": true,
+   "inside": true
+  },
+  {
+   "reference": "results/cell-gks0.0275.json (CAPD, verified)",
+   "interval": [
+    "0x1.acaf249c533cfp+5",
+    "0x1.acaf24ea88f37p+5"
+   ],
+   "overlaps": true,
+   "inside": true
+  }
+ ]
+}
