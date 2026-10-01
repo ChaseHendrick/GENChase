@@ -499,8 +499,10 @@ spectral radius is < e^{-delta T}. Put kappa := e^{-delta' T} and choose kappa' 
 J = S^{-1} DPm(x*) S and S_eta := diag(1, eta, eta^2, ...), S_eta^{-1} J S_eta has the same diagonal and off-diagonal
 entries eta or 0, so |v|_* := |S_eta^{-1} S^{-1} v|_inf (induced norm = largest row sum) works for
 0 < eta <= kappa' - (spectral radius). By
-continuity of DPm, ||DPm(z)||_* <= kappa on a convex neighbourhood of x* in Sigma, so Pm is a kappa-contraction there
-(mean value inequality) and |Pm^k(z) - x*|_* <= kappa^k |z - x*|_*.
+continuity of DPm, ||DPm(z)||_* <= kappa on a convex neighbourhood Nc of x* in Sigma (a ball of |.|_* in the affine
+hyperplane Sigma), so Pm maps Nc into itself, is a kappa-contraction there (mean value inequality) and
+|Pm^k(z) - x*|_* <= kappa^k |z - x*|_*. Below, eps_0 is taken so small that z_1 lies in Nc, and norms on C^{18N} are
+compared with |.|_* by fixed constants absorbed into the C_i.
 A solution starting at x_0 with |x_0 - x(s)| small (some s in [0, T)) satisfies |z_0 - x*| <= e^{Lip T} |x_0 - x(s)|
 for z_0 := phi_{T - s}(x_0) (Gronwall; x(T) = x*), and t_S is defined on the full neighbourhood U of x*; so the solution
 meets Sigma at the time t_1 := T - s + t_S(z_0) <= 3T at the point z_1 := phi_{t_S(z_0)}(z_0), with
@@ -509,7 +511,7 @@ t_S(x*) = T, |t_S(z_k) - T| <= C_2 kappa^k |z_1 - x*|, so sigma_inf := lim (t_k 
 |t_k - k T - sigma_inf| <= C_3 kappa^k |z_1 - x*|. Put sigma := -sigma_inf. For t in [t_k, t_{k+1}],
 phi_t(x_0) = phi_{t - t_k}(z_k) and x(t + sigma) = phi_{t - t_k}(x(t_k + sigma)), with
 x(t_k + sigma) = x(t_k - k T - sigma_inf) (T-periodicity) within sup|F| C_3 kappa^k |z_1 - x*| of x(0) = x*, and
-|z_k - x*| <= C_4 kappa^k |z_1 - x*|. Gronwall over the interval of length <= 2T gives
+|z_k - x*| <= C_4 kappa^k |z_1 - x*|. Gronwall over the interval [t_k, t_{k+1}], of length t_S(z_k) <= 2T, gives
 |phi_t(x_0) - x(t + sigma)| <= C_5 kappa^k |z_1 - x*|, and t <= t_{k+1} <= (k + 1) T + C_6 gives
 kappa^k <= C_7 e^{-delta' t}. The time before t_1 is bounded and handled by Gronwall. QED
 
@@ -651,13 +653,27 @@ One adversarial rereading by the author. What was checked and what changed:
 11. Citations: only Kato's book is cited, by section and by Theorem III.6.29, which I am confident of. The Andronov-Witt
     theorem, Gelfand's formula and the Bauer-Fike theorem are not cited; the needed facts are proved inline. The four
     names in section 7 are reported from the plan and not cited as sources.
+12. Second pass (after writing): Lemma 2(c) reworded (the conjugation argument was garbled); Theorem 4(iii): the
+    Jordan-scaling norm now states the induced norm and the admissible eta, the contraction neighbourhood Nc and the
+    smallness of eps_0 are explicit, and the first crossing is taken through the section-time function on the full
+    neighbourhood U (the first draft applied the map Pm, defined only on Sigma, to a point off Sigma); Lemma 4.1: the
+    Cauchy coefficient bound needs holomorphy on an open set containing the closed strip, which phi only has on
+    |Im theta| < rho0, so the bound is taken for rho'' < rho_e and passed to the limit; Lemmas 3.3 and 3.5 now also
+    assume (C3) (dist_j > 0 is used); in Corollary 1.3 the section-time function was renamed t_g (s is the README's
+    section level); checklist item 4 now gives one starting rectangle valid for every N >= 1 (b = -a =
+    omega_bar (N/2 + 1/4)), checked against (C1) for N = 1 (b = 0.75 omega_bar < omega_lo).
+13. Empirical check only (not part of any proof): the toy model in the scratchpad confirms Theorem 1, the sign
+    convention, the 18N-type count in an offset half-open strip, and Corollary 1.2(iv) (H_q against H_0 + i omega q to
+    1e-13).
 
 Places where I am not fully certain, for the second reader:
 
-* Lemma 3.5 (SC), the weighted-norm bookkeeping of ||Ehat_WT||_zeta <= bhat: bhat is defined with the 1 / zeta_T factor
-  and the tail inverse bound with the zeta_T-weighted norm; I checked that the zeta_T factors cancel in the product,
-  but the code should compute the column sums of Ehat_WT (mu - D_T - s Ehat_TT)^{-1} Ehat_TW e_j in one consistent
-  weighted norm.
+* Lemma 3.5 (SC), the weighted-norm bookkeeping: the proof now writes out ||Ehat_WT||_zeta <= bhat and
+  ||Ehat_TW e_j||_zeta <= r_j in one weighted norm, and the zeta_T factors cancel; the code must use exactly these
+  definitions (b_m with the factor 1 / zeta_T, r_j with the factor zeta_T), or simply set zeta_T = 1.
+* The citations of Kato's book are by section and by Theorem III.6.29; the second reader should confirm the section
+  numbers against a copy (the facts themselves are standard: holomorphy of the resolvent, Riesz projections of an
+  isolated part of the spectrum, discreteness of the spectrum under a compact resolvent).
 * Lemma 4.1 needs |Im theta| <= rho0 for the l^1_nu bound and |Im theta| <= rho2 for M_k; rho_e = min(rho0, rho2) is
   the strip used. If Stage E's M_k is computed on a strip narrower than rho0, this is fine; if R_j <= t_j for some j the
   lemma does not apply.
