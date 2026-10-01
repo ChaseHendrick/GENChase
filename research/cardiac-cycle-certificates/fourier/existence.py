@@ -67,7 +67,9 @@ For m > m_max, y = omega_bar m >= Y := omega_bar (m_max + 1): with B0 = J0hat - 
 and entrywise |B0| <= G0 := |J0hat| + dmax E, dmax >= every d_m (dmax = 4 c). With G = G0 / Y and theta = ||G||_inf < 1:
     |A_m| <= (1/y) sum_k (G0/y)^k <= (1/Y) S_G,   |m A_m| = (y / omega_bar) |A_m| <= (1/omega_bar) S_G,
     S_G := I + G + G^2 + theta^3 / (1 - theta) * ones   (each entry of sum_{k>=3} G^k is <= its row sum <= theta^3/(1-theta)),
-and |A_m J'_n| <= |A_m| |J'_n|. m_max is the least integer with theta <= theta_target (setting). The sup bounds
+and |A_m J'_n| <= |A_m| |J'_n|. m_max is an integer with theta <= theta_target (setting): the code starts from a
+float guess and increases it until om_bar (m_max + 1) theta_target >= ||G0||_inf is certified, so it may exceed the
+least such integer; this is harmless, since theta is recomputed from the actual Y and certified < 1. The sup bounds
 Abar0 = sup_{|m|>K} |A_m|, Abar1 = sup |m A_m|, C_n = sup |A_m J'_n| are entrywise maxima over both ranges. Negative m:
 A_{-m} = conj(A_m), so |A_{-m}| = |A_m| and |A_{-m} J'_n| = |A_m conj(J'_n)|, bounded by an explicit product with the
 conjugated enclosure. For |n| <= n_explicit the products A_m J'_n (m and -m) are formed explicitly for K < m <= m_max;
@@ -135,9 +137,19 @@ and the contract on F), and the set of evaluation points is invariant under w ->
 7. Real solution, period, wave number
 -------------------------------------
 kappa(omega, a) := (conj omega, (conj a_{-m})_m) is an isometry of X and kappa(xbar) = xbar. F(kappa x) = kappa'(F(x)) with
-kappa'(F_ph, (F_m)) = (conj F_ph, (conj F_{-m})): f has real coefficients and is built from +, -, *, /, exp and
-principal-branch log/sqrt whose arguments have Re > 0 on the domain certified in section 6 (arbmodel guards), so
-f(conj z) = conj f(z) there; phi_{kappa a}(theta) = conj phi_a(theta) for real theta, hence g_m(kappa a) = conj g_{-m}(a);
+kappa'(F_ph, (F_m)) = (conj F_ph, (conj F_{-m})). Why f(conj z) = conj f(z) holds pointwise at every point that is used:
+fourier/tp06_18d_arb.py (audited 2026-10-01: it contains only +, -, *, /, integer powers, 55 calls of exp, 4 of log,
+3 of sqrt, real constants _D/_I, and no abs, Re/Im, comparison, branch or float conversion) evaluates f as a fixed
+composition of these operations. Each one commutes with conjugation wherever it is defined: +, -, *, / and integer
+powers algebraically, exp because its power series has real coefficients, and the principal log and sqrt on
+{Re > 0} (the only arguments arbmodel admits, guarded), because that set is conjugation-invariant and
+Log(conj w) = conj Log(w), sqrt(conj w) = conj sqrt(w) off (-inf, 0]. So, by induction over the expression, if z is in
+the certified domain (every intermediate log/sqrt argument has Re > 0, every divisor is nonzero), then so is conj z,
+and f(conj z) = conj f(z), point by point, with no connectedness argument. The points that occur are
+phibar(theta) + h(theta) with theta real and |h_j(theta)| <= ||h_j||_nu < R_j; this family is closed under conjugation
+(phibar(theta) is real for real theta, and |conj h_j| = |h_j|), and it lies in the domain certified by the polydisc
+cover of section 6. Hence phi_{kappa a}(theta) = conj phi_a(theta) for real theta, g(kappa a)(theta) = conj g(a)(theta),
+and g_m(kappa a) = conj g_{-m}(a);
 d_{-m} = d_m is real and s / sigma_V is real. So kappa maps zeros of F in B_r(xbar) to zeros in B_r(xbar); by uniqueness
 the zero x* = kappa x*: omega* is real and phi* is real-valued. Since a* in (l^1_nu)^18 and i omega* m a*_m =
 g_m - d_m E a*_m is in l^1_nu, phi* is C^1 (indeed analytic on |Im theta| < rho0) and solves the profile equation
@@ -210,7 +222,8 @@ DEFAULTS = dict(
 
 # ------------------------------------------------------------------------------------------------ helpers
 def _q(s):
-    """Exact arb from a rational string 'p/q' or a dyadic decimal; refuses inexact values."""
+    """Ball (arb) containing the rational value of a string 'p/q' or a decimal. It is NOT necessarily exact (1/3 is
+    not dyadic); callers that need an exact dyadic use _exact_dyadic_param, which checks."""
     fr = Fraction(s)
     v = arb(fmpq(fr.numerator, fr.denominator))
     return v
@@ -237,7 +250,12 @@ def lo(x):
 
 
 def amax(a, b):
-    return a if a > b else (b if b > a else up(a.union(b)))
+    """An exact upper bound of max(a, b) (both real balls)."""
+    if a > b:
+        return up(a)
+    if b > a:
+        return up(b)
+    return up(a.union(b))
 
 
 def to_fraction(x):
@@ -302,6 +320,13 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
     There is deliberately no way to pass strip bounds in: every S is recomputed here from the centre."""
     st = dict(DEFAULTS)
     st.update(settings or {})
+    # Test-only hooks (never used by prove(), which refuses them): "_mutate" deletes one bound contribution, to show
+    # that the tests detect the deletion; "_diagnostics" returns the certified blocks (floats) under the key "_diag".
+    mut = frozenset(st.pop("_mutate", ()) or ())
+    unknown = mut - {"T", "ft", "SJ_tail", "Y0_tail"}
+    if unknown:
+        raise ValueError(f"unknown mutation {sorted(unknown)}")
+    want_diag = bool(st.pop("_diagnostics", False))
     Nd = N if N_damping is None else N_damping
     clk = Clock(log)
     lay = ct.Layout(K)
@@ -475,6 +500,8 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             for j in range(DIM):
                 for m in range(-K, K + 1):
                     Wb[lay.idx(j, m), t] = up(SJ[j][k] * erho ** abs(m - mp))
+        if "SJ_tail" in mut:
+            Wb = arb_mat(n, len(cols_b))                  # MUTATION: majorant columns deleted
         colWb = WROW * (Aabs * Wb)
         for t, (k, mp) in enumerate(cols_b):
             for c in range(DIM + 1):
@@ -505,7 +532,11 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
                 s = arb(0)
                 for j in range(DIM):
                     s += Abar0[c][j] * SJ[j][k]
-                T[c][k] = up(T[c][k] + s * tailK)
+                T[c][k] = up(T[c][k] + (0 if "SJ_tail" in mut else s * tailK))   # (mutation: S_J tail)
+        if "T" in mut:
+            T = [[arb(0)] * DIM for _ in range(DIM)]          # MUTATION: tail-row block deleted
+        if "ft" in mut:
+            Z1_ft = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]   # MUTATION: finite rows x tail columns deleted
 
         # ---- Z1 assembly ----------------------------------------------------------------------------------
         Z1_rows = []
@@ -543,6 +574,7 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             c = 0 if comp_of[r] is None else 1 + comp_of[r]
             Y0c[c] = Y0c[c] + AF[r, 0].abs_upper() * nupow[abs(mode_of[r])]
         Y0_fin_max = max(float(v) for v in Y0c)
+        Y0_fin = list(Y0c)
         Ab0 = arb_mat(Abar0)
         for m in range(K + 1, Kp + 1):                    # K < |m| <= K'
             Am = tail["A_explicit"].get(m)
@@ -562,6 +594,8 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             for k in range(DIM):
                 s += Abar0[c][k] * Sg[k]
             Y0c[1 + c] = Y0c[1 + c] + s * tailK
+        if "Y0_tail" in mut:
+            Y0c = Y0_fin                                       # MUTATION: tail rows of Y0 deleted
         Y0 = arb(0)
         for c in range(DIM + 1):
             Y0 = amax(Y0, up(Y0c[c] / ETA[c]))
@@ -623,6 +657,9 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             omega={"lower": bound_rec(om_ball, "down"), "upper": bound_rec(om_ball, "up")},
             Y0=bound_rec(Y0), Z1=bound_rec(Z1), Z2=bound_rec(Z2), r_star=bound_rec(r_star),
             r_existence=bound_rec(r_lo), r_uniqueness=bound_rec(r_hi),
+            r_uniqueness_is_r_star=bool((r_hi - r_star).is_zero()),
+            r_uniqueness_note=("r_uniqueness = min(the large root of p, r_*) with r_* the hand-set validity radius "
+                               "of Z2 (settings.r_star); it is a certified contraction ball, not the largest one"),
             p_at_r_existence=bound_rec(Y0 + (Z1 - 1) * r_lo + Z2 * r_lo * r_lo / 2),
             p_at_r_uniqueness=bound_rec(Y0 + (Z1 - 1) * r_hi + Z2 * r_hi * r_hi / 2),
             contraction_at_r_uniqueness=bound_rec(Z1 + Z2 * r_hi),
@@ -640,6 +677,12 @@ def prove_centre(N, K, om_bar, A, *, N_damping=None, settings=None, log=print, c
             settings={k: (v if not isinstance(v, arb) else str(v)) for k, v in st.items()},
             timings_s=clk.marks, wall_s=round(time.time() - clk.t0, 2),
         )
+        if mut:
+            out["MUTATED"] = sorted(mut)
+        if want_diag:
+            out["_diag"] = dict(
+                Z1_ff=_f(Z1_ff), Z1_ft=_f(Z1_ft), T=_f(T), Y0_fin=[float(up(v)) for v in Y0_fin],
+                Y0_total=[float(up(v)) for v in Y0c], eta=[float(e) for e in ETA], nu=float(nu.mid()))
     finally:
         ctx.prec = old_prec
     return out
@@ -819,6 +862,8 @@ def prove(N, K=32, settings=None, log=print, write=True):
     Nf, Kf, om, A, rec = ct.load(path)
     if (Nf, Kf) != (N, K):
         raise ValueError("centre file does not match N, K")
+    if settings and any(k.startswith("_") for k in settings):
+        raise ValueError("test-only settings (_mutate, _diagnostics) are refused by prove()")
     res = prove_centre(N, K, om, A, settings=settings, log=log, centre_file=path)
     res.update(
         status="computed; awaiting adversarial review",
