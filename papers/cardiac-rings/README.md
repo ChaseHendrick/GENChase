@@ -16,12 +16,12 @@ value about 1.5% below the supercritical Hopf point that Erhardt computed numeri
 cell we give two computer-assisted proofs, sharing no library, that a periodic orbit exists and is locally orbitally
 asymptotically stable: a time-domain proof with CAPD, which encloses the period in [53.5855190480139,
 53.585519630722438] ms and bounds the 17 nontrivial Floquet multipliers of its orbit in modulus by 0.998642, and a
-space-time Fourier proof in Arb ball arithmetic, which encloses the period of its orbit in an interval of width
-1e-26 ms and bounds its 17 nontrivial multipliers by 0.99785888. An exact rational check shows that a point of the
-second orbit lies in the ball in which the first proof shows its fixed point unique, so the two proofs are about the
-same orbit. For rings of N = 8, 16, 32 and 64 identical cells with voltage-only diffusive coupling of
+space-time Fourier proof in Arb ball arithmetic, which encloses the period of its orbit in an interval of width less
+than 2e-25 ms and bounds its 17 nontrivial multipliers by 0.99785888. An exact rational check shows that a point of
+the second orbit lies in the ball that the first proof shows the return map to map into itself as a contraction, so
+the two proofs are about the same orbit. For rings of N = 8, 16, 32 and 64 identical cells with voltage-only diffusive coupling of
 strength N^2/64000 per ms we prove, in Fourier space, that a rotating 1-wave x_j(t) = phi(omega t + 2 pi j/N)
-exists, is locally unique, has minimal period enclosed in an interval of width 1e-26 ms, is not synchronous, and is
+exists, is locally unique, has minimal period enclosed in an interval of width less than 2e-25 ms, is not synchronous, and is
 locally exponentially orbitally stable with asymptotic phase: the Floquet multiplier 1 is algebraically simple, and
 the other 18N - 1 multipliers have modulus less than e^(-delta T) with delta = 5e-6 per ms. Existence is proved by a
 radii-polynomial argument in a weighted l^1 space, with rigorous strip covers, aliasing bounds and a polydisc Cauchy
@@ -37,8 +37,9 @@ Hopf branch is numerical, and nothing is claimed for a continuum cable or for ti
   arithmetic):
   - Theorem A(i), the cell by CAPD: record `data/cell-gks0.0275.json` (verified; 732 s).
   - Theorem A(iii), the two cell proofs enclose the same orbit: `code/fourier/link_cell.py` (exact rationals,
-    standard library), output `data/link_cell.txt`; it assumes that the CAPD and Arb translations of Erhardt's source
-    define the same function, which the tests support at points but do not prove.
+    standard library), output `data/link_cell.txt`. Part (i) assumes that the CAPD program evaluates Erhardt's
+    function and part (ii) that the Arb program does; (iii) uses both assumptions together. The two programs were
+    compared at 104 points by the tests, not proved equal.
   - Theorem A(ii) and Theorem B, the cell and the rings N = 8, 16, 32, 64 in Fourier space: records
     `data/fourier-existence-N*.json` (Stage E, the existence proof) and `data/fourier-stability-N*.json` (Stage S,
     the stability proof).
@@ -55,8 +56,9 @@ Hopf branch is numerical, and nothing is claimed for a continuum cable or for ti
   tissue, other N or uniformity in N. A certified branch on an interval of G_Ks (the project's "rec 2") is in progress
   in `research/cardiac-cycle-certificates/fourier/branch.py`; no result of it is used here.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
-  of their fixes, are copied in [`review/`](review/README.md), with one reading of this manuscript
-  (`review/manuscript-reading-1-2026-10-01.md`), whose findings are addressed in the present draft. On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
+  of their fixes, are copied in [`review/`](review/README.md), with a first reading of this manuscript
+  (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised draft
+  (`review/manuscript-reading-2-2026-10-01.md`), whose corrections are made and listed in `review/fix-check-2026-10-01.md`. On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
   (`notes/rerun-2026-10-01.md`).
 - **Novelty:** the project's logged searches (RESEARCH.md of GENChase, entries of 2026-09-30 and 2026-10-01 on
   cardiac work) found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model

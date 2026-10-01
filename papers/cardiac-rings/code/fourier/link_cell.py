@@ -131,6 +131,7 @@ def main():
     rec = json.load(open(cpath))
     K = int(rec["K"])
     a = rec["a"]
+    check(all(hexq(a[i][0][1]) == 0 for i in range(18)), "centre: Im a_0 = 0 in every component (pbar uses Re a_0)")
     pbar = []
     for i in range(18):
         v = hexq(a[i][0][0])

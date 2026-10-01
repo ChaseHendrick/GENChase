@@ -21,7 +21,7 @@ GENChase: the companion repository does not carry `notes/`.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
-## Record (2026-10-01, `paper/cardiac-rings.tex` after the first in-project reading of the manuscript)
+## Record (2026-10-01, `paper/cardiac-rings.tex` after two in-project readings of the manuscript)
 
 - [ ] **1. Complete proofs.** Open. The draft writes out the proofs of every lemma and theorem the certificates rest
   on (Section 4, Lemmas 4.1 to 4.8, for existence; Section 5, the lemmas, corollaries and theorems numbered 5.1 to 5.17,
@@ -31,8 +31,8 @@ GENChase: the companion repository does not carry `notes/`.
   correct as written apart from its G4 (fixed), and asked for a precise Y0/Z1 assembly (G1), the coefficient
   enclosures beyond n_A (G2) and the CAPD argument (G3), all now written out. What is missing: (a) three facts about
   operators with compact resolvent are cited from Kato (1976) by chapter and section only, and the book has not been
-  checked against a copy for the exact statements and numbering; (b) the revised passages (Sections 4.2, 4.4, 4.5,
-  5.6, 6 and Lemma 6.1) have not been read again.
+  checked against a copy for the exact statements and numbering; (b) the passages revised after the second reading
+  (R3 to R6 and the exposition items, `review/fix-check-2026-10-01.md`) have not been read by a third reader.
 - [x] **2. Rigorous computation.** Every inequality of the proofs is decided in Arb ball arithmetic (python-flint
   0.9.0, pinned) by `code/fourier/existence.py` and `code/fourier/stability.py`, or in CAPD interval arithmetic by
   `code/proofs/verify.cpp`; floating point only proposes centres, frames and weights. The programs raise
@@ -77,23 +77,20 @@ GENChase: the companion repository does not carry `notes/`.
   the expectation of rotating waves. The ledger lists readings to do before submission (Paullet-Ermentrout, Ashwin-Swift,
   Hoppensteadt-Izhikevich Theorem 9.2, papers citing Erhardt 2025, the full text of Di Marco et al.); the draft says
   so in Section 9.
-- [ ] **6. Adversarial second reading.** Open. The programs and the lemma file had in-project adversarial readings by
-  separate AI agent sessions, every finding was fixed, and a second reading of the fixes found nothing unsound
-  (`review/*.md`, outcome in `data/fourier-review-status.json`). The manuscript had one in-project reading by a
-  separate agent session told to find errors (`review/manuscript-reading-1-2026-10-01.md`): no false theorem; fixed in
-  the draft of 2026-10-01: E1 to E4 (outward-rounded CAPD bounds 0.99864150686405151 and 0.99864258833469344, exact
-  dyadic delta 23058430092137/2^59 and approximate signs elsewhere, r_ex entries 1.6440 and 1.6408, |abar_1V| >=
-  0.11524), E5 (the same-orbit wording removed and, beyond the request, the link proved: Lemma 6.1 and
-  `code/fourier/link_cell.py`), E6 (epsilon at both radii in the coordinates S), G1 (codomain X' of F, A: X' -> X
-  bounded and injective, Y0 tail sum, the max(ff, ft) + T formula for Z1, C_n for m > m_max), G2 (entrywise
-  enclosures of A_n for |n| > n_A), G3 (parametrization of the section, explicit ball, multipliers by Corollary 5.6,
-  stability by the proof of Theorem 5.17(iii)), G4 (B_c a ball of |.|_*, choice of s, notation), G5 (what is
-  certified; late-digit rerun differences and the unpinned BLAS threads), G6 (reading status of every source; the
-  link's dependence on two translations), C1 to C4 (Rucklidge-Silber title, also corrected in the project note;
-  Kuegler spelling; the four precedents added; Ashwin-Swift and Hoppensteadt-Izhikevich in the bibliography), A1 (the
-  manuscript and README carry no sentence saying who has not reviewed them), X1 to X8, X10, X11 and T1, T2. X9
-  (process history in the text) is kept by choice. The revised draft has not been read again; a reading briefed only
-  with the paper and its programs, of the whole revised draft, is still needed. No outside review has taken place.
+- [x] **6. Adversarial second reading.** Two in-project readings of the manuscript with its programs, each by a
+  separate AI agent session told to find errors; no outside review has taken place. Reading 1
+  (`review/manuscript-reading-1-2026-10-01.md`): no false theorem; its findings E1 to E6, G1 to G6, C1 to C4, A1 and
+  the exposition items were fixed (fixes: outward-rounded CAPD bounds, exact dyadic delta, r_ex entries, |abar_1V|
+  bound, the link of the two cell proofs proved as Lemma 6.1 with `code/fourier/link_cell.py`, epsilon in the
+  coordinates S at both radii, the Y0/Z1 assembly with the codomain of F, coefficient enclosures beyond n_A, the CAPD
+  argument of Section 6, the ball B_c in the proof of Theorem 5.17(iii), what is certified and the rerun
+  differences, reading status, citations and novelty wording, no review labels in the draft; X9 kept by choice).
+  Reading 2 (`review/manuscript-reading-2-2026-10-01.md`), of the revised passages, with a rerun of the link: nothing
+  unsound, the link confirmed; two wrong numbers in statements (R1, delta for N = 1; R2, the period width) and
+  gaps R3 to R6, citations R7 to R9 and exposition items, all fixed; where each is fixed is recorded in
+  `review/fix-check-2026-10-01.md`. Reading 2 stated that a check of these fixes, recorded in the review folder,
+  suffices for this item; that record is the fix-check file, made by the drafting session, and the fixes after
+  reading 2 have not been read by a third reader.
 - [ ] **7. Reproducible.** Open. `code/run_all.sh` checks the copies against the records' 90 hashes (passes), runs the
   link of Lemma 6.1 (passes) and reruns Stage E and Stage S in a scratch folder; the N = 1 and N = 8 proofs were rerun from these copies on
   2026-10-01 and reproduce the period enclosures and every stability bound exactly (`notes/rerun-2026-10-01.md`);

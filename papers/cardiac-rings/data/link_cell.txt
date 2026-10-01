@@ -7,6 +7,7 @@ PASS frame header: N = 1, G_Ks = 0.0275, no coupling
 PASS frame file fully read
 PASS blocks cover the 17 free coordinates
 PASS blocks and radii equal those in the CAPD record
+PASS centre: Im a_0 = 0 in every component (pbar uses Re a_0)
 PASS xhat_V = s / sigma_V exactly (the section level)
   (centre only, not used: |phibar_V(0) - s/sigma_V| = 6.377e-45)
   r_ex = 1.707295e-28; |pbar - xhat|_inf over free components = 4.327e-13
