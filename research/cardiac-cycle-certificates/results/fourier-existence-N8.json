@@ -1,0 +1,290 @@
+{
+ "N": 8,
+ "N_damping": 8,
+ "K": 32,
+ "Kprime": 80,
+ "M": 192,
+ "label": null,
+ "omega_bar": "0x1e04173ba20d3d8c0719e9d2df4a54de74f729a3p-160",
+ "T_ms": {
+  "lower": {
+   "hex": "0x35968544146fcc418086dd9e990d3p-108",
+   "dec": "53.58797097681944967415082",
+   "approx": 53.58797097681945
+  },
+  "upper": {
+   "hex": "0xd65a151051bf3106021b78dafbbb5p-110",
+   "dec": "53.58797097681944967415083",
+   "approx": 53.58797097681945
+  }
+ },
+ "omega": {
+  "lower": {
+   "hex": "0x1e04173ba20d3d8c0719e9a8430ca9de74f729a3p-160",
+   "dec": "0.1172499199474729906636971",
+   "approx": 0.117249919947473
+  },
+  "upper": {
+   "hex": "0x1e04173ba20d3d8c0719e9fd7b87ffde74f729a3p-160",
+   "dec": "0.1172499199474729906636972",
+   "approx": 0.117249919947473
+  }
+ },
+ "Y0": {
+  "hex": "0x87c68e20592d9ccc75ed0909efea1c79512136323d8d9a366716304accf1ef57p-346",
+  "dec": "4.284322703802253057976116E-28",
+  "approx": 4.284322703802253e-28
+ },
+ "Z1": {
+  "hex": "0x6822557608b645a2bfc8bafa85e0d883025a7f991f2d60192cbff79aba8ed8ddp-257",
+  "dec": "0.2033869463524351886267373",
+  "approx": 0.20338694635243518
+ },
+ "Z2": {
+  "hex": "0xee6c7c2c81e6ec8f46dfe099aaecbca027488e8dbc6f4253849c39746f2263f7p-220",
+  "dec": "64001393352.11887794463655",
+  "approx": 64001393352.11888
+ },
+ "r_star": {
+  "hex": "0x8cbccc096f5088cbf93f87b7442e45d3f598fa3b657ba08d4319c3f4e16e9a45p-295",
+  "dec": "1.000000000000000000000001E-12",
+  "approx": 1e-12
+ },
+ "r_existence": {
+  "hex": "0x154e1ed55cc09p-139",
+  "dec": "5.378177987460193495035136E-28",
+  "approx": 5.3781779874601935e-28
+ },
+ "r_uniqueness": {
+  "hex": "0x119799812dea11p-92",
+  "dec": "9.999999999999999798866477E-13",
+  "approx": 1e-12
+ },
+ "p_at_r_existence": {
+  "hex": "-0x87c68e20850272d8d5d4695ee6338e4d61a8b5a8f41dc3364fbe1c1d85ee86d3p-366",
+  "dec": "-4.085848526119494688061428E-34",
+  "approx": -4.085848526119494e-34
+ },
+ "p_at_r_uniqueness": {
+  "hex": "-0xd7382076f3400130de441bb99754ebf02dc34899fbb0d30a46802c778bcdc911p-296",
+  "dec": "-7.646123569715049292333976E-13",
+  "approx": -7.646123569715049e-13
+ },
+ "contraction_at_r_uniqueness": {
+  "hex": "0x88e71fdcb9c0a93ed93c509a6c3743aa63661e49029220377a963ff3bee80a4fp-257",
+  "dec": "0.2673883397045540652840913",
+  "approx": 0.26738833970455406
+ },
+ "abs_a1V_lower": {
+  "hex": "0xec06bb1c09871fa8107613fe5d2f72b1ba85097348aa402a3ada3e24f8fee021p-259",
+  "dec": "0.1152472131663589410425031",
+  "approx": 0.11524721316635894
+ },
+ "a1V_margin": {
+  "hex": "0xec06bb1c09871fa8107612f4e269b9bcdd19bb23c9464924038f7382b96f5c6bp-259",
+  "dec": "0.1152472131663589410425031",
+  "approx": 0.11524721316635894
+ },
+ "Z1_by_output_component": [
+  9.865229636826534e-13,
+  0.06769670623361775,
+  0.0044155633313691395,
+  0.004419069028681945,
+  0.004406354948307237,
+  0.00463012806941939,
+  0.009794006001337388,
+  0.005660590267193662,
+  0.008435922174161583,
+  0.004411386456722464,
+  0.004518767750074931,
+  0.00983574275765972,
+  0.004525073401182808,
+  0.004669696886422343,
+  0.004567862904165847,
+  0.004883353158655508,
+  0.0044909103905267185,
+  0.20338694635243518,
+  0.004405872499239504
+ ],
+ "Y0_by_output_component": [
+  6.454791917069578e-43,
+  2.3171379047697693e-28,
+  1.2504495265229521e-29,
+  1.4089114102422958e-29,
+  1.251412703963824e-29,
+  1.255337462090797e-29,
+  5.950978811463443e-29,
+  3.076804092652056e-29,
+  1.4744185202004573e-29,
+  1.287192576728957e-29,
+  1.2545281304458382e-29,
+  2.7320105155899853e-29,
+  1.57692358043445e-29,
+  2.034737645795091e-29,
+  1.6101332155100522e-29,
+  1.8789949369052708e-29,
+  1.365267204139713e-29,
+  4.284322703802253e-28,
+  1.2505186975326156e-29
+ ],
+ "Z2_by_output_component": [
+  887450077.4890136,
+  64001393352.11888,
+  9841401.722344048,
+  489752089.27045465,
+  57284857.97142897,
+  10423323.596789991,
+  4767260818.308958,
+  4675252687.980321,
+  404161512.99300385,
+  280557600.50921357,
+  22285934.541352578,
+  2909313388.8319707,
+  1340260153.7556489,
+  2595238744.136481,
+  1313168707.8607907,
+  3175095190.727782,
+  634610958.1613663,
+  27641445786.327545,
+  1378843846.7919836
+ ],
+ "tail": {
+  "m_max": 391,
+  "theta": 0.49648466791296364,
+  "Abar0_max": 0.3102549639543359,
+  "Abar1_max": 15.173472809388665,
+  "T_max_row_sum": 0.15714917614295953
+ },
+ "strips": {
+  "g": {
+   "S_max": 0.07086852747358303,
+   "n_evals": 8032,
+   "n_leaves": 4192,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 4192,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.78,
+   "phi_digest": "b56b5e047ff1296bb735c00c0201d2b1645da3f51b4463c5d8e427bc7ce3dfe0",
+   "S_over_L_max": 16.530905490695336
+  },
+  "J": {
+   "S_max": 17.772222370199906,
+   "n_evals": 352,
+   "n_leaves": 352,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 0,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 10.0,
+    "atol": 1.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 1.23,
+   "phi_digest": "b56b5e047ff1296bb735c00c0201d2b1645da3f51b4463c5d8e427bc7ce3dfe0",
+   "S_over_L_max": Infinity
+  },
+  "polydisc": {
+   "S_max": 0.11191794746520077,
+   "n_evals": 8032,
+   "n_leaves": 4192,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 4192,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.74,
+   "phi_digest": "c453ab5d6e568bb4ec0d9e9864938f3b832950ad1c0d3df898cd24c85c0bfa89",
+   "S_over_L_max": Infinity
+  },
+  "S_source_g": "strip",
+  "S_source_J": "strip"
+ },
+ "settings": {
+  "rho0": "1/4",
+  "rho": "1",
+  "rho2": "1",
+  "R": "1/1024",
+  "L": 16,
+  "M": 192,
+  "prec_g": 256,
+  "prec_J": 128,
+  "prec_mat": 128,
+  "theta_target": "1/2",
+  "n_explicit": 12,
+  "r_star": "1e-12",
+  "strip_nx": 32,
+  "strip_rtol": 3.0,
+  "strip_max_evals": 8000,
+  "eta": null
+ },
+ "timings_s": {
+  "strip_g": 7.8,
+  "strip_J": 1.24,
+  "strip_polydisc": 7.75,
+  "dft_g": 0.23,
+  "dft_J": 0.75,
+  "build_Jfin": 0.39,
+  "A_fin": 3.76,
+  "product A_fin J_fin": 53.06,
+  "Z1 finite": 2.53,
+  "Z1 finite x tail": 32.25,
+  "tail resolvents": 10.83,
+  "Z1": 0.02,
+  "Y0": 0.2,
+  "Z2": 0.0,
+  "corollaries": 0.0
+ },
+ "wall_s": 120.81,
+ "status": "computed; awaiting adversarial review",
+ "theorem": "For the ring of N = 8 cells (c = N^2 / 64000 per ms) of Erhardt's 18-state TP06 endocardial model at G_Ks = 0.0275, there are omega* > 0 and a real 2 pi periodic phi*, analytic on |Im theta| < rho0, such that z_j(t) = phi*(omega* t + 2 pi j / N) solves the ring ODE and phi*_V(0) = s (s the double nearest 0.2 mV); (omega*, Fourier coefficients of phi*) is the only zero of F in the ball of radius r_uniqueness about the centre in X = C x (l^1_nu)^18 (norm in the module docstring) and lies within r_existence of it; T = 2 pi / omega* lies in T_ms; phi* has minimal period 2 pi (a*_{1,V} != 0), so the solution has minimal period T, is not synchronous, and is a rotating 1-wave.",
+ "centre_file": "fourier/data/centre_N8_K32.json",
+ "centre_sha256": "1a2a4da2fd274f967574aef09e5563f4c8b1d0875195d5a1df2c4541ab4d6477",
+ "sources_sha256": {
+  "fourier/existence.py": "7498f3d1511d27151b3b5362c71e33bb3b289267c62f33ec6c15d4e0dfd56744",
+  "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+  "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+  "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+  "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+  "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+  "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+ },
+ "python_flint": "0.9.0",
+ "FLINT": "3.6.0",
+ "python": "3.11.15",
+ "machine": "x86_64",
+ "date": "2026-10-01",
+ "comparison": [
+  {
+   "reference": "other pipeline",
+   "interval": [
+    "53.58795907",
+    "53.58798288"
+   ],
+   "overlaps": true,
+   "inside": true
+  }
+ ]
+}
