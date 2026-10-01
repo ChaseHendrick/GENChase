@@ -1,0 +1,301 @@
+{
+ "N": 1,
+ "N_damping": 1,
+ "K": 32,
+ "Kprime": 80,
+ "M": 192,
+ "label": null,
+ "omega_bar": "0x3c08e27722071085d514fe6bf1f2ca4a4cbfbp-149",
+ "T_ms": {
+  "lower": {
+   "hex": "0x6b2bc930db76a794a5bb73897553b3p-113",
+   "dec": "53.58551933936116920991898",
+   "approx": 53.58551933936117
+  },
+  "upper": {
+   "hex": "0x6b2bc930db76a794a5bb73ea0c3a35p-113",
+   "dec": "53.58551933936116920991899",
+   "approx": 53.58551933936117
+  }
+ },
+ "omega": {
+  "lower": {
+   "hex": "0x3c08e27722071085d514fe50e456c24a4cbfbp-149",
+   "dec": "0.1172552843500068756237191",
+   "approx": 0.11725528435000687
+  },
+  "upper": {
+   "hex": "0x3c08e27722071085d514fe86ff8ed24a4cbfbp-149",
+   "dec": "0.1172552843500068756237192",
+   "approx": 0.11725528435000687
+  }
+ },
+ "Y0": {
+  "hex": "0xac59392150986c48dd3f4a142fb2ba8da69111a53b26c25d49d22566f3bfb4e3p-348",
+  "dec": "1.359590158010930414696111E-28",
+  "approx": 1.3595901580109305e-28
+ },
+ "Z1": {
+  "hex": "0xd08b8de893e2f0a752fdbfd1962a31595cedcfa1433bc2a81d43b2f527cdcf0bp-258",
+  "dec": "0.2036573575214530329919111",
+  "approx": 0.20365735752145303
+ },
+ "Z2": {
+  "hex": "0x3bb2ff03dd5163aa2f45971831a485b3fa5a2f04112c1b292c824206f1b648c5p-218",
+  "dec": "64101531895.32948175347829",
+  "approx": 64101531895.32948
+ },
+ "r_star": {
+  "hex": "0x8cbccc096f5088cbf93f87b7442e45d3f598fa3b657ba08d4319c3f4e16e9a45p-295",
+  "dec": "1.000000000000000000000001E-12",
+  "approx": 1e-12
+ },
+ "r_existence": {
+  "hex": "0xd86ce037cfbc5p-144",
+  "dec": "1.707294551482933812657130E-28",
+  "approx": 1.7072945514829338e-28
+ },
+ "r_uniqueness": {
+  "hex": "0x119799812dea11p-92",
+  "dec": "9.999999999999999798866477E-13",
+  "approx": 1e-12
+ },
+ "r_uniqueness_set_by_r_star": true,
+ "r_uniqueness_note": "r_uniqueness = min(the large root of p, r_*), rounded to a double <= r_*, with r_* the hand-set validity radius of Z2 (settings.r_star); when r_uniqueness_set_by_r_star is true it is that chosen radius, a certified contraction ball, not the largest one",
+ "p_at_r_existence": {
+  "hex": "-0x562c9c90e1ee859b770d5599289763ee3b267de4215a7e383135e6ddb38947f3p-367",
+  "dec": "-1.296606214735645662401751E-34",
+  "approx": -1.2966062147356456e-34
+ },
+ "p_at_r_uniqueness": {
+  "hex": "-0xd72108a4dbe64ab0412f723ef37743e4fc3b892668a5b15496b569faa9cfd285p-296",
+  "dec": "-7.642918765308820754445104E-13",
+  "approx": -7.64291876530882e-13
+ },
+ "contraction_at_r_uniqueness": {
+  "hex": "0x8917b1728447f2530541458546797965d23ae657457474f7a3192fd7fffa3707p-257",
+  "dec": "0.2677588894167825134560927",
+  "approx": 0.2677588894167825
+ },
+ "abs_a1V_lower": {
+  "hex": "0xec8f32de3b36bbdc7ac7ed4f40749b41dda055c609afbdf280e5b1e852a12d4dp-259",
+  "dec": "0.1155075048513042252165136",
+  "approx": 0.11550750485130422
+ },
+ "a1V_margin": {
+  "hex": "0x7647996f1d9b5dee3d63f67d7ce337eec8f459ca6124afb11083e86896a51631p-258",
+  "dec": "0.1155075048513042252165136",
+  "approx": 0.11550750485130422
+ },
+ "Z1_by_output_component": [
+  6.744606803601979e-13,
+  0.06781085587747913,
+  0.004417956841388759,
+  0.004421455048777656,
+  0.004408726519832763,
+  0.00463302246926146,
+  0.00980863575644877,
+  0.005665613372534543,
+  0.008447788999347746,
+  0.00441376667214944,
+  0.0045218001390016985,
+  0.0098452423623146,
+  0.004527689023010446,
+  0.00467259508848274,
+  0.004570423726033953,
+  0.00488638207627404,
+  0.004493384531390323,
+  0.20365735752145303,
+  0.004408243060041028
+ ],
+ "Y0_by_output_component": [
+  1.0479922683541798e-42,
+  2.7494168958896736e-30,
+  3.146709401712423e-36,
+  1.8755029168151073e-33,
+  7.93456849334273e-36,
+  2.741131239056483e-34,
+  1.6104884257542874e-31,
+  3.171602133184837e-32,
+  6.256444803917077e-33,
+  1.784408601856966e-34,
+  2.3114605741831305e-35,
+  3.319284968120579e-30,
+  1.7062537032822138e-33,
+  6.553131858095138e-33,
+  1.7544470253267327e-31,
+  3.4058811047302736e-31,
+  1.7798732086781406e-31,
+  1.3595901580109305e-28,
+  1.1087485196093673e-35
+ ],
+ "Z2_by_output_component": [
+  888499956.7313005,
+  64101531895.32948,
+  9854350.901617207,
+  490515967.2862858,
+  57370398.83852525,
+  10435077.936951416,
+  4774805487.3238945,
+  4682636471.6093025,
+  404795523.4901528,
+  281005525.37506646,
+  22318108.539242685,
+  2910895940.6161222,
+  1342352071.535215,
+  2599275516.3175097,
+  1314101162.468861,
+  3178142153.1941867,
+  635337991.3913413,
+  27660998457.41182,
+  1381295589.9113505
+ ],
+ "tail": {
+  "m_max": 391,
+  "theta": 0.4963749884090537,
+  "Abar0_max": 0.31022723769382626,
+  "Abar1_max": 15.170686618479195,
+  "T_max_row_sum": 0.15736179046794282
+ },
+ "strips": {
+  "g": {
+   "S_max": 0.2227706925109933,
+   "n_evals": 8064,
+   "n_leaves": 4288,
+   "n_nonfinite_evals": 32,
+   "n_unresolved": 4288,
+   "full_strip": true,
+   "rho": "1.500000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.79,
+   "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
+   "S_over_L_max": 17.029263118666425
+  },
+  "J": {
+   "S_max": 17.774255847119303,
+   "n_evals": 896,
+   "n_leaves": 704,
+   "n_nonfinite_evals": 32,
+   "n_unresolved": 0,
+   "full_strip": true,
+   "rho": "1.500000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 10.0,
+    "atol": 1.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 3.44,
+   "phi_digest": "d1e2c0471c497aabaec5830a787e98e32e262a67732fcd761bdb0e7c04314d8a",
+   "S_over_L_max": Infinity
+  },
+  "polydisc": {
+   "S_max": 0.11225968091531766,
+   "n_evals": 8032,
+   "n_leaves": 4192,
+   "n_nonfinite_evals": 0,
+   "n_unresolved": 4192,
+   "full_strip": true,
+   "rho": "1.000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "prec": 53,
+   "params": {
+    "rtol": 3.0,
+    "atol": 0.0,
+    "nx": 32,
+    "max_evals": 8000,
+    "min_width": 5.960464477539063e-08,
+    "centred": false
+   },
+   "seconds": 7.17,
+   "phi_digest": "afe0a733148b4890f72c1784a9ad957cbc6c690bd188e254b24942489c0d4d3c",
+   "S_over_L_max": Infinity
+  },
+  "S_source_g": "strip",
+  "S_source_J": "strip"
+ },
+ "settings": {
+  "rho0": "1/4",
+  "rho": "3/2",
+  "rho2": "1",
+  "R": "1/1024",
+  "L": 16,
+  "M": 192,
+  "prec_g": 256,
+  "prec_J": 128,
+  "prec_mat": 128,
+  "theta_target": "1/2",
+  "n_explicit": 12,
+  "r_star": "1e-12",
+  "strip_nx": 32,
+  "strip_rtol": 3.0,
+  "strip_max_evals": 8000,
+  "eta": null
+ },
+ "timings_s": {
+  "strip_g": 7.81,
+  "strip_J": 3.46,
+  "strip_polydisc": 7.18,
+  "dft_g": 0.19,
+  "dft_J": 0.73,
+  "build_Jfin": 0.64,
+  "A_fin": 4.68,
+  "product A_fin J_fin": 45.55,
+  "Z1 finite": 2.61,
+  "Z1 finite x tail": 29.62,
+  "tail resolvents": 10.93,
+  "Z1": 0.02,
+  "Y0": 0.22,
+  "Z2": 0.0,
+  "corollaries": 0.0
+ },
+ "wall_s": 113.64,
+ "status": "computed; awaiting adversarial review",
+ "theorem": "For the single cell (N = 1) of Erhardt's 18-state TP06 endocardial model at G_Ks = 0.0275, there are omega* > 0 and a real 2 pi periodic phi*, analytic on |Im theta| < rho0, such that z_j(t) = phi*(omega* t + 2 pi j / N) solves the ring ODE and phi*_V(0) = s (s the double nearest 0.2 mV); (omega*, Fourier coefficients of phi*) is the only zero of F in the ball of radius r_uniqueness about the centre in X = C x (l^1_nu)^18 (norm in the module docstring) and lies within r_existence of it; T = 2 pi / omega* lies in T_ms; phi* has minimal period 2 pi (a*_{1,V} != 0), so the solution has minimal period T.",
+ "centre_file": "fourier/data/centre_N1_K32.json",
+ "centre_sha256": "e1d2c0a811b8b9a0741d019709e5a5f0591a3d1bee4232d18c9e781d8e6ecd79",
+ "sources_sha256": {
+  "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+  "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+  "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+  "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+  "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+  "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+  "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+ },
+ "python_flint": "0.9.0",
+ "FLINT": "3.6.0",
+ "python": "3.11.15",
+ "machine": "x86_64",
+ "date": "2026-10-01",
+ "comparison": [
+  {
+   "reference": "other pipeline",
+   "interval": [
+    "53.58551856",
+    "53.58552012"
+   ],
+   "overlaps": true,
+   "inside": true
+  },
+  {
+   "reference": "results/cell-gks0.0275.json (CAPD, verified)",
+   "interval": [
+    "0x1.acaf249c533cfp+5",
+    "0x1.acaf24ea88f37p+5"
+   ],
+   "overlaps": true,
+   "inside": true
+  }
+ ]
+}

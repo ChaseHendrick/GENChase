@@ -185,6 +185,21 @@
       "codeDoi": "10.5281/zenodo.23050604",
       "archiveVersion": "1.0.4",
       "commitments": []
+    },
+    {
+      "id": "cardiac-rings",
+      "title": "Stable Rotating Waves in Rings of a Modified Ventricular Myocyte Model Near a Hopf Point: Computer-Assisted Proofs in Fourier Space",
+      "status": "draft",
+      "note": "Drafted in this repository by the owner's standing decision (2026-09-26) from research/cardiac-cycle-certificates/, the canonical location of its programs and records (the copies in code/ and data/ are byte-identical, and the records' hashes refer to paths relative to that folder). Computer-assisted proofs for Erhardt's 18-state modification of the TP06 endocardial cell at G_Ks = 0.0275: the cell's periodic orbit by CAPD (patched 6.1.0) and, independently, in Fourier space with Arb; and rotating 1-waves in rings of N = 8, 16, 32, 64 cells with existence, local uniqueness, minimal period and local exponential orbital stability (all 18N - 1 nontrivial Floquet multipliers below e^(-delta T), delta = 5e-6 per ms). The programs and the stability lemmas had in-project adversarial readings by separate AI agent sessions, with a second reading of the fixes (review/); no reader has yet been briefed with the manuscript, and there has been no outside review. Identification with Erhardt's Hopf branch is numerical. The G_Ks branch (rec 2) is in progress and not part of this draft. No PDF yet (no TeX toolchain where it was drafted); quality items 1, 4, 6 and 7 are open (notes/QUALITY.md). No journal chosen.",
+      "typst": null,
+      "latex": "papers/cardiac-rings/paper/cardiac-rings.tex",
+      "pdf": null,
+      "companion": null,
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
+      "codeDoi": null,
+      "commitments": []
     }
   ]
 }
