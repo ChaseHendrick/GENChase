@@ -2,7 +2,9 @@
 
 Status: written 2026-10-01, before any Stage S code (PLAN-large-rings.md, step 3). Every statement below is proved
 here by hand or reduced to a cited textbook fact; nothing in this file is a computational result. The proofs have had
-one self-adversarial reading by their author (recorded in section 8) and no other reading yet; the plan requires a
+one self-adversarial reading by their author (section 8) and one independent reading by a referee in this project's
+session (report in the session scratchpad, `lemmas-review.md`; no error found, three gaps and eight minor items, all
+addressed in section 9); this is not an outside review. The plan requires a
 second, independent reading before any record says "verified".
 
 Contents
@@ -16,6 +18,7 @@ Contents
 6. Pitfalls
 7. Sources and related work
 8. Self-review
+9. Review response (independent referee, 2026-10-01)
 
 ## 0. Setting and notation
 
@@ -68,7 +71,10 @@ Contents
   is `fft(J)/L` of samples at theta_k = 2 pi k / L (the coefficient of e^{i n theta}), its block (m, m') is A_{m-m'},
   its diagonal is -i omega m, and its damping -4 c sin^2(pi m / N) sits on the V entry. A scratch check
   (`scratchpad/lemmas/toy.py`: 3-dimensional cells, N = 5, random trigonometric A) reproduces e^{mu tau} = eig(M_tau)
-  to 3e-13 with this convention and misses by 4e-2 with the opposite sign of the diagonal.
+  to 3e-13 with this convention, in the OFFSET half-open strip a = -omega N / 2 + 0.3 (count 15 = 3N), and misses by
+  4e-2 with the opposite sign of the diagonal. Its centred strip also prints "count 15", but there the match is only
+  1.6e-3: rounding put both copies of one eigenvalue on Im = +- omega N / 2 inside and both copies of another outside,
+  so that count is a coincidence (pitfall 1), not a confirmation.
 
 ## 1. Hill-sector lemma
 
@@ -88,7 +94,7 @@ Re lambda > alpha, then ||(lambda - D_0)^{-1}|| <= 1 / Re lambda (|lambda + i om
 with inverse (lambda - D_0)^{-1} (I - B (lambda - D_0)^{-1})^{-1}, which is compact. H_0 is closed (a closed operator
 plus a bounded one). A resolvent that is compact at one point is compact at every point of the resolvent set (the
 resolvent identity R(lambda) = R(lambda_0) (I + (lambda_0 - lambda) R(lambda))). The remaining statements are the
-standard consequences of a compact resolvent: Kato 1976, Theorem III.6.29 (spectrum = isolated eigenvalues of finite
+standard consequences of a compact resolvent: Kato 1976, Theorem III.6.29 (numbering to be confirmed against a copy, see section 7) (spectrum = isolated eigenvalues of finite
 algebraic multiplicity) and Section III.6.5 (for an isolated eigenvalue with finite-rank Riesz projection, the range of
 the projection is ker (H - mu)^k for all large k). QED
 
@@ -226,7 +232,10 @@ Computable sufficient conditions. (S1) The certificate of Theorem 3 implies (c) 
 {Re mu >= -delta}, and Theorem 3 leaves only i omega N Z there, simple). (S2) A lighter test of (c) alone:
 (i) mu = i omega q is in the resolvent set of H_0 for q = 1, ..., floor(N / 2): the single-point version of the
 small-gain inequality of section 3.3 (with Gamma replaced by the one point mu; no count is needed), and (ii) 0 is
-algebraically simple: the bordered test of Lemma 3.8 at mu = 0.
+algebraically simple: the mu = 0 part of Lemma 3.8 (injectivity of the bordered operator at mu = 0 only). (S2) is NOT a
+required check and no program step is specified for it: injectivity of the bordered operator on D x C is an
+infinite-dimensional statement that would need its own window/tail (Schur) argument, which this file does not write
+out. The required route is (S1).
 
 ## 3. Exclusion and isolation by a Riesz-projection homotopy
 
@@ -255,12 +264,24 @@ R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, compact. (s, mu) -> R_s(mu) is norm
 [0, 1] x Gamma (R_D is continuous on its resolvent set and inversion is continuous), hence uniformly continuous. The
 spectrum of H(s) is discrete (Lemma 1.0's argument: Kato 1976, Theorem III.6.29), so Omega, which is bounded and whose
 boundary lies in the resolvent set, contains finitely many eigenvalues. The Riesz projection
-P(s) := (1 / 2 pi i) contour integral over Gamma of R_s(mu) d mu is a projection whose range is the sum of the
-generalized eigenspaces of the eigenvalues inside Gamma (Kato 1976, Sections III.6.4 and III.6.5), so its rank is
+P(s) := (1 / 2 pi i) contour integral over Gamma of R_s(mu) d mu (Gamma positively, i.e. counterclockwise, oriented;
+here and in Lemma 3.3) is a projection whose range is the sum of the
+generalized eigenspaces of the eigenvalues inside Gamma (Kato 1976, Sections III.6.4 and III.6.5; numbering to be
+confirmed), so its rank is
 n(H(s), Omega). P(s) is norm continuous in s, so by Lemma 3.1 its rank is locally constant, hence constant on [0, 1].
 QED
 
 ### 3.2 The comparison operator
+
+Cell coordinates. The program first fixes an invertible diagonal 18 x 18 matrix S = diag(s_1, ..., s_18) with s_l
+powers of two, and works in the coordinates P_m = (I x S) Ptilde_m, i.e. the same S in every mode of every cell. This is
+an exact similarity: H_0 becomes (I x S)^{-1} H_0 (I x S), whose coefficients are S^{-1} A_n S, whose diagonal -i omega m
+is unchanged, and whose damping is unchanged because S is diagonal and so commutes with E = e_V e_V^T. Spectra,
+algebraic multiplicities and the domain D are unchanged (S is a fixed matrix). From here to the end of section 3, A_n,
+A0c, X_r, B_m, V, U_r and every norm |.|_1, ||.||_{1->1} mean the S-coordinates versions; in particular theta_c, t_w,
+r_j, b_m, Fr and rho_T are all computed in the 1-norm of the S-coordinates, the same norm in which (SG) and (SC) are
+stated, so the norms match. (S = I is allowed but, in the scaled variables of arbmodel, makes the tail unreachable:
+see Lemma 3.4, route A, and pitfall 8.)
 
 Data chosen by the program (floating point; their accuracy affects only whether the test passes, never soundness):
 
@@ -290,8 +311,10 @@ and Ehat_TT acts on the tail by (Ehat_TT P)_m = sum_{n != 0, m - n in Tl} A_n P_
 Ehat; the program never needs them, only enclosures (section 4.1). Note that B_m contains the exact omega and d_m: they
 are not moved into Ehat (an omega error times m is unbounded, section 6, pitfall 6).
 
-The weighted norm on X is ||P||_zeta := sum_j zeta_j |(V^{-1} P_W)_j| + zeta_T sum_{m in Tl} |P_m|_1 in the
-coordinates of Scal; it is equivalent to the norm of X. For a bounded operator on a weighted l^1 space, the norm is the
+The weighted norm is defined on the Scal-coordinates v = Scal^{-1} P (scalar window coordinates v_j, tail blocks
+v_m in C^18): ||v||_zeta := sum_j zeta_j |v_j| + zeta_T sum_{m in Tl} |v_m|_1. All operator norms ||.||_zeta in sections
+3.3 to 3.5 refer to operators acting on these coordinates (Dhat, Ehat, their blocks). Transported back to P it is
+||P|| = sum_j zeta_j |(V^{-1} P_W)_j| + zeta_T sum_{m in Tl} |P_m|_1, the same norm; it is equivalent to the norm of X. For a bounded operator on a weighted l^1 space, the norm is the
 supremum of the weighted column sums.
 
 ### 3.3 The certificate inequalities
@@ -306,40 +329,71 @@ Notation for the bounds (all upper bounds, computed in ball arithmetic as in sec
   H_{W,m} is the n_W x 18 block with rows (w, l) and entries (A_{w-m})_{l,k}. With
   beta_{(w,l)} := sum_j zeta_j |(V^{-1})_{j,(w,l)}| one has b_m <= max_k (1 / zeta_T) sum_{(w,l)} beta_{(w,l)} |(A_{w-m})_{l,k}|.
 * Tail-to-tail: theta_c := sigma_off + ||A_0 - A0c||_{1->1}, sigma_off := sum_{n != 0} ||A_n||_{1->1}.
-* Tail resolvent (Lemma 3.4): rho_T >= sup of ||(mu - B_m)^{-1}||_{1->1} over mu in a neighbourhood of closure(Omega)
-  and m in Tl.
+* Tail resolvent (Lemma 3.4): rho_T >= sup of ||(mu - B_m)^{-1}||_{1->1} over mu in closure(Omega) and m in Tl
+  (Lemma 3.4 delivers it on an explicit neighbourhood Nb_eta of closure(Omega), which is more than needed; on Nb_eta
+  only invertibility with a uniformly bounded inverse is used).
 
 Lemma 3.3 (the comparison operator). Assume (C1), (C2) and (C3) of Theorem 3. Then Dhat has compact resolvent, Gamma lies in
 its resolvent set, n(Dhat, Omega) = #{j : lambda_j in Omega}, and for mu in Gamma,
 ||(mu - Dhat)^{-1}||_zeta <= max(max_j 1 / dist_j, rho_T).
 Proof. Dhat is block diagonal; its window part is the diagonal matrix Lambda. For the tail part D_T, Lemma 3.4 gives
-mu - B_m invertible with ||(mu - B_m)^{-1}||_{1->1} <= rho_T for all mu in an open neighbourhood Nb of closure(Omega)
-and all m in Tl, so mu - D_T is a bijection with bounded inverse (the direct sum of the block inverses; the tail weight
-is the constant zeta_T, so the weighted block norm is the 1->1 norm) and Nb lies in the resolvent set of D_T. For a fixed
-mu_0, ||(mu_0 - B_m)^{-1}|| -> 0 as |m| -> inf (Lemma 3.4, the distance grows like omega |m|), so (mu_0 - D_T)^{-1} is a
+mu - B_m invertible with ||(mu - B_m)^{-1}||_{1->1} <= rho_T for all mu in the open neighbourhood Nb := Nb_eta of
+closure(Omega) and all m in Tl, so mu - D_T is a bijection with bounded inverse (the direct sum of the block inverses;
+the tail weight is the constant zeta_T, so the weighted block norm is the 1->1 norm of the S-coordinates) and Nb lies in
+the resolvent set of D_T. For a fixed mu_0, ||(mu_0 - B_m)^{-1}|| -> 0 as |m| -> inf (Lemma 3.4(c)), so (mu_0 - D_T)^{-1} is a
 norm limit of finite-rank operators, i.e. compact. The resolvent of D_T is holomorphic on Nb (Kato 1976, Section
-III.6.1), so its contour integral over Gamma vanishes, and the Riesz projection of Dhat for Omega is
+III.6.1, numbering to be confirmed), so its contour integral over Gamma vanishes, and the Riesz projection of Dhat for Omega is
 diag(1 if lambda_j in Omega else 0) on the window and 0 on the tail. Its rank is #{j : lambda_j in Omega}
 (dist_j > 0 rules out lambda_j on Gamma). The bound is the norm of a block-diagonal operator. QED
 
-Lemma 3.4 (tail blocks). Let r = m mod N (r and N - r give the same X_r). Let Fr := U_r^{-1} X_r U_r - Lambda_r (in balls,
-with d_r a ball), kappa_r >= ||U_r||_{1->1} ||U_r^{-1}||_{1->1}, h := max(|a|, |b|), omega_lo <= omega, and
+Lemma 3.4 (tail blocks). Let r = m mod N (r and N - r give the same X_r = A0c - d_r E), h := max(|a|, |b|),
+omega_lo <= omega, g_0 := omega_lo (K_e + 1) - h, and, for eta >= 0,
 
-      gamma_r := min over l of max( -delta - Re lambda_{r,l},  omega_lo (K_e + 1) - h - |Im lambda_{r,l}| ).
+      Zset_eta := {z : -delta - eta <= Re z <= R_0 + eta, Im z >= g_0 - eta},
+      Nb_eta   := {mu : -delta - eta < Re mu < R_0 + eta, |Im mu| < h + eta}   (open, contains closure(Omega) if eta > 0).
 
-If gamma_r > ||Fr||_{1->1} for every r, then for every mu with Re mu >= -delta and |Im mu| <= h, and every m in Tl,
-mu - B_m is invertible and ||(mu - B_m)^{-1}||_{1->1} <= rho_T := max_r kappa_r / (gamma_r - ||Fr||_{1->1}). The same
-holds, with the strict inequality preserved, on a small neighbourhood of that set. For fixed mu,
-||(mu - B_m)^{-1}||_{1->1} -> 0 as |m| -> inf.
-Proof. mu - B_m = z - X_r with z := mu + i omega m, and z - X_r = U_r (z - Lambda_r - Fr) U_r^{-1}. For each l,
-|z - lambda_{r,l}| >= Re z - Re lambda_{r,l} >= -delta - Re lambda_{r,l}, and |z - lambda_{r,l}| >=
-|Im mu + omega m - Im lambda_{r,l}| >= omega |m| - |Im mu| - |Im lambda_{r,l}| >= omega_lo (K_e + 1) - h - |Im lambda_{r,l}|.
-So the diagonal matrix z - Lambda_r has inverse of norm <= 1 / gamma_r, and Neumann's series gives
-||(z - Lambda_r - Fr)^{-1}|| <= 1 / (gamma_r - ||Fr||). The neighbourhood: all inequalities are strict and continuous in
-mu. For fixed mu the second lower bound grows like omega |m|. QED
+(a) Reduction. For mu in Nb_eta (resp. closure(Omega)) and m in Tl, mu - B_m = z - X_r with z := mu + i omega m, and
+    either z or conj(z) lies in Zset_eta (resp. Zset_0): Re z = Re mu, and Im z = Im mu + omega m >= omega_lo (K_e + 1) - h
+    - eta when m >= K_e + 1, Im z <= -(g_0 - eta) when m <= -(K_e + 1). Since X_r is real,
+    (conj(z) - X_r)^{-1} = conj((z - X_r)^{-1}) has the same 1->1 norm. Hence: if, for some eta > 0 and every r,
+    z - X_r is invertible on Zset_eta with ||(z - X_r)^{-1}||_{1->1} <= rho_T there, then for every mu in Nb_eta and
+    every m in Tl, mu - B_m is invertible with ||(mu - B_m)^{-1}||_{1->1} <= rho_T.
+(b) Two routes to the hypothesis of (a); the program states which one it used.
+    Route A (primary): weighted approximate diagonalization. With U_r invertible (its columns may be scaled freely) and
+    Lambda_r = diag(lambda_{r,l}) exactly representable, Fr := U_r^{-1} X_r U_r - Lambda_r (in balls, d_r a ball),
+    kappa_r >= ||U_r||_{1->1} ||U_r^{-1}||_{1->1} (S-coordinates), and
+
+        gamma_r := min over l of max( -delta - eta - Re lambda_{r,l},  g_0 - eta - |Im lambda_{r,l}| ),
+
+    if gamma_r > ||Fr||_{1->1} for every r, the hypothesis holds with rho_T := max_r kappa_r / (gamma_r - ||Fr||_{1->1}).
+    Route B (alternative): direct cover. Choose Z > max_r ||X_r||_{1->1} (upper bound) and cover the bounded part
+    {z in Zset_eta : Im z <= Z} by finitely many closed boxes Bx (exact dyadic corners). For each box and each r, invert
+    the ball matrix zB I - [X_r] in Arb, where zB is a complex ball containing Bx; Arb's inversion either fails or returns
+    a ball matrix containing the inverse of every point matrix in the input ball (its general containment contract),
+    and a returned finite ball shows that every z - X_r, z in Bx, is invertible. Let rho_Bx be an upper bound of the
+    1->1 norm of the returned ball. For Im z >= Z, |z| >= Z > ||X_r|| and the Neumann series give
+    ||(z - X_r)^{-1}||_{1->1} <= 1 / (Z - ||X_r||_{1->1}). The hypothesis holds with
+    rho_T := max( max_{Bx, r} rho_Bx, max_r 1 / (Z - ||X_r||_{1->1}) ). (This is the construction of existence.py
+    section 4 for A_m, with a Neumann far bound; it is tight but needs a 2-D cover of a region of size about
+    (R_0 + delta) x (Z - g_0).)
+(c) For fixed mu, ||(mu - B_m)^{-1}||_{1->1} <= 1 / (|mu + i omega m| - ||X_r||_{1->1}) -> 0 as |m| -> inf.
+Proof. (a) is shown in its statement. Route A: z - X_r = U_r (z - Lambda_r - Fr) U_r^{-1}. For z in Zset_eta and each
+l, |z - lambda_{r,l}| >= Re z - Re lambda_{r,l} >= -delta - eta - Re lambda_{r,l} and |z - lambda_{r,l}| >=
+Im z - |Im lambda_{r,l}| >= g_0 - eta - |Im lambda_{r,l}|, so the diagonal matrix z - Lambda_r has inverse of norm
+<= 1 / gamma_r (the 1->1 norm of a diagonal matrix is its largest modulus), and the Neumann series gives
+||(z - Lambda_r - Fr)^{-1}|| <= 1 / (gamma_r - ||Fr||); multiply by ||U_r|| ||U_r^{-1}|| <= kappa_r. Route B: the
+boxes cover the bounded part, the Neumann bound the rest (Im z >= Z implies |z| >= Z). (c) is the Neumann bound. QED
+
+Remark (why route A needs S). In the scaled variables with S = I, kappa_r is about 850 to 900 (the "A_0 eigenvector
+condition number 854" of the plan), and the referee measured (floating point) rho_T about 940 to 995 and
+theta_T = theta_c rho_T about 190 at K_e = N/2 + 8, about 92 at K_e = N/2 + 16; theta_T < 1 would need K_e - N/2 of
+about 1500. The true sup of the tail resolvent was 5.9 (offset 8) and 1.83 (offset 16). With an optimized power-of-two
+S and column scaling of U_r the referee measured kappa about 7.0, sigma_off about 0.085, rho_T about 3.8 and theta_T
+about 0.32 at K_e = N/2 + 16 (0.65 at N/2 + 8). These numbers are floating-point experiments, not bounds.
 
 Lemma 3.5 (small gain on Gamma, two forms). Assume (C1), (C2) and (C3) of Theorem 3.
-(SG) If fm_j + r_j / zeta_j < dist_j for every j, and (b_m + theta_c) rho_T < 1 for every m in Tl, then
+(SG) If fm_j + r_j / zeta_j < dist_j for every j, and sup_{m in Tl} (b_m + theta_c) rho_T < 1 (a supremum over
+infinitely many column blocks; with the monotone far bound of Lemma 3.7 it is a maximum of finitely many numbers), then
 sup over mu in Gamma of ||Ehat (mu - Dhat)^{-1}||_zeta < 1.
 (SC) (Schur-complement form.) If theta_T := theta_c rho_T < 1, bhat := sup_{m in Tl} b_m is finite, and for every j
 
@@ -373,8 +427,10 @@ Lemma 3.6 (the right half plane). If R_0 > alpha (Lemma 1.0), then {Re mu >= R_0
 Proof. Lemma 1.0. QED
 
 Lemma 3.7 (bounds for the coupling sums from coefficient bounds). Suppose ball enclosures [A_n] of A_n are known for
-|n| <= n_A and ||A_n||_{1->1} <= s_1 q_1^{|n|} + s_2 q_2^{|n|} for |n| > n_A (q_1, q_2 < 1; section 4.1 supplies this
-form). Then, with Gtail(k) := sum over |n| >= k of (s_1 q_1^{|n|} + s_2 q_2^{|n|}) = 2 sum_i s_i q_i^k / (1 - q_i)
+|n| <= n_A and the tail form ||A_n||_{1->1} <= s_1 q_1^{|n|} + s_2 q_2^{|n|} holds for EVERY n (q_1, q_2 < 1; section
+4.1 supplies it for every n, since the strip bound on J_n and Lemma 4.1 hold for all n; the enclosures are used where
+they are sharper, the tail form where n is outside their range). If a program has the tail form only for |n| > n_A,
+it must take n_c >= n_A, which makes every index used in the last bullet satisfy |n| >= n_c + 1 > n_A. Then, with Gtail(k) := sum over |n| >= k of (s_1 q_1^{|n|} + s_2 q_2^{|n|}) = 2 sum_i s_i q_i^k / (1 - q_i)
 for k >= 1:
 * sigma_off <= sum_{0 < |n| <= n_A} ||[A_n]||_{1->1} + Gtail(n_A + 1);
 * t_w <= sum over |n| <= n_A with |w + n| > K_e of ||[A_n]|| + Gtail(n_A + 1);
@@ -406,7 +462,8 @@ bound where compared from below):
      tail form of Lemma 3.7 (section 4.1); [d_m] containing d_m.
 (C1) Geometry: delta > 0; R_0 > alpha^up, alpha^up := sum_{|n| <= n_A} ||[A_n]||_{1->1} + Gtail(n_A + 1) + 4c;
      a < 0 < b with b - a >= omega_hi N, b < omega_lo N and -a < omega_lo N.
-(C2) Tail: gamma_r > ||Fr||_{1->1} for r = 0, ..., floor(N / 2) (Lemma 3.4); rho_T finite.
+(C2) Tail: a fixed exact S (section 3.2) and some eta > 0 for which the hypothesis of Lemma 3.4(a) is established by
+     route A (gamma_r > ||Fr||_{1->1} for r = 0, ..., floor(N / 2)) or route B, giving rho_T; all in S-coordinates.
 (C3) Window: V invertible, with an enclosure of V^{-1}; Fm enclosed from the ball matrix [H_WW] (which contains the true
      H_WW: blocks [A_{w-w'}] plus diag(-i [omega] w - [d_w] E)); dist_j > 0 for every j.
 (C4) Small gain: either (SG) or (SC) of Lemma 3.5.
@@ -423,6 +480,10 @@ an eigenvalue with Re mu >= -delta. By Lemma 3.6, Re mu < R_0. Since b - a >= om
 mu' := mu + i omega N k has a <= Im mu' < a + omega N <= b, and mu' is an eigenvalue with the same multiplicity
 (Corollary 1.2(i)). mu' is not on Gamma (Gamma is in the resolvent set), so -delta < Re mu' < R_0 and a < Im mu' < b,
 i.e. mu' in Omega, hence mu' = 0 and mu in i omega N Z, with m(mu; H_0) = m(0; H_0) = 1. QED
+
+Remark (which conditions are for soundness). The proof uses b - a >= omega N (from b - a >= omega_hi N) and (C5).
+The conditions b < omega_lo N and -a < omega_lo N are not needed for soundness: if Omega contained +- i omega N the count
+would be at least 2 and (C5) could not pass. They are listed so that a correct spectrum can pass.
 
 Remark (the quantities named in the plan). The resolvent of the truncation is not bounded separately: on Gamma, in the
 coordinates of V, (mu - H_WW)^{-1} = V (mu - Lambda - Fm)^{-1} V^{-1}, and the window column conditions of (SG)/(SC) are a
@@ -442,7 +503,16 @@ e^{i n theta}. Stage E already encloses J_n for |n| <= K' (aliased DFT, fourier_
 strip bound |J_{n,jk}| <= S_{J,jk} e^{-rho |n|}, and, for its Z2, a bound M_k >= sup |f_k(phibar(theta) + w)| over
 |Im theta| <= rho2 and the polydisc |w_j| <= R_j.
 
-Lemma 4.1 (perturbation of the coefficients). Let rho_e := min(rho0, rho2) > 0, t_j := eta_j r < R_j, and
+Which radius. The Stage E record (e.g. results/fourier-existence-N8.json) carries two radii: r_existence, the radius of
+the ball, about the centre, in which the record places the zero, and r_uniqueness, the radius of the ball in
+which the zero is unique. Both balls contain the zero, so Lemma 4.1 is valid with either, but eps is linear in t, and at
+N = 8 the referee estimated ||eps||_{1->1} about 4e-5 with r_uniqueness = 1e-12, far above the near-axis margins
+(dist_j about 1.3e-6), against about 1e-21 with r_existence = 5.4e-28. The program must therefore read
+r := r_existence and the weights eta (eta_om, eta_k) from the Stage E record, not recompute or retype them, and must
+assert t_j := eta_j r < R_j for every j (a check that fails the run), since Lemma 4.1 is void otherwise.
+
+Lemma 4.1 (perturbation of the coefficients). Let r := r_existence, rho_e := min(rho0, rho2) > 0,
+t_j := eta_j r, assume t_j < R_j for every j (asserted by the program), and let
 
       eps_{kl} := (M_k / R_l) [ (1 - t_l / R_l)^{-1} prod_j (1 - t_j / R_j)^{-1} - 1 ].
 
@@ -458,8 +528,12 @@ by Stage E's strip covers). fourier_eval Lemma 2 needs holomorphy on an open set
 holds for every strip |Im theta| <= rho'' with rho'' < rho_e (phi is holomorphic on the open strip |Im theta| < rho0);
 it gives |(A_n - J_n)_{kl}| <= eps_{kl} e^{-rho'' |n|} for every rho'' < rho_e, hence for rho_e. QED
 
+Lemma 4.1 is stated in the scaled variables of Stage E. In the cell coordinates S of section 3.2 every bound
+transforms exactly: (S^{-1} M S)_{kl} = M_{kl} s_l / s_k, so [J_n], S_J and eps are replaced entrywise by their entries
+times s_l / s_k (exact for powers of two). The bounds below are then taken in S-coordinates.
 Consequently the program may use [A_n] := [J_n] + ball(0, eps e^{-rho_e |n|}) for |n| <= n_A (entrywise), and
-||A_n||_{1->1} <= ||S_J||_{1->1} e^{-rho |n|} + ||eps||_{1->1} e^{-rho_e |n|} for |n| > n_A: the form of Lemma 3.7 with
+||A_n||_{1->1} <= ||S_J||_{1->1} e^{-rho |n|} + ||eps||_{1->1} e^{-rho_e |n|} for EVERY n (both bounds hold for all n): the
+form of Lemma 3.7 with
 (s_1, q_1) = (||S_J||, e^{-rho}) and (s_2, q_2) = (||eps||, e^{-rho_e}). An alternative that avoids M_k: evaluate Df on
 the sample balls phibar(theta_k) + polydisc(t) and on the strip cover thickened by the polydisc; the DFT of these
 enclosures, with the aliasing bound computed from the thickened strip sup, contains the true A_n directly. Either way
@@ -513,7 +587,11 @@ phi_t(x_0) = phi_{t - t_k}(z_k) and x(t + sigma) = phi_{t - t_k}(x(t_k + sigma))
 x(t_k + sigma) = x(t_k - k T - sigma_inf) (T-periodicity) within sup|F| C_3 kappa^k |z_1 - x*| of x(0) = x*, and
 |z_k - x*| <= C_4 kappa^k |z_1 - x*|. Gronwall over the interval [t_k, t_{k+1}], of length t_S(z_k) <= 2T, gives
 |phi_t(x_0) - x(t + sigma)| <= C_5 kappa^k |z_1 - x*|, and t <= t_{k+1} <= (k + 1) T + C_6 gives
-kappa^k <= C_7 e^{-delta' t}. The time before t_1 is bounded and handled by Gronwall. QED
+kappa^k <= C_7 e^{-delta' t}. Finally t in [0, t_1] (t_1 <= 3T). Gronwall gives |phi_t(x_0) - x(t + s)| <=
+e^{Lip t} |x_0 - x(s)| (x(t + s) = phi_t(x(s))). The phase: t_1 - T = -s + t_S(z_0) with |t_S(z_0) - T| <= C |z_0 - x*|,
+and |sigma_inf - (t_1 - T)| <= sum_{k >= 1} |t_S(z_k) - T| <= C' |z_1 - x*|; hence sigma = -sigma_inf = s - T + O(dist(x_0, O)),
+and by T-periodicity |x(t + sigma) - x(t + s)| <= sup|F| C'' dist(x_0, O). So on [0, t_1] the difference is at most
+C_8 dist(x_0, O) <= C_8 e^{3 delta' T} e^{-delta' t} dist(x_0, O). QED
 
 Scope of the conclusion. (i) and (ii) are spectral facts about the 18N-dimensional ODE at the single parameter set and
 the single N of the run. (iii) is local; eps_0 and C are not computed. Nothing is claimed for the continuum cable or
@@ -522,31 +600,43 @@ to T (the certificate also excludes i omega q, so no extra neutral multiplier is
 
 ## 5. What the program must compute (checklist)
 
-Inputs from Stage E (read, never recomputed by hand): omega_lo, omega_hi; r, eta, nu = e^{rho0}; the enclosures [J_n]
+Inputs from Stage E (read from its record, never recomputed or retyped): omega_lo, omega_hi; r = r_existence (not
+r_uniqueness, section 4.1), eta, nu = e^{rho0}; the enclosures [J_n]
 (|n| <= K') and S_J on |Im theta| <= rho; M_k and R (polydisc, strip rho2); the claim that the strip covers succeeded.
 
 1. Exact constants: N, c = N^2 / 64000 as an exact rational, [d_r] for r = 0..floor(N/2) (arbmodel.damping), E.
-2. Coefficients: eps (Lemma 4.1) in Arb; [A_n] = [J_n] + ball(0, eps e^{-rho_e |n|}) for |n| <= n_A; the tail form
-   (s_1, q_1, s_2, q_2); Gtail. Or the thickened-DFT alternative of 4.1.
+2. Coefficients: assert t_j = eta_j r_existence < R_j for every j (fail otherwise); eps (Lemma 4.1) in Arb;
+   choose the cell coordinates S (exact powers of two, section 3.2) and transform [J_n], S_J, eps exactly;
+   [A_n] = [J_n] + ball(0, eps e^{-rho_e |n|}) for |n| <= n_A; the tail form (s_1, q_1, s_2, q_2), valid for every n;
+   Gtail. Or the thickened-DFT alternative of 4.1. The window needs |n| <= 2 K_e and b_m needs |n| <= 2 K_e + n_c; where
+   these exceed Stage E's K' (e.g. K' = 80 against 2 K_e = 96 at N = 64, K_e = 48) the tail form is used (sound).
 3. alpha^up and R_0 > alpha^up (C1).
 4. Geometry: delta (plan: 5e-6 per ms), a, b with b - a >= omega_hi N, b < omega_lo N, -a < omega_lo N. Recommended
    start for every N >= 1: b = -a = omega_bar (N/2 + 1/4) (an exact dyadic near it), which satisfies (C1) when the
    omega ball is tiny and puts both edges a quarter of omega away from the rows Im mu ~ omega k where the near-axis
    eigenvalues sit (pitfall 1). Then move a, b, if needed, to maximize min_j dist_j, rechecking (C1).
-5. Tail, per r in 0..floor(N/2): X_r = A0c - [d_r] E; U_r, Lambda_r (LAPACK on the midpoint); an Arb enclosure of
-   U_r^{-1}; Fr = U_r^{-1} X_r U_r - Lambda_r; kappa_r; gamma_r with h = max(|a|, |b|) and omega_lo; check
-   gamma_r > ||Fr||; rho_T.
+5. Tail, per r in 0..floor(N/2), all in S-coordinates: X_r = A0c - [d_r] E; choose eta > 0. Route A: U_r, Lambda_r
+   (LAPACK on the midpoint), columns of U_r scaled (with S) to minimize kappa_r; an Arb enclosure of U_r^{-1};
+   Fr = U_r^{-1} X_r U_r - Lambda_r; kappa_r; gamma_r with g_0 = omega_lo (K_e + 1) - h, h = max(|a|, |b|); check
+   gamma_r > ||Fr||; rho_T. Route B: the box cover of Lemma 3.4 and the Neumann far bound. Either way record which
+   route and the resulting rho_T and theta_T. With S = I, route A gives kappa_r about 850 to 900 and cannot close
+   (theta_T about 90 to 190); this is expected, not a bug in the model.
 6. Window: [H_WW] of size 18 (2 K_e + 1) (with -i [omega] w on the diagonal and [d_w] on the V entry); V, Lambda from
    LAPACK (double, or higher precision for the near-axis eigenvalues); Arb enclosure of V^{-1}; Fm = V^{-1} [H_WW] V -
    Lambda at 128 bits at least for the rows and columns of eigenvalues with Re lambda_j > -1e-3 (plan step 3: 53-bit
    balls lose 1e-7 to 1e-6 there); fm_j.
 7. Distances: dist_j = distance from lambda_j to the rectangle boundary (lower bound in Arb); check dist_j > 0; count
    #{lambda_j in Omega} with exact comparisons of the floats lambda_j against -delta, R_0, a, b: must be 1 (C5).
-8. Couplings: t_w (w in W); r_j; beta_{(w,l)}, beta_max; b_m for K_e < |m| <= K_e + n_c from entrywise [A_{w-m}]; the
-   monotone far bound at |m| = K_e + n_c + 1; bhat; sigma_off; ||A_0 - A0c||; theta_c; theta_T.
+8. Couplings (S-coordinates): t_w (w in W); r_j; beta_{(w,l)}, beta_max; b_m for K_e < |m| <= K_e + n_c from entrywise
+   [A_{w-m}]; the monotone far bound at |m| = K_e + n_c + 1 (valid because the tail form holds for every n; otherwise
+   take n_c >= n_A); bhat; sigma_off; ||A_0 - A0c||; theta_c; theta_T. In (SG) the tail test is the max over the finite
+   list plus the far bound (a supremum, M1 of the review).
 9. Decide (SG) or (SC) (Lemma 3.5). Record the worst ratio for each window column and for the tail.
-10. Record everything: delta, the certified bound e^{-delta T_lo} on the nontrivial multipliers, e^{-delta tau} for the
-    reduced map, all constants above, precisions, the hashes of inputs and program.
+10. Record everything: delta, the certified bounds e^{-delta T_lo} on the nontrivial multipliers and e^{-delta tau_lo}
+    (tau_lo = T_lo / N) for the reduced map, both rounded outward (upward) from Arb; all constants above (S, eta, the
+    route of Lemma 3.4), precisions, the hashes of inputs and program. -delta, R_0, a and b are exact dyadics, so the
+    count (C5) is an exact comparison. The Stage S record inherits Stage E's status: it must not say "verified" before
+    the Stage E record does, and not before the second reading of this file.
 11. Negative controls (must fail): delta = 7e-6 at N = 8 (true leading exponent about -6.32e-6); delta = 1e-5 at N = 64
     (about -9.34e-6); anti-diffusion c -> -c; K_e too small (tail Im-gap closes or b_m too large); a dropped coefficient
     A_1; omega_lo replaced by a value making b >= omega_lo N (the count must then become 2 or the check (C1) fail).
@@ -583,7 +673,10 @@ Inputs from Stage E (read, never recomputed by hand): omega_lo, omega_hi; r, eta
    omega_lo (K_e + 1) - h - |Im lambda_{r,l}| > ||Fr|| for every eigenvalue with Re lambda_{r,l} >= -delta, so
    K_e >= N/2 + 2 at the very least, and in practice K_e - N/2 of about 8 or more. Never use A_0 eigencoordinates as
    the comparison inside the window (|m| <= N/2 + 1).
-8. Conditioning. cond(V) is reported as 2e3 to 6e3 and the A_0 eigenvector condition number as 854. In (SG) the
+8. Conditioning. cond(V) is reported as 2e3 to 6e3 and the A_0 eigenvector condition number as 854. In the unweighted
+   scaled 1-norm the latter is fatal for the tail: route A of Lemma 3.4 with S = I gives theta_T about 90 to 190 at any
+   practical K_e. Use the cell coordinates S (referee: theta_T about 0.32 at K_e = N/2 + 16) or route B. Every tail
+   quantity must be computed in the same S-coordinates as the window quantities; mixing norms is unsound. In (SG) the
    tail-column condition contains V^{-1} at the window edge, where the spurious truncation eigenvectors live; it may
    fail even though the problem is well posed. (SC) needs only the product bhat r_j, which is small for the near-axis
    columns; use (SC) first, enlarge K_e second, and choose zeta (small zeta_j for fast or spurious columns with large
@@ -605,7 +698,10 @@ Inputs from Stage E (read, never recomputed by hand): omega_lo, omega_hi; r, eta
 * T. Kato, Perturbation Theory for Linear Operators, 2nd edition, Springer (Grundlehren der mathematischen
   Wissenschaften 132), 1976: Section III.6.1 (the resolvent is holomorphic on the resolvent set), Sections III.6.4 and
   III.6.5 (Riesz projections of separated parts of the spectrum and of isolated eigenvalues), Theorem III.6.29 (closed
-  operators with compact resolvent). These are the only external results used; everything else is proved above.
+  operators with compact resolvent). These are the only external results used; everything else is proved above. The
+  section and theorem numbers are from memory and are TO BE CONFIRMED against a copy (the referee's recollection agrees
+  but was not checked against a copy either); the facts are standard. Arb's containment contract for ball matrix
+  inversion (Lemma 3.4, route B) is a property of the library, part of the trust base, not a mathematical citation.
 * Floquet's theorem, Hill's method and the Andronov-Witt theorem are classical; the proofs above are self-contained
   and do not rely on a particular textbook statement.
 * The plan (step 3, "Missing") requires a prior-article search before any wording about novelty, crediting Castelli and
@@ -675,6 +771,46 @@ Places where I am not fully certain, for the second reader:
   numbers against a copy (the facts themselves are standard: holomorphy of the resolvent, Riesz projections of an
   isolated part of the spectrum, discreteness of the spectrum under a compact resolvent).
 * Lemma 4.1 needs |Im theta| <= rho0 for the l^1_nu bound and |Im theta| <= rho2 for M_k; rho_e = min(rho0, rho2) is
-  the strip used. If Stage E's M_k is computed on a strip narrower than rho0, this is fine; if R_j <= t_j for some j the
-  lemma does not apply.
+  the strip used. t_j < R_j is now an asserted check (G2).
+* Feasibility of route A with a weighted S rests on the referee's floating-point measurement (theta_T about 0.32); it
+  is not yet a computed bound.
 * Whether (SG) or (SC) closes at N = 64 with K_e - N/2 about 8 is a numerical question not answered here (pitfall 8).
+
+## 9. Review response (independent referee, 2026-10-01)
+
+The referee found no error that makes a stated theorem false. Each gap and minor item, and what changed:
+
+* G1 (tail bound unreachable: kappa_r about 850 to 900 gives theta_T about 90 to 190). Section 3.2 now fixes exact
+  power-of-two cell coordinates S (the same diagonal similarity in every mode; it commutes with E and changes no
+  spectrum), and every quantity of section 3 is computed in the 1-norm of these coordinates, the norm of (SG) and (SC).
+  Lemma 3.4 was rewritten: (a) a reduction, with an explicit neighbourhood Nb_eta of closure(Omega), to a resolvent
+  bound for the 18 x 18 matrices X_r on the half-strip Zset_eta (conjugation symmetry handles m < 0); (b) route A
+  (primary), the weighted approximate diagonalization with eta built into gamma_r, and route B (alternative), an Arb
+  box cover of the bounded part plus the Neumann far bound 1 / (Z - ||X_r||), as in existence.py section 4; (c) the
+  decay as |m| -> inf from the Neumann bound. The remark after Lemma 3.4, (C2), checklist item 5 and pitfall 8 record
+  that route A with S = I cannot close, and the referee's floating-point measurements with S (kappa about 7.0,
+  theta_T about 0.32 at K_e = N/2 + 16), labelled as experiments.
+* G2 (which Stage E radius). Section 4.1 now explains r_existence against r_uniqueness and requires r := r_existence and
+  eta read from the Stage E record; Lemma 4.1 states r = r_existence and assumes t_j < R_j, which checklist item 2
+  makes an asserted check that fails the run. Lemma 4.1 also says how its bounds transform to the S-coordinates.
+* G3 (Lemma 3.7 far bound). Lemma 3.7 now assumes the tail form for every n, which section 4.1 supplies (the strip bound
+  on J_n and Lemma 4.1 hold for all n), and says that a program with the tail form only for |n| > n_A must take
+  n_c >= n_A. Checklist item 8 repeats it.
+* M1. (SG) now requires sup over m in Tl of (b_m + theta_c) rho_T < 1, and notes that with the monotone far bound it is a
+  finite maximum.
+* M2. rho_T is defined as the bound on closure(Omega); Lemma 3.4 delivers invertibility and the bound on the explicit
+  open neighbourhood Nb_eta, which Lemma 3.3 uses only for invertibility and holomorphy.
+* M3. The weighted norm is now defined on the Scal-coordinates, with its transport to P stated as the same norm.
+* M4. The contour Gamma is positively (counterclockwise) oriented, stated in Lemma 3.2 and used in Lemma 3.3.
+* M5. (S2)(ii) now cites the mu = 0 part of Lemma 3.8 only, and (S2) is marked as not required, with no program step,
+  because bordered injectivity on D x C needs its own window/tail argument; the required route is (S1).
+* M6. Theorem 4(iii) now treats [0, t_1] explicitly: Gronwall from x(s), and sigma = s - T + O(dist(x_0, O)) modulo T.
+* M7. Section 0 now cites only the offset-strip toy result (3e-13, count 15) and says why the centred-strip count of 15
+  is a coincidence (match only 1.6e-3).
+* M8. The Kato section and theorem numbers are marked "to be confirmed against a copy" where they are cited and in
+  section 7.
+
+Also from the referee's list of program needs: the checklist now asks for outward rounding of the reported bounds
+(with tau_lo = T_lo / N), exact dyadic -delta, R_0, a, b, the coefficient ranges against Stage E's K', and a Stage S
+record that does not say "verified" before Stage E's does. A remark after Theorem 3 notes that b < omega_lo N and
+-a < omega_lo N are needed to pass, not for soundness.
