@@ -28,7 +28,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("orbit"); ap.add_argument("glo"); ap.add_argument("ghi"); ap.add_argument("cn"); ap.add_argument("cd")
     ap.add_argument("dst"); ap.add_argument("--diag"); ap.add_argument("--rho0", type=float, default=1e-9)
-    ap.add_argument("--floor", type=float, default=1e-13); ap.add_argument("--safety", type=float, default=1.5); ap.add_argument("--slow", type=float, default=SLOW); ap.add_argument("--frame-from")
+    ap.add_argument("--floor", type=float, default=1e-13); ap.add_argument("--safety", type=float, default=1.5); ap.add_argument("--slow", type=float, default=SLOW); ap.add_argument("--g0", type=float, default=0.0); ap.add_argument("--frame-from")
     a = ap.parse_args()
     L = open(a.orbit).read().split("\n")
     N = int(L[0].split()[0]); T = L[0].split()[1]
@@ -83,6 +83,8 @@ def main():
         D = open(a.diag).read().split("\n")
         assert int(D[0]) == nb
         g0 = np.array(list(map(float, D[1].split())))
+        if a.g0:  # expected centre residual of the final (multiprecision) run, per block
+            g0 = np.full(nb, a.g0)
         Mn = np.array([list(map(float, D[2 + i].split())) for i in range(nb)])
     else:
         Bs = np.diag(1 / s) @ B @ np.diag(s)
