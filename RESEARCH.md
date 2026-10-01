@@ -2243,3 +2243,16 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
   - Golubitsky-Stewart-Schaeffer Vol. II: the ring is treated in Chapter XVIII, Section 4.
 - Result: no precedent found for exclusion with counting of a Hill operator's spectrum in ball arithmetic. Credit wording for each source is in the note.
 - Re-search: no. Read the full text of Di Marco et al. before submission.
+
+### 2026-10-01  Du and Hassard (2001), another attempt at the full text  (session agent; `papers/hh-dynamics/`)
+
+- Tried:
+  - Watam Press: the issue's contents page links the article's full text (`fulltext_a_pdf/2001v8/v8n4a-pdf/p3.pdf`), which needs a subscriber login (HTTP 401). The owner could not obtain it through the publisher.
+  - Crossref holds no DOI or record for the article.
+  - Web searches for the title and authors found no copy elsewhere, and none on ResearchGate.
+  - arXiv has no papers by Z. Du.
+  - The Semantic Scholar and OpenAlex APIs were rate-limited.
+- Re-read: the zbMATH review (1002.37041, A. J. Homburg). The defining equations are solved with interval arithmetic, nondegeneracy conditions and the genericity of the unfolding are checked, and the method is applied to an enzyme-catalyzed reaction model and to the Hodgkin-Huxley model.
+- Found: Z. Du is at the Department of Mathematics, Sichuan University (ORCID 0000-0003-3550-0817) and still publishes, as recently as 2025. A copy could be requested from him.
+- Result: the hh-dynamics manuscript now states what the abstract and the review say, credits the work and claims no priority for the Hopf points or their coefficients. The access status is stated once, in its sources paragraph, without apology (owner's instruction, 2026-10-01).
+- Re-search: no.
