@@ -26,6 +26,13 @@ Negative controls
     exceeds the mutated Y0, while staying below the certified Y0 (it is a lower estimate of a part of it).
   * A piece whose g range or centre is not covered by the Hessian cover is refused.
   * Gluing: replacing piece b's uniqueness radius by its existence radius, or gluing two pieces far apart, fails.
+Stability and resume
+  * Every piece carries a stability statement (pointwise at checked points, else none; never uniform); every
+    point marked on the branch passed the ball-inclusion check, and the check fails for a shrunk uniqueness radius,
+    for a point at another g, for another point's centre forced into the piece, and for a centre with a wrong digest.
+  * Log validation: a truncated final line is dropped, a group's orphan pieces are moved out, a corrupted middle line,
+    a tampered radius (gluing re-derived) and a centre digest mismatch are refused.
+  * The uniform stability attempt is recorded and fails, as documented.
 """
 import json
 import os
@@ -310,11 +317,126 @@ def test_stability_points_recorded():
             assert float(p["delta"]["approx"]) > 0
 
 
+def test_every_piece_has_a_stability_statement():
+    rec = _record()
+    for row in rec["pieces"]:
+        st = row["stability"]
+        assert st["uniform"] is False and st["kind"] in ("pointwise", "none") and st["statement"], row["g"]
+        if st["kind"] == "pointwise":
+            for g in st["certified_at"]:
+                assert Fraction(row["g"][0]) <= Fraction(g) <= Fraction(row["g"][1])
+    on = [p for p in rec["stability"] if p["on_certified_branch"]]
+    assert on, "no stability point checked to lie on the branch"
+    for p in on:
+        assert p["ok"] and p["branch_membership_check"]["ok"]
+        chk = p["branch_membership_check"]
+        assert Fraction(chk["lhs"]["dec"]) <= Fraction(chk["r_uniqueness_piece"]["dec"])
+    covered = {g for row in rec["pieces"] for g in row["stability"]["certified_at"]}
+    assert covered == {p["g"] for p in on}
+
+
+def _point_inputs(g):
+    pts = {r["g"]: r for r in br._read_jsonl(br.POINTS_LOG.format(K=K_RUN)) if r["type"] == "point" and r.get("ok")}
+    pc = {r["g"]: r for r in br._read_jsonl(br.POINT_CENTRES)}
+    return pts[g], pc[g]
+
+
+def test_point_membership_and_negative_controls():
+    pieces, _, cen, _ = _run_data()
+    pt, pc = _point_inputs("0.0275")
+    q = _first_piece()["rec"]
+    qc = cen[br._dstr(Fraction(q["centre_g"]))]
+    assert br.point_on_branch(pt, pc, q, qc)["ok"]
+    # negative: the uniqueness radius of the piece replaced by a tiny one
+    q_bad = dict(q, r_uniqueness=dict(q["r_uniqueness"], hex="0x1p-80"))
+    assert not br.point_on_branch(pt, pc, q_bad, qc)["ok"]
+    # negative: the point's orbit at another g (0.02755) claimed for a piece containing 0.0275 (g check)
+    pt2, pc2 = _point_inputs("0.02755")
+    assert not br.point_on_branch(pt2, pc2, q, qc)["ok"]
+    # negative: g forced into the piece, but the centre is that of 0.02755: the ball inclusion must fail
+    pt3 = dict(pt2, g=q["centre_g"])
+    assert not br.point_on_branch(pt3, pc2, q, qc)["ok"]
+    # negative: a point centre that does not match its proof record is refused
+    try:
+        br.point_on_branch(pt, pc2, q, qc)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("a point centre with the wrong digest was accepted")
+
+
+def test_log_validation_and_repair():
+    import shutil
+    import tempfile
+    src_run, src_cen = br.RUN_LOG.format(K=K_RUN), br.CENTRES.format(K=K_RUN)
+    old = (br.RUN_LOG, br.CENTRES)
+    tmp = tempfile.mkdtemp()
+    try:
+        br.RUN_LOG, br.CENTRES = os.path.join(tmp, "run_K{K}.jsonl"), os.path.join(tmp, "centres_K{K}.jsonl")
+        run, cen = br.RUN_LOG.format(K=K_RUN), br.CENTRES.format(K=K_RUN)
+        lines = [l for l in open(src_run).read().split("\n") if l.strip()]
+        gi = max(i for i, l in enumerate(lines[:40]) if json.loads(l)["type"] == "group")     # end of an early group
+        keep = lines[:gi + 1]
+        nxt = [l for l in lines[gi + 1:] if json.loads(l)["type"] == "piece"][:3]               # next group's pieces
+        shutil.copy(src_cen, cen)
+        # (1) a truncated final line is dropped, orphan pieces (no group record) are moved out, the rest validates
+        with open(run, "w") as fh:
+            fh.write("\n".join(keep + nxt) + "\n" + nxt[0][:57])
+        pieces, groups, _ = br.validate_logs(K_RUN, log=QUIET)
+        assert len(groups) == sum(1 for l in keep if json.loads(l)["type"] == "group")
+        assert len(pieces) == sum(1 for l in keep if json.loads(l)["type"] == "piece")
+        assert os.path.exists(run + ".truncated")
+        assert len(br._read_jsonl(run.replace(".jsonl", ".orphans.jsonl"))) == 3
+        # (2) a bad line in the middle is refused (never silently dropped)
+        with open(run, "w") as fh:
+            fh.write("\n".join(keep[:3] + ["{broken"] + keep[3:]) + "\n")
+        try:
+            br.validate_logs(K_RUN, log=QUIET)
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError("a corrupted middle line was accepted")
+        # (3) a tampered piece (radius of uniqueness shrunk) breaks the re-derived gluing
+        recs = [json.loads(l) for l in keep]
+        ip = [i for i, r in enumerate(recs) if r["type"] == "piece"][1]
+        recs[ip]["rec"]["r_uniqueness"]["hex"] = "0x1p-80"
+        with open(run, "w") as fh:
+            fh.write("".join(json.dumps(r) + "\n" for r in recs))
+        try:
+            br.validate_logs(K_RUN, log=QUIET)
+        except RuntimeError as e:
+            assert "glue" in str(e)
+        else:
+            raise AssertionError("a tampered radius passed the resume check")
+        # (4) a centre that does not match its piece's digest is refused
+        recs = [json.loads(l) for l in keep]
+        recs[ip]["rec"]["centre_sha256"] = "0" * 64
+        with open(run, "w") as fh:
+            fh.write("".join(json.dumps(r) + "\n" for r in recs))
+        try:
+            br.validate_logs(K_RUN, log=QUIET)
+        except RuntimeError as e:
+            assert "digest" in str(e)
+        else:
+            raise AssertionError("a centre digest mismatch passed the resume check")
+    finally:
+        br.RUN_LOG, br.CENTRES = old
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_uniform_attempt_recorded_and_fails():
+    rec = _record()
+    ua = rec["stability_uniform_attempt"]
+    assert ua and all(not a["ok"] for a in ua), "a uniform attempt is recorded and (as documented) fails"
+
+
 TESTS = [test_decimal_strings, test_hessian_matches_jacobian_differences, test_parameter_derivatives,
          test_hess_box_encloses_points, test_acceptance_piece_containing_stage_E_point,
          test_period_enclosures_consistent, test_gluing_rederived, test_negative_centre_at_wrong_g,
          test_negative_drop_parameter_width_detected, test_negative_cover_must_contain_piece, test_negative_gluing,
-         test_stability_points_recorded]
+         test_stability_points_recorded, test_every_piece_has_a_stability_statement,
+         test_point_membership_and_negative_controls, test_log_validation_and_repair,
+         test_uniform_attempt_recorded_and_fails]
 
 if __name__ == "__main__":
     failed = 0

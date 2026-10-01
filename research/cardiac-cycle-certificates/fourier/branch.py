@@ -134,9 +134,14 @@ units, so the run with the piece's data cannot close; this is recorded once (sta
 What is run instead (stability_points): at selected exact decimals g_s, a point proof (prove_piece with
 g_lo = g_hi = g_s, K = 32, a 256-bit Arb-refined centre, weights 1, Stage E's precisions POINT_SETTINGS, so r_lo is
 about 1e-28; a K = 12 double centre gives r = 4e-14 and theta_T = 540 in Stage S), then Stage S with
-delta = 0.85 |float leading nontrivial exponent| at g_s. These give stability at those points only. Points beyond the
-certified interval are recorded as isolated results (existence and stability at that g; that the orbit is the
-continuation of the branch is not proved there). What uniform stability on a piece would need: an eps of the size of
+delta = 0.85 |float leading nontrivial exponent| at g_s. These give stability at those points only. A point's orbit is the branch orbit at that g
+only if the program checks it (point_on_branch, in Arb): g lies in a piece and the point's existence ball (K = 32,
+weights 1) lies in that piece's uniqueness ball, ||xbar_pt - xbar_piece||_{eta(piece)} + r_lo(pt) max_c (1 / eta_c(piece))
+<= r_hi(piece), the K = 12 centre padded with exact zeros; then the point's zero of F(.; g) is x*_piece(g) by
+uniqueness. Every piece of the record carries a stability statement: "pointwise" at the checked points it contains,
+otherwise "none" with the nearest checked points on either side. Points beyond the certified interval (or whose check
+fails) are recorded as isolated results (existence and stability at that g; that the orbit is the continuation of
+the branch is not proved there). The uniform attempt is reproducible (uniform_stability_attempt). What uniform stability on a piece would need: an eps of the size of
 the true variation of J along the piece (about |D^2 f| ||dx/dg|| |g - g_c|, already about 0.1 for 1e-6 wide pieces)
 is still 2e3 times the margin, so either pieces about 1e-10 wide, or a perturbation bound for the critical Floquet
 exponents that uses the structure (they move by about |d mu / dg| |g - g_c|, tiny) rather than the norm of the
@@ -161,6 +166,27 @@ Arb chord iteration at 256 bits at the exact decimal g_s. A_fin, the weights eta
 weight-free blocks), r_*, the radii R_i = 32 eta_i r_*, the piece boundaries (multiples of 1e-12), the bridges and
 splits are chosen by floating-point code; they are exact numbers whose quality only decides whether the
 inequalities hold.
+
+8a. Resume and log validation (driver only; no bound depends on it)
+--------------------------------------------------------------------
+run() resumes from the run log. validate_logs first drops an unparsable LAST line of the run log or the centres file
+(a process killed while appending; kept in <file>.truncated), moves the pieces of a group without its group record
+to run_K<K>.orphans.jsonl (they are proved again), checks group numbering, piece counts, group overlap and every
+centre's SHA-256, and re-derives every gluing inequality in Arb. The first piece of the resumed run is glued to the
+last logged piece by the same Arb check (glue) before anything is logged, so a resumed branch is connected by
+checked inequalities, never by trust in the log. collect() repeats the gluing from the stored exact data.
+
+8b. Why the pieces shrink toward the Hopf point (float data, section 9)
+-----------------------------------------------------------------------
+The admissible half-width is about (1 - Z1)^2 / (2 Z2 ||A d_gF||). Toward the Hopf point the orbit's amplitude
+(|a_{1,V}|, V range 0.116 mV at 0.0275, 0.016 mV at 0.0279) tends to 0: the phase row and the tangent direction
+degenerate, ||A|| (eta = 1) grows from 2.7e5 to 1.2e6 at 0.0279 and 2.5e6 at 0.027905, and ||dx/dg|| from 1.2e3 to
+3.3e3 and 5.0e3, while the amplitude behaves like (g_H - g)^{1/2} (|a_{1,V}| falls by 7.4 while g_H - g falls by
+51.6 between 0.0275 and 0.0279; sqrt(51.6) = 7.2). The predicted admissible half-width
+falls from 5.3e-6 (0.0275) to 3.2e-8 (0.0279) and 7.5e-9 (0.027905), and the gluing condition (existence ball of one
+piece inside the uniqueness ball of the next) caps the usable fraction of it. A proof up to the Hopf point needs
+coordinates in which the orbit does not collapse (amplitude-scaled unknowns, a blow-up of the Hopf point); none is
+attempted, and nothing is claimed at the Hopf point.
 
 9. Float exploration (non-rigorous, `explore`)
 -----------------------------------------------
@@ -1373,10 +1399,14 @@ def MH_float(hess):
 # Gluing (Theorem B3)
 # =================================================================================================================
 def centre_distance(oA, AA, oB, AB, ETA_B, nu, prec=256):
-    """Exact upper bound of ||xbar_A - xbar_B|| in the weights ETA_B (both centres with the same K)."""
-    K = (len(AA[0]) - 1) // 2
-    if (len(AB[0]) - 1) // 2 != K:
-        raise ValueError("centres must have the same K")
+    """Exact upper bound of ||xbar_A - xbar_B|| in the weights ETA_B. Centres with different K are compared as elements
+    of l^1_nu, the shorter one padded with exact zeros (a centre with K modes IS the sequence with zeros beyond K)."""
+    KA, KB = (len(AA[0]) - 1) // 2, (len(AB[0]) - 1) // 2
+    K = max(KA, KB)
+    zero = acb(0)
+
+    def coef(A_, K_, i, m):
+        return A_[i][m + K_] if abs(m) <= K_ else zero
     old = ctx.prec
     ctx.prec = prec
     try:
@@ -1384,7 +1414,7 @@ def centre_distance(oA, AA, oB, AB, ETA_B, nu, prec=256):
         for i in range(DIM):
             s = arb(0)
             for m in range(-K, K + 1):
-                s += (AA[i][m + K] - AB[i][m + K]).abs_upper() * nu ** abs(m)
+                s += (coef(AA, KA, i, m) - coef(AB, KB, i, m)).abs_upper() * nu ** abs(m)
             best = amax(best, up(s / ETA_B[1 + i]))
     finally:
         ctx.prec = old
@@ -1467,6 +1497,7 @@ EXPLORE_GRID = ([round(0.0275 + 2.5e-5 * i, 7) for i in range(15)] +
 RUN_LOG = os.path.join(DATA, "run_K{K}.jsonl")
 CENTRES = os.path.join(DATA, "centres_K{K}.jsonl")
 POINTS_LOG = os.path.join(DATA, "points_K{K}.jsonl")
+POINT_CENTRES = os.path.join(DATA, "points_centres_K32.jsonl")
 GRID = Fraction(1, 10 ** 12)          # piece endpoints are multiples of 1e-12 (exact decimals)
 
 
@@ -1515,6 +1546,118 @@ def _read_jsonl(path):
         return []
     with open(path) as fh:
         return [json.loads(l) for l in fh if l.strip()]
+
+
+def _repair_jsonl(path, log=print):
+    """Drop a truncated final line (a process killed while appending). Only the LAST line may be unparsable; it is
+    moved to <path>.truncated (kept for the record) and the file is rewritten without it. Any other bad line is an
+    error. Returns the number of lines dropped (0 or 1)."""
+    if not os.path.exists(path):
+        return 0
+    with open(path) as fh:
+        raw = fh.read()
+    lines = raw.split("\n")
+    body = [l for l in lines if l.strip()]
+    bad = []
+    for i, l in enumerate(body):
+        try:
+            json.loads(l)
+        except ValueError:
+            bad.append(i)
+    if not bad:
+        if raw and not raw.endswith("\n"):          # complete JSON but no newline: append one
+            with open(path, "a") as fh:
+                fh.write("\n")
+        return 0
+    if bad != [len(body) - 1]:
+        raise RuntimeError(f"{path}: unparsable line(s) {bad} not at the end; refusing to repair")
+    with open(path + ".truncated", "a") as fh:
+        fh.write(body[-1] + "\n")
+    with open(path, "w") as fh:
+        fh.write("\n".join(body[:-1]) + "\n")
+    log(f"  {os.path.basename(path)}: dropped a truncated final line ({len(body[-1])} chars, kept in .truncated)")
+    return 1
+
+
+def _read_jsonl_tolerant(path):
+    """Read-only: parse every line, ignoring an unparsable LAST line (a writer may be appending). Any other bad line
+    is an error."""
+    if not os.path.exists(path):
+        return []
+    with open(path) as fh:
+        body = [l for l in fh.read().split("\n") if l.strip()]
+    out = []
+    for i, l in enumerate(body):
+        try:
+            out.append(json.loads(l))
+        except ValueError:
+            if i != len(body) - 1:
+                raise RuntimeError(f"{path}: unparsable line {i} not at the end")
+    return out
+
+
+def validate_logs(K=12, reglue=True, log=print, repair=True):
+    """Resume check (untrusted logs are re-checked, not believed): repair a truncated final line of the run log and of
+    the centres file; keep only pieces whose group record exists (a group killed between appending its pieces and
+    its group record is incomplete: its pieces are moved to run_K<K>.orphans.jsonl, they are re-proved on resume);
+    check that groups are numbered 0, 1, ..., that each group has its recorded number of pieces inside its range, that
+    consecutive groups overlap, that every piece's centre is in the centres file with the recorded SHA-256; and, with
+    reglue, re-derive every gluing inequality between consecutive pieces in Arb (glue(), the same check as collect).
+    Returns (pieces sorted by g_lo, groups, centres)."""
+    runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
+    if repair:
+        _repair_jsonl(runlog, log)
+        _repair_jsonl(cpath, log)
+    recs = _read_jsonl_tolerant(runlog)
+    centres = {r["g"]: r for r in _read_jsonl_tolerant(cpath)}
+    groups = [r for r in recs if r["type"] == "group"]
+    gids = [g["group"] for g in groups]
+    if gids != list(range(len(groups))):
+        raise RuntimeError(f"group ids not 0..n-1: {gids}")
+    pieces_all = [r for r in recs if r["type"] == "piece"]
+    orphans = [r for r in pieces_all if r["group"] not in set(gids)]
+    if orphans and repair:
+        with open(runlog.replace(".jsonl", ".orphans.jsonl"), "a") as fh:
+            for r in orphans:
+                fh.write(json.dumps(r) + "\n")
+        keep = [r for r in recs if not (r["type"] == "piece" and r["group"] not in set(gids))]
+        with open(runlog, "w") as fh:
+            for r in keep:
+                fh.write(json.dumps(r) + "\n")
+        log(f"  {len(orphans)} piece(s) of an incomplete group moved to the orphans file")
+    elif orphans:
+        log(f"  {len(orphans)} piece(s) of an incomplete group ignored (read-only)")
+    pieces = sorted([r for r in pieces_all if r["group"] in set(gids)], key=lambda r: Fraction(r["rec"]["g_lo"]))
+    for g in groups:
+        mine = [p for p in pieces if p["group"] == g["group"]]
+        if len(mine) != g["n_pieces"]:
+            raise RuntimeError(f"group {g['group']}: {len(mine)} pieces logged, {g['n_pieces']} recorded")
+        if not (Fraction(g["g_lo"]) <= min(Fraction(p["rec"]["g_lo"]) for p in mine) and
+                max(Fraction(p["rec"]["g_hi"]) for p in mine) <= Fraction(g["g_hi"])):
+            raise RuntimeError(f"group {g['group']}: pieces outside the group range")
+    for a, b in zip(groups, groups[1:]):
+        if not Fraction(b["g_lo"]) < Fraction(a["g_hi"]):
+            raise RuntimeError(f"groups {a['group']} and {b['group']} do not overlap")
+    for p in pieces:
+        c = centres.get(_dstr(Fraction(p["rec"]["centre_g"])))
+        if c is None:
+            raise RuntimeError(f"no centre for piece {p['rec']['label']}")
+        om, A = centre_from_record(c)
+        if centre_digest(om, A) != p["rec"]["centre_sha256"]:
+            raise RuntimeError(f"centre digest mismatch for piece {p['rec']['label']}")
+    nglue = 0
+    if reglue:
+        for pa, pb in zip(pieces, pieces[1:]):
+            a_, b_ = pa["rec"], pb["rec"]
+            oa = obj_from_record(a_, centres[_dstr(Fraction(a_["centre_g"]))])
+            ob = obj_from_record(b_, centres[_dstr(Fraction(b_["centre_g"]))])
+            if not glue(dict(a_, _obj=oa), dict(b_, _obj=ob))["glued"]:
+                raise RuntimeError(f"pieces {a_['label']} and {b_['label']} do not glue")
+            nglue += 1
+    if pieces:
+        log(f"  logs valid: {len(groups)} groups, {len(pieces)} pieces, [{pieces[0]['rec']['g_lo']}, "
+            f"{max((p['rec']['g_hi'] for p in pieces), key=Fraction)}], {nglue} gluing inequalities re-derived")
+    return pieces, groups, centres
 
 
 class FloatTrack:
@@ -1612,10 +1755,7 @@ def run(K=12, g_stop="0.02790", n_per_group=12, workers=3, budget_s=3300, factor
     runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
     os.makedirs(DATA, exist_ok=True)
     hwf = _float_halfwidth_table(K)
-    recs = _read_jsonl(runlog)
-    centres = {r["g"]: r for r in _read_jsonl(cpath)}
-    pieces = [r for r in recs if r["type"] == "piece"]
-    groups = [r for r in recs if r["type"] == "group"]
+    pieces, groups, centres = validate_logs(K, log=log)       # repairs a truncated tail, re-derives the gluing
     prev_last = None
     if pieces:
         last = max(pieces, key=lambda r: Fraction(r["rec"]["g_hi"]))
@@ -1628,7 +1768,9 @@ def run(K=12, g_stop="0.02790", n_per_group=12, workers=3, budget_s=3300, factor
         eta_prev = np.array([float(Fraction(e)) for e in groups[-1]["eta"]])
         MH_prev = np.array(groups[-1]["MH_float"])
         first = False
-        prev_last = (None, dict(ok=True, rec=last["rec"]))
+        prev_last = (None, dict(ok=True, rec=last["rec"]))   # the first new piece is glued to it in Arb below
+        log(f"resuming after group {groups[-1]['group']} at g_lo = {_dstr(next_lo)} (last certified piece "
+            f"{last['rec']['label']} [{last['rec']['g_lo']}, {last['rec']['g_hi']}]), factor {factor:.4f}")
     else:
         trk = FloatTrack(K)
         factor, eta_prev, MH_prev, first, next_lo = factor0, None, None, True, None
@@ -1781,6 +1923,7 @@ def stability_points(gs, K=32, run_K=12, log=print):
         t0 = time.time()
         trk.at(g)
         omb, A, hist = refine_centre(trk.om, trk.a, _dstr(g), prec=256, log=log)
+        _append(POINT_CENTRES, centre_record(_dstr(g), omb, A, hist))
         fp = FloatPoint(float(omb), centre_float(A), float(g), need_hess=False)
         lead = fp.leading_nontrivial()[0]
         delta_s = f"{0.85 * abs(lead):.3e}"
@@ -1794,13 +1937,88 @@ def stability_points(gs, K=32, run_K=12, log=print):
             rec.update(ok_existence=True, rec=_public(pp))
             st = stability_point(pp, delta_s, log=log)
             rec.update(ok=True, stability=st)
-        except (ProofFailure, ArithmeticError, ValueError) as e:
+        except Exception as e:  # noqa: BLE001  (recorded as a failure, never as a proof)
             rec.update(ok=False, why=f"{type(e).__name__}: {e}")
         rec["wall"] = round(time.time() - t0, 1)
         _append(runlog, rec)
         log(f"stability point g = {_dstr(g)}: {'ok' if rec.get('ok') else 'FAILED ' + rec.get('why', '')[:200]} "
             f"({rec['wall']} s)")
         out.append(rec)
+    return out
+
+
+def regen_point_centres(K=32, run_K=12, log=print):
+    """Recover the exact K = 32 centres of point records logged before centres were saved: repeat the deterministic
+    computation (float continuation from the Stage E centre through the logged g in increasing order, the call order
+    of stability_points, then the Arb chord refinement) and keep a centre only if its SHA-256 equals the digest in the
+    point's proof record. Untrusted computation, checked by the digest; nothing is believed without it."""
+    have = {r["g"] for r in _read_jsonl(POINT_CENTRES)}
+    pts = [r for r in _read_jsonl(POINTS_LOG.format(K=run_K)) if r["type"] == "point" and r.get("rec")]
+    todo = sorted({r["g"] for r in pts} - have, key=Fraction)
+    if not todo:
+        return 0
+    trk = FloatTrack(K)
+    n = 0
+    for gs in todo:
+        trk.at(Fraction(gs))
+        omb, A, hist = refine_centre(trk.om, trk.a, gs, prec=256, log=log)
+        dig = centre_digest(omb, A)
+        want = {r["rec"]["centre_sha256"] for r in pts if r["g"] == gs}
+        if dig in want:
+            _append(POINT_CENTRES, centre_record(gs, omb, A, hist))
+            n += 1
+            log(f"  point centre at g = {gs}: digest reproduced")
+        else:
+            log(f"  point centre at g = {gs}: digest NOT reproduced (point must be re-run)")
+    return n
+
+
+def point_on_branch(pt, pt_centre, piece, piece_centre):
+    """Is the orbit of a point proof (g = pt["g"], K = 32, weights 1) the branch orbit x*(g) of a piece containing g?
+    Sufficient (Arb): g in the piece and the point's existence ball lies in the piece's uniqueness ball,
+        ||xbar_pt - xbar_piece||_{eta(piece)} + r_lo(pt) max_c (eta_c(pt) / eta_c(piece)) <= r_hi(piece)
+    (centres compared in l^1_nu with zero padding). Then x*_pt is a zero of F(.; g) in the piece's uniqueness ball, so
+    it equals x*_piece(g) (Theorem B1 uniqueness at that g)."""
+    g = Fraction(pt["g"])
+    if not Fraction(piece["g_lo"]) <= g <= Fraction(piece["g_hi"]):
+        return dict(ok=False, why="g not in piece")
+    op = obj_from_record(pt["rec"], pt_centre)
+    oq = obj_from_record(piece, piece_centre)
+    if op["nu"] != oq["nu"]:
+        raise ValueError("different nu")
+    d = centre_distance(op["om_bar"], op["A"], oq["om_bar"], oq["A"], oq["ETA"], oq["nu"])
+    conv = arb(0)
+    for ea, eb in zip(op["ETA"], oq["ETA"]):
+        conv = amax(conv, up(ea / eb))
+    lhs = up(d + op["r_lo"] * conv)
+    return dict(ok=bool(lhs <= oq["r_hi"]), piece=[piece["g_lo"], piece["g_hi"]], piece_label=piece["label"],
+                centre_distance=bound_rec(d), lhs=bound_rec(lhs), r_uniqueness_piece=bound_rec(oq["r_hi"]))
+
+
+def uniform_stability_attempt(piece_label, K=12, delta="4e-5", log=print):
+    """Reproducible record of the uniform attempt (section 6): re-prove the piece from its stored data (cover rebuilt
+    around its centre), then feed Stage S with r = the piece's existence radius and J at g_c (the g-width of J would
+    only add). Expected to FAIL; the record states why. Appended to the points log as type "uniform_attempt"."""
+    pieces, groups, centres = validate_logs(K, reglue=False, log=log, repair=False)
+    p = next(r for r in pieces if r["rec"]["label"] == piece_label)
+    grp = groups[p["group"]]
+    rec = p["rec"]
+    om, A = centre_from_record(centres[_dstr(Fraction(rec["centre_g"]))])
+    hb = HessBound([(om, A)], rec["g_lo"], rec["g_hi"], grp["R"], "1", None, log=log)
+    pp = prove_piece(om, A, rec["g_lo"], rec["g_hi"], eta=rec["eta"], r_star=grp["r_star"], hess=hb, log=log)
+    out = dict(type="uniform_attempt", piece=[rec["g_lo"], rec["g_hi"]], label=piece_label,
+               r_existence=pp["r_existence"], delta_requested=delta,
+               note="Stage S fed with the piece proof (r = the piece's r_existence, J at g_c; the g-width of J would "
+                    "only add); produced by branch.uniform_stability_attempt")
+    t0 = time.time()
+    try:
+        st = stability_point(pp, delta, log=log)
+        out.update(ok=True, stability=st)
+    except Exception as e:  # noqa: BLE001  (Stage S raises its own ProofFailure; any failure is recorded, not a proof)
+        out.update(ok=False, why=f"{type(e).__name__}: {e}")
+    out["wall"] = round(time.time() - t0, 1)
+    _append(POINTS_LOG.format(K=K), out)
+    log(f"uniform attempt on {piece_label}: {'ok' if out['ok'] else out['why'][:200]}")
     return out
 
 
@@ -1832,11 +2050,15 @@ def obj_from_record(rec, centre):
 def collect(K=12, write=True, log=print):
     """Re-check gluing in Arb from the stored exact data and write results/fourier-branch-gks.json."""
     runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
-    recs = _read_jsonl(runlog)
-    centres = {r["g"]: r for r in _read_jsonl(cpath)}
-    pieces = sorted([r for r in recs if r["type"] == "piece"], key=lambda r: Fraction(r["rec"]["g_lo"]))
-    groups = [r for r in recs if r["type"] == "group"]
-    points = [r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "point"]
+    pieces, groups, centres = validate_logs(K, reglue=False, log=log, repair=False)   # gluing re-derived below
+    recs = _read_jsonl_tolerant(runlog)
+    pts_all = [r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "point"]
+    byg = {}
+    for r in pts_all:                       # one record per g: the last successful one, else the last one
+        if r.get("ok") or r["g"] not in byg or not byg[r["g"]].get("ok"):
+            byg[r["g"]] = r
+    points = sorted(byg.values(), key=lambda r: Fraction(r["g"]))
+    pcentres = {r["g"]: r for r in _read_jsonl(POINT_CENTRES)}
     fails = [r for r in recs if r["type"] == "failure"]
     glue_recs = []
     connected_to = None
@@ -1849,7 +2071,29 @@ def collect(K=12, write=True, log=print):
         if not g["glued"] and connected_to is None:
             connected_to = i
     n_conn = len(pieces) if connected_to is None else connected_to + 1
-    lo_all, hi_all = pieces[0]["rec"]["g_lo"], pieces[n_conn - 1]["rec"]["g_hi"]
+    lo_all = pieces[0]["rec"]["g_lo"]
+    hi_all = max((r["rec"]["g_hi"] for r in pieces[:n_conn]), key=Fraction)
+    # pointwise stability: is each point's orbit the branch orbit? (ball inclusion, point_on_branch)
+    member = {}
+    for r in points:
+        if not r.get("rec"):
+            continue
+        g = Fraction(r["g"])
+        cands = [q for q in pieces[:n_conn] if Fraction(q["rec"]["g_lo"]) <= g <= Fraction(q["rec"]["g_hi"])]
+        chk = None
+        for q in sorted(cands, key=lambda q: abs(Fraction(q["rec"]["centre_g"]) - g)):
+            if r["g"] not in pcentres:
+                chk = dict(ok=False, why="point centre not stored (cannot check membership)")
+                break
+            chk = point_on_branch(r, pcentres[r["g"]], q["rec"], centres[_dstr(Fraction(q["rec"]["centre_g"]))])
+            if chk["ok"]:
+                break
+        member[r["g"]] = chk
+    stab_by_piece = {}
+    for r in points:
+        chk = member.get(r["g"])
+        if r.get("ok") and chk and chk["ok"]:
+            stab_by_piece.setdefault(chk["piece_label"], []).append(r["g"])
     table = []
     for r in pieces:
         p = r["rec"]
@@ -1859,15 +2103,22 @@ def collect(K=12, write=True, log=print):
                           Z2=p["Z2"], r_star=p["r_star"], contraction=p["contraction_at_r_uniqueness"]["approx"],
                           Y0_over_cap=p["diag"]["Y0"] / ((1 - p["diag"]["Z1"]) ** 2 / (2 * p["diag"]["Z2"])),
                           eta=p["eta"], centre_sha256=p["centre_sha256"], hessian_cover=p["hessian_cover"],
-                          label=p["label"], wall_s=r["wall"]))
+                          label=p["label"], wall_s=r["wall"],
+                          stability=_piece_stability(p, stab_by_piece.get(p["label"], []), points, member)))
     stab = []
     for r in points:
-        on = Fraction(lo_all) <= Fraction(r["g"]) <= Fraction(hi_all)
-        d = dict(g=r["g"], ok=r["ok"], on_certified_branch=on, delta_requested=r["delta_requested"],
+        inside = Fraction(lo_all) <= Fraction(r["g"]) <= Fraction(hi_all)
+        chk = member.get(r["g"])
+        on = bool(chk and chk["ok"])
+        d = dict(g=r["g"], ok=r["ok"], on_certified_branch=on, branch_membership_check=chk,
+                 delta_requested=r["delta_requested"],
                  float_leading_exponent=r["float_leading_exponent"], wall_s=r["wall"], uniform=False,
-                 note=("pointwise: Stage S at this single g only (section 6)" if on else
-                       "isolated point beyond the certified branch: existence (point proof) and Stage S at this g "
-                       "only; that this orbit continues the branch is NOT proved (float continuation only)"))
+                 note=("pointwise: Stage S at this single g only (section 6); the orbit is the branch orbit at this g "
+                       "(point existence ball inside the piece's uniqueness ball)" if on else
+                       ("inside the certified g range but the membership check did not pass: Stage S statement is "
+                        "about the point proof's orbit only" if inside else
+                        "isolated point beyond the certified branch: existence (point proof) and Stage S at this g "
+                        "only; that this orbit continues the branch is NOT proved (float continuation only)")))
         if r["ok"]:
             s = r["stability"]
             d.update(delta=s["delta"], multiplier_bound_full_period=s["multiplier_bound_full_period"],
@@ -1918,6 +2169,24 @@ def collect(K=12, write=True, log=print):
     return out
 
 
+def _piece_stability(p, gs_ok, points, member):
+    """The stability statement of one piece (section 6): never uniform; pointwise at the listed g, if any."""
+    if gs_ok:
+        return dict(uniform=False, kind="pointwise", certified_at=gs_ok,
+                    statement=f"Stage S certifies the orbit x*(g) of this piece linearly stable (every nontrivial "
+                              f"Floquet multiplier of modulus < 1) at G_Ks = {', '.join(gs_ok)} only; not at the other "
+                              f"G_Ks of the piece")
+    near = [r["g"] for r in points if r.get("ok") and member.get(r["g"]) and member[r["g"]]["ok"]]
+    lo_, hi_ = Fraction(p["g_lo"]), Fraction(p["g_hi"])
+    below = [g for g in near if Fraction(g) < lo_]
+    above = [g for g in near if Fraction(g) > hi_]
+    return dict(uniform=False, kind="none", certified_at=[],
+                nearest_certified_below=below[-1] if below else None,
+                nearest_certified_above=above[0] if above else None,
+                statement="no stability certificate on this piece (uniform stability on a piece is out of reach of "
+                          "Stage S, section 6; pointwise certificates exist only at the listed G_Ks)")
+
+
 def theorem_text(lo_, hi_):
     return (f"For Erhardt's 18-state TP06 endocardial cell (single cell) and every G_Ks in [{lo_}, {hi_}] there are "
             "omega*(G_Ks) > 0 and a real 2 pi periodic phi*(.; G_Ks), analytic on |Im theta| < 1/4, with "
@@ -1927,7 +2196,9 @@ def theorem_text(lo_, hi_):
             "existence ball; z(t) = phi*(omega* t) is a periodic orbit of minimal period T = 2 pi / omega* with T in the "
             "piece's T_ms enclosure for every G_Ks of the piece; G_Ks -> (omega*, phi*) is continuous on the whole "
             "interval (Lipschitz on each piece, pieces glued by ball inclusion on their overlaps), so the orbits form "
-            "one continuous branch. Stability is certified only at the listed points (pointwise, Stage S).")
+            "one continuous branch. Linear stability (nontrivial Floquet multipliers of modulus at most the recorded "
+            "bound < 1) is certified only at the listed G_Ks (pointwise, Stage S), at each of which the stable orbit "
+            "is shown to be the branch orbit by ball inclusion; it is not certified uniformly on any piece.")
 
 
 def main():
@@ -1940,6 +2211,9 @@ def main():
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--per-group", type=int, default=12)
     ap.add_argument("--budget", type=float, default=3300)
+    ap.add_argument("--u-target", type=float, default=0.4,
+                    help="target Y0 / ((1 - Z1)^2 / (2 Z2)) for the width controller (untrusted choice)")
+    ap.add_argument("--validate", action="store_true", help="validate (and repair a truncated tail of) the logs")
     ap.add_argument("--stability", default="", help="comma-separated exact decimals g for pointwise Stage S")
     a = ap.parse_args()
     if a.explore:
@@ -1951,7 +2225,10 @@ def main():
                            K=16, points=out), fh, indent=1)
         print("wrote", path)
     if a.run:
-        run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget)
+        run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget,
+            u_target=a.u_target)
+    if a.validate and not a.run:
+        validate_logs(K=a.K, repair=False)
     if a.stability:
         stability_points(a.stability.split(","), run_K=a.K)
     if a.collect:
