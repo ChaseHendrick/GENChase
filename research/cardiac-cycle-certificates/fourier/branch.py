@@ -182,7 +182,7 @@ from tp06_18d import PARAMS, field as float_field  # noqa: E402
 DIM = 18
 IV = 0
 RESULTS = os.path.join(ROOT, "results")
-DATA = os.path.join(HERE, "data", "branch")
+DATA = os.environ.get("BRANCH_DATA", os.path.join(HERE, "data", "branch"))
 G_HOPF = Fraction("0.027907858929580")      # Erhardt's first Hopf point (not used in any bound)
 G_STAGE_E = "0.0275"
 
@@ -1411,16 +1411,405 @@ SOURCES = ["fourier/branch.py", "fourier/existence.py", "fourier/centre.py", "fo
 
 
 # =================================================================================================================
-# Driver
+# Driver: adaptive pieces in groups (one Hessian cover and one weight vector per group), worker processes per group
 # =================================================================================================================
 EXPLORE_GRID = ([round(0.0275 + 2.5e-5 * i, 7) for i in range(15)] +
                 [round(0.02785 + 1e-5 * i, 7) for i in range(1, 6)] + [0.027905])
+RUN_LOG = os.path.join(DATA, "run_K{K}.jsonl")
+CENTRES = os.path.join(DATA, "centres_K{K}.jsonl")
+GRID = Fraction(1, 10 ** 12)          # piece endpoints are multiples of 1e-12 (exact decimals)
+
+
+def _dec_round(x, down=True):
+    q = Fraction(x) / GRID
+    n = q.numerator // q.denominator if down else -((-q.numerator) // q.denominator)
+    return n * GRID
+
+
+def _dstr(fr):
+    """Exact decimal string of a Fraction whose denominator is 2^a 5^b."""
+    fr = Fraction(fr)
+    d, a2, a5 = fr.denominator, 0, 0
+    while d % 2 == 0:
+        d //= 2
+        a2 += 1
+    while d % 5 == 0:
+        d //= 5
+        a5 += 1
+    if d != 1:
+        raise ValueError(f"{fr} is not a decimal")
+    k = max(a2, a5)
+    n = abs(fr.numerator) * (10 ** k // fr.denominator)
+    s = str(n).rjust(k + 1, "0")
+    out = (s[:-k] + "." + s[-k:]).rstrip("0").rstrip(".") if k else s
+    assert Fraction(out) == abs(fr)
+    return ("-" if fr < 0 else "") + out
+
+
+def _float_halfwidth_table(K):
+    path = os.path.join(DATA, f"float_branch_K{K}.json")
+    with open(path) as fh:
+        pts = json.load(fh)["points"]
+    gs = np.array([p["g"] for p in pts])
+    hw = np.array([p["predicted_half_width_eta_opt"] for p in pts])
+    return lambda g: float(np.exp(np.interp(float(g), gs, np.log(hw))))
+
+
+def _append(path, rec):
+    with open(path, "a") as fh:
+        fh.write(json.dumps(rec) + "\n")
+
+
+def _read_jsonl(path):
+    if not os.path.exists(path):
+        return []
+    with open(path) as fh:
+        return [json.loads(l) for l in fh if l.strip()]
+
+
+class FloatTrack:
+    """Float continuation state (untrusted): (g, omega, a, x1) with the tangent x1 = dx/dg."""
+
+    def __init__(self, K, g=None, om=None, a=None):
+        self.K = K
+        self.Mc = 4 * K + 64
+        self.lay = ct.Layout(K)
+        if om is None:
+            om, a = stage_e_seed(K)
+            g = Fraction(G_STAGE_E)
+        self.g, self.om, self.a, self.x1 = Fraction(g), om, a, None
+        self._solve(self.g)
+
+    def _solve(self, g):
+        om, a, nr = newton_f(self.om, self.a, float(g), self.Mc)
+        if not nr < 1e-11:
+            raise RuntimeError(f"float Newton failed at g = {g} (|R| = {nr:.2e})")
+        G, _ = galerkin_f(om, a, float(g), self.Mc)
+        self.x1 = -np.linalg.solve(G, dFdg_f(a, self.Mc))
+        self.g, self.om, self.a = Fraction(g), om, a
+
+    def at(self, g):
+        dom, da = ct.unpack(self.lay, self.x1 * float(Fraction(g) - self.g))
+        self.om, self.a = ct.symmetrize(self.om + dom.real, self.a + da)
+        self._solve(g)
+        return to_exact_centre(self.om, self.a, 128)
+
+
+def _worker_init(state):
+    global _W
+    _W = state
+
+
+def _piece_job(job):
+    """Worker: blocks and assembly of one piece (or a point proof with stability). Returns a JSON-able dict."""
+    import traceback
+    hb, eta, rstar = _W["hess"][job["hess"]], _W["eta"], _W["rstar"]
+    om, A = centre_from_record(job["centre"])
+    t0 = time.time()
+    try:
+        if job["kind"] == "piece":
+            res = prove_piece(om, A, job["g_lo"], job["g_hi"], eta=eta, r_star=rstar, hess=hb, log=lambda *a, **k: None,
+                              label=job["label"])
+            return dict(ok=True, rec=_public(res), wall=time.time() - t0)
+        pp = prove_piece(om, A, job["g_lo"], job["g_hi"], eta=eta, r_star=rstar, hess=hb, log=lambda *a, **k: None,
+                         label=job["label"])
+        st = stability_point(pp, job["delta"], log=lambda *a, **k: None)
+        return dict(ok=True, rec=_public(pp), stability=st, wall=time.time() - t0)
+    except ProofFailure as e:
+        return dict(ok=False, why=str(e), diag=getattr(e, "diag", None), wall=time.time() - t0)
+    except Exception as e:  # noqa: BLE001  (recorded, never counted as a proof)
+        return dict(ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-2000:], wall=time.time() - t0)
+
+
+def run(K=16, g_stop="0.02790", n_per_group=8, workers=2, budget_s=3300, factor0=0.2, log=print):
+    """Adaptive branch run, resumable from the run log. Each group: centres (float continuation), blocks of the first
+    piece, weights eta (float search on the rigorous blocks), r_*, radii R, one Hessian cover, then all pieces (and one
+    point proof with Stage S) in worker processes; failed pieces are split and retried with their own cover."""
+    import multiprocessing as mp
+    T0 = time.time()
+    runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
+    os.makedirs(DATA, exist_ok=True)
+    hwf = _float_halfwidth_table(K)
+    recs = _read_jsonl(runlog)
+    centres = {r["g"]: r for r in _read_jsonl(cpath)}
+    pieces = [r for r in recs if r["type"] == "piece"]
+    groups = [r for r in recs if r["type"] == "group"]
+    if pieces:
+        last = max(pieces, key=lambda r: Fraction(r["rec"]["g_hi"]))
+        c = centres[last["rec"]["centre_g"]]
+        om, A = centre_from_record(c)
+        trk = FloatTrack(K, Fraction(c["g"]), float(om), centre_float(A))
+        next_lo = Fraction(last["rec"]["g_hi"]) - Fraction(groups[-1]["overlap_frac"]) * \
+            (Fraction(last["rec"]["g_hi"]) - Fraction(last["rec"]["g_lo"]))
+        next_lo = _dec_round(next_lo, down=True)
+        factor = groups[-1]["factor_next"]
+        eta_prev = np.array([float(Fraction(e)) for e in groups[-1]["eta"]])
+        MH_prev = np.array(groups[-1]["MH_float"])
+        first = False
+    else:
+        trk = FloatTrack(K)
+        factor, eta_prev, MH_prev, first, next_lo = factor0, None, None, True, None
+    ovl = Fraction(1, 10)
+    gid = len(groups)
+    while Fraction(next_lo or 0) < Fraction(g_stop) and time.time() - T0 < budget_s:
+        tg = time.time()
+        # ---- plan the group's pieces
+        plan = []
+        lo_ = next_lo
+        for j in range(n_per_group):
+            if first and j == 0:
+                gc = Fraction(G_STAGE_E)
+                hw = _dec_round(factor * hwf(gc), down=True)
+                lo_ = gc - hw
+                hi_ = gc + hw
+            else:
+                hw = _dec_round(factor * hwf(lo_), down=True)
+                hi_ = lo_ + 2 * hw
+                gc = (lo_ + hi_) / 2
+            if hw <= 0:
+                raise RuntimeError("planned width rounds to 0")
+            plan.append(dict(g_lo=lo_, g_hi=hi_, g_c=gc))
+            lo_ = _dec_round(hi_ - ovl * (hi_ - lo_), down=True)
+            if hi_ >= Fraction(g_stop):
+                break
+        for p in plan:
+            om, A = trk.at(p["g_c"])
+            crec = centre_record(_dstr(p["g_c"]), om, A, [])
+            centres[crec["g"]] = crec
+            _append(cpath, crec)
+            p["centre"] = crec
+        # ---- weights and radii from the first piece's rigorous blocks
+        om0, A0 = centre_from_record(plan[0]["centre"])
+        bl0 = piece_blocks(om0, A0, _dstr(plan[0]["g_lo"]), _dstr(plan[0]["g_hi"]), log=lambda *a, **k: None)
+        if MH_prev is None:
+            fp = FloatPoint(trk.om, trk.a, float(plan[0]["g_c"]))
+            MH_est = 2.5 * fp.H
+        else:
+            MH_est = MH_prev
+        eta_f, pred = choose_eta(bl0, MH_est, eta0=eta_prev)
+        if eta_prev is not None:
+            keep = choose_eta(bl0, MH_est, iters=0, eta0=eta_prev)[1]
+            if keep["delta_admissible"] > 0.9 * pred["delta_admissible"]:
+                eta_f, pred = eta_prev / eta_prev.max(), keep
+        eta = dyadic_eta(eta_f, bits=20)
+        rs = 0.9 * pred["r_star"] / 0.35 if pred["r_star"] > 0 else 1e-9
+        rstar = f"{max(1, int(rs * 2 ** 60))}/{2 ** 60}"
+        Rs = [f"{max(1, int(32 * float(Fraction(eta[1 + i])) * rs * 2 ** 60))}/{2 ** 60}" for i in range(DIM)]
+        hb = HessBound([centre_from_record(p["centre"]) for p in plan], _dstr(plan[0]["g_lo"]),
+                       _dstr(plan[-1]["g_hi"]), Rs, "1", None, log=lambda *a, **k: None)
+        # ---- all pieces and one point proof (+ Stage S) in workers
+        fp0 = FloatPoint(*(lambda c: (float(c[0]), centre_float(c[1])))(centre_from_record(plan[0]["centre"])),
+                         float(plan[0]["g_c"]), need_hess=False)
+        lead = fp0.leading_nontrivial()[0]
+        delta_s = f"{0.85 * abs(lead):.3e}"
+        jobs = [dict(kind="piece", hess=0, g_lo=_dstr(p["g_lo"]), g_hi=_dstr(p["g_hi"]), centre=p["centre"],
+                     label=f"G{gid}P{j}") for j, p in enumerate(plan)]
+        jobs.append(dict(kind="point", hess=0, g_lo=_dstr(plan[0]["g_c"]), g_hi=_dstr(plan[0]["g_c"]),
+                         centre=plan[0]["centre"], label=f"G{gid}point", delta=delta_s))
+        state = dict(hess={0: hb}, eta=eta, rstar=rstar)
+        ctxp = mp.get_context("fork")
+        with ctxp.Pool(workers, initializer=_worker_init, initargs=(state,)) as pool:
+            outs = pool.map(_piece_job, jobs, chunksize=1)
+        # ---- failures: split once, with a cover of their own
+        done = []
+        for j, (job, o) in enumerate(zip(jobs[:-1], outs[:-1])):
+            if o["ok"]:
+                done.append((job, o))
+                continue
+            log(f"  piece {job['label']} [{job['g_lo']}, {job['g_hi']}] FAILED: {o['why'][:160]}; splitting")
+            _append(runlog, dict(type="failure", group=gid, job={k: v for k, v in job.items() if k != "centre"},
+                                 why=o["why"], diag=o.get("diag")))
+            lo1, hi2 = Fraction(job["g_lo"]), Fraction(job["g_hi"])
+            w = hi2 - lo1
+            mid = (lo1 + hi2) / 2
+            subs = [(lo1, _dec_round(mid + w / 20, down=False)), (_dec_round(mid - w / 20, down=True), hi2)]
+            sub_plan = []
+            for a_, b_ in subs:
+                gc = (a_ + b_) / 2
+                om, A = trk_at_any(K, centres, gc)
+                crec = centre_record(_dstr(gc), om, A, [])
+                centres[crec["g"]] = crec
+                _append(cpath, crec)
+                sub_plan.append(dict(kind="piece", hess=1, g_lo=_dstr(a_), g_hi=_dstr(b_), centre=crec,
+                                     label=job["label"] + "s" + str(len(sub_plan))))
+            hb2 = HessBound([centre_from_record(p["centre"]) for p in sub_plan], sub_plan[0]["g_lo"],
+                            sub_plan[-1]["g_hi"], Rs, "1", None, log=lambda *a, **k: None)
+            state2 = dict(hess={1: hb2}, eta=eta, rstar=rstar)
+            with ctxp.Pool(workers, initializer=_worker_init, initargs=(state2,)) as pool:
+                outs2 = pool.map(_piece_job, sub_plan, chunksize=1)
+            for sj, so in zip(sub_plan, outs2):
+                if not so["ok"]:
+                    _append(runlog, dict(type="failure", group=gid, job={k: v for k, v in sj.items() if k != "centre"},
+                                         why=so["why"], diag=so.get("diag")))
+                    raise RuntimeError(f"piece {sj['label']} failed after splitting: {so['why'][:200]}")
+                so["hess_record"] = hb2.record()
+                done.append((sj, so))
+        done.sort(key=lambda t: Fraction(t[0]["g_lo"]))
+        for job, o in done:
+            _append(runlog, dict(type="piece", group=gid, rec=o["rec"], wall=o["wall"],
+                                 hess_record=o.get("hess_record")))
+        pt = outs[-1]
+        _append(runlog, dict(type="point", group=gid, ok=pt["ok"], g=jobs[-1]["g_lo"], delta_requested=delta_s,
+                             float_leading_exponent=lead, rec=pt.get("rec"), stability=pt.get("stability"),
+                             why=pt.get("why"), wall=pt["wall"]))
+        # ---- adapt the width factor to the achieved Y0 / cap
+        us = []
+        for job, o in done:
+            dg = o["rec"]["diag"]
+            cap = (1 - dg["Z1"]) ** 2 / (2 * dg["Z2"])
+            us.append(dg["Y0"] / cap)
+        umax = max(us)
+        fails = sum(1 for o in outs[:-1] if not o["ok"])
+        factor_next = factor * min(1.4, max(0.6, 0.55 / umax)) * (0.8 if fails else 1.0)
+        MHf = MH_float(hb)
+        _append(runlog, dict(type="group", group=gid, g_lo=_dstr(plan[0]["g_lo"]), g_hi=_dstr(plan[-1]["g_hi"]),
+                             n_pieces=len(done), failures=fails, eta=eta, r_star=rstar, R=Rs,
+                             hess=hb.record(), MH_float=MHf.tolist(), factor=factor, factor_next=factor_next,
+                             overlap_frac=str(ovl), Y0_over_cap=us, predicted=pred, wall_s=round(time.time() - tg, 1)))
+        log(f"group {gid}: [{_dstr(plan[0]['g_lo'])}, {_dstr(plan[-1]['g_hi'])}] {len(done)} pieces, {fails} split, "
+            f"Y0/cap max {umax:.2f}, factor {factor:.3f} -> {factor_next:.3f}, point stability "
+            f"{'ok' if pt['ok'] else 'FAILED: ' + str(pt.get('why'))[:120]}, {time.time() - tg:.0f} s")
+        factor, eta_prev, MH_prev, first = factor_next, np.array([float(Fraction(e)) for e in eta]), MHf, False
+        lastp = done[-1][0]
+        next_lo = _dec_round(Fraction(lastp["g_hi"]) - ovl * (Fraction(lastp["g_hi"]) - Fraction(lastp["g_lo"])), True)
+        gid += 1
+        if Fraction(lastp["g_hi"]) >= Fraction(g_stop):
+            break
+    return gid
+
+
+def trk_at_any(K, centres, gc):
+    """Float centre at gc from the nearest stored centre (untrusted)."""
+    best = min(centres.values(), key=lambda c: abs(Fraction(c["g"]) - gc))
+    om, A = centre_from_record(best)
+    trk = FloatTrack(K, Fraction(best["g"]), float(om), centre_float(A))
+    return trk.at(gc)
+
+
+def obj_from_record(rec, centre):
+    """Exact data for gluing from a piece record and its centre record."""
+    om, A = centre_from_record(centre)
+    if centre_digest(om, A) != rec["centre_sha256"]:
+        raise ValueError("centre does not match the piece record")
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        ETA = [ex._exact_dyadic_param(e, "eta") for e in rec["eta"]]
+        nu = ex._exact_dyadic_param(rec["settings"]["rho0"], "rho0").exp()
+        r_lo = ct.text_to_dyadic(rec["r_existence"]["hex"])
+        r_hi = ct.text_to_dyadic(rec["r_uniqueness"]["hex"])
+    finally:
+        ctx.prec = old
+    return dict(om_bar=om, A=A, ETA=ETA, nu=nu, r_lo=r_lo, r_hi=r_hi)
+
+
+def collect(K=16, write=True, log=print):
+    """Re-check gluing in Arb from the stored exact data and write results/fourier-branch-gks.json."""
+    runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
+    recs = _read_jsonl(runlog)
+    centres = {r["g"]: r for r in _read_jsonl(cpath)}
+    pieces = sorted([r for r in recs if r["type"] == "piece"], key=lambda r: Fraction(r["rec"]["g_lo"]))
+    groups = [r for r in recs if r["type"] == "group"]
+    points = [r for r in recs if r["type"] == "point"]
+    fails = [r for r in recs if r["type"] == "failure"]
+    glue_recs = []
+    connected_to = None
+    for i in range(len(pieces) - 1):
+        pa, pb = pieces[i]["rec"], pieces[i + 1]["rec"]
+        oa = obj_from_record(pa, centres[pa["centre_g"]])
+        ob = obj_from_record(pb, centres[pb["centre_g"]])
+        g = glue(dict(pa, _obj=oa), dict(pb, _obj=ob))
+        glue_recs.append(g)
+        if not g["glued"] and connected_to is None:
+            connected_to = i
+    n_conn = len(pieces) if connected_to is None else connected_to + 1
+    lo_all, hi_all = pieces[0]["rec"]["g_lo"], pieces[n_conn - 1]["rec"]["g_hi"]
+    table = []
+    for r in pieces:
+        p = r["rec"]
+        table.append(dict(g=[p["g_lo"], p["g_hi"]], g_centre=p["centre_g"],
+                          T_ms=[p["T_ms"]["lower"]["dec"], p["T_ms"]["upper"]["dec"]],
+                          r_existence=p["r_existence"], r_uniqueness=p["r_uniqueness"], Y0=p["Y0"], Z1=p["Z1"],
+                          Z2=p["Z2"], r_star=p["r_star"], contraction=p["contraction_at_r_uniqueness"]["approx"],
+                          Y0_over_cap=p["diag"]["Y0"] / ((1 - p["diag"]["Z1"]) ** 2 / (2 * p["diag"]["Z2"])),
+                          eta=p["eta"], centre_sha256=p["centre_sha256"], hessian_cover=p["hessian_cover"],
+                          label=p["label"], wall_s=r["wall"]))
+    stab = []
+    for r in points:
+        d = dict(g=r["g"], ok=r["ok"], delta_requested=r["delta_requested"],
+                 float_leading_exponent=r["float_leading_exponent"], wall_s=r["wall"], uniform=False,
+                 note="pointwise: Stage S at this single g only (section 6)")
+        if r["ok"]:
+            s = r["stability"]
+            d.update(delta=s["delta"], multiplier_bound_full_period=s["multiplier_bound_full_period"],
+                     dist_min=s["dist_min"], eps_max=s["eps_max"], point_T_ms=r["rec"]["T_ms"],
+                     point_r_existence=r["rec"]["r_existence"])
+        else:
+            d["why"] = r.get("why")
+        stab.append(d)
+    # comparisons
+    with open(os.path.join(RESULTS, "fourier-existence-N1.json")) as fh:
+        se = json.load(fh)
+    cmp_ = []
+    for r in pieces:
+        p = r["rec"]
+        if Fraction(p["g_lo"]) <= Fraction(G_STAGE_E) <= Fraction(p["g_hi"]):
+            a_, b_ = Fraction(p["T_ms"]["lower"]["dec"]), Fraction(p["T_ms"]["upper"]["dec"])
+            A_, B_ = Fraction(se["T_ms"]["lower"]["dec"]), Fraction(se["T_ms"]["upper"]["dec"])
+            cmp_.append(dict(piece=[p["g_lo"], p["g_hi"]], stage_E_T_ms=[se["T_ms"]["lower"]["dec"],
+                                                                         se["T_ms"]["upper"]["dec"]],
+                             overlaps=bool(a_ <= B_ and A_ <= b_), stage_E_inside=bool(a_ <= A_ and B_ <= b_)))
+    out = dict(
+        what="Rec 2: certified branch of the single-cell periodic orbit of Erhardt's 18-state TP06 endocardial model "
+             "over G_Ks intervals toward the first Hopf point (fourier/branch.py)",
+        status="computed; awaiting adversarial review",
+        theorem=theorem_text(lo_all, hi_all),
+        g_covered=[lo_all, hi_all], connected_pieces=n_conn, n_pieces=len(pieces),
+        largest_g_reached=hi_all, hopf_point_erhardt=str(G_HOPF),
+        distance_to_hopf=float(G_HOPF - Fraction(hi_all)),
+        pieces=table, gluing=glue_recs, stability=stab, stability_uniform=False,
+        stability_note=("Stage S was run at one exact g per group (pointwise). Uniform stability on a piece is NOT "
+                        "claimed: see fourier/branch.py section 6 for what it would need."),
+        comparison_stage_E=cmp_, failures_split=len(fails),
+        groups=[{k: v for k, v in g.items() if k != "MH_float"} for g in groups],
+        settings=dict(DEFAULTS, K=K),
+        sources_sha256={p: sha256(os.path.join(ROOT, p)) for p in SOURCES},
+        run_log=os.path.relpath(runlog, ROOT), run_log_sha256=sha256(runlog),
+        centres_file=os.path.relpath(cpath, ROOT), centres_sha256=sha256(cpath),
+        python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
+        machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
+        total_piece_wall_s=round(sum(r["wall"] for r in pieces), 1))
+    if write:
+        path = os.path.join(RESULTS, "fourier-branch-gks.json")
+        with open(path, "w") as fh:
+            json.dump(out, fh, indent=1)
+            fh.write("\n")
+        log(f"wrote {path}: {len(pieces)} pieces, connected [{lo_all}, {hi_all}]")
+    return out
+
+
+def theorem_text(lo_, hi_):
+    return (f"For Erhardt's 18-state TP06 endocardial cell (single cell) and every G_Ks in [{lo_}, {hi_}] there are "
+            "omega*(G_Ks) > 0 and a real 2 pi periodic phi*(.; G_Ks), analytic on |Im theta| < 1/4, with "
+            "omega* phi*' = f(phi*; G_Ks) and Im of the first Fourier coefficient of phi*_V equal to 0, such that, on "
+            "each piece listed, (omega*, Fourier coefficients of phi*) is the only zero of F(.; G_Ks) in the piece's "
+            "uniqueness ball about its centre (X = C x (l^1_nu)^18, nu = e^{1/4}, the piece's weights) and lies in its "
+            "existence ball; z(t) = phi*(omega* t) is a periodic orbit of minimal period T = 2 pi / omega* with T in the "
+            "piece's T_ms enclosure for every G_Ks of the piece; G_Ks -> (omega*, phi*) is continuous on the whole "
+            "interval (Lipschitz on each piece, pieces glued by ball inclusion on their overlaps), so the orbits form "
+            "one continuous branch. Stability is certified only at the listed points (pointwise, Stage S).")
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--explore", action="store_true")
+    ap.add_argument("--run", action="store_true")
+    ap.add_argument("--collect", action="store_true")
     ap.add_argument("--K", type=int, default=16)
+    ap.add_argument("--g-stop", default="0.02790")
+    ap.add_argument("--workers", type=int, default=2)
+    ap.add_argument("--per-group", type=int, default=8)
+    ap.add_argument("--budget", type=float, default=3300)
     a = ap.parse_args()
     if a.explore:
         out = explore(EXPLORE_GRID, K=a.K)
@@ -1430,6 +1819,10 @@ def main():
                                 "condition; Hill-matrix Floquet exponents; predicted admissible half-widths",
                            K=a.K, points=out), fh, indent=1)
         print("wrote", path)
+    if a.run:
+        run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget)
+    if a.collect:
+        collect(K=a.K)
 
 
 if __name__ == "__main__":
