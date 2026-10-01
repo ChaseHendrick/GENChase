@@ -112,7 +112,11 @@ class DomainError(ArithmeticError):
 
 @contextlib.contextmanager
 def precision(bits=None):
-    """Run the body at `bits` of working precision (None: DEFAULT_PREC), restoring the previous value afterwards."""
+    """Run the body at `bits` of working precision (None: DEFAULT_PREC), restoring the previous value afterwards.
+
+    Note: None means DEFAULT_PREC (128 bits), NOT the surrounding precision, so every public function called with
+    prec=None runs at 128 bits even inside an outer precision(256) block (fourier_eval.precision(None) instead leaves
+    the precision unchanged). Pass prec explicitly when a caller needs more than 128 bits. Sound either way."""
     old = ctx.prec
     ctx.prec = int(DEFAULT_PREC if bits is None else bits)
     try:

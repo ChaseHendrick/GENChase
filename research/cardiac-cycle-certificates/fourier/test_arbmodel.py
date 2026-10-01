@@ -17,7 +17,7 @@
     last digit, one at a time; the exponent sign of 3.1e5, 2.5428e4 and 6.948e-6 flipped; each Jacobian column
     dropped; each dual-number rule falsified (one of them by a relative 2^-100 only); the CAPD overlap with one decimal
     perturbed; the reference evaluated with its binary float literals instead of the decimals; a ring with the
-    coupling sign flipped; the N = 63 damping against N = 64.
+    coupling sign flipped; a rotating-wave mode fed through ring_field must give -d_m (not +d_m) on V.
 Also: pinned versions and hashes, freshness and token-by-token form of the generated file, exact decimal and scale
 balls, scales and parameters against the CAPD sources, the ring coupling, the Fourier damping symbol, domain guards and
 a parameter interval.
@@ -681,11 +681,37 @@ def test_damping_symbol():
         for N in range(8, 200):
             assert box.contains(am.damping(5, N=N)), N
         assert box.contains(am.damping(5, eps=0))
+        # sanity only (these cannot catch a sign error; the sign is fixed by the exp_pi_i symbol above and by
+        # test_ring_symbol_consistency): N enters the symbol, and d_1 != 0.
         differ = sum(not am.damping(m, N=63).overlaps(am.damping(m, N=64)) for m in range(1, 64))
         assert differ > 0
         assert not am.damping(1, N=64).overlaps(-am.damping(1, N=64))
     return (f"{checked} (N, m) pairs: -d_m equals c (e^(-2 pi i m/N) - 2 + e^(2 pi i m/N)) and the eps = 1/N^2 form; "
             f"eps = 0 gives D (2 pi m)^2; the eps interval [0, 1/64] encloses N = 8..199; N = 63 vs 64 differ at {differ} modes")
+
+
+def test_ring_symbol_consistency():
+    """End to end: a single Fourier mode on V, x_k(theta) = z0 + amp cos(m (theta + 2 pi k/N)) e_V, put through
+    ring_field, changes cell 0's V rate (relative to the uncoupled cell) by exactly -d_m times the mode; +d_m must
+    be disjoint. This ties damping() to the ring ODE that the rotating-wave theorem is about."""
+    rec = json.load(open(os.path.join(HERE, "data", "orbit_N1_M64.json")))
+    z0 = [rec["Z"][i][0] for i in range(18)]
+    checked = 0
+    with am.precision(256):
+        for N, m in ((8, 3), (16, 1), (64, 5), (63, 7)):
+            amp = acb(fmpq(1, 100))
+            zs = []
+            for k in range(N):
+                z = [am.to_ball(v) for v in z0]
+                z[0] = z[0] + amp * acb(arb.cos_pi_fmpq(fmpq(3, 10) + fmpq(2 * m * k, N)))
+                zs.append(z)
+            out = am.ring_field(zs, am.coupling(N=N, prec=256), prec=256)
+            coup = out[0][0] - am.f(zs[0], prec=256)[0]
+            pred = -am.damping(m, N=N, prec=256) * amp * acb(arb.cos_pi_fmpq(fmpq(3, 10)))
+            assert coup.overlaps(pred), (N, m, coup, pred)
+            assert not coup.overlaps(-pred), (N, m)
+            checked += 1
+    return f"{checked} (N, m) rotating modes: ring_field coupling on V equals -d_m times the mode; +d_m disjoint"
 
 
 def test_domain_and_parameter_interval():
@@ -721,7 +747,8 @@ def test_domain_and_parameter_interval():
 TESTS = [test_flint_pinned, test_generated_file, test_decimal_and_scale_balls, test_scales_and_params_match_capd,
          test_a_field_contains_mpmath, test_a_control_float_literals, test_b_capd, test_c_jacobian,
          test_d_last_digit_mutations, test_d_exponent_sign_flips, test_d_jacobian_column_dropped,
-         test_d_dual_rules_falsified, test_ring_coupling, test_damping_symbol, test_domain_and_parameter_interval]
+         test_d_dual_rules_falsified, test_ring_coupling, test_damping_symbol, test_ring_symbol_consistency,
+         test_domain_and_parameter_interval]
 
 
 def main():

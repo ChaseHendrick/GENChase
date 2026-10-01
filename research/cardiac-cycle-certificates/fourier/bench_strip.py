@@ -35,6 +35,7 @@ import arbmodel as am  # noqa: E402
 from tp06_18d import NAMES  # noqa: E402
 import fourier_eval as fe  # noqa: E402
 
+# Session scratch input (not in the repository); pass --npz with a centre file to reproduce.
 DEFAULT_NPZ = "/tmp/claude-0/-home-user-GENChase/8e652c2a-6f64-5009-9ee8-187ba6394e5c/scratchpad/fourier/orbit_N64_M64.npz"
 SIG = 2.0 ** np.array(am.SCALE_EXP, dtype=float)
 D = 1.0 / 64000.0
@@ -212,7 +213,9 @@ def main():
         Smax = st.S_max()
         r = st.ratio()
         tails = {Kp: float(fe.tail_bound(Smax, rho, Kp + 1).mid()) for Kp in (32, 48, 64)}
-        d = dict(rho=rho, S=[float(s.mid()) for s in st.S], S_over_L=r, n_evals=st.n_evals, n_leaves=st.n_leaves,
+        # S_upper: exact upper ends as m*2^e (binary, no rounding); the float fields are diagnostics, not bounds.
+        d = dict(rho=rho, S_upper=["%d*2^%d" % s.upper().mid().man_exp() for s in st.S],
+                 S_diagnostic_float=[float(s.mid()) for s in st.S], S_over_L=r, n_evals=st.n_evals, n_leaves=st.n_leaves,
                  n_nonfinite=st.n_nonfinite_evals, n_unresolved=st.n_unresolved, min_leaf_width=st.min_leaf_width,
                  seconds=st.seconds, tail_at_Kp_plus_1=tails)
         covers.append(d)

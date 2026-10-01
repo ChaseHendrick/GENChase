@@ -12,7 +12,7 @@ the strip bound S must be at least the exact strip sup where that is known in cl
   * a polynomial f of a random complex trigonometric polynomial: exact coefficients by convolution;
   * g = 2 cos(M theta) with M nodes: the case where Lemma 3 is tight (c_0 = 0 but c_hat_0 = 2).
 Negative controls (each must be DETECTED: a true value falls outside, or a check fails, or the code refuses):
-understated S, rho beyond the analyticity strip, a cover of the edges only, an unguarded log, the aliasing term
+understated S, a wrong derivative in the centred form (half, zero), rho beyond the analyticity strip, a cover of the edges only, an unguarded log, the aliasing term
 removed, the alias bound computed for M + 1 nodes when M were used, and a cover of part of the period only.
 """
 import math
@@ -254,6 +254,51 @@ def _tight():
     return _TIGHT
 
 
+def _exp_df(scale=1):
+    """Derivative black box for f = exp: (Y, J) with J = scale * exp (scale = 1 is correct)."""
+    from flint import acb_mat
+    return lambda z: ([guarded_exp(z[0])], acb_mat([[scale * guarded_exp(z[0])]]))
+
+
+def test_centred_form():
+    """The centred (mean-value) bound with a correct derivative: S >= the closed-form strip sup, for exp(a cos theta)
+    and for 1/(b - cos theta); and it is not looser than the naive cover by more than its rtol."""
+    from flint import acb_mat
+    for a, rho in ((2.0, 1.0), (0.5, 2.0), (5.0, 1.0)):
+        f, phi = exp_cos(a)
+        st = strip_sup(f, phi, rho, df=_exp_df(), rtol=0.01)
+        with precision(REF_PREC):
+            exact = (arb(a) * arb(rho).cosh()).exp()
+        assert st.params["centred"] and st.S[0] >= exact, (a, rho, st.S[0], exact)
+        enc = fourier_coefficients(f, phi, rho, 32, 15, S=st)
+        assert misses(enc, 0, lambda k: bessel(k, a)) == []
+    b, rho = 1.5, 0.75                                   # arccosh 1.5 = 0.962 > rho
+    phi = TrigPoly([[-0.5, b, -0.5]])                    # b - cos theta
+    f = lambda z: [1 / z[0]]
+    df = lambda z: ([1 / z[0]], acb_mat([[-1 / (z[0] * z[0])]]))
+    st = strip_sup(f, phi, rho, df=df, rtol=0.01)
+    with precision(REF_PREC):
+        exact = 1 / (arb(b) - arb(rho).cosh())
+    assert st.S[0] >= exact, (st.S[0], exact)
+
+
+def test_stripsup_identity():
+    """fourier_coefficients refuses a StripSup made at another rho, for another phi, or over the edges only."""
+    f, phi = exp_cos(2.0)
+    st = strip_sup(f, phi, 1.0, rtol=0.1)
+    assert fourier_coefficients(f, phi, 1.0, 16, 7, S=st).S_source == "strip"
+    _, phi2 = exp_cos(2.5)
+    edges = sup_over_rectangles(f, phi, 1.0, [(0, 1, -1, fmpq(-1, 2)), (0, 1, fmpq(1, 2), 1)], rtol=0.1)
+    for bad in (lambda: fourier_coefficients(f, phi, 0.5, 16, 7, S=st),
+                lambda: fourier_coefficients(f, phi2, 1.0, 16, 7, S=st),
+                lambda: fourier_coefficients(f, phi, 1.0, 16, 7, S=edges)):
+        try:
+            bad()
+            raise AssertionError("accepted a StripSup that does not belong to this call")
+        except ValueError:
+            pass
+
+
 def test_tight_case():
     """g = 2 cos(M theta) with M nodes, rho = 1, M = 8: c_0 = 0, c_hat_0 = 2, and Lemma 3 gives
     E_0 = 2 cosh(8) * 2 e^{-8} / (1 - e^{-8}) = 2 (1 + e^{-16}) / (1 - e^{-8}) = 2.00067..., tight to 3.4e-4."""
@@ -288,8 +333,10 @@ def nc_understated_S_tight():
     return all(out)
 
 
-def nc_understated_S_bessel():
-    """exp(a cos theta): 0.9 S fails the closed-form check S >= exp(a cosh rho) in every case."""
+def nc_cover_not_loose_bessel():
+    """Not a soundness control (an understated S is never fed to the DFT here): the cover's S is within 10 per cent
+    of the exact strip sup, so 0.9 S fails the closed-form check S >= exp(a cosh rho) in every case. This shows the
+    acceptance check in test_bessel is not trivially satisfied by a hugely inflated S."""
     hits = []
     for a, rho, M in BESSEL_CASES:
         f, phi = exp_cos(a)
@@ -297,6 +344,29 @@ def nc_understated_S_bessel():
         with precision(REF_PREC):
             hits.append(not (st.S[0] * arb("0.9") >= (arb(a) * arb(rho).cosh()).exp()))
     return all(hits)
+
+
+def _wrong_derivative(scale):
+    """Detected if the cover refuses (centred and naive balls disjoint) or its S misses the exact strip sup."""
+    a, rho = 2.0, 1.0
+    f, phi = exp_cos(a)
+    with precision(REF_PREC):
+        exact = (arb(a) * arb(rho).cosh()).exp()
+    try:
+        st = strip_sup(f, phi, rho, df=_exp_df(scale), rtol=0.01)
+    except ValueError:
+        return True
+    return not st.S[0] >= exact
+
+
+def nc_half_derivative():
+    """A derivative black box returning half of exp' (centred form)."""
+    return _wrong_derivative(0.5)
+
+
+def nc_zero_derivative():
+    """A derivative black box returning 0."""
+    return _wrong_derivative(0)
 
 
 def nc_widened_rho_pole():
@@ -385,7 +455,7 @@ def nc_partial_period():
     return (not part.S[0] >= exact) and full.S[0] >= exact
 
 
-NEGATIVE_CONTROLS = [nc_understated_S_tight, nc_understated_S_bessel, nc_widened_rho_pole, nc_widened_rho_branch,
+NEGATIVE_CONTROLS = [nc_understated_S_tight, nc_cover_not_loose_bessel, nc_half_derivative, nc_zero_derivative, nc_widened_rho_pole, nc_widened_rho_branch,
                      nc_no_alias, nc_M_plus_one, nc_partial_period]
 
 
@@ -395,7 +465,7 @@ def test_negative_controls():
 
 
 TESTS = [test_primitives, test_cover_tiles, test_bessel, test_vector_stub, test_log_stub, test_trig_poly_stub,
-         test_tight_case, test_api_guards]
+         test_centred_form, test_stripsup_identity, test_tight_case, test_api_guards]
 
 
 if __name__ == "__main__":

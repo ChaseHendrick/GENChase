@@ -115,6 +115,7 @@ M, k, K', nu; S is an exact Arb number rounded up by acb.abs_upper.
 """
 from __future__ import annotations
 
+import hashlib
 import heapq
 import math
 import time
@@ -235,6 +236,16 @@ class TrigPoly:
     def coeff(self, i: int, m: int) -> acb:
         return self.coeffs[i][m + self.K] if abs(m) <= self.K else acb(0)
 
+    def digest(self) -> str:
+        """SHA-256 of the exact coefficient balls (midpoint and radius mantissa/exponent pairs): ties a StripSup to
+        the phi it was computed for, so that fourier_coefficients can refuse a bound made for another phi."""
+        h = hashlib.sha256(f"{self.n} {self.K}".encode())
+        for r in self.coeffs:
+            for c in r:
+                for part in (c.real, c.imag):
+                    h.update(repr((part.mid().man_exp(), part.rad().man_exp())).encode())
+        return h.hexdigest()
+
     def powers(self, theta: acb) -> List[acb]:
         """[e^{i m theta} for m = -K..K] as balls containing the values for every theta in the ball theta."""
         K = self.K
@@ -278,6 +289,7 @@ class StripSup:
     prec: int
     params: dict = dc_field(default_factory=dict)
     leaves: Optional[list] = None    # [(xl, xr, yl, yr)] exact rationals, only with keep_leaves=True
+    phi_digest: str = ""             # TrigPoly.digest() of the phi the cover was computed for
 
     def S_max(self) -> arb:
         out = self.S[0]
@@ -365,7 +377,13 @@ def _evaluate_boxes(f, df, phi: "TrigPoly", boxes, two_pi: arb, rho_a: arb):
                 gi = Gp[i, 0]
                 if not gi.is_finite():
                     continue
-                ui = (Yc[i] + gi * d).abs_upper()
+                cen = Yc[i] + gi * d
+                # Both cen and Yb[i] contain g_i(theta) for every theta in B, so they must meet. Disjoint balls prove
+                # that F or DF breaks its contract (e.g. a wrong derivative); refuse rather than use either.
+                if not cen.overlaps(Yb[i]):
+                    raise ValueError(f"centred and naive enclosures of component {i} are disjoint on a box: "
+                                     "DF is not a valid derivative enclosure of F")
+                ui = cen.abs_upper()
                 if ui < u[i]:
                     u[i] = ui
         l = [a if a > b else b for a, b in ((yc.abs_lower(), yb.abs_lower()) for yc, yb in zip(Yc, Yb))]
@@ -507,7 +525,7 @@ def sup_over_rectangles(f: Callable, phi: "TrigPoly", rho, rects, *, df: Optiona
                         seconds=time.time() - t0, prec=prec,
                         params=dict(rtol=rtol, atol=atol, nx=nx, max_evals=max_evals, min_width=min_width,
                                     centred=df is not None),
-                        leaves=[b for b, _, _ in accepted] if keep_leaves else None)
+                        leaves=[b for b, _, _ in accepted] if keep_leaves else None, phi_digest=phi.digest())
 
 
 def strip_sup(f: Callable, phi: "TrigPoly", rho, **kw) -> StripSup:
@@ -620,6 +638,7 @@ class FourierEnclosure:
     strip: Optional[StripSup]
     seconds: float
     prec: int
+    S_source: str = "computed"       # "computed" or "strip" (checked); "raw" = caller-supplied, unchecked (tests)
 
     def coeff(self, i: int, k: int) -> acb:
         if abs(k) > self.Kp:
@@ -640,16 +659,32 @@ def fourier_coefficients(f: Callable, phi: TrigPoly, rho, M: int, Kp: int, *, S:
                          prec: int = 128, strip_kw: Optional[dict] = None) -> FourierEnclosure:
     """The Theorem of section 4: balls for c_{i,k}[f o phi], |k| <= K' < M, plus the Cauchy tail.
 
-    If S is None the strip bound is computed by strip_sup (the only way to get the certificate). Passing S is for
-    callers that already hold a certified bound for the same f, phi and rho (and for the tests' negative controls).
+    If S is None the strip bound is computed by strip_sup. S may be a StripSup from an earlier cover: it is then
+    checked to be a full-strip cover (not edges only) at exactly this rho and for exactly this phi (TrigPoly.digest);
+    that f is the same black box remains the caller's responsibility. A plain sequence of bounds is NOT checked at
+    all and is meant only for the tests and their negative controls; the enclosure records S_source = "raw" then.
     """
     t0 = time.time()
     if not (0 <= Kp < M):
         raise ValueError("need 0 <= K' < M")
     strip = None
+    source = "computed"
     if S is None:
         strip = strip_sup(f, phi, rho, **(strip_kw or {}))
         S = strip.S
+    elif isinstance(S, StripSup):
+        strip, source = S, "strip"
+        with precision(prec):
+            rho_chk = _exact_positive(rho, "rho")
+        if not strip.full_strip:
+            raise ValueError("the StripSup is not a full-strip cover")
+        if not (strip.rho.is_exact() and rho_chk.is_exact() and strip.rho == rho_chk):
+            raise ValueError("the StripSup was computed at a different rho")
+        if strip.phi_digest != phi.digest():
+            raise ValueError("the StripSup was computed for a different phi")
+        S = strip.S
+    else:
+        source = "raw"
     with precision(prec):
         rho_a = _exact_positive(rho, "rho")
         S = [s if isinstance(s, arb) else arb(s) for s in S]
@@ -658,4 +693,5 @@ def fourier_coefficients(f: Callable, phi: TrigPoly, rho, M: int, Kp: int, *, S:
     if len(C_hat) != len(S):
         raise ValueError("S has the wrong number of components")
     c = enclose_coefficients(C_hat, S, rho_a, M, Kp, prec=prec)
-    return FourierEnclosure(c=c, S=S, rho=rho_a, M=M, Kp=Kp, strip=strip, seconds=time.time() - t0, prec=prec)
+    return FourierEnclosure(c=c, S=S, rho=rho_a, M=M, Kp=Kp, strip=strip, seconds=time.time() - t0, prec=prec,
+                            S_source=source)
