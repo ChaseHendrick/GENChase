@@ -3,7 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
-## 2.2.4 (2026-09-29)
+## 2.2.4 (2026-09-30)
+
+**DOI:** [10.5281/zenodo.23050561](https://doi.org/10.5281/zenodo.23050561). Publication / Preprint.
 
 Figure layout update. Moves circulation, radius, angle and path-length labels below the spiral diagrams, curve keys above the minima graph and the Euler/SQG bound values below the alpha-model graph. All three vector figures and the manuscript PDF were rebuilt and inspected at manuscript scale. Before/after plotted-array hashes match. Scientific captions, numerical inputs, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 

@@ -177,5 +177,5 @@ GENChase: the companion repository does not carry `notes/`.
   the response to each finding: `notes/review-identities-4-2026-09-27.md`.
 - [x] **7. Reproducible.** The programs in `code/` run from the companion (release 2.2.0,
   doi:10.5281/zenodo.22994932, made 2026-09-27; release 2.1.0, doi:10.5281/zenodo.22966989, before it); `paper-check` and `paper-sync --check` pass
-  (2026-09-27, after the fixes of the fourth 2.2.0 reading), and the stated counts are current: 42 pages, 43
-  references, 152 checks in `verify_general_mu.py` and 103 in `verify_central_vortex.py`.
+  (2026-09-27, after the fixes of the fourth 2.2.0 reading), and the stated counts are current: 43 pages as built
+  with Tectonic, 43 references, 152 checks in `verify_general_mu.py` and 103 in `verify_central_vortex.py`.

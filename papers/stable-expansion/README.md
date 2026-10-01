@@ -72,8 +72,11 @@ python3 -m pip install -r code/requirements.txt
 python3 code/verify_stable_expansion.py
 python3 code/survey_expansions.py
 python3 code/plot_stable_expansion.py
-cd paper && pdflatex stable-expansion.tex && pdflatex stable-expansion.tex && pdflatex stable-expansion.tex
+cd paper && tectonic stable-expansion.tex
 ```
+
+The committed PDF is built with Tectonic. Three runs of pdflatex also build it, but its line and page breaks may differ
+slightly.
 
 The plot can be regenerated directly from the stored report without rerunning the verification or survey. Its lines connect recorded samples and do not represent certified error bounds.
 

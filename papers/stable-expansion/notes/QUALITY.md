@@ -68,4 +68,4 @@ GENChase: the companion repository does not carry `notes/`.
   the five-vortex recipe, one shared stable5 test that the negative control runs, and a Krawczyk run that must fail,
   with the radii asserted); 70 checks. The owner signed off on this record on 2026-09-26.
 - [x] **7. Reproducible.** `verify_stable_expansion.py` (70 checks) and `survey_expansions.py`; `paper-check` passes;
-  20 pages.
+  21 pages as built with Tectonic.

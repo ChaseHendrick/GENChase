@@ -20,7 +20,8 @@ the sum of the squares of its circulations, measured in units of the strong one;
 $P$ to grow like the inverse of the weak circulations, with an explicit constant. In particular no such configuration
 collapses without rotation, whatever the number of vortices. We prove that a weak triple of signs $(+,+,-)$ beside a
 positive strong vortex gives collapses with $P$ below $\sqrt{3}/2$ by an amount proportional to the weak circulations,
-so that $\sqrt{3}/2$ is a limit and not a bound at a fixed strength; a formal expansion, confirmed by high-precision
+so that $\sqrt{3}/2$ is a limit and not a bound at a fixed strength, and that the constant cannot be increased for any
+number of weak vortices from two on; a formal expansion, confirmed by high-precision
 numerical collapses computed at fifty digits, extends the first-order term to clusters of any size and explains why four
 vortices are the first to go below $\sqrt{3}/2$. We then map, numerically, the least $\alpha$ at which $N$ vortices can
 collapse without rotation along two families: the least $N$ is $5$, $6$, $8$, $11$, $17$, $29$ and $60$ for $\alpha =
@@ -103,8 +104,11 @@ python3 code/plot_phase_diagram.py
 python3 code/verify_family_structure.py
 python3 code/verify_stability.py
 python3 code/verify_continuum_limit.py
-cd paper && pdflatex collapse-without-rotation.tex && pdflatex collapse-without-rotation.tex && pdflatex collapse-without-rotation.tex
+cd paper && tectonic collapse-without-rotation.tex
 ```
+
+The committed PDF is built with Tectonic. Three runs of pdflatex also build it, but its line and page breaks may differ
+slightly.
 
 Each verification program exits with an error if any check fails and writes its report to `data/`.
 

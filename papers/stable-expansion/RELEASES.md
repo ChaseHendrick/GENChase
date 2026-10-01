@@ -3,7 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
-## 1.0.4 (2026-09-29)
+## 1.0.4 (2026-09-30)
+
+**DOI:** [10.5281/zenodo.23050580](https://doi.org/10.5281/zenodo.23050580). Publication / Preprint.
 
 Figure layout update. Replaces the legends inside the convergence graphs with one shared legend below both panels and adds margin space for the final growth-factor tick. The vector figure and manuscript PDF were rebuilt and inspected at manuscript scale. Before/after plotted-array hashes match. Scientific captions, numerical inputs, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 

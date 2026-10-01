@@ -49,4 +49,4 @@ GENChase: the companion repository does not carry `notes/`.
   folder: sound with fixes, all applied); the whole draft (8 must-fix items, all applied; RESEARCH.md); Lemma 1,
   Theorem 3 and Corollary 3 (no mathematical error; gaps and wording fixed in ChaseHendrick/GENChase#159).
 - [x] **7. Reproducible.** Ten programs, 373 checks (376 with `--large`), each stopping on a failed check;
-  `paper-check` and `paper-sync --check` pass; 24 pages.
+  `paper-check` and `paper-sync --check` pass; 25 pages as built with Tectonic.
