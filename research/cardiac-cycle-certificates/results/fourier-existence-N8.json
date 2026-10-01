@@ -60,6 +60,8 @@
   "dec": "9.999999999999999798866477E-13",
   "approx": 1e-12
  },
+ "r_uniqueness_set_by_r_star": true,
+ "r_uniqueness_note": "r_uniqueness = min(the large root of p, r_*), rounded to a double <= r_*, with r_* the hand-set validity radius of Z2 (settings.r_star); when r_uniqueness_set_by_r_star is true it is that chosen radius, a certified contraction ball, not the largest one",
  "p_at_r_existence": {
   "hex": "-0x5300c52e0c648cdced1879f883cb77eba6aa2e58a9549b2d4ca0f77ccb3defe7p-367",
   "dec": "-1.248890468593097788194327E-34",
@@ -173,7 +175,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 7.72,
+   "seconds": 7.56,
    "phi_digest": "b56b5e047ff1296bb735c00c0201d2b1645da3f51b4463c5d8e427bc7ce3dfe0",
    "S_over_L_max": 17.024742160612774
   },
@@ -194,7 +196,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 3.27,
+   "seconds": 3.19,
    "phi_digest": "b56b5e047ff1296bb735c00c0201d2b1645da3f51b4463c5d8e427bc7ce3dfe0",
    "S_over_L_max": Infinity
   },
@@ -215,7 +217,7 @@
     "min_width": 5.960464477539063e-08,
     "centred": false
    },
-   "seconds": 7.75,
+   "seconds": 7.48,
    "phi_digest": "77f0e807b20ced44bb8ce88a6795b63b26ce2ca8cc20c403d67ff3976c68f0c3",
    "S_over_L_max": Infinity
   },
@@ -241,29 +243,29 @@
   "eta": null
  },
  "timings_s": {
-  "strip_g": 7.75,
-  "strip_J": 3.31,
-  "strip_polydisc": 7.77,
-  "dft_g": 0.25,
-  "dft_J": 0.91,
-  "build_Jfin": 0.39,
-  "A_fin": 3.74,
-  "product A_fin J_fin": 51.07,
-  "Z1 finite": 2.59,
-  "Z1 finite x tail": 32.53,
-  "tail resolvents": 11.01,
+  "strip_g": 7.58,
+  "strip_J": 3.23,
+  "strip_polydisc": 7.5,
+  "dft_g": 0.27,
+  "dft_J": 0.77,
+  "build_Jfin": 0.37,
+  "A_fin": 3.43,
+  "product A_fin J_fin": 49.38,
+  "Z1 finite": 2.54,
+  "Z1 finite x tail": 31.94,
+  "tail resolvents": 11.77,
   "Z1": 0.02,
-  "Y0": 0.22,
+  "Y0": 0.19,
   "Z2": 0.0,
   "corollaries": 0.0
  },
- "wall_s": 121.57,
+ "wall_s": 118.98,
  "status": "computed; awaiting adversarial review",
  "theorem": "For the ring of N = 8 cells (c = N^2 / 64000 per ms) of Erhardt's 18-state TP06 endocardial model at G_Ks = 0.0275, there are omega* > 0 and a real 2 pi periodic phi*, analytic on |Im theta| < rho0, such that z_j(t) = phi*(omega* t + 2 pi j / N) solves the ring ODE and phi*_V(0) = s (s the double nearest 0.2 mV); (omega*, Fourier coefficients of phi*) is the only zero of F in the ball of radius r_uniqueness about the centre in X = C x (l^1_nu)^18 (norm in the module docstring) and lies within r_existence of it; T = 2 pi / omega* lies in T_ms; phi* has minimal period 2 pi (a*_{1,V} != 0), so the solution has minimal period T, is not synchronous, and is a rotating 1-wave.",
  "centre_file": "fourier/data/centre_N8_K32.json",
  "centre_sha256": "1a2a4da2fd274f967574aef09e5563f4c8b1d0875195d5a1df2c4541ab4d6477",
  "sources_sha256": {
-  "fourier/existence.py": "d1a7cfb22e2ee7814d487ae95ace4beb63f0f21b42752bac3843ca016b638ee7",
+  "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
   "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
