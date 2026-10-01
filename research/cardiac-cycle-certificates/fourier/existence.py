@@ -190,7 +190,7 @@ class ProofFailure(RuntimeError):
 
 DEFAULTS = dict(
     rho0="1/4",            # nu = e^{rho0}
-    rho="1",               # strip of the Fourier enclosures of g and J (Lemmas 1-3 of fourier_eval)
+    rho="3/2",             # strip of the Fourier enclosures of g and J (Lemmas 1-3 of fourier_eval)
     rho2="1",              # strip of the polydisc majorant (Z2); needs rho2 > rho0
     R="1/1024",            # polydisc radius R_k (all components; scaled variables)
     L=16,                  # K' = 2K + L
