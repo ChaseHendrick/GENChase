@@ -93,7 +93,7 @@ fails. An exp overflow (exp(5(V+40)) above V of about 102 mV) terminates the pro
 check its argument (it returns NaN bounds, which later products turn into 0), so every log is computed as
 2 log(sqrt(a)) and MpInterval sqrt refuses a negative argument. No run can pass silently outside the domain.
 
-**Trust boundary.** CAPD 6.1.0 (commit `03dc5628203334b214bb7d9fd63788a175521005`, built here with filib and MPFR,
+**Trust boundary (CAPD route).** CAPD 6.1.0 (commit `03dc5628203334b214bb7d9fd63788a175521005`, built here with filib and MPFR,
 unmodified), the compiler (g++ 13.3, `-frounding-math`), the processor's directed rounding, and the programs in this
 folder. The untrusted helpers (`orbit_newton.cpp`, `frame.py`) only propose a centre, a frame and radii; the
 certificate driver (`proofs/certify.py`) checks that the frame's parameters are the intended ones and records the
@@ -106,6 +106,26 @@ at its 10-iteration cap without converging. The local build uses the current win
 (`proofs/capd-6.1.0-genchase.patch`, a header-only change). Certificates record the hash of the patched header;
 records made before the patch say "conditional on the CAPD crossing issue" and are superseded by reruns.
 
+## Method 2: space-time Fourier and Hill operator (`fourier/`)
+
+This second method shares no library with the CAPD route. Its trust base is Arb, through python-flint 0.9.0, a pinned
+wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost is minutes per N, not gigabytes.
+
+* **Stage E, existence** (`fourier/existence.py`).
+  - Write the rotating 1-wave as x_j(t) = phi(omega t + 2 pi j/N). Then
+    F_m = i omega m a_m - [f o phi]_m + d_m E a_m = 0, with d_m = 4 c sin^2(pi m/N), plus a phase condition.
+  - This is solved by a radii-polynomial (Newton-Kantorovich) argument in C x (l^1_nu)^18.
+  - The bound on the nonlinear part comes from rigorous strip covers and DFTs with an aliasing bound, plus an
+    analytic tail. The second-derivative bound Z2 is a polydisc Cauchy majorant.
+  - Conjugation symmetry together with uniqueness makes the solution real.
+* **Stage S, stability** (`fourier/stability.py`, lemmas in `fourier/LEMMAS-stability.md`).
+  - The 18N Floquet multipliers are e^{mu T}, with mu in the spectrum of one Hill operator H_0 on a half-open strip
+    of height omega N. Algebraic multiplicities match.
+  - A Riesz-projection homotopy, with a Schur-complement small-gain test and a tail resolvent in power-of-two
+    weighted cell coordinates, certifies two things: H_0 has exactly one eigenvalue (0, algebraically simple) in
+    Re mu > -delta per period strip, and the multiplier 1 is simple.
+  - Stage E's ball enters through Lemma 4.1.
+
 ## Status (2026-10-01)
 
 * Model translation: checked (see above).
@@ -114,11 +134,29 @@ records made before the patch say "conditional on the CAPD crossing issue" and a
   (exact bounds in the record), inside the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet
   multipliers of modulus at most 0.998642; locally orbitally asymptotically stable. The unpatched run gave the same
   bounds.
-* Rings N = 8 and N = 16: candidates located (periods 53.58797098 and 53.58806910 ms, inside the other pipeline's
-  certified intervals); double-interval derivative enclosures measured with Perron roots 0.99996225 (N = 8) and
-  0.99997284 (N = 16), below one; the minimal-period gate passes for N = 8; certification runs in progress. A
-  128-bit centre uses about 4.7 GB at N = 8 and would need about 19 GB at N = 16 with CAPD's Lohner sets, so N >= 16
-  needs a lighter high-precision centre.
-* N = 32, 64: CAPD's generic C1 method needs memory proportional to N^2 (about 6 GB at N = 32, 22 GB at N = 64);
-  approach under design.
-* G_Ks interval (rec 2): not started.
+* **Rings, Fourier route (Stage E plus Stage S): computed for N = 1, 8, 16, 32, 64.** Each stage had an in-project
+  adversarial review, and every finding was fixed (`reviews/fourier-stage1-review-2026-10-01.md`,
+  `reviews/stability-lemmas-review-2026-10-01.md`, `reviews/stageE-existence-review-2026-10-01.md`,
+  `reviews/stageS-stability-review-2026-10-01.md`). A second reading of the fixes is pending; the records say
+  "computed; awaiting adversarial review" until it ends. No outside review has taken place.
+  - Existence (`results/fourier-existence-N*.json`):
+    - each N has a unique rotating 1-wave within about 1.6e-28 (scaled l^1_nu) of the centre;
+    - the period is enclosed to about 1e-26 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
+      53.588069103590169235937300 (16), 53.588094130318032506551540 (32) and 53.588100418317577541042130 (64), each
+      the lower end of a 1e-26 interval;
+    - the N = 1 period lies inside the CAPD record (`results/cell-gks0.0275.json`), and the N = 1, 8 and 16 periods
+      lie inside the other pipeline's certified intervals.
+  - Stability (`results/fourier-stability-N*.json`):
+    - every nontrivial Floquet multiplier has modulus at most e^{-delta T};
+    - delta = 5e-6 per ms for N = 8 to 64, and 4e-5 for N = 1;
+    - in moduli, 0.99973210 per period for N = 8 to 64, and 0.99785888 for N = 1, which is consistent with CAPD's
+      0.998642;
+    - so the orbit is locally exponentially orbitally stable with asymptotic phase.
+  - Floating-point leading exponents are -6.32e-6, -8.57e-6, -9.19e-6 and -9.34e-6 per ms for N = 8, 16, 32, 64. At
+    N = 8 the certificate closes at delta = 6.32095e-6 and fails at 6.321e-6.
+  - Identifying these waves with the branch continued from Erhardt's Hopf point is numerical, not proved.
+  - Prior-article search and readings: `notes/prior-article-rings-2026-10-01.md`, `notes/readings-rings-2026-10-01.md`
+    and RESEARCH.md.
+* Rings, CAPD route: the N = 8 and 16 candidates and Perron roots below 1 are as before. The 128-bit centre is too
+  heavy at N >= 8 on this machine. This route would be a second, time-domain proof only.
+* G_Ks interval (rec 2): in progress on the Fourier route (`fourier/branch.py`).

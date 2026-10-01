@@ -763,6 +763,24 @@ def f_and_hess(z, prm, prec=53):
     return F, H
 
 
+def dgJ_flat(z, prm, prec=53):
+    """Black box: the 324 entries d/dg (Df)_{kj} = d^2 f_k / dz_j dg_Ks (row-major), by Hess with g_Ks as a 19th variable
+    (its ball, e.g. an interval, is the base point; the derivative is enclosed over that ball)."""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        p["g_Ks"] = Hess(am.to_ball(p["g_Ks"]), {DIM: acb(1)})
+        x = [Hess(am.to_ball(zi) * s, {k: s}) for k, (zi, s) in enumerate(zip(z, am.SIG))]
+        y = fn(x, p, HessMath, acb(0))
+        out = []
+        zero = acb(0)
+        for k, yk in enumerate(y):
+            yk = _lift(yk) if not isinstance(yk, Hess) else yk
+            for j in range(DIM):
+                out.append(yk.h.get((j, DIM), zero) * am.ISIG[k])
+    return out
+
+
 def hess_flat(z, prm, prec=53):
     """Black box for fourier_eval.strip_sup: the 18 values of f, then the 18 x 171 Hessian entries (k, j <= l)."""
     F, H = f_and_hess(z, prm, prec)
@@ -919,8 +937,11 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
     prm53_c, prmG_c = params_for(gc, gc, 53), params_for(gc, gc, Pg)            # g = g_c (point)
     f53c = lambda z: am.f(z, prm53_c, prec=53)  # noqa: E731
     fGc = lambda z: am.f(z, prmG_c, prec=Pg)  # noqa: E731
-    J53 = lambda z: ex._flat(am.f_and_df(z, prm53_G, prec=53)[1])  # noqa: E731
-    JJ = lambda z: ex._flat(am.f_and_df(z, prmJ_G, prec=PJ)[1])  # noqa: E731
+    prmJ_c = params_for(gc, gc, PJ)
+    J53 = lambda z: ex._flat(am.f_and_df(z, prm53_c, prec=53)[1])  # noqa: E731
+    JJ = lambda z: ex._flat(am.f_and_df(z, prmJ_c, prec=PJ)[1])  # noqa: E731
+    D53 = lambda z: dgJ_flat(z, prm53_G, 53)  # noqa: E731
+    DJ = lambda z: dgJ_flat(z, prmJ_G, PJ)  # noqa: E731
 
     def d1_53(z):
         P = am.f_and_df(z, prm53_G, prec=53, wrt=("g_Ks",))[2]
@@ -935,21 +956,33 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
     strip_g = fe.strip_sup(f53c, phi, rho, **skw)
     strip_J = fe.strip_sup(J53, phi, rho, **dict(skw, rtol=max(skw["rtol"], 10.0), atol=1.0))
     strip_d = fe.strip_sup(d1_53, phi, rho, **skw)
-    for s in (strip_g, strip_J, strip_d):
+    strip_D = fe.strip_sup(D53, phi, rho, **dict(skw, rtol=max(skw["rtol"], 10.0), atol=1e-3))
+    for s in (strip_g, strip_J, strip_d, strip_D):
         if not s.full_strip:
             raise ProofFailure("a strip cover is not the full strip")
     clk.mark("strips")
     enc_g = fe.fourier_coefficients(fGc, phi, rho, Mn, Kp, S=strip_g, prec=Pg)
     enc_d = fe.fourier_coefficients(d1_G, phi, rho, Mn, Kp, S=strip_d, prec=Pg)
     enc_J = fe.fourier_coefficients(JJ, phi, rho, Mn, Kp, S=strip_J, prec=PJ)
-    if any(e.S_source != "strip" for e in (enc_g, enc_d, enc_J)):
+    enc_D = fe.fourier_coefficients(DJ, phi, rho, Mn, Kp, S=strip_D, prec=PJ)
+    if any(e.S_source != "strip" for e in (enc_g, enc_d, enc_J, enc_D)):
         raise ProofFailure("Fourier enclosure without a checked strip bound")
     clk.mark("dft")
     J = {nn: [[enc_J.c[DIM * r + c][nn + Kp] for c in range(DIM)] for r in range(DIM)] for nn in range(-Kp, Kp + 1)}
     SJ = [[enc_J.S[DIM * r + c] for c in range(DIM)] for r in range(DIM)]
+    D1 = {nn: [[enc_D.c[DIM * r + c][nn + Kp] for c in range(DIM)] for r in range(DIM)] for nn in range(-Kp, Kp + 1)}
+    SD = [[enc_D.S[DIM * r + c] for c in range(DIM)] for r in range(DIM)]
 
     ctx.prec = PM
     try:
+        Dfin = acb_mat(n, n)          # d_g DF(xbar; xi) on the finite modes (no phase / omega entries)
+        for i in range(DIM):
+            for m in range(-K, K + 1):
+                r = lay.idx(i, m)
+                for k in range(DIM):
+                    base = 1 + k * lay.L + K
+                    for m2 in range(-K, K + 1):
+                        Dfin[r, base + m2] = -D1[m - m2][i][k]
         Jfin = acb_mat(n, n)
         Jfin[0, lay.idx(IV, 1)] = acb(1)
         Jfin[0, lay.idx(IV, -1)] = acb(-1)
@@ -966,9 +999,10 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         Ainv = np.linalg.inv(Jmid)
         Afin = acb_mat([[acb(complex(v)) for v in row] for row in Ainv])
         Bfin = ex._identity(n) - Afin * Jfin
+        ADfin = Afin * Dfin
     finally:
         ctx.prec = old_prec
-    clk.mark("A_fin, I - A_fin J_fin")
+    clk.mark("A_fin, I - A_fin J_fin, A_fin D_fin")
 
     ctx.prec = Pg
     try:
@@ -981,33 +1015,41 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
         N0 = ex._block_colsup(colA, comp_of, mode_of, nupow)
         N1 = ex._block_colsup(colA, comp_of, mode_of, nupow, scale_by_mode=True)
 
-        # finite rows x tail columns (the phase functional has no entry on |m'| > K)
+        # finite rows x tail columns (the phase functional has no entry on |m'| > K): for the convolution operator
+        # with coefficients C (J at g_c, or D1 over G) and entrywise strip majorant SC (Stage E section 5)
         Lw = int(st["L"])
         cols_exact = [(k, mp) for k in range(DIM) for mp in list(range(K + 1, K + Lw + 1)) + list(range(-K - Lw, -K))]
-        Wm = acb_mat(n, len(cols_exact))
-        for t, (k, mp) in enumerate(cols_exact):
-            for j in range(DIM):
-                for m in range(-K, K + 1):
-                    Wm[lay.idx(j, m), t] = -J[m - mp][j][k]
-        with fe.precision(PM):
-            AW = Afin * Wm
-        colW = WROW * ex._abs_mat(AW)
-        Z1_ft = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
-        for t, (k, mp) in enumerate(cols_exact):
-            for c in range(DIM + 1):
-                Z1_ft[c][1 + k] = amax(Z1_ft[c][1 + k], up(colW[c, t] / nupow[abs(mp)]))
         mb = K + Lw + 1
         cols_b = [(k, s * mb) for k in range(DIM) for s in (1, -1)]
-        Wb = arb_mat(n, len(cols_b))
         erho = (-rho).exp()
-        for t, (k, mp) in enumerate(cols_b):
-            for j in range(DIM):
-                for m in range(-K, K + 1):
-                    Wb[lay.idx(j, m), t] = up(SJ[j][k] * erho ** abs(m - mp))
-        colWb = WROW * (Aabs * Wb)
-        for t, (k, mp) in enumerate(cols_b):
-            for c in range(DIM + 1):
-                Z1_ft[c][1 + k] = amax(Z1_ft[c][1 + k], up(colWb[c, t] / nupow[abs(mp)]))
+
+        def finite_tail(C, SC):
+            Wm = acb_mat(n, len(cols_exact))
+            for t, (k, mp) in enumerate(cols_exact):
+                for j in range(DIM):
+                    for m in range(-K, K + 1):
+                        Wm[lay.idx(j, m), t] = -C[m - mp][j][k]
+            with fe.precision(PM):
+                AW = Afin * Wm
+            colW = WROW * ex._abs_mat(AW)
+            out = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
+            for t, (k, mp) in enumerate(cols_exact):
+                for c in range(DIM + 1):
+                    out[c][1 + k] = amax(out[c][1 + k], up(colW[c, t] / nupow[abs(mp)]))
+            Wb = arb_mat(n, len(cols_b))
+            for t, (k, mp) in enumerate(cols_b):
+                for j in range(DIM):
+                    for m in range(-K, K + 1):
+                        Wb[lay.idx(j, m), t] = up(SC[j][k] * erho ** abs(m - mp))
+            colWb = WROW * (Aabs * Wb)
+            for t, (k, mp) in enumerate(cols_b):
+                for c in range(DIM + 1):
+                    out[c][1 + k] = amax(out[c][1 + k], up(colWb[c, t] / nupow[abs(mp)]))
+            return out
+
+        Z1_ft = finite_tail(J, SJ)
+        Zg_ff = ex._block_colsup(WROW * ex._abs_mat(ADfin), comp_of, mode_of, nupow)
+        Zg_ft = finite_tail(D1, SD)
         clk.mark("Z1 finite x tail")
 
         J0hat = acb_mat([[acb(J[0][r][c].real.mid()) for c in range(DIM)] for r in range(DIM)])
@@ -1036,6 +1078,26 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
                 if c >= 1 and cp >= 1:
                     b = up(b + T[c - 1][cp - 1])
                 B1[c][cp] = b
+        # tail rows of A d_gDF: (A d_gDF y)_m = -A_m sum_n D1_n y_{m-n}, |A_m D1_n| <= Abar0 |D1_n| (entrywise)
+        Ab0m = arb_mat(Abar0)
+        Tg = [[arb(0)] * DIM for _ in range(DIM)]
+        for nn in range(-Kp, Kp + 1):
+            P = Ab0m * arb_mat([[D1[nn][r][c].abs_upper() for c in range(DIM)] for r in range(DIM)])
+            w = up(nupow[abs(nn)])
+            for c in range(DIM):
+                for k in range(DIM):
+                    Tg[c][k] = Tg[c][k] + P[c, k] * w
+        P = Ab0m * arb_mat(SD)
+        for c in range(DIM):
+            for k in range(DIM):
+                Tg[c][k] = up(Tg[c][k] + P[c, k] * tailK)
+        B1g = [[None] * (DIM + 1) for _ in range(DIM + 1)]
+        for c in range(DIM + 1):
+            for cp in range(DIM + 1):
+                b = amax(Zg_ff[c][cp], Zg_ft[c][cp])
+                if c >= 1 and cp >= 1:
+                    b = up(b + Tg[c - 1][cp - 1])
+                B1g[c][cp] = b
         clk.mark("tail")
 
         # residual parts: at g_c, and the g-derivative over G
@@ -1080,9 +1142,10 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
     finally:
         ctx.prec = old_prec
     return dict(g_lo=str(g_lo), g_hi=str(g_hi), g_c=str(gc), K=K, Kp=Kp, M=Mn, settings=st, label=label,
-                om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, N0=N0, N1=N1, Abar0=Abar0,
+                om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, B1g=B1g, N0=N0, N1=N1, Abar0=Abar0,
                 Abar1=Abar1, Y0p=Y0p, Y0g=Y0g, J=J, SJ=SJ, tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))),
-                strips=dict(g=ex._strip_rec(strip_g), J=ex._strip_rec(strip_J), dg=ex._strip_rec(strip_d)),
+                strips=dict(g=ex._strip_rec(strip_g), J=ex._strip_rec(strip_J), dg_f=ex._strip_rec(strip_d),
+                            dg_J=ex._strip_rec(strip_D)),
                 timings_s=clk.marks, wall_s=round(time.time() - clk.t0, 2))
 
 
@@ -1115,17 +1178,17 @@ def assemble(bl, eta, r_star, hess, *, log=print, _mutate=()):
         if not q2 < 1:
             raise ProofFailure("nu e^{-rho2} not < 1")
         Q2 = (1 + q2) / (1 - q2)
-        B1, N0, N1, Abar0, Abar1 = bl["B1"], bl["N0"], bl["N1"], bl["Abar0"], bl["Abar1"]
+        B1, B1g, N0, N1, Abar0, Abar1 = bl["B1"], bl["B1g"], bl["N0"], bl["N1"], bl["Abar0"], bl["Abar1"]
+        dl = arb(0) if "drop_g_width" in mut else bl["delta"]
         Z1_rows = []
         for c in range(DIM + 1):
             s = arb(0)
             for cp in range(DIM + 1):
-                s += ETA[cp] * B1[c][cp]
+                s += ETA[cp] * (B1[c][cp] + dl * B1g[c][cp])
             Z1_rows.append(up(s / ETA[c]))
         Z1 = Z1_rows[0]
         for v in Z1_rows[1:]:
             Z1 = amax(Z1, v)
-        dl = arb(0) if "drop_g_width" in mut else bl["delta"]
         Y0c = [up(bl["Y0p"][c] + dl * bl["Y0g"][c]) for c in range(DIM + 1)]
         Y0 = arb(0)
         for c in range(DIM + 1):
@@ -1206,6 +1269,7 @@ def _blocks_float(bl, MH_rows=None):
     N0t, N1t = N0.copy(), N1.copy()
     N0t[1:, 1:] += Ab0
     N1t[1:, 1:] += Ab1
+    B1 = B1 + float(bl["delta"]) * f(bl["B1g"])
     return dict(B1=B1, N0=N0t[:, 1:], N1=N1t[:, 1:], Y0p=np.array([float(v) for v in bl["Y0p"]]),
                 Y0g=np.array([float(v) for v in bl["Y0g"]]), delta=float(bl["delta"]))
 
