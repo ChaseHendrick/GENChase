@@ -191,7 +191,7 @@ up, lo, amax, bound_rec, dec = ex.up, ex.lo, ex.amax, ex.bound_rec, ex.dec
 
 DEFAULTS = dict(
     rho0="1/4", rho="3/2", rho2="1",
-    L=16, M=128, prec_g=128, prec_J=128, prec_mat=128,
+    L=16, M=128, prec_g=64, prec_J=64, prec_mat=64,
     theta_target="1/2", n_explicit=12,
     strip_nx=32, strip_rtol=3.0, strip_max_evals=4000,
     hess_nx=16, hess_rtol=1.0, hess_max_evals=1500,
@@ -763,6 +763,21 @@ def f_and_hess(z, prm, prec=53):
     return F, H
 
 
+def dg_flat(z, prm, prec=53):
+    """Black box: the 18 entries d f_k / d g_Ks, by Hess with g_Ks as the only variable (its ball is the base point)."""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        p["g_Ks"] = Hess(am.to_ball(p["g_Ks"]), {0: acb(1)})
+        x = [am.to_ball(zi) * s for zi, s in zip(z, am.SIG)]
+        y = fn(x, p, HessMath, acb(0))
+        out = []
+        for k, yk in enumerate(y):
+            out.append((yk.g.get(0, acb(0)) if isinstance(yk, Hess) else acb(0)) * am.ISIG[k])
+            _chk(yk.v if isinstance(yk, Hess) else am.to_ball(yk))
+    return out
+
+
 def dgJ_flat(z, prm, prec=53):
     """Black box: the 324 entries d/dg (Df)_{kj} = d^2 f_k / dz_j dg_Ks (row-major), by Hess with g_Ks as a 19th variable
     (its ball, e.g. an interval, is the base point; the derivative is enclosed over that ball)."""
@@ -943,17 +958,12 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
     D53 = lambda z: dgJ_flat(z, prm53_G, 53)  # noqa: E731
     DJ = lambda z: dgJ_flat(z, prmJ_G, PJ)  # noqa: E731
 
-    def d1_53(z):
-        P = am.f_and_df(z, prm53_G, prec=53, wrt=("g_Ks",))[2]
-        return [P[i, 0] for i in range(DIM)]
-
-    def d1_G(z):
-        P = am.f_and_df(z, prmG_G, prec=Pg, wrt=("g_Ks",))[2]
-        return [P[i, 0] for i in range(DIM)]
+    d1_53 = lambda z: dg_flat(z, prm53_G, 53)  # noqa: E731
+    d1_G = lambda z: dg_flat(z, prmG_G, Pg)  # noqa: E731
 
     skw = dict(nx=int(st["strip_nx"]), rtol=float(st["strip_rtol"]), max_evals=int(st["strip_max_evals"]))
     log(f"piece [{g_lo}, {g_hi}] (g_c = {gc}): K = {K}, K' = {Kp}, M = {Mn}")
-    strip_g = fe.strip_sup(f53c, phi, rho, **skw)
+    strip_g = fe.strip_sup(f53c, phi, rho, **dict(skw, max_evals=min(skw["max_evals"], int(st.get("strip_g_max_evals", 1000)))))
     strip_J = fe.strip_sup(J53, phi, rho, **dict(skw, rtol=max(skw["rtol"], 10.0), atol=1.0))
     strip_d = fe.strip_sup(d1_53, phi, rho, **skw)
     strip_D = fe.strip_sup(D53, phi, rho, **dict(skw, rtol=max(skw["rtol"], 10.0), atol=1e-3))
@@ -1463,8 +1473,8 @@ def _dstr(fr):
     return ("-" if fr < 0 else "") + out
 
 
-def _float_halfwidth_table(K):
-    path = os.path.join(DATA, f"float_branch_K{K}.json")
+def _float_halfwidth_table(K, K_float=16):
+    path = os.path.join(DATA, f"float_branch_K{K_float}.json")
     with open(path) as fh:
         pts = json.load(fh)["points"]
     gs = np.array([p["g"] for p in pts])
@@ -1569,7 +1579,7 @@ def _glue_jobs(ja, oa, jb, ob, centres):
     return glue(dict(pa, _obj=ga), dict(pb, _obj=gb))
 
 
-def run(K=16, g_stop="0.02790", n_per_group=9, workers=3, budget_s=3300, factor0=0.11, u_target=0.4, log=print):
+def run(K=12, g_stop="0.02790", n_per_group=12, workers=3, budget_s=3300, factor0=0.05, u_target=0.4, log=print):
     """Adaptive branch run, resumable from the run log. Each group: centres (float continuation), blocks of the first
     piece, weights eta (float search on the rigorous blocks), r_*, radii R, one Hessian cover, then all pieces in
     worker processes; failed pieces are split, and consecutive pieces that do not glue get a bridge piece between
@@ -1648,7 +1658,15 @@ def run(K=16, g_stop="0.02790", n_per_group=9, workers=3, budget_s=3300, factor0
                      label=f"G{gid}P{j}") for j, p in enumerate(plan)]
         state = dict(hess={0: hb}, eta=eta, rstar=rstar)
         with mp.get_context("fork").Pool(workers, initializer=_worker_init, initargs=(state,)) as pool:
-            outs = pool.map(_piece_job, jobs, chunksize=1)
+            res_async = pool.map_async(_piece_job, jobs[1:], chunksize=1)
+            t0 = time.time()
+            bl0["label"] = jobs[0]["label"]
+            try:                                   # the first piece's blocks are already computed: assemble here
+                out0 = dict(ok=True, rec=_public(assemble(bl0, eta, rstar, hb, log=lambda *a, **k: None)),
+                            wall=bl0["wall_s"] + time.time() - t0)
+            except ProofFailure as e:
+                out0 = dict(ok=False, why=str(e), diag=getattr(e, "diag", None), wall=time.time() - t0)
+            outs = [out0] + res_async.get()
         for o in outs:
             o["hess_record"] = None
         done, nsplit, nbridge = [], 0, 0
@@ -1726,11 +1744,14 @@ def run(K=16, g_stop="0.02790", n_per_group=9, workers=3, budget_s=3300, factor0
     return gid
 
 
-def stability_points(gs, K=32, log=print):
+POINT_SETTINGS = dict(prec_g=256, prec_J=128, prec_mat=128, M=192, strip_max_evals=8000, strip_g_max_evals=8000)
+
+
+def stability_points(gs, K=32, run_K=12, log=print):
     """Pointwise stability (section 6): at each exact decimal g in gs, a K = 32 centre (float continuation from the
     Stage E centre, Arb chord refinement at 256 bits), a point proof (Theorem B1 with g_lo = g_hi = g, so r_lo is at
     the truncation level), then Stage S with delta = 0.85 |float leading nontrivial exponent|. Appends to the run log."""
-    runlog = RUN_LOG.format(K=16)
+    runlog = RUN_LOG.format(K=run_K)
     trk = FloatTrack(K)
     out = []
     for g in sorted(Fraction(x) for x in gs):
@@ -1745,7 +1766,8 @@ def stability_points(gs, K=32, log=print):
         rec = dict(type="point", g=_dstr(g), K=K, delta_requested=delta_s, float_leading_exponent=lead,
                    centre_refinement=hist)
         try:
-            pp = prove_piece(omb, A, _dstr(g), _dstr(g), eta=eta, r_star="1/1099511627776", hess=hb, log=log)
+            pp = prove_piece(omb, A, _dstr(g), _dstr(g), eta=eta, r_star="1/1099511627776", hess=hb, log=log,
+                             settings=POINT_SETTINGS)
             rec.update(ok_existence=True, rec=_public(pp))
             st = stability_point(pp, delta_s, log=log)
             rec.update(ok=True, stability=st)
@@ -1784,7 +1806,7 @@ def obj_from_record(rec, centre):
     return dict(om_bar=om, A=A, ETA=ETA, nu=nu, r_lo=r_lo, r_hi=r_hi)
 
 
-def collect(K=16, write=True, log=print):
+def collect(K=12, write=True, log=print):
     """Re-check gluing in Arb from the stored exact data and write results/fourier-branch-gks.json."""
     runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
     recs = _read_jsonl(runlog)
@@ -1886,25 +1908,25 @@ def main():
     ap.add_argument("--explore", action="store_true")
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--collect", action="store_true")
-    ap.add_argument("--K", type=int, default=16)
+    ap.add_argument("--K", type=int, default=12)
     ap.add_argument("--g-stop", default="0.02790")
-    ap.add_argument("--workers", type=int, default=2)
-    ap.add_argument("--per-group", type=int, default=8)
+    ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--per-group", type=int, default=12)
     ap.add_argument("--budget", type=float, default=3300)
     ap.add_argument("--stability", default="", help="comma-separated exact decimals g for pointwise Stage S")
     a = ap.parse_args()
     if a.explore:
-        out = explore(EXPLORE_GRID, K=a.K)
-        path = os.path.join(DATA, f"float_branch_K{a.K}.json")
+        out = explore(EXPLORE_GRID, K=16)
+        path = os.path.join(DATA, "float_branch_K16.json")
         with open(path, "w") as fh:
             json.dump(dict(what="float (NON-RIGOROUS) continuation of the single-cell branch with the Fourier phase "
                                 "condition; Hill-matrix Floquet exponents; predicted admissible half-widths",
-                           K=a.K, points=out), fh, indent=1)
+                           K=16, points=out), fh, indent=1)
         print("wrote", path)
     if a.run:
         run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget)
     if a.stability:
-        stability_points(a.stability.split(","))
+        stability_points(a.stability.split(","), run_K=a.K)
     if a.collect:
         collect(K=a.K)
 
