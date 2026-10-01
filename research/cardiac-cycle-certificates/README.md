@@ -155,9 +155,9 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   every stored hash. What was and was not checked is stated in the review files.
   - Existence (`results/fourier-existence-N*.json`):
     - each N has a unique rotating 1-wave within about 1.6e-28 (scaled l^1_nu) of the centre;
-    - the period is enclosed to about 1e-26 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
+    - the period is enclosed in an interval narrower than 2e-25 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
       53.588069103590169235937300 (16), 53.588094130318032506551540 (32) and 53.588100418317577541042130 (64), each
-      the lower end of a 1e-26 interval;
+      the record's outward-rounded decimal lower end (23 decimals, a trailing zero added);
     - the N = 1 period lies inside the CAPD record (`results/cell-gks0.0275.json`), and the N = 1, 8 and 16 periods
       lie inside the other pipeline's certified intervals.
   - Stability (`results/fourier-stability-N*.json`):
