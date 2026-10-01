@@ -97,5 +97,5 @@ GENChase: the companion repository does not carry `notes/`.
   numpy, SciPy, matplotlib; the mutation study uses only the standard library); their outputs are in `data/`, and
   `code/hh_make_numbers.py` and `code/hh_make_figures.py` rebuild every number, table and figure of the manuscript
   from them. `node tools/paper-check.js` and `node tools/paper-sync.js --check hh-dynamics` pass (run on 2026-09-27 after the last changes), and the
-  counts stated are current: 30 pages (README, RELEASES.md), and the check counts in the manuscript (generated),
+  counts stated are current: 29 pages in the README (30 until the shortening of 2026-10-01; RELEASES.md gives the count of the release it describes), and the check counts in the manuscript (generated),
   the README, RELEASES.md and this record, from the committed outputs.

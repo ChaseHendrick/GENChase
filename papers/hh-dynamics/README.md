@@ -4,7 +4,7 @@
 
 **Preprint**, release 1.0.5 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23050587](https://doi.org/10.5281/zenodo.23050587)); release 1.0.1 remains at [doi:10.5281/zenodo.23002943](https://doi.org/10.5281/zenodo.23002943). Not peer reviewed.
 
-**[Read the preprint (PDF, 30 pages)](paper/hh-dynamics.pdf)**, built from [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex).
+**[Read the preprint (PDF, 29 pages)](paper/hh-dynamics.pdf)**, built from [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex).
 
 ## Abstract
 
