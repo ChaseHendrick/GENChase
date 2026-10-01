@@ -266,3 +266,37 @@ step size and cost; (2) the GHK window node and its remainder bound, tested on a
 the C1 shift-map enclosure, the Krawczyk test on the 302-dimensional leaf and the stability bound. Stop if the
 pilot shows more than about 1e3 core-hours per C1 shift map. No-go for N <= 15 (no persistent reentry found) and
 for any continuum-resolved ring.
+
+## 9. Pilot stage 1 results (2026-10-01)
+
+These are measurements from the CAPD pilot in `pilot/`: `timing19.cpp`, run under the `measure.py` wrapper, which
+sets nice 10 and an address-space cap. Records are in `pilot/results/`. The cost lines are extrapolations made by
+`pilot/extrapolate.py`; they are not measurements. Nothing here is a certificate.
+
+* **One full millisecond, C1Rect2Set, order 20, dimension 304** (`ref1ms_rect20.json`, `ref1ms_rect20_steps.tsv`).
+  - The run started at the window t0 = 0.75 ms and took 373 steps, with a mean step of 0.002684 ms. The step is
+    pinned by the stiffness: h times 942 per ms is about 2.5.
+  - Cost per step was 20.5 s on one core, 7,672 s wall in total, with peak RSS 1.44 GiB.
+  - At the end, the C0 set has maximal relative diameter 3.2e-9, from an initial box of relative radius 1e-10.
+  - The derivative enclosure ends with entries up to 96 (scaled) and relative width at most 1.8e-7 on entries of
+    at least 1e-3.
+  - **The floating-point reference end state lies inside the enclosure**, at a relative distance of 5.9e-14 from
+    its midpoint. This is the first check of the 19-state CAPD translation against an independent integration
+    over a finite time.
+* **An earlier artifact, now resolved.** `probe_rect20.json` records `reference_end_state_inside_enclosure: false`.
+  That probe ran at 17:43 with a build that compared the reference at t0 + 1 ms against an enclosure that only
+  reached t0 + 0.01 ms. The guard was added before the later probes, which record null. The 1 ms run above settles
+  the question.
+* **Extrapolated cost (`results/extrapolation.json`).**
+  - About 12,600 steps per shift interval (33.82 ms).
+  - **72 to 83 core-hours per C1 shift map** at order 20. The range comes from the 0 to 15 percent allowance for
+    the crossings, the GHK node and the branch switch.
+  - That is below the section 6.6 estimate of 110 to 270 core-hours, and well under the 1e3 core-hour stop rule.
+  - On one thread, it is about 3 to 3.5 days of wall time per C1 shift map.
+* **Not measured: wrapping over a whole shift interval.** Over this window the derivative's width grew from 1e-8
+  to 1e-5 in absolute terms while its entries grew to about 96. That is consistent with the entries' own growth,
+  not with a loss of relative accuracy. Only a longer run can show whether the relative width stays small over
+  34 ms, especially through the upstroke and the -40 mV switch. Pilot steps (2) and (3) remain to be done.
+* **Verdict.** The cost criterion of the staged pilot passes on these measurements, with the caveat on wrapping
+  above. A full proof needs about 3 to 4 core-days per C1 shift map, plus the multiprecision centre. That is
+  feasible only on a dedicated multi-core machine, not in this shared session.
