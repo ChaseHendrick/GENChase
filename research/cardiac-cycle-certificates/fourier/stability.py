@@ -17,7 +17,11 @@ hold, never whether a passed inequality is true.
 Inputs (checklist "Inputs from Stage E", item C0)
   * The Stage E record results/fourier-existence-N{N}.json: omega_lo, omega_hi (exact hex), r := r_existence (exact
     hex; NOT r_uniqueness, section 4.1), the weights eta (settings), rho0, rho, rho2, R, K', M, the precisions and the
-    strip-cover parameters. The record's centre_sha256 must match the centre file.
+    strip-cover parameters, all read from the record's own settings (a missing key fails the run; nothing is taken
+    from existence.DEFAULTS). Provenance is enforced: the record's centre_sha256 must match the centre file, every
+    source hash in the record must match the current file (else the run fails: rerun Stage E first), and no source
+    nor the Stage E record may change while the run lasts (else no record is written). The Stage S record stores the
+    SHA-256 of the Stage E record file it read.
   * The enclosures [J_n] (|n| <= K'), the entrywise strip bound S_J on |Im theta| <= rho, and the polydisc bounds M_k
     (|Im theta| <= rho2, |w_j| <= R_j) are recomputed here by the same calls to fourier_eval as existence.py makes
     (strip_sup / fourier_coefficients with Stage E's settings), because existence.py does not return them. They are
@@ -46,8 +50,9 @@ Steps (checklist section 5 of the lemma file)
      g_0 - eta - |Im lambda_rl|); check gamma_r > ||Fr||; rho_T = max_r kappa_r / (gamma_r - ||Fr||).
   6. Window W = {|m| <= K_e}, n_W = 18 (2 K_e + 1). [H_WW] (S-coordinates): blocks [A_{w-w'}], diagonal blocks
      [A_0] - i [omega] w I - [d_w] E with [omega] the ball [omega_lo, omega_hi]. V, Lambda: LAPACK eigenvectors /
-     eigenvalues of the floating-point midpoint (unscaled), V transformed to S-coordinates and each column scaled to
-     unit 1-norm (exact doubles). Vi: the floating-point inverse of V (exact doubles).
+     eigenvalues of the floating-point midpoint in S-coordinates (S^{-1} H S, exact scaling), each column scaled to
+     unit 1-norm (exact doubles). LAPACK runs single-threaded (environment set before numpy is imported) and the S
+     search has no wall-time limit, so a rerun reproduces the record. Vi: the floating-point inverse of V (exact doubles).
      V^{-1} and Fm are bounded as follows (the bounds the lemmas use are fm_j and beta, upper bounds of weighted column
      sums of Fm and of V^{-1}; they are obtained without forming an inverse of the big matrix in Arb):
        C := I - Vi V (Arb), q_C := ||C||_zeta < 1 checked. Then Vi V = I - C is invertible, so V is invertible
@@ -81,7 +86,9 @@ exponents, and the weights.
 Test-only hooks (`controls`, never used by the driver; recorded in the output when used): damping_sign = -1
 (anti-diffusion), drop = [n, ...] (coefficients A_{+-n} set to zero in the proof data and, unless drop_proof_only,
 in the floating-point data that choose V, U_r, S), omega_lo (replaces Stage E's
-omega_lo), Ke (absolute window), skip_sanity, skip_count (the run then cannot certify:
+omega_lo), Ke (absolute window), lie_lead_re (the leading near-axis pair of the floating-point Lambda moved to
+this real part, V unchanged: floating data that lie), dump (floating copies of internal quantities for the
+independent checks of test_stability.py), skip_sanity, skip_count (the run then cannot certify:
 the final check of the count is repeated below).
 """
 import argparse
@@ -95,7 +102,13 @@ import sys
 import time
 from fractions import Fraction
 
-import numpy as np
+# Reproducibility (records): one LAPACK/BLAS thread, set before numpy is imported. If numpy was imported earlier by
+# the caller, the setting may not take effect; the record says which (threads_pinned_before_numpy).
+_NUMPY_PREIMPORTED = "numpy" in sys.modules
+for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "BLIS_NUM_THREADS"):
+    os.environ[_v] = "1"
+
+import numpy as np  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -201,8 +214,16 @@ def maxrss_mb():
 def stage_e_inputs(N, K=32, log=print):
     """Read the Stage E record and the centre; recompute [J_n], S_J and M_k exactly as existence.py does."""
     rpath = os.path.join(RESULTS, f"fourier-existence-N{N}.json")
-    with open(rpath) as fh:
-        rec = json.load(fh)
+    with open(rpath, "rb") as fh:
+        raw = fh.read()
+    rec_sha = hashlib.sha256(raw).hexdigest()
+    rec = json.loads(raw)
+    # provenance (enforced): every source the Stage E record hashed must equal the current file
+    bad = [p for p, h in rec["sources_sha256"].items() if sha256(os.path.join(ROOT, p)) != h]
+    missing = [p for p in ex.SOURCES if p not in rec["sources_sha256"]]
+    if bad or missing:
+        raise InputMismatch(f"Stage E sources differ from the files hashed in its record: {bad + missing}; rerun "
+                            "Stage E (existence.py) first")
     if rec["N"] != N or rec["K"] != K:
         raise InputMismatch("Stage E record does not match N, K")
     cpath = os.path.join(ROOT, rec["centre_file"])
@@ -211,9 +232,13 @@ def stage_e_inputs(N, K=32, log=print):
     Nf, Kf, om_bar, A, _ = ct.load(cpath)
     if (Nf, Kf) != (N, K) or ct.dyadic_to_text(om_bar) != rec["omega_bar"]:
         raise InputMismatch("centre does not match the record")
-    st = dict(ex.DEFAULTS)
-    st.update(rec["settings"])
-    eta = st["eta"] or ["1"] * (DIM + 1)
+    st = dict(rec["settings"])               # from the record only (no defaults filled in)
+    need = ["rho0", "rho", "rho2", "R", "L", "M", "prec_g", "prec_J", "strip_nx", "strip_rtol", "strip_max_evals",
+            "eta"]
+    miss = [k for k in need if k not in st]
+    if miss:
+        raise InputMismatch(f"Stage E record settings lack {miss}")
+    eta = st["eta"] or ["1"] * (DIM + 1)     # existence.py convention: null = all weights 1
     Kp, Mn, Pg, PJ = int(rec["Kprime"]), int(rec["M"]), int(st["prec_g"]), int(st["prec_J"])
     if Kp != 2 * K + int(st["L"]) or Mn != int(st["M"]):
         raise InputMismatch("K' or M inconsistent with the record settings")
@@ -268,7 +293,7 @@ def stage_e_inputs(N, K=32, log=print):
     srcs = ["fourier/stability.py"] + ex.SOURCES
     cur = {p: sha256(os.path.join(ROOT, p)) for p in srcs}
     stage_e_match = {p: (cur[p] == rec["sources_sha256"].get(p)) for p in ex.SOURCES}
-    return dict(rec=rec, rec_path=rpath, centre_path=cpath, om_bar=om_bar, A=A, K=K, Kp=Kp, M=Mn, settings=st,
+    return dict(rec=rec, rec_path=rpath, rec_sha256=rec_sha, centre_path=cpath, om_bar=om_bar, A=A, K=K, Kp=Kp, M=Mn, settings=st,
                 rho0=rho0, rho=rho, rho2=rho2, R=Rk, ETA=ETA, om_lo=om_lo, om_hi=om_hi, r=r_ex, J=J, SJ=SJ,
                 Mk=list(strip_P.S), sources=cur, stage_e_sources_match=stage_e_match)
 
@@ -337,7 +362,7 @@ def best_U(X, g0, delta, tols):
     return best
 
 
-def search_S(Jmid, Xs, g0, delta, tols, log=print, budget_s=600):
+def search_S(Jmid, Xs, g0, delta, tols, log=print, max_sweeps=40):
     """Floating-point search of e (S = diag 2^e, e_0 = 0) minimizing sigma_off(S) max_r rho_r(S) (route A).
     Continuous minimization of the S-weighted condition number of the eigenvectors of X_0 (row and column
     scalings), rounding, then an integer coordinate search. Untrusted: only its result is used, as exact data."""
@@ -365,7 +390,9 @@ def search_S(Jmid, Xs, g0, delta, tols, log=print, budget_s=600):
     cur = theta(e)
     t0 = time.time()
     improved = True
-    while improved and time.time() - t0 < budget_s:
+    sweeps = 0
+    while improved and sweeps < max_sweeps:          # deterministic (no wall-time limit)
+        sweeps += 1
         improved = False
         for i in range(1, DIM):
             for stp in (1, -1, 2, -2):
@@ -543,6 +570,7 @@ def _certify(N, inp, st, controls, log, mark, prec):
 
     # ---- 5. tail, route A (C2)
     tail = []
+    tail_X = []
     rho_T = arb(0)
     for rr in range(hN + 1):
         X = acb_mat([[acb(A0c[i, j]) - (dm[rr] if (i == IV and j == IV) else 0) for j in range(DIM)]
@@ -570,6 +598,7 @@ def _certify(N, inp, st, controls, log, mark, prec):
             raise ProofFailure(f"route A: gamma_{rr} = {float(gam):.4e} is not > ||F_{rr}|| = {float(Fn):.4e}")
         rho_r = up(kap / (gam - Fn))
         rho_T = amax(rho_T, rho_r)
+        tail_X.append(Xf)
         tail.append(dict(r=rr, cluster_tol=tol, kappa=float(kap), F_norm=float(Fn), gamma=float(gam),
                          rho=float(rho_r), d_r=float(dm[rr].real.mid())))
     theta_T = up(theta_c * rho_T)
@@ -589,11 +618,16 @@ def _certify(N, inp, st, controls, log, mark, prec):
                 Hf[DIM * i:DIM * i + DIM, DIM * k:DIM * k + DIM] = Jmid[m - mp]
         Hf[DIM * i:DIM * i + DIM, DIM * i:DIM * i + DIM] += -1j * omf * m * np.eye(DIM)
         Hf[DIM * i + IV, DIM * i + IV] -= dmf(m)
+    Ss = np.tile(sf, len(ms))
+    Hf = Hf * Ss[None, :] / Ss[:, None]                          # S-coordinates (exact power-of-two scaling)
     lam, Vf = np.linalg.eig(Hf)
     del Hf
-    Ss = np.tile(sf, len(ms))
-    Vf = Vf / Ss[:, None]
     Vf = Vf / np.abs(Vf).sum(0)[None, :]
+    if "lie_lead_re" in controls:                                # test hook: floating data that lie
+        cand = [j for j in range(nW) if abs(lam[j].imag) < float(b) and abs(lam[j]) > 1e-9]
+        cand.sort(key=lambda j: -lam[j].real)
+        for j in cand[:2]:
+            lam[j] = complex(float(controls["lie_lead_re"]), lam[j].imag)
     Vif = np.linalg.inv(Vf)
     mark("window eig (LAPACK)")
 
@@ -789,6 +823,11 @@ def _certify(N, inp, st, controls, log, mark, prec):
         multiplier_bound_full_period=bound_rec(mult_T), multiplier_bound_reduced_map=bound_rec(mult_tau),
         controls=controls or None,
     )
+    if controls.get("dump"):                                    # test hook: floating copies for independent checks
+        out["internals"] = dict(e=e, Ke=Ke, Vf=Vf, lam=lam, fm=[float(v) for v in fm], r=[float(v) for v in r_j],
+                                beta=[float(v) for v in beta], bms={m: float(v) for m, v in bms.items()},
+                                far=float(far), sigma_off=float(sigma_off), rho_T=float(rho_T), tail_X=tail_X,
+                                g0=float(g0.mid()), h=float(b), dist=[float(v) for v in dist])
     log(f"  CERTIFIED (pending review): nontrivial multipliers |rho| < e^(-delta T) <= {float(mult_T):.9f}; "
         f"reduced map spectral radius < {float(mult_tau):.9f}")
     return out
@@ -816,22 +855,31 @@ def run(N, delta=None, settings=None, write=True, log=print):
     st = dict(settings or {})
     if delta is not None:
         st["delta"] = delta
-    res = certify(N, settings=st, log=log)
-    inp_rec = os.path.join(RESULTS, f"fourier-existence-N{N}.json")
-    with open(inp_rec) as fh:
-        rec = json.load(fh)
     srcs = ["fourier/stability.py"] + ex.SOURCES
+    cur0 = {p: sha256(os.path.join(ROOT, p)) for p in srcs}
+    inp = stage_e_inputs(N, log=log)
+    res = certify(N, inp=inp, settings=st, log=log)
+    inp_rec = os.path.join(RESULTS, f"fourier-existence-N{N}.json")
+    rec = inp["rec"]
+    # provenance (enforced): nothing the run depends on may have changed while it ran
     cur = {p: sha256(os.path.join(ROOT, p)) for p in srcs}
+    if cur != cur0 or sha256(inp_rec) != inp["rec_sha256"]:
+        changed = [p for p in srcs if cur[p] != cur0[p]] + ([inp_rec] if sha256(inp_rec) != inp["rec_sha256"] else [])
+        raise InputMismatch(f"files changed during the run: {changed}; no record written")
+    if not all(cur[p] == rec["sources_sha256"].get(p) for p in ex.SOURCES):
+        raise InputMismatch("Stage E sources differ from its record; no record written")
     res.update(
         status="computed; awaiting adversarial review",
         stage_e_status=rec.get("status"),
         theorem=theorem_text(N, res),
-        stage_e_record=os.path.relpath(inp_rec, ROOT), stage_e_record_sha256=sha256(inp_rec),
+        stage_e_record=os.path.relpath(inp_rec, ROOT), stage_e_record_sha256=inp["rec_sha256"],
         centre_file=rec["centre_file"], centre_sha256=sha256(os.path.join(ROOT, rec["centre_file"])),
         sources_sha256=cur,
         stage_e_sources_match={p: cur[p] == rec["sources_sha256"].get(p) for p in ex.SOURCES},
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, numpy=np.__version__,
         python=platform.python_version(), machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
+        blas_threads={v: os.environ.get(v) for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")},
+        threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         settings={k: v for k, v in dict(DEFAULTS, **st).items()},
     )
     if write:

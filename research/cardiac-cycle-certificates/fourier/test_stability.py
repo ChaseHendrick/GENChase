@@ -1,19 +1,28 @@
 """Acceptance tests, negative controls and a floating-point cross-check for stability.py (Stage S). Each can fail.
 
-Run (machine shared; about 10 minutes):
+Run (machine shared; about 12 minutes):
   PYTHONPATH=<python-flint 0.9.0> nice timeout 3000 python3 test_stability.py      (or pytest)
 
 Acceptance
-  * N = 8, delta = 5e-6 is certified (Theorem 3 by route A and (SC)), and delta = 6.3e-6 is certified too (the
-    floating-point leading exponent is -6.32e-6: the certificate is sharp to about 0.3 per cent of it).
-Negative controls (checklist item 11; each must FAIL, with ProofFailure, or be detected, with InputMismatch)
-  * delta = 7e-6 at N = 8 (true leading exponent about -6.32e-6): the count (C5) becomes 3;
-  * delta = 1e-5 at N = 64 (about -9.34e-6): the count (C5) becomes 3;
-  * anti-diffusion (the damping symbol d_m replaced by -d_m everywhere) at N = 8;
+  * N = 8, delta = 5e-6 is certified (Theorem 3 by route A and (SC)); the sharp pair: delta = 6.32095e-6 is
+    certified and delta = 6.321e-6 fails at (C5) (the floating-point leading exponent is -6.3209583e-6, not itself
+    certified).
+  * Dominance (N = 8): every certified bound (fm_j, r_j, b_m, beta, sigma_off, rho_T) is at least an independently
+    computed floating-point value; its docstring lists the one-term deletions that stay undetectable because the
+    term is negligible.
+Negative controls (checklist item 11; each must FAIL, with ProofFailure, or be detected, with InputMismatch, at the
+stated place)
+  * a Stage E record whose source hashes do not match the current files: InputMismatch (provenance);
+  * delta = 7e-6 and delta = 6.321e-6 at N = 8: (C5), count 3;
+  * delta = 1e-5 at N = 64 (about -9.34e-6): (C5), count 3;
+  * floating data that lie (leading near-axis pair of Lambda moved to Re = -7.5e-6, V unchanged), delta = 7e-6:
+    the floating count is 1, and (SC) fails;
+  * anti-diffusion (the damping symbol d_m replaced by -d_m everywhere) at N = 8: (C5), count 9;
   * K_e too small (K_e = N/2 + 1 at N = 8): the tail check (C2) or theta_T < 1 fails;
   * S = I (no cell coordinates) at N = 8: route A cannot close (pitfall 8);
-  * a dropped coefficient A_{+-1} at N = 8: (a) dropped everywhere: detected by the trivial-eigenvector sanity check;
-    (b) dropped only in the proof data, sanity check skipped: the certificate itself fails;
+  * a dropped coefficient A_{+-1} at N = 8: (a) dropped everywhere: (C5) fails (count 9); with the count failure
+    deferred (test hook skip_count) the trivial-eigenvector sanity check detects it; (b) dropped only in the proof
+    data, sanity check skipped: (SC) fails;
   * omega_lo replaced by b / N at N = 8 (so that b >= omega_lo N): (C1) fails.
 Cross-check (not part of the proof)
   * N = 8: an ordinary floating-point 144-dimensional monodromy Y(T) (scipy DOP853 integration of the ring and its
@@ -21,18 +30,20 @@ Cross-check (not part of the proof)
     multiplier inside the certified disc |rho| < e^(-delta T_lo), and the leading moduli equal to e^(Re mu T) of the
     window eigenvalues; the reduced map M_tau = Q^(-1) Y(tau) against e^(mu tau) of the near-axis eigenvalues.
 """
+import json
 import math
 import os
+import shutil
 import sys
+import tempfile
 import time
-
-import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+import stability as sb  # noqa: E402  (first: pins the BLAS threads before numpy is imported)
+import numpy as np  # noqa: E402
 import centre as ct  # noqa: E402
-import stability as sb  # noqa: E402
 
 QUIET = lambda *a, **k: None  # noqa: E731
 _INP = {}
@@ -79,10 +90,14 @@ def test_accept_N8():
 
 
 def test_accept_N8_sharp():
+    """delta = 6.32095e-6 sits 1.3e-6 (relative) below the floating-point |Re lambda_lead| = 6.3209583e-6 (that
+    float value is not certified; the margin is stated so that the test reads as a sharpness check)."""
     t0 = time.time()
-    res = _certify(8, {"delta": "6.3e-6", "S_exps": _S(8)})
+    res = _certify(8, {"delta": "6.32095e-6", "S_exps": _S(8)})
+    lead = res["float_leading_nontrivial_window_eigenvalue"][0]
     assert res["count_in_Omega"] == 1 and res["SC_worst_ratio"] < 1
-    print(f"  N = 8, delta = 6.3e-6: certified ({time.time() - t0:.0f} s); near-axis worst "
+    print(f"  N = 8, delta = 6.32095e-6 (float |Re lambda_lead| = {-lead:.8e}, relative margin "
+          f"{(-lead - 6.32095e-6) / -lead:.2e}): certified ({time.time() - t0:.0f} s); near-axis worst "
           f"{res['SC_worst_ratio_near_axis']:.3e}, dist_min {res['dist_min']:.3e}")
 
 
@@ -103,12 +118,25 @@ def test_neg_delta_N8():
     _expect_failure(8, "delta = 7e-6 at N = 8", {"delta": "7e-6", "S_exps": _S(8)}, expect_text=["(C5)"])
 
 
+def test_neg_delta_N8_sharp():
+    _expect_failure(8, "delta = 6.321e-6 at N = 8 (just above the float exponent)", {"delta": "6.321e-6",
+                    "S_exps": _S(8)}, expect_text=["(C5) count of window eigenvalues in Omega is 3"])
+
+
+def test_neg_lying_float_data():
+    """The floating-point Lambda lies (leading near-axis pair moved from Re -6.32e-6 to -7.5e-6, V unchanged); with
+    delta = 7e-6 the floating count is then 1. The Arb residual fm_j must catch it at (SC)."""
+    _expect_failure(8, "lying Lambda (lead pair at Re -7.5e-6), delta = 7e-6", {"delta": "7e-6", "S_exps": _S(8)},
+                    {"lie_lead_re": -7.5e-6}, expect_text=["(SC)"])
+
+
 def test_neg_delta_N64():
     _expect_failure(64, "delta = 1e-5 at N = 64", {"delta": "1e-5", "S_exps": _S(64)}, expect_text=["(C5)"])
 
 
 def test_neg_antidiffusion():
-    _expect_failure(8, "anti-diffusion c -> -c at N = 8", {"delta": "5e-6"}, {"damping_sign": -1})
+    _expect_failure(8, "anti-diffusion c -> -c at N = 8", {"delta": "5e-6", "S_exps": _S(8)}, {"damping_sign": -1},
+                    expect_text=["(C5) count of window eigenvalues in Omega is 9"])
 
 
 def test_neg_Ke_small():
@@ -124,7 +152,7 @@ def test_neg_drop_A1_detected():
     # dropped in the proof data and in the data choosing V, U_r: the operator changes consistently; the count (C5)
     # (checked first) or, failing that, the trivial-eigenvector sanity check must stop the run
     _expect_failure(8, "A_{+-1} dropped everywhere", {"delta": "5e-6", "S_exps": _S(8)},
-                    {"drop": [1]}, allow=(sb.ProofFailure, sb.InputMismatch))
+                    {"drop": [1]}, allow=(sb.ProofFailure, sb.InputMismatch), expect_text=["(C5)"])
     # the sanity check on its own: the count failure is deferred (test hook skip_count), so the run reaches the
     # trivial-eigenvector check, which must stop it
     _expect_failure(8, "A_{+-1} dropped everywhere, count forced (sanity check must detect)",
@@ -134,7 +162,7 @@ def test_neg_drop_A1_detected():
 
 def test_neg_drop_A1_proof_only():
     _expect_failure(8, "A_{+-1} dropped in the proof data only, no sanity check", {"delta": "5e-6", "S_exps": _S(8)},
-                    {"drop": [1], "drop_proof_only": True, "skip_sanity": True})
+                    {"drop": [1], "drop_proof_only": True, "skip_sanity": True}, expect_text=["(SC)"])
 
 
 def test_neg_omega_lo():
@@ -206,7 +234,139 @@ def test_crosscheck_monodromy_N8():
           f"near-axis e^(mu tau) vs eig(M_tau) max distance {worst:.1e}")
 
 
-ALL = [test_accept_N8, test_accept_N8_sharp, test_neg_delta_N8, test_neg_antidiffusion, test_neg_Ke_small,
+# ------------------------------------------------------------------------------------------------ provenance
+def test_neg_provenance():
+    """A Stage E record whose source hashes do not match the current files must stop the run (GAP 1 of the review)."""
+    tmp = tempfile.mkdtemp()
+    old = sb.RESULTS
+    try:
+        with open(os.path.join(old, "fourier-existence-N8.json")) as fh:
+            rec = json.load(fh)
+        rec["sources_sha256"]["fourier/existence.py"] = "0" * 64
+        with open(os.path.join(tmp, "fourier-existence-N8.json"), "w") as fh:
+            json.dump(rec, fh)
+        sb.RESULTS = tmp
+        try:
+            sb.stage_e_inputs(8, log=QUIET)
+        except sb.InputMismatch as e:
+            assert "Stage E sources differ" in str(e), str(e)
+            print(f"  negative control 'stale Stage E source hash' failed as required: {str(e)[:120]}")
+            return
+        raise AssertionError("a Stage E record with a wrong source hash was accepted")
+    finally:
+        sb.RESULTS = old
+        shutil.rmtree(tmp)
+
+
+# ------------------------------------------------------------------------------------------------ dominance
+def _ld(x):
+    """long double (64-bit mantissa) of an exact arb: double-double sum, error below 2^-64 relative."""
+    from fractions import Fraction
+    fr = sb.frac(x)
+    hi = float(fr)
+    return np.longdouble(hi) + np.longdouble(float(fr - Fraction(hi)))
+
+
+def test_dominance_N8():
+    """Every certified bound must dominate an independently computed floating-point value (WEAK TEST 1 of the review,
+    after its probe1.py): fm_j against the column sums of V^{-1} H_WW V - Lambda (long double, H assembled here from
+    the 128-bit midpoints), r_j against ||H_TW V e_j||_1 (tail rows up to K_e + K'), b_m against
+    max_k sum_j |(V^{-1} H_{W,m})_{jk}|, beta against the column sums of V^{-1}, sigma_off against the float sum, and
+    rho_T against a sampled sup of ||(z - X_r)^{-1}||_{1->1} over a grid of Zset_0 (X_r assembled here).
+    Slack: relative 1e-6 plus absolute 1e-15 (the rounding of the long-double reference).
+
+    One-term deletions this test (and the suite) cannot see because the term is negligible here (N = 8, delta = 5e-6;
+    measured by the referee in a mutated copy): the factor 1 / (1 - q_C) and the |lambda_j| ||C e_j|| term of fm_j
+    (q_C about 3e-14), Gtail(n_A + 1) in t_w and sigma_off (about 1e-20), the far bound for b_m (about 3e-12, below the
+    listed b_m), the eps balls of Lemma 4.1 (about 1e-22 before scaling), and the damping -d_r E in the tail matrices X_r
+    (d_r <= 4c = 0.004 at N = 8; rho_T is about 5.6 times the sampled sup, so a rho_T computed without it still
+    dominates). Each would change a bound by far less than its margin; none can be detected by a comparison with the
+    true value, since the bound stays above it."""
+    N = 8
+    t0 = time.time()
+    inp = _inp(N)
+    res = _certify(N, {"delta": "5e-6", "S_exps": _S(N)}, {"dump": True})
+    D = res.pop("internals")
+    e = np.array(D["e"])
+    s = 2.0 ** e
+    Ke, Kp = D["Ke"], inp["Kp"]
+    ms = list(range(-Ke, Ke + 1))
+    nW = 18 * len(ms)
+    om = _ld(inp["om_bar"])
+    Jl = {}
+    for n in range(-Kp, Kp + 1):
+        M = np.empty((18, 18), dtype=np.clongdouble)
+        for r in range(18):
+            for c in range(18):
+                z = inp["J"][n][r][c]
+                M[r, c] = (_ld(z.real.mid()) + 1j * _ld(z.imag.mid())) * np.longdouble(s[c] / s[r])
+        Jl[n] = M
+    dml = {m: _ld(sb.am.damping(m, N=N, prec=128).real.mid()) for m in range(-Ke - Kp, Ke + Kp + 1)}
+    H = np.zeros((nW, nW), dtype=np.clongdouble)
+    for i, m in enumerate(ms):
+        for k, mp in enumerate(ms):
+            if abs(m - mp) <= Kp:
+                H[18 * i:18 * i + 18, 18 * k:18 * k + 18] = Jl[m - mp]
+        for r in range(18):
+            H[18 * i + r, 18 * i + r] += -1j * om * m
+        H[18 * i, 18 * i] -= dml[m]
+    V = D["Vf"].astype(np.clongdouble)
+    lam = D["lam"].astype(np.clongdouble)
+    Vinv = np.linalg.inv(D["Vf"]).astype(np.clongdouble)
+    # one Newton step on the inverse in long double: Vinv <- Vinv (2 I - V Vinv)
+    Vinv = Vinv @ (2 * np.eye(nW, dtype=np.clongdouble) - V @ Vinv)
+    fm_ref = np.abs(Vinv @ (H @ V - V * lam[None, :])).sum(0).astype(float)
+    fm = np.array(D["fm"])
+
+    def check(name, arb_v, ref):
+        arb_v, ref = np.asarray(arb_v, float), np.asarray(ref, float)
+        ok = arb_v >= ref * (1 - 1e-6) - 1e-15
+        big = ref > 1e-14
+        ratio = (arb_v[big] / ref[big]).min() if big.any() else float("nan")
+        assert ok.all(), f"{name}: certified bound below the float value at {int((~ok).sum())} entries"
+        return ratio
+    out = {"fm": check("fm", fm, fm_ref)}
+    Jd = {n: Jl[n].astype(complex) for n in Jl}
+    Vd = D["Vf"]
+    rf = np.zeros(nW)
+    for mt in list(range(Ke + 1, Ke + Kp + 1)) + list(range(-Ke - Kp, -Ke)):
+        blk = np.zeros((18, nW), complex)
+        for i, w in enumerate(ms):
+            if abs(mt - w) <= Kp:
+                blk[:, 18 * i:18 * i + 18] = Jd[mt - w]
+        rf += np.abs(blk @ Vd).sum(0)
+    out["r"] = check("r_j", D["r"], rf)
+    Vinvd = Vinv.astype(complex)
+    bref, barb = [], []
+    for mt, bv in D["bms"].items():
+        blk = np.zeros((nW, 18), complex)
+        for i, w in enumerate(ms):
+            if abs(w - mt) <= Kp:
+                blk[18 * i:18 * i + 18, :] = Jd[w - mt]
+        bref.append(np.abs(Vinvd @ blk).sum(0).max())
+        barb.append(bv)
+    out["b_m"] = check("b_m", barb, bref)
+    out["beta"] = check("beta", D["beta"], np.abs(Vinvd).sum(0))
+    so = sum(np.abs(Jd[n]).sum(0).max() for n in Jd if n != 0)
+    out["sigma_off"] = check("sigma_off", [D["sigma_off"]], [so])
+    # rho_T against a sampled sup over Zset_0 (X_r assembled here: A0c - d_r E in S-coordinates)
+    delta = res["delta"]["approx"]
+    g0 = D["g0"]
+    A0 = np.array([[float(inp["J"][0][r][c].real.mid()) for c in range(18)] for r in range(18)]) * s[None, :] / s[:, None]
+    best = 0.0
+    for rr in range(N // 2 + 1):
+        X = A0.copy()
+        X[0, 0] -= ct.damping_float(rr, N)
+        for x in np.linspace(-delta, 2.0, 41):
+            for y in np.concatenate([np.linspace(g0, g0 + 3, 121), [g0 + 10, g0 + 100]]):
+                best = max(best, np.abs(np.linalg.inv((x + 1j * y) * np.eye(18) - X)).sum(0).max())
+    out["rho_T"] = check("rho_T", [D["rho_T"]], [best])
+    print(f"  dominance N = 8 ({time.time() - t0:.0f} s): min certified/float ratios " +
+          ", ".join(f"{k} {v:.6g}" for k, v in out.items()) + f" (rho_T {D['rho_T']:.3f} against sampled {best:.3f})")
+
+
+ALL = [test_neg_provenance, test_accept_N8, test_accept_N8_sharp, test_dominance_N8, test_neg_delta_N8,
+       test_neg_delta_N8_sharp, test_neg_lying_float_data, test_neg_antidiffusion, test_neg_Ke_small,
        test_neg_S_identity, test_neg_drop_A1_detected, test_neg_drop_A1_proof_only, test_neg_omega_lo,
        test_crosscheck_monodromy_N8, test_neg_delta_N64]
 

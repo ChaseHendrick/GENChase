@@ -622,9 +622,19 @@ r_uniqueness, section 4.1), eta, nu = e^{rho0}; the enclosures [J_n]
    route and the resulting rho_T and theta_T. With S = I, route A gives kappa_r about 850 to 900 and cannot close
    (theta_T about 90 to 190); this is expected, not a bug in the model.
 6. Window: [H_WW] of size 18 (2 K_e + 1) (with -i [omega] w on the diagonal and [d_w] on the V entry); V, Lambda from
-   LAPACK (double, or higher precision for the near-axis eigenvalues); Arb enclosure of V^{-1}; Fm = V^{-1} [H_WW] V -
-   Lambda at 128 bits at least for the rows and columns of eigenvalues with Re lambda_j > -1e-3 (plan step 3: 53-bit
-   balls lose 1e-7 to 1e-6 there); fm_j.
+   LAPACK on the floating-point midpoint in S-coordinates (double, or higher precision for the near-axis eigenvalues);
+   then V^{-1} and Fm are bounded at 128 bits at least for the rows and columns of eigenvalues with Re lambda_j > -1e-3
+   (plan step 3: 53-bit balls lose 1e-7 to 1e-6 there; fourier/stability.py uses 128 bits everywhere), either by an
+   Arb enclosure of V^{-1} and Fm = V^{-1} [H_WW] V - Lambda, or (the route stability.py uses) without inverting V in
+   Arb: with Vi an exact floating-point approximate inverse, C := I - Vi V (Arb) and q_C := ||C||_zeta < 1 checked,
+   Vi V = I - C is invertible, so V is invertible (C3) and V^{-1} = (I - C)^{-1} Vi (the factor on the left), with
+   ||(I - C)^{-1}||_zeta <= 1 / (1 - q_C). Since Vi V Lambda = Lambda - C Lambda, the exact identity
+   Vi (H_WW V - V Lambda) = Vi H_WW V - Lambda + C Lambda holds, so Fm = (I - C)^{-1} (Wm + C Lambda) with
+   Wm := Vi [H_WW] V - Lambda (an Arb ball containing the value for the true H_WW), and
+   fm_j <= (||Wm e_j||_zeta + |lambda_j| ||C e_j||_zeta) / ((1 - q_C) zeta_j),
+   beta_{(w,l)} <= ||Vi e_{(w,l)}||_zeta / (1 - q_C) (item 8).
+   (In Lemma 3.4, route A, U_r may be any invertible matrix and Lambda_r any diagonal one: stability.py groups nearly
+   coincident eigenvalues of X_r into an orthonormal basis of their span and puts the intra-cluster coupling into Fr.)
 7. Distances: dist_j = distance from lambda_j to the rectangle boundary (lower bound in Arb); check dist_j > 0; count
    #{lambda_j in Omega} with exact comparisons of the floats lambda_j against -delta, R_0, a, b: must be 1 (C5).
 8. Couplings (S-coordinates): t_w (w in W); r_j; beta_{(w,l)}, beta_max; b_m for K_e < |m| <= K_e + n_c from entrywise

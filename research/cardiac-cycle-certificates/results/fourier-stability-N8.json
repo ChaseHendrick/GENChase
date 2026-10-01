@@ -181,143 +181,143 @@
   }
  ],
  "q_C": {
-  "hex": "0xee3e48c7b6c99f885e69c4977ef66cd3p-173",
-  "dec": "2.645031949429725444753095E-14",
-  "approx": 2.6450319494297255e-14
+  "hex": "0xee06ededc48d219e2e98dc8246a37695p-173",
+  "dec": "2.642631313832486268505290E-14",
+  "approx": 2.6426313138324862e-14
  },
- "fm_max": 0.05025435745642576,
+ "fm_max": 5.169163327773212e-10,
  "beta_max": {
-  "hex": "0xed63a2cb3398b056049a67f61d82f555p-120",
-  "dec": "237.3892027855842468966605",
-  "approx": 237.38920278558425
+  "hex": "0xed63a2c46f1999c928bd814abf22adefp-120",
+  "dec": "237.3892023822059861465231",
+  "approx": 237.38920238220598
  },
  "bhat": {
-  "hex": "0xdb02adff65d185df825e60566eb3aa7bp-128",
-  "dec": "0.8555096386460886142150548",
-  "approx": 0.8555096386460886
+  "hex": "0xdb02adff7683e7a22181422b8da2a709p-128",
+  "dec": "0.8555096386612742691741250",
+  "approx": 0.8555096386612743
  },
  "b_m_far_bound": {
-  "hex": "0xc30d93b29cae9ed2f5f434367c45c47dp-166",
-  "dec": "2.771870341264550379834096E-12",
-  "approx": 2.7718703412645504e-12
+  "hex": "0x6186c9d68694876b9c74b9e36c982565p-165",
+  "dec": "2.771870336554512079170141E-12",
+  "approx": 2.771870336554512e-12
  },
- "b_m_max_listed": 0.8555096386460886,
- "r_max": 0.03923007485930239,
- "dist_min": 1.3209583067598232e-06,
+ "b_m_max_listed": 0.8555096386612743,
+ "r_max": 0.03923007485929576,
+ "dist_min": 1.3209583075595586e-06,
  "count_in_Omega": 1,
  "eigenvalue_in_Omega": [
-  -2.3798255770341743e-15,
-  -2.147407323436448e-15
+  3.281288609049301e-16,
+  -3.930343907166274e-15
  ],
- "SC_worst_ratio": 0.09225245879281985,
+ "SC_worst_ratio": 0.08988489381840538,
  "SC_worst_lambda": [
-  -0.5835578867244499,
-  -2.3449894731495453
+  -0.05389471994773606,
+  -2.34493071225036
  ],
- "SC_worst_ratio_near_axis": 2.2624058244822113e-06,
- "SG_tail_value": 3.3427380122167007,
+ "SC_worst_ratio_near_axis": 4.4986706731914687e-07,
+ "SG_tail_value": 3.3427380122710355,
  "near_axis_columns": [
   {
-   "lam_re": -2.3798255770341743e-15,
-   "lam_im": -2.147407323436448e-15,
-   "dist": 4.999999997620838e-06,
-   "fm": 5.437378392289439e-12,
-   "r": 8.557667917397351e-14,
-   "ratio": 1.1604121527262128e-06
+   "lam_re": 3.281288609049301e-16,
+   "lam_im": -3.930343907166274e-15,
+   "dist": 5.000000000328792e-06,
+   "fm": 6.000805034414199e-13,
+   "r": 8.433469622152567e-14,
+   "ratio": 1.9189404001386108e-07
   },
   {
-   "lam_re": -6.320958306760487e-06,
-   "lam_im": 0.1172592127492485,
-   "dist": 1.3209583067598232e-06,
-   "fm": 2.615563178504691e-12,
-   "r": 8.752394664305916e-14,
-   "ratio": 2.2624058244822113e-06
+   "lam_re": -6.320958307560222e-06,
+   "lam_im": -0.11725921274924724,
+   "dist": 1.3209583075595586e-06,
+   "fm": 2.0756140754714285e-13,
+   "r": 8.692762648301564e-14,
+   "ratio": 4.3756172541913776e-07
   },
   {
-   "lam_re": -6.320958307618649e-06,
-   "lam_im": -0.11725921274924805,
-   "dist": 1.3209583076179853e-06,
-   "fm": 2.5872393220142405e-12,
-   "r": 8.770390847983581e-14,
-   "ratio": 2.2415444873167668e-06
+   "lam_re": -6.3209583075905266e-06,
+   "lam_im": 0.11725921274924773,
+   "dist": 1.320958307589863e-06,
+   "fm": 2.2378952552508703e-13,
+   "r": 8.693389794612722e-14,
+   "ratio": 4.4986706731914687e-07
   },
   {
-   "lam_re": -2.1654912593362014e-05,
-   "lam_im": 0.7034861583584601,
-   "dist": 0.20517399925767757,
-   "fm": 3.334330971255141e-12,
-   "r": 3.5462245878729874e-13,
-   "ratio": 2.3616752691367564e-11
+   "lam_re": -2.1654912595210385e-05,
+   "lam_im": -0.7034861583584633,
+   "dist": 0.2051739992576808,
+   "fm": 4.4698033151148875e-13,
+   "r": 3.539195525386653e-13,
+   "ratio": 9.529460620302903e-12
   },
   {
-   "lam_re": -2.165491259601643e-05,
-   "lam_im": 0.2345132012213219,
-   "dist": 1.6654912596015765e-05,
-   "fm": 2.793271690634956e-12,
-   "r": 9.562765887687328e-14,
-   "ratio": 1.9218269561954443e-07
+   "lam_re": -2.1654912595439176e-05,
+   "lam_im": 0.7034861583584552,
+   "dist": 0.20517399925767268,
+   "fm": 5.281459150314753e-13,
+   "r": 3.5392114835240544e-13,
+   "ratio": 9.925087670146407e-12
   },
   {
-   "lam_re": -2.1654912597815537e-05,
-   "lam_im": -0.23451320122132124,
-   "dist": 1.6654912597814873e-05,
-   "fm": 2.8867320309328682e-12,
-   "r": 9.571503509315261e-14,
-   "ratio": 1.9781663037851167e-07
+   "lam_re": -2.165491259680625e-05,
+   "lam_im": -0.23451320122131958,
+   "dist": 1.6654912596805586e-05,
+   "fm": 2.6012575449450675e-13,
+   "r": 9.503945382485231e-14,
+   "ratio": 3.9936171408548236e-08
   },
   {
-   "lam_re": -2.1654912598756404e-05,
-   "lam_im": -0.7034861583584688,
-   "dist": 0.20517399925768634,
-   "fm": 3.2806519232917873e-12,
-   "r": 3.548468647911807e-13,
-   "ratio": 2.3359786658063772e-11
+   "lam_re": -2.1654912596953447e-05,
+   "lam_im": 0.23451320122132008,
+   "dist": 1.6654912596952783e-05,
+   "fm": 2.674837084505416e-13,
+   "r": 9.504627998101056e-14,
+   "ratio": 4.037970681350844e-08
   },
   {
-   "lam_re": -3.708013840382946e-05,
-   "lam_im": -0.5862400320547199,
-   "dist": 0.08792787813011559,
-   "fm": 3.1276423232235985e-12,
-   "r": 1.789344279174737e-13,
-   "ratio": 4.4242689919948817e-11
+   "lam_re": -3.708013841055473e-05,
+   "lam_im": 0.5862400320547183,
+   "dist": 0.08792787813011403,
+   "fm": 4.682584202476072e-13,
+   "r": 1.78278871735195e-13,
+   "ratio": 1.396585859012044e-11
   },
   {
-   "lam_re": -3.708013841045025e-05,
-   "lam_im": 0.3517593275250585,
-   "dist": 3.208013841044959e-05,
-   "fm": 2.927680583233444e-12,
-   "r": 1.098640854517368e-13,
-   "ratio": 1.0585562126338799e-07
+   "lam_re": -3.7080138411003915e-05,
+   "lam_im": 0.3517593275250624,
+   "dist": 3.208013841100325e-05,
+   "fm": 3.414366171959779e-13,
+   "r": 1.093784622912499e-13,
+   "ratio": 2.5172882274267983e-08
   },
   {
-   "lam_re": -3.7080138412802654e-05,
-   "lam_im": -0.3517593275250606,
-   "dist": 3.208013841280199e-05,
-   "fm": 2.961425186989935e-12,
-   "r": 1.1007551102867795e-13,
-   "ratio": 1.0693559126262571e-07
+   "lam_re": -3.7080138411798066e-05,
+   "lam_im": -0.35175932752506334,
+   "dist": 3.20801384117974e-05,
+   "fm": 3.156110946396711e-13,
+   "r": 1.0936627760383872e-13,
+   "ratio": 2.436623216221892e-08
   },
   {
-   "lam_re": -3.7080138415400775e-05,
-   "lam_im": 0.5862400320547111,
-   "dist": 0.08792787813010683,
-   "fm": 3.4210442456856244e-12,
-   "r": 1.7884077081887556e-13,
-   "ratio": 4.757499830572716e-11
+   "lam_re": -3.708013841364314e-05,
+   "lam_im": -0.5862400320547206,
+   "dist": 0.08792787813011638,
+   "fm": 4.53049354634414e-13,
+   "r": 1.7827189942347626e-13,
+   "ratio": 1.3792548620315633e-11
   },
   {
-   "lam_re": -4.330310002791659e-05,
-   "lam_im": 0.46899967978988527,
-   "dist": 3.8303100027915925e-05,
-   "fm": 2.887425806204833e-12,
-   "r": 1.3312890756941041e-13,
-   "ratio": 9.019506309438754e-08
+   "lam_re": -4.330310003680739e-05,
+   "lam_im": 0.46899967978988955,
+   "dist": 3.830310003680673e-05,
+   "fm": 3.8500101777769206e-13,
+   "r": 1.3238076067614142e-13,
+   "ratio": 2.477965307190823e-08
   }
  ],
  "sanity_trivial_eigenvector_residual": 2.515535033223308e-20,
  "float_leading_nontrivial_window_eigenvalue": [
-  -6.320958306760487e-06,
-  0.1172592127492485
+  -6.320958307560222e-06,
+  -0.11725921274924724
  ],
  "T_lo": {
   "hex": "0xd65a151051bf3106021b774dad4cd2b1p-122",
@@ -336,32 +336,32 @@
  },
  "controls": null,
  "timings_s": {
-  "stage E inputs": 12.11,
-  "choose S": 4.93,
-  "coefficients": 0.1,
+  "stage E inputs": 0.0,
+  "choose S": 4.99,
+  "coefficients": 0.11,
   "tail route A": 0.04,
-  "window eig (LAPACK)": 1.77,
+  "window eig (LAPACK)": 1.74,
   "distances, count": 0.02,
-  "build [H_WW]": 0.61,
-  "[H_WW] V": 13.7,
-  "Vi [H_WW] V - Lambda": 14.6,
-  "C = I - Vi V": 11.45,
-  "fm, beta": 1.16,
-  "couplings": 0.54,
+  "build [H_WW]": 0.65,
+  "[H_WW] V": 13.64,
+  "Vi [H_WW] V - Lambda": 14.3,
+  "C = I - Vi V": 11.03,
+  "fm, beta": 1.03,
+  "couplings": 0.53,
   "small gain": 0.0
  },
- "wall_s": 61.03,
- "maxrss_MB": 722.9,
+ "wall_s": 48.07,
+ "maxrss_MB": 722.1,
  "status": "computed; awaiting adversarial review",
  "stage_e_status": "computed; awaiting adversarial review",
  "theorem": "Conditional on the Stage E theorem of results/fourier-existence-N8.json (a real rotating wave x_j(t) = phi(omega t + 2 pi j / N) of the ring of N = 8 cells (c = N^2 / 64000 per ms), period T = 2 pi / omega; status: awaiting adversarial review) and on the lemmas of fourier/LEMMAS-stability.md: with delta = 0.000005000000000000663635812970 per ms (exact dyadic, recorded), every eigenvalue mu of the Hill operator H_0 with Re mu >= -delta lies in i omega N Z and is algebraically simple (Theorem 3). Hence (Theorem 4): the monodromy Y(T) has the Floquet multiplier 1 algebraically simple, and all other 143 Floquet multipliers have modulus < e^(-delta T) <= 0.9997320960377930203747358; the shift-reduced map M_tau = Q^(-1) Y(tau), tau = T / N, has the eigenvalue 1 algebraically simple and all other eigenvalues of modulus < e^(-delta tau) <= 0.9999665080790063923613739 (so does the derivative of every section map of Corollary 1.3, without the eigenvalue 1: spectral radius < 0.9999665080790063923613739); the orbit is locally exponentially orbitally stable with asymptotic phase.",
  "stage_e_record": "results/fourier-existence-N8.json",
- "stage_e_record_sha256": "982f8ec3dabd1c583cf48b4bb75ac67fc3c5bc269653d54ef4a0501194362c37",
+ "stage_e_record_sha256": "a1bd799b5609bc6cb7b19a96d86a14ee63919402ea4f626a59e140c7e62eff2c",
  "centre_file": "fourier/data/centre_N8_K32.json",
  "centre_sha256": "1a2a4da2fd274f967574aef09e5563f4c8b1d0875195d5a1df2c4541ab4d6477",
  "sources_sha256": {
-  "fourier/stability.py": "310ea776f6af2cceb1e48f1fcf8bfe6d3f59eb38c9639114ff25eb569d2ed1d3",
-  "fourier/existence.py": "d1a7cfb22e2ee7814d487ae95ace4beb63f0f21b42752bac3843ca016b638ee7",
+  "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+  "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
   "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
@@ -384,6 +384,12 @@
  "python": "3.11.15",
  "machine": "x86_64",
  "date": "2026-10-01",
+ "blas_threads": {
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "threads_pinned_before_numpy": true,
  "settings": {
   "delta": "5e-6",
   "Ke_offset": 16,
