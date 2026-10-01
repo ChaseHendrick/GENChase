@@ -109,10 +109,11 @@ records made before the patch say "conditional on the CAPD crossing issue" and a
 ## Status (2026-10-01)
 
 * Model translation: checked (see above).
-* **Fixed cell at G_Ks = 0.0275: verified** (`results/cell-gks0.0275.json`, 755 s). A unique fixed point of the first
-  return map in the certified ball; period in [53.5855190480, 53.5855196307] ms (exact bounds in the record), inside
-  the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet multipliers of modulus at most
-  0.998642; locally orbitally asymptotically stable. Conditional on the open CAPD issue above.
+* **Fixed cell at G_Ks = 0.0275: verified** on the patched CAPD build (`results/cell-gks0.0275.json`, 732 s). A
+  unique fixed point of the first return map in the certified ball; period in [53.5855190480, 53.5855196307] ms
+  (exact bounds in the record), inside the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet
+  multipliers of modulus at most 0.998642; locally orbitally asymptotically stable. The unpatched run gave the same
+  bounds.
 * Rings N = 8 and N = 16: candidates located (periods 53.58797098 and 53.58806910 ms, inside the other pipeline's
   certified intervals); double-interval derivative enclosures measured with Perron roots 0.99996225 (N = 8) and
   0.99997284 (N = 16), below one; the minimal-period gate passes for N = 8; certification runs in progress. A

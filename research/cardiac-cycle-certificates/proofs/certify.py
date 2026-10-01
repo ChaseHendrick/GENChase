@@ -57,7 +57,7 @@ def main():
         verify = {"verified": False, "error": f"no verifier record: {e}"}
     try:
         commit = subprocess.run(["git", "-C", STUDY, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-        dirty = subprocess.run(["git", "-C", STUDY, "status", "--porcelain", "--", "."], capture_output=True, text=True).stdout.strip() != ""
+        dirty = subprocess.run(["git", "-C", STUDY, "status", "--porcelain", "--"] + SOURCES, capture_output=True, text=True).stdout.strip() != ""
     except Exception:
         commit, dirty = "unknown", True
     rec = {
@@ -69,7 +69,7 @@ def main():
         "settings_env": settings,
         "hashes": {"frame": sha(a.frame), "verify_binary": sha(a.binary),
                    **{s: sha(os.path.join(STUDY, s)) for s in SOURCES}},
-        "repository_commit": commit, "working_tree_dirty": dirty, "capd_commit": CAPD_COMMIT,
+        "repository_commit": commit, "sources_dirty": dirty, "capd_commit": CAPD_COMMIT,
         "capd_patch": {"file": "proofs/capd-6.1.0-genchase.patch", "applied_header_sha256": sha(CAPD_PATCHED_HEADER) if os.path.exists(CAPD_PATCHED_HEADER) else None,
                        "applied": os.path.exists(CAPD_PATCHED_HEADER) and b"GENChase patch" in open(CAPD_PATCHED_HEADER, "rb").read()},
         "verifier": verify,

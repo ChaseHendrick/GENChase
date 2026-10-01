@@ -10,7 +10,7 @@
  },
  "verified": true,
  "verifier_exit": 0,
- "wall_seconds": 754.6,
+ "wall_seconds": 732.3,
  "settings_env": {
   "VERIFY_MP_BITS": "128",
   "VERIFY_MP_TOL": "1e-24",
@@ -18,15 +18,20 @@
  },
  "hashes": {
   "frame": "2c9ad5eae1835f34efdfd57a4f123f56efb1530ca9a0338a76cb33f92d7e37b8",
-  "verify_binary": "cf86ef06f8c9ac8bfc4755e41442593c4165daddbd47dc2364743504f4e9c6a2",
+  "verify_binary": "1df03338ca5a57b4ef0109742daa48f533a6115c5ce416e2976b32651dcfea97",
   "proofs/verify.cpp": "d420437428bbd4d2c82a86559f5d6507846aa2b81c68c4e026c94f89d20c1d99",
   "model/tp06_capd.hpp": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
   "model/setup.hpp": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
   "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
  },
- "repository_commit": "fff2714b93758626e14aee450195ed2667c450dc",
+ "repository_commit": "f48a01b2d3dcb81dd0e8a9375e2696d170d37897",
  "working_tree_dirty": true,
  "capd_commit": "03dc5628203334b214bb7d9fd63788a175521005",
+ "capd_patch": {
+  "file": "proofs/capd-6.1.0-genchase.patch",
+  "applied_header_sha256": "06344b35c2eeba712b870e8d132dbfa3c235f4270804c580171c0311207c2bf0",
+  "applied": true
+ },
  "verifier": {
   "schema": "cardiac-cycle-contraction-v1",
   "N": 1,
@@ -138,5 +143,7 @@
   "verified": true
  },
  "stdout_tail": "VERIFIED  q <= 0.998642  r0 <= 0.13796  max_b(g0_b/rho_b + rowsum_b) <= 0.998643  period in [53.5855190480139, 53.585519630722438]\n",
- "stderr_tail": "frame inverse: ||E|| <= 3.21169e-13, max width 1.37561e-10; DG max relative width 0.154437; M max width 0.00245836; centre time [53.58551933936883, 53.585519339368837]; box time [53.5855190480139, 53.585519630722438]\n"
+ "stderr_tail": "frame inverse: ||E|| <= 3.21169e-13, max width 1.37561e-10; DG max relative width 0.154437; M max width 0.00245836; centre time [53.58551933936883, 53.585519339368837]; box time [53.5855190480139, 53.585519630722438]\n",
+ "sources_match_commit": true,
+ "note": "working_tree_dirty refers to unrelated in-progress files elsewhere in the study folder; sources_match_commit checks that every hashed verifier source equals its version at repository_commit."
 }
