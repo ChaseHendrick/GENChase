@@ -94,5 +94,8 @@ GENChase: the companion repository does not carry `notes/`.
 - [ ] **7. Reproducible.** Open. `code/run_all.sh` checks the copies against the records' 90 hashes (passes), runs the
   link of Lemma 6.1 (passes) and reruns Stage E and Stage S in a scratch folder; the N = 1 and N = 8 proofs were rerun from these copies on
   2026-10-01 and reproduce the period enclosures and every stability bound exactly (`notes/rerun-2026-10-01.md`);
-  N = 16, 32, 64 and the CAPD certificate were not rerun from here. No PDF has been built (no TeX toolchain was
-  available), so no page count is stated, and `paper-sync --check` applies only from status "ready".
+  N = 16, 32, 64 and the CAPD certificate were not rerun from here. The PDF builds with `sh tools/paper-build.sh
+  cardiac-rings` (TeX Live 2023, Ubuntu 24.04; 26 pages; on 2026-10-01 the log had no undefined references and one
+  overfull line of 2.7 pt). Still open: a full rerun of N = 16, 32 and 64 and of the CAPD certificate from the copies,
+  bit-reproducible Y0, Z1, Z2 and r_ex (BLAS threads are not pinned in existence.py; the fix is queued), and
+  `paper-sync --check`, which applies only from status "ready".

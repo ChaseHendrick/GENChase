@@ -302,7 +302,7 @@ Since $\|a_{*,V} - \bar a_V\|_\nu \ge \nu|a_{*,1,V} - \bar a_{1,V}|$, $|a_{*,1,V
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:ring}(a), (b) and the existence part of Theorem~\ref{thm:cell}(ii)]
-For each $N \in \{1, 8, 16, 32, 64\}$ the program \file{code/fourier/existence.py} computes, in Arb, the strip covers (all leaves finite, full strip), the enclosures of Proposition~\ref{prop:enclosure}, the tail of Lemma~\ref{lem:Atail}, $Y_0$, $Z_1$ and $Z_2$ as above, checks $p(r) < 0$ and $Z_1 + Z_2r < 1$ at $r = r_{\mathrm{ex}}$ and at $r = r_{\mathrm{un}} \le r_*$, checks $\bar\omega - r_{\mathrm{ex}} > 0$ and $|\bar a_{1,V}| > r_{\mathrm{ex}}/\nu$, and writes the interval $2\pi/[\omega_*]$ with outward-rounded decimal ends. The records \file{data/fourier-existence-N*.json} store every bound; for example at $N = 8$: $Y_0 = 1.3096 \times 10^{-28}$, $Z_1 = 0.20339$, $Z_2 \le 6.4002 \times 10^{10}$, $|\bar a_{1,V}| \ge 0.11524$. Lemmas~\ref{lem:rp} and~\ref{lem:real} give the statements.
+For each $N \in \{1, 8, 16, 32, 64\}$ the program \file{code/fourier/existence.py} computes, in Arb, the strip covers (all leaves finite, full strip), the enclosures of Proposition~\ref{prop:enclosure}, the tail of Lemma~\ref{lem:Atail}, $Y_0$, $Z_1$ and $Z_2$ as above, checks $p(r) < 0$ and $Z_1 + Z_2r < 1$ at $r = r_{\mathrm{ex}}$ and at $r = r_{\mathrm{un}} \le r_*$, checks $\bar\omega - r_{\mathrm{ex}} > 0$, and $|\bar a_{1,V}| > r_{\mathrm{ex}}/\nu$, and writes the interval $2\pi/[\omega_*]$ with outward-rounded decimal ends. The records \file{data/fourier-existence-N*.json} store every bound; for example at $N = 8$: $Y_0 = 1.3096 \times 10^{-28}$, $Z_1 = 0.20339$, $Z_2 \le 6.4002 \times 10^{10}$, $|\bar a_{1,V}| \ge 0.11524$. Lemmas~\ref{lem:rp} and~\ref{lem:real} give the statements.
 \end{proof}
 
 \section{Stability through one Hill operator}\label{sec:stability}
@@ -467,7 +467,11 @@ Suppose enclosures $[A_n]$ of $A_n$ are known for $|n| \le n_A$ and $\|A_n\|_{1\
 \end{lemma}
 
 \begin{proof}
-Sums of upper bounds, with exact geometric sums. For the last bound, $\sum_{(w,l)}\beta_{(w,l)}|(A_{w-m})_{l,k}| \le \beta_{\max}\sum_w\|A_{w-m}\|_{1\to1}$, and the indices $n = w - m$ have one sign with $|n| \ge |m| - K_e$.
+Sums of upper bounds, with exact geometric sums. For the last bound,
+\[
+\sum_{(w,l)}\beta_{(w,l)}|(A_{w-m})_{l,k}| \le \beta_{\max}\sum_w\|A_{w-m}\|_{1\to1},
+\]
+and the indices $n = w - m$ have one sign with $|n| \ge |m| - K_e$.
 \end{proof}
 
 \begin{lemma}[the window without inverting $V$]\label{lem:Vinv}
