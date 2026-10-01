@@ -11,8 +11,9 @@ integrated with the mode-fixed hybrid integrator (Radau, rtol 1e-12). The sample
 bound on the motion between samples (max |dV/dt| on the window times half the sample spacing), still in floating
 point, so the window conditions are numerical checks, not certificates.
 
-Usage: python3 window.py OUTDIR   (writes OUTDIR/shift_dense.npz, OUTDIR/window_start.txt and prints a JSON summary;
-the summary is also written to results/window.json)
+Usage: python3 window.py OUTDIR [T0]   (writes OUTDIR/shift_dense.npz, OUTDIR/window_start.txt and
+OUTDIR/window_states.txt, and the summary results/window.json; with T0, a given valid start instead of the earliest
+one, written to OUTDIR/window_start_t<T0>.txt and results/window_t<T0>.json)
 """
 import json, os, sys, time
 import numpy as np
@@ -71,6 +72,12 @@ valid_starts = [c["t0"] for c in cands]
 # The earliest valid window: it follows the upstroke of cell 0 (fast Na inactivation, notch), so its step sizes
 # are expected to be among the smallest of the shift interval (a conservative choice for a cost measurement).
 chosen = cands[0]
+tag = ""
+if len(sys.argv) > 2:  # a later valid window (used for a step-size comparison in a quiet phase)
+    want = float(sys.argv[2])
+    chosen = min(cands, key=lambda c: abs(c["t0"] - want))
+    assert abs(chosen["t0"] - want) < 1e-9, "requested window start is not a valid start on the 0.05 ms grid"
+    tag = "_t%g" % want
 t0 = round(chosen["t0"], 2)
 
 # accurate start state at t0 and a fine re-check of the chosen window
@@ -93,8 +100,9 @@ fine = dict(samples=int(len(tf)), max_spacing_ms=float(np.diff(tf).max()), slack
 # states near the orbit, not on it; the comparison only needs physiological states of this window)
 ts = np.linspace(t0, t0 + 1.0, 21)
 W = np.array([[np.interp(t, tf, o2["rec_y"][a]) for a in range(19 * N)] for t in ts])
-np.savetxt(os.path.join(out_dir, "window_states.txt"), W, fmt="%.17g")
-with open(os.path.join(out_dir, "window_start.txt"), "w") as f:
+if not tag:
+    np.savetxt(os.path.join(out_dir, "window_states.txt"), W, fmt="%.17g")
+with open(os.path.join(out_dir, "window_start%s.txt" % tag), "w") as f:
     f.write("%d %s %.17g\n" % (N, "0.035", t0))
     f.write(" ".join("%d" % int(b) for b in lo_s) + "\n")
     f.write(" ".join(repr(float(v)) for v in xs) + "\n")
@@ -105,7 +113,7 @@ summary = dict(note="Floating-point window choice for the stage-1 pilot; not a c
                orbit_max_abs_per_state=[float(np.abs(ry[a * N:(a + 1) * N]).max()) for a in range(19)],
                orbit_min_abs_per_state=[float(np.abs(ry[a * N:(a + 1) * N]).min()) for a in range(19)],
                secs=round(time.time() - t_start, 1))
-json.dump(summary, open(os.path.join(HERE, "results", "window.json"), "w"), indent=1)
+json.dump(summary, open(os.path.join(HERE, "results", "window%s.json" % tag), "w"), indent=1)
 print(json.dumps({k: summary[k] for k in ("t0_ms", "n_valid", "chosen_coarse")}))
 print(json.dumps({k: fine[k] for k in ("min_abs_V_plus_40_mV", "min_abs_V_minus_15_mV", "slack_mV", "samples")}))
 print("valid starts:", valid_starts)

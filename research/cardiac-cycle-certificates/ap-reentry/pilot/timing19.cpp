@@ -9,7 +9,7 @@
 // Reports steps, step sizes, wall time per step, the enclosure widths at the end and whether the floating-point
 // reference end state lies in the enclosure. Measurements only: nothing here is a certificate.
 //
-// Usage: timing19 window_start.txt rect|ho ORDER T_MS MAX_WALL_S out.json [steps.tsv]
+// Usage: [PILOT_TOL=tol] timing19 window_start.txt rect|ho ORDER T_MS MAX_WALL_S out.json [steps.tsv]
 //   rect = C1Rect2Set, ho = C1HORect2Set (Hermite-Obreshkov). If the wall time exceeds MAX_WALL_S the run stops
 //   after the current step and reports the fraction of [t0, t0 + T] covered.
 #include <algorithm>
@@ -30,6 +30,8 @@ static double now() {
 
 struct Widths {
   double c0RelMax = 0, c0RelMaxV = 0;  // max diam/|mid| over all coordinates, and over the V coordinates
+  int c0RelArg = -1;                   // where c0RelMax is attained
+  double c0ScaledMax = 0;              // max diam in the scaled variables (all of order one on the orbit)
   double dWidthMax = 0, dAbsMax = 0, dRelBig = 0;  // derivative: max entry width, max |entry|, max width/|mid| over entries with |mid| >= 1e-3 max
   double dRowSumMax = 0;  // max row sum of |mid| (infinity norm of the midpoint matrix)
 };
@@ -38,7 +40,8 @@ static Widths measure(const IVector& x, const IMatrix& D) {
   Widths w;
   for (int i = 0; i < DIM; ++i) {
     double r = diam(x[i]).rightBound() / std::max(1e-300, std::abs(x[i].mid().leftBound()));
-    w.c0RelMax = std::max(w.c0RelMax, r);
+    if (r > w.c0RelMax) { w.c0RelMax = r; w.c0RelArg = i; }
+    w.c0ScaledMax = std::max(w.c0ScaledMax, diam(x[i]).rightBound());
     if (i % NS == 0) w.c0RelMaxV = std::max(w.c0RelMaxV, r);
   }
   for (int i = 0; i < DIM; ++i) {
@@ -76,11 +79,17 @@ int runSet(SetT& s, IOdeSolver& solver, double T, double maxWall, const char* se
       hs.push_back(tc - prevT);
       walls.push_back(b - a);
       prevT = tc;
-      if (steps) {
+      if (steps) {  // step, time, step size, wall, max relative diam, max scaled diam, max derivative entry width
         IVector xx = IVector(s);
-        double rel = 0;
-        for (int i = 0; i < DIM; ++i) rel = std::max(rel, diam(xx[i]).rightBound() / std::max(1e-300, std::abs(xx[i].mid().leftBound())));
-        *steps << hs.size() << "\t" << std::setprecision(10) << tc << "\t" << hs.back() << "\t" << walls.back() << "\t" << rel << std::endl;
+        IMatrix DD = IMatrix(s);
+        double rel = 0, absw = 0, dw = 0;
+        for (int i = 0; i < DIM; ++i) {
+          rel = std::max(rel, diam(xx[i]).rightBound() / std::max(1e-300, std::abs(xx[i].mid().leftBound())));
+          absw = std::max(absw, diam(xx[i]).rightBound());
+          for (int k = 0; k < DIM; ++k) dw = std::max(dw, diam(DD[i][k]).rightBound());
+        }
+        *steps << hs.size() << "\t" << std::setprecision(10) << tc << "\t" << hs.back() << "\t" << walls.back() << "\t" << rel
+               << "\t" << absw << "\t" << dw << std::endl;
       }
       if (b - wall0 > maxWall && !tm.completed()) { partial = true; break; }
     } while (!tm.completed());
@@ -94,7 +103,8 @@ int runSet(SetT& s, IOdeSolver& solver, double T, double maxWall, const char* se
   // the floating-point reference end state (only meaningful when the run reached T)
   double refOutside = 0, refMidRel = 0;
   bool refInside = true;
-  if (!partial && error.empty()) {
+  const bool refApplies = !partial && error.empty() && T == 1.0;  // the reference end state is at t0 + 1 ms
+  if (refApplies) {
     for (int i = 0; i < DIM; ++i) {
       double r = xref[i];
       double lo = x[i].leftBound(), hi = x[i].rightBound();
@@ -133,11 +143,13 @@ int runSet(SetT& s, IOdeSolver& solver, double T, double maxWall, const char* se
       << ", \"wall_per_step_median_s\": " << wmed << ", \"wall_first_step_s\": " << (n ? walls[0] : 0)
       << ", \"wall_per_step_mean_excluding_first_s\": " << (n > 1 ? wrest / (n - 1) : 0)
       << ", \"wall_per_step_min_s\": " << wmin << ", \"wall_per_step_max_s\": " << wmax << ",\n"
-      << "  \"end_c0_max_relative_diameter\": " << w.c0RelMax << ", \"end_c0_max_relative_diameter_V\": " << w.c0RelMaxV << ",\n"
+      << "  \"end_c0_max_relative_diameter\": " << w.c0RelMax << ", \"end_c0_max_relative_diameter_at\": \"cell " << w.c0RelArg / NS
+      << " state " << w.c0RelArg % NS << "\", \"end_c0_max_relative_diameter_V\": " << w.c0RelMaxV
+      << ", \"end_c0_max_diameter_scaled\": " << w.c0ScaledMax << ",\n"
       << "  \"end_derivative_max_entry_width_scaled\": " << w.dWidthMax << ", \"end_derivative_max_abs_entry_scaled\": " << w.dAbsMax
       << ", \"end_derivative_max_relative_width_entries_ge_1e-3_max\": " << w.dRelBig
       << ", \"end_derivative_inf_norm_of_midpoint_scaled\": " << w.dRowSumMax << ",\n"
-      << "  \"reference_end_state_inside_enclosure\": " << (partial || !error.empty() ? "null" : (refInside ? "true" : "false"))
+      << "  \"reference_end_state_inside_enclosure\": " << (!refApplies ? "null" : (refInside ? "true" : "false"))
       << ", \"reference_max_relative_distance_outside\": " << refOutside
       << ", \"reference_max_relative_distance_to_midpoint\": " << refMidRel << "\n}\n";
   return error.empty() ? 0 : 1;
@@ -175,6 +187,13 @@ int main(int argc, char** argv) {
   IMap f(tp06r::ringField<N>, DIM, DIM, tp06r::P_MAX);
   tp06r::setParameters<IMap, interval>(f, "0.035");
   IOdeSolver solver(f, order);
+  // Optional step-control tolerance (default: CAPD's 1e-18 absolute and relative); any value is rigorous, it only
+  // changes the step sizes and the widths.
+  if (const char* tol = std::getenv("PILOT_TOL")) {
+    double v = std::atof(tol);
+    solver.setAbsoluteTolerance(v);
+    solver.setRelativeTolerance(v);
+  }
   std::ofstream out(argv[6]);
   std::ofstream stepsFile;
   std::ostream* steps = nullptr;
