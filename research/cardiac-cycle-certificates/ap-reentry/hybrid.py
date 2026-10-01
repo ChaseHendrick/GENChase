@@ -6,6 +6,7 @@ integration exactly when some cell crosses V = -40 mV, its branch is switched, a
 the numerical counterpart of the piecewise-smooth flow a rigorous proof must treat with saltation matrices.
 Stimuli are piecewise constant and also split segments.  Layout: y = Y.ravel(), Y of shape (19, N).
 """
+import os, ctypes
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.sparse import lil_matrix
@@ -14,11 +15,33 @@ import tp06_19d as M
 SCALE = np.array([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1e-4, 1, 1e-4, 10, 100], dtype=float)
 
 
+_LIB = None
+
+
+def _lib():
+    """ctypes handle to libtp06.so (tp06_rhs.c), path from $TP06_LIB; None if unavailable."""
+    global _LIB
+    if _LIB is None:
+        path = os.environ.get("TP06_LIB", "")
+        _LIB = False
+        if path and os.path.exists(path):
+            L = ctypes.CDLL(path)
+            dp = np.ctypeslib.ndpointer(dtype=np.float64, flags="C_CONTIGUOUS")
+            up = np.ctypeslib.ndpointer(dtype=np.uint8, flags="C_CONTIGUOUS")
+            L.ring_rhs.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, dp, dp, up, dp, ctypes.c_int, dp,
+                                   ctypes.c_int]
+            L.ring_rhs.restype = None
+            _LIB = L
+    return _LIB or None
+
+
 class Ring:
-    def __init__(self, N, c, p, weights=None):
+    def __init__(self, N, c, p, weights=None, fast=True):
         self.N, self.c, self.p = N, float(c), p
         self.w = np.ones(N) if weights is None else np.asarray(weights, float)  # edge i joins cell i and i+1 (mod N)
         self.nfev = 0
+        base = all(p[k] == v for k, v in M.BASE.items()) and p["Cm"] == 1.0
+        self.lib = _lib() if (fast and base) else None
 
     def coupling(self, V):
         if self.N == 1:
@@ -31,6 +54,16 @@ class Ring:
     def rhs(self, t, y, lo, istim):
         self.nfev += 1
         N = self.N
+        if self.lib is not None:
+            if y.ndim == 1:
+                Yc = np.ascontiguousarray(y, dtype=np.float64); k = 1
+            else:
+                k = y.shape[1]; Yc = np.ascontiguousarray(y.T, dtype=np.float64)
+            D = np.empty_like(Yc)
+            self.lib.ring_rhs(N, self.c, float(self.p["Cm_flux"]), np.ascontiguousarray(self.w, dtype=np.float64), Yc,
+                              np.ascontiguousarray(lo, dtype=np.uint8), np.ascontiguousarray(istim, dtype=np.float64),
+                              int(bool(self.p.get("stim_K", False))), D, k)
+            return D if y.ndim == 1 else D.T
         if y.ndim == 1:
             Y = y.reshape(19, N)
             return M.field(Y, self.p, i_stim=istim, coupling=self.coupling(Y[0]), lo=lo).ravel()
