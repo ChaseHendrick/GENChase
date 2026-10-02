@@ -194,7 +194,7 @@
       "typst": null,
       "latex": "papers/cardiac-rings/paper/cardiac-rings.tex",
       "pdf": "papers/cardiac-rings/paper/cardiac-rings.pdf",
-      "companion": null,
+      "companion": "ChaseHendrick/cardiac-rings",
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
