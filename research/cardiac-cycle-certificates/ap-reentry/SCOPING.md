@@ -300,3 +300,31 @@ sets nice 10 and an address-space cap. Records are in `pilot/results/`. The cost
 * **Verdict.** The cost criterion of the staged pilot passes on these measurements, with the caveat on wrapping
   above. A full proof needs about 3 to 4 core-days per C1 shift map, plus the multiprecision centre. That is
   feasible only on a dedicated multi-core machine, not in this shared session.
+
+## 10. Pilot stages 2 and 3, the proof program, the dry run (2026-10-01 to 2026-10-02)
+
+Measurements and a pipeline test; nothing here is a certificate. Records in `proof/results/`.
+
+* **Stage 2, the GHK window** (`stage2_ghk.json`, one uncoupled cell): the degree-24 window around 15 mV with the
+  Bernoulli coefficients, the proved tail bound and the Gronwall inflation (C0 and C1) runs through the fast passage
+  (1 ms from -40 mV, 34 window steps of 109) and a slow plateau stretch (25 ms, all 215 steps in the window); the
+  floating-point reference lies inside in every run. Inflations: at most 2.6e-30 (C0) and 4.8e-27 (C1) at degree 24.
+  Negative control: at degree 4 without the inflation the reference falls outside (55 radii), with it inside.
+* **Stage 3, the h/j switch** (`stage3_switch.json`): the section split at -40 mV with the branch flip and the
+  derivative composed through the section (saltation by composition) on one cell, a ring of 2 and a ring of 4; section
+  images and end sets contain the reference; the negative control without the switch misses it. The multiprecision
+  centre (128 bits, order 30) costs 2.50, 8.62 and 32.4 s per step at N = 1, 2, 4.
+* **The program** (`proof/`, runbook `RUNBOOK.md`): trusted `ring19.hpp`, `engine.hpp`, `ap_proof.cpp`; untrusted
+  `driver.py`, `frame_leaf.py`, `common.py`, whose outputs `ap_proof` checks.
+* **The dry run** (`proof/results/dryrun_dry3.json`, `RUNBOOK.md` section 4): N = 3, c = 0.15 per ms, a state that is
+  not a rotating wave. Every segment certified (C1 and C0), the chain composed, and `verify` reported NOT VERIFIED
+  (q_upper 1.73e6), as it must. Two faults of the untrusted driver were found and fixed. The full N = 16 proof stays a
+  secondary result for a dedicated machine (extrapolated 72 to 83 core-hours per C1 shift map and about 2,500
+  core-hours for the multiprecision centre as configured, `RUNBOOK.md` section 5).
+
+## 11. The continuum route (2026-10-02)
+
+The owner's plan of 2026-10-02 replaces the discrete ring near propagation failure by periodic travelling waves of the
+continuum cable on a ring of length L, in the comoving frame (a 20-dimensional ODE), with L = c T. Plan, numerical
+branch, CAPD wrapping pilot and cost: `continuum/PLAN.md` (log `continuum/LOG.md`). In brief (numerical and pilot
+results, no theorem): CONTINUUM_SUMMARY

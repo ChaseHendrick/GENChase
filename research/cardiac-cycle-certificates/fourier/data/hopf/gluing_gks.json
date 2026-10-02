@@ -1,0 +1,578 @@
+{
+ "gks_branch_snapshot": {
+  "run_K12.jsonl": {
+   "lines": 730,
+   "sha256_of_these_lines": "301d2ea40407176e168d56b0c18243771bdc3c897c94a6c6c15af89a5dcccd8c"
+  },
+  "centres_K12.jsonl": {
+   "lines": 728,
+   "sha256_of_these_lines": "a86e3a85c397d0fdf198c1a7ee7ced6a11faefbdbd9241f6de79a7ff3185ebd1"
+  },
+  "n_pieces": 676,
+  "n_groups": 54,
+  "g_lo": "0.027499735464",
+  "g_hi": "2778134123/100000000000",
+  "consecutive_gluings_rederived": 675
+ },
+ "points": [
+  {
+   "g": "0.0275",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "11/400",
+    "eps_enclosure": [
+     "0.23101500970260845043",
+     "0.23101500970260845044"
+    ],
+    "point_centre_sha256": "e607dc81f2cf9bcba9950ae373724c0e39a07449e41227ebce426b37b1b48a7f",
+    "point_r_existence": 1.7069393194341051e-28,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027499735464",
+     "0.027500264536"
+    ],
+    "piece_label": "G0P0",
+    "lhs": 3.539942496443794e-11,
+    "r_uniqueness_piece": 0.0015225820350108577
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0x7fb9b78a8970b00721311b275445495dp-127",
+    "dec": "0.9978551317643726833409084",
+    "approx": 0.9978551317643727
+   },
+   "delta": {
+    "hex": "0x2a04356eccbdp-60",
+    "dec": "0.00004007000000000055656146359",
+    "approx": 4.0070000000000557e-05
+   }
+  },
+  {
+   "g": "0.02755",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "551/20000",
+    "eps_enclosure": [
+     "0.21589359249996328832",
+     "0.21589359249996328833"
+    ],
+    "point_centre_sha256": "96ce5f531e2b2858892c9903039d7e57035562bf619c0cb1030665466c3168b2",
+    "point_r_existence": 1.881582446811222e-29,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027549655526",
+     "0.027550184956"
+    ],
+    "piece_label": "G8P9",
+    "lhs": 9.63526539554451e-05,
+    "r_uniqueness_piece": 0.0016096830030414627
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0x3fdcf3ed2e84ad002ec1941ef4a8b6bdp-126",
+    "dec": "0.9978608909824043249733007",
+    "approx": 0.9978608909824044
+   },
+   "delta": {
+    "hex": "0x29fed70b1431p-60",
+    "dec": "0.00004005000000000067533756365",
+    "approx": 4.0050000000000675e-05
+   }
+  },
+  {
+   "g": "0.0276",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "69/2500",
+    "eps_enclosure": [
+     "0.19978363566614366941",
+     "0.19978363566614366942"
+    ],
+    "point_centre_sha256": "c4f6678ed36f5f86eed0360378e3c6ff6c0ea9c1d699ce85b3e00b491fa96d63",
+    "point_r_existence": 1.4961446287939577e-30,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027599913523",
+     "0.027600546515"
+    ],
+    "piece_label": "G14P13",
+    "lhs": 0.0002939764178465582,
+    "r_uniqueness_piece": 0.001628543032359809
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0x7fba17e33eba328709e15f984f8e7e3dp-127",
+    "dec": "0.9978666171641222417536131",
+    "approx": 0.9978666171641223
+   },
+   "delta": {
+    "hex": "0x29f978a75ba5p-60",
+    "dec": "0.00004003000000000079411366372",
+    "approx": 4.0030000000000794e-05
+   }
+  },
+  {
+   "g": "0.02765",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "553/20000",
+    "eps_enclosure": [
+     "0.18242179699687759449",
+     "0.18242179699687759450"
+    ],
+    "point_centre_sha256": "b966eca34bb54c81c9e4a57e085e4e207446076dde3d743d35785b20b3b836a3",
+    "point_r_existence": 7.640463904160678e-32,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.02764973389",
+     "0.02765022034"
+    ],
+    "piece_label": "G22P4",
+    "lhs": 3.129133897081846e-05,
+    "r_uniqueness_piece": 0.0016385557182321698
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff748f4b2c19c8858e3f93c35e141b0fp-128",
+    "dec": "0.9978723104978605224172043",
+    "approx": 0.9978723104978605
+   },
+   "delta": {
+    "hex": "0x53e83487463p-57",
+    "dec": "0.00004001000000000004552802580",
+    "approx": 4.0010000000000046e-05
+   }
+  },
+  {
+   "g": "0.0277",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "277/10000",
+    "eps_enclosure": [
+     "0.16340772549919370133",
+     "0.16340772549919370134"
+    ],
+    "point_centre_sha256": "42e1c29be9d232f3943df0bd780d1f8cd3bbfc2a6912d5183f91de5219072c74",
+    "point_r_existence": 2.068394300048486e-33,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027699944322",
+     "0.027700370264"
+    ],
+    "piece_label": "G32P6",
+    "lhs": 0.00023405361219869535,
+    "r_uniqueness_piece": 0.0015505926537206748
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0x7fba7721ca8a24bf7d510ea6e6ccdd41p-127",
+    "dec": "0.9978779711719464525778148",
+    "approx": 0.9978779711719464
+   },
+   "delta": {
+    "hex": "0xa7baef7faa3p-58",
+    "dec": "0.00003999000000000016430412587",
+    "approx": 3.9990000000000164e-05
+   }
+  },
+  {
+   "g": "0.02775",
+   "source": "branch",
+   "on_eps_branch": false,
+   "lemma_D": {
+    "g": "111/4000",
+    "eps_enclosure": [
+     "0.14207755865829869655",
+     "0.14207755865829869656"
+    ],
+    "point_centre_sha256": "909086094194f9dd4fe0f8ea263dd18bab1eca51e96f6b4ec61bccded9eb2715",
+    "point_r_existence": 2.0876514732767353e-35,
+    "checks": [],
+    "eps_covered": false,
+    "ok": false
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027749716801",
+     "0.027750058087"
+    ],
+    "piece_label": "G44P6",
+    "lhs": 0.00018705372185726226,
+    "r_uniqueness_piece": 0.0013737678549776908
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff754cb0876cb80309d1b890ffa312a3p-128",
+    "dec": "0.9978835993746767442628768",
+    "approx": 0.9978835993746767
+   },
+   "delta": {
+    "hex": "0x14f4aebe19p-51",
+    "dec": "0.00003997000000000028308022593",
+    "approx": 3.997000000000028e-05
+   }
+  },
+  {
+   "g": "0.02778",
+   "source": "hopf",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "1389/50000",
+    "eps_enclosure": [
+     "0.12769007505990053945",
+     "0.12769007505990053946"
+    ],
+    "point_centre_sha256": "7d9fff735de6303f7409975786f4abee7767e138e1938d2da02dcd85c4a52c10",
+    "point_r_existence": 6.376825964870513e-37,
+    "checks": [
+     {
+      "eps_piece": [
+       "127519/1000000",
+       "128089/1000000"
+      ],
+      "lhs": 7.314711746297504e-08,
+      "r_uniqueness": 1.1944465936784787e-05,
+      "slack": 1.1871318819321812e-05,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027779822295",
+     "0.027780100279"
+    ],
+    "piece_label": "G53P6",
+    "lhs": 7.018775866565249e-05,
+    "r_uniqueness_piece": 0.0012180854997100674
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "approx": 0.9978868551371892,
+    "dec": "0.9978868551371892295891169",
+    "hex": "0xff75834fec2a189573421bb3cc262741p-128"
+   },
+   "delta": {
+    "approx": 3.996000000000034e-05,
+    "dec": "0.00003996000000000034246827597",
+    "hex": "0x14f357252addp-59"
+   }
+  },
+  {
+   "g": "0.0278",
+   "source": "branch",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "139/5000",
+    "eps_enclosure": [
+     "0.11717070423612204049",
+     "0.11717070423612204050"
+    ],
+    "point_centre_sha256": "19a9f0beadd00b2da9b6d188e984b167dbe9d5cf604089cee3621bdd80625d62",
+    "point_r_existence": 3.698215485176505e-38,
+    "checks": [
+     {
+      "eps_piece": [
+       "58551/500000",
+       "5899/50000"
+      ],
+      "lhs": 7.781973297287658e-07,
+      "r_uniqueness": 9.9817095653981e-05,
+      "slack": 9.903889832425223e-05,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": false,
+   "gks_check": {
+    "ok": false,
+    "tried": []
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff75a1b7ec1155f0162b02caf6c40f75p-128",
+    "dec": "0.9978886674908314649268018",
+    "approx": 0.9978886674908315
+   },
+   "delta": {
+    "hex": "0x14f357252addp-59",
+    "dec": "0.00003996000000000034246827597",
+    "approx": 3.996000000000034e-05
+   }
+  },
+  {
+   "g": "0.02785",
+   "source": "branch",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "557/20000",
+    "eps_enclosure": [
+     "0.085617354732995964100",
+     "0.085617354732995964101"
+    ],
+    "point_centre_sha256": "ba36949a53607fe5ab709e8fc0a7fbff8793c044df1b529b9ec3d5e2e0a89823",
+    "point_r_existence": 1.1737361984424434e-42,
+    "checks": [
+     {
+      "eps_piece": [
+       "42271/500000",
+       "87563/1000000"
+      ],
+      "lhs": 1.0940059152844305e-06,
+      "r_uniqueness": 0.0005,
+      "slack": 0.0004989059940847156,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": false,
+   "gks_check": {
+    "ok": false,
+    "tried": []
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0x3fdd7fc54d087373166f70b24ed8a507p-126",
+    "dec": "0.9978942324415875614085962",
+    "approx": 0.9978942324415876
+   },
+   "delta": {
+    "hex": "0x14f0a7f34e97p-59",
+    "dec": "0.00003994000000000046124437603",
+    "approx": 3.994000000000046e-05
+   }
+  },
+  {
+   "g": "0.02787",
+   "source": "branch",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "2787/100000",
+    "eps_enclosure": [
+     "0.069188890862443567282",
+     "0.069188890862443567283"
+    ],
+    "point_centre_sha256": "a21a167b9013bba38371483b5501218e429c20e8f7fc91b0dbab786f038cac1e",
+    "point_r_existence": 1.2288014869725407e-45,
+    "checks": [
+     {
+      "eps_piece": [
+       "547/8000",
+       "287/4000"
+      ],
+      "lhs": 4.440607945460131e-06,
+      "r_uniqueness": 0.001,
+      "slack": 0.00099555939205454,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": false,
+   "gks_check": {
+    "ok": false,
+    "tried": []
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff76260b51a3ecd0bbedfbf17a156c99p-128",
+    "dec": "0.9978965547212649946829885",
+    "approx": 0.997896554721265
+   },
+   "delta": {
+    "hex": "0x53bd416981dp-57",
+    "dec": "0.00003993000000000052063242606",
+    "approx": 3.993000000000052e-05
+   }
+  },
+  {
+   "g": "0.02788",
+   "source": "branch",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "697/25000",
+    "eps_enclosure": [
+     "0.059320716811843457405",
+     "0.059320716811843457406"
+    ],
+    "point_centre_sha256": "9b7624182e0e7b698aeec6e8a2980d0c4e5bb6e5006a71dbc786420159a6dfa6",
+    "point_r_existence": 1.4133970575228403e-45,
+    "checks": [
+     {
+      "eps_piece": [
+       "233/4000",
+       "13/200"
+      ],
+      "lhs": 3.09953837246364e-05,
+      "r_uniqueness": 0.001,
+      "slack": 0.0009690046162753636,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": false,
+   "gks_check": {
+    "ok": false,
+    "tried": []
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff7635144b15a1f5c9f9ae7af4706f01p-128",
+    "dec": "0.9978974508804499260488257",
+    "approx": 0.9978974508804499
+   },
+   "delta": {
+    "hex": "0x53bd416981dp-57",
+    "dec": "0.00003993000000000052063242606",
+    "approx": 3.993000000000052e-05
+   }
+  },
+  {
+   "g": "0.0279",
+   "source": "branch",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "279/10000",
+    "eps_enclosure": [
+     "0.031456841082649671989",
+     "0.031456841082649671990"
+    ],
+    "point_centre_sha256": "b9125b58ea1f706208402e20fa3a83a7b443680ecdec8b3ab6c1ebb2da5b7a04",
+    "point_r_existence": 1.4396920746898632e-45,
+    "checks": [
+     {
+      "eps_piece": [
+       "29/1000",
+       "67/2000"
+      ],
+      "lhs": 2.5165724453458984e-07,
+      "r_uniqueness": 0.001,
+      "slack": 0.0009997483427554655,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": false,
+   "gks_check": {
+    "ok": false,
+    "tried": []
+   },
+   "stage_S_ok": true,
+   "multiplier_bound_full_period": {
+    "hex": "0xff764a46e90db363208fd086e78c9e75p-128",
+    "dec": "0.9978987143631943749657543",
+    "approx": 0.9978987143631943
+   },
+   "delta": {
+    "hex": "0x14f0a7f34e97p-59",
+    "dec": "0.00003994000000000046124437603",
+    "approx": 3.994000000000046e-05
+   }
+  }
+ ],
+ "eps_branch": {
+  "n_pieces": 68,
+  "eps_end": "6427/50000"
+ },
+ "point_logs_sha256": {
+  "fourier/data/branch/points_K12.jsonl": {
+   "lines": 13,
+   "sha256_of_these_lines": "aac6de8cd0b0a57d4b175ce9dd89107e2093c7aa29d67862376e6ac2c4baf608"
+  },
+  "fourier/data/branch/points_centres_K32.jsonl": {
+   "lines": 12,
+   "sha256_of_these_lines": "2530cf41e416e153bfac265e84d7af68cc10ec8ec15fb786ddfd4f9d271ab8c8"
+  },
+  "fourier/data/hopf/gks_points.jsonl": {
+   "lines": 1,
+   "sha256_of_these_lines": "52edb6b7b00d278c663bcf4bdc9fb6a8aa89acb6dd77bdaba8dd76b3ae2f1210"
+  },
+  "fourier/data/hopf/gks_points_centres_K32.jsonl": {
+   "lines": 1,
+   "sha256_of_these_lines": "0cda2493a8a04708051d0fd97825b320b27a1cffb7640dcf1f79a32e2e5bd6fa"
+  }
+ },
+ "glue_points": [
+  {
+   "g": "0.02778",
+   "source": "hopf"
+  }
+ ],
+ "ok": true,
+ "stable_bridge_points": [
+  {
+   "g": "0.02778",
+   "source": "hopf"
+  },
+  {
+   "g": "0.0278",
+   "source": "branch"
+  },
+  {
+   "g": "0.02785",
+   "source": "branch"
+  },
+  {
+   "g": "0.02787",
+   "source": "branch"
+  },
+  {
+   "g": "0.02788",
+   "source": "branch"
+  },
+  {
+   "g": "0.0279",
+   "source": "branch"
+  }
+ ]
+}

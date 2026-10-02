@@ -29,3 +29,5 @@ Environment for reproduction (all single-threaded, run under `nice -n 19`):
 | `analyze_multipliers.py` | eigenvalues of DP, Floquet multipliers mu^N, charge eigenvalue check |
 | `validate_orbit.py` | full-rotation closure, crossing counts, stiffness, independent check of the leading multiplier |
 | `results/*.json` | small summaries of every run quoted in `SCOPING.md` |
+| `proof/`, `RUNBOOK.md` | the discrete N = 16 proof program (trusted `ring19.hpp`, `engine.hpp`, `ap_proof.cpp`; untrusted driver), its pilot records and the dry run (`proof/results/dryrun_dry3.json`); a secondary result for a dedicated machine |
+| `continuum/` | the continuum route (owner's plan of 2026-10-02): travelling waves of the cable on a ring in the comoving frame, numerical branch, CAPD wrapping pilot, cost; read `continuum/PLAN.md` |

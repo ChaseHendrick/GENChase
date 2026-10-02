@@ -43,3 +43,44 @@ Newest entries last. Times UTC. Nothing in this log is a proof.
   `check_comoving_field.py` (CAPD field against tw_model.py: 300 points inside, max relative difference 1.0e-12;
   negative control kappa (1 + 1e-6): all 300 outside; `results/check_comoving_field.json`), `wrap_pilot.cpp`,
   `wrap_run.py`.
+- 06:18 (found on resuming at 06:42). Dry run attempt 2 (`dryrun-dry3b`) had completed: all 4 segments certified in
+  kinds c1 and c0 (c1: 5, 175, 81, 51 steps, 14.5 + 143.5 + 80.7 + 65.4 s), `chain` ok for both kinds, `verify`
+  NOT VERIFIED (q <= 1.73e6, as it must be for a state that is not a rotating wave: spectral radius 11.4 of the
+  leaf map), all segments certified, centre times inside box times, finite. Record copied to
+  `../proof/results/dryrun_dry3.json` (sources not dirty; hashes of ring19.hpp, engine.hpp, ap_proof.cpp and driver.py
+  equal to the committed files). Discrete-ring task (3) closed: the pipeline runs end to end; it is not a proof.
+
+## 2026-10-02, resumed session (06:42 UTC)
+
+- 06:42. No job of this route was running (`ps` for wrap_pilot, tw_, capd, ap_proof: none). Other agents' jobs use
+  about 4 cores; this work stays on one core, nice 10.
+- 06:44 to 06:48. Cable snapshot for the collocation guess: `pde_guess.py` with the N = 16 orbit waveform, L = 200 mm,
+  h = 0.25 mm (N = 800, coupling 2.464 per ms), dt 0.01, 4,000 ms (3 min 34 s): 11 rotations, last periods 343.7 to
+  344.3 ms, c = 0.5809 mm/ms, kappa = 2.1914 per ms (first-order RL on a grid, so not the continuum speed).
+- 06:48. `tw_bvp.py init` at that kappa, M = 400 + 400: Newton converged from the snapshot in 12 iterations
+  (residual 3e-15), two remesh rounds, 12 s. T = 298.978 ms at c = 0.58092 mm/ms, L = 173.68 mm. The discrete
+  grid at h = 0.25 mm gave T = 344 ms at the same speed: the grid slows conduction, as expected.
+- 06:49. Mesh study at kappa = 2.19136 (M = 200, 300, 400, 600, 900 per piece): T = 299.0667, 298.9251, 298.9777,
+  298.97385, 298.97379 ms. M = 600 is used below (T to about 1e-4 ms; L to about 1e-4 mm).
+- 06:50 to 06:58. Continuation down in kappa from 2.19136 (`tw_bvp.py cont ... 0.2`, M = 600, remesh every 5 steps;
+  57 rows to kappa = 0.19907). T decreases from 297.15 ms to a minimum near 215.83 ms at kappa about 0.537
+  (c about 0.288 mm/ms; quadratic fit through the three nearest rows), then increases again (slow branch); L = c T
+  decreases monotonically over the whole range, from 171.83 mm to 40.40 mm at kappa = 0.19907 (c = 0.1751 mm/ms,
+  T = 230.71 ms). So the minimum of L is not at the minimum of T (see PLAN.md section 6, corrected). Newton needs
+  smaller steps below kappa 0.3 (failed steps halved), but the smallest singular value of the collocation Jacobian
+  stays at 3e-7 to 4e-7 (scaled) at kappa = 2.17, 0.525 and 0.294: no fold in kappa there.
+- 06:59. The CAPD pilot needs a decimal kappa: the wave was re-solved at kappa = 2.19 exactly (T = 298.84894 ms,
+  L = 173.5538 mm; `sol_k2.19_exact.npz` in the scratchpad).
+- 06:59 to 07:05. CAPD wrapping pilot on the kappa = 2.19 wave (`wrap_run.py` + `/root/bin/wrap_pilot`, built at 06:00
+  from the committed sources; one core, nice 10; run directory `tw/wrap` in the scratchpad). Runs P1 to P5 (PLAN.md
+  section 8): P1, C1 from V = -38 mV through the upstroke, 30 ms requested, stopped at 6.26 ms after 312 steps (29.7 s)
+  because the trajectory of the box centre left the wave along the expanding direction and repolarized early (V back
+  to -40.6 mV; the floating-point trajectory from the same point lies inside the enclosure); |D| reached 2.8e7 with
+  radius/(r0 |D|) constant at 0.53: no wrapping. P2, the foot (T - 5.5 to T - 0.5 ms): 1,380 steps, 122 s, |D| 1.9e5,
+  ratio 0.13 to 0.14. P3, 2 ms windows at six other phases: 13 to 21 steps on the plateau and in repolarization,
+  456 and 530 steps near rest. P4, dimension 21 with kappa radius 1e-9 relative: 0.108 s per step against 0.095.
+  P5, C0: 0.034 s per step. Float references inside every enclosure.
+- 07:05. Full-period sweep started: 2 ms C1 windows from collocation points over the whole period except 0.05 ms on
+  each side of the two sections (`tw/wrap/sweep.py`, 150 windows).
+- 07:07. Review by a separate agent started (a nested `claude -p` process with read-only tools plus writing the review
+  file; prompt in the scratchpad `tw/review_prompt.md`): in-project reading, not an outside review.

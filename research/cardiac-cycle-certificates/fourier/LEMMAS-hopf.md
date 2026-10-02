@@ -114,16 +114,18 @@ MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
 ### Theorem A (computer-assisted; `hopf.theorem_A`, record `fourier/data/hopf/theoremA.json`)
 
 Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). The program covers `W` by adjacent
-closed intervals with exact end points (record: `cover_left`, `G_H`, `cover_right`). For an interval `G` of the cover
+closed intervals with exact end points (record: `cover_left`, 286 intervals, `G_H`, `cover_right`, 229 intervals;
+233.6 s on one core). For an interval `G` of the cover
 write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
 `A_G(g) = D_z f(x_G(g); g)`. Then:
 
 (a) For every interval `G` and every `g in G`, `x_G(g)` exists, is real, and is real analytic in `g` on `G`; the
 spectrum of `A_G(g)` consists of a simple eigenvalue `lambda_G(g)` with `Im lambda_G(g) > 0`, its conjugate, and 16
-eigenvalues with real part at most the record's `others_max_re_upper` (about `-4.69e-5`).
+eigenvalues with real part at most the record's `others_max_re_upper`, `-4.6926852e-5` (rounded up).
 
-(b) `Re lambda_G(g) > 0` on every interval left of `G_H`, `< 0` on every interval right of `G_H`. `G_H` has width
-`2e-13`; on it `d Re lambda / dg` lies in the record's ball (about `-5.5769`), in particular `< 0`.
+(b) `Re lambda_G(g) > 0` on every interval left of `G_H`, `< 0` on every interval right of `G_H`.
+`G_H = [0.0279078440027596034781, 0.0279078440029596034781]` (width `2e-13`); on it `d Re lambda / dg` lies in
+`[-5.5769472, -5.5769465]` (the record's ball, rounded outward), in particular `< 0`.
 
 (c) *Consistency near `G_H`.* On the interval `J` of Corollary B(a) (it contains `G_H` and about 3e-7 of `W` around
 it), all intervals of the cover that meet `J` have their equilibrium polydiscs (recorded under `polydisc` and
@@ -132,12 +134,13 @@ it), all intervals of the cover that meet `J` have their equilibrium polydiscs (
 `A(g) = D_z f(x_e(g); g)`.
 
 (d) There is exactly one `g_H` in `J` (in fact in `G_H`) at which `A(g)` has an eigenvalue on the imaginary axis; there
-`lambda(g_H) = i omega_H` with `omega_H` in the record's ball (about `0.11934140178`), and `Re lambda(g) > 0` for
+`lambda(g_H) = i omega_H` with `omega_H` in `[0.119341401778, 0.119341401788]` (rounded outward), and `Re lambda(g) > 0` for
 `g in J`, `g < g_H`, `< 0` for `g > g_H`. More generally, for every interval `G` of the cover other than `G_H` and every
 `g in G`, `A_G(g)` has no eigenvalue on the imaginary axis.
 
-(e) `l1 < 0` at `(x_e(g_H), g_H)`: the record's enclosure of `l1` (about `-22.4879` in physical units with
-`<q, q> = 1`; `omega_H l1` is about `-2.6837`, Erhardt's `-2.6838`).
+(e) `l1 < 0` at `(x_e(g_H), g_H)`: `l1` lies in `[-22.4878803, -22.4878761]` (physical units, `<q, q> = 1`; record
+`l1_kuznetsov_physical`, rounded outward), and `omega_H l1` in `[-2.6837352, -2.6837346]`, which agrees with
+Erhardt's MATCONT value `-2.6838` to the printed digits.
 
 *Proof.* (a) On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the midpoint, inside `X_G`),
 Lemma A1 a ball matrix containing `A_G(g)` for every `g in G`; with `S` the float eigenvector matrix of the midpoint of
@@ -148,7 +151,11 @@ eigenvalue in `L` is the eigenvalue in `D1`, `lambda_G(g)`, which is simple (Lem
 its conjugate is the one in `D2`. Realness of `x_G`: the polydisc is invariant under conjugation and `f(conj z; g) =
 conj f(z; g)` for real `g`, so the unique zero is real. (b) On the intervals left of `G_H` the program certifies
 `Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record); on `G_H`, Lemma A2 with `p`, `q`, `A'` enclosed over
-`G_H` gives the ball for `Re lambda'`. (c) is checked by `identification_at_eps0` (box inclusions of the recorded
+`G_H` gives the ball for `Re lambda'`. Here `p` is identified as the left eigenvector of `lambda` itself: the
+left-eigenpair contraction (Lemma K for `A^T`) gives, for every `A` in the ball, an eigenvalue `lambda_l(A)` of `A` in a
+ball that `dlambda_dg` checks to be disjoint from every Gershgorin disc but `D1`; so `lambda_l(A)` lies in `D1`, which
+holds exactly one eigenvalue (Lemma G(b)), and `lambda_l(A) = lambda(A)`. (Until 2026-10-02 the program checked only
+that the two eigenvalue balls overlap, which does not identify them.) (c) is checked by `identification_at_eps0` (box inclusions of the recorded
 polydiscs in `P`, and Lemma K on `P` over `J`): for `g in J` and an interval `G` containing `g`, `x_G(g)` lies in `X_G`,
 hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The eigenvalue in `D1` of an interval and in `D1'` of an
 adjacent interval are, at the shared end point, eigenvalues with positive imaginary part of the same matrix that are
@@ -360,7 +367,9 @@ A line of `fourier/data/hopf/pieces.jsonl` carries an interval `[e_lo, e_hi]` (`
 an exact centre line `xbar(xi) = xbar_c + (xi - e_c) tbar` (`centre`, digest `result.centre_sha256`), exact dyadic
 weights `eta` (38: `omega`, `g`, `c_0..c_17`, `w_0..w_17`), the cover it was proved with (`cover`, logged in
 `covers.jsonl` with its family `T`, `R`, `G_R`, `rho2` and centres), and the exact numbers `Y0`, `Z1`, `Z2`, `r_*`,
-`r_lo = r_existence < r_hi = r_uniqueness <= r_*` with `p(r_lo) < 0`, `p(r_hi) < 0`, `Z1 + Z2 r_hi < 1`. By Lemmas B2,
+`r_lo = r_existence <= r_hi = r_uniqueness <= r_*` with `p(r_lo) < 0`, `p(r_hi) < 0`, `Z1 + Z2 r_hi < 1` (on 21 of
+the 68 pieces `r_lo = r_hi`: `existence._radii` falls back to `r_hi = r_lo` when its larger candidate fails
+`Z1 + Z2 r < 1`; uniqueness then holds in `B_{r_lo}`). By Lemmas B2,
 B3 and the radii-polynomial theorem (B2), for **every** `eps in [e_lo, e_hi]` (not only sampled values):
 
 1. `F(.; eps)` has exactly one zero `x*(eps) = (omega*, g*, c*, w*)` in the closed ball `B_{r_hi}(xbar(eps))` of
@@ -376,20 +385,27 @@ B3 and the radii-polynomial theorem (B2), for **every** `eps in [e_lo, e_hi]` (n
    `G_Ks = 0.0275`, branch.py section 8b). The value of `G_Ks` at which this orbit exists
    is enclosed: `|g*(eps) - gbar(eps)| <= eta_g r_lo`, and over the piece `g*(eps) in [g_lo, g_hi]` (the record's
    `g` enclosure, `gbar_c +- (delta |tbar_g| + eta_g r_lo)`). Likewise `omega*` and the period `T = 2 pi / omega*`
-   (`omega`, `T_ms`). Numerically (midpoints of the enclosures, not a bound) `g_H - g*(eps)` is about `7.7e-3 eps^2`
-   on the pieces so far, the square-root law of the Hopf bifurcation.
+   (`omega`, `T_ms`). Numerically (midpoints of the enclosures, not a bound) `g_H - g*(eps)` is about `7.9e-3 eps^2`
+   (`7.84e-3` to `7.93e-3` times `eps^2` over the 68 pieces), the square-root law of the Hopf bifurcation.
 4. Nothing is claimed about orbits outside the ball, about stability (Part S), or about a G_Ks value directly: a given
    `G_Ks` is reached through `eps` (Corollary B(c)), and whether `g*` is monotone in `eps` is not certified.
 
-Every piece is re-glued to its predecessor in Arb by `collect` (Lemma B4). Pieces 0 to 30 were made before the program
-logged its own SHA-256 (`code_sha256`, logged per piece from piece 31 on); the program used for them differs from the
-current one only in the driver `run` (which pieces to try and in what order) and in bookkeeping, and
-`fourier/test_hopf.py` re-proves pieces 0, 13, 30 and the last piece bit for bit (Y0, Z1, Z2, r_existence,
-r_uniqueness as exact dyadics) with the current program and covers rebuilt from the logged centres.
+Every piece is re-glued to its predecessor in Arb by `collect` (Lemma B4). The 68 pieces were made by five bounded
+runs of `hopf.run` on 2026-10-02: pieces 0 to 13 and 14 to 30 (before the program logged its own SHA-256), 31 to 40
+(`code_sha256` prefix `bae43c6c3b`), 41 to 62 (`c656af84d2`) and 63 to 67 (`e6754dbe4c`); pieces 0 to 40 have
+`K = 8`, `M = 48`, pieces 41 to 67 `K = 12`, `M = 64`. A copy of the program was taken at the start of each run (in the
+session's scratch directory, not in the repository). Comparing their syntax trees with the current `hopf.py`, every
+definition that a piece proof uses (`Jet`, `curve_point`, `Centre`, `EpsCover`, `hess19`, `_CurveFns`, `piece_blocks`,
+`assemble`, `centre_distance`, `glue`, the constants) is identical; they differ only in the untrusted float solver
+`FloatEps` (runs before 31 to 40), the driver `run`, Parts A and C, and bookkeeping. `branch.py`, `existence.py`,
+`fourier_eval.py` and `arbmodel.py` were last modified before the first run. `fourier/test_hopf.py` re-proves pieces 0,
+13, 30, 40, 62 and the last piece bit for bit (Y0, Z1, Z2, r_existence, r_uniqueness as exact dyadics) with the
+current program and covers rebuilt from the logged centres.
 
 ### Theorem B (computer-assisted; `hopf.run`, records `fourier/data/hopf/pieces.jsonl`, `covers.jsonl`)
 
-For every `eps in [0, eps0]` (`eps0` and the pieces in `results/fourier-hopf.json`) there is a zero
+For every `eps in [0, eps0]`, `eps0 = 6427/50000 = 0.12854` (68 pieces, listed in `results/fourier-hopf.json`), there is
+a zero
 `x*(eps) = (omega*(eps), g*(eps), c*(eps), w*(eps))` of `F(.; eps)`, unique in the piece's `B_{r_hi}(xbar(eps))`,
 with `omega*`, `g*`, `c*` real, `w*_{-m} = conj(w*_m)`, and `eps -> x*(eps)` is continuous on `[0, eps0]`. For
 `eps > 0`, `z(t) = c*(eps) + eps w*(eps)(omega*(eps) t)` is a periodic orbit of the cell at `G_Ks = g*(eps)` of minimal
@@ -403,15 +419,26 @@ because `f(conj z; conj g) = conj f(z; g)` at every point of the certified domai
 model is a composition of `+ - * /`, integer powers, `exp` and the principal `log`, `sqrt` on `Re > 0`, each commuting
 with conjugation; the evaluation points `c + s xi w(theta)`, `theta` real, form a conjugation-invariant set in the
 cover's family). So `kappa x*(xi)` is a zero in the same ball and equals `x*(xi)`. Continuity on a piece: let
-`kappa = Z1 + Z2 r_hi < 1` (every `T_xi` is a `kappa`-contraction of `B_{r_hi}(xbar(xi))`). For `xi'` near `xi`,
-`||xbar(xi) - xbar(xi')|| <= |xi - xi'| ||tbar|| <= r_hi - r_lo`, so `x*(xi) in B_{r_lo}(xbar(xi))` lies in
-`B_{r_hi}(xbar(xi'))`, and `||x*(xi) - x*(xi')|| = ||T_xi(x*(xi)) - T_xi'(x*(xi'))|| <= ||A (F(x*(xi); xi) -
-F(x*(xi); xi'))|| + kappa ||x*(xi) - x*(xi')||`; the first term tends to 0 as `xi' -> xi` (for fixed `x`,
-`xi -> A F(x; xi)` is continuous: `F` is analytic in `(x, xi)` on the ball by Lemma P, and `A` is bounded on the
-residuals that occur, as in E.3), so `x*` is continuous at `xi`. Gluing at the shared end points (Lemma B4) makes the
+`kappa = Z1 + Z2 r_hi < 1` (every `T_xi` is a `kappa`-contraction of `B_{r_hi}(xbar(xi))`), and let `r_1` be the
+smaller root of `p` (`Y0 > 0`). Since `p(r_lo) < 0` strictly and `p` is a convex quadratic with `p(0) = Y0 > 0`,
+`r_1 < r_lo`, and for every `r in (r_1, r_lo]` the radii-polynomial theorem (with the pair `r, r_hi`; `Z1 + Z2 r < 1`
+as `r <= r_hi`) puts the zero in `B_r`; so `||x*(xi) - xbar(xi)|| <= r_1` for every `xi` of the piece, and
+`r_hi - r_1 > 0` even when `r_lo = r_hi`. For `xi'` near `xi`, `||xbar(xi) - xbar(xi')|| <= |xi - xi'| ||tbar|| <=
+r_hi - r_1`, so `x*(xi) in B_{r_1}(xbar(xi))` lies in `B_{r_hi}(xbar(xi'))`, and `||x*(xi) - x*(xi')|| =
+||T_xi(x*(xi)) - T_xi'(x*(xi'))|| <= ||T_xi(x*(xi)) - T_xi'(x*(xi))|| + ||T_xi'(x*(xi)) - T_xi'(x*(xi'))|| <=
+||A (F(x*(xi); xi) - F(x*(xi); xi'))|| + kappa ||x*(xi) - x*(xi')||`; the first term tends to 0 as `xi' -> xi` (for
+fixed `x`, `xi -> A F(x; xi)` is continuous: `F` is analytic in `(x, xi)` on the ball by Lemma P, and `A` is bounded on
+the residuals that occur, as in E.3), so `x*` is continuous at `xi`. Gluing at the shared end points (Lemma B4) makes the
 piecewise definition single valued, hence continuous on `[0, eps0]`. Lemma B1(a) gives the orbits
 (`omega* >= omega_bar - delta |tbar_om| - eta_om r_lo > 0` certified). Distinct `eps` give distinct orbits:
 `|a_{1,V}| = eps/2` does not change under a time shift. QED.
+
+*The numbers* (record `results/fourier-hopf.json`; floats rounded for reading, exact values in the logs). On every piece
+`Z1 <= 0.251`, `Z2 <= 1.44e4`, `Z1 + Z2 r_hi <= 0.974`; `Y0` is `4.7e-7` to `3.9e-4` and `r_lo` `5.8e-7` to `7.7e-4` in
+the weighted norm; the smallest gluing slack is `3.0e-10`. The minimal period `2 pi / omega*` lies in
+`[52.6486, 52.9414]` ms over the whole range (rounded outward). At `eps0`, `g*(eps0)` lies in `[0.0277783015906886, 0.0277783239122673]`.
+From `eps = 0.004` on, every piece's `g` enclosure lies below `G_H` (record: `first_eps_with_g_certified_below_gH`).
+Total piece time 6,597 s on one core.
 
 ### Corollary B (computer-assisted and cited; the branch is born at the Hopf point)
 
@@ -494,18 +521,30 @@ the complete lines of the append-only logs whose line counts and SHA-256 the rec
 `g -> x*_P(g)` on `[0.027499735464, g_s]` and the eps-branch `eps -> x*(eps)` on `[0, eps_s]` share the orbit at
 `(g_s, eps_s)`, so their union is one continuous curve of real periodic orbits that starts at the orbit of Stage E at
 `G_Ks = 0.0275` (branch.py), passes through the Hopf cycles of Corollary A, and ends at the Hopf point
-`(x_e(g_H), g_H)` of Theorem A. With Corollary B(c): if the G_Ks branch reaches `g_end+` (it does whenever
-`g_s >= g_end+`, as `g_s = g*(eps_s)` with `eps_s <= eps_end`, or directly from the snapshot's `g_hi`), then for every
-`G_Ks in [0.027499735464, g_H)` the single cell has a periodic orbit on this curve.
+`(x_e(g_H), g_H)` of Theorem A. For every `G_Ks in [0.027499735464, g_H)` the single cell has a periodic orbit on this
+curve.
 
 *Proof.* Lemma D gives `x*(eps_s) = y_s` (the point's orbit in blown-up coordinates); `point_on_branch` gives
 `x*_P(g_s) = (omega_s, a_s)` (the point's existence ball lies in `P`'s uniqueness ball). These are the same periodic
 orbit. Both families are continuous in their parameters (branch.py Theorem B3, Theorem B here), and the union of two
 curves with a common point is connected; the end points are named by branch.py (Stage E at 0.0275) and Corollary B(a).
-The coverage statement is Corollary B(c) together with branch.py's coverage of `[0.027499735464, g_hi]`. QED.
+Coverage: branch.py covers `[0.027499735464, g_s]` (the validated chain reaches beyond `g_s`, since `P` contains it);
+`g*` is continuous on `[0, eps_s]` with `g*(0) = g_H` (Corollary B(a)) and `g*(eps_s) = g_s` (Lemma D), so by the
+intermediate value theorem every `g in [g_s, g_H)` is `g*(eps)` for some `eps in (0, eps_s]` (`eps != 0` as `g != g_H`),
+where Theorem B gives the orbit. QED.
 
-If no point proof satisfies both checks, the record states the gap: the lowest `G_Ks` reached by the bridge (`g_end+`)
-and the highest reached by the G_Ks branch.
+**As computed (2026-10-02; `fourier/data/hopf/gluing_gks.json`, record `results/fourier-hopf.json`, `glue_point`).**
+`g_s = 0.02778`. The point proof (`K = 32`, weights 1, Stage S) was made by `hopf.gks_point_proofs` with branch.py's
+functions and logged in `fourier/data/hopf/gks_points.jsonl` (centre in `gks_points_centres_K32.jsonl`); the branch logs
+were not touched. Lemma D: `eps_s` lies in `[0.12769007505990053945, 0.12769007505990053946]`, inside the eps-piece
+`[0.127519, 0.128089]` (piece 66), where the bound of (ii) is `7.3e-8` against `r_hi = 1.19e-5`. `point_on_branch`:
+G_Ks piece `G53P6 = [0.027779822295, 0.027780100279]`, left side `7.0e-5` against `r_hi = 1.22e-3`. The validated
+snapshot of the branch logs: `run_K12.jsonl` 730 lines, `centres_K12.jsonl` 728 lines (SHA-256 of these lines in the
+record), 54 groups, 676 pieces, `[0.027499735464, 0.02778134123]`, 675 consecutive gluings re-derived in Arb. So the
+gap between the branch and the Hopf point is closed: for every `G_Ks in [0.027499735464, g_H)` the cell has a periodic
+orbit on one continuous curve that starts at Stage E's orbit at `0.0275` and ends at the Hopf point. Lemma D also
+holds for the branch.py point proofs at `0.0278, 0.02785, 0.02787, 0.02788, 0.0279` (eps-side only; the G_Ks branch
+does not reach them), and `point_on_branch` for those at `0.0275` to `0.02775` (G_Ks side only).
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -517,11 +556,17 @@ and the highest reached by the G_Ks branch.
    `beta = mu(g) ~ Re lambda(g)`, i.e. the multiplier near 1 is about `exp(-2 Re lambda(g) T)`; with
    `d Re lambda / dg ~ -5.58` this exponent is about `-11.2 (g_H - g)` per ms, smaller in modulus than the slow
    equilibrium mode `-4.7e-5` per ms while `g_H - g < 4.2e-6` (`eps` below about `0.023`).
-2. **At isolated G_Ks values (computer-assisted).** At every point proof of `branch.py` that passed Stage S and whose
+2. **At isolated G_Ks values (computer-assisted).** At every `K = 32` point proof that passed Stage S and whose
    orbit is identified with the bridge by Lemma D (record: `stability_points`), every nontrivial Floquet multiplier of
-   the bridge orbit has modulus at most the recorded `multiplier_bound_full_period` (about `0.99789`, `delta` about
-   `4.0e-5` per ms) and the multiplier 1 is algebraically simple (Stage S, LEMMAS-stability.md), so that orbit is
-   locally exponentially orbitally stable with asymptotic phase. This is stability at those `G_Ks` values only.
+   the bridge orbit has modulus at most the recorded `multiplier_bound_full_period` and the multiplier 1 is
+   algebraically simple (Stage S, LEMMAS-stability.md), so that orbit is locally exponentially orbitally stable with
+   asymptotic phase. As computed: `G_Ks = 0.02778` (`eps_s = 0.127690...`, bound `0.99788686`), `0.0278` (`0.117170...`,
+   `0.99788867`), `0.02785` (`0.085617...`, `0.99789424`), `0.02787` (`0.069188...`, `0.99789656`), `0.02788`
+   (`0.059320...`, `0.99789746`) and `0.0279` (`0.031456...`, `0.99789872`), each with `delta` about `4.0e-5` per ms
+   (bounds rounded up). On the G_Ks side of the curve, `point_on_branch` identifies the Stage S point proofs at
+   `0.0275, 0.02755, 0.0276, 0.02765, 0.0277, 0.02775` (and `0.02778`) with the G_Ks branch (`gluing_gks.json`), so
+   along the whole curve of Theorem C pointwise stability is proved at these 12 values of `G_Ks`. This is stability at
+   those `G_Ks` values only.
 3. **Not proved.** Stability for every `eps` of the bridge, i.e. between the unquantified `eps_1` and the isolated
    points, and between the isolated points. A proof would need a uniform Floquet bound along the blown-up branch that
    resolves the multiplier near 1 at the scale `eps^2` (a second blow-up of the Hill operator at `eps = 0`, where the

@@ -8,7 +8,15 @@
 // and inflate the set by the Gronwall bound of engine.hpp (C0: delta = eps0 h e^{L+ h}; C1: e1), with eps0, eps1,
 // M2 computed here for the comoving rows W and Ca_ss (comoving19::windowRows).
 //
-// Usage: wrap_pilot START KAPPA DURATION KIND BRANCH OUTPREFIX [order] [theta_mV] [K] [log_every]
+// Monotone rule (optional, argument "monotone" = 1; added 2026-10-02 after the in-project review, finding 3): a segment
+// may start ON the section V = -40 (or anywhere on the closed side). The start box must have V >= -40 (high) or
+// V <= -40 (low) at every point. A step whose enclosure meets V = -40 is then accepted if W > 0 (high) or W < 0 (low) on
+// the whole widened step enclosure: V is strictly monotone on that step, and by induction V(t) is on the closed side at
+// the step's start, so V > -40 (high) or V < -40 (low) on the open step. Every other step needs the strict side as before.
+// (At the single instant where V = -40 the model uses the V >= -40 formulas; a set of measure zero does not change a
+// Caratheodory solution.)
+//
+// Usage: wrap_pilot START KAPPA DURATION KIND BRANCH OUTPREFIX [order] [theta_mV] [K] [log_every] [monotone]
 //   START: box file ("# comment", dim, then "lo hi" in C hex per line; dim 20, or 21 with kappa as a state)
 //   KAPPA: decimal string (kappa = c^2/D, 1/ms); used as the map parameter when dim = 20
 //   KIND: c0 | c1 | mp0;  BRANCH: high | low
@@ -87,6 +95,7 @@ int run(const std::vector<std::string>& a) {
   const double theta = a.size() > 7 ? std::atof(a[7].c_str()) : 1.0;
   const int K = a.size() > 8 ? std::atoi(a[8].c_str()) : 24;
   const int logEvery = a.size() > 9 ? std::atoi(a[9].c_str()) : 1;
+  const bool monotone = a.size() > 10 && std::atoi(a[10].c_str()) == 1;
   const bool low = branch == "low";
   if (!low && branch != "high") throw std::runtime_error("branch must be high or low");
   if (Tr::MP) MpFloat::setDefaultPrecision(128);
@@ -98,6 +107,11 @@ int run(const std::vector<std::string>& a) {
   if (dim != 20 && dim != 21) throw std::runtime_error("dim must be 20 or 21");
   std::vector<double> lo(dim), hi(dim);
   for (int i = 0; i < dim; ++i) { std::string u, v; in >> u >> v; lo[i] = apx::unhex(u); hi[i] = apx::unhex(v); }
+  if (monotone) {  // the start box must lie on the closed side of V = -40 (scaling by 2^6 is exact)
+    interval V0 = interval(lo[0], hi[0]) * comoving19::scaleOf(0);
+    if (low ? !(V0.rightBound() <= -40.0) : !(V0.leftBound() >= -40.0))
+      throw std::runtime_error("monotone rule: start box not on the closed side of V = -40");
+  }
   typename Tr::Map f(comoving19::field, dim, dim, comoving19::numParams());
   ring19::setParameters<typename Tr::Map, S>(f, kappa, 1, apx::ghkCoefs<S>());
   IMap fD(comoving19::field, dim, dim, comoving19::numParams());
@@ -116,7 +130,7 @@ int run(const std::vector<std::string>& a) {
   const double dstar = 1e-9;
   std::ofstream tsv(outp + ".tsv");
   tsv << "step\tt\th\tpoly\tV_lo\tV_hi\tc0_max_rad_scaled\tc0_max_rel_diam\tD_norm_inf_mid\tD_max_abs\tD_max_width\tD_rel_width_big\twall_s\n";
-  long steps = 0, polySteps = 0, retries = 0;
+  long steps = 0, polySteps = 0, retries = 0, monotoneSteps = 0;
   double hmin = 1e300, hmax = 0, deltaMax = 0, e1Max = 0, w0 = now();
   std::string error;
   bool ok = true;
@@ -181,8 +195,13 @@ int run(const std::vector<std::string>& a) {
         }
         interval V = W[0] * comoving19::scaleOf(0);
         if (low ? !(V.rightBound() < -40.0) : !(V.leftBound() > -40.0)) {
-          std::ostringstream o; o << "branch " << branch << " not certified: V in [" << V.leftBound() << ", " << V.rightBound() << "]";
-          throw std::runtime_error(o.str());
+          interval Wv = W[comoving19::IW] * comoving19::scaleOf(comoving19::IW);
+          bool mono = monotone && (low ? (Wv.rightBound() < 0.0) : (Wv.leftBound() > 0.0));
+          if (!mono) {
+            std::ostringstream o; o << "branch " << branch << " not certified: V in [" << V.leftBound() << ", " << V.rightBound() << "]";
+            throw std::runtime_error(o.str());
+          }
+          ++monotoneSteps;
         }
         if (poly) {
           interval zeta = gw.alpha * W[0] - 30.0 / gw.RTF;
@@ -228,7 +247,7 @@ int run(const std::vector<std::string>& a) {
      << "\", \"dim\": " << dim << ", \"kappa\": \"" << kappa << "\", \"branch\": \"" << branch << "\", \"order\": " << order
      << ", \"theta_mV\": " << theta << ", \"window_degree\": " << K << ",\n  \"ok\": " << (ok ? "true" : "false") << ", \"error\": \"" << error
      << "\",\n  \"duration_requested_ms\": " << duration << ", \"t_reached\": " << toI(s.getCurrentTime()).rightBound()
-     << ", \"steps\": " << steps << ", \"window_steps\": " << polySteps << ", \"retries\": " << retries << ", \"h_min\": " << hmin
+     << ", \"steps\": " << steps << ", \"monotone_rule\": " << (monotone ? "true" : "false") << ", \"monotone_steps\": " << monotoneSteps << ", \"window_steps\": " << polySteps << ", \"retries\": " << retries << ", \"h_min\": " << hmin
      << ", \"h_max\": " << hmax << ", \"gronwall_delta_max\": " << deltaMax << ", \"gronwall_e1_max\": " << e1Max
      << ", \"start_max_radius_scaled\": " << r0 << ",\n  \"wall_s\": " << wall << ", \"wall_per_step_s\": " << wall / std::max(1L, steps) << "\n}\n";
   std::cout << Tr::name() << (ok ? " ok" : " FAILED: " + error) << " steps " << steps << " t " << toI(s.getCurrentTime()).rightBound()
@@ -238,7 +257,7 @@ int run(const std::vector<std::string>& a) {
 
 int main(int argc, char** argv) {
   if (argc < 7) {
-    std::cerr << "usage: wrap_pilot START KAPPA DURATION KIND BRANCH OUTPREFIX [order] [theta_mV] [K] [log_every]\n";
+    std::cerr << "usage: wrap_pilot START KAPPA DURATION KIND BRANCH OUTPREFIX [order] [theta_mV] [K] [log_every] [monotone]\n";
     return 2;
   }
   std::vector<std::string> a(argv + 1, argv + argc);

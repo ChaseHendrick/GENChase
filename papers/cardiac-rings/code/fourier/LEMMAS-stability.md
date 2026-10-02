@@ -3,7 +3,7 @@
 Status: written 2026-10-01, before any Stage S code (PLAN-large-rings.md, step 3). Every statement below is proved
 here by hand or reduced to a cited textbook fact; nothing in this file is a computational result. The proofs have had
 one self-adversarial reading by their author (section 8) and one independent reading by a referee in this project's
-session (report in the session scratchpad, `lemmas-review.md`; no error found, three gaps and eight minor items, all
+session (report in `review/stability-lemmas-review-2026-10-01.md` of this paper's folder; no error found, three gaps and eight minor items, all
 addressed in section 9); this is not an outside review. The plan requires a
 second, independent reading before any record says "verified".
 
@@ -70,7 +70,7 @@ Contents
   (`prototypes/fourier-feasibility/rw_fourier.py`, `hill_spectrum`; `hill.py`) uses exactly this convention: its A_n
   is `fft(J)/L` of samples at theta_k = 2 pi k / L (the coefficient of e^{i n theta}), its block (m, m') is A_{m-m'},
   its diagonal is -i omega m, and its damping -4 c sin^2(pi m / N) sits on the V entry. A scratch check
-  (`scratchpad/lemmas/toy.py`: 3-dimensional cells, N = 5, random trigonometric A) reproduces e^{mu tau} = eig(M_tau)
+  (a program `toy.py` that is not in this folder: 3-dimensional cells, N = 5, random trigonometric A) reproduces e^{mu tau} = eig(M_tau)
   to 3e-13 with this convention, in the OFFSET half-open strip a = -omega N / 2 + 0.3 (count 15 = 3N), and misses by
   4e-2 with the opposite sign of the diagonal. Its centred strip also prints "count 15", but there the match is only
   1.6e-3: rounding put both copies of one eigenvalue on Im = +- omega N / 2 inside and both copies of another outside,
@@ -95,7 +95,7 @@ with inverse (lambda - D_0)^{-1} (I - B (lambda - D_0)^{-1})^{-1}, which is comp
 plus a bounded one). A resolvent that is compact at one point is compact at every point of the resolvent set (the
 resolvent identity R(lambda) = R(lambda_0) (I + (lambda_0 - lambda) R(lambda))). The remaining statements are the
 standard consequences of a compact resolvent, proved in Appendix A of the manuscript
-(papers/cardiac-rings/paper/cardiac-rings.tex), Theorem A.5 (ii) to (iv): the spectrum consists of isolated eigenvalues
+(paper/cardiac-rings.tex), Theorem A.5 (ii) to (iv): the spectrum consists of isolated eigenvalues
 of finite algebraic multiplicity, and G_mu(H_0) = ker (H_0 - mu)^k for all large k is the range of the Riesz
 projection of mu. See also Kato 1976, Section III.6, the standard reference; no step depends on it (section 7). QED
 
@@ -261,7 +261,7 @@ that for every (s, mu) in [0, 1] x Gamma the bounded operator I - s Ehat R_D(mu)
 R_D(mu) := (mu - Dhat)^{-1} (sufficient: sup over mu in Gamma of ||Ehat R_D(mu)|| < 1). Let H(s) := Dhat + s Ehat and
 n(H, Omega) := sum over eigenvalues mu in Omega of m(mu; H). Then Gamma lies in the resolvent set of every H(s), each
 H(s) has compact resolvent, n(H(s), Omega) is finite, and n(H(1), Omega) = n(Dhat, Omega).
-Proof. This is Theorem A.7 of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex), whose proof uses
+Proof. This is Theorem A.7 of the manuscript (paper/cardiac-rings.tex), whose proof uses
 Lemma 3.1 (the manuscript's Lemma 5.8) and Appendix A: mu - H(s) = (I - s Ehat R_D(mu)) (mu - Dhat) is a bijection
 with compact inverse R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, norm continuous and bounded on [0, 1] x Gamma; the
 Riesz projection P(s) (Gamma positively, i.e. counterclockwise, oriented; here and in Lemma 3.3) has rank n(H(s), Omega)
@@ -507,11 +507,17 @@ e^{i n theta}. Stage E already encloses J_n for |n| <= K' (aliased DFT, fourier_
 strip bound |J_{n,jk}| <= S_{J,jk} e^{-rho |n|}, and, for its Z2, a bound M_k >= sup |f_k(phibar(theta) + w)| over
 |Im theta| <= rho2 and the polydisc |w_j| <= R_j.
 
-Which radius. The Stage E record (e.g. results/fourier-existence-N8.json) carries two radii: r_existence, the radius of
+Which radius. The Stage E record (e.g. data/fourier-existence-N8.json) carries two radii: r_existence, the radius of
 the ball, about the centre, in which the record places the zero, and r_uniqueness, the radius of the ball in
-which the zero is unique. Both balls contain the zero, so Lemma 4.1 is valid with either, but eps is linear in t, and at
-N = 8 the referee estimated ||eps||_{1->1} about 4e-5 with r_uniqueness = 1e-12, far above the near-axis margins
-(dist_j about 1.3e-6), against about 1e-21 with r_existence = 5.4e-28. The program must therefore read
+which the zero is unique. Both balls contain the zero, so Lemma 4.1 is valid with either, but eps is linear in t. At
+N = 8 the record (data/fourier-existence-N8.json) has r_existence = 1.643907e-28 and r_uniqueness = 1e-12. With
+r = r_existence, the stability record gives ||eps||_{1->1} <= 1.2023e-12 in the cell coordinates S (eps_1norm_S; the
+entrywise maximum is eps_max = 3.67e-22). Since eps grows linearly in t for small t, r = r_uniqueness would give about
+7e3 in the same coordinates (an estimate by scaling, not a recorded value). That is far above the near-axis margins
+(dist_j about 1.3e-6). The referee report of 2026-10-01 (review/stability-lemmas-review-2026-10-01.md, G2) made the
+same point from an earlier run of the record (r_existence = 5.4e-28 then), in the Stage E variables without the
+scaling S: entrywise eps about 2.2e-6 and ||eps||_{1->1} about 4e-5 at r_uniqueness, against entrywise eps about 1e-21
+at r_existence. The program must therefore read
 r := r_existence and the weights eta (eta_om, eta_k) from the Stage E record, not recompute or retype them, and must
 assert t_j := eta_j r < R_j for every j (a check that fails the run), since Lemma 4.1 is void otherwise.
 
@@ -713,7 +719,7 @@ r_uniqueness, section 4.1), eta, nu = e^{rho0}; the enclosures [J_n]
   Wissenschaften 132), 1976, Chapter III, Section 6: the standard reference for the facts about operators with compact
   resolvent used here (the resolvent is holomorphic on the resolvent set; Riesz projections of separated parts of the
   spectrum and of isolated eigenvalues; discrete spectrum under a compact resolvent). Since 2026-10-02 no step depends
-  on the book: Appendix A of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex) proves these facts on the
+  on the book: Appendix A of the manuscript (paper/cardiac-rings.tex) proves these facts on the
   l^1 spaces used here (Lemma A.1, compact operators are norm limits of finite-rank ones; Lemma A.2, the resolvent;
   Lemma A.3, contour integrals; Proposition A.4, the Riesz projection; Theorem A.5, compact resolvent; Lemma A.6,
   continuity of the Riesz projection; Theorem A.7, the homotopy count of Lemma 3.2), from the Neumann series, the
@@ -776,9 +782,9 @@ One adversarial rereading by the author. What was checked and what changed:
     assume (C3) (dist_j > 0 is used); in Corollary 1.3 the section-time function was renamed t_g (s is the README's
     section level); checklist item 4 now gives one starting rectangle valid for every N >= 1 (b = -a =
     omega_bar (N/2 + 1/4)), checked against (C1) for N = 1 (b = 0.75 omega_bar < omega_lo).
-13. Empirical check only (not part of any proof): the toy model in the scratchpad confirms Theorem 1, the sign
-    convention, the 18N-type count in an offset half-open strip, and Corollary 1.2(iv) (H_q against H_0 + i omega q to
-    1e-13).
+13. Empirical check only (not part of any proof): the scratch toy model (its program is not in this folder) confirms
+    Theorem 1, the sign convention, the 18N-type count in an offset half-open strip, and Corollary 1.2(iv) (H_q against
+    H_0 + i omega q to 1e-13).
 
 Places where I am not fully certain, for the second reader:
 
@@ -828,7 +834,7 @@ The referee found no error that makes a stated theorem false. Each gap and minor
 * M8. The Kato section and theorem numbers are marked "to be confirmed against a copy" where they are cited and in
   section 7. (2026-10-02: superseded. The facts are now proved in Appendix A of the manuscript, and the lemmas
   above cite that appendix, with Kato as the standard reference only; see section 7. An in-project adversarial
-  reading of Appendix A on 2026-10-02, papers/cardiac-rings/review/appendixA-reading-2026-10-02.md, found no error;
+  reading of Appendix A on 2026-10-02, review/appendixA-reading-2026-10-02.md, found no error;
   its gaps G1 and G2 led to the restatement of Lemma 3.2 on l^1_w(J) and to the domain statements for Dhat, Ehat
   and D_T in section 3.2 and Lemma 3.3.)
 

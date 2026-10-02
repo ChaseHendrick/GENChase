@@ -12,5 +12,19 @@
   "points_outside": 300,
   "max_rel_difference_midpoint": 1.0000000006003223e-06
  },
+ "window_rows_test": {
+  "points": 150,
+  "degree": 2,
+  "V_minus_15_range_mV": [
+   1.0,
+   40.0
+  ],
+  "rows_match": true,
+  "python_window_field_inside": true,
+  "max_rel_difference_W_and_Ca_ss_rows": 1.568211621588793e-07,
+  "negative_control_A_W_without_kappa_failures": 150,
+  "negative_control_A_C_doubled_failures": 150,
+  "passed": true
+ },
  "passed": true
 }

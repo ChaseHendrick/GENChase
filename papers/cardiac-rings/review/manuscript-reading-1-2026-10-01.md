@@ -1,4 +1,4 @@
-# Referee report: papers/cardiac-rings/paper/cardiac-rings.tex (draft of 2026-10-01)
+# Referee report: paper/cardiac-rings.tex (draft of 2026-10-01)
 
 This report comes from a separate in-project agent session that was told to find errors. It is not an outside review.
 Line numbers refer to the .tex file. Every number in the theorems and tables was checked against data/*.json with

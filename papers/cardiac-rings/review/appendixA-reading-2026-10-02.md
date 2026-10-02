@@ -1,6 +1,6 @@
 # Adversarial reading of Appendix A (cardiac-rings.tex), 2026-10-02
 
-File: papers/cardiac-rings/paper/cardiac-rings.tex (812 lines). Appendix A is lines 688-810; downstream uses
+File: paper/cardiac-rings.tex (812 lines). Appendix A is lines 688-810; downstream uses
 read: Section 5.1 (lines 310-328), Theorem 5.3 (lines 340-350), Lemmas 5.8-5.11 (lines 394-447), Lemma 5.12
 and Theorem 5.13 (lines 449-501) as far as they use the appendix, and the Limitations item (line 603).
 

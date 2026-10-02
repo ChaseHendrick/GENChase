@@ -1,0 +1,530 @@
+{
+ "schema": "ap-reentry-run-record-v1",
+ "config": {
+  "instance": "dry3",
+  "dry_run": true,
+  "N": 3,
+  "coupling": "0.15",
+  "float_tau_ms": 2.3332206285656105,
+  "float_events": [
+   [
+    0.020084215566746826,
+    2,
+    -1
+   ],
+   [
+    1.4792912486028438,
+    2,
+    1
+   ],
+   [
+    2.3332206285656105,
+    1,
+    1
+   ]
+  ],
+  "split_times": [
+   0.7496877320847953
+  ],
+  "auto_cuts": [
+   0.7496877320847953
+  ],
+  "parallel_boxes": 0.0,
+  "frame": {
+   "N": 3,
+   "leaf_dim": 55,
+   "blocks": 34,
+   "predicted_q": 11.445271567777759,
+   "spectral_radius_DG": 11.445271567760665,
+   "radii": [
+    1e-15,
+    1e-09
+   ],
+   "Q0": 451.27871375335195
+  },
+  "created": "2026-10-02T06:11:51Z",
+  "inputs": {
+   "dry_jac.npy": "702cbdfa47267624547e1996f3ff5c01e30ec1c2cecac9d6c476b897bb6af728",
+   "state.npy": "7a6c18820ea55392e27c0e7a264a0da20abf9a64bef914e2f83f5945b5c4fe7c",
+   "frame.txt": "7c28e860410cf023d68d32e728ecbf149c1f7005544070f8e731cc9aee668a3a",
+   "plan.txt": "7ed991fe71713683f02e84862ab0897b770fb98624edcc60841acb713faecf2e"
+  },
+  "status": "pilot / dry run; no theorem"
+ },
+ "status": "DRY RUN: mechanical test of the proof program on a small instance; not a proof, no theorem",
+ "segments": {
+  "c1": [
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 0,
+    "kind": "c1",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 2 level -40 dir -1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.02008421556657685, 0.020084215567032961]",
+    "T_hex": [
+     "0x1.490f4e418d80ep-6",
+     "0x1.490f4e41ad997p-6"
+    ],
+    "steps": 5,
+    "validation_steps": 6,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.0004919304108,
+    "h_max": 0.002075195312,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 3.079118991e-12,
+    "end_c0_max_relative_diameter": 6.879680983e-09,
+    "end_derivative_max_width": 1.073807709e-10,
+    "end_derivative_max_abs": 10.47822184,
+    "end_derivative_max_rel_width_big_entries": 9.611996904e-10,
+    "wall_s": 14.48853834,
+    "wall_validation_s": 4.226392823,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 1,
+    "kind": "c1",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "duration 0.729604",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.72960351651804856, 0.72960351651804867]",
+    "T_hex": [
+     "0x1.758e9794fbb4ep-1",
+     "0x1.758e9794fbb4fp-1"
+    ],
+    "steps": 175,
+    "validation_steps": 0,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.001953125,
+    "h_max": 0.009765625,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 2.608766935e-12,
+    "end_c0_max_relative_diameter": 4.593504254e-09,
+    "end_derivative_max_width": 1.302657204e-09,
+    "end_derivative_max_abs": 2.71325091,
+    "end_derivative_max_rel_width_big_entries": 3.374500877e-09,
+    "wall_s": 143.5263242,
+    "wall_validation_s": 0,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 2,
+    "kind": "c1",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 2 level -40 dir 1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.72960351651439348, 0.72960351652295619]",
+    "T_hex": [
+     "0x1.758e9794f3ab4p-1",
+     "0x1.758e9795067fap-1"
+    ],
+    "steps": 81,
+    "validation_steps": 4,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.00439453125,
+    "h_max": 0.017578125,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 4.208879772e-12,
+    "end_c0_max_relative_diameter": 1.746162243e-09,
+    "end_derivative_max_width": 1.008935456e-06,
+    "end_derivative_max_abs": 102.3916592,
+    "end_derivative_max_rel_width_big_entries": 1.0336595e-08,
+    "wall_s": 80.6889502,
+    "wall_validation_s": 4.47050011,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 3,
+    "kind": "c1",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 1 level -40 dir 1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.8539293799560892, 0.8539293799675497]",
+    "T_hex": [
+     "0x1.b5363b50028a4p-1",
+     "0x1.b5363b501bbdfp-1"
+    ],
+    "steps": 51,
+    "validation_steps": 7,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.0002609211456,
+    "h_max": 0.0224609375,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 6.707068234e-11,
+    "end_c0_max_relative_diameter": 1.24427467e-09,
+    "end_derivative_max_width": 2.300044244e-08,
+    "end_derivative_max_abs": 11.86603663,
+    "end_derivative_max_rel_width_big_entries": 2.841073992e-07,
+    "wall_s": 65.37643052,
+    "wall_validation_s": 7.168278636,
+    "resumed": false,
+    "resumed_at_step": 0
+   }
+  ],
+  "mp0": [],
+  "c0": [
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 0,
+    "kind": "c0",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 2 level -40 dir -1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.020084215566784077, 0.020084215566825405]",
+    "T_hex": [
+     "0x1.490f4e419c15fp-6",
+     "0x1.490f4e419efe7p-6"
+    ],
+    "steps": 5,
+    "validation_steps": 6,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.0004919304106,
+    "h_max": 0.002075195312,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 5.917488721e-14,
+    "end_c0_max_relative_diameter": 2.433645664e-13,
+    "wall_s": 5.736020032,
+    "wall_validation_s": 1.883710737,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 1,
+    "kind": "c0",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "duration 0.729604",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.72960351651804856, 0.72960351651804867]",
+    "T_hex": [
+     "0x1.758e9794fbb4ep-1",
+     "0x1.758e9794fbb4fp-1"
+    ],
+    "steps": 175,
+    "validation_steps": 0,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.001953125,
+    "h_max": 0.009765625,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 5.134781489e-13,
+    "end_c0_max_relative_diameter": 2.415031896e-12,
+    "wall_s": 52.11098943,
+    "wall_validation_s": 0,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 2,
+    "kind": "c0",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 2 level -40 dir 1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.72960351651591171, 0.72960351652138189]",
+    "T_hex": [
+     "0x1.758e9794f701fp-1",
+     "0x1.758e979503096p-1"
+    ],
+    "steps": 81,
+    "validation_steps": 4,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.00439453125,
+    "h_max": 0.017578125,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 2.426003842e-12,
+    "end_c0_max_relative_diameter": 2.816203624e-11,
+    "wall_s": 27.91385806,
+    "wall_validation_s": 1.290166219,
+    "resumed": false,
+    "resumed_at_step": 0
+   },
+   {
+    "status": "pilot / dry run; no theorem",
+    "segment": 3,
+    "kind": "c0",
+    "N": 3,
+    "coupling": "0.15",
+    "order": 20,
+    "end": "section cell 1 level -40 dir 1",
+    "ok": true,
+    "error": "",
+    "negative_controls": {
+     "no_inflation": false,
+     "force_quotient": false,
+     "no_switch": false
+    },
+    "T": "[0.85392937995812623, 0.85392937996553608]",
+    "T_hex": [
+     "0x1.b5363b500705p-1",
+     "0x1.b5363b5017506p-1"
+    ],
+    "steps": 51,
+    "validation_steps": 7,
+    "window_steps": 0,
+    "retries": 0,
+    "h_min": 0.0002609211436,
+    "h_max": 0.0224609375,
+    "gronwall": {
+     "delta_max": 0,
+     "delta_sum": 0,
+     "e1_max": 0,
+     "e1_sum": 0,
+     "lognorm_max": -1e+300,
+     "zeta_max": 0,
+     "tail_T0_max": 0,
+     "window_degree": 24,
+     "theta_mV": 1
+    },
+    "window_steps_per_cell": [
+     0,
+     0,
+     0
+    ],
+    "end_c0_max_diameter_scaled": 2.515287978e-11,
+    "end_c0_max_relative_diameter": 1.152460121e-10,
+    "wall_s": 18.81087237,
+    "wall_validation_s": 2.607426584,
+    "resumed": false,
+    "resumed_at_step": 0
+   }
+  ]
+ },
+ "verify": {
+  "schema": "ap-reentry-contraction-v1",
+  "status": "DRY RUN: mechanical check of the program; not a proof",
+  "N": 3,
+  "coupling": "0.15",
+  "leaf_dimension": 55,
+  "Q0_hex": "0x1.c34759c8d7979p+8",
+  "frame_inverse_E_norm": 2.091096298833145e-10,
+  "q_upper": 1730498.1421258103,
+  "worst_block": 22,
+  "r0_upper": 1.7080813149158095e+21,
+  "max_block_residual_plus_row_sum_upper": 1.7080813149158098e+21,
+  "section_map_time_box": "[2.3332206285551078, 2.3332206285755879]",
+  "section_map_time_centre": "[2.3332206285588701, 2.3332206285717922]",
+  "rotation_period_box": "[6.999661885665323, 6.9996618857267636]",
+  "segments": [
+   {
+    "segment": 0,
+    "T_box": "[0.02008421556657685, 0.020084215567032961]",
+    "T_centre": "[0.020084215566784077, 0.020084215566825405]"
+   },
+   {
+    "segment": 1,
+    "T_box": "[0.72960351651804856, 0.72960351651804867]",
+    "T_centre": "[0.72960351651804856, 0.72960351651804867]"
+   },
+   {
+    "segment": 2,
+    "T_box": "[0.72960351651439348, 0.72960351652295619]",
+    "T_centre": "[0.72960351651591171, 0.72960351652138189]"
+   },
+   {
+    "segment": 3,
+    "T_box": "[0.8539293799560892, 0.8539293799675497]",
+    "T_centre": "[0.85392937995812623, 0.85392937996553608]"
+   }
+  ],
+  "all_segments_certified": true,
+  "centre_times_inside_box_times": true,
+  "finite": true,
+  "centre_kind": "c0",
+  "floquet_bound_full_rotation_upper": 5.182190956704173e+18,
+  "verified": false
+ },
+ "hashes": {
+  "ap-reentry/proof/ring19.hpp": "358982ee65f6bdd791d44420adfb11c56b1e62e10dbe25dc3871193b9b0c4151",
+  "ap-reentry/proof/engine.hpp": "f740f429bc5f7758c9d73ed4e1ab3d3d26580a6c1229d4930ed43bad862b04eb",
+  "ap-reentry/proof/ap_proof.cpp": "3c79d5bb675623c337aee257a820bcea2c617060b78270258c433653aed9ddc3",
+  "model/setup.hpp": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
+  "model/tp06_capd.hpp": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
+  "ap-reentry/proof/driver.py": "0d7b6bc74c5c00887ed1d3268debbc79770a0e9ad58e331ba5999e469000e595",
+  "ap-reentry/proof/common.py": "581bb6a658a2a859b2d1283ec25e7c950ceda20a08e856b198d83a0edc7e77aa",
+  "ap-reentry/proof/frame_leaf.py": "27caedd73d3c42e4ac97561ab783dc54b613170e248064196220742ba3bbf501",
+  "proofs/capd-6.1.0-genchase.patch": "fcdd11fa388fa84d252ec20ed1956376dd64c05468051ba7eda237898be4adc7"
+ },
+ "binary_sha256": "d3d41f9b49aa5de5705d4a43f7038f870dd489021f2466b03b8c111cf4158d5d",
+ "capd_commit": "03dc5628203334b214bb7d9fd63788a175521005",
+ "repository_commit": "ea59f6c516ebf2eafd5e4098d1ed6c40defa16f9",
+ "sources_dirty": false,
+ "dry_run_float_P_vs_centre_enclosure": {
+  "max_abs_diff_over_radius": 0.508471937517839,
+  "max_rel_diff": 5.292145279304341e-12,
+  "note": "float rotwave.P (Radau rtol 1e-12) at the centre versus the rigorous centre enclosure; the float value is not expected inside an enclosure narrower than its own error"
+ }
+}
