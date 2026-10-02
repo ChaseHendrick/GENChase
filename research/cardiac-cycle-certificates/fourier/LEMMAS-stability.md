@@ -254,22 +254,18 @@ Lemma 3.1 (projections close in norm have equal rank). If P, P' are bounded proj
 Proof. If x is in Ran P' and P x = 0, then ||x|| = ||(P' - P) x|| < ||x|| unless x = 0; so P maps Ran P' injectively
 into Ran P and rank P' <= rank P, in particular finite. Exchange the roles. QED
 
-Lemma 3.2 (homotopy count). Let Dhat be closed on a domain dense in X with compact resolvent, Ehat bounded, Omega a
-bounded open rectangle with boundary Gamma contained in the resolvent set of Dhat, and suppose that for every
-(s, mu) in [0, 1] x Gamma the bounded operator I - s Ehat R_D(mu) is invertible, R_D(mu) := (mu - Dhat)^{-1}
-(sufficient: sup over mu in Gamma of ||Ehat R_D(mu)|| < 1). Let H(s) := Dhat + s Ehat and
+Lemma 3.2 (homotopy count). Let X be a weighted l^1 space l^1_w(J) (J countable, weights w_i > 0; both the space of
+H_0 and the weighted space of the Scal-coordinates are of this form), Dhat an operator in X with compact resolvent,
+Ehat in B(X), Omega a bounded open rectangle with boundary Gamma contained in the resolvent set of Dhat, and suppose
+that for every (s, mu) in [0, 1] x Gamma the bounded operator I - s Ehat R_D(mu) is invertible,
+R_D(mu) := (mu - Dhat)^{-1} (sufficient: sup over mu in Gamma of ||Ehat R_D(mu)|| < 1). Let H(s) := Dhat + s Ehat and
 n(H, Omega) := sum over eigenvalues mu in Omega of m(mu; H). Then Gamma lies in the resolvent set of every H(s), each
 H(s) has compact resolvent, n(H(s), Omega) is finite, and n(H(1), Omega) = n(Dhat, Omega).
-Proof. mu - H(s) = (I - s Ehat R_D(mu)) (mu - Dhat) is a bijection with inverse
-R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, compact. (s, mu) -> R_s(mu) is norm continuous on the compact set
-[0, 1] x Gamma (R_D is continuous on its resolvent set and inversion is continuous), hence uniformly continuous. The
-spectrum of H(s) is discrete (manuscript Theorem A.5(ii)), so Omega, which is bounded and whose
-boundary lies in the resolvent set, contains finitely many eigenvalues. The Riesz projection
-P(s) := (1 / 2 pi i) contour integral over Gamma of R_s(mu) d mu (Gamma positively, i.e. counterclockwise, oriented;
-here and in Lemma 3.3) is a projection whose range is the sum of the
-generalized eigenspaces of the eigenvalues inside Gamma (manuscript Proposition A.4 and Theorem A.5(iv)), so its rank
-is n(H(s), Omega). P(s) is norm continuous in s (manuscript Lemma A.6), so by Lemma 3.1 its rank is locally constant, hence constant on [0, 1].
-QED
+Proof. This is Theorem A.7 of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex), whose proof uses
+Lemma 3.1 (the manuscript's Lemma 5.8) and Appendix A: mu - H(s) = (I - s Ehat R_D(mu)) (mu - Dhat) is a bijection
+with compact inverse R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, norm continuous and bounded on [0, 1] x Gamma; the
+Riesz projection P(s) (Gamma positively, i.e. counterclockwise, oriented; here and in Lemma 3.3) has rank n(H(s), Omega)
+(Theorem A.5(iv)) and is Lipschitz in s (Lemma A.6), so its rank is locally constant, hence constant on [0, 1]. QED
 
 ### 3.2 The comparison operator
 
@@ -306,8 +302,14 @@ With H_0 written in blocks (window W, tail Tl) as [[H_WW, H_WT], [H_TW, H_TT]]:
       Ehat_WW = Fm := V^{-1} H_WW V - Lambda,      Ehat_WT = V^{-1} H_WT,
       Ehat_TW = H_TW V,                            Ehat_TT = H_TT - (direct sum of B_m),
 
-and Ehat_TT acts on the tail by (Ehat_TT P)_m = sum_{n != 0, m - n in Tl} A_n P_{m-n} + (A_0 - A0c) P_m. Ehat is bounded
-(Fm is finite; the other blocks are convolutions with summable kernels). The true omega and the true A_n enter Dhat and
+and Ehat_TT acts on the tail by (Ehat_TT P)_m = sum_{n != 0, m - n in Tl} A_n P_{m-n} + (A_0 - A0c) P_m: in the tail
+diagonal, -i omega m cancels against B_m, and the damping -d_m E of H_0 cancels exactly against the -d_{m mod N} E in
+X_{m mod N} (d_m is N-periodic). The domain of Dhat is D(Dhat) = {v : sum_{m in Tl} |m| |v_m|_1 < inf}, window
+coordinates unrestricted; this is the maximal domain of the block-diagonal Dhat, since
+(omega |m| - ||X_r||_{1->1}) |v_m|_1 <= |B_m v_m|_1 <= (omega |m| + ||X_r||_{1->1}) |v_m|_1, and Scal^{-1}(D) = D(Dhat)
+because Scal changes finitely many coordinates. The block formulas define Ehat as a bounded operator on the whole space
+(Fm is finite; the other blocks are convolutions with summable kernels), equal to Scal^{-1} H_0 Scal - Dhat on D(Dhat),
+so Dhat + Ehat = Scal^{-1} H_0 Scal with the same domain. The true omega and the true A_n enter Dhat and
 Ehat; the program never needs them, only enclosures (section 4.1). Note that B_m contains the exact omega and d_m: they
 are not moved into Ehat (an omega error times m is unbounded, section 6, pitfall 6).
 
@@ -338,13 +340,15 @@ its resolvent set, n(Dhat, Omega) = #{j : lambda_j in Omega}, and for mu in Gamm
 ||(mu - Dhat)^{-1}||_zeta <= max(max_j 1 / dist_j, rho_T).
 Proof. Dhat is block diagonal; its window part is the diagonal matrix Lambda. For the tail part D_T, Lemma 3.4 gives
 mu - B_m invertible with ||(mu - B_m)^{-1}||_{1->1} <= rho_T for all mu in the open neighbourhood Nb := Nb_eta of
-closure(Omega) and all m in Tl, so mu - D_T is a bijection with bounded inverse (the direct sum of the block inverses;
-the tail weight is the constant zeta_T, so the weighted block norm is the 1->1 norm of the S-coordinates) and Nb lies in
-the resolvent set of D_T. For a fixed mu_0, ||(mu_0 - B_m)^{-1}|| -> 0 as |m| -> inf (Lemma 3.4(c)), so (mu_0 - D_T)^{-1} is a
-norm limit of finite-rank operators, i.e. compact. The resolvent of D_T is holomorphic on Nb (manuscript
+closure(Omega) and all m in Tl, and ||B_m (mu - B_m)^{-1}||_{1->1} = ||mu (mu - B_m)^{-1} - I|| <= 1 + |mu| rho_T, so
+the direct sum of the block inverses maps the tail space into D(D_T) = {v : sum |m| |v_m|_1 < inf} (by the lower bound on
+|B_m v_m|_1 above) and is a two-sided inverse of mu - D_T: D(D_T) -> tail space, of norm at most rho_T (the norm of a
+block-diagonal operator on this l^1 space is the supremum of the block norms; the tail weight is the constant
+zeta_T, so the weighted block norm is the 1->1 norm of the S-coordinates). So Nb lies in the resolvent set of D_T. For a fixed mu_0, ||(mu_0 - B_m)^{-1}|| -> 0 as |m| -> inf (Lemma 3.4(c)), so its finite truncations
+converge to (mu_0 - D_T)^{-1} in norm (block-diagonal norm = supremum of block norms), and it is compact. The resolvent of D_T is holomorphic on Nb (manuscript
 Lemma A.2(c)), so its contour integral over Gamma vanishes (manuscript Lemma A.3(d)), and the Riesz projection of Dhat for Omega is
 diag(1 if lambda_j in Omega else 0) on the window and 0 on the tail. Its rank is #{j : lambda_j in Omega}
-(dist_j > 0 rules out lambda_j on Gamma). The bound is the norm of a block-diagonal operator. QED
+(dist_j > 0 rules out lambda_j on Gamma), which is n(Dhat, Omega) by manuscript Theorem A.5(iv). The bound is the norm of a block-diagonal operator. QED
 
 Lemma 3.4 (tail blocks). Let r = m mod N (r and N - r give the same X_r = A0c - d_r E), h := max(|a|, |b|),
 omega_lo <= omega, g_0 := omega_lo (K_e + 1) - h, and, for eta >= 0,
@@ -823,7 +827,10 @@ The referee found no error that makes a stated theorem false. Each gap and minor
   is a coincidence (match only 1.6e-3).
 * M8. The Kato section and theorem numbers are marked "to be confirmed against a copy" where they are cited and in
   section 7. (2026-10-02: superseded. The facts are now proved in Appendix A of the manuscript, and the lemmas
-  above cite that appendix, with Kato as the standard reference only; see section 7.)
+  above cite that appendix, with Kato as the standard reference only; see section 7. An in-project adversarial
+  reading of Appendix A on 2026-10-02, papers/cardiac-rings/review/appendixA-reading-2026-10-02.md, found no error;
+  its gaps G1 and G2 led to the restatement of Lemma 3.2 on l^1_w(J) and to the domain statements for Dhat, Ehat
+  and D_T in section 3.2 and Lemma 3.3.)
 
 Also from the referee's list of program needs: the checklist now asks for outward rounding of the reported bounds
 (with tau_lo = T_lo / N), exact dyadic -delta, R_0, a, b, the coefficient ranges against Stage E's K', and a Stage S

@@ -38,8 +38,22 @@ GENChase: the companion repository does not carry `notes/`.
   dimension; the Riesz-Schauder theory is not cited but replaced by a finite-rank determinant argument, Theorem
   A.5(ii)). Section 5.1, the proofs of Theorem 5.3, Lemma 5.9 (homotopy count) and Lemma 5.11 (comparison operator)
   now cite the appendix, with Kato kept as "see also"; the Labels paragraph and the Limitations item were updated, and
-  `code/fourier/LEMMAS-stability.md` (with its canonical copy) cites the appendix the same way. What is missing: (a)
-  Appendix A has not been read by anyone but its author session; (b) the passages revised after the second reading
+  `code/fourier/LEMMAS-stability.md` (with its canonical copy) cites the appendix the same way. An adversarial
+  reading of Appendix A and its uses in Section 5 by a separate AI agent session within the project
+  (`review/appendixA-reading-2026-10-02.md`, 2026-10-02; not an outside review) found no error, checked every proof
+  A.1 to A.7 line by line with numerical sanity checks, and reported two gaps in the hand-off from Section 5, both
+  fixed the same day: G1, Lemma 5.9 is now stated on X = l^1_w(J) and its proof is "This is Theorem A.7"; G2, Section
+  5.4 now states D(Dhat) (tail coordinates with sum |m| |v_m|_1 finite), Scal^{-1}(D) = D(Dhat), that Ehat is the
+  displayed bounded block operator (the d_m terms cancel by eq. (damping)) so that Dhat + Ehat = Scal^{-1} H_0 Scal
+  with equal domains, and the proof of Lemma 5.11 shows that the tail inverse maps onto D(D_T) via
+  ||B_m (mu - B_m)^{-1}|| <= 1 + |mu| rho_T. Exposition items X1 to X10 were also addressed: the list of elementary
+  facts (X1); the index set renamed J and the remainder in Theorem A.5(ii) renamed Delta, with K renamed calligraphic K
+  and the perturbation in Lemmas A.2(e) and A.6 renamed calligraphic E (X2); e < 1/r (X3); the orientation of the
+  inner edges in Lemma A.3(d) (X4); Lemma A.6 restated without the redundant hypothesis (X5); R(lambda)X = D(H) proved
+  (X6); the domain convention cited in Section 5.1 (X7); Lemma 5.8 named as the one prerequisite from the body in the
+  appendix's opening paragraph, not moved (X8); the block-diagonal norm argument in Lemma 5.11 (X9); the Limitations
+  item records this reading (X10). The lemma file was changed the same way for G1 and G2. What is missing: (a) the
+  fixes of 2026-10-02 have not been checked by a second reader; (b) the passages revised after the second reading
   (R3 to R6 and the exposition items, `review/fix-check-2026-10-01.md`) have not been read by a third reader.
 - [x] **2. Rigorous computation.** Every inequality of the proofs is decided in Arb ball arithmetic (python-flint
   0.9.0, pinned) by `code/fourier/existence.py` and `code/fourier/stability.py`, or in CAPD interval arithmetic by
@@ -68,7 +82,10 @@ GENChase: the companion repository does not carry `notes/`.
 - [ ] **4. Sources read.** Open. The proof steps depend on Erhardt's model source (read; hash recorded) and on the
   library contracts of Arb and CAPD (trust base, not citations). Since 2026-10-02 they no longer depend on Kato (1976):
   the three facts once cited from it are proved in Appendix A, and the book is cited as the standard reference only
-  ("see also"), so it is background, not a source of a proof step; it has still not been checked against a copy. Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
+  ("see also"), so it is background, not a source of a proof step; it has still not been checked against a copy. The
+  in-project reading of Appendix A (`review/appendixA-reading-2026-10-02.md`) found its proofs complete from the stated
+  elementary facts and its citations in Section 5 matching what is proved, which is what replaces the reading of
+  Kato for the resolvent and Riesz-projection facts. Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
   and `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`: Erhardt (2025) read in full;
   Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. (2016) known from excerpts of its abstract;
   the reading status of every cited background work is listed in Section 9 of the paper ("How far the background
