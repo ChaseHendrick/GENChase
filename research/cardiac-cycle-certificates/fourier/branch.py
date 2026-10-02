@@ -26,9 +26,11 @@ dyadic weights eta chosen per piece (floating-point optimisation, section 8; onl
 2. Centre and A: as E.2, with the centre xbar = (omega_bar, abar) computed (untrusted, section 8) at an exact decimal
 g_c in G (the midpoint), exactly symmetric (abar_{-m} = conj abar_m, a_0 real) and with Im abar_{1,V} = 0 exactly, so
 F_ph(xbar) = 0. The Galerkin matrix J_fin is the Stage E one with the phase row replaced by the functional above
-(entries +1 at (V, 1) and -1 at (V, -1)); its J_n entries are enclosures over ALL g in G (section 3). A_fin is the
-double inverse of its midpoint, A_m (|m| > K) the Stage E tail inverses built from J0hat, the exact midpoint of the
-enclosure [J_0] (which now also contains the g-width). A does not depend on g.
+(entries +1 at (V, 1) and -1 at (V, -1)). Its J_n entries, the Galerkin matrix J_fin and J0hat are enclosures at the
+POINT g_c only (piece_blocks evaluates them with the parameters at g_c); the width of G enters Z1 only through the
+term delta * B1g, and Y0 only through delta * Y0g (the mean value theorem in g, section 3). A_fin is the double
+inverse of the midpoint of J_fin(g_c), A_m (|m| > K) the Stage E tail inverses built from J0hat, the exact midpoint of
+the enclosure [J_0(g_c)]. A does not depend on g.
 
 3. Uniform bounds (Theorem B1)
 ------------------------------
@@ -120,6 +122,18 @@ in Arb, that the existence ball of piece i lies inside the uniqueness ball of pi
     ||xbar_i - xbar_{i+1}||_{eta(i+1)} + r_lo(i) max_c (eta_c(i) / eta_c(i+1)) <= r_hi(i+1)
 (the norm of the exact difference of the two centres, in the weights of piece i+1; the max converts piece i's norm).
 Then for every g in O_i, x*_i(g) is a zero of F(.; g) in the uniqueness ball of piece i+1, so x*_i(g) = x*_{i+1}(g).
+Non-consecutive overlaps (P_i meets P_j with j >= i + 2). collect() and validate_logs() require (and refuse the
+record otherwise) that, in the order of the lower ends, both endpoints increase strictly (lo_i < lo_{i+1} and
+hi_i < hi_{i+1}) and that every piece has r_lo < r_hi (exact comparison). Then x*_i = x*_j on P_i n P_j as well:
+  (a) an agreement point. g0 := lo_j lies in P_i n P_j and in every P_k, i < k < j: lo_k <= lo_j = g0, and
+      hi_k >= hi_i >= lo_j (P_i meets P_j). So g0 lies in each consecutive overlap O_k (i <= k < j), and the
+      consecutive identities give x*_i(g0) = x*_{i+1}(g0) = ... = x*_j(g0).
+  (b) closed-open. The set E = {g in P_i n P_j : x*_i(g) = x*_j(g)} is closed in the interval P_i n P_j (both maps are
+      continuous). It is open there: if g1 is in E, then x*_i(g1) = x*_j(g1) lies in the closed ball of radius r_lo(j)
+      about xbar_j (existence on piece j), which is inside the open ball of radius r_hi(j) since r_lo(j) < r_hi(j); by
+      continuity of x*_i, for g in P_i n P_j near g1, x*_i(g) lies in that open ball, hence in piece j's uniqueness
+      ball, and it is a zero of F(.; g) with g in P_j, so x*_i(g) = x*_j(g).
+  An interval is connected, and E is nonempty by (a), so E = P_i n P_j.
 The map g -> x*(g), defined piecewise, is therefore single valued and continuous on the union [lo_1, hi_last]: one
 connected curve of real periodic orbits.
 
@@ -749,8 +763,8 @@ class Hess:
             return Hess(acb(1))
         if n == 1:
             return self
-        v = self.v
-        return self._unary(v ** n, n * v ** (n - 1), n * (n - 1) * (v ** (n - 2) if n >= 2 else acb(1)))
+        v = self.v                     # d/dv v^n = n v^(n-1), d^2/dv^2 v^n = n (n-1) v^(n-2), for every int n != 0, 1
+        return self._unary(v ** n, n * v ** (n - 1), n * (n - 1) * v ** (n - 2))
 
     def exp(self):
         e = self.v.exp()
@@ -1217,7 +1231,8 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
     finally:
         ctx.prec = old_prec
     return dict(g_lo=str(g_lo), g_hi=str(g_hi), g_c=_dstr(gc), K=K, Kp=Kp, M=Mn, settings=st, label=label,
-                om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, B1g=B1g, N0=N0, N1=N1, Abar0=Abar0,
+                om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, B1g=B1g, B1g_ff=Zg_ff, N0=N0, N1=N1,
+                Abar0=Abar0,
                 Abar1=Abar1, Y0p=Y0p, Y0g=Y0g, J=J, SJ=SJ, tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))),
                 strips=dict(g=ex._strip_rec(strip_g), J=ex._strip_rec(strip_J), dg_f=ex._strip_rec(strip_d),
                             dg_J=ex._strip_rec(strip_D)),
@@ -1227,10 +1242,11 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
 def assemble(bl, eta, r_star, hess, *, log=print, _mutate=()):
     """Theorem B1: Y0, Z1, Z2 with the weights eta (19 exact dyadic strings, omega first), the radii polynomial and the
     corollaries of section 7. Raises ProofFailure (with .diag) if an inequality is not certified. _mutate (tests
-    only): "drop_g_width" omits delta Y0g (the parameter-width contribution); "no_hess_check" skips the checks that
-    the Hessian cover contains this centre and g range."""
+    only): "drop_g_width" omits delta Y0g and delta B1g (the parameter-width contributions); "drop_B1g" omits only
+    delta B1g (the g-width term of Z1); "no_hess_check" skips the checks that the Hessian cover contains this centre
+    and g range."""
     mut = frozenset(_mutate)
-    if mut - {"drop_g_width", "no_hess_check"}:
+    if mut - {"drop_g_width", "drop_B1g", "no_hess_check"}:
         raise ValueError(f"unknown mutation {sorted(mut)}")
     if len(eta) != DIM + 1:
         raise ValueError("eta needs 19 entries")
@@ -1255,11 +1271,12 @@ def assemble(bl, eta, r_star, hess, *, log=print, _mutate=()):
         Q2 = (1 + q2) / (1 - q2)
         B1, B1g, N0, N1, Abar0, Abar1 = bl["B1"], bl["B1g"], bl["N0"], bl["N1"], bl["Abar0"], bl["Abar1"]
         dl = arb(0) if "drop_g_width" in mut else bl["delta"]
+        dlz = arb(0) if ("drop_g_width" in mut or "drop_B1g" in mut) else bl["delta"]
         Z1_rows = []
         for c in range(DIM + 1):
             s = arb(0)
             for cp in range(DIM + 1):
-                s += ETA[cp] * (B1[c][cp] + dl * B1g[c][cp])
+                s += ETA[cp] * (B1[c][cp] + dlz * B1g[c][cp])
             Z1_rows.append(up(s / ETA[c]))
         Z1 = Z1_rows[0]
         for v in Z1_rows[1:]:
@@ -1423,8 +1440,13 @@ def centre_distance(oA, AA, oB, AB, ETA_B, nu, prec=256):
 
 def glue(pa, pb):
     """Check that piece a's existence ball lies in piece b's uniqueness ball and that the pieces overlap in g.
-    Returns a record; 'glued' is True only if both hold (certified in Arb)."""
+    Returns a record; 'glued' is True only if both hold (certified in Arb). The norm conversion is valid only for the
+    same nu: the two pieces' rho0 settings must be equal as exact strings, else the pieces are not glued."""
     oa, ob = pa["_obj"], pb["_obj"]
+    ra, rb = pa.get("settings", {}).get("rho0"), pb.get("settings", {}).get("rho0")
+    if ra is None or ra != rb:
+        return dict(pieces=[[pa["g_lo"], pa["g_hi"]], [pb["g_lo"], pb["g_hi"]]], glued=False,
+                    why=f"rho0 differs or is missing ({ra!r}, {rb!r}): different nu, norms not comparable")
     overlap = Fraction(pb["g_lo"]) <= Fraction(pa["g_hi"]) and Fraction(pa["g_lo"]) <= Fraction(pb["g_hi"])
     d = centre_distance(oa["om_bar"], oa["A"], ob["om_bar"], ob["A"], ob["ETA"], ob["nu"])
     conv = arb(0)
@@ -1645,6 +1667,7 @@ def validate_logs(K=12, reglue=True, log=print, repair=True):
         om, A = centre_from_record(c)
         if centre_digest(om, A) != p["rec"]["centre_sha256"]:
             raise RuntimeError(f"centre digest mismatch for piece {p['rec']['label']}")
+    check_piece_order([p["rec"] for p in pieces])
     nglue = 0
     if reglue:
         for pa, pb in zip(pieces, pieces[1:]):
@@ -1658,6 +1681,25 @@ def validate_logs(K=12, reglue=True, log=print, repair=True):
         log(f"  logs valid: {len(groups)} groups, {len(pieces)} pieces, [{pieces[0]['rec']['g_lo']}, "
             f"{max((p['rec']['g_hi'] for p in pieces), key=Fraction)}], {nglue} gluing inequalities re-derived")
     return pieces, groups, centres
+
+
+def check_piece_order(recs):
+    """Section 5 (non-consecutive overlaps): pieces sorted by g_lo must have strictly increasing g_lo AND g_hi, and every
+    piece r_lo < r_hi (exact dyadics). Raises RuntimeError otherwise. Returns the number of non-consecutive overlaps."""
+    for a, b in zip(recs, recs[1:]):
+        if not (Fraction(a["g_lo"]) < Fraction(b["g_lo"]) and Fraction(a["g_hi"]) < Fraction(b["g_hi"])):
+            raise RuntimeError(f"piece endpoints not strictly increasing at {a['label']}, {b['label']}")
+    for p in recs:
+        old = ctx.prec
+        ctx.prec = 256
+        try:
+            ok = ct.text_to_dyadic(p["r_existence"]["hex"]) < ct.text_to_dyadic(p["r_uniqueness"]["hex"])
+        finally:
+            ctx.prec = old
+        if not ok:
+            raise RuntimeError(f"piece {p['label']}: r_existence is not < r_uniqueness")
+    return sum(1 for i in range(len(recs)) for j in range(i + 2, len(recs))
+               if Fraction(recs[j]["g_lo"]) <= Fraction(recs[i]["g_hi"]))
 
 
 class FloatTrack:
@@ -2071,6 +2113,7 @@ def collect(K=12, write=True, log=print):
         if not g["glued"] and connected_to is None:
             connected_to = i
     n_conn = len(pieces) if connected_to is None else connected_to + 1
+    n_nonconsecutive = check_piece_order([r["rec"] for r in pieces])
     lo_all = pieces[0]["rec"]["g_lo"]
     hi_all = max((r["rec"]["g_hi"] for r in pieces[:n_conn]), key=Fraction)
     # pointwise stability: is each point's orbit the branch orbit? (ball inclusion, point_on_branch)
@@ -2153,7 +2196,7 @@ def collect(K=12, write=True, log=print):
                         "only those whose orbit passed the ball-inclusion check (point_on_branch) are statements about "
                         "the branch orbit, the others are isolated results. Uniform stability on a piece is NOT "
                         "claimed: see fourier/branch.py section 6 for what it would need."),
-        comparison_stage_E=cmp_, failures_split=len(fails),
+        comparison_stage_E=cmp_, failures_split=len(fails), nonconsecutive_overlaps=n_nonconsecutive,
         groups=[{k: v for k, v in g.items() if k != "MH_float"} for g in groups],
         settings=dict(DEFAULTS, K=K),
         sources_sha256={p: sha256(os.path.join(ROOT, p)) for p in SOURCES},

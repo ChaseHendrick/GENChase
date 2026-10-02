@@ -204,9 +204,14 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   - Cost: 144 to 238 s of wall time per group of 12 or 16 pieces on 3 worker processes, about 33 s per piece; 7,675 s
     of piece time in all.
   - Checks made at finalization (2026-10-01):
-    - an independent script re-derived every piece's inequalities and all 231 gluings from the stored exact numbers;
+    - a separate script (validate.py, outside the repository) re-derived every piece's inequalities and all 231
+      gluings from the stored exact numbers; it reuses branch.py's centre parser, `_dstr` and digest, so it is not
+      fully independent code;
     - the last piece of every group was re-proved from its stored centre and reproduced the logged Y0 and Z1 bit for
-      bit;
+      bit (with a cover rebuilt around that one centre). The rec 2 review (`reviews/rec2-branch-review-2026-10-02.md`)
+      rebuilt the groups' Hessian covers from the groups' centres, reproduced each cover's digest, and then reproduced
+      Y0, Z1, Z2, r_existence and r_uniqueness bit for bit on four pieces (G0P0, G0P11, G8P9, G16P15); the acceptance
+      test now does the same for the piece containing 0.0275;
     - `fourier/test_branch.py` passes, including the overlap with Stage E N = 1 at 0.0275 and the negative controls.
   - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12

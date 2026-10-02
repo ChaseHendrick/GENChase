@@ -10,10 +10,13 @@ Infrastructure
   * Hess (second-order dual numbers): the Hessian of f agrees with central differences of the forward-mode Jacobian
     (arbmodel.f_and_df) at 256 bits; d(Df)/dg and df/dg agree with differences in g and with f_and_df(wrt=g_Ks); a
     box evaluation contains the point evaluations at random points of the box (enclosure property).
+  * Hess ** n for a negative exponent: value, gradient and Hessian against the closed forms (MINOR 1 of the rec 2
+    review).
 Acceptance
-  * The piece containing G_Ks = 0.0275 is recomputed from its stored centre, weights and radii: it is proved again,
-    with the same bounds, and its T enclosure overlaps Stage E's N = 1 enclosure (results/fourier-existence-N1.json)
-    and the CAPD record (results/cell-gks0.0275.json).
+  * The piece containing G_Ks = 0.0275 is recomputed from its stored centre, weights and r_*, with its group's Hessian
+    cover rebuilt from the group's centres (in g_lo order): the cover's digest equals the logged one, and Y0, Z1, Z2,
+    r_existence and r_uniqueness equal the logged exact hex values. Its T enclosure overlaps Stage E's N = 1
+    enclosure (results/fourier-existence-N1.json) and the CAPD record (results/cell-gks0.0275.json).
   * Period enclosures along the branch: consecutive pieces' T enclosures intersect (they share parameter values, so
     a disjoint pair would be a contradiction), their midpoints decrease with G_Ks, and at sampled pieces the float
     period (an independent Galerkin-Newton at the piece's centre parameter, K = 16) lies inside the enclosure.
@@ -24,7 +27,17 @@ Negative controls
   * Dropping the parameter-width contribution (assemble(..., _mutate=("drop_g_width",))) is detected: an independent
     float estimate of ||A_fin F(xbar; g)|| (finite part, 8 times more DFT nodes, float A_fin) at the piece endpoints
     exceeds the mutated Y0, while staying below the certified Y0 (it is a lower estimate of a part of it).
+  * The g-width term delta * B1g of Z1: an independent float computation of the finite block of A d_gDF (float
+    Galerkin matrices with 8 times more DFT nodes, d_g G = G(g = 1) - G(g = 0) exactly because f is affine in g, float
+    A_fin) is dominated block by block by the rigorous finite block, which in turn is at most B1g, and the float value
+    is at least half the rigorous weighted norm (so a B1g that is too small, or zero, fails). The mutation drop_B1g
+    (only delta * B1g omitted) changes Z1.
+  * Widening the piece threefold about its centre (same centre, weights and r_*, cover rebuilt over the wider range)
+    must fail; the piece itself passes with the same inputs (control). At 2x the proof passes legitimately (the run
+    targets Y0 / cap of about 0.4), so 2x would not be a control.
   * A piece whose g range or centre is not covered by the Hessian cover is refused.
+  * Piece order: a record whose pieces are not strictly increasing in both endpoints, or with r_lo = r_hi, is refused
+    (needed by the non-consecutive overlap argument, branch.py section 5); gluing pieces with different rho0 is refused.
   * Gluing: replacing piece b's uniqueness radius by its existence radius, or gluing two pieces far apart, fails.
 Stability and resume
   * Every piece carries a stability statement (pointwise at checked points, else none; never uniform); every
@@ -171,6 +184,22 @@ def test_hess_box_encloses_points():
                 assert Hb[k].get(key, acb(0)).contains(v), (k, key)
 
 
+def test_hess_pow_negative():
+    x0 = acb(fmpq(3, 7))
+    for n in (-1, -2, -3, 2, 3):
+        x = br.Hess(x0, {0: acb(1)})
+        y = x ** n
+        with fe.precision(128):
+            v, d1, d2 = x0 ** n, n * x0 ** (n - 1), n * (n - 1) * x0 ** (n - 2)
+        assert y.v.overlaps(v) and y.g[0].overlaps(d1) and y.h[(0, 0)].overlaps(d2), n
+        assert abs(float((y.h[(0, 0)] - d2).real.mid())) <= 1e-12 * abs(float(d2.real.mid())), n
+    # a chain: (2 x + 1)^-2, Hessian 24 (2 x + 1)^-4 (in x)
+    x = br.Hess(x0, {0: acb(1)})
+    y = (2 * x + 1) ** -2
+    exact = 24 * (2 * x0 + 1) ** -4
+    assert abs(float((y.h[(0, 0)] - exact).real.mid())) <= 1e-12 * abs(float(exact.real.mid()))
+
+
 def test_decimal_strings():
     for t in ["0.0275", "0.027500000001", "0.0000005", "27.5", "0.1234567890125"]:
         assert Fraction(br._dstr(Fraction(t))) == Fraction(t)
@@ -183,15 +212,25 @@ def test_decimal_strings():
 
 
 # ------------------------------------------------------------------------------------------------ acceptance
+def _group_cover(p):
+    """The group's Hessian cover rebuilt as run() built it: the group's centres in g_lo order, the group's g range."""
+    pieces, groups, cen, _ = _run_data()
+    grp = groups[p["group"]]
+    mine = sorted([q for q in pieces if q["group"] == p["group"] and q.get("hess_record") is None],
+                  key=lambda q: Fraction(q["rec"]["g_lo"]))
+    cs = [br.centre_from_record(cen[br._dstr(Fraction(q["rec"]["centre_g"]))]) for q in mine]
+    hb = br.HessBound(cs, grp["g_lo"], grp["g_hi"], grp["R"], "1", None, log=QUIET)
+    assert hb.digest == grp["hess"]["phi_digest"], "rebuilt group cover differs from the logged one"
+    return hb
+
+
 def test_acceptance_piece_containing_stage_E_point():
     p = _first_piece()
     om, A, rec, grp = _piece_inputs(p)
-    hb = _cover_for(om, A, rec["g_lo"], rec["g_hi"], grp)
+    hb = _group_cover(p)
     res = br.prove_piece(om, A, rec["g_lo"], rec["g_hi"], eta=rec["eta"], r_star=grp["r_star"], hess=hb, log=QUIET)
-    for key in ("Y0", "Z1"):
-        assert res[key]["hex"] == rec[key]["hex"], key                 # the same rigorous bound, reproduced
-    # Z2 depends on the cover (here rebuilt around this one centre: at most the group's value)
-    assert Fraction(res["Z2"]["dec"]) <= Fraction(rec["Z2"]["dec"]) * Fraction(101, 100)
+    for key in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness"):
+        assert res[key]["hex"] == rec[key]["hex"], key                 # the same rigorous bound, bit for bit
     lo_, hi_ = Fraction(res["T_ms"]["lower"]["dec"]), Fraction(res["T_ms"]["upper"]["dec"])
     with open(os.path.join(br.RESULTS, "fourier-existence-N1.json")) as fh:
         se = json.load(fh)
@@ -277,6 +316,77 @@ def test_negative_drop_parameter_width_detected():
     assert max(est) <= Y0_good * 1.0001, (est, Y0_good)  # and the true bound is consistent with the estimate
 
 
+def _bfloat(M):
+    return np.array([[float(x) for x in row] for row in M])
+
+
+def _wnorm(B, eta):
+    return max(float((B[c] * eta).sum() / eta[c]) for c in range(DIM + 1))
+
+
+def test_B1g_term_detected():
+    p = _first_piece()
+    om, A, rec, grp = _piece_inputs(p)
+    hb = _cover_for(om, A, rec["g_lo"], rec["g_hi"], grp)
+    bl = br.piece_blocks(om, A, rec["g_lo"], rec["g_hi"], log=QUIET)
+    eta = np.array([float(Fraction(e)) for e in rec["eta"]])
+    # independent float finite block of A d_gDF
+    K = rec["K"]
+    lay = ct.Layout(K)
+    a = br.centre_float(A)
+    omf = float(om)
+    Mc = 8 * (4 * K + 64)
+    Gc, _ = br.galerkin_f(omf, a, float(Fraction(rec["centre_g"])), Mc)
+    G1, _ = br.galerkin_f(omf, a, 1.0, Mc)
+    G0, _ = br.galerkin_f(omf, a, 0.0, Mc)
+    Bf = br.blocks_f(lay, np.linalg.inv(Gc) @ (G1 - G0))
+    Bff, Bg = _bfloat(bl["B1g_ff"]), _bfloat(bl["B1g"])
+    assert np.all(Bf <= Bff * (1 + 1e-6) + 1e-300), float(np.max(Bf - Bff))
+    assert np.all(Bff <= Bg), "B1g is not at least its finite block"
+    est, rig, full = _wnorm(Bf, eta), _wnorm(Bff, eta), _wnorm(Bg, eta)
+    assert est <= full and est >= 0.5 * rig > 0, (est, rig, full)
+    good = br.assemble(bl, rec["eta"], grp["r_star"], hb, log=QUIET)
+    bad = br.assemble(bl, rec["eta"], grp["r_star"], hb, log=QUIET, _mutate=("drop_B1g",))
+    assert Fraction(bad["Z1"]["dec"]) < Fraction(good["Z1"]["dec"]), "dropping delta * B1g does not change Z1"
+    assert bad["Y0"]["hex"] == good["Y0"]["hex"]
+
+
+def test_negative_widened_piece():
+    pieces, groups, cen, _ = _run_data()
+    p = pieces[-1]
+    om, A, rec, grp = _piece_inputs(p)
+    gc = Fraction(rec["centre_g"])
+    hw = max(Fraction(rec["g_hi"]) - gc, gc - Fraction(rec["g_lo"]))
+    lo1, hi1 = br._dstr(gc - hw), br._dstr(gc + hw)
+    res = br.prove_piece(om, A, lo1, hi1, eta=rec["eta"], r_star=grp["r_star"],
+                         hess=_cover_for(om, A, lo1, hi1, grp), log=QUIET)            # control: passes
+    assert Fraction(res["r_existence"]["dec"]) > 0
+    lo3, hi3 = br._dstr(gc - 3 * hw), br._dstr(gc + 3 * hw)
+    try:
+        br.prove_piece(om, A, lo3, hi3, eta=rec["eta"], r_star=grp["r_star"],
+                       hess=_cover_for(om, A, lo3, hi3, grp), log=QUIET)
+    except ProofFailure:
+        return
+    raise AssertionError("a piece widened threefold about its centre was proved")
+
+
+def test_negative_piece_order():
+    pieces, _, _, _ = _run_data()
+    recs = [p["rec"] for p in pieces[:6]]
+    assert br.check_piece_order(recs) == 0
+    nested = recs[:2] + [dict(recs[2], g_hi=recs[1]["g_hi"])] + recs[3:]           # g_hi not increasing
+    eq = recs[:1] + [dict(recs[1], r_uniqueness=recs[1]["r_existence"])] + recs[2:]
+    for bad in (nested, eq):
+        try:
+            br.check_piece_order(bad)
+        except RuntimeError:
+            continue
+        raise AssertionError("a bad piece order or r_lo = r_hi was accepted")
+    # a monotone record with one non-consecutive overlap (piece 2 meets piece 0) is accepted and counted
+    lo2 = br._dstr((Fraction(recs[1]["g_lo"]) + Fraction(recs[0]["g_hi"])) / 2)
+    assert br.check_piece_order(recs[:2] + [dict(recs[2], g_lo=lo2)] + recs[3:]) == 1
+
+
 def test_negative_cover_must_contain_piece():
     p = _first_piece()
     om, A, rec, grp = _piece_inputs(p)
@@ -306,6 +416,8 @@ def test_negative_gluing():
     assert br.glue(dict(pa, _obj=oa), dict(pb, _obj=ob))["glued"]
     ob2 = dict(ob, r_hi=ob["r_lo"])
     assert not br.glue(dict(pa, _obj=oa), dict(pb, _obj=ob2))["glued"]
+    pb_nu = dict(pb, settings=dict(pb["settings"], rho0="1/8"))                     # another nu: refused
+    assert not br.glue(dict(pa, _obj=oa), dict(pb_nu, _obj=ob))["glued"]
     pz = pieces[-1]["rec"]
     oz = br.obj_from_record(pz, cen[br._dstr(Fraction(pz["centre_g"]))])
     assert not br.glue(dict(pa, _obj=oa), dict(pz, _obj=oz))["glued"]
@@ -436,10 +548,11 @@ def test_uniform_attempt_recorded_and_fails():
     assert ua and all(not a["ok"] for a in ua), "a uniform attempt is recorded and (as documented) fails"
 
 
-TESTS = [test_decimal_strings, test_hessian_matches_jacobian_differences, test_parameter_derivatives,
-         test_hess_box_encloses_points, test_acceptance_piece_containing_stage_E_point,
+TESTS = [test_decimal_strings, test_hess_pow_negative, test_hessian_matches_jacobian_differences,
+         test_parameter_derivatives, test_hess_box_encloses_points, test_acceptance_piece_containing_stage_E_point,
          test_period_enclosures_consistent, test_gluing_rederived, test_negative_centre_at_wrong_g,
-         test_negative_drop_parameter_width_detected, test_negative_cover_must_contain_piece, test_negative_gluing,
+         test_negative_drop_parameter_width_detected, test_B1g_term_detected, test_negative_widened_piece,
+         test_negative_piece_order, test_negative_cover_must_contain_piece, test_negative_gluing,
          test_stability_points_recorded, test_every_piece_has_a_stability_statement,
          test_point_membership_and_negative_controls, test_log_validation_and_repair,
          test_uniform_attempt_recorded_and_fails]
