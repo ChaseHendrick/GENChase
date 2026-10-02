@@ -379,6 +379,8 @@ def _certify_uniform(U, st, controls, log, prec):
         raise ValueError("the window needs [J0_n], J1c_n for |n| <= 2 K_e <= K'")
     drop = bool(controls.get("drop_g_terms"))               # test hook: treat H(g) as H(g_c) (mutation)
     hU = arb(0) if drop else U["h"]                         # exact upper bound of |g - g_c|
+    quad = "C2c" in U                                       # group unit (section 11 of the lemmas): d^2 terms
+    drop2 = bool(controls.get("drop_d2_terms"))             # test hook (group units): omit the d^2 terms (mutation)
     E = acb_mat(DIM, DIM)
     E[IV, IV] = acb(1)
     Q = acb(arb(0, 1), arb(0, 1))
@@ -393,12 +395,20 @@ def _certify_uniform(U, st, controls, log, prec):
     epsW = U["epsW"]
     om_bar, om1 = U["om_bar"], U["om1"]
     rho_om = arb(0) if drop else U["rho_om"]
-    om_lo = lo(om_bar - hU * om1.abs_upper() - rho_om)
-    om_hi = up(om_bar + hU * om1.abs_upper() + rho_om)
+    if quad:                                                # omega*(g) in om_bar + d om1 + d^2 om2half + ball
+        om2h_abs = arb(0) if (drop or drop2) else U["om2half"].abs_upper()
+        om_lo = lo(om_bar - hU * om1.abs_upper() - hU * hU * om2h_abs - rho_om)
+        om_hi = up(om_bar + hU * om1.abs_upper() + hU * hU * om2h_abs + rho_om)
+    else:
+        om_lo = lo(om_bar - hU * om1.abs_upper() - rho_om)
+        om_hi = up(om_bar + hU * om1.abs_upper() + rho_om)
     if not (om_lo > 0 and om_lo <= om_hi):
         raise ProofFailure("omega_lo must be > 0 (C0)")
     omf = float(om_bar)
     J0, J1c, rad1, SJ0, SJ1 = U["J0"], U["J1c"], U["rad1"], U["SJ0"], U["SJ1"]
+    if quad:
+        h2U = arb(0) if drop2 else hU * hU
+        C2c, rad2, SC2 = U["C2c"], U["rad2"], U["SC2"]
     Jmid = {n: np.array([[complex(float(J0[n][r][c].real.mid()), float(J0[n][r][c].imag.mid()))
                           for c in range(DIM)] for r in range(DIM)]) for n in range(-Kp, Kp + 1)}
     J1f = {n: np.array([[complex(float(J1c[n][r][c].real), float(J1c[n][r][c].imag)) for c in range(DIM)]
@@ -434,7 +444,10 @@ def _certify_uniform(U, st, controls, log, prec):
     scl = [[two(e[c] - e[r]) for c in range(DIM)] for r in range(DIM)]
     erho, erhoe = (-rho).exp(), (-rho_e).exp()
     epsS = [[up(epsW[r][c] * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
-    SJS = [[up((SJ0[r][c] + hU * SJ1[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
+    if quad:
+        SJS = [[up((SJ0[r][c] + hU * SJ1[r][c] + h2U * SC2[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
+    else:
+        SJS = [[up((SJ0[r][c] + hU * SJ1[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
     s1 = sb.colsum_max(arb_mat(SJS))
     s2 = sb.colsum_max(arb_mat(epsS))
     q1, q2 = erho, erhoe
@@ -446,11 +459,22 @@ def _certify_uniform(U, st, controls, log, prec):
     AS, absA, nrm, RAD = {}, {}, {}, {}
     nlist = max(nmax, nA)
     for n in range(-nlist, nlist + 1):
-        if abs(n) <= nA:
+        if abs(n) <= nA and quad:
+            en = erhoe ** abs(n)
+            rad = [[up(hU * rad1[n][r][c] + h2U * rad2[n][r][c] + epsW[r][c] * en) for c in range(DIM)]
+                   for r in range(DIM)]
+            RAD[n] = rad
+            M = acb_mat([[(J0[n][r][c] + Q * up(hU * J1c[n][r][c].abs_upper() + h2U * C2c[n][r][c].abs_upper() +
+                                                 rad[r][c])) * scl[r][c] for c in range(DIM)] for r in range(DIM)])
+        elif abs(n) <= nA:
             en = erhoe ** abs(n)
             rad = [[up(hU * rad1[n][r][c] + epsW[r][c] * en) for c in range(DIM)] for r in range(DIM)]
             RAD[n] = rad
             M = acb_mat([[(J0[n][r][c] + Q * up(hU * J1c[n][r][c].abs_upper() + rad[r][c])) * scl[r][c]
+                          for c in range(DIM)] for r in range(DIM)])
+        elif quad:
+            e1, e2 = erho ** abs(n), erhoe ** abs(n)
+            M = acb_mat([[Q * up(((SJ0[r][c] + hU * SJ1[r][c] + h2U * SC2[r][c]) * e1 + epsW[r][c] * e2) * scl[r][c])
                           for c in range(DIM)] for r in range(DIM)])
         else:
             e1, e2 = erho ** abs(n), erhoe ** abs(n)
@@ -603,6 +627,14 @@ def _certify_uniform(U, st, controls, log, prec):
     H1 = acb_mat(window(lambda n: AS1[n], d1))
     if drop:
         H1 = acb_mat(nW, nW)
+    H2 = None
+    if quad and not (drop or drop2):                        # the exact d^2 window: C2c and -i om2half m
+        AS2 = {n: [[C2c[n][r][c] * scl[r][c] for c in range(DIM)] for r in range(DIM)] for n in range(-2 * Ke, 2 * Ke + 1)}
+        om2h = U["om2half"]
+
+        def d2(m):
+            return [[AS2[0][r][c] + ((acb(0, -m) * om2h) if r == c else 0) for c in range(DIM)] for r in range(DIM)]
+        H2 = acb_mat(window(lambda n: AS2[n], d2))
 
     def rb_block(n):
         return [[up(RAD[n][r][c] * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
@@ -638,14 +670,29 @@ def _certify_uniform(U, st, controls, log, prec):
         W1[j, j] -= lam1[j]
     csW1 = sb.colsums_abs(W1, ones)
     del W1, P00
-    W2 = Vi1 * S1 + Vi0 * P11
-    csW2 = sb.colsums_abs(W2, ones)
-    del W2, S1
-    # the d^3 and d^2 terms below are bounded through norms (h^3, h^2 small): ||Vi1 X e_j|| <= ||Vi1||_{1->1} ||X e_j||
     nVi1 = sb.colsum_max(sb.abs_mat(Vi1))
-    csP11 = sb.colsums_abs(P11, ones)
-    csW3 = [up(nVi1 * v) for v in csP11]
-    del P11, P10, P01
+    if H2 is not None:
+        # group unit: H(d) = H0 + d H1 + d^2 H2 + E with V(d), Vi(d) affine, so
+        # W2 = Vi1 (H1 V0 + H0 V1) + Vi0 (H1 V1 + H2 V0), W3 = Vi1 (H1 V1 + H2 V0) + Vi0 H2 V1, W4 = Vi1 H2 V1
+        P20, P21 = H2 * V0, H2 * V1
+        Q2 = P11 + P20
+        W2 = Vi1 * S1 + Vi0 * Q2
+        csW2 = sb.colsums_abs(W2, ones)
+        del W2, S1
+        csQ2 = sb.colsums_abs(Q2, ones)
+        csV0P21 = sb.colsums_abs(Vi0 * P21, ones)
+        csW3 = [up(nVi1 * csQ2[j] + csV0P21[j]) for j in range(nW)]
+        csW4 = [up(nVi1 * v) for v in sb.colsums_abs(P21, ones)]
+        del Q2, P20, P21, P11, P10, P01
+    else:
+        W2 = Vi1 * S1 + Vi0 * P11
+        csW2 = sb.colsums_abs(W2, ones)
+        del W2, S1
+        # the d^3 and d^2 terms below are bounded through norms (h^3, h^2 small): ||Vi1 X e_j|| <= ||Vi1||_{1->1} ||X e_j||
+        csP11 = sb.colsums_abs(P11, ones)
+        csW3 = [up(nVi1 * v) for v in csP11]
+        csW4 = None
+        del P11, P10, P01
     Cm0 = Vi0 * V0
     for i in range(nW):
         Cm0[i, i] -= 1
@@ -668,7 +715,11 @@ def _certify_uniform(U, st, controls, log, prec):
     if not qC < 1:
         raise ProofFailure(f"sup_g ||I - Vi(g) V(g)|| = {float(qC):.3e} is not < 1")
     inv1q = 1 / (1 - qC)
-    wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + csT[0, j]) for j in range(nW)]
+    if csW4 is not None:
+        h4 = h2 * h2
+        wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + h4 * csW4[j] + csT[0, j]) for j in range(nW)]
+    else:
+        wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + csT[0, j]) for j in range(nW)]
     lamabs = [up(lam0[j].abs_upper() + hU * lam1[j].abs_upper()) for j in range(nW)]
     fm = [up((wj[j] + lamabs[j] * cj[j]) * inv1q) for j in range(nW)]
     beta = [up(csAVi[0, c] * inv1q) for c in range(nW)]
