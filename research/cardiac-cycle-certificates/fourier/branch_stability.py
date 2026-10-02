@@ -65,6 +65,16 @@ eps of Lemma 4.1), and omega_lo / omega_hi bound omega*(g) over the whole piece;
 affine data V(d), Vi(d), Lambda(d) and the polynomial bounds of Lemma 10.3. Everything else, including route A, the S
 search, the distances and count, the couplings and (SC), is the same code.
 
+Group units (section "Group units" below; LEMMAS-stability.md section 11). prove_group_uniform certifies a whole group of
+branch pieces (one interval in g, about 11 pieces wide) in one certificate: the orbit is located about a QUADRATIC path
+xbar + d xbar_1 + (d^2/2) xbar_2 by a Newton-Kantorovich step about the moving point of the path (Lemma 11.1, with Z1
+bounded along the path to second order, Lemma 11.2), identified with the branch orbit through every piece's uniqueness
+ball (Lemma 11.3), and the Hill coefficients carry an explicit d^2 term (Lemma 11.4); the window keeps the affine
+comparison operator (Theorem 11.5). The jets along the path come from a truncated Taylor arithmetic (Jet, DJet).
+Driver: run_groups (--groups) tries the group unit of every group with an uncovered piece and falls back to piece
+units for a group whose unit fails. Units already in the log (piece units) stay valid; collect() takes each piece's
+coverage from a group unit or a piece unit and writes results/fourier-branch-stability-uniform.json.
+
 Trusted: python-flint 0.9.0 (Arb); fourier/arbmodel.py, tp06_18d_arb.py, fourier_eval.py (Lemmas 1-3); branch.py
 (Theorem B: piece_blocks, assemble, HessBound, Hess); the imported helpers of stability.py and existence.py; this file.
 """
@@ -1222,7 +1232,8 @@ def _path_coeffs(zz, i, D, D2, P):
 def gjet_flat(zz, prm, D, D2, P, ps, prec=53):
     """Black box on the 54 inputs (phibar, phi_1, phi_2)(theta): the Taylor coefficients of order p in ps (p <= P) of
     G_k(xi) = f_k(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in D, as a flat list
-    [coefficient p of G_k for p in ps for k]. (With D = 0: G'(0), G''(0)/2; with D the box [-h, h]: G'''(xi)/6.)"""
+    [coefficient p of G_k for p in ps for k]. (With D = 0 and P = 3: the derivatives of order 1, 2, 3 at 0 divided by
+    1!, 2!, 3!; with D the box [-h, h] and P = 4: the fourth derivative divided by 4! at every point of the box.)"""
     with am.precision(prec):
         fn = am.model()["field"]
         p = dict(prm)
