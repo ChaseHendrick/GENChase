@@ -132,7 +132,7 @@ for (const [label, mutate] of [
   ['invalid audit date', a => { a.checkedAt = '2026-02-30T01:01:00Z'; }],
   ['invalid commit', a => { a.publicationCommit = 'a'.repeat(39); }],
   ['wrong boolean type', a => { a.allVerified = 'true'; }],
-  ['missing paper', a => { a.papers.pop(); }],
+  ['empty paper list', a => { a.papers = []; }],
   ['duplicate paper', a => { a.papers[1] = clone(a.papers[0]); }],
   ['unknown paper identity', a => { a.papers[0].paper = 'software-paper'; }],
   ['invalid release version', a => { a.papers[0].version = 'v1.2.3'; }],
@@ -149,6 +149,9 @@ for (const [label, mutate] of [
   const changed = clone(audit); mutate(changed);
   checkMetadata(true, audit, changed, label, auditFile);
 }
+// An audit may cover any subset of the registered preprints (one release, or all of them).
+const subsetAudit = clone(audit); subsetAudit.papers = subsetAudit.papers.slice(0, 1);
+checkMetadata(false, null, subsetAudit, 'Known single-paper audit addition', auditFile, 'A', ['000000', '100644']);
 const versionedAudit = clone(audit);
 versionedAudit.papers.forEach(p => Object.assign(p.recordMetadata, { version: p.version, expectedVersion: p.version, validExpectedVersion: true, versionMatches: true }));
 checkMetadata(false, audit, versionedAudit, 'Known optional archive-version metadata', auditFile);
