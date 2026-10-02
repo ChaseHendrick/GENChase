@@ -313,16 +313,40 @@ def sinc_sqrt_and_derivative(w):
     return S + rS * arb(0, 1), dS + rdS * arb(0, 1)
 
 
+def _S_dS(w):
+    """S(w), S'(w) on a real ball w contained in [0, inf): the series (section 5) if w may be < 1, else the closed
+    forms S = sin(s) / s, S' = (cos(s) - S) / (2 w), s = sqrt(w) (equal to the series for w > 0)."""
+    if w > 1:
+        s = w.sqrt()
+        sn, cs = s.sin_cos()
+        S = sn / s
+        return S, (cs - S) / (2 * w)
+    return sinc_sqrt_and_derivative(w)
+
+
+DD_W_STEP = Fraction(1, 32)          # sub-interval width in w = pi^2 m^2 eps (tightness only)
+
+
 def ddamping(m, e_lo, e_hi, prec=None):
-    """A real ball containing d'_m(xi) = 8 pi^4 D m^4 S(w) S'(w), w = pi^2 m^2 xi, for every xi in [e_lo, e_hi]."""
+    """A real ball containing d'_m(xi) = 8 pi^4 D m^4 S(w) S'(w), w = pi^2 m^2 xi, for every xi in [e_lo, e_hi]: the
+    union over a cover of [e_lo, e_hi] by sub-intervals (exact rational endpoints) of the enclosure on each."""
+    e_lo, e_hi = Fraction(e_lo), Fraction(e_hi)
+    if not 0 <= e_lo <= e_hi:
+        raise ValueError("need 0 <= e_lo <= e_hi")
+    wspan = 10 * m * m * (e_hi - e_lo)                       # >= pi^2 m^2 (e_hi - e_lo)
+    nsub = max(1, math.ceil(wspan / DD_W_STEP))
     with am.precision(prec):
-        if not 0 <= Fraction(e_lo) <= Fraction(e_hi):
-            raise ValueError("need 0 <= e_lo <= e_hi")
-        e = am.to_ball((Fraction(e_lo), Fraction(e_hi))).real
-        w = (arb.pi() ** 2 * (m * m) * e).nonnegative_part()   # w >= 0 exactly (e >= 0): clipping loses nothing
-        S, dS = sinc_sqrt_and_derivative(w)
         Db = am.to_ball(am.D_RING).real
-        return 8 * arb.pi() ** 4 * Db * (m ** 4) * S * dS
+        out = None
+        for j in range(nsub):
+            a = e_lo + (e_hi - e_lo) * Fraction(j, nsub)
+            b = e_lo + (e_hi - e_lo) * Fraction(j + 1, nsub)
+            e = am.to_ball((a, b) if a != b else a).real
+            w = (arb.pi() ** 2 * (m * m) * e).nonnegative_part()   # w >= 0 exactly (e >= 0): clipping loses nothing
+            S, dS = _S_dS(w)
+            v = 8 * arb.pi() ** 4 * Db * (m ** 4) * S * dS
+            out = v if out is None else out.union(v)
+        return out
 
 
 def damping_from_series(m, e_lo, e_hi, prec=None):
