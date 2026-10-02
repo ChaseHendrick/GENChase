@@ -48,7 +48,8 @@ and ||Dg^{-1} J0hat||_inf <= ||J0hat||_inf / y <= theta < 1. Hence M^{-1} = sum_
 |M^{-1}| <= sum_k (|J0hat| / y)^k / y <= sum_k G^k / Y; each entry of G^k (k >= 3) is at most its row sum <= theta^k,
 so sum_{k>=3} G^k <= theta^3 / (1 - theta) * ones. For m |M^{-1}|: m / y = 1 / omega_bar and (|J0hat| / y)^k <= G^k. QED.
 Stage E's Neumann bound used dmax >= d_m, which does not exist at eps = 0; Lemma T needs none. m_max is the least
-integer >= K + 1 with omega_bar (m_max + 1) theta_target >= ||J0hat||_inf (theta is recomputed and certified < 1).
+integer >= K + 1 with omega_bar (m_max + 1) theta_target >= ||J0hat||_inf, found by increasing a float guess, so it may
+exceed the least such integer (harmless: theta is recomputed from the actual Y and certified < 1).
 For K < m <= m_max the range of d_m over P is enclosed by arbmodel.damping(m, eps=(e_lo, e_hi)), giving an exact
 interval [dlo, dhi] with dlo >= 0; it is cut into nsub sub-intervals (each a ball; the balls cover [dlo, dhi]) of
 width about sub_frac * omega_bar m, and A_m is enclosed on each sub-ball by Arb inversion of the ball matrix (the
@@ -91,9 +92,10 @@ in conv{d'_m(xi) : xi in P}, which lies in the ball DD_m = ddamping(m, e_lo, e_h
   F(.; eps) has exactly one zero x*(eps) in B_{r_hi}(xbar), and it lies in B_{r_lo}(xbar).
   Real solution, period, minimal period, wave number: E.7 verbatim for each eps (d_m(eps) is real and even in m), so
   omega*(eps) is real, phi* is real, analytic on |Im theta| < 1/4, T(eps) = 2 pi / omega*(eps) lies in the piece's
-  T enclosure, and a*_{1,V} != 0 (assemble checks |abar_{1,V}| > eta_V r_lo / nu). At eps = 0 the V equation gives
-  |a*_{m,V}| (omega* |m| + 4 pi^2 D m^2) <= |g_m| + ..., so m^2 a*_{m,V} is in l^1_nu and phi*_V is C^2 (analytic): the
-  cable wave is a classical solution.
+  T enclosure, and a*_{1,V} != 0 (assemble checks |abar_{1,V}| > eta_V r_lo / nu). At eps = 0 nothing more is needed
+for a classical solution: a* is in (l^1_nu)^18, so phi* is analytic on |Im theta| < 1/4, and the V equation
+(i omega* m + d_m(0)) a*_{m,V} = g_{m,V} holds mode by mode with |i omega* m + d_m(0)| >= max(omega* |m|, d_m(0)), so
+phi*_V'' exists and the cable wave is a classical solution.
 
 5. dd_m (rigorous derivative of d_m in eps)
 -------------------------------------------
@@ -369,10 +371,10 @@ def _eps_arg(e_lo, e_hi):
     return e_lo if e_lo == e_hi else (e_lo, e_hi)
 
 
-def tail_bounds_eps(K, Kp, om_bar, J0hat, Jp, e_lo, e_hi, st, log=print, _mutate=()):
+def tail_bounds_eps(K, Kp, om_bar, J0hat, Jp, e_lo, e_hi, st, log=print, _mutate=(), _keep_all=False):
     """Section 3: entrywise sups of |A_m(eps)|, |m A_m(eps)|, |A_m(eps) J'_n| over |m| > K and eps in [e_lo, e_hi];
-    the sub-enclosures of A_m for K < m <= K' (Y0 tail). _mutate "tail_at_centre" (tests only) uses d_m(e_c) instead
-    of the range over the piece."""
+    the sub-enclosures of A_m for K < m <= K' (Y0 tail). Test-only: _mutate "tail_at_centre" uses d_m(e_c) instead of
+    the range over the piece; _keep_all keeps the sub-enclosures for every m <= m_max (no bound changes)."""
     I = ex._identity(DIM)
     absJ0 = ex._abs_mat(J0hat)
     rowmax = arb(0)
@@ -441,7 +443,7 @@ def tail_bounds_eps(K, Kp, om_bar, J0hat, Jp, e_lo, e_hi, st, log=print, _mutate
                         for k in range(DIM):
                             if Pa[r, k] > Cn[r][k]:
                                 Cn[r][k] = up(Pa[r, k])
-        if m <= Kp:
+        if m <= Kp or _keep_all:
             A_explicit[m] = Ams
     Ab = arb_mat(Abar0)
     for nn in Jp:
@@ -719,7 +721,12 @@ def _choose(bl, MHf):
 
 def finish(bl, eta, rstar, hb, *, log=print, _mutate=()):
     """branch.assemble on the eps blocks, and the record in eps terms (G_Ks fields replaced by the fixed G_Ks)."""
-    out = br.assemble(bl, eta, rstar, hb, log=log, _mutate=_mutate)
+    try:
+        out = br.assemble(bl, eta, rstar, hb, log=log, _mutate=_mutate)
+    except ProofFailure as e:            # report the eps range (assemble's message names the fixed G_Ks range)
+        err = ProofFailure(f"eps in [{_fs(bl['e_lo'])}, {_fs(bl['e_hi'])}]: {e}")
+        err.diag = getattr(e, "diag", None)
+        raise err from None
     for k in ("g_lo", "g_hi", "centre_g"):
         out.pop(k, None)
     out.update(G_Ks=G_KS, eps_lo=_fs(bl["e_lo"]), eps_hi=_fs(bl["e_hi"]), eps_c=_fs(bl["e_c"]),

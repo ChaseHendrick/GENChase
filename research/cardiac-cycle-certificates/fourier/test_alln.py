@@ -26,13 +26,20 @@ Acceptance
   * Float cross-checks of the eps terms: the float finite block of A_fin diag(d'_m(e_c)) E is at most B1g and at least
     half of it; the float ||A_fin w(e_c)|| is at most Y0g and at least half of it (so a B1g or Y0g that is zero or too
     small fails).
+  * Tail (W1, W2 of the 2026-10-02 review): for every m in (K, m_max] at both endpoints of the cable piece, the point
+    inverse A_m(eps) (256 bits) lies in one of the sub-enclosures and under Abar0, Abar1; |A_m(eps) J'_n| <= C_n for
+    point inverses, m of both signs and n on both sides of n_explicit.
 Negative controls
+  * The mutation tail_at_centre (d_m(e_c) instead of its range over the piece) is detected by the per-m check.
+  * B1g (W3): the float finite eps block at the endpoints is at most delta B1g and at least half of it; the drop_B1g
+    mutation lowers each Z1 component by at least half the float contribution (detected row by row).
   * Dropping the eps-derivative terms (drop_g_width) is detected (controls.jsonl, recomputed here on the piece
     containing 1/64): the float norm of A_fin F(xbar; eps) at an endpoint exceeds 10 times the mutated Y0, is 10 times
     the same norm at the centre parameter, and stays below the certified Y0.
   * A piece [0, w] widened beyond what closes fails (controls.jsonl; [0, 1] is re-run here).
   * Gluing a piece with a distant piece, or with r_uniqueness replaced by r_existence, fails; the Stage E inclusion
-    refuses an N with 1/N^2 outside the piece, and fails for the Stage E centre with omega shifted by 1e-2; a
+    refuses an N with 1/N^2 outside the piece; with omega shifted to (1 + 1e-3) eta_om r_hi from the piece's centre it
+    fails and with (1 - 1e-3) eta_om r_hi it passes (tests the weighting of the omega component); a
     non-increasing piece order is refused; dd_m set to 0 (mutation no_dd) lowers Y0 and Z1.
   * Logs: a truncated final line is dropped (kept in .truncated); a corrupted middle line is refused; the plan with a
     failed piece replaces it by two overlapping halves, with strictly increasing endpoints.
@@ -192,10 +199,28 @@ def test_stage_E_identification():
     assert not alln.stage_e_inclusion(16, line["rec"], line["centre"])["ok"]
     op = alln.obj_of(line["rec"], line["centre"])
     _, _, om8, A8, _ = ct.load(ct.centre_path(8, 32))
-    d0 = br.centre_distance(om8, A8, op["om_bar"], op["A"], op["ETA"], op["nu"])
-    assert d0 < op["r_hi"]
-    d = br.centre_distance(om8 + arb("0.01"), A8, op["om_bar"], op["A"], op["ETA"], op["nu"])
-    assert d > op["r_hi"], "a centre with omega shifted by 1e-2 lies in the piece's uniqueness ball"
+    with open(os.path.join(alln.RESULTS, "fourier-existence-N8.json")) as fh:
+        rE = ct.text_to_dyadic(json.load(fh)["r_existence"]["hex"])
+    conv = arb(0)
+    for eb in op["ETA"]:
+        conv = ex.amax(conv, ex.up(1 / eb))
+
+    def lhs_with_shift(s_):
+        d = br.centre_distance(om8 + s_, A8, op["om_bar"], op["A"], op["ETA"], op["nu"])
+        return ex.up(d + rE * conv)
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        assert lhs_with_shift(arb(0)) <= op["r_hi"]
+        diff = om8 - op["om_bar"]                                    # exact
+        sgn = 1 if diff >= 0 else -1
+        lim = op["ETA"][0] * op["r_hi"]                              # eta_om r_hi (exact)
+        s_fail = (sgn * ((1 + arb("0.001")) * lim + abs(diff))).mid()
+        s_pass = (sgn * ((1 - arb("0.001")) * lim - abs(diff))).mid()
+        assert not lhs_with_shift(s_fail) <= op["r_hi"], "omega shift just above eta_om r_hi passed"
+        assert lhs_with_shift(s_pass) <= op["r_hi"], "omega shift just below eta_om r_hi failed"
+    finally:
+        ctx.prec = old
 
 
 def test_cover_gluing_and_periods():
@@ -244,6 +269,129 @@ def test_eps_terms_float_crosscheck():
     Y0g = [float(x) for x in bl["Y0g"]]
     for c in range(DIM + 1):
         assert est[c] <= Y0g[c] * (1 + 1e-6) + 1e-300 and est[c] >= 0.5 * Y0g[c], (c, est[c], Y0g[c])
+
+
+def _piece_tail(e, mutate=()):
+    """tail_bounds_eps on the piece containing e with the piece's own J0hat and J'_n (from its blocks), keeping the
+    sub-enclosures for every m <= m_max."""
+    key = ("tail", str(Fraction(e)), tuple(mutate))
+    if key not in _CACHE:
+        rec2, _, bl = _reproved(e)
+        J, K, Kp = bl["J"], bl["K"], bl["Kp"]
+        J0hat = acb_mat([[acb(J[0][r][c].real.mid()) for c in range(DIM)] for r in range(DIM)])
+        Jp = {nn: acb_mat([[J[nn][r][c] - (J0hat[r, c] if nn == 0 else 0) for c in range(DIM)] for r in range(DIM)])
+              for nn in range(-Kp, Kp + 1)}
+        st = dict(alln.DEFAULTS)
+        with alln.fe.precision(int(st["prec_mat"])):
+            tb = alln.tail_bounds_eps(K, Kp, bl["om_bar"], J0hat, Jp, bl["e_lo"], bl["e_hi"], st, log=QUIET,
+                                      _mutate=mutate, _keep_all=True)
+        _CACHE[key] = (tb, J0hat, Jp, bl)
+    return _CACHE[key]
+
+
+def _point_inverse(om, J0hat, m, eps):
+    I = ex._identity(DIM)
+    M = I * acb(0, 1) * (om * m) - J0hat
+    M[IV, IV] += am.damping(m, eps=Fraction(eps), prec=256)
+    return M.inv()
+
+
+def _violations(tb, J0hat, om, K, eps_list):
+    """(m, eps) with the point inverse A_m(eps) outside every sub-enclosure, or |A_m| above Abar0 / m |A_m| above
+    Abar1 somewhere, for every m in (K, m_max]."""
+    bad = []
+    for m in range(K + 1, tb["m_max"] + 1):
+        for e in eps_list:
+            Ai = _point_inverse(om, J0hat, m, e)
+            inside = any(all(S[r, c].contains(Ai[r, c]) for r in range(DIM) for c in range(DIM))
+                         for S in tb["A_explicit"][m])
+            sup_ok = all(Ai[r, c].abs_upper() <= tb["Abar0"][r][c] and Ai[r, c].abs_upper() * m <= tb["Abar1"][r][c]
+                         for r in range(DIM) for c in range(DIM))
+            if not (inside and sup_ok):
+                bad.append((m, str(e), inside, sup_ok))
+    return bad
+
+
+def test_tail_enclosures_and_mutation():
+    """W1: at both endpoints of the cable piece, for EVERY m in (K, m_max], the point inverse A_m(eps) (256 bits) lies
+    in one of the sub-enclosures and under the sups; with the mutation tail_at_centre (d_m(e_c) only) this fails."""
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        tb, J0hat, Jp, bl = _piece_tail("0")
+        ends = [bl["e_lo"], bl["e_hi"]]
+        assert _violations(tb, J0hat, bl["om_bar"], bl["K"], ends) == []
+        tbm, _, _, _ = _piece_tail("0", mutate=("tail_at_centre",))
+        badm = _violations(tbm, J0hat, bl["om_bar"], bl["K"], ends)
+        assert len(badm) > 0, "the tail_at_centre mutation is not detected"
+    finally:
+        ctx.prec = old
+
+
+def test_tail_products_C_n():
+    """W2: |A_m(eps) J'_n| <= C_n entrywise for point inverses at both endpoints, m of both signs (A_{-m} = conj A_m),
+    and n with |n| <= n_explicit and |n| > n_explicit (the piece's J'_n enclosures, midpoint and ball)."""
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        tb, J0hat, Jp, bl = _piece_tail("0")
+        K, Kp = bl["K"], bl["Kp"]
+        n_ex = int(alln.DEFAULTS["n_explicit"])
+        ns = [0, 1, -1, 5, -7, n_ex, -n_ex, n_ex + 1, -(n_ex + 3), Kp, -Kp]
+        ms = [K + 1, K + 2, 20, 57, 150, tb["m_max"], tb["m_max"] + 1, 3 * tb["m_max"]]
+        for e in (bl["e_lo"], bl["e_hi"]):
+            for m in ms:
+                Am = _point_inverse(bl["om_bar"], J0hat, m, e)
+                for sgn in (1, -1):
+                    A_ = Am if sgn == 1 else Am.conjugate()
+                    for nn in ns:
+                        Jmid = acb_mat([[acb(Jp[nn][r, c].real.mid(), Jp[nn][r, c].imag.mid()) for c in range(DIM)]
+                                        for r in range(DIM)])
+                        for Jx in (Jmid, Jp[nn]):
+                            P = A_ * Jx
+                            for r in range(DIM):
+                                for c in range(DIM):
+                                    assert P[r, c].abs_upper() <= tb["C"][nn][r][c], (e, sgn * m, nn, r, c)
+    finally:
+        ctx.prec = old
+
+
+def test_B1g_endpoints_and_drop_B1g():
+    """W3: the finite block's eps contribution A_fin (J_fin(eps) - J_fin(e_c)) at both endpoints (float, Delta exact in
+    float from d_m(eps) - d_m(e_c)) is at most delta B1g block by block and at least half of it at one endpoint; per
+    output component, the drop_B1g mutation lowers Z1_c by at least half the float weighted contribution (so dropping
+    delta B1g is detected row by row even though, at these piece widths, it moves Z1 only in the fifth digit and the
+    radii polynomial would still close: what covers B1g is this blockwise cross-check)."""
+    for e in ("0", "1/64"):
+        line = _containing(e)
+        rec = line["rec"]
+        rec2, _, bl = _reproved(e)
+        om, A = bl["om_bar"], bl["A"]
+        K = (len(A[0]) - 1) // 2
+        lay = ct.Layout(K)
+        a = np.array([[complex(float(A[i][m].real), float(A[i][m].imag)) for m in range(2 * K + 1)] for i in range(DIM)])
+        ec = float(Fraction(rec["eps_c"]))
+        G, _ = alln.galerkin_f(float(om), a, ec, 8 * (4 * K + 64))
+        Ai = np.linalg.inv(G)
+        delta = float(Fraction(rec["eps_half_width"]))
+        Bg = np.array([[float(x) for x in row] for row in bl["B1g"]]) * delta
+        eta = np.array([float(Fraction(x)) for x in rec["eta"]])
+        best = np.zeros(DIM + 1)
+        for ee in (rec["eps_lo"], rec["eps_hi"]):
+            Dl = np.zeros(lay.n)
+            for m in range(-K, K + 1):
+                Dl[lay.idx(IV, m)] = alln.d_float(m, float(Fraction(ee))) - alln.d_float(m, ec)
+            Bf = br.blocks_f(lay, Ai @ np.diag(Dl))
+            assert np.all(Bf <= Bg * (1 + 1e-6) + 1e-300), (ee, float(np.max(Bf - Bg)))
+            best = np.maximum(best, Bf[:, 1 + IV])
+        assert np.all(best >= 0.5 * Bg[:, 1 + IV]), (best, Bg[:, 1 + IV])
+        hb = br.HessBound([(om, A)], alln.G_KS, alln.G_KS, line["extras"]["R"], "1", None, log=QUIET)
+        mut = alln.finish(bl, rec["eta"], line["extras"]["r_star_text"], hb, log=QUIET, _mutate=("drop_B1g",))
+        good, bad = rec["diag"]["Z1_by_comp"], mut["diag"]["Z1_by_comp"]
+        for c in range(DIM + 1):
+            contrib = eta[1 + IV] * best[c] / eta[c]
+            assert good[c] - bad[c] >= 0.5 * contrib * (1 - 1e-9) - 1e-15, (e, c, good[c], bad[c], contrib)
+        assert mut["Y0"]["hex"] == rec["Y0"]["hex"]
 
 
 # ------------------------------------------------------------------------------------------------ negative controls
@@ -325,7 +473,8 @@ def test_log_tools():
 
 
 TESTS = [test_damping_series, test_log_tools, test_lemma_T, test_reprove_bit_for_bit, test_stage_E_identification,
-         test_cover_gluing_and_periods, test_eps_terms_float_crosscheck, test_negative_drop_eps_derivative,
+         test_cover_gluing_and_periods, test_eps_terms_float_crosscheck, test_tail_enclosures_and_mutation,
+         test_tail_products_C_n, test_B1g_endpoints_and_drop_B1g, test_negative_drop_eps_derivative,
          test_negative_gluing_and_order, test_negative_widened_piece]
 
 if __name__ == "__main__":
