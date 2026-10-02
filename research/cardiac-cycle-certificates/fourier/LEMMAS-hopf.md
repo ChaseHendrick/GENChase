@@ -1,0 +1,417 @@
+# The certified G_Ks branch is the branch born at the Hopf point: lemmas and proofs
+
+Status: computed; awaiting adversarial review. This file states and proves what `fourier/hopf.py` relies on. Nothing
+here is "verified" until a second reading has checked it against the code. No outside review has taken place.
+
+Model: Erhardt's 18-state TP06 endocardial cell, `f(z; g)` = `arbmodel.f` with `g_Ks = g`, in the scaled variables
+`z = x / sigma` (`sigma_i = 2^{e_i}`, `model/scales.txt`). `g_Ks` enters the reference model only through
+`i_Ks = g_Ks Xs^2 (V - E_Ks)` in `dV/dt`, so
+
+    f(z; g) = f(z; g0) + (g - g0) f1(z),    f1 = d f / d g  (nonzero only in the V row),            (0.1)
+
+for all complex `g, g0` (both sides are the same expression of `g`). Labels: **proved** (a proof here, no
+computation), **computer-assisted** (a proof here in which finitely many inequalities are decided by a program in Arb
+ball arithmetic; the program and the record that carry each step are named), **cited** (a published theorem used as
+stated in its source), **numerical** (floating point, never used in a proof).
+
+Trust base: python-flint 0.9.0 (Arb), `fourier/arbmodel.py` with the generated `fourier/tp06_18d_arb.py`,
+`fourier/fourier_eval.py` (Lemmas 1-3 there: strip cover, Cauchy estimate, aliased DFT), the functions of
+`existence.py` and `branch.py` called by `hopf.py` (`_tail_bounds`, `_radii`, `_identity`, `_abs_mat`, `amax`,
+`up`, `lo`; `branch.Hess`, the second-order dual numbers), and `hopf.py`. Every float input (centres, tangents,
+eigenvectors, the inverse matrices `C`, `A_fin`, the weights `eta`, radii, piece boundaries) is an exact number chosen
+by untrusted code; its quality only decides whether an inequality holds.
+
+---------------------------------------------------------------------------------------------------------------------
+
+## Part A. The Hopf point
+
+### Lemma K (proved; contraction on a polydisc)
+
+Let `F` be holomorphic on an open set containing the closed polydisc `P = {z in C^n : |z_i - x_i| <= r_i}` (`x`
+exact, `r_i > 0`), `C` an `n x n` matrix, and let `M` be a ball matrix that contains `I - C DF(z)` for every `z in P`
+and `b` a ball vector that contains `-C F(x)`. If
+
+    kappa := max_i (1/r_i) sum_j |M_ij|^+ r_j < 1   and   |b_i|^+ + sum_j |M_ij|^+ r_j <= r_i  for every i
+
+(`|.|^+` an upper bound of the modulus over the ball), then `F` has exactly one zero in `P`. The same holds for a
+family `F_p`, `p` in a parameter set, when `M` and `b` contain the respective quantities for every `p`.
+
+*Proof.* Put `T(z) = z - C F(z)` and `||y|| = max_i |y_i| / r_i`. For `z in P`,
+`T(z) - x = -C F(x) + int_0^1 (I - C DF(x + s(z - x))) ds (z - x)`; each entry of the averaged matrix is a mean of
+the same entry of matrices in the convex ball `M`, hence lies in it, so `|T(z)_i - x_i| <= |b_i|^+ + sum_j |M_ij|^+ r_j
+<= r_i`: `T(P) in P`. For `z, z' in P`, `T(z) - T(z') = int_0^1 (I - C DF(z' + s(z - z'))) ds (z - z')`, so
+`||T(z) - T(z')|| <= kappa ||z - z'||`. By Banach's theorem `T` has exactly one fixed point in `P`. `C DF(z)` lies
+within distance `kappa < 1` of `I` in the induced weighted max norm, so it is invertible, hence so is `C`, and the fixed
+points of `T` are exactly the zeros of `F`. QED.
+
+`hopf.contraction_test` checks the two inequalities in Arb. It is used for the equilibria (`equilibrium_on`, `F = f(.;
+g)`, `n = 18`, the parameter `g` in a ball) and for eigenpairs (`eigpair_on`, `F(lambda, v) = (A - lambda) v` with
+`v_k = 1`, `n = 18` unknowns `(lambda, v_j, j != k)`, for every matrix `A` in a ball matrix). In both cases the zero
+of the real problem is real (equilibria) or the eigenpair is the unique one in the polydisc.
+
+### Lemma G (proved; Gershgorin discs; papers/hh-dynamics, Lemma lem:gersh)
+
+Let `M` be a ball matrix, `S` invertible, and `D_i = {z : |z - c_i| <= R_i}` with
+`R_i >= |(S^-1 A S)_ii - c_i| + sum_{j != i} |(S^-1 A S)_ij|` for every `A` in `M`. For every `A` in `M`: (a) every
+eigenvalue lies in the union of the `D_i`; (b) a union of `k` discs disjoint from the other discs contains exactly `k`
+eigenvalues counted with multiplicity.
+
+*Proof.* (a) Gershgorin's theorem for `S^-1 A S` (if `S^-1 A S v = lambda v` and `|v_i|` is maximal,
+`|lambda - (S^-1AS)_ii| <= sum_{j != i} |(S^-1AS)_ij|`). (b) With `Delta` the diagonal of `B = S^-1 A S` and
+`B_t = Delta + t (B - Delta)`, `t in [0, 1]`, the discs of `B_t` have the same centres and `t` times the radii, so they
+lie in the `D_i`; by (a) no eigenvalue of `B_t` crosses the boundary of the union of the `k` discs; the eigenvalues
+depend continuously on `t`, and at `t = 0` exactly `k` of them (diagonal entries) lie in that union. QED.
+
+### Lemma A1 (proved; mean value form of the Jacobian along the equilibrium branch)
+
+Let `G = [a, b]`, `g_c = (a + b)/2`, `delta = (b - a)/2`, and suppose Lemma K gives, for every `g in G`, exactly one
+equilibrium `x_e(g)` in a polydisc `X_G`, and for `g = g_c` one in a polydisc `X_c`. Then `x_e` is real analytic on
+`G` (implicit function theorem: `D_z f(x_e(g); g)` is invertible by Lemma K's proof), `x_e'(g) = -A(g)^-1 f1(x_e(g))`
+with `A(g) = D_z f(x_e(g); g)`, and for every `g in G`
+
+    A(g) in A_c + [-delta, delta] A'_G,
+
+where `A_c` encloses `D_z f(X_c; g_c)` and `A'_G` encloses `D_z^2 f(z; g)[x', .] + D_z f1(z)` over `z in X_G`,
+`g in G`, `x'` in an enclosure of `-D_z f(X_G; G)^-1 f1(X_G)`. *Proof.* `A(g) - A(g_c) = (g - g_c) int_0^1 A'(g_c +
+s(g - g_c)) ds` and `A'(g) = D_z^2 f(x_e(g); g)[x_e'(g), .] + D_z f1(x_e(g))` (chain rule, (0.1)); every
+`A'(g)`, `g in G`, lies in the convex ball `A'_G`, hence so does the average. QED. (`hopf.jacobian_family`; the
+directional second derivative is a `branch.Hess` evaluation with a 19th variable along `(x', 1)`, `_hess_dir`.)
+
+### Lemma A2 (proved; the derivative of a simple eigenvalue)
+
+If `lambda(g)` is a simple eigenvalue of the analytic matrix family `A(g)` with right and left eigenvectors `q`,
+`p` (`A q = lambda q`, `p^T A = lambda p^T`), then `p^T q != 0` and `lambda'(g) = p^T A'(g) q / (p^T q)`.
+*Proof.* Simplicity gives `p^T q != 0` and an analytic eigenpair (implicit function theorem); differentiate
+`A q = lambda q` and multiply by `p^T` on the left: `p^T A' q + p^T A q' = lambda' p^T q + lambda p^T q'`, and
+`p^T A q' = lambda p^T q'`. QED. (`hopf.dlambda_dg`; `p` and `q` are enclosed by Lemma K for every `A` in the ball.)
+
+### Lemma A3 (cited formula, tested; the first Lyapunov coefficient)
+
+With `A` having the simple pair `+-i omega`, `A q = i omega q`, `A^T p = -i omega p`, `<p, q> = conj(p)^T q = 1`, and
+`f(x0 + y) = A y + B(y, y)/2 + C(y, y, y)/6 + O(|y|^4)`,
+
+    l1 = (1 / (2 omega)) Re( <p, C(q, q, qbar)> - 2 <p, B(q, A^-1 B(q, qbar))> + <p, B(qbar, (2 i omega - A)^-1 B(q, q))> ),
+
+as given by Kuznetsov (Scholarpedia 1(10):1858 (2006), section "First Lyapunov Coefficient", revision 90964), who
+cites his book (Elements of Applied Bifurcation Theory, 3rd ed., Springer 2004) for it; this is the formula and the
+routine of papers/hh-dynamics (eq. (l1), `code/certify_equilibria_hopf.py`, `lyap1`), whose paper records which of
+these sources were read. We have not checked the formula's equation number or the theorem numbers against the book
+(the brief names Theorems 3.3, 3.4 and formula (3.20)); no proof here depends on the book. `hopf.lyap1` is that
+routine with the series given by `hopf.Jet` (truncated Taylor series in `t` of `f(x0 + t v)` along complex `v`,
+exact recurrences for `+ - * /`, integer powers, `exp`, `log`, `sqrt` in Arb): `B(v, v) = 2 [t^2]`,
+`C(v, v, v) = 6 [t^3]`, other arguments by polarization. `fourier/test_hopf.py` checks it on the two planar and two
+four-dimensional systems of papers/hh-dynamics (Lemma lem:testsys there) with known `l1` of both signs, and the two
+mutated routines (`+2` in the middle term; `(-A)^-1` for `(2 i omega - A)^-1`) are refused. The sign of `l1` does
+not depend on the normalization of `q`; its value is reported for `<q, q> = 1` in physical units, in which
+MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
+
+### Theorem A (computer-assisted; `hopf.theorem_A`, record `fourier/data/hopf/theoremA.json`)
+
+Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). Then:
+
+(a) For every `g in W` the cell has an equilibrium `x_e(g)` (in the polydiscs of the record; real analytic in `g`), and
+the spectrum of `A(g) = D_z f(x_e(g); g)` consists of a simple eigenvalue `lambda(g)` with `Im lambda(g) > 0`, its
+conjugate, and 16 eigenvalues with real part at most `-4.69e-5` (the record's `others_max_re_upper`).
+
+(b) There is exactly one `g_H in W` at which `A(g)` has an eigenvalue on the imaginary axis; `g_H` lies in the
+interval `G_H` of width `2e-13` given in the record, and there `lambda(g_H) = i omega_H` with `omega_H` in the record's
+ball (about `0.11934140178`). `Re lambda(g) > 0` for `g in W`, `g < g_H`, and `< 0` for `g > g_H`.
+
+(c) Transversality: `d Re lambda / dg (g_H)` lies in the record's ball (about `-5.5769`), in particular `< 0`.
+
+(d) `l1 < 0` at `(x_e(g_H), g_H)`: the record's enclosure of `l1` (about `-22.4879` in physical units with
+`<q, q> = 1`; `omega_H l1` is about `-2.6837`, Erhardt's `-2.6838`).
+
+*Proof.* The program covers `W` by adjacent closed intervals (left of `G_H`, `G_H`, right of `G_H`; record:
+`cover_left`, `cover_right`). On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the
+midpoint), Lemma A1 a ball matrix containing `A(g)` for every `g in G`; with `S` the float eigenvector matrix of the
+midpoint of `A_c` (unit columns), the Gershgorin discs (Lemma G) of the pair (`D1` with `Im > 0` and `D2`) are disjoint
+from each other and from the 16 other discs, and those lie in `Re < 0` (right ends recorded); Lemma K for the eigenpair
+gives a ball `L` containing an eigenvalue of `A(g)` for every `g in G`, and `L` is disjoint from every disc but `D1`, so
+the eigenvalue in `L` is the eigenvalue in `D1`, `lambda(g)`, which is simple (Lemma G(b): `D1` holds exactly one), and
+its conjugate is the one in `D2`. This is (a) on `G`. On the intervals left of `G_H` the program certifies
+`Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record). So for `g in W \ G_H` no eigenvalue is on the
+imaginary axis. On `G_H`, `lambda` is analytic (simple eigenvalue of an analytic family) and Lemma A2, with `p`, `q`,
+`A'` enclosed over `G_H`, gives `Re lambda' < 0` on `G_H`; the end points of `G_H` are end points of the adjacent
+intervals, where `Re lambda` is `> 0` (left) and `< 0` (right). So `Re lambda` has exactly one zero `g_H` in `G_H`,
+which is (b); `omega_H = Im lambda(g_H)` lies in `Im L` of `G_H`, and (c) is the enclosure of `Re lambda'` on `G_H`.
+(d): Lemma A3 evaluated with `x_e(g_H)` in the equilibrium polydisc of `G_H`, `g_H in G_H`, `A(g_H)` in the ball of
+`G_H`, `q`, `p` the eigenvector enclosures (right one normalized `<q, q> = 1` in physical units, left one by
+`p_l^T q = 1`), `omega` in `Im L`; every quantity of the formula is evaluated in ball arithmetic on balls containing
+the true values at `g_H`, so the result contains `l1`. QED.
+
+### Cited theorem (Andronov-Hopf; Kuznetsov, Scholarpedia 1(10):1858, as stated in papers/hh-dynamics, Theorem thm:kuz)
+
+Let `x' = f(x, alpha)`, `x in R^n`, `alpha in R`, `f` smooth, have a family of equilibria `x^0(alpha)` whose
+Jacobian has one pair `mu(alpha) +- i omega(alpha)` with `mu(0) = 0`, `omega(0) = omega_0 > 0`, a simple pair at
+`alpha = 0`, and `n_s` eigenvalues with negative and `n_u` with positive real part, `n_s + n_u + 2 = n`. If
+`l1(0) != 0` and `mu'(0) != 0`, the system is locally topologically equivalent near the origin to the suspension of
+the normal form `y1' = beta y1 - y2 + sigma y1 (y1^2 + y2^2)`, `y2' = y1 + beta y2 + sigma y2 (y1^2 + y2^2)`,
+`ys' = -ys`, `yu' = yu`, `sigma = sign l1(0)`; for `sigma = -1` the origin is asymptotically stable for `beta <= 0`
+and unstable for `beta > 0`, and a unique limit cycle, stable, exists for `beta > 0`.
+
+### Corollary A (computer-assisted and cited)
+
+With `alpha = g - g_H`, Theorem A gives the hypotheses with `n_s = 16`, `n_u = 0`, `mu' < 0`, `l1 < 0`
+(`sigma = -1`). The equilibrium is asymptotically stable for `g > g_H` near `g_H` and unstable for `g < g_H`
+(Theorem A(b)); in the normal form these are `beta < 0` and `beta > 0`. Hence there are a neighbourhood `U` of
+`x_e(g_H)` and `eta > 0` such that for `g in (g_H - eta, g_H)` the cell has exactly one periodic orbit in `U`, and it
+is orbitally asymptotically stable (the suspension by `ys' = -ys` keeps it attracting), and for
+`g in [g_H, g_H + eta)` it has none in `U`. The topological equivalence maps periodic orbits to periodic orbits and
+preserves (orbital) asymptotic stability, as in papers/hh-dynamics, Corollary cor:hopf. This is the supercritical Hopf
+bifurcation reported numerically by Erhardt: `g_H` is the only Hopf point in `W`, and Erhardt's value lies in `W`
+(`|g_H - 0.027907858929580|` is about `1.5e-8`; `numerics/hopf_and_orbit.py` reports the same offset).
+
+---------------------------------------------------------------------------------------------------------------------
+
+## Part B. The blown-up branch
+
+### B0. Setting
+
+`nu = e^{rho0}` (`rho0 = 1/8`). `l^1_nu` = sequences `(b_m)` with `||b||_nu = sum |b_m| nu^|m| < inf`, a Banach algebra
+under convolution; `l^1_{nu,0}` its subspace with `b_0 = 0`. Unknowns `x = (omega, g, c, w)` in
+`X = C x C x C^18 x (l^1_{nu,0})^18` with the weighted norm `||x|| = max(|omega|/eta_om, |g|/eta_g, max_k |c_k|/eta_ck,
+max_k ||w_k||_nu/eta_wk)` (`eta > 0` exact dyadics). `w(theta) = sum_{m != 0} w_m e^{i m theta}`. For a real parameter
+`eps` and `(c, u)` with the segment `c + [0, 1] eps u` in the domain,
+
+    Q(c, u, eps; g) := int_0^1 D_z f(c + s eps u; g) u ds,     so  eps Q = f(c + eps u; g) - f(c; g),
+
+and `F(x; eps) = (N+, N-, E_0, (E_m)_{m != 0})` with
+
+    N+ = w_{V,1} - 1/2,   N- = w_{V,-1} - 1/2,
+    E_0 = f(c; g) + eps [Q(c, w(.), eps; g)]_0,         E_m = i m omega w_m - [Q(c, w(.), eps; g)]_m.
+
+(`[h]_m` is the m-th Fourier coefficient of the function `theta -> h(theta)`.)
+
+### Lemma B1 (proved; what a zero means)
+
+Let `x = (omega, g, c, w)` be a zero of `F(.; eps)` with `omega > 0`, `g`, `c` real, `w_{-m} = conj(w_m)`, and
+`f(.; g)` holomorphic near `{c + s eps w(theta): s in [0, 1], theta real}`. (a) If `eps > 0`, then
+`phi = c + eps w` satisfies `omega phi' = f(phi; g)`, so `z(t) = phi(omega t)` is a periodic orbit of the cell at
+`G_Ks = g`, of minimal period `2 pi / omega`, whose first V harmonic is `a_{1,V} = eps / 2 > 0` (so `Im a_{1,V} = 0`).
+(b) If `eps = 0`, then `f(c; g) = 0` and `D_z f(c; g) w_1 = i omega w_1` with `w_{1,V} = 1/2`: `c` is an equilibrium
+and `i omega` an eigenvalue of its Jacobian.
+
+*Proof.* (a) `eps Q(c, w(theta), eps) = f(phi(theta)) - f(c)`, so `[f(phi)]_0 = f(c) + eps [Q]_0 = E_0 = 0` and,
+for `m != 0`, `[f(phi)]_m = eps [Q]_m = eps i m omega w_m = i m omega [phi]_m`. `phi` is real analytic and its
+Fourier series converges absolutely; the continuous functions `omega phi'` and `f(phi)` have the same Fourier
+coefficients, hence are equal. `a_{1,V} = eps w_{1,V} = eps/2 != 0`: the first harmonic is nonzero, so `phi` is not
+`2 pi / k` periodic for `k >= 2` and the minimal period of `z` is `2 pi / omega`. (b) At `eps = 0`,
+`Q = D_z f(c) w(theta)`, `E_0 = f(c) = 0`, and `E_1 = i omega w_1 - D_z f(c) w_1 = 0`. QED.
+
+### Lemma B2 (proved; the radii polynomial along a centre line)
+
+*The theorem used* (as `existence.py` E.3). Let `A` be an injective bounded linear operator such that
+`T_eps(x) = x - A F(x; eps)` maps `B_{r*}(xbar(eps))` into `X` and is `C^1` there. If, for one `eps`,
+`||A F(xbar(eps); eps)|| <= Y0`, `||I - A DF(xbar(eps); eps)|| <= Z1` and
+`||A (DF(x; eps) - DF(xbar(eps); eps))|| <= Z2 ||x - xbar(eps)||` on `B_{r*}`, and
+`p(r) = Y0 + (Z1 - 1) r + Z2 r^2 / 2 < 0` and `Z1 + Z2 r < 1` at `r = r_lo` and at `r = r_hi <= r*`, then `F(.; eps)`
+has exactly one zero in `B_{r_hi}(xbar(eps))`, and it lies in `B_{r_lo}(xbar(eps))`. (Proof: existence.py E.3; the
+inequalities are certified by `existence._radii`.)
+
+*The piece.* `[e_lo, e_hi]`, `e_c` its midpoint, `delta = (e_hi - e_lo)/2`, and the exact centre line
+`xbar(xi) = xbar_c + (xi - e_c) tbar` (`xbar_c`, `tbar` exact; `w`-parts conjugation symmetric with `tbar_{w,V,+-1} = 0`,
+so `N+-(xbar(xi)) = 0`; modes `|m| <= K` only). `A` is the same for all `xi` of the piece: `A_fin` the double inverse
+of the midpoint of the Galerkin matrix `DF_fin(xbar_c; e_c)` (rows `N+-`, `E_0`, `E_m` and columns `omega`, `g`, `c`,
+`w_m` for `1 <= |m| <= K`), and `A_m = (i m omega_c - J0hat)^-1` on the tail rows `|m| > K`, `J0hat` the exact real
+midpoint of the enclosure of `[J]_0` (`existence._tail_bounds`: explicit inverses for `K < m <= m_max`, a Neumann
+bound beyond; `sup |A_m| <= Abar0`, `sup |m A_m| <= Abar1` entrywise).
+
+(a) *Y0.* For every `xi` of the piece, by Taylor's formula with integral remainder applied to
+`xi -> A F(xbar(xi); xi)`,
+
+    ||A F(xbar(xi); xi)||_c <= Y0p_c + delta Y1_c + (delta^2/2) Y2_c,
+
+with `Y0p = ||A F(xbar_c; e_c)||`, `Y1 = ||A (d/dxi) F(xbar(xi); xi)|_{e_c}||` and `Y2_c >= sup_xi ||A (d/dxi)^2 F||_c`,
+per output component `c` (`||(A r)_c||` is the component's norm). Every term is computed by Fourier enclosures
+(fourier_eval Lemmas 2, 3: node values at `M` nodes, aliasing bound and Cauchy tail from a strip sup `S` at
+`rho2 > rho0`), then `A_fin` times the finite part (an Arb product), `A_m` (or `Abar0`) times the coefficients
+`K < |m| <= K'`, and `Abar0 S` times the weighted tail `sum_{|m| > K'} (nu e^{-rho2})^|m|`. The node functions:
+`Y0p` from `f(cbar)`, `Q` at the nodes, `Q = (f(cbar + e_c u) - f(cbar)) / e_c` (`u = w(theta_j)`);
+`Y1` from first-order Taylor series in `t` of `f(phi(t))` and of `Q(t) = (f(phi(t)) - f(cbar(t))) / (e_c + t)` at the
+point `e_c` (`phi(t) = cbar + t tc + (e_c + t)(u + t v)`, `v = tw(theta_j)`); `Y2` from the second-order series of
+`f(b(1, t))` and of `D f(b(s, t)) w(t)` (a dual number in a direction `tau`) with
+`b(s, t) = c(xi + t) + s (xi + t) w(xi + t)`, over balls `xi in Xi_i` (sub-intervals of the piece) and `s in S_l`
+(sub-intervals of `[0, 1]`). For each `xi`, `Q''(xi) = int_0^1 (d/dxi)^2 [D f(b(s, xi)) w(xi)] ds` lies in the
+closed convex hull of the integrand's values, hence in the union (hull) of the enclosures over the `S_l`; the node
+value for the true `xi` lies in the enclosure of the `Xi_i` that contains it, hence in the hull over `i`. The strip
+sups `S` for these functions are full-strip covers (fourier_eval Lemma 1) of the same black boxes over the whole piece
+and `s in [0, 1]`, which also certify holomorphy on the strip.
+
+(b) *Z1.* For every `xi` of the piece, `I - A DF(xbar(xi); xi) = [I - A DF(xbar_c; e_c)] - (xi - e_c) int_0^1 A
+(d/dxi)DF(xbar(xi'); xi') ds`, so `||I - A DF(xbar(xi); xi)|| <= Z1c + delta Zc` with `Z1c` the bound at the point and
+`Zc >= sup ||A (d/dxi) DF||`. Both are block bounds `max_c (1/eta_c) sum_c' eta_c' B_cc'` with:
+  * finite rows x finite columns: the Arb product `I - A_fin DF_fin` (resp. `A_fin DF'_fin`), weighted column sums;
+  * finite rows x tail columns `w_{j,m'}`, `|m'| > K`: explicit columns for `K < |m'| <= K + L`, and for
+    `|m'| >= K + L + 1` majorant columns built from `|[G]_n| <= S_G e^{-rho2 |n|}`, whose weighted column sums divided by
+    `nu^|m'|` are proportional to `(e^{-rho2}/nu)^|m'|` and so decrease in `|m'|` (as existence.py E.5);
+  * tail rows `|m| > K`: `A_m [ (J_0 - J0hat) y_m + sum_{n != 0} J_n y_{m-n} + Kc_m y_c + kg_m y_g ]` at the point
+    (`y_{w,0} := 0`; the `omega` column vanishes there since `w_m = 0`), bounded by
+    `T = sum_n C_n nu^|n| + Abar0 S_J tail` (w columns; `C_n` from `_tail_bounds`), `Tc = sum_{K < |m| <= K'} |A_m Kc_m|
+    nu^|m| + Abar0 S_Kc tail` (c columns) and the same for the g column; for `Zc` the same with the derivatives
+    `J'`, `Kc'`, `kg'` and the diagonal `i m tbar_om` (bounded by `Abar1 |tbar_om|`).
+The derivatives along the line are, with `phi(xi) = c(xi) + xi w(xi)`, `J(xi) = D f(phi(xi); g(xi))`,
+`Kc(xi) = int_0^1 D^2 f(b(s, xi))[w(xi), .] ds`, `kg(xi) = int_0^1 D f1(b(s, xi)) w(xi) ds`:
+E_0 row: `[J']_0` (c), `[J]_{-m'} + xi [J']_{-m'}` (w), `[f1(phi)']_0` (g); E_m rows: `i m tw_m` (omega),
+`-[J']_{m - m'}` and `i m tbar_om` on the diagonal (w), `-[Kc']_m` (c), `-[kg']_m` (g). They are enclosed from Taylor
+series in `t` whose coefficients are second-order dual numbers (`branch.Hess`) in `(z, g, tau)`:
+`J = [t^0] d_z f`, `J' = [t^1] d_z f`, `f1' = [t^1] d_g f` at `b(1, t)`; `Kc' = [t^1] d_z d_tau f`,
+`kg' = [t^1] d_g d_tau f` at `b(s, t) + tau w(t)`, hulls over `Xi_i`, `S_l` as in (a). For the majorant columns,
+`|J_n| = xi |Kc(xi)_n| <= e_hi HW e^{-rho2 |n|}` (`n != 0`) is not used; the strip sup of `J` itself is.
+
+(c) *A is injective and T maps into X*: as existence.py E.2, E.3 (`A_m` invertible; `A_fin` invertible because the
+compression of `I - A DF` to the finite modes is `I - A_fin DF_fin`, of norm `<= Z1 < 1`; `A(i m omega w_m)` is bounded
+because `sup_{|m| > K} |m A_m| < inf`).
+
+### Lemma B3 (proved; the second-derivative bound Z2 by a polydisc family)
+
+*Lemma P.* Let `rho2 > rho0`, `q2 = nu e^{-rho2} < 1`, `Q2 = (1 + q2)/(1 - q2)`, `p_sigma(theta)` a trigonometric
+polynomial depending affinely on `sigma` in a closed disc `D` of radius `T`, `R_i > 0`, and `F` holomorphic on an open
+set containing `K = {p_sigma(theta) + zeta : |Im theta| <= rho2, sigma in D, |zeta_i| <= R_i}` with `|F| <= M` on `K`.
+For `h in (l^1_nu)^18` with `t_i = ||h_i||_nu < R_i`: `theta -> F(p_sigma(theta) + h(theta))` is in `l^1_nu` with
+`||F(p_sigma + h)||_nu <= M Q2 P(t)`, `P(t) = prod_i R_i / (R_i - t_i)`; `sigma -> F(p_sigma + h)` is holomorphic from
+the interior of `D` into `l^1_nu`, and `||d_sigma F(p_sigma + h)||_nu <= M Q2 P(t) / (T - |sigma|)`.
+
+*Proof.* For `theta` in the strip and `sigma in D`, `zeta -> F(p_sigma(theta) + zeta)` is holomorphic on a
+neighbourhood of the closed polydisc of radii `R` (compactness of `K` in the open set), so its Taylor coefficients
+`c_alpha(theta, sigma) = d^alpha F(p_sigma(theta)) / alpha!` satisfy `|c_alpha| <= M R^{-alpha}` (Cauchy's inequality
+on the polydisc); they are holomorphic in `(theta, sigma)` and `2 pi`-periodic in `theta`. By fourier_eval Lemma 2,
+`|[c_alpha(., sigma)]_m| <= M R^{-alpha} e^{-rho2 |m|}`, so `||c_alpha(., sigma)||_nu <= M R^{-alpha} Q2`, uniformly in
+`sigma`; each `[c_alpha(., sigma)]_m` is holomorphic in `sigma` (an integral of a holomorphic function), so
+`sigma -> c_alpha(., sigma)` is holomorphic into `l^1_nu` (a uniformly convergent series of holomorphic coordinates).
+The series `sum_alpha c_alpha(., sigma) * h^{*alpha}` converges absolutely in the Banach algebra, uniformly in `sigma`,
+with sum of norms `<= M Q2 prod_i (1 - t_i/R_i)^{-1}`; for real `theta`, `|h_i(theta)| <= t_i < R_i`, so the sum is
+`F(p_sigma(theta) + h(theta))` (Taylor series on the polydisc), and convergence in `l^1_nu` is uniform convergence, so
+the coefficients agree. The uniform limit of holomorphic `l^1_nu`-valued maps is holomorphic, and Cauchy's estimate for
+Banach-space-valued holomorphic functions on the disc of radius `T - |sigma|` about `sigma` gives the last bound. QED.
+
+*The cover* (`hopf.EpsCover`, one per group of pieces). One trigonometric polynomial with ball coefficients contains
+`p_sigma(theta) + zeta` for every centre line of the group (`c(xi) + sigma w(xi)`, `xi` in the piece), `|sigma| <= T`,
+`|zeta_i| <= R_i`: mode 0 is the hull of `c(xi)` plus the complex box of half-width `R_i`, mode `m != 0` the complex
+box of half-width `T max(|w_m| + delta |tw_m|)` about `0`; the parameter `g` runs over a complex box of half-width
+`G_R` about the hull of `g(xi)`. A full strip cover at `rho2` of the black box `hess19` (`branch.Hess` in the 19
+variables `z`, `g`) gives `MJ >= |D_z f|`, `MH >= |D_z^2 f|`, `MF1 >= |f1|`, `MG >= |D_z f1|` on the family (entrywise)
+and certifies holomorphy (fourier_eval Lemma 1). `piece_blocks` checks that each piece's line lies in the family
+(`EpsCover.contains`, with the `R`-margin in mode 0 and the `G_R`-margin in `g`) and that `e_hi < T`.
+
+*The bound.* For `x = xbar(xi) + Delta` with `||Delta|| <= r <= r*`, `||y|| <= 1`, every `xi` of the piece, write
+`h_s = Delta c + s xi Delta w`, so `||h_s,l||_nu <= tau_l r`, `tau_l = eta_cl + e_hi eta_wl` (the program checks
+`tau_l r* < R_l` and `eta_g r* <= G_R`), `P = P(tau r*)`, and `p = c(xi) + s xi w(xi)` (in the family with
+`sigma = s xi`). Then:
+  * `J_x - J_xbar = [D f(p + h_1; gbar) - D f(p; gbar)] + Delta g D f1(p + h_1)`, so by the mean value inequality and
+    Lemma P (applied to `D_z^2 f` and `D_z f1`): `||(J_x - J_xbar)_kj||_nu <= r aJ_kj`,
+    `aJ_kj = Q2 P (sum_l MH_kjl tau_l + MG_kj eta_g)`.
+  * `Kc_x - Kc_xbar = int_0^1 D^2 f(p + h_s)[Delta w, .] ds + int_0^1 (D^2 f(p + h_s; g) - D^2 f(p; gbar))[w(xi), .] ds`.
+    The first is `<= r Q2 P sum_l MH_kjl eta_wl`. In the second, `D^3 f(.)[h, w(xi), e_j] = d_sigma (D^2 f(. + sigma
+    w(xi))[h, e_j])` at `sigma = 0`, and the base point `p + tau h_s + sigma w(xi) = c(xi) + (s xi + sigma) w(xi) + ...`
+    stays in the family for `|sigma| <= T - e_hi`; Lemma P's derivative bound gives `<= r aJ_kj / (T - e_hi)` (the
+    `Delta g` part through `D_z f1` likewise). This is where third derivatives enter, through Cauchy's estimate only.
+  * `kg_x - kg_xbar`: `<= r Q2 P (sum_l MG_kl eta_wl + sum_l MG_kl tau_l / (T - e_hi))` (f1 does not depend on g).
+  * `f1(phi_x) - f1(phi_xbar)`: `<= r Q2 P sum_l MG_kl tau_l`.
+  * the `i m` terms: `i m (y_om Delta w_m + Delta om y_{w,m})`, with `||.||_k <= 2 eta_om eta_wk r`.
+With these residual-component bounds `W0_k` (E_0 rows: `|[.]_0| <= ||.||_nu`) and `WE_k` (E_m rows) and the block
+norms of `A` from residual blocks to unknown components (`NA`: weighted column sums of `|A_fin|`; `Abar0` for the tail
+rows, `NA1` and `Abar1` for the `i m` terms),
+
+    Z2 = max_c (1/eta_c) sum_k [ NA_{c,E0_k} W0_k + (NA_{c,E_k} + Abar0_ck) WE_k + (NA1_{c,E_k} + Abar1_ck) 2 eta_om eta_wk ].
+
+(`assemble`; `Abar` terms only for the `w` output components.) Since `W0`, `WE` increase with `r`, the bound holds on
+`B_{r*}`.
+
+### Lemma B4 (proved; gluing)
+
+Let pieces `a = [e0, e1]` and `b = [e1, e2]` share the end point `e1`, with zeros `x*_a(e1)` in
+`B_{r_lo(a)}(xbar_a(e1))` (norm `eta(a)`) and uniqueness of the zero of `F(.; e1)` in `B_{r_hi(b)}(xbar_b(e1))`
+(norm `eta(b)`). If `||xbar_a(e1) - xbar_b(e1)||_{eta(b)} + r_lo(a) max_c eta_c(a)/eta_c(b) <= r_hi(b)` (certified in
+Arb, `hopf.glue`), then `x*_a(e1) = x*_b(e1)`. *Proof.* `||y||_{eta(b)} <= max_c (eta_c(a)/eta_c(b)) ||y||_{eta(a)}`;
+the triangle inequality puts `x*_a(e1)` in `b`'s uniqueness ball, and it is a zero of `F(.; e1)`. QED.
+
+### Theorem B (computer-assisted; `hopf.run`, records `fourier/data/hopf/pieces.jsonl`, `covers.jsonl`)
+
+For every `eps in [0, eps0]` (`eps0` and the pieces in `results/fourier-hopf.json`) there is a zero
+`x*(eps) = (omega*(eps), g*(eps), c*(eps), w*(eps))` of `F(.; eps)`, unique in the piece's `B_{r_hi}(xbar(eps))`,
+with `omega*`, `g*`, `c*` real, `w*_{-m} = conj(w*_m)`, and `eps -> x*(eps)` is continuous on `[0, eps0]`. For
+`eps > 0`, `z(t) = c*(eps) + eps w*(eps)(omega*(eps) t)` is a periodic orbit of the cell at `G_Ks = g*(eps)` of minimal
+period `2 pi / omega*(eps)` (in the record's enclosures), and distinct `eps` give distinct orbits (`a_{1,V} = eps/2`).
+
+*Proof.* On each piece Lemma B2 and Lemma B3 give the radii-polynomial inequalities for every `xi` of the piece,
+hence a unique zero `x*(xi)` in `B_{r_hi}(xbar(xi))`, inside `B_{r_lo}`. Realness: `kappa(omega, g, c, w) =
+(conj omega, conj g, conj c, (conj w_{-m})_m)` is an isometry of `X` with `kappa xbar(xi) = xbar(xi)`, and
+`F(kappa x; xi) = kappa'(F(x; xi))` with `kappa'(N+, N-, E_0, E_m) = (conj N-, conj N+, conj E_0, conj E_{-m})`,
+because `f(conj z; conj g) = conj f(z; g)` at every point of the certified domain (existence.py E.7: the generated
+model is a composition of `+ - * /`, integer powers, `exp` and the principal `log`, `sqrt` on `Re > 0`, each commuting
+with conjugation; the evaluation points `c + s xi w(theta)`, `theta` real, form a conjugation-invariant set in the
+cover's family). So `kappa x*(xi)` is a zero in the same ball and equals `x*(xi)`. Continuity on a piece: let
+`kappa = Z1 + Z2 r_hi < 1` (every `T_xi` is a `kappa`-contraction of `B_{r_hi}(xbar(xi))`). For `xi'` near `xi`,
+`||xbar(xi) - xbar(xi')|| <= |xi - xi'| ||tbar|| <= r_hi - r_lo`, so `x*(xi) in B_{r_lo}(xbar(xi))` lies in
+`B_{r_hi}(xbar(xi'))`, and `||x*(xi) - x*(xi')|| = ||T_xi(x*(xi)) - T_xi'(x*(xi'))|| <= ||A (F(x*(xi); xi) -
+F(x*(xi); xi'))|| + kappa ||x*(xi) - x*(xi')||`; the first term tends to 0 as `xi' -> xi` (for fixed `x`,
+`xi -> A F(x; xi)` is continuous: `F` is analytic in `(x, xi)` on the ball by Lemma P, and `A` is bounded on the
+residuals that occur, as in E.3), so `x*` is continuous at `xi`. Gluing at the shared end points (Lemma B4) makes the
+piecewise definition single valued, hence continuous on `[0, eps0]`. Lemma B1(a) gives the orbits
+(`omega* >= omega_bar - delta |tbar_om| - eta_om r_lo > 0` certified). Distinct `eps` give distinct orbits:
+`|a_{1,V}| = eps/2` does not change under a time shift. QED.
+
+### Corollary B (computer-assisted and cited; the branch is born at the Hopf point)
+
+(a) `x*(0) = (omega_H, g_H, x_e(g_H), w_H)`: the zero at `eps = 0` is the Hopf point of Theorem A. *Proof.* By Lemma
+B1(b), `c*(0)` is an equilibrium at `g*(0)` and `i omega*(0)` an eigenvalue of its Jacobian. The program checks that
+the enclosure of `g*(0)` lies in `W` and that the enclosure of `c*(0)` lies in the polydisc in which Lemma K gives the
+unique equilibrium `x_e(g)` for every `g` of that enclosure (`collect`, `identification_at_eps0`). So `c*(0) =
+x_e(g*(0))`, and Theorem A(b) (the only `g in W` with an eigenvalue on the imaginary axis is `g_H`, where the
+eigenvalues on the axis are `+-i omega_H`) gives `g*(0) = g_H`, `omega*(0) = omega_H`.
+
+(b) For small `eps > 0` the orbits of Theorem B are the Hopf cycles: as `eps -> 0`, `g*(eps) -> g_H` and the orbit
+`c*(eps) + eps w*(eps)(.)` tends to `x_e(g_H)` uniformly (continuity), so for `eps` small it lies in the neighbourhood
+`U` of Corollary A with `|g*(eps) - g_H| < eta`; by Corollary A it is the unique periodic orbit in `U`, it is orbitally
+asymptotically stable, and `g*(eps) < g_H` (no periodic orbit in `U` for `g >= g_H`). The quantitative enclosures of
+Theorem B give `g*(eps) < g_H` directly wherever the `g` enclosure of a piece lies below `G_H` (record: the first such
+`eps`).
+
+---------------------------------------------------------------------------------------------------------------------
+
+## Part C. Gluing to the certified G_Ks branch (`hopf.glue_gks`)
+
+The G_Ks branch (`branch.py`, `results/fourier-branch-gks.json`) consists of pieces `P = [g_lo, g_hi]` with exact
+centres `(omega_P, a_P)` (`K = 12`, `fourier/data/branch/centres_K12.jsonl`, SHA-256 checked), weights `eta_P` (19
+values), and for every `g in P` a unique zero of `F_P(.; g)` (`F_ph = a_{1,V} - a_{-1,V}`, `F_m = i omega m a_m -
+[f(phi_a; g)]_m`) in the ball of radius `r_hi(P)` about the centre, in the norm `max(|omega|/eta_om, max_k ||a_k||_{nu_P}
+/ eta_k)`, `nu_P = e^{1/4}`.
+
+### Lemma C (proved)
+
+Let `eps* > 0`, and suppose: (i) a proof on the tiny piece `[eps* - h, eps* + h]` with `rho0 = 1/4` (Lemmas B2, B3;
+`hopf.point_proof`, record `fourier/data/hopf/point.jsonl`) gives the zero `x'` of `F(.; eps*)` in
+`B_{r'}(xbar'(eps*))` (weights `eta'`, `nu = e^{1/4}`), and this ball lies in the uniqueness ball of the
+`eps`-branch piece containing `eps*` (weights `eta`, `nu = e^{1/8}`): `||xbar'(eps*) - xbar(eps*)||_{eta, e^{1/8}}
++ r' max_c eta'_c/eta_c <= r_hi` (`||.||_{e^{1/8}} <= ||.||_{e^{1/4}}`), so `x' = x*(eps*)`; (ii) the enclosure
+`g'(eps*) +- eta'_g r'` lies in `[g_lo(P), g_hi(P)]` of a G_Ks piece `P`; (iii) with `a_0 = c`, `a_m = eps* w_m`,
+
+    max( (|omega' - omega_P| + eta'_om r') / eta_{P,om},
+         max_k ( |c'_k - a_{P,k,0}| + eta'_ck r' + sum_{m != 0} |eps* w'_{k,m} - a_{P,k,m}| e^{|m|/4} + eps* eta'_wk r' ) / eta_{P,k} )
+      <= r_hi(P)
+
+(primes: the point proof's centre line at `eps*`; `hopf.glue_gks`). Then the orbit of the `eps`-branch at `eps*` is the
+orbit `x*_P(g*(eps*))` of the G_Ks branch. *Proof.* By Lemma B1(a) `a = (c*, eps* w*)` with `omega*` solves the
+periodic orbit equations of branch.py at `g = g*(eps*)`, with `F_ph = eps* (w_{1,V} - w_{-1,V}) = 0`; the bound (iii)
+(each `|.|` term is an upper bound over the ball) puts `(omega*, a)` in `P`'s uniqueness ball, and `g* in P` by (ii);
+so it is `P`'s zero at `g*`. QED.
+
+### Theorem C (status in `results/fourier-hopf.json`)
+
+If Lemma C holds at some `eps*` (record `gluing`), the union of the `eps`-branch on `[0, eps*]` and of the G_Ks branch
+from `g*(eps*)` to `0.027499735464` is one continuous curve of periodic orbits that starts at the Hopf point
+`(x_e(g_H), g_H)` of Theorem A, through the Hopf cycles of Corollary A, and ends at the certified orbit at
+`G_Ks = 0.0275` (Stage E). If no G_Ks piece reaches the `g`-range of the `eps`-branch, the record states the `g` at
+which the `eps`-branch ends and the gap.
+
+---------------------------------------------------------------------------------------------------------------------
+
+## What a reviewer must check hardest
+
+1. Lemma B2(a)-(b): that every `xi`-dependence of `F` and `DF` along the centre line is covered (the hulls over `Xi_i`,
+   `S_l`; the strip sups over the full piece; `Y1` at the point with the exact division by `e_c + t`).
+2. Lemma B3: the third-derivative terms via Cauchy's estimate in `sigma` (the family must contain
+   `c(xi) + sigma' w(xi)` for `|sigma'| <= T`; `EpsCover.contains`), the `P` factor and `tau`.
+3. The identification at `eps = 0` (Corollary B(a)): the equilibrium polydisc and the window `W`.
+4. That the Hopf theorem is used only qualitatively (Corollary B(b)); every quantitative statement comes from Theorem B.
