@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.0 (2026-10-02)
 
+**DOI:** [10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322). Publication / Preprint.
+
 The first public release of the preprint *Stable Rotating Waves in Rings of a Modified Ventricular Cell Model:
 Computer-Assisted Proofs* (45 pages), with the programs that prove its results and
 their output.
