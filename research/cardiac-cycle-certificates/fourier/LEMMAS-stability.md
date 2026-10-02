@@ -19,6 +19,7 @@ Contents
 7. Sources and related work
 8. Self-review
 9. Review response (independent referee, 2026-10-01)
+10. Uniformity in a parameter (Theorem C: the G_Ks branch, added 2026-10-02)
 
 ## 0. Setting and notation
 
@@ -836,3 +837,230 @@ Also from the referee's list of program needs: the checklist now asks for outwar
 (with tau_lo = T_lo / N), exact dyadic -delta, R_0, a, b, the coefficient ranges against Stage E's K', and a Stage S
 record that does not say "verified" before Stage E's does. A remark after Theorem 3 notes that b < omega_lo N and
 -a < omega_lo N are needed to pass, not for soundness.
+
+## 10. Uniformity in a parameter (Theorem C: the G_Ks branch, added 2026-10-02)
+
+Status: written 2026-10-02 with its program (`fourier/branch_stability.py`), by the program's author; one
+self-adversarial reading (10.6). It has had no independent reading yet. Nothing below is "verified".
+
+Sections 1 to 4 certify the spectrum of one Hill operator, for one orbit known to lie in a tiny ball. On the branch of
+`fourier/branch.py` (Theorem B) the orbit x*(g) and its period depend on the parameter g = G_Ks, and a piece
+P = [g_lo, g_hi] of the branch is a whole interval. This section proves that the conclusion of Theorem 4 holds for
+EVERY g in P from finitely many ball computations. Only N = 1 is treated (d_m = 0, Q = I, tau = T). The setting is that
+of the single-cell branch: scaled variables, f(z; g) affine in g, X = C x (l^1_nu)^18 with the piece's weights eta and
+nu = e^{rho0}.
+
+Why the pointwise certificate cannot simply be given a piece. The orbit moves along P by about ||dx/dg|| |g - g_c|,
+3e-4 in the piece's norm, so the Hill coefficients A_n(g) move by about 1e2 |g - g_c| in the 1-norm of the cell
+coordinates (3e-5 over a piece of half-width 2.6e-7; floating-point measurements). The near-axis margin is
+dist_j = 7e-6 (leading nontrivial exponent -4.71e-5 against delta = 4e-5), and the column sums of V^{-1} (dH/dg) V on
+the two critical columns are about 4e2 for the eigenvector matrix V of the centre. Any certificate that treats
+H(g) - H(g_c) as a perturbation of the centre's comparison operator (the Lemma 4.1 route with a ball of radius
+r_existence about a constant centre, or a resolvent bound at g_c) therefore needs half-widths below about 2e-8. The
+recorded attempt (`branch.uniform_stability_attempt`, theta_T = 9.7e12) failed for that reason and, on top of it,
+used the Cauchy bound of Lemma 4.1 with R = 2^-10, which is 10^5 to 10^6 times the Hessian bound used below and is
+magnified by up to 2^40 in the cell coordinates. The way out is to follow the orbit and the spectral data to first
+order in g - g_c, and to put only second-order quantities into balls.
+
+### 10.0 Data from Theorem B
+
+For the piece P (all from Theorem B of `fourier/branch.py`, recomputed by the program): the exact centre xbar =
+(omega_bar, abar) at the exact decimal g_c in P; h >= max(g_hi - g_c, g_c - g_lo); the injective operator A; Z1 with
+||I - A DF(xbar; g)|| <= Z1 for every g in P (Theorem B1); r_* and Z2 with ||A (DF(x; g) - DF(xbar; g))|| <= Z2 ||x - xbar||
+for every g in P and every x with ||x - xbar|| <= r_* (Lemma B2 and the E.6 bound; this is how Z2 enters the radii
+polynomial); r_hi <= r_* such that, for every g in P, F(.; g) has exactly one zero x*(g) in the closed ball
+B_{r_hi}(xbar). Write d := g - g_c, |d| <= h.
+
+### 10.1 Lemma 10.1 (second-order location of the orbit)
+
+Let xbar_1 = (omega_1, abar_1) in X be any element whose sequence part has finitely many nonzero modes, put
+xtilde(g) := xbar + d xbar_1, e >= h ||xbar_1||, and Y' >= sup_{g in P} ||A F(xtilde(g); g)||. If rho > 0 satisfies
+
+      e + rho <= r_hi,   kappa := Z1 + Z2 (e + rho) < 1,   Y' <= (1 - kappa) rho,
+
+then for every g in P: x*(g) lies in the closed ball B_rho(xtilde(g)); in particular |omega*(g) - omega_bar - d omega_1|
+<= eta_om rho and ||a*_k(g) - abar_k - d abar_{1,k}||_nu <= eta_k rho for every component k.
+
+Proof. Fix g. T_g(x) := x - A F(x; g) is Frechet differentiable on B_{r_*}(xbar) (Theorem B, Lemma B2(b)) with
+DT_g(x) = I - A DF(x; g). For x in B := B_rho(xtilde(g)): ||x - xbar|| <= ||xtilde(g) - xbar|| + rho <= e + rho <= r_hi <= r_*,
+so ||DT_g(x)|| <= ||I - A DF(xbar; g)|| + ||A (DF(x; g) - DF(xbar; g))|| <= Z1 + Z2 (e + rho) = kappa. B is convex, so
+the mean value inequality gives ||T_g(x) - T_g(y)|| <= kappa ||x - y|| on B, and
+||T_g(x) - xtilde(g)|| <= ||T_g(x) - T_g(xtilde(g))|| + ||A F(xtilde(g); g)|| <= kappa rho + Y' <= rho. So T_g maps the
+closed set B into itself and is a contraction there; it has a fixed point x0 in B, and A F(x0; g) = 0 gives
+F(x0; g) = 0 (A is injective). x0 lies in B_{e + rho}(xbar), inside B_{r_hi}(xbar), where x*(g) is the only zero; hence
+x0 = x*(g). The componentwise statements are the definition of the weighted norm. QED
+
+Computation of Y' (Lemma 10.1'). Write phi_1(theta) := sum_m abar_{1,m} e^{i m theta} and, for theta in the closed strip
+Sigma_rho = {|Im theta| <= rho} (rho = 3/2, the strip of Theorem B) and real d, G(theta; d) := f(phibar(theta) +
+d phi_1(theta); g_c + d). Then F(xtilde(g); g) = R0 + d R1 + d^2 R2(g) with
+  * R0 = F(xbar; g_c) (phase component F_ph(xbar) = 0; mode m: i m omega_bar abar_m - [G(.; 0)]_m);
+  * R1: phase component F_ph(xbar_1) = 0 (exactly: abar_{1,1,V} is real and abar_{1,-1,V} its conjugate); mode m:
+    i m (omega_bar abar_{1,m} + omega_1 abar_m) - [d_d G(.; 0)]_m;
+  * R2(g): phase component 0; mode m: i m omega_1 abar_{1,m} - [int_0^1 (1 - s) d_d^2 G(.; s d) ds]_m.
+Proof. The linear part i m omega a_m of F is a polynomial of degree two in d along xtilde(g): i m (omega_bar + d omega_1)
+(abar_m + d abar_{1,m}); F_ph is linear. For fixed theta, d -> G(theta; d) is real analytic on a neighbourhood of
+[-h, h] (f is holomorphic on the certified domain, which contains the points phibar(theta) + d phi_1(theta) by the strip
+covers below), and Taylor's formula with integral remainder gives G(theta; d) = G(theta; 0) + d d_d G(theta; 0) +
+d^2 int_0^1 (1 - s) d_d^2 G(theta; s d) ds. Take Fourier coefficients (all three terms are continuous in theta, and the
+order of integration may be exchanged). QED
+The program encloses [d_d G(.; 0)]_m and [d_d^2 G(.; xi)]_m, |m| <= K', for every xi in [-h, h] by fourier_eval's theorem
+(strip sup, aliased DFT, Cauchy tail) applied to the 36-component trigonometric polynomial (phibar, phi_1) and to the
+black boxes (z, z_1) -> d_d f(z + d z_1; g_c + d) at d = 0 and (z, z_1) -> d_d^2 f(z + d z_1; g_c + d) over the base
+point d in [-h, h] (forward-mode dual numbers in d, class Hess of branch.py with one variable). For each fixed xi these
+are admissible inclusion functions of the holomorphic maps (z, z_1) -> d_d f(z + xi z_1; g_c + xi) and
+(z, z_1) -> d_d^2 f(...), so the theorem holds for every xi; int_0^1 (1 - s) ds = 1/2 and the enclosures are convex,
+so [R2]_m lies in i m omega_1 abar_{1,m} - (1/2) [G2]_m, and |[R2]_m| <= S_G2 e^{-rho |m|} / 2 for |m| > K'. Then
+||(A F(xtilde(g); g))_c|| <= Y0p_c + h Y1_c + h^2 Y2_c per component c, where Y0p is Theorem B's point residual and Y1, Y2
+are the same three-part bound (finite rows A_fin v, explicit tail inverses A_m for K < |m| <= K', the Cauchy tail with
+Abar0) applied to R1 and to the ball vector R2. Y' := max_c (Y0p_c + h Y1_c + h^2 Y2_c) / eta_c.
+
+### 10.2 Lemma 10.2 (Hill coefficients for every g in P)
+
+Let rho, t_j := eta_j rho be as in Lemma 10.1. Let MH_{k,(j,l)} be the Hessian bound of Lemma B2 (branch.py, class
+HessBound) for the family of trigonometric polynomials {phibar + d phi_1 : |d| <= h} (the coefficientwise hull of
+phibar - h phi_1 and phibar + h phi_1, which contains every phibar + d phi_1), radii R_j > t_j, the strip |Im theta| <=
+rho2 and g in P. Put rho_e := min(rho0, rho2) and
+
+      eps_{W,kl} := sum_j MH_{k,(l,j)} t_j.
+
+Let [J0_n] (|n| <= K') be enclosures of the Fourier coefficients of J0(theta) := Df(phibar(theta); g_c), with
+|J0_n| <= S_J0 e^{-rho |n|} for every n; let [J1box_n] (|n| <= K') be enclosures, valid for every xi in [-h, h], of the
+Fourier coefficients of J1(theta; xi) := d/d xi Df(phibar(theta) + xi phi_1(theta); g_c + xi), with
+|J1(.; xi)_n| <= S_J1 e^{-rho |n|} for every n and xi; and let J1c_n be any exact matrices, rad1_n entrywise upper bounds of
+|[J1box_n] - J1c_n|. Then for every g in P, with A_n(g) the Fourier coefficients of A(theta; g) := Df(phi*(theta; g); g):
+
+      A_n(g) in [J0_n] + d J1c_n + ball(h rad1_n + eps_W e^{-rho_e |n|})        (entrywise, |n| <= K'),
+      |A_n(g)| <= (S_J0 + h S_J1) e^{-rho |n|} + eps_W e^{-rho_e |n|}             (entrywise, every n),
+      omega*(g) in omega_bar + d omega_1 + ball(eta_om rho).
+
+Proof. Write A(theta; g) = J0(theta) + [Df(phitilde(theta); g) - J0(theta)] + W(theta; g) with
+phitilde := phibar + d phi_1 and W(theta; g) := Df(phi*(theta; g); g) - Df(phitilde(theta); g).
+(a) The middle term equals d int_0^1 J1(theta; s d) ds (fundamental theorem of calculus in d along the segment, f smooth
+on the certified domain). Its Fourier coefficient n is d int_0^1 J1(.; s d)_n ds. For |n| <= K' each J1(.; s d)_n lies in
+the convex ball [J1box_n], so the integral does too, and d int_0^1 J1(.; sd)_n ds - d J1c_n lies in d ([J1box_n] - J1c_n),
+of modulus <= h rad1_n. For every n its modulus is at most h S_J1 e^{-rho |n|}.
+(b) For |Im theta| <= rho0, |phi*_j(theta; g) - phitilde_j(theta)| <= sum_m |a*_{j,m}(g) - atilde_{j,m}| e^{rho0 |m|} =
+||a*_j(g) - atilde_j||_nu <= t_j (Lemma 10.1). For |Im theta| <= rho_e the points phitilde(theta) + s w(theta),
+w := phi* - phitilde, s in [0, 1], lie in the polydisc family of the Hessian cover (|w_j| <= t_j < R_j), on which
+f(.; g) is holomorphic and |d^2 f_k / dz_l dz_j| <= MH_{k,(l,j)} (Lemma B2's data). So
+W_kl(theta; g) = int_0^1 sum_j (d^2 f_k / dz_l dz_j)(phitilde + s w) w_j ds has modulus <= sum_j MH_{k,(l,j)} t_j = eps_{W,kl}.
+W is holomorphic and 2 pi periodic on a neighbourhood of every strip |Im theta| <= rho'' < rho_e, so fourier_eval
+Lemma 2 gives |W_n| <= eps_W e^{-rho'' |n|} for every rho'' < rho_e, hence for rho_e (as in Lemma 4.1).
+(c) J0_n lies in [J0_n] and |J0_n| <= S_J0 e^{-rho |n|} (Lemma 2). Adding (a), (b), (c) gives the first two lines.
+(d) The last line is Lemma 10.1. QED
+
+### 10.3 Lemma 10.3 (an affine comparison operator)
+
+Fix exact complex n_W x n_W matrices V0, V1, Vi0, Vi1 and exact diagonal Lambda0, Lambda1, and put, for each g in P,
+V(d) := V0 + d V1, Vi(d) := Vi0 + d Vi1, Lambda(d) := Lambda0 + d Lambda1. (The program chooses them by first-order
+perturbation theory: V0, Lambda0 eigen-data of the floating-point window at g_c, M1 := Vi0 H1 V0 with H1 the window of
+the J1c_n and of -i omega_1 m, Lambda1 := diag M1, V1 := V0 X and Vi1 := -X Vi0 with X_ij := M1_ij / (lambda_j - lambda_i)
+for |lambda_j - lambda_i| > tau and X_ij := 0 otherwise; these choices only make the bounds small.) Let H0 be the ball
+window built from [J0_n] and -i omega_bar m (cell coordinates, as in section 3.2), H1 the exact window of the J1c_n and
+of -i omega_1 m, and Rb the nonnegative matrix with blocks (h rad1_{w - w'} + eps_W e^{-rho_e |w - w'|}) (scaled) and,
+on the diagonal of block (w, w), the extra term |w| eta_om rho. Let (column sums in the 1-norm, zeta = 1)
+
+      c_j := ||(Vi0 V0 - I) e_j|| + h ||(Vi0 V1 + Vi1 V0) e_j|| + h^2 ||Vi1 V1 e_j||,     q_C := max_j c_j,
+      w_j := ||W0 e_j|| + h ||W1 e_j|| + h^2 ||W2 e_j|| + h^3 ||W3 e_j|| + ||(|Vi0| + h |Vi1|) Rb (|V0| + h |V1|) e_j||,
+      W0 := Vi0 H0 V0 - Lambda0,  W1 := Vi1 H0 V0 + Vi0 (H1 V0 + H0 V1) - Lambda1,
+      W2 := Vi1 (H1 V0 + H0 V1) + Vi0 H1 V1,  W3 := Vi1 H1 V1,
+
+(norms of ball matrices meaning upper bounds over the balls). If q_C < 1 then for every g in P: V(d) is invertible,
+and in the notation of section 3 for the data (V(d), Lambda(d)) and the true window H_WW(g),
+
+      fm_j(g) <= (w_j + (|lambda0_j| + h |lambda1_j|) c_j) / (1 - q_C),
+      beta_{(w,l)}(g) <= ||(|Vi0| + h |Vi1|) e_{(w,l)}|| / (1 - q_C),
+      r_j(g) <= sum_{(w,l)} t_w (|V0| + h |V1|)_{(w,l), j},
+      dist_j(g) >= dist_j(0) - h |lambda1_j|,
+
+and if dist_j(0) > h |lambda1_j| for every j, the number of lambda_j(d) in Omega does not depend on g.
+Proof. Fix g. By Lemma 10.2 and the definition of the window (section 3.2), H_WW(g) = H0' + d H1 + E with H0' in the
+ball matrix H0 (the true J0 and omega_bar entries) and |E| <= Rb entrywise (the ball of Lemma 10.2 in each block, and the
+omega remainder -i (omega*(g) - omega_bar - d omega_1) w on the diagonal, of modulus <= |w| eta_om rho). Expanding the
+products, Vi(d) H_WW(g) V(d) - Lambda(d) = W0' + d W1' + d^2 W2' + d^3 W3' + Vi(d) E V(d), where Wk' is Wk with H0'
+in place of H0 (so Wk' lies in the ball Wk), and |Vi(d) E V(d)| <= (|Vi0| + h |Vi1|) Rb (|V0| + h |V1|) entrywise; the
+triangle inequality gives ||Wm(g) e_j|| <= w_j for Wm(g) := Vi(d) H_WW(g) V(d) - Lambda(d). Likewise
+C(g) := I - Vi(d) V(d) = -((Vi0 V0 - I) + d (Vi0 V1 + Vi1 V0) + d^2 Vi1 V1), so ||C(g) e_j|| <= c_j and ||C(g)|| <= q_C < 1.
+Then Vi(d) V(d) = I - C(g) is invertible, so V(d) is, and checklist item 6 of section 5 (the identity
+Fm = (I - C)^{-1} (Wm + C Lambda), proved there for any approximate inverse) gives the bound on fm_j(g) with
+|lambda_j(d)| <= |lambda0_j| + h |lambda1_j|, and the bound on beta. r_j is linear in |V| with nonnegative weights t_w
+(these t_w are the g-uniform ones of 10.4). The distance from a point to the fixed set Gamma is 1-Lipschitz and
+|lambda_j(d) - lambda_j(0)| <= h |lambda1_j|. If that is < dist_j(0) for every j, no lambda_j(d) meets Gamma as d moves
+in [-h, h], so each stays inside or outside Omega (a segment from a point of Omega to a point outside it would meet
+Gamma). QED
+
+### 10.4 Theorem 10.4 (Theorem C: stability for every g in P)
+
+Let the following be checked in ball arithmetic, with the data of 10.0 to 10.3 and delta > 0:
+(U0) omega_lo := lower bound of omega_bar - h |omega_1| - eta_om rho > 0, omega_hi := upper bound of
+     omega_bar + h |omega_1| + eta_om rho; g-uniform coefficient balls
+     [A_n]^U := [J0_n] + ball(h |J1c_n| + h rad1_n + eps_W e^{-rho_e |n|}) (|n| <= K') and the tail form
+     ||A_n||_{1->1} <= s_1 q_1^{|n|} + s_2 q_2^{|n|} for every n with s_1 = ||S_J0 + h S_J1||, q_1 = e^{-rho},
+     s_2 = ||eps_W||, q_2 = e^{-rho_e} (all in cell coordinates); every quantity of section 3.3 that is built from
+     the coefficients (alpha^up, sigma_off, ||A_0 - A0c||, theta_c, t_w, b_m, bhat) computed from these.
+(U1) (C1) of Theorem 3 with these omega_lo, omega_hi.
+(U2) (C2) by route A with A0c, U_r, Lambda_r chosen once (they do not depend on g; route A uses only A0c, d_r,
+     omega_lo, h_rect = max(|a|, |b|), delta and eta), giving rho_T, and theta_T := theta_c rho_T < 1.
+(U3) q_C < 1 and dist_j(0) - h |lambda1_j| > 0 for every j (Lemma 10.3).
+(U4) (SC): fm_j^U + bhat rho_T r_j^U / (1 - theta_T) < dist_j(0) - h |lambda1_j| for every j, with fm_j^U, r_j^U the
+     right-hand sides of Lemma 10.3.
+(U5) exactly one lambda0_j lies in Omega.
+Then for every g in P the Hill operator H_0(g) of the orbit x*(g) satisfies (G) of section 3, and the conclusions (i)
+and (iii) of Theorem 4 hold for x*(g): the Floquet multiplier 1 is algebraically simple and the other 17 have modulus
+< e^{-delta T(g)} <= e^{-delta T_lo}, T_lo := 2 pi / omega_hi; the orbit is locally exponentially orbitally stable with
+asymptotic phase.
+Proof. Fix g in P. x*(g) = (omega*(g), a*(g)) exists, is real, phi*(.; g) is nonconstant and analytic on |Im theta| < rho0
+and its period is 2 pi / omega*(g) (Theorem B); omega*(g) lies in [omega_lo, omega_hi] (Lemma 10.1). Apply Theorem 3 to
+H_0(g) with the data (V(d), Lambda(d)) for the window and (A0c, U_r, Lambda_r, S, zeta = 1, the rectangle Omega) for the
+rest. (C0): the true omega*(g) is in [omega_lo, omega_hi]; the true A_n(g) lie in [A_n]^U and in the window enclosure of
+Lemma 10.3, and obey the tail form (Lemma 10.2). Every quantity of section 3.3 is monotone in the coefficient balls, so
+the g-uniform values bound the values at g. (C1) is (U1). (C2): Lemma 3.4, route A, holds with the same rho_T, and
+theta_c(g) <= theta_c, so theta_T(g) < 1. (C3): V(d) is invertible and dist_j(g) >= dist_j(0) - h |lambda1_j| > 0
+(Lemma 10.3, (U3)). (C4): (SC) of Lemma 3.5 at g follows from (U4) and the inequalities of Lemma 10.3, since the
+left-hand side of (SC) is increasing in fm_j, bhat, rho_T, r_j and theta_T. (C5): by Lemma 10.3 the count at g equals
+the count at d = 0, which is 1 by (U5). Theorem 3 gives (G) at g, and Theorem 4 (with N = 1) its conclusions; T(g) >=
+T_lo because omega*(g) <= omega_hi. QED
+
+Theorem C (the branch). If Theorem 10.4 is certified on a set of pieces of Theorem B, then the conclusions hold for every
+G_Ks in their union, uniformly on each piece (the multiplier bound of a piece holds at every G_Ks of that piece). On a
+union of consecutive pieces this is an interval (consecutive pieces overlap).
+
+### 10.5 What the program computes (branch_stability.py)
+
+1. Theorem B data for the piece: branch.piece_blocks at the stored centre; branch.assemble with a Hessian cover of the
+   hull of phibar +- h phi_1 over P (radii R and r_* of the piece's group); the recomputed Y0 and Z1 must equal the logged
+   exact hex values (the same A; Z2 may differ, any valid cover will do); r_hi is the logged r_uniqueness.
+2. xbar_1: the floating-point Galerkin tangent, symmetrized, Im abar_{1,1,V} = 0, exact doubles.
+3. Lemma 10.1' enclosures and Y', e = h ||xbar_1|| (Arb), an exact rho, and the checks of Lemma 10.1.
+4. Lemma 10.2: [J0_n], S_J0 from piece_blocks; [J1box_n], S_J1 by Hess with the 18 states and g as variables, base
+   point the d-box; J1c_n := exact midpoints; rad1_n := |[J1box_n] - J1c_n|; t_j < R_j asserted; eps_W.
+5. Theorem 10.4: the steps of stability._certify with (U0) to (U5). Floating point chooses S, U_r, V0, Lambda0, V1,
+   Lambda1, Vi0, Vi1, a, b, R_0, rho and delta's dyadic; their quality never affects soundness.
+Negative controls (test_branch_stability.py): delta above the leading exponent must fail; the mutation that drops the
+g-terms (H(g) treated as H(g_c), omega fixed) must be detected by an independent floating-point evaluation of the true
+window at the piece's endpoints exceeding the mutated bound; the certified bound must dominate the same float values.
+
+### 10.6 Self-review (author, 2026-10-02)
+
+1. Lemma 10.1 needs the Z2 bound on the ball of radius e + rho about xbar, not about xtilde(g); this is why the
+   condition is e + rho <= r_hi (<= r_*) and why kappa contains Z2 (e + rho), not Z2 rho. The fixed point found is
+   identified with x*(g) through Theorem B's uniqueness ball, so no new uniqueness statement is needed.
+2. The Taylor remainder of 10.1' is in d with theta fixed, for real d; the strip enclosures are for complex theta with
+   d in a real box. Holomorphy in theta of each d_d^2 G(.; xi) is what fourier_eval needs, and it is certified per xi by
+   the strip cover (the black box is an inclusion function for each xi). The exchange of the s-integral and the Fourier
+   integral is Fubini for a continuous integrand on a compact set.
+3. Lemma 10.2(a) puts J1c_n (any exact matrix) into the affine part and only the deviation of the box enclosure into
+   the ball; the deviation is h times the radius, second order when the radius is first order in h (it is: the box
+   evaluation over d in [-h, h] varies by about h |d J1 / d d|).
+4. Lemma 10.2(b) is Lemma 4.1 with the Hessian (first-order) bound in place of the Cauchy bound. It needs the polydisc
+   about every phitilde(theta), which the hull of the two end polynomials contains; and |w_j| <= t_j only for
+   |Im theta| <= rho0, hence rho_e = min(rho0, rho2).
+5. Lemma 10.3 is applied at each g separately, so the comparison data may depend on g; nothing requires continuity in g
+   of the Riesz projections (Theorem 3 is used at each g on its own). The count argument uses only that the lambda_j(d)
+   are affine in d.
+6. omega enters the tail only through omega_lo (Lemma 3.4) and (C1) through omega_lo, omega_hi; both bound omega*(g)
+   for every g. In the window the omega remainder is first order in rho (second order in h) times |w| <= K_e.
+7. The route A data X_r = A0c - d_r E use the centre's A0c for every g; the g-dependence of A_0(g) - A0c (first order in
+   h) enters theta_c through ||[A_0]^U - A0c||. This is a valid bound because Ehat_TT at g contains A_0(g) - A0c.
+8. Not covered: N > 1 (the ring would add the damping and the reduced map; nothing in 10.1 to 10.4 depends on N = 1
+   except the notation, but no ring branch exists); the Hopf point itself.
