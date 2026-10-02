@@ -15,14 +15,20 @@ Cases:
          from a POINT (box radius 0): the width growth of a double-interval centre at N = 16.
 Reference: the hybrid floating-point integrator (Radau rtol 1e-12, event at -40 mV) from the box centre.
 Records cost (wall per step, peak RSS). Writes results/stage3_switch.json. Nothing here is a theorem.
-Usage: python3 stage3_switch.py AP_PROOF WORKDIR [cases...]
+Usage: python3 stage3_switch.py AP_PROOF WORKDIR [cases...] [--collect] [--kinds=k1,k2]
+  --collect   do not run ap_proof: read the segment outputs already in WORKDIR (for runs that finished in an earlier
+              session); the start box and plan are recomputed and must equal the stored files byte for byte, and the
+              wall time and peak RSS are read from each run.log.
+  --kinds     restrict the kinds (e.g. --kinds=mp0).
 """
-import json, os, sys
+import json, os, re, sys
 import numpy as np
 from common import M, Ring, run, to_capd, write_box, write_plan, read_out, run_ap_rss, inside, HERE, AP
 
 binary, work = sys.argv[1], sys.argv[2]
-want = sys.argv[3:] or ["cell", "ring2", "ring4", "ring16"]
+COLLECT = "--collect" in sys.argv[3:]
+KINDS = next((a.split("=", 1)[1].split(",") for a in sys.argv[3:] if a.startswith("--kinds=")), None)
+want = [a for a in sys.argv[3:] if not a.startswith("--")] or ["cell", "ring2", "ring4", "ring16"]
 os.makedirs(work, exist_ok=True)
 p = M.params("author")
 sec = json.load(open(os.path.join(AP, "results", "orbit_N16_c0.035_section_state.json")))
@@ -70,7 +76,14 @@ for case in want:
     os.makedirs(cdir, exist_ok=True)
     box = os.path.join(cdir, "start_box.txt")
     rel = 0.0 if case == "ring16" else 1e-10  # ring16: a point start, to measure the growth of a double-interval centre
-    write_box(box, z, rel=rel)
+    if COLLECT:  # the stored box must be the one this script writes
+        write_box(box + ".check", z, rel=rel)
+        same = open(box + ".check").read() == open(box).read()
+        os.remove(box + ".check")
+        if not same:
+            sys.exit("collect: %s differs from the box this script writes" % box)
+    else:
+        write_box(box, z, rel=rel)
     out = res.get(case, {})
     out.update(dict(N=N, coupling=C["c"], crossing_cell=cross, float_crossing_time_ms=tstar, after_switch_ms=C["after"],
                     float_events=[(float(a), int(b), int(c)) for a, b, c in events], box_relative_radius=rel))
@@ -80,19 +93,40 @@ for case in want:
     segs = ["segment 0 start box %s point %s end section %d -40 -1 low %s" % (box, box, cross, low0),
             "segment 1 start previous end duration %r low %s exempt %d -1" % (C["after"], low1, cross)]
     for kname in C["kinds"]:
+        if KINDS and kname not in KINDS:
+            continue
         kind = kname.split("_")[0]
         extra = {"negative_control_no_switch": 1} if "NO_SWITCH" in kname else {}
         rdir = os.path.join(cdir, kname)
         os.makedirs(rdir, exist_ok=True)
-        for f in os.listdir(rdir):
-            os.remove(os.path.join(rdir, f))
         plan = os.path.join(rdir, "plan.txt")
-        write_plan(plan, N, C["c"], segs, order=20, mp_order=30, mp_bits=128, ghk_degree=24, ghk_theta_mV=1, checkpoint_every=500, **extra)
+        if COLLECT:
+            write_plan(plan + ".check", N, C["c"], segs, order=20, mp_order=30, mp_bits=128, ghk_degree=24, ghk_theta_mV=1,
+                       checkpoint_every=500, **extra)
+            body = lambda f: [ln for ln in open(f).read().splitlines() if not ln.startswith("#")]  # noqa: E731
+            same = body(plan + ".check") == body(plan)
+            os.remove(plan + ".check")
+            if not same:
+                sys.exit("collect: %s differs from the plan this script writes" % plan)
+            runlog = open(os.path.join(rdir, "run.log")).read()
+        else:
+            for f in os.listdir(rdir):
+                os.remove(os.path.join(rdir, f))
+            write_plan(plan, N, C["c"], segs, order=20, mp_order=30, mp_bits=128, ghk_degree=24, ghk_theta_mV=1, checkpoint_every=500, **extra)
         rec = dict(kind=kind)
+        if COLLECT:
+            rec["collected"] = "outputs of an earlier session's run, read without rerunning (--collect)"
         tot_steps, tot_wall, peak = 0, 0.0, 0.0
         for i in range(2):
-            rc, tail, wall, rss = run_ap_rss(binary, ["segment", plan, str(i), kind, rdir], os.path.join(rdir, "run.log"), timeout=3300,
-                                             as_cap_gb=6)
+            if COLLECT:  # the last completed call of segment i in run.log: "(rc R, W s, peak RSS X GiB)" after its command
+                blocks = re.findall(r"\$ \S+ segment \S+ %d %s \S+\n(?:.*\n)*?\(rc (\S+), ([0-9.]+) s, peak RSS ([0-9.]+) GiB\)" % (i, kind), runlog)
+                if not blocks:
+                    sys.exit("collect: no completed call of segment %d in run.log" % i)
+                rc, wall, rss = blocks[-1][0].rstrip(","), float(blocks[-1][1]), float(blocks[-1][2])
+                tail = ""
+            else:
+                rc, tail, wall, rss = run_ap_rss(binary, ["segment", plan, str(i), kind, rdir], os.path.join(rdir, "run.log"), timeout=3300,
+                                                 as_cap_gb=6)
             peak = max(peak, rss)
             jf = os.path.join(rdir, "seg%d_%s.json" % (i, kind))
             if not os.path.exists(jf):

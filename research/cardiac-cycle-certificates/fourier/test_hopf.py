@@ -318,7 +318,7 @@ def test_piece_recompute_and_controls():
               nsub_s=int(p0["settings"]["nsub_s"]), rho0=p0["settings"]["rho0"])
     a, b = Fraction(p0["e_lo"]), Fraction(p0["e_hi"])
     bl = H.piece_blocks(C, a, b, cov, settings=st, log=lambda s: None)
-    rs = H._hexval(p0["r_star"])
+    rs = str(H.hex_fraction(p0["r_star"]))            # the exact r_* the run used (up of its decimal choice)
     res = H.assemble(bl, p0["eta"], rs, log=lambda s: None)
     same = all(res[k]["hex"] == p0["result"][k]["hex"] for k in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness"))
     check("piece 0 recomputed: Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values", same)

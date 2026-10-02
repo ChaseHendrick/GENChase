@@ -2115,6 +2115,8 @@ def glue(pa, pb, nu):
 # =================================================================================================================
 RUN_SETTINGS = dict(K=8, M=48, nsub_xi=2, nsub_s=2, rho0="1/8", rho2="3/4", R="1/256", G_R="1/4096",
                     T_margin="1/40", n_group=4)
+with open(os.path.abspath(__file__), "rb") as _fh:
+    CODE_SHA256 = hashlib.sha256(_fh.read()).hexdigest()       # the program text this process runs (logged per piece)
 
 
 def _append(path, rec):
@@ -2160,6 +2162,15 @@ def _hexval(rec):
     return ct.text_to_dyadic(rec["hex"]) if "hex" in rec else _arb_q(rec)
 
 
+def hex_fraction(rec):
+    """The exact rational (as a Fraction) of a bound record's '<sign>0x<hex>p<exp>' text."""
+    t = rec["hex"].strip()
+    neg = t.startswith("-")
+    h, e = t.lstrip("-")[2:].split("p")
+    v = Fraction(int(h, 16)) * Fraction(2) ** int(e)
+    return -v if neg else v
+
+
 def _piece_state(rec):
     """Exact data of a logged piece for gluing."""
     C = Centre.from_record(rec["centre"])
@@ -2168,9 +2179,10 @@ def _piece_state(rec):
                 r_lo=_hexval(rec["result"]["r_existence"]), r_hi=_hexval(rec["result"]["r_uniqueness"]))
 
 
-def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
-    """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop or the time budget; resumes from data/pieces.jsonl.
-    Every piece is glued to the previous one (Lemma B4) before it is logged."""
+def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_stop=None):
+    """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop, the time budget, or (g_stop) a piece whose g
+    enclosure lies below g_stop; resumes from data/pieces.jsonl. Every piece is glued to the previous one (Lemma B4)
+    before it is logged."""
     t_start = time.time()
     rs_ = RUN_SETTINGS
     K = int(rs_["K"])
@@ -2205,7 +2217,11 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
             out[lay.comp[i]] += abs(v[i]) * nu_f ** abs(lay.mode[i])
         return out
     n_fail = 0
-    while e_cur < stop and time.time() - t_start < budget_s:
+    gs = Fraction(g_stop) if g_stop is not None else None
+
+    def below_g_stop():
+        return gs is not None and bool(done) and hex_fraction(done[-1]["result"]["g"]["upper"]) < gs
+    while e_cur < stop and time.time() - t_start < budget_s and not below_g_stop():
         # ---- a group of pieces with the current width
         group = []
         a = e_cur
@@ -2241,7 +2257,7 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
                             record=cov.record()))
         ok_all = True
         for (C, a_, b_, uu, tt) in group:
-            if time.time() - t_start > budget_s:
+            if time.time() - t_start > budget_s or below_g_stop():
                 ok_all = False
                 break
             t0 = time.time()
@@ -2288,7 +2304,7 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
                 break
             rec = dict(type="piece", idx=len(done), e_lo=str(a_), e_hi=str(b_), centre=C.to_record(), eta=eta_s,
                        r_star=res["r_star"], cover=cid, result=res, glue_prev=gl, predicted_admissible=adm,
-                       seconds=round(time.time() - t0, 1), settings=dict(rs_))
+                       seconds=round(time.time() - t0, 1), settings=dict(rs_), code_sha256=CODE_SHA256)
             _append(ppath, rec)
             done.append(rec)
             prev = cur
@@ -2650,6 +2666,7 @@ def main():
     ap.add_argument("--theorem-a", action="store_true")
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--e-stop", default="0.2")
+    ap.add_argument("--g-stop", default=None, help="stop once a piece's g enclosure lies below this value")
     ap.add_argument("--budget", type=float, default=3300)
     ap.add_argument("--glue-gks", action="store_true", help="point proof at eps* and gluing to the G_Ks branch")
     ap.add_argument("--collect", action="store_true")
@@ -2657,7 +2674,7 @@ def main():
     if a.theorem_a:
         theorem_A()
     if a.run:
-        run(e_stop=a.e_stop, budget_s=a.budget)
+        run(e_stop=a.e_stop, budget_s=a.budget, g_stop=a.g_stop)
     gl = None
     if a.glue_gks:
         gl = glue_gks_auto()
