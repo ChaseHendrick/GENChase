@@ -363,7 +363,51 @@ SLOW_SWEEP_PENDING
 
 ## 9. Cost of the full continuum proof (extrapolated from section 8)
 
-SECTION9_PENDING
+Everything here is arithmetic on the measurements of section 8 and on floating-point quantities of the numerical wave;
+the words "estimate" and "scenario" mark what is not measured. One core means one core of this machine (shared,
+nice 10).
+
+**9.1 One kappa (existence at a point), measured inputs.**
+
+| part | cost | basis |
+|---|---|---|
+| C1 enclosures of all segments (2 ms segments, dimension 20) | 0.62 core-hours (2,250 s; 22,508 steps) | the full-period sweep, section 8 |
+| the same with kappa as a state (dimension 21) | about 0.71 core-hours | 14 per cent more per step (P4 against P1) |
+| C0 centres from the points u-bar_i (double intervals) | about 0.22 core-hours | C0 step 0.36 of a C1 step (P5 against P1) |
+| the two section segments (PoincareMap with validation) | under a minute (estimate) | S1, S2 (2 ms from the sections: 17.6 s and 2.0 s) plus a validation re-run, as in stage 3 of the ring |
+| Krawczyk linear algebra, m = 150 segments, n = 2 x 18 + 148 x 19 = 2,848 unknowns | minutes (estimate) | a dense floating-point inverse of the midpoint (about 2 n^3 = 5e10 flops) and the product with the cyclic block-bidiagonal DF(X) (about 2 x 19 n^2 interval operations) |
+| **total at one kappa** | **about 0.85 to 1 core-hour (estimate)** | sum of the rows; the segments are independent, so with 150 cores the wall time is that of the slowest window (about 65 s) plus the linear algebra |
+
+The resting phase dominates: 89 per cent of the steps are in the 84 ms with V below -75 mV, where the step is held at
+0.0036 to 0.0044 ms by the resting m gate (as in the discrete ring). If the double-interval centre were not accurate
+enough, a multiprecision centre at the stage-3 cost (2.50 s per step at 19 dimensions, 128 bits, order 30, with about
+2.5 times as many steps) would add about 22,508 x 2.5 x 2.5 s = 39 core-hours (extrapolated). Whether it is needed is
+decided by the width of the double C0 image from a point start against the box radii of 9.2. SHOOT_PRECISION
+
+For comparison, the discrete N = 16 ring needs about 72 to 83 core-hours per C1 shift map plus about 2,500 core-hours
+for its multiprecision centre (extrapolated, `../RUNBOOK.md` section 5): the continuum point proof is cheaper by two
+orders of magnitude in the C1 part and three in the centre.
+
+**9.2 A kappa piece (the family), scenario.** With the piece test of section 4 (tangent predictor, centred kappa
+dependence), the box radius r and the piece half-width delta are limited by two conditions:
+
+* contraction: ||I - C DF(X)|| is about ||C|| times the width of the DG_i enclosures over boxes of radius r, and the
+  sweep gives that width as c r |D|^2 (absolute; |D| the growth over one segment, c at most 203, median 4.8). So
+  Z = ||C|| c r |D|^2 must stay below about 1/2, i.e. r <= r_max = 1 / (2 ||C|| c |D|^2);
+* residual: with the tangent predictor the residual over the piece is about (1/2) delta^2 |u''| (scaled), which must
+  stay below about r/2, i.e. delta <= sqrt(r / |u''|).
+
+Measured or computed inputs: |D| median 120 per 2 ms segment (largest 1,180 in the upstroke); c as above; ||C|| about
+||DF^{-1}||, SHOOT_NORM; |u''| at most 19 (piece B) and 4.7 (piece A) near kappa = 2.14, at most 79 near
+kappa = 0.525 (second differences of the branch at fixed phase, `tw/dudk.py`; crude, the maxima sit where the upstroke
+moves with kappa). SCENARIO_NUMBERS
+
+**9.3 The slow branch.** SLOW_COST
+
+**9.4 What this does not include.** The spectral stability part (section 10) is not costed beyond its plan. The trial
+runs that must precede any large run: (1) the comoving section end (PoincareMap with validation) and the leaf insertion
+as an affine map; (2) one complete Krawczyk proof at one kappa (about one core-hour by 9.1); (3) one kappa piece, which
+measures delta and replaces the scenario of 9.2.
 
 ## 10. Stability: the spectral problem (plan; nothing computed rigorously)
 
