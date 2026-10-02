@@ -7,6 +7,7 @@ box centre). It summarizes the growth: the C0 radius, the derivative norm (the t
 C1 run), the ratio radius / (r0 * |D|) (the excess of the enclosure over linear growth: wrapping), the relative width
 of the derivative enclosure, the step size and the cost per step.
 Usage: python3 wrap_run.py SOL.npz S0_MS DURATION_MS KIND REL OUT_PREFIX [--dim 21 --kappa-rel R] [--timeout S]
+                          [--section up|down]   (start on Sigma_up / Sigma_down with the monotone rule of wrap_pilot)
   S0_MS: phase on the wave (s = 0 is the upstroke crossing V = -40); the branch is that of the piece containing s0.
 """
 import argparse, json, os, subprocess, sys, time
@@ -34,13 +35,22 @@ def main():
     ap.add_argument("--dim", type=int, default=20); ap.add_argument("--kappa-rel", type=float, default=0.0)
     ap.add_argument("--timeout", type=int, default=3300); ap.add_argument("--order", type=int, default=20)
     ap.add_argument("--log-every", type=int, default=1)
+    ap.add_argument("--section", choices=["none", "up", "down"], default="none",
+                    help="start exactly on a section (V = -40, V radius 0; S0_MS ignored) with the monotone rule")
     a = ap.parse_args()
     x, L, mesh, kappa, H0, beta = B.load(a.sol)
     S, Y = B.profile(x, L, mesh)
     TA = x[L.iTA]
-    k = int(np.searchsorted(S, a.s0))
-    s0, y0 = float(S[k]), Y[:, k].copy()
-    low = bool(s0 > TA)
+    if a.section == "none":
+        k = int(np.searchsorted(S, a.s0))
+        s0, y0 = float(S[k]), Y[:, k].copy()
+        low = bool(s0 > TA)
+    else:  # the collocation node on the section; V set to -40 exactly
+        nd = L.nodes(x, "A") * TM.SIGMA[:, None] if a.section == "up" else L.nodes(x, "B") * TM.SIGMA[:, None]
+        y0 = nd[:, 0].copy()
+        y0[TM.IV] = -40.0
+        s0 = 0.0 if a.section == "up" else float(TA)
+        low = a.section == "down"
     ks = kappa_str(kappa)
     kap = float(ks)
     z0 = y0 / TM.SIGMA
@@ -49,18 +59,19 @@ def main():
     with open(box, "w") as f:
         f.write("# wrap pilot start: phase %.6f ms of %s, relative radius %g\n" % (s0, os.path.basename(a.sol), a.rel))
         f.write("%d\n" % a.dim)
-        for v in z0:
-            r = a.rel * abs(v)
+        for i, v in enumerate(z0):
+            r = 0.0 if (a.section != "none" and i == TM.IV) else a.rel * abs(v)
             f.write("%s %s\n" % (float(v - r).hex(), float(v + r).hex()))
         if a.dim == 21:
             r = a.kappa_rel * kap
             f.write("%s %s\n" % (float(kap - r).hex(), float(kap + r).hex()))
     t0 = time.time()
     cmd = ["nice", "-n", "10", "timeout", str(a.timeout), BIN, box, ks, repr(a.duration), a.kind, "low" if low else "high", a.out,
-           str(a.order), "1", "24", str(a.log_every)]
+           str(a.order), "1", "24", str(a.log_every), "1" if a.section != "none" else "0"]
     r = subprocess.run(cmd, capture_output=True, text=True)
     wall = time.time() - t0
     res = dict(status="wrapping pilot; measurement only, no theorem", solution=os.path.basename(a.sol), kappa=ks, s0_ms=s0,
+               section_start=a.section,
                V0_mV=float(y0[0]), branch="low" if low else "high", duration_ms=a.duration, kind=a.kind, rel_radius=a.rel,
                dim=a.dim, kappa_rel_radius=a.kappa_rel, rc=r.returncode, stdout=r.stdout.strip()[-500:], stderr=r.stderr.strip()[-500:],
                process_wall_s=round(wall, 1))
