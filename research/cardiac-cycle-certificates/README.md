@@ -216,3 +216,33 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
     --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
+* **Every N >= 8 and the cable, existence (Stage E for every N), Fourier route: computed; awaiting adversarial review**
+  (`fourier/alln.py`, `fourier/test_alln.py`, record `results/fourier-existence-alln.json`, logs in
+  `fourier/data/alln/`). Nobody has yet given it a second reading.
+  - Theorem, as computed. Put eps = 1/N^2 and let the coupling act on Fourier mode m by
+    d_m(eps) = 4 pi^2 D m^2 sinc(pi m sqrt(eps))^2 (entire in eps; the N-ring value at eps = 1/N^2, D (2 pi m)^2 at
+    eps = 0). For every eps in [0, 1/64] there is a real analytic profile phi*(.; eps) with omega*(eps) > 0, phase
+    phi*_V(0) = s, unique in each piece's ball (X = C x (l^1_nu)^18, nu = e^{1/4}), depending continuously on eps.
+    Consequences: for every integer N >= 8 the N-cell ring has the rotating 1-wave z_j(t) = phi*(omega* t + 2 pi j/N),
+    of minimal period T(1/N^2), not synchronous; at eps = 0, u(x, t) = phi*(omega* t + 2 pi x; 0) is a travelling
+    wave of the cable u_t = D u_xx e_V + f(u) on the unit ring (one wave per ring, classical solution), and the ring
+    waves converge to it in l^1_nu as N -> infinity. Stability is not claimed.
+  - Cover: 73 pieces of width 1/4096 overlapping by 1/8, all glued by ball inclusion; Z1 0.152 to 0.199, Z2 1306 to
+    1373, Y0 6.9e-7 to 7.3e-7, existence radius 8.1e-7 to 9.1e-7, uniqueness radius at least 4.66e-4, contraction at
+    most 0.978. T enclosures are 1.1e-5 to 1.2e-5 ms wide: from [53.5879664001, 53.5879775655] ms on the piece
+    containing 1/64 to [53.5880952982, 53.5881076369] ms on the cable piece [0, 1/4096].
+  - The tail resolvents are bounded uniformly in d >= 0 (alln.py Lemma T), which covers d_m ~ m^2 at eps = 0; the
+    eps dependence of the finite part goes through the mean value theorem with a rigorous series for d'_m.
+  - Identification: for N = 8, 16, 32, 64 the per-N Stage E existence ball lies in the uniqueness ball of the piece
+    containing 1/N^2, so the per-N waves are members of this family; each Stage E T record lies inside the piece's
+    T enclosure.
+  - Controls (`fourier/data/alln/controls.jsonl`, rerun in `test_alln.py`):
+    - omitting the eps-derivative terms leaves Y0 = 3.4e-11 on [0, 1/4096], below the float residual 7.25e-7 at
+      its endpoints (4.6e-13 at its centre);
+    - the widened pieces [0, 1/16], [0, 1/8], [0, 1/4] and [0, 1] fail (Z1 = 1.27 to 16.1);
+    - [0, 1/1024], [0, 1/256] and even [0, 1/64] as a single piece close (Z1 = 0.30 for [0, 1/64]); these
+      single-piece proofs are not part of the record's cover.
+  - Cost: 1,568 s of wall time on 2 worker processes (3,129 s of piece time, 28 to 63 s per piece).
+  - Run: `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 alln.py --run --width
+    1/4096 --overlap 1/8 --workers 2`, then `python3 alln.py --controls` and `python3 alln.py --collect`. The run is
+    resumable from `fourier/data/alln/pieces.jsonl` (one line per certified piece).

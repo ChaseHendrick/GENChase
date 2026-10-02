@@ -1178,6 +1178,12 @@ def controls(piece_lo="0", piece_hi="1/4096", K=12, widen=("1/16", "1/8", "1/4",
                     "not float noise)")
     _append(CONTROLS_LOG, out)
     log(json.dumps(out))
+    widen_controls(widen, K=K, MHf=MHf, log=log)
+
+
+def widen_controls(widen, K=12, MHf=None, log=print):
+    """Pieces [0, w] for each w in `widen`: recorded as failed (a negative control) or closed (how wide a piece can be)."""
+    MHf = float_hessian_estimate(K) if MHf is None else MHf
     for w in widen:
         w = Fraction(w)
         om2, A2, _ = float_centre(w / 2, K)
@@ -1185,7 +1191,9 @@ def controls(piece_lo="0", piece_hi="1/4096", K=12, widen=("1/16", "1/8", "1/4",
         try:
             r2, _, _ = prove_piece(om2, A2, Fraction(0), w, MHf, log=log, label="control-widened", settings=dict(K=K))
             o = dict(type="control_widened", piece=["0", _fs(w)], failed=False, Y0=r2["Y0"]["approx"],
-                     Z1=r2["Z1"]["approx"], note="UNEXPECTED: the widened piece closed")
+                     Z1=r2["Z1"]["approx"], Z2=r2["Z2"]["approx"], r_existence=r2["r_existence"]["approx"],
+                     r_uniqueness=r2["r_uniqueness"]["approx"], T_ms=[r2["T_ms"]["lower"]["dec"], r2["T_ms"]["upper"]["dec"]],
+                     note="the piece closed (not part of the cover; records how wide a single piece can be)")
         except ProofFailure as e:
             o = dict(type="control_widened", piece=["0", _fs(w)], failed=True, why=str(e)[:400],
                      diag=getattr(e, "diag", None))

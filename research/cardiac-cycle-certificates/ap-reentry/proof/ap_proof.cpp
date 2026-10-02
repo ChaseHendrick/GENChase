@@ -226,7 +226,9 @@ static int runSegment(const Plan& plan, int idx, const std::string& outdir) {
   SegSpec segEff = seg;
   Vec x0(dim);
   std::unique_ptr<Set> sp;
-  if (idx == 0 || seg.startKind != "previous") {
+  // C1 segments may start from a prescribed box (time split across processes, checked by `chain`); the centre
+  // (c0, mp0) always chains from the previous segment.
+  if (idx == 0 || (Tr::C1 && seg.startKind != "previous")) {
     if (Tr::C1) {
       std::ifstream in(seg.startFile);
       if (!in) throw std::runtime_error("cannot read start " + seg.startFile);
@@ -271,7 +273,7 @@ static int runSegment(const Plan& plan, int idx, const std::string& outdir) {
   }
   Set& s = *sp;
   std::ofstream logf(segName(outdir, idx, kind, "log"), std::ios::app);
-  logf << "segment " << idx << " kind " << kind << " start " << (idx == 0 || seg.startKind != "previous" ? seg.startKind : "previous") << "\n";
+  logf << "segment " << idx << " kind " << kind << " start " << (idx == 0 || (Tr::C1 && seg.startKind != "previous") ? seg.startKind : "previous") << "\n";
   Engine<Tr> eng(plan, segEff, f, solver, fD, gw, segName(outdir, idx, kind, "ckpt"), logf);
   Vec endX(dim); Mat endD(Tr::C1 ? dim : 1, Tr::C1 ? dim : 1);
   SegResult r = eng.run(s, endX, endD);
@@ -459,6 +461,22 @@ static int cmdVerify(const std::string& framePath, const std::string& outdir, co
     segInfo << (i ? ", " : "") << "{\"segment\": " << i << ", \"T_box\": \"" << ivs(Ta) << "\", \"T_centre\": \"" << ivs(Tb) << "\"}";
   }
   bool verified = !dryRun && finite && segsOk && sameCrossing && q < 1.0 && total < 1.0;
+  {  // diagnostics for the (untrusted) radius tuner frame_leaf.py --diag: per-block residual and block-norm matrix
+    std::ostringstream d;
+    d << std::setprecision(17) << nb << "\n";
+    for (int b = 0; b < nb; ++b) {
+      interval s2 = 0;
+      for (int k = 0; k < F.bs[b]; ++k) s2 += sqr(interval(mag(G0[b0[b] + k])));
+      d << up(sqrt(interval(up(s2)))) << (b + 1 < nb ? " " : "\n");
+    }
+    for (int bi = 0; bi < nb; ++bi) for (int bj = 0; bj < nb; ++bj) {
+      double nrm;
+      if (bi == bj && F.bs[bi] == 2) { int a0 = b0[bi]; nrm = norm2x2(M[a0][a0], M[a0][a0 + 1], M[a0 + 1][a0], M[a0 + 1][a0 + 1]); }
+      else { interval fs = 0; for (int u = 0; u < F.bs[bi]; ++u) for (int v = 0; v < F.bs[bj]; ++v) fs += sqr(interval(mag(M[b0[bi] + u][b0[bj] + v]))); nrm = up(sqrt(interval(up(fs)))); }
+      d << nrm << (bj + 1 < nb ? " " : "\n");
+    }
+    atomicWrite(outJson + ".diag.txt", d.str());
+  }
   std::ostringstream js;
   js << std::setprecision(17) << "{\n  \"schema\": \"ap-reentry-contraction-v1\",\n  \"status\": \"" << (dryRun ? "DRY RUN: mechanical check of the program; not a proof" : "pilot; no theorem unless verified is true and the record is reviewed")
      << "\",\n  \"N\": " << N << ", \"coupling\": \"" << F.coupling << "\", \"leaf_dimension\": " << n << ", \"Q0_hex\": \"" << hexd(F.Q0) << "\""

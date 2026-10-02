@@ -100,3 +100,36 @@ def inside(ref, X, slack_rel=0.0):
     return bool(ok.all()), dict(max_out_over_radius=float(np.max(dist_out / np.maximum(rad, 1e-300))),
                                 max_rel_dist_to_mid=float(np.max(np.abs(mid - ref) / np.maximum(np.abs(ref), 1e-300))),
                                 max_rel_width=float(np.max((hi - lo) / np.maximum(np.abs(mid), 1e-300))))
+
+
+def run_ap_rss(binary, args, log, timeout, as_cap_gb=None):
+    """Like run_ap, and also returns the child's peak resident set (GiB, from wait4). Output goes to the log file.
+    With as_cap_gb the child runs under an address-space cap (RLIMIT_AS). On timeout the child is killed."""
+    import resource, signal
+    t = time.time()
+    with open(log, "a") as lf:
+        lf.write("$ %s %s\n" % (os.path.basename(binary), " ".join(args)))
+        lf.flush()
+
+        def pre():
+            if as_cap_gb:
+                cap = int(as_cap_gb * 2 ** 30)
+                resource.setrlimit(resource.RLIMIT_AS, (cap, cap))
+        pr = subprocess.Popen([binary] + args, stdout=lf, stderr=subprocess.STDOUT, preexec_fn=pre)
+        rc, ru = None, None
+        while True:
+            pid, status, ru = os.wait4(pr.pid, os.WNOHANG)
+            if pid != 0:
+                rc = os.waitstatus_to_exitcode(status)
+                break
+            if time.time() - t > timeout:
+                pr.send_signal(signal.SIGKILL)
+                pid, status, ru = os.wait4(pr.pid, 0)
+                rc = "timeout"
+                break
+            time.sleep(0.5)
+        pr.returncode = rc if isinstance(rc, int) else -9
+        wall = time.time() - t
+        lf.write("(rc %s, %.1f s, peak RSS %.3f GiB)\n" % (rc, wall, ru.ru_maxrss / 2 ** 20))
+    tail = open(log).read()[-2000:]
+    return rc, tail, wall, ru.ru_maxrss / 2 ** 20

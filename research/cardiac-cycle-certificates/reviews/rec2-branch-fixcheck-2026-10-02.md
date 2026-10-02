@@ -25,4 +25,5 @@ re-derived gluing, message "glue").
 ## Test run
 
 `PYTHONPATH=<python-flint 0.9.0> nice -n 10 timeout 2400 python3 test_branch.py`, run after all changes above:
-see the result line appended below.
+20 of 20 passed (2026-10-02, about 10 minutes on the shared machine; the new tests took 0.0 s (Hess powers),
+41.6 s (B1g), 73.8 s (widened piece) and 0.0 s (piece order); the acceptance test with the rebuilt group cover 77.1 s).

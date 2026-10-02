@@ -99,7 +99,7 @@ class Jet:
     __slots__ = ("c",)
 
     def __init__(self, c):
-        self.c = [_chk(x if isinstance(x, acb) else _scalar(x), "Jet coefficient") for x in c]
+        self.c = [_chk_coef(x if isinstance(x, (acb, am.Dual, _hess_cls())) else _scalar(x)) for x in c]
 
     @property
     def L(self):
@@ -143,7 +143,7 @@ class Jet:
     def recip(self):
         b = self.c
         r0 = 1 / b[0]
-        _chk(r0, "reciprocal (divisor may vanish)")
+        _chk_coef(r0)
         r = [r0]
         for k in range(1, self.L):
             r.append(-sum((b[i] * r[k - i] for i in range(1, k + 1)), acb(0)) * r0)
@@ -153,7 +153,7 @@ class Jet:
         if isinstance(o, Jet):
             return self * o.recip()
         s = 1 / _scalar(o)
-        _chk(s, "reciprocal of a scalar")
+        _chk_coef(s)
         return self * s
 
     def __rtruediv__(self, o):
@@ -178,8 +178,8 @@ class Jet:
 
     def log(self):
         a = self.c
-        if not (a[0].real > 0):
-            raise am.DomainError(f"log: constant term {a[0]} not certainly in Re > 0")
+        if not (_val(a[0]).real > 0):
+            raise am.DomainError(f"log: constant term {_val(a[0])} not certainly in Re > 0")
         l = [a[0].log()]
         for k in range(1, self.L):
             s = sum((i * l[i] * a[k - i] for i in range(1, k)), acb(0))
@@ -188,8 +188,8 @@ class Jet:
 
     def sqrt(self):
         a = self.c
-        if not (a[0].real > 0):
-            raise am.DomainError(f"sqrt: constant term {a[0]} not certainly in Re > 0")
+        if not (_val(a[0]).real > 0):
+            raise am.DomainError(f"sqrt: constant term {_val(a[0])} not certainly in Re > 0")
         s = [a[0].sqrt()]
         for k in range(1, self.L):
             t = sum((s[i] * s[k - i] for i in range(1, k)), acb(0))
@@ -197,8 +197,37 @@ class Jet:
         return Jet(s)
 
 
-def _scalar(x):
+def _hess_cls():
+    import branch as br
+    return br.Hess
+
+
+def _val(x):
+    return x if isinstance(x, acb) else x.v
+
+
+def _chk_coef(x):
+    """Finiteness of a Jet coefficient: an acb ball, an arbmodel.Dual (value and every gradient entry) or a
+    branch.Hess (value, gradient and Hessian entries)."""
     if isinstance(x, acb):
+        return _chk(x, "Jet coefficient")
+    if isinstance(x, am.Dual):
+        _chk(x.v, "Jet coefficient")
+        for v in x.d.values():
+            _chk(v, "Jet coefficient gradient")
+        return x
+    if isinstance(x, _hess_cls()):
+        _chk(x.v, "Jet coefficient")
+        for v in x.g.values():
+            _chk(v, "Jet coefficient gradient")
+        for v in x.h.values():
+            _chk(v, "Jet coefficient Hessian")
+        return x
+    raise TypeError(f"Jet coefficient of type {type(x).__name__}")
+
+
+def _scalar(x):
+    if isinstance(x, (acb, am.Dual, _hess_cls())):
         return x
     if isinstance(x, bool):
         raise TypeError("bool")
@@ -744,25 +773,104 @@ def lyapunov_at_hopf(cov, prec=192):
     return dict(l1=l1, l1_scaled=l1s, omega=om, lam=lam)
 
 
+def field_jet_dual(x0, u, L, g, prec=128):
+    """Taylor coefficients (k < L) in t of f(z + t u; g') with first-order dual numbers in the 19 variables
+    (z_0..z_17, g') at z = x0 (scaled), g' = g: a list of 18 lists of arbmodel.Dual (value, gradient dict with keys
+    0..17 for z and 18 for g). So [t^0].d[j] = D_z f, [t^1].d[j] = D^2 f[u, e_j], [t^2].d[j] = (1/2) D^3 f[u, u, e_j],
+    [t^0].d[18] = f1, [t^1].d[18] = D f1 [u], [t^2].d[18] = (1/2) D^2 f1 [u, u] (all at x0, enclosed over the balls)."""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(am.params(prec))
+        p["g_Ks"] = Jet([am.Dual(am.to_ball(g), {DIM: acb(1)})] + [acb(0)] * (L - 1))
+        xs = []
+        for k in range(DIM):
+            s_ = am.SIG[k]
+            xs.append(Jet([am.Dual(am.to_ball(x0[k]) * s_, {k: s_}), am.to_ball(u[k]) * s_] + [acb(0)] * (L - 2)))
+        y = fn(xs, p, JetMath, acb(0))
+        out = []
+        for k, yk in enumerate(y):
+            s_ = am.ISIG[k]
+            yk = yk if isinstance(yk, Jet) else Jet([am.to_ball(yk)] + [acb(0)] * (L - 1))
+            row = []
+            for cf in yk.c:
+                if isinstance(cf, am.Dual):
+                    row.append(am.Dual(cf.v * s_, {kk: vv * s_ for kk, vv in cf.d.items()}))
+                else:
+                    row.append(am.Dual(cf * s_, {}))
+            out.append(row)
+    return out
+
+
+def model_on_jets(xs, gj, prec):
+    """Evaluate the model (scaled variables) on input Jets xs (18) and the parameter Jet gj; returns 18 output Jets in
+    the scaled variables (outputs multiplied by 2^-e_k exactly)."""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(am.params(prec))
+        p["g_Ks"] = gj
+        y = fn([Jet([c * am.SIG[k] for c in xk.c]) for k, xk in enumerate(xs)], p, JetMath, acb(0))
+        L = xs[0].L
+        out = []
+        for k, yk in enumerate(y):
+            yk = yk if isinstance(yk, Jet) else Jet([am.to_ball(yk)] + [acb(0)] * (L - 1))
+            out.append(Jet([c * am.ISIG[k] for c in yk.c]))
+    return out
+
+
+def curve_point(bt, wt, gt, L, kind, prec):
+    """Jets along the centre curve. bt: 18 lists of t-coefficients of the base point b(t); wt: 18 lists of t-coefficients
+    of the direction w(t) (or None); gt: t-coefficients of g(t). kind: 'acb' (plain values), 'dual_tau' (first-order dual
+    in tau along w(t): x = b(t) + tau w(t)), 'hess' (second-order duals in z_0..z_17, g (18) and tau (19))."""
+    H_ = _hess_cls()
+    pad = lambda lst: (list(lst) + [acb(0)] * L)[:L]  # noqa: E731  (truncation drops t^k, k >= L: exact for [t^k], k < L)
+    xs = []
+    for k in range(DIM):
+        b = pad(bt[k])
+        w = pad(wt[k]) if wt is not None else [acb(0)] * L
+        if kind == "acb":
+            xs.append(Jet(b))
+        elif kind == "dual_tau":
+            xs.append(Jet([am.Dual(b[i], {19: w[i]} if not w[i].is_zero() else {}) for i in range(L)]))
+        elif kind == "hess":
+            cs = []
+            for i in range(L):
+                g = {}
+                if i == 0:
+                    g[k] = acb(1)
+                if not w[i].is_zero():
+                    g[19] = w[i]
+                cs.append(H_(b[i], g))
+            xs.append(Jet(cs))
+        else:
+            raise ValueError(kind)
+    gl = pad(gt)
+    if kind == "hess":
+        gj = Jet([H_(gl[0], {18: acb(1)})] + [H_(c) for c in gl[1:]])
+    elif kind == "dual_tau":
+        gj = Jet([am.Dual(c) for c in gl])
+    else:
+        gj = Jet(gl)
+    return model_on_jets(xs, gj, prec)
+
+
 # #################################################################################################################
-# Part B. The blown-up radii polynomial (LEMMAS-hopf.md, Section B)
+# Part B. The blown-up radii polynomial along a centre curve (LEMMAS-hopf.md, Section B)
 # #################################################################################################################
 #
 # Unknowns x = (omega, g, c, w): omega, g in C, c in C^18, w = (w_m)_{m != 0}, w_m in C^18, ||w_k||_nu =
 # sum_{m != 0} |w_{k,m}| nu^|m|. Norm ||x|| = max(|omega|/eta_om, |g|/eta_g, max_k |c_k|/eta_ck, max_k ||w_k||/eta_wk).
-# For a parameter eps (real), with Q(c, u, eps; g) = int_0^1 D_z f(c + s eps u; g) u ds (so eps Q = f(c + eps u) - f(c)):
+# Q(c, u, eps; g) = int_0^1 D_z f(c + s eps u; g) u ds, so eps Q = f(c + eps u) - f(c).
 #     N+ = w_{V,1} - 1/2,  N- = w_{V,-1} - 1/2,
 #     E_0 = f(c; g) + eps [Q(c, w(.), eps; g)]_0          (= [f(c + eps w(.); g)]_0),
 #     E_m = i m omega w_m - [Q(c, w(.), eps; g)]_m,  m != 0.
-# For eps > 0 and real data, a zero gives the periodic orbit phi = c + eps w (omega phi' = f(phi; g)); at eps = 0 a zero
-# is an equilibrium c with eigenvalue i omega and eigenvector w_1 (Lemma B1). DF(x; eps) y, with J = D_z f(c + eps w),
-# Kc = (J - D_z f(c)) / eps = int_0^1 D^2 f(c + s eps w)[w, .] ds, kg = int_0^1 D f1(c + s eps w) w ds:
+# DF(x; eps) y, with J = D_z f(c + eps w), Kc = int_0^1 D^2 f(c + s eps w)[w, .] ds, kg = int_0^1 D f1(c + s eps w)[w] ds:
 #     E_0 row: [J]_0 y_c + eps [J y_w]_0 + [f1(c + eps w)]_0 y_g
 #     E_m row: i m y_om w_m + i m omega y_{w,m} - [J y_w]_m - [Kc]_m y_c - [kg]_m y_g.
-# The proof on a piece [e_lo, e_hi] (centre e_c, delta = half width) is the radii polynomial of existence.py E.3 for
-# T_eps(x) = x - A F(x; eps), with bounds valid for every eps of the piece (Lemma B2):
-#     Y0 = max_c (Y0p_c + delta Yeps_c) / eta_c,  Z1 = Z1(e_c) + delta Zeps,  Z2 by the polydisc family (Lemma B3).
-# Pieces are glued at shared endpoints by ball inclusion (Lemma B4).
+# On a piece [e_lo, e_hi] (e_c the midpoint, delta the half width) the centre moves along the line
+# xbar(xi) = xbar_c + (xi - e_c) tbar (tbar: an exact float tangent with tbar_{w,V,+-1} = 0). For every xi in the piece:
+#     ||A F(xbar(xi); xi)|| <= Y0p + delta Y1 + delta^2 / 2 Y2,     ||I - A DF(xbar(xi); xi)|| <= Z1c + delta Zc,
+# Y0p, Z1c at the point e_c, Y1 = ||A d/dxi F|| at e_c, Y2 >= sup ||A d^2/dxi^2 F||, Zc >= sup ||A d/dxi DF|| (Lemma B2),
+# and Z2 by the polydisc family (Lemma B3). Pieces are glued at shared endpoints by ball inclusion (Lemma B4).
 
 NC = 2 + 2 * DIM         # norm components: 0 omega, 1 g, 2 + k c_k, 20 + k w_k
 CC, CW = 2, 2 + DIM
@@ -798,56 +906,91 @@ def _ex(v):
             raise ValueError("not exact")
         return v
     if isinstance(v, Fraction):
-        return arb(fmpq(v.numerator, v.denominator))
+        a = arb(fmpq(v.numerator, v.denominator))
+        if not a.is_exact():
+            raise ValueError("not dyadic")
+        return a
     return arb(float(v))
 
 
-class Centre:
-    """Exact centre: omega, g (exact arb), c (18 exact arb), w[k][m + K] (acb, exact, w[k][K] = 0), at eps = e_c.
-    Checks symmetry (w_{-m} = conj w_m, real omega, g, c) and w_{V, +-1} = 1/2 exactly."""
+def _sym_rows(rows, K, what):
+    out = [[acb(x) for x in row] for row in rows]
+    for k in range(DIM):
+        if len(out[k]) != 2 * K + 1 or not out[k][K].is_zero():
+            raise ValueError(f"{what} needs 2K+1 entries with a zero mode 0")
+        for m in range(1, K + 1):
+            a, b = out[k][K + m], out[k][K - m]
+            if not (a.real.is_exact() and a.imag.is_exact() and a.real == b.real and (a.imag + b.imag).is_zero()):
+                raise ValueError(f"{what} not exact and conjugation symmetric")
+    return out
 
-    def __init__(self, om, g, c, w, K):
+
+class Centre:
+    """Exact centre (omega, g, c, w) at eps = e_c and exact tangent (tom, tg, tc, tw); w[k][m + K] acb, mode 0 zero,
+    conjugation symmetric, w_{V,1} = 1/2 exactly; tw likewise with tw_{V,+-1} = 0 exactly."""
+
+    def __init__(self, om, g, c, w, tom, tg, tc, tw, K):
         self.K = K
         self.om, self.g = _ex(om), _ex(g)
         self.c = [_ex(v) for v in c]
-        self.w = [[acb(x) for x in row] for row in w]
-        for k in range(DIM):
-            if len(self.w[k]) != 2 * K + 1 or not self.w[k][K].is_zero():
-                raise ValueError("w needs 2K+1 entries with a zero mode 0")
-            for m in range(1, K + 1):
-                a, b = self.w[k][K + m], self.w[k][K - m]
-                if not (a.real.is_exact() and a.imag.is_exact() and a.real == b.real and (a.imag + b.imag).is_zero()):
-                    raise ValueError("w not exact and conjugation symmetric")
+        self.w = _sym_rows(w, K, "w")
+        self.tom, self.tg = _ex(tom), _ex(tg)
+        self.tc = [_ex(v) for v in tc]
+        self.tw = _sym_rows(tw, K, "tw")
         if not (self.w[IV][K + 1].real == arb(fmpq(1, 2)) and self.w[IV][K + 1].imag.is_zero()):
             raise ValueError("w_{V,1} must be exactly 1/2")
+        if not self.tw[IV][K + 1].is_zero():
+            raise ValueError("tw_{V,1} must be exactly 0")
         if not self.om > 0:
             raise ValueError("omega_bar must be positive")
 
     def trig(self):
         return fe.TrigPoly(self.w)
 
+    def trig36(self):
+        return fe.TrigPoly(self.w + self.tw)
+
     def to_record(self):
-        t = lambda x: _dyadic_text(x)  # noqa: E731
-        return dict(K=self.K, omega=t(self.om), g=t(self.g), c=[t(v) for v in self.c],
-                    w=[[[t(self.w[k][self.K + m].real), t(self.w[k][self.K + m].imag)] for m in range(1, self.K + 1)]
-                       for k in range(DIM)])
+        t = _dyadic_text
+        K = self.K
+
+        def rows(W):
+            return [[[t(W[k][K + m].real), t(W[k][K + m].imag)] for m in range(1, K + 1)] for k in range(DIM)]
+        return dict(K=K, omega=t(self.om), g=t(self.g), c=[t(v) for v in self.c], w=rows(self.w),
+                    t_omega=t(self.tom), t_g=t(self.tg), t_c=[t(v) for v in self.tc], t_w=rows(self.tw))
 
     @staticmethod
     def from_record(r):
         K = r["K"]
-        d = lambda s: _dyadic_from_text(s)  # noqa: E731
-        w = []
-        for k in range(DIM):
-            row = [acb(0)] * (2 * K + 1)
-            for m in range(1, K + 1):
-                re, im = d(r["w"][k][m - 1][0]), d(r["w"][k][m - 1][1])
-                row[K + m] = acb(re, im)
-                row[K - m] = acb(re, -im)
-            w.append(row)
-        return Centre(d(r["omega"]), d(r["g"]), [d(s) for s in r["c"]], w, K)
+        d = _dyadic_from_text
+
+        def rows(R):
+            out = []
+            for k in range(DIM):
+                row = [acb(0)] * (2 * K + 1)
+                for m in range(1, K + 1):
+                    re, im = d(R[k][m - 1][0]), d(R[k][m - 1][1])
+                    row[K + m] = acb(re, im)
+                    row[K - m] = acb(re, -im)
+                out.append(row)
+            return out
+        return Centre(d(r["omega"]), d(r["g"]), [d(s) for s in r["c"]], rows(r["w"]),
+                      d(r["t_omega"]), d(r["t_g"]), [d(s) for s in r["t_c"]], rows(r["t_w"]), K)
 
     def digest(self):
         return hashlib.sha256(json.dumps(self.to_record(), sort_keys=True).encode()).hexdigest()
+
+
+def curve_at(C, e_c, xi, prec=256):
+    """xbar(xi) = xbar_c + (xi - e_c) tbar as balls (omega, g, c (18), w (18 x (2K+1)))."""
+    with am.precision(prec):
+        d = _arb_q(Fraction(xi) - Fraction(e_c))
+        K = C.K
+        om = C.om + d * C.tom
+        g = C.g + d * C.tg
+        c = [C.c[k] + d * C.tc[k] for k in range(DIM)]
+        w = [[C.w[k][t] + d * C.tw[k][t] for t in range(2 * K + 1)] for k in range(DIM)]
+    return om, g, c, w
 
 
 def _dyadic_text(x):
@@ -980,21 +1123,32 @@ class FloatEps:
         w[:, list(self.ms).index(-1)] = np.conj(v)
         return self.pack(fh.omega, fh.g, fh.x, w)
 
-    def to_centre(self, u):
-        """Exact centre from u: doubles, exact symmetry, w_{V,+-1} = 1/2 exactly."""
+    def tangent(self, u, e, h=1e-6):
+        """Untrusted float tangent du/deps at the solution u (central difference of Newton solutions)."""
+        up_, _ = self.newton(u, e + h)
+        um_, _ = self.newton(u, e - h)
+        return (up_ - um_) / (2 * h)
+
+    def to_centre(self, u, t):
+        """Exact centre from u and tangent t: doubles, exact symmetry, w_{V,+-1} = 1/2, tw_{V,+-1} = 0 exactly."""
         lay, K = self.lay, self.K
         om, g, c, w = self.unpack(self.symmetrize(u))
-        W = []
-        for k in range(DIM):
-            row = [acb(0)] * (2 * K + 1)
-            for m in range(1, K + 1):
-                z = complex(w[k, list(self.ms).index(m)])
-                if k == IV and m == 1:
-                    z = 0.5 + 0j
-                row[K + m] = acb(z.real, z.imag)
-                row[K - m] = acb(z.real, -z.imag)
-            W.append(row)
-        return Centre(float(om.real), float(g.real), [float(v) for v in c.real], W, K)
+        tom, tg, tc, tw = self.unpack(self.symmetrize(t))
+
+        def rows(W, fix):
+            out = []
+            for k in range(DIM):
+                row = [acb(0)] * (2 * K + 1)
+                for m in range(1, K + 1):
+                    z = complex(W[k, list(self.ms).index(m)])
+                    if k == IV and m == 1:
+                        z = fix
+                    row[K + m] = acb(z.real, z.imag)
+                    row[K - m] = acb(z.real, -z.imag)
+                out.append(row)
+            return out
+        return Centre(float(om.real), float(g.real), [float(v) for v in c.real], rows(w, 0.5 + 0j),
+                      float(tom.real), float(tg.real), [float(v) for v in tc.real], rows(tw, 0j), K)
 
     def from_centre(self, C):
         K = self.K
@@ -1036,17 +1190,31 @@ def hess19(z, prm, prec=53):
     return F + Jz + Hz + f1 + Jg
 
 
-class EpsCover:
-    """Lemma B3 data for a group of pieces: the family Phi = {c + sigma w(theta) + zeta : c, w a centre of the group,
-    |sigma| <= T, |zeta_i| <= R_i}, theta in the closed strip |Im theta| <= rho2, g in the complex disc of radius G_R
-    about the group's g hull, realised as one trigonometric polynomial with ball coefficients: mode 0 = hull of the
-    centres' c + the complex box of half-width R_i, mode m != 0 = the complex box of half-width T max |w_{k,m}| about 0
-    (it contains sigma w_{k,m} for |sigma| <= T). A full strip cover (fourier_eval Lemma 1) of hess19 gives exact upper
-    bounds MJ_kj >= sup |D_z f|, MH_kjl >= sup |D_z^2 f|, MF1_k >= sup |f1|, MG_kj >= sup |D_z f1| over the family, and
-    certifies that f(.; g) is holomorphic on a neighbourhood of it for every g in the disc."""
+def _curve_boxes(C, e_lo, e_hi):
+    """Balls containing c(xi), g(xi) and w(xi)_m for xi in [e_lo, e_hi] (e_c the midpoint): centre +- delta |tangent|."""
+    ec = (Fraction(e_lo) + Fraction(e_hi)) / 2
+    dl = up(_arb_q((Fraction(e_hi) - Fraction(e_lo)) / 2))
+    K = C.K
+    c = [C.c[k] + dl * C.tc[k].abs_upper() * arb(0, 1) for k in range(DIM)]
+    g = C.g + dl * C.tg.abs_upper() * arb(0, 1)
+    wabs = [[up(C.w[k][K + m].abs_upper() + dl * C.tw[k][K + m].abs_upper()) for m in range(1, K + 1)]
+            for k in range(DIM)]
+    return ec, dl, c, g, wabs
 
-    def __init__(self, centres, T, R, G_R, rho2="1", nx=16, rtol=1.0, max_evals=1500, log=print):
-        K = centres[0].K
+
+class EpsCover:
+    """Lemma B3 data for a group of pieces (C, e_lo, e_hi): the family Phi = {c + sigma w(theta) + zeta : (c, w) on a
+    piece's centre curve, |sigma| <= T, |zeta_i| <= R_i}, theta in the closed strip |Im theta| <= rho2, g in the complex
+    disc of radius G_R about the hull of the curves' g, realised as ONE trigonometric polynomial with ball coefficients:
+    mode 0 = hull of the curves' c + the complex box of half-width R_i; mode m != 0 = the complex box of half-width
+    T max (|w_{k,m}| + delta |tw_{k,m}|) about 0 (it contains sigma w(xi)_{k,m} for |sigma| <= T). A full strip cover
+    (fourier_eval Lemma 1) of hess19 gives exact upper bounds MJ_kj >= sup |D_z f|, MH_kjl >= sup |D_z^2 f|,
+    MF1_k >= sup |f1|, MG_kj >= sup |D_z f1| over the family, and certifies that f(.; g) is holomorphic on a
+    neighbourhood of it for every g in the disc."""
+
+    def __init__(self, pieces, T, R, G_R, rho2="1", nx=16, rtol=1.0, max_evals=1500, log=print):
+        C0 = pieces[0][0]
+        K = C0.K
         self.K = K
         self.T = _arb_q(T)
         self.T_text = str(T)
@@ -1062,30 +1230,28 @@ class EpsCover:
         old = ctx.prec
         ctx.prec = 128
         try:
+            chull, ghull, wmax = None, None, None
+            for (C, a, b) in pieces:
+                if C.K != K:
+                    raise ValueError("pieces with different K")
+                _, _, cb, gb, wabs = _curve_boxes(C, a, b)
+                chull = cb if chull is None else [x.union(y) for x, y in zip(chull, cb)]
+                ghull = gb if ghull is None else ghull.union(gb)
+                wmax = wabs if wmax is None else [[amax(x, y) for x, y in zip(r1, r2)] for r1, r2 in zip(wmax, wabs)]
             coeffs = [[None] * (2 * K + 1) for _ in range(DIM)]
             for k in range(DIM):
-                cre = centres[0].c[k]
-                for C in centres[1:]:
-                    cre = cre.union(C.c[k])
-                self.c_hull_k = None
-                coeffs[k][K] = acb(cre + self.R[k] * arb(0, 1), self.R[k] * arb(0, 1))
+                coeffs[k][K] = acb(chull[k] + self.R[k] * arb(0, 1), self.R[k] * arb(0, 1))
                 for m in range(1, K + 1):
-                    a = arb(0)
-                    for C in centres:
-                        a = amax(a, C.w[k][K + m].abs_upper())
-                    rad = up(self.T * a)
+                    rad = up(self.T * wmax[k][m - 1])
                     coeffs[k][K + m] = acb(arb(0, rad), arb(0, rad))
                     coeffs[k][K - m] = acb(arb(0, rad), arb(0, rad))
-            gh = centres[0].g
-            for C in centres[1:]:
-                gh = gh.union(C.g)
-            self.g_ball = acb(gh + self.G_R * arb(0, 1), self.G_R * arb(0, 1))
+            self.g_ball = acb(ghull + self.G_R * arb(0, 1), self.G_R * arb(0, 1))
         finally:
             ctx.prec = old
         self.coeffs = coeffs
-        for C in centres:
-            if not self.contains(C):
-                raise ProofFailure("internal: a centre is not in the cover family")
+        for (C, a, b) in pieces:
+            if not self.contains(C, a, b):
+                raise ProofFailure("internal: a piece is not in the cover family")
         phi = fe.TrigPoly(coeffs)
         prm = am.params(53)
         prm["g_Ks"] = self.g_ball
@@ -1095,36 +1261,41 @@ class EpsCover:
             raise ProofFailure("cover is not the full strip")
         S = sp.S
         o = 0
-        self.Mf = S[o:o + DIM]; o += DIM
-        self.MJ = [[S[o + DIM * k + j] for j in range(DIM)] for k in range(DIM)]; o += DIM * DIM
-        self.MH = [[S[o + NH * k + p] for p in range(NH)] for k in range(DIM)]; o += DIM * NH
-        self.MF1 = S[o:o + DIM]; o += DIM
-        self.MG = [[S[o + DIM * k + j] for j in range(DIM)] for k in range(DIM)]; o += DIM * DIM
+        self.Mf = S[o:o + DIM]
+        o += DIM
+        self.MJ = [[S[o + DIM * k + j] for j in range(DIM)] for k in range(DIM)]
+        o += DIM * DIM
+        self.MH = [[S[o + NH * k + p] for p in range(NH)] for k in range(DIM)]
+        o += DIM * NH
+        self.MF1 = S[o:o + DIM]
+        o += DIM
+        self.MG = [[S[o + DIM * k + j] for j in range(DIM)] for k in range(DIM)]
         self.strip = sp
         self.digest = phi.digest()
         self.seconds = time.time() - t0
-        log(f"  cover: T = {T}, {sp.n_evals} boxes, {self.seconds:.1f} s; max_k sum MH = "
-            f"{max(float(sum(r, arb(0))) for r in self.MH):.3e}, max MJ = {max(float(max(r)) for r in self.MJ):.3e}")
+        log(f"  cover: T = {T}, {len(pieces)} piece(s), {sp.n_evals} boxes, {self.seconds:.1f} s; max_k sum MH = "
+            f"{max(float(sum(r, arb(0))) for r in self.MH):.3e}")
 
     def H(self, k, j, l):
         return self.MH[k][HPI[(j, l) if j <= l else (l, j)]]
 
-    def contains(self, C):
+    def contains(self, C, e_lo, e_hi):
+        """The piece's centre curve lies in the family: c(xi) in the mode-0 box shrunk by R, T (|w_m| + delta |tw_m|)
+        <= the box half-width, g(xi) in the g disc, and e_hi <= T."""
         K = self.K
-        if C.K != K:
+        if C.K != K or not _arb_q(e_hi) <= self.T:
             return False
+        _, _, cb, gb, wabs = _curve_boxes(C, e_lo, e_hi)
         for k in range(DIM):
-            if not self.coeffs[k][K].contains(acb(C.c[k])):
+            box = self.coeffs[k][K]
+            inner = acb(box.real.mid() + (box.real.rad() - self.R[k]) * arb(0, 1))
+            if not inner.real.contains(cb[k]):
                 return False
             for m in range(1, K + 1):
-                # sigma w_{k,m} for |sigma| <= T lies in the box iff |Re|, |Im| <= T |w| is enough: check T |w| <= rad
-                rad = self.coeffs[k][K + m].real.rad()
-                if not up(self.T * C.w[k][K + m].abs_upper()) <= rad:
+                if not up(self.T * wabs[k][m - 1]) <= self.coeffs[k][K + m].real.rad():
                     return False
-        return True
-
-    def contains_g(self, g_ball):
-        return bool(self.g_ball.contains(g_ball))
+        gin = self.g_ball.real.mid() + (self.g_ball.real.rad() - self.G_R) * arb(0, 1)
+        return bool(gin.contains(gb))
 
     def record(self):
         return dict(T=self.T_text, R=self.R_text, G_R=self.G_R_text, rho2=self.rho2_text, digest=self.digest,
@@ -1135,8 +1306,8 @@ class EpsCover:
 
 
 # ------------------------------------------------------------------------------------------------ the proof on a piece
-PIECE_DEFAULTS = dict(rho0="1/4", L=8, M=96, prec_Q=192, prec_J=128, prec_mat=128, theta_target="1/2",
-                      n_explicit=12, nsub=8)
+PIECE_DEFAULTS = dict(rho0="1/4", L=8, M=64, prec_Q=192, prec_J=128, prec_mat=128, theta_target="1/2",
+                      n_explicit=12, nsub_xi=4, nsub_s=4, box_nx=16, box_max_evals=400)
 
 
 def _node_rows(phi, M, prec):
@@ -1152,26 +1323,124 @@ def _enclose(nodes_vals, S, rho, M, Kp, prec):
     return fe.enclose_coefficients(C_hat, S, rho, M, Kp, prec=prec)
 
 
-def _wsup(C, rho2):
-    """W_l >= sup_{|Im theta| <= rho2} |w_l(theta)|: sum_m |w_{l,m}| e^{rho2 |m|} (exact upper)."""
+def _hull(a, b):
+    return acb(a.real.union(b.real), a.imag.union(b.imag))
+
+
+def _hull_list(A_, B_):
+    return list(B_) if A_ is None else [_hull(x, y) for x, y in zip(A_, B_)]
+
+
+def _box_sup(fn, phi, rho, st):
+    """Strip sup (fourier_eval Lemma 1) of a black box, accepting the first finite cover (the bounds feed only aliasing
+    and Cauchy tails); raises ProofFailure if the cover is not the full strip."""
+    sp = fe.strip_sup(fn, phi, rho, nx=int(st["box_nx"]), rtol=1e30, atol=0.0, max_evals=int(st["box_max_evals"]))
+    if not sp.full_strip:
+        raise ProofFailure("strip cover of a curve function is not the full strip")
+    return sp
+
+
+class _CurveFns:
+    """The node functions along the centre curve (LEMMAS-hopf.md, Lemma B2). For a node value z36 = (u, v) =
+    (w(theta), tw(theta)) and balls Xi (for xi), S (for s):
+      point (xi = e_c exactly):  phi(t) = cbar + t tc + (e_c + t)(u + t v), g(t) = gbar + t tg;
+          Y1: [t] of f(phi(t); g(t)) and [t] of Q(t) = (f(phi(t)) - f(cbar(t))) / (e_c + t)
+      curve (xi in Xi, d = xi - e_c): cbar(xi) = cbar + d tc, W0 = u + d v, g(xi) = gbar + d tg,
+          b(s, t) = cbar(xi) + s xi W0 + t (tc + s (W0 + xi v)) + t^2 s v,  w(t) = W0 + t v,  g(t) = g(xi) + t tg:
+          Y2: 2 [t^2] f(b(1, t)) and 2 [t^2] D f(b(s, t)) w(t)   (dual number in tau along w(t))
+          Zc: [t^0], [t^1] of D_z f(b(1, t)), [t^1] of f1(b(1, t)), [t^1] of D^2 f(b(s,t))[w(t), .] and of
+              D f1(b(s,t))[w(t)]   (second-order duals in z, g, tau)."""
+
+    def __init__(self, C, e_lo, e_hi, prec):
+        self.C, self.prec = C, prec
+        self.elo, self.ehi = Fraction(e_lo), Fraction(e_hi)
+        self.ec = (self.elo + self.ehi) / 2
+        self.ecB = _arb_q(self.ec)
+        self.cbar = [acb(v) for v in C.c]
+        self.tc = [acb(v) for v in C.tc]
+        self.gbar, self.tg = acb(C.g), acb(C.tg)
+        with am.precision(prec):
+            # f(cbar(t); g(t)) does not depend on theta: once
+            bt = [[self.cbar[k], self.tc[k]] for k in range(DIM)]
+            self.F0 = curve_point(bt, None, [self.gbar, self.tg], 2, "acb", prec)
+
+    def y1(self, z):
+        u, v = z[:DIM], z[DIM:]
+        ec = self.ecB
+        bt = [[self.cbar[k] + ec * u[k], self.tc[k] + u[k] + ec * v[k], v[k]] for k in range(DIM)]
+        F1 = curve_point(bt, None, [self.gbar, self.tg], 2, "acb", self.prec)
+        den = Jet([acb(ec), acb(1)])
+        out = [F1[k].c[1] for k in range(DIM)]
+        for k in range(DIM):
+            q = (F1[k] - self.F0[k]) / den
+            out.append(q.c[1])
+        return out
+
+    def _base(self, z, Xi):
+        u, v = z[:DIM], z[DIM:]
+        d = Xi - self.ecB
+        cx = [self.cbar[k] + d * self.tc[k] for k in range(DIM)]
+        W0 = [u[k] + d * v[k] for k in range(DIM)]
+        gx = self.gbar + d * self.tg
+        return u, v, cx, W0, gx
+
+    def _bt(self, cx, W0, v, Xi, s):
+        return [[cx[k] + s * Xi * W0[k], self.tc[k] + s * (W0[k] + Xi * v[k]), s * v[k]] for k in range(DIM)]
+
+    def y2(self, z, Xi, Ss):
+        u, v, cx, W0, gx = self._base(z, Xi)
+        wt = [[W0[k], v[k]] for k in range(DIM)]
+        J1 = curve_point(self._bt(cx, W0, v, Xi, acb(1)), wt, [gx, self.tg], 3, "dual_tau", self.prec)
+        out = [2 * J1[k].c[2].v for k in range(DIM)]
+        acc = None
+        for S_ in Ss:
+            Js = curve_point(self._bt(cx, W0, v, Xi, S_), wt, [gx, self.tg], 3, "dual_tau", self.prec)
+            acc = _hull_list(acc, [2 * Js[k].c[2].d.get(19, acb(0)) for k in range(DIM)])
+        return out + acc
+
+    def zc(self, z, Xi, Ss):
+        u, v, cx, W0, gx = self._base(z, Xi)
+        wt = [[W0[k], v[k]] for k in range(DIM)]
+        zero = acb(0)
+        H1 = curve_point(self._bt(cx, W0, v, Xi, acb(1)), wt, [gx, self.tg], 2, "hess", self.prec)
+        J = [H1[k].c[0].g.get(j, zero) for k in range(DIM) for j in range(DIM)]
+        Jp = [H1[k].c[1].g.get(j, zero) for k in range(DIM) for j in range(DIM)]
+        f1p = [H1[k].c[1].g.get(DIM, zero) for k in range(DIM)]
+        acc = None
+        for S_ in Ss:
+            Hs = curve_point(self._bt(cx, W0, v, Xi, S_), wt, [gx, self.tg], 2, "hess", self.prec)
+            vals = [Hs[k].c[1].h.get((j, 19), zero) for k in range(DIM) for j in range(DIM)]
+            vals += [Hs[k].c[1].h.get((DIM, 19), zero) for k in range(DIM)]
+            acc = _hull_list(acc, vals)
+        return J + Jp + f1p + acc
+
+
+def _wsup(C, dl, rho2):
+    """W_l >= sup_{|Im theta| <= rho2, xi in the piece} |w(xi)_l(theta)| = sum_m (|w_{l,m}| + delta |tw_{l,m}|) e^{rho2 |m|}."""
     K = C.K
     out = []
     for l in range(DIM):
         s = arb(0)
         for m in range(1, K + 1):
-            s += 2 * C.w[l][K + m].abs_upper() * (rho2 * m).exp()
+            s += 2 * (C.w[l][K + m].abs_upper() + dl * C.tw[l][K + m].abs_upper()) * (rho2 * m).exp()
         out.append(up(s))
     return out
 
 
 def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
     """Every weight-free rigorous ingredient of the radii polynomial on the piece [e_lo, e_hi] (exact decimals or
-    Fractions) for the exact centre C (computed at the midpoint e_c), with the strip sups from the cover cov (Lemma B3).
-    See LEMMAS-hopf.md, Lemma B2, for the bounds assembled here."""
+    Fractions) for the exact centre C (at the midpoint e_c) and tangent, with the strip sups of the point data from the
+    cover cov (Lemma B3). LEMMAS-hopf.md, Lemma B2, states the bounds assembled here."""
     st = dict(PIECE_DEFAULTS)
     st.update(settings or {})
-    clk = ex.Clock(lambda s: None)
+    marks = {}
     t0 = time.time()
+    tl = [t0]
+
+    def mark(name):
+        t = time.time()
+        marks[name] = round(t - tl[0], 1)
+        tl[0] = t
     K = C.K
     lay = Lay(K)
     n = lay.n
@@ -1179,13 +1448,13 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
     Mn = int(st["M"])
     if not Kp < Mn:
         raise ValueError("need K' < M")
-    PQ, PJ, PM = int(st["prec_Q"]), int(st["prec_J"]), int(st["prec_mat"])
+    PQ, PM = int(st["prec_Q"]), int(st["prec_mat"])
     elo, ehi = Fraction(e_lo), Fraction(e_hi)
     if not (0 <= elo < ehi):
         raise ValueError("need 0 <= e_lo < e_hi")
     ec = (elo + ehi) / 2
-    if not cov.contains(C):
-        raise ProofFailure("centre not in the cover family")
+    if not cov.contains(C, elo, ehi):
+        raise ProofFailure("piece not in the cover family")
     old = ctx.prec
     ctx.prec = PQ
     try:
@@ -1200,15 +1469,13 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
         nupow = [nu ** j for j in range(Kp + 2 * K + 4)]
         ecb = _arb_q(ec)
         delta = up(_arb_q((ehi - elo) / 2))
-        eloB, ehiB = _arb_q(elo), _arb_q(ehi)
-        if not ehiB <= cov.T:
-            raise ProofFailure("e_hi > T: the cover family does not contain the piece")
+        ehiB = _arb_q(ehi)
         Tm = cov.T - ehiB                              # T - e_hi > 0
         if not Tm > 0:
             raise ProofFailure("T - e_hi not positive")
-        Wl = _wsup(C, rho2)
+        Wl = _wsup(C, delta, rho2)
         MJ, MF1 = cov.MJ, cov.MF1
-        # strip sups (Lemma B3 (b)): from the cover, for the functions of the centre used below
+        # strip sups (Lemma B3 (b)) of the point-data functions of the centre at e_c
         HW = [[up(sum((cov.H(k, j, l) * Wl[l] for l in range(DIM)), arb(0))) for j in range(DIM)] for k in range(DIM)]
         GW = [up(sum((cov.MG[k][l] * Wl[l] for l in range(DIM)), arb(0))) for k in range(DIM)]
         S_Q = [up(sum((MJ[k][j] * Wl[j] for j in range(DIM)), arb(0))) for k in range(DIM)]
@@ -1216,17 +1483,13 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
         S_Kc = HW
         S_f1 = list(MF1)
         S_kg = GW
-        S_dE0 = S_Q
-        S_dQ = [up(sum((cov.H(k, j, l) * Wl[j] * Wl[l] for j in range(DIM) for l in range(DIM)), arb(0)) / 2)
-                for k in range(DIM)]
     finally:
         ctx.prec = old
 
     phi = C.trig()
-    ghat = C.g
     cbar = [acb(v) for v in C.c]
-    # ---- point data at e_c: Q, J, Kc, f1, kg at the M nodes (one dual evaluation per node, prec PQ)
-    prmQ = am.params(PQ, g_Ks=acb(ghat))
+    # ---- point data at e_c: Q, J, Kc, f1, kg at the M nodes (one dual evaluation per node)
+    prmQ = am.params(PQ, g_Ks=acb(C.g))
     with am.precision(PQ):
         f0, J0c, P0 = am.f_and_df(cbar, prmQ, prec=PQ, wrt=("g_Ks",))
         nodes = _node_rows(phi, Mn, PQ)
@@ -1243,20 +1506,21 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
         S_all = S_Q + [S_J[k][j] for k in range(DIM) for j in range(DIM)] + \
             [S_Kc[k][j] for k in range(DIM) for j in range(DIM)] + S_f1 + S_kg
         enc = _enclose(vals, S_all, rho2, Mn, Kp, PQ)
-    clk.mark("point data")
+    mark("point data")
     o = 0
-    encQ = enc[o:o + DIM]; o += DIM
-    encJ = enc[o:o + DIM * DIM]; o += DIM * DIM
-    encK = enc[o:o + DIM * DIM]; o += DIM * DIM
-    encf1 = enc[o:o + DIM]; o += DIM
-    enckg = enc[o:o + DIM]; o += DIM
+    encQ = enc[o:o + DIM]
+    o += DIM
+    encJ = enc[o:o + DIM * DIM]
+    o += DIM * DIM
+    encK = enc[o:o + DIM * DIM]
+    o += DIM * DIM
+    encf1 = enc[o:o + DIM]
+    o += DIM
+    enckg = enc[o:o + DIM]
 
-    def Jn(nn):
-        return [[encJ[DIM * k + j][nn + Kp] for j in range(DIM)] for k in range(DIM)]
-
-    def Kn(nn):
-        return [[encK[DIM * k + j][nn + Kp] for j in range(DIM)] for k in range(DIM)]
-    J = {nn: Jn(nn) for nn in range(-Kp, Kp + 1)}
+    def M_(enc_, nn):
+        return [[enc_[DIM * k + j][nn + Kp] for j in range(DIM)] for k in range(DIM)]
+    J = {nn: M_(encJ, nn) for nn in range(-Kp, Kp + 1)}
 
     # ---- Galerkin matrix at e_c and A_fin
     ctx.prec = PM
@@ -1271,12 +1535,12 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
                 D[r, CC + j] = J[0][k][j]
                 for mp in lay.modes():
                     D[r, lay.w(j, mp)] = ecb * J[-mp][k][j]
-        for k in range(DIM):
-            for m in lay.modes():
+        for m in lay.modes():
+            Km = M_(encK, m)
+            for k in range(DIM):
                 r = lay.w(k, m)
                 D[r, 0] = acb(0, m) * C.w[k][K + m]
                 D[r, 1] = -enckg[k][m + Kp]
-                Km = Kn(m)
                 for j in range(DIM):
                     D[r, CC + j] = -Km[k][j]
                     for mp in lay.modes():
@@ -1287,17 +1551,16 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
         Bff = ex._identity(n) - Afin * D
     finally:
         ctx.prec = old
-    clk.mark("galerkin")
+    mark("galerkin")
 
     ctx.prec = PQ
     try:
-        # row weights per output component
         WR = arb_mat(NC, n)
         for i in range(n):
             WR[lay.comp[i], i] = up(nupow[abs(lay.mode[i])])
 
         def colsup(Mabs, scale_by_mode=False):
-            """B[c][c'] = max over columns j of input component c' of (weighted col sum over rows of c) / nu^|m_j|."""
+            """B[c][c'] = max over columns j of component c' of (row-weighted column sum over the rows of c) / nu^|m_j|."""
             cs = WR * Mabs
             B = [[arb(0)] * NC for _ in range(NC)]
             for j in range(n):
@@ -1310,40 +1573,61 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
             return B
         Z1_ff = colsup(ex._abs_mat(Bff))
         Aabs = ex._abs_mat(Afin)
-        NA = colsup(Aabs)            # input components of the residual: 0 N+, 1 N-, 2+k E0_k, 20+k E_k
+        NA = colsup(Aabs)             # residual input blocks: 0 N+, 1 N-, 2 + k E_0k, 20 + k E_k
         NA1 = colsup(Aabs, scale_by_mode=True)
-        clk.mark("Z1 finite")
-        # ---- finite rows x tail columns (w_{j,m'}, |m'| > K)
         Lw = int(st["L"])
         cols = [(j, mp) for j in range(DIM) for mp in list(range(K + 1, K + Lw + 1)) + list(range(-K - Lw, -K))]
-        Wm = acb_mat(n, len(cols))
-        for t, (j, mp) in enumerate(cols):
-            for k in range(DIM):
-                Wm[CC + k, t] = ecb * J[-mp][k][j]
-                for m in lay.modes():
-                    Wm[lay.w(k, m), t] = -J[m - mp][k][j]
-        with fe.precision(PM):
-            AW = Afin * Wm
-        cW = WR * ex._abs_mat(AW)
-        Z1_ft = [[arb(0)] * DIM for _ in range(NC)]
-        for t, (j, mp) in enumerate(cols):
-            for c in range(NC):
-                Z1_ft[c][j] = amax(Z1_ft[c][j], up(cW[c, t] / nupow[abs(mp)]))
         mb = K + Lw + 1
-        colsb = [(j, s * mb) for j in range(DIM) for s in (1, -1)]
-        Wb = arb_mat(n, len(colsb))
+        colsb = [(j, sg * mb) for j in range(DIM) for sg in (1, -1)]
         er = (-rho2).exp()
-        for t, (j, mp) in enumerate(colsb):
+
+        def finite_tail(colfun, majorant):
+            """Finite rows x tail columns (w_{j,m'}, |m'| > K): explicit for K < |m'| <= K + L (colfun(j, m') -> list
+            of n balls), the majorant columns at |m'| = K + L + 1 (majorant(j, m') -> list of n exact upper bounds,
+            each proportional to e^{-rho2 |m'|} times a constant: the weighted sum / nu^|m'| decreases in |m'|)."""
+            Wm = acb_mat(n, len(cols))
+            for t, (j, mp) in enumerate(cols):
+                col = colfun(j, mp)
+                for i in range(n):
+                    if col[i] is not None:
+                        Wm[i, t] = col[i]
+            with fe.precision(PM):
+                AW = Afin * Wm
+            cW = WR * ex._abs_mat(AW)
+            out = [[arb(0)] * DIM for _ in range(NC)]
+            for t, (j, mp) in enumerate(cols):
+                for c in range(NC):
+                    out[c][j] = amax(out[c][j], up(cW[c, t] / nupow[abs(mp)]))
+            Wb = arb_mat(n, len(colsb))
+            for t, (j, mp) in enumerate(colsb):
+                col = majorant(j, mp)
+                for i in range(n):
+                    if col[i] is not None:
+                        Wb[i, t] = col[i]
+            cWb = WR * (Aabs * Wb)
+            for t, (j, mp) in enumerate(colsb):
+                for c in range(NC):
+                    out[c][j] = amax(out[c][j], up(cWb[c, t] / nupow[abs(mp)]))
+            return out
+
+        def col_J(j, mp):
+            col = [None] * n
             for k in range(DIM):
-                Wb[CC + k, t] = up(ecb.real * S_J[k][j] * er ** abs(mp))
+                col[CC + k] = ecb * J[-mp][k][j]
                 for m in lay.modes():
-                    Wb[lay.w(k, m), t] = up(S_J[k][j] * er ** abs(m - mp))
-        cWb = WR * (Aabs * Wb)
-        for t, (j, mp) in enumerate(colsb):
-            for c in range(NC):
-                Z1_ft[c][j] = amax(Z1_ft[c][j], up(cWb[c, t] / nupow[abs(mp)]))
-        clk.mark("Z1 finite x tail")
-        # ---- tail resolvents A_m = (i m om - J0hat)^-1, |m| > K (existence._tail_bounds, N = 1: no damping)
+                    col[lay.w(k, m)] = -J[m - mp][k][j]
+            return col
+
+        def maj_J(j, mp):
+            col = [None] * n
+            for k in range(DIM):
+                col[CC + k] = up(ecb * S_J[k][j] * er ** abs(mp))
+                for m in lay.modes():
+                    col[lay.w(k, m)] = up(S_J[k][j] * er ** abs(m - mp))
+            return col
+        Z1_ft = finite_tail(col_J, maj_J)
+        mark("Z1 finite")
+        # ---- tail resolvents A_m = (i m om - J0hat)^-1, |m| > K (existence._tail_bounds with N = 1: no damping)
         J0hat = acb_mat([[acb(J[0][k][j].real.mid()) for j in range(DIM)] for k in range(DIM)])
         Jp = {nn: acb_mat([[J[nn][k][j] - (J0hat[k, j] if nn == 0 else 0) for j in range(DIM)] for k in range(DIM)])
               for nn in range(-Kp, Kp + 1)}
@@ -1352,7 +1636,47 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
             tail = ex._tail_bounds(K, Kp, C.om, J0hat, Jp, {}, 1, stt, nupow, lambda s: None)
         Abar0, Abar1, Cn, Aex = tail["Abar0"], tail["Abar1"], tail["C"], tail["A_explicit"]
         Ab0 = arb_mat(Abar0)
-        # T (w -> w), Tc (c -> w), Tg (g -> w): tail rows (LEMMAS-hopf.md, Lemma B2 (c))
+
+        def conv_tail(enc_, S_):
+            """sum_j Abar0_cj (sum_{|n| <= K'} |G_{n,jk}| nu^|n| + S_jk tailK): tail rows of a convolution by G."""
+            out = [[arb(0)] * DIM for _ in range(DIM)]
+            for k in range(DIM):
+                for j in range(DIM):
+                    s_ = sum((enc_[DIM * j + k][nn + Kp].abs_upper() * nupow[abs(nn)] for nn in range(-Kp, Kp + 1)),
+                             arb(0)) + S_[j][k] * tailK
+                    for c in range(DIM):
+                        out[c][k] = out[c][k] + Abar0[c][j] * s_
+            return [[up(v) for v in row] for row in out]
+
+        def col_tail(encM, encv, SM, Sv):
+            """Tail rows of a c-column (matrix coefficients encM_m) and a g-column (vector encv_m)."""
+            Tc_ = [[arb(0)] * DIM for _ in range(DIM)]
+            Tg_ = [arb(0)] * DIM
+            for m in range(K + 1, Kp + 1):
+                Am = Aex.get(m)
+                for sgn in (1, -1):
+                    mm = sgn * m
+                    Km = acb_mat(M_(encM, mm))
+                    kgm = colvec([encv[k][mm + Kp] for k in range(DIM)])
+                    if Am is not None:
+                        Asg = Am if sgn == 1 else Am.conjugate()
+                        PK = ex._abs_mat(Asg * Km)
+                        Pg_ = Asg * kgm
+                        pg = [Pg_[c, 0].abs_upper() for c in range(DIM)]
+                    else:
+                        PK = Ab0 * ex._abs_mat(Km)
+                        v_ = Ab0 * arb_mat([[kgm[k, 0].abs_upper()] for k in range(DIM)])
+                        pg = [up(v_[c, 0]) for c in range(DIM)]
+                    for c in range(DIM):
+                        Tg_[c] = up(Tg_[c] + pg[c] * nupow[m])
+                        for k in range(DIM):
+                            Tc_[c][k] = up(Tc_[c][k] + PK[c, k] * nupow[m])
+            for c in range(DIM):
+                Tg_[c] = up(Tg_[c] + sum((Abar0[c][j] * Sv[j] for j in range(DIM)), arb(0)) * tailK)
+                for k in range(DIM):
+                    Tc_[c][k] = up(Tc_[c][k] + sum((Abar0[c][j] * SM[j][k] for j in range(DIM)), arb(0)) * tailK)
+            return Tc_, Tg_
+
         T = [[arb(0)] * DIM for _ in range(DIM)]
         for nn, Cm in Cn.items():
             w_ = up(nupow[abs(nn)])
@@ -1361,39 +1685,14 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
                     T[c][k] = T[c][k] + Cm[c][k] * w_
         for c in range(DIM):
             for k in range(DIM):
-                s = sum((Abar0[c][j] * S_J[j][k] for j in range(DIM)), arb(0))
-                T[c][k] = up(T[c][k] + s * tailK)
-        Tc = [[arb(0)] * DIM for _ in range(DIM)]
-        Tg = [arb(0)] * DIM
-        for m in range(K + 1, Kp + 1):
-            Am = Aex.get(m)
-            for sgn in (1, -1):
-                mm = sgn * m
-                Km = acb_mat(Kn(mm))
-                kgm = colvec([enckg[k][mm + Kp] for k in range(DIM)])
-                if Am is not None:
-                    Asg = Am if sgn == 1 else Am.conjugate()
-                    PK = ex._abs_mat(Asg * Km)
-                    Pg_ = Asg * kgm
-                    pg = [Pg_[c, 0].abs_upper() for c in range(DIM)]
-                else:
-                    PK = Ab0 * ex._abs_mat(Km)
-                    v = Ab0 * arb_mat([[kgm[k, 0].abs_upper()] for k in range(DIM)])
-                    pg = [up(v[c, 0]) for c in range(DIM)]
-                for c in range(DIM):
-                    Tg[c] = up(Tg[c] + pg[c] * nupow[m])
-                    for k in range(DIM):
-                        Tc[c][k] = up(Tc[c][k] + PK[c, k] * nupow[m])
-        for c in range(DIM):
-            Tg[c] = up(Tg[c] + sum((Abar0[c][j] * S_kg[j] for j in range(DIM)), arb(0)) * tailK)
-            for k in range(DIM):
-                Tc[c][k] = up(Tc[c][k] + sum((Abar0[c][j] * S_Kc[j][k] for j in range(DIM)), arb(0)) * tailK)
-        clk.mark("tail")
+                s_ = sum((Abar0[c][j] * S_J[j][k] for j in range(DIM)), arb(0))
+                T[c][k] = up(T[c][k] + s_ * tailK)
+        Tc, Tg = col_tail(encK, enckg, S_Kc, S_kg)
+        mark("tail")
 
-        # ---- Y0 at e_c: A F(xbar; e_c)
         def apply_A(fin_vec, tail_vals, S_tail):
-            """Weighted component norms of A r for the residual r with finite part fin_vec (acb_mat n x 1), tail entries
-            tail_vals[mm] (18-vectors, K < |mm| <= K') and Cauchy tail |r_{k,m}| <= S_tail[k] e^{-rho2 |m|}, |m| > K'."""
+            """Weighted component norms of A r for the residual r with finite part fin_vec (n x 1), tail entries
+            tail_vals[mm] (18 balls, K < |mm| <= K') and |r_{k,m}| <= S_tail[k] e^{-rho2 |m|} for |m| > K'."""
             AF = Afin * fin_vec
             out = [arb(0)] * NC
             for i in range(n):
@@ -1404,17 +1703,19 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
                     mm = sgn * m
                     gv = colvec(tail_vals[mm])
                     if Am is not None:
-                        v = (Am if sgn == 1 else Am.conjugate()) * gv
-                        vals_ = [v[c, 0].abs_upper() for c in range(DIM)]
+                        v_ = (Am if sgn == 1 else Am.conjugate()) * gv
+                        vals_ = [v_[c, 0].abs_upper() for c in range(DIM)]
                     else:
-                        v = Ab0 * arb_mat([[gv[k, 0].abs_upper()] for k in range(DIM)])
-                        vals_ = [up(v[c, 0]) for c in range(DIM)]
+                        v_ = Ab0 * arb_mat([[gv[k, 0].abs_upper()] for k in range(DIM)])
+                        vals_ = [up(v_[c, 0]) for c in range(DIM)]
                     for c in range(DIM):
                         out[CW + c] = out[CW + c] + vals_[c] * nupow[m]
             for c in range(DIM):
                 out[CW + c] = out[CW + c] + sum((Abar0[c][k] * S_tail[k] for k in range(DIM)), arb(0)) * tailK
             return [up(v) for v in out]
+        tail_modes = list(range(K + 1, Kp + 1)) + list(range(-Kp, -K))
 
+        # ---- Y0p = ||A F(xbar_c; e_c)||
         Ffin = acb_mat(n, 1)
         Ffin[0, 0] = C.w[IV][K + 1] - acb(fmpq(1, 2))
         Ffin[1, 0] = C.w[IV][K - 1] - acb(fmpq(1, 2))
@@ -1422,268 +1723,133 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
             Ffin[CC + k, 0] = f0[k] + ecb * encQ[k][Kp]
             for m in lay.modes():
                 Ffin[lay.w(k, m), 0] = acb(0, m) * acb(C.om) * C.w[k][K + m] - encQ[k][m + Kp]
-        tailF = {mm: [-encQ[k][mm + Kp] for k in range(DIM)] for mm in list(range(K + 1, Kp + 1)) + list(range(-Kp, -K))}
-        Y0p = apply_A(Ffin, tailF, S_Q)
-        clk.mark("Y0")
+        Y0p = apply_A(Ffin, {mm: [-encQ[k][mm + Kp] for k in range(DIM)] for mm in tail_modes}, S_Q)
+        mark("Y0")
 
-        # ---- Yeps: A d_eps F(xbar; xi) over xi in [e_lo, e_hi] (Lemma B2 (a)): jets along w at the nodes
-        nsub = int(st["nsub"])
-        dvals = []
+        # ---- curve data (Lemma B2 (a), (b))
+        cf = _CurveFns(C, elo, ehi, PQ)
+        phi36 = C.trig36()
+        nodes36 = _node_rows(phi36, Mn, PQ)
+        nxi, ns = int(st["nsub_xi"]), int(st["nsub_s"])
+        subs_xi = [_ball_interval(elo + (ehi - elo) * Fraction(i, nxi), elo + (ehi - elo) * Fraction(i + 1, nxi))
+                   for i in range(nxi)]
+        subs_s = [_ball_interval(Fraction(i, ns), Fraction(i + 1, ns)) for i in range(ns)]
+        XiB = _ball_interval(elo, ehi)
+        S01 = [_ball_interval(0, 1)]
         with am.precision(PQ):
-            subs_E = [(elo + (ehi - elo) * Fraction(i, nsub), elo + (ehi - elo) * Fraction(i + 1, nsub)) for i in range(nsub)]
-            subs_S = [(ehi * Fraction(i, nsub), ehi * Fraction(i + 1, nsub)) for i in range(nsub)]
-            for z in nodes:
-                dE0 = None
-                dQ = None
-                for (a, b) in subs_E:
-                    Xi = _ball_interval(a, b)
-                    x0 = [cbar[k] + Xi * z[k] for k in range(DIM)]
-                    jt = field_jet(x0, z, 2, acb(ghat), 0, physical=False, prec=PQ)
-                    v = [jt[k][1] for k in range(DIM)]
-                    dE0 = v if dE0 is None else [acb(dE0[k].real.union(v[k].real), dE0[k].imag.union(v[k].imag)) for k in range(DIM)]
-                for (a, b) in subs_S:
-                    Sg = _ball_interval(a, b)
-                    x0 = [cbar[k] + Sg * z[k] for k in range(DIM)]
-                    jt = field_jet(x0, z, 3, acb(ghat), 0, physical=False, prec=PQ)
-                    v = [jt[k][2] for k in range(DIM)]            # (1/2) D^2 f[u, u]: int_0^1 s D^2 f(..)[u,u] ds lies in its hull
-                    dQ = v if dQ is None else [acb(dQ[k].real.union(v[k].real), dQ[k].imag.union(v[k].imag)) for k in range(DIM)]
-                dvals.append(dE0 + dQ)
-            encd = _enclose(dvals, S_dE0 + S_dQ, rho2, Mn, Kp, PQ)
-        encdE0, encdQ = encd[:DIM], encd[DIM:]
-        dF = acb_mat(n, 1)
+            # Y1 at the point e_c
+            sp1 = _box_sup(lambda z: cf.y1(z), phi36, rho2, st)
+            v1 = [cf.y1(z) for z in nodes36]
+            enc1 = _enclose(v1, sp1.S, rho2, Mn, Kp, PQ)
+            mark("Y1 data")
+            sp2 = _box_sup(lambda z: cf.y2(z, XiB, S01), phi36, rho2, st)
+            v2 = []
+            for z in nodes36:
+                acc = None
+                for Xi in subs_xi:
+                    acc = _hull_list(acc, cf.y2(z, Xi, subs_s))
+                v2.append(acc)
+            enc2 = _enclose(v2, sp2.S, rho2, Mn, Kp, PQ)
+            mark("Y2 data")
+            sp3 = _box_sup(lambda z: cf.zc(z, XiB, S01), phi36, rho2, st)
+            v3 = []
+            for z in nodes36:
+                acc = None
+                for Xi in subs_xi:
+                    acc = _hull_list(acc, cf.zc(z, Xi, subs_s))
+                v3.append(acc)
+            enc3 = _enclose(v3, sp3.S, rho2, Mn, Kp, PQ)
+            mark("Zc data")
+        # Y1
+        F1 = acb_mat(n, 1)
         for k in range(DIM):
-            dF[CC + k, 0] = encdE0[k][Kp]
+            F1[CC + k, 0] = enc1[k][Kp]
             for m in lay.modes():
-                dF[lay.w(k, m), 0] = -encdQ[k][m + Kp]
-        tailD = {mm: [-encdQ[k][mm + Kp] for k in range(DIM)] for mm in list(range(K + 1, Kp + 1)) + list(range(-Kp, -K))}
-        Yeps = apply_A(dF, tailD, S_dQ)
-        clk.mark("Yeps")
+                F1[lay.w(k, m), 0] = acb(0, m) * (acb(C.tom) * C.w[k][K + m] + acb(C.om) * C.tw[k][K + m]) \
+                    - enc1[DIM + k][m + Kp]
+        Y1 = apply_A(F1, {mm: [-enc1[DIM + k][mm + Kp] for k in range(DIM)] for mm in tail_modes}, sp1.S[DIM:])
+        # Y2 (sup over the piece)
+        F2 = acb_mat(n, 1)
+        for k in range(DIM):
+            F2[CC + k, 0] = enc2[k][Kp]
+            for m in lay.modes():
+                F2[lay.w(k, m), 0] = 2 * acb(0, m) * acb(C.tom) * C.tw[k][K + m] - enc2[DIM + k][m + Kp]
+        Y2 = apply_A(F2, {mm: [-enc2[DIM + k][mm + Kp] for k in range(DIM)] for mm in tail_modes}, sp2.S[DIM:])
+        # Zc: A d/dxi DF(xbar(xi); xi), finite part by an exact product with A_fin
+        o = 0
+        eJ = enc3[o:o + DIM * DIM]
+        o += DIM * DIM
+        eJp = enc3[o:o + DIM * DIM]
+        o += DIM * DIM
+        ef1p = enc3[o:o + DIM]
+        o += DIM
+        eKcp = enc3[o:o + DIM * DIM]
+        o += DIM * DIM
+        ekgp = enc3[o:o + DIM]
+        S3 = sp3.S
+        S_Jx = [[S3[DIM * k + j] for j in range(DIM)] for k in range(DIM)]
+        S_Jp = [[S3[DIM * DIM + DIM * k + j] for j in range(DIM)] for k in range(DIM)]
+        S_Kcp = [[S3[2 * DIM * DIM + DIM + DIM * k + j] for j in range(DIM)] for k in range(DIM)]
+        S_kgp = [S3[3 * DIM * DIM + DIM + k] for k in range(DIM)]
+        Dp = acb_mat(n, n)
+        Jp0 = M_(eJp, 0)
+        for k in range(DIM):
+            r = CC + k
+            Dp[r, 1] = ef1p[k][Kp]
+            for j in range(DIM):
+                Dp[r, CC + j] = Jp0[k][j]
+            for mp in lay.modes():
+                A1, A2 = M_(eJ, -mp), M_(eJp, -mp)
+                for j in range(DIM):
+                    Dp[r, lay.w(j, mp)] = A1[k][j] + XiB * A2[k][j]
+        for m in lay.modes():
+            dK = M_(eKcp, m)
+            for k in range(DIM):
+                r = lay.w(k, m)
+                Dp[r, 0] = acb(0, m) * C.tw[k][K + m]
+                Dp[r, 1] = -ekgp[k][m + Kp]
+                for j in range(DIM):
+                    Dp[r, CC + j] = -dK[k][j]
+            for mp in lay.modes():
+                A2 = M_(eJp, m - mp)
+                for k in range(DIM):
+                    r = lay.w(k, m)
+                    for j in range(DIM):
+                        Dp[r, lay.w(j, mp)] = -A2[k][j]
+            for k in range(DIM):
+                r = lay.w(k, m)
+                Dp[r, r] += acb(0, m) * acb(C.tom)
+        with fe.precision(PM):
+            PZ = Afin * Dp
+        Zc_ff = colsup(ex._abs_mat(PZ))
+
+        def col_Jc(j, mp):
+            col = [None] * n
+            A1, A2 = M_(eJ, -mp), M_(eJp, -mp)
+            for k in range(DIM):
+                col[CC + k] = A1[k][j] + XiB * A2[k][j]
+                for m in lay.modes():
+                    col[lay.w(k, m)] = -M_(eJp, m - mp)[k][j]
+            return col
+
+        def maj_Jc(j, mp):
+            col = [None] * n
+            for k in range(DIM):
+                col[CC + k] = up((S_Jx[k][j] + ehiB * S_Jp[k][j]) * er ** abs(mp))
+                for m in lay.modes():
+                    col[lay.w(k, m)] = up(S_Jp[k][j] * er ** abs(m - mp))
+            return col
+        Zc_ft = finite_tail(col_Jc, maj_Jc)
+        TZ = conv_tail(eJp, S_Jp)
+        tom_abs = C.tom.abs_upper()
+        TZ = [[up(TZ[c][k] + Abar1[c][k] * tom_abs) for k in range(DIM)] for c in range(DIM)]
+        TcZ, TgZ = col_tail(eKcp, ekgp, S_Kcp, S_kgp)
+        mark("Zc blocks")
     finally:
         ctx.prec = old
     return dict(C=C, K=K, Kp=Kp, M=Mn, e_lo=str(elo), e_hi=str(ehi), e_c=str(ec), delta=delta, ehiB=ehiB, Tm=Tm,
-                enu=up((-rho2).exp() / nu),
                 nu=nu, Q2=Q2, rho2=rho2, Wl=Wl, HW=HW, GW=GW, Z1_ff=Z1_ff, Z1_ft=Z1_ft, T=T, Tc=Tc, Tg=Tg, NA=NA,
-                NA1=NA1, Abar0=Abar0, Abar1=Abar1, Y0p=Y0p, Yeps=Yeps, cov=cov, label=label, settings=st,
-                tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))), timings_s=clk.marks,
-                wall_s=round(time.time() - t0, 1), A_fin_sha=hashlib.sha256(Dm.tobytes()).hexdigest())
-
-
-def assemble(bl, eta, r_star, *, log=print, _mutate=()):
-    """The radii polynomial on the piece with weights eta (38 exact dyadic strings: omega, g, c_0..c_17, w_0..w_17) and
-    the Z2 validity radius r_star (LEMMAS-hopf.md, Lemmas B2, B3). Raises ProofFailure (with .diag) if an inequality
-    is not certified. _mutate (tests only): 'drop_eps_width' omits delta (Yeps, Zeps); 'drop_cauchy' omits the
-    1 / (T - e_hi) terms of Z2 (the third-derivative terms); 'drop_tail' omits the tail-row blocks T, Tc, Tg."""
-    mut = frozenset(_mutate)
-    if mut - {"drop_eps_width", "drop_cauchy", "drop_tail"}:
-        raise ValueError(f"unknown mutation {sorted(mut)}")
-    if len(eta) != NC:
-        raise ValueError(f"eta needs {NC} entries")
-    cov = bl["cov"]
-    old = ctx.prec
-    ctx.prec = int(bl["settings"]["prec_Q"])
-    try:
-        E = [_arb_q(e) for e in eta]
-        for e in E:
-            if not (e.is_exact() and e > 0):
-                raise ValueError("eta must be exact positive dyadics")
-        rs = _arb_q(r_star) if not isinstance(r_star, arb) else r_star
-        rs = up(rs)
-        e_om, e_g = E[0], E[1]
-        ec = [E[CC + k] for k in range(DIM)]
-        ew = [E[CW + k] for k in range(DIM)]
-        Q2, ehi, Tm, delta = bl["Q2"], bl["ehiB"], bl["Tm"], bl["delta"]
-        if "drop_eps_width" in mut:
-            delta = arb(0)
-        HW, GW = bl["HW"], bl["GW"]
-        NA, NA1 = bl["NA"], bl["NA1"]
-        Ab0, Ab1 = bl["Abar0"], bl["Abar1"]
-        # ---- Z1 at e_c
-        drop_tail = "drop_tail" in mut
-        Z1c_rows = []
-        for c in range(NC):
-            s = e_om * bl["Z1_ff"][c][0] + e_g * (bl["Z1_ff"][c][1] + (bl["Tg"][c - CW] if c >= CW and not drop_tail else 0))
-            for k in range(DIM):
-                b = bl["Z1_ff"][c][CC + k] + (bl["Tc"][c - CW][k] if c >= CW and not drop_tail else 0)
-                s += ec[k] * b
-                b = amax(bl["Z1_ff"][c][CW + k], bl["Z1_ft"][c][k]) + (bl["T"][c - CW][k] if c >= CW and not drop_tail else 0)
-                s += ew[k] * b
-            Z1c_rows.append(up(s / E[c]))
-        # ---- Zeps (crude, multiplied by delta)
-        MJ = cov.MJ
-        r0 = []
-        rE = []
-        enu = bl["enu"]                                  # e^{-rho2} / nu
-        for k in range(DIM):
-            # E_0 row (Lemma B2 (b)): every term is a mean of a zero-mean-at-eps=0 function, hence O(e_hi)
-            a = sum((ehi * HW[k][j] / Tm * ec[j] + ehi * HW[k][j] * (enu + 1) * ew[j] for j in range(DIM)), arb(0)) \
-                + ehi * GW[k] / Tm * e_g
-            r0.append(up(a))
-            b = sum((HW[k][j] * ew[j] + HW[k][j] * ec[j] / (2 * Tm) for j in range(DIM)), arb(0)) + GW[k] * e_g / (2 * Tm)
-            rE.append(up(Q2 * b))
-
-        def through_A(v0, vE, v1=None):
-            rows = []
-            for c in range(NC):
-                s = arb(0)
-                for k in range(DIM):
-                    s += NA[c][CC + k] * v0[k]
-                    s += (NA[c][CW + k] + (Ab0[c - CW][k] if c >= CW else 0)) * vE[k]
-                    if v1 is not None:
-                        s += (NA1[c][CW + k] + (Ab1[c - CW][k] if c >= CW else 0)) * v1[k]
-                rows.append(up(s / E[c]))
-            return rows
-        Zeps_rows = through_A(r0, rE)
-        Z1_rows = [up(Z1c_rows[c] + delta * Zeps_rows[c]) for c in range(NC)]
-        Z1 = amax_list(Z1_rows)
-        # ---- Y0
-        Y0_rows = [up((bl["Y0p"][c] + delta * bl["Yeps"][c]) / E[c]) for c in range(NC)]
-        Y0 = amax_list(Y0_rows)
-        # ---- Z2 (Lemma B3)
-        tau = [ec[l] + ehi * ew[l] for l in range(DIM)]
-        P = arb(1)
-        for l in range(DIM):
-            t = tau[l] * rs
-            if not t < cov.R[l]:
-                raise ProofFailure(f"tau_{l} r_* is not < R_{l}")
-            P = P * cov.R[l] / (cov.R[l] - t)
-        if not e_g * rs <= cov.G_R:
-            raise ProofFailure("eta_g r_* exceeds the cover's g radius")
-        P = up(P)
-        cauchy = arb(0) if "drop_cauchy" in mut else 1 / Tm
-        aJ = [[up(Q2 * P * (sum((cov.H(k, j, l) * tau[l] for l in range(DIM)), arb(0)) + cov.MG[k][j] * e_g))
-               for j in range(DIM)] for k in range(DIM)]
-        W0, WE = [], []
-        for k in range(DIM):
-            mgt = sum((cov.MG[k][l] * tau[l] for l in range(DIM)), arb(0))
-            mgw = sum((cov.MG[k][l] * ew[l] for l in range(DIM)), arb(0))
-            W0.append(up(sum((aJ[k][j] * (ec[j] + ehi * ew[j]) for j in range(DIM)), arb(0)) + e_g * Q2 * P * mgt))
-            s = sum((aJ[k][j] * ew[j] for j in range(DIM)), arb(0))
-            for j in range(DIM):
-                hw = sum((cov.H(k, j, l) * ew[l] for l in range(DIM)), arb(0))
-                s += (Q2 * P * hw + aJ[k][j] * cauchy) * ec[j]
-            s += e_g * Q2 * P * (mgw + mgt * cauchy)
-            WE.append(up(s))
-        v1 = [up(2 * e_om * ew[k]) for k in range(DIM)]
-        Z2_rows = through_A(W0, WE, v1)
-        Z2 = amax_list(Z2_rows)
-        diag = dict(Y0=float(Y0), Z1=float(Z1), Z2=float(Z2), Z1c=float(amax_list(Z1c_rows)),
-                    Zeps=float(amax_list(Zeps_rows)), Y0p=float(amax_list([up(bl["Y0p"][c] / E[c]) for c in range(NC)])),
-                    Yeps=float(amax_list([up(bl["Yeps"][c] / E[c]) for c in range(NC)])), P=float(P),
-                    r_star=float(rs), delta=float(bl["delta"]))
-        res = ex._radii(Y0, Z1, Z2, rs)
-        if res is None:
-            err = ProofFailure(f"radii polynomial not negative on [{bl['e_lo']}, {bl['e_hi']}]: Y0 = {float(Y0):.3e}, "
-                               f"Z1 = {float(Z1):.4f}, Z2 = {float(Z2):.3e}, r_* = {float(rs):.3e}")
-            err.diag = diag
-            raise err
-        r_lo, r_hi = res
-        C = bl["C"]
-        om_ball = acb(C.om) + up(e_om * r_lo) * acb(arb(0, 1))
-        if not om_ball.real > 0:
-            raise ProofFailure("omega not certainly positive")
-        g_ball = acb(C.g) + up(e_g * r_lo) * acb(arb(0, 1))
-        Tball = 2 * arb.pi() / om_ball.real
-        log(f"  [{bl['e_lo']}, {bl['e_hi']}]: Y0 = {float(Y0):.3e} (point {diag['Y0p']:.2e}, eps-rate {diag['Yeps']:.2e}),"
-            f" Z1 = {float(Z1):.4f} (point {diag['Z1c']:.3f}), Z2 = {float(Z2):.3e}, r = [{float(r_lo):.3e}, "
-            f"{float(r_hi):.3e}]")
-        out = dict(e_lo=bl["e_lo"], e_hi=bl["e_hi"], e_c=bl["e_c"], label=bl["label"], K=bl["K"], Kprime=bl["Kp"],
-                   M=bl["M"], centre_sha256=C.digest(), cover=cov.digest, eta=list(eta), r_star=bound_rec(rs),
-                   Y0=bound_rec(Y0), Z1=bound_rec(Z1), Z2=bound_rec(Z2),
-                   r_existence=bound_rec(r_lo), r_uniqueness=bound_rec(r_hi),
-                   p_at_r_existence=bound_rec(Y0 + (Z1 - 1) * r_lo + Z2 * r_lo * r_lo / 2),
-                   p_at_r_uniqueness=bound_rec(Y0 + (Z1 - 1) * r_hi + Z2 * r_hi * r_hi / 2),
-                   contraction_at_r_uniqueness=bound_rec(Z1 + Z2 * r_hi),
-                   g={"lower": bound_rec(lo(g_ball.real), "down"), "upper": bound_rec(up(g_ball.real), "up")},
-                   omega={"lower": bound_rec(lo(om_ball.real), "down"), "upper": bound_rec(up(om_ball.real), "up")},
-                   T_ms={"lower": bound_rec(lo(Tball), "down"), "upper": bound_rec(up(Tball), "up")},
-                   diag=diag, tail=bl["tail"], timings_s=bl["timings_s"], wall_s=bl["wall_s"])
-        if mut:
-            out["MUTATED"] = sorted(mut)
-        out["_obj"] = dict(C=C, E=E, r_lo=r_lo, r_hi=r_hi, nu=bl["nu"])
-    finally:
-        ctx.prec = old
-    return out
-
-
-# ------------------------------------------------------------------------------------------------ float weight search
-def _fl(M):
-    return np.array([[float(x) for x in row] for row in M])
-
-
-class BlocksFloat:
-    """Float images of the weight-free blocks (for choosing eta and r_*; never a bound)."""
-
-    def __init__(self, bl):
-        cov = bl["cov"]
-        self.Z1ff = _fl(bl["Z1_ff"])
-        self.Z1ft = _fl(bl["Z1_ft"])
-        self.T, self.Tc, self.Tg = _fl(bl["T"]), _fl(bl["Tc"]), np.array([float(v) for v in bl["Tg"]])
-        self.NA, self.NA1 = _fl(bl["NA"]), _fl(bl["NA1"])
-        self.Ab0, self.Ab1 = _fl(bl["Abar0"]), _fl(bl["Abar1"])
-        self.Y0p = np.array([float(v) for v in bl["Y0p"]])
-        self.Yeps = np.array([float(v) for v in bl["Yeps"]])
-        self.HW, self.GW = _fl(bl["HW"]), np.array([float(v) for v in bl["GW"]])
-        self.MJ = _fl(cov.MJ)
-        self.MH = np.zeros((DIM, DIM, DIM))
-        for k in range(DIM):
-            for p_, (j, l) in enumerate(HP):
-                self.MH[k, j, l] = self.MH[k, l, j] = float(cov.MH[k][p_])
-        self.MG = _fl(cov.MG)
-        self.R = np.array([float(r) for r in cov.R])
-        self.GR = float(cov.G_R)
-        self.Q2, self.ehi, self.Tm, self.delta = float(bl["Q2"]), float(bl["ehiB"]), float(bl["Tm"]), float(bl["delta"])
-        self.enu = float(bl["enu"])
-        NAt = self.NA.copy()
-        NAt[CW:, CW:] += self.Ab0
-        self.NA0 = self.NA[:, CC:CW]
-        self.NAE = NAt[:, CW:]
-        NA1t = self.NA1.copy()
-        NA1t[CW:, CW:] += self.Ab1
-        self.NA1E = NA1t[:, CW:]
-        B = self.Z1ff.copy()
-        B[:, CW:] = np.maximum(B[:, CW:], self.Z1ft)
-        B[CW:, CW:] += self.T
-        B[CW:, CC:CW] += self.Tc
-        B[CW:, 1] += self.Tg
-        self.B = B
-
-    def evaluate(self, eta, rstar, delta=None):
-        delta = self.delta if delta is None else delta
-        ec, ew, eg, eom = eta[CC:CW], eta[CW:], eta[1], eta[0]
-        Z1c = (self.B @ eta) / eta
-        r0 = self.ehi * (self.HW @ ec / self.Tm + (self.enu + 1) * self.HW @ ew) + self.ehi * self.GW * eg / self.Tm
-        rE = self.Q2 * (self.HW @ ew + self.HW @ ec / (2 * self.Tm) + self.GW * eg / (2 * self.Tm))
-        Zeps = (self.NA0 @ r0 + self.NAE @ rE) / eta
-        Z1 = np.max(Z1c + delta * Zeps)
-        Y0 = np.max((self.Y0p + delta * self.Yeps) / eta)
-        tau = ec + self.ehi * ew
-        P = np.prod(self.R / (self.R - tau * rstar)) if np.all(tau * rstar < self.R) else np.inf
-        aJ = self.Q2 * P * (np.einsum("kjl,l->kj", self.MH, tau) + self.MG * eg)
-        W0 = aJ @ (ec + self.ehi * ew) + eg * self.Q2 * P * (self.MG @ tau)
-        hw = np.einsum("kjl,l->kj", self.MH, ew)
-        WE = aJ @ ew + (self.Q2 * P * hw + aJ / self.Tm) @ ec + eg * self.Q2 * P * (self.MG @ ew + (self.MG @ tau) / self.Tm)
-        Z2 = np.max((self.NA0 @ W0 + self.NAE @ WE + self.NA1E @ (2 * eom * ew)) / eta)
-        return dict(Y0=Y0, Z1=Z1, Z2=Z2, Z1c=np.max(Z1c), Zeps=np.max(Zeps), P=P)
-
-    def admissible(self, eta, rstar):
-        """largest delta for which the radii polynomial (float model) closes, by bisection."""
-        lo_, hi_ = 0.0, 1.0
-        for _ in range(40):
-            mid = 0.5 * (lo_ + hi_)
-            d = self.evaluate(eta, rstar, mid)
-            ok = d["Z1"] < 1 and (1 - d["Z1"]) ** 2 > 2 * d["Y0"] * d["Z2"] * 1.0001
-            lo_, hi_ = (mid, hi_) if ok else (lo_, mid)
-        return lo_
-
-    def search(self, eta0, rstar, iters=1500, seed=0):
-        rng = np.random.default_rng(seed)
-        eta = np.array(eta0, float)
-        best = self.admissible(eta, rstar)
-        for _ in range(iters):
-            c = rng.integers(NC)
-            e2 = eta.copy()
-            e2[c] *= math.exp(rng.normal() * 0.8)
-            v = self.admissible(e2, rstar)
-            if v > best:
-                best, eta = v, e2
-        return eta / eta.max(), best
+                NA1=NA1, Abar0=Abar0, Abar1=Abar1, Y0p=Y0p, Y1=Y1, Y2=Y2, Zc_ff=Zc_ff, Zc_ft=Zc_ft, TZ=TZ, TcZ=TcZ,
+                TgZ=TgZ, cov=cov, label=label, settings=st,
+                tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))), timings_s=marks,
+                wall_s=round(time.time() - t0, 1), box_evals=[sp1.n_evals, sp2.n_evals, sp3.n_evals])

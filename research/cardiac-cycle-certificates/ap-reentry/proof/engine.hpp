@@ -132,10 +132,9 @@ struct Acc : capd::multiPrec::MpReal {  // read access to the MPFR value (protec
 };
 inline std::string str(const capd::multiPrec::MpReal& r) {
   mpfr_srcptr p = Acc::get(r);
-  char* buf = mpfr_get_str(nullptr, nullptr, 16, 0, p, MPFR_RNDN);
   mpfr_exp_t e; char* b2 = mpfr_get_str(nullptr, &e, 16, 0, p, MPFR_RNDN);
   std::string s = std::string(b2) + "@" + std::to_string(long(e)) + "#" + std::to_string(long(mpfr_get_prec(p)));
-  mpfr_free_str(buf); mpfr_free_str(b2);
+  mpfr_free_str(b2);
   return s;
 }
 inline capd::multiPrec::MpReal parse(const std::string& s) {
@@ -350,7 +349,7 @@ struct Gronwall {
 struct SegResult {
   bool ok = false; std::string error;
   long steps = 0, polySteps = 0, retries = 0, validationSteps = 0;
-  double hmin = 1e300, hmax = 0, deltaMax = 0, e1Max = 0, deltaSum = 0, e1Sum = 0, lMax = -1e300, zmaxMax = 0, T0Max = 0;
+  double hmin = 1e300, hmax = 0, hlast = 0, deltaMax = 0, e1Max = 0, deltaSum = 0, e1Sum = 0, lMax = -1e300, zmaxMax = 0, T0Max = 0;
   double wall = 0, wallValidation = 0;
   interval T = 0;  // time of the segment (duration or section time), relative to the segment start
   bool resumed = false; long resumedAtStep = 0;
@@ -488,10 +487,12 @@ class Engine {
 
   // One certified step (with retry). Returns false when the duration end is reached (no step taken).
   // tEnd: absolute end time (duration segments) or +inf.
-  bool step(Set& s, double tEnd, SegResult& r, bool forceQuot, int crossCell, int crossDir, bool countAsValidation) {
+  bool step(Set& s, double tEnd, SegResult& r, bool forceQuot, int crossCell, int crossDir, bool countAsValidation,
+            double cap = INFINITY) {
     double tNow = toI(s.getCurrentTime()).rightBound();
     double maxStep = std::isfinite(tEnd) ? tEnd - toI(s.getCurrentTime()).leftBound() : 1.0;
     if (std::isfinite(tEnd) && !(maxStep > 1e-13)) return false;
+    maxStep = std::min(maxStep, cap);
     (void)tNow;
     chooseModes(s, forceQuot);
     for (int attempt = 0; attempt < 40; ++attempt) {
@@ -542,7 +543,7 @@ class Engine {
         r.T0Max = std::max(r.T0Max, g.T0);
       }
       if (countAsValidation) ++r.validationSteps; else ++r.steps;
-      r.hmin = std::min(r.hmin, h); r.hmax = std::max(r.hmax, h);
+      r.hmin = std::min(r.hmin, h); r.hmax = std::max(r.hmax, h); r.hlast = h;
       return true;
     }
     throw std::runtime_error("too many step retries");
@@ -570,17 +571,18 @@ class Engine {
         const int dir = seg.secDir;
         // approach: step until the crossing cell is within approachSteps * h * |dV/dt| of the level
         while (true) {
+          // distance of the crossing cell to the level (mV) and a bound on its speed from the field on the set's hull
+          // (and on the last step's enclosure); approach steps are capped so that the cell cannot reach the level
           IVector x = toIV(Vec(s));
+          double Lmv = levelScaled * ring19::scaleOf(0);
           double V = (dir > 0 ? x[NS * c].rightBound() : x[NS * c].leftBound()) * ring19::scaleOf(0);
-          double dist = dir > 0 ? -40.0 - V : V + 40.0;  // generic level handled below
-          dist = dir > 0 ? (levelScaled * ring19::scaleOf(0)) - V : V - (levelScaled * ring19::scaleOf(0));
-          if (r.steps > 0) {
-            IVector W = toIV(s.getLastEnclosure());
-            interval dV = fD(W)[NS * c] * ring19::scaleOf(0);
-            double rate = mag(dV);
-            if (dist < plan.approachSteps * r.hmax * rate + 1e-9) break;
-          }
-          step(s, INFINITY, r, false, -1, 0, false);
+          double dist = dir > 0 ? Lmv - V : V - Lmv;
+          double rate = mag(fD(x)[NS * c] * ring19::scaleOf(0));
+          if (r.steps > 0) rate = std::max(rate, mag(fD(toIV(s.getLastEnclosure()))[NS * c] * ring19::scaleOf(0)));
+          rate = 2.0 * rate + 1e-6;
+          if (r.steps > 0 && dist < plan.approachSteps * r.hlast * rate) break;
+          if (!(dist > 0)) throw std::runtime_error("crossing cell at or past the level before the approach");
+          step(s, INFINITY, r, false, -1, 0, false, 0.5 * dist / rate);
           if (plan.ckptEvery > 0 && r.steps % plan.ckptEvery == 0) { r.wall = wallBefore + now() - w0; saveCkpt(s, r); }
           if (r.steps % 100 == 0) log << "step " << r.steps << " t " << toI(s.getCurrentTime()).rightBound() << "\n" << std::flush;
           if (r.steps > 50000000) throw std::runtime_error("no approach");

@@ -1,0 +1,247 @@
+{
+ "note": "Pilot stage 3: certified passage through the internal h/j switch at -40 mV (section split, branch flip, saltation by composition); cost of the C0 multiprecision centre. Pilot / dry run; no theorem.",
+ "cell": {
+  "N": 1,
+  "coupling": "0",
+  "crossing_cell": 0,
+  "float_crossing_time_ms": 0.1710506866440568,
+  "after_switch_ms": 1.0,
+  "float_events": [
+   [
+    0.1710506866440568,
+    0,
+    -1
+   ]
+  ],
+  "box_relative_radius": 1e-10,
+  "c1": {
+   "kind": "c1",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 1,
+    "validation_steps": 2,
+    "T": "[0.17105068355807143, 0.17105068973003082]",
+    "wall_s": 1.01,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 2.211156368e-09,
+    "end_derivative_max_rel_width_big_entries": 1.069056408e-06
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 6,
+    "validation_steps": 0,
+    "T": "[1, 1.0000000000000002]",
+    "wall_s": 1.01,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 1.257473267e-09,
+    "end_derivative_max_rel_width_big_entries": 1.138815294e-08
+   },
+   "peak_rss_GiB": 0.0801,
+   "wall_per_step_s": 0.22457,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.388678566373253e-13,
+    "max_rel_width": 2.2111563682007604e-09
+   },
+   "end_contains_reference": true,
+   "end_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 8.387965427483846e-15,
+    "max_rel_width": 1.2574732667487493e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.17105068355807143,
+    0.17105068973003082
+   ],
+   "composed_derivative_max_abs": 1.000000579947299,
+   "section_derivative_row_of_crossing_cell_max_abs": 1.1102230246251565e-16
+  },
+  "c0": {
+   "kind": "c0",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 1,
+    "validation_steps": 2,
+    "T": "[0.17105068355807143, 0.17105068973003082]",
+    "wall_s": 0.51,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 2.211156368e-09
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 6,
+    "validation_steps": 0,
+    "T": "[1, 1.0000000000000002]",
+    "wall_s": 0.51,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 1.257473267e-09
+   },
+   "peak_rss_GiB": 0.0801,
+   "wall_per_step_s": 0.11276,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.388678566373253e-13,
+    "max_rel_width": 2.2111563682007604e-09
+   },
+   "end_contains_reference": true,
+   "end_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 8.387965427483846e-15,
+    "max_rel_width": 1.2574732667487493e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.17105068355807143,
+    0.17105068973003082
+   ]
+  },
+  "mp0": {
+   "kind": "mp0",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 1,
+    "validation_steps": 2,
+    "T": "[0.1710506835581084, 0.17105068973000001]",
+    "wall_s": 16.02,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 2.211131568e-09
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 15,
+    "validation_steps": 0,
+    "T": "[1, 1.0000000000000002]",
+    "wall_s": 29.03,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 1.25744008e-09
+   },
+   "peak_rss_GiB": 0.1018,
+   "wall_per_step_s": 2.50255,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.388678566373253e-13,
+    "max_rel_width": 2.211131329765624e-09
+   },
+   "end_contains_reference": true,
+   "end_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 7.293882980420735e-15,
+    "max_rel_width": 1.257440079581187e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.1710506835581084,
+    0.17105068973
+   ]
+  },
+  "c0_NO_SWITCH": {
+   "kind": "c0",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 1,
+    "validation_steps": 2,
+    "T": "[0.17105068355807143, 0.17105068973003082]",
+    "wall_s": 0.51,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 2.211156368e-09
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 6,
+    "validation_steps": 0,
+    "T": "[1, 1.0000000000000002]",
+    "wall_s": 0.51,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 1.248999477e-09
+   },
+   "peak_rss_GiB": 0.0808,
+   "wall_per_step_s": 0.11348,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.388678566373253e-13,
+    "max_rel_width": 2.2111563682007604e-09
+   },
+   "end_contains_reference": false,
+   "end_info": {
+    "max_out_over_radius": 48927287.15635021,
+    "max_rel_dist_to_mid": 0.030237123912981882,
+    "max_rel_width": 1.2489994768982661e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.17105068355807143,
+    0.17105068973003082
+   ]
+  }
+ },
+ "ring2": {
+  "N": 2,
+  "coupling": "0.035",
+  "crossing_cell": 1,
+  "float_crossing_time_ms": 0.02616768678418556,
+  "after_switch_ms": 0.1,
+  "float_events": [
+   [
+    0.02616768678418556,
+    1,
+    -1
+   ]
+  ],
+  "box_relative_radius": 1e-10,
+  "c0": {
+   "kind": "c0",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 1,
+    "validation_steps": 8,
+    "T": "[0.0261676857070718, 0.026167687861298132]",
+    "wall_s": 1.51,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 3.16897889e-09
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 7,
+    "validation_steps": 0,
+    "T": "[0.10000000000000001, 0.10000000000000001]",
+    "wall_s": 1.01,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 3.275930343e-09
+   },
+   "peak_rss_GiB": 0.0809,
+   "wall_per_step_s": 0.15748,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.8746228866776563e-11,
+    "max_rel_width": 3.1689788903900295e-09
+   },
+   "end_contains_reference": true,
+   "end_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.0065979582267314e-14,
+    "max_rel_width": 3.2759303433133383e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.0261676857070718,
+    0.026167687861298132
+   ]
+  }
+ }
+}

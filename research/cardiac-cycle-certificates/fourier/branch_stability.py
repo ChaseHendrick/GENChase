@@ -78,6 +78,10 @@ import sys
 import time
 from fractions import Fraction
 
+# One BLAS thread, set before numpy is imported: A_fin is a float inverse, and a multithreaded LAPACK changes its last
+# bits, hence the last bits of the (equally rigorous) bounds; prove_piece_uniform requires Theorem B's Y0 and Z1 to be
+# reproduced bit for bit, which needs the run's single-threaded inverse.
+_NUMPY_PREIMPORTED = "numpy" in sys.modules
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "BLIS_NUM_THREADS"):
     os.environ[_v] = "1"
 
@@ -114,7 +118,9 @@ FAILURES = (ProofFailure, br.ProofFailure, sb.ProofFailure, sb.InputMismatch)
 
 DEFAULTS = dict(
     delta="3e-5",            # requested decay rate per ms (rounded up to a dyadic, as in stability.py)
-    Ke_offset=16, n_c=24, prec=128, eta_tail="1/1048576", S_exps=None, zeta="ones",
+    Ke_offset=12, n_c=24, prec=128,     # K_e = 12 (stability.py: 16): measured on G16P15, (SC) worst ratio 0.50 at
+                                         # K_e = 12 against 0.48 at 16, certificate 43 s against 76 s
+    eta_tail="1/1048576", S_exps=None, zeta="ones",
     cluster_tols=[0.0, 1e-3, 3e-3, 1e-2, 2e-2, 5e-2, 0.1, 0.2],
     sanity_tol="1e-6",
     tau="1e-3",              # eigenvalue pairs closer than tau are not separated by the first-order correction
@@ -852,7 +858,8 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     mark("certificate")
     out = dict(
         type="unit", label=label, g=[rec["g_lo"], rec["g_hi"]], g_centre=rec["centre_g"],
-        centre_sha256=rec["centre_sha256"], uniform=True, ok=True,
+        centre_sha256=rec["centre_sha256"], uniform=True, ok=True, settings=st,
+        program_sha256=br.sha256(os.path.abspath(__file__)), threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(theorem_B_bounds_reproduced=same, Z1=asm["Z1"], Z2_this_cover=asm["Z2"],
@@ -902,9 +909,13 @@ def done_labels(K=12):
     return out
 
 
-def run(labels=None, K=12, workers=2, deltas=("3e-5", "2.5e-5", "2e-5"), budget_s=3500, log=print):
-    """Prove the listed pieces (default: every logged piece not yet done), trying the deltas in order (the first
-    that closes is kept). Appends each result (or failure) to the log at once."""
+ATTEMPTS = (dict(delta="3e-5", Ke_offset=12), dict(delta="3e-5", Ke_offset=16), dict(delta="2.5e-5", Ke_offset=16),
+            dict(delta="2e-5", Ke_offset=16))
+
+
+def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=print):
+    """Prove the listed pieces (default: every logged piece not yet done), trying the settings in order (the first
+    that closes is kept; untrusted choices). Appends each result (or failure) to the log at once."""
     import multiprocessing as mp
     T0 = time.time()
     path = LOG.format(K=K)
@@ -915,10 +926,10 @@ def run(labels=None, K=12, workers=2, deltas=("3e-5", "2.5e-5", "2e-5"), budget_
     if labels:
         todo = [l for l in todo if l in set(labels)]
     log(f"uniform stability: {len(have)} pieces done, {len(todo)} to do, workers {workers}")
-    pending = {l: list(deltas) for l in todo}
+    pending = {l: list(attempts) for l in todo}
     with mp.get_context("fork").Pool(workers, maxtasksperchild=4) as pool:
         while pending and time.time() - T0 < budget_s:
-            batch = [(l, dict(delta=ds[0])) for l, ds in pending.items()]
+            batch = [(l, dict(ds[0])) for l, ds in pending.items()]
             nxt = {}
             for res in pool.imap_unordered(_job, batch):
                 l = res["label"]
@@ -1026,7 +1037,6 @@ def main():
     ap.add_argument("--labels", default="")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--budget", type=float, default=3500)
-    ap.add_argument("--deltas", default="3e-5,2.5e-5,2e-5")
     ap.add_argument("--one", default="", help="prove one piece in this process and print the record")
     ap.add_argument("--delta", default=None)
     a = ap.parse_args()
@@ -1041,8 +1051,7 @@ def main():
                               theta_T=c["theta_T"]["approx"], SC_worst=c["SC_worst_ratio"],
                               critical=c["critical_columns"], timings=r["timings_s"], wall=r["wall_s"]), indent=1))
     if a.run:
-        run(labels=[l for l in a.labels.split(",") if l] or None, workers=a.workers, budget_s=a.budget,
-            deltas=tuple(a.deltas.split(",")))
+        run(labels=[l for l in a.labels.split(",") if l] or None, workers=a.workers, budget_s=a.budget)
     if a.collect:
         collect()
 

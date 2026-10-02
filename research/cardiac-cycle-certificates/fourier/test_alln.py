@@ -31,9 +31,9 @@ Negative controls
     containing 1/64): the float norm of A_fin F(xbar; eps) at an endpoint exceeds 10 times the mutated Y0, is 10 times
     the same norm at the centre parameter, and stays below the certified Y0.
   * A piece [0, w] widened beyond what closes fails (controls.jsonl; [0, 1] is re-run here).
-  * Gluing a piece with a distant piece, or with r_uniqueness replaced by r_existence, fails; a Stage E centre of
-    another N is not in the piece's uniqueness ball; a non-increasing piece order is refused; dd_m set to 0 (mutation
-    no_dd) lowers Y0 and Z1.
+  * Gluing a piece with a distant piece, or with r_uniqueness replaced by r_existence, fails; the Stage E inclusion
+    refuses an N with 1/N^2 outside the piece, and fails for the Stage E centre with omega shifted by 1e-2; a
+    non-increasing piece order is refused; dd_m set to 0 (mutation no_dd) lowers Y0 and Z1.
   * Logs: a truncated final line is dropped (kept in .truncated); a corrupted middle line is refused; the plan with a
     failed piece replaces it by two overlapping halves, with strictly increasing endpoints.
 """
@@ -185,12 +185,17 @@ def test_stage_E_identification():
         line = _containing(Fraction(1, N * N))
         j = alln.stage_e_inclusion(N, line["rec"], line["centre"])
         assert j["ok"] and j["T_overlaps"], j
-    # negative: the N = 16 Stage E centre is not the wave of the piece containing 1/64
+    # negatives: 1/N^2 outside the piece is refused; a Stage E centre with omega shifted by 1e-2 is not in the ball.
+    # (The N = 16 centre DOES lie in the uniqueness ball of the piece containing 1/64; that is no contradiction,
+    # uniqueness is about zeros of F(.; eps) at one eps, and the N = 16 wave is a zero at eps = 1/256 only.)
     line = _containing(Fraction(1, 64))
+    assert not alln.stage_e_inclusion(16, line["rec"], line["centre"])["ok"]
     op = alln.obj_of(line["rec"], line["centre"])
-    _, _, om16, A16, _ = ct.load(ct.centre_path(16, 32))
-    d = br.centre_distance(om16, A16, op["om_bar"], op["A"], op["ETA"], op["nu"])
-    assert d > op["r_hi"], "a Stage E centre of another N lies in the piece's uniqueness ball"
+    _, _, om8, A8, _ = ct.load(ct.centre_path(8, 32))
+    d0 = br.centre_distance(om8, A8, op["om_bar"], op["A"], op["ETA"], op["nu"])
+    assert d0 < op["r_hi"]
+    d = br.centre_distance(om8 + arb("0.01"), A8, op["om_bar"], op["A"], op["ETA"], op["nu"])
+    assert d > op["r_hi"], "a centre with omega shifted by 1e-2 lies in the piece's uniqueness ball"
 
 
 def test_cover_gluing_and_periods():

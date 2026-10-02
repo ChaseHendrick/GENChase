@@ -137,8 +137,12 @@ hi_i < hi_{i+1}) and that every piece has r_lo < r_hi (exact comparison). Then x
 The map g -> x*(g), defined piecewise, is therefore single valued and continuous on the union [lo_1, hi_last]: one
 connected curve of real periodic orbits.
 
-6. Stability along the branch (pointwise only)
-----------------------------------------------
+6. Stability along the branch (pointwise here; uniform in Theorem C)
+--------------------------------------------------------------------
+Uniform stability on each piece is proved separately, by fourier/branch_stability.py (Theorem C, lemmas in
+LEMMAS-stability.md section 10, record results/fourier-branch-stability.json): it locates x*(g) to second order about
+the affine centre xbar + (g - g_c) xbar_1 and applies Theorem 3 at every g with a comparison operator that is affine
+in g. What follows describes the pointwise route of this file and why feeding a piece to Stage S directly fails.
 fourier/stability.py (Stage S) certifies, for one zero x* with a radius r >= ||x* - xbar||, that every nontrivial
 Floquet multiplier has modulus <= e^{-delta T}. It accepts an input dictionary (certify(N, inp=...)), so it can be fed
 J enclosures over a parameter interval; but its perturbation term eps (Lemma 4.1 of LEMMAS-stability.md: Cauchy,
@@ -2195,8 +2199,9 @@ def collect(K=12, write=True, log=print):
         stability_uniform_attempt=[r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "uniform_attempt"],
         stability_note=("Stage S was run pointwise, at the exact G_Ks listed under 'stability' (stability_points); "
                         "only those whose orbit passed the ball-inclusion check (point_on_branch) are statements about "
-                        "the branch orbit, the others are isolated results. Uniform stability on a piece is NOT "
-                        "claimed: see fourier/branch.py section 6 for what it would need."),
+                        "the branch orbit, the others are isolated results. This record claims no uniform stability; "
+                        "uniform stability on pieces is the separate Theorem C record "
+                        "results/fourier-branch-stability.json (fourier/branch_stability.py)."),
         comparison_stage_E=cmp_, failures_split=len(fails), nonconsecutive_overlaps=n_nonconsecutive,
         groups=[{k: v for k, v in g.items() if k != "MH_float"} for g in groups],
         settings=dict(DEFAULTS, K=K),

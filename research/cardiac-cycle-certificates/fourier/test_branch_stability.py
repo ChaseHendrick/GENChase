@@ -101,7 +101,8 @@ def test_acceptance_piece():
     c = p["certificate"]
     assert c["count_in_Omega"] == 1 and c["theta_T"]["approx"] < 1 and c["SC_worst_ratio"] < 1
     logged = bs.done_labels().get(LABEL)
-    if logged is not None and logged["delta_requested"] == p["delta_requested"]:
+    if (logged is not None and logged["delta_requested"] == p["delta_requested"]
+            and logged["certificate"]["K_e"] == c["K_e"]):
         assert logged["existence"]["rho"]["hex"] == p["existence"]["rho"]["hex"]
         assert logged["certificate"]["theta_T"]["hex"] == c["theta_T"]["hex"]
         assert logged["multiplier_bound_full_period"]["hex"] == p["multiplier_bound_full_period"]["hex"]
