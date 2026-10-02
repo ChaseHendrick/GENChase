@@ -69,8 +69,10 @@ ring. Periodic orbits of (2) therefore come in one-parameter families indexed by
 leaf {H = H0}.
 
 **The leaf.** H0 = q(y01) = 150.44266158133294 mM, the charge per cell of the standard TP06 initial state (y01 of the
-source with K_i = 138.3, `tp06_19d.Y0`). A ring prepared at rest in that state and excited by a stimulus carried by K
-(author convention) has exactly this charge, so its reentry, if it settles to a travelling wave, lies on this leaf.
+source with K_i = 138.3, `tp06_19d.Y0`). y01 is the standard initial state, not an equilibrium of the cell
+(f_V(y01) = 0.26 mV/ms); but q is conserved by the cell flow, so a ring started uniformly in y01 and excited by a
+stimulus carried by K (author convention) has exactly this charge per cell, and its reentry, if it settles to a
+travelling wave, lies on this leaf.
 H is an explicit graph in K_i (dH/dK_i = 1), so the leaf needs no implicit function: K_i = H0 - (H - K_i).
 
 ## 3. Structure of the orbit
@@ -102,17 +104,28 @@ CAPD's PoincareMap with the project's patch).
 H0); every other node has 19 (K_i fixed by H0). Each map G_i takes node i to node i+1 (indices mod m = m_A + m_B):
 first insert K_i from H0 (and V = -40 on a section), map, then drop the coordinates that the target node does not
 carry. The maps preserve H exactly (both branch fields do), so the dropped K_i of an image is the one H0 prescribes,
-and nothing is lost by dropping it. The system
+and nothing is lost by dropping it. The insertion K_i = H0 - (q - K_i) - (k/kappa) W depends on kappa
+(dK_i/dkappa = (k/kappa^2) W), so the kappa column of each DG_i must include it; and evaluated on an independent box of
+the other coordinates the inserted K_i loses their correlation, so the insertion is carried as an affine map in the
+Lohner set (exact to first order, since dH/dK_i = 1), not as an interval function (review finding 8). The system
 
     F(u, kappa) = ( u_{i+1} - G_i(u_i, kappa) )_{i = 0..m-1} = 0                                       (4)
 
 is square: 2 x 18 + (m - 2) x 19 equations and unknowns. Its zeros for fixed kappa are the periodic orbits on the leaf
 (the phase is fixed by u_0 in Sigma_up). The period is T = sum of the durations + the two section times.
 
-**The h/j event.** A segment of piece A is valid only if V > -40 on every step enclosure (CAPD's enclosure of all
-trajectories over the step), and its last step reaches Sigma_down with W < 0 on the crossing enclosure (monotone
-crossing; the image lies exactly on V = -40). Piece B likewise with V < -40 and W > 0. Then the computed F_hi or F_lo
-trajectory is the model's trajectory on the whole segment, because the model uses exactly that formula there. The
+**The h/j event.** Inside piece A every step enclosure (CAPD's enclosure of all trajectories over the step, widened
+by dstar) must have V > -40; inside piece B, V < -40. At the two ends of a piece this strict test cannot hold, because
+V = -40 there (review finding 3), and the rule is the monotone one: a segment starting on Sigma_up has V = -40 exactly
+at s = 0, and a step whose enclosure meets V = -40 is accepted if W > 0 on the whole step enclosure, so that V is
+strictly increasing on that step and V > -40 on (0, h]; by induction over the steps V > -40 on the open segment. Piece B
+from Sigma_down likewise with W < 0. The last step of a piece reaches the next section through the patched PoincareMap
+with a validation re-run (as `../proof/engine.hpp` does for the ring), with W < 0 (end of A) or W > 0 (end of B) on the
+crossing enclosure (monotone crossing; the image lies exactly on V = -40). At the single instants with V = -40 the
+model uses the V >= -40 formulas; a set of measure zero does not change a Caratheodory solution. Then the computed
+F_hi or F_lo trajectory is the model's trajectory on the whole segment, because the model uses exactly that formula
+there. The monotone start rule is implemented in `wrap_pilot.cpp` (argument `monotone`) and piloted from both sections
+(section 8); the section end for the comoving field is not yet implemented (the ring engine has it). The
 derivative of a chain is the product of the segment derivatives taken between sections, so no saltation matrix is
 added: a map that starts on Sigma_down is differentiated along Sigma_down, where the saltation matrix
 S = I + (F_lo - F_hi) e_V^T / W acts as the identity (e_V . v = 0). This is the treatment already piloted on the ring
@@ -124,33 +137,51 @@ otherwise the degree-24 window polynomial with the rigorous tail bound and the G
 comoving system the window changes the rows W (through f_V, with the factor kappa) and Ca_ss; `comoving19.hpp`
 `windowRows` gives both prefactors, and `wrap_pilot.cpp` applies the bound.
 
-**Existence test.** Krawczyk (or interval Newton) on (4), on a box X around the numerical zero u-bar, for kappa in an
-interval [kappa]:
+**Existence test.** Krawczyk (or interval Newton) on (4). At a point kappa: a box X around the numerical zero u-bar,
 
-    K(X) = u-bar - C F(u-bar, [kappa]) + (I - C DF(X, [kappa])) (X - u-bar),   K(X) inside int X,
+    K(X) = u-bar - C F(u-bar, kappa) + (I - C DF(X, kappa)) (X - u-bar),   K(X) inside int X,
 
-with F(u-bar, [kappa]) from C0 enclosures of the segments from the points u-bar_i (kappa as a state over [kappa]) and
-DF(X, [kappa]) from C1 enclosures over the boxes X_i x [kappa]. DF is cyclic block bidiagonal (identity blocks and
--DG_i), and C is a floating-point inverse of its midpoint. Success gives, for every kappa in [kappa], a unique zero in
+with F(u-bar, kappa) from C0 enclosures of the segments from the points u-bar_i and DF(X, kappa) from C1 enclosures over
+the boxes X_i. DF is cyclic block bidiagonal (identity blocks and -DG_i), and C is a floating-point inverse of its
+midpoint. **For kappa in an interval [kappa] = kbar + [-delta, delta]** the naive form, with F(u-bar, [kappa]) as an
+interval vector and one box X for the whole piece, does not scale (review finding 1): the width of F(u-bar, [kappa]) is
+about |d_kappa F| delta in the expanding rows, the product C (box) loses the cancellation that makes the true Newton
+correction C d_kappa F delta = -(du/dkappa) delta moderate, and X would have to contain the whole zero curve. The piece
+test is therefore written (i) on the tangent predictor u-bar(kappa) = u-bar(kbar) + u'(kbar) (kappa - kbar), u' the
+floating-point branch tangent, so that X only holds the second-order deviation, and (ii) with the kappa dependence in
+centred (mean-value) form, F(u-bar(kappa), kappa) = F(u-bar(kbar), kbar) + M (kappa - kbar), where the column M encloses
+the total kappa-derivative d/dkappa F(u-bar(kappa), kappa) over the piece (from the C1 data with kappa as a state and
+the derivative of the predictor) and C is applied to it as a matrix-vector product. The first-order term then nearly
+cancels and what remains is of order delta^2 |u''| plus enclosure widths. Success gives, for every kappa in [kappa], a unique zero in
 X, hence a periodic travelling wave of (2) with period T(kappa) in an enclosure, and the ring (3) of length
 L(kappa) = sqrt(D kappa) T(kappa) carries reentry with speed c = sqrt(D kappa). The minimal period is T because the
 chain crosses Sigma_up exactly once (certified on every step: V > -40 throughout piece A, V < -40 throughout piece B).
 
 **Precision.** The conditioning of (4) is governed by the exponential dichotomy of the orbit, not by exp(kappa T): with
-segments over which the expansion is e^5 to e^10, the blocks are moderate, and double-interval C1 enclosures may
-suffice. Whether the centre needs multiprecision (as the discrete ring did, `../proof/results/stage3_switch.json`
+segments over which the expansion is e^2 to e^10, the blocks are moderate, and double-interval C1 enclosures may
+suffice; the segment length is adaptive (shorter in the upstroke, where the expansion rate is largest). Whether the centre needs multiprecision (as the discrete ring did, `../proof/results/stage3_switch.json`
 ring4: 32.4 s per mp0 step) is decided by the residual of the double-interval centre; section 8 measures the widths.
 
 ## 5. Interval parameter: a family of ring lengths
 
-Cover a kappa range [kappa_a, kappa_b] by overlapping pieces [kappa_j, kappa_{j+1}], each proved by section 4 with its
-own box; consecutive pieces are glued by uniqueness (the zero of the overlap lies in both boxes), as the Fourier branch
-of this study does (`../../fourier/branch.py`). On each piece kappa -> (u(kappa), T(kappa)) is continuous (the
-Krawczyk test makes D_u F invertible on the box, so the implicit function theorem applies), so the glued branch is a
-continuous curve of travelling waves and L(kappa) = sqrt(D kappa) T(kappa) is continuous. Every L between the
-enclosures at the ends of a monotone stretch is then a ring length with reentry (intermediate value theorem). The
-family parameter could equally be L (with kappa an unknown and (3) an extra equation); kappa is preferred because the
-branch is regular in kappa through the minimum of L (section 6).
+Cover a kappa range [kappa_a, kappa_b] by overlapping pieces [kappa_j, kappa_{j+1}], each proved by section 4 (piece
+form) with its own box. On each piece kappa -> (u(kappa), T(kappa)) is continuous (the Krawczyk test makes D_u F
+invertible on the box, so the implicit function theorem applies).
+
+**Gluing (review finding 2).** Neighbouring pieces must use one node layout (the same durations Delta_i and the same
+m_A, m_B), so that their boxes live in the same space; otherwise compare them at the Sigma_up node u_0 (18
+coordinates) and push that box through the other layout. With a common layout: let z_j(kappa) and z_{j+1}(kappa) be the
+zeros of pieces j and j+1, unique in X_j and X_{j+1}, on the overlap O. If z_j(k*) lies in int X_{j+1} for one k* in O,
+then it is a zero in X_{j+1}, so z_j(k*) = z_{j+1}(k*) by uniqueness. The set of kappa in O where z_j = z_{j+1} is closed
+(both curves are continuous) and open (where they agree the common point is interior to X_{j+1}, and by continuity
+z_j stays in int X_{j+1} nearby, where uniqueness applies again); O is connected, so the curves agree on O. The glued
+branch is a continuous curve of travelling waves and L(kappa) = sqrt(D kappa) T(kappa) is continuous.
+
+**Ring lengths.** Every L between the values L(kappa_1), L(kappa_2) at two points of the proved range is a ring length
+carrying a wave of the branch (intermediate value theorem; continuity is enough, no monotonicity is needed for
+existence). Monotonicity, or a bound on dL/dkappa, is needed only to count the waves for a given L. The family parameter
+could equally be L (with kappa an unknown and (3) an extra equation); kappa is preferred because the branch is regular
+in kappa through the minimum of L (section 6).
 
 ## 6. The minimum ring length: what is well posed
 
@@ -164,8 +195,11 @@ so at the nose of the dispersion relation, where T is minimal (T' = 0), dL/dkapp
 decreasing as kappa decreases, and it can be stationary only where T'/T = -1/(2 kappa) < 0, that is, on the slow
 branch, past the nose. The numerical branch of section 7 shows exactly this: T has its minimum (about 215.83 ms) near
 kappa = 0.537, and L keeps decreasing through it and along the slow branch, at least down to kappa = 0.199
-(L = 40.40 mm). Both points are regular points of the branch in kappa (a fold of T or of L is not a fold in kappa);
-the computed collocation Jacobian has no small singular value there.
+(L = 40.40 mm). Both points are regular points of the branch in kappa (a fold of T or of L is not a fold in kappa).
+Numerically, the smallest singular value of the scaled collocation Jacobian does not decrease along the sampled points
+(3e-7 to 4e-7 at kappa = 2.17, 0.525, 0.294; its absolute size reflects the scaling of a system with 72,000 unknowns,
+not regularity), and the tangent component dT/dkappa varies smoothly (from +90 at kappa = 2.17 through 0 at the nose to
+-143 at kappa = 0.199); a fold in kappa would make the tangent turn. The rigorous statement is the Krawczyk test.
 
 What the minimum of L means, where it exists: it is a fold of the ring problem at fixed L. Rings slightly longer
 carry two waves of different speeds on this branch near it, rings slightly shorter none (locally). At such a fold one
@@ -177,11 +211,23 @@ spectral question (section 10) and is not claimed.
   piece enclosures [L_j], L*_branch lies in [min_j inf L_j, min_j sup L_j]. It is an interior minimum (a fold of the
   proved branch) only if L at both ends of the range exceeds that upper bound. If L is monotone on the proved range,
   the statement is only that every L between the end values carries a wave; no minimum is located.
-* **Not established numerically yet:** whether L has an interior minimum at all. On the computed range it decreases
-  monotonically as kappa decreases (section 7). If the slow branch ends in a slow solitary-type limit (T -> infinity
-  at a positive c), L -> infinity there and an interior minimum exists; if T stays bounded as c -> 0, L -> 0 along the
-  branch and "the minimum ring length along the branch" is not a meaningful target. The continuation below
-  kappa = 0.199 decides which (section 7).
+* **L does not tend to 0 along a branch of non-vanishing amplitude (review finding 5).** The first version of this
+  bullet allowed "T bounded as c -> 0, so L -> 0"; that case is impossible. From W' = kappa (W - f_V) the only bounded
+  (hence the periodic) solution is W(s) = kappa integral_0^infinity e^{-kappa r} f_V(s + r) dr, so (a) |W| <= M := max |f_V|
+  over the orbit, (b) the integral of f_V over a period vanishes (V(T) = V(0)), and (c) subtracting the mean
+  a = (1 - e^{-kappa T})/(kappa T) of e^{-kappa r} over a period, |W| <= M psi(kappa T) with
+  psi(x) = (x/(1 - e^{-x})) integral_0^1 |e^{-x u} - a| du, which is x/4 + O(x^2) for small x. The rising or the falling
+  part of V takes at most T/2, so the excursion Delta = Vmax - Vmin <= (T/2) M min(psi(kappa T), 1), and with x = kappa T,
+  L = sqrt(D kappa) T = sqrt(D x T) >= sqrt(2 D Delta / M) sqrt(x / min(psi(x), 1)). Numerically
+  inf_x x / min(psi(x), 1) = 4 (approached as x -> 0; psi evaluated by quadrature on 600 points of x in [1e-4, 20], not a
+  proved inequality), so L >= sqrt(8 D Delta / M). On the slow branch Delta is about 86 mV and M about 20.4 mV/ms (at
+  kappa = 0.199), which gives L >= about 2.3 mm: a weak bound, but it excludes L -> 0. The identity (a)-(b) was checked
+  numerically on the kappa = 0.199 profile by the reviewer (W from the formula against the profile: 0.6910 against
+  0.6884 at s = 5 ms, the difference being the interpolation grid). This derivation is the review's; it has not been
+  checked against a paper. What remains open is whether L(kappa) turns up before the branch ends (an interior
+  minimum) or decreases towards a positive infimum at the end of the branch (kappa -> 0, or a turning point in kappa, or
+  a termination of the branch); only the continuation (section 7) can say, and a proof can only enclose the minimum over
+  a proved range.
 * **Not provable by this method:** that no reentry exists for L < L*_branch (a global nonexistence statement about all
   solutions, on other branches or not travelling waves at all). The result must say "the shortest ring along this
   branch", not "the shortest ring that sustains reentry".
@@ -245,7 +291,8 @@ h/j branch certified on every step enclosure; GHK quotient or degree-24 window w
 switched on within theta = 1 mV of 15 mV), driven by `wrap_run.py`, which also integrates the box centre in floating
 point (Radau, rtol 1e-12) and checks that this reference lies in the end enclosure. Wave: kappa = 2.19 exactly
 (T = 298.84894 ms, L = 173.5538 mm; section 7). Start boxes: a collocation point of the wave, relative radius r0 per
-component. "|D|" is the infinity norm of the midpoint of the derivative enclosure (the true expansion of the flow);
+component, K_i included (the boxes are not on the leaf; a proof inserts K_i from H0 as an affine map, section 4, and
+the widths should be re-measured that way once). "|D|" is the infinity norm of the midpoint of the derivative enclosure (an approximation of the expansion of the flow);
 "wrapping ratio" is (C0 radius)/(r0 |D|), which stays constant if the enclosure grows only as the flow does. One core,
 nice 10. Records: `results/wrap_pilot_2026-10-02.json`.
 
@@ -273,10 +320,12 @@ Findings (measurements, not a proof):
   trajectory from the box centre (a collocation point, accurate to the collocation error) left the wave along the
   expanding direction and repolarized early (V fell from 14 mV back to -40 mV); the floating-point trajectory from the
   same point did the same and lies inside the enclosure. The expanding rate on this wave is about 2.3 per ms on
-  average (between 1.1 and 4.6 per ms, frozen-coefficient eigenvalues; section 7), so a segment of Delta ms multiplies
-  errors by roughly e^{2.3 Delta}: segments of 2 to 4 ms (factors 1e2 to 1e4) are the natural choice, about 75 to 150
-  segments per period at kappa = 2.19. On the slow branch the expansion per period is much smaller (section 7), so
-  fewer segments are needed there.
+  average (between 1.1 and 4.6 per ms, frozen-coefficient eigenvalues; section 7; P1 measured about 2.7 per ms through
+  the upstroke), so a segment of Delta ms multiplies errors by roughly e^{2.3 Delta}. Estimate (not a measurement):
+  segments of 2 to 4 ms (factors 1e2 to 1e4; more in the upstroke) give about 75 to 150 segments per period at
+  kappa = 2.19; segment lengths should be adaptive. The centres u-bar_i of the proof must come from a Newton iteration
+  on the shooting system (4) itself, not from the collocation profile. On the slow branch the expansion per period is
+  much smaller (section 7), so fewer segments are needed there.
 * **Step size is set by the stiffness of the resting m gate**, as in the discrete ring: 0.0036 to 0.0044 ms near rest
   (V below about -80 mV), 0.02 ms through the upstroke, 0.1 to 0.16 ms on the plateau and in repolarization. The cost
   of a C1 step in 20 dimensions is 0.09 to 0.11 s, a dimension-21 step (kappa as a state) about 14 per cent more, and a
@@ -313,18 +362,28 @@ equation, independent of lambda). lambda is an eigenvalue iff the monodromy M(la
 eigenvalue 1. lambda = 0 is an eigenvalue with eigenfunction phi' (translation), and the charge invariant adds a second
 neutral direction (across leaves), so 0 has algebraic multiplicity at least 2; on the leaf, at least 1.
 
-**Structure of the spectrum (expected; to be verified).** For |Im lambda| large the gate and concentration rows
-dominate (6), and the eigenvalues accumulate along vertical lines Re lambda = (1/T) log |m_j|, where m_j are the
+**Structure of the spectrum (expected; to be verified).** On the ring the operator in (5) (second order in V, first
+order in the other 18 components, periodic) has compact resolvent, so its spectrum consists of isolated eigenvalues of
+finite multiplicity; there is no essential spectrum in the usual sense. For |Im lambda| large the gate and
+concentration rows dominate (6), and the eigenvalues lie asymptotically along vertical lines
+Re lambda = (1/T) log |m_j|, where m_j are the
 multipliers over one period of the 18 transport rows alone with V frozen along the wave (each gate relaxes, so
 |m_j| < 1 is expected; the concentrations relax slowly, so some of these lines lie very close to the imaginary axis: a
-rough hand estimate for K_i, through E_K in i_K1 alone, gives a relaxation rate of about 1e-4 per ms; not computed). The spectrum is discrete but not confined to a sector; the linearization does not
-generate an analytic semigroup, and the spectral mapping property must be shown separately (the parabolic V part is
-compact for t > 0 on the ring; the essential growth bound comes from the transport rows).
+rough hand estimate for K_i, through E_K in i_K1 alone, gives a relaxation rate of about 1e-4 per ms; not computed).
+If some |m_j| >= 1 the wave is unstable at arbitrarily high wavenumbers, and m_j = -1 (an alternans-type onset of the
+driven cell) would put a whole line of eigenvalues on the imaginary axis at once. The leaf removes only the global
+charge: the local charge q(x) is not conserved (dq/dt = -k D V_xx), so the slow ionic modes give eigenvalues close to
+the axis at every wavenumber, and a numerical "all eigenvalues in Re lambda < 0" must be reported with its margin.
+The eigenvalues are not confined to a sector; the linearization does not generate an analytic or eventually compact
+semigroup (the transport rows generate a group), so the growth bound of the semigroup can exceed the spectral bound,
+and the spectral mapping property must be shown separately (for example by splitting off the transport rows, whose own
+growth bound is computable, from a part that is compact for t > 0).
 
 **What "spectral stability" can mean here, and what it cannot.** Spectral stability on the leaf: every eigenvalue
-other than the translation eigenvalue 0 has Re lambda < 0, including the accumulation lines. It does not by itself give
-nonlinear orbital stability: (a) the semigroup is not analytic (see above); (b) because of the h/j switch the time-T map
-of the PDE is not C^1 in the usual sense near the crossing curves. A nonlinear statement needs a separate argument
+other than the translation eigenvalue 0 has Re lambda < 0, with a margin that bounds the asymptotic lines away from the
+axis. It does not by itself give nonlinear orbital stability: (a) the semigroup is not analytic or eventually compact
+(see above); (b) because of the h/j switch the time-T map of the PDE is not C^1 in the usual sense near the crossing
+curves (a perturbation can make a crossing non-transversal). A nonlinear statement needs a separate argument
 (for example a Lipschitz contraction estimate in L^infinity for the time-T map). The owner's plan asks for existence plus
 spectral stability first; the statement must stop there.
 

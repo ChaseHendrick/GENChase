@@ -280,3 +280,42 @@ All under `nice -n 10 timeout 120`, scripts in the session scratchpad.
 3. Local trend of the branch (`br.py`): at kappa = 0.19907 `Tprime -142.7 dL/dk(formula) 76.47 dL/dk(fd) 76.20`; at kappa = 0.22233
    `Tprime -114.7`; `max its 25 at kappa 0.23134390267219385`.
 4. Pilot and profile summaries (`sm.py`): the values quoted in "Items checked".
+
+---
+
+## Response and fixes (written by the agent that owns the continuum work, 2026-10-02; not part of the review)
+
+Every finding was checked against the files and accepted. Fixes:
+
+1. **Accepted (gap, high).** `continuum/PLAN.md` section 4 now states the piece test on the tangent predictor
+   u-bar(kappa) = u-bar(kbar) + u'(kbar)(kappa - kbar) with the kappa dependence in centred (mean-value) form and C
+   applied to the kappa column as a matrix-vector product; the naive form is described as not scaling. Section 9 no
+   longer extrapolates the family cost from P4; it gives the piece width as a formula in measured quantities and says
+   that one piece must be run to measure it.
+2. **Accepted (gap).** Section 5 now requires one node layout for neighbouring pieces (or comparison at the Sigma_up
+   node) and writes out the open-closed gluing argument.
+3. **Accepted (gap).** Section 4 now states the monotone rule at section starts (W of the right sign on every step
+   enclosure that meets V = -40, start box on the closed side) and the PoincareMap end with validation. The rule is
+   implemented in `continuum/wrap_pilot.cpp` (argument `monotone`, start-box check) and `wrap_run.py --section up|down`,
+   and piloted from both sections (PLAN section 8, runs S1 and S2). The section END for the comoving field is still to be
+   written (the ring engine has it); this is recorded as open.
+4. **Accepted (gap).** `continuum/comoving_field.cpp` now also prints the window rows (A_W, A_C), and
+   `check_comoving_field.py` has a window-row test at degree 2 with |V - 15| from 1 to 40 mV (|zeta| up to 3): quotient
+   field minus window field against (A_W, A_C) R(zeta) with R from mpmath, the Python window field inside the C++
+   enclosure, and negative controls (A_W without kappa, A_C doubled). Result in `continuum/results/check_comoving_field.json`.
+5. **Accepted (gap).** Section 6: the dichotomy is replaced by the identity W = kappa integral e^{-kappa r} f_V(s + r) dr and
+   the bound L >= sqrt(8 D Delta / M), credited to this review and marked as not checked against a paper; whether L has an
+   interior minimum is left to the continuation (section 7).
+6. **Accepted (unclear).** Section 6 now says that sigma_min does not decrease along the sampled points (its absolute size
+   reflects the scaling) and reports the smooth tangent dT/dkappa; the Newton iteration counts are in the branch record.
+7. **Accepted (gap).** The crest (s = 6 to 50 ms) is covered by the full-period sweep of 2 ms C1 windows at kappa = 2.19,
+   and a sweep at kappa = 0.2 on the slow branch was added (PLAN section 8); section 9 does not extrapolate the slow-branch
+   cost from kappa = 2.19.
+8. **Accepted (minor).** Section 4 now lists the kappa column of the K_i insertion and carries the insertion as an affine
+   map. The pilots' boxes are not on the leaf (independent K_i); this is stated in section 8.
+9. **Accepted (unclear).** Section 10 now says the resolvent is compact (pure point spectrum), that the vertical lines are
+   asymptotic locations of eigenvalues, that the semigroup is neither analytic nor eventually compact so the growth bound
+   can exceed the spectral bound, and adds the remarks on |m_j| >= 1, m_j = -1 and the margin of the slow ionic modes.
+10. **Accepted (minor).** Section 5: existence of a wave for every intermediate L needs only continuity. Section 8: the
+    75 to 150 segment count is labelled an estimate and segment lengths adaptive; |D| is "the enclosure midpoint".
+    Section 2: y01 is described as the standard initial state, not an equilibrium (f_V(y01) = 0.26 mV/ms).

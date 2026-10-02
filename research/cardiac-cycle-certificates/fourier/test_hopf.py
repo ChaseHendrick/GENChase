@@ -18,10 +18,11 @@ Theorem A
     condition of the cover fails), and shifted to the left Re lambda > 0 at its right end; dlambda_dg told that the
     critical disc is the conjugate's refuses the left eigenpair (it is identified with lambda only through D1).
 Theorem B (needs the run data, fourier/data/hopf/)
-  * Pieces 0 (fast mode) or 0, 13, 30 and the last one (full mode) are recomputed from their stored centres, weights
-    and r_*, with their groups' covers rebuilt from the logged centres: the cover digests equal the logged ones, and
-    Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values (pieces 0 to 30 were made before the program
-    logged its own hash, so this ties them to the current program text).
+  * Pieces 0 (fast mode) or 0, 13, 30, 40, 62 and the last one (full mode) are recomputed from their stored centres,
+    weights and r_*, with their groups' covers rebuilt from the logged centres: the cover digests equal the logged
+    ones, and Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values (pieces 0 to 30 were made before the
+    program logged its own hash, and the later runs logged hashes of earlier program texts; this ties a piece of each
+    run, K = 8 and K = 12, to the current program text).
   * Negative controls on that piece: the parameter interval widened threefold about its centre must fail; dropping the
     curve terms (delta Y1, delta^2 Y2 / 2, delta Zc) changes Y0 and Z1; dropping the Cauchy (third-derivative) terms
     changes Z2; a centre computed at a wrong eps (shifted by the piece width) must fail; a piece outside its cover is
@@ -348,7 +349,9 @@ def test_piece_recompute_and_controls():
         check("Theorem B data present", False, "no pieces logged")
         return
     # pieces made by the earlier runs (no code hash logged) and the last one: re-proved bit for bit by this program
-    idxs = [0] if FAST else sorted({0, 13, 30, len(pieces) - 1} & set(range(len(pieces))))
+    # 0, 13, 30: made before the program logged its hash; 40, 62: the last pieces of the runs with logged hashes
+    # bae43c6c3b (K = 8) and c656af84d2 (K = 12); the last piece: the final run
+    idxs = [0] if FAST else sorted({0, 13, 30, 40, 62, len(pieces) - 1} & set(range(len(pieces))))
     p0 = pieces[0]
     crec = covers[p0["cover"]]
     first = _recompute(p0, covers)

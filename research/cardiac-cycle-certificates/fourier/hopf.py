@@ -2816,8 +2816,15 @@ def collect(write=True, log=print, data=DATA):
         if not covers[r["cover"]]["record"]["digest"].startswith(r["cover"]) or \
                 r["result"]["cover"] != covers[r["cover"]]["record"]["digest"]:
             raise ProofFailure(f"piece {r['idx']}: cover digest mismatch")
-        if not hex_fraction(r["result"]["r_existence"]) < hex_fraction(r["result"]["r_uniqueness"]):
-            raise ProofFailure(f"piece {r['idx']}: r_existence not < r_uniqueness")
+        # the logged radii-polynomial inequalities (exact upper bounds): 0 < r_lo <= r_hi <= r_*, p(r_lo) < 0,
+        # p(r_hi) < 0, Z1 + Z2 r_hi < 1. r_lo = r_hi is allowed (existence._radii's fallback): Theorem B's continuity
+        # argument uses the smaller root r_1 < r_lo of p, which exists because p(r_lo) < 0 strictly.
+        rl_, rh_ = hex_fraction(r["result"]["r_existence"]), hex_fraction(r["result"]["r_uniqueness"])
+        if not (0 < rl_ <= rh_ <= hex_fraction(r["result"]["r_star"])):
+            raise ProofFailure(f"piece {r['idx']}: radii not ordered 0 < r_existence <= r_uniqueness <= r_*")
+        if not (hex_fraction(r["result"]["p_at_r_existence"]) < 0 and hex_fraction(r["result"]["p_at_r_uniqueness"]) < 0
+                and hex_fraction(r["result"]["contraction_at_r_uniqueness"]) < 1):
+            raise ProofFailure(f"piece {r['idx']}: logged radii-polynomial inequalities do not hold")
     ident = identification_at_eps0(pieces[0], thA, log=log)
     gHa, gHb = Fraction(thA["gH_interval"][0]), Fraction(thA["gH_interval"][1])
     first_below = None
@@ -2841,7 +2848,7 @@ def collect(write=True, log=print, data=DATA):
         if gl.get("eps_branch", {}).get("n_pieces") != len(pieces):
             log("note: gluing_gks.json was made with a different number of eps pieces; rerun --bridge")
             gl["stale"] = True
-    closed = bool(gl and gl.get("ok") and not gl.get("stale"))
+    closed = bool(gl and gl.get("ok") and not gl.get("stale") and ident.get("ok"))
     gks_hi = Fraction(gl["gks_branch_snapshot"]["g_hi"]) if gl else None
     summary = [dict(idx=r["idx"], eps=[r["e_lo"], r["e_hi"]], g=[r["result"]["g"]["lower"]["dec"][:18],
                                                                   r["result"]["g"]["upper"]["dec"][:18]],
@@ -2859,10 +2866,29 @@ def collect(write=True, log=print, data=DATA):
                  f"(scaled variables, phase with Im a_1V = 0) is eps/2; distinct eps give distinct orbits. x*(0) is the "
                  f"Hopf point of Theorem A (g*(0) = g_H). By continuity, every G_Ks in [{bridge_g_low}, g_H) is g*(eps) "
                  f"for some eps in (0, {eps_end}], so the cell has a periodic orbit on the bridge at every such G_Ks.")
+    glue_point, theorem_C = None, None
+    if closed:
+        gp = next(p for p in gl["points"] if p["on_eps_branch"] and p["on_gks_branch"])
+        ck = [c for c in gp["lemma_D"]["checks"] if c["ok"]]
+        glue_point = dict(g=gp["g"], source=gp["source"], eps_enclosure=gp["lemma_D"]["eps_enclosure"],
+                          lemma_D_eps_pieces=[c["eps_piece"] for c in ck],
+                          lemma_D_lhs_max=max(c["lhs"] for c in ck), lemma_D_r_uniqueness_min=min(c["r_uniqueness"] for c in ck),
+                          gks_piece=gp["gks_check"]["piece"], gks_piece_label=gp["gks_check"]["piece_label"],
+                          gks_lhs=gp["gks_check"]["lhs"], gks_r_uniqueness=gp["gks_check"]["r_uniqueness_piece"],
+                          stage_S_ok=gp["stage_S_ok"], multiplier_bound_full_period=gp["multiplier_bound_full_period"])
+        theorem_C = (f"Theorem C (LEMMAS-hopf.md): the K = 32 point proof at G_Ks = {gp['g']} ({gp['source']} log) is the "
+                     f"bridge orbit at eps_s in {gp['lemma_D']['eps_enclosure']} (Lemma D) and the G_Ks-branch orbit of "
+                     f"piece {gp['gks_check']['piece_label']} (branch.point_on_branch, on the validated snapshot of the "
+                     f"branch logs recorded under bridge_checks.gks_branch_snapshot). So the G_Ks branch on "
+                     f"[0.027499735464, {gp['g']}] and the eps-branch on [0, eps_s] form one continuous curve of real "
+                     f"periodic orbits of the single cell from the Stage E orbit at G_Ks = 0.0275 to the Hopf point "
+                     f"(x_e(g_H), g_H) of Theorem A, and for every G_Ks in [0.027499735464, g_H) the cell has a periodic "
+                     f"orbit on this curve (G_Ks branch up to {gp['g']}, intermediate value theorem for g* on [0, eps_s] "
+                     f"above it).")
     rec = dict(
         what="Rec 2, Hopf bridge: the single-cell periodic orbit is certified from the end of the G_Ks branch "
-             "(branch.py) to Erhardt's supercritical Hopf point by a blown-up radii polynomial in the amplitude eps "
-             "(fourier/hopf.py, LEMMAS-hopf.md)",
+             "(branch.py) to the supercritical Hopf point g_H of Theorem A (Erhardt's numerical value lies about "
+             "1.5e-8 above it) by a blown-up radii polynomial in the amplitude eps (fourier/hopf.py, LEMMAS-hopf.md)",
         status="computed; awaiting adversarial review",
         not_claimed=("No outside review has taken place. Stability is NOT proved uniformly on the bridge: only "
                      "(a) for small amplitude, qualitatively (cited Hopf theorem, no explicit range), and (b) at the "
@@ -2886,6 +2912,8 @@ def collect(write=True, log=print, data=DATA):
         T_ms_range=[min(r["result"]["T_ms"]["lower"]["dec"][:14] for r in pieces),
                     max(r["result"]["T_ms"]["upper"]["dec"][:14] for r in pieces)],
         bridge_checks=gl,
+        theorem_C=theorem_C,
+        glue_point=glue_point,
         hopf_gap_closed=closed,
         gap=(None if closed else dict(bridge_g_low=bridge_g_low, gks_branch_g_hi=(str(gks_hi) if gks_hi else None),
                                       note="glued only through a branch.py point proof whose g lies in both ranges")),

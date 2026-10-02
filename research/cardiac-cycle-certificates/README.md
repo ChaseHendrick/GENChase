@@ -216,6 +216,52 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
     --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
+* **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: computed; one in-project
+  adversarial reading, REVIEW_PLACEHOLDER; no outside review** (`fourier/hopf.py`,
+  proofs in `fourier/LEMMAS-hopf.md`, tests `fourier/test_hopf.py`, record `results/fourier-hopf.json`, logs in
+  `fourier/data/hopf/`).
+  - Theorem A, the Hopf point (computer-assisted). The window W = [0.02789, 0.02792] is covered by 516 adjacent
+    intervals with exact end points. On each, a contraction on a polydisc gives the unique equilibrium for every G_Ks
+    of the interval, and Gershgorin discs of the Jacobian (enclosed by the mean value form in G_Ks) separate one simple
+    pair lambda, conj lambda from 16 eigenvalues with real part at most -4.6926852e-5. Re lambda > 0 on the 286
+    intervals left of G_H = [0.0279078440027596034781, 0.0279078440029596034781] and < 0 on the 229 right of it; on
+    G_H, d Re lambda / dG_Ks lies in [-5.5769472, -5.5769465], so there is exactly one Hopf point g_H, with
+    omega_H in [0.119341401778, 0.119341401788] per ms. The first Lyapunov coefficient (Kuznetsov's formula, second
+    and third derivatives by Taylor series in Arb, tested on systems with known values) lies in
+    [-22.4878803, -22.4878761] (physical units, <q, q> = 1); omega_H l1 is in [-2.6837352, -2.6837346], against
+    Erhardt's MATCONT value -2.6838. Erhardt's g_H = 0.027907858929580 lies 1.49e-8 above ours. With the cited
+    Andronov-Hopf theorem (Kuznetsov) the bifurcation is supercritical: just below g_H there is a unique small cycle near
+    the equilibrium, orbitally asymptotically stable, and just above none. That neighbourhood is not quantified.
+  - Theorem B, the blown-up branch (computer-assisted). The orbit is written as c + eps w(omega t). Here eps is the
+    amplitude of the first harmonic of V, fixed by w_{V,+-1} = 1/2: in the scaled variable V / 2^-2 mV the first
+    Fourier coefficient is eps/2, so in V itself the harmonic has amplitude eps/4 mV. The unknowns are omega, G_Ks, c
+    and w. For every eps in [0, 0.12854] (68 pieces, glued by ball inclusion) the blown-up equations have a zero that
+    is unique in the piece's ball, real and continuous in eps. For eps > 0 it is a periodic orbit of the cell at
+    G_Ks = g*(eps), with minimal period in [52.6486, 52.9414] ms. At eps = 0 it is the Hopf point of Theorem A, shown
+    in Arb by one polydisc that contains the eps = 0 zero and every Theorem A polydisc near g_H. G_Ks is an unknown
+    of the problem: each piece encloses g*(eps), and g*(0.12854) lies in [0.0277783015906886, 0.0277783239122673].
+    Numerically, though not as a bound, g_H - g*(eps) is about 7.7e-3 eps^2, the square-root law. Monotonicity of g*
+    in eps is not certified. On every piece Z1 <= 0.251 and the contraction factor is at most 0.974; the smallest
+    gluing slack is 3.0e-10.
+  - Theorem C, glued to the G_Ks branch (computer-assisted). A K = 32 point proof at G_Ks = 0.02778 (with Stage S)
+    serves both sides. It is the bridge orbit at eps_s in [0.12769007505990053945, 0.12769007505990053946]: the ball
+    inclusion holds with 7.3e-8 against a radius of 1.19e-5. It is also the G_Ks-branch orbit of piece G53P6: 7.0e-5
+    against 1.22e-3. The branch side was checked on a validated snapshot of the branch logs (676 pieces reaching
+    0.02778134123, every gluing re-derived). **So for every G_Ks in [0.027499735464, g_H) the single cell has a
+    periodic orbit, and these orbits form one continuous curve from the Stage E orbit at 0.0275 to the Hopf point.**
+    The gap to the Hopf point is closed.
+  - Stability is proved only in two forms. (a) For small amplitude, qualitatively, from the cited theorem; no explicit
+    range. (b) At 12 isolated values of G_Ks on the curve: 0.0275, 0.02755, 0.0276, 0.02765, 0.0277, 0.02775, 0.02778,
+    0.0278, 0.02785, 0.02787, 0.02788 and 0.0279. At each, Stage S bounds every nontrivial Floquet multiplier by
+    0.9979 (delta about 4.0e-5 per ms). Each is identified with the curve by ball inclusion. Stability is NOT proved
+    uniformly along the bridge: the multiplier near 1 tends to 1 as eps -> 0, and no uniform bound that resolves it is
+    attempted (LEMMAS-hopf.md, Part S).
+  - Cost: Theorem A 234 s; the 68 pieces 6,597 s, 58 to 145 s each on one core; the point proof at 0.02778
+    203 s; the gluing checks 14 s.
+  - Run (each step resumable, logs append-only): `cd fourier && nohup nice -n 10 timeout 3000 python3 hopf.py
+    --theorem-a`; `nohup nice -n 10 timeout 3600 python3 hopf.py --run --K 12 --M 64 --g-stop <g> --budget 3300`;
+    `python3 hopf.py --gks-points 0.02778`; `python3 hopf.py --bridge`; `python3 hopf.py --collect`; tests:
+    `nice timeout 3000 python3 test_hopf.py` (about 25 minutes; `--fast` about 8).
 * **Every N >= 8 and the cable, existence (Stage E for every N), Fourier route: computed; awaiting adversarial review**
   (`fourier/alln.py`, `fourier/test_alln.py`, record `results/fourier-existence-alln.json`, logs in
   `fourier/data/alln/`). Nobody has yet given it a second reading.
