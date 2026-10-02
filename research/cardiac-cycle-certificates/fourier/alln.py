@@ -116,8 +116,12 @@ which is summable in l^1_nu; dominated convergence. So eps -> x*(eps) is continu
 is claimed), and omega*(eps), T(eps) are continuous.
 Gluing (as B.5): consecutive pieces overlap in eps (e_lo(b) <= e_hi(a)) and the program checks in Arb
     ||xbar_a - xbar_b||_{eta(b)} + r_lo(a) max_c (eta_c(a) / eta_c(b)) <= r_hi(b);
-then for eps in the overlap x*_a(eps) is a zero of F(.; eps) in b's uniqueness ball, so x*_a(eps) = x*_b(eps). The
-pieces define one continuous map eps -> x*(eps) on the union of the glued chain.
+then for eps in the overlap x*_a(eps) is a zero of F(.; eps) in b's uniqueness ball, so x*_a(eps) = x*_b(eps).
+Non-consecutive overlaps: collect() requires (branch.check_piece_order, refusing the record otherwise) that, in the
+order of the lower ends, both endpoints increase strictly and every piece has r_lo < r_hi; then the argument of B.5
+(a) agreement at eps0 = lo_j through the consecutive overlaps, (b) the agreement set is closed and open in the
+interval P_i n P_j because r_lo(j) < r_hi(j) and x*_i is continuous) gives x*_i = x*_j on P_i n P_j. The pieces
+therefore define one single-valued continuous map eps -> x*(eps) on the union of the glued chain.
 
 7. Identification with the per-N Stage E records
 ------------------------------------------------
@@ -985,6 +989,9 @@ def collect(width="1/4096", overlap="1/8", e_end=E_END, write=True, log=print):
     chain.sort(key=lambda r: (Fraction(r["rec"]["eps_lo"]), Fraction(r["rec"]["eps_hi"])))
     for r in chain:                                   # digest check (obj_of raises on mismatch)
         obj_of(r["rec"], r["centre"])
+    n_nonconsecutive = br.check_piece_order(           # section 6: strictly increasing endpoints, r_lo < r_hi
+        [dict(g_lo=r["rec"]["eps_lo"], g_hi=r["rec"]["eps_hi"], label=r["rec"]["label"],
+              r_existence=r["rec"]["r_existence"], r_uniqueness=r["rec"]["r_uniqueness"]) for r in chain])
     glues = []
     covered_hi = None
     if chain and Fraction(chain[0]["rec"]["eps_lo"]) == 0:
@@ -1027,7 +1034,7 @@ def collect(width="1/4096", overlap="1/8", e_end=E_END, write=True, log=print):
         eps_covered=[ "0", _fs(covered_hi)] if covered_hi is not None else None,
         eps_covered_float=[0.0, float(covered_hi)] if covered_hi is not None else None,
         complete_cover_of_0_to_1_64=complete, missing_plan_pieces=[[_fs(a), _fs(b)] for a, b in missing],
-        n_pieces=len(chain), n_glued_chain=n_glued,
+        n_pieces=len(chain), n_glued_chain=n_glued, non_consecutive_overlaps=n_nonconsecutive,
         piece_width_min=float(min(widths)) if widths else None, piece_width_max=float(max(widths)) if widths else None,
         plan=dict(width=str(width), overlap=str(overlap), grid="2^-40"),
         failures=[{k: v for k, v in f.items() if k not in ("diag", "trace")} for f in fails],
