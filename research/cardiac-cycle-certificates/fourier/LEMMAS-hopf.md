@@ -162,8 +162,9 @@ equilibrium polydisc of `G_H`, `g_H in G_H`, `A(g_H)` in the ball of `G_H`, `q`,
 one normalized `<q, q> = 1` in physical units, left one by `p_l^T q = 1`), `omega` in `Im L`; every quantity of the
 formula is evaluated in ball arithmetic on balls containing the true values at `g_H`, so the result contains `l1`. QED.
 
-(Before the review of 2026-10-02 the record did not contain the polydiscs and the program did not check `X_c` in
-`X_G`; statement (c) was then implicit. See the review file.)
+(Added on 2026-10-02 while finishing the bridge: earlier versions of the program neither recorded the polydiscs nor
+checked `X_c` in `X_G`, so (c) was implicit and the statement "exactly one `g_H` in `W`" was not justified across
+intervals with different polydiscs. Outside `J` the theorem is now stated per interval.)
 
 ### Cited theorem (Andronov-Hopf; Kuznetsov, Scholarpedia 1(10):1858, as stated in papers/hh-dynamics, Theorem thm:kuz)
 
@@ -177,15 +178,17 @@ and unstable for `beta > 0`, and a unique limit cycle, stable, exists for `beta 
 
 ### Corollary A (computer-assisted and cited)
 
-With `alpha = g - g_H`, Theorem A gives the hypotheses with `n_s = 16`, `n_u = 0`, `mu' < 0`, `l1 < 0`
-(`sigma = -1`). The equilibrium is asymptotically stable for `g > g_H` near `g_H` and unstable for `g < g_H`
-(Theorem A(b)); in the normal form these are `beta < 0` and `beta > 0`. Hence there are a neighbourhood `U` of
-`x_e(g_H)` and `eta > 0` such that for `g in (g_H - eta, g_H)` the cell has exactly one periodic orbit in `U`, and it
-is orbitally asymptotically stable (the suspension by `ys' = -ys` keeps it attracting), and for
-`g in [g_H, g_H + eta)` it has none in `U`. The topological equivalence maps periodic orbits to periodic orbits and
-preserves (orbital) asymptotic stability, as in papers/hh-dynamics, Corollary cor:hopf. This is the supercritical Hopf
-bifurcation reported numerically by Erhardt: `g_H` is the only Hopf point in `W`, and Erhardt's value lies in `W`
-(`|g_H - 0.027907858929580|` is about `1.5e-8`; `numerics/hopf_and_orbit.py` reports the same offset).
+With `alpha = g - g_H` and the branch `x_e` on `J` (Theorem A(c)), Theorem A gives the hypotheses of the cited theorem
+with `n_s = 16`, `n_u = 0`, `mu' < 0`, `l1 < 0` (`sigma = -1`). The equilibrium is asymptotically stable for
+`g > g_H` near `g_H` and unstable for `g < g_H` (Theorem A(d)); in the normal form these are `beta < 0` and
+`beta > 0`. Hence there are a neighbourhood `U` of `x_e(g_H)` and `eta_H > 0` such that for
+`g in (g_H - eta_H, g_H)` the cell has exactly one periodic orbit in `U`, and it is orbitally asymptotically stable (the
+suspension by `ys' = -ys` keeps it attracting), and for `g in [g_H, g_H + eta_H)` it has none in `U`. The topological
+equivalence maps periodic orbits to periodic orbits and preserves (orbital) asymptotic stability, as in
+papers/hh-dynamics, Corollary cor:hopf. `U` and `eta_H` are not quantified: this is the only place where the cited
+theorem enters, and nothing quantitative is taken from it. This is the supercritical Hopf bifurcation reported
+numerically by Erhardt: Erhardt's value lies in `W` (`|g_H - 0.027907858929580|` is about `1.5e-8`;
+`numerics/hopf_and_orbit.py` reports the same offset).
 
 ---------------------------------------------------------------------------------------------------------------------
 
