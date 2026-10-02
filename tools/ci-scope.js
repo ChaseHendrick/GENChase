@@ -11,7 +11,7 @@ const ROOT_DOCS = new Set([
 const full = reason => ({ browserRequired: true, reason });
 const REGISTRY = 'papers/papers.json';
 const PUBLICATION_FIELDS = new Set(['note', 'codeDoi', 'archiveVersion']);
-const PREPRINTS = new Set(['minimal-winding', 'collapse-without-rotation', 'stable-expansion', 'rank-window', 'hh-dynamics', 'double-pendulum', 'nf-pulse', 'hh-pulse']);
+const PREPRINTS = new Set(['minimal-winding', 'collapse-without-rotation', 'stable-expansion', 'rank-window', 'hh-dynamics', 'double-pendulum', 'nf-pulse', 'hh-pulse', 'cardiac-rings']);
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const line = (value, max = 20000) => typeof value === 'string' && value.length > 0 && value.length <= max && value.trim() === value && !/[\x00-\x1f\x7f\ufffd]/.test(value);
