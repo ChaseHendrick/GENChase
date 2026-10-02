@@ -2419,29 +2419,56 @@ def ball_of_piece_at(st_, xi):
     return omB, gB, cB, w, [up(E[CW + k] * r) for k in range(DIM)]
 
 
-def identification_at_eps0(first_piece_rec, prec=192, log=print):
-    """Corollary B(a): the enclosure of g*(0) lies in W and the enclosure of c*(0) lies in the polydisc in which
-    Lemma K gives the unique equilibrium for every g of the g*(0) enclosure. Returns a record."""
+def identification_at_eps0(first_piece_rec, thA, prec=192, log=print):
+    """Corollary B(a): x*(0) is the Hopf point of Theorem A. Checks (all in Arb, exact comparisons):
+    (i) the enclosure [ga, gb] of g*(0) (rounded outward to decimals) lies in W and is covered by Theorem A intervals
+    whose equilibrium polydiscs X_G are recorded in thA (adjacent, exact endpoints);
+    (ii) Lemma K on ONE polydisc P over [ga, gb] (radii chosen to contain the sets below);
+    (iii) the enclosure of c*(0) lies in P, and so does the real segment of every recorded X_G of an interval meeting
+    [ga, gb]. Then for every g in [ga, gb] the unique equilibrium in P is Theorem A's equilibrium of every interval
+    containing g (uniqueness in P), and c*(0) is it at g = g*(0). Returns a record (ok = all checks)."""
+    import centre as ct
     st_ = _piece_state(first_piece_rec)
     if st_["e_lo"] != 0:
         raise ValueError("not the first piece")
     omB, gB, cB, _, _ = ball_of_piece_at(st_, Fraction(0))
-    Wa, Wb = _arb_q(WINDOW[0]), _arb_q(WINDOW[1])
-    in_W = bool(gB > Wa and gB < Wb)
-    # equilibrium polydisc over the g enclosure (rounded outward to decimals)
     ga = Fraction(dec(lo(gB), "down", 25))
     gb = Fraction(dec(up(gB), "up", 25))
-    fh_x = float_equilibrium(float((ga + gb) / 2))
-    eq = equilibrium_on(_ball_interval(ga, gb), fh_x, prec=prec)
-    inside = all(bool(eq["Xc"][k].real.contains(cB[k])) for k in range(DIM))
-    rec = dict(g_star_0={"lower": dec(lo(gB), "down", 20), "upper": dec(up(gB), "up", 20)},
+    in_W = Fraction(WINDOW[0]) < ga and gb < Fraction(WINDOW[1])
+    ivs = [dict(a=thA["gH_interval"][0], b=thA["gH_interval"][1], polydisc=thA["polydisc_GH"])]
+    ivs += [iv for iv in thA["cover_left"] + thA["cover_right"]]
+    meet = sorted([iv for iv in ivs if Fraction(iv["a"]) <= gb and Fraction(iv["b"]) >= ga],
+                  key=lambda iv: Fraction(iv["a"]))
+    contiguous = all(Fraction(u["b"]) == Fraction(v["a"]) for u, v in zip(meet, meet[1:]))
+    covered = bool(meet) and contiguous and Fraction(meet[0]["a"]) <= ga and Fraction(meet[-1]["b"]) >= gb
+    have_pd = all("polydisc" in iv for iv in meet)
+    out = dict(g_star_0={"lower": dec(lo(gB), "down", 20), "upper": dec(up(gB), "up", 20)},
                omega_star_0={"lower": dec(lo(omB), "down", 20), "upper": dec(up(omB), "up", 20)},
-               g_in_window=in_W, c_in_equilibrium_polydisc=inside,
-               equilibrium_polydisc_radius_max=float(max(float(r) for r in eq["r"])),
-               equilibrium_kappa=float(eq["kappa"]),
-               c_radius_max=float(max(float(x.rad()) for x in cB)))
-    log(f"identification at eps = 0: g*(0) in W: {in_W}, c*(0) in the equilibrium polydisc: {inside}")
-    return rec
+               g_interval=[str(ga), str(gb)], g_in_window=in_W, n_theoremA_intervals_meeting=len(meet),
+               intervals_cover=covered, polydiscs_recorded=have_pd, omega_positive=bool(omB > 0))
+    if not (in_W and covered and have_pd):
+        out["ok"] = False
+        log(f"identification at eps = 0: preconditions fail {out}")
+        return out
+    with am.precision(prec):
+        xf = float_equilibrium(float((ga + gb) / 2))
+        pds = [polydisc_from_record(iv["polydisc"]) for iv in meet]
+        rmin = []
+        for i in range(DIM):
+            v = up((cB[i] - arb(float(xf[i]))).abs_upper())
+            for (xc, rr) in pds:
+                v = amax(v, up((xc[i] - arb(float(xf[i]))).abs_upper() + rr[i]))
+            rmin.append(float(v) * 1.01 + 1e-300)
+        eq = equilibrium_on(_ball_interval(ga, gb), xf, prec=prec, rmin=rmin)
+        xP, rP = eq["xt"], eq["r"]
+        c_in = all(bool((cB[i] - xP[i]).abs_upper() <= rP[i]) for i in range(DIM))
+        pd_in = all(bool((xc[i] - xP[i]).abs_upper() + rr[i] <= rP[i]) for (xc, rr) in pds for i in range(DIM))
+    out.update(c_in_P=c_in, theoremA_polydiscs_in_P=pd_in, P_kappa=float(eq["kappa"]),
+               P_radius_max=float(max(float(r) for r in rP)), c_radius_max=float(max(float(x.rad()) for x in cB)),
+               P=polydisc_record(eq), ok=bool(c_in and pd_in and omB > 0))
+    log(f"identification at eps = 0: g*(0) in [{float(ga):.12f}, {float(gb):.12f}] (in W: {in_W}; {len(meet)} "
+        f"Theorem A intervals), c*(0) in P: {c_in}, Theorem A polydiscs in P: {pd_in}, kappa {float(eq['kappa']):.2e}")
+    return out
 
 
 def _gks_record():

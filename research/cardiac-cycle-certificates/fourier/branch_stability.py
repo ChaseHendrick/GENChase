@@ -1799,33 +1799,140 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
     return done_labels(K)
 
 
+def done_groups(K=12):
+    """Certified group units by group id (the last one logged for a group wins; all are valid)."""
+    out = {}
+    for r in br._read_jsonl_tolerant(LOG.format(K=K)):
+        if r.get("type") == "group_unit" and r.get("ok"):
+            out[r["group"]] = r
+    return out
+
+
+def _gjob(args):
+    gid, settings = args
+    t0 = time.time()
+    try:
+        return dict(gid=gid, ok=True, rec=prove_group_uniform(gid, settings=settings, log=QUIET))
+    except FAILURES as e:
+        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", wall=round(time.time() - t0, 1),
+                    settings=settings)
+    except Exception as e:  # noqa: BLE001  (recorded, never a proof)
+        import traceback
+        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-1500:],
+                    wall=round(time.time() - t0, 1), settings=settings)
+
+
+GROUP_ATTEMPTS = (dict(delta="3e-5"),)
+
+
+def group_coverage(K=12):
+    """(pieces, groups, uncovered): a piece is covered by a certified piece unit with its centre digest, or by a certified
+    group unit of its group that lists it with the same centre digest."""
+    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    hp, hg = done_labels(K), done_groups(K)
+    unc = {}
+    for p in pieces:
+        r = p["rec"]
+        u = hp.get(r["label"])
+        if u is not None and u["centre_sha256"] == r["centre_sha256"]:
+            continue
+        g = hg.get(p["group"])
+        if g is not None and g.get("piece_centre_sha256", {}).get(r["label"]) == r["centre_sha256"]:
+            continue
+        unc.setdefault(p["group"], []).append(r["label"])
+    return pieces, groups, unc
+
+
+def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=3300, fallback=True, log=print):
+    """Group units (prove_group_uniform) for every logged group with an uncovered piece, in order of g, at most
+    `workers` at a time; each result (or failure) is appended to the log at once. A group whose unit fails under every
+    attempt falls back to piece units for its uncovered pieces (run(), the piece driver), if fallback."""
+    import multiprocessing as mp
+    T0 = time.time()
+    path = LOG.format(K=K)
+    br._repair_jsonl(path, log)
+    _, groups, unc = group_coverage(K)
+    failed_before = {r["group"] for r in br._read_jsonl_tolerant(path) if r.get("type") == "group_failure"}
+    todo = [g["group"] for g in groups if g["group"] in unc and (gids is None or g["group"] in set(gids))]
+    log(f"group units: {len(groups)} groups logged, {len(todo)} with uncovered pieces, workers {workers}")
+    to_pieces = [gid for gid in todo if gid in failed_before]
+    queue = [(gid, list(attempts)) for gid in todo if gid not in failed_before]
+    with mp.get_context("fork").Pool(workers, maxtasksperchild=2) as pool:
+        running = {}
+        while (queue or running) and time.time() - T0 < budget_s:
+            while queue and len(running) < workers and time.time() - T0 < budget_s:
+                gid, ds = queue.pop(0)
+                running[gid] = (pool.apply_async(_gjob, ((gid, dict(ds[0])),)), ds)
+            done = [gid for gid, (ar, _) in running.items() if ar.ready()]
+            if not done:
+                time.sleep(2)
+                continue
+            for gid in done:
+                ar, ds = running.pop(gid)
+                res = ar.get()
+                if res["ok"]:
+                    br._append(path, res["rec"])
+                    c = res["rec"]["certificate"]
+                    log(f"  G{gid}: CERTIFIED uniformly over [{res['rec']['g'][0]}, {res['rec']['g'][1]}] "
+                        f"({len(res['rec']['pieces'])} pieces), delta {res['rec']['delta_requested']}, (SC) worst "
+                        f"{c['SC_worst_ratio']:.3e}, rho {res['rec']['existence']['rho']['approx']:.2e}, "
+                        f"Z1 path {res['rec']['existence']['Z1_path']['approx']:.3f}, {res['rec']['wall_s']} s")
+                else:
+                    br._append(path, dict(type="group_failure", group=gid, why=res["why"], settings=res.get("settings"),
+                                          trace=res.get("trace"), wall=res.get("wall")))
+                    log(f"  G{gid}: group unit failed ({ds[0]}): {res['why'][:200]}")
+                    if ds[1:]:
+                        queue.insert(0, (gid, ds[1:]))
+                    else:
+                        to_pieces.append(gid)
+    left = budget_s - (time.time() - T0)
+    if fallback and to_pieces and left > 300:
+        _, _, unc = group_coverage(K)
+        labels = [l for gid in sorted(to_pieces) for l in unc.get(gid, [])]
+        if labels:
+            log(f"falling back to piece units for groups {sorted(to_pieces)} ({len(labels)} pieces)")
+            run(labels=labels, K=K, workers=workers, budget_s=left, log=log)
+    return done_groups(K)
+
+
 SOURCES = ["fourier/branch_stability.py", "fourier/branch.py", "fourier/stability.py", "fourier/existence.py",
            "fourier/centre.py", "fourier/arbmodel.py", "fourier/fourier_eval.py", "fourier/tp06_18d_arb.py",
            "model/tp06_18d.py", "model/scales.txt"]
 
 
+RECORD = os.path.join(RESULTS, "fourier-branch-stability-uniform.json")
+
+
 def collect(K=12, write=True, log=print):
-    pieces, _, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
-    have = done_labels(K)
+    """The Theorem C record: every piece of the branch record with the unit that covers it (a piece unit, or the group
+    unit of its group), the maximal intervals covered, the group units and the failures. Centre digests are matched
+    against the branch logs; nothing is taken from a unit whose centre digest does not match."""
+    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    hp, hg = done_labels(K), done_groups(K)
     allr = br._read_jsonl_tolerant(LOG.format(K=K))
-    fails = [r for r in allr if r.get("type") == "failure"]
+    fails = [r for r in allr if r.get("type") in ("failure", "group_failure")]
     rows = []
     for p in pieces:
         r = p["rec"]
-        u = have.get(r["label"])
+        u = hp.get(r["label"])
         if u is not None and u["centre_sha256"] != r["centre_sha256"]:
             u = None
-        rows.append(dict(label=r["label"], g=[r["g_lo"], r["g_hi"]], uniform=u is not None,
-                         delta=u["delta"] if u else None, delta_requested=u["delta_requested"] if u else None,
-                         multiplier_bound_full_period=u["multiplier_bound_full_period"] if u else None,
-                         rho=u["existence"]["rho"]["approx"] if u else None,
-                         SC_worst_ratio=u["certificate"]["SC_worst_ratio"] if u else None,
-                         critical_ratios=[c["ratio"] for c in u["certificate"]["critical_columns"]] if u else None,
-                         theta_T=u["certificate"]["theta_T"]["approx"] if u else None,
-                         wall_s=u["wall_s"] if u else None))
+        gu = hg.get(p["group"])
+        if gu is not None and gu.get("piece_centre_sha256", {}).get(r["label"]) != r["centre_sha256"]:
+            gu = None
+        cov = gu if gu is not None else u          # report the group unit when there is one (both are valid)
+        rows.append(dict(label=r["label"], group=p["group"], g=[r["g_lo"], r["g_hi"]], uniform=cov is not None,
+                         unit=None if cov is None else (cov["label"] if cov is gu else r["label"]),
+                         unit_kind=None if cov is None else ("group" if cov is gu else "piece"),
+                         also_piece_unit=bool(u is not None and cov is gu),
+                         delta=cov["delta"] if cov else None, delta_requested=cov["delta_requested"] if cov else None,
+                         multiplier_bound_full_period=cov["multiplier_bound_full_period"] if cov else None,
+                         rho=cov["existence"]["rho"]["approx"] if cov else None,
+                         SC_worst_ratio=cov["certificate"]["SC_worst_ratio"] if cov else None,
+                         theta_T=cov["certificate"]["theta_T"]["approx"] if cov else None,
+                         program_sha256=cov.get("program_sha256") if cov else None))
     covered = [r for r in rows if r["uniform"]]
-    # maximal runs of consecutive certified pieces (consecutive pieces overlap, so a run covers an interval)
-    runs, cur = [], None
+    runs, cur = [], None                           # maximal runs of consecutive covered pieces (they overlap)
     for r in rows:
         if r["uniform"]:
             if cur is None:
@@ -1838,28 +1945,62 @@ def collect(K=12, write=True, log=print):
             cur = None
     if cur is not None:
         runs.append(cur)
-    worst = max((Fraction(r["multiplier_bound_full_period"]["dec"]) for r in covered), default=None)
+    used = {}
+    for r in covered:
+        used.setdefault(r["unit"], r)
+    units_used = []
+    for lab in used:
+        x = hg[int(lab[1:])] if (lab.startswith("G") and "P" not in lab) else hp[lab]
+        units_used.append(x)
+    worst = max((Fraction(x["multiplier_bound_full_period"]["dec"]) for x in units_used), default=None)
+    prog = {}
+    for x in units_used:
+        key = x.get("program_sha256") or "not recorded (early version of branch_stability.py)"
+        prog[key] = prog.get(key, 0) + 1
+    gunits = []
+    for gid, x in sorted(hg.items()):
+        gunits.append(dict(group=gid, label=x["label"], g=x["g"], half_width=x["half_width"]["approx"],
+                           pieces=x["pieces"], centre_piece=x["centre_piece"], delta_requested=x["delta_requested"],
+                           multiplier_bound_full_period=x["multiplier_bound_full_period"]["approx"],
+                           rho=x["existence"]["rho"]["approx"], Z1_path=x["existence"]["Z1_path"]["approx"],
+                           Z1_point=x["existence"]["Z1_point"]["approx"], Z2=x["existence"]["Z2"]["approx"],
+                           kappa=x["existence"]["kappa"]["approx"],
+                           identification_worst_ratio=max(i["lhs"] / i["r_uniqueness"]
+                                                          for i in x["existence"]["identification"]),
+                           SC_worst_ratio=x["certificate"]["SC_worst_ratio"],
+                           critical_ratios=[c["ratio"] for c in x["certificate"]["critical_columns"]],
+                           theta_T=x["certificate"]["theta_T"]["approx"], wall_s=x["wall_s"],
+                           program_sha256=x.get("program_sha256")))
+    n_piece_units = len(hp)
     out = dict(
-        what="Theorem C: linear stability of the single-cell periodic orbit uniformly in G_Ks on each certified "
-             "piece of the rec 2 branch (fourier/branch_stability.py; lemmas: fourier/LEMMAS-stability.md section 10)",
+        what="Theorem C: linear stability of the single-cell periodic orbit uniformly in G_Ks on the rec 2 branch, "
+             "certified on whole groups of pieces (group units) and on single pieces (piece units) "
+             "(fourier/branch_stability.py; lemmas: fourier/LEMMAS-stability.md sections 10 and 11)",
         status="computed; awaiting adversarial review",
         theorem=theorem_text(runs, worst),
         n_pieces_branch=len(rows), n_pieces_uniform=len(covered),
+        n_group_units=len(hg), n_piece_units=n_piece_units,
+        n_units_used=len(units_used),
         intervals_uniform=[dict(g=[a, b], n_pieces=n) for a, b, n in runs],
+        uncovered_pieces=[r["label"] for r in rows if not r["uniform"]],
         worst_multiplier_bound=None if worst is None else float(worst),
-        pieces=rows, failures=[{k: v for k, v in f.items() if k != "trace"} for f in fails],
-        settings=dict(DEFAULTS), sources_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in SOURCES},
+        delta_requested_values=sorted({x["delta_requested"] for x in units_used}),
+        programs_of_units_used=prog,
+        group_units=gunits, pieces=rows,
+        failures=[{k: v for k, v in f.items() if k != "trace"} for f in fails],
+        settings=dict(DEFAULTS), group_settings=dict(GROUP_DEFAULTS),
+        sources_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in SOURCES},
         log=os.path.relpath(LOG.format(K=K), ROOT), log_sha256=br.sha256(LOG.format(K=K)),
         branch_run_log_sha256=br.sha256(br.RUN_LOG.format(K=K)), branch_centres_sha256=br.sha256(br.CENTRES.format(K=K)),
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         numpy=np.__version__, machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
-        total_wall_s=round(sum(r["wall_s"] or 0 for r in rows), 1))
+        total_wall_s=round(sum(x["wall_s"] for x in units_used), 1))
     if write:
-        path = os.path.join(RESULTS, "fourier-branch-stability.json")
-        with open(path, "w") as fh:
+        with open(RECORD, "w") as fh:
             json.dump(out, fh, indent=1)
             fh.write("\n")
-        log(f"wrote {path}: {len(covered)} of {len(rows)} pieces uniform")
+        log(f"wrote {RECORD}: {len(covered)} of {len(rows)} pieces uniform ({len(hg)} group units, "
+            f"{n_piece_units} piece units in the log)")
     return out
 
 
@@ -1869,13 +2010,14 @@ def theorem_text(runs, worst):
     iv = "; ".join(f"[{a}, {b}]" for a, b, _ in runs)
     return ("Conditional on Theorem B (results/fourier-branch-gks.json: for every G_Ks in each listed piece the branch "
             "orbit x*(G_Ks) exists, is unique in the piece's ball and has minimal period T) and on the lemmas of "
-            "fourier/LEMMAS-stability.md (sections 1 to 4 and 10): for EVERY G_Ks in " + iv + " (each a union of "
-            "branch pieces certified one by one), the single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 "
-            "endocardial model has the Floquet multiplier 1 algebraically simple and its other 17 Floquet multipliers "
-            "of modulus < e^(-delta T_lo) with the piece's delta and T_lo (worst over the pieces: "
+            "fourier/LEMMAS-stability.md (sections 1 to 4, 10 and 11): for EVERY G_Ks in " + iv + " (a union of "
+            "branch pieces, each covered by a certified unit: the group unit of its group or a piece unit), the "
+            "single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 endocardial model has the Floquet "
+            "multiplier 1 algebraically simple and its other 17 Floquet multipliers of modulus < e^(-delta T_lo) with "
+            "the unit's delta and T_lo (worst over the units: "
             f"{'%.9f' % worst if worst is not None else 'n/a'}); hence it is locally exponentially orbitally stable "
-            "with asymptotic phase (Theorem 4(iii)). The bound holds uniformly on each piece, not only at sampled "
-            "values of G_Ks.")
+            "with asymptotic phase (Theorem 4(iii)). The bound holds uniformly on each unit's interval, not only at "
+            "sampled values of G_Ks.")
 
 
 def main():
@@ -1885,6 +2027,9 @@ def main():
     ap.add_argument("--labels", default="")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--budget", type=float, default=3500)
+    ap.add_argument("--groups", action="store_true", help="group units for every group with an uncovered piece")
+    ap.add_argument("--gids", default="", help="comma-separated group ids for --groups (default: all)")
+    ap.add_argument("--no-fallback", action="store_true", help="with --groups: do not fall back to piece units")
     ap.add_argument("--one", default="", help="prove one piece in this process and print the record")
     ap.add_argument("--delta", default=None)
     a = ap.parse_args()
@@ -1898,6 +2043,9 @@ def main():
                                          for k, v in r["existence"].items()},
                               theta_T=c["theta_T"]["approx"], SC_worst=c["SC_worst_ratio"],
                               critical=c["critical_columns"], timings=r["timings_s"], wall=r["wall_s"]), indent=1))
+    if a.groups:
+        run_groups(gids=[int(v) for v in a.gids.split(",") if v] or None, workers=a.workers, budget_s=a.budget,
+                   fallback=not a.no_fallback)
     if a.run:
         run(labels=[l for l in a.labels.split(",") if l] or None, workers=a.workers, budget_s=a.budget)
     if a.collect:
