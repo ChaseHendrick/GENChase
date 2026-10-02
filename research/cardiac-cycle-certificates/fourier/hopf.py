@@ -1306,7 +1306,7 @@ class EpsCover:
 
 
 # ------------------------------------------------------------------------------------------------ the proof on a piece
-PIECE_DEFAULTS = dict(rho0="1/4", L=8, M=64, prec_Q=192, prec_J=128, prec_mat=128, theta_target="1/2",
+PIECE_DEFAULTS = dict(rho0="1/8", L=8, M=64, prec_Q=192, prec_J=128, prec_mat=128, theta_target="1/2",
                       n_explicit=12, nsub_xi=4, nsub_s=4, box_nx=16, box_max_evals=400)
 
 
@@ -2069,3 +2069,282 @@ class BlocksFloat:
             if v > best:
                 best, eta = v, e2
         return eta / eta.max(), best
+
+
+# =================================================================================================================
+# Lemma B4: gluing consecutive pieces at a shared endpoint
+# =================================================================================================================
+def centre_distance(Ca, eca, Cb, ecb, xi, Eb, nu, prec=256):
+    """Exact upper bound of ||xbar_a(xi) - xbar_b(xi)|| in the weights Eb (38 exact arbs), modes weighted by nu^|m|."""
+    with am.precision(prec):
+        oa, ga, ca, wa = curve_at(Ca, eca, xi, prec)
+        ob, gb, cb, wb = curve_at(Cb, ecb, xi, prec)
+        Ka, Kb = Ca.K, Cb.K
+        Km = max(Ka, Kb)
+        vals = [(oa - ob).abs_upper() / Eb[0], (ga - gb).abs_upper() / Eb[1]]
+        for k in range(DIM):
+            vals.append((ca[k] - cb[k]).abs_upper() / Eb[CC + k])
+        for k in range(DIM):
+            s = arb(0)
+            for m in range(1, Km + 1):
+                for sg in (1, -1):
+                    a = wa[k][Ka + sg * m] if m <= Ka else acb(0)
+                    b = wb[k][Kb + sg * m] if m <= Kb else acb(0)
+                    s += (a - b).abs_upper() * nu ** m
+            vals.append(s / Eb[CW + k])
+        return up(amax_list(vals))
+
+
+def glue(pa, pb, nu):
+    """Lemma B4 at xi = e_hi(a) = e_lo(b): the existence ball of piece a at xi lies in piece b's uniqueness ball:
+    ||xbar_a(xi) - xbar_b(xi)||_{eta_b} + r_lo(a) max_c eta_c(a) / eta_c(b) <= r_hi(b). pa, pb: dicts with C, e_lo,
+    e_hi (Fractions), E (38 exact arbs), r_lo, r_hi (exact arbs). Returns (ok, slack)."""
+    xi = pa["e_hi"]
+    if xi != pb["e_lo"]:
+        return False, None
+    eca = (pa["e_lo"] + pa["e_hi"]) / 2
+    ecb = (pb["e_lo"] + pb["e_hi"]) / 2
+    d = centre_distance(pa["C"], eca, pb["C"], ecb, xi, pb["E"], nu)
+    ratio = amax_list([up(pa["E"][c] / pb["E"][c]) for c in range(NC)])
+    lhs = d + pa["r_lo"] * ratio
+    return bool(lhs <= pb["r_hi"]), float(pb["r_hi"] - lhs)
+
+
+# =================================================================================================================
+# Driver for Part B (resumable; every proven piece is appended to data/hopf/pieces.jsonl)
+# =================================================================================================================
+RUN_SETTINGS = dict(K=8, M=48, nsub_xi=2, nsub_s=2, rho0="1/8", rho2="3/4", R="1/256", G_R="1/4096",
+                    T_margin="1/40", n_group=4)
+
+
+def _append(path, rec):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a") as fh:
+        fh.write(json.dumps(rec, sort_keys=True) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+
+
+def _read_jsonl(path):
+    out = []
+    if not os.path.exists(path):
+        return out
+    with open(path) as fh:
+        lines = fh.read().split("\n")
+    for i, line in enumerate(lines):
+        if not line.strip():
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            if i >= len(lines) - 2:          # a process killed while appending: drop the last partial line
+                break
+            raise
+    return out
+
+
+def _dyadic_eta(eta, bits=20):
+    out = []
+    for x in eta:
+        v = max(1, round(float(x) * 2 ** bits))
+        out.append(str(Fraction(v, 2 ** bits)))
+    return out
+
+
+def _ceil_dyadic(x, den=64):
+    return Fraction(math.ceil(float(x) * den), den)
+
+
+def _hexval(rec):
+    import centre as ct
+    return ct.text_to_dyadic(rec["hex"]) if "hex" in rec else _arb_q(rec)
+
+
+def _piece_state(rec):
+    """Exact data of a logged piece for gluing."""
+    C = Centre.from_record(rec["centre"])
+    E = [_arb_q(e) for e in rec["eta"]]
+    return dict(C=C, e_lo=Fraction(rec["e_lo"]), e_hi=Fraction(rec["e_hi"]), E=E,
+                r_lo=_hexval(rec["result"]["r_existence"]), r_hi=_hexval(rec["result"]["r_uniqueness"]))
+
+
+def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
+    """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop or the time budget; resumes from data/pieces.jsonl.
+    Every piece is glued to the previous one (Lemma B4) before it is logged."""
+    t_start = time.time()
+    rs_ = RUN_SETTINGS
+    K = int(rs_["K"])
+    st = dict(M=int(rs_["M"]), nsub_xi=int(rs_["nsub_xi"]), nsub_s=int(rs_["nsub_s"]), rho0=rs_["rho0"])
+    nu_f = math.exp(float(Fraction(rs_["rho0"])))
+    with am.precision(192):
+        nu = _arb_q(rs_["rho0"]).exp()
+    ppath = os.path.join(data, "pieces.jsonl")
+    cpath = os.path.join(data, "covers.jsonl")
+    done = [r for r in _read_jsonl(ppath) if r.get("type") == "piece"]
+    fh = FloatHopf()
+    FE = FloatEps(K)
+    u = FE.initial(fh)
+    e_cur = Fraction(0)
+    prev = None
+    eta_prev = None
+    width = Fraction(width0)
+    if done:
+        last = done[-1]
+        e_cur = Fraction(last["e_hi"])
+        prev = _piece_state(last)
+        eta_prev = np.array([float(Fraction(e)) for e in last["eta"]])
+        width = Fraction(last["e_hi"]) - Fraction(last["e_lo"])
+        u = FE.from_centre(prev["C"])
+        log(f"resuming after {len(done)} pieces at e = {float(e_cur):.6f}")
+    stop = Fraction(e_stop)
+    lay = FE.lay
+
+    def comps(v):
+        out = np.zeros(NC)
+        for i in range(lay.n):
+            out[lay.comp[i]] += abs(v[i]) * nu_f ** abs(lay.mode[i])
+        return out
+    n_fail = 0
+    while e_cur < stop and time.time() - t_start < budget_s:
+        # ---- a group of pieces with the current width
+        group = []
+        a = e_cur
+        uu = u
+        for i in range(int(rs_["n_group"])):
+            if a >= stop:
+                break
+            b = min(a + width, stop)
+            ec = (a + b) / 2
+            uu, nr = FE.newton(uu, float(ec))
+            tt = FE.tangent(uu, float(ec))
+            C = FE.to_centre(uu, tt)
+            group.append((C, a, b, uu, tt))
+            a = b
+        e_top = group[-1][2]
+        T = _ceil_dyadic(e_top + Fraction(rs_["T_margin"]))
+        try:
+            cov = EpsCover([(C, a_, b_) for (C, a_, b_, _, _) in group], str(T), [rs_["R"]] * DIM, rs_["G_R"],
+                           rho2=rs_["rho2"], max_evals=1500, log=log)
+        except (ProofFailure, fe.StripCoverError) as e:
+            log(f"  cover failed ({e}); halving the width")
+            width /= 2
+            continue
+        cid = cov.digest[:16]
+        _append(cpath, dict(type="cover", id=cid, T=str(T), R=rs_["R"], G_R=rs_["G_R"], rho2=rs_["rho2"],
+                            pieces=[[str(a_), str(b_), C.digest()] for (C, a_, b_, _, _) in group],
+                            record=cov.record()))
+        ok_all = True
+        for (C, a_, b_, uu, tt) in group:
+            if time.time() - t_start > budget_s:
+                ok_all = False
+                break
+            t0 = time.time()
+            bl = piece_blocks(C, a_, b_, cov, settings=st, log=log)
+            BF = BlocksFloat(bl)
+            eta0 = eta_prev if eta_prev is not None else np.maximum(comps(tt) / comps(tt).max(), 1e-3)
+            best = None
+            for rsv in (1e-4, 3e-4, 1e-3):
+                e2, adm = BF.search(eta0, rsv, iters=150 if eta_prev is not None else 400)
+                if best is None or adm > best[0]:
+                    best = (adm, rsv, e2)
+            adm, rsv, e2 = best
+            eta_s = _dyadic_eta(e2)
+            res = None
+            for rs_try in (rsv, rsv / 2, rsv * 2):
+                try:
+                    res = assemble(bl, eta_s, str(Fraction(rs_try).limit_denominator(1 << 30)), log=log)
+                    break
+                except ProofFailure as e:
+                    log(f"  assemble failed at r_* = {rs_try:.1e}: {e}")
+            if res is None:
+                ok_all = False
+                break
+            obj = res.pop("_obj")
+            cur = dict(C=C, e_lo=Fraction(a_), e_hi=Fraction(b_), E=obj["E"], r_lo=obj["r_lo"], r_hi=obj["r_hi"])
+            gl = None
+            if prev is not None:
+                okg, slack = glue(prev, cur, nu)
+                gl = dict(ok=okg, slack=slack)
+                if not okg:
+                    log(f"  gluing failed at e = {float(a_):.6f} (slack {slack:.3e})")
+                    ok_all = False
+                    break
+            elif Fraction(a_) != 0:
+                raise RuntimeError("first piece must start at 0")
+            rec = dict(type="piece", idx=len(done), e_lo=str(a_), e_hi=str(b_), centre=C.to_record(), eta=eta_s,
+                       r_star=res["r_star"], cover=cid, result=res, glue_prev=gl, predicted_admissible=adm,
+                       seconds=round(time.time() - t0, 1), settings=dict(rs_))
+            _append(ppath, rec)
+            done.append(rec)
+            prev = cur
+            eta_prev = e2
+            u = uu
+            e_cur = Fraction(b_)
+            log(f"piece {len(done) - 1}: [{float(a_):.6f}, {float(b_):.6f}] ok, g in [{res['g']['lower']['dec'][:16]}, "
+                f"{res['g']['upper']['dec'][:16]}], {time.time() - t0:.0f} s, predicted admissible half-width {adm:.2e}")
+            # adapt the width to the predicted admissible half-width
+            target = Fraction(min(2 * adm * 0.8, float(width) * 1.5)).limit_denominator(10 ** 6)
+            target = Fraction(round(float(target) * 1e6), 10 ** 6)
+            if target > 0:
+                width_next = target
+            else:
+                width_next = width
+        if ok_all:
+            width = width_next
+            n_fail = 0
+        else:
+            width = width / 2
+            n_fail += 1
+            if n_fail > 6:
+                log("too many failures; stopping")
+                break
+    log(f"stopped at e = {float(e_cur):.6f} after {time.time() - t_start:.0f} s, {len(done)} pieces")
+    return done
+
+
+# =================================================================================================================
+# Theorem A driver
+# =================================================================================================================
+def _ball_rec(x):
+    """lower/upper decimal records of a real ball"""
+    return {"lower": bound_rec(lo(x), "down"), "upper": bound_rec(up(x), "up")}
+
+
+def theorem_A(log=print, data=DATA, prec=192):
+    """Part A: the Hopf point in the window W. Writes data/hopf/theoremA.json and returns the record (with the exact
+    objects under '_obj')."""
+    t0 = time.time()
+    fh = FloatHopf()
+    gH0 = refine_gH(fh, prec=prec, log=log)
+    gH = Fraction(round(gH0 * 10 ** 22), 10 ** 22)          # a 22-digit decimal near the zero (untrusted choice)
+    cov = cover_window(fh, gH, prec=prec, log=log)
+    L = lyapunov_at_hopf(cov, prec=prec)
+    famH, spH = cov["famH"], cov["spH"]
+    if not L["l1"] < 0:
+        raise ProofFailure("l1 < 0 not certified")
+    om = spH["lam"].imag
+    eqX = famH["eq_G"]["X"]
+    rec = dict(
+        window=list(WINDOW), gH_interval=cov["gH_interval"],
+        gH_interval_decimal=[dec(_arb_q(Fraction(cov["gH_interval"][0])), "down", 22),
+                             dec(_arb_q(Fraction(cov["gH_interval"][1])), "up", 22)],
+        n_intervals=dict(left=len(cov["left"]), right=len(cov["right"])),
+        others_max_re_upper=bound_rec(cov["stats"]["max_others_re"]),
+        lambda_imag_range=[dec(cov["stats"]["min_im"], "down", 12), dec(cov["stats"]["max_im"], "up", 12)],
+        omega_H=_ball_rec(om), dRe_lambda_dg=_ball_rec(cov["dlam"].real), dIm_lambda_dg=_ball_rec(cov["dlam"].imag),
+        l1_kuznetsov_physical=_ball_rec(L["l1"]), l1_times_omega_physical=_ball_rec(L["l1"] * om),
+        l1_scaled_variables=_ball_rec(L["l1_scaled"]),
+        equilibrium_at_gH_scaled=[[dec(lo(x.real), "down", 20), dec(up(x.real), "up", 20)] for x in eqX],
+        equilibrium_radius_max=float(max(float(x.real.rad()) for x in eqX)),
+        erhardt=dict(g_H=G_ERHARDT, l1=L1_ERHARDT, note="Erhardt's MATCONT value; MATCONT's first Lyapunov "
+                     "coefficient equals omega times Kuznetsov's l1 in the normalisation <q, q> = 1 (physical units)"),
+        cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1))
+    os.makedirs(data, exist_ok=True)
+    with open(os.path.join(data, "theoremA.json"), "w") as fh_:
+        json.dump(rec, fh_, indent=1)
+    log(f"Theorem A: g_H in [{rec['gH_interval_decimal'][0]}, {rec['gH_interval_decimal'][1]}], omega_H = "
+        f"{float(om.mid()):.12f}, dRe/dg = {float(cov['dlam'].real.mid()):.6f}, l1 = {float(L['l1'].mid()):.6f} "
+        f"(times omega {float((L['l1'] * om).mid()):.6f}), others Re <= {float(cov['stats']['max_others_re']):.4e}, "
+        f"{rec['seconds']} s")
+    rec["_obj"] = dict(cov=cov, L=L, fh=fh)
+    return rec

@@ -36,7 +36,8 @@ Negative controls
   * Dropping the eps-derivative terms (drop_g_width) is detected (controls.jsonl, recomputed here on the piece
     containing 1/64): the float norm of A_fin F(xbar; eps) at an endpoint exceeds 10 times the mutated Y0, is 10 times
     the same norm at the centre parameter, and stays below the certified Y0.
-  * A piece [0, w] widened beyond what closes fails (controls.jsonl; [0, 1] is re-run here).
+  * A piece [0, w] widened beyond what closes fails at the radii polynomial, not through an exception (controls.jsonl;
+    [0, 1/16], the narrowest failing width recorded, is re-run here and its message names the eps range).
   * Gluing a piece with a distant piece, or with r_uniqueness replaced by r_existence, fails; the Stage E inclusion
     refuses an N with 1/N^2 outside the piece; with omega shifted to (1 + 1e-3) eta_om r_hi from the piece's centre it
     fails and with (1 - 1e-3) eta_om r_hi it passes (tests the weighting of the omega component); a
@@ -330,7 +331,10 @@ def test_tail_enclosures_and_mutation():
 
 def test_tail_products_C_n():
     """W2: |A_m(eps) J'_n| <= C_n entrywise for point inverses at both endpoints, m of both signs (A_{-m} = conj A_m),
-    and n with |n| <= n_explicit and |n| > n_explicit (the piece's J'_n enclosures, midpoint and ball)."""
+    and n with |n| <= n_explicit and |n| > n_explicit, J'_n a POINT of its enclosure (midpoint and box corners). A ball
+    J'_n is not used: Arb's complex box product inflates the radius beyond the disc bound |A| |J'_n| that C_n uses, so
+    abs_upper of a ball product is not a value of |A_m J'_n| (first version of this test; e.g. m = n = 13 at eps = 0,
+    where J'_13 is a pure-radius ball of about 1e-19).)"""
     old = ctx.prec
     ctx.prec = 256
     try:
@@ -345,9 +349,12 @@ def test_tail_products_C_n():
                 for sgn in (1, -1):
                     A_ = Am if sgn == 1 else Am.conjugate()
                     for nn in ns:
-                        Jmid = acb_mat([[acb(Jp[nn][r, c].real.mid(), Jp[nn][r, c].imag.mid()) for c in range(DIM)]
-                                        for r in range(DIM)])
-                        for Jx in (Jmid, Jp[nn]):
+                        pts = []
+                        for sr, si in ((0, 0), (1, 1), (-1, 1), (1, -1)):   # midpoint and corners of the J'_n boxes
+                            pts.append(acb_mat([[acb(Jp[nn][r, c].real.mid() + sr * Jp[nn][r, c].real.rad(),
+                                                     Jp[nn][r, c].imag.mid() + si * Jp[nn][r, c].imag.rad())
+                                                 for c in range(DIM)] for r in range(DIM)]))
+                        for Jx in pts:
                             P = A_ * Jx
                             for r in range(DIM):
                                 for c in range(DIM):
@@ -417,14 +424,16 @@ def test_negative_drop_eps_derivative():
 def test_negative_widened_piece():
     C = [c for c in alln._read_log(alln.CONTROLS_LOG, False) if c["type"] == "control_widened"]
     assert any(c["failed"] for c in C), C
+    assert all("radii polynomial not negative" in c["why"] for c in C if c["failed"]), "a widened piece failed otherwise"
     MHf = alln.float_hessian_estimate(12)
-    w = Fraction(1)
+    w = Fraction(1, 16)                      # the narrowest recorded failing width (Z1 = 1.27, from the eps terms)
     om, A, _ = alln.float_centre(w / 2, 12)
     try:
         alln.prove_piece(om, A, Fraction(0), w, MHf, log=QUIET)
-    except ProofFailure:
+    except ProofFailure as e:
+        assert "radii polynomial not negative" in str(e) and "eps in [0, 1/16]" in str(e), str(e)
         return
-    raise AssertionError("the piece [0, 1] was proved")
+    raise AssertionError("the piece [0, 1/16] was proved")
 
 
 def test_negative_gluing_and_order():
