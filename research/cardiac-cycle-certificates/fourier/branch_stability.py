@@ -944,6 +944,795 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
 
 
 # =================================================================================================================
+# Group units: Theorem C for a whole group of branch pieces in one certificate (LEMMAS-stability.md section 11)
+# =================================================================================================================
+# A piece unit (prove_piece_uniform) locates x*(g) to second order about an AFFINE centre and treats everything of
+# second order in d = g - g_c as a ball; that ball grows like h^2 and is already about a third of the (SC) margin on a
+# piece (half-width 2.6e-7). A group is about 11 pieces wide, so a group unit goes one order further: the orbit is
+# located about a QUADRATIC centre xtilde(g) = xbar + d xbar_1 + (d^2 / 2) xbar_2 (third-order remainder), the
+# Newton-Kantorovich step is taken about the moving centre xtilde(g) itself (Lemma 11.1: Z1 is bounded along the
+# path, not through Z2 times the distance travelled, which would be 500 x 3e-3 > 1), and the Hill coefficients carry an
+# explicit d^2 term (Lemma 11.3). The comparison operator of the window stays affine in d (Lemma 10.3, with the
+# d^2 window H2 added to the expansion). Everything new is evaluated with the truncated Taylor arithmetic below.
+
+def _const(o):
+    """An exact or ball constant as acb (floats and bools are refused, as in branch.Hess)."""
+    if isinstance(o, bool):
+        raise TypeError("bool")
+    if isinstance(o, acb):
+        return o
+    if isinstance(o, (arb, int, flint.fmpz, fmpq)):
+        return acb(o)
+    raise TypeError(f"Jet arithmetic with {type(o).__name__} is refused (no float may enter unexamined)")
+
+
+class Jet:
+    """c[0] + c[1] t + ... + c[P] t^P (truncated at degree P), t = xi - xi0, acb coefficients. Each operation applies
+    the exact recurrence for the Taylor coefficients of the composite in ball arithmetic, so with a ball base point xi0
+    every coefficient encloses the corresponding Taylor coefficient of the composite at EVERY point of that ball.
+    Every coefficient is checked finite (branch._chk); a reciprocal needs a finite 1 / c[0] (c[0] free of 0), log and
+    sqrt need Re c[0] > 0 certified; so a finite result certifies that every intermediate is holomorphic on a
+    neighbourhood of the input box (the contract of fourier_eval, made strict as in branch.Hess)."""
+    __slots__ = ("c",)
+
+    def __init__(self, c):
+        self.c = [br._chk(v) for v in c]
+
+    @property
+    def P(self):
+        return len(self.c) - 1
+
+    def _lift(self, o):
+        if isinstance(o, Jet):
+            if len(o.c) != len(self.c):
+                raise ValueError("jet degrees differ")
+            return o
+        return Jet([_const(o)] + [acb(0)] * self.P)
+
+    def __add__(self, o):
+        o = self._lift(o)
+        return Jet([a + b for a, b in zip(self.c, o.c)])
+
+    __radd__ = __add__
+
+    def __neg__(self):
+        return Jet([-a for a in self.c])
+
+    def __pos__(self):
+        return self
+
+    def __sub__(self, o):
+        return self + (-self._lift(o))
+
+    def __rsub__(self, o):
+        return self._lift(o) + (-self)
+
+    def __mul__(self, o):
+        if not isinstance(o, Jet):
+            s = _const(o)
+            return Jet([a * s for a in self.c])
+        if len(o.c) != len(self.c):
+            raise ValueError("jet degrees differ")
+        a, b = self.c, o.c
+        out = []
+        for k in range(len(a)):
+            s = acb(0)
+            for i in range(k + 1):
+                s += a[i] * b[k - i]
+            out.append(s)
+        return Jet(out)
+
+    __rmul__ = __mul__
+
+    def reciprocal(self):
+        a = self.c
+        r0 = br._chk(1 / a[0])
+        r = [r0]
+        for k in range(1, len(a)):
+            s = acb(0)
+            for j in range(1, k + 1):
+                s += a[j] * r[k - j]
+            r.append(br._chk(-s * r0))
+        return Jet(r)
+
+    def __truediv__(self, o):
+        if isinstance(o, Jet):
+            return self * o.reciprocal()
+        r = br._chk(1 / _const(o))
+        return Jet([a * r for a in self.c])
+
+    def __rtruediv__(self, o):
+        return self._lift(o) * self.reciprocal()
+
+    def __pow__(self, n):
+        if type(n) is not int:
+            raise TypeError("Jet ** n needs an int exponent")
+        if n == 0:
+            return self._lift(1)
+        if n < 0:
+            return (self ** (-n)).reciprocal()
+        out = self
+        for _ in range(n - 1):
+            out = out * self
+        return out
+
+    def exp(self):
+        a = self.c
+        e = [br._chk(a[0].exp())]
+        for k in range(1, len(a)):                      # k e_k = sum_{j=1}^k j a_j e_{k-j}
+            s = acb(0)
+            for j in range(1, k + 1):
+                s += j * a[j] * e[k - j]
+            e.append(br._chk(s / k))
+        return Jet(e)
+
+    def log(self):
+        a = self.c
+        if not (a[0].real > 0):
+            raise br.HessDomainError(f"log argument {a[0]} not certainly in Re > 0")
+        r0 = br._chk(1 / a[0])
+        out = [br._chk(a[0].log())]
+        for k in range(1, len(a)):                      # k a_0 l_k = k a_k - sum_{j=1}^{k-1} j l_j a_{k-j}
+            s = acb(0)
+            for j in range(1, k):
+                s += j * out[j] * a[k - j]
+            out.append(br._chk((a[k] - s / k) * r0))
+        return Jet(out)
+
+    def sqrt(self):
+        a = self.c
+        if not (a[0].real > 0):
+            raise br.HessDomainError(f"sqrt argument {a[0]} not certainly in Re > 0")
+        s0 = br._chk(a[0].sqrt())
+        inv = br._chk(1 / (2 * s0))
+        out = [s0]
+        for k in range(1, len(a)):                      # 2 s_0 s_k = a_k - sum_{j=1}^{k-1} s_j s_{k-j}
+            t = acb(0)
+            for j in range(1, k):
+                t += out[j] * out[k - j]
+            out.append(br._chk((a[k] - t) * inv))
+        return Jet(out)
+
+
+class DJet:
+    """(v, g): v a Jet in xi (the value) and g = {l: Jet} the derivatives in the state directions l (first order in the
+    states, degree P in xi). Sums, products and the chain rule are exact at first order in the states:
+    (u w)' = u w' + u' w and phi(u)' = phi'(u) u', with phi'(u) itself a Jet."""
+    __slots__ = ("v", "g")
+
+    def __init__(self, v, g=None):
+        self.v = v
+        self.g = g if g is not None else {}
+
+    def _lift(self, o):
+        if isinstance(o, DJet):
+            return o
+        if isinstance(o, Jet):
+            raise TypeError("mixed Jet and DJet")
+        return DJet(self.v._lift(o), {})
+
+    def __add__(self, o):
+        o = self._lift(o)
+        g = dict(self.g)
+        for k, x in o.g.items():
+            g[k] = g[k] + x if k in g else x
+        return DJet(self.v + o.v, g)
+
+    __radd__ = __add__
+
+    def __neg__(self):
+        return DJet(-self.v, {k: -x for k, x in self.g.items()})
+
+    def __pos__(self):
+        return self
+
+    def __sub__(self, o):
+        return self + (-self._lift(o))
+
+    def __rsub__(self, o):
+        return self._lift(o) + (-self)
+
+    def __mul__(self, o):
+        if not isinstance(o, DJet):
+            if isinstance(o, Jet):
+                raise TypeError("mixed Jet and DJet")
+            s = _const(o)
+            return DJet(self.v * s, {k: x * s for k, x in self.g.items()})
+        g = {k: x * o.v for k, x in self.g.items()}
+        for k, x in o.g.items():
+            g[k] = g[k] + self.v * x if k in g else self.v * x
+        return DJet(self.v * o.v, g)
+
+    __rmul__ = __mul__
+
+    def _unary(self, fv, dv):
+        return DJet(fv, {k: dv * x for k, x in self.g.items()})
+
+    def reciprocal(self):
+        r = self.v.reciprocal()
+        return self._unary(r, -(r * r))
+
+    def __truediv__(self, o):
+        if isinstance(o, DJet):
+            return self * o.reciprocal()
+        r = br._chk(1 / _const(o))
+        return self * r
+
+    def __rtruediv__(self, o):
+        return self._lift(o) * self.reciprocal()
+
+    def __pow__(self, n):
+        if type(n) is not int:
+            raise TypeError("DJet ** n needs an int exponent")
+        if n == 0:
+            return self._lift(1)
+        if n == 1:
+            return self
+        vn1 = self.v ** (n - 1)
+        return self._unary(vn1 * self.v, vn1 * n)
+
+    def exp(self):
+        e = self.v.exp()
+        return self._unary(e, e)
+
+    def log(self):
+        lv = self.v.log()                                  # certifies Re v > 0
+        return self._unary(lv, self.v.reciprocal())
+
+    def sqrt(self):
+        s = self.v.sqrt()                                  # certifies Re v > 0
+        return self._unary(s, s.reciprocal() * fmpq(1, 2))
+
+
+class JetMath:
+    @staticmethod
+    def exp(a):
+        return a.exp() if isinstance(a, (Jet, DJet)) else br.HessMath.exp(a)
+
+    @staticmethod
+    def log(a):
+        return a.log() if isinstance(a, (Jet, DJet)) else br.HessMath.log(a)
+
+    @staticmethod
+    def sqrt(a):
+        return a.sqrt() if isinstance(a, (Jet, DJet)) else br.HessMath.sqrt(a)
+
+
+def _sq_ball(h):
+    """A real ball containing [0, h^2] (h an exact Fraction), or the exact 0."""
+    if h == 0:
+        return acb(0)
+    hb = arb(fmpq(h.numerator, h.denominator))
+    h2 = (hb * hb).upper()
+    return acb((h2 * arb(0, 1) + h2) / 2)
+
+
+def _path_coeffs(zz, i, D, D2, P):
+    """Taylor coefficients at xi0 in D of xi -> z_i + xi z1_i + (xi^2 / 2) z2_i, for every xi0 in D (D2 contains the
+    squares of the points of D): [z + D z1 + (D2 / 2) z2, z1 + D z2, z2 / 2, 0, ...], truncated at degree P."""
+    z, z1, z2 = am.to_ball(zz[i]), am.to_ball(zz[DIM + i]), am.to_ball(zz[2 * DIM + i])
+    c = [z + D * z1 + D2 * z2 / 2, z1 + D * z2, z2 / 2] + [acb(0)] * max(0, P - 2)
+    return c[:P + 1]
+
+
+def gjet_flat(zz, prm, D, D2, P, ps, prec=53):
+    """Black box on the 54 inputs (phibar, phi_1, phi_2)(theta): the Taylor coefficients of order p in ps (p <= P) of
+    G_k(xi) = f_k(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in D, as a flat list
+    [coefficient p of G_k for p in ps for k]. (With D = 0: G'(0), G''(0)/2; with D the box [-h, h]: G'''(xi)/6.)"""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        p["g_Ks"] = Jet([am.to_ball(prm["g_Ks"]) + D, acb(1)] + [acb(0)] * (P - 1))
+        x = [Jet([v * s for v in _path_coeffs(zz, i, D, D2, P)]) for i, s in enumerate(am.SIG)]
+        y = fn(x, p, JetMath, acb(0))
+        out = []
+        for pp in ps:
+            for k, yk in enumerate(y):
+                yk = yk if isinstance(yk, Jet) else x[0]._lift(yk)
+                out.append(br._chk(yk.c[pp] * am.ISIG[k]))
+    return out
+
+
+def djet_flat(zz, prm, D, D2, P, ps, prec=53):
+    """Black box: the entries (row-major, k then l) of the Taylor coefficients of order p in ps of
+    xi -> (Df)_{kl}(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point in D, as
+    [coefficient p of (Df)_{kl} for p in ps for k for l]. (With D = 0, p = 1: J1(theta; 0); with D the box, p = 1 and
+    2: J1(theta; xi) and J2(theta; xi) / 2 for every xi in [-h, h].)"""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        z0 = [acb(0)] * (P + 1)
+        p["g_Ks"] = DJet(Jet([am.to_ball(prm["g_Ks"]) + D, acb(1)] + [acb(0)] * (P - 1)), {})
+        x = []
+        for i, s in enumerate(am.SIG):
+            seed = list(z0)
+            seed[0] = s
+            x.append(DJet(Jet([v * s for v in _path_coeffs(zz, i, D, D2, P)]), {i: Jet(seed)}))
+        y = fn(x, p, JetMath, acb(0))
+        out = []
+        for pp in ps:
+            for k, yk in enumerate(y):
+                yk = yk if isinstance(yk, DJet) else x[0]._lift(yk)
+                for l in range(DIM):
+                    gl = yk.g.get(l)
+                    out.append(br._chk(gl.c[pp] * am.ISIG[k]) if gl is not None else acb(0))
+    return out
+
+
+# -- untrusted inputs ---------------------------------------------------------------------------------------------
+def predictor(om, A, gc, h):
+    """Untrusted (only their quality matters): (om1, A1), the float Galerkin tangent at g_c (tangent()), and
+    (om2, A2) ~ d^2 x / dg^2 at g_c, the central difference (x1(g_c + s) - x1(g_c - s)) / (2 s), s = h / 2, of the float
+    tangents at float Newton solutions; conjugation symmetric, Im of the (V, +-1) coefficients exactly 0, exact
+    doubles (so F_ph(xbar_1) = F_ph(xbar_2) = 0 exactly)."""
+    K = (len(A[0]) - 1) // 2
+    lay = ct.Layout(K)
+    om1b, A1 = tangent(om, A, gc)
+    Mc = 8 * (4 * K + 64)
+    a0, a1 = br.centre_float(A), br.centre_float(A1)
+    s = float(h) / 2
+    x1s = []
+    for sg in (1, -1):
+        gs = float(Fraction(gc)) + sg * s
+        om_s, a_s, nr = br.newton_f(float(om) + sg * s * float(om1b), a0 + sg * s * a1, gs, Mc, iters=30, tol=1e-14)
+        if not nr < 1e-11:
+            raise RuntimeError(f"float Newton failed at g_c {'+' if sg > 0 else '-'} h/2 (|R| = {nr:.2e})")
+        G, _ = br.galerkin_f(om_s, a_s, gs, Mc)
+        x1s.append(-np.linalg.solve(G, br.dFdg_f(a_s, Mc)))
+    om2, a2 = ct.unpack(lay, (x1s[0] - x1s[1]) / (2 * s))
+    om2, a2 = ct.symmetrize(om2, a2)
+    a2[IV, K + 1] = a2[IV, K + 1].real
+    a2[IV, K - 1] = a2[IV, K - 1].real
+    om2b, A2 = ct.to_exact(om2, a2, 128)
+    return om1b, A1, om2b, A2
+
+
+def path_ball(om, A, om1, A1, om2, A2, h, prec=256):
+    """Coefficient balls containing xtilde(xi) = xbar + xi xbar_1 + (xi^2 / 2) xbar_2 for every xi in [-h, h]."""
+    K = (len(A[0]) - 1) // 2
+    old = ctx.prec
+    ctx.prec = prec
+    try:
+        D, D2 = _dball(h), _sq_ball(h)
+        omb = (om + D * om1 + D2 * om2 / 2).real
+        Ab = [[A[i][t] + D * A1[i][t] + D2 * A2[i][t] / 2 for t in range(2 * K + 1)] for i in range(DIM)]
+    finally:
+        ctx.prec = old
+    return omb, Ab
+
+
+def group_data(gid, K=12):
+    """The group's pieces (sorted, covering [g_lo, g_hi] with consecutive overlaps, checked) and the centre of the piece
+    whose centre g is nearest the group's midpoint (digest checked)."""
+    pieces, groups, centres = _logs(K)
+    grp = groups[gid]
+    if grp["group"] != gid:
+        raise ValueError("group numbering")
+    plist = sorted([p["rec"] for p in pieces if p["group"] == gid], key=lambda r: Fraction(r["g_lo"]))
+    if not plist:
+        raise KeyError(f"no pieces in group {gid}")
+    glo, ghi = Fraction(plist[0]["g_lo"]), Fraction(plist[-1]["g_hi"])
+    if not (glo == Fraction(grp["g_lo"]) and ghi == Fraction(grp["g_hi"])):
+        raise ValueError(f"group {gid}: pieces do not span the group's recorded range")
+    for a, b in zip(plist, plist[1:]):
+        if not Fraction(b["g_lo"]) <= Fraction(a["g_hi"]):
+            raise ValueError(f"group {gid}: pieces {a['label']}, {b['label']} leave a gap")
+    mid = (glo + ghi) / 2
+    crec = min(plist, key=lambda r: (abs(Fraction(r["centre_g"]) - mid), Fraction(r["centre_g"])))
+    om, A = br.centre_from_record(centres[br._dstr(Fraction(crec["centre_g"]))])
+    if br.centre_digest(om, A) != crec["centre_sha256"]:
+        raise ValueError("centre digest mismatch")
+    if any(r["settings"] != crec["settings"] or r["eta"] != crec["eta"] for r in plist):
+        raise ValueError(f"group {gid}: pieces with different settings or weights")
+    return grp, plist, crec, om, A, centres
+
+
+# -- Lemma 11.2: the moving-centre Z1 -----------------------------------------------------------------------------
+def moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, h):
+    """Block bounds B'[c][c'] (exact upper bounds) with ||A D'(xi)||_block <= B' for every xi in [-h, h], where
+    D'(xi) = d/dxi DF(xtilde(xi); g_c + xi): the omega column i m (a1 + xi a2)_m, the diagonal i m (om1 + xi om2) and
+    the convolution with -J1(theta; xi), J1(theta; xi) = d/dxi Df(phitilde(theta; xi); g_c + xi) (enclosed by J1box for
+    |n| <= K', majorant SJ1box). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin D'_fin|, finite rows x
+    tail columns (strip majorant), tail rows Abar0 sum_n |J1_n| nu^|n| + Abar0 S tailK + |om1 + xi om2| Abar1."""
+    st = bl["settings"]
+    K, Kp = bl["K"], bl["_Kp"]
+    lay = ct.Layout(K)
+    n = lay.n
+    PM, Pg = int(st["prec_mat"]), int(st["prec_g"])
+    nupow, tailK, Afin, Abar0, Abar1 = bl["_nupow"], bl["_tailK"], bl["_Afin"], bl["Abar0"], bl["Abar1"]
+    rho = bl["rho"]
+    old = ctx.prec
+    ctx.prec = PM
+    try:
+        D = _dball(h)
+        om1x = om1 + D * om2                                   # om1 + xi om2, every xi in [-h, h]
+        Dfin = acb_mat(n, n)
+        for i in range(DIM):
+            for m in range(-K, K + 1):
+                r = lay.idx(i, m)
+                Dfin[r, 0] = acb(0, m) * (A1[i][m + K] + D * A2[i][m + K])
+                for k in range(DIM):
+                    base = 1 + k * lay.L + K
+                    for m2 in range(-K, K + 1):
+                        Dfin[r, base + m2] = -J1box[m - m2][i][k]
+                Dfin[r, r] += acb(0, m) * om1x
+        ADfin = Afin * Dfin
+        om1x_abs = up(om1x.abs_upper())
+    finally:
+        ctx.prec = old
+    ctx.prec = Pg
+    try:
+        comp_of = [None] + [k for k in range(DIM) for _ in range(lay.L)]
+        mode_of = [0] + [m for _ in range(DIM) for m in range(-K, K + 1)]
+        WROW = ex._weight_rows(lay, nupow)
+        B_ff = ex._block_colsup(WROW * ex._abs_mat(ADfin), comp_of, mode_of, nupow)
+        Arows = Afin.tolist()
+        Aabs_rows = ex._abs_mat(Afin).tolist()
+        Lw = int(st["L"])
+        cols_exact = [(k, mp) for k in range(DIM) for mp in list(range(K + 1, K + Lw + 1)) + list(range(-K - Lw, -K))]
+        mb = K + Lw + 1
+        cols_b = [(k, s * mb) for k in range(DIM) for s in (1, -1)]
+        erho = (-rho).exp()
+        ridx = [lay.idx(j, m) for j in range(DIM) for m in range(-K, K + 1)]
+        Wm = acb_mat(len(ridx), len(cols_exact))
+        for t, (k, mp) in enumerate(cols_exact):
+            for j in range(DIM):
+                for mi, m in enumerate(range(-K, K + 1)):
+                    Wm[j * lay.L + mi, t] = -J1box[m - mp][j][k]
+        AS = acb_mat([[row[c] for c in ridx] for row in Arows])
+        with fe.precision(PM):
+            AW = AS * Wm
+        colW = WROW * ex._abs_mat(AW)
+        B_ft = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
+        for t, (k, mp) in enumerate(cols_exact):
+            for c in range(DIM + 1):
+                B_ft[c][1 + k] = amax(B_ft[c][1 + k], up(colW[c, t] / nupow[abs(mp)]))
+        Wb = arb_mat(len(ridx), len(cols_b))
+        for t, (k, mp) in enumerate(cols_b):
+            for j in range(DIM):
+                for mi, m in enumerate(range(-K, K + 1)):
+                    Wb[j * lay.L + mi, t] = up(SJ1box[j][k] * erho ** abs(m - mp))
+        AabsS = arb_mat([[row[c] for c in ridx] for row in Aabs_rows])
+        colWb = WROW * (AabsS * Wb)
+        for t, (k, mp) in enumerate(cols_b):
+            for c in range(DIM + 1):
+                B_ft[c][1 + k] = amax(B_ft[c][1 + k], up(colWb[c, t] / nupow[abs(mp)]))
+        Ab0m = arb_mat(Abar0)
+        T = [[arb(0)] * DIM for _ in range(DIM)]
+        for nn in range(-Kp, Kp + 1):
+            Pm = Ab0m * arb_mat([[J1box[nn][r][c].abs_upper() for c in range(DIM)] for r in range(DIM)])
+            w = up(nupow[abs(nn)])
+            for c in range(DIM):
+                for k in range(DIM):
+                    T[c][k] = T[c][k] + Pm[c, k] * w
+        Pm = Ab0m * arb_mat(SJ1box)
+        for c in range(DIM):
+            for k in range(DIM):
+                T[c][k] = up(T[c][k] + Pm[c, k] * tailK + om1x_abs * Abar1[c][k])
+        B = [[None] * (DIM + 1) for _ in range(DIM + 1)]
+        for c in range(DIM + 1):
+            for cp in range(DIM + 1):
+                b = amax(B_ff[c][cp], B_ft[c][cp])
+                if c >= 1 and cp >= 1:
+                    b = up(b + T[c - 1][cp - 1])
+                B[c][cp] = b
+        return B
+    finally:
+        ctx.prec = old
+
+
+def _z1_rows(B1, Bp, h, ETA):
+    """max_c (1/eta_c) sum_c' eta_c' (B1_cc' + h B'_cc') (B' = None: B1 alone)."""
+    best = arb(0)
+    for c in range(DIM + 1):
+        s = arb(0)
+        for cp in range(DIM + 1):
+            s += ETA[cp] * (B1[c][cp] + (h * Bp[c][cp] if Bp is not None else 0))
+        best = amax(best, up(s / ETA[c]))
+    return best
+
+
+def _z2(bl, ETA, r_star, hb):
+    """Lemma B2 / E.6 with this unit's Hessian cover: Z2 = max_c (1/eta_c) sum_k [2 eta_om eta_k (N1 + Abar1)_ck +
+    (N0 + Abar0)_ck W_k], valid about every centre whose coefficients lie in the cover's hull."""
+    nu, rho2 = bl["nu"], hb.rho2
+    q2 = nu * (-rho2).exp()
+    if not q2 < 1:
+        raise ProofFailure("nu e^{-rho2} not < 1")
+    Q2 = (1 + q2) / (1 - q2)
+    N0, N1, Abar0, Abar1 = bl["N0"], bl["N1"], bl["Abar0"], bl["Abar1"]
+    Wk, Pfac = hb.W(ETA, r_star, Q2)
+    best = arb(0)
+    for c in range(DIM + 1):
+        s = arb(0)
+        for k in range(DIM):
+            n1 = N1[c][1 + k] + (Abar1[c - 1][k] if c >= 1 else 0)
+            n0 = N0[c][1 + k] + (Abar0[c - 1][k] if c >= 1 else 0)
+            s += 2 * ETA[0] * ETA[1 + k] * n1 + n0 * Wk[k]
+        best = amax(best, up(s / ETA[c]))
+    return best, Pfac
+
+
+def _poly_norm(cs, D, ETA, nu, K):
+    """Upper bound, over every d in the real ball D, of ||c0 + d c1 + d^2 c2|| in the weights ETA, for coefficient
+    triples cs = (omega part (w0, w1, w2), state parts [(A0, A1, A2)]) (exact balls; K modes)."""
+    (w0, w1, w2), comps = cs
+    D2 = D * D
+    best = up((w0 + D * w1 + D2 * w2).abs_upper() / ETA[0])
+    for i in range(DIM):
+        A0_, A1_, A2_ = comps[i]
+        s = arb(0)
+        for t in range(2 * K + 1):
+            s += (A0_[t] + D * A1_[t] + D2 * A2_[t]).abs_upper() * nu ** abs(t - K)
+        best = amax(best, up(s / ETA[1 + i]))
+    return best
+
+
+GROUP_DEFAULTS = dict(
+    r_star="1/1048576",       # radius of this unit's Z2 ball (2^-20); rho must be <= r_*; R_i = R_factor eta_i r_*
+    R_factor=256,
+    rho_margin="1/64",
+)
+
+
+def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mutate=(), _widen=1):
+    """Theorem 11.5 on the whole group gid (section 11 of the lemmas). _widen (tests only) multiplies h (and the d-range
+    of every enclosure) by an integer factor: the certificate must then be refused. _mutate (tests only):
+    'drop_third_order' drops h^3 Y3 + h^4 Y4 from Y'; 'drop_moving_centre' drops h B' from Z1."""
+    st = dict(DEFAULTS)
+    st.update(GROUP_DEFAULTS)
+    st.update(settings or {})
+    mut = frozenset(_mutate)
+    if mut - {"drop_third_order", "drop_moving_centre"}:
+        raise ValueError(f"unknown mutation {sorted(mut)}")
+    t0 = time.time()
+    marks = {}
+
+    def mark(name, t=[t0]):
+        now = time.time()
+        marks[name] = round(now - t[0], 1)
+        t[0] = now
+    grp, plist, crec, om, A, centres = group_data(gid, K)
+    gc = Fraction(crec["centre_g"])
+    glo, ghi = Fraction(grp["g_lo"]), Fraction(grp["g_hi"])
+    hF = max(ghi - gc, gc - glo) * int(_widen)
+    bst = dict(br.DEFAULTS)
+    bst.update(crec["settings"])
+    # 1. Theorem B blocks at the POINT g_c (A, B1, N0, N1, Abar0, Abar1, Y0p, [J0_n], S_J0)
+    bl = br.piece_blocks(om, A, crec["centre_g"], crec["centre_g"], settings=crec["settings"], log=QUIET,
+                         label=f"G{gid}")
+    mark("piece_blocks")
+    # 2. untrusted predictor
+    om1, A1, om2, A2 = predictor(om, A, gc, hF)
+    for Ax in (A1, A2):
+        if not (Ax[IV][K + 1] - Ax[IV][K - 1]).is_zero():
+            raise ProofFailure("F_ph of a predictor coefficient is not exactly 0")
+    mark("predictor")
+    ETA = [ex._exact_dyadic_param(v, "eta") for v in crec["eta"]]
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        r_star = ex._exact_dyadic_param(st["r_star"], "r_star")
+        Rs = []
+        for i in range(DIM):
+            v = Fraction(crec["eta"][1 + i]) * Fraction(st["r_star"]) * int(st["R_factor"])
+            Rs.append(f"{v.numerator}/{v.denominator}")
+    finally:
+        ctx.prec = old
+    # 3. Hessian cover of the path family (hull of xtilde(xi), |xi| <= h, inflated by R) over g in [g_lo, g_hi]
+    omb, Ab = path_ball(om, A, om1, A1, om2, A2, hF)
+    hb = br.HessBound([(om, A), (omb, Ab)], br._dstr(gc - hF), br._dstr(gc + hF), Rs, "1", None, log=QUIET)
+    if not hb.contains_centre(A):
+        raise ProofFailure("centre not inside the Hessian cover's hull")
+    mark("Hessian cover")
+    # 4. jets along the path: strip covers and Fourier enclosures
+    Pg, PJ, Mn, Kp = int(bst["prec_g"]), int(bst["prec_J"]), int(bst["M"]), bl["Kp"]
+    rho = bl["rho"]
+    D0, Dh, Dh2 = acb(0), _dball(hF), _sq_ball(hF)
+    Phi = fe.TrigPoly([row[:] for row in A] + [row[:] for row in A1] + [row[:] for row in A2])
+    prm53, prmG, prmJ = (br.params_for(gc, gc, p) for p in (53, Pg, PJ))
+    skw = dict(nx=int(st["strip_nx_new"]), rtol=float(st["strip_rtol_new"]), max_evals=int(st["strip_max_evals"]))
+    fG_pt = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, D0, D0, 2, (1, 2), pc)  # noqa: E731
+    fG_box = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, Dh, Dh2, 3, (3,), pc)  # noqa: E731
+    fJ_pt = lambda z, pr=prm53, pc=53: djet_flat(z, pr, D0, D0, 1, (1,), pc)  # noqa: E731
+    fJ_box = lambda z, pr=prm53, pc=53: djet_flat(z, pr, Dh, Dh2, 2, (1, 2), pc)  # noqa: E731
+    sG_pt = fe.strip_sup(fG_pt, Phi, rho, **skw)
+    sG_box = fe.strip_sup(fG_box, Phi, rho, **skw)
+    sJ_pt = fe.strip_sup(fJ_pt, Phi, rho, **dict(skw, atol=1e-3))
+    sJ_box = fe.strip_sup(fJ_box, Phi, rho, **dict(skw, atol=1e-3))
+    for s_ in (sG_pt, sG_box, sJ_pt, sJ_box):
+        if not s_.full_strip:
+            raise ProofFailure("a strip cover is not the full strip")
+    mark("strips")
+    eG_pt = fe.fourier_coefficients(lambda z: fG_pt(z, prmG, Pg), Phi, rho, Mn, Kp, S=sG_pt, prec=Pg)
+    eG_box = fe.fourier_coefficients(lambda z: fG_box(z, prmG, Pg), Phi, rho, Mn, Kp, S=sG_box, prec=Pg)
+    eJ_pt = fe.fourier_coefficients(lambda z: fJ_pt(z, prmJ, PJ), Phi, rho, Mn, Kp, S=sJ_pt, prec=PJ)
+    eJ_box = fe.fourier_coefficients(lambda z: fJ_box(z, prmJ, PJ), Phi, rho, Mn, Kp, S=sJ_box, prec=PJ)
+    if any(x.S_source != "strip" for x in (eG_pt, eG_box, eJ_pt, eJ_box)):
+        raise ProofFailure("Fourier enclosure without a checked strip bound")
+    mark("dft")
+    NN = DIM * DIM
+
+    def mats(enc, off):
+        C = {nn: [[enc.c[off + DIM * r + c][nn + Kp] for c in range(DIM)] for r in range(DIM)] for nn in range(-Kp, Kp + 1)}
+        S = [[enc.S[off + DIM * r + c] for c in range(DIM)] for r in range(DIM)]
+        return C, S
+    J1pt, SJ1 = mats(eJ_pt, 0)
+    J1box, SJ1box = mats(eJ_box, 0)
+    C2box, SC2 = mats(eJ_box, NN)
+    # 5. Lemma 11.2: Z1 along the path, Z2 about every point of the path
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        hU = up(arb(fmpq(hF.numerator, hF.denominator)))
+    finally:
+        ctx.prec = old
+    old = ctx.prec
+    ctx.prec = int(bst["prec_g"])
+    try:
+        Bp = moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, hF)
+        Z1c = _z1_rows(bl["B1"], None, hU, ETA)
+        Z1G = Z1c if "drop_moving_centre" in mut else _z1_rows(bl["B1"], Bp, hU, ETA)
+        Z2, Pfac = _z2(bl, ETA, r_star, hb)
+    finally:
+        ctx.prec = old
+    mark("Z1, Z2")
+    # 6. Lemma 11.1: Y' and rho
+    old = ctx.prec
+    ctx.prec = int(bst["prec_g"])
+    try:
+        om_bar = bl["om_bar"]
+        zero_c = [[acb(0)] * (2 * Kp + 1) for _ in range(DIM)]
+        zero_S = [arb(0)] * DIM
+        lin = {1: [], 2: [], 3: [], 4: []}
+        for i in range(DIM):
+            l1, l2, l3, l4 = [], [], [], []
+            for m in range(-K, K + 1):
+                t = m + K
+                im = acb(0, m)
+                l1.append(im * (om_bar * A1[i][t] + om1 * A[i][t]))
+                l2.append(im * (om_bar * A2[i][t] / 2 + om1 * A1[i][t] + om2 * A[i][t] / 2))
+                l3.append(im * (om1 * A2[i][t] + om2 * A1[i][t]) / 2)
+                l4.append(im * om2 * A2[i][t] / 4)
+            lin[1].append(l1)
+            lin[2].append(l2)
+            lin[3].append(l3)
+            lin[4].append(l4)
+        c1 = [eG_pt.c[k] for k in range(DIM)]
+        c2 = [eG_pt.c[DIM + k] for k in range(DIM)]
+        S1 = [eG_pt.S[k] for k in range(DIM)]
+        S2 = [eG_pt.S[DIM + k] for k in range(DIM)]
+        Y1 = _y_parts(bl, c1, S1, lin[1], arb(1))
+        Y2 = _y_parts(bl, c2, S2, lin[2], arb(1))
+        Y3 = _y_parts(bl, eG_box.c, eG_box.S, lin[3], arb(1))
+        Y4 = _y_parts(bl, zero_c, zero_S, lin[4], arb(1))
+        if "drop_third_order" in mut:
+            Y3 = Y4 = [arb(0)] * (DIM + 1)
+        Y0p = bl["Y0p"]
+        Yc = [up(Y0p[c] + hU * Y1[c] + hU ** 2 * Y2[c] + hU ** 3 * Y3[c] + hU ** 4 * Y4[c]) for c in range(DIM + 1)]
+        Yp = arb(0)
+        for c in range(DIM + 1):
+            Yp = amax(Yp, up(Yc[c] / ETA[c]))
+        if not Z1G < 1:
+            raise ProofFailure(f"Z1 along the path = {float(Z1G):.4f} is not < 1 (Lemma 11.1)")
+        rho_x = arb(float(up(Yp / (1 - Z1G))) * (1 + float(Fraction(st["rho_margin"]))) * 1.0000001)
+        for _ in range(8):
+            kappa = up(Z1G + Z2 * rho_x)
+            if kappa < 1 and Yp <= (1 - kappa) * rho_x:
+                break
+            rho_x = arb(float(rho_x) * 1.5)
+        else:
+            raise ProofFailure("Lemma 11.1: no admissible rho")
+        kappa = up(Z1G + Z2 * rho_x)
+        if not (kappa < 1 and Yp <= (1 - kappa) * rho_x):
+            raise ProofFailure("Lemma 11.1 inequality not certified")
+        if not rho_x <= r_star:
+            raise ProofFailure(f"rho = {float(rho_x):.3e} > r_* = {float(r_star):.3e} (Z2 not valid there)")
+    finally:
+        ctx.prec = old
+    mark("Lemma 11.1")
+    # 7. identification with the branch, piece by piece (x*(g) of Theorem B is the zero found, for g in each piece)
+    ident = []
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        nu = bl["nu"]
+        for r in plist:
+            oi = br.obj_from_record(r, centres[br._dstr(Fraction(r["centre_g"]))])
+            if r["settings"]["rho0"] != crec["settings"]["rho0"]:
+                raise ProofFailure("different nu")
+            dlo, dhi = Fraction(r["g_lo"]) - gc, Fraction(r["g_hi"]) - gc
+            mid_, rad_ = (dlo + dhi) / 2, (dhi - dlo) / 2
+            Dp = acb(arb(fmpq(mid_.numerator, mid_.denominator), arb(fmpq(rad_.numerator, rad_.denominator)).upper()))
+            cs = ((om - oi["om_bar"], om1, om2 / 2),
+                  [([A[i][t] - oi["A"][i][t] for t in range(2 * K + 1)], A1[i], [v / 2 for v in A2[i]])
+                   for i in range(DIM)])
+            dist = _poly_norm(cs, Dp, oi["ETA"], nu, K)
+            conv = arb(0)
+            for ea, eb in zip(ETA, oi["ETA"]):
+                conv = amax(conv, up(ea / eb))
+            lhs = up(dist + rho_x * conv)
+            ok = bool(lhs <= oi["r_hi"])
+            ident.append(dict(label=r["label"], lhs=float(lhs), r_uniqueness=float(oi["r_hi"]), ok=ok))
+            if not ok:
+                raise ProofFailure(f"identification with piece {r['label']} fails: {float(lhs):.3e} > r_hi")
+    finally:
+        ctx.prec = old
+    mark("identification")
+    # 8. Lemma 11.3 data: eps_W from this unit's Hessian cover, the d^0, d^1, d^2 Hill coefficients
+    t = [up(ETA[1 + j] * rho_x) for j in range(DIM)]
+    for j in range(DIM):
+        if not t[j] < hb.R[j]:
+            raise ProofFailure(f"t_{j} = eta_j rho is not < R_{j}")
+    pidx = {pr: i for i, pr in enumerate(br.HPAIRS)}
+    epsW = [[None] * DIM for _ in range(DIM)]
+    for k in range(DIM):
+        for l in range(DIM):
+            s = arb(0)
+            for j in range(DIM):
+                s += hb.MH[k][pidx[(min(l, j), max(l, j))]] * t[j]
+            epsW[k][l] = up(s)
+
+    def split(Cd):
+        cen, rad = {}, {}
+        for nn in range(-Kp, Kp + 1):
+            cen[nn] = [[None] * DIM for _ in range(DIM)]
+            rad[nn] = [[None] * DIM for _ in range(DIM)]
+            for r in range(DIM):
+                for c in range(DIM):
+                    v = Cd[nn][r][c]
+                    mid = acb(v.real.mid(), v.imag.mid())
+                    cen[nn][r][c] = mid
+                    rad[nn][r][c] = (v - mid).abs_upper()
+        return cen, rad
+    J1c, rad1 = split(J1pt)
+    C2c, rad2 = split(C2box)
+    old = ctx.prec
+    ctx.prec = 128
+    try:
+        rho_om = up(ETA[0] * rho_x)
+        om2half = (om2 / 2).mid() if isinstance(om2, arb) else arb(om2) / 2
+    finally:
+        ctx.prec = old
+    U = dict(K=K, Kp=Kp, A=A, om_bar=bl["om_bar"], om1=om1, rho_om=rho_om, h=hU, J0=bl["J"], SJ0=bl["SJ"],
+             J1c=J1c, rad1=rad1, SJ1=SJ1, epsW=epsW, rho=rho, rho0=bl["rho0"], rho2=hb.rho2,
+             C2c=C2c, rad2=rad2, SC2=SC2, om2half=om2half)
+    cert = certify_uniform(U, settings=st, controls=controls, log=log)
+    mark("certificate")
+    out = dict(
+        type="group_unit", group=gid, label=f"G{gid}", g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
+        centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
+        pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
+        half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
+        program_sha256=br.sha256(os.path.abspath(__file__)), threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
+        T_lo=cert["T_lo"],
+        existence=dict(Z1_point=bound_rec(Z1c), Z1_path=bound_rec(Z1G), Z2=bound_rec(Z2), polydisc_P=float(Pfac),
+                       r_star=st["r_star"], rho=bound_rec(rho_x), Yprime=bound_rec(Yp), kappa=bound_rec(kappa),
+                       Y0p_max=float(max(Y0p[c] / ETA[c] for c in range(DIM + 1))),
+                       hY1_max=float(max(hU * Y1[c] / ETA[c] for c in range(DIM + 1))),
+                       h2Y2_max=float(max(hU ** 2 * Y2[c] / ETA[c] for c in range(DIM + 1))),
+                       h3Y3_max=float(max(hU ** 3 * Y3[c] / ETA[c] for c in range(DIM + 1))),
+                       h4Y4_max=float(max(hU ** 4 * Y4[c] / ETA[c] for c in range(DIM + 1))),
+                       hessian_cover=hb.record(), identification=ident),
+        predictor=dict(omega1=ct.dyadic_to_text(om1), omega2=ct.dyadic_to_text(om2), sha256=hashlib.sha256(
+            "".join(ct.dyadic_to_text(Ax[i][m].real) + ct.dyadic_to_text(Ax[i][m].imag)
+                    for Ax in (A1, A2) for i in range(DIM) for m in range(2 * K + 1)).encode()).hexdigest()),
+        eps_W_max=float(max(max(r) for r in epsW)),
+        strips=dict(G_pt=ex._strip_rec(sG_pt), G_box=ex._strip_rec(sG_box), J_pt=ex._strip_rec(sJ_pt),
+                    J_box=ex._strip_rec(sJ_box)),
+        certificate={k: v for k, v in cert.items() if k != "internals"}, timings_s=marks,
+        wall_s=round(time.time() - t0, 1))
+    if controls and controls.get("dump"):
+        out["_internals"] = cert.get("internals")
+        out["_ctx"] = dict(bl=bl, om=om, A=A, om1=om1, A1=A1, om2=om2, A2=A2, ETA=ETA, U=U, settings=st, grp=grp,
+                           plist=plist, crec=crec, rho_x=rho_x, hF=hF, Z1G=Z1G, Z2=Z2, Yp=Yp, r_star=r_star, hb=hb)
+    if mut or _widen != 1:
+        out["MUTATED"] = sorted(mut) + ([f"widen x{_widen}"] if _widen != 1 else [])
+    return out
+
+
+# =================================================================================================================
 # Driver (resumable; every unit appended to the JSONL log as soon as it is done)
 # =================================================================================================================
 def _job(args):

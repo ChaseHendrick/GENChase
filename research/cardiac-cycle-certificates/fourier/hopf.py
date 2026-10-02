@@ -352,8 +352,9 @@ def contraction_test(Fc, Jbox, C, r, centre_pert=None):
     return ok and bool(kappa < 1), kappa, worst
 
 
-def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
+def equilibrium_on(G, xf, prec=192, rfac="1e-45", rmin=None):
     """Lemma K for f(.; g) on the polydisc P around the exact double vector xf, for every g in the ball G.
+    rmin (optional, floats): lower bounds for the radii (used to make P contain given sets).
     Returns dict(X=list of acb balls containing x_e(g) for all g in G (the polydisc), xf, r, kappa)."""
     with am.precision(prec):
         prm = am.params(prec, g_Ks=G)
@@ -366,6 +367,8 @@ def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
         r = []
         for i in range(DIM):
             v = float(CF[i, 0].abs_upper()) * 4 + float(Fraction(rfac)) * max(abs(float(xf[i])), 1e-3)
+            if rmin is not None:
+                v = max(v, float(rmin[i]))
             r.append(arb(v))
         X = [acb(xt[i].real + r[i] * arb(0, 1), r[i] * arb(0, 1)) for i in range(DIM)]
         _, JX = am.f_and_df(X, prm, prec=prec)
@@ -375,7 +378,7 @@ def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
                                f"worst {float(worst):.3e})")
         # the zero lies in x~ + (polydisc); real by uniqueness (the polydisc is conjugation invariant, f real)
         Xr = [acb(xt[i].real + r[i] * arb(0, 1)) for i in range(DIM)]
-    return dict(X=Xr, Xc=X, r=r, kappa=kappa, C=C)
+    return dict(X=Xr, Xc=X, r=r, kappa=kappa, C=C, xt=[v.real for v in xt])
 
 
 # =================================================================================================================
@@ -564,6 +567,10 @@ def jacobian_family(a, b, fh, prec=192):
         xf = float_equilibrium(float(gc), fh.x)
         eq_c = equilibrium_on(Gc, xf, prec=prec)
         eq_G = equilibrium_on(G, xf, prec=prec)
+        # Lemma A1 needs the midpoint equilibrium (unique in X_c) to be the branch of X_G at g_c: X_c in X_G (same
+        # centre xf, so radii suffice); then it is the unique zero of f(.; g_c) in X_G.
+        if not all(bool(eq_c["r"][i] <= eq_G["r"][i]) for i in range(DIM)):
+            raise ProofFailure("midpoint polydisc X_c not inside X_G")
         prm_c = am.params(prec, g_Ks=Gc)
         prm_G = am.params(prec, g_Ks=G)
         _, Ac = am.f_and_df(eq_c["X"], prm_c, prec=prec)
@@ -632,7 +639,16 @@ def dlambda_dg(fam, sp):
     return num / pq, p
 
 
-def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print, logfile=None):
+def polydisc_record(eq):
+    """Exact record of an equilibrium polydisc (centre doubles, radii) as '<sign>0x<hex>p<exp>' texts."""
+    return dict(centre=[_dyadic_text(v) for v in eq["xt"]], radius=[_dyadic_text(v) for v in eq["r"]])
+
+
+def polydisc_from_record(rec):
+    return [_dyadic_from_text(t) for t in rec["centre"]], [_dyadic_from_text(t) for t in rec["radius"]]
+
+
+def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print, logfile=None, band="1e-6"):
     """Theorem A (crossing part): a cover of W by closed intervals, on each of which (spectrum_on) the 16 other
     eigenvalues have Re < 0 and lambda(g) is enclosed, with Re lambda > 0 left of G_H = [gH - h, gH + h], Re lambda < 0
     right of it, and Re d lambda/dg < 0 on G_H. Intervals are adjacent (shared exact endpoints) and cover W."""
@@ -643,6 +659,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
     if not (Wa < ga and gb < Wb):
         raise ValueError("G_H not inside W")
     wf = Fraction(w_far)
+    band = Fraction(band)                   # intervals meeting [gH - band, gH + band] record their polydisc
     pieces = []
     stats = dict(n=0, max_others_re=None, min_im=None, max_im=None)
 
@@ -674,8 +691,11 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
                 if w < hh / 1024:
                     raise ProofFailure(f"cannot decide the sign of Re lambda near [{float(a)}, {float(b)}]")
                 continue
-            out.append(dict(a=str(a), b=str(b), re_lam=[dec(lo(sp["lam"].real), "down", 6), dec(up(sp["lam"].real), "up", 6)],
-                            others_max_re=float(sp["others_max_re"])))
+            item = dict(a=str(a), b=str(b), re_lam=[dec(lo(sp["lam"].real), "down", 6), dec(up(sp["lam"].real), "up", 6)],
+                        others_max_re=float(sp["others_max_re"]))
+            if a <= gH + band and b >= gH - band:
+                item["polydisc"] = polydisc_record(fam["eq_G"])
+            out.append(item)
             stats["n"] += 1
             stats["max_others_re"] = sp["others_max_re"] if stats["max_others_re"] is None else amax(stats["max_others_re"], sp["others_max_re"])
             im_lo, im_hi = lo(sp["lam"].imag), up(sp["lam"].imag)
@@ -695,7 +715,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
     left = side(ga, Wa, -1)
     log(f"  window cover: {len(left)} intervals left of G_H, {len(right)} right, {time.time() - t0:.1f} s")
     return dict(gH_interval=[str(ga), str(gb)], famH=famH, spH=spH, dlam=dl, p=p, left=left, right=right,
-                stats=stats, seconds=round(time.time() - t0, 1))
+                stats=stats, seconds=round(time.time() - t0, 1), polydisc_H=polydisc_record(famH["eq_G"]))
 
 
 # =================================================================================================================
@@ -2369,7 +2389,9 @@ def theorem_A(log=print, data=DATA, prec=192):
         equilibrium_radius_max=float(max(float(x.real.rad()) for x in eqX)),
         erhardt=dict(g_H=G_ERHARDT, l1=L1_ERHARDT, note="Erhardt's MATCONT value; MATCONT's first Lyapunov "
                      "coefficient equals omega times Kuznetsov's l1 in the normalisation <q, q> = 1 (physical units)"),
-        cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1))
+        polydisc_GH=cov["polydisc_H"], dRe_lambda_dg_interval="G_H",
+        cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1),
+        code_sha256=CODE_SHA256)
     os.makedirs(data, exist_ok=True)
     with open(os.path.join(data, "theoremA.json"), "w") as fh_:
         json.dump(rec, fh_, indent=1)
