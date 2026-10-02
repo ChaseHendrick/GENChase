@@ -304,24 +304,38 @@ def _rebuild_cover(crec):
                       log=lambda s: None)
 
 
+def _recompute(p, covers):
+    """Re-prove a logged piece from its stored centre, weights and r_* with its group's cover rebuilt from the logged
+    centres (current program text); returns (cover digest ok, blocks, result, settings)."""
+    crec = covers[p["cover"]]
+    cov = _rebuild_cover(crec)
+    C = H.Centre.from_record(p["centre"])
+    st = dict(M=int(p["settings"]["M"]), nsub_xi=int(p["settings"]["nsub_xi"]),
+              nsub_s=int(p["settings"]["nsub_s"]), rho0=p["settings"]["rho0"])
+    bl = H.piece_blocks(C, Fraction(p["e_lo"]), Fraction(p["e_hi"]), cov, settings=st, log=lambda s: None)
+    rs = str(H.hex_fraction(p["r_star"]))             # the exact r_* the run used (up of its decimal choice)
+    res = H.assemble(bl, p["eta"], rs, log=lambda s: None)
+    return cov.digest[:16] == p["cover"], bl, res, st, cov, C, rs
+
+
 def test_piece_recompute_and_controls():
     pieces, covers = _logs()
     if not pieces:
         check("Theorem B data present", False, "no pieces logged")
         return
+    # pieces made by the earlier runs (no code hash logged) and the last one: re-proved bit for bit by this program
+    idxs = [0] if FAST else sorted({0, 13, 30, len(pieces) - 1} & set(range(len(pieces))))
     p0 = pieces[0]
     crec = covers[p0["cover"]]
-    cov = _rebuild_cover(crec)
-    check("cover rebuilt from the logged centres has the logged digest", cov.digest[:16] == p0["cover"])
-    C = H.Centre.from_record(p0["centre"])
-    st = dict(M=int(p0["settings"]["M"]), nsub_xi=int(p0["settings"]["nsub_xi"]),
-              nsub_s=int(p0["settings"]["nsub_s"]), rho0=p0["settings"]["rho0"])
+    first = _recompute(p0, covers)
+    _, bl, res, st, cov, C, rs = first
     a, b = Fraction(p0["e_lo"]), Fraction(p0["e_hi"])
-    bl = H.piece_blocks(C, a, b, cov, settings=st, log=lambda s: None)
-    rs = str(H.hex_fraction(p0["r_star"]))            # the exact r_* the run used (up of its decimal choice)
-    res = H.assemble(bl, p0["eta"], rs, log=lambda s: None)
-    same = all(res[k]["hex"] == p0["result"][k]["hex"] for k in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness"))
-    check("piece 0 recomputed: Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values", same)
+    for i in idxs:
+        p = pieces[i]
+        dig_ok, _, res_i, _, _, _, _ = first if i == 0 else _recompute(p, covers)
+        same = all(res_i[k]["hex"] == p["result"][k]["hex"] for k in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness"))
+        check(f"piece {i} recomputed (cover digest reproduced: {dig_ok}): Y0, Z1, Z2, r_existence, r_uniqueness equal "
+              f"the logged exact values", dig_ok and same)
     # mutations
     r1 = H.assemble(bl, p0["eta"], rs, log=lambda s: None, _mutate=("drop_curve",))
     check("mutation drop_curve changes Y0 and Z1 (the parameter-width terms are live)",

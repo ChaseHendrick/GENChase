@@ -109,7 +109,7 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 | `code/fourier/existence.py` | Stage E: the radii-polynomial existence proof (Section 4) |
 | `code/fourier/stability.py` | Stage S: the Hill-operator certificate (Section 5) |
 | `code/fourier/link_cell.py` | The exact check that the Fourier cell orbit's section point lies in the CAPD ball (Lemma 6.1) |
-| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.7); `alln.py` calls the bound assembly, the Hessian cover and the centre distance of `branch.py` |
+| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.8); `alln.py` calls the bound assembly, the Hessian cover and the centre distance of `branch.py` |
 | `code/fourier/data/alln/` | The run log of Theorem C (`pieces.jsonl`, the exact inputs and bounds of every piece, hashed by the record), its controls and the code version at launch |
 | `code/fourier/LEMMAS-stability.md` | The stability lemmas as they were reviewed; Section 5 of the paper writes them out |
 | `code/fourier/centre.py`, `code/fourier/data/` | Untrusted Newton solver for the centres, and the centres as exact dyadic numbers |

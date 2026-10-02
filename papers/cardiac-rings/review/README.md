@@ -21,7 +21,7 @@ Appendix A reading and the integration reading of 2026-10-02 are readings of the
 | `appendixA-reading-2026-10-02.md` | Appendix A (operators with compact resolvent) and its uses in Section 5 | no error; two gaps in the hand-off from Section 5 (G1, G2) and exposition items, fixed the same day |
 | `alln-existence-review-2026-10-02.md` | `fourier/alln.py` (Theorem C), its tests, record and the parts of `branch.py` it calls; copied from the study | nothing unsound, no gap affecting the theorem, two pieces re-proved bit for bit; four weak tests (W1 to W4) and four minor items |
 | `alln-existence-fixcheck-2026-10-02.md` | (record by the program's author, not an independent reading; copied from the study) | how W1 to W4 and M1 to M4 were fixed, no bound changed; tests 13 of 13 passed |
-| `alln-integration-reading-2026-10-02.md` | Theorem C, Sections 2.3 and 4.7 and Remark 7.1 of the manuscript, with the study's programs and records | see the file; its fixes are recorded there |
+| `alln-integration-reading-2026-10-02.md` | Theorem C, Sections 2.3 and 4.8 and Remark 7.1 of the manuscript, with the study's programs and records | see the file; its fixes are recorded there |
 
 The outcome for the Fourier route is recorded in `data/fourier-review-status.json`, outside the hashed records; it
 covers Stage E and Stage S for N = 1, 8, 16, 32, 64, not yet the record of Theorem C.

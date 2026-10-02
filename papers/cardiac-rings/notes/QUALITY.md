@@ -25,7 +25,7 @@ GENChase: the companion repository does not carry `notes/`.
 
 - [ ] **1. Complete proofs.** Open. The draft writes out the proofs of every lemma and theorem the certificates rest
   on (Section 4, Lemmas 4.1 to 4.8, for existence, and, since 2026-10-02, Lemmas 4.9 to 4.14 with the proof of Theorem C
-  in Section 4.7, for existence for every N >= 8 and the cable; Section 5, the lemmas, corollaries and theorems numbered 5.1 to 5.17,
+  in Section 4.8, for existence for every N >= 8 and the cable; Section 5, the lemmas, corollaries and theorems numbered 5.1 to 5.17,
   for stability, adapted from `code/fourier/LEMMAS-stability.md` and the docstrings of `fourier_eval.py` and
   `existence.py`), the CAPD argument of Section 6 and Lemma 6.1 (the two cell proofs enclose the same orbit). The
   reading of 2026-10-01 (`review/manuscript-reading-1-2026-10-01.md`) found every proof of Section 5 complete and
@@ -56,7 +56,7 @@ GENChase: the companion repository does not carry `notes/`.
   item records this reading (X10). The lemma file was changed the same way for G1 and G2. What is missing: (a) the
   fixes of 2026-10-02 have not been checked by a second reader; (b) the passages revised after the second reading
   (R3 to R6 and the exposition items, `review/fix-check-2026-10-01.md`) have not been read by a third reader; (c) Theorem
-  C (every N >= 8 and the cable, 2026-10-02) is proved in Section 4.7 by Lemmas 4.9 (tail resolvents for every
+  C (every N >= 8 and the cable, 2026-10-02) is proved in Section 4.8 by Lemmas 4.9 (tail resolvents for every
   damping), 4.10 (the fixed-point map, well defined at eps = 0), 4.11 (the derivative of d_m), 4.12 (bounds uniform
   over a piece), 4.13 (Z2 from a Hessian bound, proved as Lemma 4.7) and 4.14 (continuity and gluing), written out
   from the docstrings of `code/fourier/alln.py` and `branch.py`; its integration had one in-project reading
