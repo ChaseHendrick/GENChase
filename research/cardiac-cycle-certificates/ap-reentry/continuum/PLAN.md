@@ -336,7 +336,30 @@ Findings (measurements, not a proof):
   width at 4 ms is 1.4e-3 against 1.6e-5 for the point-kappa C0 run P5 from the same box. The kappa pieces must therefore be narrow, or the segments
   shorter, where the sensitivity to kappa is large (section 9).
 
-SWEEP_PENDING
+**Full-period sweep at kappa = 2.19** (`tw/wrap/sweep.py`; record `results/wrap_pilot_2026-10-02.json`, key `sweep`):
+150 C1 windows of 2 ms (order 20, dimension 20, box relative radius 1e-10), each from a collocation point, covering
+298.67 ms of the 298.85 ms period except about 0.05 ms on each side of the two sections. This is what the C1 part of a
+multiple-shooting proof at one kappa integrates, up to the two section segments and the leaf insertion.
+
+| quantity | value |
+|---|---|
+| windows certified | 149 of 150; the last one started 0.067 ms late (the start snaps to the next collocation point) and reached the up-crossing V = -40 at s = T, where the branch-low check stops it: an artifact of the window placement, not of the enclosure (float reference inside) |
+| steps, wall on one core | 22,508 steps, 2,250 s (0.62 core-hours), 0.100 s per step |
+| piece A (193 ms: upstroke, crest, plateau, repolarization) | 2,012 steps, 215 s; 428 window steps (GHK window), all in the windows from s = 2 to 48 ms |
+| piece B (106 ms: tail of repolarization, rest, foot) | 20,496 steps, 2,035 s; the 42 windows with V below -75 mV take 19,975 steps for 83.9 ms (h = 0.0036 to 0.0044 ms, the resting m gate) |
+| derivative growth per 2 ms window | median 120 (piece A 118, piece B 158), largest 1,180 (upstroke, s = 0.02 to 2 ms); sum of log over the windows 720 (piece A 461, piece B 259), against the frozen-coefficient estimate 683 for the period |
+| wrapping ratio at window ends | 0.06 to 0.52 |
+| relative width of the derivative at window ends | at most 1.2e-5 (r0 1e-10); c = width / (r0 |D|) has median 4.8, 90th percentile 125, maximum 203 |
+| float reference inside the end enclosure | every window |
+
+**Segments that start on a section** (review finding 3; monotone rule of `wrap_pilot.cpp`, binary rebuilt 07:45 UTC;
+the default behaviour without the rule is unchanged): S1 starts on Sigma_up (V = -40 exactly, V radius 0, piece A),
+S2 on Sigma_down (piece B), C1, r0 1e-12, 2 ms each. Both certified, each with one step accepted by the monotone rule
+(W = +93 and -1.39 mV/ms there): S1 138 steps, 17.6 s, |D| 1,115, wrapping ratio 0.52 to 0.54; S2 12 steps, 2.0 s,
+|D| 92. Float references inside. The section END for the comoving field (PoincareMap with validation) is not yet
+implemented.
+
+SLOW_SWEEP_PENDING
 
 ## 9. Cost of the full continuum proof (extrapolated from section 8)
 
