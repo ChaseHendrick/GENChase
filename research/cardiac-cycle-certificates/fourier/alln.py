@@ -703,12 +703,17 @@ def piece_blocks(om_bar, A, e_lo, e_hi, *, settings=None, log=print, label=None,
 # =================================================================================================================
 # One piece: blocks, weights (float search), Hessian cover (Lemma B2), branch.assemble
 # =================================================================================================================
+def _radii_text(eta, rs):
+    rstar = f"{max(1, int(rs * 2 ** 60))}/{2 ** 60}"
+    Rs = [f"{max(1, int(32 * float(Fraction(eta[1 + i])) * rs * 2 ** 60))}/{2 ** 60}" for i in range(DIM)]
+    return rstar, Rs
+
+
 def _choose(bl, MHf):
     eta_f, pred = br.choose_eta(bl, MHf, iters=3000)
     eta = br.dyadic_eta(eta_f, bits=20)
     rs = 0.9 * pred["r_star"] / 0.35 if pred["r_star"] > 0 else 1e-9
-    rstar = f"{max(1, int(rs * 2 ** 60))}/{2 ** 60}"
-    Rs = [f"{max(1, int(32 * float(Fraction(eta[1 + i])) * rs * 2 ** 60))}/{2 ** 60}" for i in range(DIM)]
+    rstar, Rs = _radii_text(eta, rs)
     return eta, rstar, Rs, pred
 
 
@@ -725,22 +730,30 @@ def finish(bl, eta, rstar, hb, *, log=print, _mutate=()):
 
 
 def prove_piece(om, A, e_lo, e_hi, MHf, *, settings=None, log=print, label=None, _mutate_blocks=()):
-    """Returns (record without _obj, obj, extras). Raises ProofFailure (with .diag) if the inequalities fail with the
-    float-predicted weights and again with weights re-chosen from the rigorous Hessian cover."""
+    """Returns (record, extras, blocks). Untrusted choices, in order: weights eta and r_* from the float prediction
+    (branch.choose_eta with the Hessian estimate MHf); if the inequalities fail, weights re-chosen with the rigorous
+    cover's Hessian entries; if they hold but r_uniqueness < 2 r_existence (r_* above (1 - Z1) / Z2, so that
+    existence._radii falls back to r_hi = r_lo, useless for gluing), r_* := 0.8 (1 - Z1) / Z2 from the rigorous Z1, Z2
+    with the same weights, a new cover, and the assembly again. Raises ProofFailure (with .diag) if nothing closes."""
     bl = piece_blocks(om, A, e_lo, e_hi, settings=settings, log=log, label=label, _mutate=_mutate_blocks)
     tries = []
-    MH = MHf
-    for attempt in range(2):
-        eta, rstar, Rs, pred = _choose(bl, MH)
+    eta, rstar, Rs, pred = _choose(bl, MHf)
+    for attempt in range(4):
         hb = br.HessBound([(om, A)], G_KS, G_KS, Rs, "1", None, log=log)
         try:
             out = finish(bl, eta, rstar, hb, log=log)
-            extras = dict(eta_prediction={k: float(v) for k, v in pred.items()}, r_star_text=rstar, R=Rs,
-                          hess_record=hb.record(), attempt=attempt, earlier_attempts=tries)
-            return out, extras, bl
         except ProofFailure as e:
-            tries.append(dict(why=str(e), diag=getattr(e, "diag", None)))
-            MH = br.MH_float(hb)
+            tries.append(dict(why=str(e), diag=getattr(e, "diag", None), r_star=rstar))
+            eta, rstar, Rs, pred = _choose(bl, br.MH_float(hb))
+            continue
+        extras = dict(eta_prediction={k: float(v) for k, v in pred.items()}, r_star_text=rstar, R=Rs,
+                      hess_record=hb.record(), attempt=attempt, earlier_attempts=tries)
+        if out["r_uniqueness"]["approx"] >= 2 * out["r_existence"]["approx"]:
+            return out, extras, bl
+        d = out["diag"]
+        tries.append(dict(why="r_uniqueness < 2 r_existence; r_* re-chosen from the rigorous Z1, Z2", r_star=rstar,
+                          Z1=d["Z1"], Z2=d["Z2"]))
+        rstar, Rs = _radii_text(eta, 0.8 * (1 - d["Z1"]) / d["Z2"])
     err = ProofFailure(f"piece [{e_lo}, {e_hi}] failed: {tries[-1]['why']}")
     err.diag = tries
     raise err
@@ -1122,7 +1135,21 @@ def float_residual_norm(rec, centre, eps, K=None):
     return best
 
 
-def controls(piece_lo="0", piece_hi="1/4096", K=12, widen=("1/4", "1"), log=print):
+def reprove(line, log=None, _mutate_blocks=(), _mutate=()):
+    """Re-run a logged piece from its stored exact inputs (centre, weights, r_*, radii R): blocks, a new Hessian cover,
+    assembly. Returns (record, cover digest). Used to check that the logged numbers are reproduced bit for bit."""
+    log = log or (lambda *a, **k: None)
+    rec, extras = line["rec"], line["extras"]
+    om, A = centre_from_text(line["centre"])
+    if br.centre_digest(om, A) != rec["centre_sha256"]:
+        raise ValueError("centre digest mismatch")
+    bl = piece_blocks(om, A, Fraction(rec["eps_lo"]), Fraction(rec["eps_hi"]), settings=dict(K=rec["K"]), log=log,
+                      label=rec["label"], _mutate=_mutate_blocks)
+    hb = br.HessBound([(om, A)], G_KS, G_KS, extras["R"], "1", None, log=log)
+    return finish(bl, rec["eta"], extras["r_star_text"], hb, log=log, _mutate=_mutate), hb.digest, bl
+
+
+def controls(piece_lo="0", piece_hi="1/4096", K=12, widen=("1/16", "1/8", "1/4", "1"), log=print):
     """(a) dropping the eps-derivative terms (assemble's drop_g_width) on a logged piece: the mutated Y0 is compared
     with a float residual at the piece's endpoints; (b) the piece [piece_lo, w] widened to each w in `widen` must
     fail. Appends to controls.jsonl."""
@@ -1134,13 +1161,18 @@ def controls(piece_lo="0", piece_hi="1/4096", K=12, widen=("1/4", "1"), log=prin
     mut = finish(bl, rec["eta"], extras["r_star_text"], hb, log=log, _mutate=("drop_g_width",))
     cen = centre_text(om, A)
     res_ends = {e: float_residual_norm(rec, cen, e) for e in (rec["eps_lo"], rec["eps_hi"])}
+    res_centre = float_residual_norm(rec, cen, rec["eps_c"])
     worst = max(res_ends.values())
     out = dict(type="control_drop_eps_derivative", piece=[rec["eps_lo"], rec["eps_hi"]],
                Y0_correct=rec["Y0"]["approx"], Y0_mutated=mut["Y0"]["approx"], Z1_correct=rec["Z1"]["approx"],
                Z1_mutated=mut["Z1"]["approx"], float_residual_at_endpoints=res_ends,
-               detected=bool(worst > mut["Y0"]["approx"]), correct_bound_holds=bool(worst <= rec["Y0"]["approx"]),
+               float_residual_at_centre=res_centre,
+               detected=bool(worst > 10 * mut["Y0"]["approx"] and res_centre < worst / 10),
+               correct_bound_holds=bool(worst <= rec["Y0"]["approx"]),
                note="mutation: delta * Y0g and delta * B1g omitted (branch.assemble _mutate drop_g_width); detected if "
-                    "the float residual norm of A_fin F(xbar; eps) at an endpoint exceeds the mutated Y0")
+                    "the float norm of A_fin F(xbar; eps) at an endpoint exceeds 10 times the mutated Y0 while the same "
+                    "float norm at the centre parameter e_c is 10 times smaller (so the excess is the eps variation, "
+                    "not float noise)")
     _append(CONTROLS_LOG, out)
     log(json.dumps(out))
     for w in widen:
