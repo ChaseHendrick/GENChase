@@ -1,0 +1,13 @@
+# Parallel branch reproof, 2026-10-02
+
+The calculation is distributed by complete historical continuation groups. The 57 groups and 712 pieces are assigned to six independent shards by `group % 6`. Each shard uses three single-threaded proof workers. The reviewed mathematical programs and their exact acceptance inequalities are unchanged.
+
+`.github/workflows/cardiac-reproof.yml` starts on a push touching its workflow, helper or cardiac research files only when the commit message contains `[cardiac reproof]`. It also supports manual dispatch after reaching the default branch. It has read-only repository permissions. It cannot release or publish a paper. Each worker job has a 45-minute outer limit and a 2,400-second proof budget; all successful shards must finish before the merged certificate is attempted.
+
+The Linux arithmetic wheel is checked against the existing `arbmodel.FLINT_PIN`, followed by the model's installed-file and scientific controls. Source digests, the exact historical input identity, centre identity, group metadata and actual fresh rational radii-polynomial and contraction bounds accompany every shard. The merge rejects missing, duplicate, mismatched or stale records. It rederives the 711 gluing inequalities before admitting a complete output. Twelve negative helper controls and a synthetic positive merge exercise the bookkeeping separately from the scientific calculations.
+
+The historical JSONL format contains positive `Infinity` in three non-proof strip diagnostics: `rec.strips.{J,dg_f,dg_J}.S_over_L_max`. The helper preserves only that explicitly checked compatibility case. Negative infinity, NaN and nonfinite values elsewhere are rejected. None of these diagnostics replaces the exact hexadecimal proof bounds.
+
+Successful artifacts are named `cardiac-branch-shard-0` through `cardiac-branch-shard-5` and `cardiac-branch-merged`. Failed or budget-limited jobs retain partial logs and runtime details. Download into a new directory and independently inspect the artifacts and their producing commit. Do not overwrite a still-running local proof log. The helper preserves existing output by default and requires an explicit backup option to replace it.
+
+The workflow supplies a faster execution path, not automatic acceptance of the 1.1.0 manuscript. A complete branch certificate must still be independently inspected. Uniform stability, all 68 Hopf amplitude pieces and their gluings, bridge identifications, the remaining negative controls, manuscript development, figure regeneration and publication checks remain separate requirements. The published 1.0.0 preprint and its archived proof artifacts remain unchanged.
