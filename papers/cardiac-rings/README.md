@@ -2,37 +2,32 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft**, not yet released: release 1.0.0, with the programs that prove its results and their output, is prepared
-and will be made once every item of the project's quality record is closed. Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+**Preprint**, release 1.0.0 (2026-10-02), with the programs that prove its results and their output. Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
 
-**[Read the paper (PDF, 40 pages)](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
+**[Read the paper (PDF, 45 pages)](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
 
 ## Abstract
 
 We give computer-assisted proofs for Erhardt's 18-state modification of the ten Tusscher-Panfilov 2006 endocardial
-ventricular cell model, with reduced repolarization reserve and slow delayed rectifier conductance G_Ks = 0.0275 nS/pF,
-about 1.5 per cent below the first supercritical Hopf point that Erhardt computed numerically. Rings of N identical
-cells are coupled diffusively through the voltage with strength N^2/64000 per ms; they discretize the voltage-only
-cable u_t = f(u) + D u_xx, D = 1/64000 per ms, on a ring of unit length. Rotating waves on such rings are expected
-from Z_N-equivariant Hopf theory; we prove them at explicit parameters.
+ventricular cell model at slow delayed rectifier conductance G_Ks = 0.0275 nS/pF, 1.46 per cent below his numerically
+computed Hopf point. Rings of N identical cells, coupled diffusively through the voltage with strength N^2/64000 per ms,
+discretize the cable u_t = f(u) + D u_xx, D = 1/64000 per ms, on a ring of length 1. Rotating waves there are expected
+from equivariant Hopf theory; we prove them at explicit parameters.
 
-For the single cell, two proofs (CAPD and Arb, which share only the libraries GMP and MPFR) show that a locally
-orbitally asymptotically stable periodic orbit exists, with its 17 nontrivial Floquet multipliers below 0.998642 and
-0.997859 respectively, and an exact rational check shows that they concern the same orbit. For N = 8, 16, 32 and 64 a
-rotating 1-wave exists, is locally unique and not synchronous, has minimal period T = 2 pi/omega enclosed in an
-interval narrower than 2e-25 ms, and is locally exponentially orbitally stable with asymptotic phase: the multiplier
-1 is algebraically simple and the other 18N - 1 have modulus below e^(-delta T) < 0.9997321, with delta = 5e-6 per
-ms. A locally unique rotating 1-wave also exists for every N >= 8, and a traveling wave for the cable, to which the
-ring waves converge as N tends to infinity.
+For one cell, two proofs (CAPD and Arb, sharing only GMP and MPFR) give an orbitally asymptotically stable periodic
+orbit, with 17 nontrivial Floquet multipliers below 0.998642 and 0.997859 respectively, and an exact rational check
+shows both enclose the same orbit. For N = 8, 16, 32, 64 a rotating 1-wave exists, is locally unique and not
+synchronous, has minimal period T = 2 pi/omega enclosed to within 2e-25 ms, and is locally exponentially orbitally
+stable: the multiplier 1 is algebraically simple and the other 18N - 1 have modulus below e^(-delta T) < 0.9997321,
+delta = 5e-6 per ms. A locally unique rotating 1-wave also exists for every N >= 8, and a traveling wave for the cable,
+the limit of the ring waves.
 
-Existence is a radii-polynomial argument in a weighted l^1 space; it is made uniform over a parameter epsilon in
-[0, 1/64] (1/N^2 for the rings, 0 for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill
-operator, whose spectrum in a half-open strip of height omega N gives every Floquet multiplier with its algebraic
-multiplicity; a Riesz-projection homotopy shows that this spectrum meets {Re mu >= -delta} only in the eigenvalues
-i omega N Z, each algebraically simple. Stability is proved only for the cell and for N = 8, 16, 32 and 64. That these
-orbits lie on the branch born at the Hopf point is inferred from floating-point observations, not proved, and nothing
-is claimed for tissue.
+Existence is a radii-polynomial argument in a weighted l^1 space, made uniform over epsilon in [0, 1/64] (1/N^2 for the
+rings, 0 for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill operator whose spectrum gives
+every Floquet multiplier with its algebraic multiplicity; a Riesz-projection homotopy shows it meets {Re mu >= -delta}
+only in the eigenvalues i omega N Z, each algebraically simple. Stability is proved only for the cell and these four
+rings; the link to the Hopf branch is only numerical, and nothing is claimed for tissue.
 
 ## Status of the results
 

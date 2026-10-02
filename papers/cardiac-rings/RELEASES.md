@@ -6,7 +6,7 @@ peer reviewed.
 ## 1.0.0 (2026-10-02)
 
 The first public release of the preprint *Stable Rotating Waves in Rings of a Modified Ventricular Cell Model:
-Computer-Assisted Proofs* (40 pages), with the programs that prove its results and
+Computer-Assisted Proofs* (45 pages), with the programs that prove its results and
 their output.
 
 ### What the paper shows

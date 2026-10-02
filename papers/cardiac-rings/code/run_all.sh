@@ -9,7 +9,7 @@
 #                                      identifications of Theorem C from the stored exact data (alln.py --collect,
 #                                      under a minute) and compare them with data/; "alln" may be added to a list of N
 #                                      ("1,8,alln"). Re-proving pieces from their stored centres is done by
-#                                      fourier/test_alln.py (about 15 minutes), not by this script.
+#                                      fourier/test_alln.py (about 10 to 15 minutes), not by this script.
 #
 # Run from the paper's folder (the folder that holds code/ and data/). The programs write their records to
 # <root>/results, so this script stages code/ in a scratch folder, with the records of data/ as its results/: the

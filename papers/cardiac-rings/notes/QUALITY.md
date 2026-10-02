@@ -23,7 +23,7 @@ GENChase: the companion repository does not carry `notes/`.
 
 ## Record (2026-10-01, `paper/cardiac-rings.tex` after two in-project readings of the manuscript; updated 2026-10-02 for Appendix A, Theorem C and Remark 7.1)
 
-- [ ] **1. Complete proofs.** Open. The draft writes out the proofs of every lemma and theorem the certificates rest
+- [x] **1. Complete proofs.** The draft writes out the proofs of every lemma and theorem the certificates rest
   on (Section 4, Lemmas 4.1 to 4.8, for existence, and, since 2026-10-02, Lemmas 4.9 to 4.14 with the proof of Theorem C
   in Section 4.8, for existence for every N >= 8 and the cable; Section 5, the lemmas, corollaries and theorems numbered 5.1 to 5.17,
   for stability, adapted from `code/fourier/LEMMAS-stability.md` and the docstrings of `fourier_eval.py` and
@@ -53,17 +53,17 @@ GENChase: the companion repository does not carry `notes/`.
   inner edges in Lemma A.3(d) (X4); Lemma A.6 restated without the redundant hypothesis (X5); R(lambda)X = D(H) proved
   (X6); the domain convention cited in Section 5.1 (X7); Lemma 5.8 named as the one prerequisite from the body in the
   appendix's opening paragraph, not moved (X8); the block-diagonal norm argument in Lemma 5.11 (X9); the Limitations
-  item records this reading (X10). The lemma file was changed the same way for G1 and G2. What is missing: (a) the
-  fixes of 2026-10-02 have not been checked by a second reader; (b) the passages revised after the second reading
-  (R3 to R6 and the exposition items, `review/fix-check-2026-10-01.md`) have not been read by a third reader; (c) Theorem
-  C (every N >= 8 and the cable, 2026-10-02) is proved in Section 4.8 by Lemmas 4.9 (tail resolvents for every
-  damping), 4.10 (the fixed-point map, well defined at eps = 0), 4.11 (the derivative of d_m), 4.12 (bounds uniform
-  over a piece), 4.13 (Z2 from a Hessian bound, proved as Lemma 4.7) and 4.14 (continuity and gluing), written out
-  from the docstrings of `code/fourier/alln.py` and `branch.py`; its integration had one in-project reading
-  (`review/alln-integration-reading-2026-10-02.md`), whose fixes have not been read by a second reader; (d) the G_Ks
-  branch with uniform stability and the Hopf bridge are still being computed and reviewed in the study and are not in
-  this draft (a TODO comment after Theorem C in the source marks where they go); they must be proved in full here
-  before this item can close.
+  item records this reading (X10). The lemma file was changed the same way for G1 and G2. A third in-project reading of the whole manuscript on 2026-10-02 (`review/third-reading-2026-10-02.md`; five parts,
+  each by a separate AI agent session, every finding checked by two further sessions; not an outside review) read the
+  text after the Appendix A fixes and after the passages revised after reading 2, including Theorem C (Sections 2.3
+  and 4.8, Lemmas 4.9 to 4.14 and the proof of Theorem C), Appendix A and Remark 7.1. It found no gap in the proofs:
+  the every-N argument is complete, including the cable endpoint eps = 0 and the gluing (existence part); no gap in
+  Section 5 or Appendix A (stability part); the CAPD argument of Section 6 matches `code/proofs/verify.cpp` (CAPD
+  part). Its confirmed findings on the proofs were statements and notation (E4, E5, E7; N3 to N6 and N8 of the
+  stability part) and the four constants of Theorem C(a), which no program decided (E2); the proof now says they are
+  read off the record by an exact rational check, whose program and output are in the reading. All were fixed on
+  2026-10-02; these fixes have not been read by a further reader. The G_Ks branch with uniform stability and the Hopf
+  bridge are not part of this paper: Section 9 calls an interval in G_Ks future work and claims no result of it.
 - [x] **2. Rigorous computation.** Every inequality of the proofs is decided in Arb ball arithmetic (python-flint
   0.9.0, pinned) by `code/fourier/existence.py` and `code/fourier/stability.py`, or in CAPD interval arithmetic by
   `code/proofs/verify.cpp`; floating point only proposes centres, frames and weights. The programs raise
@@ -81,9 +81,12 @@ GENChase: the companion repository does not carry `notes/`.
   complete run of the test suites is kept in this folder. Theorem C (2026-10-02): every inequality is decided in Arb by
   `code/fourier/alln.py` (with the bound assembly and Hessian cover of `code/fourier/branch.py`), which raises
   `ProofFailure` at a failed check and logs the piece as failed; the record `data/fourier-existence-alln.json` stores
-  every piece's exact inputs (run log `code/fourier/data/alln/pieces.jsonl`, hashed); negative controls (dropping the
+  every piece's weights, radii, period enclosure and the SHA-256 of its centre, and the hash of the run log
+  `code/fourier/data/alln/pieces.jsonl`, which holds every piece's exact inputs (centres, weights, r_*, R_i); the four
+  constants of Theorem C(a) that summarize all pieces are read off the record by an exact rational check
+  (`review/third-reading-2026-10-02.md`); negative controls (dropping the
   parameter-width terms is detected, widened pieces fail at the radii polynomial) are in the record and in
-  `code/fourier/test_alln.py`, which also re-proves five pieces bit for bit (13 of 13 tests passed,
+  `code/fourier/test_alln.py`, which also re-proves four pieces bit for bit (13 of 13 tests passed,
   `review/alln-existence-fixcheck-2026-10-02.md`). The program had an in-project adversarial reading
   (`review/alln-existence-review-2026-10-02.md`: nothing unsound; weak tests W1 to W4 and minor items fixed by the
   program's author).
@@ -101,22 +104,19 @@ GENChase: the companion repository does not carry `notes/`.
   as records. The README's "Status of the results" uses the same labels. The manuscript reading of 2026-10-01 checked
   the labels ("Labels: Section 7 is numerical and unused, and the Hopf identification is labelled numerical") and
   every printed number against the records; its unsafe roundings (E1 to E4) are fixed.
-- [ ] **4. Sources read.** Open. The proof steps depend on Erhardt's model source (read; hash recorded) and on the
-  library contracts of Arb and CAPD (trust base, not citations). Since 2026-10-02 they no longer depend on Kato (1976):
-  the three facts once cited from it are proved in Appendix A, and the book is cited as the standard reference only
-  ("see also"), so it is background, not a source of a proof step; it has still not been checked against a copy. The
-  in-project reading of Appendix A (`review/appendixA-reading-2026-10-02.md`) found its proofs complete from the stated
-  elementary facts and its citations in Section 5 matching what is proved, which is what replaces the reading of
-  Kato for the resolvent and Riesz-projection facts. Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
-  and `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`: Erhardt (2025) read in full;
-  Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. (2016) known from excerpts of its abstract;
-  the reading status of every cited background work is listed in Section 9 of the paper ("How far the background
-  sources were read"). Whether item 4 can close without reading Kato is for the coordinator to decide after a
-  reading of Appendix A. Since 2026-10-02 the paper also cites van den Berg, Lessard and Mischaikow (Math. Comp. 79
-  (2010)) as background for rigorous parameter continuation, known from its abstract (Crossref record), not a source
-  of a proof step; it is listed in Section 9 but not yet in the RESEARCH.md ledger. Theorem C uses no external result
-  beyond those of Sections 4.1 to 4.6; Remark 7.1 cites Ermentrout (1992), Theorem 3.1 and Lemma 3.2 (read,
-  pp. 1674-1677), for a numerical comparison only.
+- [x] **4. Sources read.** The proof steps depend on Erhardt's model source (read; file hash recorded in Section 2.1)
+  and on the library contracts of Arb and CAPD (trust base, Section 8, not citations). No proof step depends on Kato
+  (1976): the three facts once cited from it are proved in Appendix A, Kato is cited as the standard reference only
+  and was not checked against a copy, and the paper says so; the third reading (`review/third-reading-2026-10-02.md`,
+  claims and sources part) confirmed that no proof step depends on Kato or on any unread source. Remark 7.1 cites
+  Ermentrout (1992), Theorem 3.1 and Lemma 3.2 (read, pp. 1674-1677), for a numerical comparison only. Background
+  citations and how far each was read are recorded in RESEARCH.md: the cardiac entries of 2026-09-30 and 2026-10-01
+  (Erhardt 2025 read in full; Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. known from
+  excerpts of its abstract; the others as Section 9 lists them), with the notes in
+  `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`, and the entry of 2026-10-02 "cardiac
+  rings: background citations added since the readings" for van den Berg-Lessard-Mischaikow (abstract), Kato (not
+  checked against a copy), Johansson (Arb) and Kapela et al. (CAPD) (cited as software, no reading recorded). Section 9
+  of the paper ("How far the background sources were read") states the same reading status for every cited work.
 - [x] **5. Prior article review.** RESEARCH.md, entries "2026-09-30 cardiac ring wave certification and next
   targets", "2026-10-01 cardiac cell and ring certificates: model origin, earlier rigorous work and the weak-coupling
   prediction", "2026-10-01 cardiac rings on the Fourier/Hill route: earlier computer-assisted lattice and Floquet
@@ -146,17 +146,29 @@ GENChase: the companion repository does not carry `notes/`.
   unsound, the link confirmed; two wrong numbers in statements (R1, delta for N = 1; R2, the period width) and
   gaps R3 to R6, citations R7 to R9 and exposition items, all fixed; where each is fixed is recorded in
   `review/fix-check-2026-10-01.md`. Reading 2 stated that a check of these fixes, recorded in the review folder,
-  suffices for this item; that record is the fix-check file, made by the drafting session, and the fixes after
-  reading 2 have not been read by a third reader.
-- [ ] **7. Reproducible.** Open. `code/run_all.sh` checks the copies against the records' 90 hashes (passes) and the
-  15 hashes of the Theorem C record (passes), runs the link of Lemma 6.1 (passes), with the argument `alln` re-derives
-  Theorem C's gluing and Stage E identifications in Arb from the stored data (rerun from the copies on 2026-10-02:
-  identical to the record), and reruns Stage E and Stage S in a scratch folder; the N = 1 and N = 8 proofs were rerun from these copies on
-  2026-10-01 and reproduce the period enclosures and every stability bound exactly (`notes/rerun-2026-10-01.md`);
-  N = 16, 32, 64 and the CAPD certificate were not rerun from here, and the 73 pieces of Theorem C were not re-proved
-  from here (test_alln.py, about 15 minutes, re-proves five of them; it passed in the study). The PDF builds with
-  `sh tools/paper-build.sh cardiac-rings` (TeX Live 2023, Ubuntu 24.04; 40 pages on 2026-10-02, after Appendix A,
-  Theorem C and Remark 7.1; the log has no undefined references and one overfull line of 2.7 pt). Still open: a full
-  rerun of N = 16, 32 and 64 and of the CAPD certificate from the copies, a rerun of test_alln.py from the copies,
-  bit-reproducible Y0, Z1, Z2 and r_ex (BLAS threads are not pinned in existence.py; the fix is queued), and
-  `paper-sync --check`, which applies only from status "ready".
+  suffices for this item; that record is the fix-check file, made by the drafting session. Appendix A had its own
+  adversarial reading on 2026-10-02 (`review/appendixA-reading-2026-10-02.md`). Reading 3, of 2026-10-02
+  (`review/third-reading-2026-10-02.md`), read the whole manuscript after those fixes, including Theorem C (Sections
+  2.3 and 4.8) and Remark 7.1, which the readings of 2026-10-01 predate, in five parts with every finding checked by
+  two further sessions: no gap in the proofs; its must findings (a reading cited that did not exist, "share no
+  library", the count of re-proved pieces, a bound printed below its record, stale rerun statements) and its should
+  findings were fixed the same day, as recorded in that file; those fixes have not been read by a further reader.
+- [x] **7. Reproducible.** From a fresh staging of the companion (`node tools/paper-sync.js --stage`) and a new
+  Python 3.11.15 environment with `pip install -r code/requirements.txt` (python-flint 0.9.0, numpy 2.4.6, scipy
+  1.17.1, mpmath 1.3.0, matplotlib 3.11.2), `sh code/run_all.sh 1` passed on 2026-10-02: the 90 hashes of the Fourier
+  records and the 15 of the Theorem C record match, the link of Lemma 6.1 passes with its negative control, and Stage E
+  and Stage S for N = 1 reproduce every compared value exactly; `code/plot_cardiac_rings.py` in the same environment
+  rewrote the three figures and `paper/figures/sources.json` byte for byte (`notes/rerun-2026-10-02.md`, section 5).
+  The other proofs were rerun from the same copies with the same package versions: N = 1 and 8 on 2026-10-01
+  (`notes/rerun-2026-10-01.md`); on 2026-10-02 the CAPD certificate (all 28 keys of the verifier's output equal to the
+  record), N = 16, 32 and 64 (enclosures and stability bounds identical), the collection step of Theorem C
+  (identical) and `code/fourier/test_alln.py` (13 of 13 tests, four pieces re-proved bit for bit)
+  (`notes/rerun-2026-10-02.md`, sections 1 to 3). `run_all.sh` does not check the four source hashes of the CAPD
+  record; they were compared with the copies by hand and agree (Section 8 says so). `timeout 900 sh
+  tools/paper-build.sh cardiac-rings` builds the PDF (45 pages on 2026-10-02, with the three figures);
+  `node tools/paper-check.js --paper cardiac-rings` passes ("stages cleanly") and `node tools/paper-sync.js --check
+  cardiac-rings` says "ready to publish as its own repository". The page count (45) and the check counts (90 and 15
+  hashes, 13 tests, four pieces) stated in the paper and the README are current. Limits, stated in Section 8: Y0, Z1,
+  Z2 and r_ex reproduce only to late digits (the floating-point inverse may depend on the BLAS thread setting; not
+  investigated), 69 of the 73 pieces of Theorem C were not re-proved from the copies, and the other test files were
+  not rerun from the companion.

@@ -2244,6 +2244,19 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
 - Result: no precedent found for exclusion with counting of a Hill operator's spectrum in ball arithmetic. Credit wording for each source is in the note.
 - Re-search: no. Read the full text of Di Marco et al. before submission.
 
+### 2026-10-02  cardiac rings: background citations added since the readings  (session agent; `papers/cardiac-rings/`)
+
+- No search was run. This records how far four works the manuscript cites were read, as Section 9 of the paper states.
+  - van den Berg, Lessard and Mischaikow, Math. Comp. 79 (2010) 1565-1584, doi:10.1090/S0025-5718-10-02325-2: known
+    from its abstract (Crossref record). Background for the rigorous parameter continuation behind Theorem C; not a
+    source of a proof step.
+  - Kato, Perturbation Theory for Linear Operators (2nd ed., 1976): not checked against a copy. Cited as the standard
+    reference only; the three facts once taken from it are proved in Appendix A of the paper.
+  - Johansson, IEEE Trans. Comput. 66 (2017) (Arb) and Kapela, Mrozek, Wilczak and Zgliczynski, Commun. Nonlinear Sci.
+    Numer. Simul. 101 (2021) (CAPD): cited as the software used, whose correctness is part of the trust base; no
+    reading of the papers is recorded.
+- Re-search: no.
+
 ### 2026-10-01  Du and Hassard (2001), another attempt at the full text  (session agent; `papers/hh-dynamics/`)
 
 - Tried:
