@@ -525,6 +525,12 @@ def spectrum_on(fam, prec=192):
                 raise ProofFailure(f"eigenvalue enclosure meets disc {i}")
         if not lam.imag > 0:
             raise ProofFailure("Im lambda not certainly positive")
+        # A(g) is real, so conj(lambda*) is an eigenvalue too; its ball conj(lam) must be disjoint from every disc but
+        # D2, so conj(lambda*) lies in D2, which holds exactly one eigenvalue (Lemma G(b)): the spectrum is lambda*,
+        # conj(lambda*) and the 16 eigenvalues of the other discs (review 2026-10-02, GAP 1).
+        for i in range(DIM):
+            if i != jc and not _discs_disjoint((lc.conjugate(), lr), discs[i]):
+                raise ProofFailure(f"conjugate eigenvalue enclosure meets disc {i}")
     return dict(lam=lam, v=v, k=k, others_max_re=maxre, discs=discs, ic=ic, jc=jc)
 
 

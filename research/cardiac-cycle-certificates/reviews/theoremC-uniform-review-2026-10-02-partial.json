@@ -1,0 +1,103 @@
+{
+ "report": null,
+ "confirmed": [
+  {
+   "id": "L1",
+   "lens": "A-newton-z1-uniform",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md line 1122 (Lemma 11.0 proof)",
+   "finding": "The proof of Lemma 11.0 copies Theorem B's formula for the first term of DF(x) - DF(y), written 'i m (y_om delta a + delta_om y_a)'. In branch.py section 4, y is the test vector. In Lemma 11.0, y is the base point, the moving centre. Read with the lemma's own notation, the term depends on the base point, which contradicts the next words, 'does not depend on the centre'. The mathematics is correct: (DF(x;g) - DF(y;g)) v = i m (v_om (x_a - y_a) + (x_om - y_om) v_a) - (Dg(x_a) - Dg(y_a)) v_a, and the linear part does not involve y. But the written proof is ambiguous at exactly the step that carries Lemma B2 over to a moving centre."
+  },
+  {
+   "id": "L2",
+   "lens": "A-newton-z1-uniform",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md lines 1115-1121 (Lemma 11.0 hypothesis)",
+   "finding": "Lemma 11.0 is stated for every y 'whose coefficients lie in the cover's coefficient balls'. The proof needs more than that. It uses Cauchy's estimate on the polydisc about phi_y(theta), together with fourier_eval Lemma 2 for the Taylor coefficients c_alpha(theta), on the strip |Im theta| <= rho2 = 1. Since rho2 > rho0, phi_y must be holomorphic on that wider strip, and a general element of X is not. The hull only has balls for |m| <= K, so the intended class is trigonometric polynomials with modes |m| <= K. xtilde(g) belongs to that class, so the application is sound; only the statement is broader than what is proved."
+  },
+  {
+   "id": "L3",
+   "lens": "A-newton-z1-uniform",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md line 1099 (section 11.0); branch_stability.py lines 1675 and 1515",
+   "finding": "Section 11.0 says 'Z1_point < 1 makes A injective (E.2)', but prove_group_uniform never tests Z1_point < 1. Z1c is only logged. Injectivity still holds: Z1_G dominates Z1_point term by term (B' and B'' are nonnegative), and lemma_11_1 refuses unless Z1G < 1. The lemma text should state this implication, because Lemma 11.1's last sentence, 'A is injective', depends on it."
+  },
+  {
+   "id": "L4",
+   "lens": "A-newton-z1-uniform",
+   "class": "MINOR",
+   "location": "branch_stability.py lines 73, 971, 1366, 1576, 1721",
+   "finding": "Lemma and theorem numbers in the code disagree with LEMMAS-stability.md section 11. In the lemma file, 11.4 is the Hill coefficients, 11.5 the comparison operator and 11.6 the theorem, and Lemma 11.2 has no part (a). A reviewer comparing code with lemmas is pointed to the wrong statement."
+  },
+  {
+   "id": "L5",
+   "lens": "A-newton-z1-uniform",
+   "class": "MINOR",
+   "location": "branch_stability.py line 970; LEMMAS-stability.md lines 1082 and 1298",
+   "finding": "The texts give three different sizes for Z2 in the motivation for the moving-centre step: '500 x 3e-3 > 1' in the code comment, 'about 250 x 3e-3' in the lemma introduction and 'Z2 about 245' in self-review item 2. The logged values agree with the lemma file, not with the code comment. Soundness is not affected."
+  },
+  {
+   "id": "L6",
+   "lens": "A-newton-z1-uniform",
+   "class": "WEAK TEST",
+   "location": "fourier/test_branch_stability.py lines 362-395 (test_group_Z1_path_term); branch_stability.py lines 1585 and 1676 (mutation 'drop_moving_centre')",
+   "finding": "The mutation hook 'drop_moving_centre' is defined but no test uses it. The only check on Lemma 11.2's new term is test_group_Z1_path_term. It compares the certified h B' + h^2 B'' with a floating-point evaluation of the finite x finite block of A_fin (DF(xtilde(g); g) - DF(xbar; g_c)) at the two ends. Three parts of operator_blocks are therefore never compared with an independent value: the finite rows x tail columns part, the tail rows (Abar0 sum |J_n| nu^|n| + Abar0 S tailK + |om_d| Abar1), and B'' on its own. A too-small h^2 B'' cannot be isolated, because the test's comparison is against the sum h B' + h^2 B''."
+  },
+  {
+   "id": "C345-1",
+   "lens": "B-taylor-jets-identify",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md 11.0' (last paragraph: 'These are admissible black boxes for fourier_eval ... for each fixed xi0'); same assertion in 10.6 item 2",
+   "finding": "Lemma 11.0' proves that each Jet coefficient is holomorphic in xi near xi0 and that the ball recurrences enclose the Taylor coefficients. fourier_eval's contract asks for more: the black box must be an inclusion function of a map that is holomorphic in its 54 inputs (z, z1, z2) on an open set U. In practice it must at least give holomorphy in theta of theta -> c_p(theta; xi0) near the strip. The text asserts admissibility but never states the step that gives it. That step is joint holomorphy in (z, z1, z2, xi) on the open set where every intermediate lies in its domain. The xi-Taylor coefficients at xi0 are then holomorphic in (z, z1, z2). The ball domain checks put every input point of the box, and every xi0 in [-h, h], inside that open set. The wording 'real-analytic inputs u(xi)' is also loose: for complex theta the path is complex-valued, and what matters is analyticity in xi."
+  },
+  {
+   "id": "C345-2",
+   "lens": "B-taylor-jets-identify",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md line 1075 (section 11 status paragraph)",
+   "finding": "The status line says an independent in-project reading 'is recorded in reviews/theoremC-uniform-review-2026-10-02.md'. No such file exists in the working tree. The lemma file therefore cites a recorded reading that does not exist on disk. This is not an outside-review claim, but the house rules require that text not claim readings that have not taken place."
+  },
+  {
+   "id": "C345-3",
+   "lens": "B-taylor-jets-identify",
+   "class": "WEAK TEST",
+   "location": "fourier/test_branch_stability.py test_jets_against_hess_and_differences (lines 456-503)",
+   "finding": "The fourth-order coefficient c_4 carries the whole integral remainder of Lemma 11.1' (the h^4 Y4 term). It is never compared with an independently computed value. The test checks orders 1 and 2 of G against branch.Hess on an affine path, order 3 of G and order 2 of Df by central differences, and for order 4 only that a ball base point contains point base points. That check tests inclusion monotonicity: a recurrence that is wrong at k = 4 in the same way at every base point would still pass. Every comparison is also made at one real theta (0.3) and compares real midparts only. The complex-theta evaluations used by the strip covers are never exercised."
+  },
+  {
+   "id": "C345-4",
+   "lens": "B-taylor-jets-identify",
+   "class": "WEAK TEST",
+   "location": "fourier/test_branch_stability.py test_group_negative_identification (lines 408-418); branch_stability.identify / _poly_norm",
+   "finding": "Lemma 11.3 has only one test: a negative control that divides every r_hi by 16. That control shows the comparison is executed. Nothing checks that lhs actually dominates the true sup over g in P_i of ||xtilde(g) - xbar_i||_{eta(i)}. A _poly_norm that underestimates would pass every test, for example one that drops the d^2 term, collapses the d-ball Dp to the piece centre, or omits the nu^|m| weight. The divide-by-16 control would still fire, because the logged lhs / r_hi lies between about 0.20 and 0.26. test_group_float_orbit_inside_ball checks Lemma 11.1 (the orbit lies near the path), not Lemma 11.3."
+  },
+  {
+   "id": "C345-5",
+   "lens": "B-taylor-jets-identify",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md 11.0' ('enclosed for every xi0 in D by the balls built with D and D2 (xi0^2 lies in D2)'); branch_stability.py _path_coeffs docstring ('D2 contains the squares of the points of D'), Jet docstring ('at EVERY point of that ball'), _dball and _sq_ball (lines 202-206, 1217-1223)",
+   "finding": "D = _dball(h) is acb(arb(0, upper(h))). Its radius is stored mag-rounded upward, so it can slightly exceed h. D2 = _sq_ball(h) is built separately as [0, upper(h^2)]. So xi0^2 in D2 is guaranteed only for |xi0| <= h, not for every point of D, and the stated enclosure 'for every xi0 in D' is not guaranteed at the extra rim of D. Every use needs only xi0 in [-h, h]: c_4 and C2 over the box, path_ball, and the Taylor and integral remainders with s d in [-h, h]. Section 11.0 states the correct sets (D contains [-h, h], D2 contains [0, h^2]). Soundness is not affected."
+  },
+  {
+   "id": "C345-6",
+   "lens": "B-taylor-jets-identify",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md 11.1' (lines 1162-1180) and 11.3 (lines 1208-1220)",
+   "finding": "Three small omissions. (a) 11.1' leaves out the exchange of the s-integral with the Fourier integral (Fubini for a continuous integrand on a compact set). 10.1' and 10.6 item 2 state it, and 11.1' relies on it implicitly. (b) 11.1' says real analyticity on [-h, h] is 'certified by the strip covers below' without saying that only the box covers (G_box, J_box, with base ball D) certify the domain on strip x [-h, h]; the point covers certify xi = 0 only. (c) The proof of 11.3 says 'for g in P_i', but x0(g) is defined only for g in I. This needs P_i contained in I. That holds because validate_logs (called by group_data through _logs) requires both piece endpoints to increase strictly, but the lemma does not say so."
+  },
+  {
+   "id": "F1",
+   "lens": "C-bookkeeping-record",
+   "class": "GAP",
+   "location": "fourier/branch_stability.py:2024 (collect calls br.validate_logs(reglue=False) on the live run log) and :2122-2124 (theorem_text: 'Conditional on Theorem B (results/fourier-branch-gks.json: for every G_Ks in each listed piece ...)'); results/fourier-branch-gks.json",
+   "finding": "The record would claim stability on pieces that the Theorem B record it cites does not list. collect() takes its pieces from the live run log. That log is still being extended, and collect does not re-derive the gluing. Nothing checks that a covered piece is listed in results/fourier-branch-gks.json with the same label, range, centre digest and r_uniqueness. The record also stores no hash of results/fourier-branch-gks.json. Group units G17 to G21 cover 60 pieces that are all beyond that record. Their identification (Lemma 11.3) uses r_uniqueness values from pieces that no collected Theorem B record contains. The per-g mathematics is still conditional on those logged piece certificates, but the stated condition is wrong."
+  },
+  {
+   "id": "F2",
+   "lens": "C-bookkeeping-record",
+   "class": "GAP",
+   "location": "program_sha256=br.sha256(os.path.abspath(__file__)) inside prove_piece_uniform in commits 4f6a88c (line 862), 65ed51d (868) and c38e1ac (919). Current code takes the hash at import (branch_stability.py:123-126). collect: branch_stability.py:2065-2068 and 2103. Log fourier/data/branch/stability_uniform_K12.jsonl lines 1-3, 41 and 42.",
+   "finding": "The program_sha256 of each hashed piece unit was taken when the record was written, not from the code that computed it. Workers fork from the parent's import-time code, so a file edited during a run gets hashed instead of the code that ran. One record carries a provably wrong hash and one carries a hash that matches no commit. Three units carry no hash or settings at all. collect only counts the hashes (programs_of_units_used): it does not map them to commits or flag unknown ones, and sources_sha256 hashes only the current files. So 5 of the 60 piece units used cannot be tied to reviewable code. I found no soundness defect. In the committed versions, the piece-path diffs (be4e1e3 to 4f6a88c to 65ed51d to HEAD) change only the strip-cover parameters and replace the exact W3 and C2 column sums with larger norm-product bounds. The dependencies (branch.py, stability.py, existence.py, fourier_eval.py, arbmodel.py, centre.py) are unchanged since 4f6a88c, and the working tree is clean for them. Between be4e1e3 and 4f6a88c, branch.py changed only in its docstring and in collect text."
+  }
+ ]
+}
