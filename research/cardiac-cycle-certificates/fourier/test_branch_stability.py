@@ -61,7 +61,7 @@ def _float_orbit(g, K=16):
     return trk.om, trk.a.copy()
 
 
-def _hill_float(om, a, g, e, Ke=16, NS=512):
+def _hill_float(om, a, g, e, Ke, NS=512):
     sf = 2.0 ** np.array(e, dtype=float)
     Z = ct.phi_samples(a, NS)
     J = br.jac_f(Z, float(g))
@@ -127,7 +127,7 @@ def _endpoint_data():
         d = float(Fraction(gend) - gc)
         omf, af = _float_orbit(gend)
         dist = _dist_eta(omf, af, om + d * om1, abar + d * a1, eta)
-        H = _hill_float(omf, af, gend, e)
+        H = _hill_float(omf, af, gend, e, p["certificate"]["K_e"])
         out.append(dict(g=gend, d=d, dist=dist, H=H, om=omf, a=af))
     _C["ends"] = out
     return out

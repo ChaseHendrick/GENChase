@@ -1485,6 +1485,70 @@ def _poly_norm(cs, D, ETA, nu, K):
     return best
 
 
+def lemma_11_1(Yparts, hU, ETA, Z1G, Z2, r_star, margin, mut=()):
+    """Lemma 11.1: Y' = max_c (sum_k h^k Y_k,c) / eta_c from the per-component parts Y_0 (= Y0p), ..., Y_4, and an exact
+    rho with rho <= r_*, kappa = Z1_Gamma + Z2 rho < 1 and Y' <= (1 - kappa) rho. Returns (Y', rho, kappa) or raises
+    ProofFailure. mut (tests only): 'drop_third_order' omits h^3 Y_3 + h^4 Y_4."""
+    Yk = list(Yparts)
+    if "drop_third_order" in mut:
+        Yk[3] = Yk[4] = [arb(0)] * (DIM + 1)
+    Yc = [up(sum((hU ** k * Yk[k][c] for k in range(1, 5)), Yk[0][c])) for c in range(DIM + 1)]
+    Yp = arb(0)
+    for c in range(DIM + 1):
+        Yp = amax(Yp, up(Yc[c] / ETA[c]))
+    if not Z1G < 1:
+        raise ProofFailure(f"Z1 along the path = {float(Z1G):.4f} is not < 1 (Lemma 11.1)")
+    rho_x = arb(float(up(Yp / (1 - Z1G))) * (1 + float(Fraction(margin))) * 1.0000001)
+    for _ in range(8):
+        kappa = up(Z1G + Z2 * rho_x)
+        if kappa < 1 and Yp <= (1 - kappa) * rho_x:
+            break
+        rho_x = arb(float(rho_x) * 1.5)
+    else:
+        raise ProofFailure("Lemma 11.1: no admissible rho")
+    kappa = up(Z1G + Z2 * rho_x)
+    if not (kappa < 1 and Yp <= (1 - kappa) * rho_x):
+        raise ProofFailure("Lemma 11.1 inequality not certified")
+    if not rho_x <= r_star:
+        raise ProofFailure(f"rho = {float(rho_x):.3e} > r_* = {float(r_star):.3e} (Z2 not valid there)")
+    return Yp, rho_x, kappa
+
+
+def identify(plist, centres, crec, gc, path, ETA, rho_x, nu, K, r_hi_scale=None):
+    """Lemma 11.3 for every piece of the group: sup_{g in P_i} ||xtilde(g) - xbar_i||_{eta(i)} + rho max_c eta_c / eta_c(i)
+    <= r_hi(i), the sup bounded by evaluating the path's coefficients with d an Arb ball containing the piece's d range
+    (the union of the balls of its two exact ends). Returns the per-piece records or raises ProofFailure. r_hi_scale
+    (tests only) multiplies every r_hi."""
+    om, A, om1, A1, om2, A2 = path
+    out = []
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        for r in plist:
+            oi = br.obj_from_record(r, centres[br._dstr(Fraction(r["centre_g"]))])
+            if r["settings"]["rho0"] != crec["settings"]["rho0"]:
+                raise ProofFailure("different nu")
+            r_hi = oi["r_hi"] if r_hi_scale is None else oi["r_hi"] * r_hi_scale
+            dlo, dhi = Fraction(r["g_lo"]) - gc, Fraction(r["g_hi"]) - gc
+            Dp = acb(arb(fmpq(dlo.numerator, dlo.denominator)).union(arb(fmpq(dhi.numerator, dhi.denominator))))
+            cs = ((om - oi["om_bar"], om1, om2 / 2),
+                  [([A[i][t] - oi["A"][i][t] for t in range(2 * K + 1)], A1[i], [v / 2 for v in A2[i]])
+                   for i in range(DIM)])
+            dist = _poly_norm(cs, Dp, oi["ETA"], nu, K)
+            conv = arb(0)
+            for ea, eb in zip(ETA, oi["ETA"]):
+                conv = amax(conv, up(ea / eb))
+            lhs = up(dist + rho_x * conv)
+            ok = bool(lhs <= r_hi)
+            out.append(dict(label=r["label"], lhs=float(lhs), r_uniqueness=float(r_hi), ok=ok))
+            if not ok:
+                raise ProofFailure(f"identification with piece {r['label']} fails (uniqueness): "
+                                   f"{float(lhs):.3e} > r_hi = {float(r_hi):.3e}")
+    finally:
+        ctx.prec = old
+    return out
+
+
 GROUP_DEFAULTS = dict(
     r_star="1/1048576",       # radius of this unit's Z2 ball (2^-20); rho must be <= r_*; R_i = R_factor eta_i r_*
     R_factor=256,
@@ -1620,28 +1684,8 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         Y2 = _y_parts(bl, cp_[1], Sp_[1], lin[2], arb(1))
         Y3 = _y_parts(bl, cp_[2], Sp_[2], lin[3], arb(1))
         Y4 = _y_parts(bl, eG_box.c, eG_box.S, lin[4], arb(1))                       # c4 over the xi box
-        if "drop_third_order" in mut:
-            Y3 = Y4 = [arb(0)] * (DIM + 1)
         Y0p = bl["Y0p"]
-        Yc = [up(Y0p[c] + hU * Y1[c] + hU ** 2 * Y2[c] + hU ** 3 * Y3[c] + hU ** 4 * Y4[c]) for c in range(DIM + 1)]
-        Yp = arb(0)
-        for c in range(DIM + 1):
-            Yp = amax(Yp, up(Yc[c] / ETA[c]))
-        if not Z1G < 1:
-            raise ProofFailure(f"Z1 along the path = {float(Z1G):.4f} is not < 1 (Lemma 11.1)")
-        rho_x = arb(float(up(Yp / (1 - Z1G))) * (1 + float(Fraction(st["rho_margin"]))) * 1.0000001)
-        for _ in range(8):
-            kappa = up(Z1G + Z2 * rho_x)
-            if kappa < 1 and Yp <= (1 - kappa) * rho_x:
-                break
-            rho_x = arb(float(rho_x) * 1.5)
-        else:
-            raise ProofFailure("Lemma 11.1: no admissible rho")
-        kappa = up(Z1G + Z2 * rho_x)
-        if not (kappa < 1 and Yp <= (1 - kappa) * rho_x):
-            raise ProofFailure("Lemma 11.1 inequality not certified")
-        if not rho_x <= r_star:
-            raise ProofFailure(f"rho = {float(rho_x):.3e} > r_* = {float(r_star):.3e} (Z2 not valid there)")
+        Yp, rho_x, kappa = lemma_11_1([Y0p, Y1, Y2, Y3, Y4], hU, ETA, Z1G, Z2, r_star, st["rho_margin"], mut)
     finally:
         ctx.prec = old
     mark("Lemma 11.1")
@@ -1653,32 +1697,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         f"{max(float(hU ** 4 * Y4[c] / ETA[c]) for c in range(DIM + 1)):.2e}), rho = {float(rho_x):.3e}, "
         f"kappa = {float(kappa):.4f}")
     # 7. identification with the branch, piece by piece (x*(g) of Theorem B is the zero found, for g in each piece)
-    ident = []
-    old = ctx.prec
-    ctx.prec = 256
-    try:
-        nu = bl["nu"]
-        for r in plist:
-            oi = br.obj_from_record(r, centres[br._dstr(Fraction(r["centre_g"]))])
-            if r["settings"]["rho0"] != crec["settings"]["rho0"]:
-                raise ProofFailure("different nu")
-            dlo, dhi = Fraction(r["g_lo"]) - gc, Fraction(r["g_hi"]) - gc
-            mid_, rad_ = (dlo + dhi) / 2, (dhi - dlo) / 2
-            Dp = acb(arb(fmpq(mid_.numerator, mid_.denominator), arb(fmpq(rad_.numerator, rad_.denominator)).upper()))
-            cs = ((om - oi["om_bar"], om1, om2 / 2),
-                  [([A[i][t] - oi["A"][i][t] for t in range(2 * K + 1)], A1[i], [v / 2 for v in A2[i]])
-                   for i in range(DIM)])
-            dist = _poly_norm(cs, Dp, oi["ETA"], nu, K)
-            conv = arb(0)
-            for ea, eb in zip(ETA, oi["ETA"]):
-                conv = amax(conv, up(ea / eb))
-            lhs = up(dist + rho_x * conv)
-            ok = bool(lhs <= oi["r_hi"])
-            ident.append(dict(label=r["label"], lhs=float(lhs), r_uniqueness=float(oi["r_hi"]), ok=ok))
-            if not ok:
-                raise ProofFailure(f"identification with piece {r['label']} fails: {float(lhs):.3e} > r_hi")
-    finally:
-        ctx.prec = old
+    ident = identify(plist, centres, crec, gc, (om, A, om1, A1, om2, A2), ETA, rho_x, bl["nu"], K)
     mark("identification")
     # 8. Lemma 11.3 data: eps_W from this unit's Hessian cover, the d^0, d^1, d^2 Hill coefficients
     t = [up(ETA[1 + j] * rho_x) for j in range(DIM)]
@@ -1747,7 +1766,9 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     if controls and controls.get("dump"):
         out["_internals"] = cert.get("internals")
         out["_ctx"] = dict(bl=bl, om=om, A=A, om1=om1, A1=A1, om2=om2, A2=A2, ETA=ETA, U=U, settings=st, grp=grp,
-                           plist=plist, crec=crec, rho_x=rho_x, hF=hF, Z1G=Z1G, Z2=Z2, Yp=Yp, r_star=r_star, hb=hb)
+                           plist=plist, crec=crec, rho_x=rho_x, hF=hF, hU=hU, Z1c=Z1c, Z1G=Z1G, Z2=Z2, Yp=Yp,
+                           r_star=r_star, hb=hb, Yparts=[bl["Y0p"], Y1, Y2, Y3, Y4], Bp=Bp, Bpp=Bpp, centres=centres,
+                           gc=gc)
     if mut or _widen != 1:
         out["MUTATED"] = sorted(mut) + ([f"widen x{_widen}"] if _widen != 1 else [])
     return out
