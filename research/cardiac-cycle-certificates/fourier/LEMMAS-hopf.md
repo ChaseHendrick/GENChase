@@ -354,6 +354,39 @@ Let pieces `a = [e0, e1]` and `b = [e1, e2]` share the end point `e1`, with zero
 Arb, `hopf.glue`), then `x*_a(e1) = x*_b(e1)`. *Proof.* `||y||_{eta(b)} <= max_c (eta_c(a)/eta_c(b)) ||y||_{eta(a)}`;
 the triangle inequality puts `x*_a(e1)` in `b`'s uniqueness ball, and it is a zero of `F(.; e1)`. QED.
 
+### Proposition B-piece (computer-assisted; what one logged piece proves)
+
+A line of `fourier/data/hopf/pieces.jsonl` carries an interval `[e_lo, e_hi]` (`0 <= e_lo < e_hi`, exact rationals),
+an exact centre line `xbar(xi) = xbar_c + (xi - e_c) tbar` (`centre`, digest `result.centre_sha256`), exact dyadic
+weights `eta` (38: `omega`, `g`, `c_0..c_17`, `w_0..w_17`), the cover it was proved with (`cover`, logged in
+`covers.jsonl` with its family `T`, `R`, `G_R`, `rho2` and centres), and the exact numbers `Y0`, `Z1`, `Z2`, `r_*`,
+`r_lo = r_existence < r_hi = r_uniqueness <= r_*` with `p(r_lo) < 0`, `p(r_hi) < 0`, `Z1 + Z2 r_hi < 1`. By Lemmas B2,
+B3 and the radii-polynomial theorem (B2), for **every** `eps in [e_lo, e_hi]` (not only sampled values):
+
+1. `F(.; eps)` has exactly one zero `x*(eps) = (omega*, g*, c*, w*)` in the closed ball `B_{r_hi}(xbar(eps))` of
+   `X = C x C x C^18 x (l^1_{nu,0})^18`, `nu = e^{1/8}`, weighted norm with `eta`; it lies in `B_{r_lo}(xbar(eps))`.
+   This is local uniqueness in the blown-up unknowns: among cycles whose first V harmonic (scaled variables, phase
+   `Im a_{1,V} = 0`) is `eps/2`, written as `c + eps w`, with `(omega, g, c, w)` in that ball.
+2. `x*(eps)` is real (proof of Theorem B), and for `eps > 0` Lemma B1(a) turns it into a periodic orbit of the cell at
+   `G_Ks = g*(eps)`, `z(t) = c*(eps) + eps w*(eps)(omega*(eps) t)`, of minimal period `2 pi / omega*(eps)`.
+3. *How `eps` relates to `G_Ks`.* `eps` is the parameter; `G_Ks` is an unknown. `eps = 2 a_{1,V}` where `a_{1,V}` is
+   the first Fourier coefficient of the scaled `V` component of the orbit in the phase with `Im a_{1,V} = 0`: `eps`
+   is the amplitude of the first harmonic of `z_V = V / sigma_V`, `sigma_V = 2^-2` mV (`model/scales.txt`), so the
+   first harmonic of `V` itself has amplitude `eps / 4` mV (the whole `V` range of the orbit is about `0.116` mV at
+   `G_Ks = 0.0275`, branch.py section 8b). The value of `G_Ks` at which this orbit exists
+   is enclosed: `|g*(eps) - gbar(eps)| <= eta_g r_lo`, and over the piece `g*(eps) in [g_lo, g_hi]` (the record's
+   `g` enclosure, `gbar_c +- (delta |tbar_g| + eta_g r_lo)`). Likewise `omega*` and the period `T = 2 pi / omega*`
+   (`omega`, `T_ms`). Numerically (midpoints of the enclosures, not a bound) `g_H - g*(eps)` is about `7.7e-3 eps^2`
+   on the pieces so far, the square-root law of the Hopf bifurcation.
+4. Nothing is claimed about orbits outside the ball, about stability (Part S), or about a G_Ks value directly: a given
+   `G_Ks` is reached through `eps` (Corollary B(c)), and whether `g*` is monotone in `eps` is not certified.
+
+Every piece is re-glued to its predecessor in Arb by `collect` (Lemma B4). Pieces 0 to 30 were made before the program
+logged its own SHA-256 (`code_sha256`, logged per piece from piece 31 on); the program used for them differs from the
+current one only in the driver `run` (which pieces to try and in what order) and in bookkeeping, and
+`fourier/test_hopf.py` re-proves pieces 0, 13, 30 and the last piece bit for bit (Y0, Z1, Z2, r_existence,
+r_uniqueness as exact dyadics) with the current program and covers rebuilt from the logged centres.
+
 ### Theorem B (computer-assisted; `hopf.run`, records `fourier/data/hopf/pieces.jsonl`, `covers.jsonl`)
 
 For every `eps in [0, eps0]` (`eps0` and the pieces in `results/fourier-hopf.json`) there is a zero
@@ -383,20 +416,28 @@ piecewise definition single valued, hence continuous on `[0, eps0]`. Lemma B1(a)
 ### Corollary B (computer-assisted and cited; the branch is born at the Hopf point)
 
 (a) `x*(0) = (omega_H, g_H, x_e(g_H), w_H)`: the zero at `eps = 0` is the Hopf point of Theorem A. *Proof.* By Lemma
-B1(b), `c*(0)` is an equilibrium at `g*(0)` and `i omega*(0)` an eigenvalue of its Jacobian. The program checks that
-the enclosure of `g*(0)` lies in `W` and that the enclosure of `c*(0)` lies in the polydisc in which Lemma K gives the
-unique equilibrium `x_e(g)` for every `g` of that enclosure (`collect`, `identification_at_eps0`). So `c*(0) =
-x_e(g*(0))`, and Theorem A(b) (the only `g in W` with an eigenvalue on the imaginary axis is `g_H`, where the
-eigenvalues on the axis are `+-i omega_H`) gives `g*(0) = g_H`, `omega*(0) = omega_H`.
+B1(b), `c*(0)` is an equilibrium at `g*(0)` and `i omega*(0)` (`omega*(0) > 0` certified) an eigenvalue of its
+Jacobian. `identification_at_eps0` checks, in Arb: the enclosure of `g*(0)`, rounded outward to an interval `J` of
+25-digit decimals, lies in `W` and is covered by adjacent intervals of Theorem A's cover whose polydiscs are recorded;
+Lemma K holds on one polydisc `P` over `J` (centre a float equilibrium at the midpoint of `J`, radii enlarged to
+contain the sets below); the enclosure of `c*(0)` lies in `P`; the real segment of every recorded polydisc of an
+interval meeting `J` lies in `P`. Then `c*(0)` is the unique equilibrium in `P` at `g*(0)`, which is `x_e(g*(0))`
+(Theorem A(c)), and Theorem A(d) (in `J` only `g_H` has an eigenvalue on the axis, and there the eigenvalue with
+positive imaginary part is `i omega_H`) gives `g*(0) = g_H`, `omega*(0) = omega_H`.
 
 (b) For small `eps > 0` the orbits of Theorem B are the Hopf cycles: as `eps -> 0`, `g*(eps) -> g_H` and the orbit
 `c*(eps) + eps w*(eps)(.)` tends to `x_e(g_H)` uniformly (continuity), so for `eps` small it lies in the neighbourhood
-`U` of Corollary A with `|g*(eps) - g_H| < eta`; by Corollary A it is the unique periodic orbit in `U`, it is orbitally
-asymptotically stable, and `g*(eps) < g_H` (no periodic orbit in `U` for `g >= g_H`). The quantitative enclosures of
-Theorem B give `g*(eps) < g_H` directly wherever the `g` enclosure of a piece lies below `G_H` (record: the first such
-`eps`).
+`U` of Corollary A with `|g*(eps) - g_H| < eta_H`; by Corollary A it is the unique periodic orbit in `U`, it is
+orbitally asymptotically stable, and `g*(eps) < g_H` (no periodic orbit in `U` for `g >= g_H`). "Small" is not
+quantified. The quantitative enclosures of Theorem B give `g*(eps) < g_H` directly on every piece whose `g` enclosure
+lies below `G_H` (record: `first_eps_with_g_certified_below_gH`, and that every later piece is below too); for
+`eps` between the unquantified small range and that value, `g*(eps) < g_H` is not certified.
 
----------------------------------------------------------------------------------------------------------------------
+(c) *Every G_Ks value of the bridge.* Let `eps_end` be the right end of the last piece and `g_end+` the upper end of
+the enclosure of `g*(eps_end)` (record: `g_star_at_eps_end`, `bridge_g_covered`). `g*` is continuous on
+`[0, eps_end]` with `g*(0) = g_H` (a), so by the intermediate value theorem every `g in [g_end+, g_H)` equals
+`g*(eps)` for some `eps in (0, eps_end]` (`eps != 0` since `g != g_H`), and the cell has at that `G_Ks` the periodic
+orbit of Theorem B at that `eps`.
 
 ## Part C. Gluing to the certified G_Ks branch (`hopf.glue_gks`)
 
