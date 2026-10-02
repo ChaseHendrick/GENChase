@@ -108,6 +108,10 @@ DATA = br.DATA
 LOG = os.path.join(DATA, "stability_uniform_K{K}.jsonl")
 up, lo, amax, bound_rec = ex.up, ex.lo, ex.amax, ex.bound_rec
 QUIET = lambda *a, **k: None  # noqa: E731
+# the hash of this file AS IMPORTED (worker processes are forked after import), so that a record never carries the hash
+# of a later edit of the file than the code that computed it
+with open(os.path.abspath(__file__), "rb") as _fh:
+    PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
 
 
 class ProofFailure(RuntimeError):
@@ -918,7 +922,7 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     out = dict(
         type="unit", label=label, g=[rec["g_lo"], rec["g_hi"]], g_centre=rec["centre_g"],
         centre_sha256=rec["centre_sha256"], uniform=True, ok=True, settings=st,
-        program_sha256=br.sha256(os.path.abspath(__file__)), threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(theorem_B_bounds_reproduced=same, Z1=asm["Z1"], Z2_this_cover=asm["Z2"],
@@ -1328,12 +1332,14 @@ def group_data(gid, K=12):
 
 
 # -- Lemma 11.2: the moving-centre Z1 -----------------------------------------------------------------------------
-def moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, h):
-    """Block bounds B'[c][c'] (exact upper bounds) with ||A D'(xi)||_block <= B' for every xi in [-h, h], where
-    D'(xi) = d/dxi DF(xtilde(xi); g_c + xi): the omega column i m (a1 + xi a2)_m, the diagonal i m (om1 + xi om2) and
-    the convolution with -J1(theta; xi), J1(theta; xi) = d/dxi Df(phitilde(theta; xi); g_c + xi) (enclosed by J1box for
-    |n| <= K', majorant SJ1box). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin D'_fin|, finite rows x
-    tail columns (strip majorant), tail rows Abar0 sum_n |J1_n| nu^|n| + Abar0 S tailK + |om1 + xi om2| Abar1."""
+def operator_blocks(bl, Jm, SJm, om_d, Acol):
+    """Block bounds B[c][c'] (exact upper bounds) of ||A E||_block for every operator E of the form
+    (E y)_ph = 0, (E y)_m = i m om_d y_{a,m} + i m Acol_m y_om - [Jm * y_a]_m, with om_d a real ball, Acol coefficient
+    balls with modes |m| <= K, and Jm a convolution whose coefficients lie in the balls Jm[n] for |n| <= K' and obey
+    |Jm_n| <= SJm e^{-rho |n|} for every n (Lemma 11.2(a): E = D'(0) with (J1pt, om_1, abar_1), and E = E2 with
+    ([C2box], om_2 / 2, abar_2 / 2)). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin E_fin|, finite
+    rows x tail columns (convolution only; strip majorant), tail rows Abar0 sum_n |Jm_n| nu^|n| + Abar0 SJm tailK +
+    |om_d| Abar1 (Acol has no entries beyond K)."""
     st = bl["settings"]
     K, Kp = bl["K"], bl["_Kp"]
     lay = ct.Layout(K)
@@ -1341,16 +1347,16 @@ def moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, h):
     PM, Pg = int(st["prec_mat"]), int(st["prec_g"])
     nupow, tailK, Afin, Abar0, Abar1 = bl["_nupow"], bl["_tailK"], bl["_Afin"], bl["Abar0"], bl["Abar1"]
     rho = bl["rho"]
+    J1box, SJ1box = Jm, SJm
     old = ctx.prec
     ctx.prec = PM
     try:
-        D = _dball(h)
-        om1x = om1 + D * om2                                   # om1 + xi om2, every xi in [-h, h]
+        om1x = om_d
         Dfin = acb_mat(n, n)
         for i in range(DIM):
             for m in range(-K, K + 1):
                 r = lay.idx(i, m)
-                Dfin[r, 0] = acb(0, m) * (A1[i][m + K] + D * A2[i][m + K])
+                Dfin[r, 0] = acb(0, m) * Acol[i][m + K]
                 for k in range(DIM):
                     base = 1 + k * lay.L + K
                     for m2 in range(-K, K + 1):
@@ -1421,13 +1427,13 @@ def moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, h):
         ctx.prec = old
 
 
-def _z1_rows(B1, Bp, h, ETA):
-    """max_c (1/eta_c) sum_c' eta_c' (B1_cc' + h B'_cc') (B' = None: B1 alone)."""
+def _z1_rows(B1, Bp, Bpp, h, ETA):
+    """max_c (1/eta_c) sum_c' eta_c' (B1_cc' + h B'_cc' + h^2 B''_cc') (B' = B'' = None: B1 alone)."""
     best = arb(0)
     for c in range(DIM + 1):
         s = arb(0)
         for cp in range(DIM + 1):
-            s += ETA[cp] * (B1[c][cp] + (h * Bp[c][cp] if Bp is not None else 0))
+            s += ETA[cp] * (B1[c][cp] + ((h * Bp[c][cp] + h * h * Bpp[c][cp]) if Bp is not None else 0))
         best = amax(best, up(s / ETA[c]))
     return best
 
@@ -1532,8 +1538,8 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     Phi = fe.TrigPoly([row[:] for row in A] + [row[:] for row in A1] + [row[:] for row in A2])
     prm53, prmG, prmJ = (br.params_for(gc, gc, p) for p in (53, Pg, PJ))
     skw = dict(nx=int(st["strip_nx_new"]), rtol=float(st["strip_rtol_new"]), max_evals=int(st["strip_max_evals"]))
-    fG_pt = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, D0, D0, 2, (1, 2), pc)  # noqa: E731
-    fG_box = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, Dh, Dh2, 3, (3,), pc)  # noqa: E731
+    fG_pt = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, D0, D0, 3, (1, 2, 3), pc)  # noqa: E731
+    fG_box = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, Dh, Dh2, 4, (4,), pc)  # noqa: E731
     fJ_pt = lambda z, pr=prm53, pc=53: djet_flat(z, pr, D0, D0, 1, (1,), pc)  # noqa: E731
     fJ_box = lambda z, pr=prm53, pc=53: djet_flat(z, pr, Dh, Dh2, 2, (1, 2), pc)  # noqa: E731
     sG_pt = fe.strip_sup(fG_pt, Phi, rho, **skw)
@@ -1570,9 +1576,10 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     old = ctx.prec
     ctx.prec = int(bst["prec_g"])
     try:
-        Bp = moving_centre_blocks(bl, J1box, SJ1box, om1, A1, om2, A2, hF)
-        Z1c = _z1_rows(bl["B1"], None, hU, ETA)
-        Z1G = Z1c if "drop_moving_centre" in mut else _z1_rows(bl["B1"], Bp, hU, ETA)
+        Bp = operator_blocks(bl, J1pt, SJ1, acb(om1), A1)                          # D'(0)
+        Bpp = operator_blocks(bl, C2box, SC2, acb(om2) / 2, [[v / 2 for v in row] for row in A2])   # E2 (ball)
+        Z1c = _z1_rows(bl["B1"], None, None, hU, ETA)
+        Z1G = Z1c if "drop_moving_centre" in mut else _z1_rows(bl["B1"], Bp, Bpp, hU, ETA)
         Z2, Pfac = _z2(bl, ETA, r_star, hb)
     finally:
         ctx.prec = old
@@ -1582,8 +1589,6 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     ctx.prec = int(bst["prec_g"])
     try:
         om_bar = bl["om_bar"]
-        zero_c = [[acb(0)] * (2 * Kp + 1) for _ in range(DIM)]
-        zero_S = [arb(0)] * DIM
         lin = {1: [], 2: [], 3: [], 4: []}
         for i in range(DIM):
             l1, l2, l3, l4 = [], [], [], []
@@ -1598,14 +1603,12 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
             lin[2].append(l2)
             lin[3].append(l3)
             lin[4].append(l4)
-        c1 = [eG_pt.c[k] for k in range(DIM)]
-        c2 = [eG_pt.c[DIM + k] for k in range(DIM)]
-        S1 = [eG_pt.S[k] for k in range(DIM)]
-        S2 = [eG_pt.S[DIM + k] for k in range(DIM)]
-        Y1 = _y_parts(bl, c1, S1, lin[1], arb(1))
-        Y2 = _y_parts(bl, c2, S2, lin[2], arb(1))
-        Y3 = _y_parts(bl, eG_box.c, eG_box.S, lin[3], arb(1))
-        Y4 = _y_parts(bl, zero_c, zero_S, lin[4], arb(1))
+        cp_ = [[eG_pt.c[q * DIM + k] for k in range(DIM)] for q in range(3)]     # c1, c2, c3 at xi = 0
+        Sp_ = [[eG_pt.S[q * DIM + k] for k in range(DIM)] for q in range(3)]
+        Y1 = _y_parts(bl, cp_[0], Sp_[0], lin[1], arb(1))
+        Y2 = _y_parts(bl, cp_[1], Sp_[1], lin[2], arb(1))
+        Y3 = _y_parts(bl, cp_[2], Sp_[2], lin[3], arb(1))
+        Y4 = _y_parts(bl, eG_box.c, eG_box.S, lin[4], arb(1))                       # c4 over the xi box
         if "drop_third_order" in mut:
             Y3 = Y4 = [arb(0)] * (DIM + 1)
         Y0p = bl["Y0p"]
@@ -1711,7 +1714,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
         pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
         half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
-        program_sha256=br.sha256(os.path.abspath(__file__)), threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(Z1_point=bound_rec(Z1c), Z1_path=bound_rec(Z1G), Z2=bound_rec(Z2), polydisc_P=float(Pfac),

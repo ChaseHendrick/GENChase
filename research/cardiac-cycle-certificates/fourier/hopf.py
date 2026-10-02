@@ -27,7 +27,17 @@ Conclusion (cited theorem, Kuznetsov's Andronov-Hopf theorem as stated in hh-dyn
 l1 < 0 and mu' < 0, for g < g_H near g_H there is a unique small cycle near x_e(g_H), and it is orbitally
 asymptotically stable; for g >= g_H near g_H there is none near x_e(g_H).
 
-Part B (quantitative bridge; LEMMAS-hopf.md, Section B) -- see the docstring above prove_piece.
+Part B (quantitative bridge; LEMMAS-hopf.md, Part B): the blown-up radii polynomial in the amplitude eps, see the
+comment block above class Lay; run() proves pieces [e_lo, e_hi] from eps = 0 upward and glues each to the previous one
+(Lemma B4); identification_at_eps0 shows that the zero at eps = 0 is the Hopf point of Part A (Corollary B(a)).
+
+Part C (gluing; LEMMAS-hopf.md, Part C): point_in_eps_branch (Lemma D) shows that the orbit of a K = 32 point proof
+of branch.py at G_Ks = g_s is the bridge orbit at eps_s = 2 a_{1,V}; branch.point_on_branch shows that it is the G_Ks
+branch orbit at g_s (bridge_checks, on a validated snapshot of the append-only branch logs). gks_point_proofs makes
+such point proofs with branch.py's functions, logged under data/hopf/.
+
+Part S (stability; LEMMAS-hopf.md, Part S): only pointwise (Stage S at the point proofs identified by Lemma D) and,
+qualitatively, for small amplitude (cited Hopf theorem). Not uniform on the bridge.
 """
 import argparse
 import hashlib
@@ -1171,11 +1181,14 @@ class FloatEps:
                       float(tom.real), float(tg.real), [float(v) for v in tc.real], rows(tw, 0j), K)
 
     def from_centre(self, C):
+        """Float vector of an exact centre, padded with zeros (or truncated) to this K (untrusted start for Newton)."""
         K = self.K
         w = np.zeros((DIM, 2 * K), complex)
         for k in range(DIM):
             for t, m in enumerate(self.ms):
-                z = C.w[k][K + m]
+                if abs(m) > C.K:
+                    continue
+                z = C.w[k][C.K + m]
                 w[k, t] = complex(float(z.real.mid()), float(z.imag.mid()))
         return self.pack(float(C.om.mid()), float(C.g.mid()), [float(v.mid()) for v in C.c], w)
 
@@ -2199,12 +2212,16 @@ def _piece_state(rec):
                 r_lo=_hexval(rec["result"]["r_existence"]), r_hi=_hexval(rec["result"]["r_uniqueness"]))
 
 
-def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_stop=None):
+def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_stop=None, K=None, M=None):
     """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop, the time budget, or (g_stop) a piece whose g
     enclosure lies below g_stop; resumes from data/pieces.jsonl. Every piece is glued to the previous one (Lemma B4)
     before it is logged."""
     t_start = time.time()
-    rs_ = RUN_SETTINGS
+    rs_ = dict(RUN_SETTINGS)
+    if K is not None:                      # a larger Galerkin size for new pieces (gluing compares any two K)
+        rs_["K"] = int(K)
+    if M is not None:
+        rs_["M"] = int(M)
     K = int(rs_["K"])
     st = dict(M=int(rs_["M"]), nsub_xi=int(rs_["nsub_xi"]), nsub_s=int(rs_["nsub_s"]), rho0=rs_["rho0"])
     nu_f = math.exp(float(Fraction(rs_["rho0"])))
@@ -2602,11 +2619,62 @@ def gks_branch_snapshot(log=print, tmpdir=None):
     return recs, centres, info
 
 
-def gks_points():
-    """The branch.py point proofs (K = 32, Stage S) and their centres: (list of point records, centres by g)."""
-    pts = [r for r in _read_jsonl(os.path.join(BRANCH_DIR, "points_K12.jsonl"))
-           if r.get("type") == "point" and r.get("ok_existence") and r.get("rec")]
-    cents = {r["g"]: r for r in _read_jsonl(os.path.join(BRANCH_DIR, "points_centres_K32.jsonl"))}
+def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100000"):
+    """branch.py's pointwise proof (its Theorem B1 with g_lo = g_hi = g_s, K = 32, weights 1, POINT_SETTINGS) and,
+    if asked, Stage S (branch.stability_point), at the exact decimals gs: the computation of branch.stability_points,
+    logged to data/hopf/gks_points.jsonl and data/hopf/gks_points_centres_K32.jsonl (the branch logs are not touched).
+    The float continuation from Stage E's centre goes in steps of at most `step` (untrusted)."""
+    import branch as br
+    ppath = os.path.join(data, "gks_points.jsonl")
+    cpath = os.path.join(data, "gks_points_centres_K32.jsonl")
+    trk = br.FloatTrack(K)
+    out = []
+    for g in sorted(Fraction(x) for x in gs):
+        t0 = time.time()
+        while trk.g + Fraction(step) < g:
+            trk.at(trk.g + Fraction(step))
+        trk.at(g)
+        omb, A, hist = br.refine_centre(trk.om, trk.a, br._dstr(g), prec=256, log=log)
+        _append(cpath, br.centre_record(br._dstr(g), omb, A, hist))
+        fp = br.FloatPoint(float(omb), br.centre_float(A), float(g), need_hess=False)
+        lead = fp.leading_nontrivial()[0]
+        delta_s = f"{0.85 * abs(lead):.3e}"
+        hb = br.HessBound([(omb, A)], br._dstr(g), br._dstr(g), ["1/4096"] * DIM, "1", None, log=log)
+        rec = dict(type="point", g=br._dstr(g), K=K, delta_requested=delta_s, float_leading_exponent=lead,
+                   centre_refinement=hist, made_by="hopf.gks_point_proofs (branch.py functions)",
+                   code_sha256=CODE_SHA256)
+        try:
+            pp = br.prove_piece(omb, A, br._dstr(g), br._dstr(g), eta=["1"] * (DIM + 1), r_star="1/1099511627776",
+                                hess=hb, log=log, settings=br.POINT_SETTINGS)
+            rec.update(ok_existence=True, rec=br._public(pp))
+            if stability:
+                st = br.stability_point(pp, delta_s, log=log)
+                rec.update(ok=True, stability=st)
+            else:
+                rec.update(ok=False, stability="not run")
+        except Exception as e:  # noqa: BLE001  (recorded as a failure, never as a proof)
+            rec.update(ok=False, why=f"{type(e).__name__}: {e}")
+        rec["wall"] = round(time.time() - t0, 1)
+        _append(ppath, rec)
+        log(f"G_Ks point g = {br._dstr(g)}: existence {rec.get('ok_existence', False)}, Stage S "
+            f"{rec.get('ok') if stability else 'not run'} ({rec['wall']} s)")
+        out.append(rec)
+    return out
+
+
+def gks_points(data=DATA):
+    """The point proofs (K = 32) of branch.py's log and of gks_point_proofs, with their centres:
+    (list of point records with a 'source' field, centres by (source, g))."""
+    pts, cents = [], {}
+    for src, pf, cf in (("branch", os.path.join(BRANCH_DIR, "points_K12.jsonl"),
+                         os.path.join(BRANCH_DIR, "points_centres_K32.jsonl")),
+                        ("hopf", os.path.join(data, "gks_points.jsonl"),
+                         os.path.join(data, "gks_points_centres_K32.jsonl"))):
+        for r in _read_jsonl(pf):
+            if r.get("type") == "point" and r.get("ok_existence") and r.get("rec"):
+                pts.append(dict(r, source=src))
+        for r in _read_jsonl(cf):
+            cents[(src, r["g"])] = r
     return pts, cents
 
 
@@ -2634,18 +2702,22 @@ def bridge_checks(log=print, data=DATA, prec=256):
     with am.precision(prec):
         nu_eps = _arb_q(pieces[0]["settings"]["rho0"]).exp()
     recs, centres, info = gks_branch_snapshot(log=log)
-    pts, cents = gks_points()
+    pts, cents = gks_points(data)
+    shas = {}
+    for pth in (os.path.join(BRANCH_DIR, "points_K12.jsonl"), os.path.join(BRANCH_DIR, "points_centres_K32.jsonl"),
+                os.path.join(data, "gks_points.jsonl"), os.path.join(data, "gks_points_centres_K32.jsonl")):
+        if os.path.exists(pth):
+            shas[os.path.relpath(pth, ROOT)] = _sha(pth)
     out = dict(gks_branch_snapshot=info, points=[], eps_branch=dict(n_pieces=len(pieces), eps_end=pieces[-1]["e_hi"]),
-               points_log_sha256=_sha(os.path.join(BRANCH_DIR, "points_K12.jsonl")),
-               point_centres_sha256=_sha(os.path.join(BRANCH_DIR, "points_centres_K32.jsonl")))
+               point_logs_sha256=shas)
     for pt in sorted(pts, key=lambda r: Fraction(r["g"])):
-        cent = cents.get(pt["g"])
+        cent = cents.get((pt["source"], pt["g"]))
         if cent is None:
             continue
         d = point_in_eps_branch(pt["rec"], cent, states, nu_eps, prec)
         on = point_on_gks_branch(pt, cent, recs, centres)
         st = pt.get("stability") if pt.get("ok") else None
-        item = dict(g=pt["g"], on_eps_branch=d["ok"], lemma_D=d, on_gks_branch=on["ok"], gks_check=on,
+        item = dict(g=pt["g"], source=pt["source"], on_eps_branch=d["ok"], lemma_D=d, on_gks_branch=on["ok"], gks_check=on,
                     stage_S_ok=bool(pt.get("ok")),
                     multiplier_bound_full_period=(st or {}).get("multiplier_bound_full_period"),
                     delta=(st or {}).get("delta"))
@@ -2653,9 +2725,10 @@ def bridge_checks(log=print, data=DATA, prec=256):
         log(f"  point g = {pt['g']}: on the eps-branch {d['ok']} (eps in {d['eps_enclosure']}), on the G_Ks branch "
             f"{on['ok']}, Stage S {bool(pt.get('ok'))}")
     glue_pts = [p for p in out["points"] if p["on_eps_branch"] and p["on_gks_branch"]]
-    out["glue_points"] = [p["g"] for p in glue_pts]
+    out["glue_points"] = [dict(g=p["g"], source=p["source"]) for p in glue_pts]
     out["ok"] = bool(glue_pts)
-    out["stable_bridge_points"] = [p["g"] for p in out["points"] if p["on_eps_branch"] and p["stage_S_ok"]]
+    out["stable_bridge_points"] = [dict(g=p["g"], source=p["source"]) for p in out["points"]
+                                   if p["on_eps_branch"] and p["stage_S_ok"]]
     with open(os.path.join(data, "gluing_gks.json"), "w") as fh_:
         json.dump(out, fh_, indent=1, default=str)
     return out
@@ -2784,7 +2857,7 @@ def collect(write=True, log=print, data=DATA):
         hopf_gap_closed=closed,
         gap=(None if closed else dict(bridge_g_low=bridge_g_low, gks_branch_g_hi=(str(gks_hi) if gks_hi else None),
                                       note="glued only through a branch.py point proof whose g lies in both ranges")),
-        stability_points=([dict(g=p["g"], eps=p["lemma_D"]["eps_enclosure"],
+        stability_points=([dict(g=p["g"], source=p["source"], eps=p["lemma_D"]["eps_enclosure"],
                                 multiplier_bound_full_period=p["multiplier_bound_full_period"])
                            for p in gl["points"] if p["on_eps_branch"] and p["stage_S_ok"]] if gl else []),
         pieces=summary,
@@ -2811,13 +2884,19 @@ def main():
     ap.add_argument("--e-stop", default="0.2")
     ap.add_argument("--g-stop", default=None, help="stop once a piece's g enclosure lies below this value")
     ap.add_argument("--budget", type=float, default=3300)
+    ap.add_argument("--K", type=int, default=None, help="Galerkin size of new eps pieces (default RUN_SETTINGS)")
+    ap.add_argument("--M", type=int, default=None, help="DFT nodes of new eps pieces (default RUN_SETTINGS)")
+    ap.add_argument("--gks-points", default=None, help="comma-separated exact decimals: K = 32 G_Ks point proofs")
+    ap.add_argument("--no-stability", action="store_true", help="with --gks-points: existence only (no Stage S)")
     ap.add_argument("--bridge", action="store_true", help="Lemma D for the branch.py point proofs and the gluing")
     ap.add_argument("--collect", action="store_true")
     a = ap.parse_args()
     if a.theorem_a:
         theorem_A()
     if a.run:
-        run(e_stop=a.e_stop, budget_s=a.budget, g_stop=a.g_stop)
+        run(e_stop=a.e_stop, budget_s=a.budget, g_stop=a.g_stop, K=a.K, M=a.M)
+    if a.gks_points:
+        gks_point_proofs([x.strip() for x in a.gks_points.split(",") if x.strip()], stability=not a.no_stability)
     if a.bridge:
         bridge_checks()
     if a.collect:

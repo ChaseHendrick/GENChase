@@ -1,6 +1,6 @@
 """Acceptance tests and negative controls for hopf.py (the Hopf gap). Each test can fail.
 
-Run (machine shared; about 15 minutes):
+Run (machine shared; about 20 minutes, --fast about 8):
   PYTHONPATH=<python-flint 0.9.0> nice timeout 3000 python3 test_hopf.py [--fast]     (or pytest)
 
 Infrastructure
@@ -17,9 +17,10 @@ Theorem A
     by 1e-9 to the right does not contain the crossing (Re lambda < 0 at its left end, so the left-side sign
     condition of the cover fails), and shifted to the left Re lambda > 0 at its right end.
 Theorem B (needs the run data, fourier/data/hopf/)
-  * The first piece is recomputed from its stored centre, weights and r_*, with its group's cover rebuilt from the
-    logged centres: the cover digest equals the logged one, and Y0, Z1, Z2, r_existence, r_uniqueness equal the logged
-    exact values.
+  * Pieces 0 (fast mode) or 0, 13, 30 and the last one (full mode) are recomputed from their stored centres, weights
+    and r_*, with their groups' covers rebuilt from the logged centres: the cover digests equal the logged ones, and
+    Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values (pieces 0 to 30 were made before the program
+    logged its own hash, so this ties them to the current program text).
   * Negative controls on that piece: the parameter interval widened threefold about its centre must fail; dropping the
     curve terms (delta Y1, delta^2 Y2 / 2, delta Zc) changes Y0 and Z1; dropping the Cauchy (third-derivative) terms
     changes Z2; a centre computed at a wrong eps (shifted by the piece width) must fail; a piece outside its cover is
@@ -28,6 +29,17 @@ Theorem B (needs the run data, fourier/data/hopf/)
     matrices, more nodes) lies below the rigorous Y2 and Zc and above a tenth of them.
   * Gluing: every consecutive pair of logged pieces re-glues in Arb; with r_hi replaced by r_lo, or with a piece glued
     to a non-adjacent one, the check fails.
+Corollary B(a) (needs theoremA.json)
+  * The identification at eps = 0 passes; negative controls: the default (not enlarged) equilibrium polydisc misses
+    c*(0)'s enclosure; without the recorded polydiscs of the left intervals the identification is refused.
+Lemma D and the gluing (Part C)
+  * At least one G_Ks point proof is identified with the eps-branch. Negative controls: the same profile claimed at a
+    G_Ks shifted by 1e-5, a point radius of 1/64, a point centre that does not match its digest, an eps-branch cut
+    before the point's eps: all refused.
+  * If a gluing point is recorded: it is re-derived (on the G_Ks branch by branch.point_on_branch, on the eps-branch by
+    Lemma D); G_Ks pieces that do not contain its g are refused.
+Sign and widening controls asked for in the brief: a sign-flipped l1 (the 'sign' mutation and "l1 > 0" refused), a
+perturbed equilibrium (the shifted Lemma K polydisc), a widened eps range (the threefold piece) all fail.
 """
 import json
 import math
@@ -485,7 +497,7 @@ def test_bridge():
     pts, cents = H.gks_points()
     on = []
     for pt in pts:
-        c = cents.get(pt["g"])
+        c = cents.get((pt["source"], pt["g"]))
         if c is None:
             continue
         d = H.point_in_eps_branch(pt["rec"], c, states, nu8)
@@ -523,14 +535,16 @@ def test_bridge():
         with open(pg) as fh_:
             gl = json.load(fh_)
         if gl.get("glue_points"):
-            gs = gl["glue_points"][0]
-            ptg = next(p for p in pts if p["g"] == gs)
+            gp = gl["glue_points"][0]
+            gs, src = gp["g"], gp["source"]
+            ptg = next(p for p in pts if p["g"] == gs and p["source"] == src)
+            cg = cents[(src, gs)]
             recs, centres, _ = H.gks_branch_snapshot(log=lambda s: None)
-            ok = H.point_on_gks_branch(ptg, cents[gs], recs, centres)["ok"]
-            dg = H.point_in_eps_branch(ptg["rec"], cents[gs], states, nu8)["ok"]
+            ok = H.point_on_gks_branch(ptg, cg, recs, centres)["ok"]
+            dg = H.point_in_eps_branch(ptg["rec"], cg, states, nu8)["ok"]
             check(f"gluing re-derived at g = {gs}: the point is on the G_Ks branch and on the eps-branch", ok and dg)
             far = [p_ for p_ in recs if Fraction(p_["g_hi"]) < Fraction(gs)][-3:]
-            ok2 = H.point_on_gks_branch(ptg, cents[gs], far, centres)["ok"]
+            ok2 = H.point_on_gks_branch(ptg, cg, far, centres)["ok"]
             check("negative control: G_Ks pieces not containing the point's g are refused", ok2 is False)
 
 

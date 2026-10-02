@@ -22,6 +22,24 @@ Newest entries last. Times UTC. Nothing in this log is a proof.
   `stage3_switch.py --collect --kinds=mp0` (reads the outputs, recomputes the box and plan and requires them equal to
   the stored files). Section image, end set and crossing time contain the floating-point reference. 32.4 s per step,
   peak RSS 1.19 GiB.
-- 05:56. Dry run of the discrete pipeline started (driver.py, instance dry3: N = 3, c = 0.15, not a rotating wave;
+- 05:53. Dry run of the discrete pipeline started (driver.py, instance dry3: N = 3, c = 0.15, not a rotating wave;
   float shift interval 2.333 ms with internal events at 0.020 ms (cell 2 down) and 1.479 ms (cell 2 up)). Kinds c1 and
   c0 (the multiprecision centre would take hours at N = 3). Run dir in the session scratchpad; log `dryrun.log`.
+- 06:09. Dry run attempt 1 (run dir `dryrun-dry3-attempt1` in the scratchpad): prepare ok (16 min, mostly the
+  112-evaluation finite-difference Jacobian; leaf dimension 55, spectral radius of the leaf map 11.4, as expected for a
+  state that is not a rotating wave). Segment 0 (C1, to cell 2 crossing down) ok, 5 steps + 6 validation steps,
+  14.8 s. Segment 1 FAILED at once: "crossing cell at or past the level before the approach": cell 2 crosses -40 down
+  and then up within the interval, so the segment that ends on cell 2's upward section starts with cell 2 on the level.
+  The N = 16 plan never has two consecutive events of one cell, so this is a plan-generation fault exposed by the dry
+  run, not a fault of the trusted engine.
+- 06:11. driver.py fixed (untrusted code only): an automatic duration cut at the midpoint between two consecutive
+  section events of the same cell (`auto_cuts` in config.json), `--reuse-jac` for dry3, and `float()` around cut
+  durations (numpy 2 wrote `np.float64(...)` into the plan, which the plan parser cannot read; this would also have hit
+  an N = 16 plan with a cut after an event). Attempt 2 (run dir `dryrun-dry3b`) started with 4 segments: section
+  (cell 2 down), duration 0.7296 ms, section (cell 2 up), terminal section (cell 1 up).
+- Continuum code written while the core was busy: `tw_model.py` (comoving field, first integral H; H cancels to
+  2.2e-16 at random states), `tw_bvp.py` (Radau IIA collocation, two pieces split at the switch; Jacobian checked
+  against finite differences to 5e-10), `pde_guess.py`, `tw_shooting.py`, `comoving19.hpp`, `comoving_field.cpp` and
+  `check_comoving_field.py` (CAPD field against tw_model.py: 300 points inside, max relative difference 1.0e-12;
+  negative control kappa (1 + 1e-6): all 300 outside; `results/check_comoving_field.json`), `wrap_pilot.cpp`,
+  `wrap_run.py`.
