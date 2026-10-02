@@ -439,40 +439,94 @@ the enclosure of `g*(eps_end)` (record: `g_star_at_eps_end`, `bridge_g_covered`)
 `g*(eps)` for some `eps in (0, eps_end]` (`eps != 0` since `g != g_H`), and the cell has at that `G_Ks` the periodic
 orbit of Theorem B at that `eps`.
 
-## Part C. Gluing to the certified G_Ks branch (`hopf.glue_gks`)
+## Part C. Gluing to the certified G_Ks branch (`hopf.bridge_checks`, record `fourier/data/hopf/gluing_gks.json`)
 
-The G_Ks branch (`branch.py`, `results/fourier-branch-gks.json`) consists of pieces `P = [g_lo, g_hi]` with exact
-centres `(omega_P, a_P)` (`K = 12`, `fourier/data/branch/centres_K12.jsonl`, SHA-256 checked), weights `eta_P` (19
-values), and for every `g in P` a unique zero of `F_P(.; g)` (`F_ph = a_{1,V} - a_{-1,V}`, `F_m = i omega m a_m -
-[f(phi_a; g)]_m`) in the ball of radius `r_hi(P)` about the centre, in the norm `max(|omega|/eta_om, max_k ||a_k||_{nu_P}
-/ eta_k)`, `nu_P = e^{1/4}`.
+The G_Ks branch (`branch.py`) consists of pieces `P = [g_lo, g_hi]` with exact centres `(omega_P, a_P)` (`K = 12`,
+`fourier/data/branch/centres_K12.jsonl`, SHA-256 checked), weights `eta_P` (19 values), and for every `g in P` a unique
+zero of `F_P(.; g)` (`F_ph = a_{1,V} - a_{-1,V}`, `F_m = i omega m a_m - [f(phi_a; g)]_m`) in the ball of radius
+`r_hi(P)` about the centre, in the norm `max(|omega|/eta_om, max_k ||a_k||_{nu_P} / eta_k)`, `nu_P = e^{1/4}`
+(branch.py Theorem B1). Consecutive pieces overlap and are glued by ball inclusion (branch.py Theorem B3). A *point
+proof* of `branch.py` is the same theorem with `g_lo = g_hi = g_s` (`K = 32`, weights 1, a 256-bit centre, so
+`r_lo` is about `1e-37`), logged in `points_K12.jsonl` with its centre in `points_centres_K32.jsonl`; most were
+followed by Stage S (pointwise stability). `branch.point_on_branch` checks, in Arb, that a point's existence ball lies
+in the uniqueness ball of a G_Ks piece containing `g_s`, so that the point's orbit is that piece's orbit at `g_s`.
 
-### Lemma C (proved)
+### Lemma D (proved; a G_Ks point proof on the eps-branch; `hopf.point_in_eps_branch`)
 
-Let `eps* > 0`, and suppose: (i) a proof on the tiny piece `[eps* - h, eps* + h]` with `rho0 = 1/4` (Lemmas B2, B3;
-`hopf.point_proof`, record `fourier/data/hopf/point.jsonl`) gives the zero `x'` of `F(.; eps*)` in
-`B_{r'}(xbar'(eps*))` (weights `eta'`, `nu = e^{1/4}`), and this ball lies in the uniqueness ball of the
-`eps`-branch piece containing `eps*` (weights `eta`, `nu = e^{1/8}`): `||xbar'(eps*) - xbar(eps*)||_{eta, e^{1/8}}
-+ r' max_c eta'_c/eta_c <= r_hi` (`||.||_{e^{1/8}} <= ||.||_{e^{1/4}}`), so `x' = x*(eps*)`; (ii) the enclosure
-`g'(eps*) +- eta'_g r'` lies in `[g_lo(P), g_hi(P)]` of a G_Ks piece `P`; (iii) with `a_0 = c`, `a_m = eps* w_m`,
+Let a point proof at `g_s` give the zero `(omega_s, a_s)` of `F_P(.; g_s)` with `||(omega_s, a_s) - (ombar_s, abar_s)||
+<= r_s` (weights `eta_s`, `nu_P`), where `abar_s` is real-symmetric with `Im abar_{s,1,V} = 0` exactly. Put
+`eps_s := 2 a_{s,1,V}`. Suppose, with `nu = e^{1/8} <= nu_P` the eps-branch's norm:
 
-    max( (|omega' - omega_P| + eta'_om r') / eta_{P,om},
-         max_k ( |c'_k - a_{P,k,0}| + eta'_ck r' + sum_{m != 0} |eps* w'_{k,m} - a_{P,k,m}| e^{|m|/4} + eps* eta'_wk r' ) / eta_{P,k} )
-      <= r_hi(P)
+(i) the ball `E = 2 (abar_{s,1,V} +- eta_{s,V} r_s / nu_P)` lies in `(0, inf)`;
 
-(primes: the point proof's centre line at `eps*`; `hopf.glue_gks`). Then the orbit of the `eps`-branch at `eps*` is the
-orbit `x*_P(g*(eps*))` of the G_Ks branch. *Proof.* By Lemma B1(a) `a = (c*, eps* w*)` with `omega*` solves the
-periodic orbit equations of branch.py at `g = g*(eps*)`, with `F_ph = eps* (w_{1,V} - w_{-1,V}) = 0`; the bound (iii)
-(each `|.|` term is an upper bound over the ball) puts `(omega*, a)` in `P`'s uniqueness ball, and `g* in P` by (ii);
-so it is `P`'s zero at `g*`. QED.
+(ii) every eps-piece `Q = [e_lo, e_hi]` meeting `E` satisfies, with `X = E n Q` and every bound taken over `eps in X`,
 
-### Theorem C (status in `results/fourier-hopf.json`)
+    max( (|omega_bar_s - omega_Q(X)| + eta_{s,om} r_s) / eta_om(Q),   |g_s - g_Q(X)| / eta_g(Q),
+         max_k (|abar_{s,k,0} - c_{Q,k}(X)| + eta_{s,k} r_s) / eta_ck(Q),
+         max_k ( sum_{m != 0} |abar_{s,k,m} / X - w_{Q,k,m}(X)| nu^|m| + eta_{s,k} r_s / min X ) / eta_wk(Q) )  <=  r_hi(Q)
 
-If Lemma C holds at some `eps*` (record `gluing`), the union of the `eps`-branch on `[0, eps*]` and of the G_Ks branch
-from `g*(eps*)` to `0.027499735464` is one continuous curve of periodic orbits that starts at the Hopf point
-`(x_e(g_H), g_H)` of Theorem A, through the Hopf cycles of Corollary A, and ends at the certified orbit at
-`G_Ks = 0.0275` (Stage E). If no G_Ks piece reaches the `g`-range of the `eps`-branch, the record states the `g` at
-which the `eps`-branch ends and the gap.
+(`omega_Q(X)`, ... the piece's centre line evaluated on the ball `X`);
+
+(iii) these pieces cover `E`.
+
+Then `eps_s` lies in `E`, and `y_s := (omega_s, g_s, a_{s,0}, (a_{s,m} / eps_s)_{m != 0})` is the eps-branch zero
+`x*(eps_s)`: the orbit of the point proof is the bridge orbit at `eps = eps_s`, and `g*(eps_s) = g_s`.
+
+*Proof.* `a_s` is real-symmetric (branch.py section 7) and `F_ph = 0`, so `a_{s,1,V} = a_{s,-1,V}` is real, and
+`|a_{s,1,V} - abar_{s,1,V}| nu_P <= ||a_{s,V} - abar_{s,V}||_{nu_P} <= eta_{s,V} r_s`, so `eps_s in E` and `eps_s > 0`
+by (i). By (iii) `eps_s` lies in a piece `Q` checked in (ii), and `eps_s in X`. `y_s` is a zero of `F(.; eps_s)`:
+`w_{V,+-1} = a_{s,+-1,V} / eps_s = 1/2`; `phi = a_{s,0} + eps_s w` is the profile of the point, so
+`omega_s phi' = f(phi; g_s)`, whose mean is `E_0 = [f(phi)]_0 = 0` and whose `m`-th coefficient (`m != 0`) is
+`eps_s [Q]_m = [f(phi)]_m - [f(c)]_m = [f(phi)]_m = i m omega_s a_{s,m} = eps_s i m omega_s w_m`, so `E_m = 0`
+(`Q` is defined since `y_s` lies in the ball where Lemma B3's cover certifies holomorphy, see below). The bound in (ii)
+is an upper bound of `||y_s - xbar_Q(eps_s)||` in `Q`'s norm: componentwise by the triangle inequality, with
+`|a_{s,k,0} - abar_{s,k,0}| <= ||a_{s,k} - abar_{s,k}||_{nu_P} <= eta_{s,k} r_s` and
+`sum_{m != 0} |a_{s,k,m} - abar_{s,k,m}| nu^|m| <= ||a_{s,k} - abar_{s,k}||_{nu_P} <= eta_{s,k} r_s` (as `nu <= nu_P`;
+the modes beyond both centres' `K` are included, the centres being zero there), divided by `eps_s >= min X`. So `y_s`
+lies in `B_{r_hi(Q)}(xbar_Q(eps_s))` (inside `B_{r_*}`, where Lemma B3's family contains every point `c + s eps w`
+used by `F`), and by uniqueness there `y_s = x*(eps_s)`. QED.
+
+### Theorem C (computer-assisted; the Hopf bridge glued to the G_Ks branch)
+
+Suppose a point proof at `g_s` satisfies Lemma D, and `branch.point_on_branch` holds for it and a piece `P` of the G_Ks
+branch (`P` in the chain validated by `branch.validate_logs`, every consecutive gluing re-derived in Arb, on a copy of
+the complete lines of the append-only logs whose line counts and SHA-256 the record gives). Then the G_Ks branch
+`g -> x*_P(g)` on `[0.027499735464, g_s]` and the eps-branch `eps -> x*(eps)` on `[0, eps_s]` share the orbit at
+`(g_s, eps_s)`, so their union is one continuous curve of real periodic orbits that starts at the orbit of Stage E at
+`G_Ks = 0.0275` (branch.py), passes through the Hopf cycles of Corollary A, and ends at the Hopf point
+`(x_e(g_H), g_H)` of Theorem A. With Corollary B(c): if the G_Ks branch reaches `g_end+` (it does whenever
+`g_s >= g_end+`, as `g_s = g*(eps_s)` with `eps_s <= eps_end`, or directly from the snapshot's `g_hi`), then for every
+`G_Ks in [0.027499735464, g_H)` the single cell has a periodic orbit on this curve.
+
+*Proof.* Lemma D gives `x*(eps_s) = y_s` (the point's orbit in blown-up coordinates); `point_on_branch` gives
+`x*_P(g_s) = (omega_s, a_s)` (the point's existence ball lies in `P`'s uniqueness ball). These are the same periodic
+orbit. Both families are continuous in their parameters (branch.py Theorem B3, Theorem B here), and the union of two
+curves with a common point is connected; the end points are named by branch.py (Stage E at 0.0275) and Corollary B(a).
+The coverage statement is Corollary B(c) together with branch.py's coverage of `[0.027499735464, g_hi]`. QED.
+
+If no point proof satisfies both checks, the record states the gap: the lowest `G_Ks` reached by the bridge (`g_end+`)
+and the highest reached by the G_Ks branch.
+
+---------------------------------------------------------------------------------------------------------------------
+
+## Part S. Stability on the bridge: what is and is not proved
+
+1. **Small amplitude (cited, not quantified).** By Corollary A and Corollary B(b), there is an `eps_1 > 0` such that
+   for `eps in (0, eps_1)` the bridge orbit is orbitally asymptotically stable. `eps_1` is not computed. The mechanism
+   (numerical heuristic, not used): in the normal form the nontrivial exponent of the cycle is `-2 beta` with
+   `beta = mu(g) ~ Re lambda(g)`, i.e. the multiplier near 1 is about `exp(-2 Re lambda(g) T)`; with
+   `d Re lambda / dg ~ -5.58` this exponent is about `-11.2 (g_H - g)` per ms, smaller in modulus than the slow
+   equilibrium mode `-4.7e-5` per ms while `g_H - g < 4.2e-6` (`eps` below about `0.023`).
+2. **At isolated G_Ks values (computer-assisted).** At every point proof of `branch.py` that passed Stage S and whose
+   orbit is identified with the bridge by Lemma D (record: `stability_points`), every nontrivial Floquet multiplier of
+   the bridge orbit has modulus at most the recorded `multiplier_bound_full_period` (about `0.99789`, `delta` about
+   `4.0e-5` per ms) and the multiplier 1 is algebraically simple (Stage S, LEMMAS-stability.md), so that orbit is
+   locally exponentially orbitally stable with asymptotic phase. This is stability at those `G_Ks` values only.
+3. **Not proved.** Stability for every `eps` of the bridge, i.e. between the unquantified `eps_1` and the isolated
+   points, and between the isolated points. A proof would need a uniform Floquet bound along the blown-up branch that
+   resolves the multiplier near 1 at the scale `eps^2` (a second blow-up of the Hill operator at `eps = 0`, where the
+   multiplier 1 is double), or a quantified Hopf theorem; neither is attempted. Stage S fed with a piece's existence
+   radius fails for the same reason it fails on the G_Ks pieces (branch.py section 6).
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -482,5 +536,11 @@ which the `eps`-branch ends and the gap.
    `S_l`; the strip sups over the full piece; `Y1` at the point with the exact division by `e_c + t`).
 2. Lemma B3: the third-derivative terms via Cauchy's estimate in `sigma` (the family must contain
    `c(xi) + sigma' w(xi)` for `|sigma'| <= T`; `EpsCover.contains`), the `P` factor and `tau`.
-3. The identification at `eps = 0` (Corollary B(a)): the equilibrium polydisc and the window `W`.
-4. That the Hopf theorem is used only qualitatively (Corollary B(b)); every quantitative statement comes from Theorem B.
+3. Theorem A(c) and Corollary B(a): that one polydisc `P` with Lemma K contains `c*(0)` and every recorded Theorem A
+   polydisc of an interval meeting `J`, so that all equilibria named there are one branch.
+4. Lemma D: the conversion between the two problems (`eps_s = 2 a_{1,V}`, `w = a / eps_s`), the norm comparison
+   (`nu = e^{1/8} <= nu_P = e^{1/4}`), the evaluation of the eps-centre line on the ball `X`, and the coverage of `E`.
+5. Theorem C: that the G_Ks pieces used are those validated (complete lines of the append-only logs, copied, validated
+   and hashed together), and that `branch.point_on_branch` is applied to a piece containing `g_s`.
+6. That the Hopf theorem is used only qualitatively (Corollary A, Corollary B(b), Part S.1); every quantitative
+   statement comes from Theorems A, B, C and Lemma D.

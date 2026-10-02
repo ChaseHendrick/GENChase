@@ -1631,6 +1631,13 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     finally:
         ctx.prec = old
     mark("Lemma 11.1")
+    log(f"  G{gid}: h = {float(hU):.4e}, Z1 point {float(Z1c):.4f}, Z1 path {float(Z1G):.4f}, Z2 {float(Z2):.3e}, "
+        f"Y' = {float(Yp):.3e} (Y0p {max(float(Y0p[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h Y1 "
+        f"{max(float(hU * Y1[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^2 Y2 "
+        f"{max(float(hU ** 2 * Y2[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^3 Y3 "
+        f"{max(float(hU ** 3 * Y3[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^4 Y4 "
+        f"{max(float(hU ** 4 * Y4[c] / ETA[c]) for c in range(DIM + 1)):.2e}), rho = {float(rho_x):.3e}, "
+        f"kappa = {float(kappa):.4f}")
     # 7. identification with the branch, piece by piece (x*(g) of Theorem B is the zero found, for g in each piece)
     ident = []
     old = ctx.prec
