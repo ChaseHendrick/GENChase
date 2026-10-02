@@ -3,6 +3,10 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and
 has not been peer reviewed.
 
+## 2.2.5 (2026-10-02)
+
+Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. The manuscript PDF is built with Tectonic, and the source comment and README say so and give the command. A hard-coded section number is now a cross-reference, and a constant is written $K_4$ consistently. Grotto and Pappalettera (2025) is cited in its published version, Nonlinearity 38 (2025) 105020, with its DOI, and a punctuation error in the title of Borisov and Lebedev (1998) is corrected. Numerical inputs, proof programs, certificates and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 2.2.4 (2026-09-30)
 
 **DOI:** [10.5281/zenodo.23050561](https://doi.org/10.5281/zenodo.23050561). Publication / Preprint.
