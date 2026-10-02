@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-02T11:07:28.396068+00:00",
+  "papers": [
+    {
+      "paper": "cardiac-rings",
+      "doi": "10.5281/zenodo.23101322",
+      "expectedVersion": "1.0.0",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "record": "https://zenodo.org/records/23101322",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
+      "titleMatches": true,
+      "version": "1.0.0",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "repositoryPdfSha256": "77526c6c5395dfa7475097e435f2a4374deb890ad311e8459759d94538768014",
+      "archives": [
+        {
+          "file": "ChaseHendrick/cardiac-rings-1.0.0.zip",
+          "url": "https://zenodo.org/api/records/23101322/files/ChaseHendrick/cardiac-rings-1.0.0.zip/content",
+          "zipSha256": "1ba739c5cccbfe602f34a16173b16dd8839dddce5965486ef7885e19dfc307d7",
+          "manuscript": [
+            "ChaseHendrick-cardiac-rings-047ea7f/paper/cardiac-rings.pdf"
+          ],
+          "manuscriptSha256": "77526c6c5395dfa7475097e435f2a4374deb890ad311e8459759d94538768014",
+          "matchesRepository": true
+        }
+      ]
+    }
+  ],
+  "awaitingFirstArchive": []
+}

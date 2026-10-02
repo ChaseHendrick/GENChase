@@ -240,6 +240,11 @@ for (const m of mods) {
 /* ---- 7. the prose agrees with the file ---- */
 const spelled = count.spell(mods.length);
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
+{
+  // The paper status block and count in README.md are generated from papers/papers.json.
+  const problem = require('./papers-readme.js').check(readme);
+  if (problem) fail(problem);
+}
 const citation = fs.existsSync(path.join(root, 'CITATION.cff')) ? fs.readFileSync(path.join(root, 'CITATION.cff'), 'utf8') : '';
 const techniquesMd = fs.existsSync(path.join(root, 'TECHNIQUES.md')) ? fs.readFileSync(path.join(root, 'TECHNIQUES.md'), 'utf8') : '';
 const designPlan = fs.existsSync(path.join(root, 'DESIGN-PLAN.md')) ? fs.readFileSync(path.join(root, 'DESIGN-PLAN.md'), 'utf8') : '';

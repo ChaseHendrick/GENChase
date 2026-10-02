@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.0 (2026-10-02), with the programs that prove its results and their output. Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+**Preprint**, release 1.0.0 (2026-10-02), archived on Zenodo with the programs that prove its results and their output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
 
 **[Read the paper (PDF, 45 pages)](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
@@ -221,6 +221,7 @@ Until the paper is published in a journal:
   title  = {Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs},
   year   = {2026},
   note   = {Preprint},
+  doi    = {10.5281/zenodo.23101322},
   url    = {https://github.com/ChaseHendrick/cardiac-rings}
 }
 ```

@@ -11,7 +11,7 @@ const ROOT_DOCS = new Set([
 const full = reason => ({ browserRequired: true, reason });
 const REGISTRY = 'papers/papers.json';
 const PUBLICATION_FIELDS = new Set(['note', 'codeDoi', 'archiveVersion']);
-const PREPRINTS = new Set(['minimal-winding', 'collapse-without-rotation', 'stable-expansion', 'rank-window', 'hh-dynamics', 'double-pendulum', 'nf-pulse', 'hh-pulse']);
+const PREPRINTS = new Set(['minimal-winding', 'collapse-without-rotation', 'stable-expansion', 'rank-window', 'hh-dynamics', 'double-pendulum', 'nf-pulse', 'hh-pulse', 'cardiac-rings']);
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const line = (value, max = 20000) => typeof value === 'string' && value.length > 0 && value.length <= max && value.trim() === value && !/[\x00-\x1f\x7f\ufffd]/.test(value);
@@ -92,7 +92,7 @@ function auditOnly(text) {
       typeof audit.checkedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|\+00:00)$/.test(audit.checkedAt) ||
       !date(audit.checkedAt.slice(0, 10)) || !Number.isFinite(Date.parse(audit.checkedAt)) ||
       !commit(audit.publicationCommit) || !commit(audit.reviewedFigureCommit) || typeof audit.allVerified !== 'boolean' || !line(audit.scope, 2000) ||
-      !Array.isArray(audit.papers) || audit.papers.length !== PREPRINTS.size) return false;
+      !Array.isArray(audit.papers) || !audit.papers.length) return false;
   const seen = new Set();
   return audit.papers.every(p => {
     if (!keys(p, ['paper', 'version', 'doi', 'record', 'release', 'releaseTagCommit', 'reviewedPdfSha256', 'githubZipSha256', 'zenodoArchives', 'recordMetadata', 'ok']) ||
@@ -166,4 +166,4 @@ function classify({ eventName = process.env.CI_EVENT_NAME, cwd = path.resolve(__
   } catch { return full('Changed-file inspection unavailable; running full checks'); }
 }
 if (require.main === module) process.stdout.write(JSON.stringify(classify()) + '\n');
-module.exports = { classify, classifyRaw, documentation, textOnly, strictJson, registryOnly, auditOnly, auditPath };
+module.exports = { classify, classifyRaw, documentation, textOnly, strictJson, registryOnly, auditOnly, auditPath, PREPRINTS };
