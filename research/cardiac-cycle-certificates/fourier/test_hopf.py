@@ -15,7 +15,8 @@ Theorem A
   * At G_H: the 16 other Gershgorin discs lie in Re < 0, d Re lambda / dg < 0, l1 < 0 (and omega l1 near Erhardt's
     -2.6838). Negative controls: "l1 > 0" (the wrong sign assumed) is refused by the enclosure; the interval G_H shifted
     by 1e-9 to the right does not contain the crossing (Re lambda < 0 at its left end, so the left-side sign
-    condition of the cover fails), and shifted to the left Re lambda > 0 at its right end.
+    condition of the cover fails), and shifted to the left Re lambda > 0 at its right end; dlambda_dg told that the
+    critical disc is the conjugate's refuses the left eigenpair (it is identified with lambda only through D1).
 Theorem B (needs the run data, fourier/data/hopf/)
   * Pieces 0 (fast mode) or 0, 13, 30 and the last one (full mode) are recomputed from their stored centres, weights
     and r_*, with their groups' covers rebuilt from the logged centres: the cover digests equal the logged ones, and
@@ -38,6 +39,9 @@ Lemma D and the gluing (Part C)
     before the point's eps: all refused.
   * If a gluing point is recorded: it is re-derived (on the G_Ks branch by branch.point_on_branch, on the eps-branch by
     Lemma D); G_Ks pieces that do not contain its g are refused.
+The record (results/fourier-hopf.json)
+  * Every stored source and data SHA-256 equals the file on disk; the piece count, eps range and Theorem A enclosures
+    are those of the logs; a one-byte change in pieces.jsonl changes its hash.
 Sign and widening controls asked for in the brief: a sign-flipped l1 (the 'sign' mutation and "l1 > 0" refused), a
 perturbed equilibrium (the shifted Lemma K polydisc), a widened eps range (the threefold piece) all fail.
 """
@@ -291,6 +295,14 @@ def test_theorem_A_core(fh):
     check("omega l1 agrees with Erhardt's -2.6838 to the printed digits",
           abs(float((L["l1"] * om).mid()) + 2.6838) < 1e-4)
     check("negative control: the wrong sign l1 > 0 is refused by the enclosure", not (L["l1"] > 0))
+    # negative control: the left eigenpair must be identified with lambda through the Gershgorin disc D1; told that the
+    # critical disc is D2 (the conjugate's), dlambda_dg must refuse (the left eigenvalue ball lies in D1)
+    try:
+        H.dlambda_dg(famH, dict(spH, ic=spH["jc"]))
+        refused = False
+    except H.ProofFailure:
+        refused = True
+    check("negative control: dlambda_dg refuses a left eigenvalue that is not in the critical disc", refused)
     # G_H shifted by 1e-9: no crossing inside
     sh = Fraction(1, 10 ** 9)
     lam_a = H.spectrum_on(H.jacobian_family(ga + sh, ga + sh, fh))["lam"]
@@ -548,6 +560,40 @@ def test_bridge():
             check("negative control: G_Ks pieces not containing the point's g are refused", ok2 is False)
 
 
+# ------------------------------------------------------------------------------------------------ the record
+def test_record_hashes():
+    """results/fourier-hopf.json: every stored source and data SHA-256 equals the file now on disk, the record's numbers
+    are those of the logs (piece count, eps range, Theorem A enclosures), and a one-byte change is detected."""
+    import hashlib
+    import tempfile
+    path = os.path.join(H.RESULTS, "fourier-hopf.json")
+    if not os.path.exists(path):
+        check("record results/fourier-hopf.json present", False)
+        return
+    with open(path) as fh_:
+        rec = json.load(fh_)
+    bad = [s_ for s_, h in rec["sources_sha256"].items() if H._sha(os.path.join(H.ROOT, s_)) != h]
+    bad += [f for f, h in rec["data_sha256"].items() if H._sha(os.path.join(H.DATA, f)) != h]
+    check("record: every stored source and data SHA-256 equals the file on disk", not bad, f"mismatch {bad}")
+    pieces, _ = _logs()
+    with open(os.path.join(H.DATA, "theoremA.json")) as fh_:
+        thA = json.load(fh_)
+    same = (rec["n_pieces"] == len(pieces) and rec["eps_covered"] == ["0", pieces[-1]["e_hi"]]
+            and rec["theorem_A_record"]["l1_kuznetsov_physical"] == thA["l1_kuznetsov_physical"]
+            and rec["theorem_A_record"]["gH_interval"] == thA["gH_interval"])
+    check("record: piece count, eps range and Theorem A enclosures are those of the logs", same)
+    # negative control: a copy of pieces.jsonl with one byte changed has a different hash
+    with open(os.path.join(H.DATA, "pieces.jsonl"), "rb") as fh_:
+        raw = bytearray(fh_.read())
+    raw[len(raw) // 2] ^= 1
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        tf.write(bytes(raw))
+    changed = H._sha(tf.name) != rec["data_sha256"]["pieces.jsonl"]
+    os.unlink(tf.name)
+    check("negative control: a one-byte change in pieces.jsonl changes its SHA-256", changed and
+          hashlib.sha256(bytes(raw)).hexdigest() != rec["data_sha256"]["pieces.jsonl"])
+
+
 def main():
     t0 = time.time()
     test_jet_closed_forms()
@@ -561,6 +607,7 @@ def main():
     test_gluing_logged()
     test_identification()
     test_bridge()
+    test_record_hashes()
     n_fail = sum(1 for _, ok, _ in RESULTS if not ok)
     print(f"{len(RESULTS)} checks, {n_fail} failed, {time.time() - t0:.0f} s")
     return 1 if n_fail else 0

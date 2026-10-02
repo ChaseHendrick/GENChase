@@ -399,7 +399,8 @@ def test_group_negative_delta_above_exponent():
     G = _group()
     try:
         bs.certify_uniform(G["_ctx"]["U"], settings=dict(G["settings"], delta="5e-5"), log=QUIET)
-    except bs.FAILURES:
+    except bs.FAILURES as e:
+        print(f"  delta 5e-5 refused: {type(e).__name__}: {str(e)[:160]}")
         return
     raise AssertionError("delta = 5e-5 (above the leading exponent 4.71e-5) was certified on a group")
 
@@ -421,7 +422,8 @@ def test_group_negative_widened():
     """The same group, centre and weights with the parameter interval widened threefold must be refused."""
     try:
         bs.prove_group_uniform(GID, _widen=3, log=QUIET)
-    except bs.FAILURES:
+    except bs.FAILURES as e:
+        print(f"  widened x3 refused: {type(e).__name__}: {str(e)[:160]}")
         return
     raise AssertionError("a threefold widened group interval was certified")
 
