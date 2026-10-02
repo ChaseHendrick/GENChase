@@ -4,7 +4,7 @@
 
 **Draft** (status "draft" in `papers/papers.json`).
 The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex), and its PDF
-[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (26 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
+[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (40 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
 GENChase, their canonical location; the copies here are byte-identical, and the hashes stored in the records refer to
 paths relative to that folder, which `code/` reproduces. The one exception is `code/fourier/LEMMAS-stability.md`, kept as
 it was reviewed: the canonical file has since gained a section 10 for the G_Ks branch, which this draft does not use. The quality record is [`notes/QUALITY.md`](notes/QUALITY.md).

@@ -40,7 +40,7 @@ def run(kfac, tag):
     of = os.path.join(work, "out_%s.txt" % tag)
     with open(pf, "w") as f:
         for kappa, low, poly, y in pts:
-            ks = repr(float(kappa) * kfac) if kfac != 1.0 else kappa
+            ks = ("%.10g" % (float(kappa) * kfac)) if kfac != 1.0 else kappa
             z = y / TM.SIGMA
             f.write("%s %d %d 24 %s\n" % (ks, low, poly, " ".join(float(v).hex() for v in z)))
     subprocess.run([binary, pf, of], check=True, timeout=600)
@@ -61,9 +61,10 @@ def run(kfac, tag):
     return dict(points=len(pts), python_inside_all=inside_all, points_outside=n_out, max_rel_difference_midpoint=worst_rel)
 
 
-res = dict(note="Floating-point cross-check of comoving19.hpp against tw_model.py; test, not a proof.",
-           check=run(1.0, "check"), negative_control_kappa_times_1_plus_1e-6=run(1 + 1e-6, "neg"))
-res["passed"] = bool(res["check"]["python_inside_all"] and res["negative_control_kappa_times_1_plus_1e-6"]["points_outside"] > 0.9 * len(pts))
+NEG = "negative_control_kappa_times_1_plus_1e-6"
+res = {"note": "Floating-point cross-check of comoving19.hpp against tw_model.py; test, not a proof.",
+       "check": run(1.0, "check"), NEG: run(1 + 1e-6, "neg")}
+res["passed"] = bool(res["check"]["python_inside_all"] and res[NEG]["points_outside"] > 0.9 * len(pts))
 os.makedirs(os.path.join(HERE, "results"), exist_ok=True)
 json.dump(res, open(os.path.join(HERE, "results", "check_comoving_field.json"), "w"), indent=1)
 print(json.dumps(res, indent=1))
