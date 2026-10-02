@@ -2,12 +2,11 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Draft** (status "draft" in `papers/papers.json`).
-The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex), and its PDF
-[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (40 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
-GENChase, their canonical location; the copies here are byte-identical, and the hashes stored in the records refer to
-paths relative to that folder, which `code/` reproduces. The one exception is `code/fourier/LEMMAS-stability.md`, kept as
-it was reviewed: the canonical file has since gained a section 10 for the G_Ks branch, which this draft does not use. The quality record is [`notes/QUALITY.md`](notes/QUALITY.md).
+**Preprint**, release 1.0.0 (2026-10-02), with the programs that prove its results and their output. Not peer
+reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+in [`review/`](review/README.md); none is an outside review.
+
+**[Read the paper (PDF, 40 pages)](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
 
 ## Abstract
 
@@ -67,26 +66,27 @@ identification of these orbits with the Hopf branch is numerical, and nothing is
   `code/numerics/phase_reduction.py`, `data/numerics-phase-reduction.json`), which predicts the period shifts to within
   0.82 per cent and the leading exponents to within 3.5 per cent, and fails for the short-wavelength ring modes when
   N >= 16.
-- **Consistency check, not a publication:** an independent computation with CAPD in the same project, on the owner's
-  machine (`docs/CARDIAC-HANDOFF-2026-09-30.md` of GENChase), enclosed the periods of the cell and of the 8- and
+- **Consistency check, not part of this paper:** an independent computation with CAPD made earlier in the project,
+  whose records stay in the project's development repository, enclosed the periods of the cell and of the 8- and
   16-cell waves in intervals that contain the periods proved here.
 - **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry or tissue; N < 8;
   stability for N other than 8, 16, 32, 64, for the cable, or uniformly in N; a rate of convergence as N tends to
-  infinity. A certified branch on an interval of G_Ks (the project's "rec 2") is in progress
-  in `research/cardiac-cycle-certificates/fourier/branch.py`; no result of it is used here.
+  infinity. A certified branch of these orbits on an interval of G_Ks toward the Hopf point is future work; no result
+  of it is used or claimed here.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
-  of their fixes, are copied in [`review/`](review/README.md), with a first reading of this manuscript
-  (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised draft
-  (`review/manuscript-reading-2-2026-10-01.md`), whose corrections are made and listed in `review/fix-check-2026-10-01.md`;
-  Appendix A had a reading of its own (`review/appendixA-reading-2026-10-02.md`), and the integration of Theorem C and
-  the phase-reduction remark another (`review/alln-integration-reading-2026-10-02.md`). On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
-  (`notes/rerun-2026-10-01.md`).
-- **Novelty:** the project's logged searches (RESEARCH.md of GENChase, entries of 2026-09-30 and 2026-10-01 on
-  cardiac work) found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model
-  and none of a rotating wave in a ring of coupled cells. Nothing more is claimed; in particular the searches did not
-  cover traveling waves of continuum cables, and no novelty is claimed for the cable wave of Theorem C. The oscillation of the cell is
-  predicted by Erhardt's numerical continuation (Front. Phys. 13 (2025) 1569121), and the existence of rotating waves
-  near a Hopf point of a ring is the generic expectation of Z_N-equivariant Hopf theory.
+  of their fixes; a review of the CAPD verifier, which led to its hardening and to the CAPD patch in `code/proofs/`; a
+  first reading of this manuscript (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised
+  draft (`review/manuscript-reading-2-2026-10-01.md`), whose corrections are made and listed in
+  `review/fix-check-2026-10-01.md`; a reading of Appendix A (`review/appendixA-reading-2026-10-02.md`); and the
+  reading of the program of Theorem C above. The index of these files is [`review/README.md`](review/README.md). On
+  2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`, and on 2026-10-02 the collection step
+  of Theorem C; Section 8 of the manuscript gives the outcome. None of these checks is an outside review.
+- **Novelty:** the project's prior-article searches of 2026-09-30 and 2026-10-01, which stay in its development
+  records, found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model and
+  none of a rotating wave in a ring of coupled cells. Nothing more is claimed; in particular the searches did not
+  cover traveling waves of continuum cables, and no novelty is claimed for the cable wave of Theorem C. The
+  oscillation of the cell is predicted by Erhardt's numerical continuation (Front. Phys. 13 (2025) 1569121), and the
+  existence of rotating waves near a Hopf point of a ring is the generic expectation of Z_N-equivariant Hopf theory.
 
 ## The model
 
@@ -101,6 +101,21 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 ## Programs
 
+The programs and records were computed in the project's study of these orbits. `code/` reproduces the layout of the
+study's folder, to which the paths hashed in the records are relative. Every file in `code/` that the study also has
+is a byte-identical copy of the study's file, except `code/fourier/LEMMAS-stability.md`, which is kept at the version
+this paper uses (the study's file has since gained a section 10 for a branch in G_Ks, which this paper does not use),
+with its references to the manuscript and to the Appendix A reading written relative to this folder; `code/run_all.sh`
+and `code/requirements.txt` were written for this folder. The JSON records in `data/` are byte-identical copies of the
+study's records, and `data/link_cell.txt` is the output of `code/fourier/link_cell.py`.
+
+| Folder | What is in it |
+|---|---|
+| [`paper/`](paper/) | The manuscript, [`cardiac-rings.tex`](paper/cardiac-rings.tex), and its PDF, [`cardiac-rings.pdf`](paper/cardiac-rings.pdf) |
+| [`code/`](code/) | The programs below, [`run_all.sh`](code/run_all.sh) and [`requirements.txt`](code/requirements.txt) |
+| [`data/`](data/) | The CAPD record of the cell, the Stage E and Stage S records for N = 1, 8, 16, 32, 64, the record of Theorem C, the in-project review status, the output of the link, and two numerical records |
+| [`review/`](review/README.md) | The in-project readings of the programs, the lemmas and the manuscript, with an index |
+
 | Path | What it is |
 |---|---|
 | `code/run_all.sh` | Provenance check of the copies against the records' hashes, the link of the two cell proofs, and an optional rerun of Stage E and Stage S in a scratch folder with a comparison against `data/` |
@@ -109,10 +124,10 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 | `code/fourier/existence.py` | Stage E: the radii-polynomial existence proof (Section 4) |
 | `code/fourier/stability.py` | Stage S: the Hill-operator certificate (Section 5) |
 | `code/fourier/link_cell.py` | The exact check that the Fourier cell orbit's section point lies in the CAPD ball (Lemma 6.1) |
-| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.8); `alln.py` calls the bound assembly, the Hessian cover and the centre distance of `branch.py` |
+| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.8); `alln.py` calls the bound assembly, the Hessian cover and the center distance of `branch.py` |
 | `code/fourier/data/alln/` | The run log of Theorem C (`pieces.jsonl`, the exact inputs and bounds of every piece, hashed by the record), its controls and the code version at launch |
-| `code/fourier/LEMMAS-stability.md` | The stability lemmas as they were reviewed; Section 5 of the paper writes them out |
-| `code/fourier/centre.py`, `code/fourier/data/` | Untrusted Newton solver for the centres, and the centres as exact dyadic numbers |
+| `code/fourier/LEMMAS-stability.md` | The stability lemmas in the version this paper uses; Section 5 of the paper writes them out |
+| `code/fourier/centre.py`, `code/fourier/data/` | Untrusted Newton solver for the centers, and the centers as exact dyadic numbers |
 | `code/fourier/check_records.py` | Rechecks every hash stored in the Fourier records |
 | `code/fourier/test_*.py` | Tests and negative controls (the reviews ran them; no stored log of a full run is kept here) |
 | `code/model/` | The reference translation (`tp06_18d.py`), the CAPD field (`tp06_capd.hpp`, `setup.hpp`) and the scales |
@@ -122,7 +137,7 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 ## Reproduce
 
-From this folder, with python-flint 0.9.0 (`pip install -r code/requirements.txt`):
+From this folder, with python-flint 0.9.0 (`python3 -m pip install -r code/requirements.txt`):
 
 ```
 sh code/run_all.sh                 # provenance ("90 hashes checked", and "15 hashes checked" for Theorem C) and the link ("LINKED")
@@ -131,14 +146,15 @@ sh code/run_all.sh 1,8             # rerun Stage E and Stage S for N = 1 and 8 (
 sh code/run_all.sh 1,8,16,32,64    # all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)
 ```
 
-Theorem C's pieces are re-proved from their stored inputs by `fourier/test_alln.py` (about 15 minutes), run in a folder
-staged as `run_all.sh` stages one (`code/` with `data/fourier-*.json` copied to `results/`).
+Five of the 73 pieces of Theorem C (those containing eps = 0, 1/4096, 1/1024, 1/256 and 1/64) are re-proved from their
+stored inputs by `code/fourier/test_alln.py` (about 15 minutes), run in a folder staged as `run_all.sh` stages one (the
+contents of `code/`, with `data/fourier-*.json` copied to `results/`).
 
 The script stages `code/` in a scratch folder, because the programs write their records to `<root>/results`, and never
 touches `data/`. Expect the period enclosures and the stability bounds to agree exactly with `data/`, and the binary
-values of Y0, Z1, Z2 and r_existence to differ in their last digits (`notes/rerun-2026-10-01.md`): `existence.py` does
-not pin BLAS threads, so its untrusted floating-point inverse is not bit-reproducible (a fix is queued in the project).
-What is certified are the stored records in `data/`; the Stage S records hash the Stage E records they read.
+values of Y0, Z1, Z2 and r_existence to differ in their last digits: `existence.py` does not pin the number of BLAS
+threads, so its untrusted floating-point inverse is not bit-reproducible (Section 8 of the manuscript). What is
+certified are the stored records in `data/`; the Stage S records hash the Stage E records they read.
 
 The CAPD certificate of Theorem A(i) needs CAPD 6.1.0 at commit 03dc5628203334b214bb7d9fd63788a175521005, built with
 multiprecision (GMP and MPFR), with `git apply code/proofs/capd-6.1.0-genchase.patch` from the CAPD source root, and
@@ -146,13 +162,27 @@ multiprecision (GMP and MPFR), with `git apply code/proofs/capd-6.1.0-genchase.p
 `python3 code/proofs/certify.py <verify binary> code/candidates/cell_frameF.txt <record.json> --N 1 --gks 0.0275 --env VERIFY_MP_BITS=128 --env VERIFY_MP_TOL=1e-24 --env VERIFY_MP_ORDER=30`.
 `certify.py` contains the absolute path of the patched header in the session where it ran (`CAPD_PATCHED_HEADER`);
 edit it to point at your CAPD installation, or the record will say that the patch was not detected. The copy here is
-unchanged so that it matches the canonical file.
+unchanged so that it matches the study's file.
 
-The manuscript is built with `sh tools/paper-build.sh cardiac-rings` from the GENChase root (pdflatex, three runs),
-which writes `paper/cardiac-rings.pdf`, the file registered as `pdf` in `papers/papers.json`.
+The manuscript is built with `pdflatex cardiac-rings.tex`, run three times in `paper/`.
+
+## Cite
+
+Until the paper is published in a journal:
+
+```bibtex
+@misc{hendrick2026cardiac,
+  author = {Hendrick, Chase},
+  title  = {Stable Rotating Waves in Rings of a Modified Ventricular Myocyte Model Near a {Hopf} Point: Computer-Assisted Proofs in {Fourier} Space},
+  year   = {2026},
+  note   = {Preprint},
+  url    = {https://github.com/ChaseHendrick/cardiac-rings}
+}
+```
 
 ## License
 
-The programs in `code/` and the data in `data/` are licensed under the Apache License 2.0; see NOTICE. The model
-translation follows A. H. Erhardt's MIT-licensed source. Manuscript text is Copyright (c) 2026 Chase Hendrick, all
-rights reserved.
+The manuscript in `paper/`, its figures included, is Copyright (c) 2026 Chase Hendrick, all rights reserved. The
+programs in `code/` and the data in `data/` are under the Apache License 2.0 (see `NOTICE`). The model translation
+follows A. H. Erhardt's MIT-licensed source, and `code/proofs/capd-6.1.0-genchase.patch` is subject to CAPD's own
+license; `NOTICE` says which files these are. The `LICENSE` file has the manuscript notice and the Apache License.

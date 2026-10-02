@@ -1,0 +1,25 @@
+{
+  "description": "Display of stored centres, enclosures and radii; no proof is rerun.",
+  "figures": [
+    "cell-orbit.pdf",
+    "ring-wave.pdf",
+    "alln-pieces.pdf"
+  ],
+  "inputs": {
+    "code/fourier/data/centre_N16_K32.json": "0c3690b038ef9ac09f67da64429a0e6c7defe11c828cb781ea840704a317f6f7",
+    "code/fourier/data/centre_N1_K32.json": "e1d2c0a811b8b9a0741d019709e5a5f0591a3d1bee4232d18c9e781d8e6ecd79",
+    "code/fourier/data/centre_N32_K32.json": "fdad37fec781b0e4691aebc1494d2b97e5782dbf60d1cc1117fe8d9f931799c0",
+    "code/fourier/data/centre_N64_K32.json": "5cbb9b1ee3f9d4c94cd2c14de41e73123ff59f675d944f5c69124861a52ed29c",
+    "code/fourier/data/centre_N8_K32.json": "1a2a4da2fd274f967574aef09e5563f4c8b1d0875195d5a1df2c4541ab4d6477",
+    "code/model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "data/fourier-existence-N1.json": "628822e1cfb7168dd1123eaa7e5f4534a32f1ac5f05208f37793c71782bc571e",
+    "data/fourier-existence-N16.json": "f9b89af50c6109d536ab9d008c53767cb10d6aa6e93bbd28ab6eb93e744c4a51",
+    "data/fourier-existence-N32.json": "2484f4fd8790bafbb1b9e424d3afe10a7af3f83e2f604d67fed433577ea5eba7",
+    "data/fourier-existence-N64.json": "df488646db4b0ff2d48975422dbd81716ae6a1576f8513dfbb5c150306be8cf6",
+    "data/fourier-existence-N8.json": "a1bd799b5609bc6cb7b19a96d86a14ee63919402ea4f626a59e140c7e62eff2c",
+    "data/fourier-existence-alln.json": "a6fb7707b08d71853107e8a795839f36806e89214aaa2b0c09b7297d25fff571",
+    "code/plot_cardiac_rings.py": "06f382c0da3917228ad4899bcca995fde563d0c6fdae3754b6fb3f4a454a7c6c"
+  },
+  "matplotlib": "3.11.2",
+  "numpy": "2.4.6"
+}

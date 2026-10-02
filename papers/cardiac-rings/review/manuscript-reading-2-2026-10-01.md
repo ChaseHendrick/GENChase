@@ -1,4 +1,4 @@
-# Second reading: papers/cardiac-rings/paper/cardiac-rings.tex (revised draft of 2026-10-01)
+# Second reading: paper/cardiac-rings.tex (revised draft of 2026-10-01)
 
 This reading was done by a separate in-project agent session that was told to find errors. It is not an outside
 review. Line numbers refer to the .tex file. No TeX build was possible, so I read the source. I concentrated on the
@@ -139,8 +139,8 @@ None beyond the numbers above.
 ## What I checked and found correct
 
 **Link (Lemma 6.1, Theorem A(iii), `link_cell.py`, `data/link_cell.txt`).**
-- `timeout 300 python3 research/cardiac-cycle-certificates/fourier/link_cell.py` exits 0 in 0.2 s, and its output is
-  byte-identical to `papers/cardiac-rings/data/link_cell.txt`.
+- `timeout 300 python3 fourier/link_cell.py` in the study folder exits 0 in 0.2 s, and its output is
+  byte-identical to `data/link_cell.txt`.
 - The paper copy `code/fourier/link_cell.py` is identical to the research copy. The research `results/` records
   equal the paper's `data/` copies.
 - The worst ratio is 0.1396 (block 7), and the negative control (radii / 10) fails in 2 blocks, as stated.

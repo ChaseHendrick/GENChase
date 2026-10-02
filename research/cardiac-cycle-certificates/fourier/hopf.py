@@ -641,8 +641,14 @@ def dlambda_dg(fam, sp):
     A = fam["A"]
     q = sp["v"]
     lam_l, p, _ = left_eig(A, complex(float(sp["lam"].real.mid()), float(sp["lam"].imag.mid())))
-    if not (lam_l - sp["lam"]).contains(0) and not lam_l.overlaps(sp["lam"]):
-        raise ProofFailure("left and right eigenvalue enclosures do not overlap")
+    # lam_l(A) is an eigenvalue of A (that of A^T); its ball must be disjoint from every Gershgorin disc but D1, so it
+    # lies in D1, which holds exactly one eigenvalue (Lemma G(b)): lam_l(A) = lambda(A) and p(A) is its left eigenvector.
+    # (An overlap of the two eigenvalue balls alone would not identify them.)
+    lc = acb(lam_l.real.mid(), lam_l.imag.mid())
+    lr = up((lam_l - lc).abs_upper())
+    for i in range(DIM):
+        if i != sp["ic"] and not _discs_disjoint((lc, lr), sp["discs"][i]):
+            raise ProofFailure(f"left eigenvalue enclosure meets disc {i}")
     pq = sum((p[i] * q[i] for i in range(DIM)), acb(0))
     Apq = fam["Aprime"] * colvec(q)
     num = sum((p[i] * Apq[i, 0] for i in range(DIM)), acb(0))
@@ -707,6 +713,9 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
                 item["polydisc"] = polydisc_record(fam["eq_G"])
             out.append(item)
             stats["n"] += 1
+            if stats["n"] % 25 == 0:
+                log(f"  window cover: {stats['n']} intervals, now at [{float(a):.12f}, {float(b):.12f}], "
+                    f"{time.time() - t0:.0f} s")
             stats["max_others_re"] = sp["others_max_re"] if stats["max_others_re"] is None else amax(stats["max_others_re"], sp["others_max_re"])
             im_lo, im_hi = lo(sp["lam"].imag), up(sp["lam"].imag)
             stats["min_im"] = im_lo if stats["min_im"] is None or im_lo < stats["min_im"] else stats["min_im"]
@@ -2706,8 +2715,9 @@ def bridge_checks(log=print, data=DATA, prec=256):
     shas = {}
     for pth in (os.path.join(BRANCH_DIR, "points_K12.jsonl"), os.path.join(BRANCH_DIR, "points_centres_K32.jsonl"),
                 os.path.join(data, "gks_points.jsonl"), os.path.join(data, "gks_points_centres_K32.jsonl")):
-        if os.path.exists(pth):
-            shas[os.path.relpath(pth, ROOT)] = _sha(pth)
+        if os.path.exists(pth):                # append-only logs: the complete lines read here, their count and hash
+            _, n_, sha_ = _complete_lines(pth)
+            shas[os.path.relpath(pth, ROOT)] = dict(lines=n_, sha256_of_these_lines=sha_)
     out = dict(gks_branch_snapshot=info, points=[], eps_branch=dict(n_pieces=len(pieces), eps_end=pieces[-1]["e_hi"]),
                point_logs_sha256=shas)
     for pt in sorted(pts, key=lambda r: Fraction(r["g"])):
@@ -2865,7 +2875,8 @@ def collect(write=True, log=print, data=DATA):
                 for k, v in covers.items()],
         sources_sha256={s_: _sha(os.path.join(ROOT, s_)) for s_ in SOURCES},
         data_sha256={os.path.basename(p_): _sha(p_) for p_ in (os.path.join(data, f) for f in
-                     ("pieces.jsonl", "covers.jsonl", "theoremA.json", "gluing_gks.json")) if os.path.exists(p_)},
+                     ("pieces.jsonl", "covers.jsonl", "theoremA.json", "gluing_gks.json", "gks_points.jsonl",
+                      "gks_points_centres_K32.jsonl")) if os.path.exists(p_)},
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_piece_seconds=round(sum(r.get("seconds", 0) for r in pieces), 1))

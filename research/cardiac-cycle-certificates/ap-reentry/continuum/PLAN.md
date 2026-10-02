@@ -154,20 +154,43 @@ branch is regular in kappa through the minimum of L (section 6).
 
 ## 6. The minimum ring length: what is well posed
 
-Numerically (section 7) L(kappa) has an interior minimum on the branch: the fold of the dispersion relation, where the
-fast branch (larger c) meets the slow branch (smaller c). In kappa the branch passes through this point regularly
-(a fold in L is not a fold in kappa), so the pieces of section 5 cover it with no singularity.
+**Two different extrema (corrected 2026-10-02).** The first version of this section put the minimum of L at the fold
+of the dispersion relation, where the fast branch meets the slow branch. That is wrong in general. Along the branch,
+parameterized by kappa (equivalently by c = sqrt(D kappa)),
 
-* **Well posed and provable:** L*_branch = min of L(kappa) over the proved kappa range. With piece enclosures [L_j],
-  L*_branch lies in [min_j inf L_j, min_j sup L_j]. If L at both ends of the range exceeds that upper bound, the minimum
-  is interior: a fold of the proved branch.
+    dL/dkappa = L (1/(2 kappa) + T'(kappa)/T),
+
+so at the nose of the dispersion relation, where T is minimal (T' = 0), dL/dkappa = L/(2 kappa) > 0: L is still
+decreasing as kappa decreases, and it can be stationary only where T'/T = -1/(2 kappa) < 0, that is, on the slow
+branch, past the nose. The numerical branch of section 7 shows exactly this: T has its minimum (about 215.83 ms) near
+kappa = 0.537, and L keeps decreasing through it and along the slow branch, at least down to kappa = 0.199
+(L = 40.40 mm). Both points are regular points of the branch in kappa (a fold of T or of L is not a fold in kappa);
+the computed collocation Jacobian has no small singular value there.
+
+What the minimum of L means, where it exists: it is a fold of the ring problem at fixed L. Rings slightly longer
+carry two waves of different speeds on this branch near it, rings slightly shorter none (locally). At such a fold one
+real eigenvalue of the ring linearization on the leaf generically passes through 0 (a saddle-node of rotating waves),
+so the two waves near the fold differ in stability by one real eigenvalue. Which side is stable, if either, is a
+spectral question (section 10) and is not claimed.
+
+* **Well posed and provable:** L*_branch = the minimum of L(kappa) over a proved kappa range [kappa_a, kappa_b]. With
+  piece enclosures [L_j], L*_branch lies in [min_j inf L_j, min_j sup L_j]. It is an interior minimum (a fold of the
+  proved branch) only if L at both ends of the range exceeds that upper bound. If L is monotone on the proved range,
+  the statement is only that every L between the end values carries a wave; no minimum is located.
+* **Not established numerically yet:** whether L has an interior minimum at all. On the computed range it decreases
+  monotonically as kappa decreases (section 7). If the slow branch ends in a slow solitary-type limit (T -> infinity
+  at a positive c), L -> infinity there and an interior minimum exists; if T stays bounded as c -> 0, L -> 0 along the
+  branch and "the minimum ring length along the branch" is not a meaningful target. The continuation below
+  kappa = 0.199 decides which (section 7).
 * **Not provable by this method:** that no reentry exists for L < L*_branch (a global nonexistence statement about all
   solutions, on other branches or not travelling waves at all). The result must say "the shortest ring along this
   branch", not "the shortest ring that sustains reentry".
-* **A different number:** the shortest ring with *stable* reentry. On the fast branch near the fold the wave is
-  expected to lose stability through an oscillatory instability at some L above L*_branch (the alternans-type
-  instability of reentry on rings), and the slow branch is expected to be unstable. Locating that needs the spectral
-  problem (section 10). Until then the minimum-length target is the fold of the existence branch, and the text must say
-  that stability there is not claimed.
-* **The leaf matters:** L*_branch depends on H0 (the charge per cell). A second interval parameter H0 is possible
-  (the proof is the same with H0 an interval), but the statement above is for H0 = q(y01).
+* **A different number, and the one of physiological interest:** the shortest ring with *stable* reentry. The fast
+  branch is expected to lose stability at some L above L*_branch (an oscillatory, alternans-type instability of
+  reentry on rings is the classical scenario), and the slow branch is expected to be unstable. The cable simulations
+  of `../SCOPING.md` section 3.1 (first-order, h = 0.25 mm) died at L = 100 mm and circulated at 150 mm, while
+  travelling waves exist on the branch far below 100 mm: consistent with instability of the short-ring waves, but
+  those runs are on a grid and not converged. Locating the stability boundary needs section 10. Until then the text
+  must say that stability at the minimum is not claimed.
+* **The leaf matters:** L(kappa) and L*_branch depend on H0 (the charge per cell). A second interval parameter H0 is
+  possible (the proof is the same with H0 an interval), but the statements above are for H0 = q(y01).

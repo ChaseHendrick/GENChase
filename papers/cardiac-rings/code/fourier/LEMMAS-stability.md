@@ -95,7 +95,7 @@ with inverse (lambda - D_0)^{-1} (I - B (lambda - D_0)^{-1})^{-1}, which is comp
 plus a bounded one). A resolvent that is compact at one point is compact at every point of the resolvent set (the
 resolvent identity R(lambda) = R(lambda_0) (I + (lambda_0 - lambda) R(lambda))). The remaining statements are the
 standard consequences of a compact resolvent, proved in Appendix A of the manuscript
-(papers/cardiac-rings/paper/cardiac-rings.tex), Theorem A.5 (ii) to (iv): the spectrum consists of isolated eigenvalues
+(paper/cardiac-rings.tex), Theorem A.5 (ii) to (iv): the spectrum consists of isolated eigenvalues
 of finite algebraic multiplicity, and G_mu(H_0) = ker (H_0 - mu)^k for all large k is the range of the Riesz
 projection of mu. See also Kato 1976, Section III.6, the standard reference; no step depends on it (section 7). QED
 
@@ -261,7 +261,7 @@ that for every (s, mu) in [0, 1] x Gamma the bounded operator I - s Ehat R_D(mu)
 R_D(mu) := (mu - Dhat)^{-1} (sufficient: sup over mu in Gamma of ||Ehat R_D(mu)|| < 1). Let H(s) := Dhat + s Ehat and
 n(H, Omega) := sum over eigenvalues mu in Omega of m(mu; H). Then Gamma lies in the resolvent set of every H(s), each
 H(s) has compact resolvent, n(H(s), Omega) is finite, and n(H(1), Omega) = n(Dhat, Omega).
-Proof. This is Theorem A.7 of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex), whose proof uses
+Proof. This is Theorem A.7 of the manuscript (paper/cardiac-rings.tex), whose proof uses
 Lemma 3.1 (the manuscript's Lemma 5.8) and Appendix A: mu - H(s) = (I - s Ehat R_D(mu)) (mu - Dhat) is a bijection
 with compact inverse R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, norm continuous and bounded on [0, 1] x Gamma; the
 Riesz projection P(s) (Gamma positively, i.e. counterclockwise, oriented; here and in Lemma 3.3) has rank n(H(s), Omega)
@@ -713,7 +713,7 @@ r_uniqueness, section 4.1), eta, nu = e^{rho0}; the enclosures [J_n]
   Wissenschaften 132), 1976, Chapter III, Section 6: the standard reference for the facts about operators with compact
   resolvent used here (the resolvent is holomorphic on the resolvent set; Riesz projections of separated parts of the
   spectrum and of isolated eigenvalues; discrete spectrum under a compact resolvent). Since 2026-10-02 no step depends
-  on the book: Appendix A of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex) proves these facts on the
+  on the book: Appendix A of the manuscript (paper/cardiac-rings.tex) proves these facts on the
   l^1 spaces used here (Lemma A.1, compact operators are norm limits of finite-rank ones; Lemma A.2, the resolvent;
   Lemma A.3, contour integrals; Proposition A.4, the Riesz projection; Theorem A.5, compact resolvent; Lemma A.6,
   continuity of the Riesz projection; Theorem A.7, the homotopy count of Lemma 3.2), from the Neumann series, the
@@ -828,7 +828,7 @@ The referee found no error that makes a stated theorem false. Each gap and minor
 * M8. The Kato section and theorem numbers are marked "to be confirmed against a copy" where they are cited and in
   section 7. (2026-10-02: superseded. The facts are now proved in Appendix A of the manuscript, and the lemmas
   above cite that appendix, with Kato as the standard reference only; see section 7. An in-project adversarial
-  reading of Appendix A on 2026-10-02, papers/cardiac-rings/review/appendixA-reading-2026-10-02.md, found no error;
+  reading of Appendix A on 2026-10-02, review/appendixA-reading-2026-10-02.md, found no error;
   its gaps G1 and G2 led to the restatement of Lemma 3.2 on l^1_w(J) and to the domain statements for Dhat, Ehat
   and D_T in section 3.2 and Lemma 3.3.)
 

@@ -71,8 +71,10 @@ xbar + d xbar_1 + (d^2/2) xbar_2 by a Newton-Kantorovich step about the moving p
 bounded along the path to second order, Lemma 11.2), identified with the branch orbit through every piece's uniqueness
 ball (Lemma 11.3), and the Hill coefficients carry an explicit d^2 term (Lemma 11.4); the window keeps the affine
 comparison operator (Theorem 11.5). The jets along the path come from a truncated Taylor arithmetic (Jet, DJet).
-Driver: run_groups (--groups) tries the group unit of every group with an uncovered piece and falls back to piece
-units for a group whose unit fails. Units already in the log (piece units) stay valid; collect() takes each piece's
+A unit may also be a run of consecutive pieces of a group (part = (i0, i1), label G<gid>[i0:i1]); section 11 is
+stated for any such run, and the whole group is the run of all its pieces.
+Driver: run_groups (--groups) tries the group unit of every group with an uncovered piece; when a whole-group unit
+fails it tries the two halves of the group, and a half that fails falls back to piece units. Units already in the log (piece units) stay valid; collect() takes each piece's
 coverage from a group unit or a piece unit and writes results/fourier-branch-stability-uniform.json.
 
 Trusted: python-flint 0.9.0 (Arb); fourier/arbmodel.py, tp06_18d_arb.py, fourier_eval.py (Lemmas 1-3); branch.py
@@ -1316,9 +1318,16 @@ def path_ball(om, A, om1, A1, om2, A2, h, prec=256):
     return omb, Ab
 
 
-def group_data(gid, K=12):
-    """The group's pieces (sorted, covering [g_lo, g_hi] with consecutive overlaps, checked) and the centre of the piece
-    whose centre g is nearest the group's midpoint (digest checked)."""
+def unit_label(gid, part=None):
+    """G<gid> for a whole-group unit; G<gid>[i0:i1] for the unit of the group's pieces i0 .. i1 - 1 (sorted by g_lo)."""
+    return f"G{gid}" if part is None else f"G{gid}[{int(part[0])}:{int(part[1])}]"
+
+
+def group_data(gid, K=12, part=None):
+    """The group's pieces (sorted, covering [g_lo, g_hi] with consecutive overlaps, checked), restricted to the
+    consecutive run part = (i0, i1) (pieces i0 .. i1 - 1 in the order of g_lo) when part is given, and the centre of the
+    piece of that run whose centre g is nearest the run's midpoint (digest checked). The returned interval
+    [g_lo, g_hi] is that of the run (the whole group's when part is None)."""
     pieces, groups, centres = _logs(K)
     grp = groups[gid]
     if grp["group"] != gid:
@@ -1332,6 +1341,13 @@ def group_data(gid, K=12):
     for a, b in zip(plist, plist[1:]):
         if not Fraction(b["g_lo"]) <= Fraction(a["g_hi"]):
             raise ValueError(f"group {gid}: pieces {a['label']}, {b['label']} leave a gap")
+    if part is not None:
+        i0, i1 = int(part[0]), int(part[1])
+        if not 0 <= i0 < i1 <= len(plist):
+            raise ValueError(f"group {gid}: part {part} is not a nonempty run of its {len(plist)} pieces")
+        plist = plist[i0:i1]
+        glo, ghi = Fraction(plist[0]["g_lo"]), Fraction(plist[-1]["g_hi"])
+        grp = dict(grp, g_lo=br._dstr(glo), g_hi=br._dstr(ghi))
     mid = (glo + ghi) / 2
     crec = min(plist, key=lambda r: (abs(Fraction(r["centre_g"]) - mid), Fraction(r["centre_g"])))
     om, A = br.centre_from_record(centres[br._dstr(Fraction(crec["centre_g"]))])
@@ -1556,10 +1572,12 @@ GROUP_DEFAULTS = dict(
 )
 
 
-def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mutate=(), _widen=1):
-    """Theorem 11.5 on the whole group gid (section 11 of the lemmas). _widen (tests only) multiplies h (and the d-range
-    of every enclosure) by an integer factor: the certificate must then be refused. _mutate (tests only):
-    'drop_third_order' drops h^3 Y3 + h^4 Y4 from Y'; 'drop_moving_centre' drops h B' from Z1."""
+def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mutate=(), _widen=1, part=None):
+    """Theorem 11.5 on the whole group gid (section 11 of the lemmas), or, with part = (i0, i1), on the run of its
+    consecutive pieces i0 .. i1 - 1 (sorted by g_lo; the unit's interval is then the union of those pieces). _widen
+    (tests only) multiplies h (and the d-range of every enclosure) by an integer factor: the certificate must then be
+    refused. _mutate (tests only): 'drop_third_order' drops h^3 Y3 + h^4 Y4 from Y'; 'drop_moving_centre' drops
+    h B' + h^2 B'' from Z1."""
     st = dict(DEFAULTS)
     st.update(GROUP_DEFAULTS)
     st.update(settings or {})
@@ -1573,7 +1591,8 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         now = time.time()
         marks[name] = round(now - t[0], 1)
         t[0] = now
-    grp, plist, crec, om, A, centres = group_data(gid, K)
+    grp, plist, crec, om, A, centres = group_data(gid, K, part)
+    ulabel = unit_label(gid, part)
     gc = Fraction(crec["centre_g"])
     glo, ghi = Fraction(grp["g_lo"]), Fraction(grp["g_hi"])
     hF = max(ghi - gc, gc - glo) * int(_widen)
@@ -1581,7 +1600,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     bst.update(crec["settings"])
     # 1. Theorem B blocks at the POINT g_c (A, B1, N0, N1, Abar0, Abar1, Y0p, [J0_n], S_J0)
     bl = br.piece_blocks(om, A, crec["centre_g"], crec["centre_g"], settings=crec["settings"], log=QUIET,
-                         label=f"G{gid}")
+                         label=ulabel)
     mark("piece_blocks")
     # 2. untrusted predictor
     om1, A1, om2, A2 = predictor(om, A, gc, hF)
@@ -1689,7 +1708,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     finally:
         ctx.prec = old
     mark("Lemma 11.1")
-    log(f"  G{gid}: h = {float(hU):.4e}, Z1 point {float(Z1c):.4f}, Z1 path {float(Z1G):.4f}, Z2 {float(Z2):.3e}, "
+    log(f"  {ulabel}: h = {float(hU):.4e}, Z1 point {float(Z1c):.4f}, Z1 path {float(Z1G):.4f}, Z2 {float(Z2):.3e}, "
         f"Y' = {float(Yp):.3e} (Y0p {max(float(Y0p[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h Y1 "
         f"{max(float(hU * Y1[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^2 Y2 "
         f"{max(float(hU ** 2 * Y2[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^3 Y3 "
@@ -1740,7 +1759,8 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     cert = certify_uniform(U, settings=st, controls=controls, log=log)
     mark("certificate")
     out = dict(
-        type="group_unit", group=gid, label=f"G{gid}", g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
+        type="group_unit", group=gid, label=ulabel, part=None if part is None else [int(part[0]), int(part[1])],
+        g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
         centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
         pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
         half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
@@ -1842,25 +1862,40 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
 
 
 def done_groups(K=12):
-    """Certified group units by group id (the last one logged for a group wins; all are valid)."""
+    """Certified group units by unit label (G<gid> for a whole group, G<gid>[i0:i1] for a run of its pieces; the last
+    one logged for a label wins; all are valid)."""
     out = {}
     for r in br._read_jsonl_tolerant(LOG.format(K=K)):
         if r.get("type") == "group_unit" and r.get("ok"):
-            out[r["group"]] = r
+            out[r["label"]] = r
     return out
 
 
+def _covering_group_unit(rec, gid, hg):
+    """A certified group unit (whole group preferred, then runs in label order) of group gid that lists the piece rec
+    with the same centre digest, or None."""
+    cands = [x for x in hg.values() if x["group"] == gid and
+             x.get("piece_centre_sha256", {}).get(rec["label"]) == rec["centre_sha256"]]
+    cands.sort(key=lambda x: (x.get("part") is not None, x["label"]))
+    return cands[0] if cands else None
+
+
+def _halves(n):
+    """The two runs (0, n // 2), (n // 2, n) of a group of n >= 2 pieces."""
+    return [(0, n // 2), (n // 2, n)] if n >= 2 else []
+
+
 def _gjob(args):
-    gid, settings = args
+    gid, part, settings = args
     t0 = time.time()
     try:
-        return dict(gid=gid, ok=True, rec=prove_group_uniform(gid, settings=settings, log=QUIET))
+        return dict(gid=gid, part=part, ok=True, rec=prove_group_uniform(gid, settings=settings, log=QUIET, part=part))
     except FAILURES as e:
-        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", wall=round(time.time() - t0, 1),
+        return dict(gid=gid, part=part, ok=False, why=f"{type(e).__name__}: {e}", wall=round(time.time() - t0, 1),
                     settings=settings)
     except Exception as e:  # noqa: BLE001  (recorded, never a proof)
         import traceback
-        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-1500:],
+        return dict(gid=gid, part=part, ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-1500:],
                     wall=round(time.time() - t0, 1), settings=settings)
 
 
@@ -1869,7 +1904,7 @@ GROUP_ATTEMPTS = (dict(delta="3e-5"),)
 
 def group_coverage(K=12):
     """(pieces, groups, uncovered): a piece is covered by a certified piece unit with its centre digest, or by a certified
-    group unit of its group that lists it with the same centre digest."""
+    group unit of its group (whole or a run of its pieces) that lists it with the same centre digest."""
     pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
     hp, hg = done_labels(K), done_groups(K)
     unc = {}
@@ -1878,8 +1913,7 @@ def group_coverage(K=12):
         u = hp.get(r["label"])
         if u is not None and u["centre_sha256"] == r["centre_sha256"]:
             continue
-        g = hg.get(p["group"])
-        if g is not None and g.get("piece_centre_sha256", {}).get(r["label"]) == r["centre_sha256"]:
+        if _covering_group_unit(r, p["group"], hg) is not None:
             continue
         unc.setdefault(p["group"], []).append(r["label"])
     return pieces, groups, unc
@@ -1887,52 +1921,89 @@ def group_coverage(K=12):
 
 def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=3300, fallback=True, log=print):
     """Group units (prove_group_uniform) for every logged group with an uncovered piece, in order of g, at most
-    `workers` at a time; each result (or failure) is appended to the log at once. A group whose unit fails under every
-    attempt falls back to piece units for its uncovered pieces (run(), the piece driver), if fallback."""
+    `workers` at a time; each result (or failure) is appended to the log at once. A group whose whole-group unit fails
+    under every attempt is split into two halves (runs of consecutive pieces, prove_group_uniform(part=...)); a half
+    that fails falls back to piece units for its uncovered pieces (run(), the piece driver), if fallback. Failures
+    already in the log are not retried."""
     import multiprocessing as mp
     T0 = time.time()
     path = LOG.format(K=K)
     br._repair_jsonl(path, log)
-    _, groups, unc = group_coverage(K)
-    failed_before = {r["group"] for r in br._read_jsonl_tolerant(path) if r.get("type") == "group_failure"}
+    pieces, groups, unc = group_coverage(K)
+    npieces = {}
+    plabels = {}
+    for p in sorted(pieces, key=lambda q: Fraction(q["rec"]["g_lo"])):
+        npieces[p["group"]] = npieces.get(p["group"], 0) + 1
+        plabels.setdefault(p["group"], []).append(p["rec"]["label"])
+    failed = set()
+    for r in br._read_jsonl_tolerant(path):
+        if r.get("type") == "group_failure":
+            pt = r.get("part")
+            failed.add((r["group"], None if pt is None else (int(pt[0]), int(pt[1]))))
     todo = [g["group"] for g in groups if g["group"] in unc and (gids is None or g["group"] in set(gids))]
     log(f"group units: {len(groups)} groups logged, {len(todo)} with uncovered pieces, workers {workers}")
-    to_pieces = [gid for gid in todo if gid in failed_before]
-    queue = [(gid, list(attempts)) for gid in todo if gid not in failed_before]
+    to_pieces = []                                          # (gid, part) whose pieces fall back to piece units
+
+    def units_for(gid):
+        """The units still to try for group gid: the whole group, else its halves with uncovered pieces."""
+        if (gid, None) not in failed:
+            return [(gid, None)]
+        out = []
+        for pt in _halves(npieces[gid]):
+            if not set(plabels[gid][pt[0]:pt[1]]) & set(unc.get(gid, [])):
+                continue
+            if (gid, pt) in failed:
+                to_pieces.append((gid, pt))
+            else:
+                out.append((gid, pt))
+        if not out and npieces[gid] < 2:
+            to_pieces.append((gid, None))
+        return out
+    queue = [(gid, pt, list(attempts)) for g0 in todo for gid, pt in units_for(g0)]
     with mp.get_context("fork").Pool(workers, maxtasksperchild=2) as pool:
         running = {}
         while (queue or running) and time.time() - T0 < budget_s:
             while queue and len(running) < workers and time.time() - T0 < budget_s:
-                gid, ds = queue.pop(0)
-                running[gid] = (pool.apply_async(_gjob, ((gid, dict(ds[0])),)), ds)
-            done = [gid for gid, (ar, _) in running.items() if ar.ready()]
+                gid, pt, ds = queue.pop(0)
+                running[(gid, pt)] = (pool.apply_async(_gjob, ((gid, pt, dict(ds[0])),)), ds)
+            done = [key for key, (ar, _) in running.items() if ar.ready()]
             if not done:
                 time.sleep(2)
                 continue
-            for gid in done:
-                ar, ds = running.pop(gid)
+            for key in done:
+                gid, pt = key
+                ar, ds = running.pop(key)
                 res = ar.get()
+                lab = unit_label(gid, pt)
                 if res["ok"]:
                     br._append(path, res["rec"])
                     c = res["rec"]["certificate"]
-                    log(f"  G{gid}: CERTIFIED uniformly over [{res['rec']['g'][0]}, {res['rec']['g'][1]}] "
+                    log(f"  {lab}: CERTIFIED uniformly over [{res['rec']['g'][0]}, {res['rec']['g'][1]}] "
                         f"({len(res['rec']['pieces'])} pieces), delta {res['rec']['delta_requested']}, (SC) worst "
                         f"{c['SC_worst_ratio']:.3e}, rho {res['rec']['existence']['rho']['approx']:.2e}, "
                         f"Z1 path {res['rec']['existence']['Z1_path']['approx']:.3f}, {res['rec']['wall_s']} s")
                 else:
-                    br._append(path, dict(type="group_failure", group=gid, why=res["why"], settings=res.get("settings"),
-                                          trace=res.get("trace"), wall=res.get("wall")))
-                    log(f"  G{gid}: group unit failed ({ds[0]}): {res['why'][:200]}")
+                    br._append(path, dict(type="group_failure", group=gid, label=lab,
+                                          part=None if pt is None else [pt[0], pt[1]], why=res["why"],
+                                          settings=res.get("settings"), trace=res.get("trace"), wall=res.get("wall")))
+                    log(f"  {lab}: group unit failed ({ds[0]}): {res['why'][:200]}")
                     if ds[1:]:
-                        queue.insert(0, (gid, ds[1:]))
+                        queue.insert(0, (gid, pt, ds[1:]))
+                    elif pt is None:
+                        failed.add((gid, None))
+                        queue[0:0] = [(gid, h, list(attempts)) for _, h in units_for(gid)]
                     else:
-                        to_pieces.append(gid)
+                        failed.add((gid, pt))
+                        to_pieces.append((gid, pt))
     left = budget_s - (time.time() - T0)
     if fallback and to_pieces and left > 300:
         _, _, unc = group_coverage(K)
-        labels = [l for gid in sorted(to_pieces) for l in unc.get(gid, [])]
+        labels = []
+        for gid, pt in sorted(to_pieces, key=lambda t: (t[0], -1 if t[1] is None else t[1][0])):
+            run_labels = plabels[gid] if pt is None else plabels[gid][pt[0]:pt[1]]
+            labels += [l for l in run_labels if l in set(unc.get(gid, [])) and l not in labels]
         if labels:
-            log(f"falling back to piece units for groups {sorted(to_pieces)} ({len(labels)} pieces)")
+            log(f"falling back to piece units for {[unit_label(g, p) for g, p in to_pieces]} ({len(labels)} pieces)")
             run(labels=labels, K=K, workers=workers, budget_s=left, log=log)
     return done_groups(K)
 
@@ -1946,8 +2017,9 @@ RECORD = os.path.join(RESULTS, "fourier-branch-stability-uniform.json")
 
 
 def collect(K=12, write=True, log=print):
-    """The Theorem C record: every piece of the branch record with the unit that covers it (a piece unit, or the group
-    unit of its group), the maximal intervals covered, the group units and the failures. Centre digests are matched
+    """The Theorem C record: every piece of the branch record with the unit that covers it (a piece unit, or a group
+    unit of its group: the whole group or a run of its pieces), the maximal intervals covered, the group units and the
+    failures. Centre digests are matched
     against the branch logs; nothing is taken from a unit whose centre digest does not match."""
     pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
     hp, hg = done_labels(K), done_groups(K)
@@ -1959,9 +2031,7 @@ def collect(K=12, write=True, log=print):
         u = hp.get(r["label"])
         if u is not None and u["centre_sha256"] != r["centre_sha256"]:
             u = None
-        gu = hg.get(p["group"])
-        if gu is not None and gu.get("piece_centre_sha256", {}).get(r["label"]) != r["centre_sha256"]:
-            gu = None
+        gu = _covering_group_unit(r, p["group"], hg)
         cov = gu if gu is not None else u          # report the group unit when there is one (both are valid)
         rows.append(dict(label=r["label"], group=p["group"], g=[r["g_lo"], r["g_hi"]], uniform=cov is not None,
                          unit=None if cov is None else (cov["label"] if cov is gu else r["label"]),
@@ -1989,19 +2059,17 @@ def collect(K=12, write=True, log=print):
         runs.append(cur)
     used = {}
     for r in covered:
-        used.setdefault(r["unit"], r)
-    units_used = []
-    for lab in used:
-        x = hg[int(lab[1:])] if (lab.startswith("G") and "P" not in lab) else hp[lab]
-        units_used.append(x)
+        used.setdefault((r["unit_kind"], r["unit"]), r)
+    units_used = [hg[lab] if kind == "group" else hp[lab] for kind, lab in used]
     worst = max((Fraction(x["multiplier_bound_full_period"]["dec"]) for x in units_used), default=None)
     prog = {}
     for x in units_used:
         key = x.get("program_sha256") or "not recorded (early version of branch_stability.py)"
         prog[key] = prog.get(key, 0) + 1
     gunits = []
-    for gid, x in sorted(hg.items()):
-        gunits.append(dict(group=gid, label=x["label"], g=x["g"], half_width=x["half_width"]["approx"],
+    for x in sorted(hg.values(), key=lambda v: (v["group"], -1 if v.get("part") is None else v["part"][0])):
+        gunits.append(dict(group=x["group"], label=x["label"], part=x.get("part"), g=x["g"],
+                           half_width=x["half_width"]["approx"],
                            pieces=x["pieces"], centre_piece=x["centre_piece"], delta_requested=x["delta_requested"],
                            multiplier_bound_full_period=x["multiplier_bound_full_period"]["approx"],
                            rho=x["existence"]["rho"]["approx"], Z1_path=x["existence"]["Z1_path"]["approx"],
@@ -2021,7 +2089,8 @@ def collect(K=12, write=True, log=print):
         status="computed; awaiting adversarial review",
         theorem=theorem_text(runs, worst),
         n_pieces_branch=len(rows), n_pieces_uniform=len(covered),
-        n_group_units=len(hg), n_piece_units=n_piece_units,
+        n_group_units=len(hg), n_group_units_used=sum(1 for kind, _ in used if kind == "group"),
+        n_piece_units=n_piece_units, n_piece_units_used=sum(1 for kind, _ in used if kind == "piece"),
         n_units_used=len(units_used),
         intervals_uniform=[dict(g=[a, b], n_pieces=n) for a, b, n in runs],
         uncovered_pieces=[r["label"] for r in rows if not r["uniform"]],
@@ -2053,7 +2122,8 @@ def theorem_text(runs, worst):
     return ("Conditional on Theorem B (results/fourier-branch-gks.json: for every G_Ks in each listed piece the branch "
             "orbit x*(G_Ks) exists, is unique in the piece's ball and has minimal period T) and on the lemmas of "
             "fourier/LEMMAS-stability.md (sections 1 to 4, 10 and 11): for EVERY G_Ks in " + iv + " (a union of "
-            "branch pieces, each covered by a certified unit: the group unit of its group or a piece unit), the "
+            "branch pieces, each covered by a certified unit: a group unit of its group, for the whole group or a run "
+            "of its consecutive pieces, or a piece unit), the "
             "single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 endocardial model has the Floquet "
             "multiplier 1 algebraically simple and its other 17 Floquet multipliers of modulus < e^(-delta T_lo) with "
             "the unit's delta and T_lo (worst over the units: "
