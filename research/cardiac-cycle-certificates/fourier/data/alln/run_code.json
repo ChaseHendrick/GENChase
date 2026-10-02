@@ -1,0 +1,6 @@
+{
+ "alln_py_sha256_at_run_launch": "c3123c6313a65e8b0f22087cbad6c7e7e56e66efebeaad78488278f29575e26c",
+ "launched": "2026-10-02T00:18Z",
+ "command": "nohup nice -n 10 timeout 3600 python3 alln.py --run --width 1/4096 --overlap 1/8 --workers 2 --budget 3300",
+ "note": "the pieces in pieces.jsonl were produced by this version of alln.py; later edits touched only the docstring, collect(), current_plan() (overlap type), reprove() and controls(); test_alln.test_reprove_bit_for_bit re-proves logged pieces with the final file and compares the exact bounds"
+}

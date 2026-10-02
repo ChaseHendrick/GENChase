@@ -1234,6 +1234,7 @@ def piece_blocks(om_bar, A, g_lo, g_hi, *, settings=None, log=print, label=None)
                 om_bar=om_bar, A=A, nu=nu, rho0=rho0, rho=rho, delta=delta, B1=B1, B1g=B1g, B1g_ff=Zg_ff, N0=N0, N1=N1,
                 Abar0=Abar0,
                 Abar1=Abar1, Y0p=Y0p, Y0g=Y0g, J=J, SJ=SJ, tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))),
+                _Afin=Afin, _A_explicit=tail["A_explicit"], _enc_g=enc_g, _tailK=tailK, _nupow=nupow, _Kp=Kp,
                 strips=dict(g=ex._strip_rec(strip_g), J=ex._strip_rec(strip_J), dg_f=ex._strip_rec(strip_d),
                             dg_J=ex._strip_rec(strip_D)),
                 timings_s=clk.marks, wall_s=round(time.time() - clk.t0, 2))

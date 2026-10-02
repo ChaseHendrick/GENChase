@@ -911,6 +911,7 @@ def split(piece, overlap):
 
 def current_plan(width, overlap, fails, e_end=E_END):
     """Leaves of the plan: the base grid with every failed piece replaced (recursively) by its two halves."""
+    overlap = Fraction(overlap)
     failed = {(Fraction(f["eps_lo"]), Fraction(f["eps_hi"])) for f in fails}
     out, stack = [], list(reversed(base_plan(width, overlap, e_end)))
     while stack:
@@ -1054,6 +1055,8 @@ def collect(width="1/4096", overlap="1/8", e_end=E_END, write=True, log=print):
         pieces=table, gluing=glues, stage_E_inclusion=inclusions,
         cable_piece=table[0] if cable else None,
         controls=_read_log(CONTROLS_LOG, False),
+        run_code=(json.load(open(os.path.join(DATA, "run_code.json"))) if os.path.exists(os.path.join(DATA, "run_code.json"))
+                  else None),
         settings=dict(DEFAULTS),
         sources_sha256={p: ex.sha256(os.path.join(ROOT, p)) for p in SOURCES},
         pieces_log=os.path.relpath(PIECES_LOG, ROOT), pieces_log_sha256=ex.sha256(PIECES_LOG),

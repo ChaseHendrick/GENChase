@@ -514,18 +514,23 @@ def test_log_validation_and_repair():
             pass
         else:
             raise AssertionError("a corrupted middle line was accepted")
-        # (3) a tampered piece (radius of uniqueness shrunk) breaks the re-derived gluing
+        # (3) a tampered piece: radius of uniqueness shrunk below the existence radius (refused by the piece-order
+        # check), and shrunk to just above the existence radius (breaks the re-derived gluing)
         recs = [json.loads(l) for l in keep]
         ip = [i for i, r in enumerate(recs) if r["type"] == "piece"][1]
-        recs[ip]["rec"]["r_uniqueness"]["hex"] = "0x1p-80"
-        with open(run, "w") as fh:
-            fh.write("".join(json.dumps(r) + "\n" for r in recs))
-        try:
-            br.validate_logs(K_RUN, log=QUIET)
-        except RuntimeError as e:
-            assert "glue" in str(e)
-        else:
-            raise AssertionError("a tampered radius passed the resume check")
+        r_lo_hex = recs[ip]["rec"]["r_existence"]["hex"]
+        with fe.precision(1024):
+            just_above = ct.dyadic_to_text(ct.text_to_dyadic(r_lo_hex) + arb(2) ** -400)
+        for tamper, expect in (("0x1p-80", "r_existence"), (just_above, "glue")):
+            recs[ip]["rec"]["r_uniqueness"]["hex"] = tamper
+            with open(run, "w") as fh:
+                fh.write("".join(json.dumps(r) + "\n" for r in recs))
+            try:
+                br.validate_logs(K_RUN, log=QUIET)
+            except RuntimeError as e:
+                assert expect in str(e), (expect, str(e))
+            else:
+                raise AssertionError("a tampered radius passed the resume check")
         # (4) a centre that does not match its piece's digest is refused
         recs = [json.loads(l) for l in keep]
         recs[ip]["rec"]["centre_sha256"] = "0" * 64
