@@ -2382,6 +2382,28 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_sto
 # =================================================================================================================
 # Theorem A driver
 # =================================================================================================================
+def _exact_decimal(fr):
+    """The exact decimal expansion of a Fraction whose denominator is 2^a 5^b (raises otherwise)."""
+    fr = Fraction(fr)
+    d, n = fr.denominator, 0
+    while d % 10 == 0:
+        d //= 10
+        n += 1
+    while d % 2 == 0 or d % 5 == 0:
+        d = d // 2 if d % 2 == 0 else d // 5
+        n += 1
+    if d != 1:
+        raise ValueError("not a finite decimal")
+    v = abs(fr) * 10 ** n
+    if v.denominator != 1:
+        raise ValueError("internal: not a finite decimal")
+    s_ = str(v.numerator).rjust(n + 1, "0")
+    out = s_[:len(s_) - n] + ("." + s_[len(s_) - n:] if n else "")
+    if Fraction(out) != abs(fr):
+        raise ValueError("internal: decimal conversion")
+    return ("-" if fr < 0 else "") + out
+
+
 def _ball_rec(x):
     """lower/upper decimal records of a real ball"""
     return {"lower": bound_rec(lo(x), "down"), "upper": bound_rec(up(x), "up")}
@@ -2403,8 +2425,8 @@ def theorem_A(log=print, data=DATA, prec=192):
     eqX = famH["eq_G"]["X"]
     rec = dict(
         window=list(WINDOW), gH_interval=cov["gH_interval"],
-        gH_interval_decimal=[dec(_arb_q(Fraction(cov["gH_interval"][0])), "down", 22),
-                             dec(_arb_q(Fraction(cov["gH_interval"][1])), "up", 22)],
+        gH_interval_decimal=[_exact_decimal(Fraction(cov["gH_interval"][0])),
+                             _exact_decimal(Fraction(cov["gH_interval"][1]))],
         n_intervals=dict(left=len(cov["left"]), right=len(cov["right"])),
         others_max_re_upper=bound_rec(cov["stats"]["max_others_re"]),
         lambda_imag_range=[dec(cov["stats"]["min_im"], "down", 12), dec(cov["stats"]["max_im"], "up", 12)],

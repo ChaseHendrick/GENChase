@@ -71,3 +71,16 @@ Newest entries last. Times UTC. Nothing in this log is a proof.
   stays at 3e-7 to 4e-7 (scaled) at kappa = 2.17, 0.525 and 0.294: no fold in kappa there.
 - 06:59. The CAPD pilot needs a decimal kappa: the wave was re-solved at kappa = 2.19 exactly (T = 298.84894 ms,
   L = 173.5538 mm; `sol_k2.19_exact.npz` in the scratchpad).
+- 06:59 to 07:05. CAPD wrapping pilot on the kappa = 2.19 wave (`wrap_run.py` + `/root/bin/wrap_pilot`, built at 06:00
+  from the committed sources; one core, nice 10; run directory `tw/wrap` in the scratchpad). Runs P1 to P5 (PLAN.md
+  section 8): P1, C1 from V = -38 mV through the upstroke, 30 ms requested, stopped at 6.26 ms after 312 steps (29.7 s)
+  because the trajectory of the box centre left the wave along the expanding direction and repolarized early (V back
+  to -40.6 mV; the floating-point trajectory from the same point lies inside the enclosure); |D| reached 2.8e7 with
+  radius/(r0 |D|) constant at 0.53: no wrapping. P2, the foot (T - 5.5 to T - 0.5 ms): 1,380 steps, 122 s, |D| 1.9e5,
+  ratio 0.13 to 0.14. P3, 2 ms windows at six other phases: 13 to 21 steps on the plateau and in repolarization,
+  456 and 530 steps near rest. P4, dimension 21 with kappa radius 1e-9 relative: 0.108 s per step against 0.095.
+  P5, C0: 0.034 s per step. Float references inside every enclosure.
+- 07:05. Full-period sweep started: 2 ms C1 windows from collocation points over the whole period except 0.05 ms on
+  each side of the two sections (`tw/wrap/sweep.py`, 150 windows).
+- 07:07. Review by a separate agent started (a nested `claude -p` process with read-only tools plus writing the review
+  file; prompt in the scratchpad `tw/review_prompt.md`): in-project reading, not an outside review.

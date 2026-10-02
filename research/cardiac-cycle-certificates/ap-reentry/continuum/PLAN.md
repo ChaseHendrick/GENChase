@@ -194,3 +194,170 @@ spectral question (section 10) and is not claimed.
   must say that stability at the minimum is not claimed.
 * **The leaf matters:** L(kappa) and L*_branch depend on H0 (the charge per cell). A second interval parameter H0 is
   possible (the proof is the same with H0 an interval), but the statements above are for H0 = q(y01).
+
+## 7. Numerical travelling waves (floating point; not a proof)
+
+Method: `pde_guess.py` (cable on a grid, first-order Rush-Larsen, h = 0.25 mm, from the N = 16 orbit waveform) gives a
+profile; `tw_bvp.py` solves the periodic boundary-value problem of (2) on the leaf H = H0 by Radau IIA collocation
+(order 5, two pieces split at the two -40 mV crossings, so no collocation interval contains the h/j switch; an
+unfolding parameter mu on K_i' that must come out 0) and continues it in kappa; `tw_branch.py` summarizes. All of it is
+floating point; nothing here is a proof. Records: `results/tw_branch.json` (every computed row), `results/tw_profiles.json`
+(three profiles), `results/tw_mesh_k2.19136.json` (mesh study), and the solution at kappa = 2.19,
+`results/sol_k2.19.npz` (the start of the CAPD pilot).
+
+**Accuracy.** Mesh study at kappa = 2.19136 (M intervals per piece): T = 299.0667 (200), 298.9251 (300), 298.9777 (400),
+298.97385 (600), 298.97379 ms (900). The rows below use M = 600 (T to about 1e-4 ms). Newton residuals are 1e-15 to
+3e-14 (scaled max norm); |mu| <= 4e-9 (it should vanish; it measures the discretization); H varies by at most 2e-6 mM
+along a computed profile.
+
+**The branch** (H0 = 150.44266158 mM, D = 0.154 mm^2/ms):
+
+BRANCH_TABLE
+
+* **Fast branch.** T and L increase with c. At kappa = 2.19 (c = 0.5807 mm/ms) the wave has T = 298.849 ms,
+  L = 173.554 mm, Vmax 15.94 mV, maximal dV/ds 98.4 mV/ms (upstroke), and the -40 mV crossings have W = +93.1 mV/ms
+  (up) and -1.39 mV/ms (down). V crosses 15 mV twice per period (at s = 4.56 ms with W = +0.91 and at s = 24.82 ms with
+  W = -0.019 mV/ms) and stays within 1 mV of 15 mV for 44.3 ms per period (within 8 mV for 104.3 ms): the GHK window
+  is a sustained regime, as in the discrete ring.
+* **The nose (minimum of T).** T_min = 215.834 ms near kappa = 0.537 (c = 0.2876 mm/ms), quadratic fit through the
+  rows at kappa = 0.474, 0.525, 0.576; there L is about 62 mm. Vmax there is 6.9 mV: V never comes within 8 mV of
+  15 mV, so the GHK window is not needed near the nose or on the slow branch.
+* **Slow branch.** Past the nose T increases again while c keeps decreasing, and L = c T keeps decreasing: 40.40 mm
+  at kappa = 0.19907 (c = 0.1751 mm/ms, T = 230.71 ms), the last computed row. Vmax tends to about 6.57 mV, the
+  upstroke slows (maximal W 8.1 mV/ms), Na_i rises to 15.8 mM (the leaf fixes the total charge, so the ion balance
+  shifts with the rate).
+* **Expansion.** The largest real eigenvalue of the 20 x 20 Jacobian along the profile (frozen coefficients, 400
+  samples) averages 2.30 per ms at kappa = 2.19 (range 1.15 to 4.57), 0.59 at kappa = 0.525 and 0.26 at kappa = 0.199;
+  integrated over a period this crude estimate gives log-expansions of about 683, 128 and 59. Single shooting is
+  impossible on the fast branch; the slow branch is far milder.
+* **Stiffness.** The most negative eigenvalue reaches -708 per ms at kappa = 2.19 (rest, the m gate), -426 at 0.525
+  and -330 at 0.199 (the rest potential rises with Na_i).
+* **Grid against continuum.** The h = 0.25 mm grid of `../SCOPING.md` section 3.1 gives T = 344 ms at c = 0.581 mm/ms,
+  against 298.98 ms for the continuum wave at the same speed: the grid slows conduction, so the grid runs are not
+  quantitative for the continuum.
+
+**Numerical minimum ring length.** MINLEN_PENDING
+
+## 8. The wrapping pilot (CAPD measurements; not a proof)
+
+Program: `wrap_pilot.cpp` (CAPD 6.1.0 with the project patch, C1Rect2Set and C0Rect2Set, order 20, double intervals;
+h/j branch certified on every step enclosure; GHK quotient or degree-24 window with the Gronwall inflation, window
+switched on within theta = 1 mV of 15 mV), driven by `wrap_run.py`, which also integrates the box centre in floating
+point (Radau, rtol 1e-12) and checks that this reference lies in the end enclosure. Wave: kappa = 2.19 exactly
+(T = 298.84894 ms, L = 173.5538 mm; section 7). Start boxes: a collocation point of the wave, relative radius r0 per
+component. "|D|" is the infinity norm of the midpoint of the derivative enclosure (the true expansion of the flow);
+"wrapping ratio" is (C0 radius)/(r0 |D|), which stays constant if the enclosure grows only as the flow does. One core,
+nice 10. Records: `results/wrap_pilot_2026-10-02.json`.
+
+| run | phase, branch | duration | steps | s per step | mean step | end |D| | wrapping ratio | rel. width of D (big entries) | float reference inside |
+|---|---|---|---|---|---|---|---|---|---|
+| P1, C1, r0 1e-12 | upstroke from V = -38 mV, piece A | 6.26 ms of 30 requested | 312 (20 window) | 0.095 | 0.020 ms | 2.8e7 | 0.53 at every mark | 1e-9 at 0.6 ms, 1.8e-6 at 3.1 ms, 7.9e-4 at 5.1 ms | yes |
+| P2, C1, r0 1e-12 | foot, s = T - 5.5 to T - 0.5 (V from rest to -69.4 mV), piece B | 5 ms | 1,380 | 0.088 | 0.0036 ms | 1.9e5 | 0.13 to 0.14 | 5.4e-6 | yes |
+| P3, C1, r0 1e-10 | plateau and repolarization, s = 50, 100, 150 | 2 ms each | 18, 19, 21 | 0.094 to 0.108 | 0.10 to 0.11 ms | | | | yes |
+| P3, C1, r0 1e-10 | piece B, V = -49, -82, -83 mV (s = T - 100, T - 60, T - 25) | 2 ms each | 13, 456, 530 | 0.088 to 0.12 | 0.16, 0.0044, 0.0038 ms | 164 (T - 25) | 0.13 | 2.5e-6 | yes |
+| P4, C1, dim 21, kappa radius 1e-9 relative | upstroke, as P1 | 4 ms | 203 | 0.108 | 0.020 ms | 1.4e4 at 3 ms | (dominated by the kappa radius) | 1.2e-4 at 3 ms | yes |
+| P5, C0, r0 1e-12 | upstroke, as P1 | 4 ms | 209 | 0.034 | 0.019 ms | | | | yes |
+
+Findings (measurements, not a proof):
+
+* **No wrapping.** Through the upstroke the derivative grows by a factor 2.8e7 in 6.26 ms (about e^17) and the C0
+  enclosure grows exactly with it: the ratio radius/(r0 |D|) stays at 0.53 from 0.6 ms to the end. In the foot it
+  stays at 0.13 to 0.14 while |D| grows to 1.9e5. CAPD's Lohner (doubleton) representation follows the expanding
+  direction; the enclosures are as wide as the flow forces them to be and no wider.
+* **The derivative enclosure widens like r0 |D|^2.** Its relative width (entries above 1e-3 of the largest) grows
+  from 1.6e-9 to 7.9e-4 in P1 while |D| grows from 39 to 2.1e6: relative width = c r0 |D| with c from about 27 to 260
+  (P1, r0 = 1.5e-12 in scaled units) and about 22 in the foot (P2). This is the true variation of the derivative over
+  the box (second derivative times the image radius r0 |D|), not a loss of accuracy of the representation. With
+  |D| = e^{lambda Delta} it ties the segment length to the box radius: relative width of DG_i about c r0 e^{lambda Delta}.
+* **The window length is limited by the dynamics, not by the enclosure.** P1 stopped at 6.26 ms because the
+  trajectory from the box centre (a collocation point, accurate to the collocation error) left the wave along the
+  expanding direction and repolarized early (V fell from 14 mV back to -40 mV); the floating-point trajectory from the
+  same point did the same and lies inside the enclosure. The expanding rate on this wave is about 2.3 per ms on
+  average (between 1.1 and 4.6 per ms, frozen-coefficient eigenvalues; section 7), so a segment of Delta ms multiplies
+  errors by roughly e^{2.3 Delta}: segments of 2 to 4 ms (factors 1e2 to 1e4) are the natural choice, about 75 to 150
+  segments per period at kappa = 2.19. On the slow branch the expansion per period is much smaller (section 7), so
+  fewer segments are needed there.
+* **Step size is set by the stiffness of the resting m gate**, as in the discrete ring: 0.0036 to 0.0044 ms near rest
+  (V below about -80 mV), 0.02 ms through the upstroke, 0.1 to 0.16 ms on the plateau and in repolarization. The cost
+  of a C1 step in 20 dimensions is 0.09 to 0.11 s, a dimension-21 step (kappa as a state) about 14 per cent more, and a
+  C0 step about 36 per cent of a C1 step.
+* **The GHK window** (20 window steps in P1) adds Gronwall inflations of at most 2.2e-52 (C0) and 2.2e-43 (C1): negligible.
+* **kappa as an interval** (P4): a kappa radius of 1e-9 relative (2.2e-9 absolute) dominates the image radius over a
+  4 ms upstroke segment: radius/(r0 |D|) is 45 to 52 instead of 0.53 with a point kappa (P1), and the image relative
+  width at 4 ms is 1.4e-3 against 1.6e-5 for the point-kappa C0 run P5 from the same box. The kappa pieces must therefore be narrow, or the segments
+  shorter, where the sensitivity to kappa is large (section 9).
+
+SWEEP_PENDING
+
+## 9. Cost of the full continuum proof (extrapolated from section 8)
+
+SECTION9_PENDING
+
+## 10. Stability: the spectral problem (plan; nothing computed rigorously)
+
+**The operator.** In the frame moving with the wave, xi = x - c t on R/LZ, U(xi, t) = u(xi + c t, t) solves
+U_t = D e_V e_V^T U_xixi + c U_xi + f(U). The wave is the steady state Phi(xi) = phi(-xi/c). Its linearization
+
+    lambda v = D e_V e_V^T v_xixi + c v_xi + Df(Phi) v + (jump terms at the two switch points),             (5)
+
+with v L-periodic in xi. Only V diffuses; the 18 gate and concentration rows are transport equations. The jump terms
+are not optional: f_h and f_j are discontinuous in V at -40 mV, so d f / dV contains (F_hi - F_lo) delta(V + 40), which
+along the wave is a point mass at the two crossings. Written in the wave time s (d/dxi = -(1/c) d/ds) problem (5) is
+the linear 20-dimensional periodic ODE
+
+    v' = J(s) v + lambda B v,   B = -I on the 18 gate and concentration rows, B[W, V] = kappa, B[V, .] = 0,        (6)
+
+on [0, T] with v(T) = v(0), where J is the Jacobian of the comoving field (2) on each piece and the solution jumps by
+the saltation matrix S = I + (F_+ - F_-) e_V^T / W at the two sections (the same matrix as for the time-T variational
+equation, independent of lambda). lambda is an eigenvalue iff the monodromy M(lambda) of (6) (with the two jumps) has
+eigenvalue 1. lambda = 0 is an eigenvalue with eigenfunction phi' (translation), and the charge invariant adds a second
+neutral direction (across leaves), so 0 has algebraic multiplicity at least 2; on the leaf, at least 1.
+
+**Structure of the spectrum (expected; to be verified).** For |Im lambda| large the gate and concentration rows
+dominate (6), and the eigenvalues accumulate along vertical lines Re lambda = (1/T) log |m_j|, where m_j are the
+multipliers over one period of the 18 transport rows alone with V frozen along the wave (each gate relaxes, so
+|m_j| < 1 is expected; the concentrations relax slowly, so some of these lines lie very close to the imaginary axis: a
+rough hand estimate for K_i, through E_K in i_K1 alone, gives a relaxation rate of about 1e-4 per ms; not computed). The spectrum is discrete but not confined to a sector; the linearization does not
+generate an analytic semigroup, and the spectral mapping property must be shown separately (the parabolic V part is
+compact for t > 0 on the ring; the essential growth bound comes from the transport rows).
+
+**What "spectral stability" can mean here, and what it cannot.** Spectral stability on the leaf: every eigenvalue
+other than the translation eigenvalue 0 has Re lambda < 0, including the accumulation lines. It does not by itself give
+nonlinear orbital stability: (a) the semigroup is not analytic (see above); (b) because of the h/j switch the time-T map
+of the PDE is not C^1 in the usual sense near the crossing curves. A nonlinear statement needs a separate argument
+(for example a Lipschitz contraction estimate in L^infinity for the time-T map). The owner's plan asks for existence plus
+spectral stability first; the statement must stop there.
+
+**Numerical route (next step).** Discretize (6) with the same collocation as the wave (`tw_bvp.py`), giving a sparse
+generalized eigenproblem (A0 + lambda A1) x = 0 with the two saltation jumps in the continuity rows; compute the
+eigenvalues nearest a few shifts by sparse shift-and-invert. Along the branch this locates the first crossing of the
+imaginary axis (the numerical shortest stable ring) and checks the expected real crossing at the fold of L.
+
+**Rigorous route (later).** (i) A priori exclusion of |lambda| > R in the closed right half plane from the structure
+of (6) (the transport rows contract; the diffusion row is a regular perturbation for large |lambda|). (ii) In the
+compact region left, count zeros of a characteristic function by the argument principle, with M(lambda) computed by
+interval multiple shooting along the same segments as section 4. The expanding direction (multiplier of order
+e^{kappa T}) makes det(M(lambda) - I) unusable directly; a multiple-shooting determinant (the cyclic block matrix of (4)
+with lambda) or exterior-power (compound matrix) formulation is needed. Not started.
+
+## 11. Files
+
+| file | role |
+|---|---|
+| `tw_model.py` | comoving field (2), first integral H, finite-difference Jacobian (floating point) |
+| `pde_guess.py` | initial profile from a cable simulation on a grid (`../ring_rl.c`) |
+| `tw_bvp.py` | collocation of the periodic wave on the leaf, continuation in kappa, mesh study |
+| `tw_branch.py` | profile summaries (crossings, window time, stiffness, expansion) and the branch table with the minima of T and L |
+| `tw_shooting.py` | the multiple-shooting system (4) at a numerical wave in floating point: residual, segment expansion, conditioning of DF |
+| `tw_spectrum.py` | eigenvalues of the discretized linearization (6) near given shifts (floating point) |
+| `comoving19.hpp` | CAPD field of (2) (dimension 20, or 21 with kappa as a state), the window rows, H |
+| `comoving_field.cpp`, `check_comoving_field.py` | CAPD field against `tw_model.py` at 300 points, with a negative control |
+| `wrap_pilot.cpp`, `wrap_run.py` | CAPD segment enclosures (C0, C1, multiprecision C0) with the branch and window certification and the Gronwall inflation; measurement driver with a floating-point reference |
+| `results/` | the records quoted in sections 7 to 9 |
+
+Build (CAPD as in `../RUNBOOK.md` section 3.1):
+
+```
+g++ -O2 -std=c++17 wrap_pilot.cpp -o $HOME/bin/wrap_pilot $($HOME/capd-install/bin/capd-config --cflags --libs)
+g++ -O2 -std=c++17 comoving_field.cpp -o $HOME/bin/comoving_field $($HOME/capd-install/bin/capd-config --cflags --libs)
+```

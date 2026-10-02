@@ -1,0 +1,134 @@
+{
+ "note": "profile summaries of numerical travelling waves (tw_branch.py profile); floating point, not a proof",
+ "profiles": [
+  {
+   "file": "sol_k2.19_exact.npz",
+   "kappa": 2.19,
+   "c_mm_per_ms": 0.5807409060846326,
+   "T_ms": 298.84893771434423,
+   "L_mm": 173.5538028706582,
+   "T_A_ms": 192.8467277193573,
+   "T_B_ms": 106.00220999498693,
+   "H0": 150.44266158133294,
+   "H_spread": 1.7834794618920569e-06,
+   "sections_-40": {
+    "up": {
+     "s_ms": 0.0,
+     "W": 93.12713574005289
+    },
+    "down": {
+     "s_ms": 192.8467277193573,
+     "W": -1.3939064807665895
+    },
+    "note": "the two -40 mV crossings are the piece boundaries s = 0 and s = T_A"
+   },
+   "interior_crossings_-40": [],
+   "interior_crossings_15": [
+    {
+     "s_ms": 4.5595,
+     "W": 0.913517032609276
+    },
+    {
+     "s_ms": 24.8231,
+     "W": -0.019461071124651234
+    }
+   ],
+   "time_within_1_mV_of_15_ms": 44.263245870769325,
+   "time_within_8_mV_of_15_ms": 104.33014662127869,
+   "Vmax": 15.94465343908124,
+   "Vmin": -83.79306321564289,
+   "Wmax": 98.44391060423176,
+   "Wmin": -2.049707174273697,
+   "stiffness_max_abs_negative_eig_per_ms": [
+    6.98772952539326,
+    707.5737888546557
+   ],
+   "largest_real_eig_per_ms_range": [
+    1.146337319758382,
+    4.56965713767556
+   ],
+   "largest_real_eig_mean_per_ms": 2.3038887586821795,
+   "frozen_estimate_log_expansion_per_period": 683.2876279656934
+  },
+  {
+   "file": "sol_0.525114.npz",
+   "kappa": 0.5251135102161391,
+   "c_mm_per_ms": 0.2843720812127756,
+   "T_ms": 215.8437711141094,
+   "L_mm": 61.37994240853326,
+   "T_A_ms": 150.88813317485295,
+   "T_B_ms": 64.95563793925643,
+   "H0": 150.44266158133294,
+   "H_spread": 2.0083632534806384e-08,
+   "sections_-40": {
+    "up": {
+     "s_ms": 0.0,
+     "W": 19.87680658064369
+    },
+    "down": {
+     "s_ms": 150.88813317485295,
+     "W": -1.2858302531954449
+    },
+    "note": "the two -40 mV crossings are the piece boundaries s = 0 and s = T_A"
+   },
+   "interior_crossings_-40": [],
+   "interior_crossings_15": [],
+   "time_within_1_mV_of_15_ms": 0.0,
+   "time_within_8_mV_of_15_ms": 0.0,
+   "Vmax": 6.906628507920367,
+   "Vmin": -81.22189219780364,
+   "Wmax": 20.245160775330444,
+   "Wmin": -1.7637180604282618,
+   "stiffness_max_abs_negative_eig_per_ms": [
+    6.987163889934187,
+    426.4178657792423
+   ],
+   "largest_real_eig_per_ms_range": [
+    0.18594335906761042,
+    2.5395705933952186
+   ],
+   "largest_real_eig_mean_per_ms": 0.5926936202357702,
+   "frozen_estimate_log_expansion_per_period": 127.6315692851098
+  },
+  {
+   "file": "sol_0.199069.npz",
+   "kappa": 0.19906921955432724,
+   "c_mm_per_ms": 0.1750904332377026,
+   "T_ms": 230.71037062624018,
+   "L_mm": 40.395178745379326,
+   "T_A_ms": 159.2110945387021,
+   "T_B_ms": 71.49927608753808,
+   "H0": 150.44266158133294,
+   "H_spread": 9.245923138223588e-09,
+   "sections_-40": {
+    "up": {
+     "s_ms": 0.0,
+     "W": 6.750207349952171
+    },
+    "down": {
+     "s_ms": 159.2110945387021,
+     "W": -1.326670493743008
+    },
+    "note": "the two -40 mV crossings are the piece boundaries s = 0 and s = T_A"
+   },
+   "interior_crossings_-40": [],
+   "interior_crossings_15": [],
+   "time_within_1_mV_of_15_ms": 0.0,
+   "time_within_8_mV_of_15_ms": 0.0,
+   "Vmax": 6.572810076393951,
+   "Vmin": -79.91424432320227,
+   "Wmax": 8.060733061886138,
+   "Wmin": -1.5628538249670156,
+   "stiffness_max_abs_negative_eig_per_ms": [
+    6.987139391942634,
+    329.94420312802936
+   ],
+   "largest_real_eig_per_ms_range": [
+    0.0750836851290429,
+    2.5422543029957403
+   ],
+   "largest_real_eig_mean_per_ms": 0.2605461565154594,
+   "frozen_estimate_log_expansion_per_period": 58.81382085871787
+  }
+ ]
+}

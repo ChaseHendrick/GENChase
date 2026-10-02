@@ -114,16 +114,18 @@ MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
 ### Theorem A (computer-assisted; `hopf.theorem_A`, record `fourier/data/hopf/theoremA.json`)
 
 Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). The program covers `W` by adjacent
-closed intervals with exact end points (record: `cover_left`, `G_H`, `cover_right`). For an interval `G` of the cover
+closed intervals with exact end points (record: `cover_left`, 286 intervals, `G_H`, `cover_right`, 229 intervals;
+233.6 s on one core). For an interval `G` of the cover
 write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
 `A_G(g) = D_z f(x_G(g); g)`. Then:
 
 (a) For every interval `G` and every `g in G`, `x_G(g)` exists, is real, and is real analytic in `g` on `G`; the
 spectrum of `A_G(g)` consists of a simple eigenvalue `lambda_G(g)` with `Im lambda_G(g) > 0`, its conjugate, and 16
-eigenvalues with real part at most the record's `others_max_re_upper` (about `-4.69e-5`).
+eigenvalues with real part at most the record's `others_max_re_upper`, `-4.6926852e-5` (rounded up).
 
-(b) `Re lambda_G(g) > 0` on every interval left of `G_H`, `< 0` on every interval right of `G_H`. `G_H` has width
-`2e-13`; on it `d Re lambda / dg` lies in the record's ball (about `-5.5769`), in particular `< 0`.
+(b) `Re lambda_G(g) > 0` on every interval left of `G_H`, `< 0` on every interval right of `G_H`.
+`G_H = [0.0279078440027596034781, 0.0279078440029596034781]` (width `2e-13`); on it `d Re lambda / dg` lies in
+`[-5.5769472, -5.5769465]` (the record's ball, rounded outward), in particular `< 0`.
 
 (c) *Consistency near `G_H`.* On the interval `J` of Corollary B(a) (it contains `G_H` and about 3e-7 of `W` around
 it), all intervals of the cover that meet `J` have their equilibrium polydiscs (recorded under `polydisc` and
@@ -132,12 +134,13 @@ it), all intervals of the cover that meet `J` have their equilibrium polydiscs (
 `A(g) = D_z f(x_e(g); g)`.
 
 (d) There is exactly one `g_H` in `J` (in fact in `G_H`) at which `A(g)` has an eigenvalue on the imaginary axis; there
-`lambda(g_H) = i omega_H` with `omega_H` in the record's ball (about `0.11934140178`), and `Re lambda(g) > 0` for
+`lambda(g_H) = i omega_H` with `omega_H` in `[0.119341401778, 0.119341401788]` (rounded outward), and `Re lambda(g) > 0` for
 `g in J`, `g < g_H`, `< 0` for `g > g_H`. More generally, for every interval `G` of the cover other than `G_H` and every
 `g in G`, `A_G(g)` has no eigenvalue on the imaginary axis.
 
-(e) `l1 < 0` at `(x_e(g_H), g_H)`: the record's enclosure of `l1` (about `-22.4879` in physical units with
-`<q, q> = 1`; `omega_H l1` is about `-2.6837`, Erhardt's `-2.6838`).
+(e) `l1 < 0` at `(x_e(g_H), g_H)`: `l1` lies in `[-22.4878803, -22.4878761]` (physical units, `<q, q> = 1`; record
+`l1_kuznetsov_physical`, rounded outward), and `omega_H l1` in `[-2.6837352, -2.6837346]`, which agrees with
+Erhardt's MATCONT value `-2.6838` to the printed digits.
 
 *Proof.* (a) On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the midpoint, inside `X_G`),
 Lemma A1 a ball matrix containing `A_G(g)` for every `g in G`; with `S` the float eigenvector matrix of the midpoint of
@@ -148,7 +151,11 @@ eigenvalue in `L` is the eigenvalue in `D1`, `lambda_G(g)`, which is simple (Lem
 its conjugate is the one in `D2`. Realness of `x_G`: the polydisc is invariant under conjugation and `f(conj z; g) =
 conj f(z; g)` for real `g`, so the unique zero is real. (b) On the intervals left of `G_H` the program certifies
 `Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record); on `G_H`, Lemma A2 with `p`, `q`, `A'` enclosed over
-`G_H` gives the ball for `Re lambda'`. (c) is checked by `identification_at_eps0` (box inclusions of the recorded
+`G_H` gives the ball for `Re lambda'`. Here `p` is identified as the left eigenvector of `lambda` itself: the
+left-eigenpair contraction (Lemma K for `A^T`) gives, for every `A` in the ball, an eigenvalue `lambda_l(A)` of `A` in a
+ball that `dlambda_dg` checks to be disjoint from every Gershgorin disc but `D1`; so `lambda_l(A)` lies in `D1`, which
+holds exactly one eigenvalue (Lemma G(b)), and `lambda_l(A) = lambda(A)`. (Until 2026-10-02 the program checked only
+that the two eigenvalue balls overlap, which does not identify them.) (c) is checked by `identification_at_eps0` (box inclusions of the recorded
 polydiscs in `P`, and Lemma K on `P` over `J`): for `g in J` and an interval `G` containing `g`, `x_G(g)` lies in `X_G`,
 hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The eigenvalue in `D1` of an interval and in `D1'` of an
 adjacent interval are, at the shared end point, eigenvalues with positive imaginary part of the same matrix that are

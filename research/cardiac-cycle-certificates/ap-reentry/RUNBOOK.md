@@ -128,7 +128,34 @@ The centre does not depend on the radii.
 
 ## 4. The dry run (done here)
 
-DRYRUN_SECTION
+Instance `dry3`: N = 3 cells, coupling c = 0.15 per ms, author convention. Its state is a floating-point point on the
+section {V_0 = -40 mV, rising} that is **not** a rotating wave (the leaf map has spectral radius 11.4), so `verify`
+must fail; the run checks the program end to end, nothing else. Commands (one core, nice 10; run directory in the
+session scratchpad, not in the repository):
+
+```
+python3 driver.py prepare --run-dir RUN --instance dry3 --reuse-jac      # 32 s with the cached Jacobian
+python3 driver.py run --run-dir RUN --jobs 1 --kinds c1,c0 --call-timeout 3300 --nice 10
+python3 driver.py chain --run-dir RUN; python3 driver.py verify --run-dir RUN; python3 driver.py record --run-dir RUN
+```
+
+Result (2026-10-02, attempt 2; record `proof/results/dryrun_dry3.json`):
+
+| item | value |
+|---|---|
+| plan | 4 segments: section (cell 2 down, 0.0201 ms), duration cut 0.7296 ms, section (cell 2 up), terminal section (cell 1 up); float shift interval 2.3332 ms |
+| C1 segments | all certified: 5 + 175 + 81 + 51 steps (plus 6, 0, 4, 7 validation steps), 14.5 + 143.5 + 80.7 + 65.4 s |
+| C0 centre segments | all certified, 5.7 + 52.1 + 27.9 + 18.8 s (the multiprecision centre was not run: hours at N = 3) |
+| chain | ok for c1 and c0; section-map time [2.33322062855, 2.33322062858] ms (box), centre times inside box times |
+| verify | **NOT VERIFIED**, as required: q_upper = 1.73e6, block residual plus row sum 1.7e21 (the state is not a fixed point); all segments certified; finite |
+| float map at the centre | inside the centre enclosure (max distance to midpoint 0.51 of the radius; relative difference 5.3e-12) |
+| sources | hashes of `ring19.hpp`, `engine.hpp`, `ap_proof.cpp`, `driver.py`, `common.py`, `frame_leaf.py`, the CAPD patch and the binary recorded; `sources_dirty` false |
+
+Faults found and fixed (untrusted driver only, 2026-10-02): attempt 1 failed at segment 1 because the dry3 interval
+has two consecutive events of cell 2 (down at 0.020 ms, up at 1.479 ms), so a section segment started with its
+crossing cell on the level; `driver.py` now inserts a duration cut at the midpoint between two consecutive events of one
+cell (`auto_cuts`). It also wrote numpy 2 `np.float64(...)` into the plan, which the plan parser cannot read; durations
+are now converted with `float()`. The N = 16 plan has no consecutive events of one cell, but the fix applies to it.
 
 ## 5. Cost (measured per-step costs, extrapolated totals)
 
@@ -143,7 +170,7 @@ measurements, not a measurement.
 | mp0 step (128 bits, order 30, default tolerance) | 2.50 s (N = 1), 8.62 s (N = 2), 32.4 s (N = 4) per step; peak RSS 0.10, 0.33, 1.19 GiB | same |
 | mp0 versus c0 step count | about 2.5 times as many steps for the same interval (ring4, 0.1 ms: 61 against 25) | same |
 | mp0 centre, N = 16 | extrapolated by a power fit through N = 1, 2, 4 (exponent 1.85 for time, 1.77 for memory): about 410 to 460 s per step and about 14 GiB; about 20,600 steps per shift interval; **about 2,400 to 2,600 core-hours, sequential** | arithmetic on the rows above |
-| dry run (N = 3, section 4) | see section 4 | `proof/results/dryrun_dry3.json` |
+| dry run (N = 3, section 4) | C1 14.5 to 143.5 s per segment (5 to 175 steps), C0 5.7 to 52.1 s; whole pipeline about 8 minutes | `proof/results/dryrun_dry3.json` |
 
 Consequences.
 
