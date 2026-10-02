@@ -125,6 +125,9 @@ DEFAULTS = dict(
     sanity_tol="1e-6",
     tau="1e-3",              # eigenvalue pairs closer than tau are not separated by the first-order correction
     rho_margin="1/64",       # rho = (1 + rho_margin) Y' / (1 - Z1 - Z2 e), then rechecked in Arb
+    strip_nx_new=16,         # initial grid of the three new strip covers (32 in Theorem B)
+    strip_rtol_new=1000.0,   # their refinement tolerance: S only needs to be finite (aliasing e^{-rho (M - K')} and
+                             # the Cauchy tail q^{K'+1} make any finite S negligible here)
     strip_max_evals=1200,    # budget of the three new strip covers (their S only enters aliasing and the Cauchy
                              # tail beyond K', both negligible here; a smaller budget only loosens S, never a bound)
 )
@@ -638,16 +641,18 @@ def _certify_uniform(U, st, controls, log, prec):
     W2 = Vi1 * S1 + Vi0 * P11
     csW2 = sb.colsums_abs(W2, ones)
     del W2, S1
-    W3 = Vi1 * P11
-    csW3 = sb.colsums_abs(W3, ones)
-    del W3, P11, P10, P01
+    # the d^3 and d^2 terms below are bounded through norms (h^3, h^2 small): ||Vi1 X e_j|| <= ||Vi1||_{1->1} ||X e_j||
+    nVi1 = sb.colsum_max(sb.abs_mat(Vi1))
+    csP11 = sb.colsums_abs(P11, ones)
+    csW3 = [up(nVi1 * v) for v in csP11]
+    del P11, P10, P01
     Cm0 = Vi0 * V0
     for i in range(nW):
         Cm0[i, i] -= 1
     csC0 = sb.colsums_abs(Cm0, ones)
     del Cm0
     csC1 = sb.colsums_abs(Vi0 * V1 + Vi1 * V0, ones)
-    csC2 = sb.colsums_abs(Vi1 * V1, ones)
+    csC2 = [up(nVi1 * v) for v in sb.colsums_abs(V1, ones)]
     AV = arb_mat([[up(V0[i, j].abs_upper() + hU * V1[i, j].abs_upper()) for j in range(nW)] for i in range(nW)])
     AVi = arb_mat([[up(Vi0[i, j].abs_upper() + hU * Vi1[i, j].abs_upper()) for j in range(nW)] for i in range(nW)])
     Tb = AVi * (Rb * AV)
@@ -794,10 +799,11 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     Phi = fe.TrigPoly([row[:] for row in A] + [row[:] for row in A1])
     prm53, prmG, prmJ = (br.params_for(gc, gc, p) for p in (53, Pg, PJ))
     skw = dict(nx=int(bst["strip_nx"]), rtol=float(bst["strip_rtol"]), max_evals=int(st["strip_max_evals"]))
+    skw["nx"] = int(st["strip_nx_new"])
+    skw["rtol"] = float(st["strip_rtol_new"])      # refine only where needed for finiteness (S looser, see DEFAULTS)
     sG1 = fe.strip_sup(lambda z: taylor_flat(z, prm53, D0, 1, 53), Phi, rho, **skw)
     sG2 = fe.strip_sup(lambda z: taylor_flat(z, prm53, Dh, 2, 53), Phi, rho, **skw)
-    sJ1 = fe.strip_sup(lambda z: j1_flat(z, prm53, Dh, 53), Phi, rho, **dict(skw, rtol=max(skw["rtol"], 10.0),
-                                                                              atol=1e-3))
+    sJ1 = fe.strip_sup(lambda z: j1_flat(z, prm53, Dh, 53), Phi, rho, **dict(skw, atol=1e-3))
     for s_ in (sG1, sG2, sJ1):
         if not s_.full_strip:
             raise ProofFailure("a strip cover is not the full strip")
@@ -909,8 +915,8 @@ def done_labels(K=12):
     return out
 
 
-ATTEMPTS = (dict(delta="3e-5", Ke_offset=12), dict(delta="3e-5", Ke_offset=16), dict(delta="2.5e-5", Ke_offset=16),
-            dict(delta="2e-5", Ke_offset=16))
+ATTEMPTS = (dict(delta="3e-5", Ke_offset=12), dict(delta="3e-5", Ke_offset=16, strip_nx_new=32),
+            dict(delta="2.5e-5", Ke_offset=16, strip_nx_new=32), dict(delta="2e-5", Ke_offset=16, strip_nx_new=32))
 
 
 def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=print):

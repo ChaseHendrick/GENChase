@@ -965,7 +965,9 @@ on the diagonal of block (w, w), the extra term |w| eta_om rho. Let (column sums
       W0 := Vi0 H0 V0 - Lambda0,  W1 := Vi1 H0 V0 + Vi0 (H1 V0 + H0 V1) - Lambda1,
       W2 := Vi1 (H1 V0 + H0 V1) + Vi0 H1 V1,  W3 := Vi1 H1 V1,
 
-(norms of ball matrices meaning upper bounds over the balls). If q_C < 1 then for every g in P: V(d) is invertible,
+(norms of ball matrices meaning upper bounds over the balls; the program may replace ||W3 e_j|| by
+||Vi1||_{1->1} ||H1 V1 e_j|| and ||Vi1 V1 e_j|| by ||Vi1||_{1->1} ||V1 e_j||, which are larger). If q_C < 1 then for every
+g in P: V(d) is invertible,
 and in the notation of section 3 for the data (V(d), Lambda(d)) and the true window H_WW(g),
 
       fm_j(g) <= (w_j + (|lambda0_j| + h |lambda1_j|) c_j) / (1 - q_C),
