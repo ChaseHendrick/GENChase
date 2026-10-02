@@ -29,9 +29,17 @@ GENChase: the companion repository does not carry `notes/`.
   `existence.py`), the CAPD argument of Section 6 and Lemma 6.1 (the two cell proofs enclose the same orbit). The
   reading of 2026-10-01 (`review/manuscript-reading-1-2026-10-01.md`) found every proof of Section 5 complete and
   correct as written apart from its G4 (fixed), and asked for a precise Y0/Z1 assembly (G1), the coefficient
-  enclosures beyond n_A (G2) and the CAPD argument (G3), all now written out. What is missing: (a) three facts about
-  operators with compact resolvent are cited from Kato (1976) by chapter and section only, and the book has not been
-  checked against a copy for the exact statements and numbering; (b) the passages revised after the second reading
+  enclosures beyond n_A (G2) and the CAPD argument (G3), all now written out. On 2026-10-02 the three facts about
+  operators with compact resolvent that Section 5 had cited from Kato (1976) by chapter and section (discrete spectrum
+  of eigenvalues of finite algebraic multiplicity; the Riesz projection onto the generalized eigenspaces, of rank
+  n(H, Omega); holomorphy of the resolvent) were given complete proofs in a new Appendix A (Lemmas A.1 to A.3,
+  Proposition A.4, Theorem A.5, Lemma A.6, Theorem A.7), on the l^1 spaces the paper uses, from elementary facts only
+  (Neumann series, Hahn-Banach, Cauchy-Goursat for a rectangle, the identity theorem, Jordan decomposition in finite
+  dimension; the Riesz-Schauder theory is not cited but replaced by a finite-rank determinant argument, Theorem
+  A.5(ii)). Section 5.1, the proofs of Theorem 5.3, Lemma 5.9 (homotopy count) and Lemma 5.11 (comparison operator)
+  now cite the appendix, with Kato kept as "see also"; the Labels paragraph and the Limitations item were updated, and
+  `code/fourier/LEMMAS-stability.md` (with its canonical copy) cites the appendix the same way. What is missing: (a)
+  Appendix A has not been read by anyone but its author session; (b) the passages revised after the second reading
   (R3 to R6 and the exposition items, `review/fix-check-2026-10-01.md`) have not been read by a third reader.
 - [x] **2. Rigorous computation.** Every inequality of the proofs is decided in Arb ball arithmetic (python-flint
   0.9.0, pinned) by `code/fourier/existence.py` and `code/fourier/stability.py`, or in CAPD interval arithmetic by
@@ -57,13 +65,15 @@ GENChase: the companion repository does not carry `notes/`.
   as records. The README's "Status of the results" uses the same labels. The manuscript reading of 2026-10-01 checked
   the labels ("Labels: Section 7 is numerical and unused, and the Hopf identification is labelled numerical") and
   every printed number against the records; its unsafe roundings (E1 to E4) are fixed.
-- [ ] **4. Sources read.** Open. The proof steps depend on Erhardt's model source (read; hash recorded), on Kato
-  (1976) for three standard facts (not checked against a copy), and on the library contracts of Arb and CAPD (trust
-  base, not citations). Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
+- [ ] **4. Sources read.** Open. The proof steps depend on Erhardt's model source (read; hash recorded) and on the
+  library contracts of Arb and CAPD (trust base, not citations). Since 2026-10-02 they no longer depend on Kato (1976):
+  the three facts once cited from it are proved in Appendix A, and the book is cited as the standard reference only
+  ("see also"), so it is background, not a source of a proof step; it has still not been checked against a copy. Background works and how far each was read are recorded in RESEARCH.md (entries of 2026-10-01)
   and `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`: Erhardt (2025) read in full;
   Bayer-Leine and Gameiro-Lessard read in the stated sections; Di Marco et al. (2016) known from excerpts of its abstract;
   the reading status of every cited background work is listed in Section 9 of the paper ("How far the background
-  sources were read"). Kato must be read for item 4 to close.
+  sources were read"). Whether item 4 can close without reading Kato is for the coordinator to decide after a
+  reading of Appendix A.
 - [x] **5. Prior article review.** RESEARCH.md, entries "2026-09-30 cardiac ring wave certification and next
   targets", "2026-10-01 cardiac cell and ring certificates: model origin, earlier rigorous work and the weak-coupling
   prediction", "2026-10-01 cardiac rings on the Fourier/Hill route: earlier computer-assisted lattice and Floquet

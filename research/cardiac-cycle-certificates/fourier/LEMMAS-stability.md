@@ -94,9 +94,10 @@ Re lambda > alpha, then ||(lambda - D_0)^{-1}|| <= 1 / Re lambda (|lambda + i om
 with inverse (lambda - D_0)^{-1} (I - B (lambda - D_0)^{-1})^{-1}, which is compact. H_0 is closed (a closed operator
 plus a bounded one). A resolvent that is compact at one point is compact at every point of the resolvent set (the
 resolvent identity R(lambda) = R(lambda_0) (I + (lambda_0 - lambda) R(lambda))). The remaining statements are the
-standard consequences of a compact resolvent: Kato 1976, Theorem III.6.29 (numbering to be confirmed against a copy, see section 7) (spectrum = isolated eigenvalues of finite
-algebraic multiplicity) and Section III.6.5 (for an isolated eigenvalue with finite-rank Riesz projection, the range of
-the projection is ker (H - mu)^k for all large k). QED
+standard consequences of a compact resolvent, proved in Appendix A of the manuscript
+(papers/cardiac-rings/paper/cardiac-rings.tex), Theorem A.5 (ii) to (iv): the spectrum consists of isolated eigenvalues
+of finite algebraic multiplicity, and G_mu(H_0) = ker (H_0 - mu)^k for all large k is the range of the Riesz
+projection of mu. See also Kato 1976, Section III.6, the standard reference; no step depends on it (section 7). QED
 
 ### Lemma 1.1 (twisted periodicity)
 
@@ -262,13 +263,12 @@ H(s) has compact resolvent, n(H(s), Omega) is finite, and n(H(1), Omega) = n(Dha
 Proof. mu - H(s) = (I - s Ehat R_D(mu)) (mu - Dhat) is a bijection with inverse
 R_s(mu) = R_D(mu) (I - s Ehat R_D(mu))^{-1}, compact. (s, mu) -> R_s(mu) is norm continuous on the compact set
 [0, 1] x Gamma (R_D is continuous on its resolvent set and inversion is continuous), hence uniformly continuous. The
-spectrum of H(s) is discrete (Lemma 1.0's argument: Kato 1976, Theorem III.6.29), so Omega, which is bounded and whose
+spectrum of H(s) is discrete (manuscript Theorem A.5(ii)), so Omega, which is bounded and whose
 boundary lies in the resolvent set, contains finitely many eigenvalues. The Riesz projection
 P(s) := (1 / 2 pi i) contour integral over Gamma of R_s(mu) d mu (Gamma positively, i.e. counterclockwise, oriented;
 here and in Lemma 3.3) is a projection whose range is the sum of the
-generalized eigenspaces of the eigenvalues inside Gamma (Kato 1976, Sections III.6.4 and III.6.5; numbering to be
-confirmed), so its rank is
-n(H(s), Omega). P(s) is norm continuous in s, so by Lemma 3.1 its rank is locally constant, hence constant on [0, 1].
+generalized eigenspaces of the eigenvalues inside Gamma (manuscript Proposition A.4 and Theorem A.5(iv)), so its rank
+is n(H(s), Omega). P(s) is norm continuous in s (manuscript Lemma A.6), so by Lemma 3.1 its rank is locally constant, hence constant on [0, 1].
 QED
 
 ### 3.2 The comparison operator
@@ -341,8 +341,8 @@ mu - B_m invertible with ||(mu - B_m)^{-1}||_{1->1} <= rho_T for all mu in the o
 closure(Omega) and all m in Tl, so mu - D_T is a bijection with bounded inverse (the direct sum of the block inverses;
 the tail weight is the constant zeta_T, so the weighted block norm is the 1->1 norm of the S-coordinates) and Nb lies in
 the resolvent set of D_T. For a fixed mu_0, ||(mu_0 - B_m)^{-1}|| -> 0 as |m| -> inf (Lemma 3.4(c)), so (mu_0 - D_T)^{-1} is a
-norm limit of finite-rank operators, i.e. compact. The resolvent of D_T is holomorphic on Nb (Kato 1976, Section
-III.6.1, numbering to be confirmed), so its contour integral over Gamma vanishes, and the Riesz projection of Dhat for Omega is
+norm limit of finite-rank operators, i.e. compact. The resolvent of D_T is holomorphic on Nb (manuscript
+Lemma A.2(c)), so its contour integral over Gamma vanishes (manuscript Lemma A.3(d)), and the Riesz projection of Dhat for Omega is
 diag(1 if lambda_j in Omega else 0) on the window and 0 on the tail. Its rank is #{j : lambda_j in Omega}
 (dist_j > 0 rules out lambda_j on Gamma). The bound is the norm of a block-diagonal operator. QED
 
@@ -706,11 +706,15 @@ r_uniqueness, section 4.1), eta, nu = e^{rho0}; the enclosures [J_n]
 ## 7. Sources and related work
 
 * T. Kato, Perturbation Theory for Linear Operators, 2nd edition, Springer (Grundlehren der mathematischen
-  Wissenschaften 132), 1976: Section III.6.1 (the resolvent is holomorphic on the resolvent set), Sections III.6.4 and
-  III.6.5 (Riesz projections of separated parts of the spectrum and of isolated eigenvalues), Theorem III.6.29 (closed
-  operators with compact resolvent). These are the only external results used; everything else is proved above. The
-  section and theorem numbers are from memory and are TO BE CONFIRMED against a copy (the referee's recollection agrees
-  but was not checked against a copy either); the facts are standard. Arb's containment contract for ball matrix
+  Wissenschaften 132), 1976, Chapter III, Section 6: the standard reference for the facts about operators with compact
+  resolvent used here (the resolvent is holomorphic on the resolvent set; Riesz projections of separated parts of the
+  spectrum and of isolated eigenvalues; discrete spectrum under a compact resolvent). Since 2026-10-02 no step depends
+  on the book: Appendix A of the manuscript (papers/cardiac-rings/paper/cardiac-rings.tex) proves these facts on the
+  l^1 spaces used here (Lemma A.1, compact operators are norm limits of finite-rank ones; Lemma A.2, the resolvent;
+  Lemma A.3, contour integrals; Proposition A.4, the Riesz projection; Theorem A.5, compact resolvent; Lemma A.6,
+  continuity of the Riesz projection; Theorem A.7, the homotopy count of Lemma 3.2), from the Neumann series, the
+  Hahn-Banach theorem, the Cauchy-Goursat and identity theorems and Jordan decomposition in finite dimension. The
+  citations by section and theorem number that stood here before, given from memory, are no longer used. Arb's containment contract for ball matrix
   inversion (Lemma 3.4, route B) is a property of the library, part of the trust base, not a mathematical citation.
 * Floquet's theorem, Hill's method and the Andronov-Witt theorem are classical; the proofs above are self-contained
   and do not rely on a particular textbook statement.
@@ -818,7 +822,8 @@ The referee found no error that makes a stated theorem false. Each gap and minor
 * M7. Section 0 now cites only the offset-strip toy result (3e-13, count 15) and says why the centred-strip count of 15
   is a coincidence (match only 1.6e-3).
 * M8. The Kato section and theorem numbers are marked "to be confirmed against a copy" where they are cited and in
-  section 7.
+  section 7. (2026-10-02: superseded. The facts are now proved in Appendix A of the manuscript, and the lemmas
+  above cite that appendix, with Kato as the standard reference only; see section 7.)
 
 Also from the referee's list of program needs: the checklist now asks for outward rounding of the reported bounds
 (with tau_lo = T_lo / N), exact dyadic -delta, R_0, a, b, the coefficient ranges against Stage E's K', and a Stage S
