@@ -27,7 +27,17 @@ Conclusion (cited theorem, Kuznetsov's Andronov-Hopf theorem as stated in hh-dyn
 l1 < 0 and mu' < 0, for g < g_H near g_H there is a unique small cycle near x_e(g_H), and it is orbitally
 asymptotically stable; for g >= g_H near g_H there is none near x_e(g_H).
 
-Part B (quantitative bridge; LEMMAS-hopf.md, Section B) -- see the docstring above prove_piece.
+Part B (quantitative bridge; LEMMAS-hopf.md, Part B): the blown-up radii polynomial in the amplitude eps, see the
+comment block above class Lay; run() proves pieces [e_lo, e_hi] from eps = 0 upward and glues each to the previous one
+(Lemma B4); identification_at_eps0 shows that the zero at eps = 0 is the Hopf point of Part A (Corollary B(a)).
+
+Part C (gluing; LEMMAS-hopf.md, Part C): point_in_eps_branch (Lemma D) shows that the orbit of a K = 32 point proof
+of branch.py at G_Ks = g_s is the bridge orbit at eps_s = 2 a_{1,V}; branch.point_on_branch shows that it is the G_Ks
+branch orbit at g_s (bridge_checks, on a validated snapshot of the append-only branch logs). gks_point_proofs makes
+such point proofs with branch.py's functions, logged under data/hopf/.
+
+Part S (stability; LEMMAS-hopf.md, Part S): only pointwise (Stage S at the point proofs identified by Lemma D) and,
+qualitatively, for small amplitude (cited Hopf theorem). Not uniform on the bridge.
 """
 import argparse
 import hashlib
@@ -352,8 +362,9 @@ def contraction_test(Fc, Jbox, C, r, centre_pert=None):
     return ok and bool(kappa < 1), kappa, worst
 
 
-def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
+def equilibrium_on(G, xf, prec=192, rfac="1e-45", rmin=None):
     """Lemma K for f(.; g) on the polydisc P around the exact double vector xf, for every g in the ball G.
+    rmin (optional, floats): lower bounds for the radii (used to make P contain given sets).
     Returns dict(X=list of acb balls containing x_e(g) for all g in G (the polydisc), xf, r, kappa)."""
     with am.precision(prec):
         prm = am.params(prec, g_Ks=G)
@@ -366,6 +377,8 @@ def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
         r = []
         for i in range(DIM):
             v = float(CF[i, 0].abs_upper()) * 4 + float(Fraction(rfac)) * max(abs(float(xf[i])), 1e-3)
+            if rmin is not None:
+                v = max(v, float(rmin[i]))
             r.append(arb(v))
         X = [acb(xt[i].real + r[i] * arb(0, 1), r[i] * arb(0, 1)) for i in range(DIM)]
         _, JX = am.f_and_df(X, prm, prec=prec)
@@ -375,7 +388,7 @@ def equilibrium_on(G, xf, prec=192, rfac="1e-45"):
                                f"worst {float(worst):.3e})")
         # the zero lies in x~ + (polydisc); real by uniqueness (the polydisc is conjugation invariant, f real)
         Xr = [acb(xt[i].real + r[i] * arb(0, 1)) for i in range(DIM)]
-    return dict(X=Xr, Xc=X, r=r, kappa=kappa, C=C)
+    return dict(X=Xr, Xc=X, r=r, kappa=kappa, C=C, xt=[v.real for v in xt])
 
 
 # =================================================================================================================
@@ -564,6 +577,10 @@ def jacobian_family(a, b, fh, prec=192):
         xf = float_equilibrium(float(gc), fh.x)
         eq_c = equilibrium_on(Gc, xf, prec=prec)
         eq_G = equilibrium_on(G, xf, prec=prec)
+        # Lemma A1 needs the midpoint equilibrium (unique in X_c) to be the branch of X_G at g_c: X_c in X_G (same
+        # centre xf, so radii suffice); then it is the unique zero of f(.; g_c) in X_G.
+        if not all(bool(eq_c["r"][i] <= eq_G["r"][i]) for i in range(DIM)):
+            raise ProofFailure("midpoint polydisc X_c not inside X_G")
         prm_c = am.params(prec, g_Ks=Gc)
         prm_G = am.params(prec, g_Ks=G)
         _, Ac = am.f_and_df(eq_c["X"], prm_c, prec=prec)
@@ -632,7 +649,16 @@ def dlambda_dg(fam, sp):
     return num / pq, p
 
 
-def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print, logfile=None):
+def polydisc_record(eq):
+    """Exact record of an equilibrium polydisc (centre doubles, radii) as '<sign>0x<hex>p<exp>' texts."""
+    return dict(centre=[_dyadic_text(v) for v in eq["xt"]], radius=[_dyadic_text(v) for v in eq["r"]])
+
+
+def polydisc_from_record(rec):
+    return [_dyadic_from_text(t) for t in rec["centre"]], [_dyadic_from_text(t) for t in rec["radius"]]
+
+
+def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print, logfile=None, band="1e-6"):
     """Theorem A (crossing part): a cover of W by closed intervals, on each of which (spectrum_on) the 16 other
     eigenvalues have Re < 0 and lambda(g) is enclosed, with Re lambda > 0 left of G_H = [gH - h, gH + h], Re lambda < 0
     right of it, and Re d lambda/dg < 0 on G_H. Intervals are adjacent (shared exact endpoints) and cover W."""
@@ -643,6 +669,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
     if not (Wa < ga and gb < Wb):
         raise ValueError("G_H not inside W")
     wf = Fraction(w_far)
+    band = Fraction(band)                   # intervals meeting [gH - band, gH + band] record their polydisc
     pieces = []
     stats = dict(n=0, max_others_re=None, min_im=None, max_im=None)
 
@@ -674,8 +701,11 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
                 if w < hh / 1024:
                     raise ProofFailure(f"cannot decide the sign of Re lambda near [{float(a)}, {float(b)}]")
                 continue
-            out.append(dict(a=str(a), b=str(b), re_lam=[dec(lo(sp["lam"].real), "down", 6), dec(up(sp["lam"].real), "up", 6)],
-                            others_max_re=float(sp["others_max_re"])))
+            item = dict(a=str(a), b=str(b), re_lam=[dec(lo(sp["lam"].real), "down", 6), dec(up(sp["lam"].real), "up", 6)],
+                        others_max_re=float(sp["others_max_re"]))
+            if a <= gH + band and b >= gH - band:
+                item["polydisc"] = polydisc_record(fam["eq_G"])
+            out.append(item)
             stats["n"] += 1
             stats["max_others_re"] = sp["others_max_re"] if stats["max_others_re"] is None else amax(stats["max_others_re"], sp["others_max_re"])
             im_lo, im_hi = lo(sp["lam"].imag), up(sp["lam"].imag)
@@ -695,7 +725,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
     left = side(ga, Wa, -1)
     log(f"  window cover: {len(left)} intervals left of G_H, {len(right)} right, {time.time() - t0:.1f} s")
     return dict(gH_interval=[str(ga), str(gb)], famH=famH, spH=spH, dlam=dl, p=p, left=left, right=right,
-                stats=stats, seconds=round(time.time() - t0, 1))
+                stats=stats, seconds=round(time.time() - t0, 1), polydisc_H=polydisc_record(famH["eq_G"]))
 
 
 # =================================================================================================================
@@ -1151,11 +1181,14 @@ class FloatEps:
                       float(tom.real), float(tg.real), [float(v) for v in tc.real], rows(tw, 0j), K)
 
     def from_centre(self, C):
+        """Float vector of an exact centre, padded with zeros (or truncated) to this K (untrusted start for Newton)."""
         K = self.K
         w = np.zeros((DIM, 2 * K), complex)
         for k in range(DIM):
             for t, m in enumerate(self.ms):
-                z = C.w[k][K + m]
+                if abs(m) > C.K:
+                    continue
+                z = C.w[k][C.K + m]
                 w[k, t] = complex(float(z.real.mid()), float(z.imag.mid()))
         return self.pack(float(C.om.mid()), float(C.g.mid()), [float(v.mid()) for v in C.c], w)
 
@@ -2115,6 +2148,8 @@ def glue(pa, pb, nu):
 # =================================================================================================================
 RUN_SETTINGS = dict(K=8, M=48, nsub_xi=2, nsub_s=2, rho0="1/8", rho2="3/4", R="1/256", G_R="1/4096",
                     T_margin="1/40", n_group=4)
+with open(os.path.abspath(__file__), "rb") as _fh:
+    CODE_SHA256 = hashlib.sha256(_fh.read()).hexdigest()       # the program text this process runs (logged per piece)
 
 
 def _append(path, rec):
@@ -2160,6 +2195,15 @@ def _hexval(rec):
     return ct.text_to_dyadic(rec["hex"]) if "hex" in rec else _arb_q(rec)
 
 
+def hex_fraction(rec):
+    """The exact rational (as a Fraction) of a bound record's '<sign>0x<hex>p<exp>' text."""
+    t = rec["hex"].strip()
+    neg = t.startswith("-")
+    h, e = t.lstrip("-")[2:].split("p")
+    v = Fraction(int(h, 16)) * Fraction(2) ** int(e)
+    return -v if neg else v
+
+
 def _piece_state(rec):
     """Exact data of a logged piece for gluing."""
     C = Centre.from_record(rec["centre"])
@@ -2168,11 +2212,16 @@ def _piece_state(rec):
                 r_lo=_hexval(rec["result"]["r_existence"]), r_hi=_hexval(rec["result"]["r_uniqueness"]))
 
 
-def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
-    """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop or the time budget; resumes from data/pieces.jsonl.
-    Every piece is glued to the previous one (Lemma B4) before it is logged."""
+def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_stop=None, K=None, M=None):
+    """Prove pieces [e_i, e_{i+1}] from e = 0 upward until e_stop, the time budget, or (g_stop) a piece whose g
+    enclosure lies below g_stop; resumes from data/pieces.jsonl. Every piece is glued to the previous one (Lemma B4)
+    before it is logged."""
     t_start = time.time()
-    rs_ = RUN_SETTINGS
+    rs_ = dict(RUN_SETTINGS)
+    if K is not None:                      # a larger Galerkin size for new pieces (gluing compares any two K)
+        rs_["K"] = int(K)
+    if M is not None:
+        rs_["M"] = int(M)
     K = int(rs_["K"])
     st = dict(M=int(rs_["M"]), nsub_xi=int(rs_["nsub_xi"]), nsub_s=int(rs_["nsub_s"]), rho0=rs_["rho0"])
     nu_f = math.exp(float(Fraction(rs_["rho0"])))
@@ -2205,7 +2254,11 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
             out[lay.comp[i]] += abs(v[i]) * nu_f ** abs(lay.mode[i])
         return out
     n_fail = 0
-    while e_cur < stop and time.time() - t_start < budget_s:
+    gs = Fraction(g_stop) if g_stop is not None else None
+
+    def below_g_stop():
+        return gs is not None and bool(done) and hex_fraction(done[-1]["result"]["g"]["upper"]) < gs
+    while e_cur < stop and time.time() - t_start < budget_s and not below_g_stop():
         # ---- a group of pieces with the current width
         group = []
         a = e_cur
@@ -2241,7 +2294,7 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
                             record=cov.record()))
         ok_all = True
         for (C, a_, b_, uu, tt) in group:
-            if time.time() - t_start > budget_s:
+            if time.time() - t_start > budget_s or below_g_stop():
                 ok_all = False
                 break
             t0 = time.time()
@@ -2288,7 +2341,7 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
                 break
             rec = dict(type="piece", idx=len(done), e_lo=str(a_), e_hi=str(b_), centre=C.to_record(), eta=eta_s,
                        r_star=res["r_star"], cover=cid, result=res, glue_prev=gl, predicted_admissible=adm,
-                       seconds=round(time.time() - t0, 1), settings=dict(rs_))
+                       seconds=round(time.time() - t0, 1), settings=dict(rs_), code_sha256=CODE_SHA256)
             _append(ppath, rec)
             done.append(rec)
             prev = cur
@@ -2353,7 +2406,9 @@ def theorem_A(log=print, data=DATA, prec=192):
         equilibrium_radius_max=float(max(float(x.real.rad()) for x in eqX)),
         erhardt=dict(g_H=G_ERHARDT, l1=L1_ERHARDT, note="Erhardt's MATCONT value; MATCONT's first Lyapunov "
                      "coefficient equals omega times Kuznetsov's l1 in the normalisation <q, q> = 1 (physical units)"),
-        cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1))
+        polydisc_GH=cov["polydisc_H"], dRe_lambda_dg_interval="G_H",
+        cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1),
+        code_sha256=CODE_SHA256)
     os.makedirs(data, exist_ok=True)
     with open(os.path.join(data, "theoremA.json"), "w") as fh_:
         json.dump(rec, fh_, indent=1)
@@ -2381,162 +2436,302 @@ def ball_of_piece_at(st_, xi):
     return omB, gB, cB, w, [up(E[CW + k] * r) for k in range(DIM)]
 
 
-def identification_at_eps0(first_piece_rec, prec=192, log=print):
-    """Corollary B(a): the enclosure of g*(0) lies in W and the enclosure of c*(0) lies in the polydisc in which
-    Lemma K gives the unique equilibrium for every g of the g*(0) enclosure. Returns a record."""
+def identification_at_eps0(first_piece_rec, thA, prec=192, log=print):
+    """Corollary B(a): x*(0) is the Hopf point of Theorem A. Checks (all in Arb, exact comparisons):
+    (i) the enclosure [ga, gb] of g*(0) (rounded outward to decimals) lies in W and is covered by Theorem A intervals
+    whose equilibrium polydiscs X_G are recorded in thA (adjacent, exact endpoints);
+    (ii) Lemma K on ONE polydisc P over [ga, gb] (radii chosen to contain the sets below);
+    (iii) the enclosure of c*(0) lies in P, and so does the real segment of every recorded X_G of an interval meeting
+    [ga, gb]. Then for every g in [ga, gb] the unique equilibrium in P is Theorem A's equilibrium of every interval
+    containing g (uniqueness in P), and c*(0) is it at g = g*(0). Returns a record (ok = all checks)."""
+    import centre as ct
     st_ = _piece_state(first_piece_rec)
     if st_["e_lo"] != 0:
         raise ValueError("not the first piece")
     omB, gB, cB, _, _ = ball_of_piece_at(st_, Fraction(0))
-    Wa, Wb = _arb_q(WINDOW[0]), _arb_q(WINDOW[1])
-    in_W = bool(gB > Wa and gB < Wb)
-    # equilibrium polydisc over the g enclosure (rounded outward to decimals)
     ga = Fraction(dec(lo(gB), "down", 25))
     gb = Fraction(dec(up(gB), "up", 25))
-    fh_x = float_equilibrium(float((ga + gb) / 2))
-    eq = equilibrium_on(_ball_interval(ga, gb), fh_x, prec=prec)
-    inside = all(bool(eq["Xc"][k].real.contains(cB[k])) for k in range(DIM))
-    rec = dict(g_star_0={"lower": dec(lo(gB), "down", 20), "upper": dec(up(gB), "up", 20)},
+    in_W = Fraction(WINDOW[0]) < ga and gb < Fraction(WINDOW[1])
+    ivs = [dict(a=thA["gH_interval"][0], b=thA["gH_interval"][1], polydisc=thA["polydisc_GH"])]
+    ivs += [iv for iv in thA["cover_left"] + thA["cover_right"]]
+    meet = sorted([iv for iv in ivs if Fraction(iv["a"]) <= gb and Fraction(iv["b"]) >= ga],
+                  key=lambda iv: Fraction(iv["a"]))
+    contiguous = all(Fraction(u["b"]) == Fraction(v["a"]) for u, v in zip(meet, meet[1:]))
+    covered = bool(meet) and contiguous and Fraction(meet[0]["a"]) <= ga and Fraction(meet[-1]["b"]) >= gb
+    have_pd = all("polydisc" in iv for iv in meet)
+    out = dict(g_star_0={"lower": dec(lo(gB), "down", 20), "upper": dec(up(gB), "up", 20)},
                omega_star_0={"lower": dec(lo(omB), "down", 20), "upper": dec(up(omB), "up", 20)},
-               g_in_window=in_W, c_in_equilibrium_polydisc=inside,
-               equilibrium_polydisc_radius_max=float(max(float(r) for r in eq["r"])),
-               equilibrium_kappa=float(eq["kappa"]),
-               c_radius_max=float(max(float(x.rad()) for x in cB)))
-    log(f"identification at eps = 0: g*(0) in W: {in_W}, c*(0) in the equilibrium polydisc: {inside}")
-    return rec
-
-
-def _gks_record():
-    with open(os.path.join(RESULTS, "fourier-branch-gks.json")) as fh_:
-        return json.load(fh_)
-
-
-def _gks_centre(sha):
-    import branch as br
-    with open(os.path.join(HERE, "data", "branch", "centres_K12.jsonl")) as fh_:
-        for line in fh_:
-            if not line.strip():
-                continue
-            rec = json.loads(line)
-            om, A = br.centre_from_record(rec)
-            if br.centre_digest(om, A) == sha:
-                return om, A, rec
-    raise KeyError(f"centre {sha} not found")
-
-
-def glue_gks(pt, eps_piece, P, log=print, prec=256):
-    """Lemma C. pt: a point proof (a piece record dict with exact state from _piece_state, rho0 = 1/4) at xi = eps*;
-    eps_piece: the eps-branch piece state containing eps*; P: a piece of results/fourier-branch-gks.json. Checks
-    (i) pt's existence ball at eps* lies in eps_piece's uniqueness ball (norm with nu = e^{1/8}),
-    (ii) the g enclosure of pt lies in P's g range, (iii) pt's ball, mapped by a_0 = c, a_m = eps* w_m, lies in P's
-    uniqueness ball (norm with nu_P = e^{1/4}, P's weights). Returns a record with the three outcomes and slacks."""
-    xi = pt["xi"]
+               g_interval=[str(ga), str(gb)], g_in_window=in_W, n_theoremA_intervals_meeting=len(meet),
+               intervals_cover=covered, polydiscs_recorded=have_pd, omega_positive=bool(omB > 0))
+    if not (in_W and covered and have_pd):
+        out["ok"] = False
+        log(f"identification at eps = 0: preconditions fail {out}")
+        return out
     with am.precision(prec):
-        nu8 = _arb_q("1/8").exp()
-        nu4 = _arb_q("1/4").exp()
-        # (i)
-        ecp = (pt["e_lo"] + pt["e_hi"]) / 2
-        ece = (eps_piece["e_lo"] + eps_piece["e_hi"]) / 2
-        if not (eps_piece["e_lo"] <= xi <= eps_piece["e_hi"]):
-            raise ValueError("eps* not in the eps piece")
-        d = centre_distance(pt["C"], ecp, eps_piece["C"], ece, xi, eps_piece["E"], nu8, prec)
-        ratio = amax_list([up(pt["E"][c] / eps_piece["E"][c]) for c in range(NC)])
-        lhs1 = d + pt["r_lo"] * ratio
-        ok1 = bool(lhs1 <= eps_piece["r_hi"])
-        # (ii)
-        omB, gB, cB, w, wr = ball_of_piece_at(pt, xi)
-        glo, ghi = _arb_q(Fraction(P["g"][0])), _arb_q(Fraction(P["g"][1]))
-        ok2 = bool(gB >= glo and gB <= ghi)
-        # (iii)
-        omP, AP, _ = _gks_centre(P["centre_sha256"])
-        KP = (len(AP[0]) - 1) // 2
-        etaP = [_arb_q(Fraction(e)) for e in P["eta"]]
-        rP = _hexval(P["r_uniqueness"])
-        Kw = pt["C"].K
-        xiB = _arb_q(xi)
-        vals = [up(((omB - omP).abs_upper()) / etaP[0])]
-        for k in range(DIM):
-            s = (cB[k] - AP[k][KP].real).abs_upper()          # |a_0 - a_P,0| with c* in its ball
-            for m in range(1, max(KP, Kw) + 1):
-                for sg in (1, -1):
-                    a = xiB * w[k][Kw + sg * m] if m <= Kw else acb(0)
-                    b = AP[k][KP + sg * m] if m <= KP else acb(0)
-                    s += (a - b).abs_upper() * nu4 ** m
-            s += xiB * wr[k]                                   # eps* ||w* - wbar||_{nu4} <= eps* eta_wk r (pt has nu4)
-            vals.append(up(s / etaP[1 + k]))
-        lhs3 = amax_list(vals)
-        ok3 = bool(lhs3 <= rP)
-    out = dict(eps_star=str(xi), inclusion_in_eps_branch=ok1, slack_eps=float(eps_piece["r_hi"] - lhs1),
-               g_in_piece=ok2, g_star={"lower": dec(lo(gB), "down", 20), "upper": dec(up(gB), "up", 20)},
-               gks_piece=dict(label=P.get("label"), g=P["g"], centre_sha256=P["centre_sha256"]),
-               inclusion_in_gks_ball=ok3, distance_in_gks_norm=float(lhs3), gks_r_uniqueness=float(rP),
-               ok=ok1 and ok2 and ok3)
-    log(f"gluing to the G_Ks branch at eps* = {float(xi):.6f}: {out}")
+        xf = float_equilibrium(float((ga + gb) / 2))
+        pds = [polydisc_from_record(iv["polydisc"]) for iv in meet]
+        rmin = []
+        for i in range(DIM):
+            v = up((cB[i] - arb(float(xf[i]))).abs_upper())
+            for (xc, rr) in pds:
+                v = amax(v, up((xc[i] - arb(float(xf[i]))).abs_upper() + rr[i]))
+            rmin.append(float(v) * 1.01 + 1e-300)
+        eq = equilibrium_on(_ball_interval(ga, gb), xf, prec=prec, rmin=rmin)
+        xP, rP = eq["xt"], eq["r"]
+        c_in = all(bool((cB[i] - xP[i]).abs_upper() <= rP[i]) for i in range(DIM))
+        pd_in = all(bool((xc[i] - xP[i]).abs_upper() + rr[i] <= rP[i]) for (xc, rr) in pds for i in range(DIM))
+    out.update(c_in_P=c_in, theoremA_polydiscs_in_P=pd_in, P_kappa=float(eq["kappa"]),
+               P_radius_max=float(max(float(r) for r in rP)), c_radius_max=float(max(float(x.rad()) for x in cB)),
+               P=polydisc_record(eq), ok=bool(c_in and pd_in and omB > 0))
+    log(f"identification at eps = 0: g*(0) in [{float(ga):.12f}, {float(gb):.12f}] (in W: {in_W}; {len(meet)} "
+        f"Theorem A intervals), c*(0) in P: {c_in}, Theorem A polydiscs in P: {pd_in}, kappa {float(eq['kappa']):.2e}")
     return out
 
 
-def point_proof(eps_star, h="1/1000000000", rho0="1/4", log=print, data=DATA):
-    """The radii polynomial on the tiny piece [eps* - h, eps* + h] with rho0 = 1/4 (nu = e^{1/4}, the G_Ks branch's
-    norm), for Lemma C. Logged to data/hopf/point.jsonl; returns (record, state)."""
-    xi = Fraction(eps_star)
-    a, b = xi - Fraction(h), xi + Fraction(h)
-    rs_ = RUN_SETTINGS
-    K = int(rs_["K"])
-    fh = FloatHopf()
-    FE = FloatEps(K)
-    u = FE.initial(fh)
-    for e in np.linspace(0.01, float(xi), 12):
-        u, _ = FE.newton(u, float(e))
-    tt = FE.tangent(u, float(xi))
-    C = FE.to_centre(u, tt)
-    T = _ceil_dyadic(b + Fraction(rs_["T_margin"]))
-    cov = EpsCover([(C, a, b)], str(T), [rs_["R"]] * DIM, rs_["G_R"], rho2=rs_["rho2"], max_evals=1500, log=log)
-    st = dict(M=int(rs_["M"]), nsub_xi=1, nsub_s=int(rs_["nsub_s"]), rho0=rho0)
-    bl = piece_blocks(C, a, b, cov, settings=st, log=log)
-    BF = BlocksFloat(bl)
-    nu_f = math.exp(float(Fraction(rho0)))
-    lay = FE.lay
-    comps = np.zeros(NC)
-    for i in range(lay.n):
-        comps[lay.comp[i]] += abs(tt[i]) * nu_f ** abs(lay.mode[i])
-    eta0 = np.maximum(comps / comps.max(), 1e-3)
-    best = None
-    for rsv in (1e-5, 3e-5, 1e-4, 3e-4):
-        e2, adm = BF.search(eta0, rsv, iters=300)
-        if best is None or adm > best[0]:
-            best = (adm, rsv, e2)
-    adm, rsv, e2 = best
-    eta_s = _dyadic_eta(e2)
-    res = assemble(bl, eta_s, str(Fraction(rsv).limit_denominator(1 << 30)), log=log)
-    obj = res.pop("_obj")
-    rec = dict(type="point", eps_star=str(xi), e_lo=str(a), e_hi=str(b), centre=C.to_record(), eta=eta_s,
-               r_star=res["r_star"], cover=cov.digest[:16], cover_record=dict(cov.record(), T=str(T)),
-               result=res, settings=dict(rs_, rho0=rho0))
-    _append(os.path.join(data, "point.jsonl"), rec)
-    state = dict(C=C, e_lo=a, e_hi=b, E=obj["E"], r_lo=obj["r_lo"], r_hi=obj["r_hi"], xi=xi)
-    return rec, state
+# -----------------------------------------------------------------------------------------------------------------
+# Lemma D: a point proof of the G_Ks problem (branch.py) identified with the eps-branch; Part C: the gluing
+# -----------------------------------------------------------------------------------------------------------------
+BRANCH_DIR = os.path.join(HERE, "data", "branch")
 
 
-def float_eps_for_g(g_target, K=8):
-    """Untrusted: eps with g*(eps) = g_target on the float branch (secant)."""
-    fh = FloatHopf()
-    FE = FloatEps(K)
-    u = FE.initial(fh)
-    e = 0.05
-    for ee in np.linspace(0.01, 0.15, 8):
-        u, _ = FE.newton(u, float(ee))
-    e0, e1 = 0.15, 0.2
-    u0, _ = FE.newton(u, e0)
-    u1, _ = FE.newton(u0, e1)
-    g0, g1 = u0[1].real, u1[1].real
-    for _ in range(20):
-        e2 = e1 + (g_target - g1) * (e1 - e0) / (g1 - g0)
-        u2, _ = FE.newton(u1, e2)
-        e0, g0, u0 = e1, g1, u1
-        e1, g1, u1 = e2, u2[1].real, u2
-        if abs(g1 - g_target) < 1e-15:
-            break
-    return e1
+def _exact_fraction(x):
+    """Fraction of an exact arb."""
+    if not x.is_exact():
+        raise ValueError("not exact")
+    m, e = x.mid().man_exp()
+    return Fraction(int(m)) * Fraction(2) ** int(e)
+
+
+def curve_at_ball(C, e_c, X, prec=256):
+    """xbar(xi) for every xi in the real ball X: balls (omega, g, c (18), w (18 x (2K+1)))."""
+    with am.precision(prec):
+        d = X - _arb_q(Fraction(e_c))
+        K = C.K
+        om = C.om + d * C.tom
+        g = C.g + d * C.tg
+        c = [C.c[k] + d * C.tc[k] for k in range(DIM)]
+        w = [[C.w[k][t] + d * C.tw[k][t] for t in range(2 * K + 1)] for k in range(DIM)]
+    return om, g, c, w
+
+
+def point_in_eps_branch(pt_rec, pt_centre, states, nu_eps, prec=256):
+    """Lemma D (LEMMAS-hopf.md). pt_rec: a branch.py proof record with g_lo = g_hi = g_s (a 'point'), pt_centre its
+    centre record (digest checked); states: the eps-branch pieces (_piece_state), norm nu_eps = e^{rho0}.
+    (1) eps_s := 2 a*_{1,V} (real: phase condition and realness) lies in the ball E = 2 (abar_{1,V} +- eta_V r / nu_P).
+    (2) For every eps-piece meeting E, with X = E n [e_lo, e_hi]: the bound, for every eps in X, of
+        ||y_s - xbar(eps)||_{eta(piece)},  y_s = (omega*, g_s, a*_0, (a*_m / eps)_{m != 0}),
+        computed from the point's centre plus its radius (||a*_k - abar_k||_{nu_eps} <= ||a*_k - abar_k||_{nu_P}
+        <= eta_k r since nu_eps <= nu_P), is <= r_hi(piece).
+    (3) The pieces checked cover E.
+    Then y_s is the zero x*(eps_s) of the eps-branch: the point's orbit is the bridge orbit at eps = eps_s.
+    Returns a record."""
+    import branch as br
+    if pt_rec["g_lo"] != pt_rec["g_hi"]:
+        raise ValueError("not a point proof")
+    gs = Fraction(pt_rec["g_lo"])
+    o = br.obj_from_record(pt_rec, pt_centre)              # checks the centre's SHA-256 against the record
+    om_s, A, ETA, nuP, r = o["om_bar"], o["A"], o["ETA"], o["nu"], o["r_lo"]
+    Ks = (len(A[0]) - 1) // 2
+    with am.precision(prec):
+        if not nu_eps <= nuP:
+            raise ValueError("the eps-branch norm must be the weaker one (nu_eps <= nu_P)")
+        a1 = A[IV][Ks + 1]
+        if not a1.imag.is_zero():
+            raise ProofFailure("point centre: Im abar_{1,V} is not exactly 0")
+        rad = up(ETA[1 + IV] * r / nuP)
+        E = 2 * (a1.real + rad * arb(0, 1))
+        Elo, Ehi = _exact_fraction(lo(E)), _exact_fraction(up(E))
+        out = dict(g=str(gs), eps_enclosure=[dec(lo(E), "down", 20), dec(up(E), "up", 20)],
+                   point_centre_sha256=pt_rec["centre_sha256"], point_r_existence=float(r), checks=[])
+        if not Elo > 0:
+            out["ok"] = False
+            return out
+        covered = []
+        ok_all = True
+        for st_ in states:
+            a_, b_ = st_["e_lo"], st_["e_hi"]
+            if b_ < Elo or a_ > Ehi:
+                continue
+            xa, xb = max(a_, Elo), min(b_, Ehi)
+            X = _ball_interval(xa, xb).real
+            C = st_["C"]
+            Ew, rhi = st_["E"], st_["r_hi"]
+            om, g, c, w = curve_at_ball(C, (a_ + b_) / 2, X, prec)
+            Kw = C.K
+            vals = [up(((om_s - om).abs_upper() + ETA[0] * r) / Ew[0]),
+                    up((_arb_q(gs) - g).abs_upper() / Ew[1])]
+            Xlo = lo(X)
+            for k in range(DIM):
+                vals.append(up(((A[k][Ks] - c[k]).abs_upper() + ETA[1 + k] * r) / Ew[CC + k]))
+            for k in range(DIM):
+                sm = arb(0)
+                for m in range(1, max(Ks, Kw) + 1):
+                    for sg in (1, -1):
+                        a = A[k][Ks + sg * m] / X if m <= Ks else acb(0)
+                        b = w[k][Kw + sg * m] if m <= Kw else acb(0)
+                        sm += (a - b).abs_upper() * nu_eps ** m
+                vals.append(up((sm + ETA[1 + k] * r / Xlo) / Ew[CW + k]))
+            lhs = amax_list(vals)
+            ok = bool(lhs <= rhi)
+            ok_all = ok_all and ok
+            covered.append((xa, xb))
+            out["checks"].append(dict(eps_piece=[str(a_), str(b_)], lhs=float(lhs), r_uniqueness=float(rhi),
+                                      slack=float(rhi - lhs), ok=ok))
+        covered.sort()
+        cov_ok = bool(covered) and covered[0][0] <= Elo and covered[-1][1] >= Ehi and \
+            all(u[1] >= v[0] for u, v in zip(covered, covered[1:]))
+    out.update(eps_covered=cov_ok, ok=bool(ok_all and cov_ok))
+    return out
+
+
+def _complete_lines(path):
+    """The complete (newline-terminated) lines of an append-only log, with their count and SHA-256."""
+    with open(path, "rb") as fh_:
+        raw = fh_.read()
+    cut = raw.rfind(b"\n") + 1
+    body = raw[:cut]
+    return body, body.count(b"\n"), hashlib.sha256(body).hexdigest()
+
+
+def gks_branch_snapshot(log=print, tmpdir=None):
+    """Read-only use of the G_Ks branch logs of branch.py (owned by another run, append-only): the complete lines of
+    run_K12.jsonl and centres_K12.jsonl are copied to a temporary directory and validated there by
+    branch.validate_logs (groups, centres' SHA-256, and every consecutive gluing re-derived in Arb), so the content that
+    is validated is exactly the content whose line count and SHA-256 are recorded. Returns (pieces, centres, info)."""
+    import tempfile
+    import branch as br
+    tmp = tempfile.mkdtemp(prefix="hopf-gks-", dir=tmpdir)
+    info = {}
+    for name in ("run_K12.jsonl", "centres_K12.jsonl"):
+        body, n, sha = _complete_lines(os.path.join(BRANCH_DIR, name))
+        with open(os.path.join(tmp, name), "wb") as fh_:
+            fh_.write(body)
+        info[name] = dict(lines=n, sha256_of_these_lines=sha)
+    old = (br.RUN_LOG, br.CENTRES)
+    br.RUN_LOG, br.CENTRES = os.path.join(tmp, "run_K{K}.jsonl"), os.path.join(tmp, "centres_K{K}.jsonl")
+    try:
+        pieces, groups, centres = br.validate_logs(12, reglue=True, log=log, repair=False)
+    finally:
+        br.RUN_LOG, br.CENTRES = old
+    recs = [p["rec"] for p in pieces]
+    info.update(n_pieces=len(recs), n_groups=len(groups), g_lo=recs[0]["g_lo"],
+                g_hi=str(max(Fraction(p["g_hi"]) for p in recs)), consecutive_gluings_rederived=len(recs) - 1)
+    return recs, centres, info
+
+
+def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100000"):
+    """branch.py's pointwise proof (its Theorem B1 with g_lo = g_hi = g_s, K = 32, weights 1, POINT_SETTINGS) and,
+    if asked, Stage S (branch.stability_point), at the exact decimals gs: the computation of branch.stability_points,
+    logged to data/hopf/gks_points.jsonl and data/hopf/gks_points_centres_K32.jsonl (the branch logs are not touched).
+    The float continuation from Stage E's centre goes in steps of at most `step` (untrusted)."""
+    import branch as br
+    ppath = os.path.join(data, "gks_points.jsonl")
+    cpath = os.path.join(data, "gks_points_centres_K32.jsonl")
+    trk = br.FloatTrack(K)
+    out = []
+    for g in sorted(Fraction(x) for x in gs):
+        t0 = time.time()
+        while trk.g + Fraction(step) < g:
+            trk.at(trk.g + Fraction(step))
+        trk.at(g)
+        omb, A, hist = br.refine_centre(trk.om, trk.a, br._dstr(g), prec=256, log=log)
+        _append(cpath, br.centre_record(br._dstr(g), omb, A, hist))
+        fp = br.FloatPoint(float(omb), br.centre_float(A), float(g), need_hess=False)
+        lead = fp.leading_nontrivial()[0]
+        delta_s = f"{0.85 * abs(lead):.3e}"
+        hb = br.HessBound([(omb, A)], br._dstr(g), br._dstr(g), ["1/4096"] * DIM, "1", None, log=log)
+        rec = dict(type="point", g=br._dstr(g), K=K, delta_requested=delta_s, float_leading_exponent=lead,
+                   centre_refinement=hist, made_by="hopf.gks_point_proofs (branch.py functions)",
+                   code_sha256=CODE_SHA256)
+        try:
+            pp = br.prove_piece(omb, A, br._dstr(g), br._dstr(g), eta=["1"] * (DIM + 1), r_star="1/1099511627776",
+                                hess=hb, log=log, settings=br.POINT_SETTINGS)
+            rec.update(ok_existence=True, rec=br._public(pp))
+            if stability:
+                st = br.stability_point(pp, delta_s, log=log)
+                rec.update(ok=True, stability=st)
+            else:
+                rec.update(ok=False, stability="not run")
+        except Exception as e:  # noqa: BLE001  (recorded as a failure, never as a proof)
+            rec.update(ok=False, why=f"{type(e).__name__}: {e}")
+        rec["wall"] = round(time.time() - t0, 1)
+        _append(ppath, rec)
+        log(f"G_Ks point g = {br._dstr(g)}: existence {rec.get('ok_existence', False)}, Stage S "
+            f"{rec.get('ok') if stability else 'not run'} ({rec['wall']} s)")
+        out.append(rec)
+    return out
+
+
+def gks_points(data=DATA):
+    """The point proofs (K = 32) of branch.py's log and of gks_point_proofs, with their centres:
+    (list of point records with a 'source' field, centres by (source, g))."""
+    pts, cents = [], {}
+    for src, pf, cf in (("branch", os.path.join(BRANCH_DIR, "points_K12.jsonl"),
+                         os.path.join(BRANCH_DIR, "points_centres_K32.jsonl")),
+                        ("hopf", os.path.join(data, "gks_points.jsonl"),
+                         os.path.join(data, "gks_points_centres_K32.jsonl"))):
+        for r in _read_jsonl(pf):
+            if r.get("type") == "point" and r.get("ok_existence") and r.get("rec"):
+                pts.append(dict(r, source=src))
+        for r in _read_jsonl(cf):
+            cents[(src, r["g"])] = r
+    return pts, cents
+
+
+def point_on_gks_branch(pt, cent, recs, centres):
+    """branch.point_on_branch for every G_Ks piece containing the point's g (the first that passes is reported)."""
+    import branch as br
+    g = Fraction(pt["g"])
+    res = []
+    for p in recs:
+        if Fraction(p["g_lo"]) <= g <= Fraction(p["g_hi"]):
+            pc = centres[br._dstr(Fraction(p["centre_g"]))]
+            r_ = br.point_on_branch(pt, cent, p, pc)
+            res.append(r_)
+            if r_["ok"]:
+                return dict(ok=True, piece=r_["piece"], piece_label=r_["piece_label"], lhs=r_["lhs"]["approx"],
+                            r_uniqueness_piece=r_["r_uniqueness_piece"]["approx"])
+    return dict(ok=False, tried=[dict(piece=r_.get("piece"), ok=r_["ok"]) for r_ in res])
+
+
+def bridge_checks(log=print, data=DATA, prec=256):
+    """Part C and the stability points: for every branch.py point proof (g_s), Lemma D against the eps-branch, and
+    (gluing) branch.point_on_branch against the G_Ks branch. Writes data/hopf/gluing_gks.json and returns it."""
+    pieces = [r for r in _read_jsonl(os.path.join(data, "pieces.jsonl")) if r.get("type") == "piece"]
+    states = [_piece_state(r) for r in pieces]
+    with am.precision(prec):
+        nu_eps = _arb_q(pieces[0]["settings"]["rho0"]).exp()
+    recs, centres, info = gks_branch_snapshot(log=log)
+    pts, cents = gks_points(data)
+    shas = {}
+    for pth in (os.path.join(BRANCH_DIR, "points_K12.jsonl"), os.path.join(BRANCH_DIR, "points_centres_K32.jsonl"),
+                os.path.join(data, "gks_points.jsonl"), os.path.join(data, "gks_points_centres_K32.jsonl")):
+        if os.path.exists(pth):
+            shas[os.path.relpath(pth, ROOT)] = _sha(pth)
+    out = dict(gks_branch_snapshot=info, points=[], eps_branch=dict(n_pieces=len(pieces), eps_end=pieces[-1]["e_hi"]),
+               point_logs_sha256=shas)
+    for pt in sorted(pts, key=lambda r: Fraction(r["g"])):
+        cent = cents.get((pt["source"], pt["g"]))
+        if cent is None:
+            continue
+        d = point_in_eps_branch(pt["rec"], cent, states, nu_eps, prec)
+        on = point_on_gks_branch(pt, cent, recs, centres)
+        st = pt.get("stability") if pt.get("ok") else None
+        item = dict(g=pt["g"], source=pt["source"], on_eps_branch=d["ok"], lemma_D=d, on_gks_branch=on["ok"], gks_check=on,
+                    stage_S_ok=bool(pt.get("ok")),
+                    multiplier_bound_full_period=(st or {}).get("multiplier_bound_full_period"),
+                    delta=(st or {}).get("delta"))
+        out["points"].append(item)
+        log(f"  point g = {pt['g']}: on the eps-branch {d['ok']} (eps in {d['eps_enclosure']}), on the G_Ks branch "
+            f"{on['ok']}, Stage S {bool(pt.get('ok'))}")
+    glue_pts = [p for p in out["points"] if p["on_eps_branch"] and p["on_gks_branch"]]
+    out["glue_points"] = [dict(g=p["g"], source=p["source"]) for p in glue_pts]
+    out["ok"] = bool(glue_pts)
+    out["stable_bridge_points"] = [dict(g=p["g"], source=p["source"]) for p in out["points"]
+                                   if p["on_eps_branch"] and p["stage_S_ok"]]
+    with open(os.path.join(data, "gluing_gks.json"), "w") as fh_:
+        json.dump(out, fh_, indent=1, default=str)
+    return out
 
 
 # =================================================================================================================
@@ -2544,7 +2739,7 @@ def float_eps_for_g(g_target, K=8):
 # =================================================================================================================
 SOURCES = ["fourier/hopf.py", "fourier/test_hopf.py", "fourier/LEMMAS-hopf.md", "fourier/arbmodel.py",
            "fourier/tp06_18d_arb.py", "fourier/fourier_eval.py", "fourier/existence.py", "fourier/branch.py",
-           "fourier/centre.py", "model/tp06_18d.py", "model/scales.txt"]
+           "fourier/stability.py", "fourier/centre.py", "model/tp06_18d.py", "model/scales.txt"]
 
 
 def _sha(path):
@@ -2555,13 +2750,19 @@ def _sha(path):
     return h.hexdigest()
 
 
-def collect(write=True, log=print, data=DATA, gks_glue=None):
-    """Re-derive the chain from the logs (every gluing in Arb), the identification at eps = 0, and assemble the record.
-    gks_glue: the record of glue_gks (with the point proof), or None (then the gap is reported)."""
+def collect(write=True, log=print, data=DATA):
+    """Re-derive the eps-chain from the logs (every gluing in Arb, adjacency, covers, centre digests), the
+    identification at eps = 0 (Corollary B(a)), read the bridge checks (bridge_checks: Lemma D and the gluing to the
+    G_Ks branch), and write results/fourier-hopf.json."""
     pieces = [r for r in _read_jsonl(os.path.join(data, "pieces.jsonl")) if r.get("type") == "piece"]
     covers = {r["id"]: r for r in _read_jsonl(os.path.join(data, "covers.jsonl")) if r.get("type") == "cover"}
     if not pieces:
         raise RuntimeError("no pieces")
+    pA = os.path.join(data, "theoremA.json")
+    if not os.path.exists(pA):
+        raise RuntimeError("theoremA.json missing: run --theorem-a first")
+    with open(pA) as fh_:
+        thA = json.load(fh_)
     with am.precision(192):
         nu = _arb_q(pieces[0]["settings"]["rho0"]).exp()
     states = [_piece_state(r) for r in pieces]
@@ -2578,70 +2779,101 @@ def collect(write=True, log=print, data=DATA, gks_glue=None):
     for r in pieces:
         if r["cover"] not in covers:
             raise ProofFailure(f"piece {r['idx']}: cover {r['cover']} not logged")
-        if r["centre"] and Centre.from_record(r["centre"]).digest() != r["result"]["centre_sha256"]:
+        if Centre.from_record(r["centre"]).digest() != r["result"]["centre_sha256"]:
             raise ProofFailure(f"piece {r['idx']}: centre digest mismatch")
-    ident = identification_at_eps0(pieces[0], log=log)
-    thA = None
-    pA = os.path.join(data, "theoremA.json")
-    if os.path.exists(pA):
-        with open(pA) as fh_:
-            thA = json.load(fh_)
-    gHa = Fraction(thA["gH_interval"][0]) if thA else None
+        if not covers[r["cover"]]["record"]["digest"].startswith(r["cover"]) or \
+                r["result"]["cover"] != covers[r["cover"]]["record"]["digest"]:
+            raise ProofFailure(f"piece {r['idx']}: cover digest mismatch")
+        if not hex_fraction(r["result"]["r_existence"]) < hex_fraction(r["result"]["r_uniqueness"]):
+            raise ProofFailure(f"piece {r['idx']}: r_existence not < r_uniqueness")
+    ident = identification_at_eps0(pieces[0], thA, log=log)
+    gHa, gHb = Fraction(thA["gH_interval"][0]), Fraction(thA["gH_interval"][1])
     first_below = None
     for r in pieces:
-        if thA and Fraction(r["result"]["g"]["upper"]["dec"]) < gHa:
+        if hex_fraction(r["result"]["g"]["upper"]) < gHa:
             first_below = r["e_lo"]
             break
+    below_after = first_below is not None and all(hex_fraction(r["result"]["g"]["upper"]) < gHa for r in pieces
+                                                  if Fraction(r["e_lo"]) >= Fraction(first_below))
     eps_end = Fraction(pieces[-1]["e_hi"])
-    g_lo_all = min(Fraction(r["result"]["g"]["lower"]["dec"]) for r in pieces)
-    gks = _gks_record()
-    gks_end = Fraction(gks["g_covered"][1])
+    with am.precision(256):
+        _, g_end_ball, _, _, _ = ball_of_piece_at(states[-1], eps_end)
+        g_end_hi = up(g_end_ball)
+        g_end_lo = lo(g_end_ball)
+    bridge_g_low = dec(g_end_hi, "up", 20)
+    pg = os.path.join(data, "gluing_gks.json")
+    gl = None
+    if os.path.exists(pg):
+        with open(pg) as fh_:
+            gl = json.load(fh_)
+        if gl.get("eps_branch", {}).get("n_pieces") != len(pieces):
+            log("note: gluing_gks.json was made with a different number of eps pieces; rerun --bridge")
+            gl["stale"] = True
+    closed = bool(gl and gl.get("ok") and not gl.get("stale"))
+    gks_hi = Fraction(gl["gks_branch_snapshot"]["g_hi"]) if gl else None
     summary = [dict(idx=r["idx"], eps=[r["e_lo"], r["e_hi"]], g=[r["result"]["g"]["lower"]["dec"][:18],
                                                                   r["result"]["g"]["upper"]["dec"][:18]],
                     T_ms=[r["result"]["T_ms"]["lower"]["dec"][:14], r["result"]["T_ms"]["upper"]["dec"][:14]],
                     r_existence=r["result"]["r_existence"]["approx"], r_uniqueness=r["result"]["r_uniqueness"]["approx"],
                     Y0=r["result"]["Y0"]["approx"], Z1=r["result"]["Z1"]["approx"], Z2=r["result"]["Z2"]["approx"],
-                    cover=r["cover"], centre_sha256=r["result"]["centre_sha256"], glue_slack=r["glue_prev"]["slack"]
-                    if r.get("glue_prev") else None) for r in pieces]
-    closed = bool(gks_glue and gks_glue.get("ok"))
+                    contraction=r["result"]["contraction_at_r_uniqueness"]["approx"],
+                    cover=r["cover"], centre_sha256=r["result"]["centre_sha256"],
+                    glue_slack=r["glue_prev"]["slack"] if r.get("glue_prev") else None,
+                    code_sha256=r.get("code_sha256")) for r in pieces]
     theorem_B = (f"For every eps in [0, {eps_end}] the blown-up problem F(.; eps) = 0 (LEMMAS-hopf.md, B0) has a zero "
-                 f"x*(eps) = (omega*, g*, c*, w*), unique in the piece's ball, real, continuous in eps; for eps > 0, "
-                 f"c* + eps w*(omega* t) is a periodic orbit of the single cell at G_Ks = g*(eps) with minimal period "
-                 f"2 pi / omega*, and V's first Fourier coefficient eps/2; at eps = 0, x*(0) is the Hopf point of "
-                 f"Theorem A. The orbits are, for small eps, the Hopf cycles of Corollary A. g*(eps) ranges over "
-                 f"[{float(g_lo_all):.12f}, g_H] on [0, {float(eps_end):.6f}].")
+                 f"x*(eps) = (omega*, g*, c*, w*), unique in the ball B_r_hi(xbar(eps)) of the piece containing eps, real, "
+                 f"continuous in eps. For eps > 0, z(t) = c*(eps) + eps w*(eps)(omega*(eps) t) is a periodic orbit of the "
+                 f"single cell at G_Ks = g*(eps), of minimal period 2 pi / omega*(eps), whose first V Fourier coefficient "
+                 f"(scaled variables, phase with Im a_1V = 0) is eps/2; distinct eps give distinct orbits. x*(0) is the "
+                 f"Hopf point of Theorem A (g*(0) = g_H). By continuity, every G_Ks in [{bridge_g_low}, g_H) is g*(eps) "
+                 f"for some eps in (0, {eps_end}], so the cell has a periodic orbit on the bridge at every such G_Ks.")
     rec = dict(
-        what="Rec 2, Hopf gap: the certified G_Ks branch of the single-cell periodic orbit (branch.py) is the branch "
-             "born at Erhardt's supercritical Hopf point (fourier/hopf.py, LEMMAS-hopf.md)",
+        what="Rec 2, Hopf bridge: the single-cell periodic orbit is certified from the end of the G_Ks branch "
+             "(branch.py) to Erhardt's supercritical Hopf point by a blown-up radii polynomial in the amplitude eps "
+             "(fourier/hopf.py, LEMMAS-hopf.md)",
         status="computed; awaiting adversarial review",
-        not_claimed="No outside review has taken place. Nothing here is verified until a second reading has checked it.",
-        theorem_A=("Theorem A (LEMMAS-hopf.md): in W = [0.02789, 0.02792] there is exactly one g_H with an eigenvalue "
-                   "of the Jacobian at the equilibrium on the imaginary axis; there the pair +-i omega_H is simple, the "
-                   "16 other eigenvalues have real part <= the recorded bound < 0, d Re lambda/dg < 0, and l1 < 0."),
-        theorem_A_record=({k: v for k, v in thA.items() if k not in ("cover_left", "cover_right")} if thA else None),
+        not_claimed=("No outside review has taken place. Stability is NOT proved uniformly on the bridge: only "
+                     "(a) for small amplitude, qualitatively (cited Hopf theorem, no explicit range), and (b) at the "
+                     "G_Ks values listed under stability_points (Stage S point proofs identified with the bridge by "
+                     "Lemma D). Monotonicity of g*(eps) in eps is not certified."),
+        theorem_A=("Theorem A (LEMMAS-hopf.md): in W = [0.02789, 0.02792], on every interval of the recorded cover, "
+                   "the equilibrium in the interval's polydisc has a simple pair lambda, conj lambda and 16 eigenvalues "
+                   "with real part <= others_max_re_upper < 0; Re lambda > 0 left of G_H and < 0 right of it; on G_H "
+                   "(width 2e-13) d Re lambda/dg < 0 and there is exactly one g_H with Re lambda(g_H) = 0; at g_H, "
+                   "l1 < 0 (enclosure in the record)."),
+        theorem_A_record={k: v for k, v in thA.items() if k not in ("cover_left", "cover_right", "polydisc_GH")},
         theorem_B=theorem_B,
-        eps_covered=["0", str(eps_end)], n_pieces=len(pieces), g_lowest=float(g_lo_all),
-        first_eps_with_g_below_gH_certified=first_below,
+        eps_covered=["0", str(eps_end)], n_pieces=len(pieces),
+        g_star_at_eps_end={"lower": dec(g_end_lo, "down", 20), "upper": dec(g_end_hi, "up", 20)},
+        bridge_g_covered=[bridge_g_low, "g_H"],
+        first_eps_with_g_certified_below_gH=first_below, certified_below_gH_from_there_on=below_after,
         identification_at_eps0=ident,
         gluing_eps_pieces=dict(n=len(glued), min_slack=min(glued) if glued else None),
-        gks_branch=dict(g_covered=gks["g_covered"], status=gks.get("status")),
-        gluing_to_gks=gks_glue,
+        Z1_max=max(r["result"]["Z1"]["approx"] for r in pieces), Z2_max=max(r["result"]["Z2"]["approx"] for r in pieces),
+        contraction_max=max(r["result"]["contraction_at_r_uniqueness"]["approx"] for r in pieces),
+        T_ms_range=[min(r["result"]["T_ms"]["lower"]["dec"][:14] for r in pieces),
+                    max(r["result"]["T_ms"]["upper"]["dec"][:14] for r in pieces)],
+        bridge_checks=gl,
         hopf_gap_closed=closed,
-        gap=(None if closed else dict(eps_branch_ends_at_g=float(g_lo_all), gks_branch_ends_at_g=float(gks_end),
-                                      note="the two branches overlap in g only if eps_branch_ends_at_g < "
-                                           "gks_branch_ends_at_g; the gluing point is then chosen inside both")),
+        gap=(None if closed else dict(bridge_g_low=bridge_g_low, gks_branch_g_hi=(str(gks_hi) if gks_hi else None),
+                                      note="glued only through a branch.py point proof whose g lies in both ranges")),
+        stability_points=([dict(g=p["g"], source=p["source"], eps=p["lemma_D"]["eps_enclosure"],
+                                multiplier_bound_full_period=p["multiplier_bound_full_period"])
+                           for p in gl["points"] if p["on_eps_branch"] and p["stage_S_ok"]] if gl else []),
         pieces=summary,
         covers=[dict(id=k, T=v["T"], R=v["R"], G_R=v["G_R"], rho2=v["rho2"], n_evals=v["record"]["n_evals"])
                 for k, v in covers.items()],
-        sources_sha256={s: _sha(os.path.join(ROOT, s)) for s in SOURCES},
-        data_sha256={os.path.basename(p): _sha(p) for p in (os.path.join(data, f) for f in
-                     ("pieces.jsonl", "covers.jsonl", "theoremA.json", "point.jsonl")) if os.path.exists(p)},
+        sources_sha256={s_: _sha(os.path.join(ROOT, s_)) for s_ in SOURCES},
+        data_sha256={os.path.basename(p_): _sha(p_) for p_ in (os.path.join(data, f) for f in
+                     ("pieces.jsonl", "covers.jsonl", "theoremA.json", "gluing_gks.json")) if os.path.exists(p_)},
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_piece_seconds=round(sum(r.get("seconds", 0) for r in pieces), 1))
     if write:
         with open(os.path.join(RESULTS, "fourier-hopf.json"), "w") as fh_:
             json.dump(rec, fh_, indent=1)
+    log(f"collect: eps in [0, {float(eps_end):.6f}], {len(pieces)} pieces, bridge covers G_Ks in [{bridge_g_low}, g_H); "
+        f"identification at 0: {ident.get('ok')}; glued to the G_Ks branch: {closed}")
     return rec
 
 
@@ -2650,61 +2882,26 @@ def main():
     ap.add_argument("--theorem-a", action="store_true")
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--e-stop", default="0.2")
+    ap.add_argument("--g-stop", default=None, help="stop once a piece's g enclosure lies below this value")
     ap.add_argument("--budget", type=float, default=3300)
-    ap.add_argument("--glue-gks", action="store_true", help="point proof at eps* and gluing to the G_Ks branch")
+    ap.add_argument("--K", type=int, default=None, help="Galerkin size of new eps pieces (default RUN_SETTINGS)")
+    ap.add_argument("--M", type=int, default=None, help="DFT nodes of new eps pieces (default RUN_SETTINGS)")
+    ap.add_argument("--gks-points", default=None, help="comma-separated exact decimals: K = 32 G_Ks point proofs")
+    ap.add_argument("--no-stability", action="store_true", help="with --gks-points: existence only (no Stage S)")
+    ap.add_argument("--bridge", action="store_true", help="Lemma D for the branch.py point proofs and the gluing")
     ap.add_argument("--collect", action="store_true")
     a = ap.parse_args()
     if a.theorem_a:
         theorem_A()
     if a.run:
-        run(e_stop=a.e_stop, budget_s=a.budget)
-    gl = None
-    if a.glue_gks:
-        gl = glue_gks_auto()
+        run(e_stop=a.e_stop, budget_s=a.budget, g_stop=a.g_stop, K=a.K, M=a.M)
+    if a.gks_points:
+        gks_point_proofs([x.strip() for x in a.gks_points.split(",") if x.strip()], stability=not a.no_stability)
+    if a.bridge:
+        bridge_checks()
     if a.collect:
-        if gl is None:
-            p = os.path.join(DATA, "gluing_gks.json")
-            if os.path.exists(p):
-                with open(p) as fh_:
-                    gl = json.load(fh_)
-        collect(gks_glue=gl)
+        collect()
     return 0
-
-
-def glue_gks_auto(log=print, data=DATA):
-    """Choose eps* inside the eps-branch whose float g lies at the centre of a G_Ks piece overlapping the
-    eps-branch's g range, run the point proof there and Lemma C; writes data/hopf/gluing_gks.json."""
-    pieces = [r for r in _read_jsonl(os.path.join(data, "pieces.jsonl")) if r.get("type") == "piece"]
-    g_lo_all = min(Fraction(r["result"]["g"]["lower"]["dec"]) for r in pieces)
-    gks = _gks_record()
-    cand = [P for P in gks["pieces"] if Fraction(P["g"][0]) >= g_lo_all]
-    if not cand:
-        out = dict(ok=False, reason=f"no G_Ks piece with g >= {float(g_lo_all):.12f} (the eps-branch's lowest g); "
-                                    f"the G_Ks branch ends at {gks['g_covered'][1]}")
-        log(out["reason"])
-        with open(os.path.join(data, "gluing_gks.json"), "w") as fh_:
-            json.dump(out, fh_, indent=1)
-        return out
-    P = cand[len(cand) // 2]
-    gc = float(Fraction(P["g_centre"]))
-    eps_star = Fraction(round(float_eps_for_g(gc) * 10 ** 9), 10 ** 9)
-    host = None
-    for r in pieces:
-        if Fraction(r["e_lo"]) <= eps_star <= Fraction(r["e_hi"]):
-            host = r
-            break
-    if host is None:
-        raise ProofFailure("eps* outside the eps-branch")
-    prec_, st_pt = point_proof(eps_star, log=log, data=data)
-    out = glue_gks(st_pt, _piece_state(host), P, log=log)
-    out["point_proof"] = dict(eps_star=prec_["eps_star"], interval=[prec_["e_lo"], prec_["e_hi"]],
-                              r_existence=prec_["result"]["r_existence"], r_uniqueness=prec_["result"]["r_uniqueness"],
-                              Y0=prec_["result"]["Y0"], Z1=prec_["result"]["Z1"], Z2=prec_["result"]["Z2"],
-                              centre_sha256=prec_["result"]["centre_sha256"], rho0="1/4")
-    out["eps_piece"] = dict(idx=host["idx"], eps=[host["e_lo"], host["e_hi"]])
-    with open(os.path.join(data, "gluing_gks.json"), "w") as fh_:
-        json.dump(out, fh_, indent=1, default=str)
-    return out
 
 
 if __name__ == "__main__":

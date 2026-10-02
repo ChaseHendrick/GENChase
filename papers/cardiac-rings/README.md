@@ -4,9 +4,10 @@
 
 **Draft** (status "draft" in `papers/papers.json`).
 The manuscript is [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex), and its PDF
-[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (26 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
+[`paper/cardiac-rings.pdf`](paper/cardiac-rings.pdf) (40 pages) is built from it with pdflatex. The programs and records come from `research/cardiac-cycle-certificates/` in
 GENChase, their canonical location; the copies here are byte-identical, and the hashes stored in the records refer to
-paths relative to that folder, which `code/` reproduces. The quality record is [`notes/QUALITY.md`](notes/QUALITY.md).
+paths relative to that folder, which `code/` reproduces. The one exception is `code/fourier/LEMMAS-stability.md`, kept as
+it was reviewed: the canonical file has since gained a section 10 for the G_Ks branch, which this draft does not use. The quality record is [`notes/QUALITY.md`](notes/QUALITY.md).
 
 ## Abstract
 
@@ -28,8 +29,13 @@ radii-polynomial argument in a weighted l^1 space, with rigorous strip covers, a
 majorant for the non-polynomial ionic currents. Stability is proved through one Hill operator: its spectrum on a
 half-open strip of height omega N gives every Floquet multiplier of the ring with its algebraic multiplicity, and
 spectrum is excluded from {Re mu >= -delta}, apart from a simple eigenvalue 0, by a Riesz-projection homotopy with a
-Schur-complement small-gain test and an explicit tail resolvent bound. The identification of these orbits with the
-Hopf branch is numerical, and nothing is claimed for a continuum cable or for tissue.
+Schur-complement small-gain test and an explicit tail resolvent bound. The coupling of Fourier mode m is an entire
+function of epsilon = 1/N^2 whose value at epsilon = 0 is that of the continuum cable u_t = f(u) + D u_xx (voltage only,
+D = 1/64000 per ms, on a ring of unit length). Treating epsilon in [0, 1/64] as an interval parameter, covered by 73
+pieces glued by ball inclusion, we also prove that a locally unique rotating 1-wave exists for every N >= 8 and a
+locally unique traveling wave for the cable, and that they form one family, continuous in epsilon, so that the ring
+waves converge to the cable wave as N tends to infinity. Their stability is proved only for N = 8, 16, 32 and 64. The
+identification of these orbits with the Hopf branch is numerical, and nothing is claimed for tissue.
 
 ## Status of the results
 
@@ -46,23 +52,39 @@ Hopf branch is numerical, and nothing is claimed for a continuum cable or for ti
   - The records keep the status their programs wrote ("computed; awaiting adversarial review"). The in-project review
     outcome, "passed in-project adversarial review", is recorded in `data/fourier-review-status.json`, outside the
     hashed records, so that recording it does not break the hash chain from Stage S to Stage E.
+  - Theorem C, every ring size N >= 8 and the continuum cable (existence, local uniqueness, minimal period, continuity
+    in epsilon = 1/N^2, convergence as N tends to infinity): record `data/fourier-existence-alln.json` (73 pieces of
+    [0, 1/64]), written by `code/fourier/alln.py` from the run log `code/fourier/data/alln/pieces.jsonl`. For
+    N = 8, 16, 32, 64 the record identifies the wave with the wave of Theorem B, so Theorem B's stability applies to it;
+    for every other N, and for the cable, stability is not claimed. The program had an in-project adversarial reading
+    (`review/alln-existence-review-2026-10-02.md`: nothing unsound, four weak tests and four minor items, fixed by the
+    program's author without changing any bound, `review/alln-existence-fixcheck-2026-10-02.md`); the record keeps the
+    status its program wrote, and `data/fourier-review-status.json` does not list it yet.
 - **Numerical, not proved** (Section 7 of the manuscript): the floating-point leading exponents; the sharpness of the
   N = 8 certificate (passes at delta = 6.32095e-6, fails at 6.321e-6, in runs not kept as records); the Hopf point
-  (`data/numerics-hopf-orbit.json`); and that these orbits lie on the branch born at Erhardt's Hopf point.
+  (`data/numerics-hopf-orbit.json`); that these orbits lie on the branch born at Erhardt's Hopf point; the negative
+  controls of Theorem C; and the comparison with the weak-coupling phase reduction (Remark 7.1,
+  `code/numerics/phase_reduction.py`, `data/numerics-phase-reduction.json`), which predicts the period shifts to within
+  0.82 per cent and the leading exponents to within 3.5 per cent, and fails for the short-wavelength ring modes when
+  N >= 16.
 - **Consistency check, not a publication:** an independent computation with CAPD in the same project, on the owner's
   machine (`docs/CARDIAC-HANDOFF-2026-09-30.md` of GENChase), enclosed the periods of the cell and of the 8- and
   16-cell waves in intervals that contain the periods proved here.
-- **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry, a continuum cable,
-  tissue, other N or uniformity in N. A certified branch on an interval of G_Ks (the project's "rec 2") is in progress
+- **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry or tissue; N < 8;
+  stability for N other than 8, 16, 32, 64, for the cable, or uniformly in N; a rate of convergence as N tends to
+  infinity. A certified branch on an interval of G_Ks (the project's "rec 2") is in progress
   in `research/cardiac-cycle-certificates/fourier/branch.py`; no result of it is used here.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
   of their fixes, are copied in [`review/`](review/README.md), with a first reading of this manuscript
   (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised draft
-  (`review/manuscript-reading-2-2026-10-01.md`), whose corrections are made and listed in `review/fix-check-2026-10-01.md`. On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
+  (`review/manuscript-reading-2-2026-10-01.md`), whose corrections are made and listed in `review/fix-check-2026-10-01.md`;
+  Appendix A had a reading of its own (`review/appendixA-reading-2026-10-02.md`), and the integration of Theorem C and
+  the phase-reduction remark another (`review/alln-integration-reading-2026-10-02.md`). On 2026-10-01 the proofs for N = 1 and 8 were rerun from the copies in `code/`
   (`notes/rerun-2026-10-01.md`).
 - **Novelty:** the project's logged searches (RESEARCH.md of GENChase, entries of 2026-09-30 and 2026-10-01 on
   cardiac work) found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model
-  and none of a rotating wave in a ring of coupled cells. Nothing more is claimed. The oscillation of the cell is
+  and none of a rotating wave in a ring of coupled cells. Nothing more is claimed; in particular the searches did not
+  cover traveling waves of continuum cables, and no novelty is claimed for the cable wave of Theorem C. The oscillation of the cell is
   predicted by Erhardt's numerical continuation (Front. Phys. 13 (2025) 1569121), and the existence of rotating waves
   near a Hopf point of a ring is the generic expectation of Z_N-equivariant Hopf theory.
 
@@ -87,6 +109,8 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 | `code/fourier/existence.py` | Stage E: the radii-polynomial existence proof (Section 4) |
 | `code/fourier/stability.py` | Stage S: the Hill-operator certificate (Section 5) |
 | `code/fourier/link_cell.py` | The exact check that the Fourier cell orbit's section point lies in the CAPD ball (Lemma 6.1) |
+| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.8); `alln.py` calls the bound assembly, the Hessian cover and the centre distance of `branch.py` |
+| `code/fourier/data/alln/` | The run log of Theorem C (`pieces.jsonl`, the exact inputs and bounds of every piece, hashed by the record), its controls and the code version at launch |
 | `code/fourier/LEMMAS-stability.md` | The stability lemmas as they were reviewed; Section 5 of the paper writes them out |
 | `code/fourier/centre.py`, `code/fourier/data/` | Untrusted Newton solver for the centres, and the centres as exact dyadic numbers |
 | `code/fourier/check_records.py` | Rechecks every hash stored in the Fourier records |
@@ -94,17 +118,21 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 | `code/model/` | The reference translation (`tp06_18d.py`), the CAPD field (`tp06_capd.hpp`, `setup.hpp`) and the scales |
 | `code/proofs/` | The CAPD route: `verify.cpp` (the verifier), `certify.py` (the driver that writes the record), the untrusted `orbit_newton.cpp` and `frame.py`, and the CAPD patch |
 | `code/candidates/` | The cell orbit and the frame file that `data/cell-gks0.0275.json` hashes |
-| `code/numerics/` | Not part of any proof: the CAPD-against-Python field comparison and the Hopf computation |
+| `code/numerics/` | Not part of any proof: the CAPD-against-Python field comparison, the Hopf computation and the phase-reduction comparison (`phase_reduction.py`, Remark 7.1) |
 
 ## Reproduce
 
 From this folder, with python-flint 0.9.0 (`pip install -r code/requirements.txt`):
 
 ```
-sh code/run_all.sh                 # provenance ("90 hashes checked; all match") and the link ("LINKED")
+sh code/run_all.sh                 # provenance ("90 hashes checked", and "15 hashes checked" for Theorem C) and the link ("LINKED")
+sh code/run_all.sh alln            # Theorem C: re-derive the gluing and the Stage E identifications in Arb (under a minute)
 sh code/run_all.sh 1,8             # rerun Stage E and Stage S for N = 1 and 8 (about 5 minutes)
 sh code/run_all.sh 1,8,16,32,64    # all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)
 ```
+
+Theorem C's pieces are re-proved from their stored inputs by `fourier/test_alln.py` (about 15 minutes), run in a folder
+staged as `run_all.sh` stages one (`code/` with `data/fourier-*.json` copied to `results/`).
 
 The script stages `code/` in a scratch folder, because the programs write their records to `<root>/results`, and never
 touches `data/`. Expect the period enclosures and the stability bounds to agree exactly with `data/`, and the binary

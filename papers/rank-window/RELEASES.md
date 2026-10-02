@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.5 (2026-10-02)
 
+**DOI:** [10.5281/zenodo.23096200](https://doi.org/10.5281/zenodo.23096200) (2026-10-02).
+
 Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. Sources that were not read in full are now cited for what is known of them (for example from their citing papers), stated once as a plain fact, without apology. The README calls the manuscript a preprint and gives its page count, 17. Numerical inputs, programs and results are unchanged. No new scientific validation is claimed; previous archives remain unchanged.
 
 ## 1.0.4 (2026-09-29)

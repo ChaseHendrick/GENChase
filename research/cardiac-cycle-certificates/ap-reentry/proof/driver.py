@@ -3,7 +3,7 @@ floating-point orbit, launches `ap_proof` (resuming from checkpoints after any i
 writes a record with hashes. Every rigorous statement is made by ap_proof; this script only decides what to run.
 
   python3 driver.py prepare --run-dir DIR --instance N16 [--split-times 8,16,24] [--parallel-boxes 1e-7] [--jac A.npy B.npy]
-  python3 driver.py prepare --run-dir DIR --instance dry3          # DRY RUN: N = 3, c = 0.15, not a rotating wave
+  python3 driver.py prepare --run-dir DIR --instance dry3 [--reuse-jac]   # DRY RUN: N = 3, c = 0.15, not a rotating wave
   python3 driver.py run     --run-dir DIR [--jobs J] [--kinds c1,mp0] [--call-timeout S] [--nice 15] [--max-calls 1000]
   python3 driver.py chain   --run-dir DIR
   python3 driver.py verify  --run-dir DIR
@@ -90,10 +90,14 @@ def cmd_prepare(a):
         Y32, _ = state_at(16, 0.035, x16, lo16, 32.55)
         Y32 = Y32.reshape(19, 16)
         x = np.stack([Y0[:, 0], Y0[:, 3], Y32[:, 11]], axis=1).ravel()
-        J, Pfloat, tau = fd_jacobian(N, float(c), x)
-        np.save(os.path.join(d, "dry_jac.npy"), J)
-        np.save(os.path.join(d, "dry_state.npy"), x)
-        np.save(os.path.join(d, "dry_P_float.npy"), Pfloat)
+        fj, fs, fp = (os.path.join(d, n) for n in ("dry_jac.npy", "dry_state.npy", "dry_P_float.npy"))
+        if a.reuse_jac and all(os.path.exists(f) for f in (fj, fs, fp)) and np.array_equal(np.load(fs), x):
+            J, Pfloat = np.load(fj), np.load(fp)  # same state: reuse the floating-point Jacobian of an earlier prepare
+        else:
+            J, Pfloat, tau = fd_jacobian(N, float(c), x)
+            np.save(fj, J)
+            np.save(fs, x)
+            np.save(fp, Pfloat)
         jac = [os.path.join(d, "dry_jac.npy")]
         dry = True
     else:
@@ -116,6 +120,13 @@ def cmd_prepare(a):
     internal = [e for e in ev if not (e[1] == 1 % N and e[2] == 1)]
     cuts = sorted(float(t) for t in a.split_times.split(",")) if a.split_times else []
     # segment list: cuts and internal events in time order; the last segment ends at cell 1 upward
+    # A section segment cannot start with its own crossing cell on the level (the engine's approach needs a positive
+    # distance), so two consecutive section events of the same cell (e.g. a cell that crosses -40 down and back up
+    # within the interval, as in the dry-run instance) get a duration cut at the midpoint between them.
+    secs = sorted([(e[0], e[1]) for e in internal] + [(tau, 1 % N)])
+    auto_cuts = [0.5 * (t0_ + t1_) for (t0_, k0_), (t1_, k1_) in zip(secs, secs[1:]) if k0_ == k1_
+                 and not any(t0_ < t < t1_ for t in cuts)]
+    cuts = sorted(cuts + auto_cuts)
     marks = sorted([(t, "cut", None) for t in cuts] + [(e[0], "event", e) for e in internal]) + [(tau, "terminal", None)]
     segs, lo, t0, exempt = [], lo0.copy(), 0.0, [(0, 1)]
     for i, (t, kind, e) in enumerate(marks):
@@ -132,7 +143,7 @@ def cmd_prepare(a):
         else:
             start = "start previous"
         if kind == "cut":
-            segs.append("segment %d %s end duration %r low %s%s" % (i, start, t - t0, low, ex))
+            segs.append("segment %d %s end duration %r low %s%s" % (i, start, float(t - t0), low, ex))  # float: numpy 2 reprs np.float64(...)
             exempt = []
         elif kind == "event":
             segs.append("segment %d %s end section %d -40 %d low %s%s" % (i, start, e[1], e[2], low, ex))
@@ -145,7 +156,7 @@ def cmd_prepare(a):
     write_plan(plan, N, c, segs, order=a.order, mp_order=a.mp_order, mp_bits=a.mp_bits, ghk_degree=24, ghk_theta_mV=a.theta,
                checkpoint_every=a.checkpoint_every)
     cfg = dict(instance=a.instance, dry_run=dry, N=N, coupling=c, float_tau_ms=tau, float_events=[(float(t), int(k), int(s)) for t, k, s in ev],
-               split_times=cuts, parallel_boxes=a.parallel_boxes, frame=frame_info, created=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+               split_times=cuts, auto_cuts=auto_cuts, parallel_boxes=a.parallel_boxes, frame=frame_info, created=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                inputs={os.path.basename(f): sha(f) for f in jac + [state_file, frame, plan]},
                status="pilot / dry run; no theorem" if dry else "prepared; no theorem until verify passes and the record is reviewed")
     json.dump(cfg, open(cfg_path(d), "w"), indent=1)
@@ -296,6 +307,7 @@ def main():
     p.add_argument("--jac", nargs="*"); p.add_argument("--rho0", type=float, default=1e-9); p.add_argument("--order", type=int, default=20)
     p.add_argument("--mp-order", type=int, default=30); p.add_argument("--mp-bits", type=int, default=128)
     p.add_argument("--theta", type=float, default=1.0); p.add_argument("--checkpoint-every", type=int, default=200)
+    p.add_argument("--reuse-jac", action="store_true", help="dry3: reuse dry_jac.npy of an earlier prepare in the run dir (same state)")
     r = sub.add_parser("run"); r.add_argument("--run-dir", required=True); r.add_argument("--jobs", type=int, default=1)
     r.add_argument("--kinds", default="c1,mp0"); r.add_argument("--call-timeout", type=int, default=3300); r.add_argument("--nice", type=int, default=15)
     r.add_argument("--max-calls", type=int, default=100000)

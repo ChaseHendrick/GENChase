@@ -47,7 +47,7 @@ const audit = JSON.parse(fs.readFileSync(path.join(__dirname, '..', auditFile), 
 const baseline = clone(registry);
 for (const paper of baseline.papers) delete paper.archiveVersion;
 const updated = clone(baseline);
-for (const paper of updated.papers.filter(p => p.companion)) paper.archiveVersion = '1.2.3';
+for (const paper of updated.papers.filter(p => p.companion && p.codeDoi)) paper.archiveVersion = '1.2.3';
 updated.papers[0].note += ' Archive metadata checked.';
 updated.papers[0].codeDoi = '10.5281/zenodo.123456789';
 const blobs = (before, after) => id => {

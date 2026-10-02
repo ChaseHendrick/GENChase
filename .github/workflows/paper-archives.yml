@@ -29,7 +29,7 @@ jobs:
           python-version: '3.12'
       - name: Check the verifier without network access
         run: python3 tools/paper-zenodo-check.py --self-test
-      - name: Download and inspect all eight registered preprint archives
+      - name: Download and inspect every registered preprint archive
         run: python3 tools/paper-zenodo-check.py --out paper-archive-report.json
       - name: Preserve the archive report, including failures
         if: always()

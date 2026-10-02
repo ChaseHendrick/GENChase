@@ -47,7 +47,7 @@ The pieces (all in `proof/`):
 
 ```
 git clone https://github.com/CAPDGroup/CAPD.git capd && cd capd
-git checkout 03dc5628203334b214bb7d9fd63788a175521005
+git checkout 03dc5628203334b214bb7d9fd63788a175521005   # CAPD 6.1.0 (CAPDVersion.txt); the repository has no 6.1.0 tag
 git apply <repo>/research/cardiac-cycle-certificates/proofs/capd-6.1.0-genchase.patch   # header only
 cmake -S . -B build -DCAPD_ENABLE_MULTIPRECISION=true -DCMAKE_INSTALL_PREFIX=$HOME/capd-install
 cmake --build build -j && cmake --install build
@@ -62,7 +62,8 @@ g++ -O2 -std=c++17 ap_proof.cpp -o $HOME/ap_proof $($HOME/capd-install/bin/capd-
 export AP_PROOF=$HOME/ap_proof
 ```
 
-Compile time is about 1 minute. Before a long run, check the build:
+Compile time is about 1 minute (13 s on the rebuilt container, 2026-10-02; CAPD itself took 6 min 42 s with
+`-j1`). Before a long run, check the build:
 
 ```
 python3 check_field.py $AP_PROOF <shift_dense.npz> /tmp/cf     # field vs tp06_19d.py: both modes inside
@@ -131,7 +132,30 @@ DRYRUN_SECTION
 
 ## 5. Cost (measured per-step costs, extrapolated totals)
 
-COST_SECTION
+Measured on the pilots (one core, nice 10); everything called "extrapolated" is arithmetic on those
+measurements, not a measurement.
+
+| quantity | value | source |
+|---|---|---|
+| C1 step, N = 16 (304 dims), order 20 | 20.5 s per step, peak RSS 1.44 GiB, mean step 0.00269 ms (h x 942 per ms = 2.5) | `pilot/results/ref1ms_rect20.json` (1 ms, 373 steps) |
+| C1 shift map, N = 16 | **72 to 83 core-hours** (extrapolated: about 12,600 steps; 0 to 15 per cent for crossings, window, switch) | `pilot/results/extrapolation.json` |
+| c0 step (double intervals) | 0.11 s (N = 1), 0.16 s (N = 2), 0.49 s (N = 4) per step | `proof/results/stage3_switch.json` |
+| mp0 step (128 bits, order 30, default tolerance) | 2.50 s (N = 1), 8.62 s (N = 2), 32.4 s (N = 4) per step; peak RSS 0.10, 0.33, 1.19 GiB | same |
+| mp0 versus c0 step count | about 2.5 times as many steps for the same interval (ring4, 0.1 ms: 61 against 25) | same |
+| mp0 centre, N = 16 | extrapolated by a power fit through N = 1, 2, 4 (exponent 1.85 for time, 1.77 for memory): about 410 to 460 s per step and about 14 GiB; about 20,600 steps per shift interval; **about 2,400 to 2,600 core-hours, sequential** | arithmetic on the rows above |
+| dry run (N = 3, section 4) | see section 4 | `proof/results/dryrun_dry3.json` |
+
+Consequences.
+
+* The C1 map parallelizes over the time split (section 3.3): 8 processes bring it to about 10 hours of wall time.
+* The multiprecision centre, as configured (order 30, 128 bits, CAPD's default tolerance for that precision), does not
+  parallelize (each centre segment starts from the previous one) and dominates the cost by a factor of about 30. Its
+  step is limited by the tolerance, not by stability (2.5 times smaller than the double step). Untested knobs:
+  `mp_tol` in the plan (a looser tolerance at order 30), fewer bits, or a double-interval centre if its width is small
+  enough for the 1e6 conditioning of section 6.4 of `SCOPING.md`. The ring16 point-start c0 case of
+  `stage3_switch.py`, which would measure that width, has not been run.
+* Before committing a dedicated machine, rerun the cost table with the chosen centre settings on N = 4 and N = 8.
+* The continuum route (`continuum/PLAN.md`) avoids both costs: 20 dimensions instead of 304.
 
 ## 6. How to check the outputs (reviewer)
 
@@ -174,4 +198,19 @@ COST_SECTION
 
 ## 8. Known limitations and risks
 
-RISKS_SECTION
+1. **No theorem yet.** Nothing in this folder proves reentry. The dry run (section 4) exercises the program on an
+   instance that is not a rotating wave, so `verify` must report NOT VERIFIED there.
+2. **Cost of the centre** (section 5): the multiprecision centre as configured is extrapolated at about 2,500
+   core-hours, sequential, and about 14 GiB. This is an extrapolation from N <= 4 and must be remeasured.
+3. **Thin parameter window and margin** (`SCOPING.md` sections 3.4 and 7): N = 16 sustains reentry only for c in about
+   [0.0325, 0.035] per ms; the stability margin is 1.96e-4 per rotation with a cluster of 15 near-unit multipliers.
+   The contraction may not close with the radii of the first frame; `frame_leaf.py --diag` retunes them, at the price
+   of rerunning the C1 segments.
+4. **Wrapping over a whole shift interval** is not measured (stage 1 measured 1 ms). A long C1 run at N = 16 has not
+   been done.
+5. **Plan generation.** The dry run found two faults of the untrusted driver, both fixed on 2026-10-02 (section 4):
+   a section segment whose crossing cell starts on the level (two consecutive events of one cell) and a numpy 2
+   formatting of durations. Plans for other instances should be read before a long run.
+6. **Physical scope:** a discrete ring of 16 cells near propagation failure, one parameter point, not tissue. This is
+   the caveat the continuum route (`continuum/PLAN.md`) is meant to remove; the discrete proof stays a secondary
+   result for a dedicated machine.

@@ -1,0 +1,6 @@
+{
+ "alln_py_sha256_at_run_launch": "c3123c6313a65e8b0f22087cbad6c7e7e56e66efebeaad78488278f29575e26c",
+ "launched": "2026-10-02T00:18Z",
+ "command": "nohup nice -n 10 timeout 3600 python3 alln.py --run --width 1/4096 --overlap 1/8 --workers 2 --budget 3300",
+ "note": "the pieces in pieces.jsonl were produced by this version of alln.py. Edits after the launch, per the 2026-10-02 review's diff (M4): split() via current_plan() (overlap converted to Fraction), collect() (the run_code field), controls() and the new widen_controls(); later, for the review fixes (2026-10-02): the docstring (sections 3 and 4 wording), finish() (the eps range in failure messages), tail_bounds_eps() (a test-only _keep_all option that stores enclosures and changes no bound). None of these enters a bound; test_alln.test_reprove_bit_for_bit re-proves logged pieces with the current file and compares the exact bounds."
+}

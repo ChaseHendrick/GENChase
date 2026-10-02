@@ -1,4 +1,4 @@
-# Fourier route (Theorem A(ii), Theorem B). The trust base is python-flint 0.9.0 (FLINT/Arb 3.6.0), pinned:
+# Fourier route (Theorem A(ii), Theorem B, Theorem C). The trust base is python-flint 0.9.0 (FLINT/Arb 3.6.0), pinned:
 # arbmodel.py refuses another version, and fourier/test_arbmodel.py --wheel checks the wheel's SHA-256
 # (376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76 for
 # python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl).

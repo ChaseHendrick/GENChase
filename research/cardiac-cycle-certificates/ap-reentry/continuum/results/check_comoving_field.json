@@ -1,0 +1,16 @@
+{
+ "note": "Floating-point cross-check of comoving19.hpp against tw_model.py; test, not a proof.",
+ "check": {
+  "points": 300,
+  "python_inside_all": true,
+  "points_outside": 0,
+  "max_rel_difference_midpoint": 1.0265628133040196e-12
+ },
+ "negative_control_kappa_times_1_plus_1e-6": {
+  "points": 300,
+  "python_inside_all": false,
+  "points_outside": 300,
+  "max_rel_difference_midpoint": 1.0000000006003223e-06
+ },
+ "passed": true
+}

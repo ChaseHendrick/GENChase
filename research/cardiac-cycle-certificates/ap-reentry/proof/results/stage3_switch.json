@@ -341,6 +341,51 @@
     0.0768984014941635,
     0.07689840782121025
    ]
+  },
+  "mp0": {
+   "kind": "mp0",
+   "collected": "outputs of an earlier session's run, read without rerunning (--collect)",
+   "seg0": {
+    "ok": true,
+    "error": "",
+    "steps": 43,
+    "validation_steps": 6,
+    "T": "[0.076898401494387494, 0.076898407820978495]",
+    "wall_s": 1716.649,
+    "process_wall_s": 1721.5,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 6.808102225e-09
+   },
+   "seg1": {
+    "ok": true,
+    "error": "",
+    "steps": 61,
+    "validation_steps": 0,
+    "T": "[0.10000000000000001, 0.10000000000000002]",
+    "wall_s": 1845.482,
+    "process_wall_s": 1847.8,
+    "window_steps": 0,
+    "end_c0_max_relative_diameter": 6.688280216e-09
+   },
+   "peak_rss_GiB": 1.191,
+   "wall_per_step_s": 32.38301,
+   "section_image_contains_reference": true,
+   "section_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 1.2658514924808937e-11,
+    "max_rel_width": 6.808101994812247e-09
+   },
+   "end_contains_reference": true,
+   "end_info": {
+    "max_out_over_radius": 0.0,
+    "max_rel_dist_to_mid": 9.138917781435302e-12,
+    "max_rel_width": 6.688279780077989e-09
+   },
+   "crossing_time_contains_reference": true,
+   "crossing_time": [
+    0.0768984014943875,
+    0.0768984078209785
+   ]
   }
  }
 }

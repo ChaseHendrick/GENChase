@@ -65,6 +65,16 @@ eps of Lemma 4.1), and omega_lo / omega_hi bound omega*(g) over the whole piece;
 affine data V(d), Vi(d), Lambda(d) and the polynomial bounds of Lemma 10.3. Everything else, including route A, the S
 search, the distances and count, the couplings and (SC), is the same code.
 
+Group units (section "Group units" below; LEMMAS-stability.md section 11). prove_group_uniform certifies a whole group of
+branch pieces (one interval in g, about 11 pieces wide) in one certificate: the orbit is located about a QUADRATIC path
+xbar + d xbar_1 + (d^2/2) xbar_2 by a Newton-Kantorovich step about the moving point of the path (Lemma 11.1, with Z1
+bounded along the path to second order, Lemma 11.2), identified with the branch orbit through every piece's uniqueness
+ball (Lemma 11.3), and the Hill coefficients carry an explicit d^2 term (Lemma 11.4); the window keeps the affine
+comparison operator (Theorem 11.5). The jets along the path come from a truncated Taylor arithmetic (Jet, DJet).
+Driver: run_groups (--groups) tries the group unit of every group with an uncovered piece and falls back to piece
+units for a group whose unit fails. Units already in the log (piece units) stay valid; collect() takes each piece's
+coverage from a group unit or a piece unit and writes results/fourier-branch-stability-uniform.json.
+
 Trusted: python-flint 0.9.0 (Arb); fourier/arbmodel.py, tp06_18d_arb.py, fourier_eval.py (Lemmas 1-3); branch.py
 (Theorem B: piece_blocks, assemble, HessBound, Hess); the imported helpers of stability.py and existence.py; this file.
 """
@@ -108,6 +118,10 @@ DATA = br.DATA
 LOG = os.path.join(DATA, "stability_uniform_K{K}.jsonl")
 up, lo, amax, bound_rec = ex.up, ex.lo, ex.amax, ex.bound_rec
 QUIET = lambda *a, **k: None  # noqa: E731
+# the hash of this file AS IMPORTED (worker processes are forked after import), so that a record never carries the hash
+# of a later edit of the file than the code that computed it
+with open(os.path.abspath(__file__), "rb") as _fh:
+    PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
 
 
 class ProofFailure(RuntimeError):
@@ -379,6 +393,8 @@ def _certify_uniform(U, st, controls, log, prec):
         raise ValueError("the window needs [J0_n], J1c_n for |n| <= 2 K_e <= K'")
     drop = bool(controls.get("drop_g_terms"))               # test hook: treat H(g) as H(g_c) (mutation)
     hU = arb(0) if drop else U["h"]                         # exact upper bound of |g - g_c|
+    quad = "C2c" in U                                       # group unit (section 11 of the lemmas): d^2 terms
+    drop2 = bool(controls.get("drop_d2_terms"))             # test hook (group units): omit the d^2 terms (mutation)
     E = acb_mat(DIM, DIM)
     E[IV, IV] = acb(1)
     Q = acb(arb(0, 1), arb(0, 1))
@@ -393,12 +409,20 @@ def _certify_uniform(U, st, controls, log, prec):
     epsW = U["epsW"]
     om_bar, om1 = U["om_bar"], U["om1"]
     rho_om = arb(0) if drop else U["rho_om"]
-    om_lo = lo(om_bar - hU * om1.abs_upper() - rho_om)
-    om_hi = up(om_bar + hU * om1.abs_upper() + rho_om)
+    if quad:                                                # omega*(g) in om_bar + d om1 + d^2 om2half + ball
+        om2h_abs = arb(0) if (drop or drop2) else U["om2half"].abs_upper()
+        om_lo = lo(om_bar - hU * om1.abs_upper() - hU * hU * om2h_abs - rho_om)
+        om_hi = up(om_bar + hU * om1.abs_upper() + hU * hU * om2h_abs + rho_om)
+    else:
+        om_lo = lo(om_bar - hU * om1.abs_upper() - rho_om)
+        om_hi = up(om_bar + hU * om1.abs_upper() + rho_om)
     if not (om_lo > 0 and om_lo <= om_hi):
         raise ProofFailure("omega_lo must be > 0 (C0)")
     omf = float(om_bar)
     J0, J1c, rad1, SJ0, SJ1 = U["J0"], U["J1c"], U["rad1"], U["SJ0"], U["SJ1"]
+    if quad:
+        h2U = arb(0) if drop2 else hU * hU
+        C2c, rad2, SC2 = U["C2c"], U["rad2"], U["SC2"]
     Jmid = {n: np.array([[complex(float(J0[n][r][c].real.mid()), float(J0[n][r][c].imag.mid()))
                           for c in range(DIM)] for r in range(DIM)]) for n in range(-Kp, Kp + 1)}
     J1f = {n: np.array([[complex(float(J1c[n][r][c].real), float(J1c[n][r][c].imag)) for c in range(DIM)]
@@ -434,7 +458,10 @@ def _certify_uniform(U, st, controls, log, prec):
     scl = [[two(e[c] - e[r]) for c in range(DIM)] for r in range(DIM)]
     erho, erhoe = (-rho).exp(), (-rho_e).exp()
     epsS = [[up(epsW[r][c] * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
-    SJS = [[up((SJ0[r][c] + hU * SJ1[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
+    if quad:
+        SJS = [[up((SJ0[r][c] + hU * SJ1[r][c] + h2U * SC2[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
+    else:
+        SJS = [[up((SJ0[r][c] + hU * SJ1[r][c]) * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
     s1 = sb.colsum_max(arb_mat(SJS))
     s2 = sb.colsum_max(arb_mat(epsS))
     q1, q2 = erho, erhoe
@@ -446,11 +473,22 @@ def _certify_uniform(U, st, controls, log, prec):
     AS, absA, nrm, RAD = {}, {}, {}, {}
     nlist = max(nmax, nA)
     for n in range(-nlist, nlist + 1):
-        if abs(n) <= nA:
+        if abs(n) <= nA and quad:
+            en = erhoe ** abs(n)
+            rad = [[up(hU * rad1[n][r][c] + h2U * rad2[n][r][c] + epsW[r][c] * en) for c in range(DIM)]
+                   for r in range(DIM)]
+            RAD[n] = rad
+            M = acb_mat([[(J0[n][r][c] + Q * up(hU * J1c[n][r][c].abs_upper() + h2U * C2c[n][r][c].abs_upper() +
+                                                 rad[r][c])) * scl[r][c] for c in range(DIM)] for r in range(DIM)])
+        elif abs(n) <= nA:
             en = erhoe ** abs(n)
             rad = [[up(hU * rad1[n][r][c] + epsW[r][c] * en) for c in range(DIM)] for r in range(DIM)]
             RAD[n] = rad
             M = acb_mat([[(J0[n][r][c] + Q * up(hU * J1c[n][r][c].abs_upper() + rad[r][c])) * scl[r][c]
+                          for c in range(DIM)] for r in range(DIM)])
+        elif quad:
+            e1, e2 = erho ** abs(n), erhoe ** abs(n)
+            M = acb_mat([[Q * up(((SJ0[r][c] + hU * SJ1[r][c] + h2U * SC2[r][c]) * e1 + epsW[r][c] * e2) * scl[r][c])
                           for c in range(DIM)] for r in range(DIM)])
         else:
             e1, e2 = erho ** abs(n), erhoe ** abs(n)
@@ -603,6 +641,14 @@ def _certify_uniform(U, st, controls, log, prec):
     H1 = acb_mat(window(lambda n: AS1[n], d1))
     if drop:
         H1 = acb_mat(nW, nW)
+    H2 = None
+    if quad and not (drop or drop2):                        # the exact d^2 window: C2c and -i om2half m
+        AS2 = {n: [[C2c[n][r][c] * scl[r][c] for c in range(DIM)] for r in range(DIM)] for n in range(-2 * Ke, 2 * Ke + 1)}
+        om2h = U["om2half"]
+
+        def d2(m):
+            return [[AS2[0][r][c] + ((acb(0, -m) * om2h) if r == c else 0) for c in range(DIM)] for r in range(DIM)]
+        H2 = acb_mat(window(lambda n: AS2[n], d2))
 
     def rb_block(n):
         return [[up(RAD[n][r][c] * scl[r][c]) for c in range(DIM)] for r in range(DIM)]
@@ -638,14 +684,29 @@ def _certify_uniform(U, st, controls, log, prec):
         W1[j, j] -= lam1[j]
     csW1 = sb.colsums_abs(W1, ones)
     del W1, P00
-    W2 = Vi1 * S1 + Vi0 * P11
-    csW2 = sb.colsums_abs(W2, ones)
-    del W2, S1
-    # the d^3 and d^2 terms below are bounded through norms (h^3, h^2 small): ||Vi1 X e_j|| <= ||Vi1||_{1->1} ||X e_j||
     nVi1 = sb.colsum_max(sb.abs_mat(Vi1))
-    csP11 = sb.colsums_abs(P11, ones)
-    csW3 = [up(nVi1 * v) for v in csP11]
-    del P11, P10, P01
+    if H2 is not None:
+        # group unit: H(d) = H0 + d H1 + d^2 H2 + E with V(d), Vi(d) affine, so
+        # W2 = Vi1 (H1 V0 + H0 V1) + Vi0 (H1 V1 + H2 V0), W3 = Vi1 (H1 V1 + H2 V0) + Vi0 H2 V1, W4 = Vi1 H2 V1
+        P20, P21 = H2 * V0, H2 * V1
+        Q2 = P11 + P20
+        W2 = Vi1 * S1 + Vi0 * Q2
+        csW2 = sb.colsums_abs(W2, ones)
+        del W2, S1
+        csQ2 = sb.colsums_abs(Q2, ones)
+        csV0P21 = sb.colsums_abs(Vi0 * P21, ones)
+        csW3 = [up(nVi1 * csQ2[j] + csV0P21[j]) for j in range(nW)]
+        csW4 = [up(nVi1 * v) for v in sb.colsums_abs(P21, ones)]
+        del Q2, P20, P21, P11, P10, P01
+    else:
+        W2 = Vi1 * S1 + Vi0 * P11
+        csW2 = sb.colsums_abs(W2, ones)
+        del W2, S1
+        # the d^3 and d^2 terms below are bounded through norms (h^3, h^2 small): ||Vi1 X e_j|| <= ||Vi1||_{1->1} ||X e_j||
+        csP11 = sb.colsums_abs(P11, ones)
+        csW3 = [up(nVi1 * v) for v in csP11]
+        csW4 = None
+        del P11, P10, P01
     Cm0 = Vi0 * V0
     for i in range(nW):
         Cm0[i, i] -= 1
@@ -668,7 +729,11 @@ def _certify_uniform(U, st, controls, log, prec):
     if not qC < 1:
         raise ProofFailure(f"sup_g ||I - Vi(g) V(g)|| = {float(qC):.3e} is not < 1")
     inv1q = 1 / (1 - qC)
-    wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + csT[0, j]) for j in range(nW)]
+    if csW4 is not None:
+        h4 = h2 * h2
+        wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + h4 * csW4[j] + csT[0, j]) for j in range(nW)]
+    else:
+        wj = [up(csW0[j] + hU * csW1[j] + h2 * csW2[j] + h3 * csW3[j] + csT[0, j]) for j in range(nW)]
     lamabs = [up(lam0[j].abs_upper() + hU * lam1[j].abs_upper()) for j in range(nW)]
     fm = [up((wj[j] + lamabs[j] * cj[j]) * inv1q) for j in range(nW)]
     beta = [up(csAVi[0, c] * inv1q) for c in range(nW)]
@@ -742,10 +807,12 @@ def _certify_uniform(U, st, controls, log, prec):
         SC_worst_ratio_near_axis=max(ratio[j] for j in near) if near else None,
         critical_columns=[dict(lam=[float(lam[j].real), float(lam[j].imag)], dist=float(distU[j]), ratio=ratio[j],
                                W0=float(csW0[j]), hW1=float(hU * csW1[j]), h2W2=float(h2 * csW2[j]),
-                               h3W3=float(h3 * csW3[j]), ball=float(csT[0, j]), fm=float(fm[j]), r=float(r_j[j]))
+                               h3W3=float(h3 * csW3[j]), ball=float(csT[0, j]), fm=float(fm[j]), r=float(r_j[j]),
+                               **({"h4W4": float(h2 * h2 * csW4[j])} if csW4 is not None else {}))
                           for j in crit],
         sanity_trivial_eigenvector_residual=sanity, tail_by_residue=tail,
-        multiplier_bound_full_period=bound_rec(mult_T), controls=controls or None)
+        multiplier_bound_full_period=bound_rec(mult_T), controls=controls or None,
+        **({"quadratic_in_d": True} if quad else {}))
     if controls.get("dump"):
         out["internals"] = dict(lam=lam, L1=L1f, V0=V0f, V1=V1f, Vi0=Vi0f, Vi1=Vi1f, e=e, Ke=Ke, crit=crit,
                                 wj=[float(v) for v in wj], fm=[float(v) for v in fm], h=float(hU))
@@ -865,7 +932,7 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     out = dict(
         type="unit", label=label, g=[rec["g_lo"], rec["g_hi"]], g_centre=rec["centre_g"],
         centre_sha256=rec["centre_sha256"], uniform=True, ok=True, settings=st,
-        program_sha256=br.sha256(os.path.abspath(__file__)), threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(theorem_B_bounds_reproduced=same, Z1=asm["Z1"], Z2_this_cover=asm["Z2"],
@@ -887,6 +954,823 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
                            r_hi=r_hi_log, U=U, settings=st, rec=rec, om=om, A=A, loc=loc)
     if _mutate:
         out["MUTATED"] = sorted(_mutate)
+    return out
+
+
+# =================================================================================================================
+# Group units: Theorem C for a whole group of branch pieces in one certificate (LEMMAS-stability.md section 11)
+# =================================================================================================================
+# A piece unit (prove_piece_uniform) locates x*(g) to second order about an AFFINE centre and treats everything of
+# second order in d = g - g_c as a ball; that ball grows like h^2 and is already about a third of the (SC) margin on a
+# piece (half-width 2.6e-7). A group is about 11 pieces wide, so a group unit goes one order further: the orbit is
+# located about a QUADRATIC centre xtilde(g) = xbar + d xbar_1 + (d^2 / 2) xbar_2 (third-order remainder), the
+# Newton-Kantorovich step is taken about the moving centre xtilde(g) itself (Lemma 11.1: Z1 is bounded along the
+# path, not through Z2 times the distance travelled, which would be 500 x 3e-3 > 1), and the Hill coefficients carry an
+# explicit d^2 term (Lemma 11.3). The comparison operator of the window stays affine in d (Lemma 10.3, with the
+# d^2 window H2 added to the expansion). Everything new is evaluated with the truncated Taylor arithmetic below.
+
+def _const(o):
+    """An exact or ball constant as acb (floats and bools are refused, as in branch.Hess)."""
+    if isinstance(o, bool):
+        raise TypeError("bool")
+    if isinstance(o, acb):
+        return o
+    if isinstance(o, (arb, int, flint.fmpz, fmpq)):
+        return acb(o)
+    raise TypeError(f"Jet arithmetic with {type(o).__name__} is refused (no float may enter unexamined)")
+
+
+class Jet:
+    """c[0] + c[1] t + ... + c[P] t^P (truncated at degree P), t = xi - xi0, acb coefficients. Each operation applies
+    the exact recurrence for the Taylor coefficients of the composite in ball arithmetic, so with a ball base point xi0
+    every coefficient encloses the corresponding Taylor coefficient of the composite at EVERY point of that ball.
+    Every coefficient is checked finite (branch._chk); a reciprocal needs a finite 1 / c[0] (c[0] free of 0), log and
+    sqrt need Re c[0] > 0 certified; so a finite result certifies that every intermediate is holomorphic on a
+    neighbourhood of the input box (the contract of fourier_eval, made strict as in branch.Hess)."""
+    __slots__ = ("c",)
+
+    def __init__(self, c):
+        self.c = [br._chk(v) for v in c]
+
+    @property
+    def P(self):
+        return len(self.c) - 1
+
+    def _lift(self, o):
+        if isinstance(o, Jet):
+            if len(o.c) != len(self.c):
+                raise ValueError("jet degrees differ")
+            return o
+        return Jet([_const(o)] + [acb(0)] * self.P)
+
+    def __add__(self, o):
+        o = self._lift(o)
+        return Jet([a + b for a, b in zip(self.c, o.c)])
+
+    __radd__ = __add__
+
+    def __neg__(self):
+        return Jet([-a for a in self.c])
+
+    def __pos__(self):
+        return self
+
+    def __sub__(self, o):
+        return self + (-self._lift(o))
+
+    def __rsub__(self, o):
+        return self._lift(o) + (-self)
+
+    def __mul__(self, o):
+        if not isinstance(o, Jet):
+            s = _const(o)
+            return Jet([a * s for a in self.c])
+        if len(o.c) != len(self.c):
+            raise ValueError("jet degrees differ")
+        a, b = self.c, o.c
+        out = []
+        for k in range(len(a)):
+            s = acb(0)
+            for i in range(k + 1):
+                s += a[i] * b[k - i]
+            out.append(s)
+        return Jet(out)
+
+    __rmul__ = __mul__
+
+    def reciprocal(self):
+        a = self.c
+        r0 = br._chk(1 / a[0])
+        r = [r0]
+        for k in range(1, len(a)):
+            s = acb(0)
+            for j in range(1, k + 1):
+                s += a[j] * r[k - j]
+            r.append(br._chk(-s * r0))
+        return Jet(r)
+
+    def __truediv__(self, o):
+        if isinstance(o, Jet):
+            return self * o.reciprocal()
+        r = br._chk(1 / _const(o))
+        return Jet([a * r for a in self.c])
+
+    def __rtruediv__(self, o):
+        return self._lift(o) * self.reciprocal()
+
+    def __pow__(self, n):
+        if type(n) is not int:
+            raise TypeError("Jet ** n needs an int exponent")
+        if n == 0:
+            return self._lift(1)
+        if n < 0:
+            return (self ** (-n)).reciprocal()
+        out = self
+        for _ in range(n - 1):
+            out = out * self
+        return out
+
+    def exp(self):
+        a = self.c
+        e = [br._chk(a[0].exp())]
+        for k in range(1, len(a)):                      # k e_k = sum_{j=1}^k j a_j e_{k-j}
+            s = acb(0)
+            for j in range(1, k + 1):
+                s += j * a[j] * e[k - j]
+            e.append(br._chk(s / k))
+        return Jet(e)
+
+    def log(self):
+        a = self.c
+        if not (a[0].real > 0):
+            raise br.HessDomainError(f"log argument {a[0]} not certainly in Re > 0")
+        r0 = br._chk(1 / a[0])
+        out = [br._chk(a[0].log())]
+        for k in range(1, len(a)):                      # k a_0 l_k = k a_k - sum_{j=1}^{k-1} j l_j a_{k-j}
+            s = acb(0)
+            for j in range(1, k):
+                s += j * out[j] * a[k - j]
+            out.append(br._chk((a[k] - s / k) * r0))
+        return Jet(out)
+
+    def sqrt(self):
+        a = self.c
+        if not (a[0].real > 0):
+            raise br.HessDomainError(f"sqrt argument {a[0]} not certainly in Re > 0")
+        s0 = br._chk(a[0].sqrt())
+        inv = br._chk(1 / (2 * s0))
+        out = [s0]
+        for k in range(1, len(a)):                      # 2 s_0 s_k = a_k - sum_{j=1}^{k-1} s_j s_{k-j}
+            t = acb(0)
+            for j in range(1, k):
+                t += out[j] * out[k - j]
+            out.append(br._chk((a[k] - t) * inv))
+        return Jet(out)
+
+
+class DJet:
+    """(v, g): v a Jet in xi (the value) and g = {l: Jet} the derivatives in the state directions l (first order in the
+    states, degree P in xi). Sums, products and the chain rule are exact at first order in the states:
+    (u w)' = u w' + u' w and phi(u)' = phi'(u) u', with phi'(u) itself a Jet."""
+    __slots__ = ("v", "g")
+
+    def __init__(self, v, g=None):
+        self.v = v
+        self.g = g if g is not None else {}
+
+    def _lift(self, o):
+        if isinstance(o, DJet):
+            return o
+        if isinstance(o, Jet):
+            raise TypeError("mixed Jet and DJet")
+        return DJet(self.v._lift(o), {})
+
+    def __add__(self, o):
+        o = self._lift(o)
+        g = dict(self.g)
+        for k, x in o.g.items():
+            g[k] = g[k] + x if k in g else x
+        return DJet(self.v + o.v, g)
+
+    __radd__ = __add__
+
+    def __neg__(self):
+        return DJet(-self.v, {k: -x for k, x in self.g.items()})
+
+    def __pos__(self):
+        return self
+
+    def __sub__(self, o):
+        return self + (-self._lift(o))
+
+    def __rsub__(self, o):
+        return self._lift(o) + (-self)
+
+    def __mul__(self, o):
+        if not isinstance(o, DJet):
+            if isinstance(o, Jet):
+                raise TypeError("mixed Jet and DJet")
+            s = _const(o)
+            return DJet(self.v * s, {k: x * s for k, x in self.g.items()})
+        g = {k: x * o.v for k, x in self.g.items()}
+        for k, x in o.g.items():
+            g[k] = g[k] + self.v * x if k in g else self.v * x
+        return DJet(self.v * o.v, g)
+
+    __rmul__ = __mul__
+
+    def _unary(self, fv, dv):
+        return DJet(fv, {k: dv * x for k, x in self.g.items()})
+
+    def reciprocal(self):
+        r = self.v.reciprocal()
+        return self._unary(r, -(r * r))
+
+    def __truediv__(self, o):
+        if isinstance(o, DJet):
+            return self * o.reciprocal()
+        r = br._chk(1 / _const(o))
+        return self * r
+
+    def __rtruediv__(self, o):
+        return self._lift(o) * self.reciprocal()
+
+    def __pow__(self, n):
+        if type(n) is not int:
+            raise TypeError("DJet ** n needs an int exponent")
+        if n == 0:
+            return self._lift(1)
+        if n == 1:
+            return self
+        vn1 = self.v ** (n - 1)
+        return self._unary(vn1 * self.v, vn1 * n)
+
+    def exp(self):
+        e = self.v.exp()
+        return self._unary(e, e)
+
+    def log(self):
+        lv = self.v.log()                                  # certifies Re v > 0
+        return self._unary(lv, self.v.reciprocal())
+
+    def sqrt(self):
+        s = self.v.sqrt()                                  # certifies Re v > 0
+        return self._unary(s, s.reciprocal() * fmpq(1, 2))
+
+
+class JetMath:
+    @staticmethod
+    def exp(a):
+        return a.exp() if isinstance(a, (Jet, DJet)) else br.HessMath.exp(a)
+
+    @staticmethod
+    def log(a):
+        return a.log() if isinstance(a, (Jet, DJet)) else br.HessMath.log(a)
+
+    @staticmethod
+    def sqrt(a):
+        return a.sqrt() if isinstance(a, (Jet, DJet)) else br.HessMath.sqrt(a)
+
+
+def _sq_ball(h):
+    """A real ball containing [0, h^2] (h an exact Fraction), or the exact 0."""
+    if h == 0:
+        return acb(0)
+    hb = arb(fmpq(h.numerator, h.denominator))
+    h2 = (hb * hb).upper()
+    return acb((h2 * arb(0, 1) + h2) / 2)
+
+
+def _path_coeffs(zz, i, D, D2, P):
+    """Taylor coefficients at xi0 in D of xi -> z_i + xi z1_i + (xi^2 / 2) z2_i, for every xi0 in D (D2 contains the
+    squares of the points of D): [z + D z1 + (D2 / 2) z2, z1 + D z2, z2 / 2, 0, ...], truncated at degree P."""
+    z, z1, z2 = am.to_ball(zz[i]), am.to_ball(zz[DIM + i]), am.to_ball(zz[2 * DIM + i])
+    c = [z + D * z1 + D2 * z2 / 2, z1 + D * z2, z2 / 2] + [acb(0)] * max(0, P - 2)
+    return c[:P + 1]
+
+
+def gjet_flat(zz, prm, D, D2, P, ps, prec=53):
+    """Black box on the 54 inputs (phibar, phi_1, phi_2)(theta): the Taylor coefficients of order p in ps (p <= P) of
+    G_k(xi) = f_k(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in D, as a flat list
+    [coefficient p of G_k for p in ps for k]. (With D = 0 and P = 3: the derivatives of order 1, 2, 3 at 0 divided by
+    1!, 2!, 3!; with D the box [-h, h] and P = 4: the fourth derivative divided by 4! at every point of the box.)"""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        p["g_Ks"] = Jet([am.to_ball(prm["g_Ks"]) + D, acb(1)] + [acb(0)] * (P - 1))
+        x = [Jet([v * s for v in _path_coeffs(zz, i, D, D2, P)]) for i, s in enumerate(am.SIG)]
+        y = fn(x, p, JetMath, acb(0))
+        out = []
+        for pp in ps:
+            for k, yk in enumerate(y):
+                yk = yk if isinstance(yk, Jet) else x[0]._lift(yk)
+                out.append(br._chk(yk.c[pp] * am.ISIG[k]))
+    return out
+
+
+def djet_flat(zz, prm, D, D2, P, ps, prec=53):
+    """Black box: the entries (row-major, k then l) of the Taylor coefficients of order p in ps of
+    xi -> (Df)_{kl}(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point in D, as
+    [coefficient p of (Df)_{kl} for p in ps for k for l]. (With D = 0, p = 1: J1(theta; 0); with D the box, p = 1 and
+    2: J1(theta; xi) and J2(theta; xi) / 2 for every xi in [-h, h].)"""
+    with am.precision(prec):
+        fn = am.model()["field"]
+        p = dict(prm)
+        z0 = [acb(0)] * (P + 1)
+        p["g_Ks"] = DJet(Jet([am.to_ball(prm["g_Ks"]) + D, acb(1)] + [acb(0)] * (P - 1)), {})
+        x = []
+        for i, s in enumerate(am.SIG):
+            seed = list(z0)
+            seed[0] = s
+            x.append(DJet(Jet([v * s for v in _path_coeffs(zz, i, D, D2, P)]), {i: Jet(seed)}))
+        y = fn(x, p, JetMath, acb(0))
+        out = []
+        for pp in ps:
+            for k, yk in enumerate(y):
+                yk = yk if isinstance(yk, DJet) else x[0]._lift(yk)
+                for l in range(DIM):
+                    gl = yk.g.get(l)
+                    out.append(br._chk(gl.c[pp] * am.ISIG[k]) if gl is not None else acb(0))
+    return out
+
+
+# -- untrusted inputs ---------------------------------------------------------------------------------------------
+def predictor(om, A, gc, h):
+    """Untrusted (only their quality matters): (om1, A1), the float Galerkin tangent at g_c (tangent()), and
+    (om2, A2) ~ d^2 x / dg^2 at g_c, the central difference (x1(g_c + s) - x1(g_c - s)) / (2 s), s = h / 2, of the float
+    tangents at float Newton solutions; conjugation symmetric, Im of the (V, +-1) coefficients exactly 0, exact
+    doubles (so F_ph(xbar_1) = F_ph(xbar_2) = 0 exactly)."""
+    K = (len(A[0]) - 1) // 2
+    lay = ct.Layout(K)
+    om1b, A1 = tangent(om, A, gc)
+    Mc = 8 * (4 * K + 64)
+    a0, a1 = br.centre_float(A), br.centre_float(A1)
+    s = float(h) / 2
+    x1s = []
+    for sg in (1, -1):
+        gs = float(Fraction(gc)) + sg * s
+        om_s, a_s, nr = br.newton_f(float(om) + sg * s * float(om1b), a0 + sg * s * a1, gs, Mc, iters=30, tol=1e-14)
+        if not nr < 1e-11:
+            raise RuntimeError(f"float Newton failed at g_c {'+' if sg > 0 else '-'} h/2 (|R| = {nr:.2e})")
+        G, _ = br.galerkin_f(om_s, a_s, gs, Mc)
+        x1s.append(-np.linalg.solve(G, br.dFdg_f(a_s, Mc)))
+    om2, a2 = ct.unpack(lay, (x1s[0] - x1s[1]) / (2 * s))
+    om2, a2 = ct.symmetrize(om2, a2)
+    a2[IV, K + 1] = a2[IV, K + 1].real
+    a2[IV, K - 1] = a2[IV, K - 1].real
+    om2b, A2 = ct.to_exact(om2, a2, 128)
+    return om1b, A1, om2b, A2
+
+
+def path_ball(om, A, om1, A1, om2, A2, h, prec=256):
+    """Coefficient balls containing xtilde(xi) = xbar + xi xbar_1 + (xi^2 / 2) xbar_2 for every xi in [-h, h]."""
+    K = (len(A[0]) - 1) // 2
+    old = ctx.prec
+    ctx.prec = prec
+    try:
+        D, D2 = _dball(h), _sq_ball(h)
+        omb = (om + D * om1 + D2 * om2 / 2).real
+        Ab = [[A[i][t] + D * A1[i][t] + D2 * A2[i][t] / 2 for t in range(2 * K + 1)] for i in range(DIM)]
+    finally:
+        ctx.prec = old
+    return omb, Ab
+
+
+def group_data(gid, K=12):
+    """The group's pieces (sorted, covering [g_lo, g_hi] with consecutive overlaps, checked) and the centre of the piece
+    whose centre g is nearest the group's midpoint (digest checked)."""
+    pieces, groups, centres = _logs(K)
+    grp = groups[gid]
+    if grp["group"] != gid:
+        raise ValueError("group numbering")
+    plist = sorted([p["rec"] for p in pieces if p["group"] == gid], key=lambda r: Fraction(r["g_lo"]))
+    if not plist:
+        raise KeyError(f"no pieces in group {gid}")
+    glo, ghi = Fraction(plist[0]["g_lo"]), Fraction(plist[-1]["g_hi"])
+    if not (glo == Fraction(grp["g_lo"]) and ghi == Fraction(grp["g_hi"])):
+        raise ValueError(f"group {gid}: pieces do not span the group's recorded range")
+    for a, b in zip(plist, plist[1:]):
+        if not Fraction(b["g_lo"]) <= Fraction(a["g_hi"]):
+            raise ValueError(f"group {gid}: pieces {a['label']}, {b['label']} leave a gap")
+    mid = (glo + ghi) / 2
+    crec = min(plist, key=lambda r: (abs(Fraction(r["centre_g"]) - mid), Fraction(r["centre_g"])))
+    om, A = br.centre_from_record(centres[br._dstr(Fraction(crec["centre_g"]))])
+    if br.centre_digest(om, A) != crec["centre_sha256"]:
+        raise ValueError("centre digest mismatch")
+    if any(r["settings"] != crec["settings"] or r["eta"] != crec["eta"] for r in plist):
+        raise ValueError(f"group {gid}: pieces with different settings or weights")
+    return grp, plist, crec, om, A, centres
+
+
+# -- Lemma 11.2: the moving-centre Z1 -----------------------------------------------------------------------------
+def operator_blocks(bl, Jm, SJm, om_d, Acol):
+    """Block bounds B[c][c'] (exact upper bounds) of ||A E||_block for every operator E of the form
+    (E y)_ph = 0, (E y)_m = i m om_d y_{a,m} + i m Acol_m y_om - [Jm * y_a]_m, with om_d a real ball, Acol coefficient
+    balls with modes |m| <= K, and Jm a convolution whose coefficients lie in the balls Jm[n] for |n| <= K' and obey
+    |Jm_n| <= SJm e^{-rho |n|} for every n (Lemma 11.2(a): E = D'(0) with (J1pt, om_1, abar_1), and E = E2 with
+    ([C2box], om_2 / 2, abar_2 / 2)). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin E_fin|, finite
+    rows x tail columns (convolution only; strip majorant), tail rows Abar0 sum_n |Jm_n| nu^|n| + Abar0 SJm tailK +
+    |om_d| Abar1 (Acol has no entries beyond K)."""
+    st = bl["settings"]
+    K, Kp = bl["K"], bl["_Kp"]
+    lay = ct.Layout(K)
+    n = lay.n
+    PM, Pg = int(st["prec_mat"]), int(st["prec_g"])
+    nupow, tailK, Afin, Abar0, Abar1 = bl["_nupow"], bl["_tailK"], bl["_Afin"], bl["Abar0"], bl["Abar1"]
+    rho = bl["rho"]
+    J1box, SJ1box = Jm, SJm
+    old = ctx.prec
+    ctx.prec = PM
+    try:
+        om1x = om_d
+        Dfin = acb_mat(n, n)
+        for i in range(DIM):
+            for m in range(-K, K + 1):
+                r = lay.idx(i, m)
+                Dfin[r, 0] = acb(0, m) * Acol[i][m + K]
+                for k in range(DIM):
+                    base = 1 + k * lay.L + K
+                    for m2 in range(-K, K + 1):
+                        Dfin[r, base + m2] = -J1box[m - m2][i][k]
+                Dfin[r, r] += acb(0, m) * om1x
+        ADfin = Afin * Dfin
+        om1x_abs = up(om1x.abs_upper())
+    finally:
+        ctx.prec = old
+    ctx.prec = Pg
+    try:
+        comp_of = [None] + [k for k in range(DIM) for _ in range(lay.L)]
+        mode_of = [0] + [m for _ in range(DIM) for m in range(-K, K + 1)]
+        WROW = ex._weight_rows(lay, nupow)
+        B_ff = ex._block_colsup(WROW * ex._abs_mat(ADfin), comp_of, mode_of, nupow)
+        Arows = Afin.tolist()
+        Aabs_rows = ex._abs_mat(Afin).tolist()
+        Lw = int(st["L"])
+        cols_exact = [(k, mp) for k in range(DIM) for mp in list(range(K + 1, K + Lw + 1)) + list(range(-K - Lw, -K))]
+        mb = K + Lw + 1
+        cols_b = [(k, s * mb) for k in range(DIM) for s in (1, -1)]
+        erho = (-rho).exp()
+        ridx = [lay.idx(j, m) for j in range(DIM) for m in range(-K, K + 1)]
+        Wm = acb_mat(len(ridx), len(cols_exact))
+        for t, (k, mp) in enumerate(cols_exact):
+            for j in range(DIM):
+                for mi, m in enumerate(range(-K, K + 1)):
+                    Wm[j * lay.L + mi, t] = -J1box[m - mp][j][k]
+        AS = acb_mat([[row[c] for c in ridx] for row in Arows])
+        with fe.precision(PM):
+            AW = AS * Wm
+        colW = WROW * ex._abs_mat(AW)
+        B_ft = [[arb(0)] * (DIM + 1) for _ in range(DIM + 1)]
+        for t, (k, mp) in enumerate(cols_exact):
+            for c in range(DIM + 1):
+                B_ft[c][1 + k] = amax(B_ft[c][1 + k], up(colW[c, t] / nupow[abs(mp)]))
+        Wb = arb_mat(len(ridx), len(cols_b))
+        for t, (k, mp) in enumerate(cols_b):
+            for j in range(DIM):
+                for mi, m in enumerate(range(-K, K + 1)):
+                    Wb[j * lay.L + mi, t] = up(SJ1box[j][k] * erho ** abs(m - mp))
+        AabsS = arb_mat([[row[c] for c in ridx] for row in Aabs_rows])
+        colWb = WROW * (AabsS * Wb)
+        for t, (k, mp) in enumerate(cols_b):
+            for c in range(DIM + 1):
+                B_ft[c][1 + k] = amax(B_ft[c][1 + k], up(colWb[c, t] / nupow[abs(mp)]))
+        Ab0m = arb_mat(Abar0)
+        T = [[arb(0)] * DIM for _ in range(DIM)]
+        for nn in range(-Kp, Kp + 1):
+            Pm = Ab0m * arb_mat([[J1box[nn][r][c].abs_upper() for c in range(DIM)] for r in range(DIM)])
+            w = up(nupow[abs(nn)])
+            for c in range(DIM):
+                for k in range(DIM):
+                    T[c][k] = T[c][k] + Pm[c, k] * w
+        Pm = Ab0m * arb_mat(SJ1box)
+        for c in range(DIM):
+            for k in range(DIM):
+                T[c][k] = up(T[c][k] + Pm[c, k] * tailK + om1x_abs * Abar1[c][k])
+        B = [[None] * (DIM + 1) for _ in range(DIM + 1)]
+        for c in range(DIM + 1):
+            for cp in range(DIM + 1):
+                b = amax(B_ff[c][cp], B_ft[c][cp])
+                if c >= 1 and cp >= 1:
+                    b = up(b + T[c - 1][cp - 1])
+                B[c][cp] = b
+        return B
+    finally:
+        ctx.prec = old
+
+
+def _z1_rows(B1, Bp, Bpp, h, ETA):
+    """max_c (1/eta_c) sum_c' eta_c' (B1_cc' + h B'_cc' + h^2 B''_cc') (B' = B'' = None: B1 alone)."""
+    best = arb(0)
+    for c in range(DIM + 1):
+        s = arb(0)
+        for cp in range(DIM + 1):
+            s += ETA[cp] * (B1[c][cp] + ((h * Bp[c][cp] + h * h * Bpp[c][cp]) if Bp is not None else 0))
+        best = amax(best, up(s / ETA[c]))
+    return best
+
+
+def _z2(bl, ETA, r_star, hb):
+    """Lemma B2 / E.6 with this unit's Hessian cover: Z2 = max_c (1/eta_c) sum_k [2 eta_om eta_k (N1 + Abar1)_ck +
+    (N0 + Abar0)_ck W_k], valid about every centre whose coefficients lie in the cover's hull."""
+    nu, rho2 = bl["nu"], hb.rho2
+    q2 = nu * (-rho2).exp()
+    if not q2 < 1:
+        raise ProofFailure("nu e^{-rho2} not < 1")
+    Q2 = (1 + q2) / (1 - q2)
+    N0, N1, Abar0, Abar1 = bl["N0"], bl["N1"], bl["Abar0"], bl["Abar1"]
+    Wk, Pfac = hb.W(ETA, r_star, Q2)
+    best = arb(0)
+    for c in range(DIM + 1):
+        s = arb(0)
+        for k in range(DIM):
+            n1 = N1[c][1 + k] + (Abar1[c - 1][k] if c >= 1 else 0)
+            n0 = N0[c][1 + k] + (Abar0[c - 1][k] if c >= 1 else 0)
+            s += 2 * ETA[0] * ETA[1 + k] * n1 + n0 * Wk[k]
+        best = amax(best, up(s / ETA[c]))
+    return best, Pfac
+
+
+def _poly_norm(cs, D, ETA, nu, K):
+    """Upper bound, over every d in the real ball D, of ||c0 + d c1 + d^2 c2|| in the weights ETA, for coefficient
+    triples cs = (omega part (w0, w1, w2), state parts [(A0, A1, A2)]) (exact balls; K modes)."""
+    (w0, w1, w2), comps = cs
+    D2 = D * D
+    best = up((w0 + D * w1 + D2 * w2).abs_upper() / ETA[0])
+    for i in range(DIM):
+        A0_, A1_, A2_ = comps[i]
+        s = arb(0)
+        for t in range(2 * K + 1):
+            s += (A0_[t] + D * A1_[t] + D2 * A2_[t]).abs_upper() * nu ** abs(t - K)
+        best = amax(best, up(s / ETA[1 + i]))
+    return best
+
+
+def lemma_11_1(Yparts, hU, ETA, Z1G, Z2, r_star, margin, mut=()):
+    """Lemma 11.1: Y' = max_c (sum_k h^k Y_k,c) / eta_c from the per-component parts Y_0 (= Y0p), ..., Y_4, and an exact
+    rho with rho <= r_*, kappa = Z1_Gamma + Z2 rho < 1 and Y' <= (1 - kappa) rho. Returns (Y', rho, kappa) or raises
+    ProofFailure. mut (tests only): 'drop_third_order' omits h^3 Y_3 + h^4 Y_4."""
+    Yk = list(Yparts)
+    if "drop_third_order" in mut:
+        Yk[3] = Yk[4] = [arb(0)] * (DIM + 1)
+    Yc = [up(sum((hU ** k * Yk[k][c] for k in range(1, 5)), Yk[0][c])) for c in range(DIM + 1)]
+    Yp = arb(0)
+    for c in range(DIM + 1):
+        Yp = amax(Yp, up(Yc[c] / ETA[c]))
+    if not Z1G < 1:
+        raise ProofFailure(f"Z1 along the path = {float(Z1G):.4f} is not < 1 (Lemma 11.1)")
+    rho_x = arb(float(up(Yp / (1 - Z1G))) * (1 + float(Fraction(margin))) * 1.0000001)
+    for _ in range(8):
+        kappa = up(Z1G + Z2 * rho_x)
+        if kappa < 1 and Yp <= (1 - kappa) * rho_x:
+            break
+        rho_x = arb(float(rho_x) * 1.5)
+    else:
+        raise ProofFailure("Lemma 11.1: no admissible rho")
+    kappa = up(Z1G + Z2 * rho_x)
+    if not (kappa < 1 and Yp <= (1 - kappa) * rho_x):
+        raise ProofFailure("Lemma 11.1 inequality not certified")
+    if not rho_x <= r_star:
+        raise ProofFailure(f"rho = {float(rho_x):.3e} > r_* = {float(r_star):.3e} (Z2 not valid there)")
+    return Yp, rho_x, kappa
+
+
+def identify(plist, centres, crec, gc, path, ETA, rho_x, nu, K, r_hi_scale=None):
+    """Lemma 11.3 for every piece of the group: sup_{g in P_i} ||xtilde(g) - xbar_i||_{eta(i)} + rho max_c eta_c / eta_c(i)
+    <= r_hi(i), the sup bounded by evaluating the path's coefficients with d an Arb ball containing the piece's d range
+    (the union of the balls of its two exact ends). Returns the per-piece records or raises ProofFailure. r_hi_scale
+    (tests only) multiplies every r_hi."""
+    om, A, om1, A1, om2, A2 = path
+    out = []
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        for r in plist:
+            oi = br.obj_from_record(r, centres[br._dstr(Fraction(r["centre_g"]))])
+            if r["settings"]["rho0"] != crec["settings"]["rho0"]:
+                raise ProofFailure("different nu")
+            r_hi = oi["r_hi"] if r_hi_scale is None else oi["r_hi"] * r_hi_scale
+            dlo, dhi = Fraction(r["g_lo"]) - gc, Fraction(r["g_hi"]) - gc
+            Dp = acb(arb(fmpq(dlo.numerator, dlo.denominator)).union(arb(fmpq(dhi.numerator, dhi.denominator))))
+            cs = ((om - oi["om_bar"], om1, om2 / 2),
+                  [([A[i][t] - oi["A"][i][t] for t in range(2 * K + 1)], A1[i], [v / 2 for v in A2[i]])
+                   for i in range(DIM)])
+            dist = _poly_norm(cs, Dp, oi["ETA"], nu, K)
+            conv = arb(0)
+            for ea, eb in zip(ETA, oi["ETA"]):
+                conv = amax(conv, up(ea / eb))
+            lhs = up(dist + rho_x * conv)
+            ok = bool(lhs <= r_hi)
+            out.append(dict(label=r["label"], lhs=float(lhs), r_uniqueness=float(r_hi), ok=ok))
+            if not ok:
+                raise ProofFailure(f"identification with piece {r['label']} fails (uniqueness): "
+                                   f"{float(lhs):.3e} > r_hi = {float(r_hi):.3e}")
+    finally:
+        ctx.prec = old
+    return out
+
+
+GROUP_DEFAULTS = dict(
+    r_star="1/1048576",       # radius of this unit's Z2 ball (2^-20); rho must be <= r_*; R_i = R_factor eta_i r_*
+    R_factor=256,
+    rho_margin="1/64",
+)
+
+
+def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mutate=(), _widen=1):
+    """Theorem 11.5 on the whole group gid (section 11 of the lemmas). _widen (tests only) multiplies h (and the d-range
+    of every enclosure) by an integer factor: the certificate must then be refused. _mutate (tests only):
+    'drop_third_order' drops h^3 Y3 + h^4 Y4 from Y'; 'drop_moving_centre' drops h B' from Z1."""
+    st = dict(DEFAULTS)
+    st.update(GROUP_DEFAULTS)
+    st.update(settings or {})
+    mut = frozenset(_mutate)
+    if mut - {"drop_third_order", "drop_moving_centre"}:
+        raise ValueError(f"unknown mutation {sorted(mut)}")
+    t0 = time.time()
+    marks = {}
+
+    def mark(name, t=[t0]):
+        now = time.time()
+        marks[name] = round(now - t[0], 1)
+        t[0] = now
+    grp, plist, crec, om, A, centres = group_data(gid, K)
+    gc = Fraction(crec["centre_g"])
+    glo, ghi = Fraction(grp["g_lo"]), Fraction(grp["g_hi"])
+    hF = max(ghi - gc, gc - glo) * int(_widen)
+    bst = dict(br.DEFAULTS)
+    bst.update(crec["settings"])
+    # 1. Theorem B blocks at the POINT g_c (A, B1, N0, N1, Abar0, Abar1, Y0p, [J0_n], S_J0)
+    bl = br.piece_blocks(om, A, crec["centre_g"], crec["centre_g"], settings=crec["settings"], log=QUIET,
+                         label=f"G{gid}")
+    mark("piece_blocks")
+    # 2. untrusted predictor
+    om1, A1, om2, A2 = predictor(om, A, gc, hF)
+    for Ax in (A1, A2):
+        if not (Ax[IV][K + 1] - Ax[IV][K - 1]).is_zero():
+            raise ProofFailure("F_ph of a predictor coefficient is not exactly 0")
+    mark("predictor")
+    ETA = [ex._exact_dyadic_param(v, "eta") for v in crec["eta"]]
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        r_star = ex._exact_dyadic_param(st["r_star"], "r_star")
+        Rs = []
+        for i in range(DIM):
+            v = Fraction(crec["eta"][1 + i]) * Fraction(st["r_star"]) * int(st["R_factor"])
+            Rs.append(f"{v.numerator}/{v.denominator}")
+    finally:
+        ctx.prec = old
+    # 3. Hessian cover of the path family (hull of xtilde(xi), |xi| <= h, inflated by R) over g in [g_lo, g_hi]
+    omb, Ab = path_ball(om, A, om1, A1, om2, A2, hF)
+    hb = br.HessBound([(om, A), (omb, Ab)], br._dstr(gc - hF), br._dstr(gc + hF), Rs, "1", None, log=QUIET)
+    if not hb.contains_centre(A):
+        raise ProofFailure("centre not inside the Hessian cover's hull")
+    mark("Hessian cover")
+    # 4. jets along the path: strip covers and Fourier enclosures
+    Pg, PJ, Mn, Kp = int(bst["prec_g"]), int(bst["prec_J"]), int(bst["M"]), bl["Kp"]
+    rho = bl["rho"]
+    D0, Dh, Dh2 = acb(0), _dball(hF), _sq_ball(hF)
+    Phi = fe.TrigPoly([row[:] for row in A] + [row[:] for row in A1] + [row[:] for row in A2])
+    prm53, prmG, prmJ = (br.params_for(gc, gc, p) for p in (53, Pg, PJ))
+    skw = dict(nx=int(st["strip_nx_new"]), rtol=float(st["strip_rtol_new"]), max_evals=int(st["strip_max_evals"]))
+    fG_pt = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, D0, D0, 3, (1, 2, 3), pc)  # noqa: E731
+    fG_box = lambda z, pr=prm53, pc=53: gjet_flat(z, pr, Dh, Dh2, 4, (4,), pc)  # noqa: E731
+    fJ_pt = lambda z, pr=prm53, pc=53: djet_flat(z, pr, D0, D0, 1, (1,), pc)  # noqa: E731
+    fJ_box = lambda z, pr=prm53, pc=53: djet_flat(z, pr, Dh, Dh2, 2, (1, 2), pc)  # noqa: E731
+    sG_pt = fe.strip_sup(fG_pt, Phi, rho, **skw)
+    sG_box = fe.strip_sup(fG_box, Phi, rho, **skw)
+    sJ_pt = fe.strip_sup(fJ_pt, Phi, rho, **dict(skw, atol=1e-3))
+    sJ_box = fe.strip_sup(fJ_box, Phi, rho, **dict(skw, atol=1e-3))
+    for s_ in (sG_pt, sG_box, sJ_pt, sJ_box):
+        if not s_.full_strip:
+            raise ProofFailure("a strip cover is not the full strip")
+    mark("strips")
+    eG_pt = fe.fourier_coefficients(lambda z: fG_pt(z, prmG, Pg), Phi, rho, Mn, Kp, S=sG_pt, prec=Pg)
+    eG_box = fe.fourier_coefficients(lambda z: fG_box(z, prmG, Pg), Phi, rho, Mn, Kp, S=sG_box, prec=Pg)
+    eJ_pt = fe.fourier_coefficients(lambda z: fJ_pt(z, prmJ, PJ), Phi, rho, Mn, Kp, S=sJ_pt, prec=PJ)
+    eJ_box = fe.fourier_coefficients(lambda z: fJ_box(z, prmJ, PJ), Phi, rho, Mn, Kp, S=sJ_box, prec=PJ)
+    if any(x.S_source != "strip" for x in (eG_pt, eG_box, eJ_pt, eJ_box)):
+        raise ProofFailure("Fourier enclosure without a checked strip bound")
+    mark("dft")
+    NN = DIM * DIM
+
+    def mats(enc, off):
+        C = {nn: [[enc.c[off + DIM * r + c][nn + Kp] for c in range(DIM)] for r in range(DIM)] for nn in range(-Kp, Kp + 1)}
+        S = [[enc.S[off + DIM * r + c] for c in range(DIM)] for r in range(DIM)]
+        return C, S
+    J1pt, SJ1 = mats(eJ_pt, 0)
+    J1box, SJ1box = mats(eJ_box, 0)
+    C2box, SC2 = mats(eJ_box, NN)
+    # 5. Lemma 11.2: Z1 along the path, Z2 about every point of the path
+    old = ctx.prec
+    ctx.prec = 256
+    try:
+        hU = up(arb(fmpq(hF.numerator, hF.denominator)))
+    finally:
+        ctx.prec = old
+    old = ctx.prec
+    ctx.prec = int(bst["prec_g"])
+    try:
+        Bp = operator_blocks(bl, J1pt, SJ1, acb(om1), A1)                          # D'(0)
+        Bpp = operator_blocks(bl, C2box, SC2, acb(om2) / 2, [[v / 2 for v in row] for row in A2])   # E2 (ball)
+        Z1c = _z1_rows(bl["B1"], None, None, hU, ETA)
+        Z1G = Z1c if "drop_moving_centre" in mut else _z1_rows(bl["B1"], Bp, Bpp, hU, ETA)
+        Z2, Pfac = _z2(bl, ETA, r_star, hb)
+    finally:
+        ctx.prec = old
+    mark("Z1, Z2")
+    # 6. Lemma 11.1: Y' and rho
+    old = ctx.prec
+    ctx.prec = int(bst["prec_g"])
+    try:
+        om_bar = bl["om_bar"]
+        lin = {1: [], 2: [], 3: [], 4: []}
+        for i in range(DIM):
+            l1, l2, l3, l4 = [], [], [], []
+            for m in range(-K, K + 1):
+                t = m + K
+                im = acb(0, m)
+                l1.append(im * (om_bar * A1[i][t] + om1 * A[i][t]))
+                l2.append(im * (om_bar * A2[i][t] / 2 + om1 * A1[i][t] + om2 * A[i][t] / 2))
+                l3.append(im * (om1 * A2[i][t] + om2 * A1[i][t]) / 2)
+                l4.append(im * om2 * A2[i][t] / 4)
+            lin[1].append(l1)
+            lin[2].append(l2)
+            lin[3].append(l3)
+            lin[4].append(l4)
+        cp_ = [[eG_pt.c[q * DIM + k] for k in range(DIM)] for q in range(3)]     # c1, c2, c3 at xi = 0
+        Sp_ = [[eG_pt.S[q * DIM + k] for k in range(DIM)] for q in range(3)]
+        Y1 = _y_parts(bl, cp_[0], Sp_[0], lin[1], arb(1))
+        Y2 = _y_parts(bl, cp_[1], Sp_[1], lin[2], arb(1))
+        Y3 = _y_parts(bl, cp_[2], Sp_[2], lin[3], arb(1))
+        Y4 = _y_parts(bl, eG_box.c, eG_box.S, lin[4], arb(1))                       # c4 over the xi box
+        Y0p = bl["Y0p"]
+        Yp, rho_x, kappa = lemma_11_1([Y0p, Y1, Y2, Y3, Y4], hU, ETA, Z1G, Z2, r_star, st["rho_margin"], mut)
+    finally:
+        ctx.prec = old
+    mark("Lemma 11.1")
+    log(f"  G{gid}: h = {float(hU):.4e}, Z1 point {float(Z1c):.4f}, Z1 path {float(Z1G):.4f}, Z2 {float(Z2):.3e}, "
+        f"Y' = {float(Yp):.3e} (Y0p {max(float(Y0p[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h Y1 "
+        f"{max(float(hU * Y1[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^2 Y2 "
+        f"{max(float(hU ** 2 * Y2[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^3 Y3 "
+        f"{max(float(hU ** 3 * Y3[c] / ETA[c]) for c in range(DIM + 1)):.2e}, h^4 Y4 "
+        f"{max(float(hU ** 4 * Y4[c] / ETA[c]) for c in range(DIM + 1)):.2e}), rho = {float(rho_x):.3e}, "
+        f"kappa = {float(kappa):.4f}")
+    # 7. identification with the branch, piece by piece (x*(g) of Theorem B is the zero found, for g in each piece)
+    ident = identify(plist, centres, crec, gc, (om, A, om1, A1, om2, A2), ETA, rho_x, bl["nu"], K)
+    mark("identification")
+    # 8. Lemma 11.3 data: eps_W from this unit's Hessian cover, the d^0, d^1, d^2 Hill coefficients
+    t = [up(ETA[1 + j] * rho_x) for j in range(DIM)]
+    for j in range(DIM):
+        if not t[j] < hb.R[j]:
+            raise ProofFailure(f"t_{j} = eta_j rho is not < R_{j}")
+    pidx = {pr: i for i, pr in enumerate(br.HPAIRS)}
+    epsW = [[None] * DIM for _ in range(DIM)]
+    for k in range(DIM):
+        for l in range(DIM):
+            s = arb(0)
+            for j in range(DIM):
+                s += hb.MH[k][pidx[(min(l, j), max(l, j))]] * t[j]
+            epsW[k][l] = up(s)
+
+    def split(Cd):
+        cen, rad = {}, {}
+        for nn in range(-Kp, Kp + 1):
+            cen[nn] = [[None] * DIM for _ in range(DIM)]
+            rad[nn] = [[None] * DIM for _ in range(DIM)]
+            for r in range(DIM):
+                for c in range(DIM):
+                    v = Cd[nn][r][c]
+                    mid = acb(v.real.mid(), v.imag.mid())
+                    cen[nn][r][c] = mid
+                    rad[nn][r][c] = (v - mid).abs_upper()
+        return cen, rad
+    J1c, rad1 = split(J1pt)
+    C2c, rad2 = split(C2box)
+    old = ctx.prec
+    ctx.prec = 128
+    try:
+        rho_om = up(ETA[0] * rho_x)
+        om2half = (om2 / 2).mid() if isinstance(om2, arb) else arb(om2) / 2
+    finally:
+        ctx.prec = old
+    U = dict(K=K, Kp=Kp, A=A, om_bar=bl["om_bar"], om1=om1, rho_om=rho_om, h=hU, J0=bl["J"], SJ0=bl["SJ"],
+             J1c=J1c, rad1=rad1, SJ1=SJ1, epsW=epsW, rho=rho, rho0=bl["rho0"], rho2=hb.rho2,
+             C2c=C2c, rad2=rad2, SC2=SC2, om2half=om2half)
+    cert = certify_uniform(U, settings=st, controls=controls, log=log)
+    mark("certificate")
+    out = dict(
+        type="group_unit", group=gid, label=f"G{gid}", g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
+        centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
+        pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
+        half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
+        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
+        T_lo=cert["T_lo"],
+        existence=dict(Z1_point=bound_rec(Z1c), Z1_path=bound_rec(Z1G), Z2=bound_rec(Z2), polydisc_P=float(Pfac),
+                       r_star=st["r_star"], rho=bound_rec(rho_x), Yprime=bound_rec(Yp), kappa=bound_rec(kappa),
+                       Y0p_max=float(max(Y0p[c] / ETA[c] for c in range(DIM + 1))),
+                       hY1_max=float(max(hU * Y1[c] / ETA[c] for c in range(DIM + 1))),
+                       h2Y2_max=float(max(hU ** 2 * Y2[c] / ETA[c] for c in range(DIM + 1))),
+                       h3Y3_max=float(max(hU ** 3 * Y3[c] / ETA[c] for c in range(DIM + 1))),
+                       h4Y4_max=float(max(hU ** 4 * Y4[c] / ETA[c] for c in range(DIM + 1))),
+                       hessian_cover=hb.record(), identification=ident),
+        predictor=dict(omega1=ct.dyadic_to_text(om1), omega2=ct.dyadic_to_text(om2), sha256=hashlib.sha256(
+            "".join(ct.dyadic_to_text(Ax[i][m].real) + ct.dyadic_to_text(Ax[i][m].imag)
+                    for Ax in (A1, A2) for i in range(DIM) for m in range(2 * K + 1)).encode()).hexdigest()),
+        eps_W_max=float(max(max(r) for r in epsW)),
+        strips=dict(G_pt=ex._strip_rec(sG_pt), G_box=ex._strip_rec(sG_box), J_pt=ex._strip_rec(sJ_pt),
+                    J_box=ex._strip_rec(sJ_box)),
+        certificate={k: v for k, v in cert.items() if k != "internals"}, timings_s=marks,
+        wall_s=round(time.time() - t0, 1))
+    if controls and controls.get("dump"):
+        out["_internals"] = cert.get("internals")
+        out["_ctx"] = dict(bl=bl, om=om, A=A, om1=om1, A1=A1, om2=om2, A2=A2, ETA=ETA, U=U, settings=st, grp=grp,
+                           plist=plist, crec=crec, rho_x=rho_x, hF=hF, hU=hU, Z1c=Z1c, Z1G=Z1G, Z2=Z2, Yp=Yp,
+                           r_star=r_star, hb=hb, Yparts=[bl["Y0p"], Y1, Y2, Y3, Y4], Bp=Bp, Bpp=Bpp, centres=centres,
+                           gc=gc)
+    if mut or _widen != 1:
+        out["MUTATED"] = sorted(mut) + ([f"widen x{_widen}"] if _widen != 1 else [])
     return out
 
 
@@ -957,33 +1841,140 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
     return done_labels(K)
 
 
+def done_groups(K=12):
+    """Certified group units by group id (the last one logged for a group wins; all are valid)."""
+    out = {}
+    for r in br._read_jsonl_tolerant(LOG.format(K=K)):
+        if r.get("type") == "group_unit" and r.get("ok"):
+            out[r["group"]] = r
+    return out
+
+
+def _gjob(args):
+    gid, settings = args
+    t0 = time.time()
+    try:
+        return dict(gid=gid, ok=True, rec=prove_group_uniform(gid, settings=settings, log=QUIET))
+    except FAILURES as e:
+        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", wall=round(time.time() - t0, 1),
+                    settings=settings)
+    except Exception as e:  # noqa: BLE001  (recorded, never a proof)
+        import traceback
+        return dict(gid=gid, ok=False, why=f"{type(e).__name__}: {e}", trace=traceback.format_exc()[-1500:],
+                    wall=round(time.time() - t0, 1), settings=settings)
+
+
+GROUP_ATTEMPTS = (dict(delta="3e-5"),)
+
+
+def group_coverage(K=12):
+    """(pieces, groups, uncovered): a piece is covered by a certified piece unit with its centre digest, or by a certified
+    group unit of its group that lists it with the same centre digest."""
+    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    hp, hg = done_labels(K), done_groups(K)
+    unc = {}
+    for p in pieces:
+        r = p["rec"]
+        u = hp.get(r["label"])
+        if u is not None and u["centre_sha256"] == r["centre_sha256"]:
+            continue
+        g = hg.get(p["group"])
+        if g is not None and g.get("piece_centre_sha256", {}).get(r["label"]) == r["centre_sha256"]:
+            continue
+        unc.setdefault(p["group"], []).append(r["label"])
+    return pieces, groups, unc
+
+
+def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=3300, fallback=True, log=print):
+    """Group units (prove_group_uniform) for every logged group with an uncovered piece, in order of g, at most
+    `workers` at a time; each result (or failure) is appended to the log at once. A group whose unit fails under every
+    attempt falls back to piece units for its uncovered pieces (run(), the piece driver), if fallback."""
+    import multiprocessing as mp
+    T0 = time.time()
+    path = LOG.format(K=K)
+    br._repair_jsonl(path, log)
+    _, groups, unc = group_coverage(K)
+    failed_before = {r["group"] for r in br._read_jsonl_tolerant(path) if r.get("type") == "group_failure"}
+    todo = [g["group"] for g in groups if g["group"] in unc and (gids is None or g["group"] in set(gids))]
+    log(f"group units: {len(groups)} groups logged, {len(todo)} with uncovered pieces, workers {workers}")
+    to_pieces = [gid for gid in todo if gid in failed_before]
+    queue = [(gid, list(attempts)) for gid in todo if gid not in failed_before]
+    with mp.get_context("fork").Pool(workers, maxtasksperchild=2) as pool:
+        running = {}
+        while (queue or running) and time.time() - T0 < budget_s:
+            while queue and len(running) < workers and time.time() - T0 < budget_s:
+                gid, ds = queue.pop(0)
+                running[gid] = (pool.apply_async(_gjob, ((gid, dict(ds[0])),)), ds)
+            done = [gid for gid, (ar, _) in running.items() if ar.ready()]
+            if not done:
+                time.sleep(2)
+                continue
+            for gid in done:
+                ar, ds = running.pop(gid)
+                res = ar.get()
+                if res["ok"]:
+                    br._append(path, res["rec"])
+                    c = res["rec"]["certificate"]
+                    log(f"  G{gid}: CERTIFIED uniformly over [{res['rec']['g'][0]}, {res['rec']['g'][1]}] "
+                        f"({len(res['rec']['pieces'])} pieces), delta {res['rec']['delta_requested']}, (SC) worst "
+                        f"{c['SC_worst_ratio']:.3e}, rho {res['rec']['existence']['rho']['approx']:.2e}, "
+                        f"Z1 path {res['rec']['existence']['Z1_path']['approx']:.3f}, {res['rec']['wall_s']} s")
+                else:
+                    br._append(path, dict(type="group_failure", group=gid, why=res["why"], settings=res.get("settings"),
+                                          trace=res.get("trace"), wall=res.get("wall")))
+                    log(f"  G{gid}: group unit failed ({ds[0]}): {res['why'][:200]}")
+                    if ds[1:]:
+                        queue.insert(0, (gid, ds[1:]))
+                    else:
+                        to_pieces.append(gid)
+    left = budget_s - (time.time() - T0)
+    if fallback and to_pieces and left > 300:
+        _, _, unc = group_coverage(K)
+        labels = [l for gid in sorted(to_pieces) for l in unc.get(gid, [])]
+        if labels:
+            log(f"falling back to piece units for groups {sorted(to_pieces)} ({len(labels)} pieces)")
+            run(labels=labels, K=K, workers=workers, budget_s=left, log=log)
+    return done_groups(K)
+
+
 SOURCES = ["fourier/branch_stability.py", "fourier/branch.py", "fourier/stability.py", "fourier/existence.py",
            "fourier/centre.py", "fourier/arbmodel.py", "fourier/fourier_eval.py", "fourier/tp06_18d_arb.py",
            "model/tp06_18d.py", "model/scales.txt"]
 
 
+RECORD = os.path.join(RESULTS, "fourier-branch-stability-uniform.json")
+
+
 def collect(K=12, write=True, log=print):
-    pieces, _, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
-    have = done_labels(K)
+    """The Theorem C record: every piece of the branch record with the unit that covers it (a piece unit, or the group
+    unit of its group), the maximal intervals covered, the group units and the failures. Centre digests are matched
+    against the branch logs; nothing is taken from a unit whose centre digest does not match."""
+    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    hp, hg = done_labels(K), done_groups(K)
     allr = br._read_jsonl_tolerant(LOG.format(K=K))
-    fails = [r for r in allr if r.get("type") == "failure"]
+    fails = [r for r in allr if r.get("type") in ("failure", "group_failure")]
     rows = []
     for p in pieces:
         r = p["rec"]
-        u = have.get(r["label"])
+        u = hp.get(r["label"])
         if u is not None and u["centre_sha256"] != r["centre_sha256"]:
             u = None
-        rows.append(dict(label=r["label"], g=[r["g_lo"], r["g_hi"]], uniform=u is not None,
-                         delta=u["delta"] if u else None, delta_requested=u["delta_requested"] if u else None,
-                         multiplier_bound_full_period=u["multiplier_bound_full_period"] if u else None,
-                         rho=u["existence"]["rho"]["approx"] if u else None,
-                         SC_worst_ratio=u["certificate"]["SC_worst_ratio"] if u else None,
-                         critical_ratios=[c["ratio"] for c in u["certificate"]["critical_columns"]] if u else None,
-                         theta_T=u["certificate"]["theta_T"]["approx"] if u else None,
-                         wall_s=u["wall_s"] if u else None))
+        gu = hg.get(p["group"])
+        if gu is not None and gu.get("piece_centre_sha256", {}).get(r["label"]) != r["centre_sha256"]:
+            gu = None
+        cov = gu if gu is not None else u          # report the group unit when there is one (both are valid)
+        rows.append(dict(label=r["label"], group=p["group"], g=[r["g_lo"], r["g_hi"]], uniform=cov is not None,
+                         unit=None if cov is None else (cov["label"] if cov is gu else r["label"]),
+                         unit_kind=None if cov is None else ("group" if cov is gu else "piece"),
+                         also_piece_unit=bool(u is not None and cov is gu),
+                         delta=cov["delta"] if cov else None, delta_requested=cov["delta_requested"] if cov else None,
+                         multiplier_bound_full_period=cov["multiplier_bound_full_period"] if cov else None,
+                         rho=cov["existence"]["rho"]["approx"] if cov else None,
+                         SC_worst_ratio=cov["certificate"]["SC_worst_ratio"] if cov else None,
+                         theta_T=cov["certificate"]["theta_T"]["approx"] if cov else None,
+                         program_sha256=cov.get("program_sha256") if cov else None))
     covered = [r for r in rows if r["uniform"]]
-    # maximal runs of consecutive certified pieces (consecutive pieces overlap, so a run covers an interval)
-    runs, cur = [], None
+    runs, cur = [], None                           # maximal runs of consecutive covered pieces (they overlap)
     for r in rows:
         if r["uniform"]:
             if cur is None:
@@ -996,28 +1987,62 @@ def collect(K=12, write=True, log=print):
             cur = None
     if cur is not None:
         runs.append(cur)
-    worst = max((Fraction(r["multiplier_bound_full_period"]["dec"]) for r in covered), default=None)
+    used = {}
+    for r in covered:
+        used.setdefault(r["unit"], r)
+    units_used = []
+    for lab in used:
+        x = hg[int(lab[1:])] if (lab.startswith("G") and "P" not in lab) else hp[lab]
+        units_used.append(x)
+    worst = max((Fraction(x["multiplier_bound_full_period"]["dec"]) for x in units_used), default=None)
+    prog = {}
+    for x in units_used:
+        key = x.get("program_sha256") or "not recorded (early version of branch_stability.py)"
+        prog[key] = prog.get(key, 0) + 1
+    gunits = []
+    for gid, x in sorted(hg.items()):
+        gunits.append(dict(group=gid, label=x["label"], g=x["g"], half_width=x["half_width"]["approx"],
+                           pieces=x["pieces"], centre_piece=x["centre_piece"], delta_requested=x["delta_requested"],
+                           multiplier_bound_full_period=x["multiplier_bound_full_period"]["approx"],
+                           rho=x["existence"]["rho"]["approx"], Z1_path=x["existence"]["Z1_path"]["approx"],
+                           Z1_point=x["existence"]["Z1_point"]["approx"], Z2=x["existence"]["Z2"]["approx"],
+                           kappa=x["existence"]["kappa"]["approx"],
+                           identification_worst_ratio=max(i["lhs"] / i["r_uniqueness"]
+                                                          for i in x["existence"]["identification"]),
+                           SC_worst_ratio=x["certificate"]["SC_worst_ratio"],
+                           critical_ratios=[c["ratio"] for c in x["certificate"]["critical_columns"]],
+                           theta_T=x["certificate"]["theta_T"]["approx"], wall_s=x["wall_s"],
+                           program_sha256=x.get("program_sha256")))
+    n_piece_units = len(hp)
     out = dict(
-        what="Theorem C: linear stability of the single-cell periodic orbit uniformly in G_Ks on each certified "
-             "piece of the rec 2 branch (fourier/branch_stability.py; lemmas: fourier/LEMMAS-stability.md section 10)",
+        what="Theorem C: linear stability of the single-cell periodic orbit uniformly in G_Ks on the rec 2 branch, "
+             "certified on whole groups of pieces (group units) and on single pieces (piece units) "
+             "(fourier/branch_stability.py; lemmas: fourier/LEMMAS-stability.md sections 10 and 11)",
         status="computed; awaiting adversarial review",
         theorem=theorem_text(runs, worst),
         n_pieces_branch=len(rows), n_pieces_uniform=len(covered),
+        n_group_units=len(hg), n_piece_units=n_piece_units,
+        n_units_used=len(units_used),
         intervals_uniform=[dict(g=[a, b], n_pieces=n) for a, b, n in runs],
+        uncovered_pieces=[r["label"] for r in rows if not r["uniform"]],
         worst_multiplier_bound=None if worst is None else float(worst),
-        pieces=rows, failures=[{k: v for k, v in f.items() if k != "trace"} for f in fails],
-        settings=dict(DEFAULTS), sources_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in SOURCES},
+        delta_requested_values=sorted({x["delta_requested"] for x in units_used}),
+        programs_of_units_used=prog,
+        group_units=gunits, pieces=rows,
+        failures=[{k: v for k, v in f.items() if k != "trace"} for f in fails],
+        settings=dict(DEFAULTS), group_settings=dict(GROUP_DEFAULTS),
+        sources_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in SOURCES},
         log=os.path.relpath(LOG.format(K=K), ROOT), log_sha256=br.sha256(LOG.format(K=K)),
         branch_run_log_sha256=br.sha256(br.RUN_LOG.format(K=K)), branch_centres_sha256=br.sha256(br.CENTRES.format(K=K)),
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         numpy=np.__version__, machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
-        total_wall_s=round(sum(r["wall_s"] or 0 for r in rows), 1))
+        total_wall_s=round(sum(x["wall_s"] for x in units_used), 1))
     if write:
-        path = os.path.join(RESULTS, "fourier-branch-stability.json")
-        with open(path, "w") as fh:
+        with open(RECORD, "w") as fh:
             json.dump(out, fh, indent=1)
             fh.write("\n")
-        log(f"wrote {path}: {len(covered)} of {len(rows)} pieces uniform")
+        log(f"wrote {RECORD}: {len(covered)} of {len(rows)} pieces uniform ({len(hg)} group units, "
+            f"{n_piece_units} piece units in the log)")
     return out
 
 
@@ -1027,13 +2052,14 @@ def theorem_text(runs, worst):
     iv = "; ".join(f"[{a}, {b}]" for a, b, _ in runs)
     return ("Conditional on Theorem B (results/fourier-branch-gks.json: for every G_Ks in each listed piece the branch "
             "orbit x*(G_Ks) exists, is unique in the piece's ball and has minimal period T) and on the lemmas of "
-            "fourier/LEMMAS-stability.md (sections 1 to 4 and 10): for EVERY G_Ks in " + iv + " (each a union of "
-            "branch pieces certified one by one), the single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 "
-            "endocardial model has the Floquet multiplier 1 algebraically simple and its other 17 Floquet multipliers "
-            "of modulus < e^(-delta T_lo) with the piece's delta and T_lo (worst over the pieces: "
+            "fourier/LEMMAS-stability.md (sections 1 to 4, 10 and 11): for EVERY G_Ks in " + iv + " (a union of "
+            "branch pieces, each covered by a certified unit: the group unit of its group or a piece unit), the "
+            "single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 endocardial model has the Floquet "
+            "multiplier 1 algebraically simple and its other 17 Floquet multipliers of modulus < e^(-delta T_lo) with "
+            "the unit's delta and T_lo (worst over the units: "
             f"{'%.9f' % worst if worst is not None else 'n/a'}); hence it is locally exponentially orbitally stable "
-            "with asymptotic phase (Theorem 4(iii)). The bound holds uniformly on each piece, not only at sampled "
-            "values of G_Ks.")
+            "with asymptotic phase (Theorem 4(iii)). The bound holds uniformly on each unit's interval, not only at "
+            "sampled values of G_Ks.")
 
 
 def main():
@@ -1043,6 +2069,9 @@ def main():
     ap.add_argument("--labels", default="")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--budget", type=float, default=3500)
+    ap.add_argument("--groups", action="store_true", help="group units for every group with an uncovered piece")
+    ap.add_argument("--gids", default="", help="comma-separated group ids for --groups (default: all)")
+    ap.add_argument("--no-fallback", action="store_true", help="with --groups: do not fall back to piece units")
     ap.add_argument("--one", default="", help="prove one piece in this process and print the record")
     ap.add_argument("--delta", default=None)
     a = ap.parse_args()
@@ -1056,6 +2085,9 @@ def main():
                                          for k, v in r["existence"].items()},
                               theta_T=c["theta_T"]["approx"], SC_worst=c["SC_worst_ratio"],
                               critical=c["critical_columns"], timings=r["timings_s"], wall=r["wall_s"]), indent=1))
+    if a.groups:
+        run_groups(gids=[int(v) for v in a.gids.split(",") if v] or None, workers=a.workers, budget_s=a.budget,
+                   fallback=not a.no_fallback)
     if a.run:
         run(labels=[l for l in a.labels.split(",") if l] or None, workers=a.workers, budget_s=a.budget)
     if a.collect:
