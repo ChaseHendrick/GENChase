@@ -1,12 +1,35 @@
-Stable Rotating Waves in Rings of a Modified Ventricular Myocyte Model Near a Hopf Point: Computer-Assisted Proofs in Fourier Space:
+Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs:
 programs and data.
 Copyright 2026 Chase Hendrick
 
-The cell model translated in code/model/tp06_18d.py, code/model/tp06_capd.hpp and the generated
-code/fourier/tp06_18d_arb.py is A. H. Erhardt's fun_eval of "bifurcation analysis/TP06_18d_endo_bif.m" in the
-repository andreerhardt/cardiac-dynamics-of-a-human-ventricular-tissue-model-with-focus-on-early-afterdepolarizations
-(commit dc78f86fd218418e029ec43d945bcd0fc54b9f1e), MIT License, Copyright (c) A. H. Erhardt. It is a modification of
-the ten Tusscher-Panfilov 2006 human ventricular cell model.
+The programs in code/ and the data in data/ are licensed under the Apache License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0), subject to the notices below.
 
-code/proofs/capd-6.1.0-genchase.patch modifies a header of CAPD 6.1.0 and is subject to CAPD's own licence; CAPD
-itself is not included here.
+The cell model translated in code/model/tp06_18d.py, code/model/tp06_capd.hpp and the generated
+code/fourier/tp06_18d_arb.py is A. H. Erhardt's fun_eval of "bifurcation analysis/TP06_18d_endo_bif.m" in the GitHub
+repository andreerhardt/cardiac-dynamics-of-a-human-ventricular-tissue-model-with-focus-on-early-afterdepolarizations
+(commit dc78f86fd218418e029ec43d945bcd0fc54b9f1e), a modification of the ten Tusscher-Panfilov 2006 human ventricular
+cell model. That source is distributed under the following license:
+
+  MIT License
+
+  Copyright (c) 2024 André H. Erhardt
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+  the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+The C++ programs use the CAPD library (https://github.com/CAPDGroup/CAPD), which is distributed under the GNU General
+Public License. CAPD is not included here. code/proofs/capd-6.1.0-genchase.patch modifies one of its headers
+(capd/poincare/PoincareMap_templateMembers.h) and is distributed under the same license.
+
+The text of the manuscript (paper/), its figures included, is not licensed for reuse.

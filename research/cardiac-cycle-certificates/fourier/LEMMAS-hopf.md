@@ -385,8 +385,8 @@ B3 and the radii-polynomial theorem (B2), for **every** `eps in [e_lo, e_hi]` (n
    `G_Ks = 0.0275`, branch.py section 8b). The value of `G_Ks` at which this orbit exists
    is enclosed: `|g*(eps) - gbar(eps)| <= eta_g r_lo`, and over the piece `g*(eps) in [g_lo, g_hi]` (the record's
    `g` enclosure, `gbar_c +- (delta |tbar_g| + eta_g r_lo)`). Likewise `omega*` and the period `T = 2 pi / omega*`
-   (`omega`, `T_ms`). Numerically (midpoints of the enclosures, not a bound) `g_H - g*(eps)` is about `7.7e-3 eps^2`
-   on the pieces so far, the square-root law of the Hopf bifurcation.
+   (`omega`, `T_ms`). Numerically (midpoints of the enclosures, not a bound) `g_H - g*(eps)` is about `7.9e-3 eps^2`
+   (`7.84e-3` to `7.93e-3` times `eps^2` over the 68 pieces), the square-root law of the Hopf bifurcation.
 4. Nothing is claimed about orbits outside the ball, about stability (Part S), or about a G_Ks value directly: a given
    `G_Ks` is reached through `eps` (Corollary B(c)), and whether `g*` is monotone in `eps` is not certified.
 

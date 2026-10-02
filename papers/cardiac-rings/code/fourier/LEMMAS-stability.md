@@ -3,7 +3,7 @@
 Status: written 2026-10-01, before any Stage S code (PLAN-large-rings.md, step 3). Every statement below is proved
 here by hand or reduced to a cited textbook fact; nothing in this file is a computational result. The proofs have had
 one self-adversarial reading by their author (section 8) and one independent reading by a referee in this project's
-session (report in the session scratchpad, `lemmas-review.md`; no error found, three gaps and eight minor items, all
+session (report in `review/stability-lemmas-review-2026-10-01.md` of this paper's folder; no error found, three gaps and eight minor items, all
 addressed in section 9); this is not an outside review. The plan requires a
 second, independent reading before any record says "verified".
 
@@ -507,11 +507,17 @@ e^{i n theta}. Stage E already encloses J_n for |n| <= K' (aliased DFT, fourier_
 strip bound |J_{n,jk}| <= S_{J,jk} e^{-rho |n|}, and, for its Z2, a bound M_k >= sup |f_k(phibar(theta) + w)| over
 |Im theta| <= rho2 and the polydisc |w_j| <= R_j.
 
-Which radius. The Stage E record (e.g. results/fourier-existence-N8.json) carries two radii: r_existence, the radius of
+Which radius. The Stage E record (e.g. data/fourier-existence-N8.json) carries two radii: r_existence, the radius of
 the ball, about the centre, in which the record places the zero, and r_uniqueness, the radius of the ball in
-which the zero is unique. Both balls contain the zero, so Lemma 4.1 is valid with either, but eps is linear in t, and at
-N = 8 the referee estimated ||eps||_{1->1} about 4e-5 with r_uniqueness = 1e-12, far above the near-axis margins
-(dist_j about 1.3e-6), against about 1e-21 with r_existence = 5.4e-28. The program must therefore read
+which the zero is unique. Both balls contain the zero, so Lemma 4.1 is valid with either, but eps is linear in t. At
+N = 8 the record (data/fourier-existence-N8.json) has r_existence = 1.643907e-28 and r_uniqueness = 1e-12. With
+r = r_existence, the stability record gives ||eps||_{1->1} <= 1.2023e-12 in the cell coordinates S (eps_1norm_S; the
+entrywise maximum is eps_max = 3.67e-22). Since eps grows linearly in t for small t, r = r_uniqueness would give about
+7e3 in the same coordinates (an estimate by scaling, not a recorded value). That is far above the near-axis margins
+(dist_j about 1.3e-6). The referee report of 2026-10-01 (review/stability-lemmas-review-2026-10-01.md, G2) made the
+same point from an earlier run of the record (r_existence = 5.4e-28 then), in the Stage E variables without the
+scaling S: entrywise eps about 2.2e-6 and ||eps||_{1->1} about 4e-5 at r_uniqueness, against entrywise eps about 1e-21
+at r_existence. The program must therefore read
 r := r_existence and the weights eta (eta_om, eta_k) from the Stage E record, not recompute or retype them, and must
 assert t_j := eta_j r < R_j for every j (a check that fails the run), since Lemma 4.1 is void otherwise.
 

@@ -98,6 +98,55 @@
    "class": "GAP",
    "location": "program_sha256=br.sha256(os.path.abspath(__file__)) inside prove_piece_uniform in commits 4f6a88c (line 862), 65ed51d (868) and c38e1ac (919). Current code takes the hash at import (branch_stability.py:123-126). collect: branch_stability.py:2065-2068 and 2103. Log fourier/data/branch/stability_uniform_K12.jsonl lines 1-3, 41 and 42.",
    "finding": "The program_sha256 of each hashed piece unit was taken when the record was written, not from the code that computed it. Workers fork from the parent's import-time code, so a file edited during a run gets hashed instead of the code that ran. One record carries a provably wrong hash and one carries a hash that matches no commit. Three units carry no hash or settings at all. collect only counts the hashes (programs_of_units_used): it does not map them to commits or flag unknown ones, and sources_sha256 hashes only the current files. So 5 of the 60 piece units used cannot be tied to reviewable code. I found no soundness defect. In the committed versions, the piece-path diffs (be4e1e3 to 4f6a88c to 65ed51d to HEAD) change only the strip-cover parameters and replace the exact W3 and C2 column sums with larger norm-product bounds. The dependencies (branch.py, stability.py, existence.py, fourier_eval.py, arbmodel.py, centre.py) are unchanged since 4f6a88c, and the working tree is clean for them. Between be4e1e3 and 4f6a88c, branch.py changed only in its docstring and in collect text."
+  },
+  {
+   "id": "F3",
+   "lens": "C-bookkeeping-record",
+   "class": "GAP",
+   "location": "fourier/branch_stability.py:1874-1880 (_covering_group_unit), 1911-1918 (group_coverage), 2031-2035 (collect)",
+   "finding": "A unit is accepted for a piece on label plus centre digest alone. Neither collect nor group_coverage compares the unit's recorded g range with the current branch record: piece unit 'g' is not checked for equality, and a group unit's 'g' is not checked to contain the piece. Nor do they compare the r_uniqueness the unit used (r_uniqueness_logged, or identification[].r_uniqueness). The centre digest depends only on g_c and the centre's Newton solution. A regenerated branch log could therefore contain a piece with the same label and centre but a wider range or a different uniqueness radius, and collect would then claim coverage that was never proved. Group units do not record per-piece g ranges at all. This is latent: it is not triggered by the current logs."
+  },
+  {
+   "id": "F4",
+   "lens": "C-bookkeeping-record",
+   "class": "MINOR",
+   "location": "fourier/LEMMAS-stability.md:1075-1076",
+   "finding": "The status line of section 11 says that an independent in-project reading is recorded in reviews/theoremC-uniform-review-2026-10-02.md. No such file exists, so the text claims a reading that is not on record."
+  },
+  {
+   "id": "F5",
+   "lens": "C-bookkeeping-record",
+   "class": "WEAK TEST",
+   "location": "fourier/test_branch_stability.py:431-453 (test_group_parts); no test of _covering_group_unit, group_coverage, run_groups or collect",
+   "finding": "For half-group units, only group_data's slicing is tested. No test certifies or reproduces a half unit bit for bit. Nothing tests the coverage logic that decides what the record claims. There is no negative control showing that collect refuses a unit with a mismatched centre digest, a unit of another group, a piece the unit does not list, or a unit with a narrower g range. Nothing tests that interval merging stops at a gap, or that run_groups falls back correctly (whole group failed, then halves, then piece units, including legacy failure records without 'part')."
+  },
+  {
+   "id": "F6",
+   "lens": "C-bookkeeping-record",
+   "class": "WEAK TEST",
+   "location": "fourier/test_branch_stability.py:123-128 (test_acceptance_piece)",
+   "finding": "The bit-for-bit comparison with the logged G0P0 never runs. The logged unit has K_e = 16 and the current default gives K_e = 12, so the comparison is skipped, and silently: there is no message, unlike the group test. The logged G0P0 cannot be reproduced by the current code with any settings either. Its J1 strip used rtol = max(rtol, 10), which the current code no longer applies. As a result, no logged piece unit has ever been reproduced by a test."
+  },
+  {
+   "id": "F7",
+   "lens": "C-bookkeeping-record",
+   "class": "MINOR",
+   "location": "fourier/branch_stability.py:2047-2059 (collect, runs)",
+   "finding": "collect merges consecutive covered pieces into one interval without checking that they overlap. validate_logs(reglue=False) checks monotone endpoints (check_piece_order) and overlap between groups, but not overlap between consecutive pieces. group_data checks overlap only for group units. For G0 to G4, which are covered by piece units, the interval statement rests on Theorem B alone."
+  },
+  {
+   "id": "F8",
+   "lens": "C-bookkeeping-record",
+   "class": "MINOR",
+   "location": "fourier/branch_stability.py:2064, 2097, 2130",
+   "finding": "The worst multiplier bound is printed with '%.9f', which rounds to nearest, and stored as float(worst), also nearest. A printed upper bound can therefore fall below the certified value, by up to 5e-10 in the text. The theorem text also does not name the quantity it reports ('worst over the units: X' follows 'the unit's delta and T_lo')."
+  },
+  {
+   "id": "F9",
+   "lens": "C-bookkeeping-record",
+   "class": "MINOR",
+   "location": "fourier/branch_stability.py:2024-2026, 2102-2105",
+   "finding": "The record's settings field holds the current DEFAULTS, not the settings the units used: K_e is 16 for G0P0 to G0P2, and 41 units used the old strip parameters. LEMMAS-stability.md and the test file are not hashed. collect reads the logs several times (validate_logs, done_labels, done_groups, the full read, then sha256) while two writers are appending, so log_sha256 may not hash the content that was used. LEMMAS-hopf.md item 5 asks for the opposite for the Hopf record: copy, validate and hash together."
   }
  ]
 }

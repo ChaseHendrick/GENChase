@@ -18,7 +18,7 @@
     "data/fourier-existence-N64.json": "df488646db4b0ff2d48975422dbd81716ae6a1576f8513dfbb5c150306be8cf6",
     "data/fourier-existence-N8.json": "a1bd799b5609bc6cb7b19a96d86a14ee63919402ea4f626a59e140c7e62eff2c",
     "data/fourier-existence-alln.json": "a6fb7707b08d71853107e8a795839f36806e89214aaa2b0c09b7297d25fff571",
-    "code/plot_cardiac_rings.py": "06f382c0da3917228ad4899bcca995fde563d0c6fdae3754b6fb3f4a454a7c6c"
+    "code/plot_cardiac_rings.py": "42dcb168a27779a05091686c77f0f4be22815bd05f8fe8ec295015644bfe2603"
   },
   "matplotlib": "3.11.2",
   "numpy": "2.4.6"

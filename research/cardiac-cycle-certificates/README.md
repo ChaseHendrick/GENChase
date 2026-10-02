@@ -217,7 +217,8 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
     --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
 * **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: computed; one in-project
-  adversarial reading, REVIEW_PLACEHOLDER; no outside review** (`fourier/hopf.py`,
+  adversarial reading (`reviews/hopf-bridge-review-2026-10-02.md`: no UNSOUND finding; its fixes are in
+  LEMMAS-hopf.md); no outside review** (`fourier/hopf.py`,
   proofs in `fourier/LEMMAS-hopf.md`, tests `fourier/test_hopf.py`, record `results/fourier-hopf.json`, logs in
   `fourier/data/hopf/`).
   - Theorem A, the Hopf point (computer-assisted). The window W = [0.02789, 0.02792] is covered by 516 adjacent

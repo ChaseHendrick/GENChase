@@ -19,10 +19,10 @@
     python3 code/plot_cardiac_rings.py     writes paper/figures/cell-orbit.pdf, ring-wave.pdf,
                                            alln-pieces.pdf and paper/figures/sources.json
 
-NOT a proof.  Figures 1 and 2 sum, in binary64, the Fourier series of the centres of the existence proofs
+NOT a proof.  Figures 1 and 2 sum, in binary64, the Fourier series of the centers of the existence proofs
 (code/fourier/data/centre_N*_K32.json, exact dyadic numbers, each hashed by its record
 data/fourier-existence-N*.json, which this script checks).  The proofs place the true profile within r_ex
-of that centre (Theorem B(a), Table 1), far below the resolution of the figures.  Figure 3 draws the
+of that center (Theorem B(a), Table 1), far below the resolution of the figures.  Figure 3 draws the
 stored enclosures and radii of data/fourier-existence-alln.json and the period enclosures of
 data/fourier-existence-N*.json as they are stored; nothing is recomputed.  Run from any working directory.
 Needs numpy and matplotlib (the figures were made with numpy 2.4.6 and matplotlib 3.11.2; sources.json
@@ -149,7 +149,7 @@ env = V_SCALE * r_ex1 * np.exp(-m_env / 4)         # |true - centre| <= r_ex e^{
 fig = plt.figure(figsize=(6.5, 2.85))
 axa = axes_in(fig, 0.72, 1.0, 2.38, 1.6)
 axb = axes_in(fig, 3.95, 1.0, 2.4, 1.6)
-axa.plot(theta / om1, V1, color=BLUE, lw=1.4, label=r"$V(t)$ of the cell ($N = 1$), from the stored centre")
+axa.plot(theta / om1, V1, color=BLUE, lw=1.4, label=r"$V(t)$ of the cell ($N = 1$), from the stored center")
 axa.plot([0.0], [V1[0]], "o", color=INK, ms=4, clip_on=False, zorder=4,
          label=r"section point: $V = s$, crossed upward, $t = 0$")
 axa.set_xlim(0, T1)
@@ -161,10 +161,10 @@ style(axa)
 axa.legend(loc="upper left", bbox_to_anchor=(-0.02, -0.25), fontsize=7.6, handlelength=1.8, borderaxespad=0)
 
 axb.semilogy(np.arange(K1 + 1), coef, "o", color=BLUE, ms=3.2,
-             label=r"$|\hat V_m|$ of the centre, $0 \leq m \leq K = 32$")
+             label=r"$|\hat V_m|$ of the center, $0 \leq m \leq K = 32$")
 axb.semilogy(m_env, env, "-", color=ORANGE, lw=1.2,
-             label=r"$(r_{\mathrm{ex}}/4)\,e^{-m/4}$: bound on $|\hat V_m - \hat V_m^{\mathrm{centre}}|$")
-axb.axvline(K1, color=MUTED, lw=0.8, ls=":", label=r"$m = K$; the centre has no mode $m > K$")
+             label=r"$(r_{\mathrm{ex}}/4)\,e^{-m/4}$: bound on $|\hat V_{*,m} - \hat V_m|$")
+axb.axvline(K1, color=MUTED, lw=0.8, ls=":", label=r"$m = K$; the center has no mode $m > K$")
 axb.set_xlim(-1, K1 + 8)
 axb.set_ylim(1e-35, 1)
 axb.set_yticks([1e-32, 1e-24, 1e-16, 1e-8, 1])
@@ -191,8 +191,8 @@ vmin = min(v.min() for _, v in imgs.values())
 vmax = max(v.max() for _, v in imgs.values())
 
 fig = plt.figure(figsize=(6.5, 2.75))
-axes = [axes_in(fig, 0.5, 0.47, 2.3, 1.95), axes_in(fig, 3.42, 0.47, 2.3, 1.95)]
-cax = axes_in(fig, 5.9, 0.47, 0.1, 1.95)
+axes = [axes_in(fig, 0.5, 0.47, 2.2, 1.95), axes_in(fig, 3.25, 0.47, 2.2, 1.95)]
+cax = axes_in(fig, 5.6, 0.47, 0.1, 1.95)
 for ax, N, panel in zip(axes, SHOW, "ab"):
     T, img = imgs[N]
     im = ax.imshow(img, origin="lower", aspect="auto", cmap=cmap, vmin=vmin, vmax=vmax,

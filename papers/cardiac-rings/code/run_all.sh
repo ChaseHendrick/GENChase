@@ -1,7 +1,8 @@
 #!/bin/sh
 # Reproduce the Fourier-route records of this paper (Theorem A(ii), Theorem B and Theorem C).
 #
-#   sh code/run_all.sh                 provenance check only (seconds; needs only Python)
+#   sh code/run_all.sh                 provenance check and the link of the two cell certificates (seconds; needs
+#                                      only Python)
 #   sh code/run_all.sh 1,8             also rerun Stage E and Stage S for N = 1 and 8 (about 5 minutes)
 #   sh code/run_all.sh 1,8,16,32,64    all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)
 #   sh code/run_all.sh alln            also re-derive, in Arb, every gluing inequality, the piece order and the Stage E
@@ -10,12 +11,13 @@
 #                                      ("1,8,alln"). Re-proving pieces from their stored centres is done by
 #                                      fourier/test_alln.py (about 15 minutes), not by this script.
 #
-# Run from the paper's folder (papers/cardiac-rings). The programs write their records to <root>/results, so this
-# script stages code/ in a scratch folder: the committed records in data/ are never overwritten. It then compares the
-# new records with data/ (period enclosures and stability bounds must agree; see notes/rerun-2026-10-01.md for the
-# expected last-digit differences in Y0, Z1, Z2 and r_existence). Exit status 0 only if every step passes.
-# Canonical location of these programs and records: research/cardiac-cycle-certificates/ in GENChase; the hashes in
-# the records refer to paths relative to that folder, which code/ reproduces.
+# Run from the paper's folder (the folder that holds code/ and data/). The programs write their records to
+# <root>/results, so this script stages code/ in a scratch folder, with the records of data/ as its results/: the
+# committed records in data/ are never overwritten. It then compares the new records with data/ (period enclosures and
+# stability bounds must agree; Section 8 of the manuscript states which late digits of Y0, Z1, Z2 and r_existence may
+# differ). Exit status 0 only if every step passes.
+# These programs and records were computed in the project's study folder; the hashes in the records refer to paths
+# relative to that folder, whose layout code/ reproduces.
 set -eu
 HERE=$(cd "$(dirname "$0")/.." && pwd)
 NS=${1:-}

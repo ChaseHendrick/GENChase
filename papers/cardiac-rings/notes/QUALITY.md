@@ -1,4 +1,4 @@
-# Quality record: Stable Rotating Waves in Rings of a Modified Ventricular Myocyte Model Near a Hopf Point: Computer-Assisted Proofs in Fourier Space
+# Quality record: Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs
 
 The bar every paper in this repository meets before it is published or preprinted: a companion release, a Zenodo
 DOI, arXiv or a journal. `node tools/paper-check.js` refuses the status "ready" or later in `papers/papers.json` until

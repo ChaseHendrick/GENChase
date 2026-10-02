@@ -3,10 +3,12 @@
 # (376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76 for
 # python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl).
 python-flint==0.9.0
-# Untrusted helpers (centres, eigenvectors, weights) and tests. The records were made with numpy 2.4.6,
-# scipy 1.17.1 and mpmath 1.3.0 on Python 3.11.15.
-numpy
-scipy
-mpmath
+# Python 3.11 (the records were made on 3.11.15). Untrusted helpers (centers, eigenvectors, weights) and tests; the
+# versions the records were made with.
+numpy==2.4.6
+scipy==1.17.1
+mpmath==1.3.0
+# Only for code/plot_cardiac_rings.py (the figures; no proof). The figures were made with matplotlib 3.11.2.
+matplotlib==3.11.2
 # The CAPD route (Theorem A(i)) is C++: CAPD 6.1.0 at commit 03dc5628203334b214bb7d9fd63788a175521005 with
 # code/proofs/capd-6.1.0-genchase.patch, built with multiprecision (GMP, MPFR); see README.md, "Reproduce".
