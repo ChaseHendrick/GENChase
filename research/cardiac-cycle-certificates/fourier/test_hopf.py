@@ -451,6 +451,89 @@ def test_gluing_logged():
     check("negative control: gluing two non-adjacent pieces fails", not okn)
 
 
+# ------------------------------------------------------------------------------------------------ Corollary B(a)
+def test_identification():
+    pieces, _ = _logs()
+    pA = os.path.join(H.DATA, "theoremA.json")
+    if not (pieces and os.path.exists(pA)):
+        check("identification data present (pieces and theoremA.json)", False)
+        return
+    with open(pA) as fh_:
+        thA = json.load(fh_)
+    rec = H.identification_at_eps0(pieces[0], thA, log=lambda s: None)
+    check("Corollary B(a): g*(0) in W, Theorem A intervals with recorded polydiscs cover it, c*(0) and those "
+          "polydiscs lie in one Lemma K polydisc P", rec.get("ok") is True, f"kappa {rec.get('P_kappa')}")
+    # negative control: P with its default radii (not enlarged to the sets it must contain) misses c*(0)
+    st_ = H._piece_state(pieces[0])
+    _, gB, cB, _, _ = H.ball_of_piece_at(st_, Fraction(0))
+    ga, gb = Fraction(rec["g_interval"][0]), Fraction(rec["g_interval"][1])
+    eq = H.equilibrium_on(H._ball_interval(ga, gb), H.float_equilibrium(float((ga + gb) / 2)))
+    inside = all(bool((cB[i] - eq["xt"][i]).abs_upper() <= eq["r"][i]) for i in range(H.DIM))
+    check("negative control: the default polydisc (radii not enlarged) does not contain c*(0)'s enclosure", not inside)
+    # negative control: Theorem A's record without the polydiscs near G_H cannot identify
+    thB = dict(thA, cover_left=[{k: v for k, v in iv.items() if k != "polydisc"} for iv in thA["cover_left"]])
+    rec2 = H.identification_at_eps0(pieces[0], thB, log=lambda s: None)
+    check("negative control: without the left intervals' polydiscs the identification is refused", rec2.get("ok") is False)
+
+
+# ------------------------------------------------------------------------------------------------ Lemma D, gluing
+def test_bridge():
+    pieces, _ = _logs()
+    states = [H._piece_state(r) for r in pieces]
+    with am.precision(256):
+        nu8 = H._arb_q(pieces[0]["settings"]["rho0"]).exp()
+    pts, cents = H.gks_points()
+    on = []
+    for pt in pts:
+        c = cents.get(pt["g"])
+        if c is None:
+            continue
+        d = H.point_in_eps_branch(pt["rec"], c, states, nu8)
+        if d["ok"]:
+            on.append((pt, c, d))
+    check("Lemma D: at least one branch.py point proof is identified with the eps-branch", bool(on),
+          f"g = {[p['g'] for p, _, _ in on]}")
+    if not on:
+        return
+    pt, cent, d = on[-1]
+    # negative control: the same profile claimed at a G_Ks shifted by 1e-5 is not the bridge orbit
+    bad = dict(pt["rec"], g_lo=str(Fraction(pt["g"]) + Fraction(1, 10 ** 5)), g_hi=str(Fraction(pt["g"]) + Fraction(1, 10 ** 5)))
+    d2 = H.point_in_eps_branch(bad, cent, states, nu8)
+    check("negative control: Lemma D refuses the point's profile at G_Ks shifted by 1e-5", d2["ok"] is False)
+    # negative control: a large point radius (1/64) is refused
+    big = dict(pt["rec"], r_existence={"hex": "0x1p-6"})
+    d3 = H.point_in_eps_branch(big, cent, states, nu8)
+    check("negative control: Lemma D refuses a point radius of 1/64", d3["ok"] is False)
+    # negative control: a corrupted centre fails the digest check
+    cbad = json.loads(json.dumps(cent))
+    cbad["a"][0][1][0] = "0x1p-3"
+    try:
+        H.point_in_eps_branch(pt["rec"], cbad, states, nu8)
+        refused = False
+    except ValueError:
+        refused = True
+    check("negative control: a point centre that does not match its digest is refused", refused)
+    # negative control: an eps-branch truncated before the point's eps does not contain it
+    cut = [s_ for s_ in states if s_["e_hi"] < Fraction(d["eps_enclosure"][0])]
+    d4 = H.point_in_eps_branch(pt["rec"], cent, cut, nu8)
+    check("negative control: Lemma D refuses when the eps-branch stops before the point's eps", d4["ok"] is False)
+    # the gluing record, if any
+    pg = os.path.join(H.DATA, "gluing_gks.json")
+    if os.path.exists(pg):
+        with open(pg) as fh_:
+            gl = json.load(fh_)
+        if gl.get("glue_points"):
+            gs = gl["glue_points"][0]
+            ptg = next(p for p in pts if p["g"] == gs)
+            recs, centres, _ = H.gks_branch_snapshot(log=lambda s: None)
+            ok = H.point_on_gks_branch(ptg, cents[gs], recs, centres)["ok"]
+            dg = H.point_in_eps_branch(ptg["rec"], cents[gs], states, nu8)["ok"]
+            check(f"gluing re-derived at g = {gs}: the point is on the G_Ks branch and on the eps-branch", ok and dg)
+            far = [p_ for p_ in recs if Fraction(p_["g_hi"]) < Fraction(gs)][-3:]
+            ok2 = H.point_on_gks_branch(ptg, cents[gs], far, centres)["ok"]
+            check("negative control: G_Ks pieces not containing the point's g are refused", ok2 is False)
+
+
 def main():
     t0 = time.time()
     test_jet_closed_forms()
@@ -462,6 +545,8 @@ def main():
     test_theorem_A_core(fh)
     test_piece_recompute_and_controls()
     test_gluing_logged()
+    test_identification()
+    test_bridge()
     n_fail = sum(1 for _, ok, _ in RESULTS if not ok)
     print(f"{len(RESULTS)} checks, {n_fail} failed, {time.time() - t0:.0f} s")
     return 1 if n_fail else 0

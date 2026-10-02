@@ -1,7 +1,7 @@
-# The certified G_Ks branch is the branch born at the Hopf point: lemmas and proofs
+# The Hopf bridge: the single-cell periodic orbit from the end of the G_Ks branch to the Hopf point (lemmas and proofs)
 
-Status: computed; awaiting adversarial review. This file states and proves what `fourier/hopf.py` relies on. Nothing
-here is "verified" until a second reading has checked it against the code. No outside review has taken place.
+Status: computed; an in-project adversarial reading is recorded in `reviews/hopf-bridge-review-2026-10-02.md` with
+its fixes. This file states and proves what `fourier/hopf.py` relies on. No outside review has taken place.
 
 Model: Erhardt's 18-state TP06 endocardial cell, `f(z; g)` = `arbmodel.f` with `g_Ks = g`, in the scaled variables
 `z = x / sigma` (`sigma_i = 2^{e_i}`, `model/scales.txt`). `g_Ks` enters the reference model only through
@@ -17,9 +17,13 @@ stated in its source), **numerical** (floating point, never used in a proof).
 Trust base: python-flint 0.9.0 (Arb), `fourier/arbmodel.py` with the generated `fourier/tp06_18d_arb.py`,
 `fourier/fourier_eval.py` (Lemmas 1-3 there: strip cover, Cauchy estimate, aliased DFT), the functions of
 `existence.py` and `branch.py` called by `hopf.py` (`_tail_bounds`, `_radii`, `_identity`, `_abs_mat`, `amax`,
-`up`, `lo`; `branch.Hess`, the second-order dual numbers), and `hopf.py`. Every float input (centres, tangents,
-eigenvectors, the inverse matrices `C`, `A_fin`, the weights `eta`, radii, piece boundaries) is an exact number chosen
-by untrusted code; its quality only decides whether an inequality holds.
+`up`, `lo`; `branch.Hess`, the second-order dual numbers; `branch.obj_from_record`, `branch.point_on_branch`,
+`branch.validate_logs`, `branch.centre_from_record`, `branch.centre_digest`), and `hopf.py`. Part C and Part S also use
+results of `branch.py` and `stability.py` as recorded in their logs (the G_Ks branch pieces and the K = 32 point proofs
+with Stage S, `fourier/data/branch/`); those are theorems of that pipeline (`results/fourier-branch-gks.json`,
+reviewed in `reviews/rec2-branch-review-2026-10-02.md` for the part covered then), used here as stated there. Every
+float input (centres, tangents, eigenvectors, the inverse matrices `C`, `A_fin`, the weights `eta`, radii, piece
+boundaries) is an exact number chosen by untrusted code; its quality only decides whether an inequality holds.
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -65,7 +69,9 @@ depend continuously on `t`, and at `t = 0` exactly `k` of them (diagonal entries
 ### Lemma A1 (proved; mean value form of the Jacobian along the equilibrium branch)
 
 Let `G = [a, b]`, `g_c = (a + b)/2`, `delta = (b - a)/2`, and suppose Lemma K gives, for every `g in G`, exactly one
-equilibrium `x_e(g)` in a polydisc `X_G`, and for `g = g_c` one in a polydisc `X_c`. Then `x_e` is real analytic on
+equilibrium `x_e(g)` in a polydisc `X_G`, and for `g = g_c` one in a polydisc `X_c` with `X_c` contained in `X_G` (the
+program builds both about the same centre and checks the radii, `jacobian_family`; then the zero in `X_c` is a zero of
+`f(.; g_c)` in `X_G`, hence it is `x_e(g_c)`). Then `x_e` is real analytic on
 `G` (implicit function theorem: `D_z f(x_e(g); g)` is invertible by Lemma K's proof), `x_e'(g) = -A(g)^-1 f1(x_e(g))`
 with `A(g) = D_z f(x_e(g); g)`, and for every `g in G`
 
@@ -107,38 +113,57 @@ MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
 
 ### Theorem A (computer-assisted; `hopf.theorem_A`, record `fourier/data/hopf/theoremA.json`)
 
-Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). Then:
+Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). The program covers `W` by adjacent
+closed intervals with exact end points (record: `cover_left`, `G_H`, `cover_right`). For an interval `G` of the cover
+write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
+`A_G(g) = D_z f(x_G(g); g)`. Then:
 
-(a) For every `g in W` the cell has an equilibrium `x_e(g)` (in the polydiscs of the record; real analytic in `g`), and
-the spectrum of `A(g) = D_z f(x_e(g); g)` consists of a simple eigenvalue `lambda(g)` with `Im lambda(g) > 0`, its
-conjugate, and 16 eigenvalues with real part at most `-4.69e-5` (the record's `others_max_re_upper`).
+(a) For every interval `G` and every `g in G`, `x_G(g)` exists, is real, and is real analytic in `g` on `G`; the
+spectrum of `A_G(g)` consists of a simple eigenvalue `lambda_G(g)` with `Im lambda_G(g) > 0`, its conjugate, and 16
+eigenvalues with real part at most the record's `others_max_re_upper` (about `-4.69e-5`).
 
-(b) There is exactly one `g_H in W` at which `A(g)` has an eigenvalue on the imaginary axis; `g_H` lies in the
-interval `G_H` of width `2e-13` given in the record, and there `lambda(g_H) = i omega_H` with `omega_H` in the record's
-ball (about `0.11934140178`). `Re lambda(g) > 0` for `g in W`, `g < g_H`, and `< 0` for `g > g_H`.
+(b) `Re lambda_G(g) > 0` on every interval left of `G_H`, `< 0` on every interval right of `G_H`. `G_H` has width
+`2e-13`; on it `d Re lambda / dg` lies in the record's ball (about `-5.5769`), in particular `< 0`.
 
-(c) Transversality: `d Re lambda / dg (g_H)` lies in the record's ball (about `-5.5769`), in particular `< 0`.
+(c) *Consistency near `G_H`.* On the interval `J` of Corollary B(a) (it contains `G_H` and about 3e-7 of `W` around
+it), all intervals of the cover that meet `J` have their equilibrium polydiscs (recorded under `polydisc` and
+`polydisc_GH`) inside one polydisc `P` in which Lemma K gives exactly one equilibrium `x_e(g)` for every `g in J`. So on
+`J` all the `x_G` are one real analytic branch `x_e`, and the `lambda_G` are one simple eigenvalue `lambda(g)` of
+`A(g) = D_z f(x_e(g); g)`.
 
-(d) `l1 < 0` at `(x_e(g_H), g_H)`: the record's enclosure of `l1` (about `-22.4879` in physical units with
+(d) There is exactly one `g_H` in `J` (in fact in `G_H`) at which `A(g)` has an eigenvalue on the imaginary axis; there
+`lambda(g_H) = i omega_H` with `omega_H` in the record's ball (about `0.11934140178`), and `Re lambda(g) > 0` for
+`g in J`, `g < g_H`, `< 0` for `g > g_H`. More generally, for every interval `G` of the cover other than `G_H` and every
+`g in G`, `A_G(g)` has no eigenvalue on the imaginary axis.
+
+(e) `l1 < 0` at `(x_e(g_H), g_H)`: the record's enclosure of `l1` (about `-22.4879` in physical units with
 `<q, q> = 1`; `omega_H l1` is about `-2.6837`, Erhardt's `-2.6838`).
 
-*Proof.* The program covers `W` by adjacent closed intervals (left of `G_H`, `G_H`, right of `G_H`; record:
-`cover_left`, `cover_right`). On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the
-midpoint), Lemma A1 a ball matrix containing `A(g)` for every `g in G`; with `S` the float eigenvector matrix of the
-midpoint of `A_c` (unit columns), the Gershgorin discs (Lemma G) of the pair (`D1` with `Im > 0` and `D2`) are disjoint
-from each other and from the 16 other discs, and those lie in `Re < 0` (right ends recorded); Lemma K for the eigenpair
-gives a ball `L` containing an eigenvalue of `A(g)` for every `g in G`, and `L` is disjoint from every disc but `D1`, so
-the eigenvalue in `L` is the eigenvalue in `D1`, `lambda(g)`, which is simple (Lemma G(b): `D1` holds exactly one), and
-its conjugate is the one in `D2`. This is (a) on `G`. On the intervals left of `G_H` the program certifies
-`Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record). So for `g in W \ G_H` no eigenvalue is on the
-imaginary axis. On `G_H`, `lambda` is analytic (simple eigenvalue of an analytic family) and Lemma A2, with `p`, `q`,
-`A'` enclosed over `G_H`, gives `Re lambda' < 0` on `G_H`; the end points of `G_H` are end points of the adjacent
-intervals, where `Re lambda` is `> 0` (left) and `< 0` (right). So `Re lambda` has exactly one zero `g_H` in `G_H`,
-which is (b); `omega_H = Im lambda(g_H)` lies in `Im L` of `G_H`, and (c) is the enclosure of `Re lambda'` on `G_H`.
-(d): Lemma A3 evaluated with `x_e(g_H)` in the equilibrium polydisc of `G_H`, `g_H in G_H`, `A(g_H)` in the ball of
-`G_H`, `q`, `p` the eigenvector enclosures (right one normalized `<q, q> = 1` in physical units, left one by
-`p_l^T q = 1`), `omega` in `Im L`; every quantity of the formula is evaluated in ball arithmetic on balls containing
-the true values at `g_H`, so the result contains `l1`. QED.
+*Proof.* (a) On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the midpoint, inside `X_G`),
+Lemma A1 a ball matrix containing `A_G(g)` for every `g in G`; with `S` the float eigenvector matrix of the midpoint of
+`A_c` (unit columns), the Gershgorin discs (Lemma G) of the pair (`D1` with `Im > 0` and `D2`) are disjoint from each
+other and from the 16 other discs, and those lie in `Re < 0` (right ends recorded); Lemma K for the eigenpair gives a
+ball `L` containing an eigenvalue of `A_G(g)` for every `g in G`, and `L` is disjoint from every disc but `D1`, so the
+eigenvalue in `L` is the eigenvalue in `D1`, `lambda_G(g)`, which is simple (Lemma G(b): `D1` holds exactly one), and
+its conjugate is the one in `D2`. Realness of `x_G`: the polydisc is invariant under conjugation and `f(conj z; g) =
+conj f(z; g)` for real `g`, so the unique zero is real. (b) On the intervals left of `G_H` the program certifies
+`Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record); on `G_H`, Lemma A2 with `p`, `q`, `A'` enclosed over
+`G_H` gives the ball for `Re lambda'`. (c) is checked by `identification_at_eps0` (box inclusions of the recorded
+polydiscs in `P`, and Lemma K on `P` over `J`): for `g in J` and an interval `G` containing `g`, `x_G(g)` lies in `X_G`,
+hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The eigenvalue in `D1` of an interval and in `D1'` of an
+adjacent interval are, at the shared end point, eigenvalues with positive imaginary part of the same matrix that are
+not among the 16 eigenvalues with negative real part, so they are equal (if both intervals meet `J`). (d) For `g` in an
+interval `G != G_H`, `Re lambda_G(g) != 0` and the other eigenvalues have negative real part, so no eigenvalue is on the
+axis. On `G_H`, `lambda` is analytic (simple eigenvalue of an analytic family), `Re lambda' < 0`, and by (c) the end
+points of `G_H` are end points of the adjacent intervals with the same `lambda`, where `Re lambda` is `> 0` (left) and
+`< 0` (right). So `Re lambda` has exactly one zero `g_H` in `G_H`, it is the only `g in J` with an eigenvalue on the
+axis, and `omega_H = Im lambda(g_H)` lies in `Im L` of `G_H`. (e): Lemma A3 evaluated with `x_e(g_H)` in the
+equilibrium polydisc of `G_H`, `g_H in G_H`, `A(g_H)` in the ball of `G_H`, `q`, `p` the eigenvector enclosures (right
+one normalized `<q, q> = 1` in physical units, left one by `p_l^T q = 1`), `omega` in `Im L`; every quantity of the
+formula is evaluated in ball arithmetic on balls containing the true values at `g_H`, so the result contains `l1`. QED.
+
+(Before the review of 2026-10-02 the record did not contain the polydiscs and the program did not check `X_c` in
+`X_G`; statement (c) was then implicit. See the review file.)
 
 ### Cited theorem (Andronov-Hopf; Kuznetsov, Scholarpedia 1(10):1858, as stated in papers/hh-dynamics, Theorem thm:kuz)
 
