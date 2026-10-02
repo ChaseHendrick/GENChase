@@ -66,16 +66,26 @@ affine data V(d), Vi(d), Lambda(d) and the polynomial bounds of Lemma 10.3. Ever
 search, the distances and count, the couplings and (SC), is the same code.
 
 Group units (section "Group units" below; LEMMAS-stability.md section 11). prove_group_uniform certifies a whole group of
-branch pieces (one interval in g, about 11 pieces wide) in one certificate: the orbit is located about a QUADRATIC path
+branch pieces (one interval in g, about 12 pieces wide) in one certificate: the orbit is located about a QUADRATIC path
 xbar + d xbar_1 + (d^2/2) xbar_2 by a Newton-Kantorovich step about the moving point of the path (Lemma 11.1, with Z1
 bounded along the path to second order, Lemma 11.2), identified with the branch orbit through every piece's uniqueness
 ball (Lemma 11.3), and the Hill coefficients carry an explicit d^2 term (Lemma 11.4); the window keeps the affine
-comparison operator (Theorem 11.5). The jets along the path come from a truncated Taylor arithmetic (Jet, DJet).
+comparison operator (Lemma 11.5), and Theorem 11.6 is the conclusion on the unit. The jets along the path come from a
+truncated Taylor arithmetic (Jet, DJet; Lemma 11.0').
 A unit may also be a run of consecutive pieces of a group (part = (i0, i1), label G<gid>[i0:i1]); section 11 is
 stated for any such run, and the whole group is the run of all its pieces.
-Driver: run_groups (--groups) tries the group unit of every group with an uncovered piece; when a whole-group unit
-fails it tries the two halves of the group, and a half that fails falls back to piece units. Units already in the log (piece units) stay valid; collect() takes each piece's
-coverage from a group unit or a piece unit and writes results/fourier-branch-stability-uniform.json.
+
+Driver and record. Every unit record carries the SHA-256 of this file and of the program files it imports, taken when
+the process imported them (PROGRAM_SHA256, SOURCES_SHA256; worker processes are forked after import), and the settings
+it used. Units are appended to the log LOG (stability_uniform_K12_final.jsonl); the earlier log LOG_LEGACY
+(stability_uniform_K12.jsonl, units of earlier versions of this file, some without a program hash) is kept as history
+and is read by nothing here. run_groups (--groups) tries the group unit of every group with a piece not yet covered
+by a unit of THIS program; when a whole-group unit fails it tries the two halves of the group, and a half that fails
+falls back to piece units (run, --run). collect() (--collect) copies the complete lines of the branch logs and of LOG,
+validates and hashes the copies together, checks every piece it claims against the Theorem B record
+results/fourier-branch-gks.json (same label, g range, centre, centre digest, weights and r_uniqueness, inside the
+record's connected range) and against the unit that covers it (centre digest, g range, r_uniqueness used), uses only
+units made by this program, and writes results/fourier-branch-stability-uniform.json.
 
 Trusted: python-flint 0.9.0 (Arb); fourier/arbmodel.py, tp06_18d_arb.py, fourier_eval.py (Lemmas 1-3); branch.py
 (Theorem B: piece_blocks, assemble, HessBound, Hess); the imported helpers of stability.py and existence.py; this file.
@@ -86,7 +96,9 @@ import json
 import math
 import os
 import platform
+import shutil
 import sys
+import tempfile
 import time
 from fractions import Fraction
 
@@ -117,13 +129,25 @@ DIM = 18
 IV = 0
 RESULTS = os.path.join(ROOT, "results")
 DATA = br.DATA
-LOG = os.path.join(DATA, "stability_uniform_K{K}.jsonl")
+# The log of the units used by collect(): written by the final rerun of every unit with one version of this file.
+LOG = os.path.join(DATA, "stability_uniform_K{K}_final.jsonl")
+# History only (units of earlier versions of this file, three of them without a program hash): read by nothing here.
+LOG_LEGACY = os.path.join(DATA, "stability_uniform_K{K}.jsonl")
 up, lo, amax, bound_rec = ex.up, ex.lo, ex.amax, ex.bound_rec
 QUIET = lambda *a, **k: None  # noqa: E731
-# the hash of this file AS IMPORTED (worker processes are forked after import), so that a record never carries the hash
-# of a later edit of the file than the code that computed it
+# The program files (this file first) and the documents that state what they prove (hashed in the record, not run).
+SOURCES = ["fourier/branch_stability.py", "fourier/branch.py", "fourier/stability.py", "fourier/existence.py",
+           "fourier/centre.py", "fourier/arbmodel.py", "fourier/fourier_eval.py", "fourier/tp06_18d_arb.py",
+           "model/tp06_18d.py", "model/scales.txt"]
+DOCUMENTS = ["fourier/LEMMAS-stability.md", "fourier/test_branch_stability.py"]
+# The hashes of this file and of the program files AS IMPORTED (the modules above are imported before this line, and
+# worker processes are forked after import), so that a unit record never carries the hash of a later edit than the code
+# that computed it. A unit is used by collect() only if both equal those of the process that collects.
 with open(os.path.abspath(__file__), "rb") as _fh:
     PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
+SOURCES_SHA256 = {_p: br.sha256(os.path.join(ROOT, _p)) for _p in SOURCES}
+if SOURCES_SHA256["fourier/branch_stability.py"] != PROGRAM_SHA256:
+    raise RuntimeError("branch_stability.py changed while it was being imported")
 
 
 class ProofFailure(RuntimeError):
@@ -933,8 +957,9 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     mark("certificate")
     out = dict(
         type="unit", label=label, g=[rec["g_lo"], rec["g_hi"]], g_centre=rec["centre_g"],
-        centre_sha256=rec["centre_sha256"], uniform=True, ok=True, settings=st,
-        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        centre_sha256=rec["centre_sha256"], eta=rec["eta"], rho0=rec["settings"]["rho0"], uniform=True, ok=True,
+        settings=st, program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
+        threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(theorem_B_bounds_reproduced=same, Z1=asm["Z1"], Z2_this_cover=asm["Z2"],
@@ -964,12 +989,13 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
 # =================================================================================================================
 # A piece unit (prove_piece_uniform) locates x*(g) to second order about an AFFINE centre and treats everything of
 # second order in d = g - g_c as a ball; that ball grows like h^2 and is already about a third of the (SC) margin on a
-# piece (half-width 2.6e-7). A group is about 11 pieces wide, so a group unit goes one order further: the orbit is
+# piece (half-width 2.6e-7). A group is about 12 pieces wide, so a group unit goes one order further: the orbit is
 # located about a QUADRATIC centre xtilde(g) = xbar + d xbar_1 + (d^2 / 2) xbar_2 (third-order remainder), the
 # Newton-Kantorovich step is taken about the moving centre xtilde(g) itself (Lemma 11.1: Z1 is bounded along the
-# path, not through Z2 times the distance travelled, which would be 500 x 3e-3 > 1), and the Hill coefficients carry an
-# explicit d^2 term (Lemma 11.3). The comparison operator of the window stays affine in d (Lemma 10.3, with the
-# d^2 window H2 added to the expansion). Everything new is evaluated with the truncated Taylor arithmetic below.
+# path, Lemma 11.2, not through Z2 times the distance travelled, as Lemma 10.1 does; that product is given in
+# LEMMAS-stability.md 11.8, item 2), and the Hill coefficients carry an explicit d^2 term (Lemma 11.4). The comparison
+# operator of the window stays affine in d (Lemma 11.5: Lemma 10.3 with the d^2 window H2 added to the expansion).
+# Everything new is evaluated with the truncated Taylor arithmetic below (Lemma 11.0').
 
 def _const(o):
     """An exact or ball constant as acb (floats and bools are refused, as in branch.Hess)."""
@@ -984,8 +1010,11 @@ def _const(o):
 
 class Jet:
     """c[0] + c[1] t + ... + c[P] t^P (truncated at degree P), t = xi - xi0, acb coefficients. Each operation applies
-    the exact recurrence for the Taylor coefficients of the composite in ball arithmetic, so with a ball base point xi0
-    every coefficient encloses the corresponding Taylor coefficient of the composite at EVERY point of that ball.
+    the exact recurrence for the Taylor coefficients of the composite in ball arithmetic (inclusion monotone), so if the
+    input coefficients enclose the Taylor coefficients of the inputs at xi0 for every xi0 in a set X (here X = [-h, h],
+    or the single point 0), every output coefficient encloses the corresponding Taylor coefficient of the composite at
+    every xi0 in X (Lemma 11.0'). The input balls are built from the ball D (_dball, contains [-h, h]) and D2
+    (_sq_ball, contains [0, h^2]); they enclose the inputs' coefficients for xi0 in [-h, h], which is all that is used.
     Every coefficient is checked finite (branch._chk); a reciprocal needs a finite 1 / c[0] (c[0] free of 0), log and
     sqrt need Re c[0] > 0 certified; so a finite result certifies that every intermediate is holomorphic on a
     neighbourhood of the input box (the contract of fourier_eval, made strict as in branch.Hess)."""
@@ -1224,8 +1253,10 @@ def _sq_ball(h):
 
 
 def _path_coeffs(zz, i, D, D2, P):
-    """Taylor coefficients at xi0 in D of xi -> z_i + xi z1_i + (xi^2 / 2) z2_i, for every xi0 in D (D2 contains the
-    squares of the points of D): [z + D z1 + (D2 / 2) z2, z1 + D z2, z2 / 2, 0, ...], truncated at degree P."""
+    """Balls enclosing the Taylor coefficients at xi0 of xi -> z_i + xi z1_i + (xi^2 / 2) z2_i,
+    [z + D z1 + (D2 / 2) z2, z1 + D z2, z2 / 2, 0, ...] truncated at degree P, for every xi0 with xi0 in D and xi0^2 in
+    D2. With D = _dball(h) and D2 = _sq_ball(h) that holds for every xi0 in [-h, h] (D contains [-h, h], D2 contains
+    [0, h^2]); D may be slightly wider than [-h, h] (mag rounding of its radius), and its extra rim is not used."""
     z, z1, z2 = am.to_ball(zz[i]), am.to_ball(zz[DIM + i]), am.to_ball(zz[2 * DIM + i])
     c = [z + D * z1 + D2 * z2 / 2, z1 + D * z2, z2 / 2] + [acb(0)] * max(0, P - 2)
     return c[:P + 1]
@@ -1233,7 +1264,8 @@ def _path_coeffs(zz, i, D, D2, P):
 
 def gjet_flat(zz, prm, D, D2, P, ps, prec=53):
     """Black box on the 54 inputs (phibar, phi_1, phi_2)(theta): the Taylor coefficients of order p in ps (p <= P) of
-    G_k(xi) = f_k(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in D, as a flat list
+    G_k(xi) = f_k(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in [-h, h] (D = _dball(h),
+    D2 = _sq_ball(h); see _path_coeffs), as a flat list
     [coefficient p of G_k for p in ps for k]. (With D = 0 and P = 3: the derivatives of order 1, 2, 3 at 0 divided by
     1!, 2!, 3!; with D the box [-h, h] and P = 4: the fourth derivative divided by 4! at every point of the box.)"""
     with am.precision(prec):
@@ -1252,7 +1284,7 @@ def gjet_flat(zz, prm, D, D2, P, ps, prec=53):
 
 def djet_flat(zz, prm, D, D2, P, ps, prec=53):
     """Black box: the entries (row-major, k then l) of the Taylor coefficients of order p in ps of
-    xi -> (Df)_{kl}(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point in D, as
+    xi -> (Df)_{kl}(phibar + xi phi_1 + (xi^2/2) phi_2; g_c + xi) at every base point xi0 in [-h, h] (as gjet_flat), as
     [coefficient p of (Df)_{kl} for p in ps for k for l]. (With D = 0, p = 1: J1(theta; 0); with D the box, p = 1 and
     2: J1(theta; xi) and J2(theta; xi) / 2 for every xi in [-h, h].)"""
     with am.precision(prec):
@@ -1348,6 +1380,9 @@ def group_data(gid, K=12, part=None):
         plist = plist[i0:i1]
         glo, ghi = Fraction(plist[0]["g_lo"]), Fraction(plist[-1]["g_hi"])
         grp = dict(grp, g_lo=br._dstr(glo), g_hi=br._dstr(ghi))
+    for r in plist:                     # every piece P_i lies in I (Lemma 11.3 uses x0(g), defined for g in I)
+        if not (glo <= Fraction(r["g_lo"]) < Fraction(r["g_hi"]) <= ghi):
+            raise ValueError(f"group {gid}: piece {r['label']} is not inside the unit's interval")
     mid = (glo + ghi) / 2
     crec = min(plist, key=lambda r: (abs(Fraction(r["centre_g"]) - mid), Fraction(r["centre_g"])))
     om, A = br.centre_from_record(centres[br._dstr(Fraction(crec["centre_g"]))])
@@ -1359,14 +1394,16 @@ def group_data(gid, K=12, part=None):
 
 
 # -- Lemma 11.2: the moving-centre Z1 -----------------------------------------------------------------------------
-def operator_blocks(bl, Jm, SJm, om_d, Acol):
+def operator_blocks(bl, Jm, SJm, om_d, Acol, parts=False):
     """Block bounds B[c][c'] (exact upper bounds) of ||A E||_block for every operator E of the form
     (E y)_ph = 0, (E y)_m = i m om_d y_{a,m} + i m Acol_m y_om - [Jm * y_a]_m, with om_d a real ball, Acol coefficient
     balls with modes |m| <= K, and Jm a convolution whose coefficients lie in the balls Jm[n] for |n| <= K' and obey
-    |Jm_n| <= SJm e^{-rho |n|} for every n (Lemma 11.2(a): E = D'(0) with (J1pt, om_1, abar_1), and E = E2 with
-    ([C2box], om_2 / 2, abar_2 / 2)). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin E_fin|, finite
-    rows x tail columns (convolution only; strip majorant), tail rows Abar0 sum_n |Jm_n| nu^|n| + Abar0 SJm tailK +
-    |om_d| Abar1 (Acol has no entries beyond K)."""
+    |Jm_n| <= SJm e^{-rho |n|} for every n (Lemma 11.2: B' for E = D'(0) with (J1pt, om_1, abar_1), and B'' for E = E(d)
+    with ([C2box], om_2 / 2, abar_2 / 2)). Three parts as B1g of branch.piece_blocks: finite x finite |A_fin E_fin|,
+    finite rows x tail columns (convolution only; strip majorant), tail rows Abar0 sum_n |Jm_n| nu^|n| + Abar0 SJm tailK
+    + |om_d| Abar1 (Acol has no entries beyond K). With parts=True also returns the three parts
+    dict(ff=B_ff, ft=B_ft, tail=T) (T indexed by the state components), for the tests that compare each part with an
+    independent evaluation."""
     st = bl["settings"]
     K, Kp = bl["K"], bl["_Kp"]
     lay = ct.Layout(K)
@@ -1449,6 +1486,8 @@ def operator_blocks(bl, Jm, SJm, om_d, Acol):
                 if c >= 1 and cp >= 1:
                     b = up(b + T[c - 1][cp - 1])
                 B[c][cp] = b
+        if parts:
+            return B, dict(ff=B_ff, ft=B_ft, tail=T)
         return B
     finally:
         ctx.prec = old
@@ -1533,8 +1572,9 @@ def lemma_11_1(Yparts, hU, ETA, Z1G, Z2, r_star, margin, mut=()):
 def identify(plist, centres, crec, gc, path, ETA, rho_x, nu, K, r_hi_scale=None):
     """Lemma 11.3 for every piece of the group: sup_{g in P_i} ||xtilde(g) - xbar_i||_{eta(i)} + rho max_c eta_c / eta_c(i)
     <= r_hi(i), the sup bounded by evaluating the path's coefficients with d an Arb ball containing the piece's d range
-    (the union of the balls of its two exact ends). Returns the per-piece records or raises ProofFailure. r_hi_scale
-    (tests only) multiplies every r_hi."""
+    (the union of the balls of its two exact ends). r_hi(i) is the piece's logged r_uniqueness (exact hex), recorded
+    with the piece's g range and centre digest so that collect() can check them against the branch record. Returns the
+    per-piece records or raises ProofFailure. r_hi_scale (tests only) multiplies every r_hi."""
     om, A, om1, A1, om2, A2 = path
     out = []
     old = ctx.prec
@@ -1556,7 +1596,9 @@ def identify(plist, centres, crec, gc, path, ETA, rho_x, nu, K, r_hi_scale=None)
                 conv = amax(conv, up(ea / eb))
             lhs = up(dist + rho_x * conv)
             ok = bool(lhs <= r_hi)
-            out.append(dict(label=r["label"], lhs=float(lhs), r_uniqueness=float(r_hi), ok=ok))
+            out.append(dict(label=r["label"], g=[r["g_lo"], r["g_hi"]], centre_sha256=r["centre_sha256"],
+                            lhs=float(lhs), lhs_bound=bound_rec(lhs), r_uniqueness=float(r_hi),
+                            r_uniqueness_logged=r["r_uniqueness"] if r_hi_scale is None else None, ok=ok))
             if not ok:
                 raise ProofFailure(f"identification with piece {r['label']} fails (uniqueness): "
                                    f"{float(lhs):.3e} > r_hi = {float(r_hi):.3e}")
@@ -1573,7 +1615,7 @@ GROUP_DEFAULTS = dict(
 
 
 def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mutate=(), _widen=1, part=None):
-    """Theorem 11.5 on the whole group gid (section 11 of the lemmas), or, with part = (i0, i1), on the run of its
+    """Theorem 11.6 on the whole group gid (section 11 of the lemmas), or, with part = (i0, i1), on the run of its
     consecutive pieces i0 .. i1 - 1 (sorted by g_lo; the unit's interval is then the union of those pieces). _widen
     (tests only) multiplies h (and the d-range of every enclosure) by an integer factor: the certificate must then be
     refused. _mutate (tests only): 'drop_third_order' drops h^3 Y3 + h^4 Y4 from Y'; 'drop_moving_centre' drops
@@ -1670,13 +1712,18 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     old = ctx.prec
     ctx.prec = int(bst["prec_g"])
     try:
-        Bp = operator_blocks(bl, J1pt, SJ1, acb(om1), A1)                          # D'(0)
-        Bpp = operator_blocks(bl, C2box, SC2, acb(om2) / 2, [[v / 2 for v in row] for row in A2])   # E2 (ball)
+        Bp, Bp_parts = operator_blocks(bl, J1pt, SJ1, acb(om1), A1, parts=True)              # D'(0)
+        Bpp, Bpp_parts = operator_blocks(bl, C2box, SC2, acb(om2) / 2, [[v / 2 for v in row] for row in A2],
+                                         parts=True)                                       # E(d) (ball)
         Z1c = _z1_rows(bl["B1"], None, None, hU, ETA)
         Z1G = Z1c if "drop_moving_centre" in mut else _z1_rows(bl["B1"], Bp, Bpp, hU, ETA)
         Z2, Pfac = _z2(bl, ETA, r_star, hb)
     finally:
         ctx.prec = old
+    # A is injective because Z1_point < 1 (E.2); Z1_G >= Z1_point term by term (B', B'' >= 0) and lemma_11_1 needs
+    # Z1_G < 1, so this check is implied, but it is the hypothesis section 11.0 states, so it is checked as stated.
+    if not Z1c < 1:
+        raise ProofFailure(f"Z1 at the point g_c = {float(Z1c):.4f} is not < 1 (A not shown injective)")
     mark("Z1, Z2")
     # 6. Lemma 11.1: Y' and rho
     old = ctx.prec
@@ -1718,7 +1765,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
     # 7. identification with the branch, piece by piece (x*(g) of Theorem B is the zero found, for g in each piece)
     ident = identify(plist, centres, crec, gc, (om, A, om1, A1, om2, A2), ETA, rho_x, bl["nu"], K)
     mark("identification")
-    # 8. Lemma 11.3 data: eps_W from this unit's Hessian cover, the d^0, d^1, d^2 Hill coefficients
+    # 8. Lemma 11.4 data: eps_W from this unit's Hessian cover, the d^0, d^1, d^2 Hill coefficients
     t = [up(ETA[1 + j] * rho_x) for j in range(DIM)]
     for j in range(DIM):
         if not t[j] < hb.R[j]:
@@ -1763,8 +1810,10 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
         centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
         pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
+        piece_g={r["label"]: [r["g_lo"], r["g_hi"]] for r in plist}, eta=crec["eta"], rho0=crec["settings"]["rho0"],
         half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
-        program_sha256=PROGRAM_SHA256, threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
+        program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
+        threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
         T_lo=cert["T_lo"],
         existence=dict(Z1_point=bound_rec(Z1c), Z1_path=bound_rec(Z1G), Z2=bound_rec(Z2), polydisc_P=float(Pfac),
@@ -1787,8 +1836,8 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         out["_internals"] = cert.get("internals")
         out["_ctx"] = dict(bl=bl, om=om, A=A, om1=om1, A1=A1, om2=om2, A2=A2, ETA=ETA, U=U, settings=st, grp=grp,
                            plist=plist, crec=crec, rho_x=rho_x, hF=hF, hU=hU, Z1c=Z1c, Z1G=Z1G, Z2=Z2, Yp=Yp,
-                           r_star=r_star, hb=hb, Yparts=[bl["Y0p"], Y1, Y2, Y3, Y4], Bp=Bp, Bpp=Bpp, centres=centres,
-                           gc=gc)
+                           r_star=r_star, hb=hb, Yparts=[bl["Y0p"], Y1, Y2, Y3, Y4], Bp=Bp, Bpp=Bpp,
+                           Bp_parts=Bp_parts, Bpp_parts=Bpp_parts, centres=centres, gc=gc)
     if mut or _widen != 1:
         out["MUTATED"] = sorted(mut) + ([f"widen x{_widen}"] if _widen != 1 else [])
     return out

@@ -216,9 +216,10 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
     --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
-* **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: computed; one in-project
-  adversarial reading (`reviews/hopf-bridge-review-2026-10-02.md`: no UNSOUND finding; its fixes are in
-  LEMMAS-hopf.md); no outside review** (`fourier/hopf.py`,
+* **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: computed; in-project
+  adversarial review recorded, fixes applied, fix check pending; no outside review** (the reading,
+  `reviews/hopf-bridge-review-2026-10-02.md`, is an in-project reading by an AI agent session with no UNSOUND finding;
+  the fixes made for it are listed at its end and have not yet been checked by a second reading; `fourier/hopf.py`,
   proofs in `fourier/LEMMAS-hopf.md`, tests `fourier/test_hopf.py`, record `results/fourier-hopf.json`, logs in
   `fourier/data/hopf/`).
   - Theorem A, the Hopf point (computer-assisted). The window W = [0.02789, 0.02792] is covered by 516 adjacent
@@ -241,7 +242,8 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     G_Ks = g*(eps), with minimal period in [52.6486, 52.9414] ms. At eps = 0 it is the Hopf point of Theorem A, shown
     in Arb by one polydisc that contains the eps = 0 zero and every Theorem A polydisc near g_H. G_Ks is an unknown
     of the problem: each piece encloses g*(eps), and g*(0.12854) lies in [0.0277783015906886, 0.0277783239122673].
-    Numerically, though not as a bound, g_H - g*(eps) is about 7.7e-3 eps^2, the square-root law. Monotonicity of g*
+    Numerically, though not as a bound, g_H - g*(eps) is about 7.9e-3 eps^2 (7.84e-3 to 7.93e-3 over the 68 pieces),
+    the square-root law. Monotonicity of g*
     in eps is not certified. On every piece Z1 <= 0.251 and the contraction factor is at most 0.974; the smallest
     gluing slack is 3.0e-10.
   - Theorem C, glued to the G_Ks branch (computer-assisted). A K = 32 point proof at G_Ks = 0.02778 (with Stage S)
@@ -257,12 +259,15 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     0.9979 (delta about 4.0e-5 per ms). Each is identified with the curve by ball inclusion. Stability is NOT proved
     uniformly along the bridge: the multiplier near 1 tends to 1 as eps -> 0, and no uniform bound that resolves it is
     attempted (LEMMAS-hopf.md, Part S).
-  - Cost: Theorem A 234 s; the 68 pieces 6,597 s, 58 to 145 s each on one core; the point proof at 0.02778
-    203 s; the gluing checks 14 s.
+  - Cost: Theorem A 223 s (rerun of 2026-10-02 with the fixed program); the 68 pieces 6,597 s, 58 to 145 s each on
+    one core; the point proof at 0.02778 203 s; the gluing checks 14 s.
   - Run (each step resumable, logs append-only): `cd fourier && nohup nice -n 10 timeout 3000 python3 hopf.py
     --theorem-a`; `nohup nice -n 10 timeout 3600 python3 hopf.py --run --K 12 --M 64 --g-stop <g> --budget 3300`;
-    `python3 hopf.py --gks-points 0.02778`; `python3 hopf.py --bridge`; `python3 hopf.py --collect`; tests:
-    `nice timeout 3000 python3 test_hopf.py` (about 25 minutes; `--fast` about 8).
+    `python3 hopf.py --gks-points 0.02778`; `python3 hopf.py --bridge`; re-proof of every logged eps piece with the
+    current program (resumable, appends to `data/hopf/reprove.jsonl`): `nohup nice -n 10 timeout 3600 python3 hopf.py
+    --reprove-all --workers 3 --budget 3300`; `python3 hopf.py --collect` (reports under `pieces_reproved` which pieces
+    have a matching re-proof by the current program text); tests: `nice -n 10 timeout 2400 python3 test_hopf.py`
+    (modes in its header: `--fast`, full, `--rerun-theorem-a`).
 * **Every N >= 8 and the cable, existence (Stage E for every N), Fourier route: computed; awaiting adversarial review**
   (`fourier/alln.py`, `fourier/test_alln.py`, record `results/fourier-existence-alln.json`, logs in
   `fourier/data/alln/`). Nobody has yet given it a second reading.

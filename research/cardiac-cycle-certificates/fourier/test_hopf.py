@@ -1,7 +1,14 @@
 """Acceptance tests and negative controls for hopf.py (the Hopf gap). Each test can fail.
 
-Run (machine shared; about 20 minutes, --fast about 8):
-  PYTHONPATH=<python-flint 0.9.0> nice timeout 3000 python3 test_hopf.py [--fast]     (or pytest)
+Modes (run under nice with a timeout; the machine is shared):
+  --fast                 quick mode: everything below except the re-proofs of pieces 13, 30, 40, 62 and the last
+                         one, the piece-13 controls and the last piece's float checks (piece 0 is re-proved);
+  (no flag)              full mode: re-proves pieces 0, 13, 30, 40, 62 and the last one (about 100 s each);
+  --rerun-theorem-a      adds a rerun of hopf.theorem_A into a temporary directory (about 240 s) whose record must
+                         equal fourier/data/hopf/theoremA.json in every field but the run time.
+  PYTHONPATH=<python-flint 0.9.0> nice -n 10 timeout 2400 python3 test_hopf.py [--fast] [--rerun-theorem-a]
+  The re-proof of ALL logged pieces is not a test: `python3 hopf.py --reprove-all --workers W` writes
+  fourier/data/hopf/reprove.jsonl, and `hopf.py --collect` reports which pieces have a matching re-proof.
 
 Infrastructure
   * Jet (truncated Taylor series): exp, log, sqrt, reciprocal, integer powers against closed-form Taylor
@@ -12,24 +19,38 @@ Infrastructure
     signs); the mutated routines ('sign': +2 in the middle term; 'no2iw': (-A)^-1) must miss the known value.
 Theorem A
   * Lemma K refuses a polydisc that does not contain the equilibrium (centre shifted, radii kept).
-  * At G_H: the 16 other Gershgorin discs lie in Re < 0, d Re lambda / dg < 0, l1 < 0 (and omega l1 near Erhardt's
-    -2.6838). Negative controls: "l1 > 0" (the wrong sign assumed) is refused by the enclosure; the interval G_H shifted
-    by 1e-9 to the right does not contain the crossing (Re lambda < 0 at its left end, so the left-side sign
-    condition of the cover fails), and shifted to the left Re lambda > 0 at its right end; dlambda_dg told that the
-    critical disc is the conjugate's refuses the left eigenpair (it is identified with lambda only through D1).
+  * At G_H: the 16 other Gershgorin discs lie in Re < 0, d Re lambda / dg < 0, l1 < 0 (and omega l1 agrees with
+    Erhardt's -2.6838 to about four significant digits). The conjugate of the eigenvalue ball avoids every Gershgorin
+    disc but D2 (the check added to spectrum_on for GAP 1 of the 2026-10-02 review); the same test with D1 exempted
+    instead of D2 fails. Negative
+    controls: "l1 > 0" (the wrong sign assumed) is refused by the enclosure; the interval G_H shifted by 1e-9 to the
+    right does not contain the crossing (Re lambda < 0 at its left end, so the left-side sign condition of the cover
+    fails), and shifted to the left Re lambda > 0 at its right end; dlambda_dg told that the critical disc is the
+    conjugate's refuses the left eigenpair (it is identified with lambda only through D1).
+  * The record theoremA.json was written by the current hopf.py (its code_sha256), and its cover passes
+    hopf.check_theoremA_cover (adjacent intervals covering W with G_H between the sides, the recorded counts, the signs
+    of Re lambda, others_max_re < 0 and equal to the recorded upper bound, transversality, l1 < 0); negative controls:
+    a cover with one interval removed, with one sign flipped, or ending short of W is refused.
 Theorem B (needs the run data, fourier/data/hopf/)
-  * Pieces 0 (fast mode) or 0, 13, 30, 40, 62 and the last one (full mode) are recomputed from their stored centres,
-    weights and r_*, with their groups' covers rebuilt from the logged centres: the cover digests equal the logged
-    ones, and Y0, Z1, Z2, r_existence, r_uniqueness equal the logged exact values (pieces 0 to 30 were made before the
-    program logged its own hash, and the later runs logged hashes of earlier program texts; this ties a piece of each
-    run, K = 8 and K = 12, to the current program text).
+  * Pieces 0 (fast mode) or 0, 13, 30, 40, 62 and the last one (full mode) are re-proved by hopf.reprove_piece (the
+    function of `hopf.py --reprove-all`) from their stored centres, weights and r_*, with their groups' covers rebuilt
+    from the logged centres: the cover digests equal the logged ones, and Y0, Z1, Z2, the radii, p at the radii, the
+    contraction factor and the g and omega enclosures equal the logged exact values (pieces 0 to 30 were made before
+    the program logged its own hash, and the later runs logged hashes of earlier program texts; this ties a piece of
+    each run, K = 8 and K = 12, to the current program text). The comparison refuses a log line whose Y0 differs in
+    the last bit, and reprove_status counts a re-proof only for the current program hash and the current log line.
   * Negative controls: on piece 0, dropping the curve terms (delta Y1, delta^2 Y2 / 2, delta Zc) changes Y0 and Z1,
     dropping the Cauchy (third-derivative) terms changes Z2, and a piece reaching beyond its cover is refused; on piece
-    13, a tight piece, the parameter interval widened threefold about its centre must fail, and so must a centre
-    computed at a wrong eps (shifted by 1.5 piece widths). (On piece 0, which is far from tight, the threefold widening
-    is a valid proof; the controls were moved to piece 13 on 2026-10-02.)
-  * Float cross-checks: an independent float estimate of ||A d^2/dxi^2 F|| and of ||A d/dxi DF|| (float Galerkin
-    matrices, more nodes) lies below the rigorous Y2 and Zc and above a tenth of them.
+    13, a tight piece, the parameter interval widened threefold about its centre (cover rebuilt for it) must fail, and
+    so must a centre line computed at a wrong eps (e_hi + (e_hi - e_lo)/2, one piece width above the midpoint), each
+    with the message "radii polynomial not negative" (any other failure, such as a cover or domain error, fails the
+    control). (On piece 0, which is far from tight, both are valid proofs; the controls were moved to piece 13 and
+    the message check added on 2026-10-02.)
+  * Float cross-checks (piece 0 in both modes, the last piece in full mode; float Galerkin matrices with 192 nodes,
+    finite modes only): ||A d^2/dxi^2 F|| and ||A d/dxi DF|| lie below the rigorous Y2 and Zc and above a thirtieth of
+    them; ||A d/dxi F|| at e_c (central difference along the tangent) lies below the rigorous Y1; and a lower estimate
+    of Z2 (||A (DF(xbar + D) - DF(xbar))|| / r over random corner perturbations D of norm r = r_hi, then hill climbing)
+    lies below the rigorous Z2. These are sanity checks, not proofs.
   * Gluing: every consecutive pair of logged pieces re-glues in Arb; with r_hi replaced by r_lo, or with a piece glued
     to a non-adjacent one, the check fails.
 Corollary B(a) (needs theoremA.json)
@@ -40,10 +61,14 @@ Lemma D and the gluing (Part C)
     G_Ks shifted by 1e-5, a point radius of 1/64, a point centre that does not match its digest, an eps-branch cut
     before the point's eps: all refused.
   * If a gluing point is recorded: it is re-derived (on the G_Ks branch by branch.point_on_branch, on the eps-branch by
-    Lemma D); G_Ks pieces that do not contain its g are refused.
+    Lemma D). Two controls on the G_Ks side: (a) the containment guard refuses the two pieces adjacent to the glue
+    piece (they do not contain g); on those the ball inclusion alone would hold (found 2026-10-02), so the guard is
+    needed; (b) with the guard bypassed (a copy of the piece record widened to contain g), the ball inclusion itself
+    fails on the pieces three positions before and after the glue piece.
 The record (results/fourier-hopf.json)
   * Every stored source and data SHA-256 equals the file on disk; the piece count, eps range and Theorem A enclosures
-    are those of the logs; a one-byte change in pieces.jsonl changes its hash.
+    are those of the logs; the status is the agreed one; the Theorem A cover checks are recorded as passed; the
+    re-proof report equals hopf.reprove_status() now; a one-byte change in pieces.jsonl changes its hash.
 Sign and widening controls asked for in the brief: a sign-flipped l1 (the 'sign' mutation and "l1 > 0" refused), a
 perturbed equilibrium (the shifted Lemma K polydisc), a widened eps range (the threefold piece) all fail.
 """
@@ -67,6 +92,8 @@ import arbmodel as am  # noqa: E402
 import hopf as H  # noqa: E402
 
 FAST = "--fast" in sys.argv
+RERUN_A = "--rerun-theorem-a" in sys.argv
+STATUS = "computed; in-project adversarial review recorded, fixes applied, fix check pending"
 RESULTS = []
 
 
@@ -294,9 +321,23 @@ def test_theorem_A_core(fh):
     check("Theorem A at G_H: d Re lambda / dg < 0", dl.real < 0, f"{float(dl.real.mid()):.6f}")
     check("Theorem A at G_H: l1 < 0", L["l1"] < 0, f"l1 {float(L['l1'].mid()):.6f}, omega l1 "
           f"{float((L['l1'] * om).mid()):.6f}")
-    check("omega l1 agrees with Erhardt's -2.6838 to the printed digits",
-          abs(float((L["l1"] * om).mid()) + 2.6838) < 1e-4)
+    diff = abs(float((L["l1"] * om).mid()) + 2.6838)
+    check("omega l1 agrees with Erhardt's -2.6838 to about four significant digits (difference below 1e-4)",
+          diff < 1e-4, f"difference {diff:.2e}")
     check("negative control: the wrong sign l1 > 0 is refused by the enclosure", not (L["l1"] > 0))
+    # GAP 1 (review 2026-10-02): the conjugate eigenvalue ball is disjoint from every Gershgorin disc but D2, so the
+    # eigenvalue conj(lambda) (in some disc by Lemma G(a)) is the one in D2 (spectrum_on raises otherwise; re-evaluated
+    # here). Negative control: the same test with D1 exempted instead of D2 fails, since conj(L) meets D2.
+    lam = spH["lam"]
+    lc = acb(lam.real.mid(), lam.imag.mid())
+    lr = H.up((lam - lc).abs_upper())
+
+    def avoids_all_but(j):
+        return all(H._discs_disjoint((lc.conjugate(), lr), spH["discs"][i]) for i in range(H.DIM) if i != j)
+    check("Theorem A at G_H: the conjugate of the eigenvalue ball avoids every Gershgorin disc but D2",
+          avoids_all_but(spH["jc"]), f"inclusion in D2 (reported only): {spH['conj_ball_inside_D2']}")
+    check("negative control: the conjugate of the eigenvalue ball does not avoid D2 (exempting D1 instead fails)",
+          not avoids_all_but(spH["ic"]))
     # negative control: the left eigenpair must be identified with lambda through the Gershgorin disc D1; told that the
     # critical disc is D2 (the conjugate's), dlambda_dg must refuse (the left eigenvalue ball lies in D1)
     try:
@@ -316,6 +357,58 @@ def test_theorem_A_core(fh):
     return rec if os.path.exists(path) else None
 
 
+def test_theorem_A_cover():
+    """GAP 3 (review 2026-10-02): the structure of the recorded cover, and the record is the current program's."""
+    import copy
+    path = os.path.join(H.DATA, "theoremA.json")
+    if not os.path.exists(path):
+        check("theoremA.json present", False)
+        return
+    with open(path) as fh_:
+        rec = json.load(fh_)
+    check("theoremA.json was written by the current hopf.py (code_sha256)", rec.get("code_sha256") == H.CODE_SHA256,
+          f"record {str(rec.get('code_sha256'))[:12]}, program {H.CODE_SHA256[:12]}")
+    c = H.check_theoremA_cover(rec)
+    check("Theorem A cover: adjacent intervals cover W with G_H between the sides, recorded counts, Re lambda > 0 left "
+          "and < 0 right, others_max_re < 0 and equal to the recorded bound, transversality, l1 < 0, omega > 0",
+          c["ok"], f"{c['n_left']} + 1 + {c['n_right']} intervals, {c['n_breaks']} breaks, max others_max_re "
+          f"{c['others_max_re']:.6e}, G_H included: {c['others_include_gH']}")
+    gap = copy.deepcopy(rec)
+    gap["cover_left"].pop(len(gap["cover_left"]) // 2)
+    gap["n_intervals"]["left"] -= 1
+    c1 = H.check_theoremA_cover(gap)
+    check("negative control: the cover with one left interval removed is refused (a gap)",
+          c1["ok"] is False and c1["adjacent"] is False)
+    flip = copy.deepcopy(rec)
+    lo_, hi_ = flip["cover_right"][-1]["re_lam"]
+    flip["cover_right"][-1]["re_lam"] = [lo_, "1E-30"]
+    c2 = H.check_theoremA_cover(flip)
+    check("negative control: one right interval with Re lambda not certainly negative is refused",
+          c2["ok"] is False and c2["right_re_lambda_negative"] is False)
+    short = copy.deepcopy(rec)
+    last = max(short["cover_right"], key=lambda iv: Fraction(iv["a"]))
+    last["b"] = str((Fraction(last["a"]) + Fraction(last["b"])) / 2)
+    c3 = H.check_theoremA_cover(short)
+    check("negative control: a cover ending short of W is refused", c3["ok"] is False and c3["covers_W"] is False)
+
+
+def test_theorem_A_rerun():
+    """--rerun-theorem-a: theorem_A into a temporary directory reproduces theoremA.json (all fields but the time)."""
+    import tempfile
+    path = os.path.join(H.DATA, "theoremA.json")
+    with open(path) as fh_:
+        rec = json.load(fh_)
+    tmp = tempfile.mkdtemp(prefix="hopf-thA-")
+    t0 = time.time()
+    H.theorem_A(log=lambda s: None, data=tmp)
+    with open(os.path.join(tmp, "theoremA.json")) as fh_:
+        new = json.load(fh_)
+    keys = sorted(set(rec) | set(new))
+    diff = [k for k in keys if k != "seconds" and rec.get(k) != new.get(k)]
+    check("theorem_A rerun reproduces theoremA.json in every field but the run time", not diff,
+          f"differing fields {diff}, {time.time() - t0:.0f} s")
+
+
 # ------------------------------------------------------------------------------------------------ Theorem B
 def _logs():
     pieces = [r for r in H._read_jsonl(os.path.join(H.DATA, "pieces.jsonl")) if r.get("type") == "piece"]
@@ -323,95 +416,97 @@ def _logs():
     return pieces, covers
 
 
-def _rebuild_cover(crec):
-    cs = [H.Centre.from_record(c) for c in crec["centres"]]
-    pcs = [(C, Fraction(a), Fraction(b)) for C, (a, b, _) in zip(cs, crec["pieces"])]
-    return H.EpsCover(pcs, crec["T"], [crec["R"]] * H.DIM, crec["G_R"], rho2=crec["rho2"], max_evals=1500,
-                      log=lambda s: None)
+def _reprove(p, covers, lines):
+    """Re-prove a logged piece with hopf.reprove_piece (the function of `hopf.py --reprove-all`): its group's cover
+    rebuilt from the logged centres, its stored centre, weights and exact r_*, the current program text. Returns the
+    re-proof record and the objects (blocks, result, settings, cover, centre, r_*)."""
+    return H.reprove_piece(p, covers[p["cover"]], line_sha=lines[p["idx"]][1])
 
 
-def _recompute(p, covers):
-    """Re-prove a logged piece from its stored centre, weights and r_* with its group's cover rebuilt from the logged
-    centres (current program text); returns (cover digest ok, blocks, result, settings)."""
-    crec = covers[p["cover"]]
-    cov = _rebuild_cover(crec)
-    C = H.Centre.from_record(p["centre"])
-    st = dict(M=int(p["settings"]["M"]), nsub_xi=int(p["settings"]["nsub_xi"]),
-              nsub_s=int(p["settings"]["nsub_s"]), rho0=p["settings"]["rho0"])
-    bl = H.piece_blocks(C, Fraction(p["e_lo"]), Fraction(p["e_hi"]), cov, settings=st, log=lambda s: None)
-    rs = str(H.hex_fraction(p["r_star"]))             # the exact r_* the run used (up of its decimal choice)
-    res = H.assemble(bl, p["eta"], rs, log=lambda s: None)
-    return cov.digest[:16] == p["cover"], bl, res, st, cov, C, rs
+RADII_MSG = "radii polynomial not negative"
+
+
+def _control_fails_by_radii(C, lo_, hi_, crec, st, eta, rs):
+    """A negative control on a piece: cover rebuilt for (C, [lo_, hi_]) (T enlarged if the piece reaches past the
+    logged one, as run() chooses it), piece_blocks, assemble. Returns (failed by the radii polynomial, what happened):
+    any other failure (cover, domain, a different inequality) does not count as the intended failure."""
+    T = Fraction(crec["T"])
+    if hi_ + Fraction(1, 40) > T:
+        T = H._ceil_dyadic(hi_ + Fraction(1, 40), 256)
+    try:
+        cov = H.EpsCover([(C, lo_, hi_)], str(T), [crec["R"]] * H.DIM, crec["G_R"], rho2=crec["rho2"], max_evals=1500,
+                         log=lambda s: None)
+        bl = H.piece_blocks(C, lo_, hi_, cov, settings=st, log=lambda s: None)
+    except Exception as e:  # noqa: BLE001
+        return False, f"failed before the radii polynomial: {type(e).__name__}: {str(e)[:120]}"
+    try:
+        r = H.assemble(bl, eta, rs, log=lambda s: None)
+    except H.ProofFailure as e:
+        d = getattr(e, "diag", {}) or {}
+        return str(e).startswith(RADII_MSG), f"{str(e)[:60]}...; Y0 {d.get('Y0', float('nan')):.3e}"
+    return False, f"PROVED (Y0 {r['Y0']['approx']:.3e}, Z1 {r['Z1']['approx']:.3f})"
 
 
 def test_piece_recompute_and_controls():
+    import tempfile
     pieces, covers = _logs()
     if not pieces:
         check("Theorem B data present", False, "no pieces logged")
         return
+    lines = H.piece_lines()
     # pieces made by the earlier runs (no code hash logged) and the last one: re-proved bit for bit by this program
     # 0, 13, 30: made before the program logged its hash; 40, 62: the last pieces of the runs with logged hashes
     # bae43c6c3b (K = 8) and c656af84d2 (K = 12); the last piece: the final run
     idxs = [0] if FAST else sorted({0, 13, 30, 40, 62, len(pieces) - 1} & set(range(len(pieces))))
     p0 = pieces[0]
-    first = _recompute(p0, covers)
-    _, bl, res, st, cov, C, rs = first
-    done = {0: first}
+    done = {}
     for i in idxs:
-        p = pieces[i]
-        if i not in done:
-            done[i] = _recompute(p, covers)
-        dig_ok, _, res_i, _, _, _, _ = done[i]
-        same = all(res_i[k]["hex"] == p["result"][k]["hex"] for k in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness"))
-        check(f"piece {i} recomputed (cover digest reproduced: {dig_ok}): Y0, Z1, Z2, r_existence, r_uniqueness equal "
-              f"the logged exact values", dig_ok and same)
+        rr, obj = _reprove(pieces[i], covers, lines)
+        done[i] = (rr, obj)
+        check(f"piece {i} re-proved by hopf.reprove_piece (cover digest reproduced: {rr.get('cover_digest_reproduced')}):"
+              f" Y0, Z1, Z2, radii, p, contraction, g and omega equal the logged exact values", rr.get("match") is True,
+              rr.get("error") or ", ".join(k for k, v in rr.get("equal", {}).items() if not v))
+    rr0, obj0 = done[0]
+    if obj0 is None:
+        return
+    bl, res, rs = obj0["bl"], obj0["res"], obj0["rs"]
+    # GAP 2 bookkeeping (review 2026-10-02): the comparison is exact, and reprove_status counts a re-proof only for the
+    # current program hash and the current log line
+    bad = json.loads(json.dumps(p0))
+    man, ex_ = bad["result"]["Y0"]["hex"].split("p")
+    bad["result"]["Y0"]["hex"] = man[:-1] + ("0" if man[-1] != "0" else "2") + "p" + ex_
+    cmp_bad = H.reproof_compare(bad, res, obj0["cov"].digest, obj0["C"].digest())
+    check("negative control: a logged Y0 changed in its last hex digit is not matched by the re-proof",
+          cmp_bad["match"] is False and cmp_bad["equal"]["Y0"] is False and
+          H.reproof_compare(p0, res, obj0["cov"].digest, obj0["C"].digest())["match"] is True)
+    with tempfile.TemporaryDirectory() as tdir:
+        lp = os.path.join(tdir, "reprove.jsonl")
+        other = dict(rr0, code_sha256="0" * 64)
+        stale = dict(rr0, piece_line_sha256="0" * 64)
+        for r_ in (other, stale):
+            H._append(lp, r_)
+        s1 = H.reprove_status(out_path=lp)
+        H._append(lp, rr0)
+        s2 = H.reprove_status(out_path=lp)
+        H._append(lp, dict(rr0, idx=1, piece_line_sha256=lines[1][1], match=False))
+        s3 = H.reprove_status(out_path=lp)
+    check("reprove_status: a re-proof counts only with the current program hash and the current log line; a failed one "
+          "is reported as mismatched",
+          s1["n_reproved_with_current_program"] == 0 and s2["n_reproved_with_current_program"] == 1 and
+          s2["not_reproved"] == f"1-{len(pieces) - 1}" and s3["mismatched"] == "1" and
+          not s3["all_pieces_reproved_with_current_program"], f"{s1['n_reproved_with_current_program']}, "
+          f"{s2['n_reproved_with_current_program']}, mismatched {s3['mismatched']!r}")
     # mutations
     r1 = H.assemble(bl, p0["eta"], rs, log=lambda s: None, _mutate=("drop_curve",))
     check("mutation drop_curve changes Y0 and Z1 (the parameter-width terms are live)",
           r1["Y0"]["hex"] != res["Y0"]["hex"] and r1["Z1"]["hex"] != res["Z1"]["hex"])
     r2 = H.assemble(bl, p0["eta"], rs, log=lambda s: None, _mutate=("drop_cauchy",))
     check("mutation drop_cauchy changes Z2 (the third-derivative terms are live)", r2["Z2"]["hex"] != res["Z2"]["hex"])
-    if FAST:
-        return
-    # The widening and wrong-centre controls run on piece 13, a tight piece (half-width 3.4e-3 against a float
-    # predicted admissible half-width of 4.1e-3; r_existence 5.5e-4 against r_* = 1e-3). On piece 0 they do not fail:
-    # piece 0 is far from tight, and its threefold widening [0, 0.004] is a valid proof (found 2026-10-02).
-    ic = 13 if 13 in done else 0
-    pc = pieces[ic]
-    _, _, _, st, _, C, rs = done[ic]
-    crec = covers[pc["cover"]]
-    a, b = Fraction(pc["e_lo"]), Fraction(pc["e_hi"])
-    # widened threefold about the centre (same centre line, weights, r_*; cover rebuilt over the wider range)
-    ec = (a + b) / 2
-    w3a, w3b = max(Fraction(0), ec - 3 * (b - a) / 2), ec + 3 * (b - a) / 2
-    try:
-        cov3 = H.EpsCover([(C, w3a, w3b)], crec["T"], [crec["R"]] * H.DIM, crec["G_R"], rho2=crec["rho2"],
-                          max_evals=1500, log=lambda s: None)
-        bl3 = H.piece_blocks(C, w3a, w3b, cov3, settings=st, log=lambda s: None)
-        H.assemble(bl3, pc["eta"], rs, log=lambda s: None)
-        failed = False
-    except H.ProofFailure:
-        failed = True
-    check(f"negative control: piece {ic} widened threefold about its centre fails", failed)
-    # a centre computed at a wrong eps (shifted by 1.5 piece widths; float Newton started from the piece's centre)
-    FE = H.FloatEps(C.K)
-    u = FE.from_centre(C)
-    e_wrong = float(b + (b - a) / 2)
-    u, _ = FE.newton(u, e_wrong)
-    Cw = FE.to_centre(u, FE.tangent(u, e_wrong))
-    try:
-        covw = H.EpsCover([(Cw, a, b)], crec["T"], [crec["R"]] * H.DIM, crec["G_R"], rho2=crec["rho2"],
-                          max_evals=1500, log=lambda s: None)
-        blw = H.piece_blocks(Cw, a, b, covw, settings=st, log=lambda s: None)
-        H.assemble(blw, pc["eta"], rs, log=lambda s: None)
-        failed = False
-    except H.ProofFailure:
-        failed = True
-    check(f"negative control: piece {ic} with a centre computed at a wrong eps (shifted by 1.5 piece widths) fails",
-          failed)
-    # piece 0 again (its own centre, cover and blocks): a piece reaching beyond its cover's family is refused
-    _, bl0, _, st0, cov0, C0, _ = first
+    # float cross-checks on piece 0 (both modes)
     a0, b0 = Fraction(p0["e_lo"]), Fraction(p0["e_hi"])
+    _float_crosscheck(obj0["C"], a0, b0, bl, p0["eta"], res, 0)
+    # piece 0 (its own centre, cover and blocks): a piece reaching beyond its cover's family is refused
+    C0, cov0, st0 = obj0["C"], obj0["cov"], obj0["st"]
     if not cov0.contains(C0, a0, b0):
         check("internal: piece 0 lies in its own cover", False)
     try:
@@ -420,11 +515,42 @@ def test_piece_recompute_and_controls():
     except (H.ProofFailure, ValueError):
         refused = True
     check("a piece reaching beyond the cover's family is refused", refused)
-    # float cross-check of Y2 and Zc on piece 0 (independent: float Galerkin matrices with 4x nodes)
-    _float_crosscheck(C0, a0, b0, bl0, p0["eta"])
+    if FAST:
+        return
+    last = len(pieces) - 1
+    rrL, objL = done[last]
+    if objL is not None:
+        pl = pieces[last]
+        _float_crosscheck(objL["C"], Fraction(pl["e_lo"]), Fraction(pl["e_hi"]), objL["bl"], pl["eta"], objL["res"], last)
+    # The widening and wrong-centre controls run on piece 13, a tight piece (half-width 3.4e-3 against a float
+    # predicted admissible half-width of 4.1e-3; r_existence 5.5e-4 against r_* = 1e-3). On piece 0 both are valid
+    # proofs (piece 0 is far from tight; found 2026-10-02). Each must fail BY the radii polynomial: in a 2026-10-02 run
+    # (scratch script, same program), the threefold widening gave Y0 = 3.37e-3 and the wrong centre Y0 = 5.48e-3, both
+    # against r_* = 1e-3.
+    ic = 13
+    rr13, obj13 = done[ic]
+    if obj13 is None:
+        check("piece 13 re-proved (needed for its controls)", False)
+        return
+    pc = pieces[ic]
+    C, st, rs13 = obj13["C"], obj13["st"], obj13["rs"]
+    crec = covers[pc["cover"]]
+    a, b = Fraction(pc["e_lo"]), Fraction(pc["e_hi"])
+    ec = (a + b) / 2
+    ok3, why3 = _control_fails_by_radii(C, ec - 3 * (b - a) / 2, ec + 3 * (b - a) / 2, crec, st, pc["eta"], rs13)
+    check(f"negative control: piece {ic} widened threefold about its centre fails by the radii polynomial", ok3, why3)
+    # a centre line computed at a wrong eps: e_hi + (e_hi - e_lo)/2 (float Newton started from the piece's centre)
+    FE = H.FloatEps(C.K)
+    u = FE.from_centre(C)
+    e_wrong = float(b + (b - a) / 2)
+    u, _ = FE.newton(u, e_wrong)
+    Cw = FE.to_centre(u, FE.tangent(u, e_wrong))
+    okw, whyw = _control_fails_by_radii(Cw, a, b, crec, st, pc["eta"], rs13)
+    check(f"negative control: piece {ic} with a centre line computed at eps = e_hi + (e_hi - e_lo)/2 fails by the radii "
+          f"polynomial", okw, whyw)
 
 
-def _float_crosscheck(C, a, b, bl, eta):
+def _float_crosscheck(C, a, b, bl, eta, res, idx, n_rand=16, n_climb=40):
     FE = H.FloatEps(C.K, Mc=192)
     u = FE.from_centre(C)
     tt = np.zeros_like(u)
@@ -465,10 +591,55 @@ def _float_crosscheck(C, a, b, bl, eta):
     y2r = float(H.amax_list([H.up(bl["Y2"][c] / H._arb_q(eta[c])) for c in range(H.NC)]))
     zcr = float(H.amax_list(H._rows_of(bl["Zc_ff"], bl["Zc_ft"], bl["TZ"], bl["TcZ"], bl["TgZ"],
                                        [H._arb_q(e) for e in eta])))
-    check("float cross-check: rigorous Y2 >= float ||A d^2F/dxi^2|| >= Y2 / 30", y2r >= y2f >= y2r / 30,
-          f"float {y2f:.3e}, rigorous {y2r:.3e}")
-    check("float cross-check: rigorous Zc >= float ||A d DF/dxi|| >= Zc / 30", zcr >= zcf >= zcr / 30,
-          f"float {zcf:.3e}, rigorous {zcr:.3e}")
+    if idx == 0:          # the two-sided ratio test was calibrated on piece 0 only
+        check("float cross-check (piece 0): rigorous Y2 >= float ||A d^2F/dxi^2|| >= Y2 / 30", y2r >= y2f >= y2r / 30,
+              f"float {y2f:.3e}, rigorous {y2r:.3e}")
+        check("float cross-check (piece 0): rigorous Zc >= float ||A d DF/dxi|| >= Zc / 30", zcr >= zcf >= zcr / 30,
+              f"float {zcf:.3e}, rigorous {zcr:.3e}")
+    else:
+        check(f"float cross-check (piece {idx}): float ||A d^2F/dxi^2|| <= rigorous Y2 and float ||A d DF/dxi|| <= "
+              f"rigorous Zc", y2f <= y2r and zcf <= zcr, f"Y2 float {y2f:.3e} / {y2r:.3e}, Zc float {zcf:.3e} / {zcr:.3e}")
+    # WEAK TEST 2 (review 2026-10-02): Y1 (the derivative of the residual along the centre line at e_c, with the exact
+    # division by e_c + t in the rigorous version) and Z2 (the only bound with third-derivative terms). Float values
+    # are lower estimates (finite modes, sampled directions), so each must lie below the rigorous bound; they do not
+    # show that the rigorous bound is large enough in every direction.
+    h1 = min(1e-5, float(b - a) / 8)
+    y1f = vnorm(A @ ((FE.residual(u + h1 * tt, ec + h1) - FE.residual(u - h1 * tt, ec - h1)) / (2 * h1)))
+    y1r = float(H.amax_list([H.up(bl["Y1"][c] / H._arb_q(eta[c])) for c in range(H.NC)]))
+    check(f"float cross-check (piece {idx}): float ||A dF/dxi|| at e_c <= rigorous Y1", y1f <= y1r,
+          f"float {y1f:.3e}, rigorous {y1r:.3e}")
+    rng = np.random.default_rng(1000 + idx)
+    ms = list(FE.ms)
+
+    def rand_delta(r):
+        """conjugation-symmetric perturbation of weighted norm exactly r: every component at its full weight eta_c r
+        (random signs), the w weight spread over the modes at random with random phases"""
+        om_, g_ = rng.choice([-1, 1]) * E[0] * r, rng.choice([-1, 1]) * E[1] * r
+        c_ = np.array([rng.choice([-1, 1]) * E[2 + k] * r for k in range(H.DIM)])
+        w_ = np.zeros((H.DIM, 2 * K), complex)
+        for k in range(H.DIM):
+            wt = rng.dirichlet(np.ones(K))
+            for mm in range(1, K + 1):
+                z = E[2 + H.DIM + k] * r * wt[mm - 1] / (nu ** mm) / 2.0 * np.exp(1j * rng.uniform(0, 2 * np.pi))
+                w_[k, ms.index(mm)], w_[k, ms.index(-mm)] = z, np.conj(z)
+        return np.concatenate([[om_, g_], c_, w_.reshape(-1)]).astype(complex)
+    r = float(res["r_uniqueness"]["approx"])
+    z2f = 0.0
+    for _ in range(n_rand):
+        D = rand_delta(r)
+        z2f = max(z2f, onorm(A @ (FE.galerkin(u + D, ec) - G0)) / r)
+    D = rand_delta(r)
+    cur = onorm(A @ (FE.galerkin(u + D, ec) - G0)) / r
+    for _ in range(n_climb):
+        D2 = D + 0.5 * rand_delta(r)
+        D2 *= r / vnorm(D2)
+        v = onorm(A @ (FE.galerkin(u + D2, ec) - G0)) / r
+        if v > cur:
+            cur, D = v, D2
+    z2f = max(z2f, cur)
+    z2r = float(res["Z2"]["approx"])
+    check(f"float cross-check (piece {idx}): a float lower estimate of Z2 (random and hill-climbed perturbations of "
+          f"norm r_hi) <= rigorous Z2", 0 < z2f <= z2r, f"float {z2f:.3e}, rigorous {z2r:.3e}")
 
 
 def test_gluing_logged():
@@ -572,9 +743,31 @@ def test_bridge():
             ok = H.point_on_gks_branch(ptg, cg, recs, centres)["ok"]
             dg = H.point_in_eps_branch(ptg["rec"], cg, states, nu8)["ok"]
             check(f"gluing re-derived at g = {gs}: the point is on the G_Ks branch and on the eps-branch", ok and dg)
-            far = [p_ for p_ in recs if Fraction(p_["g_hi"]) < Fraction(gs)][-3:]
-            ok2 = H.point_on_gks_branch(ptg, cg, far, centres)["ok"]
-            check("negative control: G_Ks pieces not containing the point's g are refused", ok2 is False)
+            # WEAK TEST 3 (review 2026-10-02): the two parts of branch.point_on_branch are tested separately.
+            import branch as br
+            g_ = Fraction(gs)
+            iG = next(i for i, p_ in enumerate(recs) if Fraction(p_["g_lo"]) <= g_ <= Fraction(p_["g_hi"])
+                      and br.point_on_branch(ptg, cg, p_, centres[br._dstr(Fraction(p_["centre_g"]))])["ok"])
+
+            def bypassed(p_):
+                """the piece record widened to contain g: point_on_branch then decides by the ball inclusion alone"""
+                wide = dict(p_, g_lo=str(min(Fraction(p_["g_lo"]), g_)), g_hi=str(max(Fraction(p_["g_hi"]), g_)))
+                return br.point_on_branch(ptg, cg, wide, centres[br._dstr(Fraction(p_["centre_g"]))])
+            # (a) the containment guard: the adjacent pieces do not contain g and are refused for that reason (on them
+            # the inclusion alone holds, so the guard is needed)
+            adj = [recs[j] for j in (iG - 1, iG + 1) if 0 <= j < len(recs)]
+            adj = [p_ for p_ in adj if not Fraction(p_["g_lo"]) <= g_ <= Fraction(p_["g_hi"])]
+            res_a = [br.point_on_branch(ptg, cg, p_, centres[br._dstr(Fraction(p_["centre_g"]))]) for p_ in adj]
+            check("negative control: the containment guard refuses the adjacent G_Ks pieces, which do not contain g",
+                  bool(adj) and all(r_["ok"] is False and r_.get("why") == "g not in piece" for r_ in res_a),
+                  "inclusion alone on them: " + ", ".join(f"{p_['label']} {bypassed(p_)['ok']}" for p_ in adj))
+            # (b) the ball inclusion: with the guard bypassed it fails three pieces before and after the glue piece
+            far = [recs[j] for j in (iG - 3, iG + 3) if 0 <= j < len(recs)]
+            res_b = [bypassed(p_) for p_ in far]
+            check("negative control: with the guard bypassed, the ball inclusion fails on the G_Ks pieces three "
+                  "positions before and after the glue piece", len(far) == 2 and all(r_["ok"] is False for r_ in res_b),
+                  ", ".join(f"{p_['label']}: lhs {r_['lhs']['approx']:.3e} > r_hi {r_['r_uniqueness_piece']['approx']:.3e}"
+                            for p_, r_ in zip(far, res_b)))
 
 
 # ------------------------------------------------------------------------------------------------ the record
@@ -599,6 +792,14 @@ def test_record_hashes():
             and rec["theorem_A_record"]["l1_kuznetsov_physical"] == thA["l1_kuznetsov_physical"]
             and rec["theorem_A_record"]["gH_interval"] == thA["gH_interval"])
     check("record: piece count, eps range and Theorem A enclosures are those of the logs", same)
+    check(f"record: status is '{STATUS}'", rec.get("status") == STATUS, f"{rec.get('status')!r}")
+    check("record: the Theorem A cover checks are recorded as passed and equal check_theoremA_cover now",
+          rec.get("theorem_A_cover_checks", {}).get("ok") is True and
+          rec.get("theorem_A_cover_checks") == H.check_theoremA_cover(thA))
+    st_now = H.reprove_status()
+    check("record: the re-proof report equals hopf.reprove_status() now", rec.get("pieces_reproved") == st_now,
+          f"{st_now['n_reproved_with_current_program']} of {st_now['n_pieces']} re-proved with this program "
+          f"(not yet: {st_now['not_reproved'] or 'none'})")
     # negative control: a copy of pieces.jsonl with one byte changed has a different hash
     with open(os.path.join(H.DATA, "pieces.jsonl"), "rb") as fh_:
         raw = bytearray(fh_.read())
@@ -620,6 +821,9 @@ def main():
     test_lyap1()
     test_lemma_K_negative(fh)
     test_theorem_A_core(fh)
+    test_theorem_A_cover()
+    if RERUN_A:
+        test_theorem_A_rerun()
     test_piece_recompute_and_controls()
     test_gluing_logged()
     test_identification()

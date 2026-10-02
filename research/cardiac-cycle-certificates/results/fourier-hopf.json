@@ -1,6 +1,7 @@
 {
  "what": "Rec 2, Hopf bridge: the single-cell periodic orbit is certified from the end of the G_Ks branch (branch.py) to the supercritical Hopf point g_H of Theorem A (Erhardt's numerical value lies about 1.5e-8 above it) by a blown-up radii polynomial in the amplitude eps (fourier/hopf.py, LEMMAS-hopf.md)",
- "status": "computed; awaiting adversarial review",
+ "status": "computed; in-project adversarial review recorded, fixes applied, fix check pending",
+ "review": "reviews/hopf-bridge-review-2026-10-02.md: an in-project adversarial reading by an AI agent session (no UNSOUND finding); its fixes are listed at the end of that file and have not yet been checked by a second reading",
  "not_claimed": "No outside review has taken place. Stability is NOT proved uniformly on the bridge: only (a) for small amplitude, qualitatively (cited Hopf theorem, no explicit range), and (b) at the G_Ks values listed under stability_points (Stage S point proofs identified with the bridge by Lemma D). Monotonicity of g*(eps) in eps is not certified.",
  "theorem_A": "Theorem A (LEMMAS-hopf.md): in W = [0.02789, 0.02792], on every interval of the recorded cover, the equilibrium in the interval's polydisc has a simple pair lambda, conj lambda and 16 eigenvalues with real part <= others_max_re_upper < 0; Re lambda > 0 left of G_H and < 0 right of it; on G_H (width 2e-13) d Re lambda/dg < 0 and there is exactly one g_H with Re lambda(g_H) = 0; at g_H, l1 < 0 (enclosure in the record).",
  "theorem_A_record": {
@@ -25,6 +26,7 @@
    "dec": "-0.00004692685240107801006867807",
    "approx": -4.692685240107801e-05
   },
+  "gH_others_max_re": -4.6937703990328585e-05,
   "lambda_imag_range": [
    "0.119295447543",
    "0.119373320457"
@@ -182,10 +184,46 @@
    "note": "Erhardt's MATCONT value; MATCONT's first Lyapunov coefficient equals omega times Kuznetsov's l1 in the normalisation <q, q> = 1 (physical units)"
   },
   "dRe_lambda_dg_interval": "G_H",
-  "seconds": 233.6,
-  "code_sha256": "e6754dbe4c427ac5fc6660ecb9191bf3dca562b7dc3dc5ea31b2eab7190c3453"
+  "seconds": 222.6,
+  "code_sha256": "5d78af90baa975c9a3b1f51dff92a7b46ff412e18ae31eb8a951a19d27190284"
  },
+ "theorem_A_cover_checks": {
+  "window_is_W": true,
+  "gH_inside_W": true,
+  "nondegenerate": true,
+  "adjacent": true,
+  "n_breaks": 0,
+  "covers_W": true,
+  "gH_between_sides": true,
+  "counts_as_recorded": true,
+  "re_lam_ordered": true,
+  "left_re_lambda_positive": true,
+  "right_re_lambda_negative": true,
+  "others_negative": true,
+  "others_max_is_recorded_upper": true,
+  "transversal": true,
+  "l1_negative": true,
+  "omega_positive": true,
+  "n_left": 286,
+  "n_right": 229,
+  "n_polydiscs": 234,
+  "others_max_re": -4.692685240107801e-05,
+  "others_include_gH": true,
+  "ok": true
+ },
+ "theorem_A_record_by_current_program": true,
  "theorem_B": "For every eps in [0, 6427/50000] the blown-up problem F(.; eps) = 0 (LEMMAS-hopf.md, B0) has a zero x*(eps) = (omega*, g*, c*, w*), unique in the ball B_r_hi(xbar(eps)) of the piece containing eps, real, continuous in eps. For eps > 0, z(t) = c*(eps) + eps w*(eps)(omega*(eps) t) is a periodic orbit of the single cell at G_Ks = g*(eps), of minimal period 2 pi / omega*(eps), whose first V Fourier coefficient (scaled variables, phase with Im a_1V = 0) is eps/2; distinct eps give distinct orbits. x*(0) is the Hopf point of Theorem A (g*(0) = g_H). By continuity, every G_Ks in [0.027778323912267213758, g_H) is g*(eps) for some eps in (0, 6427/50000], so the cell has a periodic orbit on the bridge at every such G_Ks.",
+ "pieces_reproved": {
+  "log": "fourier/data/hopf/reprove.jsonl",
+  "program_sha256": "5d78af90baa975c9a3b1f51dff92a7b46ff412e18ae31eb8a951a19d27190284",
+  "n_pieces": 68,
+  "n_reproved_with_current_program": 2,
+  "mismatched": "",
+  "not_reproved": "1-66",
+  "n_records": 2,
+  "n_records_other_program": 0,
+  "all_pieces_reproved_with_current_program": false
+ },
  "eps_covered": [
   "0",
   "6427/50000"
@@ -2906,9 +2944,9 @@
   }
  ],
  "sources_sha256": {
-  "fourier/hopf.py": "1be81093bba27153b630210c4d3adba8ac85921ba13478652e4425a517806413",
-  "fourier/test_hopf.py": "ecd947c1d18e447599dda09924817526b4defa5fe393f9f272ee849e6fb07b79",
-  "fourier/LEMMAS-hopf.md": "d27a5b34d84ea88c804aa4e0d1266dee3f906d67fcc2e6197f47e348c53894d4",
+  "fourier/hopf.py": "5d78af90baa975c9a3b1f51dff92a7b46ff412e18ae31eb8a951a19d27190284",
+  "fourier/test_hopf.py": "f2b644006f44d7c42355ff6f1c01accad0627f07f4ff726a327086b186eaefbf",
+  "fourier/LEMMAS-hopf.md": "6ba3cd2ebac71c5540c10c447964ea7a05f4489ca70e3d8c5360bd4e850774b0",
   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
   "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
@@ -2922,10 +2960,11 @@
  "data_sha256": {
   "pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
   "covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
-  "theoremA.json": "78b57f5deb6b3831732b9beb56b80adf944d06b55339d5654372ccfa94a8179a",
+  "theoremA.json": "604f0cfdbbf0a904f54451de0cd85a4cc04fb24663a7b8d4499151dc4bd8d0b3",
   "gluing_gks.json": "4b7bac80a119fb776bd8e79b2dc34d88b50c1f9ab14cfd5ef24cb25ad8f17680",
   "gks_points.jsonl": "52edb6b7b00d278c663bcf4bdc9fb6a8aa89acb6dd77bdaba8dd76b3ae2f1210",
-  "gks_points_centres_K32.jsonl": "0cda2493a8a04708051d0fd97825b320b27a1cffb7640dcf1f79a32e2e5bd6fa"
+  "gks_points_centres_K32.jsonl": "0cda2493a8a04708051d0fd97825b320b27a1cffb7640dcf1f79a32e2e5bd6fa",
+  "reprove.jsonl": "088117de8fc65bda087af23d55e94dcef46129d51ceb6b1aa8a6db7d5594a4ad"
  },
  "python_flint": "0.9.0",
  "FLINT": "3.6.0",

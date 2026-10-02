@@ -251,6 +251,10 @@ RESULTS = os.path.join(ROOT, "results")
 DATA = os.environ.get("BRANCH_DATA", os.path.join(HERE, "data", "branch"))
 G_HOPF = Fraction("0.027907858929580")      # Erhardt's first Hopf point (not used in any bound)
 G_STAGE_E = "0.0275"
+# The SHA-256 of this file AS IMPORTED by this process (worker processes are forked after import). reprove() writes it
+# into every record of the re-proved log, and collect() of that log requires it to equal its own.
+with open(os.path.abspath(__file__), "rb") as _fh:
+    PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
 
 ProofFailure = ex.ProofFailure
 up, lo, amax, bound_rec, dec = ex.up, ex.lo, ex.amax, ex.bound_rec, ex.dec

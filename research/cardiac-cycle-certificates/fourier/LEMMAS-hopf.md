@@ -1,7 +1,9 @@
 # The Hopf bridge: the single-cell periodic orbit from the end of the G_Ks branch to the Hopf point (lemmas and proofs)
 
-Status: computed; an in-project adversarial reading is recorded in `reviews/hopf-bridge-review-2026-10-02.md` with
-its fixes. This file states and proves what `fourier/hopf.py` relies on. No outside review has taken place.
+Status: computed; in-project adversarial review recorded, fixes applied, fix check pending. The reading
+(`reviews/hopf-bridge-review-2026-10-02.md`) is an in-project reading by an AI agent session; the fixes made for it are
+listed at the end of that file and have not yet been checked by a second reading. This file states and proves what
+`fourier/hopf.py` relies on. No outside review has taken place.
 
 Model: Erhardt's 18-state TP06 endocardial cell, `f(z; g)` = `arbmodel.f` with `g_Ks = g`, in the scaled variables
 `z = x / sigma` (`sigma_i = 2^{e_i}`, `model/scales.txt`). `g_Ks` enters the reference model only through
@@ -115,8 +117,8 @@ MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
 
 Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). The program covers `W` by adjacent
 closed intervals with exact end points (record: `cover_left`, 286 intervals, `G_H`, `cover_right`, 229 intervals;
-233.6 s on one core). For an interval `G` of the cover
-write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
+222.6 s on one core in the 2026-10-02 rerun with the fixed program; 233.6 s in the first run). For an interval `G`
+of the cover write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
 `A_G(g) = D_z f(x_G(g); g)`. Then:
 
 (a) For every interval `G` and every `g in G`, `x_G(g)` exists, is real, and is real analytic in `g` on `G`; the
@@ -140,18 +142,33 @@ it), all intervals of the cover that meet `J` have their equilibrium polydiscs (
 
 (e) `l1 < 0` at `(x_e(g_H), g_H)`: `l1` lies in `[-22.4878803, -22.4878761]` (physical units, `<q, q> = 1`; record
 `l1_kuznetsov_physical`, rounded outward), and `omega_H l1` in `[-2.6837352, -2.6837346]`, which agrees with
-Erhardt's MATCONT value `-2.6838` to the printed digits.
+Erhardt's MATCONT value `-2.6838` to about four significant digits (the difference is about `6.5e-5`, one unit in
+Erhardt's last printed digit).
 
 *Proof.* (a) On each interval `G`: Lemma K gives the equilibrium for every `g in G` (and at the midpoint, inside `X_G`),
 Lemma A1 a ball matrix containing `A_G(g)` for every `g in G`; with `S` the float eigenvector matrix of the midpoint of
 `A_c` (unit columns), the Gershgorin discs (Lemma G) of the pair (`D1` with `Im > 0` and `D2`) are disjoint from each
 other and from the 16 other discs, and those lie in `Re < 0` (right ends recorded); Lemma K for the eigenpair gives a
 ball `L` containing an eigenvalue of `A_G(g)` for every `g in G`, and `L` is disjoint from every disc but `D1`, so the
-eigenvalue in `L` is the eigenvalue in `D1`, `lambda_G(g)`, which is simple (Lemma G(b): `D1` holds exactly one), and
-its conjugate is the one in `D2`. Realness of `x_G`: the polydisc is invariant under conjugation and `f(conj z; g) =
-conj f(z; g)` for real `g`, so the unique zero is real. (b) On the intervals left of `G_H` the program certifies
-`Re L > 0`, right of `G_H` `Re L < 0` (`re_lam` in the record); on `G_H`, Lemma A2 with `p`, `q`, `A'` enclosed over
-`G_H` gives the ball for `Re lambda'`. Here `p` is identified as the left eigenvector of `lambda` itself: the
+eigenvalue in `L` is the eigenvalue in `D1`, `lambda_G(g)`, which is simple (Lemma G(b): `D1` holds exactly one). Its
+conjugate is the eigenvalue in `D2`: `A_G(g)` is real, so `conj lambda_G(g)` is an eigenvalue; it lies in the ball
+`conj L` and, by Lemma G(a), in some disc; the program checks (`spectrum_on`, since 2026-10-02) that `conj L` is
+disjoint from every disc but `D2`, so `conj lambda_G(g)` lies in `D2`, which holds exactly one eigenvalue (Lemma
+G(b)); the union of the 16 other discs holds the remaining 16. (The stronger inclusion `|conj(c_L) - c_D2| + r_L <=
+R_D2` suggested by the review is not used: on `G_H` and the first and last intervals of both sides, measured on
+2026-10-02, the eigenpair radius `r_L` is 0.95 to 0.97 times `R_D2`, and at a single `g` it exceeds `R_D2`, while
+`conj L` keeps a distance of about 0.088 from the other discs.) (Before that check, noted as GAP 1 by the 2026-10-02
+review, the text asserted this step without a certificate. What (d) and Corollary A need from it also follows without
+the check. Let `mu` be the eigenvalue in `D2`. Where `Re lambda_G(g) > 0`, `conj lambda_G(g)` is not among the 16
+eigenvalues with negative real part and is not `lambda_G(g)` (`Im lambda_G > 0`), so it is `mu`. Where
+`Re lambda_G(g) < 0`: if `mu = conj lambda_G`, `Re mu < 0`; if `mu` is real, `mu != 0` because `A_G(g)` is invertible
+(Lemma K's proof for the equilibrium); if `mu` is non-real and `mu != conj lambda_G`, then `conj mu` is an eigenvalue
+different from `mu` and from `lambda_G`, hence one of the 16, and `Re mu < 0`. In every case `mu` is not on the
+imaginary axis. At `g_H`, `lambda = i omega_H`, and `-i omega_H` is neither among the 16 nor `lambda`, so it is `mu`.)
+Realness of `x_G`: the polydisc is invariant under conjugation and `f(conj z; g) = conj f(z; g)` for real `g`, so the
+unique zero is real. (b) On the intervals left of `G_H` the program certifies `Re L > 0`, right of `G_H` `Re L < 0`
+(`re_lam` in the record); on `G_H`, Lemma A2 with `p`, `q`, `A'` enclosed over `G_H` gives the ball for `Re lambda'`.
+Here `p` is identified as the left eigenvector of `lambda` itself: the
 left-eigenpair contraction (Lemma K for `A^T`) gives, for every `A` in the ball, an eigenvalue `lambda_l(A)` of `A` in a
 ball that `dlambda_dg` checks to be disjoint from every Gershgorin disc but `D1`; so `lambda_l(A)` lies in `D1`, which
 holds exactly one eigenvalue (Lemma G(b)), and `lambda_l(A) = lambda(A)`. (Until 2026-10-02 the program checked only
@@ -160,11 +177,14 @@ polydiscs in `P`, and Lemma K on `P` over `J`): for `g in J` and an interval `G`
 hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The eigenvalue in `D1` of an interval and in `D1'` of an
 adjacent interval are, at the shared end point, eigenvalues with positive imaginary part of the same matrix that are
 not among the 16 eigenvalues with negative real part, so they are equal (if both intervals meet `J`). (d) For `g` in an
-interval `G != G_H`, `Re lambda_G(g) != 0` and the other eigenvalues have negative real part, so no eigenvalue is on the
-axis. On `G_H`, `lambda` is analytic (simple eigenvalue of an analytic family), `Re lambda' < 0`, and by (c) the end
-points of `G_H` are end points of the adjacent intervals with the same `lambda`, where `Re lambda` is `> 0` (left) and
-`< 0` (right). So `Re lambda` has exactly one zero `g_H` in `G_H`, it is the only `g in J` with an eigenvalue on the
-axis, and `omega_H = Im lambda(g_H)` lies in `Im L` of `G_H`. (e): Lemma A3 evaluated with `x_e(g_H)` in the
+interval `G != G_H`, `Re lambda_G(g) != 0`, so neither `lambda_G(g)` nor its conjugate (the eigenvalue in `D2`, by (a))
+is on the axis, and the 16 others have negative real part: no eigenvalue is on the axis. On `G_H`, `lambda` is analytic
+(simple eigenvalue of an analytic family), `Re lambda' < 0`, and by (c) the end points of `G_H` are end points of the
+adjacent intervals with the same `lambda`, where `Re lambda` is `> 0` (left) and `< 0` (right). So `Re lambda` has
+exactly one zero `g_H` in `G_H`; at the other points of `G_H` the argument for `G != G_H` applies, so `g_H` is the
+only `g in J` with an eigenvalue on the axis, and `omega_H = Im lambda(g_H)` lies in `Im L` of `G_H`. At `g_H` the
+spectrum is `i omega_H`, `-i omega_H` (the eigenvalue in `D2`, by (a)) and 16 eigenvalues with negative real part:
+`n_s = 16`, `n_u = 0` in Corollary A. (e): Lemma A3 evaluated with `x_e(g_H)` in the
 equilibrium polydisc of `G_H`, `g_H in G_H`, `A(g_H)` in the ball of `G_H`, `q`, `p` the eigenvector enclosures (right
 one normalized `<q, q> = 1` in physical units, left one by `p_l^T q = 1`), `omega` in `Im L`; every quantity of the
 formula is evaluated in ball arithmetic on balls containing the true values at `g_H`, so the result contains `l1`. QED.
@@ -172,6 +192,17 @@ formula is evaluated in ball arithmetic on balls containing the true values at `
 (Added on 2026-10-02 while finishing the bridge: earlier versions of the program neither recorded the polydiscs nor
 checked `X_c` in `X_G`, so (c) was implicit and the statement "exactly one `g_H` in `W`" was not justified across
 intervals with different polydiscs. Outside `J` the theorem is now stated per interval.)
+
+(Added on 2026-10-02 after the in-project review `reviews/hopf-bridge-review-2026-10-02.md`: `spectrum_on` certifies
+that `conj L` avoids every disc but `D2` (GAP 1, used in (a)); the statistics `others_max_re_upper` and
+`lambda_imag_range` now include the interval `G_H` itself (`gH_others_max_re`; the earlier ones covered only the left
+and right intervals); and `hopf.check_theoremA_cover`, run by `collect` and by `fourier/test_hopf.py`, re-checks the
+structure of the recorded cover in exact rationals (GAP 3): the sorted intervals of both sides and `G_H` are
+non-degenerate and adjacent and run from `0.02789` to `0.02792` with `G_H` between the sides, their counts are the
+recorded ones, every left interval has `Re lambda > 0` and every right one `Re lambda < 0` (recorded enclosures),
+every `others_max_re` is negative and the largest is the recorded bound, and the recorded `d Re lambda / dg`, `l1` and
+`omega_H` have the stated signs. These re-check the bookkeeping of the run; the inequalities on each interval are
+decided in that run. `theorem_A` was rerun with that program; the numbers above are from that run.)
 
 ### Cited theorem (Andronov-Hopf; Kuznetsov, Scholarpedia 1(10):1858, as stated in papers/hh-dynamics, Theorem thm:kuz)
 
@@ -332,7 +363,9 @@ and certifies holomorphy (fourier_eval Lemma 1). `piece_blocks` checks that each
 *The bound.* For `x = xbar(xi) + Delta` with `||Delta|| <= r <= r*`, `||y|| <= 1`, every `xi` of the piece, write
 `h_s = Delta c + s xi Delta w`, so `||h_s,l||_nu <= tau_l r`, `tau_l = eta_cl + e_hi eta_wl` (the program checks
 `tau_l r* < R_l` and `eta_g r* <= G_R`), `P = P(tau r*)`, and `p = c(xi) + s xi w(xi)` (in the family with
-`sigma = s xi`). Then:
+`sigma = s xi`). The check `eta_g r* <= G_R` is needed, not redundant: `f` is affine in `g`, but the `Kc` terms below
+evaluate `D_z^2 f` at `g = gbar + Delta g`, and `MH` bounds `D_z^2 f` only for `g` in the cover's disc of radius `G_R`
+about the hull of the centre line's `g`; `|Delta g| <= eta_g r <= eta_g r*` puts that `g` in the disc. Then:
   * `J_x - J_xbar = [D f(p + h_1; gbar) - D f(p; gbar)] + Delta g D f1(p + h_1)`, so by the mean value inequality and
     Lemma P (applied to `D_z^2 f` and `D_z f1`): `||(J_x - J_xbar)_kj||_nu <= r aJ_kj`,
     `aJ_kj = Q2 P (sum_l MH_kjl tau_l + MG_kj eta_g)`.
@@ -401,6 +434,18 @@ definition that a piece proof uses (`Jet`, `curve_point`, `Centre`, `EpsCover`, 
 `fourier_eval.py` and `arbmodel.py` were last modified before the first run. `fourier/test_hopf.py` re-proves pieces 0,
 13, 30, 40, 62 and the last piece bit for bit (Y0, Z1, Z2, r_existence, r_uniqueness as exact dyadics) with the
 current program and covers rebuilt from the logged centres.
+
+Because those program copies are not in the repository (GAP 2 of the 2026-10-02 review), the claim that the logged
+numbers are those of the current program is checked piece by piece instead: `python3 hopf.py --reprove-all
+[--workers W]` re-proves every logged piece with the current program text (each group's cover rebuilt from its logged
+centres, then `piece_blocks` and `assemble` with the stored centre line, weights and exact `r_*`) and appends one record
+per piece to `fourier/data/hopf/reprove.jsonl`: the SHA-256 of the piece's line in `pieces.jsonl`, the SHA-256 of
+`hopf.py` taken when the process imported it, the cover and centre digests, and whether the exact `Y0`, `Z1`, `Z2`,
+`r_*`, `r_existence`, `r_uniqueness`, `p` at both radii, the contraction factor and the `g` and `omega` enclosures equal
+the logged ones. `collect` reports under `pieces_reproved` how many pieces have a matching re-proof by the current
+program text for their current log line. As of 2026-10-02 this holds for pieces 0 and 67 only (both matching, 93 s and
+109 s); the re-proof of the other 66 pieces has not been run, and until it has, the statement rests for them on the
+comparison of program copies described above.
 
 ### Theorem B (computer-assisted; `hopf.run`, records `fourier/data/hopf/pieces.jsonl`, `covers.jsonl`)
 
