@@ -116,7 +116,7 @@ GENChase: the companion repository does not carry `notes/`.
   `research/cardiac-cycle-certificates/notes/readings-rings-2026-10-01.md`, and the entry of 2026-10-02 "cardiac
   rings: background citations added since the readings" for van den Berg-Lessard-Mischaikow (abstract), Kato (not
   checked against a copy), Johansson (Arb) and Kapela et al. (CAPD) (cited as software, no reading recorded). Section 9
-  of the paper ("How far the background sources were read") states the same reading status for every cited work.
+  of the paper ("Sources of the proofs") states the same reading status for every cited work.
 - [x] **5. Prior article review.** RESEARCH.md, entries "2026-09-30 cardiac ring wave certification and next
   targets", "2026-10-01 cardiac cell and ring certificates: model origin, earlier rigorous work and the weak-coupling
   prediction", "2026-10-01 cardiac rings on the Fourier/Hill route: earlier computer-assisted lattice and Floquet

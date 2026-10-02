@@ -70,7 +70,7 @@ Contents
   (`prototypes/fourier-feasibility/rw_fourier.py`, `hill_spectrum`; `hill.py`) uses exactly this convention: its A_n
   is `fft(J)/L` of samples at theta_k = 2 pi k / L (the coefficient of e^{i n theta}), its block (m, m') is A_{m-m'},
   its diagonal is -i omega m, and its damping -4 c sin^2(pi m / N) sits on the V entry. A scratch check
-  (`scratchpad/lemmas/toy.py`: 3-dimensional cells, N = 5, random trigonometric A) reproduces e^{mu tau} = eig(M_tau)
+  (a program `toy.py` that is not in this folder: 3-dimensional cells, N = 5, random trigonometric A) reproduces e^{mu tau} = eig(M_tau)
   to 3e-13 with this convention, in the OFFSET half-open strip a = -omega N / 2 + 0.3 (count 15 = 3N), and misses by
   4e-2 with the opposite sign of the diagonal. Its centred strip also prints "count 15", but there the match is only
   1.6e-3: rounding put both copies of one eigenvalue on Im = +- omega N / 2 inside and both copies of another outside,
@@ -782,9 +782,9 @@ One adversarial rereading by the author. What was checked and what changed:
     assume (C3) (dist_j > 0 is used); in Corollary 1.3 the section-time function was renamed t_g (s is the README's
     section level); checklist item 4 now gives one starting rectangle valid for every N >= 1 (b = -a =
     omega_bar (N/2 + 1/4)), checked against (C1) for N = 1 (b = 0.75 omega_bar < omega_lo).
-13. Empirical check only (not part of any proof): the toy model in the scratchpad confirms Theorem 1, the sign
-    convention, the 18N-type count in an offset half-open strip, and Corollary 1.2(iv) (H_q against H_0 + i omega q to
-    1e-13).
+13. Empirical check only (not part of any proof): the scratch toy model (its program is not in this folder) confirms
+    Theorem 1, the sign convention, the 18N-type count in an offset half-open strip, and Corollary 1.2(iv) (H_q against
+    H_0 + i omega q to 1e-13).
 
 Places where I am not fully certain, for the second reader:
 

@@ -167,3 +167,51 @@ max max_c eta_c <= 1: 1.0000000e+00 at cable_piece: PASS
 ```
 
 The smallest r_un min_c eta_c, 1.0503347e-6 on the piece [35/32768, 43/32768], exceeds 1.05e-6 by about 0.03 per cent.
+
+## Nits applied (2026-10-02)
+
+After the paper was set to ready, the drafting session went through the confirmed nits of this reading and of the
+conformance audit against the released papers (`notes/handoff-2026-10-02/conformance-audit.json`), checked each
+against the current files, and applied the ones not yet done. No number, theorem statement or hashed file changed,
+and the PDF still has 45 pages. These edits have not been read by a further reader.
+
+Changed:
+
+- Manuscript: the header comment no longer says "status: draft"; Section 8 is titled "Reproducibility", and its two
+  trust paragraphs are named "Trust base of the Fourier route" and "Trust base of the CAPD route"; the abstract says
+  the parameter is 1.46 per cent below "the first supercritical Hopf point he computed numerically" (Erhardt's
+  Table 2), and the README abstract matches; Section 9 is four paragraphs ("What is not proved", "Sources of the
+  proofs", "The searches", "What has been checked") instead of an itemized list, with every sentence kept and only
+  "None of them" written as "None of the background sources". `notes/QUALITY.md` item 4 quotes the new heading.
+- `code/fourier/LEMMAS-stability.md` (not hashed by any record): the toy model is no longer cited by a scratchpad
+  path; the text says its program is not in this folder.
+- `README.md`: says that the prototypes `rw_fourier.py` and `hill.py` cited by the lemma file are in the study's
+  folder and not copied here, and that the toy model's program is not kept.
+- The note of this paper in the project's list of papers: `code/fourier/LEMMAS-stability.md` is named as the one copy
+  that differs from the study's file, and the Appendix A reading is listed.
+- The table above gives the wrong "done" text for two findings that share an id with a finding of another part:
+  N3 (stability-proofs) and N7 (numbers). Both are fixed in the current text: Lemma 5.13 introduces n_c, the column
+  sums beta of V^{-1} and the bound on b_m in its statement, and the "Weak coupling" bullet of Remark 7.1 uses the
+  normalization of the "Predictions" bullet (3.2e-2, the 3.2 per cent above).
+
+Already done in the current files, so not changed: E4, E5, E7, E8 (the README note), N4 to N8 of the stability part,
+N6, N8 and N9 of the numbers part, F14, F15, R3-CAPD-7 (the stated alternative), R3-CAPD-9, R3-CAPD-11 and R3-CAPD-13;
+and of the audit the MSC order, the shorter abstract, the Izhikevich entry, the bl2026 and es2022 entries, the review/
+paths, the note on `data/fourier-review-status.json`, "license" in NOTICE, the install line, the lemma file's
+reference to the lemma review, Table 3 (five columns, the empty cable cell explained, the caption path breakable by
+`\allowbreak` like the paper's other captions), "per ms" in the Table 2 caption, "centered" and "per cent".
+
+Skipped:
+
+- R3-CAPD-4, the rest: a note recording a rerun of `existence.py` with the thread variables unset. That rerun was
+  not made, so no result is stated.
+- E8, the regeneration of the record's theorem string: `alln.py` is hashed by the record, and the record is program
+  output.
+- R3-CAPD-11, the optional edit of the comment in `code/proofs/verify.cpp`: the CAPD record hashes that file.
+- N7 (stability-proofs), the conformance item on the lemma file's first lines, and E8's README note, in the study's
+  copies outside this paper's folder: not in the scope of this pass.
+- Optional items left as they are: bibliography entries for FLINT, python-flint and mpmath (most released papers have
+  none); `\cdot` instead of `\times` before powers of ten (uniform `\times` is acceptable); "labelled"; the abstract's
+  last sentence on the Hopf branch.
+- The audit's item on `docs/PUBLISHING-PAPERS.md` (a second reader in the field): it asks for no change to this paper,
+  and none was made.

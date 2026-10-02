@@ -10,8 +10,8 @@ in [`review/`](review/README.md); none is an outside review.
 ## Abstract
 
 We give computer-assisted proofs for Erhardt's 18-state modification of the ten Tusscher-Panfilov 2006 endocardial
-ventricular cell model at slow delayed rectifier conductance G_Ks = 0.0275 nS/pF, 1.46 per cent below his numerically
-computed Hopf point. Rings of N identical cells, coupled diffusively through the voltage with strength N^2/64000 per ms,
+ventricular cell model at slow delayed rectifier conductance G_Ks = 0.0275 nS/pF, 1.46 per cent below the first
+supercritical Hopf point he computed numerically. Rings of N identical cells, coupled diffusively through the voltage with strength N^2/64000 per ms,
 discretize the cable u_t = f(u) + D u_xx, D = 1/64000 per ms, on a ring of length 1. Rotating waves there are expected
 from equivariant Hopf theory; we prove them at explicit parameters.
 
@@ -128,7 +128,9 @@ repository; and its `check` command, `python3 fourier/check_records.py`, is the 
 runs in a scratch copy of `code/` with the records of `data/` copied to `results/`. The seed orbit
 `code/fourier/data/orbit_N1_M64.json` names its source as a scratchpad run of a non-rigorous prototype that is not
 copied here; it is used only as the starting guess of the untrusted Newton iteration and as test points, never as a
-bound.
+bound. The prototypes `rw_fourier.py` and `hill.py` cited in section 1 of `code/fourier/LEMMAS-stability.md` are in
+the study's folder `prototypes/fourier-feasibility/` and are not copied here either, and the toy model cited there was
+a scratch check, not part of any proof, whose program is not kept.
 
 | Folder | What is in it |
 |---|---|
