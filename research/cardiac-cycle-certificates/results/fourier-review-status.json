@@ -13,7 +13,6 @@
  ],
  "findings_unsound": 0,
  "remaining": [
-  "Kato theorem and section numbers in LEMMAS-stability.md to be confirmed against a copy",
   "deleting the S_J tail term of Stage E and a few negligible Stage S terms cannot be detected by any test (documented in the tests)",
   "identification of these waves with the branch continued from Erhardt's Hopf point is numerical",
   "source hashes are taken after import (a tiny window, N3 of the second reading)"
