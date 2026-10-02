@@ -338,7 +338,7 @@ def crossing_times(z0, n_cross, level, tmax):
     return sol.t_events[0][:n_cross]
 
 
-def direct_kick(om, a, theta0, eps, n_list):
+def direct_kick(om, a, theta0, eps, n_list, mu_slow):
     """Finite-difference phase response: shift of the n-th upward crossing of V = level after a V kick of +-eps."""
     T = 2 * np.pi / om
     K = (a.shape[1] - 1) // 2
@@ -356,7 +356,13 @@ def direct_kick(om, a, theta0, eps, n_list):
     for n in n_list:
         dt = (tp[n] - tm[n]) / (2 * eps)            # d(crossing time)/d(kick), ms per scaled unit
         out.append(dict(n=n, dtheta_dzV=float(-om * dt)))  # phase advance = -omega dt
-    return out
+    # extrapolation n -> infinity assuming the remainder is dominated by the slowest cell multiplier mu_slow:
+    # Delta_n = Z_V + A mu^n  =>  Z_V = (Delta_n2 - mu^(n2 - n1) Delta_n1) / (1 - mu^(n2 - n1))
+    ext = []
+    for (n1, d1), (n2, d2) in zip([(o["n"], o["dtheta_dzV"]) for o in out[:-1]], [(o["n"], o["dtheta_dzV"]) for o in out[1:]]):
+        r = mu_slow ** (n2 - n1)
+        ext.append(dict(n1=n1, n2=n2, extrapolated=float((d2 - r * d1) / (1 - r))))
+    return out, ext
 
 
 # ------------------------------------------------------------------------------------------- main
@@ -577,10 +583,13 @@ def main():
         log(f"FD monodromy theta0={theta0:.3f}: Z_V spectral {Zs_[IV]:.8e} fd {fd['Z_theta'][IV]:.8e} rel {checks[-1]['rel_err_V']:.2e}; "
             f"all comps {err:.2e}; top |mu| {fd['cell_multipliers_top'][:2]}")
     kicks = []
+    mu_slow = checks[0]["cell_multipliers_top_moduli"][0]
     for theta0 in (np.pi / 2, np.pi):
-        dk = direct_kick(om1, a1, theta0, 1e-4, [1, 5, 20, 60])
-        kicks.append(dict(theta0=theta0, Z_spectral_V=float(Z_at(zeta, theta0)[IV]), kick_eps_scaled=1e-4, shifts=dk))
-        log(f"direct kick theta0={theta0:.3f}: spectral {Z_at(zeta, theta0)[IV]:.6e}; ", [(d['n'], f"{d['dtheta_dzV']:.6e}") for d in dk])
+        dk, ext = direct_kick(om1, a1, theta0, 1e-4, [1, 5, 20, 40, 60], mu_slow)
+        kicks.append(dict(theta0=theta0, Z_spectral_V=float(Z_at(zeta, theta0)[IV]), kick_eps_scaled=1e-4, shifts=dk,
+                          extrapolated_with_slowest_multiplier=ext, mu_slow=mu_slow))
+        log(f"direct kick theta0={theta0:.3f}: spectral {Z_at(zeta, theta0)[IV]:.6e}; ",
+            [(d['n'], f"{d['dtheta_dzV']:.6e}") for d in dk], [(e['n1'], e['n2'], f"{e['extrapolated']:.6e}") for e in ext])
     rec["Z_crosscheck"] = dict(
         fd_monodromy=checks,
         fd_method="central differences (h = 1e-5, scaled units) of the DOP853 flow over one period T1 (rtol 1e-12, "
