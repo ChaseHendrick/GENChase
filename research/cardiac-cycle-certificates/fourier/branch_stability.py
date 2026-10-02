@@ -793,10 +793,12 @@ def _certify_uniform(U, st, controls, log, prec):
         SC_worst_ratio_near_axis=max(ratio[j] for j in near) if near else None,
         critical_columns=[dict(lam=[float(lam[j].real), float(lam[j].imag)], dist=float(distU[j]), ratio=ratio[j],
                                W0=float(csW0[j]), hW1=float(hU * csW1[j]), h2W2=float(h2 * csW2[j]),
-                               h3W3=float(h3 * csW3[j]), ball=float(csT[0, j]), fm=float(fm[j]), r=float(r_j[j]))
+                               h3W3=float(h3 * csW3[j]), ball=float(csT[0, j]), fm=float(fm[j]), r=float(r_j[j]),
+                               **({"h4W4": float(h2 * h2 * csW4[j])} if csW4 is not None else {}))
                           for j in crit],
         sanity_trivial_eigenvector_residual=sanity, tail_by_residue=tail,
-        multiplier_bound_full_period=bound_rec(mult_T), controls=controls or None)
+        multiplier_bound_full_period=bound_rec(mult_T), controls=controls or None,
+        **({"quadratic_in_d": True} if quad else {}))
     if controls.get("dump"):
         out["internals"] = dict(lam=lam, L1=L1f, V0=V0f, V1=V1f, Vi0=Vi0f, Vi1=Vi1f, e=e, Ke=Ke, crit=crit,
                                 wj=[float(v) for v in wj], fm=[float(v) for v in fm], h=float(hU))
