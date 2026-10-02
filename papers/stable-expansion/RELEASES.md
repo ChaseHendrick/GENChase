@@ -5,6 +5,8 @@ peer reviewed.
 
 ## 1.0.5 (2026-10-02)
 
+**DOI:** [10.5281/zenodo.23096191](https://doi.org/10.5281/zenodo.23096191). Publication / Preprint.
+
 Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. The title-page date line is removed, and the PDF is built with Tectonic. The table of programs and the data availability paragraph now list `plot_stable_expansion.py`, which draws the convergence figure from stored samples and checks nothing. The rights paragraph follows the statement on the use of AI. The two companion papers are cited by their Zenodo concept DOIs, and Yudovich (1963) gains its English translation (USSR Comput. Math. Math. Phys. 3 (1963) 1407-1456) with its DOI. Numerical inputs, proof programs, certificates and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 
 ## 1.0.4 (2026-09-30)

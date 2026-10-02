@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.4 archived on Zenodo with its programs ([doi:10.5281/zenodo.23050586](https://doi.org/10.5281/zenodo.23050586)); release 1.0.0 remains at [doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835). Not peer reviewed. Three independent referee readings were made in the project: the first recommended major revision and the second
+**Preprint**, release 1.0.5 archived on Zenodo with its programs ([doi:10.5281/zenodo.23096200](https://doi.org/10.5281/zenodo.23096200)); release 1.0.0 remains at [doi:10.5281/zenodo.22994835](https://doi.org/10.5281/zenodo.22994835). Not peer reviewed. Three independent referee readings were made in the project: the first recommended major revision and the second
 and third recommended minor revision. The fixes of the first two are applied; of the third, the findings that
 further readers confirmed are fixed and the others are answered. The fixes of the third have not been read again.
 The review reports remain in the development records and are not included in this companion archive.

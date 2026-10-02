@@ -23,6 +23,12 @@ import zipfile
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def awaiting_first_archive(paper):
+    # A companion registered before its first release has no archive to verify yet. Only an entry
+    # with neither field counts; one field without the other is an error that audit() reports.
+    return not paper.get("codeDoi") and paper.get("archiveVersion") is None
+
+
 def valid_archive_version(version):
     # New companion release versions use a plain semver core, without a leading v.
     return isinstance(version, str) and re.fullmatch(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)", version) is not None
@@ -124,7 +130,13 @@ def self_test():
         with patch(__name__ + ".ROOT", root), patch(__name__ + ".urlopen", side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
             assert audit(fixture_paper)["ok"]
         version_controls += 1
-    print(f"Publication metadata self-test passed: 13 existing checks and {version_controls} version controls, including matching ZIPs at wrong versions")
+    pending_controls = 0
+    for entry, pending in (({"id": "new"}, True), ({"id": "new", "codeDoi": None, "archiveVersion": None}, True),
+                           ({"id": "x", "codeDoi": "10.5281/zenodo.1"}, False), ({"id": "x", "archiveVersion": "1.0.0"}, False),
+                           ({"id": "x", "archiveVersion": ""}, False), (paper, False)):
+        assert awaiting_first_archive(entry) == pending
+        pending_controls += 1
+    print(f"Publication metadata self-test passed: 13 existing checks, {version_controls} version controls, including matching ZIPs at wrong versions, and {pending_controls} first-release controls")
     return 0
 
 
@@ -185,9 +197,12 @@ def main():
               if p.get("companion") and (not args.paper or p["id"] == args.paper)]
     if not papers:
         parser.error("no matching companion")
+    pending = [p for p in papers if awaiting_first_archive(p)]
+    papers = [p for p in papers if not awaiting_first_archive(p)]
     with ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(audit, papers))
-    report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "papers": results}
+    report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "papers": results,
+              "awaitingFirstArchive": [p["id"] for p in pending]}
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(report, indent=2) + "\n")
@@ -195,6 +210,8 @@ def main():
         print(("PASS" if result["ok"] else "FAIL") + " " + result["paper"] + " " + str(result["doi"]) +
               (": " + result["error"] if "error" in result else
                ": archive version " + str(result.get("version")) + " differs from " + str(result["expectedVersion"]) if not result["versionMatches"] else ""))
+    for paper in pending:
+        print("SKIP " + paper["id"] + ": companion registered, no archive yet (first release pending)")
     return 0 if all(r["ok"] for r in results) else 1
 
 

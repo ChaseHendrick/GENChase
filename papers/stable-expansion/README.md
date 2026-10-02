@@ -2,7 +2,7 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.4 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23050580](https://doi.org/10.5281/zenodo.23050580)); release 1.0.0 remains at [doi:10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173). Not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
+**Preprint**, release 1.0.5 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23096191](https://doi.org/10.5281/zenodo.23096191)); release 1.0.0 remains at [doi:10.5281/zenodo.22971173](https://doi.org/10.5281/zenodo.22971173). Not peer reviewed. It uses the certification modules of *Minimal Winding in the Self-Similar Collapse of
 Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendrick/minimal-winding),
 [doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796)).
 
@@ -92,7 +92,7 @@ Until the paper is published in a journal:
   title  = {Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches},
   year   = {2026},
   note   = {Preprint},
-  doi    = {10.5281/zenodo.23050580},
+  doi    = {10.5281/zenodo.23096191},
   url    = {https://github.com/ChaseHendrick/stable-expansion}
 }
 ```
