@@ -1853,3 +1853,219 @@ def piece_blocks(C, e_lo, e_hi, cov, *, settings=None, log=print, label=None):
                 TgZ=TgZ, cov=cov, label=label, settings=st,
                 tail=dict(m_max=tail["m_max"], theta=float(up(tail["theta"]))), timings_s=marks,
                 wall_s=round(time.time() - t0, 1), box_evals=[sp1.n_evals, sp2.n_evals, sp3.n_evals])
+
+
+def _rows_of(bl_ff, bl_ft, Tw, Tc_, Tg_, E, drop_tail=False):
+    """(1/eta_c) sum_c' eta_c' B[c][c'] for the block bound B = finite x finite (with finite x tail for w inputs,
+    max of the two) + tail rows (T: w -> w, Tc: c -> w, Tg: g -> w)."""
+    out = []
+    for c in range(NC):
+        tl = c >= CW and not drop_tail
+        s_ = E[0] * bl_ff[c][0] + E[1] * (bl_ff[c][1] + (Tg_[c - CW] if tl else 0))
+        for k in range(DIM):
+            s_ += E[CC + k] * (bl_ff[c][CC + k] + (Tc_[c - CW][k] if tl else 0))
+            s_ += E[CW + k] * (amax(bl_ff[c][CW + k], bl_ft[c][k]) + (Tw[c - CW][k] if tl else 0))
+        out.append(up(s_ / E[c]))
+    return out
+
+
+def assemble(bl, eta, r_star, *, log=print, _mutate=()):
+    """The radii polynomial on the piece with weights eta (38 exact dyadics: omega, g, c_0..c_17, w_0..w_17) and the
+    Z2 validity radius r_star (LEMMAS-hopf.md, Lemmas B2, B3). Raises ProofFailure (with .diag) if an inequality is not
+    certified. _mutate (tests only): 'drop_curve' omits delta Y1, delta^2/2 Y2 and delta Zc (the parameter width);
+    'drop_cauchy' omits the 1/(T - e_hi) terms of Z2; 'drop_tail' omits the tail-row blocks."""
+    mut = frozenset(_mutate)
+    if mut - {"drop_curve", "drop_cauchy", "drop_tail"}:
+        raise ValueError(f"unknown mutation {sorted(mut)}")
+    if len(eta) != NC:
+        raise ValueError(f"eta needs {NC} entries")
+    cov = bl["cov"]
+    old = ctx.prec
+    ctx.prec = int(bl["settings"]["prec_Q"])
+    try:
+        E = [_arb_q(e) for e in eta]
+        for e in E:
+            if not (e.is_exact() and e > 0):
+                raise ValueError("eta must be exact positive dyadics")
+        rs = up(_arb_q(r_star))
+        e_om, e_g = E[0], E[1]
+        ec = [E[CC + k] for k in range(DIM)]
+        ew = [E[CW + k] for k in range(DIM)]
+        Q2, ehi, Tm = bl["Q2"], bl["ehiB"], bl["Tm"]
+        delta = arb(0) if "drop_curve" in mut else bl["delta"]
+        dt = "drop_tail" in mut
+        NA, NA1, Ab0, Ab1 = bl["NA"], bl["NA1"], bl["Abar0"], bl["Abar1"]
+        Z1c_rows = _rows_of(bl["Z1_ff"], bl["Z1_ft"], bl["T"], bl["Tc"], bl["Tg"], E, dt)
+        Zc_rows = _rows_of(bl["Zc_ff"], bl["Zc_ft"], bl["TZ"], bl["TcZ"], bl["TgZ"], E, dt)
+        Z1_rows = [up(Z1c_rows[c] + delta * Zc_rows[c]) for c in range(NC)]
+        Z1 = amax_list(Z1_rows)
+        Y0_rows = [up((bl["Y0p"][c] + delta * bl["Y1"][c] + delta * delta / 2 * bl["Y2"][c]) / E[c]) for c in range(NC)]
+        Y0 = amax_list(Y0_rows)
+
+        def through_A(v0, vE, v1):
+            rows = []
+            for c in range(NC):
+                s = arb(0)
+                for k in range(DIM):
+                    s += NA[c][CC + k] * v0[k]
+                    s += (NA[c][CW + k] + (Ab0[c - CW][k] if c >= CW else 0)) * vE[k]
+                    s += (NA1[c][CW + k] + (Ab1[c - CW][k] if c >= CW else 0)) * v1[k]
+                rows.append(up(s / E[c]))
+            return rows
+        # ---- Z2 (Lemma B3)
+        tau = [ec[l] + ehi * ew[l] for l in range(DIM)]
+        P = arb(1)
+        for l in range(DIM):
+            t = tau[l] * rs
+            if not t < cov.R[l]:
+                raise ProofFailure(f"tau_{l} r_* is not < R_{l}")
+            P = P * cov.R[l] / (cov.R[l] - t)
+        if not e_g * rs <= cov.G_R:
+            raise ProofFailure("eta_g r_* exceeds the cover's g radius")
+        P = up(P)
+        cauchy = arb(0) if "drop_cauchy" in mut else 1 / Tm
+        aJ = [[up(Q2 * P * (sum((cov.H(k, j, l) * tau[l] for l in range(DIM)), arb(0)) + cov.MG[k][j] * e_g))
+               for j in range(DIM)] for k in range(DIM)]
+        W0, WE = [], []
+        for k in range(DIM):
+            mgt = sum((cov.MG[k][l] * tau[l] for l in range(DIM)), arb(0))
+            mgw = sum((cov.MG[k][l] * ew[l] for l in range(DIM)), arb(0))
+            W0.append(up(sum((aJ[k][j] * (ec[j] + ehi * ew[j]) for j in range(DIM)), arb(0)) + e_g * Q2 * P * mgt))
+            s = sum((aJ[k][j] * ew[j] for j in range(DIM)), arb(0))
+            for j in range(DIM):
+                hw = sum((cov.H(k, j, l) * ew[l] for l in range(DIM)), arb(0))
+                s += (Q2 * P * hw + aJ[k][j] * cauchy) * ec[j]
+            s += e_g * Q2 * P * (mgw + mgt * cauchy)
+            WE.append(up(s))
+        v1 = [up(2 * e_om * ew[k]) for k in range(DIM)]
+        Z2_rows = through_A(W0, WE, v1)
+        Z2 = amax_list(Z2_rows)
+        diag = dict(Y0=float(Y0), Z1=float(Z1), Z2=float(Z2), Z1c=float(amax_list(Z1c_rows)),
+                    Zc=float(amax_list(Zc_rows)), Y0p=float(amax_list([up(bl["Y0p"][c] / E[c]) for c in range(NC)])),
+                    Y1=float(amax_list([up(bl["Y1"][c] / E[c]) for c in range(NC)])),
+                    Y2=float(amax_list([up(bl["Y2"][c] / E[c]) for c in range(NC)])), P=float(P),
+                    r_star=float(rs), delta=float(bl["delta"]))
+        res = ex._radii(Y0, Z1, Z2, rs)
+        if res is None:
+            err = ProofFailure(f"radii polynomial not negative on [{bl['e_lo']}, {bl['e_hi']}]: Y0 = {float(Y0):.3e}, "
+                               f"Z1 = {float(Z1):.4f}, Z2 = {float(Z2):.3e}, r_* = {float(rs):.3e}")
+            err.diag = diag
+            raise err
+        r_lo, r_hi = res
+        C = bl["C"]
+        # enclosures over the piece: omega(xi), g(xi) on the centre line plus the existence radius
+        dl = bl["delta"]
+        om_ball = C.om + up(dl * C.tom.abs_upper() + e_om * r_lo) * arb(0, 1)
+        g_ball = C.g + up(dl * C.tg.abs_upper() + e_g * r_lo) * arb(0, 1)
+        if not om_ball > 0:
+            raise ProofFailure("omega not certainly positive")
+        Tball = 2 * arb.pi() / om_ball
+        log(f"  [{float(Fraction(bl['e_lo'])):.6f}, {float(Fraction(bl['e_hi'])):.6f}]: Y0 = {float(Y0):.3e} "
+            f"(p {diag['Y0p']:.1e}, Y1 {diag['Y1']:.1e}, Y2 {diag['Y2']:.2e}), Z1 = {float(Z1):.4f} "
+            f"(c {diag['Z1c']:.3f}, curve {diag['Zc']:.2f}), Z2 = {float(Z2):.3e}, r = [{float(r_lo):.3e}, {float(r_hi):.3e}]")
+        out = dict(e_lo=bl["e_lo"], e_hi=bl["e_hi"], e_c=bl["e_c"], label=bl["label"], K=bl["K"], Kprime=bl["Kp"],
+                   M=bl["M"], centre_sha256=C.digest(), cover=cov.digest, eta=[str(e) for e in eta],
+                   r_star=bound_rec(rs), Y0=bound_rec(Y0), Z1=bound_rec(Z1), Z2=bound_rec(Z2),
+                   r_existence=bound_rec(r_lo), r_uniqueness=bound_rec(r_hi),
+                   p_at_r_existence=bound_rec(Y0 + (Z1 - 1) * r_lo + Z2 * r_lo * r_lo / 2),
+                   p_at_r_uniqueness=bound_rec(Y0 + (Z1 - 1) * r_hi + Z2 * r_hi * r_hi / 2),
+                   contraction_at_r_uniqueness=bound_rec(Z1 + Z2 * r_hi),
+                   g={"lower": bound_rec(lo(g_ball), "down"), "upper": bound_rec(up(g_ball), "up")},
+                   omega={"lower": bound_rec(lo(om_ball), "down"), "upper": bound_rec(up(om_ball), "up")},
+                   T_ms={"lower": bound_rec(lo(Tball), "down"), "upper": bound_rec(up(Tball), "up")},
+                   diag=diag, tail=bl["tail"], timings_s=bl["timings_s"], wall_s=bl["wall_s"],
+                   box_evals=bl["box_evals"])
+        if mut:
+            out["MUTATED"] = sorted(mut)
+        out["_obj"] = dict(C=C, E=E, r_lo=r_lo, r_hi=r_hi, nu=bl["nu"])
+    finally:
+        ctx.prec = old
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ float weight search
+def _fl(M):
+    return np.array([[float(x) for x in row] for row in M])
+
+
+class BlocksFloat:
+    """Float images of the weight-free blocks (for choosing eta and r_*; never a bound)."""
+
+    def __init__(self, bl):
+        cov = bl["cov"]
+
+        def blk(ff, ft, Tw, Tc_, Tg_):
+            B = _fl(ff)
+            B[:, CW:] = np.maximum(B[:, CW:], _fl(ft))
+            B[CW:, CW:] += _fl(Tw)
+            B[CW:, CC:CW] += _fl(Tc_)
+            B[CW:, 1] += np.array([float(v) for v in Tg_])
+            return B
+        self.B = blk(bl["Z1_ff"], bl["Z1_ft"], bl["T"], bl["Tc"], bl["Tg"])
+        self.Bc = blk(bl["Zc_ff"], bl["Zc_ft"], bl["TZ"], bl["TcZ"], bl["TgZ"])
+        NA, NA1 = _fl(bl["NA"]), _fl(bl["NA1"])
+        Ab0, Ab1 = _fl(bl["Abar0"]), _fl(bl["Abar1"])
+        self.Y0p = np.array([float(v) for v in bl["Y0p"]])
+        self.Y1 = np.array([float(v) for v in bl["Y1"]])
+        self.Y2 = np.array([float(v) for v in bl["Y2"]])
+        self.MH = np.zeros((DIM, DIM, DIM))
+        for k in range(DIM):
+            for p_, (j, l) in enumerate(HP):
+                self.MH[k, j, l] = self.MH[k, l, j] = float(cov.MH[k][p_])
+        self.MG = _fl(cov.MG)
+        self.R = np.array([float(r) for r in cov.R])
+        self.GR = float(cov.G_R)
+        self.Q2, self.ehi, self.Tm, self.delta = float(bl["Q2"]), float(bl["ehiB"]), float(bl["Tm"]), float(bl["delta"])
+        NAt = NA.copy()
+        NAt[CW:, CW:] += Ab0
+        self.NA0 = NA[:, CC:CW]
+        self.NAE = NAt[:, CW:]
+        NA1t = NA1.copy()
+        NA1t[CW:, CW:] += Ab1
+        self.NA1E = NA1t[:, CW:]
+
+    def evaluate(self, eta, rstar, delta=None):
+        delta = self.delta if delta is None else delta
+        ec, ew, eg, eom = eta[CC:CW], eta[CW:], eta[1], eta[0]
+        Z1 = np.max((self.B @ eta) / eta + delta * (self.Bc @ eta) / eta)
+        Y0 = np.max((self.Y0p + delta * self.Y1 + delta ** 2 / 2 * self.Y2) / eta)
+        tau = ec + self.ehi * ew
+        if not (np.all(tau * rstar < self.R) and eg * rstar <= self.GR):
+            return dict(Y0=Y0, Z1=Z1, Z2=np.inf)
+        P = np.prod(self.R / (self.R - tau * rstar))
+        aJ = self.Q2 * P * (np.einsum("kjl,l->kj", self.MH, tau) + self.MG * eg)
+        W0 = aJ @ (ec + self.ehi * ew) + eg * self.Q2 * P * (self.MG @ tau)
+        hw = np.einsum("kjl,l->kj", self.MH, ew)
+        WE = aJ @ ew + (self.Q2 * P * hw + aJ / self.Tm) @ ec + eg * self.Q2 * P * (self.MG @ ew + (self.MG @ tau) / self.Tm)
+        Z2 = np.max((self.NA0 @ W0 + self.NAE @ WE + self.NA1E @ (2 * eom * ew)) / eta)
+        return dict(Y0=Y0, Z1=Z1, Z2=Z2, P=P)
+
+    def ok(self, eta, rstar, delta=None, margin=1.05):
+        d = self.evaluate(eta, rstar, delta)
+        if not (d["Z1"] < 1 and np.isfinite(d["Z2"])):
+            return False
+        disc = (1 - d["Z1"]) ** 2 - 2 * d["Y0"] * d["Z2"] * margin
+        if disc <= 0:
+            return False
+        r1 = 2 * d["Y0"] * margin / ((1 - d["Z1"]) + math.sqrt(disc))
+        return r1 < rstar
+
+    def admissible(self, eta, rstar):
+        lo_, hi_ = 0.0, 0.2
+        for _ in range(30):
+            mid = 0.5 * (lo_ + hi_)
+            lo_, hi_ = (mid, hi_) if self.ok(eta, rstar, mid) else (lo_, mid)
+        return lo_
+
+    def search(self, eta0, rstar, iters=600, seed=0):
+        rng = np.random.default_rng(seed)
+        eta = np.array(eta0, float)
+        best = self.admissible(eta, rstar)
+        for _ in range(iters):
+            c = rng.integers(NC)
+            e2 = eta.copy()
+            e2[c] *= math.exp(rng.normal() * 0.8)
+            v = self.admissible(e2, rstar)
+            if v > best:
+                best, eta = v, e2
+        return eta / eta.max(), best
