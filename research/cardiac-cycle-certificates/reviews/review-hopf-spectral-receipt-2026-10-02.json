@@ -1,0 +1,59 @@
+{
+ "independent_in_project_review": true,
+ "scope": "bounded read-only source controls, not final certificate acceptance",
+ "control_output": {
+  "source_sha256": {
+   "fourier/hopf.py": "8a15177c088c5ba089fad3bae78ef6fa20366a40ca4800d5a5ea99aeb8da7f60",
+   "fourier/test_hopf.py": "fa1d1bf782ef9e02e91b389b4c251374ac92c279443d44bf29a85d195878af82",
+   "fourier/LEMMAS-hopf.md": "d5de4f2abcf7a54589688c310243720cf2a9a99504f09284b1c01a98a85653fb",
+   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+   "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+   "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+   "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+   "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+   "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+   "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+   "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+  },
+  "sampled_spectral_controls": [
+   {
+    "where": "left",
+    "critical_re": "[5.5775e-9 +/- 2.35e-14]",
+    "critical_im_lower": "[0.119341399332532 +/- 5.29e-17]",
+    "stable_abs_im_upper": "[0.0317564166172538 +/- 4.67e-18]",
+    "conjugate_exclusion": true
+   },
+   {
+    "where": "central",
+    "critical_re": "[+/- 4.72e-12]",
+    "critical_im_lower": "[0.119341401778120 +/- 3.49e-16]",
+    "stable_abs_im_upper": "[0.0317564165399921 +/- 2.18e-18]",
+    "conjugate_exclusion": true
+   },
+   {
+    "where": "right",
+    "critical_re": "[-5.5775e-9 +/- 2.80e-14]",
+    "critical_im_lower": "[0.119341404233091 +/- 3.17e-16]",
+    "stable_abs_im_upper": "[0.0317564164384995 +/- 4.56e-18]",
+    "conjugate_exclusion": true
+   }
+  ],
+  "scope": "three local interval checks, not the full Theorem A cover"
+ },
+ "supervisor": {
+  "command": [
+   "/usr/bin/nice",
+   "-n",
+   "10",
+   "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+   "/private/tmp/cardiac-review-hopf-separation-2026-10-02.py"
+  ],
+  "pid": 33404,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 5.282474750187248,
+  "peak_aggregate_rss_mib": 78.765625,
+  "log": "/private/tmp/cardiac-review-hopf-separation-2026-10-02.log"
+ }
+}

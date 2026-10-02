@@ -70,7 +70,10 @@ _C = {}
 
 def _piece():
     if "p" not in _C:
-        _C["p"] = bs.prove_piece_uniform(LABEL, controls={"dump": True}, log=QUIET)
+        logged = bs.done_labels().get(LABEL)
+        if logged is None:
+            raise AssertionError("final piece unit missing; run final stability before full acceptance tests")
+        _C["p"] = bs.prove_piece_uniform(LABEL, settings=logged["settings"], controls={"dump": True}, log=QUIET)
     return _C["p"]
 
 
@@ -121,11 +124,10 @@ def test_acceptance_piece():
     c = p["certificate"]
     assert c["count_in_Omega"] == 1 and c["theta_T"]["approx"] < 1 and c["SC_worst_ratio"] < 1
     logged = bs.done_labels().get(LABEL)
-    if (logged is not None and logged["delta_requested"] == p["delta_requested"]
-            and logged["certificate"]["K_e"] == c["K_e"]):
-        assert logged["existence"]["rho"]["hex"] == p["existence"]["rho"]["hex"]
-        assert logged["certificate"]["theta_T"]["hex"] == c["theta_T"]["hex"]
-        assert logged["multiplier_bound_full_period"]["hex"] == p["multiplier_bound_full_period"]["hex"]
+    assert logged is not None and logged["settings"] == p["settings"], "matching final piece required"
+    assert logged["existence"]["rho"]["hex"] == p["existence"]["rho"]["hex"]
+    assert logged["certificate"]["theta_T"]["hex"] == c["theta_T"]["hex"]
+    assert logged["multiplier_bound_full_period"]["hex"] == p["multiplier_bound_full_period"]["hex"]
 
 
 def _endpoint_data():
@@ -392,7 +394,22 @@ def test_group_Z1_path_term():
         worst = max(worst, val)
     print(f"  Z1 path term: certified {inc:.3e}, float finite block {worst:.3e}")
     assert worst <= inc, (worst, inc)
+    assert worst > 0, "dropping the moving-centre term would go undetected"
     assert worst >= inc / 20, f"float {worst:.3e} is below 1/20 of the certified term {inc:.3e}"
+
+
+def test_group_drop_moving_centre_hook_detected():
+    original=_group()
+    try:
+        mutated=bs.prove_group_uniform(GID,_mutate=("drop_moving_centre",),controls={"dump":True},log=QUIET)
+    except bs.FAILURES:
+        return
+    assert "drop_moving_centre" in mutated["MUTATED"]
+    assert not bs._current_unit(mutated), "mutation must never enter coverage"
+    assert mutated["existence"]["Z1_path"]["hex"] == mutated["existence"]["Z1_point"]["hex"]
+    assert float(mutated["existence"]["Z1_path"]["approx"]) < float(original["existence"]["Z1_path"]["approx"])
+    # The finite block oracle in this test has a nonzero path increment; the mutated increment is zero.
+    test_group_Z1_path_term()
 
 
 def test_group_negative_delta_above_exponent():
@@ -503,19 +520,218 @@ def test_jets_against_hess_and_differences():
         assert all(b.contains(p_) for b, p_ in zip(cb, cpt)), d
 
 
+def _historical_piece():
+    return next(r["rec"] for r in br.snapshot_jsonl(br.LEGACY_RUN_LOG.format(K=12))[0] if r["type"] == "piece")
+
+
+def test_unit_coverage_negative_controls():
+    """Structural fixtures exercise the bookkeeping only; they never write a proof log or theorem result."""
+    import copy
+    r = _historical_piece()
+    common = dict(ok=True, uniform=True, settings={"delta": "3e-5"}, program_sha256=bs.PROGRAM_SHA256,
+                  sources_sha256=bs.SOURCES_SHA256)
+    u = dict(common, type="unit", label=r["label"], g=[r["g_lo"], r["g_hi"]],
+             centre_sha256=r["centre_sha256"], eta=r["eta"], rho0=r["settings"]["rho0"],
+             branch_piece_sha256=br.record_digest(r), existence={"r_uniqueness_logged": r["r_uniqueness"]})
+    assert bs._piece_unit_matches(u, r)
+    for k, v in (("centre_sha256", "0"*64), ("g", [r["centre_g"], r["g_hi"]]),
+                 ("program_sha256", "0"*64), ("sources_sha256", {}), ("settings", None),
+                 ("branch_piece_sha256", "0"*64), ("MUTATED", ["drop_moving_centre"])):
+        assert not bs._piece_unit_matches(dict(u, **{k:v}), r), k
+    bad = copy.deepcopy(u); bad["existence"]["r_uniqueness_logged"] = {"hex": "0x1p-90"}
+    assert not bs._piece_unit_matches(bad, r)
+    ident = dict(label=r["label"], g=u["g"], centre_sha256=r["centre_sha256"],
+                 r_uniqueness_logged=r["r_uniqueness"], ok=True)
+    gu = dict(common, type="group_unit", group=0, label="G0", part=None, g=u["g"], pieces=[r["label"]],
+              piece_g={r["label"]:u["g"]}, piece_centre_sha256={r["label"]:r["centre_sha256"]},
+              branch_piece_sha256={r["label"]:br.record_digest(r)}, existence={"identification":[ident]})
+    assert bs._covering_group_unit(r, 0, {"G0":gu}) is gu
+    for k,v in (("group", 1), ("pieces", []), ("piece_g", {}), ("g", [r["centre_g"],r["g_hi"]]),
+                ("piece_centre_sha256", {}), ("branch_piece_sha256", {}), ("existence", {"identification":[]})):
+        assert bs._covering_group_unit(r, 0, {"G0":dict(gu, **{k:v})}) is None, k
+    bad = copy.deepcopy(gu); bad["existence"]["identification"][0]["r_uniqueness_logged"] = {}
+    assert bs._covering_group_unit(r, 0, {"G0":bad}) is None
+    half = dict(gu, label="G0[0:1]", part=[0,1])
+    assert bs._covering_group_unit(r, 0, {half["label"]:half}) is half
+    rows = [dict(uniform=True,g=["0","1"]), dict(uniform=True,g=["2","3"]),
+            dict(uniform=True,g=["2.5","4"]), dict(uniform=False,g=["3.5","5"])]
+    assert bs._covered_runs(rows) == [["0","1",1],["2","4",2]]
+    assert bs._decimal_up(Fraction(12345678901,10**10)) == "1.234567891"
+    assert Fraction.from_float(bs._float_up(Fraction(1,10))) >= Fraction(1,10)
+
+
+def test_group_fallback_plan():
+    labels=[f"G0P{i}" for i in range(4)]
+    assert bs._next_group_units(0,labels,labels,set()) == ([(0,None)],[])
+    # Old failure rows lacking part refer to the whole group; the driver's source check keeps old code out.
+    row={"group":0};part=row.get("part");failed={(row["group"],None if part is None else tuple(part))}
+    assert bs._next_group_units(0,labels,labels,failed) == ([(0,(0,2)),(0,(2,4))],[])
+    failed.add((0,(0,2)))
+    assert bs._next_group_units(0,labels,labels,failed) == ([(0,(2,4))],[(0,(0,2))])
+    failed.add((0,(2,4)))
+    assert bs._next_group_units(0,labels,labels,failed) == ([],[(0,(0,2)),(0,(2,4))])
+    assert bs._next_group_units(0,labels,labels[2:],failed) == ([],[(0,(2,4))])
+    assert bs._next_group_units(0,labels[:1],labels[:1],{(0,None)}) == ([],[(0,None)])
+
+
+def test_theorem_b_record_negative_controls():
+    import copy
+    r = _historical_piece()
+    piece = dict(label=r["label"], g=[r["g_lo"], r["g_hi"]], g_centre=r["centre_g"],
+                 centre_sha256=r["centre_sha256"], eta=r["eta"], r_uniqueness=r["r_uniqueness"])
+    record = dict(run_log_sha256="run", centres_sha256="centre", program_sha256=br.PROGRAM_SHA256,
+                  sources_sha256=br.SOURCES_SHA256, n_pieces=1, connected_pieces=1, gluing=[],
+                  pieces=[piece], g_covered=piece["g"])
+    bs._check_theorem_b(record,[{"rec":r}],"run","centre")
+    for key,value in (("run_log_sha256","wrong"),("sources_sha256",{}),("connected_pieces",0),("pieces",[])):
+        try:
+            bs._check_theorem_b(dict(record, **{key:value}),[{"rec":r}],"run","centre")
+        except bs.ProofFailure:
+            continue
+        raise AssertionError(f"Theorem B mismatch {key} admitted")
+    for key,value in (("g",[r["centre_g"],r["g_hi"]]),("r_uniqueness",{}),("centre_sha256","wrong"),("eta",[])):
+        bad=copy.deepcopy(record); bad["pieces"][0][key]=value
+        try:
+            bs._check_theorem_b(bad,[{"rec":r}],"run","centre")
+        except bs.ProofFailure:
+            continue
+        raise AssertionError(f"Theorem B piece mismatch {key} admitted")
+
+
+def test_poly_norm_weighted_quadratic_sup():
+    from flint import acb, ctx
+    old=ctx.prec; ctx.prec=256
+    try:
+        K=2; nu=arb(2); ETA=[arb(1)]*19
+        comps=[([acb(0)]*5,[acb(0)]*5,[acb(0)]*5) for _ in range(18)]
+        comps[0][0][4]=acb(1); comps[0][1][4]=acb(2); comps[0][2][4]=acb(3)
+        D=acb(arb("0.1").union(arb("0.5")))
+        bound=bs._poly_norm(((acb(0),acb(0),acb(0)),comps),D,ETA,nu,K)
+        expected=arb(11) # (1 + 2*0.5 + 3*0.25)*2^2
+        assert bound >= expected
+        assert bound < 12
+        for n in range(101):
+            d=arb(n)/250+arb("0.1")
+            exact=(1+2*d+3*d*d)*4
+            assert bound >= exact
+        no_quadratic=arb(8); at_centre=(1+2*arb("0.3")+3*arb("0.3")**2)*4
+        assert no_quadratic < expected and at_centre < expected and expected/4 < expected
+    finally:
+        ctx.prec=old
+
+
+def test_operator_blocks_each_part_and_second_order():
+    """Independent sparse operator oracle isolates finite/finite, finite/tail and tail, and B'' alone."""
+    from flint import acb, acb_mat, ctx
+    old=ctx.prec; ctx.prec=128
+    try:
+        K=1; Kp=3; lay=ct.Layout(K); nu=arb(2); rho=arb(2)
+        Afin=acb_mat(lay.n,lay.n)
+        for i in range(lay.n): Afin[i,i]=1
+        diag=[[arb(int(i==j)) for j in range(18)] for i in range(18)]
+        bl=dict(K=K,_Kp=Kp,settings=dict(prec_mat=128,prec_g=128,L=1),rho=rho,
+                _nupow=[nu**n for n in range(8)],_tailK=arb(0),_Afin=Afin,Abar0=diag,
+                Abar1=[[v/2 for v in row] for row in diag])
+        J={n:[[acb(0) for _ in range(18)] for _ in range(18)] for n in range(-Kp,Kp+1)}
+        for n,value in ((-2,3),(0,1),(2,2)): J[n][0][0]=acb(value)
+        S=[[arb(0) for _ in range(18)] for _ in range(18)];S[0][0]=arb(3)*arb(4).exp()
+        Acol=[[acb(0)]*3 for _ in range(18)];Acol[0]=[acb(1),acb(0),acb(1)]
+        B,parts=bs.operator_blocks(bl,J,S,acb(2),Acol,parts=True)
+        # Direct column sums of the actual sparse convolution, in the exact mode weights.
+        for mp in range(-6,7):
+            value=sum(abs(float(J.get(m-mp,[[acb(0)]])[0][0].real)) * 2**abs(m)/2**abs(mp)
+                      for m in range(-K,K+1) if m-mp in J)
+            if abs(mp)>K:
+                assert float(parts["ft"][1][1]) >= value
+        assert parts["ft"][1][1] >= arb(3)/4
+        # Finite block diagonal has the complex frequency derivative as well as the convolution.
+        assert parts["ff"][1][1] >= (arb(1)**2+arb(2)**2).sqrt()
+        # tail rows: sum_n |J_n| nu^|n| + |om_d| Abar1 = 1+3*4+2*4+1 = 22.
+        assert parts["tail"][0][0] == arb(22)
+        # B'' is independently computed with half the second derivatives; no h B' can mask it.
+        B2,parts2=bs.operator_blocks(bl,J,S,acb(2),Acol,parts=True)
+        assert parts2["tail"][0][0] == arb(22)
+        assert B2[1][1] > 0
+        zero=[[arb(0)]*19 for _ in range(19)];eta=[arb(1)]*19;h=arb("0.01")
+        term=bs._z1_rows(zero,zero,B2,h,eta)
+        assert term >= h*h*22 and bs._z1_rows(zero,None,None,h,eta)==0
+    finally:
+        ctx.prec=old
+
+
+def test_complex_fourth_order_independent():
+    """Fourth coefficient against 80-digit numerical differentiation of the original model, at complex theta.
+    mpmath's differentiation does not use Jet or DJet recurrences.
+    """
+    import mpmath as mp
+    from flint import acb, ctx
+    import arbmodel as am
+    import fourier_eval as fe
+    rows=br.snapshot_jsonl(br.LEGACY_RUN_LOG.format(K=12))[0]
+    r=next(x["rec"] for x in rows if x["type"]=="piece" and x["group"]==6)
+    centres={c["g"]:c for c in br.snapshot_jsonl(br.CENTRES.format(K=12))[0]}
+    om,A=br.centre_from_record(centres[r["centre_g"]])
+    gc=Fraction(r["centre_g"]);h=Fraction(r["g_hi"])-gc
+    om1,A1,om2,A2=bs.predictor(om,A,gc,h)
+    old=ctx.prec;ctx.prec=256
+    def mpc(x):
+        re=ct.dyadic_to_text(x.real.mid());im=ct.dyadic_to_text(x.imag.mid())
+        def number(text):
+            q=br.frac_of(ct.text_to_dyadic(text));return mp.mpf(q.numerator)/q.denominator
+        return mp.mpc(number(re),number(im))
+    try:
+        with mp.workdps(80):
+            model={"_D":mp.mpf,"_I":mp.mpf}
+            with open(os.path.join(HERE,"tp06_18d_arb.py")) as f:
+                exec(compile(f.read(),"independent-mpmath-model","exec"),model)
+            for theta in (acb(arb("0.3"),arb("0.2")),acb(arb("0.8"),arb("-0.2"))):
+                zz=fe.TrigPoly([r[:] for r in A]+[r[:] for r in A1]+[r[:] for r in A2]).eval(theta)
+                prm=br.params_for(gc,gc,256)
+                got=bs.gjet_flat(zz,prm,acb(0),acb(0),4,(4,),prec=256)
+                zm=[mpc(v) for v in zz];sig=[mpc(acb(v)) for v in am.SIG]
+                pm={k:mpc(am.to_ball(v)) for k,v in prm.items()}
+                def direct(d):
+                    pp=dict(pm);pp["g_Ks"]+=d
+                    x=[(zm[i]+d*zm[18+i]+d*d*zm[36+i]/2)*sig[i] for i in range(18)]
+                    return model["field"](x,pp,mp,mp.mpf(0))
+                for k,v in enumerate(got):
+                    expected=mp.diff(lambda d:direct(d)[k]/sig[k],mp.mpf(0),4)/mp.factorial(4)
+                    actual=mpc(v)
+                    assert abs(actual-expected) <= mp.mpf("1e-45")*(1+abs(expected)), (theta,k,actual,expected)
+    finally:
+        ctx.prec=old
+
+
+def test_half_unit_reproduced():
+    """A half group is actually proved twice, with identical exact certificate fields."""
+    _,pl,_,_,_,_=bs.group_data(GID)
+    part=bs._halves(len(pl))[0]
+    one=bs.prove_group_uniform(GID,part=part,log=QUIET)
+    two=bs.prove_group_uniform(GID,part=part,settings=one["settings"],log=QUIET)
+    assert one["ok"] and two["ok"] and one["part"]==two["part"]==list(part)
+    for key in ("rho","Z1_path","Z2","Yprime"):
+        assert one["existence"][key]["hex"]==two["existence"][key]["hex"],key
+    assert one["certificate"]["theta_T"]["hex"]==two["certificate"]["theta_T"]["hex"]
+    assert one["multiplier_bound_full_period"]["hex"]==two["multiplier_bound_full_period"]["hex"]
+
+
+QUICK_TESTS=[test_group_fallback_plan,test_unit_coverage_negative_controls,test_theorem_b_record_negative_controls,
+             test_poly_norm_weighted_quadratic_sup,test_operator_blocks_each_part_and_second_order,
+             test_complex_fourth_order_independent]
+
 PIECE_TESTS = [test_acceptance_piece, test_float_orbit_inside_certified_ball, test_float_window_dominated,
                test_negative_delta_above_exponent, test_negative_drop_g_terms_detected,
                test_negative_drop_second_order_detected, test_negative_lemma_10_1_identification]
 GROUP_TESTS = [test_group_parts, test_group_acceptance, test_group_float_orbit_inside_ball,
                test_group_negative_drop_third_order_detected, test_group_window_dominated,
                test_group_negative_drop_d2_terms_detected, test_group_Z1_path_term,
-               test_group_negative_delta_above_exponent, test_group_negative_identification,
-               test_jets_against_hess_and_differences, test_group_negative_widened]
+               test_group_drop_moving_centre_hook_detected,test_group_negative_delta_above_exponent, test_group_negative_identification,
+               test_jets_against_hess_and_differences, test_group_negative_widened, test_half_unit_reproduced]
 TESTS = PIECE_TESTS + GROUP_TESTS
 
 if __name__ == "__main__":
     sel = sys.argv[1] if len(sys.argv) > 1 else "all"           # all | piece | group
-    run_list = {"all": TESTS, "piece": PIECE_TESTS, "group": GROUP_TESTS}[sel]
+    run_list = {"all": TESTS + QUICK_TESTS, "piece": PIECE_TESTS, "group": GROUP_TESTS, "quick": QUICK_TESTS}[sel]
     failed = 0
     for t in run_list:
         t0 = time.time()

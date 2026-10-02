@@ -8,6 +8,29 @@ A claim counts as a theorem here only in one of two cases:
 
 In both cases the run must be reproducible from the commands below. What each review checked is in `reviews/`.
 
+## Current continuation checkpoint, 2026-10-02
+
+The versioned paper **cardiac-rings 1.0.0** has been published as a Zenodo preprint,
+[doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322). Its manuscript and publication quality
+record are in `papers/cardiac-rings/`; the older computation summaries below retain their historical ranges,
+timings and evidence. They are not a current acceptance record for the proposed 1.1.0 extension.
+
+The branch and uniform-stability fixes have passed separate source-admission checks, as recorded in
+`reviews/theoremC-uniform-fixcheck-2026-10-02.md`. The fresh Hopf fixes are recorded in
+`reviews/hopf-bridge-fixcheck-2026-10-02.md`. Complete numerical and manuscript acceptance remains pending.
+The new conductance-branch target is 57 groups and 712 pieces on [0.027499735464, 0.02778996093]. Its new,
+source-bound reproof log is `fourier/data/branch/run_K12_final.jsonl`; final uniform units belong in
+`stability_uniform_K12_final.jsonl`. The Hopf target requires a current Theorem A cover, all 68 fresh amplitude
+certificates, all 67 amplitude gluings, identification at zero amplitude and gluing to the complete final branch.
+
+The pilot's historical Linux and fresh Mac proofs have different last-bit bounds. Platform differences in
+proposed numerical inverses are a possible cause, not an established diagnosis. These inverses are untrusted
+inputs. Fresh records must satisfy the exact current ball inequalities; historical numerical
+equality is a diagnostic, not a substitute for those inequalities. Old logs remain unchanged. A partial final
+log never establishes the complete theorem. Use the bounded rerun commands in the two fixes reports instead of
+the older exploration/resume commands below. The manuscript must not claim uniform stability across the entire
+Hopf bridge; isolated-point and qualitative small-amplitude stability have narrower scopes.
+
 ## What this is
 
 An independent re-implementation, in a separate code base, of the computer-assisted proofs recorded in
@@ -216,10 +239,11 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
   - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
     `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
     --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
-* **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: computed; in-project
-  adversarial review recorded, fixes applied, fix check pending; no outside review** (the reading,
+* **Hopf bridge (rec 2, from the end of the G_Ks branch to the Hopf point), Fourier route: historical computation;
+  source fixes reviewed, complete final numerical acceptance pending; no outside review** (the reading,
   `reviews/hopf-bridge-review-2026-10-02.md`, is an in-project reading by an AI agent session with no UNSOUND finding;
-  the fixes made for it are listed at its end and have not yet been checked by a second reading; `fourier/hopf.py`,
+  the final fixes and separate source check are in `reviews/hopf-bridge-fixes-2026-10-02.md` and
+  `reviews/hopf-bridge-fixcheck-2026-10-02.md`; `fourier/hopf.py`,
   proofs in `fourier/LEMMAS-hopf.md`, tests `fourier/test_hopf.py`, record `results/fourier-hopf.json`, logs in
   `fourier/data/hopf/`).
   - Theorem A, the Hopf point (computer-assisted). The window W = [0.02789, 0.02792] is covered by 516 adjacent
@@ -250,9 +274,10 @@ wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost 
     serves both sides. It is the bridge orbit at eps_s in [0.12769007505990053945, 0.12769007505990053946]: the ball
     inclusion holds with 7.3e-8 against a radius of 1.19e-5. It is also the G_Ks-branch orbit of piece G53P6: 7.0e-5
     against 1.22e-3. The branch side was checked on a validated snapshot of the branch logs (676 pieces reaching
-    0.02778134123, every gluing re-derived). **So for every G_Ks in [0.027499735464, g_H) the single cell has a
-    periodic orbit, and these orbits form one continuous curve from the Stage E orbit at 0.0275 to the Hopf point.**
-    The gap to the Hopf point is closed.
+    0.02778134123, every gluing re-derived). The intended final conclusion is an orbit for every G_Ks in
+    [0.027499735464, g_H), forming a continuous curve from the Stage E orbit to the Hopf point. This conclusion
+    requires the complete current-source reruns and rederived identifications listed in the checkpoint above;
+    the historical snapshot alone does not establish final acceptance.
   - Stability is proved only in two forms. (a) For small amplitude, qualitatively, from the cited theorem; no explicit
     range. (b) At 12 isolated values of G_Ks on the curve: 0.0275, 0.02755, 0.0276, 0.02765, 0.0277, 0.02775, 0.02778,
     0.0278, 0.02785, 0.02787, 0.02788 and 0.0279. At each, Stage S bounds every nontrivial Floquet multiplier by

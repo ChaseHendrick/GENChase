@@ -500,7 +500,7 @@ def test_log_validation_and_repair():
         # (1) a truncated final line is dropped, orphan pieces (no group record) are moved out, the rest validates
         with open(run, "w") as fh:
             fh.write("\n".join(keep + nxt) + "\n" + nxt[0][:57])
-        pieces, groups, _ = br.validate_logs(K_RUN, log=QUIET)
+        pieces, groups, _ = br.validate_logs(K_RUN, log=QUIET, repair=True)
         assert len(groups) == sum(1 for l in keep if json.loads(l)["type"] == "group")
         assert len(pieces) == sum(1 for l in keep if json.loads(l)["type"] == "piece")
         assert os.path.exists(run + ".truncated")
@@ -553,6 +553,52 @@ def test_uniform_attempt_recorded_and_fails():
     assert ua and all(not a["ok"] for a in ua), "a uniform attempt is recorded and (as documented) fails"
 
 
+def test_snapshot_immutability():
+    import hashlib
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "log.jsonl")
+        raw = b'{"x":1}\n{"x":2}\n'
+        with open(path, "wb") as f:
+            f.write(raw)
+        rows, digest = br.snapshot_jsonl(path)
+        assert rows == [{"x": 1}, {"x": 2}] and digest == hashlib.sha256(raw).hexdigest()
+        with open(path, "ab") as f:
+            f.write(b'{"x":')
+        broken = open(path, "rb").read()
+        try:
+            br.snapshot_jsonl(path)
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError("incomplete immutable log admitted")
+        assert open(path, "rb").read() == broken
+
+
+def test_final_requires_every_source_bound_piece():
+    manifest, historical, centres = br.reproof_manifest(K_RUN)
+    assert manifest["n_pieces"] == 712
+    try:
+        br.validate_final(K_RUN, records=[manifest], centre_records=centres)
+    except RuntimeError as e:
+        assert "incomplete" in str(e)
+    else:
+        raise AssertionError("empty final reproof admitted")
+    tampered = dict(manifest, sources_sha256={})
+    try:
+        br.validate_final(K_RUN, records=[tampered], centre_records=centres)
+    except RuntimeError as e:
+        assert "manifest" in str(e)
+    else:
+        raise AssertionError("changed source manifest admitted")
+    # Resume validation is strict before workers start; the original input hash and source hash are indispensable.
+    assert br.record_digest(historical[0]) != br.record_digest(dict(historical[0], tampered=True))
+
+
+QUICK_TESTS = [test_decimal_strings, test_hess_pow_negative, test_hessian_matches_jacobian_differences,
+               test_parameter_derivatives, test_hess_box_encloses_points, test_snapshot_immutability,
+               test_final_requires_every_source_bound_piece]
+
 TESTS = [test_decimal_strings, test_hess_pow_negative, test_hessian_matches_jacobian_differences,
          test_parameter_derivatives, test_hess_box_encloses_points, test_acceptance_piece_containing_stage_E_point,
          test_period_enclosures_consistent, test_gluing_rederived, test_negative_centre_at_wrong_g,
@@ -564,7 +610,8 @@ TESTS = [test_decimal_strings, test_hess_pow_negative, test_hessian_matches_jaco
 
 if __name__ == "__main__":
     failed = 0
-    for t in TESTS:
+    selected = QUICK_TESTS if len(sys.argv) > 1 and sys.argv[1] == "quick" else TESTS + QUICK_TESTS[-2:]
+    for t in selected:
         t0 = time.time()
         try:
             t()
@@ -572,5 +619,5 @@ if __name__ == "__main__":
         except Exception as e:  # noqa: BLE001
             failed += 1
             print(f"FAIL {t.__name__}: {type(e).__name__}: {e}", flush=True)
-    print(f"{len(TESTS) - failed}/{len(TESTS)} passed")
+    print(f"{len(selected) - failed}/{len(selected)} passed")
     sys.exit(1 if failed else 0)

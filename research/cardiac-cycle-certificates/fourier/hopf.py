@@ -1,8 +1,8 @@
 """Closing the Hopf gap: the certified G_Ks branch of the single cell is the branch born at the Hopf point (Arb).
 
-Status: computed; in-project adversarial review recorded, fixes applied, fix check pending. The reading
+Status: source admission check passed; complete numerical acceptance pending. The reading
 (reviews/hopf-bridge-review-2026-10-02.md) is an in-project reading by an AI agent session; no outside review has taken
-place. Nothing written by this program is "verified" until the fixes have been checked. The complete proofs are in
+place. The source fixes passed an in-project check; final numerical evidence must still satisfy collect. The complete proofs are in
 fourier/LEMMAS-hopf.md; this docstring is the map from those lemmas to the code.
 
 Model: Erhardt's 18-state TP06 endocardial cell, f(z; g) = arbmodel.f with g_Ks = g, scaled variables z = x / sigma.
@@ -34,7 +34,7 @@ Part B (quantitative bridge; LEMMAS-hopf.md, Part B): the blown-up radii polynom
 comment block above class Lay; run() proves pieces [e_lo, e_hi] from eps = 0 upward and glues each to the previous one
 (Lemma B4); identification_at_eps0 shows that the zero at eps = 0 is the Hopf point of Part A (Corollary B(a)).
 reprove_all (`hopf.py --reprove-all [--workers W]`) re-proves every logged piece with the current program text and
-compares the exact Y0, Z1, Z2 and radii with the log (data/hopf/reprove.jsonl, with the program SHA-256 taken at
+stores complete fresh exact proof results and historical equality diagnostics (data/hopf/reprove_final.jsonl, with the program SHA-256 taken at
 import); collect reports which pieces have a matching re-proof by the current program.
 
 Part C (gluing; LEMMAS-hopf.md, Part C): point_in_eps_branch (Lemma D) shows that the orbit of a K = 32 point proof
@@ -64,6 +64,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(ROOT, "model"))
+
+# Pin every scientific dependency before any lazy branch/stability import can occur.
+SOURCES = ["fourier/hopf.py", "fourier/test_hopf.py", "fourier/LEMMAS-hopf.md", "fourier/arbmodel.py",
+           "fourier/tp06_18d_arb.py", "fourier/fourier_eval.py", "fourier/existence.py", "fourier/branch.py",
+           "fourier/stability.py", "fourier/centre.py", "model/tp06_18d.py", "model/scales.txt"]
+
+def _sha(path):
+    with open(path, "rb") as fh_:
+        return hashlib.sha256(fh_.read()).hexdigest()
+
+SOURCE_SHA256 = {s_: _sha(os.path.join(ROOT, s_)) for s_ in SOURCES}
+CODE_SHA256 = SOURCE_SHA256["fourier/hopf.py"]
+
+def _assert_sources_current():
+    if any(_sha(os.path.join(ROOT, s_)) != digest for s_, digest in SOURCE_SHA256.items()):
+        raise ProofFailure("scientific sources changed after import; restart before proving or collecting")
+
 
 import flint  # noqa: E402
 from flint import acb, acb_mat, arb, arb_mat, ctx, fmpq, fmpz  # noqa: E402
@@ -515,13 +532,15 @@ def spectrum_on(fam, prec=192):
             for p in (ic, jc):
                 if not _discs_disjoint(discs[i], discs[p]):
                     raise ProofFailure(f"disc {i} meets a pair disc")
-        maxre = None
+        maxre, maxabsim = None, None
         for i in others:
             c, R = discs[i]
             right = up(c.real + R)
             if not right < 0:
                 raise ProofFailure(f"disc {i} reaches Re >= 0 (right end {float(right):.3e})")
             maxre = right if maxre is None else amax(maxre, right)
+            absim = up(c.imag.abs_upper() + R)
+            maxabsim = absim if maxabsim is None else amax(maxabsim, absim)
         v0 = V[:, ic]
         k = int(np.argmax(np.abs(v0)))
         v0 = v0 / v0[k]
@@ -545,7 +564,7 @@ def spectrum_on(fam, prec=192):
             if i != jc and not _discs_disjoint((lc.conjugate(), lr), discs[i]):
                 raise ProofFailure(f"conjugate eigenvalue enclosure meets disc {i}")
         inside = bool((lc.conjugate() - c2).abs_upper() + lr <= R2)
-    return dict(lam=lam, v=v, k=k, others_max_re=maxre, discs=discs, ic=ic, jc=jc, conj_ball_inside_D2=inside,
+    return dict(lam=lam, v=v, k=k, others_max_re=maxre, others_abs_im=maxabsim, discs=discs, ic=ic, jc=jc, conj_ball_inside_D2=inside,
                 lam_radius=lr)
 
 
@@ -698,7 +717,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
     wf = Fraction(w_far)
     band = Fraction(band)                   # intervals meeting [gH - band, gH + band] record their polydisc
     pieces = []
-    stats = dict(n=0, max_others_re=None, min_im=None, max_im=None)
+    stats = dict(n=0, max_others_re=None, max_others_abs_im=None, min_im=None, max_im=None)
 
     def run(a, b, sign):
         fam = jacobian_family(a, b, fh, prec)
@@ -729,7 +748,9 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
                     raise ProofFailure(f"cannot decide the sign of Re lambda near [{float(a)}, {float(b)}]")
                 continue
             item = dict(a=str(a), b=str(b), re_lam=[dec(lo(sp["lam"].real), "down", 6), dec(up(sp["lam"].real), "up", 6)],
-                        others_max_re=float(sp["others_max_re"]))
+                        others_max_re=float(sp["others_max_re"]),
+                        others_max_re_bound=bound_rec(sp["others_max_re"]),
+                        others_abs_im_bound=bound_rec(sp["others_abs_im"]), lambda_imag=_ball_rec(sp["lam"].imag))
             if a <= gH + band and b >= gH - band:
                 item["polydisc"] = polydisc_record(fam["eq_G"])
             out.append(item)
@@ -738,6 +759,7 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
                 log(f"  window cover: {stats['n']} intervals, now at [{float(a):.12f}, {float(b):.12f}], "
                     f"{time.time() - t0:.0f} s")
             stats["max_others_re"] = sp["others_max_re"] if stats["max_others_re"] is None else amax(stats["max_others_re"], sp["others_max_re"])
+            stats["max_others_abs_im"] = amax(stats["max_others_abs_im"], sp["others_abs_im"])
             im_lo, im_hi = lo(sp["lam"].imag), up(sp["lam"].imag)
             stats["min_im"] = im_lo if stats["min_im"] is None or im_lo < stats["min_im"] else stats["min_im"]
             stats["max_im"] = im_hi if stats["max_im"] is None or im_hi > stats["max_im"] else stats["max_im"]
@@ -753,13 +775,18 @@ def cover_window(fh, gH, W=WINDOW, h="1e-13", w_far="1e-7", prec=192, log=print,
         raise ProofFailure(f"transversality not certified: d Re lambda / dg in {dl.real}")
     # G_H is an interval of the cover too: its 16 other discs and Im lambda enter the statistics (until 2026-10-02 the
     # statistics covered only the left and right intervals)
-    stats.update(max_others_re=spH["others_max_re"], min_im=lo(spH["lam"].imag), max_im=up(spH["lam"].imag))
+    stats.update(max_others_re=spH["others_max_re"], max_others_abs_im=spH["others_abs_im"],
+                 min_im=lo(spH["lam"].imag), max_im=up(spH["lam"].imag))
     right = side(gb, Wb, +1)
     left = side(ga, Wa, -1)
+    if not stats["min_im"] > stats["max_others_abs_im"]:
+        raise ProofFailure("critical/stable imaginary separation fails on full Theorem A cover")
     log(f"  window cover: {len(left)} intervals left of G_H, {len(right)} right, {time.time() - t0:.1f} s")
     return dict(gH_interval=[str(ga), str(gb)], famH=famH, spH=spH, dlam=dl, p=p, left=left, right=right,
                 stats=stats, seconds=round(time.time() - t0, 1), polydisc_H=polydisc_record(famH["eq_G"]),
-                others_max_re_H=float(spH["others_max_re"]))
+                others_max_re_H=float(spH["others_max_re"]),
+                others_max_re_H_bound=bound_rec(spH["others_max_re"]),
+                others_abs_im_H_bound=bound_rec(spH["others_abs_im"]))
 
 
 # =================================================================================================================
@@ -2182,8 +2209,6 @@ def glue(pa, pb, nu):
 # =================================================================================================================
 RUN_SETTINGS = dict(K=8, M=48, nsub_xi=2, nsub_s=2, rho0="1/8", rho2="3/4", R="1/256", G_R="1/4096",
                     T_margin="1/40", n_group=4)
-with open(os.path.abspath(__file__), "rb") as _fh:
-    CODE_SHA256 = hashlib.sha256(_fh.read()).hexdigest()       # the program text this process runs (logged per piece)
 
 
 def _append(path, rec):
@@ -2209,6 +2234,28 @@ def _read_jsonl(path):
             if i >= len(lines) - 2:          # a process killed while appending: drop the last partial line
                 break
             raise
+    return out
+
+
+def _read_final_jsonl(path):
+    """Final evidence is strict: no malformed complete record or nonempty partial tail can be silently skipped."""
+    if not os.path.exists(path):
+        return []
+    with open(path, "rb") as fh_:
+        raw = fh_.read()
+    if raw[raw.rfind(b"\n") + 1:].strip():
+        raise ProofFailure(f"incomplete final evidence line: {path}")
+    out = []
+    for line in raw.splitlines():
+        if not line.strip():
+            continue
+        try:
+            item = json.loads(line)
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise ProofFailure(f"malformed final evidence line: {path}") from exc
+        if not isinstance(item, dict):
+            raise ProofFailure(f"nonobject final evidence line: {path}")
+        out.append(item)
     return out
 
 
@@ -2407,7 +2454,10 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA, g_sto
 # =================================================================================================================
 # Re-proof of the logged pieces with the current program (review 2026-10-02, GAP 2)
 # =================================================================================================================
-REPROVE_LOG = "reprove.jsonl"
+REPROVE_LOG = "reprove_final.jsonl"
+THEOREM_A_LOG = "theoremA_final.json"
+EXPECTED_PIECES = 68
+EXPECTED_EPS_END = Fraction(6427, 50000)
 REPROVE_KEYS = ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness", "r_star", "p_at_r_existence", "p_at_r_uniqueness",
                 "contraction_at_r_uniqueness")
 
@@ -2420,12 +2470,87 @@ def piece_lines(data=DATA):
         return out
     with open(path, "rb") as fh_:
         raw = fh_.read()
+    if raw[raw.rfind(b"\n") + 1:].strip():
+        raise ProofFailure("pieces.jsonl has an incomplete final line")
     for line in raw[:raw.rfind(b"\n") + 1].split(b"\n"):
         if not line.strip():
             continue
         rec = json.loads(line)
         if rec.get("type") == "piece":
-            out[rec["idx"]] = (rec, hashlib.sha256(line).hexdigest())
+            idx = rec["idx"]
+            if type(idx) is not int or idx in out:
+                raise ProofFailure(f"invalid or duplicated piece index: {idx}")
+            out[idx] = (rec, hashlib.sha256(line).hexdigest())
+    return out
+
+
+def _exact_input(value):
+    if isinstance(value, (float, bool)):
+        raise ProofFailure("proof setting must be an exact integer or rational text")
+    return Fraction(value)
+
+
+def cover_records(data=DATA):
+    out = {}
+    for rec in _read_final_jsonl(os.path.join(data, "covers.jsonl")):
+        if rec.get("type") == "cover":
+            if rec["id"] in out:
+                raise ProofFailure(f"duplicated cover id: {rec['id']}")
+            out[rec["id"]] = rec
+    return out
+
+
+def _record_digest(rec):
+    return hashlib.sha256(json.dumps(rec, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def validate_piece_inputs(lines, covers):
+    """The reviewed bridge has exactly 68 distinct, consecutive, nondegenerate pieces covering [0, 6427/50000]."""
+    if sorted(lines) != list(range(EXPECTED_PIECES)):
+        raise ProofFailure("expected exactly piece indices 0 through 67")
+    end = Fraction(0)
+    for idx, (rec, _) in sorted(lines.items()):
+        a, b = _exact_input(rec["e_lo"]), _exact_input(rec["e_hi"])
+        if a != end or not a < b:
+            raise ProofFailure(f"piece {idx}: gap, overlap or degenerate interval")
+        end = b
+        C, st, lg = Centre.from_record(rec["centre"]), rec["settings"], rec["result"]
+        if set(st) != set(RUN_SETTINGS):
+            raise ProofFailure(f"piece {idx}: unknown or missing settings")
+        cov = covers.get(rec["cover"])
+        if cov is None:
+            raise ProofFailure(f"piece {idx}: missing cover")
+        for key in ("K", "M", "nsub_xi", "nsub_s", "n_group"):
+            if type(st[key]) is not int or st[key] <= 0:
+                raise ProofFailure(f"piece {idx}: nonexact integer setting {key}")
+        for key in ("rho0", "rho2", "R", "G_R", "T_margin"):
+            if _exact_input(st[key]) <= 0:
+                raise ProofFailure(f"piece {idx}: nonpositive setting {key}")
+        if st["K"] != C.K or any(_exact_input(st[k]) != _exact_input(cov[k]) for k in ("rho2", "R", "G_R")):
+            raise ProofFailure(f"piece {idx}: centre/cover settings mismatch")
+        if _exact_input(st["rho0"]) != Fraction(1, 8):
+            raise ProofFailure(f"piece {idx}: bridge pieces must share rho0=1/8")
+        if len(rec["eta"]) != NC or any(_exact_input(x) <= 0 for x in rec["eta"]):
+            raise ProofFailure(f"piece {idx}: invalid exact weights")
+        if [str(_exact_input(x)) for x in lg["eta"]] != [str(_exact_input(x)) for x in rec["eta"]]:
+            raise ProofFailure(f"piece {idx}: logged result weights mismatch")
+        if lg["K"] != C.K or lg["M"] != st["M"] or _exact_input(lg["e_lo"]) != a or _exact_input(lg["e_hi"]) != b:
+            raise ProofFailure(f"piece {idx}: result metadata mismatch")
+        if hex_fraction(rec["r_star"]) != hex_fraction(lg["r_star"]):
+            raise ProofFailure(f"piece {idx}: exact r_star mismatch")
+        for key in REPROVE_KEYS:
+            hex_fraction(lg[key])
+        for key in ("g", "omega", "T_ms"):
+            lower, upper = (hex_fraction(lg[key][side]) for side in ("lower", "upper"))
+            if lower > upper or (key != "g" and lower <= 0):
+                raise ProofFailure(f"piece {idx}: invalid exact {key} enclosure")
+    if end != EXPECTED_EPS_END:
+        raise ProofFailure("bridge does not end at eps=6427/50000")
+
+
+def _exact_values(res):
+    out = {k: res[k]["hex"] for k in REPROVE_KEYS}
+    out.update({f"{q}_{side}": res[q][side]["hex"] for q in ("g", "omega", "T_ms") for side in ("lower", "upper")})
     return out
 
 
@@ -2433,7 +2558,12 @@ def rebuild_cover(crec):
     """The Lemma B3 cover of a logged group, rebuilt from the logged centres with the logged T, R, G_R, rho2 (and the
     run's max_evals); its digest must equal the logged one."""
     cs = [Centre.from_record(c) for c in crec["centres"]]
-    pcs = [(C, Fraction(a), Fraction(b)) for C, (a, b, _) in zip(cs, crec["pieces"])]
+    if len(cs) != len(crec["pieces"]) or not cs:
+        raise ProofFailure("cover centre/piece count mismatch")
+    for key in ("T", "R", "G_R", "rho2"):
+        if _exact_input(crec[key]) <= 0:
+            raise ProofFailure(f"cover has invalid exact {key}")
+    pcs = [(C, _exact_input(a), _exact_input(b)) for C, (a, b, _) in zip(cs, crec["pieces"])]
     return EpsCover(pcs, crec["T"], [crec["R"]] * DIM, crec["G_R"], rho2=crec["rho2"], max_evals=1500,
                     log=lambda s: None)
 
@@ -2443,12 +2573,12 @@ def reproof_compare(rec, res, cover_digest, centre_digest):
     record: exact equality of the REPROVE_KEYS and of the g and omega enclosures (hex dyadics), and the digests."""
     lg = rec["result"]
     eq = {k: res[k]["hex"] == lg[k]["hex"] for k in REPROVE_KEYS}
-    for q in ("g", "omega"):
+    for q in ("g", "omega", "T_ms"):
         for side in ("lower", "upper"):
             eq[f"{q}_{side}"] = res[q][side]["hex"] == lg[q][side]["hex"]
     out = dict(cover_digest_reproduced=bool(cover_digest[:16] == rec["cover"] and cover_digest == lg["cover"]),
                centre_digest_ok=bool(centre_digest == lg["centre_sha256"] == res["centre_sha256"]), equal=eq,
-               values={k: res[k]["hex"] for k in ("Y0", "Z1", "Z2", "r_existence", "r_uniqueness")})
+               values=_exact_values(res))
     out["match"] = bool(out["cover_digest_reproduced"] and out["centre_digest_ok"] and all(eq.values()))
     return out
 
@@ -2457,25 +2587,38 @@ def reprove_piece(rec, crec, cov=None, line_sha=None):
     """Re-prove one logged piece with the current program: its group's cover rebuilt from the logged centres (or the
     given one), piece_blocks for its stored centre line and settings, assemble with its stored weights and exact r_*.
     Compares the cover digest, the centre digest and the exact values REPROVE_KEYS and the g and omega enclosures
-    with the log. Returns (record for reprove.jsonl, objects for the tests)."""
+    with the log. Returns (record for reprove_final.jsonl, objects for the tests)."""
+    _assert_sources_current()
     t0 = time.time()
     out = dict(type="reprove", idx=rec["idx"], e_lo=rec["e_lo"], e_hi=rec["e_hi"], piece_line_sha256=line_sha,
                cover=rec["cover"], logged_code_sha256=rec.get("code_sha256"), code_sha256=CODE_SHA256,
-               date=time.strftime("%Y-%m-%d"), python_flint=flint.__version__)
+               date=time.strftime("%Y-%m-%d"), python_flint=flint.__version__,
+               sources_sha256=dict(SOURCE_SHA256), cover_record_sha256=_record_digest(crec))
     obj = None
     try:
         if cov is None:
             cov = rebuild_cover(crec)
         C = Centre.from_record(rec["centre"])
-        st = dict(M=int(rec["settings"]["M"]), nsub_xi=int(rec["settings"]["nsub_xi"]),
-                  nsub_s=int(rec["settings"]["nsub_s"]), rho0=rec["settings"]["rho0"])
+        for key in ("M", "nsub_xi", "nsub_s"):
+            if type(rec["settings"][key]) is not int:
+                raise ProofFailure(f"nonexact proof setting {key}")
+        _exact_input(rec["settings"]["rho0"])
+        st = {key: rec["settings"][key] for key in ("M", "nsub_xi", "nsub_s", "rho0")}
+        st = dict(PIECE_DEFAULTS, **st)
+        out["effective_settings"] = st
         bl = piece_blocks(C, Fraction(rec["e_lo"]), Fraction(rec["e_hi"]), cov, settings=st, log=lambda s: None)
         rs = str(hex_fraction(rec["r_star"]))            # the exact r_* the run used (up of its decimal choice)
         res = assemble(bl, rec["eta"], rs, log=lambda s: None)
         out.update(reproof_compare(rec, res, cov.digest, C.digest()))
+        out["historical_match"] = out["match"]
+        out["result"] = {k: v for k, v in res.items() if k != "_obj"}
+        out["certified"] = _result_certified(out["result"], rec, {rec["cover"]: crec})
+        if not out["certified"]:
+            out["error"] = "fresh exact result failed its acceptance inequalities"
         obj = dict(bl=bl, res=res, st=st, cov=cov, C=C, rs=rs)
     except Exception as e:  # noqa: BLE001  (any failure is recorded as a failed re-proof, never as a match)
         out.update(match=False, error=f"{type(e).__name__}: {str(e)[:300]}")
+    _assert_sources_current()
     out["seconds"] = round(time.time() - t0, 1)
     return out, obj
 
@@ -2487,7 +2630,8 @@ def _reprove_group(args):
         cov = rebuild_cover(crec)
     except Exception as e:  # noqa: BLE001  (recorded as failed re-proofs)
         return [dict(type="reprove", idx=rec["idx"], e_lo=rec["e_lo"], e_hi=rec["e_hi"], piece_line_sha256=sha,
-                     cover=rec["cover"], code_sha256=CODE_SHA256, date=time.strftime("%Y-%m-%d"), match=False,
+                     cover=rec["cover"], code_sha256=CODE_SHA256, sources_sha256=dict(SOURCE_SHA256),
+                     date=time.strftime("%Y-%m-%d"), match=False,
                      error=f"cover rebuild: {type(e).__name__}: {str(e)[:300]}") for rec, sha in items]
     return [reprove_piece(rec, crec, cov=cov, line_sha=sha)[0] for rec, sha in items]
 
@@ -2509,22 +2653,27 @@ def _ranges(idxs):
 
 def reprove_all(pieces=None, workers=1, budget_s=6000, log=print, data=DATA, out_path=None):
     """Re-prove every logged eps piece (or the listed indices) with the current program text and append one record per
-    piece to data/hopf/reprove.jsonl (or out_path): the exact Y0, Z1, Z2, radii (REPROVE_KEYS) and the g and omega
+    piece to data/hopf/reprove_final.jsonl (or out_path): the exact Y0, Z1, Z2, radii (REPROVE_KEYS) and the g and omega
     enclosures compared with pieces.jsonl, the cover and centre digests, the SHA-256 of the piece's log line and the
     program SHA-256 taken when this process imported hopf.py (CODE_SHA256). Resumable: a piece that already has a
     matching record for the same log line and the same program hash is skipped. workers > 1 re-proves cover groups in
     parallel processes (one cover rebuild per group); the parent alone writes the log. Stops starting new groups when
     the time budget is spent. Returns the records written."""
+    _assert_sources_current()
+    if type(workers) is not int or workers < 1 or budget_s <= 0:
+        raise ValueError("positive workers and budget required")
     out_path = out_path or os.path.join(data, REPROVE_LOG)
     lines = piece_lines(data)
-    covers = {r["id"]: r for r in _read_jsonl(os.path.join(data, "covers.jsonl")) if r.get("type") == "cover"}
+    covers = cover_records(data)
+    validate_piece_inputs(lines, covers)
     want = sorted(lines) if pieces is None else sorted(int(i) for i in pieces)
+    if len(want) != len(set(want)):
+        raise ValueError("duplicated requested piece indices")
     missing = [i for i in want if i not in lines]
     if missing:
         raise ValueError(f"pieces not in the log: {missing}")
-    done = {(r["idx"], r.get("piece_line_sha256")) for r in _read_jsonl(out_path)
-            if r.get("type") == "reprove" and r.get("match") and r.get("code_sha256") == CODE_SHA256}
-    todo = [i for i in want if (i, lines[i][1]) not in done]
+    current = _current_reproofs(lines, covers, out_path)
+    todo = [i for i in want if i not in current or not _reproof_matches(current[i], lines[i][0], covers)]
     log(f"reprove: program sha256 {CODE_SHA256[:16]}, {len(want)} piece(s) asked, {len(want) - len(todo)} already "
         f"re-proved with this program, {len(todo)} to do, {workers} worker(s), log {out_path}")
     groups = {}
@@ -2539,7 +2688,8 @@ def reprove_all(pieces=None, workers=1, budget_s=6000, log=print, data=DATA, out
         for r in recs_:
             _append(out_path, r)
             written.append(r)
-            log(f"  piece {r['idx']}: {'MATCH' if r.get('match') else 'NO MATCH ' + str(r.get('error') or r.get('equal'))}"
+            log(f"  piece {r['idx']}: {'CERTIFIED' if r.get('certified') else 'FAILED ' + str(r.get('error'))}; "
+                f"historical equality {r.get('historical_match', False)}"
                 f" ({r.get('seconds', 0)} s, {time.time() - t0:.0f} s total)")
     if workers <= 1:
         for job in jobs:
@@ -2565,24 +2715,89 @@ def reprove_all(pieces=None, workers=1, budget_s=6000, log=print, data=DATA, out
     return written
 
 
-def reprove_status(data=DATA, out_path=None):
-    """Which logged pieces have a matching re-proof (reprove.jsonl) made by the current program text (CODE_SHA256) for
-    their current log line."""
-    out_path = out_path or os.path.join(data, REPROVE_LOG)
-    lines = piece_lines(data)
-    recs = [r for r in _read_jsonl(out_path) if r.get("type") == "reprove"]
+def _current_reproofs(lines, covers, out_path):
     cur = {}
-    for r in recs:                                  # the latest record per piece made by this program for this line
+    for r in _read_final_jsonl(out_path):
+        if r.get("type") != "reprove":
+            raise ProofFailure("unexpected final reproof record type")
         i = r.get("idx")
-        if i in lines and r.get("code_sha256") == CODE_SHA256 and r.get("piece_line_sha256") == lines[i][1]:
-            cur[i] = r
-    matched = sorted(i for i, r in cur.items() if r.get("match"))
-    bad = sorted(i for i, r in cur.items() if not r.get("match"))
+        if (r.get("type") == "reprove" and type(i) is int and i in lines and r.get("sources_sha256") == SOURCE_SHA256
+                and r.get("code_sha256") == CODE_SHA256 and r.get("piece_line_sha256") == lines[i][1]):
+            cur[i] = r  # latest attempt wins, including a failed attempt
+    return cur
+
+
+def _result_certified(result, piece, covers):
+    """Check complete fresh exact proof output, never approximate fields or historical equality."""
+    try:
+        if "MUTATED" in result or "_obj" in result:
+            return False
+        meta = ("e_lo", "e_hi", "e_c", "K", "Kprime", "M", "centre_sha256", "cover")
+        if _record_digest({k: result[k] for k in meta}) != _record_digest({k: piece["result"][k] for k in meta}):
+            return False
+        if _record_digest(result["eta"]) != _record_digest(piece["eta"]):
+            return False
+        values = {k: hex_fraction(result[k]) for k in REPROVE_KEYS}
+        y, z1, z2 = (values[k] for k in ("Y0", "Z1", "Z2"))
+        rl, rh, rs = (values[k] for k in ("r_existence", "r_uniqueness", "r_star"))
+        if not (y >= 0 and 0 <= z1 < 1 and z2 >= 0 and 0 < rl <= rh <= rs == hex_fraction(piece["r_star"])):
+            return False
+        for radius, key in ((rl, "p_at_r_existence"), (rh, "p_at_r_uniqueness")):
+            if not y + (z1-1)*radius + z2*radius*radius/2 <= values[key] < 0:
+                return False
+        if not z1 + z2*rh <= values["contraction_at_r_uniqueness"] < 1:
+            return False
+        for q in ("g", "omega", "T_ms"):
+            a, b = (hex_fraction(result[q][side]) for side in ("lower", "upper"))
+            if not a <= b or (q != "g" and a <= 0):
+                return False
+        return True
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _reproof_matches(r, piece, covers):
+    try:
+        st = dict(PIECE_DEFAULTS, **{k: piece["settings"][k] for k in ("M", "nsub_xi", "nsub_s", "rho0")})
+        result = r["result"]
+        return (r.get("certified") is True and r.get("centre_digest_ok") is True and r.get("cover_digest_reproduced") is True
+                and _result_certified(result, piece, covers) and r.get("values") == _exact_values(result)
+                and r.get("cover") == piece["cover"] and r.get("e_lo") == piece["e_lo"] and r.get("e_hi") == piece["e_hi"]
+                and r.get("cover_record_sha256") == _record_digest(covers[piece["cover"]])
+                and _record_digest(r.get("effective_settings")) == _record_digest(st)
+                and r.get("python_flint") == flint.__version__)
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def final_pieces(data=DATA):
+    """Only complete current-source reproof bounds may feed any final gluing or theorem."""
+    status = reprove_status(data)
+    if not status["all_pieces_reproved_with_current_program"]:
+        raise ProofFailure(f"incomplete current-source re-proof coverage: {status}")
+    lines, covers = piece_lines(data), cover_records(data)
+    current = _current_reproofs(lines, covers, os.path.join(data, REPROVE_LOG))
+    if any(i not in current or not _reproof_matches(current[i], lines[i][0], covers) for i in lines):
+        raise ProofFailure("final reproof snapshot changed or fails its exact acceptance gate")
+    return [dict(lines[i][0], result=current[i]["result"]) for i in sorted(lines)]
+
+
+def reprove_status(data=DATA, out_path=None):
+    """Exact 68-piece coverage; only fully matched evidence pinned to all imported sources can count."""
+    _assert_sources_current()
+    out_path = out_path or os.path.join(data, REPROVE_LOG)
+    lines, covers = piece_lines(data), cover_records(data)
+    validate_piece_inputs(lines, covers)
+    recs = _read_final_jsonl(out_path)
+    cur = _current_reproofs(lines, covers, out_path)
+    matched = sorted(i for i, r in cur.items() if _reproof_matches(r, lines[i][0], covers))
+    bad = sorted(set(cur) - set(matched))
     rest = sorted(set(lines) - set(cur))
-    return dict(log=os.path.relpath(out_path, ROOT), program_sha256=CODE_SHA256, n_pieces=len(lines),
-                n_reproved_with_current_program=len(matched), mismatched=_ranges(bad), not_reproved=_ranges(rest),
-                n_records=len(recs), n_records_other_program=sum(1 for r in recs if r.get("code_sha256") != CODE_SHA256),
-                all_pieces_reproved_with_current_program=bool(lines) and len(matched) == len(lines))
+    return dict(log=os.path.relpath(out_path, ROOT), program_sha256=CODE_SHA256, sources_sha256=dict(SOURCE_SHA256),
+                n_pieces=len(lines), n_reproved_with_current_program=len(matched), mismatched=_ranges(bad),
+                not_reproved=_ranges(rest), n_records=len(recs),
+                n_records_other_program=sum(1 for r in recs if r.get("sources_sha256") != SOURCE_SHA256),
+                all_pieces_reproved_with_current_program=len(matched) == EXPECTED_PIECES)
 
 
 # =================================================================================================================
@@ -2616,8 +2831,9 @@ def _ball_rec(x):
 
 
 def theorem_A(log=print, data=DATA, prec=192):
-    """Part A: the Hopf point in the window W. Writes data/hopf/theoremA.json and returns the record (with the exact
+    """Part A: the Hopf point in the window W. Writes data/hopf/theoremA_final.json and returns the record (with the exact
     objects under '_obj')."""
+    _assert_sources_current()
     t0 = time.time()
     fh = FloatHopf()
     gH0 = refine_gH(fh, prec=prec, log=log)
@@ -2635,6 +2851,9 @@ def theorem_A(log=print, data=DATA, prec=192):
                              _exact_decimal(Fraction(cov["gH_interval"][1]))],
         n_intervals=dict(left=len(cov["left"]), right=len(cov["right"])),
         others_max_re_upper=bound_rec(cov["stats"]["max_others_re"]), gH_others_max_re=cov["others_max_re_H"],
+        gH_others_max_re_bound=cov["others_max_re_H_bound"],
+        others_abs_im_upper=bound_rec(cov["stats"]["max_others_abs_im"]),
+        gH_others_abs_im_bound=cov["others_abs_im_H_bound"],
         lambda_imag_range=[dec(cov["stats"]["min_im"], "down", 12), dec(cov["stats"]["max_im"], "up", 12)],
         omega_H=_ball_rec(om), dRe_lambda_dg=_ball_rec(cov["dlam"].real), dIm_lambda_dg=_ball_rec(cov["dlam"].imag),
         l1_kuznetsov_physical=_ball_rec(L["l1"]), l1_times_omega_physical=_ball_rec(L["l1"] * om),
@@ -2645,9 +2864,12 @@ def theorem_A(log=print, data=DATA, prec=192):
                      "coefficient equals omega times Kuznetsov's l1 in the normalisation <q, q> = 1 (physical units)"),
         polydisc_GH=cov["polydisc_H"], dRe_lambda_dg_interval="G_H",
         cover_left=cov["left"], cover_right=cov["right"], seconds=round(time.time() - t0, 1),
-        code_sha256=CODE_SHA256)
+        code_sha256=CODE_SHA256, sources_sha256=dict(SOURCE_SHA256), precision=prec)
+    _assert_sources_current()
+    if not check_theoremA_cover(rec)["ok"]:
+        raise ProofFailure("new Theorem A cover fails exact structural checks")
     os.makedirs(data, exist_ok=True)
-    with open(os.path.join(data, "theoremA.json"), "w") as fh_:
+    with open(os.path.join(data, THEOREM_A_LOG), "w") as fh_:
         json.dump(rec, fh_, indent=1)
     log(f"Theorem A: g_H in [{rec['gH_interval_decimal'][0]}, {rec['gH_interval_decimal'][1]}], omega_H = "
         f"{float(om.mid()):.12f}, dRe/dg = {float(cov['dlam'].real.mid()):.6f}, l1 = {float(L['l1'].mid()):.6f} "
@@ -2662,22 +2884,33 @@ def check_theoremA_cover(thA):
     lies inside W; the cover_left intervals, G_H and the cover_right intervals, sorted, are non-degenerate, adjacent
     (shared exact end points, so no gap and no overlap) and run from W's left end to its right end, with G_H between the
     two sides; their counts are those recorded; every left interval has Re lambda > 0 (lower end of the recorded
-    enclosure) and every right one Re lambda < 0 (upper end); every interval's others_max_re (and G_H's, when recorded)
+    enclosure) and every right one Re lambda < 0 (upper end); every interval's others_max_re (and G_H's, required)
     is < 0 and the largest equals the recorded others_max_re_upper, which is < 0; d Re lambda / dg < 0 and l1 < 0 (upper
     ends) and omega_H > 0 (lower end). These re-check the bookkeeping of one theorem_A run; the per-interval inequalities
     are decided in that run (spectrum_on). Returns a dict of named booleans with ok = all of them."""
     Wa, Wb = Fraction(WINDOW[0]), Fraction(WINDOW[1])
-    ga, gb = Fraction(thA["gH_interval"][0]), Fraction(thA["gH_interval"][1])
-    left = sorted(thA["cover_left"], key=lambda iv: Fraction(iv["a"]))
-    right = sorted(thA["cover_right"], key=lambda iv: Fraction(iv["a"]))
-    chain = [(Fraction(iv["a"]), Fraction(iv["b"])) for iv in left] + [(ga, gb)] + \
-        [(Fraction(iv["a"]), Fraction(iv["b"])) for iv in right]
+    ga, gb = _exact_input(thA["gH_interval"][0]), _exact_input(thA["gH_interval"][1])
+    left = sorted(thA["cover_left"], key=lambda iv: _exact_input(iv["a"]))
+    right = sorted(thA["cover_right"], key=lambda iv: _exact_input(iv["a"]))
+    chain = [(_exact_input(iv["a"]), _exact_input(iv["b"])) for iv in left] + [(ga, gb)] + \
+        [(_exact_input(iv["a"]), _exact_input(iv["b"])) for iv in right]
     breaks = [i for i, (u, v) in enumerate(zip(chain, chain[1:])) if u[1] != v[0]]
-    others = [iv["others_max_re"] for iv in left + right]
-    if "gH_others_max_re" in thA:
-        others.append(thA["gH_others_max_re"])
-    upper = hex_fraction(thA["others_max_re_upper"])
-    approx = thA["others_max_re_upper"]["approx"]
+    exact_schema = ("gH_others_max_re_bound" in thA and "gH_others_abs_im_bound" in thA and
+                    all("others_max_re_bound" in iv and "lambda_imag" in iv and "others_abs_im_bound" in iv
+                        for iv in left + right))
+    try:
+        others = ([hex_fraction(iv["others_max_re_bound"]) for iv in left + right] +
+                  [hex_fraction(thA["gH_others_max_re_bound"])]) if exact_schema else []
+        imag = [(hex_fraction(iv["lambda_imag"]["lower"]), hex_fraction(iv["lambda_imag"]["upper"]))
+                for iv in left + right] + [(hex_fraction(thA["omega_H"]["lower"]), hex_fraction(thA["omega_H"]["upper"]))]
+        absims = [hex_fraction(iv["others_abs_im_bound"]) for iv in left + right] + [hex_fraction(thA["gH_others_abs_im_bound"])]
+        absim_upper = hex_fraction(thA["others_abs_im_upper"])
+        upper = hex_fraction(thA["others_max_re_upper"])
+        intervals_ordered = all(hex_fraction(thA[k]["lower"]) <= hex_fraction(thA[k]["upper"])
+                                for k in ("omega_H", "dRe_lambda_dg", "l1_kuznetsov_physical"))
+    except (KeyError, TypeError, ValueError):
+        exact_schema, others, imag, upper, intervals_ordered = False, [], [], Fraction(0), False
+        absims, absim_upper = [], Fraction(0)
     out = dict(
         window_is_W=list(thA["window"]) == list(WINDOW),
         gH_inside_W=Wa < ga < gb < Wb,
@@ -2685,20 +2918,27 @@ def check_theoremA_cover(thA):
         adjacent=not breaks,
         n_breaks=len(breaks),
         covers_W=chain[0][0] == Wa and chain[-1][1] == Wb,
-        gH_between_sides=(not left or Fraction(left[-1]["b"]) == ga) and (not right or Fraction(right[0]["a"]) == gb),
+        gH_between_sides=(not left or _exact_input(left[-1]["b"]) == ga) and (not right or _exact_input(right[0]["a"]) == gb),
         counts_as_recorded=(len(left), len(right)) == (thA["n_intervals"]["left"], thA["n_intervals"]["right"]),
-        re_lam_ordered=all(Fraction(iv["re_lam"][0]) <= Fraction(iv["re_lam"][1]) for iv in left + right),
-        left_re_lambda_positive=all(Fraction(iv["re_lam"][0]) > 0 for iv in left),
-        right_re_lambda_negative=all(Fraction(iv["re_lam"][1]) < 0 for iv in right),
-        others_negative=all(v < 0 for v in others) and upper < 0,
-        others_max_is_recorded_upper=bool(others) and abs(max(others) - approx) <= 1e-12 * abs(approx),
+        re_lam_ordered=all(_exact_input(iv["re_lam"][0]) <= _exact_input(iv["re_lam"][1]) for iv in left + right),
+        left_re_lambda_positive=all(_exact_input(iv["re_lam"][0]) > 0 for iv in left),
+        right_re_lambda_negative=all(_exact_input(iv["re_lam"][1]) < 0 for iv in right),
+        exact_proof_bounds_present=exact_schema,
+        enclosures_ordered=intervals_ordered,
+        others_negative=bool(others) and all(v < 0 for v in others) and upper < 0,
+        others_max_is_recorded_upper=bool(others) and max(others) == upper,
+        stable_imag_exact_aggregate=bool(absims) and all(x >= 0 for x in absims) and max(absims) == absim_upper,
+        critical_stable_separation=bool(imag) and min(a for a, b in imag) > absim_upper,
+        positive_imag_on_entire_cover=bool(imag) and all(0 < a <= b for a, b in imag),
+        imag_summary_encloses_cover=bool(imag) and _exact_input(thA["lambda_imag_range"][0]) <= min(a for a, b in imag)
+                                  and max(b for a, b in imag) <= _exact_input(thA["lambda_imag_range"][1]),
         transversal=hex_fraction(thA["dRe_lambda_dg"]["upper"]) < 0,
         l1_negative=hex_fraction(thA["l1_kuznetsov_physical"]["upper"]) < 0,
         omega_positive=hex_fraction(thA["omega_H"]["lower"]) > 0,
         n_left=len(left), n_right=len(right), n_polydiscs=sum(1 for iv in left + right if "polydisc" in iv),
-        others_max_re=max(others) if others else None,
-        others_include_gH="gH_others_max_re" in thA)
-    out["ok"] = all(v for k, v in out.items() if isinstance(v, bool) and k != "others_include_gH")
+        others_max_re=float(max(others)) if others else None,
+        others_include_gH="gH_others_max_re_bound" in thA)
+    out["ok"] = all(v for k, v in out.items() if isinstance(v, bool))
     return out
 
 
@@ -2876,28 +3116,33 @@ def _complete_lines(path):
 
 
 def gks_branch_snapshot(log=print, tmpdir=None):
-    """Read-only use of the G_Ks branch logs of branch.py (owned by another run, append-only): the complete lines of
-    run_K12.jsonl and centres_K12.jsonl are copied to a temporary directory and validated there by
-    branch.validate_logs (groups, centres' SHA-256, and every consecutive gluing re-derived in Arb), so the content that
-    is validated is exactly the content whose line count and SHA-256 are recorded. Returns (pieces, centres, info)."""
-    import tempfile
+    """Validate immutable snapshots of the complete FINAL branch log/centres and bind its collected theorem record."""
     import branch as br
-    tmp = tempfile.mkdtemp(prefix="hopf-gks-", dir=tmpdir)
-    info = {}
-    for name in ("run_K12.jsonl", "centres_K12.jsonl"):
-        body, n, sha = _complete_lines(os.path.join(BRANCH_DIR, name))
-        with open(os.path.join(tmp, name), "wb") as fh_:
-            fh_.write(body)
-        info[name] = dict(lines=n, sha256_of_these_lines=sha)
-    old = (br.RUN_LOG, br.CENTRES)
-    br.RUN_LOG, br.CENTRES = os.path.join(tmp, "run_K{K}.jsonl"), os.path.join(tmp, "centres_K{K}.jsonl")
-    try:
-        pieces, groups, centres = br.validate_logs(12, reglue=True, log=log, repair=False)
-    finally:
-        br.RUN_LOG, br.CENTRES = old
+    _assert_sources_current()
+    runpath, cpath = br.RUN_LOG.format(K=12), br.CENTRES.format(K=12)
+    rr, runhash = br.snapshot_jsonl(runpath)
+    cc, centrehash = br.snapshot_jsonl(cpath)
+    pieces, groups, centres = br.validate_final(12, records=rr, centre_records=cc)
+    # The final manifest/source validation precedes every gluing re-derivation.
+    pieces, groups, centres = br.validate_logs(12, reglue=True, repair=False, records=rr, centre_records=cc, log=log)
+    recordpath = os.path.join(RESULTS, "fourier-branch-gks.json")
+    with open(recordpath, "rb") as fh_:
+        record_bytes = fh_.read()
+    record = json.loads(record_bytes)
+    record_hash = hashlib.sha256(record_bytes).hexdigest()
+    if (record.get("program_sha256") != br.PROGRAM_SHA256 or record.get("sources_sha256") != br.SOURCES_SHA256
+            or record.get("run_log_sha256") != runhash or record.get("centres_sha256") != centrehash
+            or record.get("run_log") != os.path.relpath(runpath, ROOT)
+            or record.get("n_pieces") != 712 or record.get("connected_pieces") != 712
+            or record.get("g_covered") != br.EXPECTED_FINAL_RANGE):
+        raise ProofFailure("Hopf gluing requires the complete current-source FINAL branch record")
     recs = [p["rec"] for p in pieces]
-    info.update(n_pieces=len(recs), n_groups=len(groups), g_lo=recs[0]["g_lo"],
-                g_hi=str(max(Fraction(p["g_hi"]) for p in recs)), consecutive_gluings_rederived=len(recs) - 1)
+    info = dict(run_log=os.path.relpath(runpath, ROOT), run_log_sha256=runhash, centres_sha256=centrehash,
+                branch_record=os.path.relpath(recordpath, ROOT), branch_record_sha256=record_hash,
+                branch_program_sha256=br.PROGRAM_SHA256, branch_sources_sha256=dict(br.SOURCES_SHA256),
+                n_pieces=len(recs), n_groups=len(groups), g_lo=recs[0]["g_lo"],
+                g_hi=str(max(Fraction(p["g_hi"]) for p in recs)), consecutive_gluings_rederived=len(recs)-1)
+    _assert_sources_current()
     return recs, centres, info
 
 
@@ -2952,10 +3197,10 @@ def gks_points(data=DATA):
                          os.path.join(BRANCH_DIR, "points_centres_K32.jsonl")),
                         ("hopf", os.path.join(data, "gks_points.jsonl"),
                          os.path.join(data, "gks_points_centres_K32.jsonl"))):
-        for r in _read_jsonl(pf):
+        for r in _read_final_jsonl(pf):
             if r.get("type") == "point" and r.get("ok_existence") and r.get("rec"):
                 pts.append(dict(r, source=src))
-        for r in _read_jsonl(cf):
+        for r in _read_final_jsonl(cf):
             cents[(src, r["g"])] = r
     return pts, cents
 
@@ -2976,10 +3221,13 @@ def point_on_gks_branch(pt, cent, recs, centres):
     return dict(ok=False, tried=[dict(piece=r_.get("piece"), ok=r_["ok"]) for r_ in res])
 
 
-def bridge_checks(log=print, data=DATA, prec=256):
+def bridge_checks(log=print, data=DATA, prec=256, write=True):
     """Part C and the stability points: for every branch.py point proof (g_s), Lemma D against the eps-branch, and
-    (gluing) branch.point_on_branch against the G_Ks branch. Writes data/hopf/gluing_gks.json and returns it."""
-    pieces = [r for r in _read_jsonl(os.path.join(data, "pieces.jsonl")) if r.get("type") == "piece"]
+    (gluing) branch.point_on_branch against the G_Ks branch. Writes data/hopf/gluing_gks_final.json when write=True and returns it."""
+    _assert_sources_current()
+    lines, covers = piece_lines(data), cover_records(data)
+    validate_piece_inputs(lines, covers)
+    pieces = final_pieces(data)
     states = [_piece_state(r) for r in pieces]
     with am.precision(prec):
         nu_eps = _arb_q(pieces[0]["settings"]["rho0"]).exp()
@@ -2992,7 +3240,8 @@ def bridge_checks(log=print, data=DATA, prec=256):
             _, n_, sha_ = _complete_lines(pth)
             shas[os.path.relpath(pth, ROOT)] = dict(lines=n_, sha256_of_these_lines=sha_)
     out = dict(gks_branch_snapshot=info, points=[], eps_branch=dict(n_pieces=len(pieces), eps_end=pieces[-1]["e_hi"]),
-               point_logs_sha256=shas)
+               point_logs_sha256=shas, sources_sha256=dict(SOURCE_SHA256),
+               eps_piece_log_sha256=_sha(os.path.join(data, "pieces.jsonl")))
     for pt in sorted(pts, key=lambda r: Fraction(r["g"])):
         cent = cents.get((pt["source"], pt["g"]))
         if cent is None:
@@ -3012,49 +3261,39 @@ def bridge_checks(log=print, data=DATA, prec=256):
     out["ok"] = bool(glue_pts)
     out["stable_bridge_points"] = [dict(g=p["g"], source=p["source"]) for p in out["points"]
                                    if p["on_eps_branch"] and p["stage_S_ok"]]
-    with open(os.path.join(data, "gluing_gks.json"), "w") as fh_:
-        json.dump(out, fh_, indent=1, default=str)
+    _assert_sources_current()
+    if write:
+        with open(os.path.join(data, "gluing_gks_final.json"), "w") as fh_:
+            json.dump(out, fh_, indent=1, default=str)
     return out
 
 
 # =================================================================================================================
 # collect: the record results/fourier-hopf.json
 # =================================================================================================================
-SOURCES = ["fourier/hopf.py", "fourier/test_hopf.py", "fourier/LEMMAS-hopf.md", "fourier/arbmodel.py",
-           "fourier/tp06_18d_arb.py", "fourier/fourier_eval.py", "fourier/existence.py", "fourier/branch.py",
-           "fourier/stability.py", "fourier/centre.py", "model/tp06_18d.py", "model/scales.txt"]
-
-
-def _sha(path):
-    h = hashlib.sha256()
-    with open(path, "rb") as fh_:
-        for chunk in iter(lambda: fh_.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def collect(write=True, log=print, data=DATA):
     """Re-derive the eps-chain from the logs (every gluing in Arb, adjacency, covers, centre digests), the structure of
     Theorem A's cover (check_theoremA_cover: adjacency, coverage of W, signs, others_max_re), the identification at
     eps = 0 (Corollary B(a)), read the bridge checks (bridge_checks: Lemma D and the gluing to the G_Ks branch), report
-    which pieces have a matching re-proof by the current program (reprove_status, data/hopf/reprove.jsonl), and write
+    which pieces have a matching re-proof by the current program (reprove_status, data/hopf/reprove_final.jsonl), and write
     results/fourier-hopf.json."""
-    pieces = [r for r in _read_jsonl(os.path.join(data, "pieces.jsonl")) if r.get("type") == "piece"]
-    covers = {r["id"]: r for r in _read_jsonl(os.path.join(data, "covers.jsonl")) if r.get("type") == "cover"}
-    if not pieces:
-        raise RuntimeError("no pieces")
-    pA = os.path.join(data, "theoremA.json")
+    _assert_sources_current()
+    lines, covers = piece_lines(data), cover_records(data)
+    validate_piece_inputs(lines, covers)
+    pieces = [lines[i][0] for i in sorted(lines)]
+    pA = os.path.join(data, THEOREM_A_LOG)
     if not os.path.exists(pA):
-        raise RuntimeError("theoremA.json missing: run --theorem-a first")
+        raise RuntimeError("theoremA_final.json missing: run --theorem-a first")
     with open(pA) as fh_:
         thA = json.load(fh_)
     thA_checks = check_theoremA_cover(thA)
     if not thA_checks["ok"]:
         raise ProofFailure(f"Theorem A record fails its structural checks: "
                            f"{[k for k, v in thA_checks.items() if v is False]}")
-    if thA.get("code_sha256") != CODE_SHA256:
-        log("note: theoremA.json was written by another program text than the current hopf.py; rerun --theorem-a")
+    if thA.get("code_sha256") != CODE_SHA256 or thA.get("sources_sha256") != SOURCE_SHA256:
+        raise ProofFailure("stale Theorem A evidence; rerun --theorem-a with current scientific sources")
     reproof = reprove_status(data)
+    pieces = final_pieces(data)
     with am.precision(192):
         nu = _arb_q(pieces[0]["settings"]["rho0"]).exp()
     states = [_piece_state(r) for r in pieces]
@@ -3086,6 +3325,8 @@ def collect(write=True, log=print, data=DATA):
                 and hex_fraction(r["result"]["contraction_at_r_uniqueness"]) < 1):
             raise ProofFailure(f"piece {r['idx']}: logged radii-polynomial inequalities do not hold")
     ident = identification_at_eps0(pieces[0], thA, log=log)
+    if ident.get("ok") is not True:
+        raise ProofFailure("fresh-bound eps=0 identification was not certified")
     gHa, gHb = Fraction(thA["gH_interval"][0]), Fraction(thA["gH_interval"][1])
     first_below = None
     for r in pieces:
@@ -3100,14 +3341,10 @@ def collect(write=True, log=print, data=DATA):
         g_end_hi = up(g_end_ball)
         g_end_lo = lo(g_end_ball)
     bridge_g_low = dec(g_end_hi, "up", 20)
-    pg = os.path.join(data, "gluing_gks.json")
-    gl = None
-    if os.path.exists(pg):
-        with open(pg) as fh_:
-            gl = json.load(fh_)
-        if gl.get("eps_branch", {}).get("n_pieces") != len(pieces):
-            log("note: gluing_gks.json was made with a different number of eps pieces; rerun --bridge")
-            gl["stale"] = True
+    # Re-derive the bridge against the complete final branch, rather than trusting saved success flags.
+    gl = bridge_checks(log=log, data=data, write=False)
+    if not gl.get("ok"):
+        raise ProofFailure("gluing to the final G_Ks branch was not certified")
     closed = bool(gl and gl.get("ok") and not gl.get("stale") and ident.get("ok"))
     gks_hi = Fraction(gl["gks_branch_snapshot"]["g_hi"]) if gl else None
     summary = [dict(idx=r["idx"], eps=[r["e_lo"], r["e_hi"]], g=[r["result"]["g"]["lower"]["dec"][:18],
@@ -3149,10 +3386,10 @@ def collect(write=True, log=print, data=DATA):
         what="Rec 2, Hopf bridge: the single-cell periodic orbit is certified from the end of the G_Ks branch "
              "(branch.py) to the supercritical Hopf point g_H of Theorem A (Erhardt's numerical value lies about "
              "1.5e-8 above it) by a blown-up radii polynomial in the amplitude eps (fourier/hopf.py, LEMMAS-hopf.md)",
-        status="computed; in-project adversarial review recorded, fixes applied, fix check pending",
+        status="source admission check passed; complete numerical acceptance pending",
         review=("reviews/hopf-bridge-review-2026-10-02.md: an in-project adversarial reading by an AI agent session "
-                "(no UNSOUND finding); its fixes are listed at the end of that file and have not yet been checked by a "
-                "second reading"),
+                "(no UNSOUND finding); its fixes are mapped in reviews/hopf-bridge-fixes-2026-10-02.md; source admission "
+                "check passed, complete numerical acceptance pending"),
         not_claimed=("No outside review has taken place. Stability is NOT proved uniformly on the bridge: only "
                      "(a) for small amplitude, qualitatively (cited Hopf theorem, no explicit range), and (b) at the "
                      "G_Ks values listed under stability_points (Stage S point proofs identified with the bridge by "
@@ -3189,13 +3426,14 @@ def collect(write=True, log=print, data=DATA):
         pieces=summary,
         covers=[dict(id=k, T=v["T"], R=v["R"], G_R=v["G_R"], rho2=v["rho2"], n_evals=v["record"]["n_evals"])
                 for k, v in covers.items()],
-        sources_sha256={s_: _sha(os.path.join(ROOT, s_)) for s_ in SOURCES},
+        sources_sha256=dict(SOURCE_SHA256),
         data_sha256={os.path.basename(p_): _sha(p_) for p_ in (os.path.join(data, f) for f in
-                     ("pieces.jsonl", "covers.jsonl", "theoremA.json", "gluing_gks.json", "gks_points.jsonl",
+                     ("pieces.jsonl", "covers.jsonl", THEOREM_A_LOG, "gluing_gks_final.json", "gks_points.jsonl",
                       "gks_points_centres_K32.jsonl", REPROVE_LOG)) if os.path.exists(p_)},
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_piece_seconds=round(sum(r.get("seconds", 0) for r in pieces), 1))
+    _assert_sources_current()
     if write:
         with open(os.path.join(RESULTS, "fourier-hopf.json"), "w") as fh_:
             json.dump(rec, fh_, indent=1)
@@ -3221,9 +3459,9 @@ def main():
     ap.add_argument("--no-stability", action="store_true", help="with --gks-points: existence only (no Stage S)")
     ap.add_argument("--bridge", action="store_true", help="Lemma D for the branch.py point proofs and the gluing")
     ap.add_argument("--reprove-all", action="store_true",
-                    help="re-prove every logged eps piece with the current program; log data/hopf/reprove.jsonl")
+                    help="re-prove every logged eps piece with the current program; log data/hopf/reprove_final.jsonl")
     ap.add_argument("--reprove-pieces", default=None, help="comma-separated piece indices: re-prove only these")
-    ap.add_argument("--reprove-log", default=None, help="log path for the re-proofs (default data/hopf/reprove.jsonl)")
+    ap.add_argument("--reprove-log", default=None, help="log path for the re-proofs (default data/hopf/reprove_final.jsonl)")
     ap.add_argument("--workers", type=int, default=1, help="with --reprove-all/--reprove-pieces: parallel processes")
     ap.add_argument("--collect", action="store_true")
     a = ap.parse_args()

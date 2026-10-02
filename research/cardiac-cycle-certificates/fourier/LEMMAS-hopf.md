@@ -1,8 +1,8 @@
 # The Hopf bridge: the single-cell periodic orbit from the end of the G_Ks branch to the Hopf point (lemmas and proofs)
 
-Status: computed; in-project adversarial review recorded, fixes applied, fix check pending. The reading
+Status: source admission check passed; complete numerical acceptance pending. The reading
 (`reviews/hopf-bridge-review-2026-10-02.md`) is an in-project reading by an AI agent session; the fixes made for it are
-listed at the end of that file and have not yet been checked by a second reading. This file states and proves what
+mapped in `reviews/hopf-bridge-fixes-2026-10-02.md` and passed an in-project source-admission check; complete numerical acceptance is pending. This file states and proves what
 `fourier/hopf.py` relies on. No outside review has taken place.
 
 Model: Erhardt's 18-state TP06 endocardial cell, `f(z; g)` = `arbmodel.f` with `g_Ks = g`, in the scaled variables
@@ -113,11 +113,11 @@ mutated routines (`+2` in the middle term; `(-A)^-1` for `(2 i omega - A)^-1`) a
 not depend on the normalization of `q`; its value is reported for `<q, q> = 1` in physical units, in which
 MATCONT's "first Lyapunov coefficient" (Erhardt's `-2.6838`) is `omega l1`.
 
-### Theorem A (computer-assisted; `hopf.theorem_A`, record `fourier/data/hopf/theoremA.json`)
+### Theorem A (computer-assisted; `hopf.theorem_A`, final record `fourier/data/hopf/theoremA_final.json`)
 
 Let `W = [0.02789, 0.02792]` (it contains Erhardt's value `0.027907858929580`). The program covers `W` by adjacent
 closed intervals with exact end points (record: `cover_left`, 286 intervals, `G_H`, `cover_right`, 229 intervals;
-222.6 s on one core in the 2026-10-02 rerun with the fixed program; 233.6 s in the first run). For an interval `G`
+222.6 s on one core in the earlier 2026-10-02 snapshot rerun; 233.6 s in the first run). For an interval `G`
 of the cover write `x_G(g)` for the unique equilibrium of `f(.; g)` in the interval's polydisc `X_G` (Lemma K) and
 `A_G(g) = D_z f(x_G(g); g)`. Then:
 
@@ -174,9 +174,15 @@ ball that `dlambda_dg` checks to be disjoint from every Gershgorin disc but `D1`
 holds exactly one eigenvalue (Lemma G(b)), and `lambda_l(A) = lambda(A)`. (Until 2026-10-02 the program checked only
 that the two eigenvalue balls overlap, which does not identify them.) (c) is checked by `identification_at_eps0` (box inclusions of the recorded
 polydiscs in `P`, and Lemma K on `P` over `J`): for `g in J` and an interval `G` containing `g`, `x_G(g)` lies in `X_G`,
-hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The eigenvalue in `D1` of an interval and in `D1'` of an
-adjacent interval are, at the shared end point, eigenvalues with positive imaginary part of the same matrix that are
-not among the 16 eigenvalues with negative real part, so they are equal (if both intervals meet `J`). (d) For `g` in an
+hence in `P`, and is a zero of `f(.; g)`, so it is `x_e(g)`. The program also certifies on the entire cover, including `G_H`, a global bound `B_im` on the absolute imaginary
+parts of all 16 other Gershgorin discs, strictly below the smallest lower endpoint of any critical imaginary
+enclosure. These exact per-interval bounds and their exact maximum are recorded as `others_abs_im_bound`,
+`gH_others_abs_im_bound`, `others_abs_im_upper`, and rechecked by `check_theoremA_cover`. At a shared endpoint,
+the two equilibrium branches meeting `J` therefore give the same real matrix. Each selected critical eigenvalue
+has imaginary part greater than `B_im`; the conjugate has negative imaginary part, and all 16 other eigenvalues
+have absolute imaginary part at most `B_im`. There is exactly one eigenvalue of that matrix above `B_im`, so the
+two selected eigenvalues are equal. This argument applies on both sides of `G_H`, regardless of the sign of their
+real parts; negative real part alone would not identify the right-side critical eigenvalue. (d) For `g` in an
 interval `G != G_H`, `Re lambda_G(g) != 0`, so neither `lambda_G(g)` nor its conjugate (the eigenvalue in `D2`, by (a))
 is on the axis, and the 16 others have negative real part: no eigenvalue is on the axis. On `G_H`, `lambda` is analytic
 (simple eigenvalue of an analytic family), `Re lambda' < 0`, and by (c) the end points of `G_H` are end points of the
@@ -202,7 +208,7 @@ non-degenerate and adjacent and run from `0.02789` to `0.02792` with `G_H` betwe
 recorded ones, every left interval has `Re lambda > 0` and every right one `Re lambda < 0` (recorded enclosures),
 every `others_max_re` is negative and the largest is the recorded bound, and the recorded `d Re lambda / dg`, `l1` and
 `omega_H` have the stated signs. These re-check the bookkeeping of the run; the inequalities on each interval are
-decided in that run. `theorem_A` was rerun with that program; the numbers above are from that run.)
+decided in that run. `theorem_A` was rerun with the earlier snapshot program; those numbers are historical. The final-source rerun is pending.)
 
 ### Cited theorem (Andronov-Hopf; Kuznetsov, Scholarpedia 1(10):1858, as stated in papers/hh-dynamics, Theorem thm:kuz)
 
@@ -423,29 +429,32 @@ B3 and the radii-polynomial theorem (B2), for **every** `eps in [e_lo, e_hi]` (n
 4. Nothing is claimed about orbits outside the ball, about stability (Part S), or about a G_Ks value directly: a given
    `G_Ks` is reached through `eps` (Corollary B(c)), and whether `g*` is monotone in `eps` is not certified.
 
-Every piece is re-glued to its predecessor in Arb by `collect` (Lemma B4). The 68 pieces were made by five bounded
-runs of `hopf.run` on 2026-10-02: pieces 0 to 13 and 14 to 30 (before the program logged its own SHA-256), 31 to 40
-(`code_sha256` prefix `bae43c6c3b`), 41 to 62 (`c656af84d2`) and 63 to 67 (`e6754dbe4c`); pieces 0 to 40 have
-`K = 8`, `M = 48`, pieces 41 to 67 `K = 12`, `M = 64`. A copy of the program was taken at the start of each run (in the
-session's scratch directory, not in the repository). Comparing their syntax trees with the current `hopf.py`, every
-definition that a piece proof uses (`Jet`, `curve_point`, `Centre`, `EpsCover`, `hess19`, `_CurveFns`, `piece_blocks`,
-`assemble`, `centre_distance`, `glue`, the constants) is identical; they differ only in the untrusted float solver
-`FloatEps` (runs before 31 to 40), the driver `run`, Parts A and C, and bookkeeping. `branch.py`, `existence.py`,
-`fourier_eval.py` and `arbmodel.py` were last modified before the first run. `fourier/test_hopf.py` re-proves pieces 0,
-13, 30, 40, 62 and the last piece bit for bit (Y0, Z1, Z2, r_existence, r_uniqueness as exact dyadics) with the
-current program and covers rebuilt from the logged centres.
+The original 68 pieces are preserved in `pieces.jsonl`, with five historical runs on 2026-10-02. Pieces 0 to 40
+have `K = 8`, `M = 48`; pieces 41 to 67 have `K = 12`, `M = 64`. Copies of earlier programs existed only in the
+session scratch directory, so they cannot establish reproducibility for a repository reader (GAP 2).
 
-Because those program copies are not in the repository (GAP 2 of the 2026-10-02 review), the claim that the logged
-numbers are those of the current program is checked piece by piece instead: `python3 hopf.py --reprove-all
-[--workers W]` re-proves every logged piece with the current program text (each group's cover rebuilt from its logged
-centres, then `piece_blocks` and `assemble` with the stored centre line, weights and exact `r_*`) and appends one record
-per piece to `fourier/data/hopf/reprove.jsonl`: the SHA-256 of the piece's line in `pieces.jsonl`, the SHA-256 of
-`hopf.py` taken when the process imported it, the cover and centre digests, and whether the exact `Y0`, `Z1`, `Z2`,
-`r_*`, `r_existence`, `r_uniqueness`, `p` at both radii, the contraction factor and the `g` and `omega` enclosures equal
-the logged ones. `collect` reports under `pieces_reproved` how many pieces have a matching re-proof by the current
-program text for their current log line. As of 2026-10-02 this holds for pieces 0 and 67 only (both matching, 93 s and
-109 s); the re-proof of the other 66 pieces has not been run, and until it has, the statement rests for them on the
-comparison of program copies described above.
+The final evidence path is `python3 hopf.py --reprove-all [--workers W]`. It rebuilds each group's cover from its
+logged centres and exact `T`, `R`, `G_R`, `rho2`, then calls `piece_blocks` and `assemble` with the logged centre
+line, exact weights, settings and `r_*`. The new append-only log `fourier/data/hopf/reprove_final.jsonl` leaves
+`reprove.jsonl` intact. Each final record binds the exact input line, full cover record, centre and import-time
+SHA-256 pins for all scientific dependencies, and records the full effective proof settings. It stores complete freshly certified exact results, with hexadecimal dyadics for `Y0`, `Z1`, `Z2`, both radii, `r_*`, both polynomial bounds, the contraction factor and the
+`g`, `omega`, `T_ms` enclosures. Historical equality is recorded as a diagnostic only. A native Mac pilot
+certified piece 0 but differed in some exact bounds from the historical run; a different floating-point inverse
+is a possible explanation, not an established cause. The acceptance gate verifies exact fresh polynomial upper
+bounds and contraction/radius inequalities, source/input identities and complete settings. Float display values
+and a bare success flag cannot satisfy it. Final gluings use only freshly certified radii and bounds.
+The latest attempt for each input line and source set wins; a failed latest attempt supersedes an earlier success.
+
+`collect` requires precisely the distinct indices 0 through 67, exact adjacency and coverage `[0, 6427/50000]`,
+and all 68 complete matching final re-proofs. Missing, duplicated, stale, failed or malformed evidence is refused,
+including settings supplied only as binary floats. It also refuses a stale Theorem A record. The reviewed final
+Theorem A run writes `theoremA_final.json`, preserving `theoremA.json`, with exact upper bounds for the 16 other
+eigenvalues and positive imaginary enclosures on every interval, including `G_H`. Its structural check verifies
+the entire cover of `W`, the exact maximum bound, signs, endpoint ordering and interval adjacency.
+
+As of this fixes report, neither final scientific rerun has been performed. The two earlier re-proofs of pieces
+0 and 67 (93 s and 109 s) remain historical evidence only; they do not satisfy the final-source gate. The theorem
+statements below describe the claim supported when all required final computation and fix checks have passed.
 
 ### Theorem B (computer-assisted; `hopf.run`, records `fourier/data/hopf/pieces.jsonl`, `covers.jsonl`)
 
@@ -511,7 +520,7 @@ the enclosure of `g*(eps_end)` (record: `g_star_at_eps_end`, `bridge_g_covered`)
 `g*(eps)` for some `eps in (0, eps_end]` (`eps != 0` since `g != g_H`), and the cell has at that `G_Ks` the periodic
 orbit of Theorem B at that `eps`.
 
-## Part C. Gluing to the certified G_Ks branch (`hopf.bridge_checks`, record `fourier/data/hopf/gluing_gks.json`)
+## Part C. Gluing to the certified G_Ks branch (`hopf.bridge_checks`, final record `fourier/data/hopf/gluing_gks_final.json`)
 
 The G_Ks branch (`branch.py`) consists of pieces `P = [g_lo, g_hi]` with exact centres `(omega_P, a_P)` (`K = 12`,
 `fourier/data/branch/centres_K12.jsonl`, SHA-256 checked), weights `eta_P` (19 values), and for every `g in P` a unique
@@ -634,3 +643,9 @@ does not reach them), and `point_on_branch` for those at `0.0275` to `0.02775` (
    and hashed together), and that `branch.point_on_branch` is applied to a piece containing `g_s`.
 6. That the Hopf theorem is used only qualitatively (Corollary A, Corollary B(b), Part S.1); every quantitative
    statement comes from Theorems A, B, C and Lemma D.
+
+Final-source gluing evidence: `gks_branch_snapshot` validates all 712 pieces of `run_K12_final.jsonl`, its
+source/input manifest, centre snapshot and all 711 gluings, and requires the complete current branch record
+`results/fourier-branch-gks.json`. Its full SHA-256 is recorded. `collect` re-derives Lemma D and the G53P6 ball
+inclusion against that final branch rather than accepting historical `gluing_gks.json` success flags. An explicit
+`--bridge` run writes `gluing_gks_final.json`, preserving the historical gluing file.

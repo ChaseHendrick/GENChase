@@ -2269,3 +2269,43 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
 - Found: Z. Du is at the Department of Mathematics, Sichuan University (ORCID 0000-0003-3550-0817) and still publishes, as recently as 2025. A copy could be requested from him.
 - Result: the hh-dynamics manuscript now states what the abstract and the review say, credits the work and claims no priority for the Hopf points or their coefficients. The access status is stated once, in its sources paragraph, without apology (owner's instruction, 2026-10-01).
 - Re-search: no.
+
+### 2026-10-02  cardiac-rings 1.1.0: validated continuation and Hopf desingularization
+
+- Web queries, recorded exactly:
+  - `van den Berg Queirolo validated continuation periodic orbits Hopf amplitude blow up`
+  - `Church Lessard validated Hopf bifurcations functional differential equations`
+  - `Erhardt 2025 1569121 rigorous validated Hopf continuation citing`
+  - `van den Berg Lessard Queirolo rigorous verification Hopf bifurcations ODEs desingularization periodic orbits`
+  - `Church Lessard validated continuation Hopf bubbles periodic orbits 2024`
+  - `"Erhardt" "2025" "1569121" Hopf periodic`
+  - `"Erhardt" "ten Tusscher" "validated" Hopf continuation`
+- Primary sources inspected:
+  - van den Berg, Lessard and Queirolo (2021), *Rigorous Verification of Hopf Bifurcations via Desingularization
+    and Continuation*, SIAM J. Applied Dynamical Systems 20(2), 573-607,
+    [doi:10.1137/20M1343464](https://doi.org/10.1137/20M1343464). The publisher PDF is accessible through
+    [VU's institutional repository](https://research.vu.nl/ws/portalfiles/portal/153185462/Rigorous_verification_of_Hopf_bifurcations_via_desingularization_and_continuation.pdf).
+    Introduction and the Section 6 formulation inspected, not a full independent verification of its proofs.
+    It explicitly rescales an orbit as equilibrium plus amplitude times a normalized profile and follows the
+    desingularized periodic branch. Its presented framework treats polynomial fields; our exponential/logarithmic
+    model needs separate holomorphic-domain and remainder bounds. Credit this existing method in the new manuscript.
+  - van den Berg and Queirolo (2021), *A General Framework for Validated Continuation of Periodic Orbits in Systems
+    of Polynomial ODEs*, J. Computational Dynamics 8(1), 59-97,
+    [doi:10.3934/jcd.2021004](https://doi.org/10.3934/jcd.2021004).
+    [Institutional abstract and bibliographic record](https://research.vu.nl/en/publications/a-general-framework-for-validated-continuation-of-periodic-orbits/)
+    inspected. Parametrized Newton-Kantorovich validation of periodic branches is established prior methodology.
+  - Church and Lessard, *Rigorous Verification of Hopf Bifurcations in Functional Differential Equations of Mixed
+    Type*: [author-hosted companion page](https://www.math.mcgill.ca/jplessard/ResearchProjects/HopfFDE/home.html)
+    and publisher search abstract inspected. This is related validated Hopf work, not a proof for our cell model.
+  - Erhardt (2025), *Cardiac Dynamics of a Human Ventricular Tissue Model with a Focus on Early Afterdepolarizations*,
+    [doi:10.3389/fphy.2025.1569121](https://www.frontiersin.org/journals/physics/articles/10.3389/fphy.2025.1569121/full).
+    Rechecked Section 3.1, Table 2 and the neighbouring continuation discussion against the live publisher text.
+    The reported first 18-state Hopf value is 0.027907858929580, with the printed coefficient
+    -2.683800872009436. Numerical prediction of this supercritical bifurcation must be credited. The separate
+    certified implementation's tighter enclosure must not be claimed to contain that printed value.
+- Result: validated continuation and amplitude desingularization are existing techniques. The intended new
+  contribution is their rigorously checked application and branch identification for the explicitly modified
+  ventricular model, conditional on completing all final reruns. These searches support no first-ever claim.
+  They did not provide an exhaustive forward citation search of Erhardt's paper; that remains a submission task.
+- Re-search: yes before submission, including a dedicated forward-citation search and a full reading of the
+  methodology references. Reading scope belongs in this audit, not as editorial comments in citation labels.

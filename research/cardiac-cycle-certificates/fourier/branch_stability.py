@@ -109,6 +109,13 @@ _NUMPY_PREIMPORTED = "numpy" in sys.modules
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "BLIS_NUM_THREADS"):
     os.environ[_v] = "1"
 
+_PREIMPORT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_PREIMPORT_FILES = ['fourier/branch_stability.py', 'fourier/branch.py', 'fourier/stability.py', 'fourier/existence.py', 'fourier/centre.py', 'fourier/arbmodel.py', 'fourier/fourier_eval.py', 'fourier/tp06_18d_arb.py', 'model/tp06_18d.py', 'model/scales.txt']
+_PREIMPORT_SOURCES = {}
+for _path in _PREIMPORT_FILES:
+    with open(os.path.join(_PREIMPORT_ROOT, _path), "rb") as _source_fh:
+        _PREIMPORT_SOURCES[_path] = hashlib.sha256(_source_fh.read()).hexdigest()
+
 import numpy as np  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -146,6 +153,8 @@ DOCUMENTS = ["fourier/LEMMAS-stability.md", "fourier/test_branch_stability.py"]
 with open(os.path.abspath(__file__), "rb") as _fh:
     PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
 SOURCES_SHA256 = {_p: br.sha256(os.path.join(ROOT, _p)) for _p in SOURCES}
+if SOURCES_SHA256 != _PREIMPORT_SOURCES:
+    raise RuntimeError("proof sources changed during import")
 if SOURCES_SHA256["fourier/branch_stability.py"] != PROGRAM_SHA256:
     raise RuntimeError("branch_stability.py changed while it was being imported")
 
@@ -183,7 +192,7 @@ def _logs(K):
     key = (K, br.sha256(br.RUN_LOG.format(K=K)), br.sha256(br.CENTRES.format(K=K)))
     if key not in _LOGS:
         _LOGS.clear()
-        _LOGS[key] = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+        _LOGS[key] = br.validate_final(K)
     return _LOGS[key]
 
 
@@ -958,6 +967,7 @@ def prove_piece_uniform(label, settings=None, K=12, log=print, controls=None, _m
     out = dict(
         type="unit", label=label, g=[rec["g_lo"], rec["g_hi"]], g_centre=rec["centre_g"],
         centre_sha256=rec["centre_sha256"], eta=rec["eta"], rho0=rec["settings"]["rho0"], uniform=True, ok=True,
+        branch_piece_sha256=br.record_digest(rec),
         settings=st, program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
         threads_pinned_before_numpy=not _NUMPY_PREIMPORTED,
         delta=cert["delta"], delta_requested=st["delta"], multiplier_bound_full_period=cert["multiplier_bound_full_period"],
@@ -1810,6 +1820,7 @@ def prove_group_uniform(gid, settings=None, K=12, log=print, controls=None, _mut
         g=[grp["g_lo"], grp["g_hi"]], g_centre=crec["centre_g"],
         centre_piece=crec["label"], centre_sha256=crec["centre_sha256"],
         pieces=[r["label"] for r in plist], piece_centre_sha256={r["label"]: r["centre_sha256"] for r in plist},
+        branch_piece_sha256={r["label"]: br.record_digest(r) for r in plist},
         piece_g={r["label"]: [r["g_lo"], r["g_hi"]] for r in plist}, eta=crec["eta"], rho0=crec["settings"]["rho0"],
         half_width=bound_rec(hU), uniform=True, ok=True, settings=st,
         program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
@@ -1860,12 +1871,32 @@ def _job(args):
                     wall=round(time.time() - t0, 1), settings=settings)
 
 
-def done_labels(K=12):
+def _current_unit(r):
+    return (r.get("ok") is True and r.get("uniform") is True and not r.get("MUTATED")
+            and r.get("program_sha256") == PROGRAM_SHA256 and r.get("sources_sha256") == SOURCES_SHA256
+            and isinstance(r.get("settings"), dict))
+
+
+def _piece_unit_matches(unit, rec):
+    return (unit is not None and _current_unit(unit) and unit.get("label") == rec["label"]
+            and unit.get("centre_sha256") == rec["centre_sha256"]
+            and unit.get("g") == [rec["g_lo"], rec["g_hi"]]
+            and unit.get("eta") == rec["eta"] and unit.get("rho0") == rec["settings"]["rho0"]
+            and unit.get("branch_piece_sha256") == br.record_digest(rec)
+            and unit.get("existence", {}).get("r_uniqueness_logged") == rec["r_uniqueness"])
+
+
+def _units_from_records(records, kind):
     out = {}
-    for r in br._read_jsonl_tolerant(LOG.format(K=K)):
-        if r.get("type") == "unit" and r.get("ok"):
+    for r in records:
+        if r.get("type") == kind and _current_unit(r):
             out[r["label"]] = r
     return out
+
+
+def done_labels(K=12):
+    path = LOG.format(K=K)
+    return _units_from_records(br.snapshot_jsonl(path)[0] if os.path.exists(path) else [], "unit")
 
 
 ATTEMPTS = (dict(delta="3e-5", Ke_offset=12), dict(delta="3e-5", Ke_offset=16, strip_nx_new=32),
@@ -1878,10 +1909,11 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
     import multiprocessing as mp
     T0 = time.time()
     path = LOG.format(K=K)
-    br._repair_jsonl(path, log)
-    pieces, _, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    if os.path.exists(path):
+        br.snapshot_jsonl(path)
+    pieces, _, _ = br.validate_final(K)
     have = done_labels(K)
-    todo = [p["rec"]["label"] for p in pieces if p["rec"]["label"] not in have]
+    todo = [p["rec"]["label"] for p in pieces if not _piece_unit_matches(have.get(p["rec"]["label"]), p["rec"])]
     if labels:
         todo = [l for l in todo if l in set(labels)]
     log(f"uniform stability: {len(have)} pieces done, {len(todo)} to do, workers {workers}")
@@ -1899,7 +1931,8 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
                         f"rho {res['rec']['existence']['rho']['approx']:.2e}, {res['rec']['wall_s']} s")
                 else:
                     br._append(path, dict(type="failure", label=l, why=res["why"], settings=res.get("settings"),
-                                          trace=res.get("trace"), wall=res.get("wall")))
+                                          trace=res.get("trace"), wall=res.get("wall"),
+                                          program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256))
                     log(f"  {l}: failed at delta {pending[l][0]}: {res['why'][:200]}")
                     rest = pending[l][1:]
                     if rest:
@@ -1913,18 +1946,29 @@ def run(labels=None, K=12, workers=2, attempts=ATTEMPTS, budget_s=3500, log=prin
 def done_groups(K=12):
     """Certified group units by unit label (G<gid> for a whole group, G<gid>[i0:i1] for a run of its pieces; the last
     one logged for a label wins; all are valid)."""
-    out = {}
-    for r in br._read_jsonl_tolerant(LOG.format(K=K)):
-        if r.get("type") == "group_unit" and r.get("ok"):
-            out[r["label"]] = r
-    return out
+    path = LOG.format(K=K)
+    return _units_from_records(br.snapshot_jsonl(path)[0] if os.path.exists(path) else [], "group_unit")
 
 
 def _covering_group_unit(rec, gid, hg):
     """A certified group unit (whole group preferred, then runs in label order) of group gid that lists the piece rec
     with the same centre digest, or None."""
-    cands = [x for x in hg.values() if x["group"] == gid and
-             x.get("piece_centre_sha256", {}).get(rec["label"]) == rec["centre_sha256"]]
+    def matches(x):
+        if not (_current_unit(x) and x.get("group") == gid and rec["label"] in x.get("pieces", [])
+                and x.get("piece_centre_sha256", {}).get(rec["label"]) == rec["centre_sha256"]
+                and x.get("piece_g", {}).get(rec["label"]) == [rec["g_lo"], rec["g_hi"]]
+                and x.get("branch_piece_sha256", {}).get(rec["label"]) == br.record_digest(rec)):
+            return False
+        interval = x.get("g", [])
+        if len(interval) != 2 or not (Fraction(interval[0]) <= Fraction(rec["g_lo"])
+                                      and Fraction(rec["g_hi"]) <= Fraction(interval[1])):
+            return False
+        ident = [i for i in x.get("existence", {}).get("identification", []) if i.get("label") == rec["label"]]
+        return (len(ident) == 1 and ident[0].get("ok") is True
+                and ident[0].get("g") == [rec["g_lo"], rec["g_hi"]]
+                and ident[0].get("centre_sha256") == rec["centre_sha256"]
+                and ident[0].get("r_uniqueness_logged") == rec["r_uniqueness"])
+    cands = [x for x in hg.values() if matches(x)]
     cands.sort(key=lambda x: (x.get("part") is not None, x["label"]))
     return cands[0] if cands else None
 
@@ -1954,18 +1998,32 @@ GROUP_ATTEMPTS = (dict(delta="3e-5"),)
 def group_coverage(K=12):
     """(pieces, groups, uncovered): a piece is covered by a certified piece unit with its centre digest, or by a certified
     group unit of its group (whole or a run of its pieces) that lists it with the same centre digest."""
-    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
+    pieces, groups, _ = br.validate_final(K)
     hp, hg = done_labels(K), done_groups(K)
     unc = {}
     for p in pieces:
         r = p["rec"]
         u = hp.get(r["label"])
-        if u is not None and u["centre_sha256"] == r["centre_sha256"]:
+        if _piece_unit_matches(u, r):
             continue
         if _covering_group_unit(r, p["group"], hg) is not None:
             continue
         unc.setdefault(p["group"], []).append(r["label"])
     return pieces, groups, unc
+
+
+def _next_group_units(gid, labels, uncovered, failed):
+    """Pure fallback plan: whole group, then failed halves' piece slices; absent legacy part means whole group."""
+    if (gid, None) not in failed:
+        return [(gid, None)], []
+    out, fallback = [], []
+    for part in _halves(len(labels)):
+        if not set(labels[part[0]:part[1]]) & set(uncovered):
+            continue
+        (fallback if (gid, part) in failed else out).append((gid, part))
+    if not out and len(labels) < 2 and uncovered:
+        fallback.append((gid, None))
+    return out, fallback
 
 
 def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=3300, fallback=True, log=print):
@@ -1977,7 +2035,8 @@ def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=330
     import multiprocessing as mp
     T0 = time.time()
     path = LOG.format(K=K)
-    br._repair_jsonl(path, log)
+    if os.path.exists(path):
+        br.snapshot_jsonl(path)
     pieces, groups, unc = group_coverage(K)
     npieces = {}
     plabels = {}
@@ -1986,7 +2045,8 @@ def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=330
         plabels.setdefault(p["group"], []).append(p["rec"]["label"])
     failed = set()
     for r in br._read_jsonl_tolerant(path):
-        if r.get("type") == "group_failure":
+        if (r.get("type") == "group_failure" and r.get("program_sha256") == PROGRAM_SHA256
+                and r.get("sources_sha256") == SOURCES_SHA256):
             pt = r.get("part")
             failed.add((r["group"], None if pt is None else (int(pt[0]), int(pt[1]))))
     todo = [g["group"] for g in groups if g["group"] in unc and (gids is None or g["group"] in set(gids))]
@@ -1995,18 +2055,8 @@ def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=330
 
     def units_for(gid):
         """The units still to try for group gid: the whole group, else its halves with uncovered pieces."""
-        if (gid, None) not in failed:
-            return [(gid, None)]
-        out = []
-        for pt in _halves(npieces[gid]):
-            if not set(plabels[gid][pt[0]:pt[1]]) & set(unc.get(gid, [])):
-                continue
-            if (gid, pt) in failed:
-                to_pieces.append((gid, pt))
-            else:
-                out.append((gid, pt))
-        if not out and npieces[gid] < 2:
-            to_pieces.append((gid, None))
+        out, fallback_units = _next_group_units(gid, plabels[gid], unc.get(gid, []), failed)
+        to_pieces.extend(fallback_units)
         return out
     queue = [(gid, pt, list(attempts)) for g0 in todo for gid, pt in units_for(g0)]
     with mp.get_context("fork").Pool(workers, maxtasksperchild=2) as pool:
@@ -2034,7 +2084,8 @@ def run_groups(gids=None, K=12, workers=1, attempts=GROUP_ATTEMPTS, budget_s=330
                 else:
                     br._append(path, dict(type="group_failure", group=gid, label=lab,
                                           part=None if pt is None else [pt[0], pt[1]], why=res["why"],
-                                          settings=res.get("settings"), trace=res.get("trace"), wall=res.get("wall")))
+                                          settings=res.get("settings"), trace=res.get("trace"), wall=res.get("wall"),
+                                          program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256))
                     log(f"  {lab}: group unit failed ({ds[0]}): {res['why'][:200]}")
                     if ds[1:]:
                         queue.insert(0, (gid, pt, ds[1:]))
@@ -2065,20 +2116,69 @@ SOURCES = ["fourier/branch_stability.py", "fourier/branch.py", "fourier/stabilit
 RECORD = os.path.join(RESULTS, "fourier-branch-stability-uniform.json")
 
 
+def _covered_runs(rows):
+    runs, cur = [], None
+    for r in rows:
+        if r["uniform"]:
+            if cur is None:
+                cur = [r["g"][0], r["g"][1], 1]
+            elif Fraction(r["g"][0]) <= Fraction(cur[1]):
+                cur[1] = max(cur[1], r["g"][1], key=Fraction)
+                cur[2] += 1
+            else:
+                runs.append(cur)
+                cur = [r["g"][0], r["g"][1], 1]
+        elif cur is not None:
+            runs.append(cur)
+            cur = None
+    if cur is not None:
+        runs.append(cur)
+    return runs
+
+
+def _check_theorem_b(theorem_b, pieces, branch_hash, centre_hash):
+    if (theorem_b.get("run_log_sha256") != branch_hash or theorem_b.get("centres_sha256") != centre_hash
+            or theorem_b.get("program_sha256") != br.PROGRAM_SHA256
+            or theorem_b.get("sources_sha256") != br.SOURCES_SHA256
+            or theorem_b.get("n_pieces") != len(pieces) or theorem_b.get("connected_pieces") != len(pieces)
+            or len(theorem_b.get("gluing", [])) != len(pieces) - 1
+            or not all(g.get("glued") is True for g in theorem_b.get("gluing", []))):
+        raise ProofFailure("Theorem B record does not match the complete final branch snapshot")
+    bt = {r["label"]: r for r in theorem_b["pieces"]}
+    if len(bt) != len(pieces):
+        raise ProofFailure("Theorem B duplicate or missing piece")
+    for p in pieces:
+        r = p["rec"]
+        expected = dict(label=r["label"], g=[r["g_lo"], r["g_hi"]], g_centre=r["centre_g"],
+                        centre_sha256=r["centre_sha256"], eta=r["eta"], r_uniqueness=r["r_uniqueness"])
+        if any(bt.get(r["label"], {}).get(k) != v for k, v in expected.items()):
+            raise ProofFailure(f"Theorem B piece mismatch: {r['label']}")
+        if not (Fraction(theorem_b["g_covered"][0]) <= Fraction(r["g_lo"])
+                and Fraction(r["g_hi"]) <= Fraction(theorem_b["g_covered"][1])):
+            raise ProofFailure("piece outside Theorem B connected range")
+
+
 def collect(K=12, write=True, log=print):
     """The Theorem C record: every piece of the branch record with the unit that covers it (a piece unit, or a group
     unit of its group: the whole group or a run of its pieces), the maximal intervals covered, the group units and the
     failures. Centre digests are matched
     against the branch logs; nothing is taken from a unit whose centre digest does not match."""
-    pieces, groups, _ = br.validate_logs(K, reglue=False, log=QUIET, repair=False)
-    hp, hg = done_labels(K), done_groups(K)
-    allr = br._read_jsonl_tolerant(LOG.format(K=K))
+    branch_records, branch_hash = br.snapshot_jsonl(br.RUN_LOG.format(K=K))
+    centre_records, centre_hash = br.snapshot_jsonl(br.CENTRES.format(K=K))
+    pieces, groups, _ = br.validate_final(K, records=branch_records, centre_records=centre_records)
+    with open(os.path.join(RESULTS, "fourier-branch-gks.json"), "rb") as fh:
+        theorem_b_bytes = fh.read()
+    theorem_b = json.loads(theorem_b_bytes)
+    theorem_b_hash = hashlib.sha256(theorem_b_bytes).hexdigest()
+    _check_theorem_b(theorem_b, pieces, branch_hash, centre_hash)
+    allr, stability_hash = br.snapshot_jsonl(LOG.format(K=K))
+    hp, hg = _units_from_records(allr, "unit"), _units_from_records(allr, "group_unit")
     fails = [r for r in allr if r.get("type") in ("failure", "group_failure")]
     rows = []
     for p in pieces:
         r = p["rec"]
         u = hp.get(r["label"])
-        if u is not None and u["centre_sha256"] != r["centre_sha256"]:
+        if not _piece_unit_matches(u, r):
             u = None
         gu = _covering_group_unit(r, p["group"], hg)
         cov = gu if gu is not None else u          # report the group unit when there is one (both are valid)
@@ -2093,19 +2193,9 @@ def collect(K=12, write=True, log=print):
                          theta_T=cov["certificate"]["theta_T"]["approx"] if cov else None,
                          program_sha256=cov.get("program_sha256") if cov else None))
     covered = [r for r in rows if r["uniform"]]
-    runs, cur = [], None                           # maximal runs of consecutive covered pieces (they overlap)
-    for r in rows:
-        if r["uniform"]:
-            if cur is None:
-                cur = [r["g"][0], r["g"][1], 1]
-            else:
-                cur[1] = max(cur[1], r["g"][1], key=Fraction)
-                cur[2] += 1
-        elif cur is not None:
-            runs.append(cur)
-            cur = None
-    if cur is not None:
-        runs.append(cur)
+    if len(covered) != len(rows):
+        raise ProofFailure(f"final stability incomplete: {len(covered)} of {len(rows)} pieces")
+    runs = _covered_runs(rows)
     used = {}
     for r in covered:
         used.setdefault((r["unit_kind"], r["unit"]), r)
@@ -2143,15 +2233,18 @@ def collect(K=12, write=True, log=print):
         n_units_used=len(units_used),
         intervals_uniform=[dict(g=[a, b], n_pieces=n) for a, b, n in runs],
         uncovered_pieces=[r["label"] for r in rows if not r["uniform"]],
-        worst_multiplier_bound=None if worst is None else float(worst),
+        worst_multiplier_bound=None if worst is None else _float_up(worst),
+        worst_multiplier_bound_exact=None if worst is None else str(worst),
         delta_requested_values=sorted({x["delta_requested"] for x in units_used}),
         programs_of_units_used=prog,
         group_units=gunits, pieces=rows,
         failures=[{k: v for k, v in f.items() if k != "trace"} for f in fails],
-        settings=dict(DEFAULTS), group_settings=dict(GROUP_DEFAULTS),
-        sources_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in SOURCES},
-        log=os.path.relpath(LOG.format(K=K), ROOT), log_sha256=br.sha256(LOG.format(K=K)),
-        branch_run_log_sha256=br.sha256(br.RUN_LOG.format(K=K)), branch_centres_sha256=br.sha256(br.CENTRES.format(K=K)),
+        settings_by_unit={x["label"]: x["settings"] for x in units_used},
+        sources_sha256=SOURCES_SHA256,
+        documents_sha256={p: br.sha256(os.path.join(ROOT, p)) for p in DOCUMENTS},
+        theorem_B_sha256=theorem_b_hash,
+        log=os.path.relpath(LOG.format(K=K), ROOT), log_sha256=stability_hash,
+        branch_run_log_sha256=branch_hash, branch_centres_sha256=centre_hash,
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         numpy=np.__version__, machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_wall_s=round(sum(x["wall_s"] for x in units_used), 1))
@@ -2162,6 +2255,17 @@ def collect(K=12, write=True, log=print):
         log(f"wrote {RECORD}: {len(covered)} of {len(rows)} pieces uniform ({len(hg)} group units, "
             f"{n_piece_units} piece units in the log)")
     return out
+
+
+def _float_up(value):
+    f = float(value)
+    return math.nextafter(f, math.inf) if Fraction.from_float(f) < value else f
+
+
+def _decimal_up(value, digits=9):
+    q = Fraction(value) * 10 ** digits
+    n = -(-q.numerator // q.denominator)
+    return f"{n // 10 ** digits}.{n % 10 ** digits:0{digits}d}"
 
 
 def theorem_text(runs, worst):
@@ -2175,8 +2279,8 @@ def theorem_text(runs, worst):
             "of its consecutive pieces, or a piece unit), the "
             "single-cell periodic orbit x*(G_Ks) of Erhardt's 18-state TP06 endocardial model has the Floquet "
             "multiplier 1 algebraically simple and its other 17 Floquet multipliers of modulus < e^(-delta T_lo) with "
-            "the unit's delta and T_lo (worst over the units: "
-            f"{'%.9f' % worst if worst is not None else 'n/a'}); hence it is locally exponentially orbitally stable "
+            "the unit's delta and T_lo (worst full-period nontrivial multiplier bound over the units: "
+            f"{_decimal_up(worst) if worst is not None else 'n/a'}); hence it is locally exponentially orbitally stable "
             "with asymptotic phase (Theorem 4(iii)). The bound holds uniformly on each unit's interval, not only at "
             "sampled values of G_Ks.")
 

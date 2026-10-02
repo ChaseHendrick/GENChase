@@ -1,14 +1,15 @@
 """Acceptance tests and negative controls for hopf.py (the Hopf gap). Each test can fail.
 
 Modes (run under nice with a timeout; the machine is shared):
+  --bookkeeping-only     synthetic evidence tampering and exact-cover controls only (seconds, no scientific rerun).
   --fast                 quick mode: everything below except the re-proofs of pieces 13, 30, 40, 62 and the last
                          one, the piece-13 controls and the last piece's float checks (piece 0 is re-proved);
   (no flag)              full mode: re-proves pieces 0, 13, 30, 40, 62 and the last one (about 100 s each);
   --rerun-theorem-a      adds a rerun of hopf.theorem_A into a temporary directory (about 240 s) whose record must
-                         equal fourier/data/hopf/theoremA.json in every field but the run time.
+                         equal fourier/data/hopf/theoremA_final.json in every field but the run time.
   PYTHONPATH=<python-flint 0.9.0> nice -n 10 timeout 2400 python3 test_hopf.py [--fast] [--rerun-theorem-a]
   The re-proof of ALL logged pieces is not a test: `python3 hopf.py --reprove-all --workers W` writes
-  fourier/data/hopf/reprove.jsonl, and `hopf.py --collect` reports which pieces have a matching re-proof.
+  fourier/data/hopf/reprove_final.jsonl, and `hopf.py --collect` reports which pieces have a matching re-proof.
 
 Infrastructure
   * Jet (truncated Taylor series): exp, log, sqrt, reciprocal, integer powers against closed-form Taylor
@@ -27,7 +28,7 @@ Theorem A
     right does not contain the crossing (Re lambda < 0 at its left end, so the left-side sign condition of the cover
     fails), and shifted to the left Re lambda > 0 at its right end; dlambda_dg told that the critical disc is the
     conjugate's refuses the left eigenpair (it is identified with lambda only through D1).
-  * The record theoremA.json was written by the current hopf.py (its code_sha256), and its cover passes
+  * The record theoremA_final.json was written by the current hopf.py (its code_sha256), and its cover passes
     hopf.check_theoremA_cover (adjacent intervals covering W with G_H between the sides, the recorded counts, the signs
     of Re lambda, others_max_re < 0 and equal to the recorded upper bound, transversality, l1 < 0); negative controls:
     a cover with one interval removed, with one sign flipped, or ending short of W is refused.
@@ -35,7 +36,8 @@ Theorem B (needs the run data, fourier/data/hopf/)
   * Pieces 0 (fast mode) or 0, 13, 30, 40, 62 and the last one (full mode) are re-proved by hopf.reprove_piece (the
     function of `hopf.py --reprove-all`) from their stored centres, weights and r_*, with their groups' covers rebuilt
     from the logged centres: the cover digests equal the logged ones, and Y0, Z1, Z2, the radii, p at the radii, the
-    contraction factor and the g and omega enclosures equal the logged exact values (pieces 0 to 30 were made before
+    contraction factor and g/omega/period enclosures are freshly certified exact bounds; historical equality is
+    diagnostic only (pieces 0 to 30 were made before
     the program logged its own hash, and the later runs logged hashes of earlier program texts; this ties a piece of
     each run, K = 8 and K = 12, to the current program text). The comparison refuses a log line whose Y0 differs in
     the last bit, and reprove_status counts a re-proof only for the current program hash and the current log line.
@@ -53,7 +55,7 @@ Theorem B (needs the run data, fourier/data/hopf/)
     lies below the rigorous Z2. These are sanity checks, not proofs.
   * Gluing: every consecutive pair of logged pieces re-glues in Arb; with r_hi replaced by r_lo, or with a piece glued
     to a non-adjacent one, the check fails.
-Corollary B(a) (needs theoremA.json)
+Corollary B(a) (needs theoremA_final.json)
   * The identification at eps = 0 passes; negative controls: the default (not enlarged) equilibrium polydisc misses
     c*(0)'s enclosure; without the recorded polydiscs of the left intervals the identification is refused.
 Lemma D and the gluing (Part C)
@@ -93,7 +95,7 @@ import hopf as H  # noqa: E402
 
 FAST = "--fast" in sys.argv
 RERUN_A = "--rerun-theorem-a" in sys.argv
-STATUS = "computed; in-project adversarial review recorded, fixes applied, fix check pending"
+STATUS = "source admission check passed; complete numerical acceptance pending"
 RESULTS = []
 
 
@@ -302,7 +304,7 @@ def test_lemma_K_negative(fh):
 
 def test_theorem_A_core(fh):
     """G_H from the record (or recomputed), spectrum, transversality, l1 and the controls."""
-    path = os.path.join(H.DATA, "theoremA.json")
+    path = os.path.join(H.DATA, H.THEOREM_A_LOG)
     if os.path.exists(path):
         with open(path) as fh_:
             rec = json.load(fh_)
@@ -360,19 +362,19 @@ def test_theorem_A_core(fh):
 def test_theorem_A_cover():
     """GAP 3 (review 2026-10-02): the structure of the recorded cover, and the record is the current program's."""
     import copy
-    path = os.path.join(H.DATA, "theoremA.json")
+    path = os.path.join(H.DATA, H.THEOREM_A_LOG)
     if not os.path.exists(path):
-        check("theoremA.json present", False)
+        check("theoremA_final.json present", False)
         return
     with open(path) as fh_:
         rec = json.load(fh_)
-    check("theoremA.json was written by the current hopf.py (code_sha256)", rec.get("code_sha256") == H.CODE_SHA256,
+    check("theoremA_final.json was written by the current hopf.py (code_sha256)", rec.get("code_sha256") == H.CODE_SHA256 and rec.get("sources_sha256") == H.SOURCE_SHA256,
           f"record {str(rec.get('code_sha256'))[:12]}, program {H.CODE_SHA256[:12]}")
     c = H.check_theoremA_cover(rec)
     check("Theorem A cover: adjacent intervals cover W with G_H between the sides, recorded counts, Re lambda > 0 left "
           "and < 0 right, others_max_re < 0 and equal to the recorded bound, transversality, l1 < 0, omega > 0",
           c["ok"], f"{c['n_left']} + 1 + {c['n_right']} intervals, {c['n_breaks']} breaks, max others_max_re "
-          f"{c['others_max_re']:.6e}, G_H included: {c['others_include_gH']}")
+          f"{c['others_max_re']}, G_H included: {c['others_include_gH']}")
     gap = copy.deepcopy(rec)
     gap["cover_left"].pop(len(gap["cover_left"]) // 2)
     gap["n_intervals"]["left"] -= 1
@@ -393,19 +395,19 @@ def test_theorem_A_cover():
 
 
 def test_theorem_A_rerun():
-    """--rerun-theorem-a: theorem_A into a temporary directory reproduces theoremA.json (all fields but the time)."""
+    """--rerun-theorem-a: theorem_A into a temporary directory reproduces theoremA_final.json (all fields but the time)."""
     import tempfile
-    path = os.path.join(H.DATA, "theoremA.json")
+    path = os.path.join(H.DATA, H.THEOREM_A_LOG)
     with open(path) as fh_:
         rec = json.load(fh_)
     tmp = tempfile.mkdtemp(prefix="hopf-thA-")
     t0 = time.time()
     H.theorem_A(log=lambda s: None, data=tmp)
-    with open(os.path.join(tmp, "theoremA.json")) as fh_:
+    with open(os.path.join(tmp, H.THEOREM_A_LOG)) as fh_:
         new = json.load(fh_)
     keys = sorted(set(rec) | set(new))
     diff = [k for k in keys if k != "seconds" and rec.get(k) != new.get(k)]
-    check("theorem_A rerun reproduces theoremA.json in every field but the run time", not diff,
+    check("theorem_A rerun reproduces theoremA_final.json in every field but the run time", not diff,
           f"differing fields {diff}, {time.time() - t0:.0f} s")
 
 
@@ -454,7 +456,7 @@ def test_piece_recompute_and_controls():
         check("Theorem B data present", False, "no pieces logged")
         return
     lines = H.piece_lines()
-    # pieces made by the earlier runs (no code hash logged) and the last one: re-proved bit for bit by this program
+    # Re-prove selected exact historical inputs; certify fresh bounds and record historical equality diagnostically.
     # 0, 13, 30: made before the program logged its hash; 40, 62: the last pieces of the runs with logged hashes
     # bae43c6c3b (K = 8) and c656af84d2 (K = 12); the last piece: the final run
     idxs = [0] if FAST else sorted({0, 13, 30, 40, 62, len(pieces) - 1} & set(range(len(pieces))))
@@ -463,8 +465,14 @@ def test_piece_recompute_and_controls():
     for i in idxs:
         rr, obj = _reprove(pieces[i], covers, lines)
         done[i] = (rr, obj)
+        try:
+            json.dumps(rr, allow_nan=False)
+            serializable = True
+        except (TypeError, ValueError):
+            serializable = False
+        check(f"piece {i}: public fresh reproof receipt is JSON serializable", serializable)
         check(f"piece {i} re-proved by hopf.reprove_piece (cover digest reproduced: {rr.get('cover_digest_reproduced')}):"
-              f" Y0, Z1, Z2, radii, p, contraction, g and omega equal the logged exact values", rr.get("match") is True,
+              f" fresh exact bounds certify the logged exact inputs (historical equality is diagnostic)", H._reproof_matches(rr, pieces[i], covers),
               rr.get("error") or ", ".join(k for k, v in rr.get("equal", {}).items() if not v))
     rr0, obj0 = done[0]
     if obj0 is None:
@@ -472,13 +480,14 @@ def test_piece_recompute_and_controls():
     bl, res, rs = obj0["bl"], obj0["res"], obj0["rs"]
     # GAP 2 bookkeeping (review 2026-10-02): the comparison is exact, and reprove_status counts a re-proof only for the
     # current program hash and the current log line
-    bad = json.loads(json.dumps(p0))
+    fresh = dict(p0, result=rr0["result"])
+    bad = json.loads(json.dumps(fresh))
     man, ex_ = bad["result"]["Y0"]["hex"].split("p")
     bad["result"]["Y0"]["hex"] = man[:-1] + ("0" if man[-1] != "0" else "2") + "p" + ex_
     cmp_bad = H.reproof_compare(bad, res, obj0["cov"].digest, obj0["C"].digest())
     check("negative control: a logged Y0 changed in its last hex digit is not matched by the re-proof",
           cmp_bad["match"] is False and cmp_bad["equal"]["Y0"] is False and
-          H.reproof_compare(p0, res, obj0["cov"].digest, obj0["C"].digest())["match"] is True)
+          H.reproof_compare(fresh, res, obj0["cov"].digest, obj0["C"].digest())["match"] is True)
     with tempfile.TemporaryDirectory() as tdir:
         lp = os.path.join(tdir, "reprove.jsonl")
         other = dict(rr0, code_sha256="0" * 64)
@@ -488,7 +497,7 @@ def test_piece_recompute_and_controls():
         s1 = H.reprove_status(out_path=lp)
         H._append(lp, rr0)
         s2 = H.reprove_status(out_path=lp)
-        H._append(lp, dict(rr0, idx=1, piece_line_sha256=lines[1][1], match=False))
+        H._append(lp, dict(rr0, idx=1, piece_line_sha256=lines[1][1], certified=False))
         s3 = H.reprove_status(out_path=lp)
     check("reprove_status: a re-proof counts only with the current program hash and the current log line; a failed one "
           "is reported as mismatched",
@@ -666,9 +675,9 @@ def test_gluing_logged():
 # ------------------------------------------------------------------------------------------------ Corollary B(a)
 def test_identification():
     pieces, _ = _logs()
-    pA = os.path.join(H.DATA, "theoremA.json")
+    pA = os.path.join(H.DATA, H.THEOREM_A_LOG)
     if not (pieces and os.path.exists(pA)):
-        check("identification data present (pieces and theoremA.json)", False)
+        check("identification data present (pieces and theoremA_final.json)", False)
         return
     with open(pA) as fh_:
         thA = json.load(fh_)
@@ -730,7 +739,7 @@ def test_bridge():
     d4 = H.point_in_eps_branch(pt["rec"], cent, cut, nu8)
     check("negative control: Lemma D refuses when the eps-branch stops before the point's eps", d4["ok"] is False)
     # the gluing record, if any
-    pg = os.path.join(H.DATA, "gluing_gks.json")
+    pg = os.path.join(H.DATA, "gluing_gks_final.json")
     if os.path.exists(pg):
         with open(pg) as fh_:
             gl = json.load(fh_)
@@ -786,7 +795,7 @@ def test_record_hashes():
     bad += [f for f, h in rec["data_sha256"].items() if H._sha(os.path.join(H.DATA, f)) != h]
     check("record: every stored source and data SHA-256 equals the file on disk", not bad, f"mismatch {bad}")
     pieces, _ = _logs()
-    with open(os.path.join(H.DATA, "theoremA.json")) as fh_:
+    with open(os.path.join(H.DATA, H.THEOREM_A_LOG)) as fh_:
         thA = json.load(fh_)
     same = (rec["n_pieces"] == len(pieces) and rec["eps_covered"] == ["0", pieces[-1]["e_hi"]]
             and rec["theorem_A_record"]["l1_kuznetsov_physical"] == thA["l1_kuznetsov_physical"]
@@ -812,8 +821,163 @@ def test_record_hashes():
           hashlib.sha256(bytes(raw)).hexdigest() != rec["data_sha256"]["pieces.jsonl"])
 
 
+def test_evidence_gates():
+    """Negative controls for evidence acceptance, using copies and a synthetic cover, never proof output."""
+    import copy
+    import shutil
+    import tempfile
+    lines, covers = H.piece_lines(), H.cover_records()
+    H.validate_piece_inputs(lines, covers)
+    check("bridge input: exactly 68 pieces cover [0, 6427/50000]", len(lines) == 68)
+    with tempfile.TemporaryDirectory() as tdir:
+        for name in ("pieces.jsonl", "covers.jsonl"):
+            shutil.copyfile(os.path.join(H.DATA, name), os.path.join(tdir, name))
+        rpath = os.path.join(tdir, H.REPROVE_LOG)
+
+        def evidence(idx):
+            p, sha = lines[idx]
+            vals = H._exact_values(p["result"])
+            return dict(type="reprove", idx=idx, e_lo=p["e_lo"], e_hi=p["e_hi"], cover=p["cover"],
+                        code_sha256=H.CODE_SHA256, sources_sha256=dict(H.SOURCE_SHA256), piece_line_sha256=sha,
+                        cover_record_sha256=H._record_digest(covers[p["cover"]]), python_flint=H.flint.__version__,
+                        effective_settings=dict(H.PIECE_DEFAULTS, **{k: p["settings"][k]
+                                                for k in ("M", "nsub_xi", "nsub_s", "rho0")}),
+                        match=True, historical_match=True, certified=True, result=p["result"],
+                        equal=dict.fromkeys(vals, True), values=vals,
+                        centre_digest_ok=True, cover_digest_reproduced=True)
+
+        def status():
+            return H.reprove_status(data=tdir)
+
+        check("missing re-proofs cannot complete coverage", not status()["all_pieces_reproved_with_current_program"])
+        for idx in lines:
+            H._append(rpath, evidence(idx))
+        check("synthetic complete exact evidence passes the bookkeeping gate",
+              status()["all_pieces_reproved_with_current_program"])
+        for key, value in (("certified", "true"), ("result", {}), ("values", {}), ("effective_settings", {}),
+                           ("cover_record_sha256", "0" * 64), ("centre_digest_ok", False),
+                           ("certified", 1),
+                           ("effective_settings", dict(evidence(0)["effective_settings"], M=48.0))):
+            bad = dict(evidence(0), **{key: value})
+            H._append(rpath, bad)
+            st = status()
+            check(f"tampered {key} cannot count as a re-proof", st["mismatched"] == "0" and
+                  not st["all_pieces_reproved_with_current_program"])
+            H._append(rpath, evidence(0))
+        for field, value in (("p_at_r_existence", "0x1p-20"), ("p_at_r_existence", "-0x1p+0"),
+                             ("contraction_at_r_uniqueness", "0x0p+0"), ("r_existence", "0x1p+0"),
+                             ("Y0", "-0x1p-20"), ("Z2", "-0x1p-20")):
+            bad = copy.deepcopy(evidence(0))
+            bad["result"][field]["hex"] = value
+            bad["values"] = H._exact_values(bad["result"])
+            H._append(rpath, bad)
+            check(f"fresh exact proof tampering {field}={value} is refused", status()["mismatched"] == "0")
+            H._append(rpath, evidence(0))
+        mutated = copy.deepcopy(evidence(0))
+        mutated["result"]["MUTATED"] = ["drop_curve"]
+        H._append(rpath, mutated)
+        check("mutated fresh proof cannot count", status()["mismatched"] == "0")
+        H._append(rpath, evidence(0))
+        check("synthetic public fresh proof receipt is JSON serializable", bool(json.dumps(evidence(0), allow_nan=False)))
+        H._append(rpath, dict(evidence(0), certified=False))
+        check("latest failed attempt overrides earlier success", status()["mismatched"] == "0")
+        H._append(rpath, evidence(0))
+        for key, value in (("code_sha256", "0" * 64), ("sources_sha256", {}), ("piece_line_sha256", "0" * 64)):
+            with open(rpath, "w") as fh_:
+                for idx in range(1, 68):
+                    fh_.write(json.dumps(evidence(idx)) + "\n")
+                fh_.write(json.dumps(dict(evidence(0), **{key: value})) + "\n")
+            check(f"stale {key} cannot complete coverage", status()["not_reproved"] == "0")
+        with tempfile.TemporaryDirectory() as malformed_dir:
+            badpath = os.path.join(malformed_dir, "reprove_final.jsonl")
+            for payload in (b'{invalid}\n', b'{invalid}', b'[]\n'):
+                with open(badpath, "wb") as fh_:
+                    fh_.write(payload)
+                try:
+                    H._read_final_jsonl(badpath)
+                    refused = False
+                except H.ProofFailure:
+                    refused = True
+                check(f"strict final JSONL refuses {payload!r}", refused)
+        # collect must reject before any expensive gluing/identification path.
+        try:
+            H.collect(write=False, log=lambda s: None, data=tdir)
+            refused = False
+        except (H.ProofFailure, RuntimeError):
+            refused = True
+        check("collect refuses missing final Theorem A evidence", refused)
+        with open(os.path.join(tdir, "pieces.jsonl"), "a") as fh_:
+            fh_.write(json.dumps(lines[0][0]) + "\n")
+        try:
+            H.piece_lines(tdir)
+            refused = False
+        except H.ProofFailure:
+            refused = True
+        check("duplicate piece index is refused", refused)
+        for mutate in ("missing", "settings-float", "r-star", "eta", "gap"):
+            bad = copy.deepcopy(lines)
+            if mutate == "missing":
+                del bad[67]
+            elif mutate == "settings-float":
+                bad[0][0]["settings"]["M"] = 48.0
+            elif mutate == "r-star":
+                bad[0][0]["r_star"]["hex"] = "0x1p-10"
+            elif mutate == "eta":
+                bad[0][0]["eta"][0] = 0.01
+            else:
+                bad[1][0]["e_lo"] = "0"
+            try:
+                H.validate_piece_inputs(bad, covers)
+                refused = False
+            except H.ProofFailure:
+                refused = True
+            check(f"invalid piece input {mutate} is refused", refused)
+    # A complete synthetic cover with exact dyadics. Floats are display fields only.
+    bnd = lambda x: H.bound_rec(H._arb_q(x))
+    ball = lambda a, b: dict(lower=bnd(a), upper=bnd(b))
+    item = lambda a, b, sign: dict(a=a, b=b, re_lam=[sign, sign], others_max_re=-0.25,
+                                  others_max_re_bound=bnd("-1/4"), others_abs_im_bound=bnd("1/16"),
+                                  lambda_imag=ball("1/8", "1/4"))
+    th = dict(window=list(H.WINDOW), gH_interval=["0.0279", "0.02791"],
+              cover_left=[item(H.WINDOW[0], "0.0279", "1/100")],
+              cover_right=[item("0.02791", H.WINDOW[1], "-1/100")], n_intervals=dict(left=1, right=1),
+              gH_others_max_re=-0.25, gH_others_max_re_bound=bnd("-1/4"), others_max_re_upper=bnd("-1/4"),
+              gH_others_abs_im_bound=bnd("1/16"), others_abs_im_upper=bnd("1/16"),
+              dRe_lambda_dg=ball("-2", "-1"), l1_kuznetsov_physical=ball("-3", "-2"),
+              omega_H=ball("1/8", "1/4"), lambda_imag_range=["1/8", "1/4"])
+    check("complete exact synthetic Theorem A cover passes", H.check_theoremA_cover(th)["ok"])
+    for mutate in ("gH-missing", "float-only", "tiny-aggregate-change", "imag-negative", "gap", "wrong-sign",
+                   "critical-stable-overlap", "central-stable-overlap"):
+        bad = copy.deepcopy(th)
+        if mutate == "gH-missing":
+            del bad["gH_others_max_re_bound"]
+        elif mutate == "float-only":
+            del bad["cover_left"][0]["others_max_re_bound"]
+        elif mutate == "tiny-aggregate-change":
+            bad["others_max_re_upper"] = bnd("-1/4")
+            bad["others_max_re_upper"]["hex"] = "-0x100000000000001p-54"
+        elif mutate == "imag-negative":
+            bad["cover_left"][0]["lambda_imag"] = ball("-1/4", "-1/8")
+        elif mutate == "critical-stable-overlap":
+            bad["cover_left"][0]["others_abs_im_bound"] = bnd("1/8")
+            bad["others_abs_im_upper"] = bnd("1/8")
+        elif mutate == "central-stable-overlap":
+            bad["gH_others_abs_im_bound"] = bnd("1/8")
+            bad["others_abs_im_upper"] = bnd("1/8")
+        elif mutate == "gap":
+            bad["cover_right"][0]["a"] = "0.027915"
+        else:
+            bad["cover_left"][0]["re_lam"] = ["-1", "-1"]
+        check(f"Theorem A tampering {mutate} is refused", not H.check_theoremA_cover(bad)["ok"])
+
+
 def main():
     t0 = time.time()
+    test_evidence_gates()
+    if "--bookkeeping-only" in sys.argv:
+        failed = sum(not ok for _, ok, _ in RESULTS)
+        print(f"{len(RESULTS)} checks, {failed} failed, {time.time() - t0:.1f} s", flush=True)
+        return 1 if failed else 0
     test_jet_closed_forms()
     test_jet_enclosure()
     fh, x, v = _test_point()
