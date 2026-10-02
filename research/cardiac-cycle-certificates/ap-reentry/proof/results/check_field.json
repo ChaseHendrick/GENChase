@@ -1,0 +1,15 @@
+{
+ "quot": {
+  "states": 39,
+  "max_rel_difference_midpoint_vs_python": 2.2535463508724013e-08,
+  "python_inside_enclosure_widened_1e12th_rel": true,
+  "max_rel_enclosure_width": 4.134502681942157e-07
+ },
+ "poly": {
+  "states": 50,
+  "max_rel_difference_midpoint_vs_python": 2.2535463508724013e-08,
+  "python_inside_enclosure_widened_1e12th_rel": true,
+  "max_rel_enclosure_width": 4.134502681942157e-07
+ },
+ "note": "Floating-point cross-check of the proof program's field against tp06_19d.py; not a certificate."
+}

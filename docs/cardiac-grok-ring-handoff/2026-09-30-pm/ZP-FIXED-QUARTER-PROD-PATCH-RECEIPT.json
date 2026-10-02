@@ -1,0 +1,152 @@
+{
+  "schema": "zp-fixed-quarter-prod-patch-receipt-v1",
+  "gate": "ZP-FIXED-QUARTER-PROD-PATCH",
+  "pilot": "fixed_quarter_prod_patch_verify",
+  "tag": "box20-zero-pruned-fixed-quarter-prod-patch-grok-20261001-v1",
+  "verify_tag": "box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1",
+  "verdict": "PASS_THREE_CONSECUTIVE_QUARTER",
+  "redesign_pass": true,
+  "prod_patch_applied": true,
+  "writtenAtET": "2026-10-01T05:19:36-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T09:19:36Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "start_et": "2026-10-01T05:06:58-0400 (ET)",
+  "start_utc": "2026-10-01T09:06:58Z",
+  "stop_reason": "probe_pass_three_consecutive_quarter",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "step": "0.25",
+  "step_policy": "fixed_forced_quarter_FixedQuarterStepControl_prod",
+  "pre_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "post_sha": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "binary_sha256": "abf2d352d4b3a776a6f7a6a0f2b17f44ba0019bb1004357c8cdadc159024643d",
+  "diff_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-PROD-PATCH.diff",
+  "backup_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/ring_flow_zero_pruned.cpp.pre-fixed-quarter-prod-patch-20261001",
+  "authoritative_source": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+  "approved_sources_untouched": true,
+  "approved_sources_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "build_tag": "zero-pruned-fixed-quarter-prod-patch-n32-v1",
+  "observed_steps_ms": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "observed_steps_hex": [
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    }
+  ],
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.25,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 2,
+      "timeEnd_mid": 0.5,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 3,
+      "timeEnd_mid": 0.75,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    }
+  ],
+  "evidence_first_three_step_hex": [
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    }
+  ],
+  "all_first_three_exact_0x1p-2": true,
+  "best_consecutive_quarter": 3,
+  "need_consecutive_quarter": 3,
+  "sites": 32,
+  "mode": "box",
+  "radius": "3e-10",
+  "order": 20,
+  "wall_s_budget": 900,
+  "wall_s_elapsed": 595.46483,
+  "rss_mib": 2048,
+  "physical_ms_reached": 0.75,
+  "tubes": 3,
+  "s_per_tube": 198.48827666666668,
+  "pids": {
+    "supervisor_pid": 31408,
+    "supervisor_pgid": 31408,
+    "native_pid": 31411,
+    "native_pgid": 31411,
+    "start_et": "2026-10-01T05:06:58-0400 (ET)",
+    "cmd": [
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1/ring_flow",
+      "--box",
+      "3e-10",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1/TUBES.jsonl",
+      "20",
+      "890",
+      "0.25",
+      "2048"
+    ]
+  },
+  "cleanup": {
+    "order": [
+      "verify",
+      "native already gone after pass signal path",
+      "supervisor exited without receipt \u2014 reconstructed from TUBES+HEARTBEAT"
+    ],
+    "stop_reason": "probe_pass_three_consecutive_quarter",
+    "native_pid": 31411,
+    "native_pgid": 31411,
+    "supervisor_pid": 31408,
+    "supervisor_pgid": 31408,
+    "confirmed_native_gone": true,
+    "confirmed_supervisor_gone": true,
+    "receipt_reconstructed": true
+  },
+  "lane_clear_before_verify": true,
+  "lane_clear_after": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1",
+  "next_recommendation": "Prod patch VERIFY PASS: live PREF TU honors exact h=1/4 (0x1p-2) for >=3 consecutive tubes. No G8/G9/auto-admit. Nothing else auto-started.",
+  "does_not_prove": [
+    "full_period_return",
+    "existence",
+    "stability",
+    "theorems",
+    "continuum"
+  ],
+  "receipt_reconstructed": true
+}

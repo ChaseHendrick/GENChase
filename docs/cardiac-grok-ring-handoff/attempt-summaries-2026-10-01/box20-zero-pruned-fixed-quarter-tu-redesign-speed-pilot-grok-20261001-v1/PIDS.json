@@ -1,0 +1,17 @@
+{
+  "supervisor_pid": 28184,
+  "supervisor_pgid": 28184,
+  "native_pid": 28187,
+  "native_pgid": 28187,
+  "start_et": "2026-10-01T04:45:05-0400 (ET)",
+  "cmd": [
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1/ring_flow",
+    "--box",
+    "3e-10",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1/TUBES.jsonl",
+    "20",
+    "3595",
+    "0.25",
+    "2048"
+  ]
+}

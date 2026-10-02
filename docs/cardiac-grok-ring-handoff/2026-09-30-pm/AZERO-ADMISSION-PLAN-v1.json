@@ -1,0 +1,450 @@
+{
+  "schema": "azero-admission-plan-v1",
+  "version": "v1",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "machine_label": "Chases-MacBook-Pro",
+  "writtenAtET": "2026-09-30 09:32:45 ET",
+  "writtenAtUTC": "2026-09-30T13:32:45Z",
+  "admitted_for_proof": false,
+  "status": "PLAN_ONLY; controls not executed this turn; NOT admitted",
+  "user_priority": {
+    "after_h64_products": "A-zero admissions C1\u2013C6 BEFORE any fixed-quarter speed pilot",
+    "do_not_replace_production_headers": true,
+    "do_not_start_heavy_capd_competing_with_h64": true,
+    "speed_pilot_deferred_until": "all six controls + independent review accept (or explicit user waiver)"
+  },
+  "h64_status_at_plan_time": {
+    "tag": "ring64-H-products-grok-20260930-v1",
+    "supervisor_pid_88117_alive": false,
+    "worker_pid_88119_alive": false,
+    "pids_still_alive": [],
+    "supervisor_exit": 0,
+    "run_report_exitCode": 0,
+    "run_report_elapsedSeconds": 186.52003820904065,
+    "run_report_sha256": "6231856ccf1269f6a03f4998ab6fd47b026ae22dd9d3c77d8fed13701137403d",
+    "result_status": "strict complete congruence DD passed",
+    "result_sha256": "5be88e88287c62714e33efc751958e9548b855fd561e2ee3fed8ebb9a9b3f5db",
+    "finished": true,
+    "note": "H64 products finished successfully. Status noted only. Did NOT start full H replay / re-run."
+  },
+  "admission_root": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok",
+  "admission_root_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok",
+  "links": {
+    "A_ZERO_PROPOSAL_V1": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+      "rel": "work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+      "sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+      "live_sha256_verified": true
+    },
+    "ROLE_06_azero_small_tests": {
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
+      "rel": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json",
+      "sha256": "6c0d547707696499ce79a55b224bdc1ba215842c486c42b757a0a4ddb64232e9",
+      "live_sha256_verified": true
+    },
+    "DESIGN_CONTROL_PLAN": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
+      "rel": "work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
+      "sha256": "9b4f9d19bcb7919cdaae0b8f93ceff8d799f6e1f70a15a00f889b7b5ab48631d",
+      "live_sha256_verified": true
+    },
+    "SPEED_DESIGN_v1": {
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/SPEED-DESIGN-v1.md",
+      "rel": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/SPEED-DESIGN-v1.md",
+      "note": "User priority AFTER H64: A-zero C1\u2013C6 BEFORE any fixed-quarter speed pilot; SPEED-DESIGN's recommended h=1/4 pilot is deferred until A-zero gate clears or is explicitly waived by user"
+    }
+  },
+  "headers": {
+    "prototypes_read_only": [
+      {
+        "path": "work/cardiac-study/tissue-scalability-preflight/AZeroPrunedCellwiseRingMap.hpp",
+        "sha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10"
+      },
+      {
+        "path": "work/cardiac-study/tissue-scalability-preflight/AZeroPrunedSparseMap.hpp",
+        "sha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8"
+      }
+    ],
+    "production_must_not_replace": [
+      {
+        "path": "work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
+        "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527"
+      },
+      {
+        "path": "work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
+        "sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043"
+      },
+      {
+        "path": "work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
+        "sha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
+      }
+    ]
+  },
+  "semantics_under_test": "Skip a J*A product only for complete outward A=[0,0] with both J endpoints finite. Otherwise preserve existing multiplication and order; nonfinite J does not trigger omission. Retain all columns, all states, dense-width A0, all remainder calls.",
+  "gate": {
+    "no_proof_reliance_until": "C1+C2+C3+C4+C5+C6 all pass AND independent review verdict=accept",
+    "no_header_swap_until": "same gate",
+    "no_fixed_quarter_speed_pilot_until": "A-zero gate clears OR user explicitly waives A-zero priority",
+    "productionPathPolicy": {
+      "replaceAcceptedZeroPrunedOrCellwise": false,
+      "useAZeroForActiveR32C1": false,
+      "useAZeroForR64": false,
+      "installPrototypeAsProductionSupplier": false
+    },
+    "required_accept_artifacts": [
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/<tag>/results/C1-RESULT.json",
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/<tag>/results/C2-RESULT.json",
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/<tag>/results/C3-RESULT.json",
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/<tag>/results/C4-RESULT.json",
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/<tag>/results/C5-RESULT.json",
+      "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-independent-source-audit-grok/<tag>/INDEPENDENT-REVIEW.json"
+    ]
+  },
+  "sequence": {
+    "while_h64_busy_or_any_heavy_capd": {
+      "allowed": [
+        "design",
+        "hash_only",
+        "checklist_draft",
+        "C6_audit_body_without_native",
+        "this_plan"
+      ],
+      "forbidden": [
+        "native_CAPD_compile",
+        "native_CAPD_run",
+        "linear_azero_harness",
+        "ring_flow",
+        "header_install"
+      ]
+    },
+    "need_free_lane_native": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5"
+    ],
+    "design_hash_only_ok_while_busy": [
+      "C6"
+    ],
+    "recommended_order_when_lane_free": [
+      "C6_pins_draft",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6_final_independent_review"
+    ],
+    "parallelism": "C2+C3 may share one N=3 harness binary if uniquely tagged outputs remain separate; do not overlap heavy native with any live ring_flow/H-products",
+    "h64_now_finished": true,
+    "native_may_start_when": "coordinator/user authorizes free-lane native controls; this plan turn does not start them"
+  },
+  "controls": [
+    {
+      "id": "C1",
+      "name": "signed-zero CAPD serialization",
+      "short": "C1-signed-zero-serialization",
+      "status": "MISSING",
+      "prior": "Predicate unit covers IEEE +0/-0 equality only; CAPD Interval serialization / enclosure identity not tested (ROLE-06).",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1",
+      "lane": "need_free_lane_native",
+      "while_h64_busy_allowed": [
+        "design_spec",
+        "hash_inventory",
+        "fixture_json_draft"
+      ],
+      "artifacts": {
+        "source": "src/c1_signed_zero_capd_serialization.cpp",
+        "binary": "bin/c1_signed_zero_capd_serialization",
+        "result_json": "results/C1-RESULT.json",
+        "stdout": "results/C1.stdout",
+        "time_log": "results/C1.time.log",
+        "compile_log": "results/COMPILE-C1.log",
+        "controls_receipt": "CONTROLS.json"
+      },
+      "pass_criteria": [
+        "CAPD interval constructed from +0.0 and -0.0 left/right endpoints serialize to identical enclosure strings used by the product path OR differ only in ways proven not to change multiplication/omission vs ZeroPruned baseline on the fixture set",
+        "Round-trip: write/read CAPD Interval containing signed zeros; A-zero skip predicate and product omission identical to IEEE-equal [0,0] case",
+        "No enclosure widening vs ZeroPruned Cellwise on N=3 linear fixture for seeds that include signed-zero A entries",
+        "exit 0; all_passed=true; admitted_for_proof remains false on this control alone"
+      ],
+      "fail_criteria": [
+        "Any product omission difference attributable only to sign-of-zero that changes enclosure vs ZeroPruned",
+        "Remainder inclusion / interval endpoints differ after serialization round-trip",
+        "wall or RSS exceeded; non-zero exit; compile failure"
+      ],
+      "limits": {
+        "wall_s": 120,
+        "rss_mib": 512,
+        "sites_max": 3,
+        "order_max": 20
+      },
+      "estimated_wall_s": 30
+    },
+    {
+      "id": "C2",
+      "name": "dense A0",
+      "short": "C2-dense-initial-matrices",
+      "status": "MISSING",
+      "prior": "Native dense-A0 controls deferred (ROLE-06 / DESIGN-CONTROL-PLAN).",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v1",
+      "lane": "need_free_lane_native",
+      "while_h64_busy_allowed": [
+        "design_spec",
+        "seed_matrix_json_draft",
+        "hash_inventory"
+      ],
+      "artifacts": {
+        "source": "src/c2_dense_a0_controls.cpp",
+        "binary": "bin/c2_dense_a0_controls",
+        "result_json": "results/C2-RESULT.json",
+        "seed_manifest": "inputs/DENSE-A0-SEEDS.json",
+        "stdout": "results/C2.stdout",
+        "time_log": "results/C2.time.log",
+        "compile_log": "results/COMPILE-C2.log"
+      },
+      "pass_criteria": [
+        "Dense nonzero-width initial A0 columns never trigger skip; products executed",
+        "Skip only when A is complete outward [0,0] AND both J endpoints finite",
+        "Nonfinite J never triggers omission even if A=[0,0]",
+        "Enclosure equality (hexfloat endpoints) vs Cellwise batch on dense seeds",
+        "exit 0; all_passed=true; fixture_only; admitted_for_proof=false"
+      ],
+      "fail_criteria": [
+        "Any skip on dense nonzero A0",
+        "Skip on A=[0,0] with nonfinite J",
+        "Enclosure mismatch vs Cellwise on retained products",
+        "wall/RSS exceeded"
+      ],
+      "limits": {
+        "wall_s": 120,
+        "rss_mib": 512,
+        "sites_max": 3,
+        "order_max": 20
+      },
+      "estimated_wall_s": 60
+    },
+    {
+      "id": "C3",
+      "name": "every variation column",
+      "short": "C3-every-variation-column",
+      "status": "MISSING",
+      "prior": "No enclosure equality vs ZeroPruned on full column sets (ROLE-06).",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v1",
+      "lane": "need_free_lane_native",
+      "while_h64_busy_allowed": [
+        "design_spec",
+        "column_checklist_draft",
+        "hash_inventory"
+      ],
+      "artifacts": {
+        "source": "src/c3_every_variation_column.cpp",
+        "binary": "bin/c3_every_variation_column",
+        "result_json": "results/C3-RESULT.json",
+        "column_audit": "results/C3-COLUMN-AUDIT.json",
+        "stdout": "results/C3.stdout",
+        "time_log": "results/C3.time.log",
+        "compile_log": "results/COMPILE-C3.log"
+      },
+      "pass_criteria": [
+        "All variation columns retained (fullColumnsRetained enforced in audit counters)",
+        "Enclosure equality vs accepted ZeroPruned on representative full-column sets (point + box, N=3 linear)",
+        "No silent column drop; column count == dim for every order coefficient matrix audited",
+        "exit 0; all_passed=true; admitted_for_proof=false"
+      ],
+      "fail_criteria": [
+        "Any missing column vs ZeroPruned / Cellwise",
+        "Endpoint mismatch on any retained column entry",
+        "wall/RSS exceeded"
+      ],
+      "limits": {
+        "wall_s": 120,
+        "rss_mib": 512,
+        "sites_max": 3,
+        "order_max": 20
+      },
+      "estimated_wall_s": 60
+    },
+    {
+      "id": "C4",
+      "name": "rigorous remainders",
+      "short": "C4-rigorous-remainders",
+      "status": "MISSING",
+      "prior": "No remainder-call retention audit against CAPD (ROLE-06).",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v1",
+      "lane": "need_free_lane_native",
+      "while_h64_busy_allowed": [
+        "design_spec",
+        "remainder_hook_checklist",
+        "hash_inventory"
+      ],
+      "artifacts": {
+        "source": "src/c4_rigorous_remainders.cpp",
+        "binary": "bin/c4_rigorous_remainders",
+        "result_json": "results/C4-RESULT.json",
+        "remainder_audit": "results/C4-REMAINDER-AUDIT.json",
+        "stdout": "results/C4.stdout",
+        "time_log": "results/C4.time.log",
+        "compile_log": "results/COMPILE-C4.log"
+      },
+      "pass_criteria": [
+        "allRemainderCallsRetained: call count to remainder / enclosure inclusion path identical to ZeroPruned baseline on fixture",
+        "CAPD remainder inclusion unchanged (hexfloat endpoint equality or proven mutual inclusion with equal width)",
+        "Fail-closed: if remainder check would fail under ZeroPruned, A-zero must also fail",
+        "exit 0; all_passed=true; admitted_for_proof=false"
+      ],
+      "fail_criteria": [
+        "Fewer remainder calls than ZeroPruned",
+        "Remainder enclosure not containing / not equal where baseline requires equality",
+        "wall/RSS exceeded"
+      ],
+      "limits": {
+        "wall_s": 180,
+        "rss_mib": 768,
+        "sites_max": 3,
+        "order_max": 20
+      },
+      "estimated_wall_s": 90
+    },
+    {
+      "id": "C5",
+      "name": "exact-linear / coeff / step / event",
+      "short": "C5-exact-linear-coefficient-step-event",
+      "status": "PARTIAL-PREDICATE-ONLY",
+      "prior": "Skip-gate unit 14/14 passed; full exact-linear / step / event controls not run. Deferred source linear_azero_controls_DEFERRED.cpp exists.",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v1",
+      "lane": "need_free_lane_native",
+      "while_h64_busy_allowed": [
+        "design_spec",
+        "extend_deferred_harness_source_text_only",
+        "hash_inventory"
+      ],
+      "artifacts": {
+        "source_coeff": "src/c5_exact_linear_coefficients.cpp",
+        "source_step": "src/c5_exact_linear_step.cpp",
+        "source_event": "src/c5_exact_linear_event.cpp",
+        "deferred_basis": "a-zero-small-tests-grok-20260930-v1/src/linear_azero_controls_DEFERRED.cpp",
+        "result_coeff": "results/C5-COEFF-RESULT.json",
+        "result_step": "results/C5-STEP-RESULT.json",
+        "result_event": "results/C5-EVENT-RESULT.json",
+        "result_summary": "results/C5-RESULT.json",
+        "negative_controls": "results/C5-NEGATIVE-CONTROLS.json",
+        "stdout": "results/C5.stdout",
+        "time_log": "results/C5.time.log"
+      },
+      "pass_criteria": [
+        "Exact-linear N=3 recurrence (kappa=9/64000) coefficient enclosures match Cellwise batch and contain exact values (point + box modes)",
+        "coefficientControlsPassed=true on result",
+        "fullStepControlsPassed=true: one validated step enclosure vs exact linear step reference",
+        "fullEventControlsPassed=true OR explicit N/A with justification if linear fixture has no event; if event path exercised, A-zero == ZeroPruned event inclusion",
+        "Negative controls: wrong sparse derivative rejected; wrong coupling rejected; point-only seed rejected in box mode",
+        "exit 0; all sub-results all_passed; admitted_for_proof=false until C6 also accepts"
+      ],
+      "fail_criteria": [
+        "Any coeff/step/event enclosure miss vs exact or vs Cellwise/ZeroPruned",
+        "Negative control incorrectly accepted",
+        "wall/RSS exceeded"
+      ],
+      "limits": {
+        "wall_s": 300,
+        "rss_mib": 768,
+        "sites_max": 3,
+        "order_max": 20
+      },
+      "estimated_wall_s": 180
+    },
+    {
+      "id": "C6",
+      "name": "independent source audit",
+      "short": "C6-independent-source-audit",
+      "status": "MISSING",
+      "prior": "sourceAuditPassed=false on A-ZERO-PROPOSAL-V1.",
+      "tag_prefix": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-independent-source-audit-grok/",
+      "unique_tag_example": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-independent-source-audit-grok/20260930-v1",
+      "lane": "design_hash_only_ok_while_busy",
+      "while_h64_busy_allowed": [
+        "full_audit_draft",
+        "hash_recompute",
+        "diff_vs_ZeroPruned",
+        "INDEPENDENT-REVIEW draft"
+      ],
+      "artifacts": {
+        "source_diff": "SOURCE-DIFF-vs-ZeroPruned.md",
+        "source_preparation": "SOURCE-PREPARATION.json",
+        "pins": "PINS.json",
+        "independent_review": "INDEPENDENT-REVIEW.json",
+        "implementer_admission": "SOURCE-ADMISSION.json",
+        "live_hash_receipt": "LIVE-HASHES.json",
+        "result_json": "results/C6-RESULT.json"
+      },
+      "pass_criteria": [
+        "Independent reviewer (not implementer of AZero prototypes) recomputes live sha256 of prototypes + baselines; all match pins",
+        "Unified diff AZeroPruned* vs ZeroPruned* contains only declared semantic changes (exact-zero-A skip gate); no unrelated edits",
+        "Checklist: semantics match proposal; fullColumns/fullStates/denseWidthA0/allRemainderCalls retained as code-visible; signed-zero control requirement retained",
+        "verdict accept only after C1\u2013C5 artifacts exist and pass; sourceAuditPassed may be set true only then",
+        "Did not rubber-stamp implementer accepted=true"
+      ],
+      "fail_criteria": [
+        "Hash mismatch vs pins",
+        "Undeclared source diff",
+        "Reviewer == sole implementer without second-pass role separation",
+        "Accept before C1\u2013C5 pass"
+      ],
+      "limits": {
+        "wall_s": 600,
+        "rss_mib": 256,
+        "sites_max": 0,
+        "order_max": 0,
+        "note": "hash/diff/review only; no native CAPD required for C6 body"
+      },
+      "estimated_wall_s": 120
+    }
+  ],
+  "wall_estimate_if_controls_small": {
+    "unit": "seconds",
+    "per_control_estimated_wall_s": {
+      "C1": 30,
+      "C2": 60,
+      "C3": 60,
+      "C4": 90,
+      "C5": 180,
+      "C6": 120
+    },
+    "serial_sum_estimated_wall_s": 540,
+    "native_only_sum_estimated_wall_s": 420,
+    "design_hash_sum_estimated_wall_s": 120,
+    "serial_sum_estimated_wall_min": 9.0,
+    "hard_caps_sum_wall_s": 1440,
+    "hard_caps_sum_wall_min": 24.0,
+    "planning_note": "Estimates assume small N=3 linear fixtures mirroring DESIGN-CONTROL-PLAN / deferred harness. Serial ~9 min estimated; hard-cap sum ~24 min if every control burns its max. Not a certificate."
+  },
+  "explicit_non_actions_this_turn": [
+    "Did not replace production ZeroPruned/Cellwise headers",
+    "Did not start heavy CAPD / A-zero native harness",
+    "Did not start fixed-quarter speed pilot",
+    "Did not start full H64 replay despite H64 finished",
+    "Did not claim A-zero admitted for proof",
+    "Did not involve Claude/Codex"
+  ],
+  "prior_partial_work": {
+    "predicate_unit_tag": "a-zero-small-tests-grok-20260930-v1",
+    "predicate_passed": "14/14",
+    "predicate_does_not_satisfy": [
+      "C1 CAPD serialization",
+      "C2",
+      "C3",
+      "C4",
+      "C5 full",
+      "C6"
+    ],
+    "deferred_native_source": "work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/linear_azero_controls_DEFERRED.cpp",
+    "deferred_native_source_sha256": "55b49bebbaa6ae85e8b28c39c1b07d832b0b4778a7f2b28a0abf41223bac0f06"
+  }
+}

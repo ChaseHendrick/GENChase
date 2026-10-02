@@ -1,0 +1,92 @@
+{
+  "schema": "cleanup-dual-pgid-v1",
+  "written_utc": "2026-09-30T13:00:18Z",
+  "written_et": "2026-09-30T09:00:18-0400 (ET)",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+  "action": "record_only",
+  "killed_anything": false,
+  "stranded_orphan_proven": false,
+  "codex_jobs_untouched": true,
+  "launch_json_reference": {
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+    "supervisor_pid": 79385,
+    "pgid_documented_as_supervisor": 79385,
+    "native_pid": 79423,
+    "note": "LAUNCH.json lists pgid=79385 for supervisor setsid group; native uses start_new_session so native PGID==native PID==79423 (separate group)."
+  },
+  "observed": {
+    "supervisor": {
+      "alive": true,
+      "pid": 79385,
+      "pgid": 79385,
+      "ppid": 1,
+      "lstart": "Wed Sep 30 08:55:44 2026",
+      "etime": "04:34",
+      "rss_kib": 5744,
+      "cwd": "<workspace>/work/cardiac-study/tissue-scalability-preflight",
+      "command": "<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3 <workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py --sites 32 --mode box --radius 3e-10 --order 20 --budget 10800 --rss-mib 2048 --step adaptive --tag box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1 --source-audit <workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "identity_vs_launch": {
+        "match": true,
+        "reasons": [
+          "all_identity_checks_passed"
+        ]
+      }
+    },
+    "native_ring_flow": {
+      "alive": true,
+      "pid": 79423,
+      "pgid": 79423,
+      "ppid": 79385,
+      "lstart": "Wed Sep 30 08:55:48 2026",
+      "etime": "04:30",
+      "rss_kib": 251392,
+      "cwd": "<workspace>/work/cardiac-study/tissue-scalability-preflight",
+      "command": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1/TUBES.jsonl 20 10795 adaptive 2048",
+      "identity_vs_launch": {
+        "match": true,
+        "reasons": [
+          "all_identity_checks_passed"
+        ]
+      }
+    }
+  },
+  "dual_process_group_ownership": {
+    "both_groups_owned": true,
+    "supervisor_group": {
+      "pgid": 79385,
+      "leader_pid": 79385,
+      "role": "python supervisor run_large_zero_pruned_flow.py"
+    },
+    "native_group": {
+      "pgid": 79423,
+      "leader_pid": 79423,
+      "role": "ring_flow native CAPD child (start_new_session)"
+    },
+    "critical_warning": "Stopping outer supervisor alone must NOT strand native: native is in a SEPARATE PGID (79423) via Popen(start_new_session=True). Killing only PGID 79385 leaves ring_flow 79423 running as orphan (PPID->1) still computing.",
+    "before_any_signal_verify": [
+      "actual command argv contains expected tag and binary/script paths",
+      "cwd matches tissue-scalability-preflight",
+      "lstart matches LAUNCH.json local_start (\u00b1 few seconds native after supervisor)",
+      "PID/PGID still as in LAUNCH.json or documented update",
+      "confirm NOT a Codex paused-lane process"
+    ]
+  },
+  "cleanup_order_safe": {
+    "order": [
+      "1) verify identities (command+cwd+lstart) for BOTH groups",
+      "2) killpg(native_pgid=79423, SIGTERM) then await exit; escalate SIGKILL only if needed",
+      "3) killpg(supervisor_pgid=79385, SIGTERM) then await exit",
+      "4) re-ps both PIDs/PGIDs; confirm no residual ring_flow for this tag"
+    ],
+    "unsafe_order_forbidden": "kill supervisor/pgid 79385 first without native \u2014 strands native",
+    "executed_this_turn": false,
+    "reason_not_executed": "both groups owned and identity-matched LIVE Grok run; no stranded orphan proven; prefer record-only; never kill Codex"
+  },
+  "rss_semantics": {
+    "limit_mib": 2048,
+    "semantics": "sampled native peak RSS via getrusage watchdog (~1ms); NOT an instantaneous kernel cgroup/memory.max quota; transient overshoot possible; wall timeout kills process group via killpg",
+    "source": "ROSTER.json active_native.rss_cap_semantics + LAUNCH.json --rss-mib 2048"
+  },
+  "no_capd_starts": true,
+  "no_manuscript_edits": true
+}

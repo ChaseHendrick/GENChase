@@ -1,0 +1,52 @@
+{
+  "schema": "azero-g2-isolated-build-review-v1",
+  "role": "independent_reviewer",
+  "roleId": "ROLE-AZERO-C1-SPEED-REVIEW",
+  "writtenAtET": "2026-09-30 10:06:36 ET",
+  "checks": [
+    {
+      "id": "map_is_AZeroPrunedSparseMap",
+      "passed": true
+    },
+    {
+      "id": "zero_pruned_flow_tu_untouched",
+      "passed": true
+    },
+    {
+      "id": "zero_pruned_headers_untouched",
+      "passed": true
+    },
+    {
+      "id": "compile_exit_0",
+      "passed": true
+    },
+    {
+      "id": "flow_not_attempted",
+      "passed": true
+    },
+    {
+      "id": "pilot_not_started",
+      "passed": true
+    },
+    {
+      "id": "admitted_for_proof_false",
+      "passed": true
+    },
+    {
+      "id": "diff_declared_scope",
+      "passed": true
+    },
+    {
+      "id": "no_production_header_swap",
+      "passed": true
+    }
+  ],
+  "checklistAllPassed": true,
+  "tag": "azero-large-return-build-n32-v1",
+  "result_sha256": "8b268fa181e2e442274f53982936a3ed09bcb24943e67042787ed6fe76b23f91",
+  "binary_sha256": "4b24c4b7a63e117b46fefdda807e817735823822012af6d281a58bdf6a990408",
+  "ring_flow_azero_sha256": "3f59a29a68121d46668ab5d01af280583abc1dba111a4b54344541eb56f3add2",
+  "build_script_sha256": "143fd05682f0b02928f17ed858670a16671d80c10878a574cd0f454a43204ca1",
+  "verdict": "accept",
+  "accepted": true
+}

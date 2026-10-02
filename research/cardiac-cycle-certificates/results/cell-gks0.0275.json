@@ -1,0 +1,149 @@
+{
+ "schema": "cardiac-cycle-certificate-record-v1",
+ "claim": {
+  "N": 1,
+  "gKs": [
+   "0.0275",
+   "0.0275"
+  ],
+  "coupling_per_ms": "0/1"
+ },
+ "verified": true,
+ "verifier_exit": 0,
+ "wall_seconds": 732.3,
+ "settings_env": {
+  "VERIFY_MP_BITS": "128",
+  "VERIFY_MP_TOL": "1e-24",
+  "VERIFY_MP_ORDER": "30"
+ },
+ "hashes": {
+  "frame": "2c9ad5eae1835f34efdfd57a4f123f56efb1530ca9a0338a76cb33f92d7e37b8",
+  "verify_binary": "1df03338ca5a57b4ef0109742daa48f533a6115c5ce416e2976b32651dcfea97",
+  "proofs/verify.cpp": "d420437428bbd4d2c82a86559f5d6507846aa2b81c68c4e026c94f89d20c1d99",
+  "model/tp06_capd.hpp": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
+  "model/setup.hpp": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
+  "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+ },
+ "repository_commit": "f48a01b2d3dcb81dd0e8a9375e2696d170d37897",
+ "working_tree_dirty": true,
+ "capd_commit": "03dc5628203334b214bb7d9fd63788a175521005",
+ "capd_patch": {
+  "file": "proofs/capd-6.1.0-genchase.patch",
+  "applied_header_sha256": "06344b35c2eeba712b870e8d132dbfa3c235f4270804c580171c0311207c2bf0",
+  "applied": true
+ },
+ "verifier": {
+  "schema": "cardiac-cycle-contraction-v1",
+  "N": 1,
+  "dimension": 18,
+  "gKs": [
+   "0.0275",
+   "0.0275"
+  ],
+  "coupling": "0/1",
+  "section_level_hex": "0x1.999999999999ap-1",
+  "order": 20,
+  "radii": [
+   8.353876140631506e-11,
+   1.1803169975844396e-11,
+   5.324864955481622e-12,
+   4.4194191121543216e-13,
+   7.556670502125166e-12,
+   4.99012656019274e-13,
+   1.157161175113665e-12,
+   1.1571714907850265e-12,
+   1.3921421954093972e-13,
+   1.1624863745180636e-13,
+   1.1324037221239085e-13,
+   1.15032633357214e-13,
+   1.1968422929614504e-13,
+   1.132381965549558e-13
+  ],
+  "block_sizes": [
+   1,
+   1,
+   2,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1
+  ],
+  "diag_block_norm_upper": [
+   0.9974811660211315,
+   0.9199759864812783,
+   0.8548413745575296,
+   0.7427860429368182,
+   0.6767430611061511,
+   0.5692686347529614,
+   0.05890232634934223,
+   0.05603761901796211,
+   0.023236611516334625,
+   1.0508241794381888e-05,
+   7.501541209948744e-07,
+   1.6540891395879982e-05,
+   1.332186070365537e-05,
+   3.068406861389794e-07
+  ],
+  "row_sum_upper": [
+   0.9986415068640515,
+   0.9897438345048686,
+   0.9758555959535306,
+   0.745221176210748,
+   0.9806267340395194,
+   0.7686238448442927,
+   0.7802479680513733,
+   0.7806438297001773,
+   0.09873949167516864,
+   0.00881350120824055,
+   0.001658662297756062,
+   0.006456374783165327,
+   0.021181444083504253,
+   0.002011728296799122
+  ],
+  "q_upper": 0.9986415068640515,
+  "q_upper_hex": "0x1.ff4df088d18aap-1",
+  "worst_block": 0,
+  "r0_upper": 0.13795954254982784,
+  "max_block_residual_plus_row_sum_upper": 0.9986425883346934,
+  "section_map_time": "[53.5855190480139, 53.585519630722438]",
+  "section_map_time_centre": "[53.58551933936883, 53.585519339368837]",
+  "period": "[53.5855190480139, 53.585519630722438]",
+  "period_exact": [
+   "0x1.acaf249c533cfp+5",
+   "0x1.acaf24ea88f37p+5"
+  ],
+  "section_map_time_exact": [
+   "0x1.acaf249c533cfp+5",
+   "0x1.acaf24ea88f37p+5"
+  ],
+  "centre_section_time_exact": [
+   "0x1.acaf24c36e1ep+5",
+   "0x1.acaf24c36e1e1p+5"
+  ],
+  "centre_time_inside_box_time": true,
+  "floquet_bound_full_period_upper": 0.9986415068640515,
+  "settings": {
+   "order": 20,
+   "fixed_step": 0,
+   "c1_set": "C1Rect2Set",
+   "mp_bits": 128,
+   "mp_order": 30,
+   "mp_tol": "1e-24",
+   "gate_grid": 8
+  },
+  "minimal_period_and_nonsynchrony_gate": "not needed (first return)",
+  "gate_pieces": 0,
+  "verified": true
+ },
+ "stdout_tail": "VERIFIED  q <= 0.998642  r0 <= 0.13796  max_b(g0_b/rho_b + rowsum_b) <= 0.998643  period in [53.5855190480139, 53.585519630722438]\n",
+ "stderr_tail": "frame inverse: ||E|| <= 3.21169e-13, max width 1.37561e-10; DG max relative width 0.154437; M max width 0.00245836; centre time [53.58551933936883, 53.585519339368837]; box time [53.5855190480139, 53.585519630722438]\n",
+ "sources_match_commit": true,
+ "note": "working_tree_dirty refers to unrelated in-progress files elsewhere in the study folder; sources_match_commit checks that every hashed verifier source equals its version at repository_commit."
+}

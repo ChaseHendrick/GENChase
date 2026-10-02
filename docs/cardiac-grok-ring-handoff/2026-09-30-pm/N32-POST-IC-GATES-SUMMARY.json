@@ -1,0 +1,46 @@
+{
+  "schema": "n32-post-ic-gates-summary-v1",
+  "status": "STOPPED_AT_GATE1",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_POST_IC_GATES",
+  "writtenAtET": "2026-10-01T07:20:22-04:00 (ET)",
+  "agent": "Grok-only-executor",
+  "machineId": "<redacted>",
+  "source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "source_ic_tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "gates": {
+    "gate1_matched_K": {
+      "status": "HARD_FAIL_BLOCKED",
+      "pass": false,
+      "blocker_code": "MISSING_N32_NATIVE_K_HARNESS",
+      "key_numbers": {
+        "q32_exact": "499995373/500000000",
+        "ic_minimum_inclusion_margin_approx": 7.410910362926704e-11,
+        "ic_contraction_bound_approx": 0.008382589759365264,
+        "dimension": 575,
+        "sites": 32,
+        "K_native_products": null
+      },
+      "paths": {
+        "LAUNCH": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-LAUNCH.json",
+        "SUMMARY": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-SUMMARY.json",
+        "BLOCKED": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-BLOCKED.json"
+      }
+    },
+    "gate2_transverse_orbital_stability": {
+      "status": "SKIPPED_AFTER_FAIL",
+      "pass": null
+    },
+    "gate3_fundamental_period_nonsynchrony": {
+      "status": "SKIPPED",
+      "pass": null
+    }
+  },
+  "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "fixedQuarter_untouched": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "lane_status": "CLEAR",
+  "no_N64_launched": true,
+  "note_for_parent": "Mac lane left clear for bounded N=64 fixed h=1/8 pilot. Matched-K blocked on missing N=32 native K harness; do not auto-admit. Unblock requires audited port of root_field_k(+optional ring_flow_k) to tissue-certification32 / ring32 path, then root_enclosure.prepare from IC products, native field run, wrap_initial_field, root_stability/joint_gate."
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "azero-g1-g2-execution-summary-v1",
+  "writtenAtET": "2026-09-30 10:06:36 ET",
+  "writtenAtUTC": "2026-09-30T14:06:36Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "G1": {
+    "verdict": "PASS",
+    "receipt_sha256": "182758c7574a43da24553f9581e22bbba2835c860f17c88f8ce5321b8c77d621",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G1-LEDGER-RECEIPT.json",
+    "proposal_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624"
+  },
+  "G2": {
+    "verdict": "PASS",
+    "receipt_sha256": "6163e2f39e839a9e05b218b78d0bc73e5c64a54f95416afe3d423f7a8147008f",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G2-BUILD-RECEIPT.json",
+    "tag": "azero-large-return-build-n32-v1",
+    "binary_sha256": "4b24c4b7a63e117b46fefdda807e817735823822012af6d281a58bdf6a990408",
+    "compile_seconds": 3.385225125
+  },
+  "both_passed": true,
+  "ready_for_P0_G5": false,
+  "ready_note": "G1+G2 PASS. Plan P0 requires G0+G2+G4 (G3 preferred). STOPPED after G2; no P0/P1/32 C1. Need user go for G3/G4/P0.",
+  "stopped_after_G2": true,
+  "P0_started": false,
+  "P1_started": false,
+  "full_32_c1_started": false,
+  "production_headers_swapped": false,
+  "blockers_remaining_for_P0": [
+    "G4 sparse C1 equivalence not yet run (required by plan before G5/P0)",
+    "G3 AZero supplier source audit not yet written (strongly preferred)",
+    "explicit user go for P0/G5 still required"
+  ],
+  "artifact_sha256": {
+    "AZERO-G1-LEDGER-RECEIPT": "182758c7574a43da24553f9581e22bbba2835c860f17c88f8ce5321b8c77d621",
+    "ROLE-07-azero-g1-ledger-REVIEW": "eda854e64f46e8cd267b2176ad0b2cff15779fc2a0dc3bb789c2e9631f834f7a",
+    "AZERO-G2-BUILD-RECEIPT": "6163e2f39e839a9e05b218b78d0bc73e5c64a54f95416afe3d423f7a8147008f",
+    "ROLE-AZERO-C1-SPEED-G2-REVIEW": "dd2fd8c6edf7069d177d1269f4bf1585e944b6d6ccd178d02f8ecbdd6c517886",
+    "AZERO-G2-FLOW-TU-DIFF": "cf5981d87ff824b8cd78f73cfb3ceedf5a714971944359b05f74bf1971e81be3",
+    "A-ZERO-PROPOSAL-V1": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624",
+    "ring_flow_azero.cpp": "3f59a29a68121d46668ab5d01af280583abc1dba111a4b54344541eb56f3add2",
+    "build_large_azero_flow.py": "143fd05682f0b02928f17ed858670a16671d80c10878a574cd0f454a43204ca1",
+    "G2-RESULT": "8b268fa181e2e442274f53982936a3ed09bcb24943e67042787ed6fe76b23f91"
+  }
+}

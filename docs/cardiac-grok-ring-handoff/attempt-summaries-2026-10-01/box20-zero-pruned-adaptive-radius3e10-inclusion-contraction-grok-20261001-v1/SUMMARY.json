@@ -1,0 +1,122 @@
+{
+  "schema": "n32-inclusion-contraction-summary-v1",
+  "status": "COMPLETE",
+  "gate": "N32-EXACT-INCLUSION-CONTRACTION",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_OPTION_2",
+  "writtenAtET": "2026-10-01T07:10:14-0400 (ET)",
+  "agent": "Grok-only-executor",
+  "machineId": "<redacted>",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "PIDs": {
+    "supervisor": 48506
+  },
+  "PGIDs": {
+    "supervisor": 48506
+  },
+  "load_run": {
+    "box_c1": true,
+    "point28": true,
+    "note": "passed after AUTHORIZED_BY_OWNER_GO_OPTION_2 alternate-path audit pin update"
+  },
+  "pin_update": {
+    "receipt": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-AUDIT-PIN-UPDATE.json",
+    "strategy": "alternate_audited_path_to_frozen_adaptive_snapshot",
+    "alternate_path_to": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/executed-sources-v5/ring_flow_zero_pruned.cpp",
+    "alternate_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+    "acceptedSupplierAuditSha256": {
+      "before": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+      "after": "41e7c30e8783266ca7b3ed9b02a75008c312ffd62c1b3de367d802512ca437eb"
+    },
+    "acceptedBoxBoundaryAuditSha256": {
+      "before": "03a82b02cddb600bb09d399676cbd3d549f63f670d9f4b41f36671584e96a6c2",
+      "after": "720042d984f392d12441ffa113be26c926730e27b8642a2ea1870fdc089d3c43"
+    },
+    "acceptedPointSupplierAuditSha256": {
+      "before": "fed1a84a92da03c2b0321d7ef1740bae3815c041153c09e1233f1e85738d6603",
+      "after": "0aef4b9558161869c4f937a5be50a5b9e1cda6a29eb20fa5dd3ed888d3cd063e"
+    },
+    "TARGET.json": {
+      "before": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06",
+      "after": "59763fff0b5a2fbe87089513413749e07daa48de89913bb8f355113f8ae27bc0"
+    }
+  },
+  "inclusion": {
+    "pass": true,
+    "uniform_root_inclusion_strict": true,
+    "minimum_inclusion_margin_exact": "83801249421265639545291363888419858450427182684893630539423345704384168867/1130782121458165970933310400475467850129589694000396133197827968827276656640000000000",
+    "minimum_inclusion_margin_approx": 7.410910362926704e-11
+  },
+  "contraction": {
+    "pass": true,
+    "uniform_root_contraction_strict": true,
+    "contraction_bound_exact": "485318790728117816144500317985245934608803921498101838787696654423015171059/57896044618658097711785492504343953926634992332820282019728792003956564819968",
+    "contraction_bound_approx": 0.008382589759365264,
+    "preconditioner_nonsingular_implied": true
+  },
+  "root_arithmetic_passed": true,
+  "key_numbers": {
+    "minimum_inclusion_margin_approx": 7.410910362926704e-11,
+    "contraction_bound_approx": 0.008382589759365264,
+    "maximum_preconditioned_point_residual_abs_approx": 2.2485982053408272e-10,
+    "wrap_elapsed_seconds": 55.056975542,
+    "root_gate_elapsed_seconds": 266.842316584,
+    "total_elapsed_seconds": 322.02607233299995,
+    "scaled_radius": "3e-10",
+    "order": 20,
+    "dimension": 575
+  },
+  "artifacts": {
+    "ACTUAL-RADIUS3E10-FLOW.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+      "sha256": "27062f121f81b1f807cd7052426c936908d97cd183e10617660df0165131cc58"
+    },
+    "ACTUAL-RADIUS3E10-MATRICES.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json",
+      "sha256": "c29020e9974649a6ec5e2c029dfbf6be48cb4a275e743d4545d5081bf0bd89a4"
+    },
+    "ACTUAL-RADIUS3E10-ARITHMETIC.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-ARITHMETIC.json",
+      "sha256": "54404c3a50b2bd16078a2f89dc0ee6e7089e52d5da6a62e29dde2fb4abc1c8eb"
+    },
+    "RESULT.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/RESULT.json",
+      "sha256": "46ed1979b33518e53590f00179610d18bbeeda03996e27606d89a442f063d71b"
+    },
+    "ROOT-INCLUSION.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ROOT-INCLUSION.json",
+      "sha256": "f0fac34d2121d7813c76094c959fd582a848f74d8501bb576a22f4da17303cc7"
+    },
+    "ROOT-CONTRACTION.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ROOT-CONTRACTION.json",
+      "sha256": "8beb17448bb061007981bea702f870a82ea150b3cdb42f58924418a88a58d4af"
+    },
+    "WRAP-SUMMARY.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/WRAP-SUMMARY.json",
+      "sha256": "80ba4535c178710b606761f5bad2bf1e43f78d1b278270e6c9218608ac30d11f"
+    },
+    "LAUNCH.json": {
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/LAUNCH.json",
+      "sha256": "6d5cdbe7ab1e265f2062b731cd7d44e10058d78d5078e49077ae06d32d43a0e1"
+    }
+  },
+  "c1_preserved": {
+    "RAW-FLOW.json_sha256": "dce3d0b0484d38101802ce6157a904bedd4eefc6fb0c15700916177339251d35",
+    "TUBES.jsonl_sha256": "4fdf2fb700b6570c7bdad8f853e6f2520efde8ee68f7aa69119934c450dae115",
+    "not_overwritten": true
+  },
+  "fixedQuarterLivePref": {
+    "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+    "sha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+    "must_stay": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+    "untouched": true
+  },
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_G8_G9_proof_admit": true,
+  "no_64_full_return": true,
+  "lane_status": "CLEAR_AFTER_COMPLETE",
+  "mathematical_implication": "Only under the independently audited complete C1 flow/source/first-return contract, strict uniform inclusion and contraction imply a unique cyclic section fixed point. This receipt does not establish stability, G8/G9, or a final theorem record."
+}

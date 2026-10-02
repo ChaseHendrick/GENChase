@@ -1,0 +1,166 @@
+{
+  "schema": "zp-fixed-eighth-speed-receipt-v1",
+  "pilot": "fixed_h_eighth_speed",
+  "tag": "box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1",
+  "verdict": "PASS_REACHED_1MS",
+  "writtenAtET": "2026-09-30T17:04:38-0400 (ET)",
+  "writtenAtUTC": "2026-09-30T21:04:38Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "start_et": "2026-09-30T16:29:24-0400 (ET)",
+  "start_utc": "2026-09-30T20:29:24Z",
+  "stop_reason": "stop_physical_ms_reached",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "step": "0.125",
+  "step_policy": "fixed",
+  "isolated_tu_patch": null,
+  "production_ring_flow_zero_pruned_untouched": true,
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "ZeroPrunedSparseMap_sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+  "first_gate": {
+    "ok": true,
+    "reason": "eighth_honored_from_tube2",
+    "observed_steps_ms": [
+      0.1125445449076334,
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125
+    ],
+    "target": 0.125,
+    "poincare_first_allowed": 0.1125445449076334,
+    "adaptive_contrast": 0.12109375
+  },
+  "true_eighth_steps_from_tube2": true,
+  "observed_steps_ms": [
+    0.1125445449076334,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125
+  ],
+  "sites": 32,
+  "mode": "box",
+  "radius": "3e-10",
+  "order": 20,
+  "wall_s_budget": 3600,
+  "wall_s_elapsed": 2113.846074041,
+  "rss_mib": 2048,
+  "physical_ms_reached": 1.112544544907633,
+  "stop_physical_ms_target": 1.0,
+  "tubes": 9,
+  "s_per_tube": 234.87178600455556,
+  "s_per_ms": 1900.010281580679,
+  "guards_ok_all_tubes": true,
+  "coords_ok_all_tubes": true,
+  "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+  "baselines": {
+    "adaptive_zeropruned_s_per_tube": 258.15079923215256,
+    "adaptive_zeropruned_s_per_ms": 2153.545969601511,
+    "azero_p1_s_per_tube": 237.02348161566664,
+    "azero_p1_s_per_ms": 1972.8309410117513
+  },
+  "speedup_vs_adaptive_zp_s_per_tube": 1.0991137063484735,
+  "speedup_vs_adaptive_zp_s_per_ms": 1.1334391137135886,
+  "speedup_vs_azero_p1_s_per_tube": 1.009161149781819,
+  "speedup_vs_azero_p1_s_per_ms": 1.038326455460278,
+  "remainder_or_domain_fail_closed": false,
+  "did_not_auto_start_anything_else": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "full_period_return": false,
+  "spatial_existence_certified": false,
+  "spatial_stability_certified": false,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1",
+  "raw_flow": {},
+  "native_exit": -15,
+  "pids": {
+    "supervisor_pid": 55044,
+    "supervisor_pgid": 55044,
+    "native_pid": 55048,
+    "native_pgid": 55048
+  },
+  "cleanup": {
+    "order": [
+      "verify",
+      "kill native PGID first",
+      "await",
+      "supervisor exits"
+    ],
+    "stop_reason": "stop_physical_ms_reached",
+    "native_pid": 55048,
+    "native_pgid": 55048,
+    "supervisor_pid": 55044,
+    "supervisor_pgid": 55044,
+    "native_ps_before_signal": "55048 55048 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl 20 3595 0.125 2048",
+    "native_signal": "SIGTERM",
+    "native_exit": -15,
+    "confirmed_native_gone": true,
+    "confirmed_supervisor_will_exit": true
+  },
+  "next_recommendation": "Fixed h=0.125 reached ~1ms with step gate honored. Compare speedups. No G8/G9/auto-start.",
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.1125445449076334,
+      "step_mid": 0.1125445449076334
+    },
+    {
+      "stepIndex": 2,
+      "timeEnd_mid": 0.23754454490763338,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 3,
+      "timeEnd_mid": 0.3625445449076334,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 4,
+      "timeEnd_mid": 0.4875445449076333,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 5,
+      "timeEnd_mid": 0.6125445449076333,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 6,
+      "timeEnd_mid": 0.7375445449076332,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 7,
+      "timeEnd_mid": 0.8625445449076332,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 8,
+      "timeEnd_mid": 0.9875445449076332,
+      "step_mid": 0.125
+    },
+    {
+      "stepIndex": 9,
+      "timeEnd_mid": 1.112544544907633,
+      "step_mid": 0.125
+    }
+  ],
+  "does_not_prove": [
+    "full_period_return",
+    "existence",
+    "stability",
+    "theorems",
+    "continuum"
+  ]
+}

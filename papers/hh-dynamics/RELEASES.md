@@ -3,7 +3,13 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.6 (2026-10-02)
+
+Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. Du and Hassard (2001) is cited for what its abstract and its zbMATH review describe, with the reading basis stated once in the sources paragraph and the priority statement kept as a scope statement; other sources are worded the same way. Hurwitz (1895) is credited for the stability determinants and Hopf (1943) for the bifurcation theorem. The table of checks counts three programs, and the paragraph on what has been checked names the six in-project adversarial readings and the mutation study; none is an outside review. The data availability paragraph cites the companion's Zenodo concept DOI, and an unpublished numerical study is described as such. Numerical inputs, proof programs, certificates and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.5 (2026-09-29)
+
+**DOI:** [10.5281/zenodo.23050587](https://doi.org/10.5281/zenodo.23050587) (2026-09-30).
 
 Figure layout update. Moves the branch, Hopf/current, orbit-section and normal-form keys outside all data panels, with reserved space above or below the graphs. The H1 and H2 markers and the section reference lines retain their meanings. All three vector figures and the manuscript PDF were rebuilt and inspected at manuscript scale. Numerical inputs and stored report hashes match the previous layout. Scientific captions, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 

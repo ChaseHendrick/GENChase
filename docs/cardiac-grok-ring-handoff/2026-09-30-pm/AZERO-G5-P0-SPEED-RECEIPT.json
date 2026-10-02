@@ -1,0 +1,120 @@
+{
+  "schema": "azero-g5-p0-speed-bench-receipt-v1",
+  "gate": "G5",
+  "pilot": "P0",
+  "tag": "azero-n3-c1-sparse-speed-bench-grok-20260930-v2",
+  "verdict": "PASS",
+  "speed_verdict": "PASS_MATERIAL",
+  "all_passed": true,
+  "speed_path_material": true,
+  "planning_target_met": false,
+  "primary_speedup": 1.0669428924972584,
+  "zeropruned_s_per_tube": 0.13741098608333335,
+  "azero_s_per_tube": 0.1287894479166667,
+  "coeff_dense_speedup_mean": 1.0215168831813752,
+  "coeff_point_speedup": 1.0671091117545186,
+  "any_metric_material_ge_1.05": true,
+  "writtenAtET": "2026-09-30 10:15:12 ET",
+  "writtenAtUTC": "2026-09-30T14:15:12Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "result_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/g5-p0-sparse-speed-bench-grok/azero-n3-c1-sparse-speed-bench-grok-20260930-v2/results/G5-RESULT.json",
+  "result_sha256": "405910c8e843e636d75feb517c1bad41f280986d61c42e6e6a415f8777ba5920",
+  "stdout_sha256": "74213453b15cb851f3c10b630f7360231bc68568e89c1827bc8ae06037f55f68",
+  "compile_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "src_sha256": "b25fddd5ea8d2117c8651bf9a1812fe9a97d6df91622bdf38d81fbe8c25e21b6",
+  "binary_sha256": "015ee8d370c2246818a51c1fa20c63ee174c0886849740926df448f027885c1f",
+  "native_exit": 0,
+  "elapsed_s": 4.609066707999999,
+  "review_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-azero-g5-p0-REVIEW.json",
+  "review_sha256": "128efb4b2abb2d684e9e136e46ea3b20579df716118f90fcbf8dbcb11f9b90c3",
+  "evidence": {
+    "schema": "azero-g5-p0-speed-bench-result-v1",
+    "control": "G5",
+    "pilot": "P0",
+    "all_passed": true,
+    "speed_path_material": true,
+    "planning_target_met": false,
+    "any_metric_material_ge_1.05": true,
+    "admitted_for_proof": false,
+    "fixture_only": true,
+    "flow_attempted": false,
+    "sites": 3,
+    "dimension": 54,
+    "order": 20,
+    "maps": [
+      "AZeroSparseLinear",
+      "ZeroPrunedSparseLinear"
+    ],
+    "map_semantics": "SparseMap-style override to computeODECoefficientsSparse; linearCell fixture (G4-consistent)",
+    "sparse_path": true,
+    "prior_v1_note": "v1 production SparseMap+synthetic IC hit log() domain error; v2 uses sparse-override linear fixture",
+    "thresholds": {
+      "material_min": 1.05,
+      "planning_target": 1.2
+    },
+    "coeff_bench_dense_a0": {
+      "reps": 12,
+      "zeropruned_seconds": 0.113240875,
+      "azero_seconds": 0.11698691700000001,
+      "zeropruned_s_per_rep": 0.009436739583333334,
+      "azero_s_per_rep": 0.009748909750000001,
+      "speedup_zp_over_az": 0.9679789664001488,
+      "reverse_order": {
+        "speedup_zp_over_az": 1.0750547999626017,
+        "zeropruned_s_per_rep": 0.010064913166666668,
+        "azero_s_per_rep": 0.009362232666666668
+      },
+      "speedup_mean_both_orders": 1.0215168831813752
+    },
+    "coeff_bench_point": {
+      "reps": 12,
+      "zeropruned_s_per_rep": 0.010154458333333335,
+      "azero_s_per_rep": 0.009515857583333336,
+      "speedup_zp_over_az": 1.0671091117545186
+    },
+    "tube_bench": {
+      "tubes": 12,
+      "step": "1/8",
+      "zeropruned_seconds": 1.648931833,
+      "azero_seconds": 1.545473375,
+      "zeropruned_s_per_tube": 0.13741098608333335,
+      "azero_s_per_tube": 0.1287894479166667,
+      "speedup_zp_over_az": 1.0669428924972584
+    },
+    "primary_metric": "tube_s_per_tube_speedup_zp_over_az",
+    "primary_speedup": 1.0669428924972584,
+    "peak_rss_bytes": 83542016,
+    "does_not_prove": [
+      "n32_return",
+      "n64_return",
+      "header_swap",
+      "theorems",
+      "continuum"
+    ]
+  },
+  "thresholds": {
+    "material_min": 1.05,
+    "planning_target": 1.2
+  },
+  "P1_recommended": true,
+  "P1_started": false,
+  "full_32_c1_started": false,
+  "production_headers_swapped": false,
+  "live_pins": {
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
+  },
+  "prior_v1_tag": "azero-n3-c1-sparse-speed-bench-grok-20260930-v1",
+  "prior_v1_status": "FAIL_DOMAIN log() domain error on production SparseMap+synthetic IC",
+  "does_not_prove": [
+    "n32_return",
+    "n64_return",
+    "header_swap",
+    "theorems",
+    "continuum"
+  ]
+}

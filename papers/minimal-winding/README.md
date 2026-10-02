@@ -72,8 +72,11 @@ python3 code/certify_sqg60.py
 python3 code/verify_many_vortices.py
 python3 code/plot_minimal_winding.py
 python3 code/plot_alpha_winding.py
-cd paper && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex && pdflatex minimal-winding.tex
+cd paper && tectonic minimal-winding.tex
 ```
+
+The committed PDF is built with Tectonic. Three runs of pdflatex also build it, but its line and page breaks may differ
+slightly.
 
 Each verification program exits with an error if any check fails and writes its report to `data/`.
 

@@ -1,0 +1,192 @@
+{
+  "schema": "zp-fixed-quarter-redesign-speed-receipt-v1",
+  "pilot": "fixed_quarter_tu_redesign_speed",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1",
+  "verdict": "PASS_REACHED_1MS",
+  "writtenAtET": "2026-10-01T04:58:43-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T08:58:43Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "start_et": "2026-10-01T04:45:05-0400 (ET)",
+  "start_utc": "2026-10-01T08:45:05Z",
+  "stop_reason": "stop_physical_ms_reached",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "step": "0.25",
+  "step_policy": "fixed_forced_quarter_redesign_FixedQuarterStepControl",
+  "isolated_tu_redesign": true,
+  "no_prod_patch": true,
+  "prod_untouched": true,
+  "production_ring_flow_zero_pruned_untouched": true,
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "binary_sha256": "9833fd2e16c04894b68068f857872f0cff67aabee113b2b601f7751915b52931",
+  "first_gate": {
+    "ok": true,
+    "reason": "all_tubes_exact_quarter",
+    "observed_steps_ms": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+    ],
+    "observed_steps_hex": [
+      {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      },
+      {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      },
+      {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      },
+      {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    ],
+    "target": 0.25,
+    "hex_target": "0x1p-2",
+    "poincare_cutin_tolerance": false,
+    "fail_closed_any_non_quarter": true
+  },
+  "all_tubes_exact_quarter": true,
+  "observed_steps_ms": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "observed_steps_hex": [
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    }
+  ],
+  "sites": 32,
+  "mode": "box",
+  "radius": "3e-10",
+  "order": 20,
+  "wall_s_budget": 3600,
+  "wall_s_elapsed": 817.890286541,
+  "rss_mib": 2048,
+  "physical_ms_reached": 1.0,
+  "stop_physical_ms_target": 1.0,
+  "tubes": 4,
+  "s_per_tube": 204.47257163525,
+  "s_per_ms": 817.890286541,
+  "guards_ok_all_tubes": true,
+  "coords_ok_all_tubes": true,
+  "baselines": {
+    "adaptive_zeropruned_s_per_tube": 258.15079923215256,
+    "adaptive_zeropruned_s_per_ms": 2153.545969601511,
+    "azero_p1_s_per_tube": 237.02348161566664,
+    "azero_p1_s_per_ms": 1972.8309410117513,
+    "fixed_eighth_s_per_tube": 234.87178600455556,
+    "fixed_eighth_s_per_ms": 1900.010281580679,
+    "redesign_v3_short_probe_s_per_tube": 207.31595204166663,
+    "redesign_v3_short_probe_caveat": "3 tubes only (~0.75 ms); not a full 1ms speed baseline"
+  },
+  "speedup_vs_adaptive_zp_s_per_tube": 1.2625204308216795,
+  "speedup_vs_adaptive_zp_s_per_ms": 2.633049939630938,
+  "speedup_vs_azero_p1_s_per_tube": 1.1591945057476112,
+  "speedup_vs_azero_p1_s_per_ms": 2.412097286734136,
+  "speedup_vs_fixed_eighth_s_per_tube": 1.1486713554106094,
+  "speedup_vs_fixed_eighth_s_per_ms": 2.32306253399359,
+  "speedup_vs_redesign_v3_short_probe_s_per_tube": 1.013905925785923,
+  "remainder_or_domain_fail_closed": false,
+  "did_not_auto_start_anything_else": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "full_period_return": false,
+  "spatial_existence_certified": false,
+  "spatial_stability_certified": false,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1",
+  "raw_flow": {},
+  "native_exit": -15,
+  "pids": {
+    "supervisor_pid": 28184,
+    "supervisor_pgid": 28184,
+    "native_pid": 28187,
+    "native_pgid": 28187
+  },
+  "cleanup": {
+    "order": [
+      "verify",
+      "kill native PGID first",
+      "await",
+      "supervisor exits"
+    ],
+    "stop_reason": "stop_physical_ms_reached",
+    "native_pid": 28187,
+    "native_pgid": 28187,
+    "supervisor_pid": 28184,
+    "supervisor_pgid": 28184,
+    "native_ps_before_signal": "28187 28187 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-speed-pilot-grok-20261001-v1/TUBES.jsonl 20 3595 0.25 2048",
+    "native_signal": "SIGTERM",
+    "native_exit": -15,
+    "confirmed_native_gone": true,
+    "confirmed_supervisor_will_exit": true
+  },
+  "next_recommendation": "Isolated redesign fixed h=1/4 reached ~1ms with all-tube exact-quarter gate. Compare speedups. No G8/G9/prod-patch/auto-start.",
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.25,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 2,
+      "timeEnd_mid": 0.5,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 3,
+      "timeEnd_mid": 0.75,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 4,
+      "timeEnd_mid": 1.0,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    }
+  ],
+  "does_not_prove": [
+    "full_period_return",
+    "existence",
+    "stability",
+    "theorems",
+    "continuum"
+  ]
+}

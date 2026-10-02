@@ -1,0 +1,114 @@
+{
+ "note": "Translation check of pilot/tp06_19d_capd.hpp against ap-reentry/tp06_19d.py; not a proof.",
+ "points": 102,
+ "components": 8208,
+ "worst_relative_double_difference": 1.300673575541396e-07,
+ "worst_where": [
+  "window state 20",
+  "3",
+  "m",
+  "-2.669392271932392e-08",
+  "-2.6693926191332362e-08"
+ ],
+ "worst_double_difference_relative_to_term_scale": 1.181798398396694e-14,
+ "n_components_plain_relative_above_1em12": 584,
+ "plain_relative_above_1em12_worst_cases": [
+  {
+   "what": "window state 20",
+   "cell": 3,
+   "state": "m",
+   "capd_double": -2.669392271932392e-08,
+   "python_double": -2.6693926191332362e-08,
+   "mp": -2.6693925303491088e-08,
+   "capd_err_rel": 9.680731246008485e-08,
+   "python_err_rel": 3.326004942010147e-08,
+   "term_scale_over_value": 120873230.27699499
+  },
+  {
+   "what": "window state 19",
+   "cell": 3,
+   "state": "m",
+   "capd_double": -7.982498772276299e-08,
+   "python_double": -7.982499160323754e-08,
+   "mp": -7.98249909219859e-08,
+   "capd_err_rel": 4.007796143881835e-08,
+   "python_err_rel": 8.534315267930835e-09,
+   "term_scale_over_value": 40420691.897219226
+  },
+  {
+   "what": "window state 9",
+   "cell": 14,
+   "state": "m",
+   "capd_double": 1.335033014521461e-07,
+   "python_double": 1.3350330758639493e-07,
+   "mp": 1.3350330530969337e-07,
+   "capd_err_rel": 2.8894769921092056e-08,
+   "python_err_rel": 1.705352197261077e-08,
+   "term_scale_over_value": 275729253.5730277
+  },
+  {
+   "what": "window state 18",
+   "cell": 3,
+   "state": "m",
+   "capd_double": -1.3223578967987115e-07,
+   "python_double": -1.3223579213069012e-07,
+   "mp": -1.32235791706975e-07,
+   "capd_err_rel": 1.5329464270199093e-08,
+   "python_err_rel": 3.2042393636186184e-09,
+   "term_scale_over_value": 24400217.5140886
+  },
+  {
+   "what": "window state 16",
+   "cell": 3,
+   "state": "m",
+   "capd_double": -2.3472018731859725e-07,
+   "python_double": -2.3472019160748783e-07,
+   "mp": -2.3472019047512812e-07,
+   "capd_err_rel": 1.3448058565494855e-08,
+   "python_err_rel": 4.8242961543792836e-09,
+   "term_scale_over_value": 13746514.47578067
+  },
+  {
+   "what": "window state 8",
+   "cell": 14,
+   "state": "m",
+   "capd_double": -1.2214744335004633e-07,
+   "python_double": -1.2214744130529767e-07,
+   "mp": -1.221474414223858e-07,
+   "capd_err_rel": 1.5781423775731077e-08,
+   "python_err_rel": 9.585801749744789e-10,
+   "term_scale_over_value": 301363250.0194533
+  }
+ ],
+ "max_capd_double_error_vs_mp_among_those": 9.680731246008485e-08,
+ "max_python_double_error_vs_mp_among_those": 3.326004942010147e-08,
+ "enclosure_misses": 0,
+ "max_relative_interval_width_window_states": 4.4375923734779123e-07,
+ "groups": {
+  "window states": {
+   "points": 21,
+   "components": 6384,
+   "worst_rel_double": 1.300673575541396e-07,
+   "enclosure_misses": 0
+  },
+  "window start, branches flipped": {
+   "points": 1,
+   "components": 304,
+   "worst_rel_double": 2.7146966780011146e-09,
+   "enclosure_misses": 0
+  },
+  "random single cell, branch low": {
+   "points": 40,
+   "components": 760,
+   "worst_rel_double": 1.8158149899016676e-13,
+   "enclosure_misses": 0
+  },
+  "random single cell, branch high": {
+   "points": 40,
+   "components": 760,
+   "worst_rel_double": 6.872893093873998e-14,
+   "enclosure_misses": 0
+  }
+ },
+ "mp_dps": 50
+}

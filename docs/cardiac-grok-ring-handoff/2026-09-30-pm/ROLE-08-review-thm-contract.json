@@ -1,0 +1,71 @@
+{
+  "schema": "grok-role-08-review-thm-contract-v1",
+  "role": {
+    "id": 8,
+    "name": "Review-thm",
+    "kind": "reviewer",
+    "status": "active_prep"
+  },
+  "utc_written": "2026-09-30T12:57:22Z",
+  "funding": "grok-bot-executors-only",
+  "current_preprint_scope": {
+    "certified_only": [
+      "fixed-cell",
+      "certified-8-site",
+      "certified-16-site"
+    ],
+    "not_in_scope_for_certificate": [
+      "32-site",
+      "64-site"
+    ],
+    "statement": "Current preprint scope: fixed-cell + certified 8/16 only. No 32/64 publish; no manuscript/certificate/release edits from this ring."
+  },
+  "frozen_jointly_reviewed_certificate_requirements": {
+    "matched_point_and_box": {
+      "required": true,
+      "detail": "Point return and full box/C1 return must be strictly matched (center, model, scales, C, q, all derivative columns). Reuse of a completed point is allowed only after that strict match with the authorized box radius (currently 3e-10 for the active 32-site attempt)."
+    },
+    "inclusion": {
+      "required": true,
+      "detail": "Strict componentwise K inclusion / validated C1 covering inclusion for the claimed set. Partial tubes do not close inclusion."
+    },
+    "period_exclusions": {
+      "required": true,
+      "detail": "Independent audit of complete time/branch/tube coverage, ascending-section exclusions, and all nonidentity cyclic shifts. T=N*tau is a physical period only once the root exists; fundamental period requires earlier-return exclusion. Disjoint initial voltage boxes prove nonsynchrony alone, not existence or period."
+    },
+    "K_and_Lyapunov": {
+      "required": true,
+      "detail": "After existence: separately audited initial field and full C1 flow covering the proved K set (or sufficient matched uniform derivative). Exact H SPD and q^2 H - DP^T H DP SPD via separately justified square rational congruences, LDL, or weighted dominance. A numerical eigensolver or H positivity alone does not prove stability. No conditional K derivative may replace the original uniform existence derivative."
+    },
+    "independent_product_positivity_replay": {
+      "required": true,
+      "detail": "Independent exact outward dyadic/GMP product replay of residuals, DP bounds, and positivity/SPD claims. Reject Python-O, missing/incomplete/rounded/point-only/wrong-shift, and stale source inputs. Use recomputed quantities, not saved success Booleans."
+    }
+  },
+  "uncertified_rule": {
+    "all_partial_or_failed_runs_remain_uncertified": true,
+    "partial_tubes_are_not_certificate": true,
+    "one_step_pilot_is_not_a_return": true,
+    "source_admission_or_positive_metric_alone_is_not_a_theorem": true,
+    "statement": "All partial/failed runs remain uncertified. A partial flow, source admission, numerical candidate, positive metric alone, or saved success Boolean is not a theorem."
+  },
+  "joint_gate_declaration_policy": {
+    "declare_theorem_only_after": [
+      "complete matched actual joint gates",
+      "independent replay",
+      "source/argument audit pass"
+    ],
+    "do_not": [
+      "silently widen source scope",
+      "call numerical resolution a continuum result",
+      "edit manuscript/certificate/release metadata",
+      "publish 32/64"
+    ]
+  },
+  "constraints": [
+    "no manuscript/certificate/release edits",
+    "no 32/64 publish",
+    "preserve interrupted receipts",
+    "Grok only"
+  ]
+}

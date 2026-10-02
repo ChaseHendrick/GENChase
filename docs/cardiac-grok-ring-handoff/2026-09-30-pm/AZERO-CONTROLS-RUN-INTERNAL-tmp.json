@@ -1,0 +1,48 @@
+{
+  "schema": "azero-controls-run-20260930-v1",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "writtenAtET": "2026-09-30 09:49:40 ET",
+  "admitted_for_proof": false,
+  "production_header_replacement": false,
+  "controls": [
+    {
+      "id": "C1",
+      "tag": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1",
+      "status": "FAIL",
+      "tag_rel": "c1-signed-zero-capd-serialization-grok/20260930-v1",
+      "tag_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1",
+      "compile_exit": 1,
+      "compile_command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-frounding-math",
+        "-D__USE_NATIVE__",
+        "-pthread",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs/headers/capdExt/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs/headers/capdAux/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs/headers/capdAlg/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs/headers/capdDynSys/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/src/c1_signed_zero_capd_serialization.cpp",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/inputs/libcapd.a",
+        "-o",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v1/bin/c1_signed_zero_capd_serialization"
+      ],
+      "all_passed": false,
+      "failure": "compile",
+      "result_sha256": "e86da4c361b97c14fb8016e0a49c4de3aa5b496b05da73d8505d5956a2746e1c"
+    }
+  ],
+  "stopped_on_failure": true,
+  "overall_all_passed": false,
+  "admit_recommendation": "DO_NOT_ADMIT",
+  "failed_control": "C1",
+  "elapsed_total_s": 1.5361944999312982,
+  "live_header_sha256": {
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10"
+  }
+}

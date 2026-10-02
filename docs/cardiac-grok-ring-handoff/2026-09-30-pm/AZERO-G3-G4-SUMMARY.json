@@ -1,0 +1,43 @@
+{
+  "schema": "azero-g3-g4-execution-summary-v1",
+  "writtenAtET": "2026-09-30 10:11:21 ET",
+  "writtenAtUTC": "2026-09-30T14:11:21Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "G3": {
+    "verdict": "PASS",
+    "receipt_sha256": "782cb87f9356934637e437af730c4b4f91bad45ef60ac296ae751371f07081d8",
+    "audit_sha256": "9a575362f7c95bee5caea5cf09f64d1edef965815f07831e018bb5cf89be858c"
+  },
+  "G4": {
+    "verdict": "PASS",
+    "receipt_sha256": "1119f8e0ee3a063a7e12d039c04cadc4889fd551760b0541c1c61ec81c9c266e",
+    "result_sha256": "61899915f2ce70ad1b65b60f619c2384a98b4410cbedfeff870948eb12faaa56"
+  },
+  "both_passed": true,
+  "ready_for_P0": false,
+  "ready_for_P0_structural": true,
+  "ready_note": "G3+G4 PASS. Plan P0/G5 still requires explicit user go (do not auto-start). Structural priors G2+G4 satisfied; G3 audit accepted for isolated runner use only.",
+  "stopped_after_G4": true,
+  "P0_started": false,
+  "P1_started": false,
+  "full_32_c1_started": false,
+  "production_headers_swapped": false,
+  "blockers_for_P0": [
+    "explicit user go for P0/G5 required (plan + this turn stop policy)"
+  ],
+  "non_blockers_now_cleared": [
+    "G3 AZero supplier source audit",
+    "G4 sparse C1 equivalence",
+    "G1 ledger",
+    "G2 isolated ring_flow_azero build"
+  ],
+  "artifact_sha256": {
+    "AZERO-G3-SUPPLIER-AUDIT-RECEIPT": "782cb87f9356934637e437af730c4b4f91bad45ef60ac296ae751371f07081d8",
+    "ROLE-07-azero-g3-supplier-REVIEW": "ad6fdd37834a1a572ad8029e7193855311febe9c561442cb16c68a0b6597b708",
+    "SUPPLIER-SOURCE-AUDIT": "9a575362f7c95bee5caea5cf09f64d1edef965815f07831e018bb5cf89be858c",
+    "AZERO-G4-EQUIVALENCE-RECEIPT": "1119f8e0ee3a063a7e12d039c04cadc4889fd551760b0541c1c61ec81c9c266e",
+    "ROLE-07-azero-g4-equivalence-REVIEW": "bc5798a5f7c3700189b34ac0f2d9b599d5204ca45e73e791a1630a5bc24d9dcb",
+    "G4-RESULT": "61899915f2ce70ad1b65b60f619c2384a98b4410cbedfeff870948eb12faaa56"
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schema": "azero-controls-independent-review-role-07-v1",
+  "role": "independent_reviewer",
+  "roleId": 7,
+  "reviewRoles": [
+    "ROLE-07"
+  ],
+  "identity": "Grok Bot ROLE-07 independent reviewer (not ROLE-06 pin preparer; not sole control implementer stamp)",
+  "notImplementer": true,
+  "implementerIdentityReviewed": {
+    "pins": "ROLE-06 Opt-deriv",
+    "controls_executor": "Grok-only admission executor",
+    "c2_harness_fix": "Grok-only (this turn); prototype untouched"
+  },
+  "machineId": "<redacted>",
+  "writtenAtET": "2026-09-30 09:59:38 ET",
+  "verdict": "accept",
+  "accepted": true,
+  "rejected": false,
+  "admissionScope": "A-zero prototype NOT admitted for proof; no production header swap; C1\u2013C5+C6 control gate cleared under 20260930-v3 (C1 from v2); fixed-quarter speed pilot still requires separate authorization",
+  "didNotRubberStampImplementerAccepted": true,
+  "implementerAcceptedTrueIgnoredAsEvidence": true,
+  "checklist": [
+    {
+      "id": "pins_live_hash_match",
+      "passed": true,
+      "evidence": "Recomputed live sha256; all match hard pins / plan"
+    },
+    {
+      "id": "source_diff_declared_scope",
+      "passed": true,
+      "evidence": "Diff is rename/cmath + exact-zero-A skip in sparse path only"
+    },
+    {
+      "id": "C1_pass",
+      "passed": true,
+      "evidence": "C1-RESULT retained 20260930-v2 all_passed=true"
+    },
+    {
+      "id": "C2_pass",
+      "passed": true,
+      "evidence": "C2-RESULT 20260930-v3 mismatches=0 vs Cellwise-sparse; dense_a0_bad=0; nonfinite_J_never_omits"
+    },
+    {
+      "id": "C3_pass",
+      "passed": true,
+      "evidence": "C3-RESULT 20260930-v3"
+    },
+    {
+      "id": "C4_pass",
+      "passed": true,
+      "evidence": "C4-RESULT 20260930-v3"
+    },
+    {
+      "id": "C5_pass",
+      "passed": true,
+      "evidence": "C5-RESULT 20260930-v3"
+    },
+    {
+      "id": "accept_only_after_C1_to_C5",
+      "passed": true,
+      "evidence": "Accept only because C1\u2013C5 all_passed"
+    },
+    {
+      "id": "hexfloat_equality_not_weakened",
+      "passed": true,
+      "evidence": "C2 still uses endpoint == ; comparator path corrected to Cellwise-sparse"
+    },
+    {
+      "id": "no_production_header_swap",
+      "passed": true,
+      "evidence": "ZeroPruned/Cellwise hashes unchanged"
+    }
+  ],
+  "checklistAllPassed": true,
+  "defects": [],
+  "c2_diagnosis": {
+    "summary": "Harness compared AZero-sparse to Cellwise-batch; batch!=sparse accounts for all 3240 mismatches",
+    "sample_pattern": "DIR k=1..20, 162 mismatches/order, base_mm=0, A0 k=0 mm=0, a_exact0 skip candidates=0; endpoint ULP drift, widths equal",
+    "fix": "azero_admission_coeff_harness.cpp: cell.computeODECoefficientsSparse in C2 and C5-coeff",
+    "prototype_edited": false,
+    "hexfloat_gate_weakened": false
+  },
+  "per_control_verdict": {
+    "C1": "PASS",
+    "C2": "PASS",
+    "C3": "PASS",
+    "C4": "PASS",
+    "C5": "PASS",
+    "C6": "ACCEPT"
+  },
+  "overall_admit_recommendation": "CONTROLS_PASS_BUT_NOT_ADMITTED_FOR_PROOF",
+  "subject": {
+    "run": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-CONTROLS-RUN-20260930-v2.json",
+    "run_sha256": "cd5c43069cf387e783eee56a13da1f1358e7b270f55a2d7ca48d1db1e7cfd86c",
+    "primary_run": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-CONTROLS-RUN-20260930.json",
+    "primary_run_sha256": "bfeca3db0e017df7258ffba53168bdc58c8edc42f4ef6af7cf1aac7826083cd0",
+    "c6_independent_review": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-independent-source-audit-grok/20260930-v3/INDEPENDENT-REVIEW.json",
+    "c6_independent_review_sha256": "a848f1a67466da2e23a5ff993b7f6872b9b561d4f42165d16621036ad85c6946"
+  },
+  "liveHashesRecomputed": {
+    "AZeroPrunedCellwiseRingMap.hpp": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/AZeroPrunedCellwiseRingMap.hpp",
+      "sha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+      "bytes": 10658
+    },
+    "AZeroPrunedSparseMap.hpp": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/AZeroPrunedSparseMap.hpp",
+      "sha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+      "bytes": 528
+    },
+    "ZeroPrunedCellwiseRingMap.hpp": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
+      "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+      "bytes": 10193
+    },
+    "ZeroPrunedSparseMap.hpp": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
+      "sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+      "bytes": 522
+    },
+    "CellwiseRingMap.hpp": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
+      "sha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+      "bytes": 9795
+    },
+    "A-ZERO-PROPOSAL-V1.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+      "sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+      "bytes": 1074
+    },
+    "PINS.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c6-independent-source-audit-grok/20260930-v3/PINS.json",
+      "sha256": "9766dc4eb8b053ddad346b0afe0e30f19e92d65f6424e24a9cf462aa7e29ec69",
+      "bytes": 15250
+    },
+    "AZERO-ADMISSION-PLAN-v1.md": {
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-ADMISSION-PLAN-v1.md",
+      "sha256": "5f7ab523875723c8b42565dfabce11ac4924d631049e25e2d4c0afc8aee48dbc",
+      "bytes": 10430
+    },
+    "AZERO-ADMISSION-PLAN-v1.json": {
+      "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-ADMISSION-PLAN-v1.json",
+      "sha256": "42d8ba485d762725d735b810a3b7e36fb11eb83615578142de73df8f90bcc0f8",
+      "bytes": 21084
+    },
+    "C1-RESULT.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c1-signed-zero-capd-serialization-grok/20260930-v2/results/C1-RESULT.json",
+      "sha256": "1d8d24e76515c3117b512030482fb9727c6c7ebee1debbc4628886955a6e1859",
+      "bytes": 545
+    },
+    "C2-RESULT.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/results/C2-RESULT.json",
+      "sha256": "892e98f7ba69a1fada43a27b71846e1f87dd60f15bfa93fe4d30609a83dc14d7",
+      "bytes": 436
+    },
+    "C3-RESULT.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/results/C3-RESULT.json",
+      "sha256": "a8410274dcd17d9e5db520e848e19695cdcaa48f46c2e8918543842da06c0599",
+      "bytes": 264
+    },
+    "C4-RESULT.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/results/C4-RESULT.json",
+      "sha256": "d9dbe340caa69bf3d4101ac41a1de8e43cec4eb232334680a32f12b82266768a",
+      "bytes": 281
+    },
+    "C5-RESULT.json": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/results/C5-RESULT.json",
+      "sha256": "1017d2eced7724265dfee393f948871129b76107cf46efb241000be51cfed2e9",
+      "bytes": 5117
+    },
+    "coeff_harness": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/_shared-capd-inputs/azero_admission_coeff_harness.cpp",
+      "sha256": "ebb0504bcc1cf4837cf915adab18a6ba918d0682d13b2ac39a097a4963de1f4a",
+      "bytes": 14566
+    }
+  },
+  "proof_flags": {
+    "admitted_for_proof": false,
+    "sourceAuditPassed": true,
+    "coefficientControlsPassed": true,
+    "fullStepControlsPassed": true,
+    "fullEventControlsPassed": false,
+    "fullEventControlsDocumentedNA": true
+  },
+  "nonActions": [
+    "Did not replace ZeroPruned/Cellwise headers",
+    "Did not weaken hexfloat equality",
+    "Did not edit AZero/ZeroPruned/Cellwise production prototypes for C2 fix (harness only)",
+    "Did not re-run H64",
+    "Did not start 32/64 C1",
+    "Did not involve Claude",
+    "Did not set admitted_for_proof=true on proposal for production install"
+  ],
+  "nextGate": "User/coordinator may consider header-admission or SPEED-DESIGN pilot only after explicit separate authorization; A-zero remains unadmitted for proof despite control pass"
+}

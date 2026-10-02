@@ -1,0 +1,32 @@
+{
+  "queued": false,
+  "reason": "lane_busy_prod_speed",
+  "written_at_local": "2026-10-01 05:25:48 ",
+  "written_at_iso": "2026-10-01T05:25:48.931016-04:00",
+  "planned_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "planned_N": 32,
+  "planned_radius": "3e-10",
+  "planned_order": 20,
+  "planned_step": "adaptive",
+  "planned_budget_s": 10800,
+  "planned_rss_mib": 2048,
+  "no_64_full_return": true,
+  "no_G8_G9_proof_admit_from_this_alone": true,
+  "adaptive_binary_policy": {
+    "do_not_use": "FixedQuarter prod TU / binary abf2d352\u2026 / live PREF/ring_flow_zero_pruned.cpp",
+    "prefer": "A: copy adaptive binary sha 0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc from PREF/runs/zero-pruned-large-return-build-n32-v1/ring_flow; snapshot pre-patch TU source from PM/backups/ring_flow_zero_pruned.cpp.pre-fixed-quarter-prod-patch-20261001",
+    "alt": "B: rebuild ONLY into new attempt dir from backup source, leave live FixedQuarter PREF untouched"
+  },
+  "blocking_campaign": {
+    "tag": "box20-zero-pruned-fixed-quarter-prod-speed-campaign-grok-20261001-v1",
+    "supervisor_pid": 34102,
+    "native_pid": 34106,
+    "confirmed_live": true
+  },
+  "live_fixedquarter_prod_tu_left_untouched": true,
+  "cleared_at_et": "2026-10-01T05:37:11-0400 (ET)",
+  "cleared_reason": "lane_free_c1_launched",
+  "c1_status": "RUNNING",
+  "c1_supervisor_pid": 36858,
+  "c1_native_pid": 36864
+}

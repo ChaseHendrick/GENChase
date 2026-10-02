@@ -1,0 +1,33 @@
+{
+  "schema": "role-07-zp-fixed-quarter-REVIEW-v1",
+  "role": "ROLE-07-style-independent-self-check",
+  "writtenAtET": "2026-09-30T14:58:32-0400 (ET)",
+  "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v1",
+  "verdict_observed": "FAIL_CLI_STEP_PARSE",
+  "error": "Failed parsing string, wanted value, got 1/4 .",
+  "tubes": 0,
+  "physical_ms_reached": 0.0,
+  "wall_s_elapsed": 2.070592708,
+  "checks": {
+    "native_exited_fast": true,
+    "zero_tubes": true,
+    "raw_flowSucceeded_false": true,
+    "error_present": true,
+    "did_not_auto_h8": true,
+    "not_admitted": true,
+    "no_g8_g9": true,
+    "supplier_zp": true,
+    "step_quarter": true,
+    "lane_clear_now": true,
+    "no_residual_ring_flow": true
+  },
+  "all_checks_passed": true,
+  "rubber_stamp": false,
+  "interpretation": "v1 failed at initialization: CAPD could not parse step '1/4'. Not remainder/domain fail-closed. SPEED-DESIGN requires step 0.25. Independent check: error string exact; 0 tubes; did not auto-start h=1/8.",
+  "did_not_auto_start_h_eighth": true,
+  "admitted_for_proof": false,
+  "receipt_path": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-SPEED-RECEIPT.json",
+  "summary_path": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-SUMMARY.json",
+  "correctedAtET": "2026-09-30T14:59:00-0400 (ET)",
+  "retry_authorized_same_go": "v2 with step 0.25"
+}

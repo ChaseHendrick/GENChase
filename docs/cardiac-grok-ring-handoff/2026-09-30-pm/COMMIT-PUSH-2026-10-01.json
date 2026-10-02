@@ -1,0 +1,65 @@
+{
+  "schema": "commit-push-receipt-v1",
+  "writtenAtET": "2026-10-01T10:41:30-0400 (ET)",
+  "agent": "Grok-only-executor",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_COMMIT_PUSH",
+  "repoUrlHttps": "https://github.com/ChaseHendrick/GENChase",
+  "remote": "origin",
+  "remoteFetchUrl": "https://github.com/ChaseHendrick/GENChase.git",
+  "branch": "codex/handoff-2026-09-30",
+  "commitShaFull": "479ec8d10ccb0b2856e21d5f8c73b66882978972",
+  "commitShaShort": "479ec8d",
+  "parentShaFull": "cac45ee5170dcbf5ef96b2b8e5c6d7c782e3ebb8",
+  "pushSucceeded": true,
+  "forcePush": false,
+  "amended": false,
+  "noVerify": false,
+  "prMerged": false,
+  "newRunsStarted": false,
+  "noRingFlow": true,
+  "noKPort": true,
+  "noPilots": true,
+  "fixedQuarterMutated": false,
+  "checkoutPath": "<workspace>/work/publication-automation-checkout",
+  "workspaceRoot": "<workspace>",
+  "committed": {
+    "fileCount": 183,
+    "summary": "Oct-1 pause handoff, PM JSON/md/py/diff receipts, FixedQuarter source snapshot, small attempt summaries; RESEARCH + CARDIAC/HANDOFF pointers",
+    "paths": [
+      "docs/CARDIAC-PAUSED-HANDOFF-2026-10-01.md",
+      "docs/cardiac-grok-ring-handoff/",
+      "docs/CARDIAC-HANDOFF-2026-09-30.md",
+      "docs/HANDOFF-2026-09-30.md",
+      "RESEARCH.md"
+    ],
+    "highlights": [
+      "FixedQuarter prod+speed",
+      "N32 C1+IC PASS",
+      "K harness missing / matched-K blocked",
+      "N64 fixed-eighth pilot PASS",
+      "handoff pause notes"
+    ]
+  },
+  "leftUntrackedLocal": {
+    "summary": "Huge RAW dumps and full attempt product trees remain local outside GENChase.",
+    "examples": [
+      "outputs/cardiac-study/tissue-ring/**/RAW-FLOW.json, TUBES.jsonl, large ACTUAL-*.json",
+      "outputs/cardiac-study/tissue-ring/**/libcapd.a and ring_flow binaries",
+      "outputs/cardiac-study/action-potential-cable/**/TRAJECTORY.npz",
+      "work/cardiac-study/tissue-scalability-preflight/runs/** native dumps",
+      "PM supervisor *.log / *.pid / *.DONE",
+      "unpublished manuscript PDF/ZIP and portable companion archives",
+      "outputs/GENChase separate branch uncommitted publication-followthrough docs"
+    ]
+  },
+  "secretsCommitted": false,
+  "notes": [
+    "Workspace root is not a git repo; cardiac GitHub track is ChaseHendrick/GENChase @ codex/handoff-2026-09-30.",
+    "No ring_flow / K port / pilots started by this commit-push job."
+  ],
+  "receiptCommitShaFull": "8c3c37e312dc3b14b89c5212cfab238db5fbce44",
+  "allCommitShas": [
+    "479ec8d10ccb0b2856e21d5f8c73b66882978972",
+    "8c3c37e312dc3b14b89c5212cfab238db5fbce44"
+  ]
+}

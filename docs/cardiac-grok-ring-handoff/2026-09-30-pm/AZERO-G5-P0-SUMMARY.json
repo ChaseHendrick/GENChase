@@ -1,0 +1,33 @@
+{
+  "schema": "azero-g5-p0-execution-summary-v1",
+  "writtenAtET": "2026-09-30 10:15:12 ET",
+  "writtenAtUTC": "2026-09-30T14:15:12Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "G5": {
+    "verdict": "PASS",
+    "speed_verdict": "PASS_MATERIAL",
+    "receipt_sha256": "22b503a68fd6b3368fc9757f30359c96eae455661bcc89a36e5c4407e51f41c7"
+  },
+  "primary_speedup": 1.0669428924972584,
+  "zeropruned_s_per_tube": 0.13741098608333335,
+  "azero_s_per_tube": 0.1287894479166667,
+  "coeff_dense_speedup_mean": 1.0215168831813752,
+  "coeff_point_speedup": 1.0671091117545186,
+  "speed_path_material_ge_1.05": true,
+  "planning_target_ge_1.20": false,
+  "any_metric_material_ge_1.05": true,
+  "P1_recommended": true,
+  "P1_recommendation_note": "Primary tube speedup >=1.05x; P1 optional after explicit user go.",
+  "stopped_after_P0": true,
+  "P1_started": false,
+  "full_32_c1_started": false,
+  "production_headers_swapped": false,
+  "artifact_sha256": {
+    "AZERO-G5-P0-SPEED-RECEIPT": "22b503a68fd6b3368fc9757f30359c96eae455661bcc89a36e5c4407e51f41c7",
+    "ROLE-07-azero-g5-p0-REVIEW": "128efb4b2abb2d684e9e136e46ea3b20579df716118f90fcbf8dbcb11f9b90c3",
+    "G5-RESULT": "405910c8e843e636d75feb517c1bad41f280986d61c42e6e6a415f8777ba5920",
+    "src": "b25fddd5ea8d2117c8651bf9a1812fe9a97d6df91622bdf38d81fbe8c25e21b6",
+    "binary": "015ee8d370c2246818a51c1fa20c63ee174c0886849740926df448f027885c1f"
+  }
+}

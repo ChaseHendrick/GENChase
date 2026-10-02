@@ -1,0 +1,98 @@
+{
+  "schema": "zp-fixed-quarter-speed-receipt-v1",
+  "pilot": "fixed_h_quarter_speed",
+  "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v4",
+  "verdict": "ABORT_STEP_NOT_QUARTER",
+  "writtenAtET": "2026-09-30T15:44:48-0400 (ET)",
+  "writtenAtUTC": "2026-09-30T19:44:48Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "start_et": "2026-09-30T15:37:45-0400 (ET)",
+  "start_utc": "2026-09-30T19:37:45Z",
+  "stop_reason": "abort_step_not_quarter",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "step": "0.25",
+  "step_policy": "fixed",
+  "isolated_maxstep_patch": "setMaxStep(I(1)/I(4)) attempt-local only",
+  "production_ring_flow_zero_pruned_untouched": true,
+  "true_quarter_steps_from_tube2": false,
+  "observed_steps_ms": [
+    0.1125445449076334
+  ],
+  "sites": 32,
+  "mode": "box",
+  "radius": "3e-10",
+  "order": 20,
+  "wall_s_budget": 3600,
+  "wall_s_elapsed": 423.007715125,
+  "rss_mib": 2048,
+  "physical_ms_reached": 0.1125445449076334,
+  "stop_physical_ms_target": 1.0,
+  "tubes": 1,
+  "s_per_tube": 423.007715125,
+  "s_per_ms": 3758.5803512037596,
+  "guards_ok_all_tubes": true,
+  "coords_ok_all_tubes": true,
+  "binary_sha256": "3cbdf89d36a080ed3f0a6dcd216abd18efa5a4415b83c8ee8f3ee1f3d655e1af",
+  "baselines": {
+    "adaptive_zeropruned_s_per_tube": 258.15079923215256,
+    "adaptive_zeropruned_s_per_ms": 2153.545969601511,
+    "azero_p1_s_per_tube": 237.02348161566664,
+    "azero_p1_s_per_ms": 1972.8309410117513
+  },
+  "speedup_vs_adaptive_zp_s_per_tube": 0.6102744465449483,
+  "speedup_vs_adaptive_zp_s_per_ms": 0.5729679209629762,
+  "speedup_vs_azero_p1_s_per_tube": 0.5603289801596775,
+  "speedup_vs_azero_p1_s_per_ms": 0.524887259728241,
+  "remainder_or_domain_fail_closed": false,
+  "did_not_auto_start_h_eighth": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "full_period_return": false,
+  "spatial_existence_certified": false,
+  "spatial_stability_certified": false,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v4",
+  "raw_flow": {},
+  "native_exit": -15,
+  "pids": {
+    "supervisor_pid": 49545,
+    "supervisor_pgid": 49545,
+    "native_pid": 49547,
+    "native_pgid": 49547
+  },
+  "cleanup": {
+    "order": [
+      "verify",
+      "kill native first",
+      "await"
+    ],
+    "stop_reason": "abort_step_not_quarter",
+    "native_pid": 49547,
+    "native_pgid": 49547,
+    "supervisor_pid": 49545,
+    "supervisor_pgid": 49545,
+    "native_ps_before_signal": "49547 49547 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v4/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v4/TUBES.jsonl 20 3595 0.25 2048",
+    "native_signal": "SIGTERM",
+    "native_exit": -15,
+    "confirmed_native_gone": true
+  },
+  "next_recommendation": "STOP fixed-quarter attempts on current Poincar\u00e9 ring_flow. Report only. Do NOT auto-start h=1/8. PM/user must explicitly authorize any next lever (deeper fixed-step TU redesign, or separately named h=1/8 calibration go).",
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.1125445449076334,
+      "step_mid": 0.1125445449076334
+    }
+  ],
+  "does_not_prove": [
+    "full_period_return",
+    "existence",
+    "stability",
+    "theorems",
+    "continuum"
+  ],
+  "blocker": "Poincar\u00e9 ring_flow path does not honor fixed setStep(1/4): first recorded tube step remains 0x1.ccfb823b8b37dp-4 \u2248 0.112545 (same as adaptive first cut-in) even with attempt-local hardcoded setMaxStep(1/4)+setStep(1/4). True fixed-quarter speed pilot not achievable on current AuditedSolver+Poincar\u00e9Map TU without deeper redesign (not done).",
+  "finalizedAtET": "2026-09-30T15:50:27-0400 (ET)"
+}

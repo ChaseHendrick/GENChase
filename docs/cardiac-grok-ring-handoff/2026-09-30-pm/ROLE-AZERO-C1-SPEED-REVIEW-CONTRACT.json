@@ -1,0 +1,39 @@
+{
+  "schema": "azero-c1-speed-review-contract-v1",
+  "roleId": "ROLE-AZERO-C1-SPEED-REVIEW",
+  "aliases": [
+    "ROLE-07-extension",
+    "independent_reviewer"
+  ],
+  "writtenAtET": "2026-09-30 10:03:24 ET",
+  "machineId": "<redacted>",
+  "notImplementer": true,
+  "scope": "Independent review of A-zero C1 speed admission gates G3\u2013G7; must not rubber-stamp implementer; must not authorize G8 header swap without explicit user go naming G8",
+  "mustVerify": [
+    "live sha256 of AZeroPruned* and ZeroPruned* match pins",
+    "source diff is rename/cmath/exact-zero-A skip only",
+    "flow TU uses AZeroPrunedSparseMap (sparse override), not batch Cellwise",
+    "C2 lesson: no batch-vs-sparse false FAIL or false PASS",
+    "G4 equivalence artifacts before G6 speed claims",
+    "G5/G6 retain 576 dirs and whole-tube guards on N=32",
+    "remainder fail-closed",
+    "dual-PGID cleanup order documented on any heavy launch",
+    "admitted_for_proof remains false until full handoff theorem package",
+    "production ZeroPruned headers untouched unless G8 go"
+  ],
+  "acceptOnlyIf": [
+    "checklist all passed",
+    "stop-on-fail honored",
+    "no undeclared source edits"
+  ],
+  "rejectIf": [
+    "header swap without G8",
+    "theorem claim from pilot",
+    "weakened hexfloat without documented exception",
+    "concurrent second heavy native ignored"
+  ],
+  "outputs": [
+    "ROLE-07-azero-c1-speed-REVIEW.json or ROLE-AZERO-C1-SPEED-REVIEW.json under PM"
+  ],
+  "planRef": "AZERO-C1-SPEED-ADMISSION-PLAN-v1.md"
+}

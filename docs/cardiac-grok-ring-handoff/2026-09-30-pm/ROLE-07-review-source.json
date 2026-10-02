@@ -1,0 +1,130 @@
+{
+  "role": "Review-source",
+  "role_id": 7,
+  "status": "verified",
+  "utc": "2026-09-30T12:58:05Z",
+  "scope": {
+    "active_attempt": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "active_attempt_path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "h64_prep": "ring64-H-positivity-preparation-v1 + ring64-H-positivity-source-review-v1",
+    "sources_modified": false,
+    "new_admissions_issued": false
+  },
+  "hashes_checked": {
+    "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+    "fixed-eighth64-step-source-review-v2/SUPPLIER-SOURCE-AUDIT.json": "4dff5efd89491062e8dcf529ff773106c0eed27f2fb5391a838fab54aed55eb2",
+    "ring64-H-positivity-preparation-v1/PRELAUNCH-CONTROLS.json": "b20c05462c7f78400633008a34c68222a855b45117e860d2cff32e55d717fc87",
+    "ring64-H-positivity-source-review-v1/CONTROLS-REVIEW.json": "bee2ebf86957790e46b1214b38123e96c12750fa4b2455337e10b94b3094a465",
+    "ring64-H run_fixed_H.py": "f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0",
+    "ring64-H SOURCE-PREPARATION.json": "b16cd43e114d2a8b20a57cee8e89e29b037cae0e154ef21fd433a17a375606b5",
+    "active_attempt_ring_flow_binary": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+    "V5_SUPPLIER-SOURCE-AUDIT.json": "1d70419f93f0e5f8393dd9db80ac3f0939bcd08f023080793845661b8ee967d6",
+    "backend_SOURCE-AUDIT.json": "a69999bcc801f626bebef97809939096e0d7295fa5986bcb47e724f9cce0f434"
+  },
+  "findings": {
+    "zero_pruned_supplier_audit": {
+      "path": "work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "schema": "cellwise-map-zero-pruned-supplier-source-audit-v1",
+      "accepted": true,
+      "approvedHeaderSha256_matches_live_SparseMap": true,
+      "approvedBaseHeaderSha256_matches_live_Cellwise": true,
+      "supportedSites": [
+        8,
+        32,
+        64
+      ]
+    },
+    "fixed_eighth64_supplier_audit": {
+      "path": "work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/SUPPLIER-SOURCE-AUDIT.json",
+      "schema": "cellwise-map-zero-pruned-fixed-eighth64-step-source-audit-v1",
+      "accepted": true,
+      "header_pins_match_zero_pruned": true,
+      "methodSourceAudit_sha_matches_zero_pruned_audit": true,
+      "actual64FixedEighthStepAccepted": false,
+      "completeReturnAccepted": false,
+      "oneStepExecutedByReview": false,
+      "note": "Source/adverse-control admission for one initial 64-site full-C1 step at exact 1/8; not a completed step/return receipt."
+    },
+    "active_32_radius3e10": {
+      "bindings_result_schema": "actual-source-bound-32-radius3e10-native-launch-v1",
+      "bindings_status": "actual build/command/source pins checked; full flow pending",
+      "grok_attempt_input_hashes_all_21_match_bindings": true,
+      "compiled_binary_sha_match": true,
+      "supplier_header_pins_match_audit": true,
+      "supplier_audit_sha_in_attempt": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+      "radiusExact": "3/10000000000",
+      "sites": 32,
+      "order": 20,
+      "flowComplete": false,
+      "flow_process_observed_running_at_review": true,
+      "preliminarySourceOnlyArtifactMapNotAFlowReceipt": true
+    },
+    "h64_source_pins": {
+      "sourceSha256_prep_prelaunch_controls_review_agree": true,
+      "reviewed_sources_copies_byte_identical_to_prep": true,
+      "PRELAUNCH_allPinsMatched": true,
+      "CONTROLS_REVIEW_passed": true,
+      "all_six_bindings_reverified_live": true,
+      "nativeArithmeticLaunched": false,
+      "formal_source_admission_receipt_exists": false,
+      "formal_source_admission_note": "No ring64-H SOURCE-AUDIT / FORMAL-SOURCE-ADMISSION receipt found. Existing artifacts are SOURCE-PREPARATION (reviewRequired=true), PRELAUNCH-CONTROLS (independentSourceReviewRequired=true), and CONTROLS-REVIEW (schema ring64-fixed-H-independent-source-and-small-controls-v1, passed=true). Backend admission reviewed-exact-product-backend-admission-v1 accepted=true exists separately (sha a69999bcc801f626...). Do not treat CONTROLS-REVIEW as full arithmetic-launch source-admission."
+    },
+    "schema_pins_confirmed": [
+      {
+        "artifact": "zero-pruned SUPPLIER-SOURCE-AUDIT",
+        "schema": "cellwise-map-zero-pruned-supplier-source-audit-v1",
+        "accepted": true
+      },
+      {
+        "artifact": "fixed-eighth64 SUPPLIER-SOURCE-AUDIT",
+        "schema": "cellwise-map-zero-pruned-fixed-eighth64-step-source-audit-v1",
+        "accepted": true
+      },
+      {
+        "artifact": "PRELAUNCH-CONTROLS",
+        "schema": "ring64-fixed-H-prelaunch-pin-and-positivity-controls-v1"
+      },
+      {
+        "artifact": "CONTROLS-REVIEW",
+        "schema": "ring64-fixed-H-independent-source-and-small-controls-v1",
+        "passed": true
+      },
+      {
+        "artifact": "SOURCE-PREPARATION",
+        "schema": "ring64-fixed-H-source-preparation-v1"
+      },
+      {
+        "artifact": "radius3e10 bindings RESULT",
+        "schema": "actual-source-bound-32-radius3e10-native-launch-v1"
+      },
+      {
+        "artifact": "V5 adapter audit (referenced by bindings)",
+        "schema": "cellwise-map-zero-pruned-per-stage-V5-adapter-source-audit-v1",
+        "accepted": true
+      },
+      {
+        "artifact": "backend SOURCE-AUDIT",
+        "schema": "reviewed-exact-product-backend-admission-v1",
+        "accepted": true
+      }
+    ]
+  },
+  "proof_flags": {
+    "existence": false,
+    "stability": false,
+    "H_admitted": false,
+    "H64_SPD_proved": false,
+    "complete_32_return": false,
+    "complete_64_return": false,
+    "radius3e10_flow_complete": false,
+    "formal_H64_source_admission_receipt": false
+  },
+  "blockers": [
+    "Active radius3e10 flow not complete; bindings explicitly mark preliminary source-only map (not a flow receipt).",
+    "No formal ring64-H source-admission receipt for full 1151-square arithmetic launch (only prep + small-controls review).",
+    "fixed-eighth64 audit accepts source/controls scope only; actual64FixedEighthStepAccepted=false.",
+    "Do not claim existence/stability/H SPD from this review."
+  ]
+}

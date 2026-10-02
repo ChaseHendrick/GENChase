@@ -1,0 +1,198 @@
+{
+  "schema": "cellwise-map-zero-pruned-large-full-return-V4-adapter-source-audit-v1",
+  "accepted": true,
+  "supportedSites": [
+    32,
+    64
+  ],
+  "approvedMethodAuditSha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+  "approvedHarnessSha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "approvedRunnerSha256": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935",
+  "approvedSelectorSha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+  "approvedBaseSha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+  "approvedOriginalBaseSha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+  "preparedCompleteReturnSourceReviewed": true,
+  "fullStates": true,
+  "fullVariations": true,
+  "curve": true,
+  "eventPathAuditPassed": true,
+  "completeCanonicalSourceHeaderBindingsReviewed": true,
+  "nativeAndCanonicalBoundsMustExactlyMatch": true,
+  "uniformInitialBoxAndReturnTimeCoverageRequired": true,
+  "allSiteModelDomainsAndConcentrationsRequired": true,
+  "positiveUniformCrossingSlopeRequired": true,
+  "allThreeHeadersRequiredForPointAndBox": true,
+  "exactCompilerFlagsAnd440HeadersAndPinnedLibraryRequired": true,
+  "physicalDecimalCenterAndExactScaleCoverageRequired": true,
+  "runtimeCommandSourceAndBudgetBindingRequired": true,
+  "kernelAndRootMetricAssociationsUnchanged": true,
+  "separatePointAndBoxActualEvidenceRequired": true,
+  "supportedOrderMinimum": 8,
+  "maxOrder": 20,
+  "pointOrder28AcceptedByV4": false,
+  "separateExactKSupplierAcceptedByV4": false,
+  "affineSupplierAcceptedByV4": false,
+  "targets": [
+    {
+      "sites": 32,
+      "targetSha256": "a10ff0a07ba6075666faac19eeea54d41f08df7fcb02ae98a64a84097412613f",
+      "runtimeManifestSha256": "778c2a77bb39a9bac3effeeeb2ae5fef8695bce41be0b1bb522c60dcc7d587d6",
+      "snapshotManifestSha256": "abacb1175542a0a51998df727190643ac2c6e4e7fe4406b1f8d6b9b0da1648c6",
+      "sourceHashes": {
+        "from_flow.py": "f0434c8b35b09c7ecc97a177cb8ac7e4d49e3cc416d38125a0ac2d71ecb69166",
+        "root_c1_flow.py": "2ddda7ee0f4016ee801d8271180f78c74248d77f30a8043512b47888fcd72250",
+        "target_config.py": "ec7ffc706840a9a5efb6d59d1b223cae86decdf9f308c6b3137fdb668bd73b68",
+        "wrap_native.py": "7ec5458a80255828fccafada24361dcd40ca6ce6094be2124f3a52f889dd3099"
+      },
+      "independentControls": 78,
+      "totalDynamicStates": 576,
+      "fullVariationColumns": 576,
+      "fullVariationIntervalEntries": 331776,
+      "domainGuardsPerCompleteTube": 4384,
+      "sectionIndex": 558,
+      "neighborCoefficient": "2/125",
+      "fixedQExact": "499995373/500000000",
+      "qFullPeriodGoalPassedFromExactRationals": true
+    },
+    {
+      "sites": 64,
+      "targetSha256": "5e8a088c6d069de115a7e2b7a6f1fb51fc8e9b332c6b0ebcdf1e0ad380edc4b9",
+      "runtimeManifestSha256": "5c1ca4943ee9b7e8e0f3ee49ee5dd225894a90d662a83a46ffa14efea0b41046",
+      "snapshotManifestSha256": "5fc2637a31d69f8a3b5411cd19c15b7dd4981a97ec9a2251bfd2c4cc24170c19",
+      "sourceHashes": {
+        "from_flow.py": "a78c5692eaacd8070f3725f82b2a94b9c4e895beac17af550c3c633f225952b6",
+        "root_c1_flow.py": "a1a1cacfce9e4070a17f1b40981e840943c6122109689faa0600c61a36ef77d9",
+        "target_config.py": "ec7ffc706840a9a5efb6d59d1b223cae86decdf9f308c6b3137fdb668bd73b68",
+        "wrap_native.py": "91f915a54347d87eb2d6cddc489e5011575b24ba0b8687023708ce1723bf90c3"
+      },
+      "independentControls": 78,
+      "totalDynamicStates": 1152,
+      "fullVariationColumns": 1152,
+      "fullVariationIntervalEntries": 1327104,
+      "domainGuardsPerCompleteTube": 8768,
+      "sectionIndex": 1134,
+      "neighborCoefficient": "8/125",
+      "fixedQExact": "249998827/250000000",
+      "qFullPeriodGoalPassedFromExactRationals": true
+    }
+  ],
+  "independentControlCount": 156,
+  "scope": "Prepared complete C0 point and uniform C1 box source/provenance/event boundary at8..20 only. Every actual run remains provisional until complete native and canonical source/input/binary/tube/guard/event/full-variation and arithmetic evidence is independently checked. This component admission does not accept any completed32/64 return.",
+  "sourceArgument": [
+    "The full-return C++ differs from the reviewed sparse supplier only by the exact-zero selector/types. The recurrence omits complete outward zero Taylor Jacobian coefficients only, preserving every nonzero coefficient and every global variation column. Pinned CAPD C0/C1 doubleton movement, approved remainders, curve and first ascending coordinate-event machinery remain unchanged.",
+    "The new V4 target checker pins the separately approved order20 source audit and all its exact dependencies, prepared full-return C++/runner, original/base/selector headers, all440 CAPD headers, library, model/source/scales/physical decimal centers, exact coupling and fixed q_N. It admits only matched C0 point or uniform C1 box commands, exact compile flags, radius/mode/order and runtime resource contracts.",
+    "The wrapper and strict adapter require the three actual supplier headers for both stages, compare every initial/image/endpoint field/time/raw variation and full tube/guard range with the separately hashed native originals, verify exact center/box coverage and every complete137N domain obligation, enforce strict positive crossing slopes and rooted whole branch time coverage, and recompute all section derivatives from the full18N raw fixed-time variation.",
+    "The uniform existence derivative remains mandatory and unchanged. Unadmitted large exact-K, affine and order28 suppliers explicitly reject. Future point28 pairing requires a separately reviewed new wrapper version.",
+    "Mock command/source fixtures only establish parser and binding controls. No mock flow or source-shaped artifact establishes a completed return. The already admitted method argument supplies recurrence soundness; no interval overlap or timing speed comparison is used as correctness proof."
+  ],
+  "restrictions": [
+    "Do not treat this receipt or source-method audit as an actual large flow or theorem certificate.",
+    "Use these exact V4 runtime/snapshot/TARGET hashes; a new source/header/policy/order/target requires a new review.",
+    "Every complete actual run requires separate strict raw/canonical/source and event/tube arithmetic replay.",
+    "No historical novelty, continuum/PDE or baseline action-potential conclusion.",
+    "Runtime range is explicit60..21600-second wall and1024..8192 MiB sampled high-water RSS; actual launch must obey its separately authorized budget.",
+    "The external admission receipt supplies current acceptance; historical preparation booleans remain false in unchanged frozen manifests."
+  ],
+  "fullActualLargeReturnPassed": false,
+  "flowLaunchedByThisReview": false,
+  "scientificArithmeticExecutedByThisReview": false,
+  "scientificTheoremClaimed": false,
+  "artifacts": [
+    {
+      "path": "<workspace>/work/cardiac-study/ring-resolution-proposals/SUPPLIER-REFERENCE-V4-REVIEW.json",
+      "sha256": "d46a993f171c3c309cb88b854ba5c82483013b265a6048b2cf456c9544c3fa64"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-large-return-v4-review-v2/CONTROLS-REVIEW.json",
+      "sha256": "21fc6064bf7c740adb6e343ef7d5c9a92b9c1685a8232a05ddd3b73bdb7a5487"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+      "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/TARGET.json",
+      "sha256": "a10ff0a07ba6075666faac19eeea54d41f08df7fcb02ae98a64a84097412613f"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/EXECUTED-SOURCE-MANIFEST.json",
+      "sha256": "778c2a77bb39a9bac3effeeeb2ae5fef8695bce41be0b1bb522c60dcc7d587d6"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/PREPARATION.json",
+      "sha256": "47a987fd748569490369e5cbdb27e4c13a269f7d78b6e52a3d835f4681434d5a"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/executed-sources-v4/EXECUTED-SOURCE-MANIFEST.json",
+      "sha256": "abacb1175542a0a51998df727190643ac2c6e4e7fe4406b1f8d6b9b0da1648c6"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/from_flow.py",
+      "sha256": "f0434c8b35b09c7ecc97a177cb8ac7e4d49e3cc416d38125a0ac2d71ecb69166"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/wrap_native.py",
+      "sha256": "7ec5458a80255828fccafada24361dcd40ca6ce6094be2124f3a52f889dd3099"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/target_config.py",
+      "sha256": "ec7ffc706840a9a5efb6d59d1b223cae86decdf9f308c6b3137fdb668bd73b68"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring32-checker-supplier-v4/root_c1_flow.py",
+      "sha256": "2ddda7ee0f4016ee801d8271180f78c74248d77f30a8043512b47888fcd72250"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/TARGET.json",
+      "sha256": "5e8a088c6d069de115a7e2b7a6f1fb51fc8e9b332c6b0ebcdf1e0ad380edc4b9"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/EXECUTED-SOURCE-MANIFEST.json",
+      "sha256": "5c1ca4943ee9b7e8e0f3ee49ee5dd225894a90d662a83a46ffa14efea0b41046"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/PREPARATION.json",
+      "sha256": "e2ad16c390e53cf226f65b8cc2aaa5028937955941a8e918b400512f998f21ec"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/executed-sources-v4/EXECUTED-SOURCE-MANIFEST.json",
+      "sha256": "5fc2637a31d69f8a3b5411cd19c15b7dd4981a97ec9a2251bfd2c4cc24170c19"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/from_flow.py",
+      "sha256": "a78c5692eaacd8070f3725f82b2a94b9c4e895beac17af550c3c633f225952b6"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/wrap_native.py",
+      "sha256": "91f915a54347d87eb2d6cddc489e5011575b24ba0b8687023708ce1723bf90c3"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/target_config.py",
+      "sha256": "ec7ffc706840a9a5efb6d59d1b223cae86decdf9f308c6b3137fdb668bd73b68"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/ring64-checker-supplier-v4/root_c1_flow.py",
+      "sha256": "a1a1cacfce9e4070a17f1b40981e840943c6122109689faa0600c61a36ef77d9"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+      "sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_large_zero_pruned_flow.py",
+      "sha256": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedSparseMap.hpp",
+      "sha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ZeroPrunedCellwiseRingMap.hpp",
+      "sha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527"
+    },
+    {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/CellwiseRingMap.hpp",
+      "sha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
+    }
+  ]
+}

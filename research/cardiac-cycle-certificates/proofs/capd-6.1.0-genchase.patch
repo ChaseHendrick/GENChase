@@ -1,0 +1,26 @@
+Local patch applied to CAPD 6.1.0 (commit 03dc5628203334b214bb7d9fd63788a175521005) on 2026-10-01 with the owner's approval.
+The file uses CRLF line endings; apply with `git apply` from the CAPD source root (header only, no library rebuild).
+
+In crossSectionInOneStep, each Newton iteration sets bound = c(newReturnTime) and checks the sign of every component of
+the vector field on that bound, then intersected bound[j] with the hull of the curve at the endpoints of the PREVIOUS
+window. That trim is valid only on the window where monotonicity was checked; the windows coincide when the loop exits
+by convergence but not when it stops at its 10-iteration cap. The patch takes the endpoints of the current window.
+
+diff --git a/capdDynSys/include/capd/poincare/PoincareMap_templateMembers.h b/capdDynSys/include/capd/poincare/PoincareMap_templateMembers.h
+index b80f7ea..9e2d6e7 100644
+--- a/capdDynSys/include/capd/poincare/PoincareMap_templateMembers.h
++++ b/capdDynSys/include/capd/poincare/PoincareMap_templateMembers.h
+@@ -259,8 +259,11 @@ bool PoincareMap<SolverT,FunT>::crossSectionInOneStep(T& theSet, T& nextSet, Sca
+     }
+     bound = c(newReturnTime);
+     vfOnBound = this->m_solver.getVectorField()(timeBeforeSection+oneStepReturnTime,bound);
+-    VectorType L = c(oneStepReturnTime.left());
+-    VectorType R = c(oneStepReturnTime.right());
++    // GENChase patch: trim with the endpoints of the SAME window on which monotonicity (vfOnBound) was checked.
++    // Upstream used the previous window (oneStepReturnTime), which is unsound if the Newton loop stops at its
++    // iteration cap without converging.
++    VectorType L = c(newReturnTime.left());
++    VectorType R = c(newReturnTime.right());
+     for(size_type j=0;j<bound.dimension();++j){
+       if(!(vfOnBound[j].contains(0.))){
+         intersection(bound[j],intervalHull(L[j],R[j]),bound[j]);

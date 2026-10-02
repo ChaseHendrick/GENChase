@@ -1,0 +1,87 @@
+{
+  "schema": "n32-matched-k-blocker-v1",
+  "status": "HARD_FAIL_BLOCKED_BEFORE_LAUNCH",
+  "gate": "N32-MATCHED-K",
+  "gate_index": 1,
+  "authorization": "AUTHORIZED_BY_OWNER_GO_POST_IC_GATES",
+  "writtenAtET": "2026-10-01T07:20:22-04:00 (ET)",
+  "agent": "Grok-only-executor",
+  "machineId": "<redacted>",
+  "source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "source_ic_tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "ic_prereq": {
+    "root_arithmetic_passed": true,
+    "inclusion_pass": true,
+    "contraction_pass": true,
+    "root_enclosure_offsets_present_in_ROOT_INCLUSION": true,
+    "offset_count": 575,
+    "IC_RESULT": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/RESULT.json",
+    "IC_FLOW": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "IC_MATRICES": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json"
+  },
+  "documented_path": {
+    "ROLE_02": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-02-r32-root-contract.json",
+    "ROLE_03": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-03-r32-K-contract.json",
+    "GROK_HANDOFF_workstream": "4 Full transverse stability owner (after existence: audited initial field + C1 covering proved K, or matched uniform derivative)",
+    "V5_prepare_K_inputs": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/root_enclosure.py --flow IC/FLOW --matrices IC/MATRICES --output K-ROOT-FIELD-INPUTS.json --header root_k_offsets.h",
+    "V5_wrap_field": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/wrap_initial_field.py",
+    "V5_stability": "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/root_stability.py / joint_gate.py",
+    "ring16_template_natives": [
+      "work/cardiac-study/tissue-certification16/root_field_k.cpp",
+      "work/cardiac-study/tissue-certification16/ring_flow_k.cpp",
+      "work/cardiac-study/tissue-certification16/run_root_field_k.py",
+      "work/cardiac-study/tissue-certification16/run_flow_k.py"
+    ],
+    "ROLE_03_template_artifacts": [
+      "K-ROOT-FIELD-INPUTS.json",
+      "root_k_offsets.h",
+      "ACTUAL-RADIUS3E10-K-ROOT-FIELD.json",
+      "ACTUAL-RADIUS3E10-K-C1-FLOW.json",
+      "ACTUAL-RADIUS3E10-KFIELD-JOINT-GATE.json",
+      "LYAPUNOV-Q-POSITIVITY.json"
+    ]
+  },
+  "blocker": {
+    "code": "MISSING_N32_NATIVE_K_HARNESS",
+    "summary": "Matched-K gate cannot launch: no N=32 native root_field_k / ring_flow_k harness under tissue-certification32 (or any ring32 path). V5 can prepare K-ROOT-FIELD-INPUTS.json + root_k_offsets.h from IC FLOW/MATRICES, and root_stability/joint_gate exist, but the required native CAPD K-field (and optional K-C1) binaries/sources for 575-dim / 32 sites are absent. Per standing rule, do not invent/port harness.",
+    "missing_files": [
+      "<workspace>/work/cardiac-study/tissue-certification32/root_field_k.cpp",
+      "<workspace>/work/cardiac-study/tissue-certification32/ring_flow_k.cpp",
+      "<workspace>/work/cardiac-study/tissue-certification32/run_root_field_k.py",
+      "<workspace>/work/cardiac-study/tissue-certification32/run_flow_k.py",
+      "<workspace>/work/cardiac-study/tissue-certification32/root_k_offsets.h",
+      "<workspace>/work/cardiac-study/tissue-certification32/K-ROOT-FIELD-INPUTS.json"
+    ],
+    "present_v5_scripts": {
+      "root_enclosure.py": true,
+      "wrap_initial_field.py": true,
+      "root_stability.py": true,
+      "joint_gate.py": true
+    },
+    "did_not_improvise": true,
+    "did_not_port_ring16_sources": true,
+    "did_not_run_root_enclosure_prepare": true,
+    "prepare_note": "root_enclosure.prepare is documented and IC products are ready (575 offsets in ROOT-INCLUSION), but prepare alone is not a matched-K pass; native field run is still required. Left unrun to avoid a half-gate without a completable path."
+  },
+  "key_numbers": {
+    "q32_exact": "499995373/500000000",
+    "ic_minimum_inclusion_margin_approx": 7.410910362926704e-11,
+    "ic_contraction_bound_approx": 0.008382589759365264,
+    "dimension": 575,
+    "sites": 32,
+    "K_native_products": null
+  },
+  "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "fixedQuarter_expected": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "fixedQuarter_untouched": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "lane_status": "CLEAR",
+  "stopped_sequence": true,
+  "gates_not_started": [
+    "N32-TRANSVERSE-STABILITY",
+    "N32-PERIOD-NONSYNCHRONY"
+  ],
+  "no_N64_work": true
+}

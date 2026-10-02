@@ -1,0 +1,22 @@
+{
+  "schema": "role-azero-g6-p1-launch-note-v1",
+  "role": "ROLE-P1-LAUNCH",
+  "tag": "box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
+  "writtenAtET": "2026-09-30T14:16:19-0400 (ET)",
+  "writtenAtUTC": "2026-09-30T18:16:19Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "launch_receipt": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G6-P1-LAUNCH.json",
+  "launch_receipt_sha256": "e39c8dac8f510d8599b7f1052fb2df7cd72e64f194281ce13819490adfaa1177",
+  "caps": {
+    "wall_s": 3600,
+    "rss_mib": 2048,
+    "stop_physical_ms": 1.0,
+    "N": 32,
+    "radius": "3e-10",
+    "order": 20
+  },
+  "cmd_summary": "isolated azero ring_flow --box 3e-10 TUBES.jsonl 20 3595 adaptive 2048",
+  "admitted_for_proof": false,
+  "P1_started": true
+}

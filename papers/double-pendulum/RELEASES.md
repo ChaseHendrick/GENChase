@@ -2,7 +2,13 @@
 
 Each release of this paper's programs and data is archived on Zenodo with its own DOI.
 
+## 1.0.5 (2026-10-02)
+
+Editorial update. The manuscript now ends with a labelled statement on the use of AI (**Use of AI.**) at the body's own size; it had none. The title-page date line is removed. The Smale-Birkhoff homoclinic theorem is credited to Birkhoff (1934) and Smale (1965), the stable manifold theorem to Hadamard (1901) and Perron (1929), and Morales-Ruiz and Ramis's Galoisian obstructions to their 2001 papers. A new Sources paragraph states how Dullin (1994) and Bolotin and Negrini (1997) were read. The statement that no proof was found is qualified by the reach of the search. The data availability paragraph cites the companion's Zenodo concept DOI. Numerical inputs, proof programs, certificates and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.4 (2026-09-29)
+
+**DOI:** [10.5281/zenodo.23050590](https://doi.org/10.5281/zenodo.23050590) (2026-09-30).
 
 Figure layout update. Replaces h-set labels inside the section plot with distinct point markers and an external key above both panels. The key also identifies the enclosure rectangles, preserving their exact endpoints and styles; N retains its star marker. The vector figure and manuscript PDF were rebuilt and inspected at manuscript scale. Stored centres, coordinate transforms and numerical input hashes are unchanged. Scientific captions, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 

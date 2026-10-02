@@ -1,0 +1,77 @@
+{
+  "schema": "n32-c1-summary-v1",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "status": "FINISHED",
+  "verdict": "FLOW_SUCCESS",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_G8_G9_proof_admit_from_this_alone": true,
+  "prod_fixedquarter_untouched": true,
+  "live_fixedquarter_sha": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "adaptive_source_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+  "tubes": 16,
+  "elapsed_s": 3678.780813083,
+  "stop_reason": "native_exited",
+  "native_exit": 0,
+  "raw_success": false,
+  "writtenAtET": "2026-10-01T06:39:20-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T10:39:20Z",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "flowSucceeded": true,
+  "stepCount": 16,
+  "returnTime": {
+    "lo": "0x1.acb45ee7cc75cp+0",
+    "hi": "0x1.acb4767c3f23fp+0"
+  },
+  "firstReturnEvidence": "Pinned CAPD PoincareMap MinusPlus one crossing from strictly negative end-section side, audited complete-step transversality and interval crossing refinement",
+  "firstAscendingEndSection": true,
+  "finalAscendingSlope": {
+    "lo": "0x1.c0e6c763abc47p-8",
+    "hi": "0x1.c0e6f6185e1ebp-8"
+  },
+  "physical_time_last_tube": 1.7957209875955016,
+  "physical_ms_last_tube": 1.7957209875955016,
+  "wall_s": 3678.780813083,
+  "lane_clear": true,
+  "cleanup_native_signal": "already_exited",
+  "failure": null,
+  "watch_collected_at_et": "2026-10-01T06:39:07-0400 (ET)",
+  "supervisor_initial_misparse": {
+    "note": "supervisor looked for raw['success'] missing; RAW uses flowSucceeded=true; corrected on watch collect",
+    "supervisor_wrote_status": "NATIVE_EXIT",
+    "supervisor_wrote_verdict": "INCOMPLETE_OR_FAIL",
+    "supervisor_raw_success": false
+  },
+  "no_restart": true,
+  "no_64_started": true,
+  "physical_ms": 1.7957209875955016,
+  "returnTime_mid": 1.674627941572726,
+  "spatialExistenceCertified": false,
+  "spatialStabilityCertified": false,
+  "cleanup": {
+    "order": [
+      "verify",
+      "kill native PGID first",
+      "await",
+      "supervisor exits"
+    ],
+    "stop_reason": "native_exited",
+    "native_pid": 36864,
+    "native_pgid": 36864,
+    "supervisor_pid": 36858,
+    "supervisor_pgid": 36858,
+    "native_signal": "already_exited",
+    "native_exit": 0,
+    "confirmed_native_gone": true,
+    "confirmed_supervisor_will_exit": true
+  },
+  "pids": {
+    "supervisor": 36858,
+    "native": 36864
+  },
+  "started_et": "2026-10-01T05:37:11-0400 (ET)",
+  "finished_et": "2026-10-01T06:38:30-0400 (ET)",
+  "watch_corrected_at_et": "2026-10-01T06:39:20-0400 (ET)"
+}

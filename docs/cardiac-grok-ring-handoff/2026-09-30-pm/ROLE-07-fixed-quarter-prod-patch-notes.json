@@ -1,0 +1,14 @@
+{
+  "role": "ROLE-07",
+  "gate": "ZP-FIXED-QUARTER-PROD-PATCH",
+  "writtenAtET": "2026-10-01T05:19:36-0400 (ET)",
+  "review": "Prod port of FixedQuarterStepControl + forceFixedQuarter from isolated v3 redesign into PREF/ring_flow_zero_pruned.cpp. setMaxStep(4/N) removed. approved-sources left at pre-sha pin. Verify: 3 consecutive exact 0x1p-2 tubes. PASS.",
+  "verdict": "PASS_THREE_CONSECUTIVE_QUARTER",
+  "redesign_pass": true,
+  "pre_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "post_sha": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "binary_sha256": "abf2d352d4b3a776a6f7a6a0f2b17f44ba0019bb1004357c8cdadc159024643d",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false
+}

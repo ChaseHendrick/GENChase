@@ -1,0 +1,17 @@
+{
+  "supervisor_pid": 36858,
+  "supervisor_pgid": 36858,
+  "native_pid": 36864,
+  "native_pgid": 36864,
+  "start_et": "2026-10-01T05:37:11-0400 (ET)",
+  "cmd": [
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow",
+    "--box",
+    "3e-10",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/TUBES.jsonl",
+    "20",
+    "10795",
+    "adaptive",
+    "2048"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "role-07-zp-fixed-quarter-v3-REVIEW-v1",
+  "writtenAtET": "2026-09-30T15:37:41-0400 (ET)",
+  "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v3",
+  "verdict_observed": "ABORT_STEP_NOT_QUARTER",
+  "observed_steps_ms": [
+    0.1125445449076334,
+    0.2250890898152668
+  ],
+  "note": "Tube2 step exactly 2*tube1 (0.225089), not 0.25 despite setMaxStep(1/4)+CLI 0.25. Independent: numbers match TUBES.jsonl; abort correct; no h=1/8 auto.",
+  "checks": {
+    "tubes_match_receipt": true,
+    "step2_is_double_step1": true,
+    "not_exact_quarter": true,
+    "did_not_auto_h8": true,
+    "production_tu_untouched": true,
+    "admitted_for_proof_false": true
+  },
+  "rubber_stamp": false,
+  "next": "v4 isolated TU hardcode setStep(I(1)/I(4))+setMaxStep(I(1)/I(4)) like fixed-eighth preflight pattern; still no h=1/8 auto if remainder fails",
+  "all_ok": true
+}

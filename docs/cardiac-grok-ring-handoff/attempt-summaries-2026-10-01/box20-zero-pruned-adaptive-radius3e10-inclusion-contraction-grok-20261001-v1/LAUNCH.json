@@ -1,0 +1,49 @@
+{
+  "schema": "n32-inclusion-contraction-launch-v1",
+  "status": "COMPLETE",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_OPTION_2",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+  "point28_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+  "command_wrap_native": [
+    "python3",
+    "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py",
+    "--point",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+    "--box",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+    "--output",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "--matrices-output",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json",
+    "--arithmetic-output",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-ARITHMETIC.json"
+  ],
+  "post_wrap": "joint_gate.root_gate(arithmetic) for inclusion+contraction; no G8/G9; admitted_for_proof=false",
+  "budget": {
+    "note": "CPU-bound exact arithmetic; no wall budget hard-kill; expect minutes to tens of minutes depending on 575-dim matrix ops"
+  },
+  "PIDs": {
+    "supervisor": 48506
+  },
+  "PGIDs": {
+    "supervisor": 48506
+  },
+  "start_time_et": "2026-10-01T07:04:31-0400 (ET)",
+  "audit_pin_receipt": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-AUDIT-PIN-UPDATE.json",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "prod_fixedquarter_untouched": true,
+  "c1_products_not_overwritten": true,
+  "lane_clear": true,
+  "running_since_et": "2026-10-01T07:04:31-0400 (ET)",
+  "finishedAtET": "2026-10-01T07:09:53-0400 (ET)",
+  "result_path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/RESULT.json",
+  "inclusion_pass": true,
+  "contraction_pass": true,
+  "root_arithmetic_passed": true,
+  "total_elapsed_seconds": 322.02607233299995,
+  "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911"
+}

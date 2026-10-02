@@ -1,0 +1,117 @@
+{
+  "schema": "grok-ring-roster-v1",
+  "utc_written": "2026-09-30T12:57:22Z",
+  "funding": "grok-bot-executors-only",
+  "platform_limits": {
+    "concurrent_executors_soft_max": 4,
+    "native_capd_jobs_max": 1,
+    "more_chat_agents_do_not_add_cpu": true
+  },
+  "roles": [
+    {
+      "id": 1,
+      "name": "R32-C1",
+      "kind": "implementer",
+      "status": "active_or_pending",
+      "executor_note": "single native owned job"
+    },
+    {
+      "id": 2,
+      "name": "R32-root",
+      "kind": "implementer",
+      "status": "blocked_on_existence"
+    },
+    {
+      "id": 3,
+      "name": "R32-K",
+      "kind": "implementer",
+      "status": "blocked_on_existence"
+    },
+    {
+      "id": 4,
+      "name": "R64-pilot",
+      "kind": "implementer",
+      "status": "queued_after_lane"
+    },
+    {
+      "id": 5,
+      "name": "R64-H",
+      "kind": "implementer",
+      "status": "prep"
+    },
+    {
+      "id": 6,
+      "name": "Opt-deriv",
+      "kind": "implementer",
+      "status": "unadmitted_prototype"
+    },
+    {
+      "id": 7,
+      "name": "Review-source",
+      "kind": "reviewer",
+      "status": "active_prep"
+    },
+    {
+      "id": 8,
+      "name": "Review-thm",
+      "kind": "reviewer",
+      "status": "active_prep"
+    }
+  ],
+  "active_native": {
+    "tag": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "sites": 32,
+    "mode": "box",
+    "radius": "3e-10",
+    "order": 20,
+    "budget_seconds": 10800,
+    "rss_limit_mib": 2048,
+    "rss_cap_semantics": "sampled native peak RSS via getrusage watchdog (~1ms); NOT an instantaneous kernel cgroup/memory.max quota; transient overshoot possible; wall timeout kills process group via killpg",
+    "process_ownership": "supervisor started with setsid; native child via Popen(start_new_session=True); timeout uses os.killpg",
+    "command_template": [
+      "python3",
+      "run_large_zero_pruned_flow.py",
+      "--sites",
+      "32",
+      "--mode",
+      "box",
+      "--radius",
+      "3e-10",
+      "--order",
+      "20",
+      "--budget",
+      "10800",
+      "--rss-mib",
+      "2048",
+      "--step",
+      "adaptive",
+      "--tag",
+      "TAG",
+      "--source-audit",
+      "AUDIT"
+    ],
+    "out_dir_template": "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/TAG",
+    "proof_flags": {
+      "spatial_existence_certified": false,
+      "spatial_stability_certified": false,
+      "partial_tubes_are_not_certificate": true
+    },
+    "launch_json_present": true,
+    "launch_json_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/LAUNCH.json",
+    "supervisor_pid": 79385,
+    "pgid": 79385,
+    "native_pid": 79423,
+    "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
+    "library_sha256": "4d1e200060068f972a8740d204822355086f1e5159b73d1a5d46eecf8cc34d94",
+    "utc_start": "2026-09-30T12:55:44Z",
+    "machineId": "<redacted>",
+    "source_audit_sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
+    "launch_fill_note": "PIDs/hashes filled from existing OUT_MAC/LAUNCH.json (written_utc 2026-09-30T12:56:23Z). Observed still running at roster write; not started or stopped by roster writer."
+  },
+  "constraints": [
+    "no manuscript/certificate/release edits",
+    "no 32/64 publish",
+    "preserve interrupted receipts",
+    "Grok only"
+  ]
+}

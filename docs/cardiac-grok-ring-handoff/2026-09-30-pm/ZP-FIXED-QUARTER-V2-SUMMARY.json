@@ -1,0 +1,17 @@
+{
+  "schema": "zp-fixed-quarter-speed-summary-v1",
+  "tag": "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v2",
+  "verdict": "ABORT_NOT_TRUE_QUARTER_MAXSTEP_CAP",
+  "writtenAtET": "2026-09-30T15:16:12-0400 (ET)",
+  "blocker": "AuditedSolver in ring_flow_zero_pruned.cpp sets setMaxStep(I(4)/I(N))=0.125 for N=32; CAPD clamps fixed 0.25 \u2192 ~0.125. Observed tubes were h\u22480.1125 then 0.125 \u2014 NOT h=1/4.",
+  "tubes_before_abort": 3,
+  "observed_steps_ms": [
+    0.1125445449076334,
+    0.125,
+    0.125
+  ],
+  "did_not_auto_start_h_eighth_as_named_pilot": true,
+  "admitted_for_proof": false,
+  "next": "v3 isolated maxStep>=0.25",
+  "receipt_sha256": "f080dc9efc1eff2e8dccbb5bef179c356dd54687bc6475c7f0699b2bb09ac3f4"
+}

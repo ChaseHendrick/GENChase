@@ -1,0 +1,20 @@
+{
+  "schema": "zp-fixed-quarter-tu-redesign-probe-launch-v3",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v3",
+  "writtenAtET": "2026-10-01T03:07:53-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T07:07:53Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "purpose": "Complete success criteria: >=3 consecutive exact h=0.25 tubes. Same redesign binary as v2 (tube1 was exact 0x1p-2).",
+  "binary_sha256": "9833fd2e16c04894b68068f857872f0cff67aabee113b2b601f7751915b52931",
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "production_ring_flow_zero_pruned_untouched": true,
+  "wall_s_budget": 900,
+  "step": "0.25",
+  "need_consecutive_quarter": 3,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v3",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "awaiting_user_for_prod_patch": false
+}

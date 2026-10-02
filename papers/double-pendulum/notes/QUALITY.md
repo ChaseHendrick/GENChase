@@ -90,16 +90,17 @@ GENChase: the companion repository does not carry `notes/`.
 - [x] **5. Prior article review.** RESEARCH.md, entries of 2026-09-26 (the classical double pendulum: prior articles)
   and 2026-09-27 (the novelty checks before the manuscript); the ledgers `research/double-pendulum/PRIOR-ART.md` and
   `BOLOTIN-NEGRINI.md`. Szuminski and Kapitaniak (2025) read in full; no newer proof found on arXiv, zbMATH Open,
-  Crossref or Semantic Scholar on 2026-09-27. Bolotin and Negrini (1997) could be read only in snippet view: the paper
-  says so (Sects. 1 and 8) and keeps the novelty of Corollary 3 and of chaos in the equal case conditional on that
+  Crossref or Semantic Scholar on 2026-09-27. Bolotin and Negrini (1997) is known from the snippet view of the journal's open
+  full-text search: the paper says so (Sects. 1 and 8) and keeps the novelty of Corollary 3 and of chaos in the equal case conditional on that
   reading; the owner decided on 2026-09-29 that the printed article will not be obtained (no loan and no preprint
   request). The comparison stays conditional on the snippets, the zbMATH review, Bolotin's 1997 doctoral abstract, and
   Bolotin-Rabinowitz, J. Differential Equations 148 (1998) 364-387, as recorded in `BOLOTIN-NEGRINI.md`. Ivanov I (in full), III and IV (their main theorems), from open
   copies of the journal's archive, 2026-09-27: numerical or asymptotic in a small mass ratio, none at equal parameters;
   I states the conjecture of non-integrability for all non-degenerate parameters, which the paper cites. Ivanov II and
   Palis (1969) are free in a browser but were blocked from the session; the owner can read them.
-  After review-1 (2026-09-27): the paper now says in Sects. 1 and 8 that Bolotin and Negrini are known only from search
-  snippets and that the printed paper has to be read before the novelty can be relied on; it states Ivanov IV's
+  After review-1 (2026-09-27): the paper now says in Sects. 1 and 8 that Bolotin and Negrini are known from the passages
+  the open full-text search displays and that the comparison and the novelty extend as far as those passages do (since
+  2026-10-01 stated once, in the Sources paragraph of Sect. 8, without apology, by the owner's rule); it states Ivanov IV's
   explicit region (the reduced system m2/m1 -> 0, within 4e-7 to 5e-3 of the vertices of its compactified parameter
   square; Main Theorem, p. 54), and it summarizes the search of the computer-assisted-proof literature recorded in
   `research/double-pendulum/PRIOR-ART.md` (section "CAPD group").

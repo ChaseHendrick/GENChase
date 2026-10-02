@@ -1,0 +1,61 @@
+{
+  "schema": "pm-resume-2026-10-01-v1",
+  "writtenAtET": "2026-10-01T10:30:23-0400 (ET)",
+  "agent": "Grok-only-executor",
+  "machineId": "<redacted>",
+  "authorization": "AUTHORIZED_BY_OWNER_CONTINUE_WITH_THE_PROOFS",
+  "user_phrase": "continue with the proofs",
+  "laneWas": "PAUSED / idle (the owner ~08:19 ET)",
+  "laneNow": "RESUMED \u2014 starting next authorized proof step",
+  "verifiedOnDisk": {
+    "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+    "fixedQuarter_untouched": true,
+    "n32_c1": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1 FLOW_SUCCESS (not re-run)",
+    "n32_ic": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1 Inclusion+Contraction PASS (not re-run)",
+    "matchedKPrior": "HARD_FAIL_BLOCKED MISSING_N32_NATIVE_K_HARNESS",
+    "full64ReturnBudgetAuthorizedByPilot": false,
+    "laneIdleBeforeStart": true,
+    "q32_exact": "499995373/500000000"
+  },
+  "decision": {
+    "nextAction": "AUDITED_N32_NATIVE_K_HARNESS_PORT",
+    "rationale": [
+      "User ordered remaining sequence: matched K \u2192 transverse stability \u2192 period/nonsynchrony; stop on hard fail; no auto-admit.",
+      "C1 and IC already PASS on disk \u2014 do not re-run.",
+      "Matched K hard-blocked solely on missing N32 native root_field_k/ring_flow_k under tissue-certification32.",
+      "Unblock path (from N32-MATCHED-K-BLOCKED / POST-IC-GATES): audited port from ring8/16 \u2192 prepare from IC \u2192 native field \u2192 wrap \u2192 stability/joint_gate.",
+      "N64 full return still unauthorized; FixedQuarter prod PREF must stay e9081f21\u2026; admitted_for_proof stays false."
+    ],
+    "notChosen": [
+      "re-run N32 C1",
+      "re-run N32 IC",
+      "full N64 return",
+      "mutate FixedQuarter PREF",
+      "auto-admit proof / G8 / G9"
+    ]
+  },
+  "planMilestones": [
+    "M1 inventory ring16 K sources + sha pins + write HARNESS-DERIVATION (this turn)",
+    "M2 port root_field_k.cpp / ring_flow_k.cpp / run_root_field_k.py / run_flow_k.py into tissue-certification32 with N=32 labels/windows",
+    "M3 root_enclosure.prepare from IC FLOW+MATRICES into NEW attempt tag (K-ROOT-FIELD-INPUTS.json + root_k_offsets.h)",
+    "M4 build+run native root_field_k; wrap_initial_field",
+    "M5 on field PASS: matched-K / root_stability / joint_gate; only then stability then period",
+    "STOP on any hard fail; NEW tags only; FixedQuarter untouched"
+  ],
+  "sourceTemplates": {
+    "ring16_root_field_k.cpp": "91a3640141d0a98b11eab08f8d6dda71712283af2988bc943f5f5ea193697f50",
+    "ring16_ring_flow_k.cpp": "78ff1455f279c6ef0c426b8b8d9a85a796630cf5e2754d5466fd1d1701dfa3cc",
+    "ring16_run_root_field_k.py": "1862af144bb0dccdd957f460eedcf5adc59353ce2ef7802de4cffa5ac16cb961",
+    "ring16_run_flow_k.py": "942c1141a101039adc04eff708d0fdcf8ca14cc564d20b0fe4ae9bc6740ac81f"
+  },
+  "icProducts": {
+    "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+    "FLOW": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "MATRICES": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json"
+  },
+  "newTagPlanned": "box20-zero-pruned-adaptive-radius3e10-matched-k-field-grok-20261001-v1",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "no_N64_work": true
+}

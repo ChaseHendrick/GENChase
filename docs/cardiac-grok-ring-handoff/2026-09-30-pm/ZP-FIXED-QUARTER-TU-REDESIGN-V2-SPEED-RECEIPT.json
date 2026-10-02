@@ -1,0 +1,60 @@
+{
+  "schema": "zp-fixed-quarter-tu-redesign-probe-speed-receipt-v2",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v2",
+  "verdict": "PARTIAL_EXACT_QUARTER_TUBE1_WALL_TOO_SHORT_FOR_THREE",
+  "redesign_pass": false,
+  "mechanism_proven_exact_quarter": true,
+  "prod_untouched": true,
+  "writtenAtET": "2026-10-01T03:07:43-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T07:07:43Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "stop_reason": "wall_or_supervisor_exit_after_tube1",
+  "supplier": "ZeroPrunedSparseMap",
+  "NOT_AZero": true,
+  "step": "0.25",
+  "isolated_tu_only": true,
+  "awaiting_user_for_prod_patch": false,
+  "production_ring_flow_zero_pruned_untouched": true,
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "binary_sha256": "9833fd2e16c04894b68068f857872f0cff67aabee113b2b601f7751915b52931",
+  "observed_steps_ms": [
+    0.25
+  ],
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.25,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    }
+  ],
+  "evidence_step_hex_tube1": {
+    "lo": "0x1p-2",
+    "hi": "0x1p-2"
+  },
+  "contrast_v4_first_hex": "0x1.ccfb823b8b37dp-4",
+  "contrast_v4_first_mid": 0.1125445449076334,
+  "best_consecutive_quarter": 1,
+  "need_consecutive_quarter": 3,
+  "wall_s_budget": 300,
+  "wall_s_elapsed_heartbeat": 301.242790791,
+  "tubes": 1,
+  "physical_ms_reached": 0.25,
+  "s_per_tube_approx": 301.242790791,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v2",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "next_recommendation": "Mechanism proven: tube1 step hex exactly 0x1p-2 (0.25), vs V4 0x1.ccfb823b8b37dp-4. Wall 300s only fits ~1 C1 order-20 tube (~250s). Launch v3 extension wall~900s on same redesign binary for 3 consecutive quarters. Prod still untouched.",
+  "does_not_prove": [
+    "full_period_return",
+    "existence",
+    "stability",
+    "theorems",
+    "continuum"
+  ]
+}

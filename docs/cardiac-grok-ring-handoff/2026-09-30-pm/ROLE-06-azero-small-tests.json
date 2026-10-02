@@ -1,0 +1,107 @@
+{
+  "schema": "grok-ring-handoff-role-azero-small-tests-v1",
+  "role": "Opt-deriv",
+  "roleId": 6,
+  "agent": "Grok-only",
+  "writtenAt": "2026-09-30 09:00:45 ET",
+  "machineId": "<redacted>",
+  "admitted_for_proof": false,
+  "status": "NOT admitted",
+  "tag_dir": "work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1",
+  "tag_result_sha256": "ba88e28e4d1acf68ff21d6d0e2b6229d7bedd7917f5da4a6c53e748a0d7ed95e",
+  "proposal_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+  "prototype_sha256": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+  "selector_sha256": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+  "live_lane_contention": {
+    "present": true,
+    "pid": 79423,
+    "lane": "box20-zero-pruned-adaptive-radius3e10-grok-20260930-v1",
+    "note": "Heavy CAPD compile/run of AZero linear harness deferred to avoid competing with live N=32 ring_flow"
+  },
+  "what_ran": [
+    {
+      "name": "azero_skip_predicate_unit",
+      "kind": "CAPD-free predicate unit",
+      "source": "src/azero_skip_predicate_unit.cpp",
+      "source_sha256": "ede8e15956c986d8da63c5e470a9d083616315c513b4b8ab90d71681698fb8b5",
+      "binary_sha256": "f173ad6240f2b4f9a4c1dfc0a3ef1b91d52107229919bddea7cd766f3e575d8a",
+      "result_path": "results/predicate-RESULT.json",
+      "result_sha256": "45084733609f281c67d6c756dcf406c9dbca9364bab5dbe6123c0bd40bcaa2a1",
+      "passed": 14,
+      "failed": 0,
+      "all_passed": true,
+      "wall_seconds_approx": 0.21,
+      "max_rss_bytes": 1687552,
+      "limits": {
+        "wall_s": 120,
+        "rss_mib": 512
+      },
+      "within_limits": true,
+      "admitted_for_proof": false
+    }
+  ],
+  "deferred": [
+    {
+      "name": "linear_azero_controls_native_N3",
+      "source": "src/linear_azero_controls_DEFERRED.cpp",
+      "source_sha256": "55b49bebbaa6ae85e8b28c39c1b07d832b0b4778a7f2b28a0abf41223bac0f06",
+      "reason": "live ring_flow 32-site contention; no pre-existing isolated A-zero harness",
+      "compile_attempted": false,
+      "run_attempted": false
+    }
+  ],
+  "design_plan_sha256": "9b4f9d19bcb7919cdaae0b8f93ceff8d799f6e1f70a15a00f889b7b5ab48631d",
+  "required_admissions_still_missing": [
+    {
+      "id": "C1-signed-zero-serialization",
+      "status": "MISSING",
+      "note": "Predicate unit covers IEEE +0/-0 equality only; CAPD serialization / enclosure identity not tested"
+    },
+    {
+      "id": "C2-dense-initial-matrices",
+      "status": "MISSING",
+      "note": "Native dense-A0 controls deferred"
+    },
+    {
+      "id": "C3-every-variation-column",
+      "status": "MISSING",
+      "note": "No enclosure equality vs ZeroPruned on full column sets"
+    },
+    {
+      "id": "C4-rigorous-remainders",
+      "status": "MISSING",
+      "note": "No remainder-call retention audit against CAPD"
+    },
+    {
+      "id": "C5-exact-linear-coefficient-step-event",
+      "status": "PARTIAL-PREDICATE-ONLY",
+      "note": "Skip-gate unit passed; full exact-linear / step / event controls not run"
+    },
+    {
+      "id": "C6-independent-source-audit",
+      "status": "MISSING",
+      "note": "sourceAuditPassed remains false on proposal"
+    }
+  ],
+  "explicit": "not admitted for proof",
+  "paths": {
+    "tag": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1",
+    "result": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/RESULT.json",
+    "predicate_result": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/results/predicate-RESULT.json",
+    "predicate_source": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/azero_skip_predicate_unit.cpp",
+    "deferred_native_source": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/linear_azero_controls_DEFERRED.cpp",
+    "design_plan": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
+    "role_doc": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json"
+  },
+  "sha256": {
+    "predicate_RESULT": "45084733609f281c67d6c756dcf406c9dbca9364bab5dbe6123c0bd40bcaa2a1",
+    "predicate_source": "ede8e15956c986d8da63c5e470a9d083616315c513b4b8ab90d71681698fb8b5",
+    "predicate_binary": "f173ad6240f2b4f9a4c1dfc0a3ef1b91d52107229919bddea7cd766f3e575d8a",
+    "deferred_source": "55b49bebbaa6ae85e8b28c39c1b07d832b0b4778a7f2b28a0abf41223bac0f06",
+    "design_plan": "9b4f9d19bcb7919cdaae0b8f93ceff8d799f6e1f70a15a00f889b7b5ab48631d",
+    "proposal": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10",
+    "AZeroPrunedSparseMap.hpp": "31d1eb16d06c333eb64535e7b8981680e54b6e60321c1344fe1d77508af21fc8",
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527"
+  }
+}

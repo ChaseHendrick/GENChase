@@ -1,0 +1,25 @@
+{
+  "schema": "n32-matched-k-field-launch-v1",
+  "writtenAtET": "2026-10-01T10:30:31-0400 (ET)",
+  "authorization": "AUTHORIZED_BY_OWNER_CONTINUE_WITH_THE_PROOFS",
+  "agent": "Grok-only-executor",
+  "machineId": "<redacted>",
+  "tag": "box20-zero-pruned-adaptive-radius3e10-matched-k-field-grok-20261001-v1",
+  "attemptDir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-matched-k-field-grok-20261001-v1",
+  "phases": [
+    "prepare_root_enclosure",
+    "native_root_field_k",
+    "wrap_initial_field"
+  ],
+  "ic": {
+    "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
+    "FLOW": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "MATRICES": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json"
+  },
+  "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "fixedQuarter_untouched": true,
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "note": "Fresh NEW tag; not a PID resume. K-C1 ring_flow_k not launched in this field milestone."
+}

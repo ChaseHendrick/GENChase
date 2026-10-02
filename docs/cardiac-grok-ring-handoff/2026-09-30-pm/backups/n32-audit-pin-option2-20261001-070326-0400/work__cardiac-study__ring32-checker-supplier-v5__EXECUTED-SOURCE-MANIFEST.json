@@ -1,0 +1,30 @@
+{
+  "schema": "frozen-zero-pruned-per-stage-return-reference-runtime-v5",
+  "sites": 32,
+  "files": {
+    "from_flow.py": "8eaada10994fb8ffd2f421e183aaf42b11da9a5c83f66ee5a37db39207693b00",
+    "wrap_initial_field.py": "542df55f4ebdf901c3f55d30bf8177ef6d5d6de32509af9951a2902c922d557d",
+    "PREPARE-SOURCE.py": "2775e35bc6232264dfcc2823821476ecb349410743eb89f99c2512549853e42c",
+    "native_helpers.py": "dd0f035e3fc8a85277f5dd188b90a4d6ecf0e2953f1f5ac45262325186c42b01",
+    "metric.py": "2c98066e7067aacc9322d7ce4cdbc267b7b0b0dc7bc612f0cf07c109bab59609",
+    "root_pipeline_controls.py": "9669da368477a160be2db27ca37bcf0e48facf200a2be7e27749e7f3e675503d",
+    "wrap_native.py": "7ec5458a80255828fccafada24361dcd40ca6ce6094be2124f3a52f889dd3099",
+    "self_test.py": "492506355a36d46a364cc91fd7cdda003c6b811fc4826ba0bb0bafbe530dc344",
+    "input_controls.py": "9454441a77aa757214d7a215874c08807f9db7614c2bc61585e643b93c5e1968",
+    "target_config.py": "020866362623aadcf3f5121dc0826941471617d9fb1f11ea26b8395ba52a5b33",
+    "root_c1_flow.py": "2ddda7ee0f4016ee801d8271180f78c74248d77f30a8043512b47888fcd72250",
+    "root_enclosure.py": "f0663508f881548ab92a72bfba95a9c17d6cf0fe1e1516480483e1a8399f4d18",
+    "root_stability.py": "97f102a4374e9171a6a7c37019b36257d788486232bf5461b7eb2fe92b520e6e",
+    "dyadic.py": "70c8bd4e227e8f521d099737897e4c01858a8ff473116706f6d42940b51baf36",
+    "joint_gate.py": "e9b536a358384ba56d368be1af82bc632ce547a276532c2a12f240e13dcee39a",
+    "checker.py": "d177f5955c85b4403f72aa9b9693b2a7a1882918b6833d6fe4785d312108fb72",
+    "TARGET.json": "5a58a70d7c40c9ec8d77cc9ae2d1c1e48dc7c0c4c3cd6e1e93a73e1c29af6f06"
+  },
+  "sourceSnapshotSha256": "acc34151afe8836d9adb28afd14ea9123039a5be4109eec1e97cd1624f1b3465",
+  "parentV4RuntimeManifestSha256": "778c2a77bb39a9bac3effeeeb2ae5fef8695bce41be0b1bb522c60dcc7d587d6",
+  "provenanceControlsSha256": "9d41914e5424b3d276b3d14c42beec4d9a684c6c77c44c2cbbf58bf7ec8b0481",
+  "newAdapterIndependentSourceReviewStillRequired": true,
+  "actualCompleteReturnReviewed": false,
+  "spatialExistenceCertified": false,
+  "spatialStabilityCertified": false
+}

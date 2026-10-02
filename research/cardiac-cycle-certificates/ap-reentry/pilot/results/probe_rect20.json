@@ -1,0 +1,68 @@
+{
+ "name": "probe_rect20",
+ "command": [
+  "timing19",
+  "/tmp/claude-0/-home-user-GENChase/8e652c2a-6f64-5009-9ee8-187ba6394e5c/scratchpad/pilot-work/window_start.txt",
+  "rect",
+  "20",
+  "0.01",
+  "300"
+ ],
+ "returncode": 0,
+ "wall_s": 89.73,
+ "user_cpu_s": 84.61,
+ "sys_cpu_s": 3.95,
+ "peak_rss_bytes": 1539547136,
+ "peak_rss_GiB": 1.434,
+ "address_space_cap_GiB": 5.0,
+ "nice": 10,
+ "timeout_s": 600.0,
+ "host": {
+  "cpus": 4,
+  "loadavg_at_end": [
+   2.4794921875,
+   2.212890625,
+   2.38671875
+  ]
+ },
+ "stderr_tail": "",
+ "run": {
+  "set": "C1Rect2Set",
+  "order": 20,
+  "dimension": 304,
+  "window_t0_ms": 0.75,
+  "requested_T_ms": 0.01,
+  "reached_T_ms": 0.01,
+  "fraction_of_T": 1,
+  "partial_by_wall_cap": false,
+  "max_wall_s": 300,
+  "error": "",
+  "step_control": {
+   "absolute_tolerance": 1e-18,
+   "relative_tolerance": 1e-18
+  },
+  "initial_box_relative_radius": 1e-10,
+  "map_build_and_setup_s": 4.042492745,
+  "steps": 4,
+  "mean_step_ms": 0.0025,
+  "mean_step_excluding_last_ms": 0.002498176195,
+  "min_step_ms": 0.002123434835,
+  "max_step_ms": 0.002685546875,
+  "wall_total_steps_s": 85.48264314,
+  "wall_per_step_mean_s": 21.37058649,
+  "wall_per_step_median_s": 20.04313663,
+  "wall_first_step_s": 27.14339219,
+  "wall_per_step_mean_excluding_first_s": 19.44631792,
+  "wall_per_step_min_s": 19.02608239,
+  "wall_per_step_max_s": 27.14339219,
+  "end_c0_max_relative_diameter": 3.614613071e-09,
+  "end_c0_max_relative_diameter_V": 2.067496546e-10,
+  "end_derivative_max_entry_width_scaled": 1.160041315e-08,
+  "end_derivative_max_abs_entry_scaled": 1.033577463,
+  "end_derivative_max_relative_width_entries_ge_1e-3_max": 4.995826619e-07,
+  "end_derivative_inf_norm_of_midpoint_scaled": 1.046580776,
+  "reference_end_state_inside_enclosure": false,
+  "reference_max_relative_distance_outside": 236.7025215,
+  "reference_max_relative_distance_to_midpoint": 236.7025215
+ }
+}

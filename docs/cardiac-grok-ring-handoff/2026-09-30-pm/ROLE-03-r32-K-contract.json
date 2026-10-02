@@ -1,0 +1,225 @@
+{
+  "schema": "grok-ring-handoff-role-contract-v1",
+  "role": "R32-K",
+  "roleId": 3,
+  "agent": "Grok-only",
+  "stage": "PREPARATION/CONTRACT",
+  "writtenAt": "2026-09-30 08:58:09 ET",
+  "machineId": "<redacted>",
+  "noNativeCapdFlowJobs": true,
+  "noKIntegrationExecutedByThisRole": true,
+  "gateRunnableNow": false,
+  "blockedOn": [
+    "R32-root existence gate must pass first (itself blocked on complete matched C1 box return)",
+    "then form matched root-only K initial field/derivative covering the proved K set",
+    "then full Lyapunov inequality with unchanged H/q"
+  ],
+  "stabilityRequires": {
+    "HPositivityAloneInsufficient": true,
+    "evidence": {
+      "path": "work/cardiac-study/tissue-proof-review/ring32-H-positivity-independent-v1/RESULT.json",
+      "sha256": "de3f13bee1e47381c966ab1e88f82916c7f8df11fd0b9d7a1279041eee4cea8e",
+      "accepted": true,
+      "fixed_exact_H_SPD_proved": true,
+      "stability_derivative_or_inequality_tested": false,
+      "spatial_stability_certified": false,
+      "preparationSha256": "735a27cfa11622ffc438bf2980ab85a84c0f1b373fb426182310db85856b41b1"
+    },
+    "requiredAfterExistence": [
+      "Separate root-only K derivative/field (conditional initial-field identity valid only at established cyclic root; not for uniform existence)",
+      "Full C1 flow covering the proved K set (or sufficient matched uniform derivative at the root)",
+      "Event correction before 575-coordinate restriction",
+      "Full Lyapunov inequality: exact H SPD (already) AND q^2 H - DP^T H DP SPD (or equivalent congruence/LDL/weighted dominance) with unchanged H and unchanged q proposals",
+      "Independent complete matrix-product / positivity replay",
+      "Transverse full-period multiplier modulus bound via unchanged q^32 < 9999/10000"
+    ],
+    "unchangedHq": {
+      "qTestExact": "499995373/500000000",
+      "qMetricExact": "499993841/500000000",
+      "H": "unchanged rational 575-square fixed H from tissue-certification32/PROPOSED-MATRICES.json / H-positivity preparation",
+      "note": "Do not retune H or q to force a pass"
+    }
+  },
+  "locatedKFieldAndDerivativeSources": {
+    "ring8": [
+      {
+        "path": "work/cardiac-study/tissue-certification/root_field_k.cpp",
+        "sha256": "7a3da041ee821e718eaf00c55fb062db3ccab42d828eab12f1152890ef7bd072"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification/run_root_field_k.py",
+        "sha256": "46c35c737c1a2f4129d4ce5909e0a29f3e99b9f7edd805780f1175a57fd3ecc8"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification/ring_flow_k.cpp"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification/run_flow_k.py"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification/root_k_offsets.h"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification/K-ROOT-FIELD-INPUTS.json",
+        "sha256": "607d62a278e8d744e3b6f01998c6f6d3e1cdeb24a3fa79cd762164cb016d1300"
+      }
+    ],
+    "ring16": [
+      {
+        "path": "work/cardiac-study/tissue-certification16/root_field_k.cpp",
+        "sha256": "91a3640141d0a98b11eab08f8d6dda71712283af2988bc943f5f5ea193697f50"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification16/run_root_field_k.py",
+        "sha256": "1862af144bb0dccdd957f460eedcf5adc59353ce2ef7802de4cffa5ac16cb961"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification16/ring_flow_k.cpp"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification16/run_flow_k.py"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification16/root_k_offsets.h"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification16/K-ROOT-FIELD-INPUTS.json",
+        "sha256": "96568f271cd2df9fc361776c6c915ae9857009ade8330993b05ea4c6eb81a044"
+      },
+      {
+        "path": "work/cardiac-study/ring16-checker/ACTUAL-RADIUS2E10-K-ROOT-FIELD.json",
+        "sha256": "f32d417831442a3c435f7cb5d9fa74d798463b5da5c42b20f7b0753b3c9b63a3"
+      },
+      {
+        "path": "work/cardiac-study/ring16-checker/ACTUAL-RADIUS2E10-K-C1-FLOW.json",
+        "sha256": "d3f01ca0189bc0a935c5e7489aa62891967380eb6978759d4e0a0f6ffead8ec5"
+      },
+      {
+        "path": "outputs/cardiac-study/tissue-ring/ring16-certification/root-field-k-radius2e10-v1/"
+      }
+    ],
+    "ring32_targets": [
+      {
+        "path": "work/cardiac-study/tissue-certification32/",
+        "note": "INPUTS/PROPOSED-MATRICES/model headers; no proved K yet"
+      },
+      {
+        "path": "work/cardiac-study/ring32-checker/wrap_initial_field.py",
+        "sha256": "542df55f4ebdf901c3f55d30bf8177ef6d5d6de32509af9951a2902c922d557d"
+      },
+      {
+        "path": "work/cardiac-study/ring32-checker/root_stability.py",
+        "sha256": "97f102a4374e9171a6a7c37019b36257d788486232bf5461b7eb2fe92b520e6e"
+      }
+    ]
+  },
+  "priorRing16Reviews": {
+    "k_c1_review_v1": {
+      "dir": "work/cardiac-study/tissue-proof-review/k-c1-review-v1",
+      "reviewMd": "work/cardiac-study/tissue-proof-review/k-c1-review-v1/REVIEW.md",
+      "sourceImplicationAudit": {
+        "path": "work/cardiac-study/tissue-proof-review/k-c1-review-v1/SOURCE-IMPLICATION-AUDIT.json",
+        "sha256": "78063e4f6dd9094d70aa457aaf5a746db2b027f75f4ad9b1966673a6a5c3507f"
+      },
+      "keySourcesInReviewFolder": [
+        {
+          "path": "work/cardiac-study/tissue-proof-review/k-c1-review-v1/ring_flow_k.cpp",
+          "sha256": "e2bd8c629b418c05f9f52be9e5e4a98184dbb0a0f4de216a4fabf8a06e3719e3"
+        },
+        {
+          "path": "work/cardiac-study/tissue-proof-review/k-c1-review-v1/root_k_offsets.h",
+          "sha256": "cbd06b7eb8bb5e9d64ebad97b66085449a1e0a08c51459fe884ff2d3fe34c4e1"
+        },
+        "work/cardiac-study/tissue-proof-review/k-c1-review-v1/run_flow_k.py",
+        "work/cardiac-study/tissue-proof-review/k-c1-review-v1/K-ROOT-FIELD-INPUTS.json",
+        "work/cardiac-study/tissue-proof-review/k-c1-review-v1/replay_k_metric.py"
+      ],
+      "summary": "8-site K-C1 source/argument review: K replaces only initial search cube by exact componentwise root offsets; model/domain/event/all tangent directions unchanged. Arithmetic replay separately required for a proof."
+    },
+    "ring16_K_field_source_review_v1": {
+      "dir": "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1",
+      "sourceAudit": {
+        "path": "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1/SOURCE-AUDIT.json",
+        "sha256": "ccb1a1311b57f91a6b039a47935711b59ee6cb28c37560ded2ea39cdbc9cdf42"
+      },
+      "status": "passed exact K input source and complete native field replay",
+      "conditionalOnIndependentUniformRootExistence": true,
+      "conditionalFieldIdentityAdmittedForExistence": false,
+      "actualNativeReturnOrStabilityClaimed": false,
+      "replayScripts": [
+        "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1/replay_field.py",
+        "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1/replay_field_v2.py",
+        "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1/replay_field_v3.py"
+      ]
+    },
+    "ring16_K_C1_source_review_v1": {
+      "dir": "work/cardiac-study/tissue-proof-review/ring16-K-C1-source-review-v1",
+      "sourceAudit": {
+        "path": "work/cardiac-study/tissue-proof-review/ring16-K-C1-source-review-v1/SOURCE-AUDIT.json",
+        "sha256": "19613e2358d063a2c3c9747f9cd45d8d6b908e13dacc09600ed0fd95894a9326"
+      },
+      "status": "passed source and exact-K input coverage audit; actual native flow pending at audit time",
+      "rootConditionalStabilityOnly": true
+    }
+  },
+  "requiredHashesAndFilesBeforeAnyR32KRun": {
+    "modelPins": [
+      {
+        "path": "work/cardiac-study/tissue-certification32/INPUTS.json",
+        "sha256": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/ring_model.h",
+        "sha256": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6"
+      },
+      {
+        "path": "work/cardiac-study/tissue-certification32/PROPOSED-MATRICES.json",
+        "sha256": "5a1b38f9cbd057a091f3157a0f4b80c954b43b59798f4cc6be589ce1c1116163"
+      }
+    ],
+    "HPositivity": [
+      {
+        "path": "work/cardiac-study/tissue-proof-review/ring32-H-positivity-preparation-v1/actual-fixed-H-v1/RESULT.json",
+        "sha256": "735a27cfa11622ffc438bf2980ab85a84c0f1b373fb426182310db85856b41b1"
+      },
+      {
+        "path": "work/cardiac-study/tissue-proof-review/ring32-H-positivity-independent-v1/RESULT.json",
+        "sha256": "de3f13bee1e47381c966ab1e88f82916c7f8df11fd0b9d7a1279041eee4cea8e"
+      }
+    ],
+    "mustExistFromFutureRootGate": [
+      "K-ROOT-ENCLOSURE-OFFSETS.json / K-ROOT-FIELD-INPUTS.json with 575 exact dyadic offsets",
+      "compiled root_k_offsets.h byte-identical to recomputed enclosure",
+      "parent uniform existence RESULT with inclusion+contraction pass"
+    ],
+    "templateArtifactNamesUnderFutureUniqueAttemptDir": [
+      "K-ROOT-FIELD-INPUTS.json",
+      "root_k_offsets.h",
+      "ACTUAL-RADIUS3E10-K-ROOT-FIELD.json",
+      "ACTUAL-RADIUS3E10-K-C1-FLOW.json",
+      "ACTUAL-RADIUS3E10-KFIELD-JOINT-GATE.json",
+      "LYAPUNOV-Q-POSITIVITY.json",
+      "INDEPENDENT-K-REPLAY/RESULT.json",
+      "EXECUTED-SOURCE-MANIFEST.json"
+    ],
+    "priorReviewPinsToMirror": [
+      {
+        "path": "work/cardiac-study/tissue-proof-review/k-c1-review-v1/SOURCE-IMPLICATION-AUDIT.json",
+        "sha256": "78063e4f6dd9094d70aa457aaf5a746db2b027f75f4ad9b1966673a6a5c3507f"
+      },
+      {
+        "path": "work/cardiac-study/tissue-proof-review/ring16-K-field-source-review-v1/SOURCE-AUDIT.json",
+        "sha256": "ccb1a1311b57f91a6b039a47935711b59ee6cb28c37560ded2ea39cdbc9cdf42"
+      },
+      {
+        "path": "work/cardiac-study/tissue-proof-review/ring16-K-C1-source-review-v1/SOURCE-AUDIT.json",
+        "sha256": "19613e2358d063a2c3c9747f9cd45d8d6b908e13dacc09600ed0fd95894a9326"
+      }
+    ]
+  },
+  "explicitNonActions": [
+    "Did not run K integration",
+    "Did not launch native CAPD K-C1 flow",
+    "Did not claim stability from H positivity"
+  ]
+}

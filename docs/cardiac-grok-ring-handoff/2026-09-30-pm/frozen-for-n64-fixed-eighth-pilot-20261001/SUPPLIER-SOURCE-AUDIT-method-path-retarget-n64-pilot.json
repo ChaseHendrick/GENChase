@@ -1,0 +1,113 @@
+{
+  "schema": "cellwise-map-zero-pruned-fixed-eighth64-step-source-audit-v1",
+  "accepted": true,
+  "supportedSites": [
+    64
+  ],
+  "maxOrder": 20,
+  "solverOrder": 20,
+  "fixedStepExact": "1/8",
+  "maximumStepExact": "1/8",
+  "pilotResourceScope": {
+    "sites": 64,
+    "wallCapSeconds": 2400,
+    "sampledRssCapMiB": 4096
+  },
+  "approvedHeaderSha256": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
+  "approvedBaseHeaderSha256": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+  "approvedOriginalBaseHeaderSha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+  "approvedStepSourceSha256": "158e9cb077ae120d48693fe584ff85a8cb2acc1c23e43e1f9b086a12aa31ccfc",
+  "approvedStepRunnerSha256": "7e9556b132fb599cae51203d1633c5f586b14b188ff37095490db7ce612a9123",
+  "fullStates": true,
+  "fullVariations": true,
+  "curve": true,
+  "eventPathAuditPassed": true,
+  "sparseJacobianRecurrence": true,
+  "exactZeroCoefficientPruning": true,
+  "methodSourceAudit": {
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/frozen-for-n64-fixed-eighth-pilot-20261001/zero-pruned-supplier-review-v1-SUPPLIER-SOURCE-AUDIT-950cb611.json",
+    "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2"
+  },
+  "dynamicStates": 1152,
+  "variationDirections": 1152,
+  "fullVariationIntervalEntries": 1327104,
+  "guardsPerSite": 137,
+  "guardsPerCompleteSet": 8768,
+  "defaultValidatedDoubletonPolicyUnchanged": true,
+  "initialNormalizedRadiusExact": "1/5000000000",
+  "wholeC0AndC1StrictRemainderInclusionRequired": true,
+  "fixedStepFailureRefinesOrThrows": true,
+  "stepCapIsProposalOnly": true,
+  "C1EnclosureArgument": "BasicOdeSolver.setStep stores the proposed exact fixed step and disables adaptive proposal selection. computeTimeStep selects min(fixedStep,maxStep). OdeSolver default HighOrderEnclosure remains active. Its C1TimeJet checkInclusion separately checks every state and matrix remainder using subsetInterior and returns r0 and r1. With step changes disabled, any failed first inclusion triggers enclosure refinement, full remainder recomputation and inclusion checks for at most30 attempts, then throws. No successful state or derivative enclosure can be obtained by bypassing this path.",
+  "sourceScope": "Source and adverse-control admission for one initial64-site full-C1 step at exact1/8 using the already audited order20 zero-pruned method. This does not admit a complete64 return, new event data, existence, stability or altered full-flow budget.",
+  "resourceScope": "The inherited native watchdog samples getrusage peak RSS. The inherited Python bounded helper uses direct owned-session os.killpg for wall timeout. Prior matched pilots verified this signalling context; launch retains that context. This review does not admit detached descendants, permission-denied group-cleanup recovery or an instantaneous allocation limit.",
+  "independentControls": {
+    "originalAdverseControls": 18,
+    "additionalResourceControls": 4,
+    "positiveIntegrationExecuted": false
+  },
+  "artifacts": {
+    "request": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/REQUEST.json",
+      "sha256": "ff27158e3b49c18a7d06f33341db5ae4227b9b827b1d5acee867bfa8e696e752"
+    },
+    "preparationManifest": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/MANIFEST.json",
+      "sha256": "245e86ee3239429435a034ad3c73f3708663f8b08923156999e62e1193143074"
+    },
+    "controlsReplay": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/CONTROLS-REPLAY.json",
+      "sha256": "7c181c2153e4af34102e60e25647f6ac2a0eaa7c77dbd15b4ec99dd3b897265e"
+    },
+    "reviewReplaySource": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/replay_controls.py",
+      "sha256": "c67ddd314a0c59b98f03b6d1922bd6ea34775622696550dd835728d3246a22fa"
+    },
+    "inheritedBoundedHelper": {
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_inspection.py",
+      "sha256": "af33387ef1c5d0000125d5f5a8b3f63775592c4090d0106db804b0d45901197b"
+    },
+    "previous64ActualStepReview": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/RESULT.json",
+      "sha256": "081e08905b6dde252f3fd56aa1e1ebd95c12ab78cc77898b1b1c07e0816aa05b"
+    },
+    "previous64ActualSourceBindings": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/SOURCE-BINDING-ADDENDUM.json",
+      "sha256": "721bdc3bae84db070434160829b028a6002b2201ed30e5c11efd7bd031e0d560"
+    },
+    "preservedFirstReviewPreparationFailure": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v1/FIRST-CONTROL-PREPARATION-FAILURE.json",
+      "sha256": "6a1e7c1f18d45395a9ddb63abe2780f22ffc0bb59391826e892f332bd8b0b4ce"
+    }
+  },
+  "primaryValidationSources": {
+    "OdeSolver.h": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/OdeSolver.h",
+      "sha256": "771845829da030b19cf5730bca904ba4456c9c83fe493495c4f02f717712e068"
+    },
+    "HighOrderEnclosure.h": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/HighOrderEnclosure.h",
+      "sha256": "0fcaa8a283997726049f275c57ede3dd5b0f0f423de23d2c86a77bc00867ddd5"
+    },
+    "StepControl.h": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/StepControl.h",
+      "sha256": "9c425dba2dcb380391ea6cd4e3190a2537b8fca9489b79e61b696b963a4a3494"
+    },
+    "BasicOdeSolver.h": {
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/BasicOdeSolver.h",
+      "sha256": "17822caff85f8db021dc72350c63c01958f8e625d5dc6267fb3885caf262e55e"
+    }
+  },
+  "oneStepExecutedByReview": false,
+  "actual64FixedEighthStepAccepted": false,
+  "completeReturnAccepted": false,
+  "spatialExistenceCertified": false,
+  "spatialStabilityCertified": false,
+  "_n64_pilot_retarget_note": {
+    "reason": "Option-2 retargeted live zero-pruned-supplier-review-v1 audit (now 41e7c30e\u2026) away from FixedQuarter PREF; N64 fixed-eighth runner still requires method audit bytes 950cb611. Use frozen Option-2 backup bytes; do not mutate live PREF e9081f21 or live Option-2 pin.",
+    "original_admitted_fe_audit_sha256": "4dff5efd89491062e8dcf529ff773106c0eed27f2fb5391a838fab54aed55eb2",
+    "only_field_changed": "methodSourceAudit.path",
+    "live_option2_left_untouched": true,
+    "live_fixedquarter_left_untouched": true
+  }
+}

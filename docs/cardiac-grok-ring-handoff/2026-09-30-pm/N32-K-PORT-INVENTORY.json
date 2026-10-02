@@ -1,0 +1,27 @@
+{
+  "schema": "n32-k-port-inventory-v1",
+  "writtenAtET": "2026-10-01T10:30:23-0400 (ET)",
+  "status": "PORT_SOURCES_WRITTEN",
+  "missing_before": [
+    "tissue-certification32/root_field_k.cpp",
+    "tissue-certification32/ring_flow_k.cpp",
+    "tissue-certification32/run_root_field_k.py",
+    "tissue-certification32/run_flow_k.py",
+    "tissue-certification32/root_k_offsets.h",
+    "tissue-certification32/K-ROOT-FIELD-INPUTS.json"
+  ],
+  "now_present_harness": {
+    "root_field_k.cpp": "34077f7734312878e05c0fd13d2782e5a90356192dd3ce1a0735035e3abd9776",
+    "ring_flow_k.cpp": "a7e4c85852700c9b9b0c09676ce4e11f8df7a432c673167e5acd24ab959635a0",
+    "run_root_field_k.py": "b7aca1ebe48c81ca97e5809c14077c4ec69a919b5257f0d821d3825b9da6b016",
+    "run_flow_k.py": "09467935875943ede2c071a57cad6a7c369d2cf9f30a65657ce4c4135c2b29b5",
+    "HARNESS-DERIVATION-K-v1.json": "f138e3d6516c9c44880cab10d69c6e21abe02821b562aead0270b8c3051ed4c8"
+  },
+  "still_need_from_prepare": [
+    "K-ROOT-FIELD-INPUTS.json",
+    "root_k_offsets.h"
+  ],
+  "next": "root_enclosure.prepare from IC products into NEW tag dir, then run_root_field_k",
+  "fixedQuarter_untouched": true,
+  "admitted_for_proof": false
+}

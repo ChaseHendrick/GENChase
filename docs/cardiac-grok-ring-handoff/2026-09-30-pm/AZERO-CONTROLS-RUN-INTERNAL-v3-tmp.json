@@ -1,0 +1,225 @@
+{
+  "schema": "azero-controls-run-20260930-v3",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "tag_series": "20260930-v3",
+  "writtenAtET": "2026-09-30 09:58:02 ET",
+  "admitted_for_proof": false,
+  "production_header_replacement": false,
+  "controls": [
+    {
+      "id": "C1",
+      "tag": "c1-signed-zero-capd-serialization-grok/20260930-v2",
+      "status": "PASS",
+      "all_passed": true,
+      "result_sha256": "1d8d24e76515c3117b512030482fb9727c6c7ebee1debbc4628886955a6e1859",
+      "retained_from_prior_tag": true,
+      "note": "C1 not re-run; retained PASS from 20260930-v2 per re-run-from-C2 instruction"
+    },
+    {
+      "id": "C2",
+      "tag": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3",
+      "status": "PASS",
+      "tag_rel": "c2-dense-a0-grok/20260930-v3",
+      "tag_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3",
+      "compile_exit": 0,
+      "compile_command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-frounding-math",
+        "-D__USE_NATIVE__",
+        "-pthread",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs/headers/capdExt/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs/headers/capdAux/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs/headers/capdAlg/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs/headers/capdDynSys/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/src/c2_dense_a0_controls.cpp",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/inputs/libcapd.a",
+        "-o",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/bin/c2_dense_a0_controls"
+      ],
+      "all_passed": true,
+      "native_exit": 0,
+      "result_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c2-dense-a0-grok/20260930-v3/results/C2-RESULT.json",
+      "result_sha256": "892e98f7ba69a1fada43a27b71846e1f87dd60f15bfa93fe4d30609a83dc14d7",
+      "elapsed_s": 2.316578334,
+      "raw_summary": {
+        "control": "C2",
+        "all_passed": true,
+        "enclosure_vs_cellwise": {
+          "entries_checked": 62370,
+          "mismatches": 0,
+          "cellwise_path": "computeODECoefficientsSparse",
+          "azero_path": "computeODECoefficientsSparse"
+        },
+        "peak_rss_bytes": 26542080
+      }
+    },
+    {
+      "id": "C3",
+      "tag": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3",
+      "status": "PASS",
+      "tag_rel": "c3-every-variation-column-grok/20260930-v3",
+      "tag_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3",
+      "compile_exit": 0,
+      "compile_command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-frounding-math",
+        "-D__USE_NATIVE__",
+        "-pthread",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs/headers/capdExt/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs/headers/capdAux/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs/headers/capdAlg/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs/headers/capdDynSys/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/src/c3_every_variation_column.cpp",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/inputs/libcapd.a",
+        "-o",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/bin/c3_every_variation_column"
+      ],
+      "all_passed": true,
+      "native_exit": 0,
+      "result_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c3-every-variation-column-grok/20260930-v3/results/C3-RESULT.json",
+      "result_sha256": "a8410274dcd17d9e5db520e848e19695cdcaa48f46c2e8918543842da06c0599",
+      "elapsed_s": 1.9302277089999995,
+      "raw_summary": {
+        "control": "C3",
+        "all_passed": true,
+        "entries_checked": 124740,
+        "mismatches": 0,
+        "fullColumnsRetained": true,
+        "peak_rss_bytes": 28262400
+      }
+    },
+    {
+      "id": "C4",
+      "tag": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3",
+      "status": "PASS",
+      "tag_rel": "c4-rigorous-remainders-grok/20260930-v3",
+      "tag_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3",
+      "compile_exit": 0,
+      "compile_command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-frounding-math",
+        "-D__USE_NATIVE__",
+        "-pthread",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs/headers/capdExt/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs/headers/capdAux/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs/headers/capdAlg/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs/headers/capdDynSys/include",
+        "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/src/c4_rigorous_remainders.cpp",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/inputs/libcapd.a",
+        "-o",
+        "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/bin/c4_rigorous_remainders"
+      ],
+      "all_passed": true,
+      "native_exit": 0,
+      "result_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c4-rigorous-remainders-grok/20260930-v3/results/C4-RESULT.json",
+      "result_sha256": "d9dbe340caa69bf3d4101ac41a1de8e43cec4eb232334680a32f12b82266768a",
+      "elapsed_s": 2.5805929159999996,
+      "raw_summary": {
+        "control": "C4",
+        "all_passed": true,
+        "entries_checked": 3024,
+        "mismatches": 0,
+        "allRemainderCallsRetained": true,
+        "peak_rss_bytes": 34963456
+      }
+    },
+    {
+      "id": "C5",
+      "tag": "work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3",
+      "status": "PASS",
+      "tag_rel": "c5-exact-linear-coeff-step-event-grok/20260930-v3",
+      "tag_abs": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3",
+      "all_passed": true,
+      "result_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/results/C5-RESULT.json",
+      "result_sha256": "1017d2eced7724265dfee393f948871129b76107cf46efb241000be51cfed2e9",
+      "elapsed_s": 4.987581875000001,
+      "details": {
+        "schema": "azero-c5-result-v1",
+        "control": "C5",
+        "compile_exit": 0,
+        "compile_command": [
+          "/usr/bin/clang++",
+          "-std=c++17",
+          "-O2",
+          "-frounding-math",
+          "-D__USE_NATIVE__",
+          "-pthread",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdExt/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAux/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAlg/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdDynSys/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/src/c5_exact_linear_coefficients.cpp",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/libcapd.a",
+          "-o",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/bin/c5_exact_linear_bundle"
+        ],
+        "compile_step_exit": 0,
+        "compile_step_command": [
+          "/usr/bin/clang++",
+          "-std=c++17",
+          "-O2",
+          "-frounding-math",
+          "-D__USE_NATIVE__",
+          "-pthread",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdExt/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAux/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdAlg/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/headers/capdDynSys/include",
+          "-I<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/src/c5_exact_linear_step.cpp",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/inputs/libcapd.a",
+          "-o",
+          "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/c5-exact-linear-coeff-step-event-grok/20260930-v3/bin/c5_exact_linear_step"
+        ],
+        "admitted_for_proof": false,
+        "fixture_only": true,
+        "flow_attempted": false,
+        "sub": {
+          "coeff": {
+            "exit": 0,
+            "all_passed": true,
+            "sha256": "22bd2c2c1ee81475e36de621e5e37467e69172cf618aa0a7aedfd3ed0dcfa533"
+          },
+          "step": {
+            "exit": 0,
+            "all_passed": true,
+            "sha256": "552abd3cc2d434cb58e6ee787ccd3bb809b72e1991a9214d2703a047ce57a90e"
+          },
+          "event": {
+            "exit": 0,
+            "all_passed": true,
+            "documented_na": true,
+            "sha256": "24037a7748c6837d3d64be1137a3965aef1c4152ebfa974c50fe44537873fc5b"
+          }
+        },
+        "coefficientControlsPassed": true,
+        "fullStepControlsPassed": true,
+        "fullEventControlsPassed": false,
+        "fullEventControlsDocumentedNA": true,
+        "negative_controls_passed": true,
+        "all_passed": true
+      }
+    }
+  ],
+  "stopped_on_failure": false,
+  "overall_all_passed": true,
+  "admit_recommendation": "STILL_NOT_ADMITTED_pending_C6_independent_review",
+  "start_from": "C2",
+  "elapsed_total_s": 11.816290958,
+  "live_header_sha256": {
+    "ZeroPrunedCellwiseRingMap.hpp": "6817be29a468657e17073aefe037722cf51605ea26bb3ed66ea2e7b843289527",
+    "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
+    "AZeroPrunedCellwiseRingMap.hpp": "c252a3bcff9b4092659b4f08d407d8f6e9c7cd06db962f5ec3506a8149251e10"
+  }
+}

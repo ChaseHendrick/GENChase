@@ -1,0 +1,82 @@
+{
+  "schema": "zp-fixed-quarter-prod-patch-summary-v1",
+  "writtenAtET": "2026-10-01T05:19:36-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T09:19:36Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "tag": "box20-zero-pruned-fixed-quarter-prod-patch-grok-20261001-v1",
+  "verify_tag": "box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1",
+  "status": "FINISHED",
+  "STARTED": true,
+  "FINISHED": true,
+  "verdict": "PASS_THREE_CONSECUTIVE_QUARTER",
+  "redesign_pass": true,
+  "prod_patch_applied": true,
+  "pre_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "post_sha": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
+  "binary_sha256": "abf2d352d4b3a776a6f7a6a0f2b17f44ba0019bb1004357c8cdadc159024643d",
+  "diff_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-PROD-PATCH.diff",
+  "observed_steps_ms": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "observed_steps_hex": [
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    }
+  ],
+  "tube_times_ms": [
+    {
+      "stepIndex": 1,
+      "timeEnd_mid": 0.25,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 2,
+      "timeEnd_mid": 0.5,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    },
+    {
+      "stepIndex": 3,
+      "timeEnd_mid": 0.75,
+      "step_mid": 0.25,
+      "step_hex": {
+        "lo": "0x1p-2",
+        "hi": "0x1p-2"
+      }
+    }
+  ],
+  "best_consecutive_quarter": 3,
+  "all_first_three_exact_0x1p-2": true,
+  "wall_s_elapsed": 595.46483,
+  "tubes": 3,
+  "stop_reason": "probe_pass_three_consecutive_quarter",
+  "cleanup_ok": true,
+  "lane_clear": true,
+  "approved_sources_untouched": true,
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1",
+  "receipt_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-PROD-PATCH-RECEIPT.json",
+  "next_recommendation": "Prod patch VERIFY PASS: live PREF TU honors exact h=1/4 (0x1p-2) for >=3 consecutive tubes. No G8/G9/auto-admit. Nothing else auto-started.",
+  "admitted_for_proof": false,
+  "G8": false,
+  "G9": false,
+  "receipt_reconstructed": true
+}

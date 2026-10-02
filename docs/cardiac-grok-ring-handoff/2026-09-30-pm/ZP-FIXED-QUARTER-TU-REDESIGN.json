@@ -1,0 +1,70 @@
+{
+  "schema": "zp-fixed-quarter-tu-redesign-rootcause-v1",
+  "writtenAtET": "2026-10-01T02:58:04-0400 (ET)",
+  "writtenAtUTC": "2026-10-01T06:58:04Z",
+  "agent": "Grok-only",
+  "machineId": "<redacted>",
+  "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v1",
+  "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
+  "root_causes": [
+    "prod setMaxStep(4/N)=0.125 clamps CLI 0.25",
+    "setStep does not assign m_step",
+    "Poincare ILastTermsStepControl::init adjustTimeStep Lipschitz seed ~0.112545 (hex 0x1.ccfb823b8b37dp-4)",
+    "approveRemainder setMaxStep(min(max,2*step)) yields ~0.225089 when max=0.25 (hex 0x1.ccfb823b8b37dp-3)",
+    "h=1/8 pass is maxStep clamp artifact, not proof that setStep alone honors arbitrary fixed h"
+  ],
+  "anomalous_steps": {
+    "first_lipschitz_seed": {
+      "mid": 0.1125445449076334,
+      "hex": "0x1.ccfb823b8b37dp-4"
+    },
+    "doubled": {
+      "mid": 0.2250890898152668,
+      "hex": "0x1.ccfb823b8b37dp-3"
+    },
+    "target_quarter": {
+      "mid": 0.25,
+      "expr": "I(1)/I(4)"
+    }
+  },
+  "redesign": {
+    "isolated_only": true,
+    "forceFixedQuarter_before_every_move": true,
+    "FixedStepControl_blocked_by_ABI": true
+  },
+  "md_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-TU-REDESIGN.md",
+  "awaiting_user_for_prod_patch": false,
+  "admitted_for_proof": false,
+  "probe_v2": {
+    "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v2",
+    "tube1_step_hex": {
+      "lo": "0x1p-2",
+      "hi": "0x1p-2"
+    },
+    "tube1_mid": 0.25,
+    "mechanism_proven": true,
+    "redesign_pass_three_consec": false,
+    "reason_not_full_pass": "wall_300s_only_one_tube"
+  },
+  "probe_v3": {
+    "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v3",
+    "verdict": "PASS_THREE_CONSECUTIVE_QUARTER",
+    "redesign_pass": true,
+    "step_hex_tubes_1_2_3": [
+      "0x1p-2",
+      "0x1p-2",
+      "0x1p-2"
+    ],
+    "mids": [
+      0.25,
+      0.25,
+      0.25
+    ],
+    "wall_s_elapsed": 621.9478561249999,
+    "binary_sha256": "9833fd2e16c04894b68068f857872f0cff67aabee113b2b601f7751915b52931"
+  },
+  "updatedAtET": "2026-10-01T03:23:23-0400 (ET)",
+  "final_verdict": "REDESIGN_PASS_EXACT_QUARTER_HONORED",
+  "redesign_pass": true,
+  "prod_untouched": true
+}
