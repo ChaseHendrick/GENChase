@@ -120,5 +120,7 @@ ${mods.length} techniques in this build. README, CITATION.cff, RESEARCH.md, DESI
 `;
   fs.writeFileSync(path.join(root, 'llms.txt'), llms);
   const stamped = count.stampRepo(fs, path, root, mods.length, mods);
+  // The paper counts, releases and DOIs in README.md come from papers/papers.json.
+  require('./papers-readme.js').write(root);
   console.log('wrote TECHNIQUES.md, techniques.json, llms.txt, and stamped', stamped.n, 'into the prose');
 })();
