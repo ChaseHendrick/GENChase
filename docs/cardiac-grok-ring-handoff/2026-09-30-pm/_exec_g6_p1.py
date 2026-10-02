@@ -5,7 +5,7 @@ import hashlib, json, os, shutil, signal, subprocess, sys, time
 from pathlib import Path
 from datetime import datetime, timezone
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 G2_BIN = PREF / "runs/azero-large-return-build-n32-v1/ring_flow"
@@ -374,7 +374,7 @@ def main():
         "writtenAtET": end_et,
         "writtenAtUTC": end_utc,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "start_et": start_et,
         "start_utc": start_utc,
         "stop_reason": stop_reason,
@@ -453,7 +453,7 @@ def main():
         "writtenAtET": end_et,
         "writtenAtUTC": end_utc,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "gate": "G6",
         "pilot": "P1",
         "tag": TAG,

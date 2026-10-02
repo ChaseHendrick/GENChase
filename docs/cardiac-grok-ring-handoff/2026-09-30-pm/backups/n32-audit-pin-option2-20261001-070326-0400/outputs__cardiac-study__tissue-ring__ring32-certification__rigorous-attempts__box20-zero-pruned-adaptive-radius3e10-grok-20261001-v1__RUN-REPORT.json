@@ -19,11 +19,11 @@
     "originalBaseHeader": "inputs/CellwiseRingMap.hpp",
     "originalBaseHeaderSha256": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f",
     "sourceAudit": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/SUPPLIER-SOURCE-AUDIT.json",
       "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2"
     },
     "allSitesControls": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/ALL-SITES-CONTROLS-REPORT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/ALL-SITES-CONTROLS-REPORT.json",
       "sha256": "48eba3f17050f8f730fee1076fe106382bbbaaa652237fa09ba98b36e408c7f2"
     }
   },
@@ -35,22 +35,22 @@
     "-O2",
     "-frounding-math",
     "-D__USE_NATIVE__",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdExt/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdAux/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdAlg/include",
-    "-I/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdDynSys/include",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/ring_flow.cpp",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/libcapd.a",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdExt/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdAux/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdAlg/include",
+    "-I<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/headers/capdDynSys/include",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/ring_flow.cpp",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/libcapd.a",
     "-o",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow"
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow"
   ],
   "compile_exit": 0,
   "compile_seconds": 3.361663958057761,
   "command": [
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow",
     "--box",
     "3e-10",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/TUBES.jsonl",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/TUBES.jsonl",
     "20",
     "10795",
     "adaptive",
@@ -93,10 +93,10 @@
   "flow_seconds": 3678.780813083,
   "resource_control": {
     "command": [
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/ring_flow",
       "--box",
       "3e-10",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/TUBES.jsonl",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/TUBES.jsonl",
       "20",
       "10795",
       "adaptive",
@@ -124,9 +124,9 @@
     }
   },
   "POST_HOC": true,
-  "AUTHORIZED_BY_SHARPIE_GO_A": true,
+  "AUTHORIZED_BY_OWNER_GO_A": true,
   "post_hoc": {
-    "authorized_by": "Sharpie explicit go for option A",
+    "authorized_by": "the owner's explicit go for option A",
     "writtenAtET": "2026-10-01T06:57:32-0400 (ET)",
     "writtenAtUTC": "2026-10-01T10:57:32Z",
     "reason": "C1 was harness-bypass FLOW_SUCCESS missing RUN-REPORT.json/BUILD.log required by ROLE-02 and V5 wrap_native.load_run",
@@ -135,7 +135,7 @@
     "adaptive_source_tu_sha": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
     "live_fixedquarter_pref_sha_untouched": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
     "prod_fixedquarter_untouched": true,
-    "origin_build_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1",
+    "origin_build_dir": "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1",
     "compile_in_attempt_dir": false,
     "run_flow_py_restored": "copied acceptedRunnerSha256 febdc66d\u2026 into inputs/ (was missing due to bypass; pin required by check_native_snapshot)",
     "fields_sourced_from": [

@@ -5,16 +5,16 @@
 **Canonical bindings:** `outputs/cardiac-study/grok-ring-handoff/HANDOFF-BINDINGS.json`  
 **Canonical narrative:** `outputs/cardiac-study/grok-ring-handoff/GROK-HANDOFF.md`  
 **PM receipts:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`  
-**Pause authority:** Sharpie, 2026-10-01 ~08:19 ET — Mac lane **PAUSED / idle**. Do not start heavy jobs until further go.
+**Pause authority:** the owner, 2026-10-01 ~08:19 ET — Mac lane **PAUSED / idle**. Do not start heavy jobs until further go.
 
-Workspace: `/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote`  
-Mac machineId: `056ff109-1c8e-49fc-9983-1c1caa02e796`
+Workspace: `<workspace>`  
+Mac machineId: `<redacted>`
 
 ---
 
 ## Lane standing (authoritative)
 
-- Mac heavy lane is **PAUSED / idle**. No `ring_flow`, no N=32 K port, no N=64 full return, no other heavy compute until Sharpie go.
+- Mac heavy lane is **PAUSED / idle**. No `ring_flow`, no N=32 K port, no N=64 full return, no other heavy compute until the owner's go.
 - One heavy at a time; dual-PGID cleanup (native PGID first, then supervisor).
 - Exact q pins unchanged: **q32 = 499995373/500000000**, **q64 = 249998827/250000000**.
 - **No proof admit.** `admitted_for_proof=false`, G8=false, G9=false everywhere below.
@@ -39,7 +39,7 @@ Mac machineId: `056ff109-1c8e-49fc-9983-1c1caa02e796`
 | Gate | Tag / result | Receipt numbers |
 | --- | --- | --- |
 | Fresh C1 | `box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1` — **FLOW_SUCCESS** | 16 tubes; returnTime mid ≈ **1.674627941572726** ms; wall ≈ **3678.78** s; adaptive binary **`0945e3b6…`**; adaptive TU snapshot **`5b85695c…`**; policy A (FixedQuarter prod left at `e9081f21…`) — `N32-C1-SUMMARY.json` |
-| Post-hoc RUN-REPORT + BUILD.log | `AUTHORIZED_BY_SHARPIE_GO_A` | RUN-REPORT sha **`d0a1365e…`**; BUILD.log sha **`092442e6…`** — `N32-POSTHOC-RUN-REPORT.json` |
+| Post-hoc RUN-REPORT + BUILD.log | `AUTHORIZED_BY_OWNER_GO_A` | RUN-REPORT sha **`d0a1365e…`**; BUILD.log sha **`092442e6…`** — `N32-POSTHOC-RUN-REPORT.json` |
 | Option-2 audit pin | alternate audited path → executed-sources-v5 TU **`5b85695c…`** | PREF FixedQuarter **`e9081f21…` untouched** — `N32-AUDIT-PIN-UPDATE.json` |
 | Inclusion + Contraction | `box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1` | Inclusion **PASS** (strict; min margin ≈ **7.410910362926704e-11**); Contraction **PASS** (strict; bound ≈ **0.008382589759365264**); `root_arithmetic_passed=true`; **not** admitted for proof — `N32-INCLUSION-CONTRACTION-SUMMARY.json` |
 
@@ -71,7 +71,7 @@ Unblock path for matched K (when authorized): audited N=32 K native port into `t
 
 ## Next authorized actions (await go)
 
-1. **Idle.** Do nothing heavy until Sharpie explicitly authorizes the next single job.
+1. **Idle.** Do nothing heavy until the owner explicitly authorizes the next single job.
 2. When go arrives, prefer **one** of:
    - Audited N=32 native K harness port (to unblock matched-K → stability → period), **or**
    - Separately budgeted N=64 full-return design/authorization (pilot alone is insufficient).
@@ -95,7 +95,7 @@ Unblock path for matched K (when authorized): audited N=32 K native port into `t
 ## Artifact path index (PM + attempts)
 
 **PM directory:**  
-`/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
+`<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
 
 Key receipts (non-exhaustive):
 

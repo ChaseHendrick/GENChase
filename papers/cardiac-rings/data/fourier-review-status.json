@@ -1,0 +1,35 @@
+{
+ "schema": "fourier-review-status-v1",
+ "date": "2026-10-01",
+ "outcome": "passed in-project adversarial review",
+ "scope": "Stage E (fourier/existence.py) and Stage S (fourier/stability.py, fourier/LEMMAS-stability.md) for N = 1, 8, 16, 32, 64",
+ "not_claimed": "No outside review has taken place. This file records reviews run inside this project by separate agent readings.",
+ "reviews": [
+  "reviews/fourier-stage1-review-2026-10-01.md",
+  "reviews/stability-lemmas-review-2026-10-01.md",
+  "reviews/stageE-existence-review-2026-10-01.md",
+  "reviews/stageS-stability-review-2026-10-01.md",
+  "reviews/fix-second-reading-2026-10-01.md"
+ ],
+ "findings_unsound": 0,
+ "remaining": [
+  "Kato theorem and section numbers in LEMMAS-stability.md to be confirmed against a copy",
+  "deleting the S_J tail term of Stage E and a few negligible Stage S terms cannot be detected by any test (documented in the tests)",
+  "identification of these waves with the branch continued from Erhardt's Hopf point is numerical",
+  "source hashes are taken after import (a tiny window, N3 of the second reading)"
+ ],
+ "records_sha256": {
+  "fourier-existence-N1.json": "628822e1cfb7168dd1123eaa7e5f4534a32f1ac5f05208f37793c71782bc571e",
+  "fourier-existence-N16.json": "f9b89af50c6109d536ab9d008c53767cb10d6aa6e93bbd28ab6eb93e744c4a51",
+  "fourier-existence-N32.json": "2484f4fd8790bafbb1b9e424d3afe10a7af3f83e2f604d67fed433577ea5eba7",
+  "fourier-existence-N64.json": "df488646db4b0ff2d48975422dbd81716ae6a1576f8513dfbb5c150306be8cf6",
+  "fourier-existence-N8.json": "a1bd799b5609bc6cb7b19a96d86a14ee63919402ea4f626a59e140c7e62eff2c",
+  "fourier-stability-N1.json": "36e93c7b726a07e3bc757042fa964ae557b08e32d52b88e85beed7c6c91377e2",
+  "fourier-stability-N16.json": "87f362842286ff0789b57b1aa0f84c63dd55c19edad061ac45127c0f07b578df",
+  "fourier-stability-N32.json": "0f64ede99042cdb2fe212687b3908d8599ebcb93508005de71c5edbf76c2def5",
+  "fourier-stability-N64.json": "2e52165a5e4800bda21ad8fa28b7ede166fccf80d65edb79cf8a405f72c79b18",
+  "fourier-stability-N8.json": "c18ddcccbcea85d78628795a3efc1710736fd5d6fdcfe58eaff35ab1089c762e"
+ },
+ "repository_commit_at_review": "3632300139c169c67a20a7fbe8af7991a983d948",
+ "check": "python3 fourier/check_records.py (stored source, centre and Stage E record hashes against the files)"
+}

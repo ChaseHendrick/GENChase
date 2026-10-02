@@ -4,7 +4,7 @@
 
 **Preprint**, release 1.0.5 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23050587](https://doi.org/10.5281/zenodo.23050587)); release 1.0.1 remains at [doi:10.5281/zenodo.23002943](https://doi.org/10.5281/zenodo.23002943). Not peer reviewed.
 
-**[Read the preprint (PDF, 30 pages)](paper/hh-dynamics.pdf)**, built from [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex).
+**[Read the preprint (PDF, 29 pages)](paper/hh-dynamics.pdf)**, built from [`paper/hh-dynamics.tex`](paper/hh-dynamics.tex).
 
 ## Abstract
 
@@ -33,7 +33,7 @@ inequalities are decided in ball arithmetic by a program named here), **proved**
 computation), **cited** (a published theorem used as stated, with its hypotheses checked), or **numerical** (no error
 control; never used in a proof).
 
-- **Computer-assisted** (`code/certify_equilibria_hopf.py`, 40 checks: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks; about 10 seconds):
+- **Computer-assisted** (`code/certify_equilibria_hopf.py`, 40 checks: 17 proof checks, 6 consistency checks, 5 negative controls, 8 self-tests, 4 cross-checks; about 7 seconds):
   - Theorem 1: exactly one equilibrium for every J in [0, 200] and every E_l in [10.59, 10.62].
   - Theorem 2: the equilibrium is asymptotically stable for J < J_H1 and J > J_H2, unstable with exactly two
     eigenvalues in Re > 0 in between; at J_Hi a simple pair crosses transversally; J_H1 and J_H2 enclosed to 1e-12
@@ -74,10 +74,9 @@ control; never used in a proof).
 - **Earlier work:** Guckenheimer and Labouriau (1993, p. 941) state the unique equilibrium for every current, without
   proof; Labouriau's thesis (1983, Chapter IV) computes the Hopf points and the directions of bifurcation in floating
   point; Labouriau (1985, 1989) and Hassard and Shiau (1989, 1991, 1996) studied the degenerate Hopf bifurcations of
-  the model. Du and Hassard (2001) computed Hopf bifurcation coefficients of the model in interval arithmetic; only
-  its first page could be read, so no priority is claimed for Theorems 1 and 2 or Corollary 3. The novelty claimed is
-  limited to a stable periodic orbit of large amplitude away from the Hopf points and to bistability, and is limited
-  by the unread part of Du and Hassard as well. The searches, and what they did not reach, are in the manuscript's
+  the model. Du and Hassard (2001) computed Hopf bifurcation coefficients of the model in interval arithmetic, a
+  local method, so no priority is claimed for Theorems 1 and 2 or Corollary 3. The novelty claimed is limited to a
+  stable periodic orbit of large amplitude away from the Hopf points and to bistability. The searches, and what they did not reach, are in the manuscript's
   Section 10.
 - **Checks made within the project**, by separate AI agent sessions (none is an outside review): on 2026-09-27,
   readings of the manuscript's mathematics, of its computations (with 15 deliberate mutations of the programs) and of

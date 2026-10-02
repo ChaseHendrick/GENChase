@@ -2,10 +2,10 @@
   "schema": "pm-resume-2026-10-01-v1",
   "writtenAtET": "2026-10-01T10:30:23-0400 (ET)",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
-  "authorization": "AUTHORIZED_BY_SHARPIE_CONTINUE_WITH_THE_PROOFS",
+  "machineId": "<redacted>",
+  "authorization": "AUTHORIZED_BY_OWNER_CONTINUE_WITH_THE_PROOFS",
   "user_phrase": "continue with the proofs",
-  "laneWas": "PAUSED / idle (Sharpie ~08:19 ET)",
+  "laneWas": "PAUSED / idle (the owner ~08:19 ET)",
   "laneNow": "RESUMED \u2014 starting next authorized proof step",
   "verifiedOnDisk": {
     "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
@@ -50,8 +50,8 @@
   },
   "icProducts": {
     "tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
-    "FLOW": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
-    "MATRICES": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json"
+    "FLOW": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-FLOW.json",
+    "MATRICES": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ACTUAL-RADIUS3E10-MATRICES.json"
   },
   "newTagPlanned": "box20-zero-pruned-adaptive-radius3e10-matched-k-field-grok-20261001-v1",
   "admitted_for_proof": false,

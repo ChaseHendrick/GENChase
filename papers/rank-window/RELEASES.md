@@ -3,9 +3,15 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.5 (2026-10-02)
+
+Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. Sources that were not read in full are now cited for what is known of them (for example from their citing papers), stated once as a plain fact, without apology. The README calls the manuscript a preprint and gives its page count, 17. Numerical inputs, programs and results are unchanged. No new scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.4 (2026-09-29)
 
-Figure layout update. Moves every legend below its panel and moves bound values and shaded-rank descriptions into external keys or note rows. Adds footer space in Figure 3 to separate the spectrum key from the shaded-rank note. All three vector figures and the manuscript PDF were rebuilt and inspected at manuscript scale. Before/after plotted-array hashes match. Scientific captions, numerical inputs, results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+**DOI:** [10.5281/zenodo.23050586](https://doi.org/10.5281/zenodo.23050586) (2026-09-30).
+
+Figure layout update. Moves every legend below its panel and moves bound values and shaded-rank descriptions into external keys or note rows. Adds footer space in Figure 3 to separate the spectrum key from the shaded-rank note. All three vector figures and the manuscript PDF were rebuilt and inspected at manuscript scale. Before/after plotted-array hashes match. Scientific captions, numerical inputs, programs and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 
 ## 1.0.3 (2026-09-29)
 

@@ -5,7 +5,7 @@ import hashlib, json, os, signal, subprocess, sys, time
 from pathlib import Path
 from datetime import datetime, timezone
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 TAG = "box20-zero-pruned-fixed-quarter-prod-patch-verify-grok-20261001-v1"
@@ -230,7 +230,7 @@ def main():
         "writtenAtET": et_label(),
         "writtenAtUTC": utc_now(),
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "start_et": start_et,
         "start_utc": start_utc,
         "stop_reason": stop_reason,
@@ -294,7 +294,7 @@ def main():
         "writtenAtET": et_label(),
         "writtenAtUTC": utc_now(),
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "tag": "box20-zero-pruned-fixed-quarter-prod-patch-grok-20261001-v1",
         "verify_tag": TAG,
         "status": "FINISHED",

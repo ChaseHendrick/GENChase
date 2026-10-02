@@ -3,7 +3,7 @@
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
 **Preprint**, release 1.0.5 archived on Zenodo with its programs and data ([doi:10.5281/zenodo.23050600](https://doi.org/10.5281/zenodo.23050600)); release 1.0.1 remains at [doi:10.5281/zenodo.23002938](https://doi.org/10.5281/zenodo.23002938). Not peer reviewed. The manuscript is [`paper/nf-pulse.tex`](paper/nf-pulse.tex), built to
-`paper/nf-pulse.pdf` (39 pages); it writes out the proofs of all six theorems. This folder holds the manuscript, the
+`paper/nf-pulse.pdf` (38 pages); it writes out the proofs of all six theorems. This folder holds the manuscript, the
 verification programs and their output. The checks made of it, all within the project by separate AI agent sessions
 instructed to find errors, are in `review/` and in the `REPORT.md` of each folder under `ext/`; `review/RERUNS.md`
 records the reruns of 2026-09-27, and Section 9 of the manuscript lists what has and has not been checked.
@@ -47,13 +47,13 @@ defined by a speed bracket of width 10^-58 and a condition on the profile. Nonli
   existence step again with their own isolating block (exact rational arithmetic), their own validated integrator
   and their own shooting argument (`review/lead/reimpl/block/BLOCK.md`). These programs were written by AI agent
   sessions within the project.
-- **Sources:** Enculescu, Physica D 196 (2004), could not be reached and is unread; Sandstede (2007) is known from
-  its abstract only. Zhang, J. Differential Equations 197 (2004), was read in part (its model uses the Heaviside
+- **Sources:** Enculescu, Physica D 196 (2004), is known from its title and citing contexts; Sandstede (2007) from
+  its abstract. Zhang, J. Differential Equations 197 (2004), was read in part (its model uses the Heaviside
   rate throughout; its pulses are for sufficiently small eps). Zhang, J. Dyn. Differ. Equ. 17 (2005), Zhang, Math. Z.
   255 (2007; online 29 July 2006), Zhang, Acta Math. Appl. Sin. 20 (2004), Zhang, SIAM J. Appl. Dyn. Syst. 6 (2007)
-  (abstract only), and Pinto, Jackson and Wayne (2005) are known from abstracts, reviews and first pages; every page
-  of these that we reached uses the Heaviside rate or concerns stability. The manuscript makes no claim to
-  be first: it says what the works we read contain and names the works we could not read (Sections 1 and 9 of the
+  (abstract only), and Pinto, Jackson and Wayne (2005) are known from abstracts, reviews and first pages; every one
+  of these pages uses the Heaviside rate or concerns stability. The manuscript makes no claim to
+  be first: it says what the works contain as far as these sources describe them and names the works known only in part (Sections 1 and 9 of the
   manuscript; the searches are in `review/PRIOR-ART.md` and `review/lead/priorart/PRIORART.md`).
 
 ## Extensions (`ext/`)
@@ -67,7 +67,7 @@ are computer-assisted proofs in ball arithmetic, and they rest on the lemmas wri
 | [`ext/gain-12/`](ext/gain-12/REPORT.md) | The fast pulse for the sigmoid (1 + tanh(6(u - 1/4)))/2 printed in Pinto and Ermentrout's Fig. 5, at eps = 3/20, speed about 1.04754, rest a saddle-focus | Theorem 4; proved by computer; an in-repository adversarial check |
 | [`ext/eps-range/`](ext/eps-range/REPORT.md) | The fast pulse for every eps in [0.08, 0.13693] (381 certified subintervals) and in five further intervals, among them [0.069975, 0.070025] and [0.1499, 0.1501], which contains 3/20: 386 certificates in all, each with a speed window that moves with eps | Theorem 2; proved by computer; an in-repository adversarial check |
 | [`ext/faye-model/`](ext/faye-model/REPORT.md) | A fast pulse in Faye's (2013) neural field with synaptic depression at eps = 1/100 (Faye's own value), 1/50 and 1/20 | Theorem 5; proved by computer; an in-repository adversarial check |
-| [`ext/stability/`](ext/stability/REPORT.md) | Spectral stability of the fast pulse at eps = 1/10, for the class P of pulses with speed in a bracket of width 10^-58 | Theorem 6; proved, computer-assisted: in Re lambda >= -1/20 the spectrum is exactly {0}, and 0 is algebraically simple; nonlinear stability would further rest on Sandstede (2007), not read, whose scope for this model is disputed |
+| [`ext/stability/`](ext/stability/REPORT.md) | Spectral stability of the fast pulse at eps = 1/10, for the class P of pulses with speed in a bracket of width 10^-58 | Theorem 6; proved, computer-assisted: in Re lambda >= -1/20 the spectrum is exactly {0}, and 0 is algebraically simple; nonlinear stability would further rest on Sandstede (2007), known from its abstract, whose scope for this model secondary sources describe differently |
 
 ## The model and the claim
 

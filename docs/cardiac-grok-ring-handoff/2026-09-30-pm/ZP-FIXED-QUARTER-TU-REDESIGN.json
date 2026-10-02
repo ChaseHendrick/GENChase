@@ -3,7 +3,7 @@
   "writtenAtET": "2026-10-01T02:58:04-0400 (ET)",
   "writtenAtUTC": "2026-10-01T06:58:04Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "tag": "box20-zero-pruned-fixed-quarter-tu-redesign-probe-grok-20261001-v1",
   "production_tu_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
   "root_causes": [
@@ -32,7 +32,7 @@
     "forceFixedQuarter_before_every_move": true,
     "FixedStepControl_blocked_by_ABI": true
   },
-  "md_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-TU-REDESIGN.md",
+  "md_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ZP-FIXED-QUARTER-TU-REDESIGN.md",
   "awaiting_user_for_prod_patch": false,
   "admitted_for_proof": false,
   "probe_v2": {

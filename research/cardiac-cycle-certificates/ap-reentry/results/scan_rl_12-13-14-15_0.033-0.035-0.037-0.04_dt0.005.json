@@ -1,0 +1,175 @@
+[
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 12,
+  "c": 0.033,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.0,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 12,
+  "c": 0.035,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.2,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 12,
+  "c": 0.037,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.1,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 12,
+  "c": 0.04,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.1,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 13,
+  "c": 0.033,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.3,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 13,
+  "c": 0.035,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 13,
+  "c": 0.037,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 13,
+  "c": 0.04,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 14,
+  "c": 0.033,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 14,
+  "c": 0.035,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 3.1,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 14,
+  "c": 0.037,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.8,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 14,
+  "c": 0.04,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 15,
+  "c": 0.033,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 2.4,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 13,
+  "T_last": 482.19739880200086,
+  "T_spread_last6": 30.88804024699857,
+  "dT_last": -15.233451775999129,
+  "dT_prev": -15.654588470999443,
+  "N": 15,
+  "c": 0.035,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 14.0,
+  "periods_tail": [
+   486.718,
+   502.082,
+   503.253,
+   483.694,
+   497.857,
+   513.085,
+   497.431,
+   482.197
+  ]
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 15,
+  "c": 0.037,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 3.3,
+  "periods_tail": []
+ },
+ {
+  "died": true,
+  "rotations": 0,
+  "N": 15,
+  "c": 0.04,
+  "dt": 0.005,
+  "t_end": 20000.0,
+  "secs": 3.0,
+  "periods_tail": []
+ }
+]

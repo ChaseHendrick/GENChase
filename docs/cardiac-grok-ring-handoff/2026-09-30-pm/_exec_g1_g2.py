@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json, shutil, subprocess, time
 from pathlib import Path
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 ADMIT = PREF / "a-zero-admission-grok"
@@ -143,7 +143,7 @@ def run_g1(live_pins):
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "proposal_path": str(proposal_path),
         "proposal_before_sha256": before_sha,
         "proposal_after_sha256": after_sha,
@@ -411,7 +411,7 @@ if __name__ == "__main__":
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "tag": tag,
         "run_dir": str(PREF / "runs" / tag),
         "result_path": str(result_path),
@@ -458,7 +458,7 @@ def main():
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "G1": {"verdict": g1["verdict"], "receipt_sha256": sha(PM / "AZERO-G1-LEDGER-RECEIPT.json"), "path": str(PM / "AZERO-G1-LEDGER-RECEIPT.json")},
         "G2": {"verdict": g2["verdict"], "receipt_sha256": sha(PM / "AZERO-G2-BUILD-RECEIPT.json"), "path": str(PM / "AZERO-G2-BUILD-RECEIPT.json"), "tag": g2["tag"], "binary_sha256": g2["binary_sha256"]},
         "both_passed": g1["all_passed"] and g2["all_passed"],

@@ -1,0 +1,2 @@
+# transient verifier output written while proofs/certify.py runs (deleted when the run ends)
+results/*.verify.json

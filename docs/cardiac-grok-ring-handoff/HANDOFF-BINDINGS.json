@@ -1,11 +1,11 @@
 {
   "scope": "Grok delegation handoff; earlier Codex runs preserved; 2026-10-01 ET FixedQuarter/N32/N64 progress absorbed; Mac lane PAUSED idle",
-  "workspaceRoot": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote",
+  "workspaceRoot": "<workspace>",
   "updatedAtET": "2026-10-01T08:21:00-0400 (ET)",
   "updatedAtUTC": "2026-10-01T12:21:00Z",
   "lanePaused": true,
   "lanePausedAtET": "2026-10-01T08:19:00-0400 (ET)",
-  "lanePausedBy": "Sharpie",
+  "lanePausedBy": "the owner",
   "bindings": {
     "work/cardiac-study/tissue-certification32/INPUTS.json": "cee0d3fb10a8e1236b8182f76d985a903609269172bb33c890b7f75f654918f0",
     "work/cardiac-study/tissue-certification32/ring_model.h": "bc49140920806b07c526586ce4855212f841898af00f56e6fca5bd6d36e921b6",
@@ -47,7 +47,7 @@
     "c1AdaptiveBinarySha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
     "c1AdaptiveSourceSha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
     "c1Policy": "A_copy_known_good_adaptive_binary",
-    "posthocAuthorizedMarker": "AUTHORIZED_BY_SHARPIE_GO_A",
+    "posthocAuthorizedMarker": "AUTHORIZED_BY_OWNER_GO_A",
     "posthocRunReportSha256": "d0a1365e05e6e0d7fc949b434b6dde039476aa96ce2483c27d4b8e115b07cf74",
     "posthocBuildLogSha256": "092442e6e2f3c10d75ee96029d1c8ecd71d3452ac21e730072e08175a740935d",
     "auditPinStrategy": "alternate_audited_path_to_frozen_adaptive_snapshot",

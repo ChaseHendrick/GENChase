@@ -3,7 +3,7 @@
 **Status:** PLAN ONLY. Controls **not** executed this turn. **NOT admitted for proof.**
 **Written:** 2026-09-30 09:32:45 ET
 **Agent:** Grok-only executor
-**MachineId:** `056ff109-1c8e-49fc-9983-1c1caa02e796`
+**MachineId:** `<redacted>`
 **PM dir:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
 **Admission root:** `work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok/`
 

@@ -5,7 +5,7 @@
   "writtenAtET": "2026-09-30T14:16:19-0400 (ET)",
   "writtenAtUTC": "2026-09-30T18:16:19Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "launch_receipt": "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G6-P1-LAUNCH.json",
   "launch_receipt_sha256": "e39c8dac8f510d8599b7f1052fb2df7cd72e64f194281ce13819490adfaa1177",
   "caps": {

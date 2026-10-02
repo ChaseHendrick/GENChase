@@ -4,7 +4,7 @@
   "writtenAtET": "2026-09-30T16:28:36-0400 (ET)",
   "writtenAtUTC": "2026-09-30T20:28:36Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "user_go": "named fixed h=1/8 ZeroPruned calibration after fixed h=1/4 blocked (Poincar\u00e9 TU would not honor 0.25; setMaxStep(4/N)=0.125 was clamp)",
   "lane_verified_free_before_launch": true,
   "tag_collision_check": "FREE_v1",
@@ -26,7 +26,7 @@
   "rss_mib": 2048,
   "stop_physical_ms": 1.0,
   "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
-  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1",
   "first_gate": {
     "policy": "After >=2 tubes: tubes[1:] must have mid(step)==0.125 within 1e-9; tube[0] may be Poincare first-cut-in ~0.112545 OR exact 0.125. If tube2+ shows adaptive-like 0.12109375 or other non-0.125, ABORT_STEP_NOT_EIGHTH with receipt \u2014 do not burn wall.",
     "known_poincare_first_cutin": 0.1125445449076334,
@@ -34,10 +34,10 @@
     "target_fixed": 0.125
   },
   "native_cmd_template": [
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/ring_flow",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/ring_flow",
     "--box",
     "3e-10",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
     "20",
     "3595",
     "0.125",
@@ -64,10 +64,10 @@
   "supervisor_pid": 55044,
   "supervisor_pgid": 55044,
   "native_cmd": [
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/ring_flow",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/ring_flow",
     "--box",
     "3e-10",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
+    "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-eighth-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
     "20",
     "3595",
     "0.125",

@@ -6,11 +6,11 @@
   "writtenAtET": "2026-09-30 10:05:40 ET",
   "writtenAtUTC": "2026-09-30T14:05:40Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
-  "proposal_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
+  "machineId": "<redacted>",
+  "proposal_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/A-ZERO-PROPOSAL-V1.json",
   "proposal_before_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
   "proposal_after_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624",
-  "backup_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
+  "backup_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
   "backup_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
   "flags_set": {
     "coefficientControlsPassed": true,
@@ -42,7 +42,7 @@
     "ZeroPrunedSparseMap.hpp": "c2c0f5174f62785776195ccf69b04b1dfcf4963ea2a95389424212adf5e53043",
     "CellwiseRingMap.hpp": "9818bfdc6848216ca1e8303059bfd13bade8d172c27c865a379119f22e19cf7f"
   },
-  "review_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-azero-g1-ledger-REVIEW.json",
+  "review_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-07-azero-g1-ledger-REVIEW.json",
   "review_sha256": "eda854e64f46e8cd267b2176ad0b2cff15779fc2a0dc3bb789c2e9631f834f7a",
   "stop_on_fail_honored": true,
   "production_headers_untouched": true

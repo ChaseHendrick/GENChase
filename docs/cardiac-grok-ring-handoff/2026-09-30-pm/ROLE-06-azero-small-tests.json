@@ -4,7 +4,7 @@
   "roleId": 6,
   "agent": "Grok-only",
   "writtenAt": "2026-09-30 09:00:45 ET",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "admitted_for_proof": false,
   "status": "NOT admitted",
   "tag_dir": "work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1",
@@ -85,13 +85,13 @@
   ],
   "explicit": "not admitted for proof",
   "paths": {
-    "tag": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1",
-    "result": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/RESULT.json",
-    "predicate_result": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/results/predicate-RESULT.json",
-    "predicate_source": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/azero_skip_predicate_unit.cpp",
-    "deferred_native_source": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/linear_azero_controls_DEFERRED.cpp",
-    "design_plan": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
-    "role_doc": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json"
+    "tag": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1",
+    "result": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/RESULT.json",
+    "predicate_result": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/results/predicate-RESULT.json",
+    "predicate_source": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/azero_skip_predicate_unit.cpp",
+    "deferred_native_source": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/src/linear_azero_controls_DEFERRED.cpp",
+    "design_plan": "<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-small-tests-grok-20260930-v1/DESIGN-CONTROL-PLAN.md",
+    "role_doc": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-06-azero-small-tests.json"
   },
   "sha256": {
     "predicate_RESULT": "45084733609f281c67d6c756dcf406c9dbca9364bab5dbe6123c0bd40bcaa2a1",

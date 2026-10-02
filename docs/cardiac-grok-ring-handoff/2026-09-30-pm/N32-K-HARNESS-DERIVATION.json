@@ -2,22 +2,22 @@
   "schema": "cardiac-ring32-native-K-harness-derivation-v1",
   "writtenAtET": "2026-10-01T10:30:23-0400 (ET)",
   "agent": "Grok-only-executor",
-  "authorization": "AUTHORIZED_BY_SHARPIE_CONTINUE_WITH_THE_PROOFS",
+  "authorization": "AUTHORIZED_BY_OWNER_CONTINUE_WITH_THE_PROOFS",
   "derived_from": {
     "ring16_root_field_k.cpp": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/root_field_k.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-certification16/root_field_k.cpp",
       "sha256": "91a3640141d0a98b11eab08f8d6dda71712283af2988bc943f5f5ea193697f50"
     },
     "ring16_ring_flow_k.cpp": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/ring_flow_k.cpp",
+      "path": "<workspace>/work/cardiac-study/tissue-certification16/ring_flow_k.cpp",
       "sha256": "78ff1455f279c6ef0c426b8b8d9a85a796630cf5e2754d5466fd1d1701dfa3cc"
     },
     "ring16_run_root_field_k.py": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/run_root_field_k.py",
+      "path": "<workspace>/work/cardiac-study/tissue-certification16/run_root_field_k.py",
       "sha256": "1862af144bb0dccdd957f460eedcf5adc59353ce2ef7802de4cffa5ac16cb961"
     },
     "ring16_run_flow_k.py": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification16/run_flow_k.py",
+      "path": "<workspace>/work/cardiac-study/tissue-certification16/run_flow_k.py",
       "sha256": "942c1141a101039adc04eff708d0fdcf8ca14cc564d20b0fe4ae9bc6740ac81f"
     },
     "ring16_HARNESS-DERIVATION_note": "ring16 itself derived from ring8; N-parametric END=18*(N-1); event window and dim labels are the N-dependent edits"

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, os, time, subprocess, sys
 from pathlib import Path
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 ATTEMPT = BASE / "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1"
 MARKER = PM / "_watch_n32_c1_20261001.DONE"

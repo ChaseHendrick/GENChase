@@ -3,7 +3,7 @@
   "writtenAtET": "2026-09-30T14:52:46-0400 (ET)",
   "writtenAtUTC": "2026-09-30T18:52:46Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "gate": "G6",
   "pilot": "P1",
   "tag": "box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
@@ -26,9 +26,9 @@
   "production_headers_swapped": false,
   "G8": false,
   "G9": false,
-  "receipt_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G6-P1-SPEED-RECEIPT.json",
+  "receipt_path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G6-P1-SPEED-RECEIPT.json",
   "receipt_sha256": "c00edb838d405cf335bb547172b06202c6c8741419c5c62f7bd13fed7dbb2cb5",
-  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
   "next_recommendation": "Report raw numbers; optional more diagnostics on skip rate; or fallback h=1/4; no G8",
   "binary_sha256": "4b24c4b7a63e117b46fefdda807e817735823822012af6d281a58bdf6a990408"
 }

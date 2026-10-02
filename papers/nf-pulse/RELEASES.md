@@ -3,7 +3,13 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.0.6 (2026-10-02)
+
+Editorial update. The statement on the use of AI is now a labelled statement (**Use of AI.**) at the body's own size, beside Funding, instead of small type. A projection is written $\Pi_E$ (it was $P$, which also names a coordinate), its neighborhoods are named consistently, and the essential-spectrum row of the table of checks now states the inequality the program checks, $\zeta_+(k) < \varrho(1) = -\delta_0$. Sources are cited for what is known of them, with their reading basis stated once, and references to internal development files are removed. Spelling follows American usage throughout. Numerical inputs, proof programs, certificates and results are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
+
 ## 1.0.5 (2026-09-29)
+
+**DOI:** [10.5281/zenodo.23050600](https://doi.org/10.5281/zenodo.23050600) (2026-09-30).
 
 Figure layout update. Places the profile-field and proof-block key above both pulse panels and the phase-plane key below them, with reserved figure margins. Line styles, the nullcline, the rest marker and the shaded proof-block range are preserved. The vector figure, raster preview and manuscript PDF were rebuilt and inspected at manuscript scale. All 523 displayed samples come from the unchanged stored orbit. Scientific captions, numerical results, proof programs and certificates are unchanged. No new proof or scientific validation is claimed; previous archives remain unchanged.
 

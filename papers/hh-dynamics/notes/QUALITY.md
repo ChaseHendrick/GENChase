@@ -70,7 +70,8 @@ GENChase: the companion repository does not carry `notes/`.
   read (the entry of 2026-09-27 "Hodgkin-Huxley manuscript before release ...", with the list of all of them), and
   the manuscript's Section 10 and bibliography say the same. Read today besides: Labouriau's thesis, Chapter IV (the
   open copy at WRAP), Hassard and Shiau (1996) in full (a copy the owner downloaded; not in the repository), the
-  first page of Du and Hassard (2001) again. Not obtained: Du and Hassard beyond its first page, Hassard (1978),
+  first page of Du and Hassard (2001) again. Known from abstracts, reviews or citing papers rather than the full text: Du
+  and Hassard (2001; abstract and zbMATH review, full text by subscription only), Hassard (1978),
   Rinzel and Miller (1980), Hassard and Shiau (1989), Shiau and Hassard (1991), Labouriau (1985, 1989); none of them
   is a source of a proof step.
 - [x] **5. Prior article review.** RESEARCH.md, entries of 2026-09-25 (survey and neuroscience scout), 2026-09-26 (the
@@ -96,5 +97,5 @@ GENChase: the companion repository does not carry `notes/`.
   numpy, SciPy, matplotlib; the mutation study uses only the standard library); their outputs are in `data/`, and
   `code/hh_make_numbers.py` and `code/hh_make_figures.py` rebuild every number, table and figure of the manuscript
   from them. `node tools/paper-check.js` and `node tools/paper-sync.js --check hh-dynamics` pass (run on 2026-09-27 after the last changes), and the
-  counts stated are current: 30 pages (README, RELEASES.md), and the check counts in the manuscript (generated),
+  counts stated are current: 29 pages in the README (30 until the shortening of 2026-10-01; RELEASES.md gives the count of the release it describes), and the check counts in the manuscript (generated),
   the README, RELEASES.md and this record, from the committed outputs.

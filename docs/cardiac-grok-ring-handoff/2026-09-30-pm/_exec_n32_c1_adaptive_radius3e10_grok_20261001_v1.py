@@ -11,7 +11,7 @@ import hashlib, json, os, shutil, signal, subprocess, sys, time
 from pathlib import Path
 from datetime import datetime, timezone
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 ATTEMPTS = BASE / "outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts"
@@ -34,7 +34,7 @@ RSS_MIB = 2048
 STEP = "adaptive"
 ORDER = 20
 RADIUS = "3e-10"
-MACHINE = "056ff109-1c8e-49fc-9983-1c1caa02e796"
+MACHINE = "<redacted>"
 
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 

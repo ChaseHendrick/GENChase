@@ -77,7 +77,7 @@ The source/unit/charge audit and ordinary four-grid action-potential propagation
 
 ## Workspace and GitHub
 
-Workspace root: `/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote`. Study files are in `outputs/cardiac-study/` and `work/cardiac-study/`. Bundled Python is `/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3`; existing plotting dependencies are in `work/figuredeps/`.
+Workspace root: `<workspace>`. Study files are in `outputs/cardiac-study/` and `work/cardiac-study/`. Bundled Python is `<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3`; existing plotting dependencies are in `work/figuredeps/`.
 
 The notes checkout is `work/publication-automation-checkout`, branch `codex/handoff-2026-09-30`, draft PR259: https://github.com/ChaseHendrick/GENChase/pull/259. Notes commit `c9083f09183a9317cd1805e8e670de8158c9ef84` was pushed before the pause, and build/science/lint/diff checks passed locally. This paused handoff is included in a subsequent notes commit. Recheck GitHub checks at that final head; earlier green CI is not evidence for a later commit. No application source or technique validation status was changed. PR255/full application sweep and the GENChase release remain separate work.
 

@@ -1,0 +1,68 @@
+{
+ "note": "Measured values are from the pilot runs named; every other number is an extrapolation by the arithmetic in extrapolate.py's docstring.",
+ "tau_ms": 33.8196585255,
+ "scoping_estimate": {
+  "per_step_s": [
+   40.0,
+   100.0
+  ],
+  "steps_order20": 9850,
+  "steps_order30": 5000,
+  "core_hours": [
+   110.0,
+   270.0
+  ],
+  "stop_rule_core_hours": 1000.0
+ },
+ "allowance_full_map": [
+  0.0,
+  0.15
+ ],
+ "runs": {
+  "ref1ms_rect20": {
+   "measured": {
+    "set": "C1Rect2Set",
+    "order": 20,
+    "window_t0_ms": 0.75,
+    "reached_ms": 1.0,
+    "steps": 373,
+    "steps_used": 371,
+    "mean_step_ms": 0.002685546875,
+    "step_ms_min_max": [
+     0.002685546875,
+     0.002685546875
+    ],
+    "wall_per_step_s": 20.524617475390837,
+    "wall_per_step_s_min_max": [
+     19.09289761,
+     26.52296866
+    ],
+    "wall_total_s": 7672.47,
+    "user_cpu_s": 7519.75,
+    "peak_rss_GiB": 1.435,
+    "h_times_942_per_ms": 2.52978515625,
+    "end_c0_max_relative_diameter": 3.194050581e-09,
+    "end_c0_max_relative_diameter_at": "cell 6 state 4",
+    "end_c0_max_diameter_scaled": 2.903673968e-10,
+    "end_derivative_max_entry_width_scaled": 1.065419133e-05,
+    "max_over_steps_derivative_entry_width_scaled": 1.065419133e-05,
+    "end_derivative_max_relative_width_large_entries": 1.824560627e-07
+   },
+   "extrapolated": {
+    "steps_per_ms": 372.3636363636364,
+    "core_s_per_ms": 7642.62119810917,
+    "steps_per_shift": 12593.211029131637,
+    "core_hours_per_shift": 71.79745532216661,
+    "core_hours_per_C1_shift_map": [
+     71.79745532216661,
+     82.5670736204916
+    ],
+    "wall_days_per_C1_shift_map_single_thread": [
+     2.9915606384236093,
+     3.4402947341871504
+    ],
+    "ratio_to_stop_rule": 0.0825670736204916
+   }
+  }
+ }
+}

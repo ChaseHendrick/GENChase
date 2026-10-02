@@ -45,6 +45,6 @@
   ],
   "proposal_before_sha256": "e09cdea5baf9399f8ecde7128233b122fe554d84c6e9f36b52e476791fff4644",
   "proposal_after_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624",
-  "backup": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
+  "backup": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/A-ZERO-PROPOSAL-V1.pre-G1-backup.json",
   "checklistAllPassed": true
 }

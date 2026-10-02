@@ -95,7 +95,7 @@ GENChase: the companion repository does not carry `notes/`.
   form for every triple of circulations and describes the possible shapes, but does not discuss the extremum; this
   narrows the wording and adds no claim.
   Open: O'Neil, Regul. Chaotic Dyn. 12 (2007) 117-126 (four-vortex collapse configurations at a fixed rate) is
-  unread (paywalled); it bears on the four-vortex minimum of Theorem 4 only. Release 2.2.0 adds no novelty
+  known from its abstract (subscription only); it bears on the four-vortex minimum of Theorem 4 only. Release 2.2.0 adds no novelty
   statement: the sentence after Proposition 3 still says that the sources give the rates and none minimizes or
   bounds their ratio, now naming them, and the expansion of F_n carries no claim, since no prior-article search
   for it is logged. The identification of the Chen-Walsh-Wheeler configurations claims nothing new about them.
@@ -177,5 +177,5 @@ GENChase: the companion repository does not carry `notes/`.
   the response to each finding: `notes/review-identities-4-2026-09-27.md`.
 - [x] **7. Reproducible.** The programs in `code/` run from the companion (release 2.2.0,
   doi:10.5281/zenodo.22994932, made 2026-09-27; release 2.1.0, doi:10.5281/zenodo.22966989, before it); `paper-check` and `paper-sync --check` pass
-  (2026-09-27, after the fixes of the fourth 2.2.0 reading), and the stated counts are current: 42 pages, 43
-  references, 152 checks in `verify_general_mu.py` and 103 in `verify_central_vortex.py`.
+  (2026-09-27, after the fixes of the fourth 2.2.0 reading), and the stated counts are current: 43 pages as built
+  with Tectonic, 43 references, 152 checks in `verify_general_mu.py` and 103 in `verify_central_vortex.py`.

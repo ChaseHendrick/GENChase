@@ -1,0 +1,12 @@
+Stable Rotating Waves in Rings of a Modified Ventricular Myocyte Model Near a Hopf Point: Computer-Assisted Proofs in Fourier Space:
+programs and data.
+Copyright 2026 Chase Hendrick
+
+The cell model translated in code/model/tp06_18d.py, code/model/tp06_capd.hpp and the generated
+code/fourier/tp06_18d_arb.py is A. H. Erhardt's fun_eval of "bifurcation analysis/TP06_18d_endo_bif.m" in the
+repository andreerhardt/cardiac-dynamics-of-a-human-ventricular-tissue-model-with-focus-on-early-afterdepolarizations
+(commit dc78f86fd218418e029ec43d945bcd0fc54b9f1e), MIT License, Copyright (c) A. H. Erhardt. It is a modification of
+the ten Tusscher-Panfilov 2006 human ventricular cell model.
+
+code/proofs/capd-6.1.0-genchase.patch modifies a header of CAPD 6.1.0 and is subject to CAPD's own licence; CAPD
+itself is not included here.

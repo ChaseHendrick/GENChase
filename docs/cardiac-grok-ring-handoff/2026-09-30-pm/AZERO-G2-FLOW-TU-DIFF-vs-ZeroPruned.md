@@ -4,8 +4,8 @@ Declared scope: include/typedef rename ZeroPrunedSparseMap→AZeroPrunedSparseMa
 ZeroPruned production TU untouched.
 
 ```
---- /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp	2026-09-30 06:57:12
-+++ /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_azero.cpp	2026-09-30 10:06:36
+--- <workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp	2026-09-30 06:57:12
++++ <workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_azero.cpp	2026-09-30 10:06:36
 @@ -1,5 +1,8 @@
 +// Isolated A-zero C1 flow TU. Uses AZeroPrunedSparseMap (sparse override).
 +// DO NOT replace production ZeroPruned headers. NOT admitted for proof.

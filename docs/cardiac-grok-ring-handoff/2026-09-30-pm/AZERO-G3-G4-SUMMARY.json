@@ -3,7 +3,7 @@
   "writtenAtET": "2026-09-30 10:11:21 ET",
   "writtenAtUTC": "2026-09-30T14:11:21Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "G3": {
     "verdict": "PASS",
     "receipt_sha256": "782cb87f9356934637e437af730c4b4f91bad45ef60ac296ae751371f07081d8",

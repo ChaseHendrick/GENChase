@@ -3,7 +3,7 @@
 **Status:** DESIGN ONLY. Next action = **await user go**. Do **not** start a 32 C1, A-zero native pilot, or production header swap from this document alone.
 **Written:** 2026-09-30 10:03:24 ET
 **Agent:** Grok-only executor
-**MachineId:** `056ff109-1c8e-49fc-9983-1c1caa02e796`
+**MachineId:** `<redacted>`
 **PM dir:** `outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/`
 
 Companion: `AZERO-C1-SPEED-ADMISSION-PLAN-v1.json` (same directory).

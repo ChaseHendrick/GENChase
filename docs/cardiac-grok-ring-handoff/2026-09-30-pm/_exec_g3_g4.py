@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json, re, shutil, subprocess, time
 from pathlib import Path
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 ADMIT = PREF / "a-zero-admission-grok"
@@ -217,7 +217,7 @@ def run_g3(live):
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
     }
     (out / "LIVE-HASHES.json").write_text(json.dumps(live_hashes, indent=2) + "\n")
     audit["controlEvidence"]["LIVE-HASHES"] = sha(out / "LIVE-HASHES.json")
@@ -260,7 +260,7 @@ def run_g3(live):
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "audit_dir": str(out),
         "audit_path": str(out / "SUPPLIER-SOURCE-AUDIT.json"),
         "audit_sha256": sha(out / "SUPPLIER-SOURCE-AUDIT.json"),
@@ -601,7 +601,7 @@ def run_g4(live):
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "tag": f"g4-sparse-c1-equivalence-grok/{tag}",
         "result_path": str(result_path),
         "result_sha256": sha(result_path),
@@ -646,7 +646,7 @@ def main():
         "writtenAtET": NOW_ET,
         "writtenAtUTC": NOW_UTC,
         "agent": "Grok-only",
-        "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+        "machineId": "<redacted>",
         "G3": {"verdict": g3["verdict"], "receipt_sha256": sha(PM / "AZERO-G3-SUPPLIER-AUDIT-RECEIPT.json"), "audit_sha256": g3["audit_sha256"]},
         "G4": {"verdict": g4["verdict"], "receipt_sha256": sha(PM / "AZERO-G4-EQUIVALENCE-RECEIPT.json"), "result_sha256": g4["result_sha256"]},
         "both_passed": g3["all_passed"] and g4["all_passed"],

@@ -1,0 +1,248 @@
+# Cardiac cycle certificates (independent pipeline)
+
+Status: work in progress, drafted in this repository under the owner's standing decision of 2026-09-26 (AGENTS.md).
+A claim counts as a theorem here only in one of two cases:
+* a CAPD record in `results/*.json` says `"verified": true`;
+* a Fourier-route record is listed in `results/fourier-review-status.json` as having passed this project's
+  adversarial review.
+
+In both cases the run must be reproducible from the commands below. What each review checked is in `reviews/`.
+
+## What this is
+
+An independent re-implementation, in a separate code base, of the computer-assisted proofs recorded in
+`docs/CARDIAC-HANDOFF-2026-09-30.md` (the other pipeline lives on the owner's machine), extended to:
+
+1. the fixed 18-state cell at G_Ks = 0.0275 (re-certification);
+2. a G_Ks interval toward the Hopf point (owner's request, "rec 2");
+3. rotating waves in rings of N = 8, 16, 32, 64 cells (coupling c = N^2 D, D = 1/64000 per ms);
+
+and, separately, scoping of a full action-potential reentry proof (`ap-reentry/`, rec 3).
+
+## Model
+
+`fun_eval` of `bifurcation analysis/TP06_18d_endo_bif.m` in A. H. Erhardt's MIT-licensed repository
+`andreerhardt/cardiac-dynamics-of-a-human-ventricular-tissue-model-with-focus-on-early-afterdepolarizations`, commit
+`dc78f86fd218418e029ec43d945bcd0fc54b9f1e`, file SHA-256
+`a50f6c08b4360dd257cce389a39ae72fda51e3642641bf5b8e5fced6c2225670` (checked on 2026-10-01). It is Erhardt's
+18-state modification of the ten Tusscher-Panfilov 2006 endocardial cell, and should be called that, not "the TP06
+cell". It differs from the published TP06 cell in four ways:
+
+1. K_i is a parameter held at 138.3 mM (19 states become 18);
+2. the Heaviside switch at V = -40 mV in the h and j rates is replaced by u = 1/(1+exp(-5(V+40)));
+3. Erhardt's reduced-repolarization parameters: G_Kr = 0.0153 (0.1 times the endocardial value), G_CaL = 0.000199
+   (5 times), with G_Ks the continuation parameter (0.0275 here);
+4. Erhardt's capacitance convention: par_Cm = 1 divides dV/dt and also multiplies the Ca_i, Ca_ss and Na_i fluxes
+   (lines 145, 147, 148 of the source), so Cm/(V_c F) is 5.405 times its value in the original-author and CellML
+   convention (Cm = 185 pF). Every concentration flux is therefore 5.405 times the published TP06 value.
+
+Erhardt, Front. Phys. 13 (2025) 1569121, reports for this 18-dimensional model a supercritical Hopf bifurcation at
+G_Ks = 0.027907858929580 with stable bifurcating cycles; the cycle certified here is consistent with that branch
+(identification by numerics, not proved).
+
+* `model/tp06_18d.py`: line-by-line reference translation (floats, numpy or mpmath).
+* `model/tp06_capd.hpp`: the CAPD vector field. Three deliberate, exact rewrites, recorded so a reviewer can check them:
+  1. every non-integer decimal enters as an interval enclosing that exact decimal (`model/setup.hpp`), so the proofs
+     are about the model as written, not its double rounding;
+  2. the source's `(1-u)` is computed as `1/(1+exp(5(V+40)))`, the same function: near V = 0, u is within 1e-80 of 1
+     and `1-u` loses all precision (the interval version carries a spurious width of about 1e-16);
+  3. each logarithm log(a) is computed as 2 log(sqrt(a)), the same function for a > 0, so that a nonpositive argument
+     stops the run in both arithmetics (see Domain below).
+* Integration variables are z = x / sigma with sigma a power of two per variable (`model/scales.txt`); scaling by a
+  power of two is exact in binary floating point and only changes conditioning.
+* `numerics/compare_rhs.py` compares the CAPD field with the Python reference at 40 random states: the double values
+  agree to 6e-13 relative, and each interval enclosure contains an mpmath evaluation (50 digits) of the Python
+  reference at the same point, within a relative tolerance of 1e-13 that absorbs the Python file's own float
+  literals. It is a translation check, not a proof that the enclosures are tight.
+* `numerics/hopf_and_orbit.py` reproduces Erhardt's Hopf point to 5e-7 relative (0.0279078439 against
+  0.0279078589) and frequency to 3e-7 relative with an ordinary finite-difference Jacobian.
+
+## Method (`proofs/verify.cpp`)
+
+Section S0 = {V_0 = s}, s the double nearest 0.2 mV, crossed upward. For N = 1 the section map g is the first
+return map; for a ring, P runs from S0 to the first upward crossing of {V_{N-1} = s} and g(x)_j = P(x)_{j-1}.
+
+In coordinates x = xhat + A(0, y) proposed by `proofs/frame.py` (eigenvectors of the section-map derivative, and an
+orthonormal Schur basis for eigenvalues below 1e-6), with a block norm ||y|| = max_b ||y_b||_2 / rho_b, the program
+encloses G(0) (centre, 128-bit MPFR intervals) and DG over the whole box (C1 Lohner method, double intervals) and
+checks
+
+* q = max_b sum_c ||M_bc|| rho_c / rho_b < 1 (M encloses DG over the box; exact spectral bound on diagonal 2x2
+  blocks, Frobenius bounds elsewhere), and
+* ||G(0)_b|| / rho_b + (row sum of block b) < 1 for every block b,
+* every bound entering the decision is finite, and the centre's section time lies inside the box's section time
+  (both runs resolve the same crossing).
+
+Then G maps the ball into itself and is a q-contraction there (mean value inequality on a convex set), so g has a
+unique fixed point in the ball and every eigenvalue of Dg there has modulus at most q.
+
+**Single cell.** g is the first return map, so its derivative's eigenvalues are the 17 nontrivial Floquet
+multipliers; all have modulus at most q < 1 and the orbit is locally orbitally asymptotically stable. The period is
+the section time (the first return time of a periodic orbit through the section is its minimal period).
+
+**Rings.** The ring field is equivariant under the cyclic shift Q, (Qx)_k = x_{k+1}: f(Qx) = Q f(x). A fixed point
+x* of g = Q^{-1} P gives phi(tau, x*) = Q x*, hence x_j(t) = x_0(t + j tau) and N tau is a period. Write h = Q^{-1}
+phi_tau; then phi_{N tau} = h^N near the orbit (equivariance), the monodromy over N tau is Dh(x*)^N, and on the
+section Dg is the quotient of Dh modulo the flow direction. So the nontrivial Floquet multipliers of the
+period-N tau orbit are lambda^N for the eigenvalues lambda of Dg(x*), with modulus at most q^N < 1 (the record gives
+q^N as `floquet_bound_full_period_upper`). Minimal period and wave number: on [0, tau] the cells' trajectories
+cover phi on [0, N tau]; the period gate shows that no cell j <= N-2 crosses s upward on [0, T_hi], so phi has exactly
+one upward crossing per N tau, the minimal period is N tau, and the solution is a single rotating wave (a k-wave would
+have k crossings). Nonsynchrony: the box guard V_{N-1}(0) < s = V_0(0).
+
+**Domain.** The model's logarithms, square roots and divisions are only defined on part of state space. In the
+double runs, CAPD's filib wrapper throws when a divisor contains 0, a log argument is not positive or a sqrt
+argument is negative; CAPD's step control retries with smaller steps and rethrows at its minimum step, so the run
+fails. An exp overflow (exp(5(V+40)) above V of about 102 mV) terminates the process. CAPD's MpInterval log does not
+check its argument (it returns NaN bounds, which later products turn into 0), so every log is computed as
+2 log(sqrt(a)) and MpInterval sqrt refuses a negative argument. No run can pass silently outside the domain.
+
+**Trust boundary (CAPD route).** CAPD 6.1.0 (commit `03dc5628203334b214bb7d9fd63788a175521005`, built here with filib and MPFR,
+unmodified), the compiler (g++ 13.3, `-frounding-math`), the processor's directed rounding, and the programs in this
+folder. The untrusted helpers (`orbit_newton.cpp`, `frame.py`) only propose a centre, a frame and radii; the
+certificate driver (`proofs/certify.py`) checks that the frame's parameters are the intended ones and records the
+hashes of the inputs and of the verifier binary.
+
+CAPD patch (applied 2026-10-01 with the owner's approval): in `PoincareMap::crossSectionInOneStep`
+(PoincareMap_templateMembers.h, lines 260-266) upstream trims the crossing-point bound with the endpoints of the
+previous Newton window while monotonicity was checked on the current one, which is unsound if the Newton loop stops
+at its 10-iteration cap without converging. The local build uses the current window's endpoints
+(`proofs/capd-6.1.0-genchase.patch`, a header-only change). Certificates record the hash of the patched header;
+records made before the patch say "conditional on the CAPD crossing issue" and are superseded by reruns.
+
+## Method 2: space-time Fourier and Hill operator (`fourier/`)
+
+This second method shares no library with the CAPD route. Its trust base is Arb, through python-flint 0.9.0, a pinned
+wheel. N enters only as a scalar damping on V in each Fourier mode, so the cost is minutes per N, not gigabytes.
+
+* **Stage E, existence** (`fourier/existence.py`).
+  - Write the rotating 1-wave as x_j(t) = phi(omega t + 2 pi j/N). Then
+    F_m = i omega m a_m - [f o phi]_m + d_m E a_m = 0, with d_m = 4 c sin^2(pi m/N), plus a phase condition.
+  - This is solved by a radii-polynomial (Newton-Kantorovich) argument in C x (l^1_nu)^18.
+  - The bound on the nonlinear part comes from rigorous strip covers and DFTs with an aliasing bound, plus an
+    analytic tail. The second-derivative bound Z2 is a polydisc Cauchy majorant.
+  - Conjugation symmetry together with uniqueness makes the solution real.
+* **Stage S, stability** (`fourier/stability.py`, lemmas in `fourier/LEMMAS-stability.md`).
+  - The 18N Floquet multipliers are e^{mu T}, with mu in the spectrum of one Hill operator H_0 on a half-open strip
+    of height omega N. Algebraic multiplicities match.
+  - A Riesz-projection homotopy, with a Schur-complement small-gain test and a tail resolvent in power-of-two
+    weighted cell coordinates, certifies two things: H_0 has exactly one eigenvalue (0, algebraically simple) in
+    Re mu > -delta per period strip, and the multiplier 1 is simple.
+  - Stage E's ball enters through Lemma 4.1.
+* **Trust boundary (Fourier route).** Arb and FLINT through python-flint 0.9.0 (the wheel's SHA-256 is pinned and
+  checked by `fourier/test_arbmodel.py`), CPython, the programs in `fourier/` and `model/`, and the written lemmas
+  (`fourier/LEMMAS-stability.md` and the docstrings of `fourier_eval.py` and `existence.py`). numpy and LAPACK only
+  propose centres, eigenvectors and weights, and every bound that uses them is checked in Arb.
+
+## Status (2026-10-01)
+
+* Model translation: checked (see above).
+* **Fixed cell at G_Ks = 0.0275: verified** on the patched CAPD build (`results/cell-gks0.0275.json`, 732 s). A
+  unique fixed point of the first return map in the certified ball; period in [53.5855190480, 53.5855196307] ms
+  (exact bounds in the record), inside the other pipeline's [53.58551856, 53.58552012]; all 17 nontrivial Floquet
+  multipliers of modulus at most 0.998642; locally orbitally asymptotically stable. The unpatched run gave the same
+  bounds.
+  `fourier/link_cell.py` (exact rationals, 2026-10-01) checks that the section point of the Fourier N = 1 orbit lies in
+  this certified ball, so the CAPD and Fourier cell certificates enclose the same orbit (assuming the two translations
+  of the model define the same function).
+* **Rings, Fourier route (Stage E plus Stage S): proved for N = 1, 8, 16, 32, 64, subject to the trust base below.** Each stage had an in-project
+  adversarial review, and every finding was fixed (`reviews/fourier-stage1-review-2026-10-01.md`,
+  `reviews/stability-lemmas-review-2026-10-01.md`, `reviews/stageE-existence-review-2026-10-01.md`,
+  `reviews/stageS-stability-review-2026-10-01.md`). A second reading of the fixes
+  (`reviews/fix-second-reading-2026-10-01.md`) found nothing unsound. The outcome, **passed in-project adversarial
+  review**, is recorded in `results/fourier-review-status.json`, outside the hashed records: the records keep the
+  status the programs wrote, and the Stage S records hash the Stage E records. `fourier/check_records.py` rechecks
+  every stored hash. What was and was not checked is stated in the review files.
+  - Existence (`results/fourier-existence-N*.json`):
+    - each N has a unique rotating 1-wave within about 1.6e-28 (scaled l^1_nu) of the centre;
+    - the period is enclosed in an interval narrower than 2e-25 ms: 53.585519339361169209918980 (N = 1), 53.587970976819449674150820 (8),
+      53.588069103590169235937300 (16), 53.588094130318032506551540 (32) and 53.588100418317577541042130 (64), each
+      the record's outward-rounded decimal lower end (23 decimals, a trailing zero added);
+    - the N = 1 period lies inside the CAPD record (`results/cell-gks0.0275.json`), and the N = 1, 8 and 16 periods
+      lie inside the other pipeline's certified intervals.
+  - Stability (`results/fourier-stability-N*.json`):
+    - every nontrivial Floquet multiplier has modulus at most e^{-delta T};
+    - delta = 5e-6 per ms for N = 8 to 64, and 4e-5 for N = 1;
+    - in moduli, 0.99973210 per period for N = 8 to 64, and 0.99785888 for N = 1, which is consistent with CAPD's
+      0.998642;
+    - so the orbit is locally exponentially orbitally stable with asymptotic phase.
+  - Floating-point leading exponents are -6.32e-6, -8.57e-6, -9.19e-6 and -9.34e-6 per ms for N = 8, 16, 32, 64. At
+    N = 8 the certificate closes at delta = 6.32095e-6 and fails at 6.321e-6.
+  - Identifying these waves with the branch continued from Erhardt's Hopf point is numerical, not proved.
+  - Prior-article search and readings: `notes/prior-article-rings-2026-10-01.md`, `notes/readings-rings-2026-10-01.md`
+    and RESEARCH.md.
+* Rings, CAPD route: the N = 8 and 16 candidates and Perron roots below 1 are as before. The 128-bit centre is too
+  heavy at N >= 8 on this machine. This route would be a second, time-domain proof only.
+* **G_Ks interval (rec 2), Fourier route: computed; awaiting adversarial review** (`fourier/branch.py`, record
+  `results/fourier-branch-gks.json`, logs in `fourier/data/branch/`). Nobody has yet given it the second reading that
+  Stage E and Stage S had.
+  - Theorem, as computed. Take the single cell (N = 1) and any G_Ks in [0.027499735464, 0.027619866374]. Then there is
+    a real periodic orbit z(t) = phi*(omega* t), with phi* 2 pi periodic and analytic on |Im theta| < 1/4, the phase
+    fixed by Im a_{1,V} = 0. It is the only zero of F(.; G_Ks) in the uniqueness ball of each piece containing G_Ks.
+    The norm is that of C x (l^1_nu)^18 with nu = e^{1/4} and the piece's dyadic weights. The minimal period lies in
+    the piece's T enclosure, from [53.58455, 53.58649] ms on the first piece to [53.30480, 53.30740] ms on the last.
+    G_Ks -> (omega*, phi*) is continuous, Lipschitz on each piece. The interval is covered by 232 pieces, 5.2e-7 to
+    6.6e-7 wide, in 17 groups. Consecutive pieces overlap by a tenth of a piece and are glued by ball inclusion
+    (Theorem B3), so the orbits form one connected branch. The bounds hold for every G_Ks of a piece, not only for
+    sampled values: Theorem B1 uses the mean value theorem in G_Ks, and Lemma B2 gives Z2 through Hessian enclosures.
+    On every piece Z1 <= 0.106, Z2 is 490 to 526, the contraction factor at the uniqueness radius is at most 0.914,
+    and the existence radius is 3.8e-4 to 5.3e-4 in the weighted norm. The piece containing 0.0275 encloses Stage E's
+    N = 1 period.
+  - Stability is pointwise only. Stage S certifies the orbit at G_Ks = 0.0275, 0.02755 and 0.0276, with
+    delta = 4.0e-5 per ms, so every nontrivial multiplier has modulus at most 0.99786. At each of these three values
+    a ball-inclusion check in Arb shows that the stable orbit is the branch orbit. Nothing is certified at the other
+    G_Ks of the range. The uniform attempt (Stage S fed with a piece's existence radius) fails as documented in
+    `branch.py` section 6 (theta_T about 1e13). The record also holds point proofs at 0.02765 to 0.0279, beyond the
+    branch. These are existence and stability at those values only: the program does not prove that those orbits
+    continue the branch.
+  - Reach toward Erhardt's Hopf point 0.027907858929580: the branch covers 29 per cent of the way from 0.0275 and
+    stops 2.88e-4 short. The run stopped because a container restart killed the builder during group 17, after that
+    group's centres were written and before any of its pieces were. There are no failed, split or bridged pieces in
+    the logs, so the method did not fail. The pieces must shrink toward the Hopf point (branch.py section 8b; the
+    float-predicted admissible half-width is 5.3e-6 at 0.0275 and 3.2e-8 at 0.0279), and nothing is claimed at the
+    Hopf point itself.
+  - Cost: 144 to 238 s of wall time per group of 12 or 16 pieces on 3 worker processes, about 33 s per piece; 7,675 s
+    of piece time in all.
+  - Checks made at finalization (2026-10-01):
+    - a separate script (validate.py, outside the repository) re-derived every piece's inequalities and all 231
+      gluings from the stored exact numbers; it reuses branch.py's centre parser, `_dstr` and digest, so it is not
+      fully independent code;
+    - the last piece of every group was re-proved from its stored centre and reproduced the logged Y0 and Z1 bit for
+      bit (with a cover rebuilt around that one centre). The rec 2 review (`reviews/rec2-branch-review-2026-10-02.md`)
+      rebuilt the groups' Hessian covers from the groups' centres, reproduced each cover's digest, and then reproduced
+      Y0, Z1, Z2, r_existence and r_uniqueness bit for bit on four pieces (G0P0, G0P11, G8P9, G16P15); the acceptance
+      test now does the same for the piece containing 0.0275;
+    - `fourier/test_branch.py` passes, including the overlap with Stage E N = 1 at 0.0275 and the negative controls.
+  - Resume (appends to the logs; re-validates them and glues the first new piece to the last logged one in Arb):
+    `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 branch.py --run --K 12
+    --g-stop 0.02790 --budget 3300 --workers 3`, then `python3 branch.py --collect` to rewrite the record.
+* **Every N >= 8 and the cable, existence (Stage E for every N), Fourier route: computed; awaiting adversarial review**
+  (`fourier/alln.py`, `fourier/test_alln.py`, record `results/fourier-existence-alln.json`, logs in
+  `fourier/data/alln/`). Nobody has yet given it a second reading.
+  - Theorem, as computed. Put eps = 1/N^2 and let the coupling act on Fourier mode m by
+    d_m(eps) = 4 pi^2 D m^2 sinc(pi m sqrt(eps))^2 (entire in eps; the N-ring value at eps = 1/N^2, D (2 pi m)^2 at
+    eps = 0). For every eps in [0, 1/64] there is a real analytic profile phi*(.; eps) with omega*(eps) > 0, phase
+    phi*_V(0) = s, unique in each piece's ball (X = C x (l^1_nu)^18, nu = e^{1/4}), depending continuously on eps.
+    Consequences: for every integer N >= 8 the N-cell ring has the rotating 1-wave z_j(t) = phi*(omega* t + 2 pi j/N),
+    of minimal period T(1/N^2), not synchronous; at eps = 0, u(x, t) = phi*(omega* t + 2 pi x; 0) is a travelling
+    wave of the cable u_t = D u_xx e_V + f(u) on the unit ring (one wave per ring, classical solution), and the ring
+    waves converge to it in l^1_nu as N -> infinity. Stability is not claimed.
+  - Cover: 73 pieces of width 1/4096 overlapping by 1/8, all glued by ball inclusion; Z1 0.152 to 0.199, Z2 1306 to
+    1373, Y0 6.9e-7 to 7.3e-7, existence radius 8.1e-7 to 9.1e-7, uniqueness radius at least 4.66e-4, contraction at
+    most 0.978. T enclosures are 1.1e-5 to 1.2e-5 ms wide: from [53.5879664001, 53.5879775655] ms on the piece
+    containing 1/64 to [53.5880952982, 53.5881076369] ms on the cable piece [0, 1/4096].
+  - The tail resolvents are bounded uniformly in d >= 0 (alln.py Lemma T), which covers d_m ~ m^2 at eps = 0; the
+    eps dependence of the finite part goes through the mean value theorem with a rigorous series for d'_m.
+  - Identification: for N = 8, 16, 32, 64 the per-N Stage E existence ball lies in the uniqueness ball of the piece
+    containing 1/N^2, so the per-N waves are members of this family; each Stage E T record lies inside the piece's
+    T enclosure.
+  - Controls (`fourier/data/alln/controls.jsonl`, rerun in `test_alln.py`):
+    - omitting the eps-derivative terms leaves Y0 = 3.4e-11 on [0, 1/4096], below the float residual 7.25e-7 at
+      its endpoints (4.6e-13 at its centre);
+    - the widened pieces [0, 1/16], [0, 1/8], [0, 1/4] and [0, 1] fail (Z1 = 1.27 to 16.1);
+    - [0, 1/1024], [0, 1/256] and even [0, 1/64] as a single piece close (Z1 = 0.30 for [0, 1/64]); these
+      single-piece proofs are not part of the record's cover.
+  - Cost: 1,568 s of wall time on 2 worker processes (3,129 s of piece time, 28 to 63 s per piece).
+  - Run: `cd fourier && PYTHONPATH=<python-flint 0.9.0> nohup nice -n 10 timeout 3600 python3 alln.py --run --width
+    1/4096 --overlap 1/8 --workers 2`, then `python3 alln.py --controls` and `python3 alln.py --collect`. The run is
+    resumable from `fourier/data/alln/pieces.jsonl` (one line per certified piece).

@@ -3,7 +3,7 @@
   "tag": "ring64-H-products-grok-20260930-v1",
   "role": "R64-H-products",
   "agent": "grok",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "machine_label": "Chases-MacBook-Pro",
   "utc_start": "2026-09-30T13:27:13Z",
   "local_start_label": "2026-09-30T09:27:13-0400 (ET)",
@@ -37,22 +37,22 @@
     }
   },
   "paths": {
-    "script": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
+    "script": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
     "script_sha256": "f112ac5ed1549a468f1545a0b882c8af4696ea3ce6df15c57be9e930286873a0",
-    "python": "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-    "output": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
-    "supervisor_log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ring64-H-products-grok-20260930-v1-supervisor.log",
-    "admission_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1",
-    "budget": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/BUDGET.json",
-    "source_admission": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/SOURCE-ADMISSION.json",
-    "independent_review": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/INDEPENDENT-REVIEW.json",
-    "prep": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1"
+    "python": "<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3",
+    "output": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1",
+    "supervisor_log": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ring64-H-products-grok-20260930-v1-supervisor.log",
+    "admission_dir": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1",
+    "budget": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/BUDGET.json",
+    "source_admission": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/SOURCE-ADMISSION.json",
+    "independent_review": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-source-admission-grok-20260930-v1/INDEPENDENT-REVIEW.json",
+    "prep": "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1"
   },
   "command_argv": [
-    "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
+    "<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3",
+    "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/run_fixed_H.py",
     "--output",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1"
+    "<workspace>/work/cardiac-study/tissue-proof-review/ring64-H-positivity-preparation-v1/ring64-H-products-grok-20260930-v1"
   ],
   "authorization": {
     "source_admission_accepted": true,

@@ -1,5 +1,5 @@
---- /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/ring_flow_zero_pruned.cpp.pre-fixed-quarter-prod-patch-20261001	2026-09-30 06:57:12
-+++ /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp	2026-10-01 05:05:54
+--- <workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/backups/ring_flow_zero_pruned.cpp.pre-fixed-quarter-prod-patch-20261001	2026-09-30 06:57:12
++++ <workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp	2026-10-01 05:05:54
 @@ -1,4 +1,6 @@
  // Rigorous flow attempt. Existence and stability require a separate checker.
 +// Prod patch 2026-10-01: FixedQuarterStepControl + forceFixedQuarter (exact h=1/4).

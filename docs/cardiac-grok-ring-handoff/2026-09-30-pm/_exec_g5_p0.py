@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json, os, shutil, signal, subprocess, time
 from pathlib import Path
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 ADMIT = PREF / "a-zero-admission-grok"

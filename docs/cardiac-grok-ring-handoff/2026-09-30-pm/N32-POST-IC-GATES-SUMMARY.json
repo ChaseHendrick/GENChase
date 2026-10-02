@@ -1,10 +1,10 @@
 {
   "schema": "n32-post-ic-gates-summary-v1",
   "status": "STOPPED_AT_GATE1",
-  "authorization": "AUTHORIZED_BY_SHARPIE_GO_POST_IC_GATES",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_POST_IC_GATES",
   "writtenAtET": "2026-10-01T07:20:22-04:00 (ET)",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "source_c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
   "source_ic_tag": "box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1",
   "gates": {
@@ -21,9 +21,9 @@
         "K_native_products": null
       },
       "paths": {
-        "LAUNCH": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-LAUNCH.json",
-        "SUMMARY": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-SUMMARY.json",
-        "BLOCKED": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-BLOCKED.json"
+        "LAUNCH": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-LAUNCH.json",
+        "SUMMARY": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-SUMMARY.json",
+        "BLOCKED": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-BLOCKED.json"
       }
     },
     "gate2_transverse_orbital_stability": {

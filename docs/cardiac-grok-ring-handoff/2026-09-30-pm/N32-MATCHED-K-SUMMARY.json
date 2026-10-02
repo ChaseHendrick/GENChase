@@ -3,10 +3,10 @@
   "status": "HARD_FAIL_BLOCKED",
   "pass": false,
   "gate": "N32-MATCHED-K",
-  "authorization": "AUTHORIZED_BY_SHARPIE_GO_POST_IC_GATES",
+  "authorization": "AUTHORIZED_BY_OWNER_GO_POST_IC_GATES",
   "writtenAtET": "2026-10-01T07:20:22-04:00 (ET)",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "key_numbers": {
     "q32_exact": "499995373/500000000",
     "ic_minimum_inclusion_margin_approx": 7.410910362926704e-11,
@@ -18,17 +18,17 @@
   "blocker_code": "MISSING_N32_NATIVE_K_HARNESS",
   "blocker_summary": "Matched-K gate cannot launch: no N=32 native root_field_k / ring_flow_k harness under tissue-certification32 (or any ring32 path). V5 can prepare K-ROOT-FIELD-INPUTS.json + root_k_offsets.h from IC FLOW/MATRICES, and root_stability/joint_gate exist, but the required native CAPD K-field (and optional K-C1) binaries/sources for 575-dim / 32 sites are absent. Per standing rule, do not invent/port harness.",
   "missing_harness_files": [
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/root_field_k.cpp",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/ring_flow_k.cpp",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/run_root_field_k.py",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/run_flow_k.py",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/root_k_offsets.h",
-    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-certification32/K-ROOT-FIELD-INPUTS.json"
+    "<workspace>/work/cardiac-study/tissue-certification32/root_field_k.cpp",
+    "<workspace>/work/cardiac-study/tissue-certification32/ring_flow_k.cpp",
+    "<workspace>/work/cardiac-study/tissue-certification32/run_root_field_k.py",
+    "<workspace>/work/cardiac-study/tissue-certification32/run_flow_k.py",
+    "<workspace>/work/cardiac-study/tissue-certification32/root_k_offsets.h",
+    "<workspace>/work/cardiac-study/tissue-certification32/K-ROOT-FIELD-INPUTS.json"
   ],
   "artifacts": {
-    "LAUNCH": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-LAUNCH.json",
-    "BLOCKED": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-BLOCKED.json",
-    "IC_ROOT_INCLUSION_with_offsets": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ROOT-INCLUSION.json"
+    "LAUNCH": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-LAUNCH.json",
+    "BLOCKED": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/N32-MATCHED-K-BLOCKED.json",
+    "IC_ROOT_INCLUSION_with_offsets": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-inclusion-contraction-grok-20261001-v1/ROOT-INCLUSION.json"
   },
   "fixedQuarterLivePrefSha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
   "admitted_for_proof": false,

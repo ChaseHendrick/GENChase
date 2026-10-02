@@ -3,17 +3,17 @@
   "writtenAtET": "2026-09-30 10:06:36 ET",
   "writtenAtUTC": "2026-09-30T14:06:36Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "G1": {
     "verdict": "PASS",
     "receipt_sha256": "182758c7574a43da24553f9581e22bbba2835c860f17c88f8ce5321b8c77d621",
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G1-LEDGER-RECEIPT.json",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G1-LEDGER-RECEIPT.json",
     "proposal_sha256": "79bb1be925be12571a57791bce2a0f650c58ea9f1f81fdcfa138ead364f31624"
   },
   "G2": {
     "verdict": "PASS",
     "receipt_sha256": "6163e2f39e839a9e05b218b78d0bc73e5c64a54f95416afe3d423f7a8147008f",
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G2-BUILD-RECEIPT.json",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-G2-BUILD-RECEIPT.json",
     "tag": "azero-large-return-build-n32-v1",
     "binary_sha256": "4b24c4b7a63e117b46fefdda807e817735823822012af6d281a58bdf6a990408",
     "compile_seconds": 3.385225125

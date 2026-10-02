@@ -2,9 +2,9 @@
 import hashlib, json, shutil, subprocess, time
 from pathlib import Path
 
-ADMIT = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok")
+ADMIT = Path("<workspace>/work/cardiac-study/tissue-scalability-preflight/a-zero-admission-grok")
 PREF = ADMIT.parent
-PM = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm")
+PM = Path("<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm")
 TAG = "20260930-v3"
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 load = lambda p: json.loads(Path(p).read_text())
@@ -210,7 +210,7 @@ controls_out.append({
 run = {
     "schema": "azero-controls-run-20260930-v3",
     "agent": "Grok-only",
-    "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+    "machineId": "<redacted>",
     "machine_label": "Chases-MacBook-Pro",
     "writtenAtET": now_et,
     "writtenAtUTC": now_utc,
@@ -274,7 +274,7 @@ role07 = {
         "controls_executor": "Grok-only admission executor",
         "c2_harness_fix": "Grok-only (this turn); prototype untouched",
     },
-    "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+    "machineId": "<redacted>",
     "writtenAtET": now_et,
     "verdict": "accept" if ind["accepted"] else "reject",
     "accepted": ind["accepted"],

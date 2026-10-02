@@ -15,7 +15,7 @@
   "writtenAtET": "2026-09-30T14:52:46-0400 (ET)",
   "writtenAtUTC": "2026-09-30T18:52:46Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "start_et": "2026-09-30T14:17:12-0400 (ET)",
   "start_utc": "2026-09-30T18:17:12Z",
   "stop_reason": "stop_physical_ms_reached",
@@ -59,8 +59,8 @@
   "full_period_return": false,
   "spatial_existence_certified": false,
   "spatial_stability_certified": false,
-  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
-  "tubes_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1",
+  "tubes_path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl",
   "raw_flow": {},
   "native_exit": -15,
   "pids": {
@@ -81,7 +81,7 @@
     "native_pgid": 39022,
     "supervisor_pid": 39017,
     "supervisor_pgid": 39017,
-    "native_ps_before_signal": "39022 39022 /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/ring_flow --box 3e-10 /Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl 20 3595 adaptive 2048",
+    "native_ps_before_signal": "39022 39022 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/ring_flow --box 3e-10 <workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-azero-adaptive-radius3e10-speed-pilot-grok-20260930-v1/TUBES.jsonl 20 3595 adaptive 2048",
     "native_signal": "SIGTERM",
     "native_exit": -15,
     "confirmed_native_gone": true

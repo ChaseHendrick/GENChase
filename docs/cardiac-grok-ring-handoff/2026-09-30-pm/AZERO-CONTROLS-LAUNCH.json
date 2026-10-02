@@ -3,8 +3,8 @@
   "orchestrator_pid": 98907,
   "pgid": 98907,
   "nice": 19,
-  "log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/azero-controls-orchestrator-20260930-v1.log",
-  "python": "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "log": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/azero-controls-orchestrator-20260930-v1.log",
+  "python": "<codex-runtimes>/codex-primary-runtime/dependencies/python/bin/python3",
   "started_et": "2026-09-30 09:49:41 ET",
-  "AZERO_RUN_OUT": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-CONTROLS-RUN-INTERNAL-tmp.json"
+  "AZERO_RUN_OUT": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/AZERO-CONTROLS-RUN-INTERNAL-tmp.json"
 }

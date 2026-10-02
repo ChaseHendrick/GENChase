@@ -2,25 +2,25 @@
   "schema": "n32-posthoc-run-report-v1",
   "status": "WRITTEN_BUT_LOAD_RUN_REJECTED",
   "gate": "N32-POSTHOC-RUN-REPORT-OPTION-A",
-  "authorization": "Sharpie explicit go for option A",
-  "authorizedMarker": "AUTHORIZED_BY_SHARPIE_GO_A",
+  "authorization": "the owner's explicit go for option A",
+  "authorizedMarker": "AUTHORIZED_BY_OWNER_GO_A",
   "writtenAtET": "2026-10-01T06:58:17-0400 (ET)",
   "writtenAtUTC": "2026-10-01T10:58:17Z",
   "agent": "Grok-only-executor",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "c1_tag": "box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
-  "c1_attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+  "c1_attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
   "products_written": {
     "RUN-REPORT.json": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/RUN-REPORT.json",
       "sha256": "d0a1365e05e6e0d7fc949b434b6dde039476aa96ce2483c27d4b8e115b07cf74"
     },
     "BUILD.log": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/BUILD.log",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/BUILD.log",
       "sha256": "092442e6e2f3c10d75ee96029d1c8ecd71d3452ac21e730072e08175a740935d"
     },
     "inputs/run_flow.py_restored": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/run_flow.py",
+      "path": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1/inputs/run_flow.py",
       "sha256": "febdc66d35343f201fef1cbff3f84aa8fe416a8056c57b8dc02f88e5dbcf6935",
       "note": "acceptedRunnerSha256 pin restored; was missing due to harness bypass"
     }
@@ -63,7 +63,7 @@
     "step_count": 16,
     "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
     "POST_HOC": true,
-    "AUTHORIZED_BY_SHARPIE_GO_A": true,
+    "AUTHORIZED_BY_OWNER_GO_A": true,
     "supplier.kind": "ZeroPrunedSparseMap-full-C1-v1",
     "supplier.sourceAudit.sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2",
     "compile_command_has_frounding_math": true,
@@ -95,7 +95,7 @@
       "native": 36864
     },
     "policy_A": "adaptive binary + pre-patch TU snapshot; FixedQuarter prod not used/altered",
-    "origin_build": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1",
+    "origin_build": "<workspace>/work/cardiac-study/tissue-scalability-preflight/runs/zero-pruned-large-return-build-n32-v1",
     "BUILD.log_policy": "post-hoc provenance header + copied real origin BUILD.log compiler stdout"
   },
   "load_run_dry_check": {
@@ -104,7 +104,7 @@
     "point28_accepted": true,
     "point28_note": "OK tubes=16",
     "exact_rejection": "ValueError: stale source audit dependency",
-    "stale_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
+    "stale_path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/ring_flow_zero_pruned.cpp",
     "stale_expected_sha256": "5b85695c7948a7589fe7be4211fd9e22e48c6417a9f0a3936f33e086a4f3879c",
     "stale_actual_sha256": "e9081f2160e17a3661fb8f095c71febb4d44d3cbb9adcec34b1a5b1c1e2da911",
     "rejection_locus": "target_config.check_box_boundary -> check_dependencies(box_boundary_audit, CONFIG['auditedFullReturnSources']) requires live PREF ring_flow_zero_pruned.cpp == acceptedHarnessSha256 5b85695c\u2026",

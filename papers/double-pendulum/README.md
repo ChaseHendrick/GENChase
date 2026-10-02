@@ -13,8 +13,8 @@ archived on Zenodo ([doi:10.5281/zenodo.23050590](https://doi.org/10.5281/zenodo
 The planar double pendulum with two equal point masses on two equal massless rods is the standard example of chaos in
 classical mechanics, but, as far as we could find, neither its chaos nor its non-integrability has been proved at these
 parameters: the known proofs need a small parameter (a weak coupling, a small mass ratio, a special link geometry), and
-the one variational criterion that needs none has been applied only under a parameter condition that, in the text
-available to us, the equal case does not satisfy. We give a computer-assisted proof. At each of the energies
+the one variational criterion that needs none has been applied only under a parameter condition that, in the openly
+searchable text of that paper, the equal case does not satisfy. We give a computer-assisted proof. At each of the energies
 $E = -1/2$, $0$ and $1/2$, in units in which the lower rest state has $E = -3$ and $E = 0$ is the energy of releasing
 both arms from rest in the horizontal position, the flow on the energy level has a hyperbolic periodic orbit with a
 transversal homoclinic orbit, and the same holds simultaneously for every energy in $[-10^{-10}, 10^{-10}]$.
@@ -46,8 +46,9 @@ their output accompany the paper. Meromorphic non-integrability in the sense of 
   crossing without error control.
 - **Limitations:** the proof trusts CAPD's rigorous integrator and Poincaré map (and our reading of its code for sets
   that start on the section), the compiler and the floating-point rounding. Bolotin and Negrini (Russ. J. Math. Phys.
-  5, 1997) were read only in snippet view; the statement that the global non-integrability and the chaos had not been
-  proved rests on that reading (Section 8 of the paper). Only the stated energies are covered. Meromorphic
+  5, 1997) are known from the passages of Sections 3 and 10 that the journal volume's open full-text search displays;
+  the statement that the global non-integrability and the chaos had not been proved rests on those passages (Section 8
+  of the paper). Only the stated energies are covered. Meromorphic
   non-integrability is not proved.
 
 ## Contents
@@ -75,7 +76,7 @@ From this folder (needs g++ with OpenMP, cmake, git and Python 3):
 
 ```
 python3 -m pip install -r code/requirements.txt
-sh code/run_all.sh            # builds CAPD at the pinned commit and the programs; about 85 minutes on 2 threads
+sh code/run_all.sh            # builds CAPD at the pinned commit and the programs; 39 minutes on 2 threads in the run of 2026-09-29
 cd code/crosscheck && for c in kraw3 otherE edges_nr; do python3 $c.py > ../../data/crosscheck_$c.txt; done; cd ../..
 cd paper && pdflatex double-pendulum.tex && pdflatex double-pendulum.tex && pdflatex double-pendulum.tex
 ```

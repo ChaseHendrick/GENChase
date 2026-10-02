@@ -5,7 +5,7 @@ import hashlib, json, os, signal, subprocess, sys, time
 from pathlib import Path
 from datetime import datetime, timezone
 
-BASE = Path("/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote")
+BASE = Path("<workspace>")
 PM = BASE / "outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm"
 PREF = BASE / "work/cardiac-study/tissue-scalability-preflight"
 TAG = "box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v3"
@@ -202,7 +202,7 @@ def main():
     receipt={
       "schema":"zp-fixed-quarter-speed-receipt-v1","pilot":"fixed_h_quarter_speed","tag":TAG,
       "verdict":gate_verdict,"writtenAtET":end_et,"writtenAtUTC":end_utc,"agent":"Grok-only",
-      "machineId":"056ff109-1c8e-49fc-9983-1c1caa02e796","start_et":start_et,"start_utc":start_utc,
+      "machineId":"<redacted>","start_et":start_et,"start_utc":start_utc,
       "stop_reason":stop_reason,"supplier":"ZeroPrunedSparseMap","NOT_AZero":True,
       "step":STEP,"step_policy":"fixed","isolated_maxstep_patch":"setMaxStep(I(1)/I(4)) attempt-local only",
       "production_ring_flow_zero_pruned_untouched": sha(PREF/"ring_flow_zero_pruned.cpp")==PROD_TU,
@@ -233,7 +233,7 @@ def main():
     receipt_path.write_text(json.dumps(receipt, indent=2)+"\n")
     summary={
       "schema":"zp-fixed-quarter-speed-summary-v1","writtenAtET":end_et,"writtenAtUTC":end_utc,
-      "agent":"Grok-only","machineId":"056ff109-1c8e-49fc-9983-1c1caa02e796","tag":TAG,
+      "agent":"Grok-only","machineId":"<redacted>","tag":TAG,
       "verdict":gate_verdict,"supplier":"ZeroPrunedSparseMap","step":STEP,
       "true_quarter_steps_from_tube2":true_quarter,"observed_steps_ms":steps,
       "wall_s_elapsed":elapsed_s,"physical_ms_reached":physical_ms,"tubes":len(tubes),

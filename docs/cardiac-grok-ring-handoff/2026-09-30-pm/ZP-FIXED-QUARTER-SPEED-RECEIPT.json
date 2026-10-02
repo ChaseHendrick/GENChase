@@ -6,7 +6,7 @@
   "writtenAtET": "2026-09-30T14:58:12-0400 (ET)",
   "writtenAtUTC": "2026-09-30T18:58:12Z",
   "agent": "Grok-only",
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "start_et": "2026-09-30T14:58:10-0400 (ET)",
   "start_utc": "2026-09-30T18:58:10Z",
   "stop_reason": "native_exited",
@@ -47,7 +47,7 @@
   "full_period_return": false,
   "spatial_existence_certified": false,
   "spatial_stability_certified": false,
-  "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v1",
+  "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-fixed-quarter-radius3e10-speed-pilot-grok-20260930-v1",
   "raw_flow": {
     "schema": "tissue-ring-native-flow-v1",
     "flowSucceeded": false,

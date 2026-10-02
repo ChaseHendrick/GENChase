@@ -45,7 +45,7 @@
       "passed": true
     }
   ],
-  "audit_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/azero-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
+  "audit_path": "<workspace>/work/cardiac-study/tissue-proof-review/azero-supplier-review-v1/SUPPLIER-SOURCE-AUDIT.json",
   "audit_sha256": "9a575362f7c95bee5caea5cf09f64d1edef965815f07831e018bb5cf89be858c",
   "checklistAllPassed": true
 }

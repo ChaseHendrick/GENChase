@@ -14,7 +14,7 @@
   "c1_products_not_overwritten": true,
   "inclusion_started": false,
   "contraction_started": false,
-  "machineId": "056ff109-1c8e-49fc-9983-1c1caa02e796",
+  "machineId": "<redacted>",
   "agent": "Grok-only-executor",
   "writtenAtET": "2026-10-01T06:54:16-0400 (ET)",
   "writtenAtUTC": "2026-10-01T10:54:16Z",
@@ -27,7 +27,7 @@
     "returnTime_mid": 1.674627941572726,
     "binary_sha256": "0945e3b652d175e752286d370a2b2a885c8db93037503c38e78e8632b3ae7ccc",
     "admitted_for_proof": false,
-    "attempt_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+    "attempt_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
     "harness_bypassed": true,
     "harness_bypass_reason": "run_large_zero_pruned_flow.py copies live FixedQuarter PREF source; C1 used policy A copy adaptive binary"
   },
@@ -42,7 +42,7 @@
     "LAUNCH.json": true
   },
   "point28_available": true,
-  "point28_dir": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+  "point28_dir": "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
   "blocker": {
     "id": "MISSING_C1_RUN_REPORT_AND_BUILD_LOG",
     "severity": "hard",
@@ -69,7 +69,7 @@
   "documented_procedure_located": {
     "primary_path": "work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py --point <point28> --box <C1> then joint_gate/from_flow/root arithmetic",
     "mirror_of": "ring16: wrap_native.py then run_actual_root.py / joint_gate.py (inclusion+contraction)",
-    "role_contract": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-02-r32-root-contract.json",
+    "role_contract": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/ROLE-02-r32-root-contract.json",
     "role_required_box_files": [
       "RUN-REPORT.json",
       "RAW-FLOW.json",
@@ -80,11 +80,11 @@
     ],
     "wrap_native_cli": [
       "python3",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py",
+      "<workspace>/work/cardiac-study/ring32-checker-supplier-v5/wrap_native.py",
       "--point",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/point28-zero-pruned-fixed-eighth-v1",
       "--box",
-      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
+      "<workspace>/outputs/cardiac-study/tissue-ring/ring32-certification/rigorous-attempts/box20-zero-pruned-adaptive-radius3e10-grok-20261001-v1",
       "--output",
       "<NEW-TAG>/ACTUAL-RADIUS3E10-FLOW.json",
       "--matrices-output",
@@ -93,7 +93,7 @@
       "<NEW-TAG>/ACTUAL-RADIUS3E10-ARITHMETIC.json"
     ],
     "ring32_run_actual_root_exists": false,
-    "ring16_run_actual_root": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/ring16-checker/run_actual_root.py"
+    "ring16_run_actual_root": "<workspace>/work/cardiac-study/ring16-checker/run_actual_root.py"
   },
   "what_was_not_done": [
     "Did not invent a synthetic RUN-REPORT.json",

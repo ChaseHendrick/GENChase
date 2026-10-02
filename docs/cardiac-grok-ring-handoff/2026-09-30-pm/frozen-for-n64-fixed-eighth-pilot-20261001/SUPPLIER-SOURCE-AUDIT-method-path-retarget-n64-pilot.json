@@ -25,7 +25,7 @@
   "sparseJacobianRecurrence": true,
   "exactZeroCoefficientPruning": true,
   "methodSourceAudit": {
-    "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/frozen-for-n64-fixed-eighth-pilot-20261001/zero-pruned-supplier-review-v1-SUPPLIER-SOURCE-AUDIT-950cb611.json",
+    "path": "<workspace>/outputs/cardiac-study/grok-ring-handoff/2026-09-30-pm/frozen-for-n64-fixed-eighth-pilot-20261001/zero-pruned-supplier-review-v1-SUPPLIER-SOURCE-AUDIT-950cb611.json",
     "sha256": "950cb6110a66c622a9c90b58e2d68394c9539801e77cde2795acb8c4fdf3dae2"
   },
   "dynamicStates": 1152,
@@ -48,53 +48,53 @@
   },
   "artifacts": {
     "request": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/REQUEST.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/REQUEST.json",
       "sha256": "ff27158e3b49c18a7d06f33341db5ae4227b9b827b1d5acee867bfa8e696e752"
     },
     "preparationManifest": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/MANIFEST.json",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/step-eighth64-admission-preparation-v1/MANIFEST.json",
       "sha256": "245e86ee3239429435a034ad3c73f3708663f8b08923156999e62e1193143074"
     },
     "controlsReplay": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/CONTROLS-REPLAY.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/CONTROLS-REPLAY.json",
       "sha256": "7c181c2153e4af34102e60e25647f6ac2a0eaa7c77dbd15b4ec99dd3b897265e"
     },
     "reviewReplaySource": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/replay_controls.py",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/replay_controls.py",
       "sha256": "c67ddd314a0c59b98f03b6d1922bd6ea34775622696550dd835728d3246a22fa"
     },
     "inheritedBoundedHelper": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-scalability-preflight/run_inspection.py",
+      "path": "<workspace>/work/cardiac-study/tissue-scalability-preflight/run_inspection.py",
       "sha256": "af33387ef1c5d0000125d5f5a8b3f63775592c4090d0106db804b0d45901197b"
     },
     "previous64ActualStepReview": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/RESULT.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/RESULT.json",
       "sha256": "081e08905b6dde252f3fd56aa1e1ebd95c12ab78cc77898b1b1c07e0816aa05b"
     },
     "previous64ActualSourceBindings": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/SOURCE-BINDING-ADDENDUM.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/zero-pruned64-step-review-v1/SOURCE-BINDING-ADDENDUM.json",
       "sha256": "721bdc3bae84db070434160829b028a6002b2201ed30e5c11efd7bd031e0d560"
     },
     "preservedFirstReviewPreparationFailure": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v1/FIRST-CONTROL-PREPARATION-FAILURE.json",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v1/FIRST-CONTROL-PREPARATION-FAILURE.json",
       "sha256": "6a1e7c1f18d45395a9ddb63abe2780f22ffc0bb59391826e892f332bd8b0b4ce"
     }
   },
   "primaryValidationSources": {
     "OdeSolver.h": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/OdeSolver.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/OdeSolver.h",
       "sha256": "771845829da030b19cf5730bca904ba4456c9c83fe493495c4f02f717712e068"
     },
     "HighOrderEnclosure.h": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/HighOrderEnclosure.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/HighOrderEnclosure.h",
       "sha256": "0fcaa8a283997726049f275c57ede3dd5b0f0f423de23d2c86a77bc00867ddd5"
     },
     "StepControl.h": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/StepControl.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/StepControl.h",
       "sha256": "9c425dba2dcb380391ea6cd4e3190a2537b8fca9489b79e61b696b963a4a3494"
     },
     "BasicOdeSolver.h": {
-      "path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/BasicOdeSolver.h",
+      "path": "<workspace>/work/cardiac-study/tissue-proof-review/fixed-eighth64-step-source-review-v2/reviewed-sources/BasicOdeSolver.h",
       "sha256": "17822caff85f8db021dc72350c63c01958f8e625d5dc6267fb3885caf262e55e"
     }
   },
