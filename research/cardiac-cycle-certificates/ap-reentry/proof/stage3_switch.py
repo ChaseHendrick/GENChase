@@ -11,7 +11,8 @@ Cases:
          switch; kinds c1, c0, mp0; negative control c0 without the switch (the reference must fall outside).
   ring2, ring4   rings of 2 and 4 cells taken from orbit cells 10-11 and 9-12 at t = 32.6 ms (c = 0.035); 0.1 ms
          after the switch; kinds c0 and mp0, for the cost of the multiprecision centre versus N.
-  ring16 the N = 16 ring on the orbit at t = 32.6 ms (cell 11 crosses at 32.676 ms); 0.1 ms after the switch; c0.
+  ring16 the N = 16 ring on the orbit at t = 32.6 ms (cell 11 crosses at 32.676 ms); 0.1 ms after the switch; c0
+         from a POINT (box radius 0): the width growth of a double-interval centre at N = 16.
 Reference: the hybrid floating-point integrator (Radau rtol 1e-12, event at -40 mV) from the box centre.
 Records cost (wall per step, peak RSS). Writes results/stage3_switch.json. Nothing here is a theorem.
 Usage: python3 stage3_switch.py AP_PROOF WORKDIR [cases...]
@@ -68,10 +69,11 @@ for case in want:
     cdir = os.path.join(work, case)
     os.makedirs(cdir, exist_ok=True)
     box = os.path.join(cdir, "start_box.txt")
-    write_box(box, z, rel=1e-10)
+    rel = 0.0 if case == "ring16" else 1e-10  # ring16: a point start, to measure the growth of a double-interval centre
+    write_box(box, z, rel=rel)
     out = res.get(case, {})
     out.update(dict(N=N, coupling=C["c"], crossing_cell=cross, float_crossing_time_ms=tstar, after_switch_ms=C["after"],
-                    float_events=[(float(a), int(b), int(c)) for a, b, c in events], box_relative_radius=1e-10))
+                    float_events=[(float(a), int(b), int(c)) for a, b, c in events], box_relative_radius=rel))
     low0 = " ".join(str(int(v)) for v in lo)
     lo1 = lo.copy(); lo1[cross] = True
     low1 = " ".join(str(int(v)) for v in lo1)

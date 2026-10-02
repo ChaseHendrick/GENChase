@@ -2221,12 +2221,17 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
             group.append((C, a, b, uu, tt))
             a = b
         e_top = group[-1][2]
-        T = _ceil_dyadic(e_top + Fraction(rs_["T_margin"]))
-        try:
-            cov = EpsCover([(C, a_, b_) for (C, a_, b_, _, _) in group], str(T), [rs_["R"]] * DIM, rs_["G_R"],
-                           rho2=rs_["rho2"], max_evals=1500, log=log)
-        except (ProofFailure, fe.StripCoverError) as e:
-            log(f"  cover failed ({e}); halving the width")
+        cov = None
+        for mfac in (1, 2, 4):                     # smaller T if the family is too large for a finite cover
+            T = _ceil_dyadic(e_top + Fraction(rs_["T_margin"]) / mfac, 256)
+            try:
+                cov = EpsCover([(C, a_, b_) for (C, a_, b_, _, _) in group], str(T), [rs_["R"]] * DIM, rs_["G_R"],
+                               rho2=rs_["rho2"], max_evals=1500, log=log)
+                break
+            except (ProofFailure, fe.StripCoverError) as e:
+                log(f"  cover failed at T = {T} ({str(e)[:80]})")
+        if cov is None:
+            log("  cover failed; halving the width")
             width /= 2
             continue
         cid = cov.digest[:16]
@@ -2249,29 +2254,38 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
                 if best is None or adm > best[0]:
                     best = (adm, rsv, e2)
             adm, rsv, e2 = best
-            eta_s = _dyadic_eta(e2)
-            res = None
-            for rs_try in (rsv, rsv / 2, rsv * 2):
-                try:
-                    res = assemble(bl, eta_s, str(Fraction(rs_try).limit_denominator(1 << 30)), log=log)
+            # candidates: the searched weights, the previous piece's weights (ratio 1 in the gluing), their geometric
+            # mean; for each, r_* and its double and half. The first that passes and glues is taken.
+            cands = [e2]
+            if eta_prev is not None:
+                cands += [eta_prev, np.sqrt(e2 * eta_prev)]
+            res = gl = cur = None
+            eta_s = None
+            for ee in cands:
+                eta_try = _dyadic_eta(ee)
+                for rs_try in (rsv, 2 * rsv, rsv / 2):
+                    try:
+                        r_ = assemble(bl, eta_try, str(Fraction(rs_try).limit_denominator(1 << 30)), log=log)
+                    except ProofFailure as e:
+                        log(f"  assemble failed at r_* = {rs_try:.1e}: {e}")
+                        continue
+                    obj = r_.pop("_obj")
+                    c_ = dict(C=C, e_lo=Fraction(a_), e_hi=Fraction(b_), E=obj["E"], r_lo=obj["r_lo"], r_hi=obj["r_hi"])
+                    if prev is not None:
+                        okg, slack = glue(prev, c_, nu)
+                        if not okg:
+                            log(f"  gluing failed at e = {float(a_):.6f} (slack {slack:.3e})")
+                            continue
+                        gl = dict(ok=okg, slack=slack)
+                    elif Fraction(a_) != 0:
+                        raise RuntimeError("first piece must start at 0")
+                    res, cur, eta_s, e2 = r_, c_, eta_try, ee
                     break
-                except ProofFailure as e:
-                    log(f"  assemble failed at r_* = {rs_try:.1e}: {e}")
+                if res is not None:
+                    break
             if res is None:
                 ok_all = False
                 break
-            obj = res.pop("_obj")
-            cur = dict(C=C, e_lo=Fraction(a_), e_hi=Fraction(b_), E=obj["E"], r_lo=obj["r_lo"], r_hi=obj["r_hi"])
-            gl = None
-            if prev is not None:
-                okg, slack = glue(prev, cur, nu)
-                gl = dict(ok=okg, slack=slack)
-                if not okg:
-                    log(f"  gluing failed at e = {float(a_):.6f} (slack {slack:.3e})")
-                    ok_all = False
-                    break
-            elif Fraction(a_) != 0:
-                raise RuntimeError("first piece must start at 0")
             rec = dict(type="piece", idx=len(done), e_lo=str(a_), e_hi=str(b_), centre=C.to_record(), eta=eta_s,
                        r_star=res["r_star"], cover=cid, result=res, glue_prev=gl, predicted_admissible=adm,
                        seconds=round(time.time() - t0, 1), settings=dict(rs_))
@@ -2284,7 +2298,7 @@ def run(e_stop="0.2", budget_s=3300, width0="0.002", log=print, data=DATA):
             log(f"piece {len(done) - 1}: [{float(a_):.6f}, {float(b_):.6f}] ok, g in [{res['g']['lower']['dec'][:16]}, "
                 f"{res['g']['upper']['dec'][:16]}], {time.time() - t0:.0f} s, predicted admissible half-width {adm:.2e}")
             # adapt the width to the predicted admissible half-width
-            target = Fraction(min(2 * adm * 0.8, float(width) * 1.5)).limit_denominator(10 ** 6)
+            target = Fraction(min(2 * adm * 0.5, float(width) * 1.5)).limit_denominator(10 ** 6)
             target = Fraction(round(float(target) * 1e6), 10 ** 6)
             if target > 0:
                 width_next = target
