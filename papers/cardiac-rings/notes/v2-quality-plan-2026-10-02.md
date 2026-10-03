@@ -1,8 +1,6 @@
 # Version 1.1.0 quality and synchronization plan
 
-The released 1.0.0 manuscript and its certificates remain the accepted publication. This plan does not admit the
-new conductance branch or Hopf bridge. The final source fixes, numerical reruns and manuscript checks below are
-required before publishing 1.1.0.
+The released 1.0.0 manuscript and its certificates remain the accepted publication. The candidate now has completed numerical producer and collector evidence for the new conductance branch, full lower-interval uniform cover and amplitude bridge, subject to their separate recorded checks. This plan does not mark the candidate release-ready. Complete original numerical suites, synchronized companion reproduction, PDF inspection, manuscript review and publication gates remain required before publishing 1.1.0.
 
 1. **Proof source and argument.** Resolve all recorded Hopf and uniform-stability findings, then obtain the
    separate in-project fix checks. Bind each final certificate to sources captured before calculation. Preserve
@@ -35,5 +33,23 @@ required before publishing 1.1.0.
    PDF. Record its archive hash, PDF entry and version DOI; then update archiveVersion/codeDoi and regenerate the paper
    index in a follow-up PR. Keep previous archives and releases. GENChase itself does not go to Zenodo.
 
-Submission work still includes a dedicated forward-citation search of Erhardt (2025) and full readings of the new
-methodology references. Those remaining literature checks must not be represented as completed.
+The dedicated bounded Erhardt (2025) forward-citation search and method readings are complete within their recorded
+scope in `review/method-reading-and-forward-citations-2026-10-02.md`: the full published 2021 Hopf article and full
+46-page March 22, 2019 continuation preprint were read. The final typeset continuation article was not read in full,
+and the cited authors' numerical proofs were not rerun. Search coverage is not exhaustive and supplies no priority
+claim. The fresh 0.02778 bridge point is existence-only; stability on the lower interval is furnished by the full
+uniform branch cover, not historical Stage S points. The whole amplitude bridge has no quantitative uniform
+stability certificate.
+
+For synchronization, preserve the exact 1.0 all-N `branch.py` archive as `code/fourier/branch-1.0.0.py`; verify its
+hash against the unchanged all-N record before restoring its execution path in historical scratch checks. Stage
+current branch/uniform/Hopf collection separately. Compare typed exact sources, inputs, settings and mathematical
+results; any runtime/path or common zero-endpoint polydisc difference must be explicitly recorded and rigorously
+rechecked. Branch Y0/cap display rounding is reported separately after deriving the exact ratio from the unchanged dyadic proof bounds, with no tolerance or bound change. Do not relabel a copied success as a fresh numerical reproof.
+
+The companion continuation wrapper directly checks the exact conservative self-map majorant of each stored
+uniform unit, including the maximum of its stored kappa and serialized derivative implication. All 63 actual
+original receipts passed this inexpensive exact check; 45 bounded synthetic orchestration controls passed, including
+an underestimated stored-kappa self-map negative control. No full numerical piece proof was rerun by those controls.
+The complete synchronized companion collectors still require their recorded run and review. Original source-bound
+SC proofs remain part of the evidence; omitted finite SC vectors are not reconstructed by the collector wrapper.

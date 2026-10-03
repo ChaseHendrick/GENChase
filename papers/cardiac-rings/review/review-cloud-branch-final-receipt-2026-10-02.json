@@ -1,0 +1,89 @@
+{
+  "accepted_scope": [
+    "existence",
+    "local uniqueness",
+    "continuity",
+    "minimal period"
+  ],
+  "g_covered": [
+    "0.027499735464",
+    "0.02778996093"
+  ],
+  "helper_sha256": "ae49cff4e26394a780ef6061b2b9a75b4615d112c368af4cefd362897d32443c",
+  "kind": "independent actual complete cloud branch review",
+  "log_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-cloud-branch-37076139080/merged/run_K12_final.jsonl",
+  "log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+  "minimum_gluing_slack_exact": "828405937334717/2305843009213693952",
+  "n_gluings_rederived": 711,
+  "n_groups": 57,
+  "n_pieces": 712,
+  "not_accepted": [
+    "inherited point stability",
+    "uniform stability",
+    "Hopf amplitude branch",
+    "Hopf bridge closure",
+    "paper1.1 release"
+  ],
+  "producer_gluings_bit_equal_to_mac": 711,
+  "record_path": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-cloud-branch-37076139080/merged/fourier-branch-gks.json",
+  "record_sha256": "099c0c9460c726991b01f3395ece2fb0b5939d545801b2d7bc22c689a175f195",
+  "run_log_metadata": "../../work/merged/run_K12_final.jsonl",
+  "sources_sha256": {
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "wall_seconds": 11.301714292028919,
+  "workflow_run": "37076139080",
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-cloud-branch-2026-10-02.py"
+    ],
+    "pid": 45205,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 11.495595875196159,
+    "peak_aggregate_rss_mib": 289.8125,
+    "log": "/private/tmp/cardiac-review-cloud-branch-fixed-2026-10-02.log"
+  },
+  "initial_reviewer_error": {
+    "stdout": "  logs valid: 57 groups, 712 pieces, [0.027499735464, 0.02778996093], 0 gluing inequalities re-derived\nTraceback (most recent call last):\n  File \"/private/tmp/cardiac-review-cloud-branch-2026-10-02.py\", line 51, in <module>\n    result=dict(kind='independent actual complete cloud branch review',workflow_run='37076139080',log_path=str(logpath),record_path=str(recordpath),log_sha256=loghash,record_sha256=hashlib.sha256(raw).hexdigest(),n_pieces=712,n_groups=57,n_gluings_rederived=711,producer_gluings_bit_equal_to_mac=glue_exact_equal,minimum_gluing_slack_exact=str(minimum_slack),g_covered=cloud['g_covered'],sources_sha256=B.SOURCES_SHA256,helper_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),run_log_metadata=cloud['run_log'],accepted_scope=['existence','local uniqueness','continuity','minimal period'],not_accepted=['inherited point stability','uniform stability','Hopf amplitude branch','Hopf bridge closure','paper1.1 release'],wall_seconds=time.monotonic()-t0)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^^^^^^^^^^^^\nAttributeError: 'dict' object has no attribute 'read_bytes'\n",
+    "supervisor": {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+        "/private/tmp/cardiac-review-cloud-branch-2026-10-02.py"
+      ],
+      "pid": 44905,
+      "exit_code": 1,
+      "stop_reason": null,
+      "wall_seconds": 12.150212042033672,
+      "peak_aggregate_rss_mib": 282.640625,
+      "log": "/private/tmp/cardiac-review-cloud-branch-2026-10-02.log"
+    },
+    "scope": "All numerical/source/metadata assertions had passed; reviewer receipt formatting then failed due to a shadowed Path variable. No acceptance assigned to that failed process. Corrected reviewer script reran all checks successfully."
+  },
+  "canonical_record_review": {
+    "record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+    "run_log": "fourier/data/branch/run_K12_final.jsonl",
+    "exact_proof_piece_gluing_source_group_setting_content_matches_cloud": true,
+    "last_digit_float_diagnostic_changes": [
+      "G2P8",
+      "G16P8",
+      "G50P3"
+    ],
+    "producer_preserved": true
+  }
+}

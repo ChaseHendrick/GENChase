@@ -25,11 +25,11 @@ data/fourier-existence-N*.json, which this script checks).  The proofs place the
 of that center (Theorem B(a), Table 1), far below the resolution of the figures.  Figure 3 draws the
 stored enclosures and radii of data/fourier-existence-alln.json and the period enclosures of
 data/fourier-existence-N*.json as they are stored; nothing is recomputed.  The figure branch-hopf.pdf draws
-the stored enclosures of the G_Ks branch (code/fourier/data/branch/run_K12.jsonl, with the first V harmonic
+the stored enclosures of the G_Ks branch (code/fourier/data/branch/run_K12_final.jsonl, with the first V harmonic
 of each piece's center in centres_K12.jsonl, matched to the piece by the SHA-256 its record stores, which
-this script recomputes), of the Hopf bridge and the Hopf point (code/fourier/data/hopf/pieces.jsonl,
-theoremA.json, gluing_gks.json) and the stored Floquet multiplier bounds
-(code/fourier/data/branch/stability_uniform_K12.jsonl, gluing_gks.json), converted to binary64 for drawing;
+this script recomputes), of the freshly re-proved Hopf bridge and the Hopf point
+(code/fourier/data/hopf/reprove_final.jsonl, theoremA_final.json, gluing_gks_final.json) and the stored uniform
+Floquet multiplier bounds (code/fourier/data/branch/stability_uniform_K12_final.jsonl), converted to binary64 for drawing;
 nothing is recomputed.  Run from any working directory.
 Needs numpy and matplotlib (the figures were made with numpy 2.4.6 and matplotlib 3.11.2; sources.json
 records the versions and the SHA-256 of every input); the output is byte-identical on regeneration.
@@ -94,6 +94,17 @@ def axes_in(fig, left, bottom, width, height):
 
 
 def save(fig, name, title):
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    legends = list(fig.legends) + [ax.get_legend() for ax in fig.axes if ax.get_legend() is not None]
+    for legend in legends:
+        bounds = legend.get_window_extent(renderer)
+        canvas = fig.bbox
+        if not (canvas.x0 <= bounds.x0 and bounds.x1 <= canvas.x1
+                and canvas.y0 <= bounds.y0 and bounds.y1 <= canvas.y1):
+            raise SystemExit(f"{name}: legend extends beyond the figure")
+        if any(bounds.overlaps(ax.get_window_extent(renderer)) for ax in fig.axes):
+            raise SystemExit(f"{name}: legend overlaps a data panel")
     fig.savefig(FIG / name, metadata={"CreationDate": None, "ModDate": None, "Title": title,
                                       "Author": "Chase Hendrick"})
     plt.close(fig)
@@ -358,31 +369,8 @@ print(f"  pieces: {len(P)}, gluing inequalities: {len(glue)}, max r_ex = {max(p[
       f"min r_un = {min(p['run'] for p in P):.4e}")
 
 # ------------------------------------------------------------------------------ Figure branch-hopf: the G_Ks branch
-# TEMPORARY FALLBACK, to be removed once the records are copied into this folder.  On 2026-10-02 the records of the
-# G_Ks branch (code/fourier/data/branch/) and of the Hopf bridge (code/fourier/data/hopf/) are not yet in this folder.
-# read_record() reads a record from this folder when it is there; otherwise, and only then, from the study folder
-# whose files this folder's code/ and data/ copy (code/X there is X, data/X there is results/X), when this folder
-# still sits in the repository where it was developed.  Every record read that way is listed in sources.json under
-# "inputs_read_from_study_folder", with its SHA-256 under "inputs", and announced on the terminal.
-STUDY = ROOT.parents[1] / "research" / "cardiac-cycle-certificates"
-FALLBACK = {}                 # (relative path in this folder) -> SHA-256 of the file read from the study folder
-
-
 def read_record(rel):
-    if (ROOT / rel).exists():
-        return read(rel)
-    if rel.startswith("code/"):
-        src = STUDY / rel[len("code/"):]
-    elif rel.startswith("data/"):
-        src = STUDY / "results" / rel[len("data/"):]
-    else:
-        raise SystemExit(f"{rel}: not a record path")
-    if not src.is_file():
-        raise SystemExit(f"{rel} is not in this folder (and no study folder holds it)")
-    raw = src.read_bytes()
-    FALLBACK[rel] = sha256(raw)
-    print(f"  FALLBACK: {rel} is not in this folder; read from the study folder (SHA-256 {FALLBACK[rel][:16]}...)")
-    return raw
+    return read(rel)
 
 
 def jsonl(rel):
@@ -420,12 +408,30 @@ def dec(rec):
     return Decimal(rec["dec"])
 
 
-BRANCH_RUN = "code/fourier/data/branch/run_K12.jsonl"
+BRANCH_RUN = "code/fourier/data/branch/run_K12_final.jsonl"
 BRANCH_CENTRES = "code/fourier/data/branch/centres_K12.jsonl"
-BRANCH_UNITS = "code/fourier/data/branch/stability_uniform_K12.jsonl"
-HOPF_PIECES = "code/fourier/data/hopf/pieces.jsonl"
-HOPF_THEOREM_A = "code/fourier/data/hopf/theoremA.json"
-HOPF_GLUING = "code/fourier/data/hopf/gluing_gks.json"
+BRANCH_UNITS = "code/fourier/data/branch/stability_uniform_K12_final.jsonl"
+HOPF_PIECES = "code/fourier/data/hopf/reprove_final.jsonl"
+HOPF_THEOREM_A = "code/fourier/data/hopf/theoremA_final.json"
+HOPF_GLUING = "code/fourier/data/hopf/gluing_gks_final.json"
+
+# Bind the display inputs to the separately reviewed collected records. This checks provenance,
+# rather than rerunning any proof or inferring acceptance from a plotted numerical curve.
+B_RECORD = json.loads(read("data/fourier-branch-gks.json"))
+C_RECORD = json.loads(read("data/fourier-branch-stability-uniform.json"))
+H_RECORD = json.loads(read("data/fourier-hopf.json"))
+expected = {BRANCH_RUN: B_RECORD["run_log_sha256"],
+            BRANCH_CENTRES: B_RECORD["centres_sha256"],
+            BRANCH_UNITS: C_RECORD["log_sha256"]}
+expected.update({"code/fourier/data/hopf/" + name: digest for name, digest in H_RECORD["data_sha256"].items()})
+for record in (B_RECORD, C_RECORD, H_RECORD):
+    expected.update({"code/" + name: digest for name, digest in record["sources_sha256"].items()})
+for rel, digest in expected.items():
+    if sha256(read(rel)) != digest:
+        raise SystemExit(f"{rel} does not match its collected certificate")
+if (C_RECORD["theorem_B_sha256"] != sha256(read("data/fourier-branch-gks.json"))
+        or C_RECORD["n_pieces_uniform"] != 712 or not H_RECORD["hopf_gap_closed"]):
+    raise SystemExit("the complete uniform or Hopf certificate does not identify the accepted branch")
 
 # the G_Ks branch: pieces [g_lo, g_hi] with T in T_ms for every G_Ks of the piece, and |a_{1,V} - abar_{1,V}| <=
 # eta_V r_ex / nu (nu = e^rho0) about the center's real first V coefficient
@@ -458,8 +464,9 @@ for p in bpieces:
 
 # the Hopf bridge: on the piece [e_lo, e_hi] of the amplitude parameter (a_{1,V} = parameter/2), G_Ks and T in the
 # stored enclosures for every parameter value of the piece
-hp = sorted((d for d in jsonl(HOPF_PIECES) if d["type"] == "piece"), key=lambda d: d["idx"])
-if ([d["idx"] for d in hp] != list(range(len(hp))) or hp[0]["e_lo"] != "0"
+hp = sorted((d for d in jsonl(HOPF_PIECES) if d["type"] == "reprove"), key=lambda d: d["idx"])
+if (len(hp) != 68 or any(d["certified"] is not True for d in hp)
+        or [d["idx"] for d in hp] != list(range(len(hp))) or hp[0]["e_lo"] != "0"
         or any(Fraction(p["e_hi"]) != Fraction(q["e_lo"]) for p, q in zip(hp, hp[1:]))):
     raise SystemExit("the bridge pieces are not consecutive from 0")
 HB = [dict(e=(Fraction(d["e_lo"]), Fraction(d["e_hi"])),
@@ -481,22 +488,24 @@ if not (Fraction(hp[0]["result"]["g"]["lower"]["dec"]) <= gH[0] < gH[1]
         <= Fraction(hp[0]["result"]["g"]["upper"]["dec"])):
     raise SystemExit("the first bridge piece does not enclose the Hopf interval")
 
-# where the two families share an orbit, and the pointwise Stage S proofs on the bridge
+# Where the two families share an orbit. The fresh bridge point proves existence and identification;
+# its stability follows only where it is covered by the separate uniform lower-branch certificate.
 GL = json.loads(read_record(HOPF_GLUING))
 if not GL["ok"]:
     raise SystemExit("the gluing record is not ok")
+if GL != H_RECORD["bridge_checks"]:
+    raise SystemExit("the gluing file does not match the collected Hopf certificate")
 glue_g = [float(Fraction(p["g"])) for p in GL["glue_points"]]
-want = {(p["g"], p["source"]) for p in GL["stable_bridge_points"]}
-SP = [p for p in GL["points"] if (p["g"], p["source"]) in want]
-if len(SP) != len(want) or not all(p["on_eps_branch"] and p["stage_S_ok"] and p["lemma_D"]["ok"] for p in SP):
-    raise SystemExit("a stable bridge point is not a Stage S proof identified with the bridge")
-SPT = [(float(Fraction(p["g"])), float(dec(p["multiplier_bound_full_period"])), float(dec(p["delta"]))) for p in SP]
+if GL["stable_bridge_points"]:
+    raise SystemExit("unexpected inherited pointwise stability receipts in the fresh bridge")
 
 # the uniform stability units: every nontrivial Floquet multiplier of the branch orbit has modulus at most the
 # stored bound, for every G_Ks of the unit
 units = jsonl(BRANCH_UNITS)
 UOK = [u for u in units if u["type"] in ("unit", "group_unit") and u["ok"] is True and u["uniform"] is True]
 n_not_ok = len(units) - len(UOK)
+if len(UOK) != 63 or len(bpieces) != 712:
+    raise SystemExit("unexpected complete branch or uniform certificate count")
 U = [(Fraction(u["g"][0]), Fraction(u["g"][1]), float(dec(u["multiplier_bound_full_period"])), float(dec(u["delta"])))
      for u in UOK]
 covered = []                  # union of the units, exact
@@ -561,9 +570,8 @@ for lo, hi, bound, _ in U:
     axC.plot([float(lo), float(hi)], [bound] * 2, "-", color=BLUE, lw=1.6, solid_capstyle="butt", zorder=4)
 for lo, hi in bare:
     axC.axvspan(float(lo), float(hi), color=GRID, alpha=0.55, lw=0, zorder=1)
-axC.plot([s[0] for s in SPT], [s[1] for s in SPT], "D", color=ORANGE, ms=4.2, mec="white", mew=0.6, zorder=5)
 axC.axhline(1.0, color=MUTED, lw=0.8, ls="--", zorder=3)
-yc = [u[2] for u in U] + [s[1] for s in SPT]
+yc = [u[2] for u in U]
 axC.set_ylim(min(yc) - 0.0004, 1.0003)
 axC.set_yticks([0.998, 0.999, 1.0])
 axC.set_yticklabels(["0.998", "0.999", "1"])
@@ -613,12 +621,10 @@ labels_l = [rf"$G_{{Ks}}$ branch: piece $\times$ enclosure ({len(BR)} pieces)",
 fig.legend(keys_l, labels_l, loc="upper left", bbox_to_anchor=(0.55 / 6.5, 0.95 / 5.55), fontsize=7.6,
            handlelength=1.8, borderaxespad=0, ncol=1)
 keys_r = [Line2D([], [], color=BLUE, lw=1.6),
-          Line2D([], [], ls="none", marker="D", color=ORANGE, ms=4.2, mec="white", mew=0.6),
           Rectangle((0, 0), 1, 1, facecolor=GRID, alpha=0.55, lw=0),
           Line2D([], [], color=MUTED, lw=0.8, ls="--")]
 labels_r = [rf"(c) bound over a unit ({len(U)} units)",
-            rf"(c) bound at a single $G_{{Ks}}$ ({len(SPT)} points)",
-            r"(c) no uniform bound: the points only",
+            r"(c) no uniform bound supplied",
             r"(c) modulus 1"]
 fig.legend(keys_r, labels_r, loc="upper left", bbox_to_anchor=(3.95 / 6.5, 0.95 / 5.55), fontsize=7.6,
            handlelength=1.8, borderaxespad=0, ncol=1)
@@ -631,8 +637,7 @@ print(f"  bridge: {len(HB)} pieces, parameter in [0, {hp[-1]['e_hi']}], "
       f"T in [{min(b['T'][0] for b in HB):.6f}, {max(b['T'][1] for b in HB):.6f}] ms")
 print(f"  Hopf: g_H in [{TA['gH_interval_decimal'][0]}, {TA['gH_interval_decimal'][1]}], T_H = {TH:.9f} ms; "
       f"Erhardt {TA['erhardt']['g_H']} is {float(g_erh - gH_mid):.4e} above the midpoint")
-print(f"  glued at G_Ks = {[p['g'] for p in GL['glue_points']]}; stable bridge points "
-      f"{[(p['g'], round(s[1], 8), round(s[2], 8)) for p, s in zip(SP, SPT)]}")
+print(f"  glued at G_Ks = {[p['g'] for p in GL['glue_points']]}; no inherited pointwise stability receipts")
 print(f"  uniform units: {len(U)} ok ({n_not_ok} other records), bound in [{min(u[2] for u in U):.8f}, "
       f"{max(u[2] for u in U):.8f}], delta in {sorted({u[3] for u in U})}, "
       f"union {[[str(float(a)), str(float(b))] for a, b in covered]}; no uniform bound on "
@@ -640,15 +645,11 @@ print(f"  uniform units: {len(U)} ok ({n_not_ok} other records), bound in [{min(
 
 # ------------------------------------------------------------------------------ manifest
 srcs = {rel: sha256((ROOT / rel).read_bytes()) for rel in set(INPUTS)}
-srcs.update(FALLBACK)
 srcs = dict(sorted(srcs.items()))
 srcs["code/plot_cardiac_rings.py"] = sha256(Path(__file__).read_bytes())
 manifest = {"description": "Display of stored centres, enclosures, radii and bounds; no proof is rerun.",
             "figures": ["cell-orbit.pdf", "ring-wave.pdf", "alln-pieces.pdf", "branch-hopf.pdf"],
-            "inputs": srcs, "matplotlib": matplotlib.__version__, "numpy": np.__version__}
-if FALLBACK:
-    manifest["inputs_read_from_study_folder"] = sorted(FALLBACK)
-    manifest["fallback_note"] = ("These inputs are not yet in this folder; they were read from the study folder whose "
-                                 "files code/ and data/ copy, with the SHA-256 given under inputs.")
+            "inputs": srcs, "matplotlib": matplotlib.__version__, "numpy": np.__version__,
+            "layout_checks": "Every legend lies wholly inside the figure and outside every data panel."}
 (FIG / "sources.json").write_text(json.dumps(manifest, indent=2) + "\n")
 print("wrote", (FIG / "sources.json").relative_to(ROOT))

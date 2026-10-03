@@ -2309,3 +2309,26 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
   They did not provide an exhaustive forward citation search of Erhardt's paper; that remains a submission task.
 - Re-search: yes before submission, including a dedicated forward-citation search and a full reading of the
   methodology references. Reading scope belongs in this audit, not as editorial comments in citation labels.
+
+### 2026-10-02  cardiac-rings 1.1.0: completed method readings and scoped forward-citation refresh
+
+- The later reading in this session supersedes the partial-reading scope above. The published van den
+  Berg-Lessard-Queirolo article was read in full, journal pages 573-607. Its Section 2.2 already accommodates
+  locally analytic nonpolynomial fields with validated Fourier evaluation and derivative bounds; the earlier
+  summary describing a polynomial-only framework was inaccurate. Section 6 supplies the prior transformed-ball
+  gluing method. Nonpolynomiality alone is not a new method.
+- The complete 46-page author-hosted continuation preprint of March 22, 2019 was read. The 2021 published
+  continuation article's metadata, abstract and figure captions were inspected; its complete final text was not
+  obtained. These versions are explicitly distinguished in the reading record.
+- OpenAlex, Crossref and Semantic Scholar were queried for references to the published Erhardt DOI at
+  2026-10-03 02:09:31 UTC. They returned one indexed citing work; the primary publisher's reference 46 confirms
+  that reference. The inspected model and bifurcation sections concern a different tissue-compartment/ECG
+  model and contain no TP06 interval certificate. This exhausts the particular OpenAlex result set, not all
+  literature or all indexing services. The separate WIAS preprint identifier returned zero forward works.
+- Exact queries, primary links, reading versions and coverage, access failures, hashes and limits are recorded
+  in [the method-reading and forward-citation record](research/cardiac-cycle-certificates/reviews/method-reading-and-forward-citations-2026-10-02.md).
+  Direct retrieval of the Scholarpedia article and its revision failed; indexed primary-site statements were
+  inspected, and no successful direct full-page reading is claimed.
+- These checks support credit for established methods and a rigorously checked application to the explicitly
+  modified ventricular model. They establish no first-ever or clinical claim. Refresh the forward search before
+  submission, and retain the separately recorded older background-reading tasks.

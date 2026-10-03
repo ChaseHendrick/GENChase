@@ -1,0 +1,18 @@
+{
+  "python": "3.12.14",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "python-flint": "0.9.0",
+  "FLINT": "3.6.0",
+  "wheel": "python_flint-0.9.0-cp310-abi3-macosx_11_0_arm64.whl",
+  "wheel_sha256": "025fd4e77f2cbbf40f63b9cd7571aad3803deb57aecd72e7c397480fe84921a0",
+  "pypi_digest_matched": true,
+  "installed_wheel_hashed_files_checked": 112,
+  "source_url": "https://files.pythonhosted.org/packages/41/c3/2323ed921fa08ad2a0935775dddba8502d30bfdc3034920abfdac2138236/python_flint-0.9.0-cp310-abi3-macosx_11_0_arm64.whl",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "mpmath": "1.3.0",
+    "matplotlib": "3.11.2",
+    "psutil": "7.2.2"
+  }
+}

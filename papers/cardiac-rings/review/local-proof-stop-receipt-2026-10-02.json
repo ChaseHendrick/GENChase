@@ -1,0 +1,46 @@
+{
+  "reason": "Owned local branch and Hopf groups intentionally stopped after session interruption and host sleep; not numerical rejection.",
+  "timer_note": "Monotonic supervisor active time excludes host sleep and differs from real elapsed time.",
+  "local_branch_pieces_preserved": 128,
+  "hopf_production_receipts": 0,
+  "branch_supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "5",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "branch.py",
+      "--reprove",
+      "--workers",
+      "5",
+      "--budget",
+      "1920"
+    ],
+    "pid": 38171,
+    "exit_code": -15,
+    "stop_reason": null,
+    "wall_seconds": 1535.1952251249459,
+    "peak_aggregate_rss_mib": 2638.5625,
+    "log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-branch-final-stage2.log"
+  },
+  "hopf_supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "5",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "hopf.py",
+      "--reprove-all",
+      "--workers",
+      "3",
+      "--budget",
+      "2000"
+    ],
+    "pid": 42235,
+    "exit_code": -15,
+    "stop_reason": null,
+    "wall_seconds": 703.1452221248765,
+    "peak_aggregate_rss_mib": 855.03125,
+    "log": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-full-final.log"
+  }
+}

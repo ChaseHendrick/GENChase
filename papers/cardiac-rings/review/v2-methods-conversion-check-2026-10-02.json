@@ -1,0 +1,180 @@
+{
+  "schema": 1,
+  "date": "2026-10-02",
+  "role": "conversion and consistency check by methods-draft author",
+  "independent_discovery_of_proof_correctness": false,
+  "status": "conditional mathematical conversion consistent; final presentation follow-ups open",
+  "tex": {
+    "path": "papers/cardiac-rings/paper/cardiac-rings.tex",
+    "sha256": "6413469425e55f9d65c3745b19de3a18974f287793f2c3aee416c2dd86cc884d"
+  },
+  "draft_equations": {
+    "branch": {
+      "draft": "papers/cardiac-rings/notes/v2-branch-methods-draft-2026-10-02.md",
+      "sha256": "a9935179cef7d04ae11283db75c1fc98dc07c6dc4bea0df38e6694e79157f3ee",
+      "n_display_equations": 86,
+      "proof_displays_identical": 84,
+      "total_identical": 84,
+      "statement_displays_relocated_or_rephrased": [
+        7,
+        8
+      ]
+    },
+    "hopf": {
+      "draft": "papers/cardiac-rings/notes/v2-hopf-methods-draft-2026-10-02.md",
+      "sha256": "b70aa4575c7edf54ae8ff8f05d410f3151919dcf69b93d905a162dde596245a1",
+      "n_display_equations": 60,
+      "proof_displays_identical": 57,
+      "total_identical": 57,
+      "statement_displays_relocated_or_rephrased": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "source_mapping": [
+    {
+      "target": "Theorem D(a)",
+      "lines": [
+        246,
+        249
+      ],
+      "draft": "branch Sections1-4",
+      "scientific_basis": "branch.py reviewed docstring and final712/57/711 record",
+      "checked": "N1 only, exact interval, phase-fixed unique balls, first harmonic, minimal period, continuous/Lipschitz branch"
+    },
+    {
+      "target": "Theorem D(b)",
+      "lines": [
+        250,
+        254
+      ],
+      "draft": "branch Sections5-10",
+      "scientific_basis": "LEMMAS-stability Sections10-11 and fresh63-unit full712 cover",
+      "checked": "signed finite/tail directions, moving tubes, multiplicity, neutral phase, local nonlinear constants; no uniform nonlinear neighborhood"
+    },
+    {
+      "target": "Theorem D(c)",
+      "lines": [
+        255,
+        261
+      ],
+      "draft": "Hopf Sections2-12",
+      "scientific_basis": "LEMMAS-hopf and current516/68/67/zero/fresh0.02778 receipt chain",
+      "checked": "scaled amplitude, positive frequency, zero identity, both inclusions, connected curve/IVT, no global graph or full bridge decay"
+    },
+    {
+      "target": "branch proofs",
+      "lines": [
+        762,
+        1407
+      ],
+      "draft": "branch86 display equations",
+      "scientific_basis": "branch.py and LEMMAS-stability10-11",
+      "checked": "84 proof displays map exactly;2 proposed-statement displays moved to theorem/local stability text"
+    },
+    {
+      "target": "Hopf proofs",
+      "lines": [
+        1409,
+        1899
+      ],
+      "draft": "Hopf60 display equations",
+      "scientific_basis": "hopf.py and LEMMAS-hopf",
+      "checked": "57 proof displays map exactly;3 setting/statement displays rephrased in theorem/scaled setting;identity J renamed J_H to avoid conductance J collision"
+    }
+  ],
+  "scientific_records": {
+    "fourier-branch-gks.json": {
+      "path": "research/cardiac-cycle-certificates/results/fourier-branch-gks.json",
+      "sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3"
+    },
+    "fourier-branch-stability-uniform.json": {
+      "path": "research/cardiac-cycle-certificates/results/fourier-branch-stability-uniform.json",
+      "sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5"
+    },
+    "fourier-hopf.json": {
+      "path": "research/cardiac-cycle-certificates/results/fourier-hopf.json",
+      "sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff"
+    }
+  },
+  "counts": {
+    "branch_pieces": 712,
+    "branch_groups": 57,
+    "branch_gluings": 711,
+    "uniform_units": 63,
+    "uniform_piece_fallbacks": 0,
+    "amplitude_pieces": 68,
+    "amplitude_gluings": 67,
+    "theorem_A_cover_intervals": 516
+  },
+  "checks": {
+    "multiplier_nine_decimal_upper_bound": true,
+    "scaled_voltage_amplitude_epsilon_over8": true,
+    "no_historical12point_stability_claim": true,
+    "conditional_abstract_and_theorem": true,
+    "no_global_conductance_graph_claim": true,
+    "no_uniform_full_bridge_stability_claim": true
+  },
+  "findings": [
+    {
+      "id": "C1",
+      "severity": "editorial",
+      "line": 1477,
+      "finding": "Hopf equilibrium notation x_H is undeclared locally while Theorem D(c) uses z_H; also lines1829/1833.",
+      "action": "Use z_H consistently or explicitly define x_H=z_H in the fixed scaled coordinates.",
+      "blocks_package_build": false
+    },
+    {
+      "id": "C2",
+      "severity": "before final presentation",
+      "line": 1950,
+      "finding": "Reproducibility driver/table/trust-base describes old90+15 hash scopes and omits new D branch/stability/Hopf reproduction and recovery provenance.",
+      "action": "Add a D-specific reproduction/trust-base paragraph and program mapping before claiming the final companion reproduces D.",
+      "blocks_package_build": false
+    },
+    {
+      "id": "C3",
+      "severity": "known staging prerequisite",
+      "line": 1896,
+      "finding": "Final research records are not yet copied under paper/data; figures/sources.json still hashes legacy branch/Hopf logs while the updated plot script now selects final logs.",
+      "action": "Complete the already-planned final companion and four-figure staging, regenerate sources.json, then recheck its input hashes.",
+      "blocks_package_build": false
+    },
+    {
+      "id": "C4",
+      "severity": "presentation preference",
+      "line": 1997,
+      "finding": "Inherited public manuscript paragraph repeatedly names AI agent sessions despite the current no-public-AI-credit instruction.",
+      "action": "Keep accurate in-project review scope while removing explicit assistant credit from the new manuscript; leave archived1.0.0 evidence immutable.",
+      "blocks_package_build": false
+    }
+  ],
+  "workflow": {
+    "path": ".github/workflows/cardiac-package-check.yml",
+    "sha256": "19b3811a02d58853fa33003139c23531f2589feebe5519b8207fa233b6f62ad2",
+    "build_tool_sha256": "57ff6e97bc6c48a47ec786f1166963d6dbdcac1af399a85f32a6c28fdd83e310",
+    "status": "admitted for read-only external build/rebuild scope",
+    "checks": [
+      "contents:read",
+      "dispatch or explicit marker",
+      "15min job",
+      "bounded install/build/pass commands",
+      "pipefail and halt-on-error",
+      "same source-date epoch",
+      "undefined-reference rejection",
+      "byte-identical PDF rebuild",
+      "source/figure/PDF hashes",
+      "always upload evidence"
+    ],
+    "not_checked": [
+      "actual CI run",
+      "PDF pixels/page layout",
+      "final companion staging",
+      "scientific certificate admission"
+    ]
+  },
+  "new_numerical_proofs_run": false,
+  "tex_or_scientific_sources_changed": false
+}

@@ -1,0 +1,77 @@
+{
+  "status": "actual canonical fresh zero-amplitude identity and complete closure admitted; numerical full suites remain separately scoped",
+  "canonical_record_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+  "producer_record_sha256": "064629ec0e75f556c94d589ac293a3cf690a45450a2c3f116a7a9ac363cf4f97",
+  "source_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "data_sha256": {
+    "pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+    "covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+    "theoremA_final.json": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+    "gks_points.jsonl": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+    "gks_points_centres_K32.jsonl": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+    "reprove_final.jsonl": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92"
+  },
+  "direct_polydisc_validations": [
+    {
+      "source": "canonical",
+      "stored_polydisc_sha256": "a92e4f7ae5e4a07dc361bb76da909440f4fcbf5198c3563137d1c72ad4fdb3ea",
+      "independently_recomputed_kappa": {
+        "hex": "0x496c7480bc91abd2d804307f8ff1b6d67b7cf21bfdb1a2a1p-200",
+        "dec": "0.001120356028638159628734884",
+        "approx": 0.0011203560286381596
+      },
+      "worst_self_map_ratio": {
+        "hex": "0x8092d8e901792357a5b00860ff1fe36dacf6f9e437fb6347p-193",
+        "dec": "0.2511203560286381596287349",
+        "approx": 0.25112035602863814
+      },
+      "exact_complex_polydisc_contraction": true,
+      "contains_fresh_c0": true,
+      "contains_all_meeting_theoremA_polydiscs": true
+    },
+    {
+      "source": "Linux producer",
+      "stored_polydisc_sha256": "cb2e3b1565ff024c7a7f2b488385a8a67a485ea725c0c489ee594dae37047d2f",
+      "independently_recomputed_kappa": {
+        "hex": "0x125b1d208636c1c13a54dab48d022891a868b1fab42201c5p-198",
+        "dec": "0.001120356029875522011189544",
+        "approx": 0.001120356029875522
+      },
+      "worst_self_map_ratio": {
+        "hex": "0x8092d8e90431b60e09d2a6d5a46811448d43458fd5a1100fp-193",
+        "dec": "0.2511203560298755220111896",
+        "approx": 0.25112035602987554
+      },
+      "exact_complex_polydisc_contraction": true,
+      "contains_fresh_c0": true,
+      "contains_all_meeting_theoremA_polydiscs": true
+    }
+  ],
+  "genuine_platform_differences": [
+    "zero-amplitude proposal polydisc center/radii",
+    "diagnostic P_kappa/P_radius_max"
+  ],
+  "context_differences": [
+    "machine/date",
+    "pieces_reproved.log",
+    "bridge point-log path keys"
+  ],
+  "comparison": "Every remaining field agrees exactly with preserved Linux producer; full current collector closure rederived; both stored polydiscs independently pass complex LemmaK and exact inclusion checks.",
+  "no_bit_equality_claim_for_polydisc": true,
+  "no_stage_S_or_uniform_bridge_stability_promotion": true,
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-hopf-canonical-zero-2026-10-02.py"
+    ],
+    "pid": 59329,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 10.153331708163023,
+    "peak_aggregate_rss_mib": 320.671875,
+    "log": "/private/tmp/cardiac-review-hopf-canonical-zero-2026-10-02.log"
+  }
+}

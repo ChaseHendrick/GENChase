@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "status": "integrated conditional mathematics admitted for package build; original remaining controls and build gates separate",
+  "paper_sha256": "7b54e88a172feb76adaa1cb0684f338b3924bb4d557c59110257e707814b9184",
+  "reviewed_branch_draft_sha256": "a9935179cef7d04ae11283db75c1fc98dc07c6dc4bea0df38e6694e79157f3ee",
+  "reviewed_hopf_draft_sha256": "b70aa4575c7edf54ae8ff8f05d410f3151919dcf69b93d905a162dde596245a1",
+  "integration": "Prior display-formula comparison found all84 branch and57 Hopf method displays verbatim from the reviewed drafts; deleted conclusion displays are stated in conditional TheoremD or existing stability theorem. Final root additions independently read: figure/caption, exact conservative max-majorant and stronger self-map, 35/63 adjustments, six fallback groups, finite SC public-vector limitation, historical source archive and current scratch reproduction, program table.",
+  "old_existence_stability_and_CAPD_proof_blocks_unchanged": true,
+  "scope": "Conditional N=1 conductance theorem. Quantitative uniform stability only on lower J; classical qualitative stability only near Hopf. Connected projection uses continuity, not monotonicity or global uniqueness. No inherited old point StageS. Fixed-conductance all-N/cable theorem scope unchanged.",
+  "compilation_verified_by_this_reviewer": false,
+  "independent_full_bibliography_reading_claim": false,
+  "outstanding": "Actual group/half live control results, package build/reproduction, final release decision. Current native full original Hopf suite117/117 passed separately.",
+  "reviewer_marker_failure_before_pass": "Initial section-marker typo compared the old proof block to the full remaining manuscript; corrected marker passed exact existing existence/stability and CAPD block comparison. No manuscript edits or numerical execution occurred.",
+  "editorial_refresh": {
+    "final_paper_sha256": "c8629b4f83ad234b16d5e21f162709f25bcc4dddf2af429e857302c92905fa8c",
+    "README_sha256": "7264bc935cd48b1ac76ae9d3df66dc262a42cfa3800dc05ba4c5262248fd3965",
+    "verified_scope": "Removing exactly the added trust-base paragraph reproduces admitted7b54 manuscript bytes. Branch, branch_stability and hopf numerical routines explicitly trusted; bench_strip correctly benchmark/proposal with underlying rigorous field/DFT evaluations, not a theorem producer/source pin. README read in full for candidacy, proof-scope, runtime, exact tube/comparison and original1.0 archive separation; no new numerical acceptance claimed."
+  }
+}

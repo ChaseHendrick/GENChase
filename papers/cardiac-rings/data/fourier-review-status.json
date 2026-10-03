@@ -30,5 +30,161 @@
   "fourier-stability-N8.json": "c18ddcccbcea85d78628795a3efc1710736fd5d6fdcfe58eaff35ab1089c762e"
  },
  "repository_commit_at_review": "3632300139c169c67a20a7fbe8af7991a983d948",
- "check": "python3 fourier/check_records.py (stored source, centre and Stage E record hashes against the files)"
+ "check": "python3 fourier/check_records.py (stored source, centre and Stage E record hashes against the files)",
+ "additional_scoped_acceptance": [
+  {
+   "date": "2026-10-02",
+   "record": "fourier-branch-gks.json",
+   "outcome": "accepted in-project adversarial review in the explicitly limited scope below",
+   "scope": [
+    "existence",
+    "local uniqueness",
+    "continuity",
+    "minimal period"
+   ],
+   "g_covered": [
+    "0.027499735464",
+    "0.02778996093"
+   ],
+   "n_pieces": 712,
+   "n_groups": 57,
+   "n_gluings_rederived": 711,
+   "workflow_run": "37076139080",
+   "producer_record_sha256": "099c0c9460c726991b01f3395ece2fb0b5939d545801b2d7bc22c689a175f195",
+   "run_log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+   "program_sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+   "canonical_record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+   "canonical_record_note": "New collector output on byte-identical canonical installed final log; exact proof pieces,711gluings,sources,groups and settings match the separately preserved cloud producer. Three float Y0_over_cap display diagnostics differ in last digits; acceptance uses exact hexadecimal bounds, not these floats.",
+   "reviews": [
+    "reviews/theoremC-uniform-fixcheck-2026-10-02.md",
+    "reviews/review-cloud-branch-final-receipt-2026-10-02.json"
+   ],
+   "not_accepted": [
+    "inherited point stability",
+    "uniform stability",
+    "Hopf amplitude branch",
+    "Hopf bridge closure",
+    "paper1.1 release"
+   ],
+   "not_claimed": "No outside review; separate in-project AI-agent reading."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier/data/hopf/theoremA_final.json",
+   "record_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+   "program_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+   "outcome": "accepted separate in-project exact-record review of the fresh Theorem A component",
+   "scope": [
+    "complete 516-interval equilibrium and simple critical-eigenvalue cover",
+    "exact Hopf parameter enclosure",
+    "strict transversality and negative first Lyapunov coefficient",
+    "stable complementary spectrum and critical/stable imaginary separation"
+   ],
+   "n_intervals": 516,
+   "n_left": 286,
+   "n_central": 1,
+   "n_right": 229,
+   "reviews": [
+    "reviews/review-theoremA-point-gate-receipt-2026-10-02.json",
+    "reviews/theoremA-point-gate-run-receipt-2026-10-02.json"
+   ],
+   "previous_record_preserved": "reviews/theoremA-before-point-gate-2026-10-02.json",
+   "not_accepted": [
+    "68-piece amplitude branch",
+    "67 amplitude gluings",
+    "Hopf-to-conductance bridge",
+    "uniform conductance stability",
+    "manuscript 1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier-branch-stability-uniform.json",
+   "record_sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
+   "outcome": "accepted separate in-project exact conservative certificate collection; original scientific acceptance suites pending",
+   "scope": [
+    "source-bound producer certificates of uniform single-cell orbital stability on the complete lower conductance branch",
+    "exact conservative contraction and stronger self-map majorants for every used certificate",
+    "all 712 pieces in one connected covered interval"
+   ],
+   "n_pieces": 712,
+   "n_units": 63,
+   "n_preserved_fallback_failures": 6,
+   "n_conservative_rounding_adjustments": 35,
+   "g_covered": [
+    "0.027499735464",
+    "0.02778996093"
+   ],
+   "workflow_run": "37088569093",
+   "producer_commit": "81744b5cccacf6463b1cdd0aff1f316c44cff4a1",
+   "run_outcome": "numerical proofs completed; original orchestration receipt check failed on independently rounded relational bounds; raw artifacts conservatively recovered",
+   "producer_record_sha256": "3cfd07b0b3d990dfa76cbce9ffb7546c0c96e4ecaf34479b2ad6ebbd3a7c20a9",
+   "log_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+   "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+   "worst_multiplier_bound_upper": "0.998413816",
+   "reviews": [
+    "reviews/review-stability-recovery-actual-receipt-2026-10-02.json",
+    "reviews/theoremC-uniform-fixcheck-2026-10-02.md",
+    "reviews/uniform-stability-recovery-receipt-2026-10-02.jsonl"
+   ],
+   "limitations": [
+    "public SC receipts omit finite column vectors; acceptance retains the fresh source-bound Arb producer calculation",
+    "original piece, group, half and scientific negative suites remain separate prerequisites"
+   ],
+   "not_accepted": [
+    "complete original scientific acceptance suites",
+    "uniform stability of the entire Hopf amplitude branch",
+    "manuscript 1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier-hopf.json",
+   "record_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+   "outcome": "accepted separate in-project actual exact numerical collection and closure, including the full current-source original Hopf acceptance suite",
+   "scope": [
+    "all68 current-source amplitude-piece certificates",
+    "all67 consecutive amplitude gluing inequalities",
+    "zero-amplitude identification with the fresh TheoremA equilibrium and simplecritical pair",
+    "fresh existence-only point at g=0.02778 and ball inclusions into both branches",
+    "closure against the accepted712-piece conductance branch and its711gluings"
+   ],
+   "workflow_run": "37088805596",
+   "producer_commit": "cf73fd1d044177793040c31e4332c5a9cb1547dd",
+   "producer_record_sha256": "064629ec0e75f556c94d589ac293a3cf690a45450a2c3f116a7a9ac363cf4f97",
+   "program_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+   "reproof_log_sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+   "theorem_A_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+   "n_pieces": 68,
+   "n_gluings": 67,
+   "fresh_point_g": "0.02778",
+   "point_log_sha256": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+   "point_centres_sha256": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+   "reviews": [
+    "reviews/review-hopf-cloud-actual-receipt-2026-10-02.json",
+    "reviews/review-hopf-canonical-zero-receipt-2026-10-02.json",
+    "reviews/hopf-bridge-fixcheck-2026-10-02.md",
+    "reviews/hopf-linux-merge-receipt-2026-10-02.json",
+    "reviews/review-hopf-full-original-suite-receipt-2026-10-02.json"
+   ],
+   "canonical_record_note": "Current collector on byte-identical installed inputs; amplitude bounds,67gluings and bridge memberships match producer. Independently computed native and Linux zero-endpoint polydiscs both passed direct Arb LemmaK contraction and exact containment checks; their coefficients are not claimed bit-identical. Platform metadata and point-log path keys reflect the canonical location.",
+   "not_accepted": [
+    "historical pointwise StageS stability",
+    "quantitative uniform stability over the entire amplitudebridge",
+    "manuscript1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review.",
+   "original_scientific_suite": {
+    "checks": 117,
+    "failed": 0,
+    "exit_code": 0,
+    "receipt": "reviews/review-hopf-full-original-suite-receipt-2026-10-02.json",
+    "receipt_sha256": "154f38a3acf07a8a0bc11f7d77f303980b23e0927112e51ec51f95ece54475e7",
+    "wall_seconds": 476.9907682919875,
+    "peak_rss_mib": 633.625
+   }
+  }
+ ]
 }

@@ -1,0 +1,198 @@
+{
+  "status": "actual current 68 receipts, 67 gluings, zero-amplitude identity and fresh existence-only point bridge passed; full scientific suites pending",
+  "helper_sha256": "9b3a8699a987c40cd256521664c40e8f64b6d848b24bbed869a33d8d5b702e93",
+  "hopf_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "merged_log_sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+  "producer_record_sha256": "064629ec0e75f556c94d589ac293a3cf690a45450a2c3f116a7a9ac363cf4f97",
+  "accepted_theoremA_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+  "point_log_sha256": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+  "point_centres_sha256": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+  "pieces": 68,
+  "gluings": 67,
+  "bridge_conductance": "0.02778",
+  "branch_pieces": 712,
+  "branch_gluings": 711,
+  "negative_controls": [
+    "('idx',)",
+    "('sources_sha256',)",
+    "('effective_settings', 'M')",
+    "('result', 'r_uniqueness', 'hex')",
+    "('result', 'Y0', 'hex')",
+    "('result', 'Z1', 'hex')",
+    "('result', 'p_at_r_existence', 'hex')",
+    "('result', 'contraction_at_r_uniqueness', 'hex')",
+    "('result', 'omega', 'lower', 'hex')",
+    "('result', '_obj')"
+  ],
+  "actual_collect_gluing": {
+    "n": 67,
+    "min_slack": 3.0315066505301493e-10
+  },
+  "identification_at_eps0": {
+    "g_star_0": {
+      "lower": "0.027907703083469560106",
+      "upper": "0.027908000799452981761"
+    },
+    "omega_star_0": {
+      "lower": "0.11934112893202437899",
+      "upper": "0.11934175527119512961"
+    },
+    "g_interval": [
+      "1395385154173478005346087/50000000000000000000000000",
+      "2790800079945298176054003/100000000000000000000000000"
+    ],
+    "g_in_window": true,
+    "n_theoremA_intervals_meeting": 208,
+    "intervals_cover": true,
+    "polydiscs_recorded": true,
+    "omega_positive": true,
+    "c_in_P": true,
+    "theoremA_polydiscs_in_P": true,
+    "P_kappa": 0.0011203560286381596,
+    "P_radius_max": 0.00043574010126690155,
+    "c_radius_max": 3.068991696864032e-05,
+    "P": {
+      "centre": [
+        "0x1f9baae55b8147p-54",
+        "0x1f406a93a3e0dbp-53",
+        "0x32ca2fc6970abp-50",
+        "0x12e53c6caede97p-52",
+        "0x1fe24edc6d18ffp-53",
+        "0x11f33014f90ae3p-52",
+        "0x11f33014f90ae3p-52",
+        "0xbf41022799c75p-52",
+        "0xdac90b4a3b0a3p-52",
+        "0x2acdd3922f69dp-49",
+        "0x1d6dd71deb9d9p-49",
+        "0x1d72a1652083bp-49",
+        "0x11fd5f118b6347p-52",
+        "0x1785d01b8bb02bp-53",
+        "0x1f8a9037280df7p-53",
+        "0x19761b7a60b6adp-53",
+        "0x99d7f19e57ffp-47",
+        "0x13436b8b98e13dp-52"
+      ],
+      "radius": [
+        "0x391d02f81p-45",
+        "0x17da55921p-54",
+        "0xebbc7e3dp-50",
+        "0x1f9140e903p-55",
+        "0xbfe0e0a3p-56",
+        "0x113f082e1p-47",
+        "0x113f082e1p-47",
+        "0x170597271p-51",
+        "0x1a66ec4e03p-53",
+        "0x12493b94bp-54",
+        "0x1bf00cf39p-52",
+        "0xa794dac41p-51",
+        "0x294e6d9803p-53",
+        "0x8c3e3c6c1p-53",
+        "0x99088a281p-51",
+        "0x300574331p-52",
+        "0x26f669a91p-50",
+        "0x4c9d5b681p-50"
+      ]
+    },
+    "ok": true
+  },
+  "branch_snapshot": {
+    "run_log": "fourier/data/branch/run_K12_final.jsonl",
+    "run_log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+    "centres_sha256": "396610e93cb6b8d233776d88aacdd7a461970f3efd638eb1b8d9e1688b789b36",
+    "branch_record": "results/fourier-branch-gks.json",
+    "branch_record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+    "branch_program_sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "branch_sources_sha256": {
+      "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+      "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+      "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+      "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+      "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+      "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+      "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+    },
+    "n_pieces": 712,
+    "n_groups": 57,
+    "g_lo": "0.027499735464",
+    "g_hi": "2778996093/100000000000",
+    "consecutive_gluings_rederived": 711
+  },
+  "scope": "Connected existence/local uniqueness/continuity/minimal period only. Qualitative small Hopf stability retained separately. No Stage S or uniform whole bridge stability claim.",
+  "numerical_full_suites": "Not executed by this read-only artifact driver",
+  "wall_seconds": 10.022253457922488,
+  "path_context_difference": {
+    "field": "pieces_reproved.log",
+    "review": "../../../cardiac-hopf-cloud-37088805596/merged/merged/data/reprove_final.jsonl",
+    "producer": "../../work/merged/data/reprove_final.jsonl",
+    "note": "Only this path field excluded from exact reproof-status comparison; original producer bytes preserved."
+  },
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.py",
+      "--merged",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/merged/merged",
+      "--shards",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/all-shards"
+    ],
+    "pid": 57741,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 10.360377042088658,
+    "peak_aggregate_rss_mib": 366.046875,
+    "log": "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.log"
+  },
+  "prior_review_invocation_failures": [
+    {
+      "reason": "artifact directory nesting",
+      "log": "Traceback (most recent call last):\n  File \"/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.py\", line 15, in <module>\n    receipt=m.parse((out/'merge-receipt.json').read_bytes());producer=m.parse((out/'fourier-hopf.json').read_bytes())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1019, in read_bytes\n    with self.open(mode='rb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/merged/merge-receipt.json'\n",
+      "supervisor": {
+        "command": [
+          "/usr/bin/nice",
+          "-n",
+          "10",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+          "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.py",
+          "--merged",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/merged",
+          "--shards",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/all-shards"
+        ],
+        "pid": 57225,
+        "exit_code": 1,
+        "stop_reason": null,
+        "wall_seconds": 1.0335952078457922,
+        "peak_aggregate_rss_mib": 134.78125,
+        "log": "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.log"
+      }
+    },
+    {
+      "reason": "exact reproof-status comparison included cloud/local log-path metadata",
+      "log": "  logs valid: 57 groups, 712 pieces, [0.027499735464, 0.02778996093], 0 gluing inequalities re-derived\nTraceback (most recent call last):\n  File \"/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.py\", line 49, in <module>\n    assert m.digest(actual[key])==m.digest(producer[key]),key\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pieces_reproved\n",
+      "supervisor": {
+        "command": [
+          "/usr/bin/nice",
+          "-n",
+          "10",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+          "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.py",
+          "--merged",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/merged/merged",
+          "--shards",
+          "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-hopf-cloud-37088805596/all-shards"
+        ],
+        "pid": 57373,
+        "exit_code": 1,
+        "stop_reason": null,
+        "wall_seconds": 10.649740875000134,
+        "peak_aggregate_rss_mib": 365.296875,
+        "log": "/private/tmp/cardiac-review-hopf-cloud-actual-2026-10-02.log"
+      }
+    }
+  ]
+}

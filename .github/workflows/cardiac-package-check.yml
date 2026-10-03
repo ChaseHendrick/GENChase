@@ -1,0 +1,65 @@
+name: cardiac manuscript package check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cardiac-package-check.yml'
+      - 'papers/cardiac-rings/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardiac-package-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  manuscript:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[cardiac manuscript]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install project manuscript build dependencies
+        timeout-minutes: 7
+        run: |
+          set -o pipefail
+          mkdir -p work/cardiac-package
+          git rev-parse HEAD > work/cardiac-package/runtime.txt
+          timeout 180 sudo apt-get update
+          timeout 300 sudo apt-get install -y --no-install-recommends texlive-latex-extra texlive-fonts-recommended lmodern
+          pdflatex --version >> work/cardiac-package/runtime.txt
+          dpkg-query -W 'texlive*' lmodern >> work/cardiac-package/runtime.txt
+      - name: Build the full manuscript with the repository tool
+        timeout-minutes: 4
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 180 sh tools/paper-build.sh cardiac-rings 2>&1 | tee work/cardiac-package/build.log
+          cp papers/cardiac-rings/paper/cardiac-rings.pdf work/cardiac-package/
+          sha256sum papers/cardiac-rings/paper/cardiac-rings.tex papers/cardiac-rings/paper/figures/*.pdf papers/cardiac-rings/paper/figures/sources.json work/cardiac-package/cardiac-rings.pdf > work/cardiac-package/hashes.txt
+      - name: Preserve TeX diagnostics and verify identical rebuild
+        timeout-minutes: 4
+        run: |
+          set -o pipefail
+          cp -R papers/cardiac-rings/paper work/cardiac-package/diagnostics
+          export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct -- papers/cardiac-rings/paper/cardiac-rings.tex)
+          export FORCE_SOURCE_DATE=1
+          cd work/cardiac-package/diagnostics
+          for pass in 1 2 3; do
+            timeout 50 pdflatex -interaction=nonstopmode -halt-on-error cardiac-rings.tex > "pass-$pass.log" 2>&1 || { tail -40 "pass-$pass.log"; exit 1; }
+          done
+          cmp cardiac-rings.pdf ../cardiac-rings.pdf
+          if rg 'undefined references|Citation .* undefined|Reference .* undefined' cardiac-rings.log; then exit 1; fi
+          rg 'Overfull|Underfull|Warning|Output written' cardiac-rings.log > ../layout-diagnostics.txt || true
+      - name: Preserve the built PDF, source manifest and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-manuscript-package
+          path: work/cardiac-package/
+          if-no-files-found: error
+          retention-days: 30

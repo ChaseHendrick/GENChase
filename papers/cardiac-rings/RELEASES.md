@@ -3,6 +3,32 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.1.0 candidate (not published)
+
+No version DOI or publication date is assigned. The 1.0.0 DOI below remains the released version reference.
+The candidate adds conditional Theorem D for the single cell: a 712-piece conductance family with 711 gluings,
+63 group or subgroup uniform-stability certificates covering the entire lower interval, and a 68-piece amplitude
+family with 67 gluings and a fresh bridge to the supercritical Hopf equilibrium. The lower-interval multiplier
+bound is 0.998413816 at requested delta = 3e-5 per ms. Historical all-N and cable results retain their original scope.
+The fresh G_Ks = 0.02778 point proof is existence-only; no old pointwise stability receipt is inherited. Uniform
+stability is not established on the whole amplitude bridge, and the conductance projection need not be monotone.
+
+Current numerical producer and collection results require independent recorded acceptance. Remaining release gates
+include the complete original numerical suites, companion scratch reproduction, complete PDF build and visual
+inspection, independent manuscript review, applicable CI and publication checks, and download-and-content
+verification of a future deposited archive. No release-ready or outside-review status is claimed.
+
+The reproduction script adds `continuation` (alias `branch`) without redoing every amplitude or conductance piece
+by default. It checks collectors in scratch directories. Exact original all-N source bytes are archived as
+`code/fourier/branch-1.0.0.py`; their hash is checked before reconstructing the historical execution layout. Original
+1.0 records and its deposited archive are preserved. Python 3.12, the pinned Linux python-flint 0.9.0 wheel and the
+native runtime controls document the new producer trust base; runtime differences are not bitwise portability.
+
+Method credits include the established analytic continuation/desingularization and gluing work of van den Berg,
+Queirolo and Lessard. The full published 2021 Hopf article and full 2019 continuation preprint were read, with access
+limits and the bounded Erhardt forward-citation search recorded in
+`review/method-reading-and-forward-citations-2026-10-02.md`. No historical-priority claim follows.
+
 ## 1.0.0 (2026-10-02)
 
 **DOI:** [10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322). Publication / Preprint.

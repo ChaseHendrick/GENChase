@@ -138,6 +138,53 @@
     "manuscript 1.1.0 release"
    ],
    "not_claimed": "No outside or human review."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier-hopf.json",
+   "record_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+   "outcome": "accepted separate in-project actual exact numerical collection and closure, including the full current-source original Hopf acceptance suite",
+   "scope": [
+    "all68 current-source amplitude-piece certificates",
+    "all67 consecutive amplitude gluing inequalities",
+    "zero-amplitude identification with the fresh TheoremA equilibrium and simplecritical pair",
+    "fresh existence-only point at g=0.02778 and ball inclusions into both branches",
+    "closure against the accepted712-piece conductance branch and its711gluings"
+   ],
+   "workflow_run": "37088805596",
+   "producer_commit": "cf73fd1d044177793040c31e4332c5a9cb1547dd",
+   "producer_record_sha256": "064629ec0e75f556c94d589ac293a3cf690a45450a2c3f116a7a9ac363cf4f97",
+   "program_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+   "reproof_log_sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+   "theorem_A_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+   "n_pieces": 68,
+   "n_gluings": 67,
+   "fresh_point_g": "0.02778",
+   "point_log_sha256": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+   "point_centres_sha256": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+   "reviews": [
+    "reviews/review-hopf-cloud-actual-receipt-2026-10-02.json",
+    "reviews/review-hopf-canonical-zero-receipt-2026-10-02.json",
+    "reviews/hopf-bridge-fixcheck-2026-10-02.md",
+    "reviews/hopf-linux-merge-receipt-2026-10-02.json",
+    "reviews/review-hopf-full-original-suite-receipt-2026-10-02.json"
+   ],
+   "canonical_record_note": "Current collector on byte-identical installed inputs; amplitude bounds,67gluings and bridge memberships match producer. Independently computed native and Linux zero-endpoint polydiscs both passed direct Arb LemmaK contraction and exact containment checks; their coefficients are not claimed bit-identical. Platform metadata and point-log path keys reflect the canonical location.",
+   "not_accepted": [
+    "historical pointwise StageS stability",
+    "quantitative uniform stability over the entire amplitudebridge",
+    "manuscript1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review.",
+   "original_scientific_suite": {
+    "checks": 117,
+    "failed": 0,
+    "exit_code": 0,
+    "receipt": "reviews/review-hopf-full-original-suite-receipt-2026-10-02.json",
+    "receipt_sha256": "154f38a3acf07a8a0bc11f7d77f303980b23e0927112e51ec51f95ece54475e7",
+    "wall_seconds": 476.9907682919875,
+    "peak_rss_mib": 633.625
+   }
   }
  ]
 }

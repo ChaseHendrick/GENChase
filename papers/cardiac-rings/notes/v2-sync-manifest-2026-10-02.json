@@ -1,0 +1,366 @@
+{
+  "scope": "byte-identical synchronization of the current candidate programs and evidence; does not declare publication readiness",
+  "files": {
+    "code/fourier/LEMMAS-hopf.md": {
+      "source": "research/cardiac-cycle-certificates/fourier/LEMMAS-hopf.md",
+      "sha256": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c"
+    },
+    "code/fourier/LEMMAS-stability.md": {
+      "source": "research/cardiac-cycle-certificates/fourier/LEMMAS-stability.md",
+      "sha256": "9dc27ff8d0e9d219435fd01141d3b7fa28e16358cab9d1897ed34327c033fcc8"
+    },
+    "code/fourier/alln.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/alln.py",
+      "sha256": "efec79f5236f1535dea2de6919af41655e893836a83b5bd9c594e09d1342a414"
+    },
+    "code/fourier/arbmodel.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/arbmodel.py",
+      "sha256": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7"
+    },
+    "code/fourier/bench_strip.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/bench_strip.py",
+      "sha256": "d3e7f96405399b924774c1a8567f13add2b4007f944d7c967b1fcca10ff47c80"
+    },
+    "code/fourier/branch.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/branch.py",
+      "sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf"
+    },
+    "code/fourier/branch_stability.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/branch_stability.py",
+      "sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463"
+    },
+    "code/fourier/centre.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/centre.py",
+      "sha256": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907"
+    },
+    "code/fourier/check_records.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/check_records.py",
+      "sha256": "d490e718fcc57727678a86cd2aa0fce4a7d1e40844af375b0b4777b2af6e255d"
+    },
+    "code/fourier/existence.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/existence.py",
+      "sha256": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690"
+    },
+    "code/fourier/fourier_eval.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/fourier_eval.py",
+      "sha256": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf"
+    },
+    "code/fourier/hopf.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/hopf.py",
+      "sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c"
+    },
+    "code/fourier/link_cell.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/link_cell.py",
+      "sha256": "89a6c20dd4ef50ad94200dc58eee3288d2f499a460557c4f152e5aa274e5237b"
+    },
+    "code/fourier/stability.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/stability.py",
+      "sha256": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b"
+    },
+    "code/fourier/test_alln.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_alln.py",
+      "sha256": "359cfd39760c60125436b1dde820a90363afcad0f8a52b4a0d6269e95041e803"
+    },
+    "code/fourier/test_arbmodel.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_arbmodel.py",
+      "sha256": "2b2a1a0dffab2b323ba135131f03ab142538d14cf37dc722f8262200bf0a4bce"
+    },
+    "code/fourier/test_branch.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_branch.py",
+      "sha256": "ffc2b5508bb82b6d254ea76a27a5aad77163d9dd4ba8d21e38e4d240b4085d59"
+    },
+    "code/fourier/test_branch_stability.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_branch_stability.py",
+      "sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317"
+    },
+    "code/fourier/test_existence.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_existence.py",
+      "sha256": "a7e2699fb689286e2d5674a9a52b845d1cb7999b2d0216e25233b49909f91d49"
+    },
+    "code/fourier/test_fourier_eval.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_fourier_eval.py",
+      "sha256": "64f9aa6db66267ff11fbdf6b227b2aecf2f073949491aab38460c71d295489f3"
+    },
+    "code/fourier/test_hopf.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_hopf.py",
+      "sha256": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244"
+    },
+    "code/fourier/test_stability.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/test_stability.py",
+      "sha256": "4b2175ad963031e58a085d9b5819d50af0795073362bdf33a49d18be4c56fced"
+    },
+    "code/fourier/tp06_18d_arb.py": {
+      "source": "research/cardiac-cycle-certificates/fourier/tp06_18d_arb.py",
+      "sha256": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819"
+    },
+    "code/fourier/data/branch/centres_K12.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/centres_K12.jsonl",
+      "sha256": "396610e93cb6b8d233776d88aacdd7a461970f3efd638eb1b8d9e1688b789b36"
+    },
+    "code/fourier/data/branch/float_branch_K16.json": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/float_branch_K16.json",
+      "sha256": "bffffce71b9e09e64ff3eafad9c7f6f88d9ad7d0dad5de9d184dba3edbc4434a"
+    },
+    "code/fourier/data/branch/points_K12.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/points_K12.jsonl",
+      "sha256": "aac6de8cd0b0a57d4b175ce9dd89107e2093c7aa29d67862376e6ac2c4baf608"
+    },
+    "code/fourier/data/branch/points_centres_K32.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/points_centres_K32.jsonl",
+      "sha256": "2530cf41e416e153bfac265e84d7af68cc10ec8ec15fb786ddfd4f9d271ab8c8"
+    },
+    "code/fourier/data/branch/run_K12_final.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/run_K12_final.jsonl",
+      "sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8"
+    },
+    "code/fourier/data/branch/stability_uniform_K12_final.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/branch/stability_uniform_K12_final.jsonl",
+      "sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9"
+    },
+    "code/fourier/data/hopf/covers.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/covers.jsonl",
+      "sha256": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592"
+    },
+    "code/fourier/data/hopf/pieces.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/pieces.jsonl",
+      "sha256": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6"
+    },
+    "code/fourier/data/hopf/reprove_final.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/reprove_final.jsonl",
+      "sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92"
+    },
+    "code/fourier/data/hopf/theoremA_final.json": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/theoremA_final.json",
+      "sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6"
+    },
+    "code/fourier/data/hopf/gks_points.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/gks_points.jsonl",
+      "sha256": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa"
+    },
+    "code/fourier/data/hopf/gks_points_centres_K32.jsonl": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/gks_points_centres_K32.jsonl",
+      "sha256": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714"
+    },
+    "code/fourier/data/hopf/gluing_gks_final.json": {
+      "source": "research/cardiac-cycle-certificates/fourier/data/hopf/gluing_gks_final.json",
+      "sha256": "fc35b028288ee0f0d5ae9a03ba6db47eb6f41c3237d9efa01463c879e435f58e"
+    },
+    "data/fourier-branch-gks.json": {
+      "source": "research/cardiac-cycle-certificates/results/fourier-branch-gks.json",
+      "sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3"
+    },
+    "data/fourier-branch-stability-uniform.json": {
+      "source": "research/cardiac-cycle-certificates/results/fourier-branch-stability-uniform.json",
+      "sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5"
+    },
+    "data/fourier-hopf.json": {
+      "source": "research/cardiac-cycle-certificates/results/fourier-hopf.json",
+      "sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff"
+    },
+    "data/fourier-review-status.json": {
+      "source": "research/cardiac-cycle-certificates/results/fourier-review-status.json",
+      "sha256": "b2e5ccb9aeba5d3b449fe34920ea4ac39126029a0de217bcc9d2103ad6505168"
+    },
+    "review/alln-existence-fixcheck-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/alln-existence-fixcheck-2026-10-02.md",
+      "sha256": "4320f33c336c90b8ee90deb5d881c9632a1f811eb05bea0377e94eed0f44cbd8"
+    },
+    "review/alln-existence-review-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/alln-existence-review-2026-10-02.md",
+      "sha256": "2e8b18f2b6df83f0cd7614d71b1322f54edee40ba68c3b5923444349c3a8ebb2"
+    },
+    "review/branch-canonical-install-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/branch-canonical-install-receipt-2026-10-02.json",
+      "sha256": "ace13221751da46f22412ab54684f2ffd763ad7b4bfe496a36c36e19aeda1e0b"
+    },
+    "review/branch-linux-collected-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/branch-linux-collected-2026-10-02.json",
+      "sha256": "099c0c9460c726991b01f3395ece2fb0b5939d545801b2d7bc22c689a175f195"
+    },
+    "review/hopf-bridge-fixcheck-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-bridge-fixcheck-2026-10-02.md",
+      "sha256": "f8b3316513fb1b65b000b25c59c951ee68b143570ddbb2bf309b99d0a9e1c2c2"
+    },
+    "review/hopf-bridge-fixes-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-bridge-fixes-2026-10-02.md",
+      "sha256": "5fadce9b45da19856d5f054b8ffa912306f0550bde2519701ed577989dbbeaa2"
+    },
+    "review/hopf-bridge-review-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-bridge-review-2026-10-02.md",
+      "sha256": "331310471e5525ceba4dde840c8b7382c0c0873533c5d7e1b19ad15a025ba19b"
+    },
+    "review/hopf-linux-collected-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-linux-collected-2026-10-02.json",
+      "sha256": "064629ec0e75f556c94d589ac293a3cf690a45450a2c3f116a7a9ac363cf4f97"
+    },
+    "review/hopf-linux-gluing-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-linux-gluing-2026-10-02.json",
+      "sha256": "fa488207eb920e8d6fc97c9458e53f585c0ed264c51c3f830f0e75ca6f04234b"
+    },
+    "review/hopf-linux-merge-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/hopf-linux-merge-receipt-2026-10-02.json",
+      "sha256": "06f66c58312eec222b72d661725cc40fcd28ca24bcf478b7053c2b9439cc1928"
+    },
+    "review/linux-shard-runtime-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/linux-shard-runtime-receipt-2026-10-02.json",
+      "sha256": "620ffbfc0de2663b8a407db24ace3a2bb261b55f19bfccd869e1377eadc4e617"
+    },
+    "review/local-proof-stop-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/local-proof-stop-receipt-2026-10-02.json",
+      "sha256": "7c502dab4dc703800f67cf1496380e249d155ab500ccd9b0cd1eee89cf7904db"
+    },
+    "review/method-reading-and-forward-citations-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/method-reading-and-forward-citations-2026-10-02.md",
+      "sha256": "f0e541a7013326d992586558508a3cc8b71e908d14e8b981020dc5a334075831"
+    },
+    "review/methods-delimiter-repair-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/methods-delimiter-repair-2026-10-02.json",
+      "sha256": "b32f48863cfd13b8b30e507ae628975b34254a76579ed137b83e2bd64d00fb92"
+    },
+    "review/parallel-branch-reproof-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/parallel-branch-reproof-2026-10-02.md",
+      "sha256": "42f99843a6722ca12f05aa98f730719f3fba8894c8d98025a676cf171670d691"
+    },
+    "review/rec2-branch-fixcheck-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/rec2-branch-fixcheck-2026-10-02.md",
+      "sha256": "2f0f127518b8006c4d39bd8ff384fc601c472cb138721f753897a06a9f48b248"
+    },
+    "review/rec2-branch-review-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/rec2-branch-review-2026-10-02.md",
+      "sha256": "65db70355b41ee27494183dd4889cb31a036bc89dcd95abe52dc50628fc76adf"
+    },
+    "review/review-boundary-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-boundary-receipt-2026-10-02.json",
+      "sha256": "b84da6bdd593f7a6e9b6e5f8b5ee0bd5a26a888ed95cf4c1587ba0d038353aae"
+    },
+    "review/review-branch-methods-draft-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-branch-methods-draft-receipt-2026-10-02.json",
+      "sha256": "6c6e7ae4a5a7c7dd48510b5ba0eb231fe7bf7a6673186f1caf734aa00830b52c"
+    },
+    "review/review-cloud-branch-final-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-cloud-branch-final-receipt-2026-10-02.json",
+      "sha256": "f34d2e1c7ae1965f2323171000e003b997ece05c2dac8c91021a4a95fb13b291"
+    },
+    "review/review-continuation-orchestration-final-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-continuation-orchestration-final-receipt-2026-10-02.json",
+      "sha256": "b04c7127120c4fb3896198d7203a83692bcaecc704582becaa416fd2d7b2afbe"
+    },
+    "review/review-continuation-orchestration-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-continuation-orchestration-receipt-2026-10-02.json",
+      "sha256": "78d190c138914c703d56e0a5d21f5e220f43d5071bf30478785da4f4e342eff9"
+    },
+    "review/review-final-companion-orchestration-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-final-companion-orchestration-receipt-2026-10-02.json",
+      "sha256": "ee60d6c5603f81e17d55c0f041683e26cbc8cf2e0c2994828964cbd82e89ec3f"
+    },
+    "review/review-group-half-orchestration-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-group-half-orchestration-receipt-2026-10-02.json",
+      "sha256": "37a6b17bd2255ad6ad5c1919c76fdbc6aeb8c5e983ef7e5983d7d5a83a2f91a2"
+    },
+    "review/review-hopf-canonical-zero-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-canonical-zero-receipt-2026-10-02.json",
+      "sha256": "3fc55f1cba23c12dcbb740c2052228326f9b9628fd0b64a5cb5b9ecd27f3a2f4"
+    },
+    "review/review-hopf-cloud-actual-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-cloud-actual-receipt-2026-10-02.json",
+      "sha256": "d4c64d8765f01bafdfc88fd57bac712d362124dd7b08f5f622a5f215ed3235b8"
+    },
+    "review/review-hopf-fresh-gate-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-fresh-gate-receipt-2026-10-02.json",
+      "sha256": "db062f09311e8c2fc653fd20ad3699270524aaa3cd31afdcf046fd999a19fc2b"
+    },
+    "review/review-hopf-fresh-point-actual-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-fresh-point-actual-receipt-2026-10-02.json",
+      "sha256": "712728199fc6034c274706a61e02e72771ba25a585c50927212f6742499f2882"
+    },
+    "review/review-hopf-full-original-suite-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-full-original-suite-receipt-2026-10-02.json",
+      "sha256": "154f38a3acf07a8a0bc11f7d77f303980b23e0927112e51ec51f95ece54475e7"
+    },
+    "review/review-hopf-methods-draft-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-methods-draft-receipt-2026-10-02.json",
+      "sha256": "ab329d8f9fec1fa7b5f26210b926fdd9e2a9f4ad6caf6926b9fe129c8dffdf76"
+    },
+    "review/review-hopf-point-gate-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-point-gate-receipt-2026-10-02.json",
+      "sha256": "3362e1020d8d2cfce878bea64bc4c99547f2c960e588ff3f8a4f1bc1f9b61d03"
+    },
+    "review/review-hopf-second-pilot-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-second-pilot-receipt-2026-10-02.json",
+      "sha256": "c0482ef787c9a38d61b42511e2d13ac4b94acbfdfc6615410223975228bedc4e"
+    },
+    "review/review-hopf-spectral-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-hopf-spectral-receipt-2026-10-02.json",
+      "sha256": "15ba907367ed5dbd7e4d726cf9243c1e67b3641150d6fe9bf26939fb5ff1c0c9"
+    },
+    "review/review-integrated-manuscript-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-integrated-manuscript-receipt-2026-10-02.json",
+      "sha256": "fe34fbb13c1f62f1b7b20854a5c9295e6797d0ff1cc0ca29ef3faf91c66d64e7"
+    },
+    "review/review-linux-piece-acceptance-orchestration-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-linux-piece-acceptance-orchestration-receipt-2026-10-02.json",
+      "sha256": "5602a7ba8c178805020da16bc0928197a8aba38f2b25ae04a74484c9e0de17ad"
+    },
+    "review/review-linux-piece-actual-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-linux-piece-actual-receipt-2026-10-02.json",
+      "sha256": "f7b59a2e6160f7e49d1f04d358a95dcb98150be44964334ab9d2fd59c9742c69"
+    },
+    "review/review-linux-shard-helper-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-linux-shard-helper-receipt-2026-10-02.json",
+      "sha256": "65fb5aefc8b87627ce72afb749adc9171976ef1a67f99afb7a2d98e469d0ea6a"
+    },
+    "review/review-stability-G0P0-pilot-failure-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-stability-G0P0-pilot-failure-receipt-2026-10-02.json",
+      "sha256": "9dd47a1b3bca38e9fe2a92512197512cc703625432281c9124bf2fe2c0c7c661"
+    },
+    "review/review-stability-future-gate-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-stability-future-gate-receipt-2026-10-02.json",
+      "sha256": "c4cb949493041b52bf52db5660a718a9b150ad8abd6b3f68d4ef0ad140cf3f3a"
+    },
+    "review/review-stability-recovery-actual-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-stability-recovery-actual-receipt-2026-10-02.json",
+      "sha256": "d30c2c94ed8c58cf85d2836dc54606e7f6fb20fa5248369bc04745f104819b25"
+    },
+    "review/review-theoremA-final-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-theoremA-final-receipt-2026-10-02.json",
+      "sha256": "d3db0ffb42bec55f6fd14b60dd3bc7c930e9a28687e5362ef6b766439f9696cd"
+    },
+    "review/review-theoremA-point-gate-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-theoremA-point-gate-receipt-2026-10-02.json",
+      "sha256": "67ff9a77441dbf7ab73348cb195cb34872bf5ad24ce683cf76284219d90f22d7"
+    },
+    "review/runtime-macos-arm64-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/runtime-macos-arm64-2026-10-02.json",
+      "sha256": "373f11f5f7833754d06e2bfc666f6e9819ba4cd8bfd7ef258f2ec03591cce89f"
+    },
+    "review/theoremA-before-point-gate-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/theoremA-before-point-gate-2026-10-02.json",
+      "sha256": "8101ac680cd3856653c00bd76a0d5230e29b6b732fc16c2cf4d07b6c55f4b797"
+    },
+    "review/theoremA-point-gate-run-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/theoremA-point-gate-run-receipt-2026-10-02.json",
+      "sha256": "7d954d4ea1ccabb924af73659a713b0d62e4f8840123250bd0828c064eaabe3d"
+    },
+    "review/theoremC-uniform-fixcheck-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/theoremC-uniform-fixcheck-2026-10-02.md",
+      "sha256": "407172154002ca29f300c188c4579427a65bbb74bc244223b131e9adadb5031f"
+    },
+    "review/theoremC-uniform-fixes-2026-10-02.md": {
+      "source": "research/cardiac-cycle-certificates/reviews/theoremC-uniform-fixes-2026-10-02.md",
+      "sha256": "f00d37fccfea39df9159df9e5bb8e551dfec652c3481b11a0035548a7a2e1424"
+    },
+    "review/theoremC-uniform-review-2026-10-02-partial.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/theoremC-uniform-review-2026-10-02-partial.json",
+      "sha256": "86bfab70806b7a3704bd55894a4ddf0e1f48fbf1caa81a872f2f24577aea902c"
+    },
+    "review/uniform-stability-recovered-producer-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/uniform-stability-recovered-producer-2026-10-02.json",
+      "sha256": "3cfd07b0b3d990dfa76cbce9ffb7546c0c96e4ecaf34479b2ad6ebbd3a7c20a9"
+    },
+    "review/uniform-stability-recovery-receipt-2026-10-02.jsonl": {
+      "source": "research/cardiac-cycle-certificates/reviews/uniform-stability-recovery-receipt-2026-10-02.jsonl",
+      "sha256": "10017dd27e1840c03dad6fbbe1b062c5790dce352c72cd1066bb0a95bdda8d07"
+    }
+  },
+  "n_files": 90
+}

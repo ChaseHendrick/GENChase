@@ -1,0 +1,115 @@
+{
+ "gks_branch_snapshot": {
+  "run_log": "fourier/data/branch/run_K12_final.jsonl",
+  "run_log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+  "centres_sha256": "396610e93cb6b8d233776d88aacdd7a461970f3efd638eb1b8d9e1688b789b36",
+  "branch_record": "results/fourier-branch-gks.json",
+  "branch_record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+  "branch_program_sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+  "branch_sources_sha256": {
+   "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+   "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+   "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+   "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+   "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+   "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+   "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+   "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+  },
+  "n_pieces": 712,
+  "n_groups": 57,
+  "g_lo": "0.027499735464",
+  "g_hi": "2778996093/100000000000",
+  "consecutive_gluings_rederived": 711
+ },
+ "points": [
+  {
+   "g": "0.02778",
+   "source": "hopf",
+   "on_eps_branch": true,
+   "lemma_D": {
+    "g": "1389/50000",
+    "eps_enclosure": [
+     "0.12769007505990053945",
+     "0.12769007505990053946"
+    ],
+    "point_centre_sha256": "37fc6d9f217d762b4702d6666d17027152b5721e173cd21ee8b0d9ecbf964148",
+    "point_r_existence": 6.253499778063264e-37,
+    "checks": [
+     {
+      "eps_piece": [
+       "127519/1000000",
+       "128089/1000000"
+      ],
+      "lhs": 7.314711746297504e-08,
+      "r_uniqueness": 1.1944465936784919e-05,
+      "slack": 1.1871318819321944e-05,
+      "ok": true
+     }
+    ],
+    "eps_covered": true,
+    "ok": true
+   },
+   "on_gks_branch": true,
+   "gks_check": {
+    "ok": true,
+    "piece": [
+     "0.027779822295",
+     "0.027780100279"
+    ],
+    "piece_label": "G53P6",
+    "lhs": 7.018775866565249e-05,
+    "r_uniqueness_piece": 0.0012180854997100674
+   },
+   "stage_S_ok": false,
+   "multiplier_bound_full_period": null,
+   "delta": null
+  }
+ ],
+ "eps_branch": {
+  "n_pieces": 68,
+  "eps_end": "6427/50000"
+ },
+ "point_logs_sha256": {
+  "fourier/data/branch/points_K12.jsonl": {
+   "lines": 13,
+   "sha256_of_these_lines": "aac6de8cd0b0a57d4b175ce9dd89107e2093c7aa29d67862376e6ac2c4baf608"
+  },
+  "fourier/data/branch/points_centres_K32.jsonl": {
+   "lines": 12,
+   "sha256_of_these_lines": "2530cf41e416e153bfac265e84d7af68cc10ec8ec15fb786ddfd4f9d271ab8c8"
+  },
+  "fourier/data/hopf/gks_points.jsonl": {
+   "lines": 1,
+   "sha256_of_these_lines": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa"
+  },
+  "fourier/data/hopf/gks_points_centres_K32.jsonl": {
+   "lines": 1,
+   "sha256_of_these_lines": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714"
+  }
+ },
+ "sources_sha256": {
+  "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+  "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+  "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+  "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+  "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+  "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+  "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+  "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+  "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+  "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+  "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+ },
+ "eps_piece_log_sha256": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+ "glue_points": [
+  {
+   "g": "0.02778",
+   "source": "hopf"
+  }
+ ],
+ "ok": true,
+ "stable_bridge_points": []
+}

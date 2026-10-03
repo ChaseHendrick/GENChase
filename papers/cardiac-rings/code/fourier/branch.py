@@ -227,7 +227,14 @@ import time
 from fractions import Fraction
 
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
-    os.environ.setdefault(_v, "1")
+    os.environ[_v] = "1"
+
+_PREIMPORT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_PREIMPORT_FILES = ['fourier/branch.py', 'fourier/existence.py', 'fourier/centre.py', 'fourier/arbmodel.py', 'fourier/fourier_eval.py', 'fourier/tp06_18d_arb.py', 'fourier/stability.py', 'model/tp06_18d.py', 'model/scales.txt']
+_PREIMPORT_SOURCES = {}
+for _path in _PREIMPORT_FILES:
+    with open(os.path.join(_PREIMPORT_ROOT, _path), "rb") as _source_fh:
+        _PREIMPORT_SOURCES[_path] = hashlib.sha256(_source_fh.read()).hexdigest()
 
 import numpy as np  # noqa: E402
 
@@ -251,6 +258,10 @@ RESULTS = os.path.join(ROOT, "results")
 DATA = os.environ.get("BRANCH_DATA", os.path.join(HERE, "data", "branch"))
 G_HOPF = Fraction("0.027907858929580")      # Erhardt's first Hopf point (not used in any bound)
 G_STAGE_E = "0.0275"
+# The SHA-256 of this file AS IMPORTED by this process (worker processes are forked after import). reprove() writes it
+# into every record of the re-proved log, and collect() of that log requires it to equal its own.
+with open(os.path.abspath(__file__), "rb") as _fh:
+    PROGRAM_SHA256 = hashlib.sha256(_fh.read()).hexdigest()
 
 ProofFailure = ex.ProofFailure
 up, lo, amax, bound_rec, dec = ex.up, ex.lo, ex.amax, ex.bound_rec, ex.dec
@@ -1514,6 +1525,11 @@ def sha256(path):
 SOURCES = ["fourier/branch.py", "fourier/existence.py", "fourier/centre.py", "fourier/arbmodel.py",
            "fourier/fourier_eval.py", "fourier/tp06_18d_arb.py", "fourier/stability.py", "model/tp06_18d.py",
            "model/scales.txt"]
+SOURCES_SHA256 = {p: sha256(os.path.join(ROOT, p)) for p in SOURCES}
+if SOURCES_SHA256 != _PREIMPORT_SOURCES:
+    raise RuntimeError("proof sources changed during import")
+if SOURCES_SHA256["fourier/branch.py"] != PROGRAM_SHA256:
+    raise RuntimeError("branch.py changed during import")
 
 
 # =================================================================================================================
@@ -1521,7 +1537,8 @@ SOURCES = ["fourier/branch.py", "fourier/existence.py", "fourier/centre.py", "fo
 # =================================================================================================================
 EXPLORE_GRID = ([round(0.0275 + 2.5e-5 * i, 7) for i in range(15)] +
                 [round(0.02785 + 1e-5 * i, 7) for i in range(1, 6)] + [0.027905])
-RUN_LOG = os.path.join(DATA, "run_K{K}.jsonl")
+LEGACY_RUN_LOG = os.path.join(DATA, "run_K{K}.jsonl")
+RUN_LOG = os.path.join(DATA, "run_K{K}_final.jsonl")
 CENTRES = os.path.join(DATA, "centres_K{K}.jsonl")
 POINTS_LOG = os.path.join(DATA, "points_K{K}.jsonl")
 POINT_CENTRES = os.path.join(DATA, "points_centres_K32.jsonl")
@@ -1566,6 +1583,8 @@ def _float_halfwidth_table(K, K_float=16):
 def _append(path, rec):
     with open(path, "a") as fh:
         fh.write(json.dumps(rec) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
 
 
 def _read_jsonl(path):
@@ -1623,7 +1642,7 @@ def _read_jsonl_tolerant(path):
     return out
 
 
-def validate_logs(K=12, reglue=True, log=print, repair=True):
+def validate_logs(K=12, reglue=True, log=print, repair=False, records=None, centre_records=None, run_path=None):
     """Resume check (untrusted logs are re-checked, not believed): repair a truncated final line of the run log and of
     the centres file; keep only pieces whose group record exists (a group killed between appending its pieces and
     its group record is incomplete: its pieces are moved to run_K<K>.orphans.jsonl, they are re-proved on resume);
@@ -1631,12 +1650,12 @@ def validate_logs(K=12, reglue=True, log=print, repair=True):
     consecutive groups overlap, that every piece's centre is in the centres file with the recorded SHA-256; and, with
     reglue, re-derive every gluing inequality between consecutive pieces in Arb (glue(), the same check as collect).
     Returns (pieces sorted by g_lo, groups, centres)."""
-    runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
+    runlog, cpath = run_path or RUN_LOG.format(K=K), CENTRES.format(K=K)
     if repair:
         _repair_jsonl(runlog, log)
         _repair_jsonl(cpath, log)
-    recs = _read_jsonl_tolerant(runlog)
-    centres = {r["g"]: r for r in _read_jsonl_tolerant(cpath)}
+    recs = records if records is not None else snapshot_jsonl(runlog)[0]
+    centres = {r["g"]: r for r in (centre_records if centre_records is not None else snapshot_jsonl(cpath)[0])}
     groups = [r for r in recs if r["type"] == "group"]
     gids = [g["group"] for g in groups]
     if gids != list(range(len(groups))):
@@ -1672,6 +1691,9 @@ def validate_logs(K=12, reglue=True, log=print, repair=True):
         om, A = centre_from_record(c)
         if centre_digest(om, A) != p["rec"]["centre_sha256"]:
             raise RuntimeError(f"centre digest mismatch for piece {p['rec']['label']}")
+    labels = [p["rec"]["label"] for p in pieces]
+    if len(labels) != len(set(labels)):
+        raise RuntimeError("duplicate branch piece label")
     check_piece_order([p["rec"] for p in pieces])
     nglue = 0
     if reglue:
@@ -1799,10 +1821,12 @@ def run(K=12, g_stop="0.02790", n_per_group=12, workers=3, budget_s=3300, factor
     them (each with a cover of its own). Untrusted choices only; every claim is re-checked by collect()."""
     import multiprocessing as mp
     T0 = time.time()
-    runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
+    runlog, cpath = LEGACY_RUN_LOG.format(K=K), CENTRES.format(K=K)
+    if os.path.exists(runlog):
+        raise RuntimeError("historical branch log is immutable; use --reprove")
     os.makedirs(DATA, exist_ok=True)
     hwf = _float_halfwidth_table(K)
-    pieces, groups, centres = validate_logs(K, log=log)       # repairs a truncated tail, re-derives the gluing
+    pieces, groups, centres = ([], [], {})
     prev_last = None
     if pieces:
         last = max(pieces, key=lambda r: Fraction(r["rec"]["g_hi"]))
@@ -2094,18 +2118,168 @@ def obj_from_record(rec, centre):
     return dict(om_bar=om, A=A, ETA=ETA, nu=nu, r_lo=r_lo, r_hi=r_hi)
 
 
+def snapshot_jsonl(path):
+    """Parse and hash the same immutable bytes; incomplete tails are refused, never repaired."""
+    with open(path, "rb") as fh:
+        raw = fh.read()
+    if raw and not raw.endswith(b"\n"):
+        raise RuntimeError(f"{path}: incomplete final line; preserve the log and investigate")
+    return [json.loads(line) for line in raw.splitlines() if line.strip()], hashlib.sha256(raw).hexdigest()
+
+
+def record_digest(record):
+    return hashlib.sha256(json.dumps(record, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+EXPECTED_FINAL_PIECES = 712
+EXPECTED_FINAL_GROUPS = 57
+EXPECTED_FINAL_RANGE = ["0.027499735464", "0.02778996093"]
+
+
+def reproof_manifest(K=12):
+    records, run_hash = snapshot_jsonl(LEGACY_RUN_LOG.format(K=K))
+    centres, centre_hash = snapshot_jsonl(CENTRES.format(K=K))
+    pieces = [r for r in records if r.get("type") == "piece"]
+    groups = [r for r in records if r.get("type") == "group"]
+    coverage = [min((r["rec"]["g_lo"] for r in pieces), key=Fraction),
+                max((r["rec"]["g_hi"] for r in pieces), key=Fraction)] if pieces else []
+    if K != 12 or len(pieces) != EXPECTED_FINAL_PIECES or len(groups) != EXPECTED_FINAL_GROUPS or coverage != EXPECTED_FINAL_RANGE:
+        raise RuntimeError("final reproof requires the complete 57-group, 712-piece historical interval")
+    return dict(type="reproof_manifest", K=K, program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
+                input_log_sha256=run_hash, centres_sha256=centre_hash,
+                n_pieces=sum(r["type"] == "piece" for r in records)), records, centres
+
+
+def validate_final(K=12, records=None, centre_records=None):
+    """Require every historical piece, exact inputs and current import-time sources, once each."""
+    manifest, historical, cc = reproof_manifest(K)
+    rr = snapshot_jsonl(RUN_LOG.format(K=K))[0] if records is None else records
+    manifests = [r for r in rr if r.get("type") == "reproof_manifest"]
+    if manifests != [manifest]:
+        raise RuntimeError("final branch manifest differs from current sources or historical inputs")
+    old = {r["rec"]["label"]: r for r in historical if r["type"] == "piece"}
+    new = [r for r in rr if r.get("type") == "piece"]
+    if len(new) != len(old) or {r["rec"]["label"] for r in new} != set(old):
+        raise RuntimeError(f"final branch incomplete: {len(new)} of {len(old)} pieces")
+    for r in new:
+        prior = old[r["rec"]["label"]]
+        if (r.get("program_sha256") != PROGRAM_SHA256 or r.get("sources_sha256") != SOURCES_SHA256
+                or r.get("input_piece_sha256") != record_digest(prior)):
+            raise RuntimeError("final branch piece source/input mismatch")
+        for key in ("g_lo", "g_hi", "centre_g", "centre_sha256", "eta", "settings", "r_star"):
+            if r["rec"][key] != prior["rec"][key]:
+                raise RuntimeError(f"final branch piece {r['rec']['label']} changed logged {key}")
+    if [r for r in rr if r.get("type") == "group"] != [r for r in historical if r["type"] == "group"]:
+        raise RuntimeError("final branch group metadata differs from historical inputs")
+    return validate_logs(K, reglue=False, repair=False, records=rr, centre_records=cc if centre_records is None else centre_records)
+
+
+_REPROOF_HESS_CACHE = {}
+
+
+def _reproof_job(job):
+    """Recompute from exact logged inputs, never copy a success Boolean."""
+    prior, centre, cover_spec, cover_centres = job
+    r = prior["rec"]
+    t0 = time.time()
+    key = record_digest([cover_spec, cover_centres, r["settings"]])
+    if key not in _REPROOF_HESS_CACHE:
+        _REPROOF_HESS_CACHE.clear()
+        _REPROOF_HESS_CACHE[key] = HessBound([centre_from_record(c) for c in cover_centres], *cover_spec["g_hull"],
+                   cover_spec["R"], str(Fraction(cover_spec["rho2"])), r["settings"], log=lambda *a, **k: None)
+    hb = _REPROOF_HESS_CACHE[key]
+    if hb.digest != r["hessian_cover"]:
+        raise RuntimeError(f"{r['label']}: reconstructed cover digest mismatch")
+    om, A = centre_from_record(centre)
+    result = prove_piece(om, A, r["g_lo"], r["g_hi"], eta=r["eta"],
+                         r_star=ct.text_to_dyadic(r["r_star"]["hex"]), hess=hb,
+                         settings=r["settings"], label=r["label"], log=lambda *a, **k: None)
+    return dict(type="piece", group=prior["group"], rec=_public(result), wall=time.time() - t0,
+                hess_record=hb.record(), program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
+                input_piece_sha256=record_digest(prior))
+
+
+def reprove(K=12, workers=3, budget_s=3300, labels=None, log=print):
+    """Finite, resumable reproof into a new append-only log; historical logs are never altered.
+    A budget expiration terminates workers and leaves completed records for the next invocation.
+    --labels is a bounded probe; collect still requires the complete historical coverage.
+    """
+    import multiprocessing as mp
+    if workers < 1 or budget_s <= 0:
+        raise ValueError("positive workers and budget required")
+    manifest, historical, cc = reproof_manifest(K)
+    pieces, groups, centres = validate_logs(K, reglue=False, records=historical, centre_records=cc, repair=False)
+    path = RUN_LOG.format(K=K)
+    if not os.path.exists(path):
+        _append(path, manifest)
+    final = snapshot_jsonl(path)[0]
+    if [r for r in final if r.get("type") == "reproof_manifest"] != [manifest]:
+        raise RuntimeError("resume refuses changed sources or input manifest; use a new final log")
+    have = {}
+    for r in final:
+        if r.get("type") != "piece":
+            continue
+        lab = r["rec"]["label"]
+        prior = next((p for p in pieces if p["rec"]["label"] == lab), None)
+        if (lab in have or prior is None or r.get("input_piece_sha256") != record_digest(prior)
+                or r.get("program_sha256") != PROGRAM_SHA256 or r.get("sources_sha256") != SOURCES_SHA256):
+            raise RuntimeError("resume refuses duplicate, unknown or mismatched piece")
+        have[lab] = r
+    group_done = {r["group"] for r in final if r.get("type") == "group"}
+    deadline = time.monotonic() + budget_s
+    pool = mp.get_context("fork").Pool(workers)
+    try:
+        for grp in groups:
+            mine = [p for p in pieces if p["group"] == grp["group"]]
+            pending = []
+            active = []
+            for p in mine:
+                lab = p["rec"]["label"]
+                if lab in have or (labels is not None and lab not in labels):
+                    continue
+                spec = p.get("hess_record") or grp["hess"]
+                cover_pieces = mine if not p.get("hess_record") else [q for q in mine if q.get("hess_record") == spec]
+                cs = [centres[_dstr(Fraction(q["rec"]["centre_g"]))] for q in cover_pieces]
+                pending.append((p, centres[_dstr(Fraction(p["rec"]["centre_g"]))], spec, cs))
+            while (pending or active) and time.monotonic() < deadline:
+                while pending and len(active) < workers:
+                    active.append(pool.apply_async(_reproof_job, (pending.pop(0),)))
+                ready = [a for a in active if a.ready()]
+                if not ready:
+                    time.sleep(0.2)
+                    continue
+                for a in ready:
+                    result = a.get()
+                    _append(path, result)
+                    have[result["rec"]["label"]] = result
+                    active.remove(a)
+                    log(f"reproved {result['rec']['label']}: {len(have)}/{len(pieces)}, {result['wall']:.1f}s")
+            if all(p["rec"]["label"] in have for p in mine) and grp["group"] not in group_done:
+                _append(path, grp)
+                group_done.add(grp["group"])
+            if time.monotonic() >= deadline:
+                break
+    finally:
+        pool.terminate()
+        pool.join()
+    return len(have)
+
+
 def collect(K=12, write=True, log=print):
     """Re-check gluing in Arb from the stored exact data and write results/fourier-branch-gks.json."""
     runlog, cpath = RUN_LOG.format(K=K), CENTRES.format(K=K)
-    pieces, groups, centres = validate_logs(K, reglue=False, log=log, repair=False)   # gluing re-derived below
-    recs = _read_jsonl_tolerant(runlog)
-    pts_all = [r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "point"]
+    recs, run_hash = snapshot_jsonl(runlog)
+    cc, centre_hash = snapshot_jsonl(cpath)
+    pieces, groups, centres = validate_final(K, records=recs, centre_records=cc)
+    point_records, point_hash = snapshot_jsonl(POINTS_LOG.format(K=K))
+    point_centres, point_centre_hash = snapshot_jsonl(POINT_CENTRES)
+    pts_all = [r for r in point_records if r["type"] == "point"]
     byg = {}
     for r in pts_all:                       # one record per g: the last successful one, else the last one
         if r.get("ok") or r["g"] not in byg or not byg[r["g"]].get("ok"):
             byg[r["g"]] = r
     points = sorted(byg.values(), key=lambda r: Fraction(r["g"]))
-    pcentres = {r["g"]: r for r in _read_jsonl(POINT_CENTRES)}
+    pcentres = {r["g"]: r for r in point_centres}
     fails = [r for r in recs if r["type"] == "failure"]
     glue_recs = []
     connected_to = None
@@ -2117,7 +2291,9 @@ def collect(K=12, write=True, log=print):
         glue_recs.append(g)
         if not g["glued"] and connected_to is None:
             connected_to = i
-    n_conn = len(pieces) if connected_to is None else connected_to + 1
+    if connected_to is not None:
+        raise RuntimeError("final branch gluing failed; no complete theorem record written")
+    n_conn = len(pieces)
     n_nonconsecutive = check_piece_order([r["rec"] for r in pieces])
     lo_all = pieces[0]["rec"]["g_lo"]
     hi_all = max((r["rec"]["g_hi"] for r in pieces[:n_conn]), key=Fraction)
@@ -2196,7 +2372,7 @@ def collect(K=12, write=True, log=print):
         largest_g_reached=hi_all, hopf_point_erhardt=_dstr(G_HOPF),
         distance_to_hopf=float(G_HOPF - Fraction(hi_all)),
         pieces=table, gluing=glue_recs, stability=stab, stability_uniform=False,
-        stability_uniform_attempt=[r for r in _read_jsonl(POINTS_LOG.format(K=K)) if r["type"] == "uniform_attempt"],
+        stability_uniform_attempt=[r for r in point_records if r["type"] == "uniform_attempt"],
         stability_note=("Stage S was run pointwise, at the exact G_Ks listed under 'stability' (stability_points); "
                         "only those whose orbit passed the ball-inclusion check (point_on_branch) are statements about "
                         "the branch orbit, the others are isolated results. This record claims no uniform stability; "
@@ -2204,12 +2380,13 @@ def collect(K=12, write=True, log=print):
                         "results/fourier-branch-stability.json (fourier/branch_stability.py)."),
         comparison_stage_E=cmp_, failures_split=len(fails), nonconsecutive_overlaps=n_nonconsecutive,
         groups=[{k: v for k, v in g.items() if k != "MH_float"} for g in groups],
-        settings=dict(DEFAULTS, K=K),
-        sources_sha256={p: sha256(os.path.join(ROOT, p)) for p in SOURCES},
-        run_log=os.path.relpath(runlog, ROOT), run_log_sha256=sha256(runlog),
-        centres_file=os.path.relpath(cpath, ROOT), centres_sha256=sha256(cpath),
-        points_log=os.path.relpath(POINTS_LOG.format(K=K), ROOT), points_log_sha256=sha256(POINTS_LOG.format(K=K)),
-        point_centres_file=os.path.relpath(POINT_CENTRES, ROOT), point_centres_sha256=sha256(POINT_CENTRES),
+        settings_by_piece={p["rec"]["label"]: p["rec"]["settings"] for p in pieces},
+        program_sha256=PROGRAM_SHA256, sources_sha256=SOURCES_SHA256,
+        documents_sha256={p: sha256(os.path.join(ROOT, p)) for p in ("fourier/test_branch.py",)},
+        run_log=os.path.relpath(runlog, ROOT), run_log_sha256=run_hash,
+        centres_file=os.path.relpath(cpath, ROOT), centres_sha256=centre_hash,
+        points_log=os.path.relpath(POINTS_LOG.format(K=K), ROOT), points_log_sha256=point_hash,
+        point_centres_file=os.path.relpath(POINT_CENTRES, ROOT), point_centres_sha256=point_centre_hash,
         python_flint=flint.__version__, FLINT=flint.__FLINT_VERSION__, python=platform.python_version(),
         machine=platform.machine(), date=time.strftime("%Y-%m-%d"),
         total_piece_wall_s=round(sum(r["wall"] for r in pieces), 1))
@@ -2262,6 +2439,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--explore", action="store_true")
     ap.add_argument("--run", action="store_true")
+    ap.add_argument("--reprove", action="store_true")
+    ap.add_argument("--labels", default="", help="bounded reproof probe only; collect requires every piece")
     ap.add_argument("--collect", action="store_true")
     ap.add_argument("--K", type=int, default=12)
     ap.add_argument("--g-stop", default="0.02790")
@@ -2281,6 +2460,8 @@ def main():
                                 "condition; Hill-matrix Floquet exponents; predicted admissible half-widths",
                            K=16, points=out), fh, indent=1)
         print("wrote", path)
+    if a.reprove:
+        reprove(K=a.K, workers=a.workers, budget_s=a.budget, labels=set(a.labels.split(",")) if a.labels else None)
     if a.run:
         run(K=a.K, g_stop=a.g_stop, n_per_group=a.per_group, workers=a.workers, budget_s=a.budget,
             u_target=a.u_target)

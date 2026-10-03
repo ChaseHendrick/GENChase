@@ -1,0 +1,41 @@
+{
+  "status": "actual isolated fresh G0P0 and all seven original piece controls accepted on pinned Linux; full group/half suites separate",
+  "producer_receipt_sha256": "141118c81685300703f00461ace8bf8d626bba9c6053b5eba0e3ba76a1273010",
+  "fresh_piece_log_sha256": "3e1041ee97afd9ace7d048ddd16c0b1f26bd76681a73b5a27d281ae6bba84779",
+  "runtime_sha256": "2079e6b59490fdbcac70bfd8f4d38f91da2dc9de1b2f82a41e831a0f6267991d",
+  "actual_helper_sha256": "57d961c99e6a4a7d4f189965d72a0c8ae465bff1fc48c18e8a9dac45b20898d3",
+  "actual_producer_gate_sha256": "ee953a5f4dc789a7576a740f773632f8b563b1ba454bec580f855d1622d00e57",
+  "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "actual_controls": [
+    "test_acceptance_piece",
+    "test_float_orbit_inside_certified_ball",
+    "test_float_window_dominated",
+    "test_negative_delta_above_exponent",
+    "test_negative_drop_g_terms_detected",
+    "test_negative_drop_second_order_detected",
+    "test_negative_lemma_10_1_identification"
+  ],
+  "controls_passed": 7,
+  "wall_seconds": 238.89514741899998,
+  "peak_self_rss_mib": 830.9375,
+  "independent_review": "Current source/input/centre/settings/rational bounds and unchanged original exactY0/Z1 gate bind actual unit; current stronger wrapper gate also passes. Old ee953 gate explicitly bound to producer execution; new7c gate not retroactively substituted.",
+  "scope": "Isolated piece acceptance only. No production fallback unit inserted; 63 actual group-unit certificate coverage retained. Mac gate failure preserved.",
+  "evidence_inputs_unchanged": true,
+  "no_numeric_reproof_in_reviewer": true,
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-linux-piece-actual-2026-10-02.py"
+    ],
+    "pid": 59585,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 2.8620135840028524,
+    "peak_aggregate_rss_mib": 219.546875,
+    "log": "/private/tmp/cardiac-review-linux-piece-actual-2026-10-02.log"
+  }
+}
