@@ -1,6 +1,6 @@
 # Model wording correction: rebuild checkpoint (2026-10-03)
 
-Status: corrected source prepared; final PDF build and visual review pending. This checkpoint supplies no new
+Status: corrected source built and scoped PDF packaging review completed, as recorded below. This checkpoint supplies no new
 theorem, numerical certificate or extension claim. The released 1.1.0 PDF and immutable tag remain untouched.
 
 ## Source and correction scope
@@ -76,5 +76,39 @@ gh workflow run cardiac-package-check.yml --repo ChaseHendrick/GENChase \
 Before replacing the registered PDF, download the actual artifact, match its source and figure hashes, confirm
 successful final build and identical rebuild, inspect all PDF pages and fonts/metadata, and inspect the corrected
 model page at reading size. Compare changed pagination and figures against the preserved 1.1.0 PDF. Record any
-clipping, overlap, warnings or citation failures. No page, font or metadata acceptance is asserted here because no
-corrected PDF exists yet. The rebuild is a manuscript packaging check, not scientific validation.
+clipping, overlap, warnings or citation failures. No page, font or metadata acceptance was asserted at the local
+attempt checkpoint because no corrected PDF existed then. The rebuild is a manuscript packaging check, not
+scientific validation.
+
+## Actual cloud build and scoped PDF review
+
+Run `37101156156` on committed source head `d6c19d05ba041c25324186a4b8c9ce6d84c4d66b` completed successfully.
+The job ran from 2026-10-03 05:51:14 UTC to 05:52:39 UTC, including dependency setup. The repository build and
+independent three-pass rebuild passed and their PDFs were byte-identical. The runtime was pdfTeX
+3.141592653-2.6-1.40.25, TeX Live 2023/Debian, on the declared Ubuntu 24.04 runner. Actual source and all figure
+inputs match the hashes above and the current working tree. The final compiler log has no unresolved citations or
+references. The artifact remains in `work/cardiac-model-correction-package-37101156156`.
+
+The corrected 73-page PDF has SHA-256
+`99203ed5f186a1cb3dda6c329a973d8b547726461559ba708fd2cce70f5e07e9`.
+All 45 used fonts are embedded, all extracted text spans lie within the page boxes, and the metadata gives the
+registered title and Chase Hendrick as author. Creation/modification time is 2026-10-03 05:51:07 UTC, as fixed by
+the source commit epoch. Five contact sheets cover every page; only pages 5 and 6 differ in the image comparison
+at scale 0.65. The other 71 pages, including the four scientific figures and bibliography, are pixel-identical at
+that scale. Pages 5 and 6 were additionally rendered and inspected at scale 1.5. The corrected model paragraph is
+readable, the additional potassium-clamp clarification fits, and no overlap, clipping or caption collision was found.
+This is a conversion/layout consistency check by the correction's author, not a newly independent proof review.
+
+The unchanged 2.69937-pt proof-box protrusion and three underfull spacing diagnostics remain visible in the saved
+compiler diagnostics; the page inspection found no collision or clipping from them. Metadata, font, geometry,
+source/figure binding and visual scope are recorded in `model-correction-pdf-review-37101156156.json`, SHA-256
+`beddefdbb161e5389a46d9cc071a6bf96ed72df3a9302c99336221645defd2fa`.
+
+After these actual checks, the registered working-tree PDF was replaced by the corrected PDF. The former registered
+1.1.0 PDF is preserved byte-for-byte as `published-1.1.0-preserved.pdf` in the private artifact directory. No remote
+release, tag or historical archive was changed. The scientific model/program/result bytes, theorem statements and
+figure inputs remain unchanged. Prospective quality-upgrade obligations for new research claims remain open.
+
+The ordinary `node tools/paper-check.js --paper cardiac-rings` exited 0 after the PDF replacement, reporting 73
+pages and a clean companion stage. Its note explicitly reserves prospective adoption checks for a new release with
+`--release`; this ordinary pass does not close the seven open quality-upgrade items. `git diff --check` passed.

@@ -7,6 +7,10 @@ in [`review/`](review/README.md); none is an outside review.
 
 **Version 1.1.0** is published and archived. The actual GitHub and Zenodo source ZIPs each contain the exact reviewed 73-page PDF and all 186 expected files, including all 84 code/data files. The complete original stability and Hopf suites, branch quick checks and fresh tracked-companion reproduction passed their recorded in-project checks.
 
+The working revision after 1.1.0 corrects the distinction between membrane-current and internal calcium fluxes
+and clarifies the clamped-potassium model. Its source and rebuilt PDF retain the same theorem claims. The version
+DOI above identifies the published 1.1.0 archive.
+
 Release 1.0.0 remains available at [doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322); earlier immutable archives and their evidence remain unchanged.
 
 **[Read the paper PDF](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
