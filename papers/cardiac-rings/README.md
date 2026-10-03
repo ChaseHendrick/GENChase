@@ -134,8 +134,9 @@ andreerhardt/cardiac-dynamics-of-a-human-ventricular-tissue-model-with-focus-on-
 dc78f86, MIT License), which differs from the published TP06 cell in four ways: K_i is held at 138.3 mM; the Heaviside
 switch at V = -40 mV in the h and j rates is replaced by 1/(1 + exp(-5(V + 40))); G_Kr = 0.0153 and G_CaL = 0.000199
 (0.1 and 5 times the endocardial values), with G_Ks = 0.0275; and C_m = 1 also multiplies the Ca_i, Ca_ss and Na_i
-fluxes, so every concentration flux is 5.405 times its value in the convention of the CellML-derived version of
-TP06 in the same repository, which uses 0.185 for the cell capacitance. The ring is
+membrane-current terms, whose coefficients are 1/0.185, approximately 5.405, times those in the convention of
+the CellML-derived version of TP06 in the same repository, which uses 0.185 for the cell capacitance.
+Internal calcium uptake, leak, release and transfer terms do not carry this capacitance factor. The ring is
 dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the projection on V.
 
 ## Programs

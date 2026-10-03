@@ -44,7 +44,8 @@ g_CaL 0.0398 l/F/s = 3.98e-5 in fun_eval units (73), g_to 0.073 (91). Initial st
 
 **Capacitance convention (a real discrepancy, verified in the source).** Erhardt runs `TP06_endo.m` with
 par_Cm = 1 (`TP06_16D_bifurcation_endo.m` line 26; `fun_TP06_model.m` line 29), which divides dV/dt by 1 and also
-multiplies every concentration flux by 1. The gotran/CellML file uses Cm = 185 pF, V_c = 16404 um^3,
+multiplies the membrane-current terms in the concentration equations by 1. Internal calcium uptake, leak,
+release and transfer terms do not carry this factor. The gotran/CellML file uses Cm = 185 pF, V_c = 16404 um^3,
 F = 96.485 C/mmol (lines 160-162) in the fluxes, i.e. flux factor Cm/(V_c F) = 1.1689e-4, while Erhardt's is
 1/(0.016404 x 96485.3415) = 6.318e-4, a factor 5.405 = 1/0.185 larger. The gotran file also carries the stimulus
 in K_i (line 322); Erhardt's K_i equation (TP06_endo.m line 147) does not. `tp06_19d.params()` offers both:
