@@ -1,0 +1,115 @@
+{
+  "independent_negative_controls": 30,
+  "controls": [
+    "stability ('sources_sha256',)",
+    "stability ('eta',)",
+    "stability ('rho0',)",
+    "stability ('existence', 'Z1_point')",
+    "stability ('existence', 'Z2')",
+    "stability ('existence', 'rho')",
+    "stability ('existence', 'identification', 0, 'ok')",
+    "stability ('certificate', 'SC_worst_ratio')",
+    "stability ('certificate', 'SC_worst_ratio')",
+    "stability ('certificate', 'count_in_Omega')",
+    "stability ('certificate', 'N')",
+    "stability ('MUTATED',)",
+    "stability ('certificate', 'internals')",
+    "correlated multiplier_bound_full_period",
+    "correlated T_lo",
+    "typed stability assignment (True, 6)",
+    "typed stability assignment (0, 6.0)",
+    "typed stability assignment (6, 6)",
+    "hopf ('idx',)",
+    "hopf ('idx',)",
+    "hopf ('result', 'K')",
+    "hopf ('result', 'eta')",
+    "hopf ('result', 'r_uniqueness', 'hex')",
+    "hopf ('result', 'contraction_at_r_uniqueness', 'hex')",
+    "hopf ('result', 'Z1', 'hex')",
+    "hopf ('result', 'Y0', 'hex')",
+    "hopf ('result', 'omega', 'lower', 'hex')",
+    "hopf ('result', '_obj')",
+    "hopf ('centre_digest_ok',)",
+    "hopf ('effective_settings', 'nsub_xi')"
+  ],
+  "actual_stability_partition_counts": [
+    124,
+    124,
+    124,
+    112,
+    116,
+    112
+  ],
+  "stability_helper_sha256": "ee953a5f4dc789a7576a740f773632f8b563b1ba454bec580f855d1622d00e57",
+  "hopf_helper_sha256": "2b164537938012551a2a91adf75ac1573150063a9f2995465488755de508077d",
+  "status": "passed structural controls, actualbranch input manifest; no stability/Hopf numerical recomputation",
+  "workflow_sha256": "fd92f8deab87420f36b77bee1ad29495b4c539ec793053cd87f856c0150e6c23",
+  "workflow_gate_cases": {
+    "docs": {
+      "enabled": false,
+      "shards": 0,
+      "merges": 0,
+      "kinds": []
+    },
+    "push both": {
+      "enabled": true,
+      "shards": 12,
+      "merges": 2,
+      "kinds": [
+        "stability",
+        "hopf"
+      ]
+    },
+    "push stability": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "stability"
+      ]
+    },
+    "push hopf": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "hopf"
+      ]
+    },
+    "dispatch both": {
+      "enabled": true,
+      "shards": 12,
+      "merges": 2,
+      "kinds": [
+        "stability",
+        "hopf"
+      ]
+    },
+    "dispatch stability": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "stability"
+      ]
+    },
+    "dispatch hopf": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "hopf"
+      ]
+    }
+  },
+  "merge_after_other_kind_failure": "enabled by always, own strict6shard helper still required",
+  "stage_concurrency": "separate stability/hopf keys",
+  "supervisor": {
+    "exit_code": 0,
+    "wall_seconds": 3.148102500010282,
+    "peak_aggregate_rss_mib": 226.28125,
+    "deadline_seconds": 120,
+    "rss_limit_mib": 512,
+    "log": "/private/tmp/cardiac-review-continuation-2026-10-02.log"
+  }
+}

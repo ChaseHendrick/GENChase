@@ -122,7 +122,7 @@ For every farther mode,
 
 Together with the explicit modes these give finite entrywise bounds $\overline A_0\ge\sup_{|m|>K}|A_m|$ and $\overline A_1\ge\sup_{|m|>K}|mA_m|$, and make $A:X'\to X$ bounded. If $\|I-A DF(\bar x;g_c)\|_{X\to X}<1$, then (A) is injective.
 
-*Proof.* For $y=\bar\omega|m|\ge Y$, expand the inverse in the Neumann series of $\widehat J_0/(i\bar\omega m)$. Entrywise absolute values are bounded by $y^{-1}\sum_{k\ge0}G^k$. For $k\ge3$, each entry is at most the corresponding row sum, which is at most $\theta^k$; summing proves both estimates. The factor needed to map (X') into $X$ is $(1+|m|)|A_m|$, bounded by $\overline A_0+\overline A_1$. The finite compression of (I-A DF\) is $I-A_{\rm fin}J_{\rm fin}$, with norm below 1. A Neumann series makes $A_{\rm fin}J_{\rm fin}$ invertible, hence the square matrix $A_{\rm fin}$ invertible. Each tail matrix is invertible by its explicit or Neumann construction, so $Av=0$ implies every component of (v) is zero. □
+*Proof.* For $y=\bar\omega|m|\ge Y$, expand the inverse in the Neumann series of $\widehat J_0/(i\bar\omega m)$. Entrywise absolute values are bounded by $y^{-1}\sum_{k\ge0}G^k$. For $k\ge3$, each entry is at most the corresponding row sum, which is at most $\theta^k$; summing proves both estimates. The factor needed to map $X'$ into $X$ is $(1+|m|)|A_m|$, bounded by $\overline A_0+\overline A_1$. The finite compression of $I-A DF$ is $I-A_{\rm fin}J_{\rm fin}$, with norm below 1. A Neumann series makes $A_{\rm fin}J_{\rm fin}$ invertible, hence the square matrix $A_{\rm fin}$ invertible. Each tail matrix is invertible by its explicit or Neumann construction, so $Av=0$ implies every component of $v$ is zero. □
 
 Negative tail modes are included: $A_{-m}=\overline{A_m}$, but products with a fixed $J_n$ require both signs. A bound for $|A_mJ_n|$ at positive $m$ cannot simply be reused for negative $m$ without conjugating $J_n$.
 
@@ -145,7 +145,7 @@ The following prescriptions specify the directions that must be bounded. A finit
  +\overline A_0 S_v\frac{2q^{K'+1}}{1-q}.
 \]
 
-Polynomial derivative terms vanish beyond (K\), including along the paths below. The three terms, finite rows, explicit tail rows and analytic omitted tail, give a component residual vector.
+Polynomial derivative terms vanish beyond $K$, including along the paths below. The three terms, finite rows, explicit tail rows and analytic omitted tail, give a component residual vector.
 
 For $B=I-A DF(\bar x;g_c)$, finite rows and finite columns are $I-A_{\rm fin}J_{\rm fin}$. Finite rows and tail columns are $A_{\rm fin}$ applied to convolution columns with entries $-J_{m-m',kj}$, $|m|\le K<|m'|$. Their phase entry is zero, since this branch phase uses only modes $\pm1$. Evaluate $K<|m'|\le K+L$ explicitly. For each sign, farther columns satisfy
 
@@ -197,9 +197,9 @@ For $t_j=\|a_j-\bar a_j\|_\nu<R_j$, define
 
 Then the Hessian composition belongs to $\ell^1_\nu$ and has norm at most $M_{H,kjl}Q_2\Pi(t)$. The map $a\mapsto f\circ\phi_a$ is analytic locally into $(\ell^1_\nu)^{18}$, with derivative convolution by $Df\circ\phi_a$; its Jacobian derivative is convolution by the Hessian.
 
-*Proof.* Expand the Hessian about the center polynomial in the state polydisc. Cauchy's formula gives Taylor coefficient bounds $|c_\alpha(\theta)|\le M_H R^{-\alpha}$. Each coefficient is periodic and holomorphic near the $\rho_2$ strip, so Lemma 2.1 gives $\|c_\alpha\|_\nu\le M_H R^{-\alpha}Q_2$. Substitution of $a-\bar a$ in this series converges absolutely in the Banach algebra, dominated by $M_HQ_2\prod_j\sum_{n\ge0}(t_j/R_j)^n$. On the real circle its value is the original composite, so its Fourier coefficients are those of the composite. The same argument for (f\) and (Df\) gives normally convergent power series on smaller polydiscs. Differentiating those series term by term gives the stated derivatives, and the series for the derivative of (Df\) is precisely the Hessian series already bounded. □
+*Proof.* Expand the Hessian about the center polynomial in the state polydisc. Cauchy's formula gives Taylor coefficient bounds $|c_\alpha(\theta)|\le M_H R^{-\alpha}$. Each coefficient is periodic and holomorphic near the $\rho_2$ strip, so Lemma 2.1 gives $\|c_\alpha\|_\nu\le M_H R^{-\alpha}Q_2$. Substitution of $a-\bar a$ in this series converges absolutely in the Banach algebra, dominated by $M_HQ_2\prod_j\sum_{n\ge0}(t_j/R_j)^n$. On the real circle its value is the original composite, so its Fourier coefficients are those of the composite. The same argument for $f$ and $Df$ gives normally convergent power series on smaller polydiscs. Differentiating those series term by term gives the stated derivatives, and the series for the derivative of $Df$ is precisely the Hessian series already bounded. □
 
-Let $N_0,N_1$ bound the finite blocks of $A_{\rm fin}$ and of $A_{\rm fin}$ followed by mode multiplication (im\), respectively, in the component sequence norms. Extend $\overline A_0,\overline A_1$ by zero in frequency output. For $\eta_jr_*<R_j$, put
+Let $N_0,N_1$ bound the finite blocks of $A_{\rm fin}$ and of $A_{\rm fin}$ followed by mode multiplication $im$, respectively, in the component sequence norms. Extend $\overline A_0,\overline A_1$ by zero in frequency output. For $\eta_jr_*<R_j$, put
 
 \[
  W_k=Q_2\Pi(\eta r_*)\sum_{j,l}\eta_j\eta_l M_{H,kjl},
@@ -224,7 +224,7 @@ The first two terms give the factor $2\eta_\omega\eta_k$; the last is the integr
  \quad(\|x-\bar x\|\le r_*).
 \]
 
-**Lemma 3.2 (piece existence and uniqueness).** Suppose the domain cover and inverse checks above hold uniformly on (P\), and choose $0<r_{\rm lo}<r_{\rm hi}\le r_*$. If, at both radii,
+**Lemma 3.2 (piece existence and uniqueness).** Suppose the domain cover and inverse checks above hold uniformly on $P$, and choose $0<r_{\rm lo}<r_{\rm hi}\le r_*$. If, at both radii,
 
 \[
  p(r)=Y_0+(Z_1-1)r+\tfrac12Z_2r^2<0,
@@ -239,11 +239,11 @@ then each $g\in P$ has a unique zero in $B_{r_{\rm hi}}(\bar x)$, and that zero 
  \|T_g(x)-\bar x\|\le Y_0+Z_1r+\tfrac12Z_2r^2<r.
 \]
 
-Its derivative norm is at most $Z_1+Z_2r<1$, so it is a contraction. Apply Banach's theorem at both radii; the smaller fixed point lies in the larger ball and is its unique fixed point. Injectivity of (A\) equates fixed points with zeros of $F$. Reality follows because $(\omega,a_m)\mapsto(\overline\omega,\overline{a_{-m}})$ takes zeros to zeros and preserves the ball, so uniqueness fixes this involution. A certified lower bound $\bar\omega-\eta_\omega r_{\rm lo}>0$ gives positive frequency. The lower bound $|\bar a_{1,V}|-\eta_Vr_{\rm lo}/\nu>0$ gives a nonzero first harmonic. A nonconstant $2\pi$-periodic continuous function with a smaller minimal period has minimal period $2\pi/k$ for an integer $k\ge2$; its Fourier coefficients then vanish outside multiples of (k\). The first harmonic excludes this possibility. □
+Its derivative norm is at most $Z_1+Z_2r<1$, so it is a contraction. Apply Banach's theorem at both radii; the smaller fixed point lies in the larger ball and is its unique fixed point. Injectivity of $A$ equates fixed points with zeros of $F$. Reality follows because $(\omega,a_m)\mapsto(\overline\omega,\overline{a_{-m}})$ takes zeros to zeros and preserves the ball, so uniqueness fixes this involution. A certified lower bound $\bar\omega-\eta_\omega r_{\rm lo}>0$ gives positive frequency. The lower bound $|\bar a_{1,V}|-\eta_Vr_{\rm lo}/\nu>0$ gives a nonzero first harmonic. A nonconstant $2\pi$-periodic continuous function with a smaller minimal period has minimal period $2\pi/k$ for an integer $k\ge2$; its Fourier coefficients then vanish outside multiples of $k$. The first harmonic excludes this possibility. □
 
 ## 4. Continuity and gluing
 
-On a piece, $F(x;g)-F(x;g')=(g-g')F_1(x)$. The composition series above gives a finite bound (L\) for $\|AF_1(x)\|$ on its uniqueness ball. With $\kappa=Z_1+Z_2r_{\rm hi}<1$, the fixed point identity gives
+On a piece, $F(x;g)-F(x;g')=(g-g')F_1(x)$. The composition series above gives a finite bound $L$ for $\|AF_1(x)\|$ on its uniqueness ball. With $\kappa=Z_1+Z_2r_{\rm hi}<1$, the fixed point identity gives
 
 \[
  \|x_*(g)-x_*(g')\|
@@ -260,7 +260,7 @@ For adjacent pieces with overlap, require
  \le r_{{\rm hi},i+1}.
 \]
 
-The existence zero of (i\) is then in the uniqueness ball of (i+1\), so the two maps agree throughout their overlap. Require that both lower and upper piece endpoints increase strictly. If nonadjacent pieces (i<j\) meet, the lower endpoint of $j$ belongs to every intermediate piece: its value is at least their lower endpoints and at most the upper endpoint of (i\), hence at most theirs. Adjacent identities give equality there. The equality set on $P_i\cap P_j$ is closed by continuity. It is relatively open: an agreement zero lies in the existence ball of $j$, which is strictly inside its uniqueness ball because $r_{{\rm lo},j}<r_{{\rm hi},j}$; nearby values from (i\) remain inside that uniqueness ball and are the same zero. The overlap is connected, so the equality set is the entire overlap. The piecewise map is therefore single valued and continuous on the full interval. This proves D(a) under the stated record hypotheses.
+The existence zero of $i$ is then in the uniqueness ball of $i+1$, so the two maps agree throughout their overlap. Require that both lower and upper piece endpoints increase strictly. If nonadjacent pieces $i<j$ meet, the lower endpoint of $j$ belongs to every intermediate piece: its value is at least their lower endpoints and at most the upper endpoint of $i$, hence at most theirs. Adjacent identities give equality there. The equality set on $P_i\cap P_j$ is closed by continuity. It is relatively open: an agreement zero lies in the existence ball of $j$, which is strictly inside its uniqueness ball because $r_{{\rm lo},j}<r_{{\rm hi},j}$; nearby values from $i$ remain inside that uniqueness ball and are the same zero. The overlap is connected, so the equality set is the entire overlap. The piecewise map is therefore single valued and continuous on the full interval. This proves D(a) under the stated record hypotheses.
 
 ## 5. Affine piece tubes and quadratic group tubes
 
@@ -288,7 +288,7 @@ the same contraction argument on $B_r(\widetilde x(g))$ locates the branch there
  -\left[\int_0^1(1-s)\partial_d^2G(\cdot;sd)\,ds\right]_m,
 \]
 
-where $G(\theta;d)=f(\phi_{\bar a}+d\phi_1;g_c+d)$. All phase components are zero when the path has the exact branch phase. Taylor's formula proves the decomposition; continuous integrands on a compact circle times ([0,1]\) justify exchange of the Fourier and $s$ integrals. The second-derivative box enclosure is multiplied by (1/2\), the mass of (1-s\). Applying the residual prescription of Section 3 gives $Y'=\max_c(Y_{0p,c}+hY_{1,c}+h^2Y_{2,c})/\eta_c$.
+where $G(\theta;d)=f(\phi_{\bar a}+d\phi_1;g_c+d)$. All phase components are zero when the path has the exact branch phase. Taylor's formula proves the decomposition; continuous integrands on a compact circle times $[0,1]$ justify exchange of the Fourier and $s$ integrals. The second-derivative box enclosure is multiplied by $1/2$, the mass of $1-s$. Applying the residual prescription of Section 3 gives $Y'=\max_c(Y_{0p,c}+hY_{1,c}+h^2Y_{2,c})/\eta_c$.
 
 For a unit consisting of consecutive overlapping branch pieces with the same weights and settings, use
 
@@ -296,11 +296,11 @@ For a unit consisting of consecutive overlapping branch pieces with the same wei
  \widetilde x(g)=\bar x+d\bar x_1+\tfrac12d^2\bar x_2.
 \]
 
-All sequence modes have $|m|\le K$, real symmetry and exact zero phase. A coefficientwise hull must contain every path coefficient for $|d|\le h$, using a real box containing ([-h,h]\) and a separate box containing $[0,h^2]$. No assertion about the square of an extra rounded rim of the first box is needed. Its guarded polydisc cover provides Lemma 3.1 about every polynomial center in the hull. The proof of the derivative-difference bound uses only a difference from that center, so the same $Z_2$ works at every moving path point. In particular it does not introduce $Z_2$ times the distance traveled from $\bar x$.
+All sequence modes have $|m|\le K$, real symmetry and exact zero phase. A coefficientwise hull must contain every path coefficient for $|d|\le h$, using a real box containing $[-h,h]$ and a separate box containing $[0,h^2]$. No assertion about the square of an extra rounded rim of the first box is needed. Its guarded polydisc cover provides Lemma 3.1 about every polynomial center in the hull. The proof of the derivative-difference bound uses only a difference from that center, so the same $Z_2$ works at every moving path point. In particular it does not introduce $Z_2$ times the distance traveled from $\bar x$.
 
 ### 5.1 Taylor arithmetic and residual
 
-A degree-(P\) jet stores Taylor coefficients $c_k=u^{(k)}/k!$. The exact recurrences are
+A degree-$P$ jet stores Taylor coefficients $c_k=u^{(k)}/k!$. The exact recurrences are
 
 \[
  (ab)_k=\sum_{j=0}^ka_jb_{k-j},\quad
@@ -314,7 +314,7 @@ A degree-(P\) jet stores Taylor coefficients $c_k=u^{(k)}/k!$. The exact recurre
  2s_0s_k=a_k-\sum_{j=1}^{k-1}s_js_{k-j}.
 \]
 
-These follow respectively by multiplying power series and by the identities $ar=1$, $e'=a'e$, $a'=a\ell'$, and $s^2=a$. Guarded $a_0$ excludes zero for reciprocals and has positive real part for log and square root. Thus each recurrence computes coefficients of a holomorphic germ. Induction over the expression, with inclusion arithmetic at each operation, proves enclosure of every coefficient. Integer powers use products and reciprocals. First state derivatives carried over jets satisfy the exact product and chain rules, so the same induction proves enclosures for (Df\).
+These follow respectively by multiplying power series and by the identities $ar=1$, $e'=a'e$, $a'=a\ell'$, and $s^2=a$. Guarded $a_0$ excludes zero for reciprocals and has positive real part for log and square root. Thus each recurrence computes coefficients of a holomorphic germ. Induction over the expression, with inclusion arithmetic at each operation, proves enclosure of every coefficient. Integer powers use products and reciprocals. First state derivatives carried over jets satisfy the exact product and chain rules, so the same induction proves enclosures for $Df$.
 
 At base point $\xi_0$, the path has coefficients
 
@@ -369,7 +369,7 @@ with zero phase rows, $J_1=\partial_dJ(\cdot;0)$, and
  C(d)=\int_0^1 2(1-s)\tfrac12\partial_d^2J(\cdot;sd)\,ds.
 \]
 
-The coefficient enclosures $[C_{2,n}]$ of $\tfrac12\partial_d^2J$ over the whole parameter box enclose $C(d)_n$, because this averaging weight also has mass 1. Use the finite/tail prescription to bound (AD'(0)\) by (B'\) and (AE(d)\) by (B''\). Tail rows now include the additional diagonal term $|\omega_d|\overline A_1$; they have no frequency column because the polynomial frequency-column profile has no modes beyond (K\). Thus
+The coefficient enclosures $[C_{2,n}]$ of $\tfrac12\partial_d^2J$ over the whole parameter box enclose $C(d)_n$, because this averaging weight also has mass 1. Use the finite/tail prescription to bound $AD'(0)$ by $B'$ and $AE(d)$ by $B''$. Tail rows now include the additional diagonal term $|\omega_d|\overline A_1$; they have no frequency column because the polynomial frequency-column profile has no modes beyond $K$. Thus
 
 \[
  Z_{1G}=\max_c\eta_c^{-1}\sum_{c'}\eta_{c'}
@@ -444,19 +444,19 @@ For fixed $g$, define the closed operator
 
 The convolution is bounded by $\alpha=\sum_n\|A_n\|_{1\to1}<\infty$. The diagonal operator has compact resolvent: its inverse entries $(\mu+i\omega m)^{-1}$ tend to zero and are norm limits of finite truncations. For $\operatorname{Re}\mu>\alpha$, a Neumann series in the bounded convolution gives a compact resolvent for $H_g$. The resolvent identity then gives compact resolvent at every resolvent point. Compact-resolvent spectral theory implies isolated eigenvalues of finite algebraic multiplicity, with Riesz projection rank equal to the sum of those multiplicities inside an isolating contour. This is the same general compact-resolvent theorem proved in the manuscript's Appendix A; the draft does not claim a new proof of that general functional-analysis theorem.
 
-**Lemma 7.1 $multiplicity, (N=1\)$.** Let $Y'(t)=Df(\phi_*(\omega t);g)Y(t)$, $Y(0)=I$, and $T=2\pi/\omega$. Then
+**Lemma 7.1 (multiplicity, $N=1$).** Let $Y'(t)=Df(\phi_*(\omega t);g)Y(t)$, $Y(0)=I$, and $T=2\pi/\omega$. Then
 
 \[
  m(\mu;H_g)=m(e^{\mu T};Y(T)).
 \]
 
-*Proof.* On the finite-dimensional generalized eigenspace $G_\mu(H_g)$, the function operator $-\omega\partial_\theta+A(\theta)$ is $\mu+K$ with (K\) nilpotent. For $p$ in that space,
+*Proof.* On the finite-dimensional generalized eigenspace $G_\mu(H_g)$, the function operator $-\omega\partial_\theta+A(\theta)$ is $\mu+K$ with $K$ nilpotent. For $p$ in that space,
 
 \[
  y(t)=(e^{t(\mu+K)}p)(\omega t)
 \]
 
-solves the variational equation by differentiation. Evaluation at zero intertwines $e^{T(\mu+K)}$ and (Y(T)\). It is injective: if $y(0)=0$, then $y(t)=0$. At (t+nT\), periodicity makes this equality a polynomial in (n\) times a nonzero exponential. If $K^{k_*}p$ is the highest nonzero power, the leading polynomial coefficient is $T^{k_*}(K^{k_*}p)(\omega t)/k_*!$, so it vanishes for every (t\), a contradiction. This gives the inequality from Hill multiplicity to monodromy multiplicity.
+solves the variational equation by differentiation. Evaluation at zero intertwines $e^{T(\mu+K)}$ and $Y(T)$. It is injective: if $y(0)=0$, then $y(t)=0$. At $t+nT$, periodicity makes this equality a polynomial in $n$ times a nonzero exponential. If $K^{k_*}p$ is the highest nonzero power, the leading polynomial coefficient is $T^{k_*}(K^{k_*}p)(\omega t)/k_*!$, so it vanishes for every $t$, a contradiction. This gives the inequality from Hill multiplicity to monodromy multiplicity.
 
 Conversely, on $W=G_\lambda(Y(T))$, $\lambda=e^{\mu T}$, write $Y(T)=\lambda(I+K)$ and
 
@@ -464,7 +464,7 @@ Conversely, on $W=G_\lambda(Y(T))$, $\lambda=e^{\mu T}$, write $Y(T)=\lambda(I+K
  B=\mu I+T^{-1}\sum_{j\ge1}(-1)^{j+1}K^j/j,
 \]
 
-where the sum is finite by nilpotence. It has $e^{TB}=Y(T)|_W$. The matrix-valued map $\Pi(t)=Y(t)e^{-tB}:W\to\mathbb C^{18}$ is $T$-periodic. Its smooth periodic profiles $p_w(\theta)=\Pi(\theta/\omega)w$ have Fourier sequences in $\mathcal D$. Differentiation gives $H_gp_w=p_{Bw}$, and evaluation at zero is (w\), so this embeds all of $W$ injectively in $G_\mu(H_g)$. The reverse dimension inequality follows. □
+where the sum is finite by nilpotence. It has $e^{TB}=Y(T)|_W$. The matrix-valued map $\Pi(t)=Y(t)e^{-tB}:W\to\mathbb C^{18}$ is $T$-periodic. Its smooth periodic profiles $p_w(\theta)=\Pi(\theta/\omega)w$ have Fourier sequences in $\mathcal D$. Differentiation gives $H_gp_w=p_{Bw}$, and evaluation at zero is $w$, so this embeds all of $W$ injectively in $G_\mu(H_g)$. The reverse dimension inequality follows. □
 
 Consequently the Hill spectrum is invariant, with multiplicity, under shifts by $i\omega\mathbb Z$; one half-open strip of height $\omega$ contains exactly 18 eigenvalues counted with multiplicity. Differentiating the profile equation gives $H_g(im a_{*,m})_m=0$. This vector is nonzero and belongs to $\mathcal D$, because the profile is nonconstant and analytic. Thus zero is an actual neutral eigenvalue, not an assumed numerical center.
 
@@ -483,7 +483,7 @@ with diagonal $\Lambda$. They are proposals; their floating-point construction i
  \|v\|_\zeta=\sum_j|v_j|+\zeta_T\sum_{m\notin W}|v_m|_1.
 \]
 
-Let $H_0,H_1,H_2$ be the window matrices of $[J_{0,n}],J_{1c,n},C_{2c,n}$, including diagonals $-im\bar\omega,-im\omega_1,-im\omega_2/2$, respectively. Let $R_b$ contain the coefficient remainder from Section 6 in every block ((w,w')\), plus $|w|\eta_\omega r$ on its diagonal. Then the true window is
+Let $H_0,H_1,H_2$ be the window matrices of $[J_{0,n}],J_{1c,n},C_{2c,n}$, including diagonals $-im\bar\omega,-im\omega_1,-im\omega_2/2$, respectively. Let $R_b$ contain the coefficient remainder from Section 6 in every block $(w,w')$, plus $|w|\eta_\omega r$ on its diagonal. Then the true window is
 
 \[
  H_{WW}(g)=H'_0+dH_1+d^2H_2+E,\quad H'_0\in H_0,\quad |E|\le R_b.
@@ -519,7 +519,7 @@ Put $V_b=|V_0|+h|V_1|$, $V_{ib}=|V_{i0}|+h|V_{i1}|$, and
  w_j=\sum_{k=0}^4h^k\|W_ke_j\|_1+\|V_{ib}R_bV_be_j\|_1.
 \]
 
-If $q_C<1$, then (V(d)\) is invertible and the true finite defect $F_m=V(d)^{-1}H_{WW}(g)V(d)-\Lambda(d)$ satisfies
+If $q_C<1$, then $V(d)$ is invertible and the true finite defect $F_m=V(d)^{-1}H_{WW}(g)V(d)-\Lambda(d)$ satisfies
 
 \[
  f_j:=\|F_me_j\|_1
@@ -530,7 +530,7 @@ If $q_C<1$, then (V(d)\) is invertible and the true finite defect $F_m=V(d)^{-1}
  \le\beta^U_{wl}=\|V_{ib}e_{wl}\|_1/(1-q_C).
 \]
 
-*Proof.* Expanding the products gives the five $W_k$, and bounding the remaining product by absolute matrices gives $w_j$. For $C=I-V_iV$, its column norms are at most $c_j$; hence (I-C\) is invertible and so are the square matrices $V_i,V$. Since $V^{-1}=(I-C)^{-1}V_i$,
+*Proof.* Expanding the products gives the five $W_k$, and bounding the remaining product by absolute matrices gives $w_j$. For $C=I-V_iV$, its column norms are at most $c_j$; hence $I-C$ is invertible and so are the square matrices $V_i,V$. Since $V^{-1}=(I-C)^{-1}V_i$,
 
 \[
  F_m=(I-C)^{-1}(V_iH_{WW}V-\Lambda+C\Lambda).
@@ -554,7 +554,7 @@ Let $B_0$ be a fixed exact real cell matrix and, for the actual frequency, put $
  \le(\omega|m|+\|B_0\|)|v_m|_1.
 \]
 
-Let $\mathcal V$ equal (V(d)\) on the finite window and the identity on the tail. It and its inverse preserve this domain. The difference $E=\mathcal V^{-1}H_g\mathcal V-D$ is bounded, with blocks $F_m,V^{-1}H_{WT},H_{TW}V,H_{TT}-D_T$. Crucially the actual $-i\omega m$ cancels in the tail difference. An uncertain frequency times $m$ is never moved into a bounded tail perturbation.
+Let $\mathcal V$ equal $V(d)$ on the finite window and the identity on the tail. It and its inverse preserve this domain. The difference $E=\mathcal V^{-1}H_g\mathcal V-D$ is bounded, with blocks $F_m,V^{-1}H_{WT},H_{TW}V,H_{TT}-D_T$. Crucially the actual $-i\omega m$ cancels in the tail difference. An uncertain frequency times $m$ is never moved into a bounded tail perturbation.
 
 From Section 6 obtain balls $[A_n]^U$ and an all-index majorant $|A_n|\le s_1q_1^{|n|}+s_2q_2^{|n|}$, $q_i<1$. Define
 
@@ -578,14 +578,14 @@ These bound each window-to-tail output column. For tail input mode $m$,
                                       |[A_{w-m}]^U_{lk}|.
 \]
 
-Use the analytic entrywise majorant where an index is outside the coefficient enclosure range. Evaluate $K_e<|m|\le K_e+n_c$ in both signs. For farther inputs all (w-m\) have one sign and modulus at least $|m|-K_e$, so
+Use the analytic entrywise majorant where an index is outside the coefficient enclosure range. Evaluate $K_e<|m|\le K_e+n_c$ in both signs. For farther inputs all $w-m$ have one sign and modulus at least $|m|-K_e$, so
 
 \[
  b_m\le\frac{\beta_{\max}^U}{\zeta_T}\frac{G(|m|-K_e)}2
  \le\frac{\beta_{\max}^U}{\zeta_T}\frac{G(n_c+1)}2.
 \]
 
-Taking the maximum of the near values and this far bound gives $\widehat b\ge\|E_{WT}\|$. All these estimates follow by summing absolute column entries; the factor (1/2\) removes the unused sign of the geometric tail. They require the majorant at every index used in the far estimate.
+Taking the maximum of the near values and this far bound gives $\widehat b\ge\|E_{WT}\|$. All these estimates follow by summing absolute column entries; the factor $1/2$ removes the unused sign of the geometric tail. They require the majorant at every index used in the far estimate.
 
 Choose $Omega=(-\delta,R_0)\times(a,b)$, with positively oriented boundary $\Gamma$, satisfying
 
@@ -642,15 +642,15 @@ each such eigenvalue being algebraically simple.
  \mu-\Lambda-sF_m-s^2E_{WT}(\mu-D_T-sE_{TT})^{-1}E_{TW}.
 \]
 
-Column $j$ of the subtracted perturbation has norm at most $f_j^U+\widehat b\rho_Tr_j^U/(1-\theta_T)$. Dividing by the diagonal $\mu-\Lambda$ gives norm below 1 on $\Gamma$. The Schur complement is invertible. The usual triangular factorization is valid on the domain: its lower factor maps the finite window into $\mathcal D$ through the tail inverse, and its upper factor is bounded on the tail into the finite window. Thus $\Gamma$ is in the resolvent of every (D+sE\). These operators have compact resolvent; their contour projections are norm continuous by the resolvent identity. Projections within norm distance less than 1 have equal finite rank: either projection restricts injectively from the other range, since a nonzero vector in its kernel would have norm strictly less than itself. Partitioning ([0,1]\) into such neighborhoods keeps the rank constant. Its initial rank is the finite inside count, one. Similarity transfers this count to $H_g$.
+Column $j$ of the subtracted perturbation has norm at most $f_j^U+\widehat b\rho_Tr_j^U/(1-\theta_T)$. Dividing by the diagonal $\mu-\Lambda$ gives norm below 1 on $\Gamma$. The Schur complement is invertible. The usual triangular factorization is valid on the domain: its lower factor maps the finite window into $\mathcal D$ through the tail inverse, and its upper factor is bounded on the tail into the finite window. Thus $\Gamma$ is in the resolvent of every $D+sE$. These operators have compact resolvent; their contour projections are norm continuous by the resolvent identity. Projections within norm distance less than 1 have equal finite rank: either projection restricts injectively from the other range, since a nonzero vector in its kernel would have norm strictly less than itself. Partitioning $[0,1]$ into such neighborhoods keeps the rank constant. Its initial rank is the finite inside count, one. Similarity transfers this count to $H_g$.
 
-The actual neutral vector from Section 7 lies at zero inside $\Omega$, so it exhausts that count and is algebraically simple. Any eigenvalue with real part at least $-\delta$ has real part below $R_0$ by the half-plane Neumann estimate of Section 7. Shift it by an integer multiple of $i\omega$ into the closed interval ([a,b]\), possible because its length is at least $\omega$. No shifted eigenvalue can lie on $\Gamma$, which is resolvent. It is therefore inside $\Omega$, and must be zero. Conversely every shift of the actual neutral eigenvalue exists with the same multiplicity by Lemma 7.1. □
+The actual neutral vector from Section 7 lies at zero inside $\Omega$, so it exhausts that count and is algebraically simple. Any eigenvalue with real part at least $-\delta$ has real part below $R_0$ by the half-plane Neumann estimate of Section 7. Shift it by an integer multiple of $i\omega$ into the closed interval $[a,b]$, possible because its length is at least $\omega$. No shifted eigenvalue can lie on $\Gamma$, which is resolvent. It is therefore inside $\Omega$, and must be zero. Conversely every shift of the actual neutral eigenvalue exists with the same multiplicity by Lemma 7.1. □
 
 All quantities in this proof were bounded on the whole parameter interval. At each fixed $g$, the same inequalities apply with its own $V(d),\Lambda(d)$, true frequency, and true coefficients. No continuity assertion for parameter-dependent Riesz projections is needed: only the $s$-homotopy for that fixed $g$. Thus Lemma 9.1 holds for every conductance of the unit. This proves the spectral part of D(b) using Lemma 7.1 and $T(g)\ge2\pi/\omega_{\rm hi}$.
 
 ## 10. Local orbital stability and asymptotic phase
 
-Fix a conductance with the preceding certificate, and a point $z_*$ on its orbit. The vector field there is nonzero: otherwise uniqueness for the ODE would make the entire orbit constant. On the transverse affine section $Sigma=\{z:\langle f(z_*),z-z_*\rangle=0\}$, the implicit function theorem supplies a smooth return time $\tau(z)$ near $T$ and a return map (P\). Its derivative is the projection of (Y(T)\) onto the section along the flow direction. In the splitting into flow direction and section, (Y(T)\) has triangular diagonal blocks 1 and $DP(z_*)$. Hence the return derivative has all 17 stable multipliers and spectral radius below $e^{-\delta T}$.
+Fix a conductance with the preceding certificate, and a point $z_*$ on its orbit. The vector field there is nonzero: otherwise uniqueness for the ODE would make the entire orbit constant. On the transverse affine section $\Sigma=\{z:\langle f(z_*),z-z_*\rangle=0\}$, the implicit function theorem supplies a smooth return time $\tau(z)$ near $T$ and a return map $P$. Its derivative is the projection of $Y(T)$ onto the section along the flow direction. In the splitting into flow direction and section, $Y(T)$ has triangular diagonal blocks 1 and $DP(z_*)$. Hence the return derivative has all 17 stable multipliers and spectral radius below $e^{-\delta T}$.
 
 For $0<\delta'<\delta$, choose a norm on the section and a contraction factor $q$ satisfying
 
@@ -658,13 +658,13 @@ For $0<\delta'<\delta$, choose a norm on the section and a contraction factor $q
  r(DP(z_*))<q<e^{-\delta'T}.
 \]
 
-Such a norm is obtained by scaling each Jordan chain so its off-diagonal entries are arbitrarily small. Continuity of (DP\) then bounds its norm by $q$ on a sufficiently small convex section ball, and the mean value inequality gives $|P^kz-z_*|\le q^k|z-z_*|$. An initial point close to the orbit reaches that section within a bounded time, at a point whose distance to $z_*$ is bounded by a constant times its initial orbital distance; this follows from a finite flow interval and the smooth return-time function.
+Such a norm is obtained by scaling each Jordan chain so its off-diagonal entries are arbitrarily small. Continuity of $DP$ then bounds its norm by $q$ on a sufficiently small convex section ball, and the mean value inequality gives $|P^kz-z_*|\le q^k|z-z_*|$. An initial point close to the orbit reaches that section within a bounded time, at a point whose distance to $z_*$ is bounded by a constant times its initial orbital distance; this follows from a finite flow interval and the smooth return-time function.
 
 If $z_k$ are successive section intersections at times $t_k$, smoothness of $\tau$ gives $|\tau(z_k)-T|\le Cq^k\operatorname{dist}(z_0,\mathcal O)$. The sum converges, so $t_k-kT\to\sigma_\infty$, with error at most $C'q^k\operatorname{dist}(z_0,\mathcal O)$. Set phase $\sigma=-\sigma_\infty$. At each section return both the perturbed orbit and $z_*(t_k+\sigma)$ are within $C''q^k\operatorname{dist}(z_0,\mathcal O)$ of $z_*$. Gronwall's inequality on the bounded intervals between returns propagates this estimate to every later time. Since $t_k=kT+O(1)$, $q^k\le C'''e^{-\delta't}$ on each such interval. On the initial bounded interval, smooth dependence on initial data and the fact that the limiting phase differs from the nearby orbit's initial phase by $O(\operatorname{dist}(z_0,\mathcal O))$ give the same estimate after increasing the constant. This proves the local stability assertion of D(b). It does not compute the section size, Jordan norm or nonlinear constants.
 
 ## 11. Numerical inputs, admission gates and remaining integration work
 
-Historical settings are context for reproduction, not a statement that a new numerical certificate passed. The branch used $K=12$, 57 center groups and 712 pieces on the exact interval ([0.027499735464,0.02778996093]\), with $\rho_0=1/4$, coefficient strip $\rho=3/2$, Hessian strip $\rho_2=1$, $L=16$, $K'=2K+L=40$, and 128 Fourier nodes. The exact per-piece weights, centers, polydisc radii, validity radii, precision and cover settings are inputs from the historical log and are not inferred from these defaults. Quadratic stability groups used historical $r_*=2^{-20}$ and polydisc factor 256; the admitted unit's logged settings must be used, including any changed window width or cover settings. There is no assertion here that every unit has one common spectral margin or that the number of fresh units equals 127.
+Historical settings are context for reproduction, not a statement that a new numerical certificate passed. The branch used $K=12$, 57 center groups and 712 pieces on the exact interval $[0.027499735464,0.02778996093]$, with $\rho_0=1/4$, coefficient strip $\rho=3/2$, Hessian strip $\rho_2=1$, $L=16$, $K'=2K+L=40$, and 128 Fourier nodes. The exact per-piece weights, centers, polydisc radii, validity radii, precision and cover settings are inputs from the historical log and are not inferred from these defaults. Quadratic stability groups used historical $r_*=2^{-20}$ and polydisc factor 256; the admitted unit's logged settings must be used, including any changed window width or cover settings. There is no assertion here that every unit has one common spectral margin or that the number of fresh units equals 127.
 
 Before a numerical Theorem D is written, require all of the following:
 
