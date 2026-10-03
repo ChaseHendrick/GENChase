@@ -1,0 +1,29 @@
+{
+  "status": "future production conservative gate admitted; replay over all63 unchanged actual successful units passed",
+  "current_production_helper_sha256": "7c8795e7ad7a59cd0fe4d184c466d40f0d8aa3fdffc1f1e4afb575b3de67bb9e",
+  "current_recovery_helper_sha256": "eeec7dc515fce0d0e500116e481c2e237eff4bed3177b2c136df2b16f01a2788",
+  "original_producer_archive_sha256": "ee953a5f4dc789a7576a740f773632f8b563b1ba454bec580f855d1622d00e57",
+  "original_recovery_execution_sha256": "ad3cd04f2d300fb211e57af071211a1f6ba1d1e56ddceb15a26bd08a9c5659d5",
+  "recovery_edit": "only original-archive import filename changed; preceding source reconstructed byte for byte",
+  "actual_pieces": 712,
+  "actual_successes": 63,
+  "production_negative_controls": 36,
+  "recovery_negative_controls": 38,
+  "gate": "exact larger max-majorant contraction and stronger self-map; unchanged source-bound SC limitations",
+  "original_data_preserved": true,
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-stability-future-gate-2026-10-02.py"
+    ],
+    "pid": 57524,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 3.150741250021383,
+    "peak_aggregate_rss_mib": 208.4375,
+    "log": "/private/tmp/cardiac-review-stability-future-gate-2026-10-02.log"
+  }
+}

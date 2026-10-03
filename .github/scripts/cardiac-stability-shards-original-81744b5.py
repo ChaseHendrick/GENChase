@@ -1,8 +1,6 @@
 """Isolated uniform-stability shards and strict producer-receipt collection.
 
 Exact tube/contraction and identification fields are checked independently here.
-Separately rounded derivative bounds are combined with the stored contraction
-bound by an exact maximum before checking the stronger tube self-map inequality.
 The public scientific records expose only a floating SC worst ratio, not every
 exact SC column. SC is therefore a fresh source-bound producer proof gate, not
 an independent exact reconstruction. No proof sources or canonical data change.
@@ -225,30 +223,23 @@ def receipt_bounds(row, rec=None):
     same(row["delta_requested"], row["settings"]["delta"], "requested delta")
     same(certificate["delta_requested"], row["delta_requested"], "certificate delta")
     rho, y, kappa = (exact(existence[k]) for k in ("rho", "Yprime", "kappa"))
-    if not (rho > 0 and y >= 0 and 0 <= kappa < 1):
-        raise ValueError("exact tube positivity/contraction bound invalid")
+    if not (rho > 0 and y >= 0 and 0 <= kappa < 1 and y <= (1-kappa)*rho):
+        raise ValueError("exact tube self-map/contraction inequality invalid")
     if row["type"] == "group_unit":
         z1, z2 = exact(existence["Z1_path"]), exact(existence["Z2"])
         rs = Fraction(existence["r_star"])
         if not (0 <= exact(existence["Z1_point"]) <= z1 < 1 and z2 >= 0
-                and rho <= rs):
+                and rho <= rs and z1+z2*rho <= kappa):
             raise ValueError("invalid exact moving-center contraction")
-        kappa_check = max(kappa, z1+z2*rho)
         same(existence["r_star"], row["settings"]["r_star"], "group validity radius")
     else:
         z1, z2, e = exact(existence["Z1"]), exact(existence["Z2_this_cover"]), exact(existence["e"])
         if not (0 <= z1 < 1 and z2 >= 0 and e >= 0
-                and e+rho <= exact(rec["r_star"])
+                and z1+z2*(e+rho) <= kappa and e+rho <= exact(rec["r_star"])
                 and e+rho <= exact(rec["r_uniqueness"])):
             raise ValueError("invalid exact affine contraction or identification")
         same(existence["theorem_B_bounds_reproduced"], {"Y0": True, "Z1": True}, "B reproduction")
         same(existence["Z1"], rec["Z1"], "piece Z1")
-        kappa_check = max(kappa, z1+z2*(e+rho))
-    # The original Arb producer can bound the contraction more finely than the
-    # separately serialized upper bounds. Their exact maximum is conservative;
-    # applying its stronger self-map inequality needs no rounding tolerance.
-    if not (kappa_check < 1 and y <= (1-kappa_check)*rho):
-        raise ValueError("exact conservative tube self-map/contraction invalid")
     if row.get("ok") is not True or row.get("uniform") is not True:
         raise ValueError("unit must be actual successful uniform output")
 
@@ -586,45 +577,8 @@ def self_test():
         piece_bad=copy.deepcopy(piece)
         piece_bad["existence"]["e"]=b(128)
         reject(lambda:verify_rows([failure,half_failure,piece_bad,halves[1]],pieces,manifest,assigned))
-    # Regression: separate upper-bound rounding can make the stored derivative
-    # sum exceed the independently stored (finer) kappa by a positive dyadic.
-    archived_spec = importlib.util.spec_from_file_location(
-        "cardiac_stability_original_regression",
-        Path(__file__).with_name("cardiac-stability-shards-original-81744b5.py"))
-    archived = importlib.util.module_from_spec(archived_spec)
-    archived_spec.loader.exec_module(archived)
-    if sha(archived_spec.origin) != "ee953a5f4dc789a7576a740f773632f8b563b1ba454bec580f855d1622d00e57":
-        raise ValueError("original producer archive bytes changed")
-    rounded = copy.deepcopy(records[0])
-    rounded["existence"].update(kappa=b(32), Z2=dict(hex="0x1p-60"))
-    try:
-        archived.receipt_bounds(rounded)
-    except ValueError as exc:
-        assert "moving-center contraction" in str(exc)
-    else:
-        raise AssertionError("original rounding regression did not fail")
-    receipt_bounds(rounded)
-    rounded_piece = copy.deepcopy(piece)
-    rounded_piece["existence"].update(kappa=b(32), Z2_this_cover=dict(hex="0x1p-60"))
-    try:
-        archived.receipt_bounds(rounded_piece, rec)
-    except ValueError as exc:
-        assert "affine contraction" in str(exc)
-    else:
-        raise AssertionError("original affine rounding regression did not fail")
-    receipt_bounds(rounded_piece, rec)
-    piece_boundary = copy.deepcopy(rounded_piece)
-    piece_boundary["existence"]["Yprime"] = dict(hex="0x7p-9")
-    reject(lambda: receipt_bounds(piece_boundary, rec))
-    # At the old self-map boundary the larger exact majorant must reject.
-    boundary = copy.deepcopy(rounded)
-    boundary["existence"]["Yprime"] = dict(hex="0x7p-9")
-    reject(lambda: receipt_bounds(boundary))
-    excessive = copy.deepcopy(rounded)
-    excessive["existence"]["Z2"] = b(65536)
-    reject(lambda: receipt_bounds(excessive))
     print(json.dumps(dict(positive_merge=True, exact_half_fallback=True, exact_piece_fallback=True,
-                         original_rounding_regression=True, original_affine_rounding_regression=True, negative_controls=errors)))
+                         negative_controls=errors)))
 
 
 def main():

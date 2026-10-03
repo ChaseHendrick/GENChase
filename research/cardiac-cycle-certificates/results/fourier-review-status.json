@@ -97,6 +97,47 @@
     "manuscript 1.1.0 release"
    ],
    "not_claimed": "No outside or human review."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier-branch-stability-uniform.json",
+   "record_sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
+   "outcome": "accepted separate in-project exact conservative certificate collection; original scientific acceptance suites pending",
+   "scope": [
+    "source-bound producer certificates of uniform single-cell orbital stability on the complete lower conductance branch",
+    "exact conservative contraction and stronger self-map majorants for every used certificate",
+    "all 712 pieces in one connected covered interval"
+   ],
+   "n_pieces": 712,
+   "n_units": 63,
+   "n_preserved_fallback_failures": 6,
+   "n_conservative_rounding_adjustments": 35,
+   "g_covered": [
+    "0.027499735464",
+    "0.02778996093"
+   ],
+   "workflow_run": "37088569093",
+   "producer_commit": "81744b5cccacf6463b1cdd0aff1f316c44cff4a1",
+   "run_outcome": "numerical proofs completed; original orchestration receipt check failed on independently rounded relational bounds; raw artifacts conservatively recovered",
+   "producer_record_sha256": "3cfd07b0b3d990dfa76cbce9ffb7546c0c96e4ecaf34479b2ad6ebbd3a7c20a9",
+   "log_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+   "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+   "worst_multiplier_bound_upper": "0.998413816",
+   "reviews": [
+    "reviews/review-stability-recovery-actual-receipt-2026-10-02.json",
+    "reviews/theoremC-uniform-fixcheck-2026-10-02.md",
+    "reviews/uniform-stability-recovery-receipt-2026-10-02.jsonl"
+   ],
+   "limitations": [
+    "public SC receipts omit finite column vectors; acceptance retains the fresh source-bound Arb producer calculation",
+    "original piece, group, half and scientific negative suites remain separate prerequisites"
+   ],
+   "not_accepted": [
+    "complete original scientific acceptance suites",
+    "uniform stability of the entire Hopf amplitude branch",
+    "manuscript 1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review."
   }
  ]
 }
