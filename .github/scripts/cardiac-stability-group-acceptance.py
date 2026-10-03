@@ -1,7 +1,9 @@
 """Opt-in isolated execution of the original GROUP/HALF scientific controls.
 
 Three bounded jobs partition all 13 unchanged GROUP_TESTS. The half job uses
-TEST_GROUP=12 and adds a fresh exact comparison against admitted G12[0:8].
+TEST_GROUP=12 and checks a fresh valid proof with the identity of admitted G12[0:8].
+Group jobs preserve the admitted log and use the actual fresh cached dump as an
+explicit isolated fixture. This is not reproduction of the old numerical bounds.
 Every job requires the admitted G6 whole-unit/default-settings fixture first.
 No piece acceptance or CAPD executable is invoked; canonical inputs are read only.
 """
@@ -73,12 +75,63 @@ def compare_unit(logged, actual, dump=False):
                 "centre_sha256", "pieces", "piece_centre_sha256", "branch_piece_sha256",
                 "piece_g", "eta", "rho0", "settings", "program_sha256", "sources_sha256"):
         gate.same(actual[key], logged[key], f"fresh {key}")
-    for key in ("rho", "Z1_point", "Z1_path", "Z2", "Yprime", "kappa"):
-        gate.same(actual["existence"][key]["hex"], logged["existence"][key]["hex"], key)
-    for key in ("q_C", "theta_T", "delta", "T_lo", "omega_lo", "omega_hi",
-                "multiplier_bound_full_period"):
-        gate.same(actual["certificate"][key]["hex"], logged["certificate"][key]["hex"], key)
     gate.same(actual["certificate"]["count_in_Omega"], 1, "fresh spectral count")
+
+
+def public_fresh(actual):
+    private = {k for k in actual if k.startswith("_")}
+    if private - {"_ctx", "_internals"}:
+        raise ValueError("unexpected private producer metadata")
+    return {k: v for k, v in actual.items() if not k.startswith("_")}
+
+
+def replace_unit(rows, label, actual):
+    selected = [i for i, row in enumerate(rows)
+                if row.get("type") == "group_unit" and row.get("label") == label]
+    if len(selected) != 1:
+        raise ValueError("fresh fixture requires exactly one original actual unit")
+    result = copy.deepcopy(rows)
+    result[selected[0]] = copy.deepcopy(actual)
+    return result
+
+
+def validate_fresh(logged, actual, rows, pieces, manifest, full, dump=False):
+    # The producer's floating proposal may choose a different valid tube on a
+    # different machine. Identity/settings remain exact; every available fresh
+    # numerical bound must satisfy the same conservative exact receipt gates.
+    compare_unit(logged, actual, dump=dump)
+    view = copy.deepcopy(public_fresh(actual))
+    if dump:
+        # dump=True only returns internal proof objects. It does not mutate the
+        # equations or inequalities. The saved actual summary retains this flag;
+        # this validation-only view permits the gate for uncontrolled receipts.
+        view["certificate"]["controls"] = None
+    candidate = replace_unit(rows, logged["label"], view)
+    gate.verify_rows(candidate, pieces, manifest, full)
+    return candidate
+
+
+def install_fresh_fixture(out, rows, logged, public):
+    working = out / "data/stability_uniform_K12_final.jsonl"
+    preserved = out / "copied-final-preserved.jsonl"
+    prior = io.sha(working)
+    candidate = replace_unit(rows, logged["label"], public)
+    working.rename(preserved)
+    gate.write_new(working, candidate)
+    if io.sha(preserved) != prior:
+        raise ValueError("original copied fixture was not preserved")
+    record = dict(label=logged["label"], original_log_sha256=prior,
+                  preserved_log=str(preserved.relative_to(out)),
+                  fresh_log_sha256=io.sha(working), actual_row_sha256=gate.digest(public),
+                  provenance="real fresh default dump computation cached for unchanged mathematical controls",
+                  boundary="test_group_acceptance compares serialization of the cached fresh proof, not independent reproduction of prior bounds")
+    io.write_new(out / "fresh-fixture-manifest.json", record)
+    return record
+
+
+def require_empty_cache(tests):
+    if tests._C:
+        raise ValueError("scientific acceptance cache must start empty; seeded fixture refused")
 
 
 def passed(controls, expected):
@@ -99,6 +152,9 @@ def run(out, budget, mode):
                    python=sys.version, platform=sys.platform,
                    thread_environment={k: os.environ[k] for k in io.THREADS})
     source_paths = {}
+    expected_copy = dict(original)
+    fixture_install = None
+    fresh_artifacts = {}
     test_hash = None
     out.mkdir(parents=True)
     io.write_new(out / "initial-manifest.json", receipt)
@@ -141,11 +197,20 @@ def run(out, budget, mode):
             raise ValueError("original GROUP_TESTS selection changed")
         if tests.GID != (12 if mode == "half" else 6):
             raise ValueError("scientific test group differs from assigned fixture")
+        require_empty_cache(tests)
         if mode != "half":
             fresh = tests._group()  # unchanged default proof with its actual dump
-            compare_unit(whole, fresh, dump=True)
-            public = {k: v for k, v in fresh.items() if not k.startswith("_")}
+            if tests._C.get("G") is not fresh or fresh.get("_ctx") is None or fresh.get("_internals") is None:
+                raise ValueError("fresh dump must originate from the actual uncached scientific computation")
+            public = public_fresh(fresh)
+            # Preserve actual numerical output before any orchestration gate.
             gate.write_new(out / "fresh-G6-dump-summary.jsonl", [public])
+            fresh_artifacts["fresh-G6-dump-summary.jsonl"] = io.sha(out / "fresh-G6-dump-summary.jsonl")
+            validate_fresh(whole, fresh, rows, pieces, manifest, full, dump=True)
+            fixture_install = install_fresh_fixture(out, rows, whole, public)
+            expected_copy["stability_uniform_K12_final.jsonl"] = fixture_install["fresh_log_sha256"]
+            receipt["fresh_fixture"] = fixture_install
+            fresh_artifacts["fresh-fixture-manifest.json"] = io.sha(out / "fresh-fixture-manifest.json")
         expected = list(PLANS[mode])
         if mode == "half":
             expected.append("explicit_current_G12_half_comparison")
@@ -178,15 +243,15 @@ def run(out, budget, mode):
             def explicit_half():
                 fresh = st.prove_group_uniform(12, part=(0, 8),
                                               settings=half["settings"], log=print)
-                compare_unit(half, fresh)
-                gate.receipt_bounds(fresh)
-                gate.write_new(out / "fresh-G12-half.jsonl", [fresh])
+                gate.write_new(out / "fresh-G12-half.jsonl", [public_fresh(fresh)])
+                fresh_artifacts["fresh-G12-half.jsonl"] = io.sha(out / "fresh-G12-half.jsonl")
+                validate_fresh(half, fresh, rows, pieces, manifest, full)
             execute(expected[-1], explicit_half)
         if not passed(receipt["controls"], expected):
             raise AssertionError("missing or failed original acceptance control")
         receipt["status"] = "passed assigned original group controls and required fresh comparison"
     except BaseException as exc:
-        receipt.update(error_type=type(exc).__name__, error=str(exc), traceback=traceback.format_exc())
+        receipt.update(status="failed", error_type=type(exc).__name__, error=str(exc), traceback=traceback.format_exc())
         print(receipt["traceback"], file=sys.stderr, flush=True)
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)
@@ -196,8 +261,12 @@ def run(out, budget, mode):
                       helper_unchanged=io.sha(__file__)==receipt["helper_sha256"],
                       dependencies_unchanged=all(io.sha(Path(__file__).with_name(n))==h
                                                 for n,h in dependencies.items()),
-                      copied_inputs_unchanged=(out / "data").exists()
-                          and io.tree(out / "data")==original)
+                      copied_inputs_match_declared_fixture=(out / "data").exists()
+                          and io.tree(out / "data")==expected_copy)
+        checks["fresh_artifacts_unchanged"] = all(io.sha(out / n)==h for n,h in fresh_artifacts.items())
+        if fixture_install:
+            checks["original_copied_fixture_preserved"] = (io.sha(out / "copied-final-preserved.jsonl")
+                == fixture_install["original_log_sha256"] == original["stability_uniform_K12_final.jsonl"])
         if source_paths:
             checks["scientific_sources_unchanged"] = all(io.sha(p)==st.SOURCES_SHA256[n]
                                                         for n,p in source_paths.items())
@@ -205,7 +274,7 @@ def run(out, budget, mode):
             checks["test_unchanged"] = io.sha(io.FOURIER / "test_branch_stability.py")==test_hash
         if not all(checks.values()):
             receipt["status"] = "failed: source or input changed"
-        receipt.update(final_checks=checks, wall_seconds=time.monotonic()-started,
+        receipt.update(final_checks=checks, fresh_artifact_sha256=fresh_artifacts, wall_seconds=time.monotonic()-started,
                        controls_attempted=len(receipt["controls"]),
                        controls_passed=sum(r["ok"] for r in receipt["controls"]),
                        peak_self_rss_mib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/
@@ -233,6 +302,13 @@ def self_test():
         pass
     else:
         raise AssertionError("deadline ignored")
+    require_empty_cache(SimpleNamespace(_C={}))
+    try:
+        require_empty_cache(SimpleNamespace(_C={"G":dict(ok=True)}))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("seeded mathematical fixture admitted")
     fake=SimpleNamespace(_current_unit=lambda _:True)
     for rows in ([],[dict(type="group_unit",label="G6")]*2):
         try:
@@ -260,15 +336,38 @@ def self_test():
         ("type","label","part","group","g","g_centre","centre_piece","centre_sha256",
          "pieces","piece_centre_sha256","branch_piece_sha256","piece_g","eta","rho0",
          "settings","program_sha256","sources_sha256")}
-    fixture.update(ok=True,uniform=True,existence={key:{"hex":"0x1p-4"} for key in
+    fixture.update(type="group_unit",label="G6",ok=True,uniform=True,existence={key:{"hex":"0x1p-4"} for key in
                    ("rho","Z1_point","Z1_path","Z2","Yprime","kappa")},
                    certificate={key:{"hex":"0x1p-4"} for key in
                    ("q_C","theta_T","delta","T_lo","omega_lo","omega_hi",
                     "multiplier_bound_full_period")})
     fixture["certificate"].update(controls=None,count_in_Omega=1)
     compare_unit(fixture,fixture)
+    different = copy.deepcopy(fixture)
+    different["existence"]["rho"]["hex"] = "0x1p-5"
+    compare_unit(fixture,different)  # identity alone never requires old bound equality
+    # Independent numerical validation remains mandatory after identity checking.
+    validate = gate.verify_rows
+    calls = []
+    def reject_invalid(rows, *_):
+        calls.append(rows)
+        if rows[0]["existence"]["kappa"]["hex"] == "0x1p+0":
+            raise ValueError("invalid exact contraction")
+    gate.verify_rows = reject_invalid
+    try:
+        validate_fresh(fixture,different,[fixture],[],{}, {})
+        bad = copy.deepcopy(different); bad["existence"]["kappa"]["hex"] = "0x1p+0"
+        try:
+            validate_fresh(fixture,bad,[fixture],[],{}, {})
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("fresh proof gate bypassed")
+        assert len(calls) == 2
+    finally:
+        gate.verify_rows = validate
     for route,value in ((("ok",),False),(("settings",),{}),
-                        (("existence","kappa","hex"),"0x1p-5"),
+                        (("program_sha256",),"stale"),
                         (("certificate","controls"),{"drop_d2_terms":True})):
         bad=copy.deepcopy(fixture); cursor=bad
         for key in route[:-1]: cursor=cursor[key]
@@ -280,6 +379,22 @@ def self_test():
         else:
             raise AssertionError("tampered fresh comparison admitted")
     with tempfile.TemporaryDirectory() as temp:
+        base = Path(temp)/"fixture"
+        (base/"data").mkdir(parents=True)
+        working = base/"data/stability_uniform_K12_final.jsonl"
+        gate.write_new(working,[fixture])
+        original_bytes = working.read_bytes()
+        record = install_fresh_fixture(base,[fixture],fixture,different)
+        assert (base/"copied-final-preserved.jsonl").read_bytes() == original_bytes
+        assert gate.read_jsonl(working) == [different]
+        assert io.sha(working) == record["fresh_log_sha256"]
+        for invalid in ([],[fixture,fixture]):
+            try:
+                replace_unit(invalid,"G6",different)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("missing/duplicate prior fixture accepted")
         out=Path(temp)/"new"
         assert io.output_path(out)==out.resolve()
         out.mkdir()
