@@ -23,6 +23,26 @@ source-bound reproof log is `fourier/data/branch/run_K12_final.jsonl`; final uni
 `stability_uniform_K12_final.jsonl`. The Hopf target requires a current Theorem A cover, all 68 fresh amplitude
 certificates, all 67 amplitude gluings, identification at zero amplitude and gluing to the complete final branch.
 
+The fresh Theorem A calculation has now passed separate exact-record review: 286 left intervals, one central
+interval and 229 right intervals cover the whole target window with the required signs and eigenvalue
+separation. Its current-source record is `fourier/data/hopf/theoremA_final.json`, with SHA-256
+`8101ac680cd3856653c00bd76a0d5230e29b6b732fc16c2cf4d07b6c55f4b797`; the scoped acceptance receipt is
+`reviews/review-theoremA-final-receipt-2026-10-02.json`. This does not admit the complete amplitude branch,
+conductance branch, bridge or uniform-stability theorem. The six-runner branch reproof and its strict merge
+are described in `reviews/parallel-branch-reproof-2026-10-02.md`.
+
+The fresh six-runner branch calculation completed on 2026-10-02: all 57 groups, 712 current-source pieces and
+711 gluings passed its complete merge checks. The downloaded log has SHA-256
+`cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8`. This completed computation is distinct
+from the stopped 128-piece local batch and from the pending uniform-stability and full Hopf-bridge calculations.
+See `docs/HANDOFF-2026-10-02-cardiac-rings-1.1.0-codex.md` for the resumed checkpoint and remaining work.
+
+Separate exact-record review has admitted this final branch for existence, local uniqueness, continuity and
+minimal period, as registered in `results/fourier-review-status.json`. Its admission explicitly excludes
+inherited point stability, uniform stability, the full Hopf amplitude branch and bridge, and the 1.1.0 release.
+The original Linux summary and local partial log are preserved; the new canonical summary has SHA-256
+`0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3`.
+
 The pilot's historical Linux and fresh Mac proofs have different last-bit bounds. Platform differences in
 proposed numerical inverses are a possible cause, not an established diagnosis. These inverses are untrusted
 inputs. Fresh records must satisfy the exact current ball inequalities; historical numerical

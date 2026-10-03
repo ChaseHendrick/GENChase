@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-02",
+  "status": "conditional mathematical draft reviewed; no additional source or argument blocker found",
+  "draft": "papers/cardiac-rings/notes/v2-branch-methods-draft-2026-10-02.md",
+  "draft_sha256": "5e97f6c7a0c9e4bd932707ecc886ca347f630735c466b00dac51eddff654c719",
+  "method": "read-only argument comparison with the admitted source lemmas; no duplicate proof computation",
+  "reviewed": [
+    "Fourier residual and injective inverse",
+    "finite/tail and Hessian contraction",
+    "continuity and gluing",
+    "affine and quadratic moving tubes with Taylor remainders",
+    "all-parameter Hill coefficient enclosures",
+    "Hill domain and Floquet multiplicities",
+    "window and tail Schur homotopy count",
+    "local orbital stability with asymptotic phase"
+  ],
+  "limits": [
+    "numerical uniform stability certificates and full acceptance suites remain pending",
+    "Hopf branch and bridge remain pending",
+    "draft needs manuscript integration and references before publication",
+    "branch numerical acceptance limited to separate 712-piece existence/local uniqueness/continuity/minimal-period receipt"
+  ],
+  "editorial_followups": [
+    "opening branch-admission status predates accepted scoped registry entry",
+    "some inline math wrappers use plain parentheses with trailing LaTeX close delimiter"
+  ]
+}

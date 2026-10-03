@@ -30,5 +30,43 @@
   "fourier-stability-N8.json": "c18ddcccbcea85d78628795a3efc1710736fd5d6fdcfe58eaff35ab1089c762e"
  },
  "repository_commit_at_review": "3632300139c169c67a20a7fbe8af7991a983d948",
- "check": "python3 fourier/check_records.py (stored source, centre and Stage E record hashes against the files)"
+ "check": "python3 fourier/check_records.py (stored source, centre and Stage E record hashes against the files)",
+ "additional_scoped_acceptance": [
+  {
+   "date": "2026-10-02",
+   "record": "fourier-branch-gks.json",
+   "outcome": "accepted in-project adversarial review in the explicitly limited scope below",
+   "scope": [
+    "existence",
+    "local uniqueness",
+    "continuity",
+    "minimal period"
+   ],
+   "g_covered": [
+    "0.027499735464",
+    "0.02778996093"
+   ],
+   "n_pieces": 712,
+   "n_groups": 57,
+   "n_gluings_rederived": 711,
+   "workflow_run": "37076139080",
+   "producer_record_sha256": "099c0c9460c726991b01f3395ece2fb0b5939d545801b2d7bc22c689a175f195",
+   "run_log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+   "program_sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+   "canonical_record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+   "canonical_record_note": "New collector output on byte-identical canonical installed final log; exact proof pieces,711gluings,sources,groups and settings match the separately preserved cloud producer. Three float Y0_over_cap display diagnostics differ in last digits; acceptance uses exact hexadecimal bounds, not these floats.",
+   "reviews": [
+    "reviews/theoremC-uniform-fixcheck-2026-10-02.md",
+    "reviews/review-cloud-branch-final-receipt-2026-10-02.json"
+   ],
+   "not_accepted": [
+    "inherited point stability",
+    "uniform stability",
+    "Hopf amplitude branch",
+    "Hopf bridge closure",
+    "paper1.1 release"
+   ],
+   "not_claimed": "No outside review; separate in-project AI-agent reading."
+  }
+ ]
 }
