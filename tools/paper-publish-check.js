@@ -36,7 +36,8 @@ const write = (f, s) => { fs.mkdirSync(path.dirname(f), { recursive: true }); fs
 const read = f => fs.readFileSync(f, 'utf8');
 const SRC = path.join(tmp, 'src'), REMOTES = path.join(tmp, 'remotes'), BARE = path.join(REMOTES, 'o', 't.git'), OWNER = path.join(tmp, 'owner');
 const run = (script, args = [], extra = {}) => spawnSync('sh', [path.join(SRC, 'tools', script), ...args],
-  { cwd: SRC, encoding: 'utf8', env: { ...ENV, GH_TOKEN: 'x', PAPERS_REMOTE: 'file://' + REMOTES, ...extra } });
+  { cwd: SRC, encoding: 'utf8', env: { ...ENV, GH_TOKEN: 'x', PAPERS_REMOTE: 'file://' + REMOTES,
+    PAPER_ARCHIVE_MODE: 'manual-zenodo', ZENODO_GITHUB_INTEGRATION_DISABLED: 'true', ...extra } });
 const remoteHead = ref => git(BARE, 'rev-parse', ref);
 const remoteFile = (ref, f) => git(BARE, 'show', ref + ':' + f);
 const commitSrc = msg => { git(SRC, 'add', '-A'); git(SRC, 'commit', '-q', '-m', msg); };
@@ -46,8 +47,11 @@ let checks = 0, failures = 0;
 const ok = (cond, what, detail) => { checks++; if (!cond) { failures++; console.log('FAIL ' + what + (detail ? '\n' + detail : '')); } };
 
 try {
+  const brandedChecks = spawnSync('python3', [path.join(ROOT, 'tools', 'paper-archive-build-check.py')],
+    { cwd: ROOT, encoding: 'utf8', env: ENV, timeout: 120000 });
+  ok(brandedChecks.status === 0, 'branded ZIP positive and negative controls pass without network access', brandedChecks.stdout + brandedChecks.stderr);
   // A repository shaped like this one, with one ready paper whose companion is o/t.
-  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh', 'paper-archive-check.py', 'paper-check.js']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
+  for (const f of ['paper-sync.js', 'paper-publish.sh', 'paper-pull.sh', 'paper-archive-check.py', 'paper-archive-build.py', 'paper-check.js']) write(path.join(SRC, 'tools', f), read(path.join(ROOT, 'tools', f)));
   write(path.join(SRC, 'LICENSE'), 'Apache License\n');
   write(path.join(SRC, 'papers', 'papers.json'), JSON.stringify({ author: { name: 'A B', 'given-names': 'A', 'family-names': 'B', affiliation: 'Independent Researcher', email: 'ab@example.org' },
     papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t', pdf: 'papers/t/paper/t.pdf' }] }, null, 2));
@@ -58,7 +62,10 @@ try {
   write(path.join(SRC, 'papers', 't', 'notes', 'private.md'), 'working note\n');
   const qualityPath = path.join(SRC, 'papers', 't', 'notes', 'QUALITY.md');
   const quality = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior article review', 'Adversarial second reading', 'Reproducible']
-    .map((title, i) => '- [x] **' + (i + 1) + '. ' + title + '.** Fixture evidence.').join('\n') + '\n';
+    .map((title, i) => '- [x] **' + (i + 1) + '. ' + title + '.** Fixture evidence.').join('\n') + '\n' +
+    '## Quality standard adoption (2026-10-03)\n\n**Quality standard:** 2026-10-03\n\n' +
+    ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior article review', 'Adversarial second reading', 'Reproducible']
+      .map((title, i) => '- [x] **U' + (i + 1) + '. ' + title + '.** Fixture evidence.').join('\n') + '\n';
   write(qualityPath, quality);
   git(tmp, 'init', '-q', SRC); commitSrc('start');
   fs.mkdirSync(path.dirname(BARE), { recursive: true }); git(tmp, 'init', '-q', '--bare', BARE);
@@ -127,6 +134,13 @@ try {
     '## 1.0.0 (2026-09-26)\n\nThe first release written without a v.\n\n## 0.9.0 (2026-09-25)\n\nA release made before 2026-09-26, tagged v0.9.0.\n');
   commitSrc('release notes');
 
+  for (const extra of [{ PAPER_ARCHIVE_MODE: '' }, { PAPER_ARCHIVE_MODE: 'automatic-github' },
+    { ZENODO_GITHUB_INTEGRATION_DISABLED: '' }, { ZENODO_GITHUB_INTEGRATION_DISABLED: 'false' }]) {
+    r = run('paper-publish.sh', [], { RELEASE: '1.0.0', PAPER: 't', ...extra });
+    ok(r.status !== 0 && /manual-zenodo/.test(r.stdout), 'a new release refuses an absent or invalid manual-deposit prerequisite', r.stdout + r.stderr);
+    ok(remoteHead('main') === mainBefore, 'a missing manual-deposit prerequisite pushes nothing');
+  }
+
   // 9. Versions are written without a leading v (owner's decision, 2026-09-26): a new tag with the v is
   // refused before anything is pushed, even with notes, and a plain one publishes.
   r = run('paper-publish.sh', [], { RELEASE: 'v1.1.0', PAPER: 't' });
@@ -139,7 +153,8 @@ try {
   // 10. A release made before 2026-09-26 keeps its v tag: that tag is taken, to bring its notes up to date
   // from the section written without the v, and the same version under a new plain tag is refused.
   git(OWNER, 'pull', '-q', 'origin', 'main'); git(OWNER, 'tag', 'v0.9.0'); git(OWNER, 'push', '-q', 'origin', 'v0.9.0');
-  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't', FAKE_RELEASE_STATE: 'published' });
+  r = run('paper-publish.sh', [], { RELEASE: 'v0.9.0', PAPER: 't', FAKE_RELEASE_STATE: 'published',
+    PAPER_ARCHIVE_MODE: '', ZENODO_GITHUB_INTEGRATION_DISABLED: '' });
   ok(r.status === 0, 'the existing tag v0.9.0 is taken, with its notes under "## 0.9.0"', r.stdout + r.stderr);
   const beforeTwin = remoteHead('main');
   write(path.join(SRC, 'papers', 't', 'README.md'), read(path.join(SRC, 'papers', 't', 'README.md')) + '\nAnother change that must not be pushed.\n');

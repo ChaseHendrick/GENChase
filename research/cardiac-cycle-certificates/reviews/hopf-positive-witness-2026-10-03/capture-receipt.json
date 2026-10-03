@@ -1,0 +1,21 @@
+{
+  "wall_s": 78.07779833301902,
+  "producer_source_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "observer_sha256": "f47972ab4d1cf1698b2e522dbd7e4f2ee7d67b8a81151a715570180ca9a25348",
+  "interface_sha256": "bb5a68329a17537bca3f22a82b4af6bbca1defde2ed4b1db5bc07dcb4c82c841",
+  "interface": "cardiac-spectral-witness/2",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "sources_unchanged": true,
+  "python_flint": "0.9.0",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "thread_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  }
+}

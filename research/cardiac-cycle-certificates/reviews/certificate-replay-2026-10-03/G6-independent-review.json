@@ -1,0 +1,136 @@
+{
+  "schema": "independent-full-spectral-replay-review/2",
+  "status": "passed conditional spectral replay",
+  "identity": "G6",
+  "witness_schema": "cardiac-spectral-witness/2",
+  "artifacts": {
+    "witness": {
+      "path": "/private/tmp/cardiac-witness-G6-v2-2026-10-03.json.gz",
+      "sha256": "541a45ae819c8632e3d9d161b50ebf15f7b17c481fbf1858d438fdf2a487ab7a"
+    },
+    "bindings": {
+      "path": "/private/tmp/cardiac-witness-G6-v2-bindings-2026-10-03.json",
+      "sha256": "66afbd0934e10b7065d2e239696ff6608266a90341030d99236bf50e188a597c"
+    },
+    "replay": {
+      "path": "/private/tmp/cardiac-witness-G6-v2-replay-receipt-2026-10-03.json",
+      "sha256": "63300ec162449ab5c53b9ebf71ecb6849e6686820b9060b6d6c3e57bd668262d"
+    },
+    "capture_log": {
+      "path": "/private/tmp/cardiac-witness-G6-v2-capture-2026-10-03.log",
+      "sha256": "64bbc8647bfa070cf099b9ded3da2ede53e1ed7cc01f735cf0c98456209df077"
+    },
+    "replay_log": {
+      "path": "/private/tmp/cardiac-witness-G6-v2-replay-2026-10-03.log",
+      "sha256": "8c998502d460f6fb97c4424b344872fa8da5c559145e7363eb46311fdf5cd0d0"
+    }
+  },
+  "bindings": {
+    "identity": "G6",
+    "settings": {
+      "delta": "3e-5",
+      "Ke_offset": 12,
+      "n_c": 24,
+      "prec": 128,
+      "eta_tail": "1/1048576",
+      "S_exps": null,
+      "zeta": "ones",
+      "cluster_tols": [
+        0.0,
+        0.001,
+        0.003,
+        0.01,
+        0.02,
+        0.05,
+        0.1,
+        0.2
+      ],
+      "sanity_tol": "1e-6",
+      "tau": "1e-3",
+      "rho_margin": "1/64",
+      "strip_nx_new": 16,
+      "strip_rtol_new": 1000.0,
+      "strip_max_evals": 1200,
+      "r_star": "1/1048576",
+      "R_factor": 256
+    },
+    "sources": {
+      "fourier/branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+      "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+      "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+      "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+      "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+      "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+      "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+      "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+      "fourier/stability_witness.py": "4b6317dfe596d9e28722753025a559397e09e110ec3ba07f82d86cb6ba983f7f",
+      "fourier/certificate_replay.py": "9f130d8b7e2163276144792efc5b6fa8e612863ffdb6509ffe39e4b4a05ab35b"
+    },
+    "inputs": {
+      "fourier/data/branch/END.md": "532c9e59723b229ca5f93d3ad1165cdcbb7bf9aaac17e7ec1abcbd63b9449a79",
+      "fourier/data/branch/centres_K12.jsonl": "396610e93cb6b8d233776d88aacdd7a461970f3efd638eb1b8d9e1688b789b36",
+      "fourier/data/branch/float_branch_K16.json": "bffffce71b9e09e64ff3eafad9c7f6f88d9ad7d0dad5de9d184dba3edbc4434a",
+      "fourier/data/branch/points_K12.jsonl": "aac6de8cd0b0a57d4b175ce9dd89107e2093c7aa29d67862376e6ac2c4baf608",
+      "fourier/data/branch/points_centres_K32.jsonl": "2530cf41e416e153bfac265e84d7af68cc10ec8ec15fb786ddfd4f9d271ab8c8",
+      "fourier/data/branch/run_K12.jsonl": "b761e1b150ec2a1f3165a671c7af570863bd09fce4c1d82ba7c7734ce98eafcb",
+      "fourier/data/branch/run_K12_final.jsonl": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+      "fourier/data/branch/run_K12_mac_partial_2026-10-02.jsonl": "8c7fa1f953f4ebc9dedaaa3a95d81c72660de57512b1099ffcccd07cf5f2c7e5",
+      "fourier/data/branch/stability_uniform_K12.jsonl": "bc2d80177231be12b54fadd7dd7e1668af6e57cee6889e8cdfb1462097c9435b",
+      "fourier/data/branch/stability_uniform_K12_final.jsonl": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9"
+    },
+    "domain": [
+      "13766930923/500000000000",
+      "2753964869/100000000000"
+    ],
+    "parameter_center": "13768264057/500000000000",
+    "geometry": {
+      "N": 1,
+      "DIM": 18,
+      "IV": 0,
+      "Ke": 12,
+      "nA": 40,
+      "nc": 24,
+      "D": "1/64000"
+    },
+    "trust": "operator/existence/phase enclosure premises"
+  },
+  "independent_checks": [
+    "reconstructed H/AS/remainder from common primitive enclosures",
+    "exact similarity scaling and ring damping formula",
+    "typed settings/domain/centre/geometry binding",
+    "every residue inverse defect and tail resolvent",
+    "all finite polynomial products and remainder products",
+    "all450 SC columns and exact count1",
+    "period/multiplier bound directions",
+    "full producer source/model/scales/input hashes checked"
+  ],
+  "source_snapshot": "/private/tmp/cardiac-replay-G6-v2-tested-sources-2026-10-03",
+  "supervisors": {
+    "capture": {
+      "exit_code": 0,
+      "wall_s": 200.54064604104497,
+      "peak_aggregate_rss_mib": 913.453125
+    },
+    "replay": {
+      "exit_code": 0,
+      "wall_s": 133.94730387511663,
+      "peak_aggregate_rss_mib": 1407.484375
+    }
+  },
+  "arithmetic": {
+    "python_flint": "0.9.0",
+    "precision": 256,
+    "independent_producer_imports": true
+  },
+  "independent_model_enclosures": false,
+  "independent_orbit_existence": false,
+  "not_admitted": [
+    "model fullstrip/DFT/Hessian enclosure construction",
+    "orbit contraction replay",
+    "new fullbridge/allN/cable stability",
+    "new physiological action potential",
+    "rewriting published proof records"
+  ]
+}

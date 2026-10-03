@@ -5,6 +5,10 @@ Usage: python3 tools/paper-zenodo-check.py [--paper ID] [--out report.json]
 Read-only. No record, release, tag or DOI is created or changed.
 archiveVersion identifies the verified release at codeDoi; a proposed newer
 release does not change this expectation until its archive has been verified.
+archiveFilename, when registered for a new branded deposit, must equal
+HendrickResearch_<paper-id>_<archiveVersion>.zip. Absent fields retain legacy checks.
+archiveManuscript binds the reviewed published PDF to its version, DOI, relative
+path and immutable tag commit. A newer working PDF does not replace that reference.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -12,9 +16,10 @@ from datetime import datetime, timezone
 import hashlib
 import io
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import sys
+import stat
 import tempfile
 from unittest.mock import patch
 from urllib.request import urlopen
@@ -32,6 +37,71 @@ def awaiting_first_archive(paper):
 def valid_archive_version(version):
     # New companion release versions use a plain semver core, without a leading v.
     return isinstance(version, str) and re.fullmatch(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)", version) is not None
+
+
+def expected_archive_filename(paper):
+    if "archiveFilename" not in paper:
+        return None
+    if (not isinstance(paper.get("id"), str) or
+            re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", paper["id"]) is None or
+            not valid_archive_version(paper.get("archiveVersion"))):
+        raise ValueError("branded archiveFilename requires a valid paper id and verified archiveVersion")
+    expected = f"HendrickResearch_{paper['id']}_{paper['archiveVersion']}.zip"
+    if paper["archiveFilename"] != expected or not isinstance(paper["archiveFilename"], str):
+        raise ValueError("archiveFilename must be " + expected)
+    return expected
+
+
+def branded_root_matches(archive, expected_filename):
+    root = expected_filename[:-4]
+    seen = set()
+    for info in archive.infolist():
+        name = info.filename
+        path = name[:-1] if info.is_dir() else name
+        mode = info.external_attr >> 16
+        if (name in seen or stat.S_ISLNK(mode) or info.flag_bits & 1 or
+                stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR) or
+                not path or path.startswith('/') or '\\' in path or
+                any(ord(c) < 32 or ord(c) == 127 for c in path) or
+                any(part in ('', '.', '..') for part in path.split('/')) or
+                str(PurePosixPath(path)) != path or
+                not (path == root or path.startswith(root + '/'))):
+            return False
+        seen.add(name)
+        if info.is_dir():
+            if stat.S_IFMT(mode) not in (0, stat.S_IFDIR) or archive.read(info):
+                return False
+        elif path == root or stat.S_IFMT(mode) == stat.S_IFDIR:
+            return False
+    return bool(seen)
+
+
+def manuscript_reference(paper):
+    """Validate the declared release reference before network or file access."""
+    prefix = f"papers/{paper['id']}/"
+    pdf = paper.get("pdf")
+    if not isinstance(pdf, str) or not pdf.startswith(prefix):
+        raise ValueError("no registered manuscript PDF")
+    relative = pdf[len(prefix):]
+    if (not relative or relative.startswith('/') or '\\' in relative or
+            any(ord(c) < 32 or ord(c) == 127 for c in relative) or
+            any(part in ('', '.', '..') for part in relative.split('/')) or
+            str(PurePosixPath(relative)) != relative or not relative.endswith('.pdf')):
+        raise ValueError("unsafe registered manuscript PDF path")
+    if "archiveManuscript" not in paper:
+        return relative, None
+    bound = paper["archiveManuscript"]
+    if (type(bound) is not dict or
+            set(bound) != {'version', 'doi', 'path', 'tagCommit', 'sha256'} or
+            any(type(bound[k]) is not str for k in bound)):
+        raise ValueError("archiveManuscript requires exactly five string fields")
+    if (not valid_archive_version(bound['version']) or bound['version'] != paper.get('archiveVersion') or
+            re.fullmatch(r"10\.5281/zenodo\.[1-9][0-9]*", bound['doi']) is None or
+            bound['doi'] != paper.get('codeDoi') or bound['path'] != relative or
+            re.fullmatch(r'[0-9a-f]{40}', bound['tagCommit']) is None or
+            re.fullmatch(r'[0-9a-f]{64}', bound['sha256']) is None):
+        raise ValueError("archiveManuscript is malformed or stale for the registered release")
+    return relative, dict(bound)
 
 
 def publication_metadata(paper, record):
@@ -82,6 +152,7 @@ def self_test():
     assert not publication_metadata(rank, {"metadata": metadata})["componentRightsDisclosed"]
     assert not publication_metadata(paper, {"metadata": {**good, "description": ""}})["componentRightsDisclosed"]
     version_controls = 1
+    binding_controls = 0
     assert publication_metadata(paper, {"metadata": good})["versionMatches"]
     for version in (None, "1.2.2", "1.2.4", "v1.2.3", "1.2", "1.2.3 ", " 1.2.3", 1.2, [], True):
         result = publication_metadata(paper, {"metadata": {**good, "version": version}})
@@ -130,13 +201,131 @@ def self_test():
         with patch(__name__ + ".ROOT", root), patch(__name__ + ".urlopen", side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
             assert audit(fixture_paper)["ok"]
         version_controls += 1
+        branded = {**fixture_paper, "archiveFilename": "HendrickResearch_test_1.2.3.zip"}
+        legacy_archive_data = archive_data
+        def wrapped(root_name):
+            stream = io.BytesIO()
+            with zipfile.ZipFile(stream, 'w') as z:
+                z.writestr(root_name + '/' + relative, pdf)
+            return stream.getvalue()
+        archive_data = wrapped(branded['archiveFilename'][:-4])
+        record['files'][0]['checksum'] = 'md5:' + hashlib.md5(archive_data).hexdigest()
+        for wrong_root in ('companion-abcdef1', 'ChaseHendrick/test-1.2.3', 'HendrickResearch_test_1.2.4', branded['archiveFilename'][:-4] + '/nested'):
+            wrong = wrapped(wrong_root)
+            altered = {**record, 'files': [{**record['files'][0], 'key': branded['archiveFilename'], 'checksum': 'md5:' + hashlib.md5(wrong).hexdigest()}]}
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(altered).encode()), io.BytesIO(wrong)]):
+                result = audit(branded)
+            assert not result['ok']
+            version_controls += 1
+        with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps({**record, 'files': [{**record['files'][0], 'key':'companion.zip', 'checksum':'md5:' + hashlib.md5(legacy_archive_data).hexdigest()}]}).encode()), io.BytesIO(legacy_archive_data)]):
+            assert audit(fixture_paper)['ok']
+        version_controls += 1
+        for filename, ok in [(branded["archiveFilename"], True), ("companion.zip", False),
+                             ("ChaseHendrick/test-1.2.3.zip", False), ("HendrickResearch_test_1.2.4.zip", False)]:
+            record["files"][0]["key"] = filename
+            with patch(__name__ + ".ROOT", root), patch(__name__ + ".urlopen", side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
+                result = audit(branded)
+            assert result["ok"] == ok and result["archiveFilenameMatches"] == ok
+            version_controls += 1
+        for filename in [None, True, [], "../test.zip", "HendrickResearch_test_1.2.3.zip\n", "HendrickResearch_other_1.2.3.zip"]:
+            with patch(__name__ + ".urlopen") as request:
+                failed = audit({**branded, "archiveFilename": filename})
+                assert not failed["ok"] and "archiveFilename" in failed["error"]
+                request.assert_not_called()
+            version_controls += 1
+        record["files"][0]["key"] = branded["archiveFilename"]
+        duplicated = {**record, "files": record["files"] * 2}
+        with patch(__name__ + ".ROOT", root), patch(__name__ + ".urlopen", side_effect=[io.BytesIO(json.dumps(duplicated).encode()), io.BytesIO(archive_data), io.BytesIO(archive_data)]):
+            result = audit(branded)
+        assert not result["ok"] and not result["archiveFilenameMatches"]
+        version_controls += 1
+        # Published bytes remain the reference when a working manuscript advances.
+        binding = {'version': '1.2.3', 'doi': '10.5281/zenodo.1', 'path': relative,
+                   'tagCommit': 'a' * 40, 'sha256': hashlib.sha256(pdf).hexdigest()}
+        released = {**branded, 'archiveManuscript': binding}
+        stream = io.BytesIO(archive_data)
+        with zipfile.ZipFile(stream, 'a') as archive:
+            archive.comment = binding['tagCommit'].encode('ascii')
+        archive_data = stream.getvalue()
+        record['files'][0]['checksum'] = 'md5:' + hashlib.md5(archive_data).hexdigest()
+        target.write_bytes(b'%PDF-1.7\nnew working manuscript\n%%EOF\n')
+        with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
+            result = audit(released)
+        assert result['ok'] and result['archives'][0]['matchesExpectedPdf']
+        assert not result['archives'][0]['matchesRepository']
+        assert result['pdfReference']['tagCommit'] == binding['tagCommit']
+        assert result['workingPdfSha256'] != result['expectedPdfSha256']
+        assert result['archives'][0]['tagCommitMatches']
+        binding_controls += 1
+        with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
+            assert not audit(branded)['ok']  # Legacy comparison remains exact.
+        binding_controls += 1
+        invalid_bindings = [None, True, [], {}, {**binding, 'extra': 'x'},
+                            {k: v for k, v in binding.items() if k != 'tagCommit'}]
+        for field, values in {
+            'version': ['1.2.4', 'v1.2.3', True],
+            'doi': ['10.5281/zenodo.2', '10.5281/zenodo.01', True],
+            'path': ['paper/other.pdf', '../paper/test.pdf', 'paper//test.pdf', '/paper/test.pdf', True],
+            'tagCommit': ['a' * 39, 'A' * 40, 'g' * 40, True],
+            'sha256': ['a' * 63, 'A' * 64, 'g' * 64, True],
+        }.items():
+            invalid_bindings.extend({**binding, field: value} for value in values)
+        for invalid in invalid_bindings:
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen') as request:
+                failed = audit({**released, 'archiveManuscript': invalid})
+                assert not failed['ok'] and 'archiveManuscript' in failed['error']
+                request.assert_not_called()
+            binding_controls += 1
+        for changed in ({'archiveVersion': '1.2.4'}, {'codeDoi': '10.5281/zenodo.2'},
+                        {'pdf': 'papers/test/paper/new.pdf'}):
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen') as request:
+                assert not audit({**released, **changed})['ok']
+                request.assert_not_called()
+            binding_controls += 1
+        # A well-formed incorrect pin, or replacing the release PDF by the newer
+        # working PDF, must still fail its exact digest gate.
+        for proposed in ({**binding, 'sha256': '0' * 64}, binding):
+            data = archive_data
+            if proposed is binding:
+                stream = io.BytesIO()
+                with zipfile.ZipFile(stream, 'w') as archive:
+                    archive.writestr(branded['archiveFilename'][:-4] + '/' + relative, target.read_bytes())
+                    archive.comment = binding['tagCommit'].encode('ascii')
+                data = stream.getvalue()
+            altered = {**record, 'files': [{**record['files'][0], 'checksum': 'md5:' + hashlib.md5(data).hexdigest()}]}
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(altered).encode()), io.BytesIO(data)]):
+                result = audit({**released, 'archiveManuscript': proposed})
+            assert not result['ok'] and not result['archives'][0]['matchesExpectedPdf']
+            binding_controls += 1
+        for comment in (b'', b'a' * 39, b'A' * 40, b'b' * 40, b'a' * 40 + b'\n'):
+            stream = io.BytesIO(archive_data)
+            with zipfile.ZipFile(stream, 'a') as archive:
+                archive.comment = comment
+            data = stream.getvalue()
+            altered = {**record, 'files': [{**record['files'][0], 'checksum': 'md5:' + hashlib.md5(data).hexdigest()}]}
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(altered).encode()), io.BytesIO(data)]):
+                result = audit(released)
+            assert not result['ok'] and result['archives'][0]['matchesExpectedPdf']
+            assert not result['archives'][0]['tagCommitMatches']
+            binding_controls += 1
+        with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen', side_effect=[io.BytesIO(json.dumps(record).encode()), io.BytesIO(archive_data)]):
+            result = audit({**released, 'archiveManuscript': {**binding, 'tagCommit': 'b' * 40}})
+        assert not result['ok'] and result['archives'][0]['matchesExpectedPdf']
+        assert not result['archives'][0]['tagCommitMatches']
+        binding_controls += 1
+        for unsafe in ('papers/test/../test/paper/test.pdf', 'papers/test/paper//test.pdf',
+                       'papers/test/paper/./test.pdf', 'papers/test/paper\\test.pdf'):
+            with patch(__name__ + '.ROOT', root), patch(__name__ + '.urlopen') as request:
+                assert not audit({**released, 'pdf': unsafe})['ok']
+                request.assert_not_called()
+            binding_controls += 1
     pending_controls = 0
     for entry, pending in (({"id": "new"}, True), ({"id": "new", "codeDoi": None, "archiveVersion": None}, True),
                            ({"id": "x", "codeDoi": "10.5281/zenodo.1"}, False), ({"id": "x", "archiveVersion": "1.0.0"}, False),
                            ({"id": "x", "archiveVersion": ""}, False), (paper, False)):
         assert awaiting_first_archive(entry) == pending
         pending_controls += 1
-    print(f"Publication metadata self-test passed: 13 existing checks, {version_controls} version controls, including matching ZIPs at wrong versions, and {pending_controls} first-release controls")
+    print(f"Publication metadata self-test passed: 13 existing checks, {version_controls} version controls, {binding_controls} published-PDF binding controls, and {pending_controls} first-release controls")
     return 0
 
 
@@ -145,22 +334,29 @@ def audit(paper):
     result = {"paper": paper["id"], "doi": paper.get("codeDoi"), "expectedVersion": expected_version,
               "validExpectedVersion": valid_archive_version(expected_version), "versionMatches": False, "ok": False}
     try:
+        expected_filename = expected_archive_filename(paper)
+        result["expectedArchiveFilename"] = expected_filename
         match = re.fullmatch(r"10\.5281/zenodo\.(\d+)", paper.get("codeDoi") or "")
         if not match:
             raise ValueError("no registered Zenodo version DOI")
         if not result["validExpectedVersion"]:
             raise ValueError("archiveVersion must identify the verified archive with a plain semver version")
+        relative, binding = manuscript_reference(paper)
+        working_path = ROOT / paper['pdf']
+        working_digest = hashlib.sha256(working_path.read_bytes()).hexdigest() if working_path.is_file() else None
+        if binding is None and working_digest is None:
+            raise ValueError("legacy manuscript PDF reference is missing")
+        expected = binding['sha256'] if binding is not None else working_digest
+        result['pdfReference'] = ({'kind': 'published-release-binding', **binding} if binding is not None else
+                                  {'kind': 'working-tree-legacy', 'path': relative, 'sha256': expected})
+        result['expectedPdfSha256'] = expected
+        result['workingPdfSha256'] = working_digest
+        result['repositoryPdfSha256'] = working_digest
         url = "https://zenodo.org/api/records/" + match[1]
         with urlopen(url, timeout=30) as response:
             record = json.load(response)
         result["record"] = "https://zenodo.org/records/" + match[1]
         result.update(publication_metadata(paper, record))
-        prefix = f"papers/{paper['id']}/"
-        pdf = paper.get("pdf")
-        if not pdf or not pdf.startswith(prefix):
-            raise ValueError("no registered manuscript PDF")
-        relative = pdf[len(prefix):]
-        expected = hashlib.sha256((ROOT / pdf).read_bytes()).hexdigest()
         archives = []
         for item in record["files"]:
             if not item["key"].endswith(".zip"):
@@ -172,14 +368,19 @@ def audit(paper):
                 raise ValueError("download checksum differs from Zenodo metadata")
             with zipfile.ZipFile(io.BytesIO(data)) as archive:
                 names = archive.namelist()
-                matches = [n for n in names if n == relative or n.endswith("/" + relative)]
+                root_matches = expected_filename is None or branded_root_matches(archive, expected_filename)
+                matches = ([n for n in names if n == expected_filename[:-4] + '/' + relative] if expected_filename is not None else
+                           [n for n in names if n == relative or n.endswith('/' + relative)])
                 digest = hashlib.sha256(archive.read(matches[0])).hexdigest() if len(matches) == 1 else None
+                tag_matches = archive.comment == binding['tagCommit'].encode('ascii') if binding is not None else None
             archives.append({"file": item["key"], "url": item["links"]["self"],
                              "zipSha256": hashlib.sha256(data).hexdigest(), "manuscript": matches,
-                             "manuscriptSha256": digest, "matchesRepository": digest == expected})
-        result["repositoryPdfSha256"] = expected
+                             "manuscriptSha256": digest, "matchesRepository": digest is not None and digest == working_digest,
+                             "matchesExpectedPdf": digest is not None and digest == expected, "archiveRootMatches": root_matches,
+                             "tagCommitMatches": tag_matches})
         result["archives"] = archives
-        result["ok"] = result["versionMatches"] and result["preprint"] and result["titleMatches"] and result["licenseMatches"] and result["componentRightsDisclosed"] and bool(archives) and all(a["matchesRepository"] for a in archives)
+        result["archiveFilenameMatches"] = expected_filename is None or (len(archives) == 1 and archives[0]["file"] == expected_filename)
+        result["ok"] = result["versionMatches"] and result["preprint"] and result["titleMatches"] and result["licenseMatches"] and result["componentRightsDisclosed"] and result["archiveFilenameMatches"] and bool(archives) and all(a["matchesExpectedPdf"] and a["archiveRootMatches"] and (binding is None or a['tagCommitMatches']) for a in archives)
     except Exception as exc:
         result["error"] = str(exc)
     return result

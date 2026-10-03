@@ -1,0 +1,18 @@
+.E.....
+======================================================================
+ERROR: test_complex_grid_covers_square (__main__.LocalControls.test_complex_grid_covers_square)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/test_hopf_stability_local.py", line 69, in test_complex_grid_covers_square
+    grid=local.square_grid('1/100',2)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 124, in square_grid
+    return [acb(hp._ball_interval(-R+2*R*Fraction(i,count), -R+2*R*Fraction(i+1,count)),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "flint/types/acb.pyx", line 158, in flint.types.acb.acb.__init__
+TypeError: cannot create arb from type <class 'flint.types.acb.acb'>
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.004s
+
+FAILED (errors=1)

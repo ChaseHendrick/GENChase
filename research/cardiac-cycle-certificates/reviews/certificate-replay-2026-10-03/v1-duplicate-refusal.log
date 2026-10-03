@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 341, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 332, in main
+    result = verify(load(args.witness), bindings, progress=lambda x: print(x, flush=True))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 201, in verify
+    require(type(w["tail"]) is list and len(w["tail"]) == N // 2 + 1, "all damping residues")
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 22, in require
+    raise Refused(message)
+Refused: all damping residues

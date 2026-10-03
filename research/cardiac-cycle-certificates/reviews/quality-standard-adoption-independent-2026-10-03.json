@@ -1,0 +1,141 @@
+{
+  "schema": "quality-standard-adoption-independent-review/1",
+  "status": "scoped prospective bookkeeping admission",
+  "hashes": {
+    "tools/paper-check.js": "ad69a48eacf9981550420a021bfef5ca4d6f4d18901a287d65cb43f918c7a743",
+    "docs/PAPER-QUALITY-STANDARD.md": "fc1384dcd6e495eced1e3f9977e31cfe30cb5bbb3b6936f33f231bbb7cca43a3",
+    "docs/PUBLISHING-PAPERS.md": "a348002fb65d4a91d25225ce7ba86ca7f193de7ffd43cc4bf7ab91722682fa08",
+    "AGENTS.md": "e54f70cf13bb27e80bd794ac93349d4009864258be070ef780f7f3c3a89b1c9c",
+    "papers/cardiac-rings/notes/QUALITY.md": "8042fbc81ad55d27b31c02a473ab3d3182301fe648fe88f46d89b0bc5da7652e"
+  },
+  "independent_cases": [
+    {
+      "name": "actual",
+      "expected_acceptance": true,
+      "actual_acceptance": true,
+      "problems": []
+    },
+    {
+      "name": "fenced",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "tilde fenced",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "comment",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "unclosed comment",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "unclosed fence",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "reversed",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: adoption items must appear in U1-U7 order"
+      ]
+    },
+    {
+      "name": "H1 boundary",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: quality standard adoption needs exactly seven U1-U7 items",
+        "papers/t/notes/QUALITY.md: adoption item U7 \"Reproducible\" is missing, duplicated or renamed"
+      ]
+    },
+    {
+      "name": "tab H2 boundary",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: quality standard adoption needs exactly seven U1-U7 items",
+        "papers/t/notes/QUALITY.md: adoption item U7 \"Reproducible\" is missing, duplicated or renamed"
+      ]
+    },
+    {
+      "name": "indented H2 boundary",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: quality standard adoption needs exactly seven U1-U7 items",
+        "papers/t/notes/QUALITY.md: adoption item U7 \"Reproducible\" is missing, duplicated or renamed"
+      ]
+    },
+    {
+      "name": "H3 allowed",
+      "expected_acceptance": true,
+      "actual_acceptance": true,
+      "problems": []
+    },
+    {
+      "name": "actual plus quoted template",
+      "expected_acceptance": true,
+      "actual_acceptance": true,
+      "problems": []
+    },
+    {
+      "name": "stale",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "open U6",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: adoption item U6 needs completed evidence or an explicit inapplicable reason"
+      ]
+    },
+    {
+      "name": "hidden version",
+      "expected_acceptance": false,
+      "actual_acceptance": false,
+      "problems": [
+        "papers/t/notes/QUALITY.md: a new release needs one explicit quality standard adoption (2026-10-03)"
+      ]
+    },
+    {
+      "name": "historical archive keeps prospective item open",
+      "actual_acceptance": true
+    }
+  ],
+  "parent_self_test_cases": 62,
+  "previous_findings_retained": [
+    "fenced and HTML-comment pseudo-sections previously accepted",
+    "reverse U order previously accepted",
+    "H1/tab-H2 out-of-section U7 previously accepted"
+  ],
+  "scope": "record shape and prospective release gating; no automatic scientific evidence validation or retrospective archive withdrawal"
+}

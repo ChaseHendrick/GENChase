@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 492, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 480, in main
+    result = verify(load(args.witness), bindings, progress=lambda x: print(x, flush=True))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 336, in verify
+    require(all(z.imag.is_zero() and z.real.is_exact() for row in A0c.tolist() for z in row), "exact real tail comparison block")
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 22, in require
+    raise Refused(message)
+Refused: exact real tail comparison block

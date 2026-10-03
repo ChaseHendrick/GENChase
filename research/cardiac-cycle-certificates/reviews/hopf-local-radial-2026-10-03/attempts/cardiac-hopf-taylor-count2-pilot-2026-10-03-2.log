@@ -1,0 +1,7 @@
+fresh complex-line full-strip cover in 15.67s
+  [0.000000, 0.002000]: Y0 = 4.387e-04 (p 9.7e-06, Y1 9.4e-03, Y2 5.99e+01), Z1 = 0.1197 (c 0.002, curve 31.24), Z2 = 3.561e+02, r = [5.623e-04, 1.000e-03]
+fresh Taylor/Cauchy complex-square coefficients radius=1/51200000
+  certify_uniform: K_e = 12 (n_W = 450), delta = 3.000000e-05, h = 1.9531e-08, omega in [0.119341401776, 0.119341401789], CONTROLS {'Ke': 12}
+  S search: floating-point theta_T estimate 0.0000, e = [0, -3, 1, -8, 28, 33, 34, -4, -8, -9, -7, 1, 6, -8, -6, -9, -4, -7] (0.3 s local)
+  tail (route A): rho_T = 7.1981, sigma_off = 0.0000, ||A_0 - A0c|| = 6.459e-12, theta_T = 0.0000
+  window: q_C = 9.719e-14, bhat = 6.837e-05, (SC) worst ratio 3.3196e-06 at -4.69377e-05-1.35346e-41j; critical columns -8.128e-17-1.338e-15j: ratio 2.837e-06 (W0 4.5e-12, h W1 1.4e-14, h^2 W2 2.5e-16, ball 8.1e-11), -4.694e-05-1.353e-41j: ratio 3.320e-06 (W0 7.7e-13, h W1 5.4e-11, h^2 W2 7.9e-18, ball 1.8e-12), -8.128e-17+1.338e-15j: ratio 2.837e-06 (W0 4.5e-12, h W1 1.4e-14, h^2 W2 2.5e-16, ball 8.1e-11)

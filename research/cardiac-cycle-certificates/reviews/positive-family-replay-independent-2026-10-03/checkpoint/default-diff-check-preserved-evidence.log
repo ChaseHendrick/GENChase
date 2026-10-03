@@ -1,0 +1,5 @@
+research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/prepare.py:56: new blank line at EOF.
+research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/reconstruct-model.py:48: new blank line at EOF.
+research/cardiac-cycle-certificates/reviews/model-translation-2026-10-03/alln-gate-failed-pilots/cardiac-prescribed-voltage6-2026-10-03.log:35: trailing whitespace.
++ValueError: operands could not be broadcast together with shapes (18,1) (6,6)
+research/cardiac-cycle-certificates/reviews/positive-family-replay-independent-2026-10-03/capture-snapshot/reviews/hopf-positive-witness-2026-10-03/prepare.py:56: new blank line at EOF.

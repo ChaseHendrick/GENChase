@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "-u",
+    "hopf_stability_local.py",
+    "--radial-quotient",
+    "1/500",
+    "--out",
+    "/private/tmp/cardiac-hopf-radial-quotient-R0002-2026-10-03.json"
+  ],
+  "pid": 99121,
+  "exit_code": 2,
+  "stop_reason": null,
+  "wall_seconds": 87.51434020814486,
+  "peak_aggregate_rss_mib": 429.328125,
+  "log": "/private/tmp/cardiac-hopf-radial-quotient-R0002-2026-10-03.log"
+}

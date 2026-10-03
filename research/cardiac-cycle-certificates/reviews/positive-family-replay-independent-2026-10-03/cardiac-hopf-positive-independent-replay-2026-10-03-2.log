@@ -1,0 +1,15 @@
+tail replay passed
+window products and count passed
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 499, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 487, in main
+    result = verify(load(args.witness), bindings, progress=lambda x: print(x, flush=True))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/certificate_replay.py", line 457, in verify
+    columns.append(dict(column=j, lhs=str(lhs), distance_lower=str(distances[j]), margin=str(distances[j] - lhs)))
+                                      ^^^^^^^^
+  File "/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/fractions.py", line 415, in __str__
+    return '%s/%s' % (self._numerator, self._denominator)
+                      ^^^^^^^^^^^^^^^
+ValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit

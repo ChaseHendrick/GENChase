@@ -65,6 +65,12 @@ missing or checked without evidence, and its self-test plants each of those mist
 paper's argument without writing it out does not meet item 1, and a second reading that is only planned does not
 meet item 6.
 
+The [paper quality standard](PAPER-QUALITY-STANDARD.md) specifies the applicable evidence behind those seven
+items, prospectively from 2026-10-03. Record adoption for a new release in its quality upgrade addendum; historical
+release records keep their original scope. Model provenance, full certificate replay and the spectral-to-nonlinear
+argument require explicit evidence when relevant. The stronger machine-gate manifest is proposed there for separate
+review; the current checker does not automatically enforce every scientific obligation in that document.
+
 Then:
 
 - Figure legends, numerical notes and point labels sit outside the data panels, in reserved margins,
@@ -72,8 +78,10 @@ Then:
   after regeneration, then inspect each figure in the rebuilt manuscript at its final size. Preserve
   the plotted values and scientific meaning when changing layout. The
   [September 29 figure audit](FIGURE-LAYOUT-AUDIT-2026-09-29.md) records the current eight-paper check.
-- A second reader in the field has read it. [REVIEWING.md](REVIEWING.md) and
-  [REVIEW-REQUEST.md](REVIEW-REQUEST.md) make that one step.
+- The independent adversarial second reading has actual recorded findings and dispositions. In-project independent
+  review is identified accurately and satisfies item 6; outside human review is not a blocking requirement in the
+  owner's workflow. Optional outside feedback uses [REVIEWING.md](REVIEWING.md) and
+  [REVIEW-REQUEST.md](REVIEW-REQUEST.md). Do not claim outside or journal peer review without evidence.
 - `node tools/paper-check.js --paper <id>` passes. It checks that the title is the same in every
   source; that every public contact email matches `author.email` in `papers/papers.json`; that the arXiv abstract fits arXiv's 1,920
   characters and its stated length is right; that the page counts in the metadata match the PDFs;
@@ -107,7 +115,10 @@ Then:
    interactions limited to collaborators; rulesets that forbid deleting or force-pushing the main
    branch and deleting or moving tags. A monthly run renews the lock. You can still edit the
    companion yourself (below).
-3. On Zenodo's GitHub page, switch the companion **on**.
+3. Future paper releases use a branded ZIP and a separate manual Zenodo version draft. Follow
+   [PAPER-ARCHIVE-NAMING.md](PAPER-ARCHIVE-NAMING.md): confirm the companion's automatic GitHub import is disabled
+   for the new release, then use the exact branded release asset. Existing integrations and archives are not
+   changed by this documentation or by the publisher.
 4. Write the release notes in `papers/<id>/RELEASES.md` under `## 1.0.0` (a date may follow the
    version): what the paper shows, how it was checked, the files, how to reproduce, the licenses. Merge.
    Then Actions, **publish papers**, Run workflow, with the paper id and the release tag, the version
@@ -116,7 +127,10 @@ Then:
    to bring that release's notes up to date; the tag and its files never change, and Zenodo keeps the
    description it archived. A release made before 2026-09-26 keeps its tag with the v (for example
    `v2.1.0` of minimal-winding): run with that tag, and its notes come from `## 2.1.0`; the same
-   version under a plain tag is refused, so it is never released twice. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+   version under a plain tag is refused, so it is never released twice. A new release also requires the explicit
+   manual-deposit route and import-disabled confirmation and attaches `HendrickResearch_<id>_<version>.zip`.
+   Upload that exact file to a new/unpublished Zenodo version draft within the same concept family, as described in
+   the naming guide; the publisher does not deposit or publish it. Cite the **version DOI** after actual verification, because
    it names exactly the programs you used; the concept DOI always points to the newest release.
 5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
    source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
@@ -147,9 +161,22 @@ including `rank-window`'s `note.tex`. LaTeX builds also accept `PAPER_PDF_ENGINE
 After Zenodo archives a new version, download the ZIP named by that record's API and inspect its
 members. Verify the manuscript bytes against the released PDF, then record the version DOI.
 Set `archiveVersion` in the same registry entry to the exact verified release version at `codeDoi`.
-Keep both fields on the verified archive when preparing a newer release; advance them together only
+For a future branded deposit, also set `archiveFilename` to the exact verified
+`HendrickResearch_<id>_<archiveVersion>.zip`; its read-only filename check does not rename historical files.
+Set `archiveManuscript` from the independently verified released PDF and immutable tag: exactly
+`{version, doi, path, tagCommit, sha256}`, all strings. Its version and DOI equal `archiveVersion` and
+`codeDoi`; its safe companion-relative path equals the registered PDF path after removing `papers/<id>/`.
+The tag commit and released-PDF SHA-256 are strict lowercase hexadecimal strings of length 40 and 64.
+This is the published reference even when the working manuscript advances. The scanner reports both digests,
+refuses stale or malformed declared bindings, and still requires exact downloaded-PDF equality. Full member
+maps and actual immutable tags are verified by the separate archive audit. In bound mode the scanner also
+requires the ZIP comment to equal the declared tag commit, alongside the exact PDF digest; this identifier
+check is not a fresh remote tag lookup or a substitute for complete-member verification.
+Keep all archive reference fields on the verified archive when preparing a newer release; advance them together only
 after that new archive has passed the download check. A new `RELEASES.md` heading is not evidence
 that Zenodo imported it.
+Refresh all five manuscript binding fields with that verified reference. The publisher itself changes no
+archive registry reference; never leave an old binding silently attached to a new version or DOI.
 The companion synchronizer uses this verified pair for the README's current archive locator and
 the citation file's archive version. Update recommended BibTeX entries in the canonical README at
 the same time; earlier archive links remain as history.

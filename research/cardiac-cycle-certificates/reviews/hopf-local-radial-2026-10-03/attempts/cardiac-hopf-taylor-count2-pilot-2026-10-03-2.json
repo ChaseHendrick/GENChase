@@ -1,0 +1,2599 @@
+{
+  "adapter_sha256": "f14888572dbce6b70d4c4dc223643907d3389253dfd35814a94a99f6ecfd564d",
+  "complex_branch": {
+    "absolute_epsilon_upper": {
+      "approx": 0.00282842712474619,
+      "dec": "0.002828427124746190097603378",
+      "hex": "0xb95d21fff9b8b8d9722a88e8eacb83b55da127a87c248363p-200"
+    },
+    "analytic_disk_radius": "1/500",
+    "complex_cover": {
+      "G_R": "0x1p-12",
+      "MH_row_sums": [
+        28.54473653260304,
+        0.00011098523805410304,
+        2.902287131354319e-05,
+        1.6017537781615615e-05,
+        0.011168218654779115,
+        0.04575988612512222,
+        0.010690205907460209,
+        0.04730192743141361,
+        0.0001482391808605851,
+        0.003357073907092669,
+        0.20615221834629827,
+        0.0010591992232028419,
+        0.0025442456324694064,
+        0.022112590970375302,
+        0.0357737295260122,
+        0.01285874874577858,
+        11.250742458579278,
+        0.00011984455652656019
+      ],
+      "MJ_row_sums": [
+        23.303495328254897,
+        0.005526409355234985,
+        0.3306647539602427,
+        0.0012875714941673392,
+        17.767314449509872,
+        4.627092789128992,
+        0.6259236836093246,
+        1.54251695306848,
+        0.009076566590642992,
+        0.05653735587495924,
+        0.12819064982153117,
+        0.055001199948054455,
+        0.22334676823360225,
+        0.022042847517519414,
+        0.023635777115594628,
+        0.005252689507551221,
+        5.266873935558504,
+        0.0002710872638645691
+      ],
+      "R": [
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8",
+        "0x1p-8"
+      ],
+      "T": "0x71fc38866601f1f3fd890ef4f5131ea1bc4078e0ee28ae9dp-196",
+      "digest": "9e1259be0af4a59c912a33a928a77fec884a88cb276d756760f1d26d0f1ac01b",
+      "full_strip": true,
+      "n_evals": 1600,
+      "n_leaves": 832,
+      "n_unresolved": 832,
+      "rho2": "0x3p-2",
+      "seconds": 15.7
+    },
+    "first_piece_input_digest": "3361a35a55c6a8d8c7e759f70348ebd9c91f390a28c891a1083f72d4cf48d051",
+    "inputs_sha256": {
+      "fourier/data/hopf/covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+      "fourier/data/hopf/gks_points.jsonl": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+      "fourier/data/hopf/gks_points_centres_K32.jsonl": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+      "fourier/data/hopf/pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+      "fourier/data/hopf/reprove_final.jsonl": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+      "fourier/data/hopf/theoremA_final.json": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+      "results/fourier-hopf.json": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff"
+    },
+    "kind": "hopf_complex_disk_branch_pilot",
+    "missing_producer_gates": [
+      "verified_disk_monodromy",
+      "two_full_resolvent_contours_and_ranks"
+    ],
+    "model_stability_certified": false,
+    "omega_nonzero_margin": {
+      "approx": 0.11933531545496112,
+      "dec": "0.1193353154549611267546621",
+      "hex": "0xf46612e9185fc2eaabd557aff54fe400e0deaf0fbd55b05bp-195"
+    },
+    "parameter_square": {
+      "imag": [
+        "-1/500",
+        "1/500"
+      ],
+      "real": [
+        "-1/500",
+        "1/500"
+      ]
+    },
+    "proof_bounds": {
+      "K": 8,
+      "Kprime": 24,
+      "M": 48,
+      "T_ms": {
+        "lower": {
+          "approx": 52.646181523799896,
+          "dec": "52.64618152379989624023437",
+          "hex": "0x34a56c27p-24"
+        },
+        "upper": {
+          "approx": 52.65151649713516,
+          "dec": "52.65151649713516235351563",
+          "hex": "0x34a6c9c9p-24"
+        }
+      },
+      "Y0": {
+        "approx": 0.0004386562144180743,
+        "dec": "0.0004386562144180742503621586",
+        "hex": "0x72fdb861653f7630e599948a43f0ad3c026944b6c0077f6dp-202"
+      },
+      "Z1": {
+        "approx": 0.11973623080512619,
+        "dec": "0.1197362308051261930054909",
+        "hex": "0x3d4e1136e89d40ddce23f0f06649ab88b8ec826070a73c17p-193"
+      },
+      "Z2": {
+        "approx": 356.0560110850661,
+        "dec": "356.0560110850660617875414",
+        "hex": "0x590395af84a49f14142cf5b6a7adc9610b1bdb1c49e5d0f3p-182"
+      },
+      "box_evals": [
+        64,
+        448,
+        448
+      ],
+      "centre_sha256": "fe9b16de257448fed1fb0a627dee3f69dedd107f1e8a49c2193526f153452bbc",
+      "contraction_at_r_uniqueness": {
+        "approx": 0.47579224189019226,
+        "dec": "0.4757922418901922547930322",
+        "hex": "0xf39b0a6d37c1578e183a630a51266ac6405090f06427e1e1p-193"
+      },
+      "cover": "9e1259be0af4a59c912a33a928a77fec884a88cb276d756760f1d26d0f1ac01b",
+      "diag": {
+        "P": 1.5357631434991792,
+        "Y0": 0.0004386562144180743,
+        "Y0p": 9.732434606961458e-06,
+        "Y1": 0.009386861049248924,
+        "Y2": 59.85450053675704,
+        "Z1": 0.11973623080512619,
+        "Z1c": 0.0023621847142805755,
+        "Z2": 356.0560110850661,
+        "Zc": 31.244242128024496,
+        "delta": 0.00382842712474619,
+        "r_star": 0.001
+      },
+      "e_c": "1/1000",
+      "e_hi": "1/500",
+      "e_lo": "0",
+      "eta": [
+        "2675/262144",
+        "2543/524288",
+        "1",
+        "2023/1048576",
+        "8645/1048576",
+        "9961/1048576",
+        "1511/1048576",
+        "50859/524288",
+        "87125/1048576",
+        "3809/524288",
+        "30297/1048576",
+        "921/1048576",
+        "7563/1048576",
+        "36777/524288",
+        "47485/1048576",
+        "11113/1048576",
+        "15715/262144",
+        "9335/1048576",
+        "26789/1048576",
+        "45783/1048576",
+        "225793/524288",
+        "9109/524288",
+        "31183/1048576",
+        "263/262144",
+        "9109/524288",
+        "250593/1048576",
+        "428905/1048576",
+        "1007/131072",
+        "291/262144",
+        "1285/1048576",
+        "113965/524288",
+        "21315/524288",
+        "74669/1048576",
+        "7345/131072",
+        "37389/1048576",
+        "100433/1048576",
+        "744177/1048576",
+        "1245/1048576"
+      ],
+      "g": {
+        "lower": {
+          "approx": 0.027905048125242145,
+          "dec": "0.02790504812524214478530737",
+          "hex": "0xe49920a2eb489p-57"
+        },
+        "upper": {
+          "approx": 0.02791062401521411,
+          "dec": "0.02791062401521410968330273",
+          "hex": "0xe4a4d22b66c89p-57"
+        }
+      },
+      "label": null,
+      "omega": {
+        "lower": {
+          "approx": 0.11933531545494555,
+          "dec": "0.1193353154549455508171007",
+          "hex": "0xf46612e9183cbp-55"
+        },
+        "upper": {
+          "approx": 0.11934740755310566,
+          "dec": "0.1193474075531056610710579",
+          "hex": "0xf46c69e26c7cbp-55"
+        }
+      },
+      "p_at_r_existence": {
+        "approx": -3.646611963206994e-10,
+        "dec": "-3.646611963206994170178203E-10",
+        "hex": "-0xc879803912025ea85d14c9dbb417c696ba0f5431e44f45d7p-223"
+      },
+      "p_at_r_uniqueness": {
+        "approx": -0.0002635795492342665,
+        "dec": "-0.0002635795492342665257385799",
+        "hex": "-0x4518862ce87b4411b0525e27371571eb2a53e571ff406881p-202"
+      },
+      "r_existence": {
+        "approx": 0.0005622608654042659,
+        "dec": "0.0005622608654042659083807654",
+        "hex": "0x126c9603ad7d51p-63"
+      },
+      "r_star": {
+        "approx": 0.001,
+        "dec": "0.001000000000000000000000001",
+        "hex": "0x83126e978d4fdf3b645a1cac083126e978d4fdf3b645a1cbp-201"
+      },
+      "r_uniqueness": {
+        "approx": 0.001,
+        "dec": "0.001000000000000000000000001",
+        "hex": "0x83126e978d4fdf3b645a1cac083126e978d4fdf3b645a1cbp-201"
+      },
+      "tail": {
+        "m_max": 387,
+        "theta": 0.49657235655383614
+      },
+      "timings_s": {
+        "Y0": 0.0,
+        "Y1 data": 0.4,
+        "Y2 data": 18.6,
+        "Z1 finite": 1.5,
+        "Zc blocks": 3.9,
+        "Zc data": 29.4,
+        "galerkin": 1.0,
+        "point data": 0.2,
+        "tail": 9.5
+      },
+      "wall_s": 64.6
+    },
+    "radius_from_point_center": {
+      "approx": 0.00382842712474619,
+      "dec": "0.003828427124746190097603378",
+      "hex": "0xfae6594bc060a8772457973eeee4172a1a0ba6a257475449p-200"
+    },
+    "real_branch_identity": {
+      "new_existence": "5185941143387473/9223372036854775808",
+      "new_uniqueness": "3213876088517980551083924184682325205044405987565585670603/3213876088517980551083924184682325205044405987565585670602752",
+      "old_existence": "4529032311169115/147573952589676412928",
+      "old_uniqueness": "3213876088517980551083924184682325205044405987565585670603/3213876088517980551083924184682325205044405987565585670602752"
+    },
+    "reused_real_display_fields_are_not_complex_enclosures": true,
+    "schema": 1,
+    "seconds": 80.64971579099074,
+    "settings": {
+      "L": 8,
+      "M": 48,
+      "box_max_evals": 400,
+      "box_nx": 16,
+      "n_explicit": 12,
+      "nsub_s": 2,
+      "nsub_xi": 2,
+      "prec_J": 128,
+      "prec_Q": 192,
+      "prec_mat": 128,
+      "rho0": "1/8",
+      "theta_target": "1/2"
+    },
+    "sources_sha256": {
+      "fourier/LEMMAS-hopf-stability-local.md": "c3eb4277b09460ff474b4bd3566ab72e6272ac0429880007cddea24589ae3283",
+      "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+      "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+      "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+      "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+      "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+      "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+      "fourier/hopf_stability_local.py": "486bada9b514e9ac91b1abfa33a61af1db60dd2be46b338c6f5c3dc5d6a5602b",
+      "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+      "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+      "fourier/test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab",
+      "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+      "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+    },
+    "status": "complex branch contraction passed; stability gates not produced"
+  },
+  "delta": "3e-5",
+  "e_hi": "1/51200000",
+  "e_lo": "-1/51200000",
+  "expected_critical_rank": 2,
+  "hill_sources": {
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "kind": "Taylor_local_other16_exclusion_pilot",
+  "model_stability_certified": false,
+  "other16_exclusion_passed": true,
+  "schema": 1,
+  "scientific_sources": {
+    "fourier/LEMMAS-hopf-stability-local.md": "c3eb4277b09460ff474b4bd3566ab72e6272ac0429880007cddea24589ae3283",
+    "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+    "fourier/hopf_stability_local.py": "486bada9b514e9ac91b1abfa33a61af1db60dd2be46b338c6f5c3dc5d6a5602b",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+    "fourier/test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "scope": "other16 only, epsilon in [-1/51200000,1/51200000]; no radial sign or attraction promotion",
+  "seconds": 112.41026754095219,
+  "shrink": {
+    "analytic_parent_radius": "1/500",
+    "c_sup": [
+      {
+        "approx": 0.000591767820944967,
+        "dec": "0.0005917678209449670498690233",
+        "hex": "0x9b20ddc04a66a7ffffffffffffffffffffffffffffffffffp-202"
+      },
+      {
+        "approx": 1.1088354065505646e-06,
+        "dec": "0.000001108835406550564700994148",
+        "hex": "0x94d34b61e0cf9b16ffffffffffffffffffffffffffffffffp-211"
+      },
+      {
+        "approx": 4.8733402970811106e-06,
+        "dec": "0.000004873340297081110567105596",
+        "hex": "0xa385aca53f7dd8153ffffffffffffffffffffffffffdffffp-209"
+      },
+      {
+        "approx": 5.5957665891535185e-06,
+        "dec": "0.000005595766589153518170154310",
+        "hex": "0xbbc344dcb873252e3fffffffffffffffffffffffffffffffp-209"
+      },
+      {
+        "approx": 8.131682228940826e-07,
+        "dec": "8.131682228940825633407390E-7",
+        "hex": "0xda487ea99d85862dffffffffffffffffffffffffffffffffp-212"
+      },
+      {
+        "approx": 5.6763755225630194e-05,
+        "dec": "0.00005676375522563019214928152",
+        "hex": "0xee159e3a093155b1afffffffffffffffffffffffffff7fffp-206"
+      },
+      {
+        "approx": 4.893890349411398e-05,
+        "dec": "0.00004893890349411398240557598",
+        "hex": "0xcd43bf5c500cb17f27ffffffffffffffffffffffffff7fffp-206"
+      },
+      {
+        "approx": 4.270592829416188e-06,
+        "dec": "0.000004270592829416188443568857",
+        "hex": "0x8f4c1cf266b729187fffffffffffffffffffffffffffffffp-209"
+      },
+      {
+        "approx": 1.709822403528592e-05,
+        "dec": "0.00001709822403528591879414226",
+        "hex": "0x8f6e281210165e728fffffffffffffffffffffffffff7fffp-207"
+      },
+      {
+        "approx": 5.123524195089684e-07,
+        "dec": "5.123524195089683897002537E-7",
+        "hex": "0x89889715953d00d1ffffffffffffffffffffffffffdfffffp-212"
+      },
+      {
+        "approx": 4.188452304744973e-06,
+        "dec": "0.000004188452304744972458904377",
+        "hex": "0x8c8a8805dd12ddfebfffffffffffffffffffffffffffffffp-209"
+      },
+      {
+        "approx": 4.079248751828861e-05,
+        "dec": "0.00004079248751828860851277120",
+        "hex": "0xab1899968b854f978fffffffffffffffffffffffffffbfffp-206"
+      },
+      {
+        "approx": 2.679832690589506e-05,
+        "dec": "0.00002679832690589506231064159",
+        "hex": "0xe0ccf804dc557b98cfffffffffffffffffffffffffffffffp-207"
+      },
+      {
+        "approx": 6.210956536103647e-06,
+        "dec": "0.000006210956536103647435793317",
+        "hex": "0xd067b5dcb38b204e3fffffffffffffffffffffffffffffffp-209"
+      },
+      {
+        "approx": 3.490685097557535e-05,
+        "dec": "0.00003490685097557535344754735",
+        "hex": "0x9268f222591d486a5fffffffffffffffffffffffffffbfffp-206"
+      },
+      {
+        "approx": 5.106973259715891e-06,
+        "dec": "0.000005106973259715891260164502",
+        "hex": "0xab5c90f6ae528929bfffffffffffffffffffffffffffffffp-209"
+      },
+      {
+        "approx": 1.496000138701472e-05,
+        "dec": "0.00001496000138701472005911464",
+        "hex": "0xfafcb77a005875a69ffffffffffffffffffffffffffdffffp-208"
+      },
+      {
+        "approx": 2.5755990248725985e-05,
+        "dec": "0.00002575599024872598536383831",
+        "hex": "0xd80e9161b5c389106ffffffffffffffffffffffffffeffffp-207"
+      }
+    ],
+    "even_factor": {
+      "approx": 1.907348633176298e-10,
+      "dec": "1.907348633176297880778561E-10",
+      "hex": "0xd1b717598de5dc3de4e1fc1a20ac04ffb1e8425aae69e3a9p-224"
+    },
+    "g_sup": {
+      "approx": 2.7668642824055356e-06,
+      "dec": "0.000002766864282405535728585663",
+      "hex": "0xb9ae5dcdce7bca24eeb01ec1bc8e691975c5494ae599dfffp-210"
+    },
+    "g_tube": {
+      "approx": 1.0052773763171418e-13,
+      "dec": "1.005277376317141874235912E-13",
+      "hex": "0x712f25cb29b2a98702907750800aaafcce07bb6958d2ceadp-234"
+    },
+    "jacobian_difference_parent_sup": [
+      [
+        {
+          "approx": 7.214661524713535e-06,
+          "dec": "0.000007214661524713535247399829",
+          "hex": "0x1e42af0f29376e57844e6c38925a23108e8d2576051595abp-206"
+        },
+        {
+          "approx": 4.76025790323156e-06,
+          "dec": "0.000004760257903231559758802320",
+          "hex": "0x9fba4dd4e5cba99504c340562c391f106801db97ebd98b73p-209"
+        },
+        {
+          "approx": 1.5451775609998114e-06,
+          "dec": "0.000001545177560999811327221324",
+          "hex": "0x33d8f963fe147f61658bad1a9dea701ab8d7f6964e9c85c9p-209"
+        },
+        {
+          "approx": 0.0005396717460349216,
+          "dec": "0.0005396717460349216261918727",
+          "hex": "0x11af183ff94a105bf740cfdfa938c965cf773e1185295537p-199"
+        },
+        {
+          "approx": 9.362273190777481e-17,
+          "dec": "9.362273190777481369265898E-17",
+          "hex": "0x6bf08d9e7fa958e9738c8a388327483ef75ae9bf00fda4cfp-244"
+        },
+        {
+          "approx": 1.4238573915375832e-17,
+          "dec": "1.423857391537583118137006E-17",
+          "hex": "0x8353e1d20561766d2e8a5fc2c9377a06abfb00d247c8770bp-247"
+        },
+        {
+          "approx": 1.487987147424564e-17,
+          "dec": "1.487987147424564160353481E-17",
+          "hex": "0x893e1a68ac732b9887916e1d84ea60d78cef4ce951e001cbp-247"
+        },
+        {
+          "approx": 0.0007196580468090206,
+          "dec": "0.0007196580468090205837699148",
+          "hex": "0xbca76f19f4d22e2fcb283048fa71fe9d7d8238f7e1a7d1d1p-202"
+        },
+        {
+          "approx": 0.000626687135546325,
+          "dec": "0.0006266871355463250970916260",
+          "hex": "0xa44843020b140be2c6412fe0b36ca6e679d9e7933c279807p-202"
+        },
+        {
+          "approx": 0.0004598140401016581,
+          "dec": "0.0004598140401016581394190472",
+          "hex": "0xf113321da6c6632b097593f0a4fdbd4f195a39fc182da5b1p-203"
+        },
+        {
+          "approx": 0.00027003088727849746,
+          "dec": "0.0002700308872784974524053787",
+          "hex": "0x46c97751af7dcb54eefb1120e07916e99a5d54e77cbea5cfp-202"
+        },
+        {
+          "approx": 3.887795205894211e-07,
+          "dec": "3.887795205894210721187110E-7",
+          "hex": "0xd0b973501c9166875824058cd00d32b47b1b23232a37d05dp-213"
+        },
+        {
+          "approx": 2.794423041067251e-07,
+          "dec": "2.794423041067251116931627E-7",
+          "hex": "0x960642014b0f28fa01146e81610faf04c481206ae0299bd7p-213"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 5.354335588051087e-05,
+          "dec": "0.00005354335588051087130743771",
+          "hex": "0x1c1277b30bd13b16ecae80df59aa727173c1ba2ba6f38575p-203"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 3.2985219105737915e-06,
+          "dec": "0.000003298521910573791276501241",
+          "hex": "0x6eae1663eaac62350d11a824d4c217a72fc23137dabeafddp-209"
+        },
+        {
+          "approx": 6.831016307358716e-05,
+          "dec": "0.00006831016307358715627331618",
+          "hex": "0x47a0dea983d32eca7901b0791a647d7a3c9d0dd8432babadp-204"
+        }
+      ],
+      [
+        {
+          "approx": 2.540648304027122e-10,
+          "dec": "2.540648304027122226304564E-10",
+          "hex": "0x22eb1c8d1237542dda02108be8d0f0e90c2523771e987f7p-217"
+        },
+        {
+          "approx": 3.1723092540321146e-07,
+          "dec": "3.172309254032114465348907E-7",
+          "hex": "0xaa4fe2eadf62cda355c4b1d612690a8b902deaf4b6bc8a1dp-213"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 7.550361812461628e-08,
+          "dec": "7.550361812461628745819029E-8",
+          "hex": "0xa2248d939bf281ef89e19a5c347301313a2a14bc6885f18bp-215"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 7.541910850642237e-09,
+          "dec": "7.541910850642237770198916E-9",
+          "hex": "0x20646b2e5887cc6a06ee33819a793962e64dfeae4ce2e34dp-216"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 9.848234920563182e-10,
+          "dec": "9.848234920563182283046888E-10",
+          "hex": "0x875a656c77acb845129094a08dd1e1439dbbe14eabedf2d9p-221"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 4.4906477960403386e-08,
+          "dec": "4.490647796040338655755861E-8",
+          "hex": "0x181be63ad167ac24df19b90bcc61c55a36ff98659fe1d6ddp-213"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 1.465493629940684e-07,
+          "dec": "1.465493629940683973208996E-7",
+          "hex": "0x9d5b2ea2492f6dd9da4021492da014f89c322ea91a4765afp-214"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 3.179955158045831e-05,
+          "dec": "0.00003179955158045830774559872",
+          "hex": "0x8560822e21341fa1a808b27f8e8422b3e28bf996c0200355p-206"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 6.068360820622062e-05,
+          "dec": "0.00006068360820622061901182232",
+          "hex": "0xfe868735a4212122e25730677ac1a11211a73ed29986133p-202"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 7.625040235152078e-05,
+          "dec": "0.00007625040235152078360140514",
+          "hex": "0x4ff44fc02128cdfa72df70cfb9743f24d2a656ae50163d47p-204"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 7.106274383637673e-06,
+          "dec": "0.000007106274383637673002216509",
+          "hex": "0xee726ea144947b72382341ca5f8e3fde4d90e23a14574337p-209"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 2.5392249323007298e-05,
+          "dec": "0.00002539224932300729833538102",
+          "hex": "0x1aa02e162d31c41306948ce951ad3defdbe6af4866c67e77p-204"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 2.1408851002428023e-06,
+          "dec": "0.000002140885100242802226673468",
+          "hex": "0x47d6101f7649fb8e1415a8415c268db8ec4b32ba14f9a5cbp-209"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0001339807752906699,
+          "dec": "0.0001339807752906699030235778",
+          "hex": "0x231f4c315277c0a54b4f3a7d411d74239f2e525197eee76fp-202"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 5.710424421350486e-09,
+          "dec": "5.710424421350485877274502E-9",
+          "hex": "0xc4356ca5e74e956579c3729580f90bc46e1cd1689dae0911p-219"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 4.213907060146353e-07,
+          "dec": "4.213907060146353128306508E-7",
+          "hex": "0x711dbfb295bc2036aafb8cc287d736bf1c48e84853e887ebp-212"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 1.4826239681483149e-08,
+          "dec": "1.482623968148314783064483E-8",
+          "hex": "0xfeb67de04f2fc457554be4a97161c79097e8c3f22710c0abp-218"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 9.588053458784444e-06,
+          "dec": "0.000009588053458784443579206801",
+          "hex": "0x2837181100c29367b73f82a2c38482580e86df08b6a49489p-206"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0001360828100708515,
+          "dec": "0.0001360828100708515070704956",
+          "hex": "0x8eb17380369de86a220bcd238a807c9c6e0f59abd1852415p-204"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 6.74117244539302e-05,
+          "dec": "0.00006741172445393019984525974",
+          "hex": "0x46afb26e2b1f62c6f674f8e24d77c24ce947edfeedc8bffbp-204"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 1.7809338056708849e-07,
+          "dec": "1.780933805670884760678596E-7",
+          "hex": "0xbf39ef896fb5b4f93d8bfacb3cb5f9d5cf2a01fd2f69b12dp-214"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 2.9354806164396254e-06,
+          "dec": "0.000002935480616439625372634462",
+          "hex": "0xc4ff2c489673aed14116128877535e79dab77ae990ffdf67p-210"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 1.8514421066582755e-06,
+          "dec": "0.000001851442106658275508031091",
+          "hex": "0x3e1fc43fb49dbe1b695a4f5389239c0d3535a33f598e3e89p-209"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 5.653626200249929e-06,
+          "dec": "0.000005653626200249928797714350",
+          "hex": "0x5eda23bf0bcd6cbe067c33e2c4cc68a473e8fa36b9bb5cd3p-208"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 6.585064731597132e-06,
+          "dec": "0.000006585064731597131821764100",
+          "hex": "0xdcf5467bedce57561740f28a29233af31eab74765157290dp-209"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 2.487492821322583e-06,
+          "dec": "0.000002487492821322582981648153",
+          "hex": "0xa6eecd1fcc7da40890e31cb09767f844e58eb2ebc8f741ebp-210"
+        },
+        {
+          "approx": 3.6518760573064596e-07,
+          "dec": "3.651876057306459757021372E-7",
+          "hex": "0x3103c0268b5fcaa2621f70ac775cddb274da5893e2de05e9p-211"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 8.873182842248564e-09,
+          "dec": "8.873182842248563777372829E-9",
+          "hex": "0x130e1577891850e820311aade53045666efe13561d7caebbp-215"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 1.0091848545206257e-05,
+          "dec": "0.00001009184854520625697461795",
+          "hex": "0xa95028d23ab9e17f90769c672c1c7df4ca11e70bbc854be9p-208"
+        },
+        {
+          "approx": 1.9324334261143926e-07,
+          "dec": "1.932433426114392589642512E-7",
+          "hex": "0xcf7e53571b591046536deba3785a1e9e73c7e791cc073293p-214"
+        },
+        {
+          "approx": 9.558023570519741e-07,
+          "dec": "9.558023570519741054959328E-7",
+          "hex": "0x100923ce30f21fcaf3564c653d00c1a223b01f6082bf3b71p-208"
+        },
+        {
+          "approx": 6.838270675194453e-07,
+          "dec": "6.838270675194453854222898E-7",
+          "hex": "0xb7903cfe77682b5260cd84fcf0ac7be615ab41f4f9609521p-212"
+        }
+      ],
+      [
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 1.986158212709341e-06,
+          "dec": "0.000001986158212709341296348202",
+          "hex": "0x8549f032aa0662eb01bf60fd9b495276138f34a518771dfbp-210"
+        },
+        {
+          "approx": 4.97815289315356e-08,
+          "dec": "4.978152893153559859981499E-8",
+          "hex": "0x6ae7af592b00a040fd8e7770e6fd02650624880aa9ec7241p-215"
+        },
+        {
+          "approx": 3.3905787689013395e-06,
+          "dec": "0.000003390578768901339650966186",
+          "hex": "0xe389b3200c70dbb8fd866e82fe758172554b9d0e489fa563p-210"
+        },
+        {
+          "approx": 1.049334588559475e-06,
+          "dec": "0.000001049334588559474879550509",
+          "hex": "0x8cd6dca702ff8d1905141099cfc9013fa037446bce49f87bp-211"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 9.619018056120056e-07,
+          "dec": "9.619018056120056327814363E-7",
+          "hex": "0x811ab1c2a91e41963260bc71563ebf1d4598bad92ab83263p-211"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.00013463839493587786,
+          "dec": "0.0001346383949358778512969673",
+          "hex": "0x234b6e031bbecb6fc96574906f7b37d11bdbbba85e4645f1p-202"
+        },
+        {
+          "approx": 0.00011724901959305059,
+          "dec": "0.0001172490195930505822774572",
+          "hex": "0x7af1cb4634d18ee93c967bdd6661cf117f38f178b63e2281p-204"
+        },
+        {
+          "approx": 8.613650419468785e-05,
+          "dec": "0.00008613650419468784767259657",
+          "hex": "0xb4a42efe0462ff9cc64eb39782617f922c890e05613296edp-205"
+        },
+        {
+          "approx": 4.9984492526444536e-05,
+          "dec": "0.00004998449252644453307177574",
+          "hex": "0x68d33857b8cc4209702679a37ab4a414393608daf7c6f573p-205"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0015759948431060948,
+          "dec": "0.001575994843106094858617995",
+          "hex": "0xce919c9e9ecdd3dcbbdf92397096759e83849d9a3eec7bfdp-201"
+        },
+        {
+          "approx": 6.725210871258974e-08,
+          "dec": "6.725210871258974348726582E-8",
+          "hex": "0x48361e6ef39bdcd53920bd92abcca3f32ecf67f7f5108cb3p-214"
+        },
+        {
+          "approx": 0.002111167809825798,
+          "dec": "0.002111167809825798209320068",
+          "hex": "0x8a5b84b31700d0cfb678a177cec900333a8e6ea2787b2903p-200"
+        },
+        {
+          "approx": 0.0008286457767594577,
+          "dec": "0.0008286457767594576892699608",
+          "hex": "0xd9397a0b6b01d8e7a7d57c8b9c16dc6bd8e6cebae629d489p-202"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        }
+      ],
+      [
+        {
+          "approx": 8.985383050810392e-11,
+          "dec": "8.985383050810392126102035E-11",
+          "hex": "0xc59735aed9d70279fdf372735143a7793527d4ef8c3a7dbbp-225"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 1.8485033095600446e-21,
+          "dec": "1.848503309560044409152973E-21",
+          "hex": "0x8bab4109e33d9c0398ed1cc45d389bb0984726654b5e2a6bp-260"
+        },
+        {
+          "approx": 2.811288505325769e-22,
+          "dec": "2.811288505325769090867473E-22",
+          "hex": "0xa9ee9520f3e7312c3ff107657f0e62071f1d09a13f66d457p-263"
+        },
+        {
+          "approx": 2.937907397525826e-22,
+          "dec": "2.937907397525826179797815E-22",
+          "hex": "0xb195ea3cb5fa9a26ee3fcdb8959bbaf94809b83caf16f6b1p-263"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 1.9734767930609964e-09,
+          "dec": "1.973476793060996353958608E-9",
+          "hex": "0x879dc55990052f2609629cecf9f239484d71d7e1155abc83p-220"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 0.0,
+          "dec": "0",
+          "hex": "0x0p0"
+        },
+        {
+          "approx": 4.055272861991039e-09,
+          "dec": "4.055272861991038944816623E-9",
+          "hex": "0x8b568eacd1aabdea49191316eaca4927d161322299f5c83bp-219"
+        }
+      ]
+    ],
+    "jacobian_remainder_factor": {
+      "approx": 1.907374974956622e-10,
+      "dec": "1.907374974956622213844296E-10",
+      "hex": "0x68dbea94c7f95d847dc052a2436fbc517a44e2c8de0c7161p-223"
+    },
+    "jacobian_route": "J_H constant mode plus epsilon*D\u00b2f_H[w0,.] modes\u00b11 plus Cauchy remainder",
+    "odd_factor": {
+      "approx": 1.3810679322683934e-05,
+      "dec": "0.00001381067932268393436838730",
+      "hex": "0xe7b46a80b5f6e91cad8041c1cea8cad628acb4341e64b1fp-204"
+    },
+    "omega_sup": {
+      "approx": 5.939005741170998e-06,
+      "dec": "0.000005939005741170997659227617",
+      "hex": "0xc747abbd5c723562ffffffffffffffffffffffffffffbfffp-209"
+    },
+    "profile_tube": [
+      {
+        "approx": 2.92854843875764e-10,
+        "dec": "2.928548438757640109253150E-10",
+        "hex": "0xa0ffa7b9dc7722d61876ff7dcf84b5c38945c2a810aae70dp-223"
+      },
+      {
+        "approx": 2.392754451835124e-13,
+        "dec": "2.392754451835123919972908E-13",
+        "hex": "0x86b339cd044417af095916c347ce6ff572ec0927633ce2dbp-233"
+      },
+      {
+        "approx": 2.360736712409967e-12,
+        "dec": "2.360736712409967063882458E-12",
+        "hex": "0xa61f407d642421a5e6de39db299cd718cdff2f4de672c4a7p-230"
+      },
+      {
+        "approx": 2.5293927995871327e-12,
+        "dec": "2.529392799587132553682085E-12",
+        "hex": "0xb1fd7d68b20dcdeb04937b04f11e0271aa5713723c5e7de3p-230"
+      },
+      {
+        "approx": 3.0290574172235814e-14,
+        "dec": "3.029057417223581585586002E-14",
+        "hex": "0x443553c1be24a976768010b694c1f22c5bb8001d38078d63p-235"
+      },
+      {
+        "approx": 2.2118253040348933e-11,
+        "dec": "2.211825304034893400106275E-11",
+        "hex": "0xc28de0c98afcca20adf5d6a755255d47cc749e3cc77d9b55p-227"
+      },
+      {
+        "approx": 2.2116796639069562e-11,
+        "dec": "2.211679663906956057050514E-11",
+        "hex": "0xc28a993aa649f47b72baa49a45ebed536383bc52d57359c7p-227"
+      },
+      {
+        "approx": 1.844526169205604e-12,
+        "dec": "1.844526169205604156475893E-12",
+        "hex": "0x40e603c5c7708cbfec860e3790724c3d979a27b40745622dp-229"
+      },
+      {
+        "approx": 8.461721680672911e-12,
+        "dec": "8.461721680672912055317011E-12",
+        "hex": "0x129b869c885cc160af686d652fb8ee6f475866fa36e0b1f3p-225"
+      },
+      {
+        "approx": 1.8375570796174278e-13,
+        "dec": "1.837557079617427759018336E-13",
+        "hex": "0x6771fd08a1085bc55ad1e930ba814ca8a7b4aedd961988f7p-233"
+      },
+      {
+        "approx": 1.119760548069357e-12,
+        "dec": "1.119760548069357081304499E-12",
+        "hex": "0x4ecbd01042b7eda5bdd5c263835890d43156daa4c592c881p-230"
+      },
+      {
+        "approx": 1.3428616212093969e-11,
+        "dec": "1.342861621209396795391163E-11",
+        "hex": "0xec3d1c6874fff4962c06548c61aee1c8fcdf122ebb3931fdp-228"
+      },
+      {
+        "approx": 1.3237477744371473e-11,
+        "dec": "1.323747774437147264596674E-11",
+        "hex": "0x747026610e058fd4bbcbaef860ccdbfef4b3a4da083b1acfp-227"
+      },
+      {
+        "approx": 2.8092454786263745e-12,
+        "dec": "2.809245478626374651538764E-12",
+        "hex": "0x62d76f0c4d6299322f2a994718e8da52bd0ea709fc06d99p-225"
+      },
+      {
+        "approx": 1.2262354250000961e-11,
+        "dec": "1.226235425000096085892652E-11",
+        "hex": "0x6bdc5df4ba3abe86680fe8bfca88c0923850c1ad499f2021p-227"
+      },
+      {
+        "approx": 1.924064964565209e-12,
+        "dec": "1.924064964565209091740335E-12",
+        "hex": "0x8764df7ee1b26bfe4b594096fa102d0b9b4154d3a1f11339p-230"
+      },
+      {
+        "approx": 6.244020193257403e-12,
+        "dec": "6.244020193257403034867237E-12",
+        "hex": "0xdbb1224fe00009fe76a68a554c189ee4d72487d9bc464b3bp-229"
+      },
+      {
+        "approx": 1.2276270988137092e-11,
+        "dec": "1.227627098813709212883682E-11",
+        "hex": "0x35fdda346403b5f4e6fc14d079b1566ad418e3d1cf73901fp-226"
+      }
+    ],
+    "radius": "1/51200000",
+    "w_even_modes_sup": [
+      {
+        "approx": 0.00041179905211102775,
+        "dec": "0.0004117990521110277743197773",
+        "hex": "0xd7e6bbb0d35fc35588902eb0f551af283860840dfb9514bfp-203"
+      },
+      {
+        "approx": 9.771889273191221e-06,
+        "dec": "0.000009771889273191221112522786",
+        "hex": "0xa3f1f1e19732187e5e4c782724121317e4b1d28269586a11p-208"
+      },
+      {
+        "approx": 1.7863160775493337e-05,
+        "dec": "0.00001786316077549333744877837",
+        "hex": "0x95d8d87da15e5206b24c84d1917bdcc329f9e740299f609dp-207"
+      },
+      {
+        "approx": 5.725867846960636e-07,
+        "dec": "5.725867846960635506857185E-7",
+        "hex": "0x99b3dd3e31c846d03a19ae588f467410ba974cb29bbbb8b5p-212"
+      },
+      {
+        "approx": 9.787965864273911e-06,
+        "dec": "0.000009787965864273910503848415",
+        "hex": "0x521b7f23d87912f2b44b29642a9683e448da8d6d8c9fd5c3p-207"
+      },
+      {
+        "approx": 0.00015009597262384007,
+        "dec": "0.0001500959726238400773523280",
+        "hex": "0x4eb18a597544e85cd5957a323af542ba0d5a6228c2751a9p-199"
+      },
+      {
+        "approx": 0.0002446030006299324,
+        "dec": "0.0002446030006299323758792307",
+        "hex": "0x803e0f1b0d55963441f46551628f4e080b2db50c071c47afp-203"
+      },
+      {
+        "approx": 5.441114441682711e-06,
+        "dec": "0.000005441114441682710733459383",
+        "hex": "0xb692d131815bfff4b8b7712c6cc94361d81aa93f130500a7p-209"
+      },
+      {
+        "approx": 8.050075965458068e-07,
+        "dec": "8.050075965458067688901983E-7",
+        "hex": "0x3605ecd9f5621f772c85893079b185e6e03d78f07fe05057p-210"
+      },
+      {
+        "approx": 7.114347472819156e-07,
+        "dec": "7.114347472819155905262635E-7",
+        "hex": "0x17df2d8dd83b75397d724164736cdfa8bbb0fc28d3858d43p-209"
+      },
+      {
+        "approx": 0.00014317540264135501,
+        "dec": "0.0001431754026413550101583064",
+        "hex": "0x4b10ad60201d13554883c3e964d1f723ea4e1bed23416e1p-199"
+      },
+      {
+        "approx": 2.4668006601555818e-05,
+        "dec": "0.00002466800660155581899626889",
+        "hex": "0xceee240bd5eaf346b86ec0ebb75a1b969c3a7750db6bdee5p-207"
+      },
+      {
+        "approx": 4.452651068621442e-05,
+        "dec": "0.00004452651068621441958465993",
+        "hex": "0x17583f41f34596eb4cdde108b46ee1cd68bdfc48a5982557p-203"
+      },
+      {
+        "approx": 4.027066352647559e-05,
+        "dec": "0.00004027066352647558815054757",
+        "hex": "0xa8e84bb38f313cb72388723ea45a58da26ecaefbd40fc447p-206"
+      },
+      {
+        "approx": 3.636521748038097e-05,
+        "dec": "0.00003636521748038097182769424",
+        "hex": "0x9886daddd7902bd1b274192e1514133700b8c35fec479acdp-206"
+      },
+      {
+        "approx": 5.6347018824145924e-05,
+        "dec": "0.00005634701882414592327406033",
+        "hex": "0xec562698cf7296e4a9224300bafd723162d6703bcf03fddbp-206"
+      },
+      {
+        "approx": 0.0008075850323651652,
+        "dec": "0.0008075850323651652753626374",
+        "hex": "0xd3b41d36036fe3eb3f32053205b8e28e0a13dca068349fdbp-202"
+      },
+      {
+        "approx": 6.764887425844122e-07,
+        "dec": "6.764887425844122437643006E-7",
+        "hex": "0x2d65fcf44180ee87ea8ee8c471fbc6394919423b829d0697p-210"
+      }
+    ],
+    "w_odd_modes_sup": [
+      {
+        "approx": 0.00024222604222114995,
+        "dec": "0.0002422260422211499594209949",
+        "hex": "0xfdfe0edf8e99da61d9259163d87f6e31417eaf94671e5d95p-204"
+      },
+      {
+        "approx": 9.768797297019549e-06,
+        "dec": "0.000009768797297019549076660419",
+        "hex": "0xa3e4aa37ab7140df0d2b0d1c11ec442d141e1e18ebcf599p-204"
+      },
+      {
+        "approx": 1.6726090378596485e-05,
+        "dec": "0.00001672609037859648383142106",
+        "hex": "0x1189e02dbc69909e3e0ed43958d2d3dbd42222adf6c26b0fp-204"
+      },
+      {
+        "approx": 5.642302954703031e-07,
+        "dec": "5.642302954703030850587773E-7",
+        "hex": "0x25dd67151b98cf9087364f8132b43b3f6036eb099a4819e5p-210"
+      },
+      {
+        "approx": 9.769316978277021e-06,
+        "dec": "0.000009769316978277021425895796",
+        "hex": "0xa3e6e59cf085bfd7fba9e37fd564eb32628c41c18538987dp-208"
+      },
+      {
+        "approx": 0.00013454931435847545,
+        "dec": "0.0001345493143584754636974116",
+        "hex": "0x8d15ce7a57c92bd9f3acd3c7e85cbff52525e8cb50306257p-204"
+      },
+      {
+        "approx": 0.0002301544097047421,
+        "dec": "0.0002301544097047420939487679",
+        "hex": "0xf1559a9a77f3f55ba9a114661b90233c77f9b21b25c8ff0bp-204"
+      },
+      {
+        "approx": 4.323865212397958e-06,
+        "dec": "0.000004323865212397957648662122",
+        "hex": "0x9115b827eb61d576bf031bc4dd6c869c67ddda94caee18edp-209"
+      },
+      {
+        "approx": 6.271797760829038e-07,
+        "dec": "6.271797760829037894457031E-7",
+        "hex": "0x2a16ddd3771f27fee15f23beea594455321277ba3de1822dp-210"
+      },
+      {
+        "approx": 6.897323829792877e-07,
+        "dec": "6.897323829792876481309352E-7",
+        "hex": "0x5c9306337c45ee0af9c541443c7c1374b54a7f669230c477p-211"
+      },
+      {
+        "approx": 0.00012230070180706807,
+        "dec": "0.0001223007018070680693659229",
+        "hex": "0x1007bb0771aec7ead9390c1a085ddb952ac070fb86d41781p-201"
+      },
+      {
+        "approx": 2.287897594596562e-05,
+        "dec": "0.00002287897594596561942824123",
+        "hex": "0xbfec3a0ac6f4561e75c6e0fe6faf61fa8536804d55852ce3p-207"
+      },
+      {
+        "approx": 4.012120684067866e-05,
+        "dec": "0.00004012120684067866539838119",
+        "hex": "0xa847d15c455712c6d11748dd87d7f79f5c04e1b7eba60889p-206"
+      },
+      {
+        "approx": 3.1540848780884444e-05,
+        "dec": "0.00003154084878088444708991863",
+        "hex": "0x42255d3f8114a9edc89e81bcb24b99084c22ce74172c0857p-205"
+      },
+      {
+        "approx": 2.0153534140472838e-05,
+        "dec": "0.00002015353414047283837733609",
+        "hex": "0xa90f629069db3a0b5fa4c861ea39cc3fca175df8f2ef2c99p-207"
+      },
+      {
+        "approx": 5.3864709732712784e-05,
+        "dec": "0.00005386470973271278067495259",
+        "hex": "0x70f66555b154962cc142cdef877ae230e637c0af67ff08c7p-205"
+      },
+      {
+        "approx": 0.0004009666156493153,
+        "dec": "0.0004009666156493152972312558",
+        "hex": "0xd238d4020d21f4205e54efdef386c6aaa235f09103ecd3e9p-203"
+      },
+      {
+        "approx": 6.676365341199563e-07,
+        "dec": "6.676365341199563679399017E-7",
+        "hex": "0x599bd10f240a51e29b580155635f11ce53494142864cf4f1p-211"
+      }
+    ],
+    "zero_identification": "fresh central TheoremA family plus accepted exact zero identity"
+  },
+  "source_pins": {
+    "LEMMAS-hopf-stability-local.md": "c3eb4277b09460ff474b4bd3566ab72e6272ac0429880007cddea24589ae3283",
+    "branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+    "hopf_stability_local.py": "486bada9b514e9ac91b1abfa33a61af1db60dd2be46b338c6f5c3dc5d6a5602b",
+    "test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab"
+  },
+  "spectral_certificate": {
+    "A0_minus_A0c": {
+      "approx": 6.4586603499249585e-12,
+      "dec": "6.458660349924958404893578E-12",
+      "hex": "0x38cf9c3445cc4dd7893f62c3837e4407796f5749526f750bp-227"
+    },
+    "K_e": 12,
+    "N": 1,
+    "SC_worst_lambda": [
+      -4.693770400109415e-05,
+      -1.3534579160556432e-41
+    ],
+    "SC_worst_ratio": 3.3196179886391287e-06,
+    "SC_worst_ratio_near_axis": 3.3196179886391287e-06,
+    "S_exponents": [
+      0,
+      -3,
+      1,
+      -8,
+      28,
+      33,
+      34,
+      -4,
+      -8,
+      -9,
+      -7,
+      1,
+      6,
+      -8,
+      -6,
+      -9,
+      -4,
+      -7
+    ],
+    "T_lo": {
+      "approx": 52.648831109446334,
+      "dec": "52.64883110944633339231048",
+      "hex": "0x694c33975766179254cee91df54fb587f92acb9066a0422bp-185"
+    },
+    "beta_max": {
+      "approx": 10.923772617423474,
+      "dec": "10.92377261742347453902453",
+      "hex": "0x2bb1f172f318b8ec754e494ec14c5827d85d86f11105dd5bp-186"
+    },
+    "bhat": {
+      "approx": 6.837150424973393e-05,
+      "dec": "0.00006837150424973392360864616",
+      "hex": "0x8f62abfdcbb955b6233138fb31675e70c71cd9a86140633p-201"
+    },
+    "controls": {
+      "Ke": 12
+    },
+    "count_in_Omega": 2,
+    "critical_columns": [
+      {
+        "W0": 4.529769574183175e-12,
+        "ball": 8.057439304916783e-11,
+        "dist": 2.9999999999919234e-05,
+        "fm": 8.511857758410362e-11,
+        "h2W2": 2.457375458620923e-16,
+        "h3W3": 1.8550023193503216e-23,
+        "hW1": 1.4169223179932927e-14,
+        "lam": [
+          -8.127652764888455e-17,
+          -1.3380234150166207e-15
+        ],
+        "r": 3.6339701950586187e-12,
+        "ratio": 2.8373455343919786e-06
+      },
+      {
+        "W0": 7.722386960330771e-13,
+        "ball": 1.830490272583227e-12,
+        "dist": 1.6937704001093638e-05,
+        "fm": 5.622493233549288e-11,
+        "h2W2": 7.892792246581289e-18,
+        "h3W3": 2.0658731418538468e-25,
+        "hW1": 5.362219542433033e-11,
+        "lam": [
+          -4.693770400109415e-05,
+          -1.3534579160556432e-41
+        ],
+        "r": 3.6057374823215417e-12,
+        "ratio": 3.3196179886391287e-06
+      },
+      {
+        "W0": 4.529769574581356e-12,
+        "ball": 8.057439304916848e-11,
+        "dist": 2.9999999999919234e-05,
+        "fm": 8.511857758450222e-11,
+        "h2W2": 2.4573754586209325e-16,
+        "h3W3": 1.8550023193503328e-23,
+        "hW1": 1.4169223179704714e-14,
+        "lam": [
+          -8.127652764888455e-17,
+          1.3380234150166207e-15
+        ],
+        "r": 3.6339701950586187e-12,
+        "ratio": 2.837345534405265e-06
+      }
+    ],
+    "delta": {
+      "approx": 3.0000000000000512e-05,
+      "dec": "0.00003000000000000051236792587",
+      "hex": "0xfba8826aa8fp-59"
+    },
+    "delta_exact": "17293822569103/576460752303423488",
+    "delta_requested": "3e-5",
+    "dist_min": 1.6937704001093638e-05,
+    "eps_W_1norm_S": {
+      "approx": 3.8071353202089383e-13,
+      "dec": "3.807135320208938077695205E-13",
+      "hex": "0xd6529a2e617a94b05314e3a4357f2b03d8677736f6d096bbp-233"
+    },
+    "n_A": 64,
+    "n_W": 450,
+    "n_c": 24,
+    "omega_hi": {
+      "approx": 0.11934140178949287,
+      "dec": "0.1193414017894928688761727",
+      "hex": "0x3d1a50f37d45175239b975c69793048431fd39b23f813c91p-193"
+    },
+    "omega_lo": {
+      "approx": 0.11934140177617208,
+      "dec": "0.1193414017761720893801478",
+      "hex": "0xf46943cd7fe8a2b7191a28e5a1b3edef380b193701fb0dbbp-195"
+    },
+    "outside_critical_cluster_multiplier_upper": {
+      "approx": 0.9984217817649959,
+      "dec": "0.9984217817649958635566269",
+      "hex": "0xff9891e44b71e0c9a2387b38acff66b9b3388e3c69246737p-192"
+    },
+    "prec": 192,
+    "q_C": {
+      "approx": 9.718951216923432e-14,
+      "dec": "9.718951216923431479005499E-14",
+      "hex": "0x6d6cf83b048cdf3836c5734f5be052bd68fe7603b8bd728dp-234"
+    },
+    "rho_T": {
+      "approx": 7.198129445061529,
+      "dec": "7.198129445061528827237077",
+      "hex": "0x3995c4e3f74fa83150991fe5838eab9133059899e3794457p-187"
+    },
+    "route_tail": "A (Lemma 3.4(b))",
+    "sanity_trivial_eigenvector_residual": 5.732977255297027e-13,
+    "sigma_off": {
+      "approx": 9.50946495914502e-09,
+      "dec": "9.509464959145020238846012E-9",
+      "hex": "0xa35f11b62d0736ed51351762e1a27267bbf3af65ca2ff03dp-218"
+    },
+    "small_gain": "SC (Lemma 3.5)",
+    "tail_by_residue": [
+      {
+        "F_norm": 0.08263639587725155,
+        "cluster_tol": 0.05,
+        "gamma": 1.3425898162959637,
+        "kappa": 9.06930781492192,
+        "r": 0,
+        "rho": 7.198129445061529
+      }
+    ],
+    "tau": "1e-3",
+    "theta_T": {
+      "approx": 6.849685000244305e-08,
+      "dec": "6.849685000244304467337820E-8",
+      "hex": "0x93188aa12d2b4e15b52d9bca445ec3c14aa9783e12cc7d87p-215"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "status": "scoped_translation_controls_pass",
+  "worst_normalized_rhs_error": 4.64778597358183e-16,
+  "worst_normalized_jac_error": 4.8609075486327344e-15,
+  "membrane_vs_internal_flux": {
+    "Ca_sr_Cm1": 0.0011281062224290917,
+    "Ca_sr_Cm0185": 0.0011281062224290917,
+    "Na_i_ratio": 5.405405405405405,
+    "false_all_flux_scale_difference": 0.004969765250160593
+  },
+  "charge_clamp": {
+    "full19_charge_derivative_float": -2.168404344971009e-19,
+    "clamped18_charge_derivative_float": 1.2717959929607137e-05,
+    "omitted_Ki_derivative_float": -1.2717959929607281e-05,
+    "conclusion": "Ki clamping is not reduction to the conserved full19 charge leaf"
+  },
+  "wall_seconds": 1.1345450000371784
+}

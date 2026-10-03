@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/usr/bin/nice",
+    "-n10",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "certificate_replay.py",
+    "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/witness.json.gz",
+    "--bindings",
+    "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/bindings.json",
+    "--source-root",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates",
+    "--out",
+    "/private/tmp/cardiac-hopf-positive-independent-replay-receipt-2026-10-03.json"
+  ],
+  "pid": 5513,
+  "exit_code": 1,
+  "stop_reason": null,
+  "wall_seconds": 34.63074941607192,
+  "peak_aggregate_rss_mib": 605.28125,
+  "log": "/private/tmp/cardiac-hopf-positive-independent-replay-2026-10-03.log"
+}

@@ -1,0 +1,365 @@
+{
+  "scope": "PDF packaging/layout observations only, not scientific validation",
+  "pdf_sha256": "99203ed5f186a1cb3dda6c329a973d8b547726461559ba708fd2cce70f5e07e9",
+  "old_pdf_sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+  "pages": 73,
+  "old_pages": 73,
+  "metadata": {
+    "format": "PDF 1.5",
+    "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
+    "author": "Chase Hendrick",
+    "subject": "",
+    "keywords": "",
+    "creator": "LaTeX with hyperref",
+    "producer": "pdfTeX-1.40.25",
+    "creationDate": "D:20261003055107Z",
+    "modDate": "D:20261003055107Z",
+    "trapped": "",
+    "encryption": null
+  },
+  "fonts": {
+    "234": {
+      "name": "DMEDXQ+LMRoman12-Bold",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 31275
+    },
+    "235": {
+      "name": "RFJYVI+LMRoman12-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 21795
+    },
+    "236": {
+      "name": "XDUCPS+LMRoman10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 40125
+    },
+    "237": {
+      "name": "CHUSBA+LMMono10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 30717
+    },
+    "238": {
+      "name": "HXNPMO+LMRoman10-Bold",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 30942
+    },
+    "239": {
+      "name": "YAWBWA+LMMathItalic10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 21256
+    },
+    "240": {
+      "name": "PEDIQY+LMMathItalic7-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 5271
+    },
+    "241": {
+      "name": "XDUCPS+LMRoman10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 40125
+    },
+    "242": {
+      "name": "UJIVBS+LMRoman7-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 22984
+    },
+    "243": {
+      "name": "SXWIRU+LMMathSymbols10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 11662
+    },
+    "244": {
+      "name": "CIXFWA+LMMathSymbols7-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 3213
+    },
+    "245": {
+      "name": "CGTGIN+MSBM10",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 3112
+    },
+    "278": {
+      "name": "AHGLAM+LMMathItalic8-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 17681
+    },
+    "279": {
+      "name": "CYACGK+LMRoman8-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 30207
+    },
+    "280": {
+      "name": "GWHEIG+LMMathSymbols8-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 5771
+    },
+    "409": {
+      "name": "SIJPWN+LMRoman6-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 22807
+    },
+    "410": {
+      "name": "RYEVFW+LMSans8-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 10343
+    },
+    "411": {
+      "name": "SNVEGG+LMMathExtension10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 9757
+    },
+    "451": {
+      "name": "YQGZSE+LMRoman10-Italic",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 27836
+    },
+    "452": {
+      "name": "HJZUGP+LMMono10-Italic",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 16546
+    },
+    "460": {
+      "name": "DNLYJV+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 12812
+    },
+    "461": {
+      "name": "EJTIYF+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3380
+    },
+    "462": {
+      "name": "ELPICY+Cmmi10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 4076
+    },
+    "463": {
+      "name": "CUUXPY+Cmr10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3680
+    },
+    "464": {
+      "name": "BVSFWK+Cmsy10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 2128
+    },
+    "465": {
+      "name": "DQPWOX+Cmsy10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 1880
+    },
+    "534": {
+      "name": "UWTHNF+LMMathSymbols6-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 3141
+    },
+    "546": {
+      "name": "EDHHRM+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 10200
+    },
+    "547": {
+      "name": "FJHZOB+Cmmi10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 2800
+    },
+    "548": {
+      "name": "DPPOUS+Cmr10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 2940
+    },
+    "617": {
+      "name": "RZXMHO+LMMathItalic6-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 7530
+    },
+    "627": {
+      "name": "JNFPVP+LMSans10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 2854
+    },
+    "637": {
+      "name": "PVNSCR+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 14620
+    },
+    "638": {
+      "name": "EJTIYF+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3380
+    },
+    "639": {
+      "name": "GQPEEJ+Cmmi10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 4184
+    },
+    "640": {
+      "name": "FAKXZZ+Cmr10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3888
+    },
+    "641": {
+      "name": "DBRKOT+Cmsy10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 2060
+    },
+    "692": {
+      "name": "LPNHGA+LMMathItalic12-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 3693
+    },
+    "693": {
+      "name": "XDUCPS+LMRoman10-Regular",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 40125
+    },
+    "695": {
+      "name": "HXNPMO+LMRoman10-Bold",
+      "extension": "pfa",
+      "kind": "Type1",
+      "embedded": true,
+      "bytes": 30942
+    },
+    "845": {
+      "name": "FATGDV+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 14320
+    },
+    "846": {
+      "name": "EJTIYF+DejaVuSerif",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3380
+    },
+    "847": {
+      "name": "YKOXTV+Cmmi10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 3540
+    },
+    "848": {
+      "name": "COAZLM+Cmr10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 4920
+    },
+    "849": {
+      "name": "CXMUKY+Cmsy10",
+      "extension": "ttf",
+      "kind": "Type0",
+      "embedded": true,
+      "bytes": 2432
+    }
+  },
+  "unembedded_font_xrefs": [],
+  "outside_page_text_spans": [],
+  "pixel_changed_pages_at_scale_065": [
+    5,
+    6
+  ],
+  "model_pages": [
+    5
+  ],
+  "visual_review": {
+    "status": "passed scoped packaging inspection",
+    "scope": "all73 page contact sheets plus pages5 and6 at1.5scale;71 pixel-identical pages at0.65scale; no independent new proof review",
+    "findings": [],
+    "warning_disposition": "one unchanged2.69937pt proof-box protrusion plus three underfull spacing diagnostics; no collision or clipping found"
+  },
+  "source_sha256": "c656378f53b929c1a93690878f86bb1ca8a405f1c24c5b487e6b3d80442f38b2",
+  "workflow_run": 37101156156,
+  "workflow_head": "d6c19d05ba041c25324186a4b8c9ce6d84c4d66b",
+  "workflow_job_started_utc": "2026-10-03T05:51:14Z",
+  "workflow_job_completed_utc": "2026-10-03T05:52:39Z",
+  "font_count": 45,
+  "artifact_diagnostics_hashes": {
+    "runtime.txt": "f038d0e3dc8818b34b55656347e80a8b17c6ac0e95d1ce77f3c586340d28774c",
+    "hashes.txt": "b24f6c40f13fcdbcbd31f1b2b94119a46e6fa1a08aad7fdbdc63f0c13ae16302",
+    "layout-diagnostics.txt": "7505a2424e4a0b4fab92d6ce5c4259b66e711c80a6ee3506ec060580ff19a983",
+    "cardiac-rings.log": "8a4a7750f8e707072287ae8d971e4af7a213c9aeaf1cf0a848249d4003301605"
+  },
+  "registered_pdf_replacement": "after actual successful build and scoped visual check; original preserved in privatepackage; old release/tag untouched"
+}

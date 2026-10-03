@@ -1,0 +1,456 @@
+{
+  "checkedAt": "2026-10-03T06:49:41.934015+00:00",
+  "papers": [
+    {
+      "paper": "minimal-winding",
+      "doi": "10.5281/zenodo.23096146",
+      "expectedVersion": "2.2.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_minimal-winding_2.2.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "2.2.5",
+        "doi": "10.5281/zenodo.23096146",
+        "path": "paper/minimal-winding.pdf",
+        "tagCommit": "d774cefc4262997102dff9265fb7eb77f22541bc",
+        "sha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee"
+      },
+      "expectedPdfSha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee",
+      "workingPdfSha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee",
+      "repositoryPdfSha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee",
+      "record": "https://zenodo.org/records/23096146",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Minimal Winding in the Self-Similar Collapse of Point Vortices",
+      "titleMatches": true,
+      "version": "2.2.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_minimal-winding_2.2.5.zip",
+          "url": "https://zenodo.org/api/records/23096146/files/HendrickResearch_minimal-winding_2.2.5.zip/content",
+          "zipSha256": "9242306a20efe8311f2dcc4b4fe1271f1d5cccfec476f0d2c31c731fdb92129e",
+          "manuscript": [
+            "HendrickResearch_minimal-winding_2.2.5/paper/minimal-winding.pdf"
+          ],
+          "manuscriptSha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "collapse-without-rotation",
+      "doi": "10.5281/zenodo.23096161",
+      "expectedVersion": "1.0.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_collapse-without-rotation_1.0.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096161",
+        "path": "paper/collapse-without-rotation.pdf",
+        "tagCommit": "8d0bd836b3b2828a6050fa6decb69b5f538e61f3",
+        "sha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f"
+      },
+      "expectedPdfSha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f",
+      "workingPdfSha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f",
+      "repositoryPdfSha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f",
+      "record": "https://zenodo.org/records/23096161",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Point-Vortex Collapse Without Rotation: A Cluster Mechanism, a Phase Diagram and a Continuum Limit",
+      "titleMatches": true,
+      "version": "1.0.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_collapse-without-rotation_1.0.5.zip",
+          "url": "https://zenodo.org/api/records/23096161/files/HendrickResearch_collapse-without-rotation_1.0.5.zip/content",
+          "zipSha256": "bcf349db2a1662280de49825b63074a10ba53d1022dec3c30fa4804a3fa83951",
+          "manuscript": [
+            "HendrickResearch_collapse-without-rotation_1.0.5/paper/collapse-without-rotation.pdf"
+          ],
+          "manuscriptSha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "stable-expansion",
+      "doi": "10.5281/zenodo.23096191",
+      "expectedVersion": "1.0.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_stable-expansion_1.0.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096191",
+        "path": "paper/stable-expansion.pdf",
+        "tagCommit": "9ce9afcb263805a1c5006b0e6adcb24cca6db6c8",
+        "sha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce"
+      },
+      "expectedPdfSha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce",
+      "workingPdfSha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce",
+      "repositoryPdfSha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce",
+      "record": "https://zenodo.org/records/23096191",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches",
+      "titleMatches": true,
+      "version": "1.0.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_stable-expansion_1.0.5.zip",
+          "url": "https://zenodo.org/api/records/23096191/files/HendrickResearch_stable-expansion_1.0.5.zip/content",
+          "zipSha256": "4ad8c0ff133c2d4c0696fcaae840b24eb0bb3ba7cda321bf3f75613d03b21cf7",
+          "manuscript": [
+            "HendrickResearch_stable-expansion_1.0.5/paper/stable-expansion.pdf"
+          ],
+          "manuscriptSha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "rank-window",
+      "doi": "10.5281/zenodo.23096200",
+      "expectedVersion": "1.0.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_rank-window_1.0.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096200",
+        "path": "paper/note.pdf",
+        "tagCommit": "dd831d5537b0760624450ba9e6386ba763d8d942",
+        "sha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d"
+      },
+      "expectedPdfSha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d",
+      "workingPdfSha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d",
+      "repositoryPdfSha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d",
+      "record": "https://zenodo.org/records/23096200",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "A Finite Rank Window Cannot Show That a Neural Population Code Satisfies the Eigenspectrum Smoothness Bound",
+      "titleMatches": true,
+      "version": "1.0.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_rank-window_1.0.5.zip",
+          "url": "https://zenodo.org/api/records/23096200/files/HendrickResearch_rank-window_1.0.5.zip/content",
+          "zipSha256": "d568c4dfe0cff44010f040fce2fa38d164414342fa960e87e81ed1edb0ffc77d",
+          "manuscript": [
+            "HendrickResearch_rank-window_1.0.5/paper/note.pdf"
+          ],
+          "manuscriptSha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "hh-dynamics",
+      "doi": "10.5281/zenodo.23096223",
+      "expectedVersion": "1.0.6",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_hh-dynamics_1.0.6.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.6",
+        "doi": "10.5281/zenodo.23096223",
+        "path": "paper/hh-dynamics.pdf",
+        "tagCommit": "0f65d1ae666a2141c645f88fe53620054f765886",
+        "sha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646"
+      },
+      "expectedPdfSha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646",
+      "workingPdfSha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646",
+      "repositoryPdfSha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646",
+      "record": "https://zenodo.org/records/23096223",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Hopf Bifurcations and Bistability in the Hodgkin-Huxley Equations at the 1952 Parameters: Computer-Assisted Proofs",
+      "titleMatches": true,
+      "version": "1.0.6",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_hh-dynamics_1.0.6.zip",
+          "url": "https://zenodo.org/api/records/23096223/files/HendrickResearch_hh-dynamics_1.0.6.zip/content",
+          "zipSha256": "2f7a733f5a43e955f33865321289f02427d1818895b2bab0334c6f0a3473c41d",
+          "manuscript": [
+            "HendrickResearch_hh-dynamics_1.0.6/paper/hh-dynamics.pdf"
+          ],
+          "manuscriptSha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "double-pendulum",
+      "doi": "10.5281/zenodo.23096228",
+      "expectedVersion": "1.0.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_double-pendulum_1.0.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096228",
+        "path": "paper/double-pendulum.pdf",
+        "tagCommit": "d50c255a15f115a0a29c367ec9835636941fee4d",
+        "sha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015"
+      },
+      "expectedPdfSha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015",
+      "workingPdfSha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015",
+      "repositoryPdfSha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015",
+      "record": "https://zenodo.org/records/23096228",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Chaos and Analytic Non-Integrability of the Classical Double Pendulum: A Computer-Assisted Proof",
+      "titleMatches": true,
+      "version": "1.0.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_double-pendulum_1.0.5.zip",
+          "url": "https://zenodo.org/api/records/23096228/files/HendrickResearch_double-pendulum_1.0.5.zip/content",
+          "zipSha256": "fd672484d3976bc307a54c5a937221f30b8e229660c3c8fff050abd77feda1fd",
+          "manuscript": [
+            "HendrickResearch_double-pendulum_1.0.5/paper/double-pendulum.pdf"
+          ],
+          "manuscriptSha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "nf-pulse",
+      "doi": "10.5281/zenodo.23096242",
+      "expectedVersion": "1.0.6",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_nf-pulse_1.0.6.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.6",
+        "doi": "10.5281/zenodo.23096242",
+        "path": "paper/nf-pulse.pdf",
+        "tagCommit": "42443dee7846ce2cada2eef442d64766a5fcbda0",
+        "sha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262"
+      },
+      "expectedPdfSha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262",
+      "workingPdfSha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262",
+      "repositoryPdfSha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262",
+      "record": "https://zenodo.org/records/23096242",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Traveling Pulses in a Neural Field with a Smooth Firing Rate: Computer-Assisted Existence and Spectral Stability",
+      "titleMatches": true,
+      "version": "1.0.6",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_nf-pulse_1.0.6.zip",
+          "url": "https://zenodo.org/api/records/23096242/files/HendrickResearch_nf-pulse_1.0.6.zip/content",
+          "zipSha256": "ab1bc4c6bd640c8f0d484533d949ea4e4c64f43862bfb4180c16d78584e10b71",
+          "manuscript": [
+            "HendrickResearch_nf-pulse_1.0.6/paper/nf-pulse.pdf"
+          ],
+          "manuscriptSha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "hh-pulse",
+      "doi": "10.5281/zenodo.23096253",
+      "expectedVersion": "1.0.5",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_hh-pulse_1.0.5.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096253",
+        "path": "paper/hh-pulse.pdf",
+        "tagCommit": "cb5892c9315895ba4bdc7319bc468a075d400d6a",
+        "sha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29"
+      },
+      "expectedPdfSha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29",
+      "workingPdfSha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29",
+      "repositoryPdfSha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29",
+      "record": "https://zenodo.org/records/23096253",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "The Propagated Action Potential of Hodgkin and Huxley at Their 1952 Constants: A Computer-Assisted Existence Proof",
+      "titleMatches": true,
+      "version": "1.0.5",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_hh-pulse_1.0.5.zip",
+          "url": "https://zenodo.org/api/records/23096253/files/HendrickResearch_hh-pulse_1.0.5.zip/content",
+          "zipSha256": "b1e7829f874aac1a0b90c55ed41b092c6f299b448ab8c070b3953ac8e4d7248c",
+          "manuscript": [
+            "HendrickResearch_hh-pulse_1.0.5/paper/hh-pulse.pdf"
+          ],
+          "manuscriptSha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29",
+          "matchesRepository": true,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    },
+    {
+      "paper": "cardiac-rings",
+      "doi": "10.5281/zenodo.23114240",
+      "expectedVersion": "1.1.0",
+      "validExpectedVersion": true,
+      "versionMatches": true,
+      "ok": true,
+      "expectedArchiveFilename": "HendrickResearch_cardiac-rings_1.1.0.zip",
+      "pdfReference": {
+        "kind": "published-release-binding",
+        "version": "1.1.0",
+        "doi": "10.5281/zenodo.23114240",
+        "path": "paper/cardiac-rings.pdf",
+        "tagCommit": "2dff17bbaec33b7941e9ee37e530226c14ca3ba9",
+        "sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1"
+      },
+      "expectedPdfSha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+      "workingPdfSha256": "99203ed5f186a1cb3dda6c329a973d8b547726461559ba708fd2cce70f5e07e9",
+      "repositoryPdfSha256": "99203ed5f186a1cb3dda6c329a973d8b547726461559ba708fd2cce70f5e07e9",
+      "record": "https://zenodo.org/records/23114240",
+      "license": "other-closed",
+      "expectedLicense": "other-closed",
+      "licenseMatches": true,
+      "componentRightsDisclosed": true,
+      "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
+      "titleMatches": true,
+      "version": "1.1.0",
+      "resourceType": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "preprint": true,
+      "archives": [
+        {
+          "file": "HendrickResearch_cardiac-rings_1.1.0.zip",
+          "url": "https://zenodo.org/api/records/23114240/files/HendrickResearch_cardiac-rings_1.1.0.zip/content",
+          "zipSha256": "c0e36f856fb692dcfddb2606c7b36f2b97a502eec38f30517494b60510bb90d3",
+          "manuscript": [
+            "HendrickResearch_cardiac-rings_1.1.0/paper/cardiac-rings.pdf"
+          ],
+          "manuscriptSha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+          "matchesRepository": false,
+          "matchesExpectedPdf": true,
+          "archiveRootMatches": true,
+          "tagCommitMatches": true
+        }
+      ],
+      "archiveFilenameMatches": true
+    }
+  ],
+  "awaitingFirstArchive": []
+}

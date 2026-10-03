@@ -21,6 +21,45 @@ GENChase: the companion repository does not carry `notes/`.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
+## Quality standard adoption (2026-10-03)
+
+**Quality standard:** 2026-10-03
+
+The [2026-10-03 paper quality standard](../../../docs/PAPER-QUALITY-STANDARD.md) is adopted for the next release's
+applicable claims. This addendum does not reopen, rewrite or assert stronger verification of the historical 1.1.0
+and 1.0.0 records below. The extension is research in progress, with the following release obligations still open:
+
+- [ ] **U1. Complete proofs.** Final integration and review remain open for the exact 18-state clamped-potassium
+  variant, units, membrane versus internal calcium flux distinction, charge convention, domain and singularity
+  treatment. The theorem-by-theorem map must discharge quantitative Hopf spectral and nonlinear prerequisites.
+  If an all-N/cable extension is included, complete sector/parameter coverage, phase multiplicity, prescribed-voltage
+  gate bounds, semigroup and nonlinear decay arguments with the necessary uniform constants remain required.
+- [ ] **U2. Rigorous computation.** Complete operator/enclosure, finite-column and tail witnesses and independent
+  replay receipts remain required for every retained computational spectral claim. Distinguish checked primitives
+  from supplied existence/operator premises. The 49-point translation audit is numerical fidelity and targeted
+  regression evidence, not global symbolic equivalence. The actual six-state SC attempt failed its sufficient
+  inequality and supplies no count-zero, all-N stability or cable stability certificate. The 1.1.0 summary receipts
+  alone do not discharge this stronger requirement.
+- [ ] **U3. Every claim labelled.** The final changed manuscript and README need a scoped claims audit separating
+  admitted historical results, completed new proofs and remaining conditional/numerical work. The floating cable
+  pilot is illustrative. No new bridge or all-N/cable stability conclusion is admitted by this addendum.
+- [ ] **U4. Sources read.** Retained primary model formulas and variants have been inspected for the translation
+  audit. The final proof/model ledger must bind precise versions, reading scope and all new semigroup/spectral
+  sources actually used. Final bibliography and source-credit review remain open.
+- [ ] **U5. Prior article review.** Historical searches retain their recorded scope. New theorem domains and exact
+  all-N/cable or quantitative Hopf claims, if included, need a fresh bounded prior-article comparison and ledger;
+  no first-proof or exhaustive-priority claim follows from the current preparatory work.
+- [ ] **U6. Adversarial second reading.** Independent final review remains required for the changed arguments,
+  model translation, witness replay scope, negative controls and theorem claims. Preserve findings and original
+  failures. The historical 1.1.0 reviews are not review of these new extensions.
+- [ ] **U7. Reproducible.** Bind final source/input/runtime hashes, run applicable fail-closed controls and complete
+  replay, regenerate scientific figures, inspect every rebuilt PDF page and metadata field, and verify the actual
+  new companion and deposited archive bytes. The new release's licensing/contact/title/citation fields and full
+  package manifests need actual checks. Historical counts and hashes are not substitutes for this evidence.
+
+The seven established headings and checked historical release evidence remain below. This addendum is an explicit
+prospective record, not an assertion that the current checker enforces the proposed evidence-manifest schema.
+
 ## Version 1.1.0 record (2026-10-02)
 
 This record supplements the historical 1.0.0 record below. The current manuscript source has SHA-256

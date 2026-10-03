@@ -77,7 +77,9 @@ cell". It differs from the published TP06 cell in four ways:
    (5 times), with G_Ks the continuation parameter (0.0275 here);
 4. Erhardt's capacitance convention: par_Cm = 1 divides dV/dt and also multiplies the Ca_i, Ca_ss and Na_i fluxes
    (lines 145, 147, 148 of the source), so Cm/(V_c F) is 5.405 times its value in the original-author and CellML
-   convention (Cm = 185 pF). Every concentration flux is therefore 5.405 times the published TP06 value.
+   convention (Cm = 185 pF). The membrane-current contributions to these concentration equations therefore have
+   coefficients 1/0.185, approximately 5.405, times those in that convention. Internal calcium uptake, leak,
+   release and transfer terms do not carry this capacitance factor.
 
 Erhardt, Front. Phys. 13 (2025) 1569121, reports for this 18-dimensional model a supercritical Hopf bifurcation at
 G_Ks = 0.027907858929580 with stable bifurcating cycles; the cycle certified here is consistent with that branch

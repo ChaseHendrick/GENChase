@@ -1,0 +1,62 @@
+{
+  "actual_local_wrapper_checks": {
+    "cardiac_1_1_0": {
+      "every_relative_file_byte_equal": true,
+      "file_count": 186,
+      "filename": "HendrickResearch_cardiac-rings_1.1.0.zip",
+      "new_zip_sha256": "c0e36f856fb692dcfddb2606c7b36f2b97a502eec38f30517494b60510bb90d3",
+      "old_zip_sha256": "2edef65e5c368641473c3fbcb5cbc031b56022a7a78e6cc03f4fe06ea7065075",
+      "paper": "cardiac-rings",
+      "pdf": {
+        "path": "paper/cardiac-rings.pdf",
+        "sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1"
+      },
+      "receipt_sha256": "9687a235f3ca3f67868ab16b740a45f720728700b6fe3ed1c3b24ebf23741abc",
+      "record": "23114240",
+      "root": "HendrickResearch_cardiac-rings_1.1.0",
+      "version": "1.1.0"
+    },
+    "complete_relative_file_payloads_byte_equal": 1699,
+    "published_archive_pairs": 9
+  },
+  "correction_guidance_checked": "Minor corrections within 30 days; correction draft published within 45 days; DOI unchanged.",
+  "date": "2026-10-03",
+  "fixed_findings": [
+    "Symbolic HEAD could advance between the PDF check and complete ZIP creation; immutable commit is now resolved first.",
+    "Declared branded ZIP filename could previously contain an account-named root; exact safe branded root and rooted PDF are now required."
+  ],
+  "limitations": [
+    "Historical entries without archiveFilename retain their legacy checks.",
+    "The Zenodo scanner checks registered metadata, filename/root and PDF; separate complete-member and whole-container audit remains required.",
+    "Owner import-disabled confirmation is an explicit prerequisite, not a remote API verification.",
+    "Current-version correction is separately authorized and preserves payloads; actual correction completion requires downloaded server bytes and unchanged DOI/version checks.",
+    "GitHub built-in source downloads remain service-controlled."
+  ],
+  "primary_correction_guidance": "https://help.zenodo.org/docs/deposit/manage-files/#modify",
+  "schema": 1,
+  "scope": "Exact branded ZIP filename/root and committed-file preservation. No scientific reproof or remote publication claim.",
+  "sources_sha256": {
+    ".github/workflows/papers.yml": "720a87f2714345f70e15f707d4c96bf1692481e8e7c763a4531b18a177add7e3",
+    "docs/PAPER-ARCHIVE-NAMING.md": "ac2269b434fbe2ccddc41c8a513315a6b6245cf48d3508761fe696aeff185528",
+    "docs/PAPER-QUALITY-STANDARD.md": "f3b16351f32e4ff6805d1c21cd0262d1f02074204a6599a24cd5ad02f4c8ecd8",
+    "docs/PUBLISHING-PAPERS.md": "4a6002c5dc1fdd0d2fcea04d59b4c72b8cd880eeff1a75ff0387580ec3d64782",
+    "tools/paper-archive-build-check.py": "8d2c28a05819b43200687cf30131c0f1431b870bc360002439f2f56ebc31ec19",
+    "tools/paper-archive-build.py": "96c015d0d663a568a0e6af6f129c2c6fbef1c1cfbb31dcee00ba6100e6c326cc",
+    "tools/paper-publish-check.js": "d6d8da2f081a082984bf5223b1c5fc4829528acc97f1fe588a646dedcd6e220b",
+    "tools/paper-publish.sh": "d2107a1e12fbe23234e087b925283a83b0bfb6fe5ae48fe9f718f30413a5b2e8",
+    "tools/paper-zenodo-check.py": "32885be765c697edb3592196ec02b4a1643b19962b4c306f1391fe0293b23704"
+  },
+  "status": "admitted for local packaging and explicit manual deposit orchestration",
+  "tests": {
+    "builder_network_free": 36,
+    "diff_check": "passed",
+    "independent_moving_HEAD_changed_PDF": "passed; immutable commit resolved before PDF check",
+    "independent_root_shapes": 10,
+    "publisher_local_repositories": 62,
+    "required_build_check": "Studio assembly OK",
+    "required_science_check": "Coverage records OK: 62 unvalidated; 11 partially validated; 62 validated within stated limits",
+    "zenodo_first_release": 6,
+    "zenodo_metadata": 13,
+    "zenodo_version_naming": 46
+  }
+}

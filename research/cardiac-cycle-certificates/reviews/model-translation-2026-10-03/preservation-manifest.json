@@ -1,0 +1,22 @@
+{
+  "scope": "preserved exact actual audit bytes; numerical fidelity controls, not global symbolic equivalence or new scientific certificate",
+  "current_head": "d6c19d05ba041c25324186a4b8c9ce6d84c4d66b",
+  "native_source_matches_current_HEAD": {
+    "research/cardiac-cycle-certificates/model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "research/cardiac-cycle-certificates/model/tp06_capd.hpp": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
+    "research/cardiac-cycle-certificates/model/setup.hpp": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
+    "research/cardiac-cycle-certificates/model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "research/cardiac-cycle-certificates/fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "research/cardiac-cycle-certificates/fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "research/cardiac-cycle-certificates/fourier/test_arbmodel.py": "2b2a1a0dffab2b323ba135131f03ab142538d14cf37dc722f8262200bf0a4bce"
+  },
+  "preserved_files_sha256": {
+    "unchanged-model-bytes.json": "3e9633193c049c508b99d816d08059226d411c8ea03994f1e14ebce622610cb6",
+    "REPORT.md": "f6e29e4587afa77a731729d4a7eabfc9dc61cab7852b892c8ec927e60861ac76",
+    "check_translation.py": "37c5a22ee28481b1055c967f176d1fff51294251e09a00c7b5f93c45c1666d76",
+    "cardiac-model-translation-audit-2026-10-03.log.receipt.json": "e0d9ca60455a750a3bdc1f6de531617c82d76f0cc63dcf5137241927439fb97d",
+    "translation-controls.json": "8d8b4e12ea0e4afc8d4c6c2a26f2225cd3ffe9f65f933015467317d7c9a8fe84",
+    "cardiac-model-translation-audit-2026-10-03.log": "e17e51b6357e6b7de910bf0f97aa94ceef6391720db3fe9d60e7b7161c630c93"
+  },
+  "historical_snapshot_note": "original REPORT and unchanged-model-bytes include a preliminary seven-test/source snapshot; the later eighth count-zero prototype control does not alter the original49 translation controls"
+}

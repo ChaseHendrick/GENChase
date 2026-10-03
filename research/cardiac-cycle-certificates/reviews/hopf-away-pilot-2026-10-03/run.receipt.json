@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "hopf_stability.py",
+    "--piece",
+    "4",
+    "--halfwidth",
+    "1/1000000",
+    "--centre-K",
+    "20",
+    "--M",
+    "128",
+    "--Kp",
+    "64",
+    "--delta",
+    "1e-6",
+    "--output",
+    "/private/tmp/cardiac-hopf-away-p4-k20-kp64.json"
+  ],
+  "pid": 95793,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 162.13575562485494,
+  "peak_aggregate_rss_mib": 832.890625,
+  "log": "/private/tmp/cardiac-hopf-away-p4-k20-kp64.log"
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "cardiac-positive-family-independent-review/1",
+  "status": "one_family_model_enclosures_and_full_spectral_replay_admitted_under_explicit_premises",
+  "scope": {
+    "N": 1,
+    "DIM": 18,
+    "domain": [
+      "9499/1000000",
+      "9501/1000000"
+    ],
+    "spectral_count": 1,
+    "columns": 450,
+    "residues": 1,
+    "independent_operator_assembly": true,
+    "independent_model_enclosure_reconstruction": true,
+    "independent_model_translation": false,
+    "independent_orbit_existence": false,
+    "full_bridge_or_allN_admitted": false
+  },
+  "composition": {
+    "operator_sha256": "06ef94a7d47f2ba5532b046dc43d6f1c4338a2df54371e36743df40525be4e4c",
+    "compressed_witness_sha256": "1cb70094886465f1e95f6faff16cda497476768a8bda4d42b7ebd4cce660bedc",
+    "bindings_canonical_sha256": "6b1602e8e716f68d3cf1a334d9b71e7c502b4f5ef8ba80c8cf60d7c8e9ffbfa3",
+    "spectral_receipt_sha256": "85b177391db15a3488023cfaa7d6fd0404ab16ba6ad650ec4bbfba2d47717138",
+    "model_receipt_sha256": "b622a8dcebbf6424991badf2c898702f56f8f94032a788a65c5a7252097cf96d"
+  },
+  "actual_spectral_supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "certificate_replay.py",
+      "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/witness.json.gz",
+      "--bindings",
+      "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/bindings.json",
+      "--source-root",
+      "/private/tmp/cardiac-hopf-positive-capture-snapshot-2026-10-03",
+      "--out",
+      "/private/tmp/cardiac-hopf-positive-independent-replay-receipt-2026-10-03-3.json"
+    ],
+    "pid": 8863,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 183.4532940420322,
+    "peak_aggregate_rss_mib": 1378.609375,
+    "log": "/private/tmp/cardiac-hopf-positive-independent-replay-2026-10-03-3.log"
+  },
+  "model_checker_source": {
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "fourier/model_enclosure_replay.py": "fd579d160d230ff8f60c2a4cac494744866991ff81f14c67ff13ec4c8aa14f8d"
+  },
+  "independent_tests": {
+    "spectral_test_methods": 12,
+    "model_test_methods": 9,
+    "additional_model_nonzero_Hessian_seed_checks": 7,
+    "strict_interior_complex_disk_direction_component_checks": 324
+  },
+  "source_review": [
+    "Every sparse Hessian product and chain rule includes both cross terms and existing second-derivative seeds. Scaled state and conductance seeds use the declared coordinates.",
+    "Full-strip evaluation boxes contain all state/parameter straight segments. Disk radii enter a triangle sum of independently reconstructed absolute Hessian components, with no inflated square-direction premise.",
+    "Signed DFT plus both alias sums, derivative-disk containment, exact partition coverage and conservative saved-bound direction were independently reviewed.",
+    "Finite real interval comparison blocks are retained in both the uniform tail-resolvent residual and the coefficient perturbation bound. No midpoint replacement or tolerance is used.",
+    "Large exact receipt integers are serialized in base-10^9 chunks without changing acceptance arithmetic or process-wide conversion limits."
+  ],
+  "premises": [
+    "pinned shared literal TP06 translation and decimal/scaling loader",
+    "accepted orbit existence/identification and the exact analytic existence tube",
+    "known nonconstant phase kernel for this strictly positive amplitude interval",
+    "reviewed Hill-sector and Schur-complement homotopy lemmas"
+  ],
+  "failure_history": [
+    {
+      "attempt": 1,
+      "status": "refused",
+      "reason": "overstrict exact-point A0c requirement; native real rounding interval preserved"
+    },
+    {
+      "attempt": 2,
+      "status": "error",
+      "reason": "Python 4300-digit exact-rational receipt formatting limit; no inequality promotion"
+    },
+    {
+      "model_boundary_crosscheck": "initial direction exactly on a disk boundary suffered outward-rounding enlargement; strict-interior dyadic direction corrected the fixture, not source"
+    }
+  ],
+  "provenance": "The original witness/bindings are unchanged. capture-snapshot matches all20 historical source/input bindings. The later replay separately pins its loaded current verifier source before and after."
+}

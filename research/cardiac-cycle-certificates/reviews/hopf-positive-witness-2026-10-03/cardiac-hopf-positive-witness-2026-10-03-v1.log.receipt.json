@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/prepare.py",
+    "--output-dir",
+    "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1"
+  ],
+  "pid": 3177,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 222.9321647908073,
+  "peak_aggregate_rss_mib": 845.46875,
+  "log": "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1.log"
+}
