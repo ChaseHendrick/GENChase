@@ -2,10 +2,8 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Preprint. Release 1.0.0 (2026-10-02) is archived on Zenodo with its original programs and output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+Preprint, release 1.1.0 (2026-10-03), archived on Zenodo with its programs and output ([doi:10.5281/zenodo.23114240](https://doi.org/10.5281/zenodo.23114240); release 1.0.0 remains at [doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
-
-**Version 1.1.0**, prepared for publication through the companion release workflow. The current proof records, complete original stability and Hopf test suites, branch quick checks and fresh tracked-companion reproduction have passed their scoped in-project checks. The release and downloaded archive verification are recorded separately; the verified archive locator above remains 1.0.0 until the new Zenodo ZIP is inspected.
 
 **[Read the paper PDF](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
 
@@ -271,7 +269,7 @@ Until the paper is published in a journal:
   title  = {Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs},
   year   = {2026},
   note   = {Preprint},
-  doi    = {10.5281/zenodo.23101322},
+  doi    = {10.5281/zenodo.23114240},
   url    = {https://github.com/ChaseHendrick/cardiac-rings}
 }
 ```

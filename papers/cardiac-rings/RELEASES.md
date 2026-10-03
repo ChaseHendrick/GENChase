@@ -3,7 +3,9 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
-## 1.1.0
+## 1.1.0 (2026-10-03)
+
+**DOI:** [10.5281/zenodo.23114240](https://doi.org/10.5281/zenodo.23114240). Publication / Preprint.
 
 The 73-page preprint adds computer-assisted Theorem D for the single cell: a 712-piece conductance family with 711 gluings,
 63 group or subgroup uniform-stability certificates covering the entire lower interval, and a 68-piece amplitude
