@@ -8,14 +8,14 @@ This is one subinterval of the admitted Hopf branch. It does not supply full
 Hopf-bridge stability, a near-zero quantitative interval, or ring/cable stability.
 
 The run took 161.48 seconds in the producer, 162.14 seconds in its supervisor,
-with sampled aggregate peak RSS 832.89 MiB. The finite window has450 rows,
-the coefficient cutoff is64, the DFT grid has128 nodes, and the new proposed
-orbit centre has20 Fourier modes. The exact parent-ball inclusion, analytic
+with sampled aggregate peak RSS 832.89 MiB. The finite window has 450 rows,
+the coefficient cutoff is 64, the DFT grid has 128 nodes, and the new proposed
+orbit centre has 20 Fourier modes. The exact parent-ball inclusion, analytic
 strip flags, source/input/settings bindings and complete native certificate
 diagnostics are in `result.json`. `run.log` and `run.receipt.json` retain the
 actual calculation and supervision details.
 
-Reproduce with the pinned python-flint0.9.0 environment, one BLAS thread, and
+Reproduce with the pinned python-flint 0.9.0 environment, one BLAS thread, and
 an external wall-clock and memory cap. From the `fourier` directory:
 
 ```sh
@@ -32,9 +32,9 @@ the small summary retained here is not a full replay witness.
 
 Three earlier private bounded attempts failed and supplied no theorem:
 
-* The stored8-mode centre left an orbit tube too broad for the small-gain test.
-* A20-mode proposal with the old64-node existence DFT had excessive aliasing error.
-* The refined orbit with only24 Jacobian coefficients retained a generic Cauchy
+* The stored 8-mode centre left an orbit tube too broad for the small-gain test.
+* A 20-mode proposal with the old 64-node existence DFT had excessive aliasing error.
+* The refined orbit with only 24 Jacobian coefficients retained a generic Cauchy
   coupling tail too broad for the small-gain test.
 
 The accepted run refines both the orbit and the coefficient/tail enclosure.
