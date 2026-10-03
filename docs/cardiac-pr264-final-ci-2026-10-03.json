@@ -1,0 +1,4286 @@
+{
+  "target_head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+  "required_rules": [
+    {
+      "context": "plates (attractors)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (cahn)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (fractal)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (ising)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (kp)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (life)",
+      "integration_id": 15368
+    },
+    {
+      "context": "structure",
+      "integration_id": 15368
+    },
+    {
+      "context": "shell chrome",
+      "integration_id": 15368
+    },
+    {
+      "context": "recipe compatibility",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (turing)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (schrodinger)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (tilings)",
+      "integration_id": 15368
+    },
+    {
+      "context": "plates (three-vortex-bound)",
+      "integration_id": 15368
+    },
+    {
+      "context": "print export (cahn)",
+      "integration_id": 15368
+    },
+    {
+      "context": "print export (tilings)",
+      "integration_id": 15368
+    },
+    {
+      "context": "print export (three-vortex-bound)",
+      "integration_id": 15368
+    }
+  ],
+  "strict_up_to_date_required": true,
+  "interval_seconds": 60,
+  "maximum_wall_seconds": 1200,
+  "snapshots": [
+    {
+      "checked_utc": "2026-10-03T03:38:25.101624+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "neutral",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 0,
+      "required_missing": [
+        "plates (attractors)",
+        "plates (cahn)",
+        "plates (fractal)",
+        "plates (ising)",
+        "plates (kp)",
+        "plates (life)",
+        "shell chrome",
+        "recipe compatibility",
+        "plates (turing)",
+        "plates (schrodinger)",
+        "plates (tilings)",
+        "plates (three-vortex-bound)",
+        "print export (cahn)",
+        "print export (tilings)",
+        "print export (three-vortex-bound)"
+      ],
+      "failed_checks": [],
+      "pending_checks": [
+        "PDE evidence (numerical)",
+        "PDE evidence (half-1)",
+        "PDE evidence (fields)",
+        "PDE evidence (half-2)",
+        "structure",
+        "Analyze (python)",
+        "Analyze (javascript-typescript)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:39:27.589100+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 1,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "plates (cahn)",
+        "plates (schrodinger)",
+        "print export (tilings)",
+        "plates (three-vortex-bound)",
+        "plates (life)",
+        "plates (kp)",
+        "plates (ising)",
+        "plates (tilings)",
+        "plates (turing)",
+        "plates (tennis)",
+        "plates (attractors)",
+        "plates (maxwell)",
+        "plates (molecular)",
+        "plates (fractal)",
+        "print export (cahn)",
+        "print export (molecular)",
+        "print export (maxwell)",
+        "art modes (hunt, deep render, evolve)",
+        "print export (tennis)",
+        "print export (three-vortex-bound)",
+        "recipe compatibility",
+        "volunteer and navigation (webkit)",
+        "completed numerical and print reviews",
+        "wave science",
+        "volunteer and navigation (chromium)",
+        "particle and field science",
+        "shell chrome",
+        "PDE evidence (half-1)",
+        "PDE evidence (fields)",
+        "PDE evidence (half-2)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:40:30.279332+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "queued",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 5,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "plates (cahn)",
+        "plates (schrodinger)",
+        "print export (tilings)",
+        "plates (three-vortex-bound)",
+        "plates (life)",
+        "plates (ising)",
+        "plates (tilings)",
+        "plates (turing)",
+        "print export (molecular)",
+        "print export (maxwell)",
+        "art modes (hunt, deep render, evolve)",
+        "print export (three-vortex-bound)",
+        "recipe compatibility",
+        "volunteer and navigation (webkit)",
+        "completed numerical and print reviews",
+        "wave science",
+        "volunteer and navigation (chromium)",
+        "particle and field science",
+        "shell chrome",
+        "PDE evidence (half-1)",
+        "PDE evidence (fields)",
+        "PDE evidence (half-2)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:41:33.045213+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 8,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "plates (cahn)",
+        "plates (schrodinger)",
+        "print export (tilings)",
+        "plates (three-vortex-bound)",
+        "plates (life)",
+        "plates (tilings)",
+        "plates (turing)",
+        "print export (molecular)",
+        "print export (maxwell)",
+        "completed numerical and print reviews",
+        "wave science",
+        "shell chrome",
+        "PDE evidence (half-1)",
+        "PDE evidence (fields)",
+        "PDE evidence (half-2)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:42:35.689096+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 12,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "print export (tilings)",
+        "plates (life)",
+        "plates (turing)",
+        "print export (molecular)",
+        "completed numerical and print reviews",
+        "shell chrome",
+        "PDE evidence (fields)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:43:38.347281+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 15,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "shell chrome",
+        "PDE evidence (fields)"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:44:40.885532+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111120670645,
+          "name": "complete PDE fields and prints",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111120670645",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 15,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "shell chrome"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:45:43.647853+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "blocked",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111120670645,
+          "name": "complete PDE fields and prints",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111120670645",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 15,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [
+        "shell chrome"
+      ],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-03T03:46:46.294911+00:00",
+      "head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+      "base": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+      "draft": false,
+      "pr_state": "open",
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "behind_main": 0,
+      "checks": [
+        {
+          "id": 111120670645,
+          "name": "complete PDE fields and prints",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111120670645",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732877,
+          "name": "plates (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732877",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732873,
+          "name": "plates (schrodinger)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732873",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732859,
+          "name": "print export (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732859",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732857,
+          "name": "plates (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732857",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732840,
+          "name": "plates (life)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732840",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732805,
+          "name": "plates (kp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732805",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732804,
+          "name": "plates (ising)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732804",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732796,
+          "name": "plates (tilings)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732796",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732786,
+          "name": "plates (turing)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732786",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732784,
+          "name": "plates (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732784",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732780,
+          "name": "plates (attractors)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732780",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732776,
+          "name": "plates (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732776",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732770,
+          "name": "plates (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732770",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732730,
+          "name": "plates (fractal)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732730",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732724,
+          "name": "print export (cahn)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732724",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732722,
+          "name": "print export (molecular)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732722",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732712,
+          "name": "print export (maxwell)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732712",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732668,
+          "name": "art modes (hunt, deep render, evolve)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732668",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732662,
+          "name": "print export (tennis)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732662",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732652,
+          "name": "print export (three-vortex-bound)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732652",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732649,
+          "name": "native CPU science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732649",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732618,
+          "name": "recipe compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732618",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732616,
+          "name": "volunteer and navigation (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732616",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732604,
+          "name": "completed numerical and print reviews",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732604",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732598,
+          "name": "wave science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732598",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732594,
+          "name": "volunteer and navigation (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732594",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732593,
+          "name": "particle and field science",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732593",
+          "app_id": 15368
+        },
+        {
+          "id": 111119732576,
+          "name": "shell chrome",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119732576",
+          "app_id": 15368
+        },
+        {
+          "id": 111119534418,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/runs/111119534418",
+          "app_id": 57789
+        },
+        {
+          "id": 111119513708,
+          "name": "deploy Pages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119513708",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481567,
+          "name": "PDE evidence (numerical)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481567",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481557,
+          "name": "PDE evidence (half-1)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481557",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481548,
+          "name": "PDE evidence (fields)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481548",
+          "app_id": 15368
+        },
+        {
+          "id": 111119481540,
+          "name": "PDE evidence (half-2)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119481540",
+          "app_id": 15368
+        },
+        {
+          "id": 111119463713,
+          "name": "validate all 712 pieces and 711 gluings",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119463713",
+          "app_id": 15368
+        },
+        {
+          "id": 111119456170,
+          "name": "isolated-piece",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782784/job/111119456170",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443305,
+          "name": "offline distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443305",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443304,
+          "name": "print production",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443304",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443240,
+          "name": "PDE evidence coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443240",
+          "app_id": 15368
+        },
+        {
+          "id": 111119443178,
+          "name": "structure",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785793/job/111119443178",
+          "app_id": 15368
+        },
+        {
+          "id": 111119442928,
+          "name": "build static Pages site",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093785754/job/111119442928",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441276,
+          "name": "Analyze (python)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441276",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441153,
+          "name": "Analyze (javascript-typescript)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441153",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441116,
+          "name": "Analyze (c-cpp)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441116",
+          "app_id": 15368
+        },
+        {
+          "id": 111119441025,
+          "name": "Analyze (actions)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093784252/job/111119441025",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436545,
+          "name": "validate complete ${{ matrix.kind }} evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119436545",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436535,
+          "name": "manuscript",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782798/job/111119436535",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436146,
+          "name": "original controls (${{ matrix.mode }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782770/job/111119436146",
+          "app_id": 15368
+        },
+        {
+          "id": 111119436093,
+          "name": "branch groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782771/job/111119436093",
+          "app_id": 15368
+        },
+        {
+          "id": 111119435970,
+          "name": "${{ matrix.kind }} groups (${{ matrix.shard }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "head_sha": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+          "details_url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37093782768/job/111119435970",
+          "app_id": 15368
+        }
+      ],
+      "statuses": [],
+      "required_passed": 16,
+      "required_missing": [],
+      "failed_checks": [],
+      "pending_checks": [],
+      "scientific_skips": [
+        "deploy Pages",
+        "validate all 712 pieces and 711 gluings",
+        "isolated-piece",
+        "validate complete ${{ matrix.kind }} evidence",
+        "manuscript",
+        "original controls (${{ matrix.mode }})",
+        "branch groups (${{ matrix.shard }})",
+        "${{ matrix.kind }} groups (${{ matrix.shard }})"
+      ]
+    }
+  ],
+  "final_package_bytes_independently_verified": true,
+  "no_new_scientific_reproof_claim": true,
+  "read_only_monitor": true,
+  "stop_reason": "all check runs complete and16 required pass",
+  "wall_seconds": 503.9400494999718,
+  "final_review_and_workflow_refresh": {
+    "checked_utc": "2026-10-03T03:47:58.074819+00:00",
+    "exact_head": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+    "base_main_sha": "b76fc98556a59435dfc5f51b09a4b35f0c8876fc",
+    "merge_state": "CLEAN",
+    "mergeable": "MERGEABLE",
+    "draft": false,
+    "review_threads_total": 0,
+    "unresolved_review_threads": 0,
+    "review_threads_pagination_complete": true,
+    "status_check_rollup": "SUCCESS",
+    "required_approving_review_count": 0,
+    "ruleset_id": 23693824,
+    "required_contexts_unchanged": true,
+    "all_workflow_runs_complete": true,
+    "successful_workflow_runs": [
+      37093785754,
+      37093785793,
+      37093784252
+    ],
+    "intentionally_skipped_opt_in_workflow_runs": [
+      37093782784,
+      37093782768,
+      37093782798,
+      37093782771,
+      37093782770
+    ],
+    "zero_new_full_scientific_reproof_claims": true
+  },
+  "final_admission": "Exact cd12 current-head software CI and merge gate passed. Root may proceed with separately authorized merge/release actions; this monitor makes no remote mutations or deposited-archive claim."
+}

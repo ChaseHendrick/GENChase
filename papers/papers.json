@@ -208,7 +208,7 @@
       "field": "Cardiac electrophysiology",
       "summary": "computer-assisted proofs of stable rotating waves in rings of a ventricular cell model",
       "status": "ready",
-      "note": "Version 1.1.0 is prepared with source-bound single-cell conductance continuation (712 pieces and 711 inclusions), uniform orbital stability on J=[0.027499735464,0.02778996093] (63 group or subgroup certificates, delta=3e-5 per ms), and a 68-piece amplitude family with 67 inclusions, zero-amplitude identity and a fresh existence-only bridge to the certified supercritical Hopf endpoint. Current mathematical records, complete original stability and Hopf suites, branch quick checks, written arguments and final claims passed their scoped independent in-project checks. A fresh tracked companion staging passed alln,continuation in 29.6365 seconds; the exact-source 73-page PDF was rebuilt, compared across all pages and visually inspected. The seven-item quality record is complete. No outside review is claimed. Release checks and applicable CI precede publication; the actual new archive must still be downloaded and verified. Original fixed-cell, N=8/16/32/64 stability and all-N/cable existence results retain their scope. Quantitative uniform stability on the entire amplitude bridge is not proved. The registered codeDoi/archiveVersion continue to identify the actual verified 1.0.0 preprint archive until the new version is downloaded and verified.",
+      "note": "Release 1.1.0 is archived as Publication / Preprint at doi:10.5281/zenodo.23114240 (2026-10-03). Its actual GitHub and Zenodo source ZIPs were downloaded and each matched all 186 reviewed files, including the exact 73-page manuscript PDF and all 84 code/data files (docs/paper-zenodo-release-audit-2026-10-03-cardiac-rings-1.1.0.json). The source-bound single-cell conductance family has 712 pieces/711 inclusions, uniform orbital stability on J=[0.027499735464,0.02778996093] via 63 units with delta=3e-5 per ms, and a 68-piece amplitude family/67 inclusions connecting through a fresh existence-only bridge and zero identity to the certified supercritical Hopf endpoint. Written arguments, final claims, complete original stability/Hopf suites, branch quick checks, fresh tracked-companion reproduction and all-page PDF inspection passed their scoped separate in-project reviews. All applicable checks passed on the final release-preparation commit before PR #264 merged. No outside or peer review is claimed. Original fixed-cell, N=8/16/32/64 stability and all-N/cable existence results retain their scope; whole-amplitude-bridge quantitative uniform stability remains unproved. The previous 1.0.0 preprint DOI 10.5281/zenodo.23101322 and immutable releases remain available.",
       "typst": null,
       "latex": "papers/cardiac-rings/paper/cardiac-rings.tex",
       "pdf": "papers/cardiac-rings/paper/cardiac-rings.pdf",
@@ -216,9 +216,9 @@
       "textLicense": "all-rights-reserved",
       "arxiv": null,
       "journal": null,
-      "codeDoi": "10.5281/zenodo.23101322",
+      "codeDoi": "10.5281/zenodo.23114240",
       "commitments": [],
-      "archiveVersion": "1.0.0",
+      "archiveVersion": "1.1.0",
       "companionProvenanceAllow": [
         {
           "file": "code/fourier/LEMMAS-hopf.md",
