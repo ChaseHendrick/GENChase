@@ -24,8 +24,32 @@ reading of 2026-10-02 are readings of the manuscript itself.
 | `alln-existence-fixcheck-2026-10-02.md` | (record by the program's author, not an independent reading; copied from the study) | how W1 to W4 and M1 to M4 were fixed, no bound changed; tests 13 of 13 passed |
 | `third-reading-2026-10-02.md` | the whole manuscript, including Theorem C (Sections 2.3 and 4.8), Appendix A and Remark 7.1, in five parts (existence proofs; stability proofs and Appendix A; numbers against the records; claims and sources; the CAPD argument and reproducibility), each finding checked by two further sessions; with a summary of a conformance audit against the released papers | no gap in the proofs; 47 confirmed findings (5 must, 21 should, 21 nit) on the record of checks, the trust base, rerun statements, citations and reading bases, and a few numbers rounded the wrong way; the file says how each was fixed (by the drafting session; the fixes have not been read by a further reader) |
 
-The outcome for the Fourier route is recorded in `data/fourier-review-status.json`, outside the hashed records; it
+## Version 1.1.0 review chain
+
+The historical table above describes the 1.0.0 readings. Version 1.1.0 also includes the source-bound conductance,
+uniform-stability and Hopf readings, fix checks, original-suite receipts and final manuscript checks below. Numerical
+producer status strings are preserved; separate admission records carry their scoped decisions.
+
+| Files | Scope |
+|---|---|
+| `rec2-branch-fixcheck-2026-10-02.md`, `theoremC-uniform-fixcheck-2026-10-02.md`, `hopf-bridge-fixcheck-2026-10-02.md` | Written continuation, stability and desingularization/gluing arguments and source gates; the internal stability review name predates manuscript Theorem D |
+| `review-current-scientific-chain-refresh-2026-10-02.json`, `review-stability-lineage-refresh-2026-10-03.json` | Actual complete source-bound records, unchanged producer bytes, conservative recovery of failed-workflow raw outputs and exact full coverage |
+| `review-linux-piece-actual-receipt-2026-10-02.json`, `review-full-group-half-actual-receipt-2026-10-02.json`, `review-hopf-full-original-suite-receipt-2026-10-02.json` | Actual complete original stability and Hopf test suites, with failures and fixture history preserved |
+| `review-integrated-manuscript-receipt-2026-10-02.json`, `review-final-theoremD-claims-receipt-2026-10-02.json`, `review-final-manuscript-editorial-receipt-2026-10-02.json` | Written integrated proofs, discharged final claims and exact final editorial changes |
+| `review-companion-wrapper-final-receipt-2026-10-02.json`, `review-tracked-stage-reproduction-2026-10-02.json`, `review-tracked-stage-final-admission-receipt-2026-10-02.json` | Exact companion wrapper, mutation/path controls and actual reproduction from committed files; no new full numerical piece rerun claimed |
+| `review-final-pdf-package-37093181017-2026-10-02.json`, `review-manuscript-package-37093181017-structured-receipt-2026-10-02.json` | Final exact-source 73-page PDF build, all-page comparison and inherited complete visual readings, explicit inspection of changed pages and embedded fonts |
+| `method-reading-and-forward-citations-2026-10-02.md` | Exact primary-source versions read and bounded prior-article search, without a historical-priority claim |
+
+All readings are separate AI-agent checks made within the project. No outside, human or peer review is claimed.
+The full finite SC column vectors are not serialized in public receipts; their source-bound native producer
+calculation remains part of the trust base. Quantitative uniform stability is admitted only on the lower
+conductance interval, not the complete amplitude bridge. `notes/QUALITY.md` stays in GENChase and ties this chain to
+the release-preparation gates. Original review paths name the development layout; copies retain their bytes.
+
+The original 1.0.0 outcome for the Fourier route is recorded in `data/fourier-review-status.json`, outside the hashed records; it
 covers Stage E and Stage S for N = 1, 8, 16, 32, 64, not yet the record of Theorem C.
+Its additional scoped entries now also record the accepted 1.1.0 conductance, uniform and Hopf components; earlier
+excluded scopes remain historical component limits, rather than overriding later admissions.
 In the readings of the programs and lemmas, paths are relative to the study folder, whose layout `code/` reproduces
 (`fourier/stability.py` there is `code/fourier/stability.py` here, and the study's records in `results/` that this
 paper uses are copied in `data/`); the manuscript readings use paths relative to this folder. "Scratchpad" refers to the session

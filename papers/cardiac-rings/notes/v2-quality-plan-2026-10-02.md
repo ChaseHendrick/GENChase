@@ -1,6 +1,15 @@
 # Version 1.1.0 quality and synchronization plan
 
-The released 1.0.0 manuscript and its certificates remain the accepted publication. The candidate now has completed numerical producer and collector evidence for the new conductance branch, full lower-interval uniform cover and amplitude bridge, subject to their separate recorded checks. This plan does not mark the candidate release-ready. Complete original numerical suites, synchronized companion reproduction, PDF inspection, manuscript review and publication gates remain required before publishing 1.1.0.
+The verified 1.0.0 archive remains the current DOI reference until the actual new ZIP is downloaded and checked.
+The 1.1.0 scientific and manuscript preparation gates below are complete within their recorded in-project scopes:
+the current source-bound branch/uniform/Hopf certificates, complete original stability and Hopf suites, branch quick checks, synchronized
+tracked-companion reproduction, written arguments, final claims and 73-page PDF layout. Publication requires the
+final release checks and applicable CI; actual Zenodo archive inspection remains a later, separate gate.
+
+The final source hash is `9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac`; PDF hash is
+`ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1`. `notes/QUALITY.md` gives the seven-item
+1.1.0 evidence record. The original checklist below records the required work; it is retained as the plan, not a
+statement that every imperative is still pending.
 
 1. **Proof source and argument.** Resolve all recorded Hopf and uniform-stability findings, then obtain the
    separate in-project fix checks. Bind each final certificate to sources captured before calculation. Preserve
@@ -51,5 +60,7 @@ The companion continuation wrapper directly checks the exact conservative self-m
 uniform unit, including the maximum of its stored kappa and serialized derivative implication. All 63 actual
 original receipts passed this inexpensive exact check; 45 bounded synthetic orchestration controls passed, including
 an underestimated stored-kappa self-map negative control. No full numerical piece proof was rerun by those controls.
-The complete synchronized companion collectors still require their recorded run and review. Original source-bound
+The complete synchronized companion collectors passed from actual committed companion bytes at c574f0b in 29.6365 s,
+436.031 MiB sampled peak RSS, under the bounded supervisor. All 84 code/data files and 14 provenance pins matched.
+The tracked-stage run and separate admission receipts record exact comparison scope. Original source-bound
 SC proofs remain part of the evidence; omitted finite SC vectors are not reconstructed by the collector wrapper.

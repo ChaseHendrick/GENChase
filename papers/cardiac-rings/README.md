@@ -2,10 +2,10 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Version 1.1.0 candidate**, not yet published or archived. The integrated manuscript and synchronized continuation evidence are under final acceptance. The original numerical suites and current scientific records have passed their scoped in-project checks. Final companion reproduction, corrected PDF inspection, manuscript review, publication checks and archive verification remain separate gates.
-
 Preprint. Release 1.0.0 (2026-10-02) is archived on Zenodo with its original programs and output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
+
+**Version 1.1.0**, prepared for publication through the companion release workflow. The current proof records, complete original stability and Hopf test suites, branch quick checks and fresh tracked-companion reproduction have passed their scoped in-project checks. The release and downloaded archive verification are recorded separately; the verified archive locator above remains 1.0.0 until the new Zenodo ZIP is inspected.
 
 **[Read the paper PDF](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
 
@@ -101,7 +101,7 @@ rings. For the single cell, a connected conductance family reaches a certified s
   16-cell waves in intervals that contain the periods proved here.
 - **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry or tissue; N < 8;
   stability for N other than 8, 16, 32, 64, for the cable, or uniformly in N; a rate of convergence as N tends to
-  infinity. The released 1.0.0 did not certify conductance continuation. The 1.1 candidate extension above concerns only the single cell.
+  infinity. The released 1.0.0 did not certify conductance continuation. The 1.1.0 extension above concerns only the single cell.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
   of their fixes; a review of the CAPD verifier, which led to its hardening and to the CAPD patch in `code/proofs/`; a
   first reading of this manuscript (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised
@@ -138,7 +138,7 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 ## Programs
 
-The canonical programs and records are copied from the development repository. The 1.1 candidate copies current
+The canonical programs and records are copied from the development repository. Version 1.1.0 copies current
 reviewed Fourier programs and inputs byte for byte into `code/`, and
 current records into `data/`. Source and input hashes retain their original execution-layout paths. A companion
 basename is not a freshness or acceptance check; the collectors validate the current source-bound complete logs.
@@ -192,7 +192,7 @@ From this folder:
 ```
 python3.12 -m pip install -r code/requirements.txt
 sh code/run_all.sh                 # stored source/input provenance (counts reported from actual records) and the exact cell link
-sh code/run_all.sh continuation    # candidate D: final B/uniform/H collectors and strict comparison, scratch only
+sh code/run_all.sh continuation    # Theorem D: final branch/uniform/Hopf collectors and strict comparison, scratch only
 sh code/run_all.sh alln            # Theorem C: re-derive the gluing and the Stage E identifications in Arb (under a minute)
 sh code/run_all.sh 1,8             # rerun Stage E and Stage S for N = 1 and 8 (about 5 minutes)
 sh code/run_all.sh 1,8,16,32,64    # all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)

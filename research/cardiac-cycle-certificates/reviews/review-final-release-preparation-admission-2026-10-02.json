@@ -1,0 +1,65 @@
+{
+  "checked_utc": "2026-10-03T03:36:25.695914+00:00",
+  "review_kind": "Independent final release-preparation admission",
+  "source_head_before_preparation": "c574f0b095e7dd43443167d1c612c6a8cdb32aad",
+  "scope": "Final staged1.1 documentation, exact installed manuscript and PDF, selected provenance grants, local release checks and actual local Git archive packaging. Remote release and deposited archive verification are separate.",
+  "manuscript": {
+    "file": "paper/cardiac-rings.tex",
+    "sha256": "9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac"
+  },
+  "pdf": {
+    "file": "paper/cardiac-rings.pdf",
+    "sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+    "pages": 73,
+    "bytes": 1036919
+  },
+  "quality_and_readiness_documents_sha256": {
+    "README.md": "85d92723d9ca037ac3833a1d130c351d10288ff324cb336c83e9048ba8011ccb",
+    "RELEASES.md": "54883c3e11fb2cf33c30e3cc51e9780b71b8f8f2441081831bd0a0e581a67456",
+    "notes/QUALITY.md": "d7a853105e6e7f02c53aef7f0fb023642cf8233c741333b2efc47a47c5fb64e4",
+    "notes/v2-quality-plan-2026-10-02.md": "3a14ee825fc44db0315b8350a51acdf725bff08c8194e44a3a4c78d3f31dfc20",
+    "review/README.md": "29fcadd3325f84d265af46949e9abb141f9d35a1df840ad5745340e66a9be36a"
+  },
+  "registry_sha256": "fbbbb9bcf32b0a696749bb90d386780cf118038de8db9ce94a05f70d316d0d0b",
+  "registered_status": "ready",
+  "archive_locator_preserved": {
+    "archiveVersion": "1.0.0",
+    "codeDoi": "10.5281/zenodo.23101322"
+  },
+  "exact_current_and_staged_provenance_grants": 17,
+  "actual_local_checks": [
+    {
+      "command": "node tools/paper-check.js --paper cardiac-rings --release",
+      "exit_code": 0,
+      "output": "OK cardiac-rings [ready]; quality bar met;73pages;companion stages cleanly"
+    },
+    {
+      "command": "node tools/paper-sync.js --check cardiac-rings",
+      "exit_code": 0,
+      "output": "cardiac-rings: ready to publish as its own repository"
+    }
+  ],
+  "local_archive": {
+    "zip_file": "cardiac-final-release-stage-2026-10-02.zip",
+    "zip_sha256": "0c3e36ab8eb17906baaf222ce147359d5261d1d602d6d173b3dfdc42ff5ba81b",
+    "entry_count": 198,
+    "verified_code_data_files": 84,
+    "verified_provenance_grants": 17,
+    "code_data_identical_to_actual_successful_tracked_reproduction": true,
+    "final_PDF_and_source_exact": true,
+    "producer_receipt_file": "review-final-release-stage-archive-2026-10-02.json",
+    "producer_receipt_sha256": "b2b39b9bf96d42cb870a3c89b25e9102d6779e151188870521bb8b9065f03b95"
+  },
+  "scientific_admission_file": "review-final-scientific-package-admission-2026-10-02.json",
+  "scientific_admission_sha256": "ece259f6852b0d7a7183bb30750c31fcadf9be7e2d24cf2017ade182479ae7ad",
+  "release_preparation_admitted": true,
+  "remaining_before_merge_publication": [
+    "Applicable CI must pass on final commit",
+    "Resolve PR review findings and use authorized companion release workflow"
+  ],
+  "remaining_after_release": [
+    "Download actual deposited new source ZIP and verify exact manuscript PDF before advancing archiveVersion/codeDoi"
+  ],
+  "no_remote_release_or_Zenodo_archive_claim": true,
+  "no_new_numerical_reproof_claim": true
+}

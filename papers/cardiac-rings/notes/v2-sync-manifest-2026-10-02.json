@@ -285,6 +285,22 @@
       "source": "research/cardiac-cycle-certificates/reviews/review-final-manuscript-editorial-receipt-2026-10-02.json",
       "sha256": "f9831f801a98949ccb5f407e467940e5563ed58c29fa0281204a2c3da954af4d"
     },
+    "review/review-final-pdf-package-37093181017-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-final-pdf-package-37093181017-2026-10-02.json",
+      "sha256": "62c325bd31121186e6c77fb3e538cea063653b02e02ccbd2febd545e742f2b27"
+    },
+    "review/review-final-release-preparation-admission-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-final-release-preparation-admission-2026-10-02.json",
+      "sha256": "3588722c93e3ebc0cefbdfdc521e2b3a413763e28c2537bafa8f4508ad61bdd0"
+    },
+    "review/review-final-release-stage-archive-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-final-release-stage-archive-2026-10-02.json",
+      "sha256": "b2b39b9bf96d42cb870a3c89b25e9102d6779e151188870521bb8b9065f03b95"
+    },
+    "review/review-final-scientific-package-admission-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-final-scientific-package-admission-2026-10-02.json",
+      "sha256": "ece259f6852b0d7a7183bb30750c31fcadf9be7e2d24cf2017ade182479ae7ad"
+    },
     "review/review-final-theoremD-claims-receipt-2026-10-02.json": {
       "source": "research/cardiac-cycle-certificates/reviews/review-final-theoremD-claims-receipt-2026-10-02.json",
       "sha256": "145c390a0e90a454a02332b9d5e6be7809c040a8eac0a6e74d46f8d415c930f7"
@@ -365,9 +381,21 @@
       "source": "research/cardiac-cycle-certificates/reviews/review-manuscript-layout-fix-receipt-2026-10-02.json",
       "sha256": "effbef3163d9bb70a5a438a8d32d9f01b40c4cc614e9c81b35d0a97d377051c7"
     },
+    "review/review-manuscript-package-37092891433-structured-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-manuscript-package-37092891433-structured-receipt-2026-10-02.json",
+      "sha256": "bb8c0138c3f154f6afffcdc94b60039f008e976cadfff22705e219bae9b938dc"
+    },
+    "review/review-manuscript-package-37093181017-structured-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-manuscript-package-37093181017-structured-receipt-2026-10-02.json",
+      "sha256": "3d602a9396c11066f5ced4e953f9fd46d38addcc591a8ab7e7dc714029da07d1"
+    },
     "review/review-manuscript-package-actual-receipt-2026-10-02.json": {
       "source": "research/cardiac-cycle-certificates/reviews/review-manuscript-package-actual-receipt-2026-10-02.json",
       "sha256": "c3474a2d79001e41f0bdfd64f6b96caea5cb19146d67a95c4abffea8a6d60c7d"
+    },
+    "review/review-manuscript-pages-1-36-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-manuscript-pages-1-36-2026-10-02.json",
+      "sha256": "7b947e4bdc9cdad51bfced10331cd4fd94867feeead15d34c8e36081785b50d3"
     },
     "review/review-original-half-actual-receipt-2026-10-02.json": {
       "source": "research/cardiac-cycle-certificates/reviews/review-original-half-actual-receipt-2026-10-02.json",
@@ -400,6 +428,14 @@
     "review/review-theoremA-point-gate-receipt-2026-10-02.json": {
       "source": "research/cardiac-cycle-certificates/reviews/review-theoremA-point-gate-receipt-2026-10-02.json",
       "sha256": "67ff9a77441dbf7ab73348cb195cb34872bf5ad24ce683cf76284219d90f22d7"
+    },
+    "review/review-tracked-stage-final-admission-receipt-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-tracked-stage-final-admission-receipt-2026-10-02.json",
+      "sha256": "02834f3a2b9af400bd0d2d9a264c41d76d7b6ed45bc57093581e6b687a0d8cd1"
+    },
+    "review/review-tracked-stage-reproduction-2026-10-02.json": {
+      "source": "research/cardiac-cycle-certificates/reviews/review-tracked-stage-reproduction-2026-10-02.json",
+      "sha256": "ad57b238cae724d5b6c6b666052181c8b3fdf9b5e04ad1dc5e7abcd9a765798b"
     },
     "review/runtime-macos-arm64-2026-10-02.json": {
       "source": "research/cardiac-cycle-certificates/reviews/runtime-macos-arm64-2026-10-02.json",
@@ -434,5 +470,5 @@
       "sha256": "10017dd27e1840c03dad6fbbe1b062c5790dce352c72cd1066bb0a95bdda8d07"
     }
   },
-  "n_files": 108
+  "n_files": 117
 }

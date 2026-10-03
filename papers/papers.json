@@ -207,8 +207,8 @@
       "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
       "field": "Cardiac electrophysiology",
       "summary": "computer-assisted proofs of stable rotating waves in rings of a ventricular cell model",
-      "status": "preparing",
-      "note": "Version 1.1.0 preparation adds source-bound single-cell conductance continuation (712 pieces and 711 inclusions), uniform orbital stability on J=[0.027499735464,0.02778996093] (63 group or subgroup certificates, delta=3e-5 per ms), and a 68-piece amplitude family with 67 inclusions, zero-amplitude identity and a fresh existence-only bridge to the certified supercritical Hopf endpoint. Mathematical records and original numerical suites have scoped in-project acceptance; no outside review is claimed. Final companion reproduction, corrected PDF review and publication checks are pending. Original fixed-cell, N=8/16/32/64 stability and all-N/cable existence results retain their scope. Quantitative uniform stability on the entire amplitude bridge is not proved. The registered codeDoi/archiveVersion continue to identify the actual verified 1.0.0 preprint archive until a new version is downloaded and verified.",
+      "status": "ready",
+      "note": "Version 1.1.0 is prepared with source-bound single-cell conductance continuation (712 pieces and 711 inclusions), uniform orbital stability on J=[0.027499735464,0.02778996093] (63 group or subgroup certificates, delta=3e-5 per ms), and a 68-piece amplitude family with 67 inclusions, zero-amplitude identity and a fresh existence-only bridge to the certified supercritical Hopf endpoint. Current mathematical records, complete original stability and Hopf suites, branch quick checks, written arguments and final claims passed their scoped independent in-project checks. A fresh tracked companion staging passed alln,continuation in 29.6365 seconds; the exact-source 73-page PDF was rebuilt, compared across all pages and visually inspected. The seven-item quality record is complete. No outside review is claimed. Release checks and applicable CI precede publication; the actual new archive must still be downloaded and verified. Original fixed-cell, N=8/16/32/64 stability and all-N/cable existence results retain their scope. Quantitative uniform stability on the entire amplitude bridge is not proved. The registered codeDoi/archiveVersion continue to identify the actual verified 1.0.0 preprint archive until the new version is downloaded and verified.",
       "typst": null,
       "latex": "papers/cardiac-rings/paper/cardiac-rings.tex",
       "pdf": "papers/cardiac-rings/paper/cardiac-rings.pdf",
@@ -331,6 +331,30 @@
             "source-repository-url"
           ],
           "reason": "Inspected exact provenance links to the public original GitHub proof run; mathematical sources and failed attempts remain preserved."
+        },
+        {
+          "file": "review/review-final-pdf-package-37093181017-2026-10-02.json",
+          "sha256": "62c325bd31121186e6c77fb3e538cea063653b02e02ccbd2febd545e742f2b27",
+          "rules": [
+            "source-repository-url"
+          ],
+          "reason": "Preserves inspected immutable PDF-audit provenance: actual public GitHub build URL or exact registered source paths. GENChase is public; email, manuscript and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/review-manuscript-package-37092891433-structured-receipt-2026-10-02.json",
+          "sha256": "bb8c0138c3f154f6afffcdc94b60039f008e976cadfff22705e219bae9b938dc",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected immutable PDF-audit provenance: actual public GitHub build URL or exact registered source paths. GENChase is public; email, manuscript and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/review-manuscript-package-37093181017-structured-receipt-2026-10-02.json",
+          "sha256": "3d602a9396c11066f5ced4e953f9fd46d38addcc591a8ab7e7dc714029da07d1",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected immutable PDF-audit provenance: actual public GitHub build URL or exact registered source paths. GENChase is public; email, manuscript and parent-folder-link checks remain strict."
         }
       ]
     }

@@ -87,3 +87,40 @@ A new read-only source and collector audit passed in 5.88 seconds, 299.83 MiB se
 The complete cover is 63 used units over all 712 pieces of the single-cell conductance interval `[0.027499735464, 0.02778996093]`. Recovery replaces no stored scientific row. For all 35 independently rounded derivative sums that exceed their finer stored kappa, the exact larger majorant and stronger self-map inequality pass. The recorded outward multiplier upper bound `0.998413816` is strictly below one. No complete physics reproof is required to repair this serialization gate failure. The original failed workflow and all actual failed whole-group attempts remain preserved.
 
 All seven unchanged original piece controls subsequently passed in run 37089576992. All thirteen unchanged original group/half controls plus one additional fresh half comparison passed in run 37091152974 and were independently reviewed. Group cached serialization tests use genuinely freshly computed isolated fixtures; they do not claim numerical bit reproduction of earlier bounds. The finite SC column vectors are absent from public JSON, so admission retains the fresh source-bound native Arb producer proofs for all 63 certificates rather than claiming a separate exact reconstruction of every SC column. This correction establishes the scoped uniform-stability component, not external peer review or manuscript release readiness. Receipt: `research/cardiac-cycle-certificates/reviews/review-stability-lineage-refresh-2026-10-03.json`.
+
+## Final manuscript and release preparation (2026-10-02, after the lineage correction)
+
+The original failed uniform workflow is preserved. Its actual current-source raw numerical outputs passed the
+stronger exact collector and independent lineage checks described above. The complete Hopf results from successful
+run 37088805596 are installed in both the canonical study and companion, including all 68 pieces, 67 gluings,
+the zero identity and fresh existence-only bridge. The original stability piece/group/half and Hopf suites passed;
+branch quick checks passed. No full current branch test-suite run is claimed by this checkpoint.
+
+The final manuscript source is `9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac`.
+Successful [build 37093181017](https://github.com/ChaseHendrick/GENChase/actions/runs/37093181017) produced the installed
+73-page PDF, SHA-256 `ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1`. Two independent builds,
+each using three TeX passes, gave byte-identical final PDFs. Separate structured and visual inspections admitted
+the final PDF: no undefined references/citations, all fonts embedded, no off-page text; 70 pages were pixel-identical
+to the previously fully inspected corrected build, including all four figures; changed pages 66, 72 and 73 were
+visually inspected clean. The minor unchanged 2.69937-pt proof box protrusion and three spacing diagnostics are
+recorded, with no clipping or collision. The email remains chase@hendrickresearch.com. Reading-status comments
+were removed from two bibliography entries without changing the accurate source-reading scope paragraph.
+
+Actual fresh tracked-companion staging at c574f0b passed `alln,continuation` in 29.6365 seconds with 436.031 MiB
+sampled peak RSS. All 84 code/data files matched committed bytes, all 14 then-current provenance pins matched,
+and exact collection/gluing/tube/zero/bridge comparisons passed. This is fresh stored-proof reproduction, not a
+new reproof of every numerical piece. Final PDF-audit provenance adds three individually inspected exact hash
+pins, for 17 total; manuscript/email/parent-folder-link checks remain strict.
+
+The 1.1.0 seven-item quality record is complete, and the README, release notes and preparation plan now state the
+discharged Theorem D and actual check scopes. The registry is `ready`, while `archiveVersion=1.0.0` and
+`codeDoi=10.5281/zenodo.23101322` still identify the actually downloaded and verified existing preprint.
+Local `paper-check --paper cardiac-rings --release`, complete `paper-check`, `paper-sync --check cardiac-rings`,
+`build --check`, science inventory, lint and staged diff whitespace checks passed. Applicable CI must still be
+observed on the final pushed commit before merging; earlier green commits are not substitutes.
+
+Next: update and ready PR #264, observe all required final-commit checks, merge, then dispatch the papers workflow
+with `paper=cardiac-rings` and `release=1.1.0`. Do not hand-push or move a tag. Verify the actual released GitHub
+source ZIP and the new Zenodo Publication / Preprint ZIP against the installed manuscript and reviewed code/data.
+Only after the deposited archive passes should a follow-up update the DOI/archive-version pair and recommended
+citation. No new DOI or publication is asserted by this preparation checkpoint; the 1.0.0 archive remains available.
