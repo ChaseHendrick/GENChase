@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "status": "full current-source original Hopf numerical suite passed",
+  "scientific_source_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "test_source_sha256": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+  "log_sha256": "af36a30daf9bdabcdc799832ad7e1517f4d3c55dbb0ecb7cc7dc2cd2ddd240ea",
+  "log": "hopf-full-original-suite-2026-10-02.log",
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/usr/bin/env",
+      "OMP_NUM_THREADS=1",
+      "OPENBLAS_NUM_THREADS=1",
+      "MKL_NUM_THREADS=1",
+      "BLIS_NUM_THREADS=1",
+      "NUMEXPR_NUM_THREADS=1",
+      "VECLIB_MAXIMUM_THREADS=1",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "research/cardiac-cycle-certificates/fourier/test_hopf.py"
+    ],
+    "pid": 59342,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 476.9907682919875,
+    "peak_aggregate_rss_mib": 633.625,
+    "log": "/private/tmp/cardiac-hopf-full-acceptance-review-2026-10-02.log"
+  },
+  "checks": 117,
+  "failed": 0,
+  "actual_selected_piece_reproofs": [
+    0,
+    13,
+    30,
+    40,
+    62,
+    67
+  ],
+  "scope": "Unmodified full test_hopf suite, including live widened/wrong-centre and residual mutation controls, zero identity, fresh bridge memberships and actual record binding. The fresh 516-interval equilibrium cover was separately produced and independently reviewed; --rerun-theorem-a was not requested. Historical bound equalities are diagnostic, current exact radii polynomial gates are authoritative.",
+  "no_full_bridge_uniform_stability_claim": true,
+  "no_release_readiness_claim": true
+}

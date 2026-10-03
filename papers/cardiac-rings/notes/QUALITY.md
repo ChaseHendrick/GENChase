@@ -21,7 +21,75 @@ GENChase: the companion repository does not carry `notes/`.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
-## Record (2026-10-01, `paper/cardiac-rings.tex` after two in-project readings of the manuscript; updated 2026-10-02 for Appendix A, Theorem C and Remark 7.1)
+## Version 1.1.0 record (2026-10-02)
+
+This record supplements the historical 1.0.0 record below. The current manuscript source has SHA-256
+`9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac`. The complete 73-page PDF has SHA-256
+`ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1`. Recorded checks have their stated scopes;
+publication and verification of the actual new deposited ZIP follow the quality decision.
+
+- [x] **1. Complete proofs.** Theorem D and the conductance, uniform-stability, desingularization and gluing arguments
+  are written out in the manuscript. The separately reviewed methods drafts, exact integration and final statement
+  checks are in `review/rec2-branch-fixcheck-2026-10-02.md`, `review/theoremC-uniform-fixcheck-2026-10-02.md`,
+  `review/hopf-bridge-fixcheck-2026-10-02.md`, `review/review-integrated-manuscript-receipt-2026-10-02.json` and
+  `review/review-final-theoremD-claims-receipt-2026-10-02.json`. The last check discharges the previously conditional
+  numerical hypotheses without changing the conclusions. The final three editorial replacements were separately
+  checked in `review/review-final-manuscript-editorial-receipt-2026-10-02.json`. Original fixed-conductance existence,
+  stability, CAPD and Appendix A proof blocks retain their previously reviewed scope.
+- [x] **2. Rigorous computation.** Current-source records contain all 712 conductance pieces and 711 inclusions,
+  all 63 uniform units covering those pieces, all 68 amplitude pieces and 67 inclusions, the 516-interval Hopf
+  equilibrium certificate, zero-amplitude identity and a fresh existence-only point joining both families.
+  `review/review-current-scientific-chain-refresh-2026-10-02.json` and the component entries in
+  `data/fourier-review-status.json` bind the accepted sources, inputs and exact inequalities. The original failed
+  stability workflow remains failed: its six raw numerical shard logs were recovered unchanged, with stronger exact
+  conservative self-map checks for 35 independently rounded derivative sums, as independently rechecked in
+  `review/review-stability-lineage-refresh-2026-10-03.json`. Public receipts omit the finite SC column vectors;
+  admission retains the source-bound native Arb producer proof, rather than claiming their reconstruction from JSON.
+  All seven branch quick checks, seven original stability piece controls, thirteen original group/half controls plus an additional half comparison,
+  six quick stability controls and 117 original Hopf checks passed, with actual receipts in `review/`.
+- [x] **3. Every claim labelled.** The final abstract, Labels paragraph, Theorem D, numerical observations and README
+  distinguish computer-assisted results from floating-point illustrations. Quantitative uniform stability is proved
+  only on J = [0.027499735464, 0.02778996093], with delta = 3e-5 per ms and outward multiplier bound 0.998413816.
+  Qualitative attraction near Hopf has no computed neighborhood size. The fresh G_Ks = 0.02778 point proof is
+  existence-only; stability is transferred by identification with the admitted lower branch. Whole-bridge uniform
+  stability, global monotonicity, global uniqueness, tissue, clinical and action-potential results are not claimed.
+  The all-N and cable results retain the original fixed-conductance and stability limits. See the final claims and
+  editorial receipts above.
+- [x] **4. Sources read.** The new arguments are written out and credit established continuation, nonpolynomial
+  estimates, desingularization and gluing methods. The full published 2021 Hopf article and complete 46-page March
+  22, 2019 continuation preprint were read, with exact versions and reading scope recorded in
+  `review/method-reading-and-forward-citations-2026-10-02.md`. The final typeset continuation article was not read
+  in full; no unverified theorem from it substitutes for a written proof. Original source and arithmetic-library
+  trust-base limits remain as recorded below and in the manuscript. Reference entries identify the sources without
+  reading-status comments; the Sources of proofs paragraph retains the accurate scope.
+- [x] **5. Prior article review.** The bounded Erhardt (2025) forward-citation search and primary-source method
+  readings are recorded in `review/method-reading-and-forward-citations-2026-10-02.md` and the research ledger.
+  They establish no first-ever or exhaustive-priority claim. Original prior-article search scope remains unchanged.
+- [x] **6. Adversarial second reading.** Separate in-project AI-agent readers checked the branch, uniform-stability
+  and Hopf arguments/programs, their fixes, actual numerical outputs, integrated manuscript and final claims.
+  The receipts named in items 1 and 2 record the acceptance boundaries and resolved findings. The final wrapper was
+  independently checked with four endpoint/tube mutations and nine optional-output/path controls in
+  `review/review-companion-endpoint-precision-receipt-2026-10-02.json` and
+  `review/review-companion-wrapper-final-receipt-2026-10-02.json`. The actual tracked staging and final PDF also
+  received separate checks in `review/review-tracked-stage-final-admission-receipt-2026-10-02.json` and
+  `review/review-manuscript-package-37093181017-structured-receipt-2026-10-02.json`. No outside, human or peer review
+  is claimed.
+- [x] **7. Reproducible.** A fresh public companion staging from committed c574f0b contained 84 byte-identical
+  code/data files and all 14 exact provenance pins. `sh code/run_all.sh alln,continuation` exited 0 in 29.6365 s
+  with 436.031 MiB sampled peak RSS under a 200-second/3500-MiB cap. Exact stored collection, all-N and conductance
+  gluing, uniform tube checks, amplitude gluing, zero identity and fresh bridge checks passed; this does not reprove
+  every numerical piece. The actual log/supervisor and independent admission are in the two tracked-stage receipts.
+  The complete original stability and Hopf suites passed separately as in item 2. The current PDF was built from the exact
+  registered source by successful run 37093181017: two independent builds, each using three TeX passes, produced
+  byte-identical final PDFs, with no unresolved references or
+  citations and all 45 used fonts embedded. All 73 pages were compared to the previously inspected corrected build:
+  70 pages, including all four figures, were pixel-identical; changed pages 66, 72 and 73 were visually inspected
+  clean. No page text was clipped. The unchanged 2.69937-pt proof box protrusion and three spacing warnings cause no
+  collision. See `review/review-final-pdf-package-37093181017-2026-10-02.json` and the prior complete page readings.
+  Final `paper-check --release` and companion staging checks passed locally. Applicable CI must pass on the final
+  commit before merging, and the actual new deposited ZIP and its PDF must be checked before advancing the archive locator.
+
+## Historical 1.0.0 record (2026-10-01, `paper/cardiac-rings.tex` after two in-project readings of the manuscript; updated 2026-10-02 for Appendix A, Theorem C and Remark 7.1)
 
 - [x] **1. Complete proofs.** The draft writes out the proofs of every lemma and theorem the certificates rest
   on (Section 4, Lemmas 4.1 to 4.8, for existence, and, since 2026-10-02, Lemmas 4.9 to 4.14 with the proof of Theorem C

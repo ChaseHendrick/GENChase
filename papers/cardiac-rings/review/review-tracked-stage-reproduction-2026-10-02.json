@@ -1,0 +1,593 @@
+{
+  "head": "c574f0b095e7dd43443167d1c612c6a8cdb32aad",
+  "stage": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-final-tracked-stage-2026-10-02",
+  "stage_exit_code": 0,
+  "code_data_tracked_committed_exact": true,
+  "file_count": 84,
+  "files": [
+    {
+      "file": "code/candidates/cell_frameF.txt",
+      "sha256": "2c9ad5eae1835f34efdfd57a4f123f56efb1530ca9a0338a76cb33f92d7e37b8",
+      "bytes": 6951
+    },
+    {
+      "file": "code/candidates/cell_orbit.txt",
+      "sha256": "b34d230adf8b35fffee5326bc857ac964c72ed18b6d0ffa177e009fa5e70749b",
+      "bytes": 7613
+    },
+    {
+      "file": "code/fourier/LEMMAS-hopf.md",
+      "sha256": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+      "bytes": 57776
+    },
+    {
+      "file": "code/fourier/LEMMAS-stability.md",
+      "sha256": "9dc27ff8d0e9d219435fd01141d3b7fa28e16358cab9d1897ed34327c033fcc8",
+      "bytes": 112597
+    },
+    {
+      "file": "code/fourier/alln.py",
+      "sha256": "efec79f5236f1535dea2de6919af41655e893836a83b5bd9c594e09d1342a414",
+      "bytes": 66244
+    },
+    {
+      "file": "code/fourier/arbmodel.py",
+      "sha256": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "bytes": 28476
+    },
+    {
+      "file": "code/fourier/bench_strip.py",
+      "sha256": "d3e7f96405399b924774c1a8567f13add2b4007f944d7c967b1fcca10ff47c80",
+      "bytes": 11813
+    },
+    {
+      "file": "code/fourier/branch-1.0.0.py",
+      "sha256": "97f7bbc586727bdab51a412d2b5b304fd6f858b79826f6c0319ef462ffbe29fa",
+      "bytes": 120155
+    },
+    {
+      "file": "code/fourier/branch.py",
+      "sha256": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+      "bytes": 130237
+    },
+    {
+      "file": "code/fourier/branch_stability.py",
+      "sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+      "bytes": 119433
+    },
+    {
+      "file": "code/fourier/centre.py",
+      "sha256": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+      "bytes": 16105
+    },
+    {
+      "file": "code/fourier/check_records.py",
+      "sha256": "d490e718fcc57727678a86cd2aa0fce4a7d1e40844af375b0b4777b2af6e255d",
+      "bytes": 3520
+    },
+    {
+      "file": "code/fourier/data/alln/controls.jsonl",
+      "sha256": "86554fa50bc52b772c27251902aae64d210be9941ea9c673fd95e80dc4112915",
+      "bytes": 34768
+    },
+    {
+      "file": "code/fourier/data/alln/pieces.jsonl",
+      "sha256": "01374b0b965b6079eac051cc7fa99a79358ebdddcec157ffc07d2418771236cd",
+      "bytes": 1484623
+    },
+    {
+      "file": "code/fourier/data/alln/run_code.json",
+      "sha256": "58dfd1241eb7240237ef0b83492d1b47634015e440fbc0ecdfe850211bafa5c8",
+      "bytes": 902
+    },
+    {
+      "file": "code/fourier/data/branch/centres_K12.jsonl",
+      "sha256": "396610e93cb6b8d233776d88aacdd7a461970f3efd638eb1b8d9e1688b789b36",
+      "bytes": 8933311
+    },
+    {
+      "file": "code/fourier/data/branch/float_branch_K16.json",
+      "sha256": "bffffce71b9e09e64ff3eafad9c7f6f88d9ad7d0dad5de9d184dba3edbc4434a",
+      "bytes": 21586
+    },
+    {
+      "file": "code/fourier/data/branch/points_K12.jsonl",
+      "sha256": "aac6de8cd0b0a57d4b175ce9dd89107e2093c7aa29d67862376e6ac2c4baf608",
+      "bytes": 89102
+    },
+    {
+      "file": "code/fourier/data/branch/points_centres_K32.jsonl",
+      "sha256": "2530cf41e416e153bfac265e84d7af68cc10ec8ec15fb786ddfd4f9d271ab8c8",
+      "bytes": 528465
+    },
+    {
+      "file": "code/fourier/data/branch/run_K12.jsonl",
+      "sha256": "b761e1b150ec2a1f3165a671c7af570863bd09fce4c1d82ba7c7734ce98eafcb",
+      "bytes": 6881830
+    },
+    {
+      "file": "code/fourier/data/branch/run_K12_final.jsonl",
+      "sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+      "bytes": 8881081
+    },
+    {
+      "file": "code/fourier/data/branch/stability_uniform_K12_final.jsonl",
+      "sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+      "bytes": 1191850
+    },
+    {
+      "file": "code/fourier/data/centre_N16_K32.json",
+      "sha256": "0c3690b038ef9ac09f67da64429a0e6c7defe11c828cb781ea840704a317f6f7",
+      "bytes": 51087
+    },
+    {
+      "file": "code/fourier/data/centre_N1_K32.json",
+      "sha256": "e1d2c0a811b8b9a0741d019709e5a5f0591a3d1bee4232d18c9e781d8e6ecd79",
+      "bytes": 44963
+    },
+    {
+      "file": "code/fourier/data/centre_N32_K32.json",
+      "sha256": "fdad37fec781b0e4691aebc1494d2b97e5782dbf60d1cc1117fe8d9f931799c0",
+      "bytes": 51094
+    },
+    {
+      "file": "code/fourier/data/centre_N64_K32.json",
+      "sha256": "5cbb9b1ee3f9d4c94cd2c14de41e73123ff59f675d944f5c69124861a52ed29c",
+      "bytes": 51010
+    },
+    {
+      "file": "code/fourier/data/centre_N8_K32.json",
+      "sha256": "1a2a4da2fd274f967574aef09e5563f4c8b1d0875195d5a1df2c4541ab4d6477",
+      "bytes": 51279
+    },
+    {
+      "file": "code/fourier/data/hopf/covers.jsonl",
+      "sha256": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+      "bytes": 2140127
+    },
+    {
+      "file": "code/fourier/data/hopf/gks_points.jsonl",
+      "sha256": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+      "bytes": 10600
+    },
+    {
+      "file": "code/fourier/data/hopf/gks_points_centres_K32.jsonl",
+      "sha256": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+      "bytes": 38724
+    },
+    {
+      "file": "code/fourier/data/hopf/gluing_gks_final.json",
+      "sha256": "fc35b028288ee0f0d5ae9a03ba6db47eb6f41c3237d9efa01463c879e435f58e",
+      "bytes": 4609
+    },
+    {
+      "file": "code/fourier/data/hopf/pieces.jsonl",
+      "sha256": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+      "bytes": 1546672
+    },
+    {
+      "file": "code/fourier/data/hopf/reprove_final.jsonl",
+      "sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+      "bytes": 443139
+    },
+    {
+      "file": "code/fourier/data/hopf/theoremA_final.json",
+      "sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+      "bytes": 658791
+    },
+    {
+      "file": "code/fourier/data/orbit_N1_M64.json",
+      "sha256": "e7a63fd65cba5dfb1cff03c6ef84ca7e91a1e90fdef15a1b12e69ae8dc3cd2f6",
+      "bytes": 27172
+    },
+    {
+      "file": "code/fourier/existence.py",
+      "sha256": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+      "bytes": 48970
+    },
+    {
+      "file": "code/fourier/fourier_eval.py",
+      "sha256": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+      "bytes": 34877
+    },
+    {
+      "file": "code/fourier/hopf.py",
+      "sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+      "bytes": 178094
+    },
+    {
+      "file": "code/fourier/link_cell.py",
+      "sha256": "89a6c20dd4ef50ad94200dc58eee3288d2f499a460557c4f152e5aa274e5237b",
+      "bytes": 8348
+    },
+    {
+      "file": "code/fourier/stability.py",
+      "sha256": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+      "bytes": 45771
+    },
+    {
+      "file": "code/fourier/test_alln.py",
+      "sha256": "359cfd39760c60125436b1dde820a90363afcad0f8a52b4a0d6269e95041e803",
+      "bytes": 25920
+    },
+    {
+      "file": "code/fourier/test_arbmodel.py",
+      "sha256": "2b2a1a0dffab2b323ba135131f03ab142538d14cf37dc722f8262200bf0a4bce",
+      "bytes": 35880
+    },
+    {
+      "file": "code/fourier/test_branch.py",
+      "sha256": "ffc2b5508bb82b6d254ea76a27a5aad77163d9dd4ba8d21e38e4d240b4085d59",
+      "bytes": 30103
+    },
+    {
+      "file": "code/fourier/test_branch_stability.py",
+      "sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+      "bytes": 36960
+    },
+    {
+      "file": "code/fourier/test_existence.py",
+      "sha256": "a7e2699fb689286e2d5674a9a52b845d1cb7999b2d0216e25233b49909f91d49",
+      "bytes": 19733
+    },
+    {
+      "file": "code/fourier/test_fourier_eval.py",
+      "sha256": "64f9aa6db66267ff11fbdf6b227b2aecf2f073949491aab38460c71d295489f3",
+      "bytes": 22657
+    },
+    {
+      "file": "code/fourier/test_hopf.py",
+      "sha256": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+      "bytes": 56530
+    },
+    {
+      "file": "code/fourier/test_stability.py",
+      "sha256": "4b2175ad963031e58a085d9b5819d50af0795073362bdf33a49d18be4c56fced",
+      "bytes": 19223
+    },
+    {
+      "file": "code/fourier/tp06_18d_arb.py",
+      "sha256": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "bytes": 9046
+    },
+    {
+      "file": "code/model/scales.txt",
+      "sha256": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+      "bytes": 263
+    },
+    {
+      "file": "code/model/setup.hpp",
+      "sha256": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
+      "bytes": 3681
+    },
+    {
+      "file": "code/model/tp06_18d.py",
+      "sha256": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+      "bytes": 6934
+    },
+    {
+      "file": "code/model/tp06_capd.hpp",
+      "sha256": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
+      "bytes": 11226
+    },
+    {
+      "file": "code/numerics/compare_rhs.cpp",
+      "sha256": "10774caea5d45a90b8d5188ddfa0fcfaec9285109908bba74eee0d1cc513585f",
+      "bytes": 1055
+    },
+    {
+      "file": "code/numerics/compare_rhs.py",
+      "sha256": "c3b46fe23c45d9e169fcc30ee98b9fb1fd5fb75dac9951bfa21965c0185333b3",
+      "bytes": 2164
+    },
+    {
+      "file": "code/numerics/hopf_and_orbit.py",
+      "sha256": "46e33fdc6ed264c4ed6364714ecd3b512391c186f87acea6e3273dde04308b83",
+      "bytes": 5424
+    },
+    {
+      "file": "code/numerics/phase_reduction.py",
+      "sha256": "03beeabf2b2b19cbd5d6d41df2d3f5737eed3f405efbe180745105159b0073a4",
+      "bytes": 30604
+    },
+    {
+      "file": "code/plot_cardiac_rings.py",
+      "sha256": "97f55853c0d1e3160f3f8f5aee134c333fb15abf23f593e2d8dfaa8c901c123b",
+      "bytes": 32430
+    },
+    {
+      "file": "code/proofs/capd-6.1.0-genchase.patch",
+      "sha256": "fcdd11fa388fa84d252ec20ed1956376dd64c05468051ba7eda237898be4adc7",
+      "bytes": 1885
+    },
+    {
+      "file": "code/proofs/certify.py",
+      "sha256": "c93202ef9425fc8be400166cb607e1cdddc230a5af0e51f801228b1cce8043a8",
+      "bytes": 4590
+    },
+    {
+      "file": "code/proofs/frame.py",
+      "sha256": "95b42d4d876263640021d7258164b00ca3c80ac8710ec2a2db0b8a2dec61eedb",
+      "bytes": 6149
+    },
+    {
+      "file": "code/proofs/orbit_newton.cpp",
+      "sha256": "0e0179d724540ea1b92cce300ab8de105912307d3b1537adb5222a6c9b38a8a8",
+      "bytes": 4856
+    },
+    {
+      "file": "code/proofs/verify.cpp",
+      "sha256": "d420437428bbd4d2c82a86559f5d6507846aa2b81c68c4e026c94f89d20c1d99",
+      "bytes": 23149
+    },
+    {
+      "file": "code/requirements.txt",
+      "sha256": "be410e3d6443f11f989803f75bea3d389da29241fcc0b5490ec0a0d1dadb0e07",
+      "bytes": 1294
+    },
+    {
+      "file": "code/run_all.sh",
+      "sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+      "bytes": 24692
+    },
+    {
+      "file": "data/cell-gks0.0275.json",
+      "sha256": "c922ddd7d89d07867cb59406da1190ae60411e2f73a584592adfd23ecdedb0de",
+      "bytes": 4265
+    },
+    {
+      "file": "data/fourier-branch-gks.json",
+      "sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+      "bytes": 2461580
+    },
+    {
+      "file": "data/fourier-branch-stability-uniform.json",
+      "sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
+      "bytes": 618825
+    },
+    {
+      "file": "data/fourier-existence-N1.json",
+      "sha256": "628822e1cfb7168dd1123eaa7e5f4534a32f1ac5f05208f37793c71782bc571e",
+      "bytes": 8883
+    },
+    {
+      "file": "data/fourier-existence-N16.json",
+      "sha256": "f9b89af50c6109d536ab9d008c53767cb10d6aa6e93bbd28ab6eb93e744c4a51",
+      "bytes": 8770
+    },
+    {
+      "file": "data/fourier-existence-N32.json",
+      "sha256": "2484f4fd8790bafbb1b9e424d3afe10a7af3f83e2f604d67fed433577ea5eba7",
+      "bytes": 8631
+    },
+    {
+      "file": "data/fourier-existence-N64.json",
+      "sha256": "df488646db4b0ff2d48975422dbd81716ae6a1576f8513dfbb5c150306be8cf6",
+      "bytes": 8627
+    },
+    {
+      "file": "data/fourier-existence-N8.json",
+      "sha256": "a1bd799b5609bc6cb7b19a96d86a14ee63919402ea4f626a59e140c7e62eff2c",
+      "bytes": 8769
+    },
+    {
+      "file": "data/fourier-existence-alln.json",
+      "sha256": "a6fb7707b08d71853107e8a795839f36806e89214aaa2b0c09b7297d25fff571",
+      "bytes": 217095
+    },
+    {
+      "file": "data/fourier-hopf.json",
+      "sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+      "bytes": 66686
+    },
+    {
+      "file": "data/fourier-review-status.json",
+      "sha256": "e38d2319560c2a2386b0a3c67f9218937d971e42d93b12bd3d05da35df87955d",
+      "bytes": 11001
+    },
+    {
+      "file": "data/fourier-stability-N1.json",
+      "sha256": "36e93c7b726a07e3bc757042fa964ae557b08e32d52b88e85beed7c6c91377e2",
+      "bytes": 10491
+    },
+    {
+      "file": "data/fourier-stability-N16.json",
+      "sha256": "87f362842286ff0789b57b1aa0f84c63dd55c19edad061ac45127c0f07b578df",
+      "bytes": 12526
+    },
+    {
+      "file": "data/fourier-stability-N32.json",
+      "sha256": "0f64ede99042cdb2fe212687b3908d8599ebcb93508005de71c5edbf76c2def5",
+      "bytes": 14106
+    },
+    {
+      "file": "data/fourier-stability-N64.json",
+      "sha256": "2e52165a5e4800bda21ad8fa28b7ede166fccf80d65edb79cf8a405f72c79b18",
+      "bytes": 17310
+    },
+    {
+      "file": "data/fourier-stability-N8.json",
+      "sha256": "c18ddcccbcea85d78628795a3efc1710736fd5d6fdcfe58eaff35ab1089c762e",
+      "bytes": 11707
+    },
+    {
+      "file": "data/link_cell.txt",
+      "sha256": "ccf5f4ad959e0f46b7f38f909d7305f16608a721e4aeb205a8b67de7d1d8fc35",
+      "bytes": 2156
+    },
+    {
+      "file": "data/numerics-hopf-orbit.json",
+      "sha256": "e937117984c91e569ec040412ecd922f2cc21bc5be96958d9d07c42a84588f67",
+      "bytes": 1736
+    },
+    {
+      "file": "data/numerics-phase-reduction.json",
+      "sha256": "72e7b1b955157cf32a5bb8e4c869f7db8589ab52d83a185113fba9f7bb870260",
+      "bytes": 48425
+    }
+  ],
+  "provenance_grant_count": 14,
+  "provenance_grants": [
+    {
+      "file": "code/fourier/LEMMAS-hopf.md",
+      "sha256": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "code/fourier/LEMMAS-stability.md",
+      "sha256": "9dc27ff8d0e9d219435fd01141d3b7fa28e16358cab9d1897ed34327c033fcc8",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "code/fourier/hopf.py",
+      "sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "code/fourier/test_hopf.py",
+      "sha256": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/hopf-bridge-fixcheck-2026-10-02.md",
+      "sha256": "f8b3316513fb1b65b000b25c59c951ee68b143570ddbb2bf309b99d0a9e1c2c2",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/methods-delimiter-repair-2026-10-02.json",
+      "sha256": "b32f48863cfd13b8b30e507ae628975b34254a76579ed137b83e2bd64d00fb92",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/parallel-branch-reproof-2026-10-02.md",
+      "sha256": "42f99843a6722ca12f05aa98f730719f3fba8894c8d98025a676cf171670d691",
+      "rules": [
+        "source-repository-url"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/review-branch-methods-draft-receipt-2026-10-02.json",
+      "sha256": "6c6e7ae4a5a7c7dd48510b5ba0eb231fe7bf7a6673186f1caf734aa00830b52c",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/review-hopf-full-original-suite-receipt-2026-10-02.json",
+      "sha256": "154f38a3acf07a8a0bc11f7d77f303980b23e0927112e51ec51f95ece54475e7",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/theoremA-point-gate-run-receipt-2026-10-02.json",
+      "sha256": "7d954d4ea1ccabb924af73659a713b0d62e4f8840123250bd0828c064eaabe3d",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/theoremC-uniform-fixcheck-2026-10-02.md",
+      "sha256": "7d0d5dd97ef0c6403004042922e28ecaed986b3361c273abc1c69cf0f2fda771",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/theoremC-uniform-fixes-2026-10-02.md",
+      "sha256": "f00d37fccfea39df9159df9e5bb8e551dfec652c3481b11a0035548a7a2e1424",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/v2-methods-conversion-check-2026-10-02.json",
+      "sha256": "b33af6cf8f28e0ff6cd512c91e7576b9c62e24e17509fd2a53c166b248709679",
+      "rules": [
+        "development-path"
+      ],
+      "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+    },
+    {
+      "file": "review/review-stability-lineage-refresh-2026-10-03.json",
+      "sha256": "aed3b1007a630339b11f255a344a3a2cf4d641cb41ffdc32d4f386b6060eaafa",
+      "rules": [
+        "source-repository-url"
+      ],
+      "reason": "Inspected exact provenance links to the public original GitHub proof run; mathematical sources and failed attempts remain preserved."
+    }
+  ],
+  "paper_sync_sha256": "5a320f121ebb67f064525169470e40424aadeab5002c16dc94ea04adc75ec87b",
+  "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+  "pdf_scope": "Historical staged PDF; new PDF package pending; no publication readiness claim.",
+  "checked_utc": "2026-10-03T03:28:09.006459+00:00",
+  "review_kind": "Actual tracked-only companion staging and read-only stored-proof collector reproduction",
+  "guard": "paper-sync.js stage exited zero with selected-paper exact provenance grants; email and parent-link guards remain active",
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/bin/sh",
+      "code/run_all.sh",
+      "alln,continuation"
+    ],
+    "pid": 74002,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 29.636505082948133,
+    "peak_aggregate_rss_mib": 436.03125,
+    "log": "/private/tmp/cardiac-final-tracked-reproduction-2026-10-02.log"
+  },
+  "limits": {
+    "wall_seconds": 200,
+    "aggregate_rss_mib": 3500,
+    "log_mib": 5
+  },
+  "supervisor_sha256": "1d77a4130a17b1a67d4af9120516920368a57760f20cd45969e076519b4ebe75",
+  "timeout_shim_sha256": "d621a9b4f869807b76d3f3070c3039be47f8f5049f410f0073efda5f09db95c2",
+  "log_sha256": "c33def3de431e6e3db05fed643c7a15258c897db99a0db720e6f0ceacbd34e0b",
+  "post_run_code_data_exact": true,
+  "result": "pass",
+  "scope": {
+    "historical_alln": "Stored sources/logs and every-N gluing and Stage E identifications rederived",
+    "branch": "712 pieces and 711 inclusions collected with exact matching source/input/settings",
+    "uniform_stability": "Complete 712-piece cover collected from accepted final source-bound native proof receipts",
+    "hopf": "68 amplitude pieces and 67 inclusions, zero identity and fresh existence-only bridge collected",
+    "comparison_exceptions": [
+      "runtime metadata",
+      "exact path relocation",
+      "directly validated zero-endpoint polydisc",
+      "reported display-only Y0/cap rounding after exact discriminant check"
+    ],
+    "excluded": [
+      "new full numerical reproof",
+      "new PDF build acceptance",
+      "release readiness"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "status": "actual original group_base7 controls and fresh source-bound G6 proof accepted; remaining group modes separate",
+  "run_id": 37091152974,
+  "producer_receipt_sha256": "ee0c7ec5d12206e793adf4b480cb35be709682ec3b278fd45a839226cb946cbd",
+  "producer_helper_sha256": "dd3a7c2b770f1b494a3abe857c2ab9b683f94e6d54c79cbb14bf7e214b67e4bd",
+  "fresh_G6_sha256": "afb2d3a40e38c5b552ba7fb0f4f84e62d6259bfc7b6ca2f70ee3f09f622c6ddd",
+  "original_fixture_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+  "working_fixture_sha256": "4d58ae5b150ee063b0652c397081b8d9dab02f2dc0038580006e2b78154ae6f5",
+  "runtime_sha256": "8f16da3075565ffe40a1f51e0bccac1263bf327ecffc1df680e97e191d445a65",
+  "log_sha256": "7506d73d40cde4aec33778d3147706f3db76c915f1aeb4e983fd22bb5450a8a1",
+  "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "controls": [
+    "test_group_parts",
+    "test_group_acceptance",
+    "test_group_float_orbit_inside_ball",
+    "test_group_negative_drop_third_order_detected",
+    "test_group_window_dominated",
+    "test_group_negative_drop_d2_terms_detected",
+    "test_group_Z1_path_term"
+  ],
+  "controls_passed": 7,
+  "wall_seconds": 151.91114692300005,
+  "peak_self_rss_mib": 805.625,
+  "scope": "Actual uncached fresh G6 default proof guarded by producer implementation, exact input/settings identity and full712 conservative receipt gate. Copied original log preserved byte-for-byte; declared working fixture differs in exactlyG6 actual fresh dump. test_group_acceptance compares cached fresh proof serialization, not independent old-bound reproduction. Other original live float/window/negative/jet controls retain their scientific meanings. Full finite SC vectors unavailable in public JSON.",
+  "no_canonical_data_modified": true,
+  "no_numerical_reproof_by_reviewer": true,
+  "no_full_group_suite_promotion": true
+}

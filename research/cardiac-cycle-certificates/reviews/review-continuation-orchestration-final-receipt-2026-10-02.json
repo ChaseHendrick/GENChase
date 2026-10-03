@@ -1,0 +1,133 @@
+{
+  "actual_hopf_partition_counts": [
+    16,
+    13,
+    11,
+    10,
+    10,
+    8
+  ],
+  "accepted_theoremA_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+  "hopf_scientific_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "independent_negative_controls": 30,
+  "controls": [
+    "stability ('sources_sha256',)",
+    "stability ('eta',)",
+    "stability ('rho0',)",
+    "stability ('existence', 'Z1_point')",
+    "stability ('existence', 'Z2')",
+    "stability ('existence', 'rho')",
+    "stability ('existence', 'identification', 0, 'ok')",
+    "stability ('certificate', 'SC_worst_ratio')",
+    "stability ('certificate', 'SC_worst_ratio')",
+    "stability ('certificate', 'count_in_Omega')",
+    "stability ('certificate', 'N')",
+    "stability ('MUTATED',)",
+    "stability ('certificate', 'internals')",
+    "correlated multiplier_bound_full_period",
+    "correlated T_lo",
+    "typed stability assignment (True, 6)",
+    "typed stability assignment (0, 6.0)",
+    "typed stability assignment (6, 6)",
+    "hopf ('idx',)",
+    "hopf ('idx',)",
+    "hopf ('result', 'K')",
+    "hopf ('result', 'eta')",
+    "hopf ('result', 'r_uniqueness', 'hex')",
+    "hopf ('result', 'contraction_at_r_uniqueness', 'hex')",
+    "hopf ('result', 'Z1', 'hex')",
+    "hopf ('result', 'Y0', 'hex')",
+    "hopf ('result', 'omega', 'lower', 'hex')",
+    "hopf ('result', '_obj')",
+    "hopf ('centre_digest_ok',)",
+    "hopf ('effective_settings', 'nsub_xi')"
+  ],
+  "actual_stability_partition_counts": [
+    124,
+    124,
+    124,
+    112,
+    116,
+    112
+  ],
+  "stability_helper_sha256": "ee953a5f4dc789a7576a740f773632f8b563b1ba454bec580f855d1622d00e57",
+  "hopf_helper_sha256": "9b3a8699a987c40cd256521664c40e8f64b6d848b24bbed869a33d8d5b702e93",
+  "status": "passed structural controls, actualbranch input manifest; no stability/Hopf numerical recomputation",
+  "workflow_sha256": "fd92f8deab87420f36b77bee1ad29495b4c539ec793053cd87f856c0150e6c23",
+  "workflow_gate_cases": {
+    "docs": {
+      "enabled": false,
+      "shards": 0,
+      "merges": 0,
+      "kinds": []
+    },
+    "push both": {
+      "enabled": true,
+      "shards": 12,
+      "merges": 2,
+      "kinds": [
+        "stability",
+        "hopf"
+      ]
+    },
+    "push stability": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "stability"
+      ]
+    },
+    "push hopf": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "hopf"
+      ]
+    },
+    "dispatch both": {
+      "enabled": true,
+      "shards": 12,
+      "merges": 2,
+      "kinds": [
+        "stability",
+        "hopf"
+      ]
+    },
+    "dispatch stability": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "stability"
+      ]
+    },
+    "dispatch hopf": {
+      "enabled": true,
+      "shards": 6,
+      "merges": 1,
+      "kinds": [
+        "hopf"
+      ]
+    }
+  },
+  "merge_after_other_kind_failure": "enabled by always, own strict6shard helper still required",
+  "stage_concurrency": "separate stability/hopf keys",
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-continuation-final-2026-10-02.py"
+    ],
+    "pid": 52756,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 4.160412957891822,
+    "peak_aggregate_rss_mib": 229.734375,
+    "log": "/private/tmp/cardiac-review-continuation-final-2026-10-02.log"
+  },
+  "admission_scope": "bounded stability and Hopf cloud orchestration admitted; actual full certificates and acceptance suites pending"
+}

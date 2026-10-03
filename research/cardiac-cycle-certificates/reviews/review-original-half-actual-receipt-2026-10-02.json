@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "status": "actual original half control and strict prior-bound comparison accepted; full group suite remains pending",
+  "run_id": 37090173180,
+  "producer_commit": "8e9e09c4f6f08ab04597838e7f26a699b4094f5d",
+  "producer_helper_sha256": "0d09d59dbf32b3bd793d5c5ab67ba92defad3b4028fa919865de3fe9031f5607",
+  "producer_receipt_sha256": "8d101e993910e23c8e88e1ff78a94d63df27c87ef2481a56d06550476fefd0e5",
+  "fresh_half_sha256": "6937dcbf2765d3aa3ed8fd24deffd7018c5e12c99c5d8406520d8f21f0354b3f",
+  "current_scientific_source_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_source_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "log_sha256": "b8a00d4388e02c3d7d0fea7b88feea9c956f0324075667758ddb923a5aecfba8",
+  "runtime_sha256": "2669a44295eca7707eaf475c77f6993f66789ef52331c236abd0b43ebf163413",
+  "actual_controls": [
+    "test_half_unit_reproduced",
+    "explicit_current_G12_half_comparison"
+  ],
+  "wall_seconds": 420.088499431,
+  "peak_self_rss_mib": 853.93359375,
+  "precise_scope": "One unchanged original test executes two independent fresh half proofs and requires exact mutual bounds. Additional helper control executes a third fresh proof and compares it to admitted historical-current G12[0:8] bounds. This old helper passed this half job without fixture replacement. All712 copied inputs/source/profiles and conservative exact gates independently rechecked. No new numerical proof run by reviewer; full finite SC vectors unavailable in public receipt.",
+  "old_base_heavy_failures_preserved": {
+    "group_base": {
+      "receipt_sha256": "b7d0d53aaa02ad74e6dd2c81f634a829ca8a62c9de646a2085c0b2ac88bdfe86",
+      "error": "typed rho mismatch",
+      "controls_attempted": 0
+    },
+    "group_heavy": {
+      "receipt_sha256": "24d5e62377755033e56115436eb8b13de1e1e8fe5346d8accbd052eface8b63c",
+      "error": "typed rho mismatch",
+      "controls_attempted": 0
+    }
+  },
+  "no_rebinding_to_replacement_helper": true,
+  "no_full_group_suite_promotion": true,
+  "independent_reviewer_supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-review-original-half-actual-2026-10-02.py"
+    ],
+    "pid": 62403,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 3.115799166029319,
+    "peak_aggregate_rss_mib": 221.484375,
+    "log": "/private/tmp/cardiac-review-original-half-actual-fixed-2026-10-02.log"
+  },
+  "initial_reviewer_failure": {
+    "error": "Incorrect reviewer parser function name, AttributeError before scientific validation; corrected m.read_json completed all checks",
+    "supervisor": {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+        "/private/tmp/cardiac-review-original-half-actual-2026-10-02.py"
+      ],
+      "pid": 62281,
+      "exit_code": 1,
+      "stop_reason": null,
+      "wall_seconds": 0.2633098748046905,
+      "peak_aggregate_rss_mib": 0.578125,
+      "log": "/private/tmp/cardiac-review-original-half-actual-2026-10-02.log"
+    }
+  }
+}

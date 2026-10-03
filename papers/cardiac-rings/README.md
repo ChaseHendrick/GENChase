@@ -2,10 +2,36 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Preprint**, release 1.0.0 (2026-10-02), archived on Zenodo with the programs that prove its results and their output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+Preprint. Release 1.0.0 (2026-10-02) is archived on Zenodo with its original programs and output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
 
-**[Read the paper (PDF, 45 pages)](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
+**Version 1.1.0**, prepared for publication through the companion release workflow. The current proof records, complete original stability and Hopf test suites, branch quick checks and fresh tracked-companion reproduction have passed their scoped in-project checks. The release and downloaded archive verification are recorded separately; the verified archive locator above remains 1.0.0 until the new Zenodo ZIP is inspected.
+
+**[Read the paper PDF](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
+
+## Conductance extension and limits
+
+Theorem D adds a computer-assisted single-cell
+continuation on the exact G_Ks interval [0.027499735464, 0.02778996093] with 712 pieces and 711 adjacent inclusions;
+uniform stability throughout that entire lower interval using 63 group or subgroup certificates, with no individual
+fallback certificate in the final cover, delta = 3e-5 per ms and every nontrivial multiplier at most 0.998413816;
+and a connected 68-piece amplitude family, with 67 inclusions and a zero-amplitude identity, joining it to the
+supercritical Hopf equilibrium. Current collected records and their independent in-project numerical reviews are
+necessary evidence, rather than a publication or outside-review decision.
+
+The sole fresh bridge point, G_Ks = 0.02778, has an existence-only proof. Its stability follows through identity with
+the separately admitted uniform branch cover, not an inherited Stage S point success. No historical pointwise
+stability success is promoted. Local small-amplitude Hopf stability has no computed neighborhood size and does not
+imply uniform stability throughout the whole bridge. There is no certified global monotonicity, global orbit
+uniqueness at fixed conductance, tissue claim, clinical implication or action-potential claim. The all-N and cable
+results of Theorem C retain their original fixed conductance and stability scope.
+
+The amplitude normalization uses fixed scaled TP06 coordinates: a1,V = epsilon/2 there, with physical
+|Vhat1| = epsilon/8 mV. Validated continuation, analytic nonpolynomial estimates, amplitude desingularization and
+transformed-ball gluing build on established work by van den Berg, Queirolo and Lessard. The complete published
+2021 Hopf article and the complete 46-page March 22, 2019 continuation preprint were read; the final typeset
+continuation article was not read in full. The bounded Erhardt (2025) forward-citation search and exact access scope
+are recorded in `review/method-reading-and-forward-citations-2026-10-02.md`. These searches do not establish priority.
 
 ## Abstract
 
@@ -27,9 +53,9 @@ Existence is a radii-polynomial argument in a weighted l^1 space, made uniform o
 rings, 0 for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill operator whose spectrum gives
 every Floquet multiplier with its algebraic multiplicity; a Riesz-projection homotopy shows it meets {Re mu >= -delta}
 only in the eigenvalues i omega N Z, each algebraically simple. Stability is proved only for the cell and these four
-rings; the link to the Hopf branch is only numerical, and nothing is claimed for tissue.
+rings. For the single cell, a connected conductance family reaches a certified supercritical Hopf endpoint. Its 712-piece lower interval has uniform nontrivial multiplier bound 0.998413816, and a 68-piece amplitude family supplies the bridge. Quantitative uniform stability is proved only on the lower interval. Nothing is claimed for tissue.
 
-## Status of the results
+## Released 1.0.0 results
 
 - **Computer-assisted** (written proofs in `paper/cardiac-rings.tex`, inequalities decided in exact rational,
   interval or ball arithmetic):
@@ -75,8 +101,7 @@ rings; the link to the Hopf branch is only numerical, and nothing is claimed for
   16-cell waves in intervals that contain the periods proved here.
 - **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry or tissue; N < 8;
   stability for N other than 8, 16, 32, 64, for the cable, or uniformly in N; a rate of convergence as N tends to
-  infinity. A certified branch of these orbits on an interval of G_Ks toward the Hopf point is future work; no result
-  of it is used or claimed here.
+  infinity. The released 1.0.0 did not certify conductance continuation. The 1.1.0 extension above concerns only the single cell.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
   of their fixes; a review of the CAPD verifier, which led to its hardening and to the CAPD patch in `code/proofs/`; a
   first reading of this manuscript (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised
@@ -113,24 +138,24 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 ## Programs
 
-The programs and records were computed in the project's study of these orbits. `code/` reproduces the layout of the
-study's folder, to which the paths hashed in the records are relative. Every file in `code/` that the study also has
-is a byte-identical copy of the study's file, except `code/fourier/LEMMAS-stability.md`, which is kept at the version
-this paper uses (the study's file has since gained a section 10 for a branch in G_Ks, which this paper does not use),
-with its references to the manuscript, to the reading of the lemmas and to the Appendix A reading written relative
-to this folder, and its section 4.1 brought up to date with the records;
-`code/run_all.sh`, `code/requirements.txt` and `code/plot_cardiac_rings.py` were written for this folder, and no
-record hashes them. The JSON records in `data/` are byte-identical copies of the study's records, and
-`data/link_cell.txt` is the output of `code/fourier/link_cell.py`. `data/fourier-review-status.json` is likewise
-copied unchanged, so it speaks of the study folder: its `reviews/` paths name the study's folder of readings, whose
-files are copied here in `review/`; `repository_commit_at_review` is a commit of the project's development
-repository; and its `check` command, `python3 fourier/check_records.py`, is the provenance step that `code/run_all.sh`
-runs in a scratch copy of `code/` with the records of `data/` copied to `results/`. The seed orbit
-`code/fourier/data/orbit_N1_M64.json` names its source as a scratchpad run of a non-rigorous prototype that is not
-copied here; it is used only as the starting guess of the untrusted Newton iteration and as test points, never as a
-bound. The prototypes `rw_fourier.py` and `hill.py` cited in section 1 of `code/fourier/LEMMAS-stability.md` are in
-the study's folder `prototypes/fourier-feasibility/` and are not copied here either, and the toy model cited there was
-a scratch check, not part of any proof, whose program is not kept.
+The canonical programs and records are copied from the development repository. Version 1.1.0 copies current
+reviewed Fourier programs and inputs byte for byte into `code/`, and
+current records into `data/`. Source and input hashes retain their original execution-layout paths. A companion
+basename is not a freshness or acceptance check; the collectors validate the current source-bound complete logs.
+
+The unchanged all-N certificate of released 1.0.0 hashes an older `fourier/branch.py`. Those exact bytes are retained
+as `code/fourier/branch-1.0.0.py` (SHA-256
+`97f7bbc586727bdab51a412d2b5b304fd6f858b79826f6c0319ef462ffbe29fa`). For historical provenance and `alln` collection,
+`run_all.sh` verifies this archive against the unchanged all-N record and restores it as `fourier/branch.py` in its
+historical scratch layout. The `continuation` target uses a separate fresh scratch copy with the current
+`code/fourier/branch.py`. No record is rebound to a changed source. The 73 original all-N pieces are not claimed
+reproved by these continuation collections.
+
+`code/run_all.sh`, `code/requirements.txt` and the plotting program are companion orchestration. The plot is not a
+proof. Historical prototype and seed files remain untrusted starting guesses, never numerical bounds. Records keep
+the producer status strings; separate reviews and acceptance receipts document in-project decisions without
+rewriting the hash chain. Paths under `reviews/` in original records refer to the development folder and are copied
+into companion `review/` with their original names.
 
 | Folder | What is in it |
 |---|---|
@@ -147,9 +172,10 @@ a scratch check, not part of any proof, whose program is not kept.
 | `code/fourier/existence.py` | Stage E: the radii-polynomial existence proof (Section 4) |
 | `code/fourier/stability.py` | Stage S: the Hill-operator certificate (Section 5) |
 | `code/fourier/link_cell.py` | The exact check that the Fourier cell orbit's section point lies in the CAPD ball (Lemma 6.1) |
-| `code/fourier/alln.py`, `code/fourier/branch.py` | Theorem C: the family in epsilon = 1/N^2, its pieces, gluing and Stage E identifications (Section 4.8); `alln.py` calls the bound assembly, the Hessian cover, the center distance and the piece-order check of `branch.py`. `branch.py` is an identical copy of the file the Theorem C record hashes; its other functions and its docstrings belong to the study's work in progress on a branch in G_Ks, which they call "Theorem C" (not this paper's Theorem C), and they refer to files and records that are not part of this folder |
+| `code/fourier/alln.py`, `code/fourier/branch-1.0.0.py` | Historical Theorem C: 73-piece all-N family, gluing and Stage E identification; the archive is restored under its hashed execution path only in historical scratch checks |
+| `code/fourier/branch.py`, `branch_stability.py`, `hopf.py` | Candidate Theorem D: complete conductance branch, whole-interval uniform stability, equilibrium Hopf cover, amplitude continuation and fresh existence-only bridge |
 | `code/fourier/data/alln/` | The run log of Theorem C (`pieces.jsonl`, the exact inputs and bounds of every piece, hashed by the record), its controls and the code version at launch |
-| `code/fourier/LEMMAS-stability.md` | The stability lemmas in the version this paper uses; Section 5 of the paper writes them out |
+| `code/fourier/LEMMAS-stability.md` | The current reviewed stability lemmas; the manuscript writes out both the historical and new conductance arguments |
 | `code/fourier/centre.py`, `code/fourier/data/` | Newton solver for the centers (untrusted), the small trusted helpers that `existence.py` and `alln.py` call (`level_exact`, `Layout`, `load` / `text_to_dyadic`, `dyadic_to_text`), and the centers as exact dyadic numbers |
 | `code/fourier/check_records.py` | Rechecks every hash stored in the Fourier records; run it through `sh code/run_all.sh`, which stages `data/` as `results/` (run directly in `code/`, it finds no records) |
 | `code/fourier/test_*.py` | Tests and negative controls (the reviews ran them; no stored log of a full run is kept here) |
@@ -164,8 +190,9 @@ a scratch check, not part of any proof, whose program is not kept.
 From this folder:
 
 ```
-python3 -m pip install -r code/requirements.txt
-sh code/run_all.sh                 # provenance ("90 hashes checked", and "15 hashes checked" for Theorem C) and the link ("LINKED")
+python3.12 -m pip install -r code/requirements.txt
+sh code/run_all.sh                 # stored source/input provenance (counts reported from actual records) and the exact cell link
+sh code/run_all.sh continuation    # Theorem D: final branch/uniform/Hopf collectors and strict comparison, scratch only
 sh code/run_all.sh alln            # Theorem C: re-derive the gluing and the Stage E identifications in Arb (under a minute)
 sh code/run_all.sh 1,8             # rerun Stage E and Stage S for N = 1 and 8 (about 5 minutes)
 sh code/run_all.sh 1,8,16,32,64    # all five (about 25 minutes; Stage S at N = 64 needs about 3.6 GB)
@@ -175,7 +202,30 @@ python3 code/plot_cardiac_rings.py # the figures (seconds; numpy and matplotlib;
 Four of the 73 pieces of Theorem C (those containing eps = 0 and 1/4096, 1/1024, 1/256 and 1/64) are re-proved from
 their stored inputs by `code/fourier/test_alln.py` (about 10 to 15 minutes on a shared machine; the command is in its
 docstring), run in a folder staged as `run_all.sh` stages one (the
-contents of `code/`, with `data/fourier-*.json` copied to `results/`).
+contents of `code/`, with `data/fourier-*.json` copied to `results/`, and the verified `branch-1.0.0.py` archive
+restored as `fourier/branch.py` for this historical test).
+
+The 1.1 Linux producer runtime is Python 3.12 on Ubuntu 24.04 x86_64 with python-flint 0.9.0 / FLINT 3.6.0.
+Download the wheel named in `code/requirements.txt`, verify SHA-256
+`376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76`, install those exact bytes, and run
+`test_arbmodel.py --wheel <wheel>` before numerical checks. Preserve the runtime and native control output.
+Historical 1.0 records used Python 3.11.15. Package versions alone do not prove wheel identity or cross-platform
+bitwise equality. Native Mac proofs can have different untrusted floating-point centers and inverse proposals.
+
+`continuation` (alias `branch`, combinable as `alln,continuation`) rederives the complete current branch and all
+711 inclusions, collects the uniform cover, then freshly rederives all 67 amplitude inclusions, the zero-amplitude
+identity and the point-to-amplitude/point-to-branch bridge. It compares typed exact source/input/settings/log hashes
+and mathematical fields with `data/`. Every original uniform receipt also passes a direct exact conservative
+tube check: kappa_check = max(kappa_stored, Z1_path + Z2*rho) for group units, the corresponding affine formula
+for piece units, kappa_check < 1 and Yprime <= (1-kappa_check)*rho, with exact radius/domain validity checks.
+The original source-bound SC producer proof is retained; full finite SC vectors are not serialized, so this collector
+check does not recompute those vectors. It runs no 712- or 68-piece numerical reproof by default and has a 1200-second
+collector cap, rather than a promised runtime. Runtime metadata may differ. Only the freshly validated common
+zero-endpoint equilibrium polydisc and its contraction diagnostics may differ numerically; these differences require
+fresh strict contraction and both inclusion checks, not a tolerance-based comparison. Relocated log paths retain
+the same exact basenames, counts and hashes. The branch Y0/cap display diagnostic is recomputed as an exact ratio
+from the unchanged dyadic proof bounds; any platform-dependent display rounding is printed with both values and
+the exact ratio, without altering a proof bound or applying a numerical tolerance. Complete original numerical suites are a separate acceptance gate.
 
 The script stages `code/` in a scratch folder, because the programs write their records to `<root>/results`, and never
 touches `data/`. Expect the period enclosures and the stability bounds to agree exactly with `data/`, and the binary

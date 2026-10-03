@@ -3,6 +3,40 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
+## 1.1.0
+
+The 73-page preprint adds computer-assisted Theorem D for the single cell: a 712-piece conductance family with 711 gluings,
+63 group or subgroup uniform-stability certificates covering the entire lower interval, and a 68-piece amplitude
+family with 67 gluings and a fresh bridge to the supercritical Hopf equilibrium. The lower-interval multiplier
+bound is 0.998413816 at requested delta = 3e-5 per ms. Historical all-N and cable results retain their original scope.
+The fresh G_Ks = 0.02778 point proof is existence-only; no old pointwise stability receipt is inherited. Uniform
+stability is not established on the whole amplitude bridge, and the conductance projection need not be monotone.
+
+The proof records and written arguments passed separate in-project adversarial readings and fix checks. The seven
+original piece controls, thirteen original group/half controls plus an additional half comparison, and all 117
+original Hopf checks passed. A fresh staging from committed companion bytes passed `alln,continuation` in 29.64 s
+with 436 MiB sampled peak RSS. This rederives collection, gluing and identification; it does not rerun every numerical
+piece proof. The failed original stability workflow remains recorded: all six raw numerical shard outputs were
+recovered and accepted with stronger exact self-map checks, without changing any scientific program or bound.
+
+Four figures present the cell, ring wave, all-size existence pieces and conductance/Hopf extension. The manuscript,
+code, data and source-bound review receipts are included together. Separate layout and manuscript reviews, the
+quality record and the release checks document their scope. No outside or human review is claimed. The prior
+1.0.0 release and archive remain available; the registry keeps its DOI until the actual new Zenodo source ZIP is
+downloaded and its manuscript PDF is verified. The archive is a Publication / Preprint, with manuscript rights
+distinct from the code and data licenses.
+
+The reproduction script adds `continuation` (alias `branch`) without redoing every amplitude or conductance piece
+by default. It checks collectors in scratch directories. Exact original all-N source bytes are archived as
+`code/fourier/branch-1.0.0.py`; their hash is checked before reconstructing the historical execution layout. Original
+1.0 records and its deposited archive are preserved. Python 3.12, the pinned Linux python-flint 0.9.0 wheel and the
+native runtime controls document the new producer trust base; runtime differences are not bitwise portability.
+
+Method credits include the established analytic continuation/desingularization and gluing work of van den Berg,
+Queirolo and Lessard. The full published 2021 Hopf article and full 2019 continuation preprint were read, with access
+limits and the bounded Erhardt forward-citation search recorded in
+`review/method-reading-and-forward-citations-2026-10-02.md`. No historical-priority claim follows.
+
 ## 1.0.0 (2026-10-02)
 
 **DOI:** [10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322). Publication / Preprint.

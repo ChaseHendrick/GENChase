@@ -1,0 +1,22 @@
+# Methods conversion and consistency check, 2026-10-02
+
+This is a conversion and source-mapping check by the author of the two methods drafts. It is not a new independent discovery or review of proof correctness. The mathematical implications and numerical receipts were reviewed separately. No TeX, scientific source, canonical data or numerical proof was changed or rerun here.
+
+The checked TeX SHA256 is 6413469425e55f9d65c3745b19de3a18974f287793f2c3aee416c2dd86cc884d. The JSON beside this note records all draft, source-record and workflow hashes. This check is scoped to that snapshot.
+
+The branch draft has86 display equations;84 proof displays map exactly after whitespace normalization. Its two proposed-statement displays are represented in TheoremD(b) and the local stability text. The Hopf draft has60 display equations;57 proof displays map exactly. Its three setting/statement displays are represented in the scaled setting and TheoremD(c). No proof display was omitted or altered. The equilibrium identity interval is named J_H in TeX to distinguish it from the conductance interval J.
+
+TheoremD is separated correctly from the released fixed-conductance all-N/cable theorem. Part(a) maps to the current712-piece/57-group/711-gluing branch. Part(b) maps to the fresh63-unit cover of all712 pieces, without individual-piece fallback certificates. The record's exact outward multiplier summary is below0.998413816. The printed common gap3e-5 is an admissible lower gap; the producer stores an outward dyadic not smaller than that request. Part(c) maps to the fresh516-interval equilibrium cover,68 amplitude pieces,67 inclusions, zero-amplitude identity and fresh0.02778 bridge. The bridge point's own StageS flag is false, as the text says; stability at that conductance comes only through the separate uniform branch identity.
+
+The scaled-coordinate amplitude statement is explicit and correct: scaled first voltage coefficient epsilon/2 corresponds to physical coefficient epsilon/8mV. The proof retains quotient holomorphy at amplitude zero, full complex domains, signed tails, inverse injectivity, full-ball derivative variation, exact tube identification, connected-family gluing and the intermediate value argument. It asserts neither a global graph over conductance nor uniform attraction throughout the amplitude bridge. The abstract, theorem, admission section and limitations keep the pending numerical acceptance/integration gates conditional. No historical twelve-point stability success is presented as the new uniform cover.
+
+The following final-presentation items remain open at this snapshot:
+
+- C1, editorial, TeX1477/1829/1833: use z_H consistently or define x_H=z_H. TheoremD(c) declares z_H while the Hopf proof still uses x_H.
+- C2, reproducibility, TeX1950 and the programs/trust-base text: the old90+15 hash and driver scopes do not describe reproduction of D. Add the new branch/stability/Hopf and conservative-recovery mapping before final companion claims.
+- C3, already-planned staging: the final records are not yet under paper/data, and figures/sources.json still maps legacy inputs. Regenerate the four final figures and their manifest after final companion staging. The old figure4 stability points have already been removed from the current TeX; the updated plot script selects final logs.
+- C4, presentation preference, TeX1997: inherited public text explicitly credits AI agent sessions. Preserve accurate in-project review scope without assistant credit in this new manuscript; archived1.0.0 evidence stays immutable.
+
+None of these is a blocker to launching the bounded package-build check. They remain prerequisites to a complete final presentation.
+
+The package workflow SHA256 is19b3811a02d58853fa33003139c23531f2589feebe5519b8207fa233b6f62ad2. It is admitted for its stated PDF build/reproducibility scope: contents:read, explicit dispatch or [cardiac manuscript] marker,15-minute job limit, bounded installation/build/three-PDF-pass commands, pipefail, halt-on-error, undefined-reference rejection, byte comparison, hashes, runtime logs and always-uploaded evidence. The build tool57ff6e97bc6c48a47ec786f1166963d6dbdcac1af399a85f32a6c28fdd83e310 and the rebuild set the same source-commit SOURCE_DATE_EPOCH and FORCE_SOURCE_DATE=1. The workflow cannot establish scientific acceptance, complete companion staging or visual layout quality merely by building an identical PDF. No actual package CI run or PDF inspection was performed in this check.

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/usr/bin/nice",
+    "-n",
+    "10",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "/private/tmp/cardiac-hopf-short-tests.py"
+  ],
+  "pid": 36002,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 108.14274783385918,
+  "peak_aggregate_rss_mib": 326.015625,
+  "log": "/private/tmp/cardiac-hopf-short-tests-fresh.log",
+  "stdout": "PASS Theorem A at G_H: the 16 other Gershgorin discs lie in Re < 0  [right end -4.6938e-05]\nPASS Theorem A at G_H: d Re lambda / dg < 0  [-5.576947]\nPASS Theorem A at G_H: l1 < 0  [l1 -22.487878, omega l1 -2.683735]\nPASS omega l1 agrees with Erhardt's -2.6838 to about four significant digits (difference below 1e-4)  [difference 6.51e-05]\nPASS negative control: the wrong sign l1 > 0 is refused by the enclosure\nPASS Theorem A at G_H: the conjugate of the eigenvalue ball avoids every Gershgorin disc but D2  [inclusion in D2 (reported only): True]\nPASS negative control: the conjugate of the eigenvalue ball does not avoid D2 (exempting D1 instead fails)\nPASS negative control: dlambda_dg refuses a left eigenvalue that is not in the critical disc\nPASS negative control: G_H shifted right by 1e-9 fails the left-side sign (Re lambda < 0 at its left end)\nPASS negative control: G_H shifted left by 1e-9 fails the right-side sign (Re lambda > 0 at its right end)\nPASS piece 0: public fresh reproof receipt is JSON serializable\nPASS piece 0 re-proved by hopf.reprove_piece (cover digest reproduced: True): fresh exact bounds certify the logged exact inputs (historical equality is diagnostic)  [Y0, Z1, Z2, r_existence, p_at_r_existence, p_at_r_uniqueness, contraction_at_r_uniqueness]\nPASS negative control: a logged Y0 changed in its last hex digit is not matched by the re-proof\nPASS reprove_status: a re-proof counts only with the current program hash and the current log line; a failed one is reported as mismatched  [0, 1, mismatched '1']\nPASS mutation drop_curve changes Y0 and Z1 (the parameter-width terms are live)\nPASS mutation drop_cauchy changes Z2 (the third-derivative terms are live)\nPASS float cross-check (piece 0): rigorous Y2 >= float ||A d^2F/dxi^2|| >= Y2 / 30  [float 1.180e+01, rigorous 5.921e+01]\nPASS float cross-check (piece 0): rigorous Zc >= float ||A d DF/dxi|| >= Zc / 30  [float 2.876e+01, rigorous 3.070e+01]\nPASS float cross-check (piece 0): float ||A dF/dxi|| at e_c <= rigorous Y1  [float 2.479e-05, rigorous 9.387e-03]\nPASS float cross-check (piece 0): a float lower estimate of Z2 (random and hill-climbed perturbations of norm r_hi) <= rigorous Z2  [float 1.527e+01, rigorous 2.822e+02]\nPASS a piece reaching beyond the cover's family is refused\nIsolated A-core and piece0: 21 checks, 0 failed, 107.1 s\n",
+  "sources_sha256": {
+    "hopf.py": "c4e4f77abad02362adbddffbb0a6a356221ec451d31ee0175399e944064759c3",
+    "test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+    "LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c"
+  },
+  "review_scope": "Read saved isolated A-core and piece0 pilot output and supervisor receipt; author ran computation; not complete68 proof."
+}

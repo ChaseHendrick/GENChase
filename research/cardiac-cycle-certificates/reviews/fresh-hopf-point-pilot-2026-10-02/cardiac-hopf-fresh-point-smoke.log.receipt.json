@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/usr/bin/nice",
+    "-n",
+    "10",
+    "../cardiac-proof-venv/bin/python",
+    "/private/tmp/cardiac-hopf-fresh-point-smoke.py"
+  ],
+  "pid": 52090,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 82.6900209998712,
+  "peak_aggregate_rss_mib": 1835.75,
+  "log": "/private/tmp/cardiac-hopf-fresh-point-smoke.log"
+}

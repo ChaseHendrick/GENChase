@@ -1,0 +1,37 @@
+{
+  "checked_utc": "2026-10-03T03:33:21.205116+00:00",
+  "review_kind": "Independent pre-release scientific and final manuscript-package admission",
+  "admitted_scopes": [
+    "Written TheoremD and its precisely bounded single-cell conductance/Hopf claims",
+    "Source-bound complete712-piece branch with711 gluings",
+    "Complete63-unit uniform stability cover of712pieces with conservative exact self-map checks",
+    "516-window equilibrium Hopf gate,68amplitude pieces,67gluings, validated zero identity and fresh existence-only bridge",
+    "Actual full stability and Hopf controls in separately scoped receipts; branch quick checks",
+    "Committed tracked-companion reproduction with all84 code/data bytes verified",
+    "Current source9d86 final73-page PDF, full compiler and page geometry, exact figures and documented visual continuation"
+  ],
+  "source_tex_sha256": "9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac",
+  "final_pdf_sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+  "evidence": {
+    "review-current-scientific-chain-refresh-2026-10-02.json": "526372dff0a7fe434c78d1fc6f8981c66cb1d9ce62303acc094c9bf6c87ec4ec",
+    "review-final-theoremD-claims-receipt-2026-10-02.json": "145c390a0e90a454a02332b9d5e6be7809c040a8eac0a6e74d46f8d415c930f7",
+    "review-final-manuscript-editorial-receipt-2026-10-02.json": "f9831f801a98949ccb5f407e467940e5563ed58c29fa0281204a2c3da954af4d",
+    "review-companion-wrapper-final-receipt-2026-10-02.json": "1cc2e3898b81d5f6a63b3f5bf5a745c3a7548bf0de9cdfc7ee7f5b7f11a7c078",
+    "review-tracked-stage-final-admission-receipt-2026-10-02.json": "02834f3a2b9af400bd0d2d9a264c41d76d7b6ed45bc57093581e6b687a0d8cd1",
+    "review-manuscript-package-37093181017-structured-receipt-2026-10-02.json": "3d602a9396c11066f5ced4e953f9fd46d38addcc591a8ab7e7dc714029da07d1",
+    "review-final-pdf-package-37093181017-2026-10-02.json": "62c325bd31121186e6c77fb3e538cea063653b02e02ccbd2febd545e742f2b27"
+  },
+  "trust_limitations": [
+    "Finite SC column vectors are not serialized; current source-bound producer checks were independently reviewed and executed, not reconstructed from JSON",
+    "Native/Linux zero-polydisc proposal differences allowed only after exact contraction and inclusion validations",
+    "No full original branch suite claim is made by this reviewer",
+    "No outside or human peer review claimed"
+  ],
+  "remaining_pre_release_actions": [
+    "Update dated1.1 QUALITY evidence and candidate documentation accurately",
+    "Install byte-identical final PDF and verify actual paper-check release/synchronization and applicable CI"
+  ],
+  "post_release_action": "Download actual new deposited source archive and verify source ZIP contains released final manuscript bytes before advancing archiveVersion/codeDoi",
+  "scientific_and_package_admission": true,
+  "overall_publication_readiness": false
+}

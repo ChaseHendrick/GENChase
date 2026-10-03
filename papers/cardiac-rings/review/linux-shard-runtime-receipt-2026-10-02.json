@@ -1,0 +1,106 @@
+{
+  "run_id": 37076139080,
+  "producing_commit": "92362aebfb40499a7d6c68214e621af7fcb3644c",
+  "scope": "arithmetic runtime and native model controls; external CAPD binary comparison unrun",
+  "nproc_note": "Recorded nproc output was obtained with OMP_NUM_THREADS=1; do not infer runner hardware core count from it.",
+  "shards": [
+    {
+      "index": 0,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "23c679a4bf82ef77276cb10bad8e833d75406f594868036eaa1e6999bc8a20f1",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "b8636fe181ad5a7ba539dd0d54185bf29fd60ffa08f0cd9b95cc4850df8dcc92"
+      }
+    },
+    {
+      "index": 1,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "26254e17f91ae89f5ddd8ad4dced290fff202c816b76b086460b02d1b31b54b2",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "9ca9d8b643b7e9f3ed89855ca251ae3f60dbf1839ba32d6a64fb9d4d3e0fcfa3"
+      }
+    },
+    {
+      "index": 2,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "8ffe22ae3465f56962cd8fb73f0fd864b33cb329ad22304dc4437fef6b39014f",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "7c9b8839f09c601959126585fc15bce2fd6f520bd0dee77d592587d265a7b45e"
+      }
+    },
+    {
+      "index": 3,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "53befaa3219b1ab8c31a14bc45e6d40193536d2b00c2bb5266d5610dff8fa53b",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "f22bd012fffd0212cd431405ee81d65ce6b2117a5ed4f262bc43cbc9d98e9285"
+      }
+    },
+    {
+      "index": 4,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "dfb6b73965ab6846146b24003807fd625f7981b30f5d030bf30e576bd8ba9182",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "8f16e53b2eb4a41325a29789021a8a3865bc9824c1675b3a7f333ff0c14197f4"
+      }
+    },
+    {
+      "index": 5,
+      "native_model_checks": 15,
+      "wheel_sha256_checked": true,
+      "files_sha256": {
+        "runtime.txt": "7ff387399d7ee4d73257393160527acec71aee2574d24ff58c4177d821b3988c",
+        "model-controls.log": "468ecbe41141238627312d28ec6e7c47c5e815903c2fd8b485c02f580e1715d3",
+        "wheel-check.log": "d049ec2972eaf60eeb54765ac54a910d4e47cc5f939efa09e31376257693b14c",
+        "shard/shard.jsonl": "3640ad21f82c1c5b176f049c077d28c8a00a6b03e784f3fb6162118e7c4c5465"
+      }
+    }
+  ],
+  "preserved_log_paths": {
+    "0": [
+      "parallel-runtime-2026-10-02/shard-0-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-0-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-0-wheel-check.txt"
+    ],
+    "1": [
+      "parallel-runtime-2026-10-02/shard-1-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-1-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-1-wheel-check.txt"
+    ],
+    "2": [
+      "parallel-runtime-2026-10-02/shard-2-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-2-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-2-wheel-check.txt"
+    ],
+    "3": [
+      "parallel-runtime-2026-10-02/shard-3-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-3-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-3-wheel-check.txt"
+    ],
+    "4": [
+      "parallel-runtime-2026-10-02/shard-4-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-4-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-4-wheel-check.txt"
+    ],
+    "5": [
+      "parallel-runtime-2026-10-02/shard-5-runtime.txt",
+      "parallel-runtime-2026-10-02/shard-5-model-controls.txt",
+      "parallel-runtime-2026-10-02/shard-5-wheel-check.txt"
+    ]
+  }
+}

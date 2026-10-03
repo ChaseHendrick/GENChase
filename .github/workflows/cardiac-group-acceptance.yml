@@ -1,0 +1,80 @@
+name: cardiac original group acceptance
+
+# Explicit dispatch or marker is required; routine research pushes do not run proofs.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cardiac-group-acceptance.yml'
+      - '.github/scripts/cardiac-stability-group-acceptance.py'
+      - '.github/scripts/cardiac-stability-shards.py'
+      - 'research/cardiac-cycle-certificates/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardiac-group-acceptance-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  BLIS_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  original-group-controls:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[cardiac group controls]')
+    name: original controls (${{ matrix.mode }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        mode: [group_base, group_heavy, half]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install and record the pinned Linux arithmetic runtime
+        timeout-minutes: 4
+        run: |
+          set -o pipefail
+          mkdir -p work/wheels
+          git rev-parse HEAD > work/runtime.txt
+          timeout 180 python -m pip download --only-binary=:all: --no-deps python-flint==0.9.0 -d work/wheels
+          echo '376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76  work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl' | sha256sum -c -
+          timeout 180 python -m pip install work/wheels/*.whl numpy==2.4.6 scipy==1.17.1 mpmath==1.3.0
+          python -m pip freeze >> work/runtime.txt
+          uname -a >> work/runtime.txt
+          sha256sum work/wheels/*.whl >> work/runtime.txt
+          python -c 'import os; print("hardware_cpu_count", os.cpu_count()); print("cpu_affinity", sorted(os.sched_getaffinity(0)))' >> work/runtime.txt
+      - name: Check the native wheel and orchestration safeguards
+        run: |
+          set -o pipefail
+          timeout 30 python research/cardiac-cycle-certificates/fourier/test_arbmodel.py -k test_flint_pinned --wheel work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl 2>&1 | tee work/wheel-check.log
+          timeout 30 python .github/scripts/cardiac-stability-group-acceptance.py --self-test 2>&1 | tee work/orchestration.log
+      - name: Run assigned unchanged GROUP_TESTS and strict logged-fixture comparison
+        timeout-minutes: 11
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 610s /usr/bin/time -v python .github/scripts/cardiac-stability-group-acceptance.py --mode '${{ matrix.mode }}' --budget 600 --out work/acceptance 2>&1 | tee work/acceptance.log
+      - name: Preserve manifests, original copied data, and actual outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-stability-group-acceptance-${{ matrix.mode }}
+          path: |
+            work/acceptance/
+            work/acceptance.log
+            work/runtime.txt
+            work/wheel-check.log
+            work/orchestration.log
+          if-no-files-found: error
+          retention-days: 30

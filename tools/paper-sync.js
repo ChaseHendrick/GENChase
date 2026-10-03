@@ -20,6 +20,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { createHash } = require('crypto');
 const { execFileSync } = require('child_process');
 
 const ORDER = ['draft', 'preparing', 'ready', 'on-arxiv', 'submitted', 'accepted', 'published'];
@@ -27,8 +28,8 @@ const PRIVATE_DIRS = ['notes/', 'submission/'];
 const BINARY = /\.(pdf|png|jpe?g|gif|zip|npz|gz)$/i;
 const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/g;
 const INTERNAL = [
-  [/github\.com\/[A-Za-z0-9-]+\/GENChase\b|\b(ChaseHendrick|SharpMeow)\/GENChase\b|(chasehendrick|sharpmeow)\.github\.io\/GENChase/i, 'a link to the GENChase repository or its site, which may be private'],
-  [/(^|[^A-Za-z0-9_./-])(research|papers)\/[A-Za-z0-9_-]/m, 'a research/ or papers/ path of the GENChase repository'],
+  [/github\.com\/[A-Za-z0-9-]+\/GENChase\b|\b(ChaseHendrick|SharpMeow)\/GENChase\b|(chasehendrick|sharpmeow)\.github\.io\/GENChase/i, 'a link to the GENChase repository or its site, which may be private', 'source-repository-url'],
+  [/(^|[^A-Za-z0-9_./-])(research|papers)\/[A-Za-z0-9_-]/m, 'a research/ or papers/ path of the GENChase repository', 'development-path'],
   [/\]\(\.\.\//, 'a Markdown link out of the paper folder'],
 ];
 const TEXT_LICENSES = {
@@ -38,6 +39,56 @@ const TEXT_LICENSES = {
 
 const registry = root => JSON.parse(fs.readFileSync(path.join(root, 'papers/papers.json'), 'utf8'));
 const yaml = s => JSON.stringify(String(s));
+const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
+
+// Reviewed provenance in immutable code/review artifacts may retain only the two named
+// internal references. Validate actual tracked inputs and the exact staged bytes before
+// granting either exception. Email and parent-folder links have no exception mechanism.
+function provenanceAllow(dir, p, context) {
+  const grants = new Map();
+  if (!p || !Object.prototype.hasOwnProperty.call(p, 'companionProvenanceAllow')) return grants;
+  const entries = p.companionProvenanceAllow;
+  const fail = why => { throw new Error('companionProvenanceAllow of ' + p.id + ': ' + why); };
+  if (!Array.isArray(entries)) fail('must be a list');
+  if (!entries.length) return grants;
+  if (!context || context.id !== p.id) fail('requires the selected paper\'s tracked staging context');
+  const tracked = new Set(trackedFiles(context.root, context.id));
+  for (const entry of entries) {
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry) ||
+        Object.keys(entry).sort().join(',') !== 'file,reason,rules,sha256') fail('entries need exactly file, sha256, rules and reason');
+    const f = entry.file;
+    if (typeof f !== 'string' || !/^(code|review)\//.test(f) ||
+        /[\\\x00-\x1f\x7f*?\[\]{}!]/.test(f) || f.split('/').some(c => !c || c === '.' || c === '..') ||
+        path.posix.normalize(f) !== f || /(^|\/)README(?:\.[^/]*)?$/i.test(f) || context.required.includes(f)) {
+      fail('file must be an exact non-manuscript, non-README path under code/ or review/');
+    }
+    if (grants.has(f)) fail('duplicate file ' + f);
+    if (typeof entry.sha256 !== 'string' || !/^[a-f0-9]{64}(?![\s\S])/.test(entry.sha256)) fail('invalid sha256 for ' + f);
+    if (!Array.isArray(entry.rules) || !entry.rules.length ||
+        entry.rules.some(r => r !== 'development-path' && r !== 'source-repository-url') ||
+        new Set(entry.rules).size !== entry.rules.length) fail('invalid or duplicate rules for ' + f);
+    if (typeof entry.reason !== 'string' || !entry.reason.trim() || /[\x00-\x1f\x7f]/.test(entry.reason)) fail('a nonempty review reason is required for ' + f);
+    if (!tracked.has(f) || !context.files.includes(f) || context.exclude.includes(f) || PRIVATE_DIRS.some(d => f.startsWith(d))) {
+      fail('file must be tracked and included in this companion: ' + f);
+    }
+    // Refuse symlink inputs and symlink staged paths, including directory components.
+    for (const base of [path.join(context.root, 'papers', context.id), dir]) {
+      let at = base;
+      for (const [i, component] of f.split('/').entries()) {
+        at = path.join(at, component);
+        if (!fs.existsSync(at)) fail('missing artifact ' + f);
+        const stat = fs.lstatSync(at);
+        if (stat.isSymbolicLink() || (i === f.split('/').length - 1 ? !stat.isFile() : !stat.isDirectory())) fail('artifact must be a regular file: ' + f);
+      }
+    }
+    const bytes = fs.readFileSync(path.join(dir, f));
+    if (BINARY.test(f) || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(bytes.toString('utf8'))) fail('binary artifact ' + f);
+    try { new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch (_) { fail('artifact must be UTF-8 text: ' + f); }
+    if (sha256(bytes) !== entry.sha256) fail('staged sha256 mismatch for ' + f);
+    grants.set(f, { rules: new Set(entry.rules), sha256: entry.sha256 });
+  }
+  return grants;
+}
 
 function archiveCitation(p) {
   if (!Object.prototype.hasOwnProperty.call(p, 'archiveVersion')) return null;
@@ -189,15 +240,19 @@ function license(root, reg, p, year) {
 // Problems that keep a staged companion from going public: links back into this repository, and email
 // addresses. The author's own address may appear in the manuscript (paper/) and nowhere else, so the
 // README, CITATION.cff and the programs leave it out (owner's decision, 2026-09-25).
-function problems(dir, reg) {
+function problems(dir, reg, p, context) {
   const out = [], allowed = new Set([String(reg.author.email || '').toLowerCase()]);
+  const grants = provenanceAllow(dir, p, context);
   const walk = rel => {
     for (const e of fs.readdirSync(path.join(dir, rel), { withFileTypes: true })) {
       const f = rel ? rel + '/' + e.name : e.name;
       if (e.isDirectory()) { if (e.name !== '.git') walk(f); continue; }
       if (BINARY.test(f) || f === 'LICENSE') continue;
-      const s = fs.readFileSync(path.join(dir, f), 'utf8');
-      for (const [re, what] of INTERNAL) if (re.test(s)) out.push(f + ': ' + what);
+      const bytes = fs.readFileSync(path.join(dir, f)), grant = grants.get(f);
+      // Check the same read that is scanned, so a change since validation cannot inherit a grant.
+      if (grant && sha256(bytes) !== grant.sha256) throw new Error('companionProvenanceAllow of ' + p.id + ': staged sha256 mismatch for ' + f);
+      const s = bytes.toString('utf8');
+      for (const [re, what, rule] of INTERNAL) if (re.test(s) && !(rule && grant?.rules.has(rule))) out.push(f + ': ' + what);
       const stray = (s.match(EMAIL) || []).filter(a => !(f.startsWith('paper/') && allowed.has(a.toLowerCase())) && !/@example\.(com|org|net)$/i.test(a));
       if (stray.length) out.push(f + ': email address ' + [...new Set(stray)].join(', '));
     }
@@ -228,7 +283,7 @@ function stage(root, id, dir, opts = {}) {
   fs.writeFileSync(path.join(dir, 'CITATION.cff'), citation(reg, p, year));
   const abs = abstractOf(readme);
   fs.writeFileSync(path.join(dir, '.zenodo.json'), zenodo(reg, p, abs.paragraphs));
-  return [...abs.problems, ...problems(dir, reg)];
+  return [...abs.problems, ...problems(dir, reg, p, { root, id, files, exclude, required })];
 }
 
 function check(root, id, opts) {
@@ -395,6 +450,96 @@ function selfTest() {
     expect(false, 'the manuscript cannot be excluded', r => { r.papers[0].latex = 'papers/t/paper/t.tex'; r.papers[0].companionExclude = ['paper/t.tex']; });
     expect(false, 'an exclusion cannot silently name a missing file', r => { r.papers[0].companionExclude = ['code/typo.py']; });
     expect(false, 'exclusions must be a list', r => { r.papers[0].companionExclude = 'code/run.py'; });
+    const provenance = '# Frozen origin: research/certificate/check.py\n# https://github.com/ChaseHendrick/GENChase\nprint(1)\n';
+    const expectProvenance = (want, what, mutate) => {
+      base();
+      w('papers/t/code/run.py', provenance);
+      w('papers/t/review/receipt.md', 'Reviewed artifact.\n');
+      const r = reg(), stagedFiles = [...files, 'review/receipt.md'];
+      r.papers[0].companionProvenanceAllow = [{ file: 'code/run.py', sha256: sha256(Buffer.from(provenance)),
+        rules: ['development-path', 'source-repository-url'], reason: 'Preserve the reviewed proof source bytes and their origin.' }];
+      execFileSync('git', ['-C', tmp, 'init', '-q']);
+      execFileSync('git', ['-C', tmp, 'add', '--', ...stagedFiles.map(f => 'papers/t/' + f)]);
+      if (mutate) mutate(r, stagedFiles);
+      let got;
+      try { got = check(tmp, 't', { registry: r, files: stagedFiles, year: 2026 }); } catch (e) { got = [e.message]; }
+      checks++;
+      if (want ? got.length !== 0 : got.length === 0) {
+        failures++; console.log('FAIL provenance ' + what + ': ' + (got.join('; ') || 'no problem found'));
+      }
+    };
+    expectProvenance(true, 'exact approved source bytes pass');
+    expectProvenance(false, 'source drift refuses the old pin', () => w('papers/t/code/run.py', provenance + '# changed\n'));
+    expectProvenance(false, 'email remains refused with a refreshed pin', r => {
+      const s = provenance + '# contact stranger@real-domain.org\n'; w('papers/t/code/run.py', s);
+      r.papers[0].companionProvenanceAllow[0].sha256 = sha256(Buffer.from(s));
+    });
+    expectProvenance(false, 'parent link remains refused with a refreshed pin', r => {
+      const s = provenance + '# [origin](../outside.md)\n'; w('papers/t/code/run.py', s);
+      r.papers[0].companionProvenanceAllow[0].sha256 = sha256(Buffer.from(s));
+    });
+    expectProvenance(false, 'unlisted files stay strict', () => w('papers/t/review/receipt.md', 'See research/other/input.json\n'));
+    expectProvenance(false, 'only the specified rule is exempt', r => { r.papers[0].companionProvenanceAllow[0].rules = ['development-path']; });
+    expectProvenance(false, 'another paper cannot grant this paper an exception', r => {
+      r.papers[1].companionProvenanceAllow = r.papers[0].companionProvenanceAllow;
+      delete r.papers[0].companionProvenanceAllow;
+    });
+    expectProvenance(false, 'a global registry field cannot grant an exception', r => {
+      r.companionProvenanceAllow = r.papers[0].companionProvenanceAllow;
+      delete r.papers[0].companionProvenanceAllow;
+    });
+    expectProvenance(false, 'empty grants retain strict checks', r => { r.papers[0].companionProvenanceAllow = []; });
+    expectProvenance(true, 'review text has the same narrow grant', r => {
+      w('papers/t/code/run.py', 'print(1)\n'); w('papers/t/review/receipt.md', provenance);
+      r.papers[0].companionProvenanceAllow[0].file = 'review/receipt.md';
+    });
+    for (const hash of ['', 'a'.repeat(63), 'A'.repeat(64), 'g'.repeat(64), 'a'.repeat(64) + '\n', null]) {
+      expectProvenance(false, 'invalid hash ' + JSON.stringify(hash), r => { r.papers[0].companionProvenanceAllow[0].sha256 = hash; });
+    }
+    for (const rules of [[], ['email'], ['parent-link'], ['development-path', 'development-path'], 'development-path', null]) {
+      expectProvenance(false, 'invalid rules ' + JSON.stringify(rules), r => { r.papers[0].companionProvenanceAllow[0].rules = rules; });
+    }
+    for (const file of ['../code/run.py', '/code/run.py', 'C:/code/run.py', 'code/../code/run.py', 'code/./run.py',
+      'code//run.py', 'code/*.py', 'code/[run].py', 'code\\run.py', 'paper/t.tex', 'README.md', 'code/README.md', 'review/README', 'code/run.py\n']) {
+      expectProvenance(false, 'invalid path ' + JSON.stringify(file), r => { r.papers[0].companionProvenanceAllow[0].file = file; });
+    }
+    for (const reason of ['', ' \t ', null, 12]) {
+      expectProvenance(false, 'invalid reason ' + JSON.stringify(reason), r => { r.papers[0].companionProvenanceAllow[0].reason = reason; });
+    }
+    expectProvenance(false, 'duplicate file entries refuse', r => { r.papers[0].companionProvenanceAllow.push({ ...r.papers[0].companionProvenanceAllow[0] }); });
+    expectProvenance(false, 'unknown entry fields refuse', r => { r.papers[0].companionProvenanceAllow[0].bypass = true; });
+    expectProvenance(false, 'malformed list refuses', r => { r.papers[0].companionProvenanceAllow = {}; });
+    expectProvenance(false, 'malformed entry refuses', r => { r.papers[0].companionProvenanceAllow = [null]; });
+    expectProvenance(false, 'missing input refuses', () => fs.unlinkSync(path.join(tmp, 'papers/t/code/run.py')));
+    expectProvenance(false, 'untracked input refuses even with opts.files', (r, stagedFiles) => {
+      w('papers/t/code/untracked.py', provenance); stagedFiles.push('code/untracked.py');
+      r.papers[0].companionProvenanceAllow[0].file = 'code/untracked.py';
+    });
+    expectProvenance(false, 'excluded input refuses', r => { r.papers[0].companionExclude = ['code/run.py']; });
+    expectProvenance(false, 'declared manuscript under code refuses', r => { r.papers[0].latex = 'papers/t/code/run.py'; });
+    expectProvenance(false, 'binary input refuses with a matching pin', r => {
+      const bytes = Buffer.from([0, 255, 1]); w('papers/t/code/run.py', bytes);
+      r.papers[0].companionProvenanceAllow[0].sha256 = sha256(bytes);
+    });
+    expectProvenance(false, 'invalid UTF-8 refuses with a matching pin', r => {
+      const bytes = Buffer.from([255, 254]); w('papers/t/code/run.py', bytes);
+      r.papers[0].companionProvenanceAllow[0].sha256 = sha256(bytes);
+    });
+    expectProvenance(false, 'binary extension refuses even with text contents', (r, stagedFiles) => {
+      w('papers/t/code/receipt.pdf', provenance); stagedFiles.push('code/receipt.pdf');
+      execFileSync('git', ['-C', tmp, 'add', '--', 'papers/t/code/receipt.pdf']);
+      r.papers[0].companionProvenanceAllow[0].file = 'code/receipt.pdf';
+    });
+    expectProvenance(false, 'symlink input refuses', () => {
+      w('origin.py', provenance); fs.unlinkSync(path.join(tmp, 'papers/t/code/run.py'));
+      fs.symlinkSync(path.join(tmp, 'origin.py'), path.join(tmp, 'papers/t/code/run.py'));
+    });
+    // Legacy direct scans receive no registry-wide or previously selected paper grant.
+    base(); w('papers/t/code/run.py', provenance);
+    checks++;
+    if (!problems(path.join(tmp, 'papers/t'), reg()).some(s => s.startsWith('code/run.py:'))) {
+      failures++; console.log('FAIL legacy problems(dir, reg) lost strict behavior');
+    }
     const listed = ready(reg()).map(p => p.id).join(' ');
     checks++; if (listed !== 't') { failures++; console.log('FAIL --list gave "' + listed + '", not "t"'); }
     checks++; try { ready(reg(), 'u'); failures++; console.log('FAIL a draft was listed'); } catch (_) { /* refused, as it should be */ }

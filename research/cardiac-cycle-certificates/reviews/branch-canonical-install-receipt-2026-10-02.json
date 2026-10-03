@@ -1,0 +1,36 @@
+{
+  "producing_run": 37076139080,
+  "producing_commit": "92362aebfb40499a7d6c68214e621af7fcb3644c",
+  "final_log_sha256": "cd3fb0811f7bc67aa20a0298088d58a9768b158b720a3cea0c8e35c6a87b20e8",
+  "linux_collected_record_sha256": "099c0c9460c726991b01f3395ece2fb0b5939d545801b2d7bc22c689a175f195",
+  "canonical_collected_record_sha256": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+  "canonical_collector_runtime": "macOS; actual proof pieces produced by the pinned Linux run",
+  "differences_from_producer": {
+    "metadata": [
+      "run_log",
+      "machine"
+    ],
+    "piece_display_ratio_only": {
+      "field": "Y0_over_cap",
+      "indices": [
+        32,
+        224,
+        631
+      ]
+    }
+  },
+  "scope": "Installation and canonical recollection; acceptance inequalities, exact piece data and all711 gluings unchanged",
+  "supervisor": {
+    "command": [
+      "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+      "branch.py",
+      "--collect"
+    ],
+    "pid": 45593,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 6.771090207854286,
+    "peak_aggregate_rss_mib": 258.09375,
+    "log": "/private/tmp/cardiac-branch-canonical-collect-2026-10-02.log"
+  }
+}

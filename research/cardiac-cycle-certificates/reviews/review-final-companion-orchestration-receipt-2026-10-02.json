@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "admission": "bounded source/orchestration and actual receipt replay passed; numerical group controls remain pending",
+  "run_all_sha256": "85d45cc21c4c129b53984bc73f13d6b52a18cdf274c7ebe146ced65dc5f917cf",
+  "group_helper_sha256": "52c59e8c04238a0f26373d039fbb1468719957448925fea8475896a1bc4eb162",
+  "controls_passed": 25,
+  "negative_controls": [
+    "changed exact branch bound",
+    "display True",
+    "display -1.0",
+    "display nan",
+    "display inf",
+    "malformed dyadic 0x1p-4junk",
+    "malformed dyadic 0x1.0p-4",
+    "malformed dyadic nan",
+    "malformed dyadic 1",
+    "noncontracting exact ratio",
+    "strict JSONL b''",
+    "strict JSONL b'{}'",
+    "strict JSONL b'{}\\n\\n'",
+    "strict JSONL b'[]\\n'",
+    "strict JSONL b'{\"x\":1,\"x\":2}\\n'",
+    "tube rho",
+    "tube Yprime",
+    "tube kappa",
+    "tube Z1_path",
+    "stored kappa underestimates selfmap",
+    "typed rstar",
+    "fresh group settings",
+    "fresh group sources_sha256",
+    "fresh group ok",
+    "fresh mutation controls"
+  ],
+  "actual_uniform_units_checked": 63,
+  "scope": "Scratch reproduction exact tube gates and comparison boundaries; group test fixture is actual fresh cached proof serialization, not prior-bound numerical equality. Full finite SC vectors are not serialized.",
+  "full_source_proofs_rerun": false,
+  "group_helper_final_sha256": "dd3a7c2b770f1b494a3abe857c2ab9b683f94e6d54c79cbb14bf7e214b67e4bd",
+  "strict_failure_followup": "The sole change from admitted52c59 unconditionally marks any outer BaseException failed, including a late deadline after success assignment. Reversing exactly one replacement reproduces admitted prior bytes.",
+  "reviewer_fixture_failures_before_pass": [
+    "Float parsing rational r_star fixture ValueError, no producer execution",
+    "Fixture-only indentation error, no producer execution"
+  ],
+  "current_failure_followup_self_test_passed": true,
+  "package_workflow_sha256": "19b3811a02d58853fa33003139c23531f2589feebe5519b8207fa233b6f62ad2",
+  "package_workflow_admission": "Read-only opt-in bounded project build and identical three-pass TeX rebuild; actual cloud build/layout outcomes pending.",
+  "ordinary_seed_scratch_followup": {
+    "final_run_all_sha256": "532a472f00ed650d2926948fcaf5b6a800e7d1bb612dc2659fb74febd26d461b",
+    "scope": "Only an ordinary numerical Hopf seed copy and explanatory comment added. Removing these exact three lines reconstructs admitted85d bytes. Every proposed equilibrium enclosure remains subject to both stored complex-polydisc contraction and exact containment gates; seed claims not promoted."
+  },
+  "endpoint_precision_and_scratch_output_followup": {
+    "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+    "receipt": "companion-wrapper-reproduction-2026-10-02.json",
+    "receipt_sha256": "2e6fd27ac5f70344c1df41e999900d7d73f171ae18f44312884c3dd3a7fa4588",
+    "complete_private_reproduction_passed": true,
+    "wall_seconds": 31.10951133305207,
+    "peak_rss_mib": 431.0,
+    "negative_and_boundary_controls": 13,
+    "source_math_unchanged": true,
+    "public_stage_guard_pass_claimed": false
+  }
+}

@@ -55,7 +55,7 @@ We give computer-assisted proofs for Erhardt's 18-state modification of the ten 
 
 For one cell, two proofs (CAPD and Arb, sharing only GMP and MPFR) give an orbitally asymptotically stable periodic orbit, with 17 nontrivial Floquet multipliers below $0.998642$ and $0.997859$ respectively, and an exact rational check shows both enclose the same orbit. For $N = 8, 16, 32, 64$ a rotating 1-wave exists, is locally unique and not synchronous, has minimal period $T = 2\pi/\omega$ enclosed to within $2 \times 10^{-25}$~ms, and is locally exponentially orbitally stable: the multiplier $1$ is algebraically simple and the other $18N - 1$ have modulus below $e^{-\delta T} < 0.9997321$, $\delta = 5 \times 10^{-6}$ per ms. A locally unique rotating 1-wave also exists for every $N \ge 8$, and a traveling wave for the cable, the limit of the ring waves.
 
-Existence is a radii-polynomial argument in a weighted $\ell^1$ space, made uniform over $\varepsilon \in [0, 1/64]$ ($1/N^2$ for the rings, $0$ for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill operator whose spectrum gives every Floquet multiplier with its algebraic multiplicity; a Riesz-projection homotopy shows it meets $\{\re\mu \ge -\delta\}$ only in the eigenvalues $i\omega N\Z$, each algebraically simple. Stability is proved only for the cell and these four rings; the link to the Hopf branch is only numerical, and nothing is claimed for tissue.
+Existence is a radii-polynomial argument in a weighted $\ell^1$ space, made uniform over $\varepsilon \in [0, 1/64]$ ($1/N^2$ for the rings, $0$ for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill operator whose spectrum gives every Floquet multiplier with its algebraic multiplicity; a Riesz-projection homotopy shows it meets $\{\re\mu \ge -\delta\}$ only in the eigenvalues $i\omega N\Z$, each algebraically simple. For the single cell, a connected conductance family reaches a certified supercritical Hopf endpoint. Its 712-piece lower interval has uniform nontrivial multiplier bound $0.998413816$; a 68-piece amplitude family supplies the bridge. Quantitative uniform stability is proved only on the lower interval. Nothing is claimed for tissue.
 
 \medskip
 \noindent\textbf{Keywords:} cardiac cell model; modified ten Tusscher--Panfilov model; ring of coupled oscillators; rotating wave; Floquet multipliers; Hill operator; computer-assisted proof; ball arithmetic; radii polynomial.\\
@@ -74,13 +74,15 @@ where $f$ is the cell's vector field and $E$ the projection on the voltage. The 
 
 \paragraph{Results.} Theorem~\ref{thm:cell} concerns the single cell. It has two parts, proved independently: one in the time domain with CAPD \cite{capd2021}, by a contraction argument for the Poincar\'e map, and one in Fourier space with Arb \cite{johansson2017}, by the method of this paper with $N = 1$. The two proofs use different interval arithmetic (CAPD with filib double intervals, and MPFR intervals for one center image; Arb ball arithmetic in FLINT), different translations of the model and different methods; they have in common only the multiprecision libraries GMP and MPFR, linked in separate builds. An exact rational check (Lemma~\ref{lem:link}) shows that they enclose the same orbit. We call the existence proof in Fourier space Stage~E (Section~\ref{sec:existence}) and the stability proof Stage~S (Section~\ref{sec:stability}), as the programs and their records do. Theorem~\ref{thm:ring} concerns the rings with $N = 8, 16, 32, 64$. Its existence part (Section~\ref{sec:existence}) is a radii-polynomial (Newton--Kantorovich) argument for the Fourier coefficients of the profile $\phi$ in a weighted $\ell^1$ space. In Fourier space the ring enters only through a scalar damping $d_m = 4c\sin^2(\pi m/N)$ on the voltage of mode $m$, so the cost does not grow with the dimension $18N$ of the ring: each existence proof takes about two minutes. Its stability part (Section~\ref{sec:stability}) rests on a lemma (Theorem~\ref{thm:hill}) that the Floquet multipliers of the rotating wave, with algebraic multiplicities, are the numbers $e^{\mu T}$ for $\mu$ in the spectrum of a single Hill operator $H_0$ in a half-open strip of height $\omega N$. Spectrum of $H_0$ is then excluded from the half plane $\{\re \mu \ge -\delta\}$, except a simple eigenvalue at $0$ and its translates by $i\omega N\Z$, by counting the rank of a Riesz projection along a homotopy (Theorem~\ref{thm:cert}). The stability proofs take between half a minute and eight minutes. Theorem~\ref{thm:alln} extends existence and local uniqueness to every ring size $N \ge 8$ and to the continuum cable. The damping $d_m$ is an entire function of $\varepsilon = 1/N^2$, and its value at $\varepsilon = 0$ is the damping of the cable, so the profile equations of all the rings and of the cable belong to one family (Section~\ref{sec:family}). We prove existence for every $\varepsilon \in [0, 1/64]$ by making the radii-polynomial argument uniform over 73 parameter pieces, in the manner of rigorous parameter continuation \cite{vblm2010}, and glue the pieces by ball inclusion (Section~\ref{sec:alln}). Stability is proved only where Stage~S was run, for $N = 8, 16, 32, 64$.
 
+\paragraph{Conductance extension.} Theorem~\ref{thm:conductance} separates three assertions for $N=1$: continuation on a 712-piece conductance interval, stability uniform on that entire lower interval, and connection by a 68-piece amplitude family to a certified supercritical Hopf endpoint. Sections~\ref{sec:conductance-methods} and~\ref{sec:hopf-methods} provide the analytic implications; Section~\ref{sec:conductance-gates} identifies the exact source-bound numerical evidence. Its uniform stability interval does not extend automatically to the whole Hopf bridge.
+
 \paragraph{Related work.} Gameiro and Lessard \cite{gl2017} proved periodic orbits of the Kuramoto--Sivashinsky equation by a space-time Fourier radii-polynomial argument and enclosed individual Floquet exponents by a second contraction on the invariance equation \cite[Sect.~7]{gl2017}. That proves instability; they state that their approach could only prove that some solutions are unstable, and that extending it to prove stability ``is the subject of current research'' \cite[Sect.~1]{gl2017}. The exclusion and counting step of Section~\ref{sec:stability} is how we supply the missing part for our Hill operator. Other routes to the stability of a periodic orbit exist: Castelli and Lessard \cite{cl2013} computed the Floquet normal form $\Phi(t) = Q(t)e^{Rt}$ of periodic orbits of ODEs by rigorous numerics, which gives all Floquet exponents; a time-domain contraction for the Poincar\'e map, as in Section~\ref{sec:capd}, is another; and Church, Dai, H\'enot, Lappicy and Vassena \cite{cdhlv2026} proved global families of stable periodic orbits in a model of competing predators by computer; their abstract does not say how stability is certified. Figueras, Gameiro, Lessard and de la Llave \cite{fgld2017} gave a framework for the numerical computation and a posteriori verification of invariant objects of evolution equations. Church and Lessard \cite{cl2022} verified Hopf bifurcations in functional differential equations of mixed type, the class to which the profile equation of a lattice traveling wave belongs, Arioli and Koch \cite{ak2020} constructed traveling waves of the FPU chain by a computer-assisted proof, and Kuehn and Queirolo \cite{kq2022} proved Hopf bifurcation points and periodic orbits of recurrent neural networks by computer. Bayer and Leine \cite{bl2026} proved an explicit a priori bound on the truncation error of the Koopman--Hill approximation of the monodromy matrix of a linear time-periodic system, for coefficients with $\|J_k\| \le a e^{-b|k|}$ and $b > \ln 2$ \cite[Theorem~4]{bl2026}, and inferred multiplier locations from pseudospectra in floating point; our tail bound is a posteriori and acts on the resolvent of the Hill operator, which lets us count eigenvalues in ball arithmetic. Johnson and Zumbrun \cite{jz2012} proved convergence of Hill's method for nonselfadjoint periodic-coefficient operators; as far as its first page describes it, the result is convergence in location and multiplicity, with no error bound stated there, and we cite it as background on Hill truncation only; our tail bound does not use it.
 
 The reduction of a ring's Floquet problem to Fourier blocks combines three classical ingredients: the $\Z_N$-isotypic decomposition of rings of identical cells \cite{gs1985}, \cite[Ch.~XVIII, Sect.~4]{gss1988}; the spatio-temporal symmetry of a discrete wave, which makes the monodromy an $N$-th power of a twisted map, as in Rucklidge and Silber \cite{rs1998} and de Wolff \cite{dewolff2023}; and the discrete Laplacian eigenvalues $4\sin^2(\pi m/N)$, familiar from the master stability function of Pecora and Carroll \cite{pc1998}. We state the resulting identity as a lemma and prove it for completeness. Paullet and Ermentrout \cite{pe1994} studied stable rotating waves in two-dimensional discrete active media analytically, and Ermentrout \cite{ermentrout1992} gave conditions for the stability of phase-locked solutions of weakly coupled oscillator arrays; Ashwin and Swift \cite{as1992} and Hoppensteadt and Izhikevich \cite{hi1997} treat weakly coupled identical oscillators and phase reduction. For piecewise-linear Chua--Yang rings, Di Marco, Forti, Garay, Koller and Pancioni \cite{dmfgkp2016} obtained, according to excerpts of their abstract, the Floquet multipliers of an unstable, metastable rotating wave. Reentry on rings of excitable (not self-oscillating) cardiac tissue has a long numerical and analytical history, for example Courtemanche, Glass and Keener \cite{cgk1993} and ten Tusscher and Panfilov \cite{tp2006}; the waves of this paper are of a different kind, phase waves on rings of self-oscillating cells. For the FitzHugh--Nagumo traveling-wave ODE, Czechowski and Zgliczy\'nski \cite{cz2016} proved periodic orbits by computer, without stability, and, according to them, Arioli and Koch \cite{ak2015} proved the existence and stability of the FitzHugh--Nagumo traveling pulse by computer. Kapela and Zgliczy\'nski \cite{kz2003} proved choreographies of the $N$-body problem by computer; a choreography has the same cyclic-shift symmetry $x_{j+1}(t) = x_j(t + T/N)$ as a rotating wave, in a Hamiltonian system without diffusive coupling.
 
-\paragraph{Earlier work, as far as the searches reached.} The searches we made (Section~\ref{sec:limits}) found no earlier computer-assisted proof of a periodic orbit of a detailed ionic cardiac cell model, and no earlier computer-assisted proof of a rotating wave in a ring of diffusively coupled cells. For Di Marco et al.\ \cite{dmfgkp2016} this rests on excerpts of their abstract, which describe a piecewise-linear ring with saturated coupling and do not mention a computer-assisted proof. We make no claim beyond that sentence; the nearest computer-assisted precedents for the symmetry and for stability are cited above. The oscillation of the single cell is not new: Erhardt's continuation \cite{erhardt2025} predicts it.
+\paragraph{Method credit and search scope.} Rigorous Fourier continuation and amplitude desingularization are established methods~\cite{vbq2021,vblq2021}. In particular locally analytic nonpolynomial fields and gluing by transformed-ball containment already appear in~\cite[Sects.~2.2 and~6]{vblq2021}. The contribution here is the stated model application and its explicit domain, remainder, spectral and identification checks. Erhardt's numerical continuation~\cite{erhardt2025} already predicts the cell oscillation. The bounded literature and forward-citation searches described in Section~\ref{sec:limits} do not establish historical priority; no first-ever claim is made.
 
-\paragraph{Labels.} Theorems~\ref{thm:cell}, \ref{thm:ring} and~\ref{thm:alln} are computer-assisted: the inequalities they rest on are decided in exact rational, interval or ball arithmetic by the programs of Section~\ref{sec:reproduce} (four constants of Theorem~\ref{thm:alln}(a) that summarize all its pieces are read off the record by an exact rational check, as the proof says), and every step from those inequalities to the statements is proved in this paper. Lemma~\ref{lem:link} is computer-assisted (exact rational arithmetic, \file{code/fourier/link_cell.py}). The other lemmas, Proposition~\ref{prop:enclosure}, Theorems~\ref{thm:hill}, \ref{thm:cert} and~\ref{thm:stab} and Corollaries~\ref{cor:strip} and~\ref{cor:section} are proved here; Theorems~\ref{thm:cert} and~\ref{thm:stab} are implications from inequalities that the programs check to their conclusions, with no computation of their own; where a lemma's hypotheses are numerical inequalities, the proofs of the theorems say which program checks them. So are the standard facts about operators with compact resolvent that Section~\ref{sec:stability} uses, in Appendix~\ref{app:resolvent}, from elementary facts only. Section~\ref{sec:numerics} collects numerical observations, labelled as such, among them a floating-point comparison with the weak-coupling phase reduction (Remark~\ref{rem:phase}); none of them is used in a proof or stated as a theorem. The checks made of this work are listed in Section~\ref{sec:limits}. Unless stated otherwise, paths such as \file{code/fourier/existence.py} name files of the folder that accompanies this paper (the companion repository named under Data availability).
+\paragraph{Labels.} Theorems~\ref{thm:cell}, \ref{thm:ring} and~\ref{thm:alln} are computer-assisted: the inequalities they rest on are decided in exact rational, interval or ball arithmetic by the programs of Section~\ref{sec:reproduce} (four constants of Theorem~\ref{thm:alln}(a) that summarize all its pieces are read off the record by an exact rational check, as the proof says), and every step from those inequalities to the statements is proved in this paper. Lemma~\ref{lem:link} is computer-assisted (exact rational arithmetic, \file{code/fourier/link_cell.py}). Theorem~\ref{thm:conductance} is computer-assisted, with its source-bound continuation and stability evidence specified in Section~\ref{sec:conductance-gates}. The other lemmas, Proposition~\ref{prop:enclosure}, Theorems~\ref{thm:hill}, \ref{thm:cert} and~\ref{thm:stab} and Corollaries~\ref{cor:strip} and~\ref{cor:section} are proved here; Theorems~\ref{thm:cert} and~\ref{thm:stab} are implications from inequalities that the programs check to their conclusions, with no computation of their own; where a lemma's hypotheses are numerical inequalities, the proofs of the theorems say which program checks them. So are the standard facts about operators with compact resolvent that Section~\ref{sec:stability} uses, in Appendix~\ref{app:resolvent}, from elementary facts only. Section~\ref{sec:numerics} collects numerical observations, labelled as such, among them a floating-point comparison with the weak-coupling phase reduction (Remark~\ref{rem:phase}); none of them is used in a proof or stated as a theorem. The checks made of this work are listed in Section~\ref{sec:limits}. Unless stated otherwise, paths such as \file{code/fourier/existence.py} name files of the folder that accompanies this paper (the companion repository named under Data availability).
 
 \section{The model and the ring}\label{sec:model}
 
@@ -239,6 +241,34 @@ $\infty$ (cable) & $[0, 1/4096]$ & $[53.58809529823, 53.58810763685]$ & -- & $4.
 \caption{Theorem~\ref{thm:alln} at the ring sizes of Theorem~\ref{thm:ring} and for the cable, from \texttt{data/\allowbreak fourier-existence-alln.json}. The period enclosures are the record's outward-rounded decimal ends, rounded outward again to 11 decimals; each contains the enclosure of Table~\ref{tab:existence} for the same $N$. The fourth column (rounded up) is the left side of the inclusion \eqref{eq:incl} of the existence ball of Theorem~\ref{thm:ring}(a) in the uniqueness ball of $P$, which must not exceed $r_{\mathrm{un}}(P)$ (rounded down); $1/4096$ lies in two pieces, and both inclusions hold. Theorem~\ref{thm:ring} gives no ball for the cable, so its entry is empty.}
 \label{tab:alln}
 \end{table}
+
+\begin{theorem}[single-cell conductance family; computer-assisted]\label{thm:conductance}
+Let $N=1$, $g=G_{Ks}$ and $J=[0.027499735464,0.02778996093]$~nS/pF, for the model of Section~\ref{sec:model}. The exact source-bound numerical inequalities of Sections~\ref{sec:conductance-methods} and~\ref{sec:hopf-methods} are verified by the records specified in Section~\ref{sec:conductance-gates}.
+\begin{enumerate}
+\item[(a)] For every $g\in J$ there is a real nonconstant cell profile $\phi_*(\cdot;g)$, analytic on $|\im\theta|<1/4$, and a positive frequency $\omega_*(g)$ such that $z(t)=\phi_*(\omega_*(g)t;g)$ solves the scaled cell equation. Its voltage first harmonic is real and nonzero. The pair of frequency and Fourier coefficients is continuous in the weighted Fourier space, locally Lipschitz on each of the 712 pieces, lies in that piece's existence ball and is its only phase-fixed zero in the uniqueness ball. The profile has minimal period $2\pi$, and $T(g)=2\pi/\omega_*(g)$ is the minimal physical period. The 711 adjacent inclusions identify one branch on all of $J$.
+\item[(b)] The accepted uniform stability units cover all of $J$. On each unit $I_u$ let $\delta_u>0$ and $\omega_{{\rm hi},u}$ be the certified bounds. For every $g\in I_u$, the Floquet multiplier $1$ is algebraically simple, and the other 17 multipliers satisfy
+\[
+ |\lambda|<e^{-\delta_u T(g)}\le e^{-\delta_u T_{{\rm lo},u}}<1,
+ \qquad T_{{\rm lo},u}=2\pi/\omega_{{\rm hi},u}.
+\]
+The orbit is locally exponentially orbitally stable with asymptotic phase. For each fixed $g$ and $0<\delta'<\delta_u$, nonlinear constants $C_g,\epsilon_g>0$ exist as in Theorem~\ref{thm:ring}(c); these constants and the neighborhood size are not computed or claimed uniform in $g$. All 63 admitted units use $\delta_u=3\times10^{-5}$ per ms; taking the maximum of their outward multiplier bounds gives $|\lambda|\le0.998413816$ for every nontrivial multiplier throughout $J$.
+\item[(c)] There is a supercritical Hopf point $(z_H,g_H,\omega_H)$ and a continuous normalized family
+\[
+ z_\varepsilon(t)=c(\varepsilon)+\varepsilon w(\omega(\varepsilon)t;\varepsilon),
+ \qquad 0\le\varepsilon\le6427/50000,
+\]
+with $g(0)=g_H$, $c(0)=z_H$, $\omega(0)=\omega_H>0$ and $w_{V,1}=w_{V,-1}=1/2$ in the fixed scaled TP06 coordinates. Thus $a_{1,V}=\varepsilon/2$ there and $|\widehat V_1|=\varepsilon/8$~mV in physical voltage. Its positive-amplitude solutions are nonconstant, have minimal period $2\pi/\omega(\varepsilon)$, and are locally unique in their normalized enclosures. The 68 amplitude pieces and 67 adjacent inclusions form one continuous family. A fresh existence proof at $g_s=0.02778$ identifies an orbit common to this family and (a). Their connected union contains a periodic orbit at every conductance in $[\inf J,g_H)$ and the Hopf equilibrium at its endpoint. Sufficiently small positive amplitudes have the local orbital stability supplied by the classical Hopf theorem. No monotonicity of $g(\varepsilon)$, global uniqueness at a fixed conductance, explicit size of that Hopf neighborhood, or uniform stability on the entire amplitude bridge is asserted.
+\end{enumerate}
+\end{theorem}
+
+This extension concerns only the single cell. The all-$N$ and cable assertions of Theorem~\ref{thm:alln} retain their fixed conductance and their original stability scope. Historical pointwise stability successes are not used as a substitute for the new uniform cover. The numerical evidence and its acceptance checks are specified in Section~\ref{sec:conductance-gates}.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/branch-hopf.pdf}
+\caption{The single-cell conductance family and its amplitude bridge to the Hopf point. Panels (a) and (b) show the stored period and physical first-voltage-harmonic enclosures for all 712 conductance pieces (blue) and all 68 freshly re-proved amplitude pieces (orange). Overlapping rectangles enclose families, rather than sampled numerical trajectories. The green line marks the fresh common orbit at $G_{Ks}=0.02778$. Panel (c) shows the outward nontrivial Floquet multiplier bound over each of the 63 uniform certificates. The gray interval has no supplied quantitative uniform bound; local Hopf attraction does not fill that interval with a numerical decay estimate. Panel (d) enlarges the endpoint enclosures. The black marker displays the certified Hopf interval, whose width is below the plotting resolution. Erhardt's printed numerical Hopf value is shown separately and lies outside that interval. Legends lie outside the data panels. All plotted values are rounded to binary64 for display; the proofs use the stored exact or interval values.}
+\label{fig:branch}
+\end{figure}
 
 \section{Existence in Fourier space}\label{sec:existence}
 
@@ -489,7 +519,7 @@ The exact inputs of every piece (centers, weights, $r_*$, the radii $R_i$) are i
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{figures/alln-pieces.pdf}
+\includegraphics[width=\dimexpr\textwidth-12pt\relax]{figures/alln-pieces.pdf}
 \caption{The pieces of the proof of Theorem~\ref{thm:alln}, as stored in \texttt{data/\allowbreak fourier-existence-alln.json}. (a) Each of the 73 boxes is a piece $P$ (width $1/4096$; consecutive pieces overlap by $1/32768$ and are darker where they overlap) times its period interval: for every $\varepsilon \in P$, $T(\varepsilon) = 2\pi/\omega_*(\varepsilon)$ lies in that interval. Diamonds: the periods $T_N$ of Theorem~\ref{thm:ring} at $\varepsilon = 1/N^2$, $N = 8, 16, 32, 64$ (Table~\ref{tab:existence}), whose enclosures are narrower than $2 \times 10^{-25}$~ms; each lies in the period interval of every piece that contains $1/N^2$ (Table~\ref{tab:alln}). Bar at $\varepsilon = 0$: the period $T_\infty \in [53.58809529823299300232974, 53.58810763684487454838746]$~ms of the cable wave (Theorem~\ref{thm:alln}(c)), the interval of the piece $[0, 1/4096]$. The vertical axis is $T - 53.588$~ms in ns; $53.588$~ms is an axis offset, not a result. The top axes mark $\varepsilon = 1/N^2$ at the labelled $N$, with minor ticks at the other integers $N$ up to $29$ in (a) and up to $52$ in (b); these points accumulate at $\varepsilon = 0$. (b) The part of (a) with $\varepsilon \le 5/4096$: the rings $N = 32$ and $N = 64$ ($1/4096$ lies in two pieces) and the cable. (c) For each piece, the existence radius $r_{\mathrm{ex}}(P)$ and the uniqueness radius $r_{\mathrm{un}}(P)$, drawn over the piece, both in the weighted norm $\|\cdot\|_\eta$ of that piece; and, at the middle of each of the 72 overlaps, the left side of the gluing inequality \eqref{eq:glue}, in the norm of the later piece $P_b$, which must not exceed $r_{\mathrm{un}}(b)$; its largest ratio to $r_{\mathrm{un}}(b)$ is below $0.0076$ (Section~\ref{sec:alln}). The weights differ from piece to piece, so the values in (c) are not in one common norm. The figure draws stored enclosures and radii only; stability is proved only for $N = 8$, $16$, $32$, $64$. Reproduced by \texttt{code/\allowbreak plot\_cardiac\_rings.py}.}
 \label{fig:alln}
 \end{figure}
@@ -736,6 +766,1152 @@ The program \file{code/fourier/stability.py} implements Theorem~\ref{thm:cert} w
 For each $N \in \{1, 8, 16, 32, 64\}$ the records \file{data/fourier-stability-N*.json} show (C0) to (C5) passed, with Lemma~\ref{lem:tail} for the tail and the form (SC): for example at $N = 8$, $\rho_T \le 3.5781$, $\theta_c \le 0.07873$, $\theta_T \le 0.2817$, $\hat b \le 0.856$, $q_C \le 2.7 \times 10^{-14}$, the smallest $\operatorname{dist}_j$ is $1.32 \times 10^{-6}$, and exactly one $\lambda_j$ (at about $3 \times 10^{-16} - 4 \times 10^{-15}i$) lies in $\Omega$; Table~\ref{tab:stability} lists the other $N$. Theorem~\ref{thm:stab} gives the statements, with the multiplier bounds $e^{-\delta T_{\mathrm{lo}}}$ and $e^{-\delta T_{\mathrm{lo}}/N}$ rounded upward from Arb. For $N = 1$, $Y(T) = M_\tau$ and $Q = I$.
 \end{proof}
 
+\section{Conductance continuation and uniform cell stability}\label{sec:conductance-methods}
+
+This section proves the implications used in Theorem~\ref{thm:conductance}(a) and (b). The parameter is $g=G_{Ks}$ and $N=1$ throughout; there is no ring coupling. This parameter family is distinct from the fixed-conductance all-$N$ family of Theorem~\ref{thm:alln}. In this section and Section~\ref{sec:hopf-methods}, $f(z;g)$ denotes the scaled field $\Sigma^{-1}f(\Sigma z;g)$ in the earlier notation. Frequencies retain their units per ms, while Fourier amplitudes refer to the scaled state.
+
+Validated Fourier continuation and radii-polynomial bounds follow established methods~\cite{vblm2010,vbq2021}. The model's analytic nonpolynomial field is handled by explicit guarded strip and polydisc estimates. The conditions below are mathematical implications; their numerical application requires the source-bound records and acceptance gates in Section~\ref{sec:conductance-gates}.
+
+\subsection{Setting, domain and proposed statement}\label{sec:cg-1}
+
+Write $z=\Sigma^{-1}x$ for the exact diagonal scaling of the 18-state cell, and $g=G_{Ks}$. The model has
+
+\[
+ f(z;g)=f(z;g_c)+(g-g_c)f_1(z).
+\]
+
+Only the voltage row of $f_1$ is nonzero. A proposed periodic orbit is
+
+\[
+ z(t)=\phi(\omega t),\qquad
+ \phi(\theta)=\sum_{m\in\mathbb Z}a_m e^{im\theta},\qquad
+ \omega\phi'=f(\phi;g).
+\]
+
+The complex domain $U_g$ is the open set where every intermediate reciprocal in the model expression has a nonzero divisor and every intermediate logarithm or square root has argument with positive real part. Exponentials and integer powers impose no further restriction, except reciprocals for negative powers. Logarithms and square roots use their principal branches. A finite ball evaluation, with these guards checked at every intermediate, certifies that the entire input set lies in this domain. Guarded evaluation of the field and its derivatives is essential; a finite unguarded logarithm is not a domain certificate.
+
+Let $\rho_0>0$, $\nu=e^{\rho_0}>1$, and exact positive weights $\eta_\omega,\eta_1,\ldots,\eta_{18}$ be fixed on a piece. Define
+
+\[
+ \ell^1_\nu=\{b:\|b\|_\nu=\sum_m|b_m|\nu^{|m|}<\infty\},\qquad
+ X=\mathbb C\times(\ell^1_\nu)^{18},
+\]
+\[
+ \| (\omega,a)\|_\eta
+ =\max\left\{|\omega|/\eta_\omega,
+             \max_k\|a_k\|_\nu/\eta_k\right\}.
+\]
+
+The residual space is $X'=\mathbb C\times(\ell^{1\prime}_\nu)^{18}$, with
+
+\[
+ \|b\|_{\nu}'=\sum_m\frac{|b_m|\nu^{|m|}}{1+|m|},
+\]
+
+and the corresponding weighted maximum norm. The operator $b_m\mapsto im b_m$ is bounded from $\ell^1_\nu$ to $\ell^{1\prime}_\nu$. It is not asserted bounded on $\ell^1_\nu$. Define $F:X\to X'$ locally by
+
+\[
+ F_{\rm ph}(\omega,a)=a_{1,V}-a_{-1,V},\qquad
+ F_m(\omega,a;g)=i\omega m a_m-[f\circ\phi_a]_m.
+\]
+
+On real conjugation-symmetric profiles this phase condition is $\operatorname{Im}a_{1,V}=0$. It fixes a local time origin when $a_{1,V}\ne0$. It does not select a voltage level crossing, which can cease to exist along a shrinking orbit.
+
+\subsection{Fourier enclosures and an injective proposed inverse}\label{sec:cg-2}
+
+The convolution inequality
+
+\[
+ \|b*c\|_\nu\le\|b\|_\nu\|c\|_\nu
+\]
+
+follows by summing absolute values and using $\nu^{|m|}\le\nu^{|n|}\nu^{|m-n|}$. Thus $\ell^1_\nu$ is a Banach algebra. Its Fourier series converges absolutely and uniformly on the closed strip $|\operatorname{Im}\theta|\le\rho_0$, and is holomorphic on its interior.
+
+\begin{lemma}[strip and Fourier bounds]\label{lem:cg-2-1} Suppose a finite cover of $[0,2\pi]\times[-\rho,\rho]$ by closed rectangles is evaluated by guarded inclusion arithmetic for a trigonometric polynomial $p$ and a holomorphic expression $H$. If all evaluations are finite, $H(p(\theta))$ is holomorphic on an open neighborhood of the closed strip, and its modulus is bounded by the maximum $S$ of the output modulus upper bounds. Its coefficients satisfy $|c_n|\le S e^{-\rho|n|}$. An $M$-node DFT encloses $\sum_{\ell\in\mathbb Z}c_{n+\ell M}$; therefore the exact coefficient is enclosed after adding the alias error
+
+\[
+ S\frac{e^{-\rho(M-n)}+e^{-\rho(M+n)}}{1-e^{-\rho M}}
+ \quad (|n|<M).
+\]
+
+For $q=\nu e^{-\rho}<1$, the weighted omitted tail beyond $K'$ is at most $2S q^{K'+1}/(1-q)$.
+
+\end{lemma}
+
+\begin{proof} Each rectangle's input ball contains every polynomial value on the rectangle; inclusion and the domain guards imply that these values lie in an open holomorphic domain. Periodicity extends the cover to the strip. Shifting the Fourier integration contour to imaginary part $-\rho\operatorname{sgn}(n)$ proves the coefficient bound. Absolute convergence permits interchanging the Fourier series with the finite DFT; the finite roots-of-unity sum is 1 precisely when the coefficient index equals $n$ modulo $M$. Summing the positive and negative alias geometric series gives the displayed formula. Summing $S(\nu e^{-\rho})^{|n|}$ over both omitted signs gives the last claim. The same proof applies entrywise and to a family whose coefficient and parameter balls contain every member. \end{proof}
+
+Choose an exact real center $\bar x=(\bar\omega,\bar a)$, with $\bar\omega>0$, modes $|m|\le K$, conjugation symmetry, and zero phase. Let $J_n=[Df\circ\phi_{\bar a}]_n$, evaluated at $g_c$. Form the finite Jacobian $J_{\rm fin}$ with rows phase and modes $|m|\le K$, and columns frequency and those modes. Its phase row has precisely $+1$ at $(1,V)$ and $-1$ at $(-1,V)$. Let $A_{\rm fin}$ be any exact square matrix proposed as an inverse. Define the fixed operator $A:X'\to X$ by $A_{\rm fin}$ on the finite block and
+
+\[
+ A_m=(i\bar\omega mI-\widehat J_0)^{-1}\quad(|m|>K),
+\]
+
+on individual tail modes, where $\widehat J_0$ is an exact real matrix. There is no damping term for $N=1$.
+
+\begin{lemma}[tail inverse and injectivity]\label{lem:cg-2-2} Compute the point matrix inverses for $K<|m|\le m_{\max}$. Put $Y=\bar\omega(m_{\max}+1)$, $G=|\widehat J_0|/Y$, and require $\theta=\|G\|_\infty<1$. Set
+
+\[
+ S_G=I+G+G^2+\frac{\theta^3}{1-\theta}\mathbf1.
+\]
+
+For every farther mode,
+
+\[
+ |A_m|\le S_G/Y,\qquad |mA_m|\le S_G/\bar\omega.
+\]
+
+Together with the explicit modes these give finite entrywise bounds $\overline A_0\ge\sup_{|m|>K}|A_m|$ and $\overline A_1\ge\sup_{|m|>K}|mA_m|$, and make $A:X'\to X$ bounded. If $\|I-A DF(\bar x;g_c)\|_{X\to X}<1$, then $A$ is injective.
+
+\end{lemma}
+
+\begin{proof} For $y=\bar\omega|m|\ge Y$, expand the inverse in the Neumann series of $\widehat J_0/(i\bar\omega m)$. Entrywise absolute values are bounded by $y^{-1}\sum_{k\ge0}G^k$. For $k\ge3$, each entry is at most the corresponding row sum, which is at most $\theta^k$; summing proves both estimates. The factor needed to map $X'$ into $X$ is $(1+|m|)|A_m|$, bounded by $\overline A_0+\overline A_1$. The finite compression of $I-A DF$ is $I-A_{\rm fin}J_{\rm fin}$, with norm below 1. A Neumann series makes $A_{\rm fin}J_{\rm fin}$ invertible, hence the square matrix $A_{\rm fin}$ invertible. Each tail matrix is invertible by its explicit or Neumann construction, so $Av=0$ implies every component of $v$ is zero. \end{proof}
+
+Negative tail modes are included: $A_{-m}=\overline{A_m}$, but products with a fixed $J_n$ require both signs. A bound for $|A_mJ_n|$ at positive $m$ cannot simply be reused for negative $m$ without conjugating $J_n$.
+
+\subsection{Finite/tail bounds and the branch contraction}\label{sec:cg-3}
+
+Here and below absolute values of matrices are entrywise, and inequalities between nonnegative matrices are entrywise. For an operator $B:X\to X$ with component blocks, a sufficient bound is
+
+\[
+ \|B\|\le\max_c\frac1{\eta_c}\sum_{c'}\eta_{c'} B_{cc'},\qquad
+ B_{cc'}\ge\sup_{m'}\sum_m|B_{cc'}(m,m')|
+                         \nu^{|m|-|m'|}.
+\]
+
+Frequency has one mode with weight 1. This is proved by applying the triangle inequality in each output component and then the weighted maximum norm.
+
+The following prescriptions specify the directions that must be bounded. A finite vector residual is multiplied by $A_{\rm fin}$ exactly in ball arithmetic. For a residual with nonlinear coefficient enclosure $[v_m]$, its remaining bound is
+
+\[
+ \sum_{K<|m|\le K'}|A_m[v_m]|\nu^{|m|}
+ +\overline A_0 S_v\frac{2q^{K'+1}}{1-q}.
+\]
+
+Polynomial derivative terms vanish beyond $K$, including along the paths below. The three terms, finite rows, explicit tail rows and analytic omitted tail, give a component residual vector.
+
+For $B=I-A DF(\bar x;g_c)$, finite rows and finite columns are $I-A_{\rm fin}J_{\rm fin}$. Finite rows and tail columns are $A_{\rm fin}$ applied to convolution columns with entries $-J_{m-m',kj}$, $|m|\le K<|m'|$. Their phase entry is zero, since this branch phase uses only modes $\pm1$. Evaluate $K<|m'|\le K+L$ explicitly. For each sign, farther columns satisfy
+
+\[
+ |J_{m-m',kj}|\le S_{J,kj}e^{-\rho(|m'|-\operatorname{sgn}(m')m)}.
+\]
+
+After division by $\nu^{|m'|}$, each term of the finite-row column sum is a nonnegative constant times $(e^{-\rho}/\nu)^{|m'|}$. It decreases, so the column at $|m'|=K+L+1$, for each sign, bounds all farther columns.
+
+For tail rows put $J'_0=J_0-\widehat J_0$ and $J'_n=J_n$ otherwise. The identity $A_m(i\bar\omega mI-\widehat J_0)=I$ gives
+
+\[
+ (By)_m=\sum_n A_mJ'_n y_{m-n},\qquad |m|>K.
+\]
+
+There is no frequency column in these rows because $\bar a_m=0$ there. Let $C_n\ge\sup_{|m|>K}|A_mJ'_n|$, using explicit products for both signs and the far bound of Lemma~\ref{lem:cg-2-2}. Then
+
+\[
+ T=\sum_{|n|\le K'}C_n\nu^{|n|}
+   +\overline A_0 S_J\frac{2q^{K'+1}}{1-q}
+\]
+
+bounds the tail convolution blocks. A block bound is the maximum of its finite-row finite-column and finite-row tail-column suprema, plus the tail block $T$. This maximum is necessary: the two finite-row cases are alternatives for an input column, whereas the tail rows are additional outputs.
+
+On $P=[g_c-h,g_c+h]$, affinity in $g$ gives
+
+\[
+ Y_0=\max_c(Y_{0p,c}+hY_{0g,c})/\eta_c,
+\]
+\[
+ Z_1=\max_c\eta_c^{-1}\sum_{c'}\eta_{c'}(B_{1,cc'}+hB_{1g,cc'}).
+\]
+
+Here $Y_{0p}$ uses the point residual, $Y_{0g}$ uses $F_g=(0,-[f_1\circ\phi_{\bar a}]_m)$, and $B_{1g}$ bounds $A\partial_g DF$ by the same finite/tail split, with the convolution coefficients of $D f_1$ and no identity subtraction. This derivative has zero rows outside voltage. Exact zero rows may be omitted; nonzero directions may not. The displayed estimates follow from $F(\bar x;g)=F(\bar x;g_c)+(g-g_c)F_g(\bar x)$ and the identical derivative identity, or from the fundamental theorem of calculus if interval enclosures are used.
+
+\begin{lemma}[Hessian bound in the Banach algebra]\label{lem:cg-3-1} Let $\rho_2>\rho_0$, exact radii $R_j>0$, and a guarded cover contain every center polynomial under consideration, its state polydisc $|w_j|\le R_j$, and every required $g$. Suppose
+
+\[
+ |\partial_j\partial_l f_k(\phi_{\bar a}(\theta)+w;g)|
+ \le M_{H,kjl}\quad(|\operatorname{Im}\theta|\le\rho_2).
+\]
+
+For $t_j=\|a_j-\bar a_j\|_\nu<R_j$, define
+
+\[
+ q_2=\nu e^{-\rho_2}<1,\quad Q_2=(1+q_2)/(1-q_2),\quad
+ \Pi(t)=\prod_j(1-t_j/R_j)^{-1}.
+\]
+
+Then the Hessian composition belongs to $\ell^1_\nu$ and has norm at most $M_{H,kjl}Q_2\Pi(t)$. The map $a\mapsto f\circ\phi_a$ is analytic locally into $(\ell^1_\nu)^{18}$, with derivative convolution by $Df\circ\phi_a$; its Jacobian derivative is convolution by the Hessian.
+
+\end{lemma}
+
+\begin{proof} Expand the Hessian about the center polynomial in the state polydisc. Cauchy's formula gives Taylor coefficient bounds $|c_\alpha(\theta)|\le M_H R^{-\alpha}$. Each coefficient is periodic and holomorphic near the $\rho_2$ strip, so Lemma~\ref{lem:cg-2-1} gives $\|c_\alpha\|_\nu\le M_H R^{-\alpha}Q_2$. Substitution of $a-\bar a$ in this series converges absolutely in the Banach algebra, dominated by $M_HQ_2\prod_j\sum_{n\ge0}(t_j/R_j)^n$. On the real circle its value is the original composite, so its Fourier coefficients are those of the composite. The same argument for $f$ and $Df$ gives normally convergent power series on smaller polydiscs. Differentiating those series term by term gives the stated derivatives, and the series for the derivative of $Df$ is precisely the Hessian series already bounded. \end{proof}
+
+Let $N_0,N_1$ bound the finite blocks of $A_{\rm fin}$ and of $A_{\rm fin}$ followed by mode multiplication $im$, respectively, in the component sequence norms. Extend $\overline A_0,\overline A_1$ by zero in frequency output. For $\eta_jr_*<R_j$, put
+
+\[
+ W_k=Q_2\Pi(\eta r_*)\sum_{j,l}\eta_j\eta_l M_{H,kjl},
+\]
+\[
+ Z_2=\max_c\eta_c^{-1}\sum_k
+ \{2\eta_\omega\eta_k(N_1+\overline A_1)_{ck}
+                  +(N_0+\overline A_0)_{ck}W_k\}.
+\]
+
+Indeed, for $x-\bar x=(\Delta\omega,\Delta a)$ and a unit test vector $y$, the derivative difference is
+
+\[
+ im(y_\omega\Delta a_m+\Delta\omega y_{a,m})
+ -[(Df\circ\phi_a-Df\circ\phi_{\bar a})*y_a]_m.
+\]
+
+The first two terms give the factor $2\eta_\omega\eta_k$; the last is the integral of the Hessian along $\bar a+s\Delta a$, bounded by Lemma~\ref{lem:cg-3-1} and the convolution inequality. Thus
+
+\[
+ \|A(DF(x;g)-DF(\bar x;g))\|\le Z_2\|x-\bar x\|
+ \quad(\|x-\bar x\|\le r_*).
+\]
+
+\begin{lemma}[piece existence and uniqueness]\label{lem:cg-3-2} Suppose the domain cover and inverse checks above hold uniformly on $P$, and choose $0<r_{\rm lo}<r_{\rm hi}\le r_*$. If, at both radii,
+
+\[
+ p(r)=Y_0+(Z_1-1)r+\tfrac12Z_2r^2<0,
+ \qquad Z_1+Z_2r<1,
+\]
+
+then each $g\in P$ has a unique zero in $B_{r_{\rm hi}}(\bar x)$, and that zero lies in $B_{r_{\rm lo}}(\bar x)$.
+
+\end{lemma}
+
+\begin{proof} The composition lemma and the bounded mode-multiplied inverse make $T_g=x-AF(x;g)$ continuously differentiable on the ball in $X$. Integration of its derivative along the center segment gives
+
+\[
+ \|T_g(x)-\bar x\|\le Y_0+Z_1r+\tfrac12Z_2r^2<r.
+\]
+
+Its derivative norm is at most $Z_1+Z_2r<1$, so it is a contraction. Apply Banach's theorem at both radii; the smaller fixed point lies in the larger ball and is its unique fixed point. Injectivity of $A$ equates fixed points with zeros of $F$. Reality follows because $(\omega,a_m)\mapsto(\overline\omega,\overline{a_{-m}})$ takes zeros to zeros and preserves the ball, so uniqueness fixes this involution. A certified lower bound $\bar\omega-\eta_\omega r_{\rm lo}>0$ gives positive frequency. The lower bound $|\bar a_{1,V}|-\eta_Vr_{\rm lo}/\nu>0$ gives a nonzero first harmonic. A nonconstant $2\pi$-periodic continuous function with a smaller minimal period has minimal period $2\pi/k$ for an integer $k\ge2$; its Fourier coefficients then vanish outside multiples of $k$. The first harmonic excludes this possibility. \end{proof}
+
+\subsection{Continuity and gluing}\label{sec:cg-4}
+
+On a piece, $F(x;g)-F(x;g')=(g-g')F_1(x)$. The composition series above gives a finite bound $L$ for $\|AF_1(x)\|$ on its uniqueness ball. With $\kappa=Z_1+Z_2r_{\rm hi}<1$, the fixed point identity gives
+
+\[
+ \|x_*(g)-x_*(g')\|
+ \le L|g-g'|+\kappa\|x_*(g)-x_*(g')\|,
+\]
+
+and hence Lipschitz constant $L/(1-\kappa)$.
+
+For adjacent pieces with overlap, require
+
+\[
+ \|\bar x_i-\bar x_{i+1}\|_{\eta(i+1)}
+ +r_{{\rm lo},i}\max_c\frac{\eta_{c,i}}{\eta_{c,i+1}}
+ \le r_{{\rm hi},i+1}.
+\]
+
+The existence zero of $i$ is then in the uniqueness ball of $i+1$, so the two maps agree throughout their overlap. Require that both lower and upper piece endpoints increase strictly. If nonadjacent pieces $i<j$ meet, the lower endpoint of $j$ belongs to every intermediate piece: its value is at least their lower endpoints and at most the upper endpoint of $i$, hence at most theirs. Adjacent identities give equality there. The equality set on $P_i\cap P_j$ is closed by continuity. It is relatively open: an agreement zero lies in the existence ball of $j$, which is strictly inside its uniqueness ball because $r_{{\rm lo},j}<r_{{\rm hi},j}$; nearby values from $i$ remain inside that uniqueness ball and are the same zero. The overlap is connected, so the equality set is the entire overlap. The piecewise map is therefore single valued and continuous on the full interval. This proves Theorem~\ref{thm:conductance}(a) under the stated record hypotheses.
+
+\subsection{Affine piece tubes and quadratic group tubes}\label{sec:cg-5}
+
+The smaller stability tube must follow the orbit. A broad existence ball about a constant center cannot be substituted for this tube without checking the resulting inequalities.
+
+For an affine path $\widetilde x(g)=\bar x+d\bar x_1$, $d=g-g_c$, $|d|\le h$, let $e\ge h\|\bar x_1\|$. If
+
+\[
+ e+r\le r_{\rm hi},\quad
+ \kappa=Z_1+Z_2(e+r)<1,\quad
+ Y'\ge\sup_g\|AF(\widetilde x(g);g)\|,\quad
+ Y'\le(1-\kappa)r,
+\]
+
+the same contraction argument on $B_r(\widetilde x(g))$ locates the branch there. The ball lies in the old uniqueness ball, which identifies the zero. Its residual decomposition is
+
+\[
+ R_0+dR_1+d^2R_2(d),
+\]
+\[
+ (R_1)_m=im(\bar\omega\bar a_{1,m}+\omega_1\bar a_m)-[\partial_dG(\cdot;0)]_m,
+\]
+\[
+ (R_2(d))_m=im\omega_1\bar a_{1,m}
+ -\left[\int_0^1(1-s)\partial_d^2G(\cdot;sd)\,ds\right]_m,
+\]
+
+where $G(\theta;d)=f(\phi_{\bar a}+d\phi_1;g_c+d)$. All phase components are zero when the path has the exact branch phase. Taylor's formula proves the decomposition; continuous integrands on a compact circle times $[0,1]$ justify exchange of the Fourier and $s$ integrals. The second-derivative box enclosure is multiplied by $1/2$, the mass of $1-s$. Applying the residual prescription of Section~\ref{sec:cg-3} gives $Y'=\max_c(Y_{0p,c}+hY_{1,c}+h^2Y_{2,c})/\eta_c$.
+
+For a unit consisting of consecutive overlapping branch pieces with the same weights and settings, use
+
+\[
+ \widetilde x(g)=\bar x+d\bar x_1+\tfrac12d^2\bar x_2.
+\]
+
+All sequence modes have $|m|\le K$, real symmetry and exact zero phase. A coefficientwise hull must contain every path coefficient for $|d|\le h$, using a real box containing $[-h,h]$ and a separate box containing $[0,h^2]$. No assertion about the square of an extra rounded rim of the first box is needed. Its guarded polydisc cover provides Lemma~\ref{lem:cg-3-1} about every polynomial center in the hull. The proof of the derivative-difference bound uses only a difference from that center, so the same $Z_2$ works at every moving path point. In particular it does not introduce $Z_2$ times the distance traveled from $\bar x$.
+
+\subsubsection{Taylor arithmetic and residual}\label{sec:cg-5-1}
+
+A degree-$P$ jet stores Taylor coefficients $c_k=u^{(k)}/k!$. The exact recurrences are
+
+\[
+ (ab)_k=\sum_{j=0}^ka_jb_{k-j},\quad
+ r_0=1/a_0,\quad r_k=-r_0\sum_{j=1}^ka_jr_{k-j},
+\]
+\[
+ ke_k=\sum_{j=1}^kja_je_{k-j},\quad
+ a_0\ell_k=a_k-\frac1k\sum_{j=1}^{k-1}j\ell_ja_{k-j},
+\]
+\[
+ 2s_0s_k=a_k-\sum_{j=1}^{k-1}s_js_{k-j}.
+\]
+
+These follow respectively by multiplying power series and by the identities $ar=1$, $e'=a'e$, $a'=a\ell'$, and $s^2=a$. Guarded $a_0$ excludes zero for reciprocals and has positive real part for log and square root. Thus each recurrence computes coefficients of a holomorphic germ. Induction over the expression, with inclusion arithmetic at each operation, proves enclosure of every coefficient. Integer powers use products and reciprocals. First state derivatives carried over jets satisfy the exact product and chain rules, so the same induction proves enclosures for $Df$.
+
+At base point $\xi_0$, the path has coefficients
+
+\[
+ (\bar z+\xi_0z_1+\xi_0^2z_2/2,\ z_1+\xi_0z_2,\ z_2/2,\ 0,\ldots),
+\]
+
+and the conductance has $(g_c+\xi_0,1,0,\ldots)$. Domain checks over the strip and every real $\xi_0\in[-h,h]$ establish joint holomorphy of the expression in its complex state inputs. Its parameter Taylor coefficients are consequently holomorphic in those inputs and are admissible black boxes for Lemma~\ref{lem:cg-2-1}.
+
+Let $c_p=(1/p!)\partial_\xi^pG(\cdot;0)$ for $p\le3$, and $c_4(\cdot;\xi)=(1/4!)\partial_\xi^4G(\cdot;\xi)$. Taylor's formula gives
+
+\[
+ G(\cdot;d)=\sum_{p=0}^3d^pc_p
+ +d^4\int_0^1 4(1-s)^3c_4(\cdot;sd)\,ds.
+\]
+
+The averaging weight has mass 1, so coefficient box enclosures and strip bounds of $c_4$ also enclose its integral. The exact derivative polynomial $\omega(d)a(d)=\sum_{p=0}^4d^pl_p$ has
+
+\[
+ l_0=\bar\omega\bar a,\quad l_1=\bar\omega\bar a_1+\omega_1\bar a,
+\]
+\[
+ l_2=\bar\omega\bar a_2/2+\omega_1\bar a_1+\omega_2\bar a/2,
+ \quad l_3=(\omega_1\bar a_2+\omega_2\bar a_1)/2,
+ \quad l_4=\omega_2\bar a_2/4.
+\]
+
+Subtracting the nonlinear expansion gives $R_p=(0,(iml_{p,m}-[c_p]_m)_m)$ for $p=1,2,3$, and the same expression with the averaged $c_4$ for $R_4(d)$. Section~\ref{sec:cg-3} bounds each $AR_p$, including every omitted Fourier coefficient. Therefore
+
+\[
+ Y'=\max_c\frac{Y_{0p,c}+\sum_{p=1}^4h^pY_{p,c}}{\eta_c}
+ \ge\sup_g\|AF(\widetilde x(g);g)\|.
+\]
+
+\subsubsection{Derivative bound and identification}\label{sec:cg-5-2}
+
+Set $D(d)=DF(\widetilde x(g_c+d);g_c+d)$ and $J(\theta;d)=Df(\widetilde\phi(\theta;d);g_c+d)$. Then
+
+\[
+ D(d)=D(0)+dD'(0)+d^2E(d),
+\]
+\[
+ (D'(0)y)_m=im\omega_1y_{a,m}+im\bar a_{1,m}y_\omega-[J_1*y_a]_m,
+\]
+\[
+ (E(d)y)_m=im(\omega_2/2)y_{a,m}+im(\bar a_{2,m}/2)y_\omega-[C(d)*y_a]_m,
+\]
+
+with zero phase rows, $J_1=\partial_dJ(\cdot;0)$, and
+
+\[
+ C(d)=\int_0^1 2(1-s)\tfrac12\partial_d^2J(\cdot;sd)\,ds.
+\]
+
+The coefficient enclosures $[C_{2,n}]$ of $\tfrac12\partial_d^2J$ over the whole parameter box enclose $C(d)_n$, because this averaging weight also has mass 1. Use the finite/tail prescription to bound $AD'(0)$ by $B'$ and $AE(d)$ by $B''$. Tail rows now include the additional diagonal term $|\omega_d|\overline A_1$; they have no frequency column because the polynomial frequency-column profile has no modes beyond $K$. Thus
+
+\[
+ Z_{1G}=\max_c\eta_c^{-1}\sum_{c'}\eta_{c'}
+ (B_{1,cc'}+hB'_{cc'}+h^2B''_{cc'})
+ \ge\sup_g\|I-AD(d)\|.
+\]
+
+The finite point compression is bounded by $Z_{1G}$, so $Z_{1G}<1$ proves injectivity as in Lemma~\ref{lem:cg-2-2}. If
+
+\[
+ r\le r_*,\qquad \kappa=Z_{1G}+Z_2r<1,\qquad
+ Y'\le(1-\kappa)r,
+\]
+
+then $T_g$ maps $B_r(\widetilde x(g))$ into itself and contracts there. Its unique zero is identified with the already glued branch by checking, for every constituent piece,
+
+\[
+ \sup_{g\in P_i}\|\widetilde x(g)-\bar x_i\|_{\eta(i)}
+ +r\max_c\frac{\eta_c}{\eta_{c,i}}\le r_{{\rm hi},i}.
+\]
+
+The supremum uses the complete polynomial on a box containing $P_i-g_c$, not sampled parameter values. The triangle inequality puts the new zero in the old uniqueness ball, so it is $x_*(g)$.
+
+\subsection{Hill coefficients for every conductance in a unit}\label{sec:cg-6}
+
+Let $t_j=\eta_jr<R_j$, $\rho_e=\min(\rho_0,\rho_2)$, and
+
+\[
+ \epsilon_{W,kl}=\sum_jM_{H,klj}t_j.
+\]
+
+Along the quadratic path let $[J_{0,n}]$, $[J_{1,n}]$, $[C_{2,n}]$ and their strip majorants be as above. Choose exact matrices $J_{1c,n},C_{2c,n}$, and entrywise radii $\operatorname{rad}_{1,n}$, $\operatorname{rad}_{2,n}$ bounding their differences from the respective coefficient balls. For the true orbit coefficients $A_n(g)=[Df\circ\phi_*]_n$,
+
+\[
+ A_n(g)\in[J_{0,n}]+dJ_{1c,n}+d^2C_{2c,n}
+ +\operatorname{ball}(h\operatorname{rad}_{1,n}+h^2\operatorname{rad}_{2,n}
+                         +\epsilon_W e^{-\rho_e|n|}),
+\]
+\[
+ |A_n(g)|\le(S_{J0}+hS_{J1}+h^2S_{C2})e^{-\rho|n|}
+                 +\epsilon_W e^{-\rho_e|n|}\quad(n\in\mathbb Z),
+\]
+\[
+ |\omega_*(g)-\bar\omega-d\omega_1-d^2\omega_2/2|\le\eta_\omega r.
+\]
+
+\begin{proof}[Derivation of the coefficient enclosures] Taylor expansion gives $J(d)=J_0+dJ_1+d^2C(d)$; subtracting exact centers of the two derivative enclosures gives the two radius terms. Put $w=\phi_* -\widetilde\phi$. Its components have modulus at most $t_j$ on the closed $\rho_0$ strip. The integral of the Hessian on $\widetilde\phi+sw$ gives
+
+\[
+ Df(\phi_*;g)-Df(\widetilde\phi;g)
+ =\int_0^1D^2f(\widetilde\phi+sw;g)w\,ds,
+\]
+
+whose entrywise modulus is at most $\epsilon_W$ on the $\rho_e$ strip. The true profile is known holomorphic only inside its $\rho_0$ strip, so apply Lemma~\ref{lem:cg-2-1} first on each closed strip $\rho''<\rho_e$, then let $\rho''\uparrow\rho_e$. This proves the slow exponential bound without assuming extension past the boundary. Adding the path terms proves both coefficient bounds. The frequency estimate is the tube inequality. For an affine piece omit the $C_2$ terms and set $\omega_2=0$; its first derivative is boxed over the entire parameter interval, so $h\operatorname{rad}_1$ encloses the integral derivative variation. \end{proof}
+
+\subsection{The Hill operator, domain and Floquet multiplicities}\label{sec:cg-7}
+
+This part uses a different space:
+
+\[
+ X_H=\ell^1(\mathbb Z;\mathbb C^{18}),\quad
+ \|P\|=\sum_m|P_m|_1,\quad
+ \mathcal D=\{P:\sum_m|m||P_m|_1<\infty\}.
+\]
+
+For fixed $g$, define the closed operator
+
+\[
+ (H_gP)_m=-i\omega_*(g)mP_m+\sum_n A_n(g)P_{m-n},
+ \qquad D(H_g)=\mathcal D.
+\]
+
+The convolution is bounded by $\alpha=\sum_n\|A_n\|_{1\to1}<\infty$. The diagonal operator has compact resolvent: its inverse entries $(\mu+i\omega m)^{-1}$ tend to zero and are norm limits of finite truncations. For $\operatorname{Re}\mu>\alpha$, a Neumann series in the bounded convolution gives a compact resolvent for $H_g$. The resolvent identity then gives compact resolvent at every resolvent point. Compact-resolvent spectral theory implies isolated eigenvalues of finite algebraic multiplicity, with Riesz projection rank equal to the sum of those multiplicities inside an isolating contour. This is the same general compact-resolvent theorem proved in Appendix~\ref{app:resolvent}; no new compact-resolvent theorem is claimed.
+
+\begin{lemma}[multiplicity, $N=1$]\label{lem:cg-7-1} Let $Y'(t)=Df(\phi_*(\omega t);g)Y(t)$, $Y(0)=I$, and $T=2\pi/\omega$. Then
+
+\[
+ m(\mu;H_g)=m(e^{\mu T};Y(T)).
+\]
+
+\end{lemma}
+
+\begin{proof} On the finite-dimensional generalized eigenspace $G_\mu(H_g)$, the function operator $-\omega\partial_\theta+A(\theta)$ is $\mu+K$ with $K$ nilpotent. For $p$ in that space,
+
+\[
+ y(t)=(e^{t(\mu+K)}p)(\omega t)
+\]
+
+solves the variational equation by differentiation. Evaluation at zero intertwines $e^{T(\mu+K)}$ and $Y(T)$. It is injective: if $y(0)=0$, then $y(t)=0$. At $t+nT$, periodicity makes this equality a polynomial in $n$ times a nonzero exponential. If $K^{k_*}p$ is the highest nonzero power, the leading polynomial coefficient is $T^{k_*}(K^{k_*}p)(\omega t)/k_*!$, so it vanishes for every $t$, a contradiction. This gives the inequality from Hill multiplicity to monodromy multiplicity.
+
+Conversely, on $W=G_\lambda(Y(T))$, $\lambda=e^{\mu T}$, write $Y(T)=\lambda(I+K)$ and
+
+\[
+ B=\mu I+T^{-1}\sum_{j\ge1}(-1)^{j+1}K^j/j,
+\]
+
+where the sum is finite by nilpotence. It has $e^{TB}=Y(T)|_W$. The matrix-valued map $\Pi(t)=Y(t)e^{-tB}:W\to\mathbb C^{18}$ is $T$-periodic. Its smooth periodic profiles $p_w(\theta)=\Pi(\theta/\omega)w$ have Fourier sequences in $\mathcal D$. Differentiation gives $H_gp_w=p_{Bw}$, and evaluation at zero is $w$, so this embeds all of $W$ injectively in $G_\mu(H_g)$. The reverse dimension inequality follows. \end{proof}
+
+Consequently the Hill spectrum is invariant, with multiplicity, under shifts by $i\omega\mathbb Z$; one half-open strip of height $\omega$ contains exactly 18 eigenvalues counted with multiplicity. Differentiating the profile equation gives $H_g(im a_{*,m})_m=0$. This vector is nonzero and belongs to $\mathcal D$, because the profile is nonconstant and analytic. Thus zero is an actual neutral eigenvalue, not an assumed numerical center.
+
+\subsection{A uniform finite-window comparison}\label{sec:cg-8}
+
+Use a fixed exact real diagonal cell similarity $S$, with entries powers of two, and replace coefficients by $S^{-1}A_nS$. This preserves $\mathcal D$, spectrum and multiplicities. All matrix 1-norms in what follows use these cell coordinates. Let $W=\{|m|\le K_e\}$, and choose exact affine matrices
+
+\[
+ V(d)=V_0+dV_1,\quad V_i(d)=V_{i0}+dV_{i1},\quad
+ \Lambda(d)=\Lambda_0+d\Lambda_1
+\]
+
+with diagonal $\Lambda$. They are proposals; their floating-point construction is not an assumption of correctness. Window weights are 1, with a constant tail weight $\zeta_T>0$. The norm in these coordinates is
+
+\[
+ \|v\|_\zeta=\sum_j|v_j|+\zeta_T\sum_{m\notin W}|v_m|_1.
+\]
+
+Let $H_0,H_1,H_2$ be the window matrices of $[J_{0,n}],J_{1c,n},C_{2c,n}$, including diagonals $-im\bar\omega$, $-im\omega_1$ and $-im\omega_2/2$, respectively. Let $R_b$ contain the coefficient remainder from Section~\ref{sec:cg-6} in every block $(w,w')$, plus $|w|\eta_\omega r$ on its diagonal. Then the true window is
+
+\[
+ H_{WW}(g)=H'_0+dH_1+d^2H_2+E,\quad H'_0\in H_0,\quad |E|\le R_b.
+\]
+
+Define
+
+\[
+ c_j=\|(V_{i0}V_0-I)e_j\|_1
+ +h\|(V_{i0}V_1+V_{i1}V_0)e_j\|_1
+ +h^2\|V_{i1}V_1e_j\|_1,\quad q_C=\max_jc_j,
+\]
+
+and the coefficient matrices
+
+\[
+ W_0=V_{i0}H_0V_0-\Lambda_0,
+\]
+\[
+ W_1=V_{i1}H_0V_0+V_{i0}(H_1V_0+H_0V_1)-\Lambda_1,
+\]
+\[
+ W_2=V_{i1}(H_1V_0+H_0V_1)+V_{i0}(H_1V_1+H_2V_0),
+\]
+\[
+ W_3=V_{i1}(H_1V_1+H_2V_0)+V_{i0}H_2V_1,
+ \qquad W_4=V_{i1}H_2V_1.
+\]
+
+Put $V_b=|V_0|+h|V_1|$, $V_{ib}=|V_{i0}|+h|V_{i1}|$, and
+
+\[
+ w_j=\sum_{k=0}^4h^k\|W_ke_j\|_1+\|V_{ib}R_bV_be_j\|_1.
+\]
+
+If $q_C<1$, then $V(d)$ is invertible and the true finite defect $F_m=V(d)^{-1}H_{WW}(g)V(d)-\Lambda(d)$ satisfies
+
+\[
+ f_j:=\|F_me_j\|_1
+ \le f_j^U=\frac{w_j+(|\lambda_{0j}|+h|\lambda_{1j}|)c_j}{1-q_C},
+\]
+\[
+ \beta_{wl}:=\|V(d)^{-1}e_{wl}\|_1
+ \le\beta^U_{wl}=\|V_{ib}e_{wl}\|_1/(1-q_C).
+\]
+
+\begin{proof}[Derivation of the window bounds] Expanding the products gives the five $W_k$, and bounding the remaining product by absolute matrices gives $w_j$. For $C=I-V_iV$, its column norms are at most $c_j$; hence $I-C$ is invertible and so are the square matrices $V_i,V$. Since $V^{-1}=(I-C)^{-1}V_i$,
+
+\[
+ F_m=(I-C)^{-1}(V_iH_{WW}V-\Lambda+C\Lambda).
+\]
+
+The Neumann norm bound $\|(I-C)^{-1}\|\le(1-q_C)^{-1}$ proves the two inequalities. If $\Gamma$ is a fixed rectangle boundary, its distance function is 1-Lipschitz, so
+
+\[
+ \operatorname{dist}(\lambda_j(d),\Gamma)
+ \ge d_j^U:=\operatorname{dist}(\lambda_{0j},\Gamma)-h|\lambda_{1j}|.
+\]
+
+When every $d_j^U>0$, no affine diagonal path crosses the boundary, and its inside count is constant. \end{proof}
+
+\subsection{Infinite tail, coupling bounds and the Schur count}\label{sec:cg-9}
+
+Let $B_0$ be a fixed exact real cell matrix and, for the actual frequency, put $B_m=-i\omega mI+B_0$ in the tail. The comparison operator is $D=\Lambda(d)\oplus(B_m)_{m\notin W}$. Its domain is precisely $\mathcal D$, because
+
+\[
+ (\omega|m|-\|B_0\|)|v_m|_1\le|B_mv_m|_1
+ \le(\omega|m|+\|B_0\|)|v_m|_1.
+\]
+
+Let $\mathcal V$ equal $V(d)$ on the finite window and the identity on the tail. It and its inverse preserve this domain. The difference $E=\mathcal V^{-1}H_g\mathcal V-D$ is bounded, with blocks $F_m,V^{-1}H_{WT},H_{TW}V,H_{TT}-D_T$. Crucially the actual $-i\omega m$ cancels in the tail difference. An uncertain frequency times $m$ is never moved into a bounded tail perturbation.
+
+From Section~\ref{sec:cg-6} obtain balls $[A_n]^U$ and an all-index majorant $|A_n|\le s_1q_1^{|n|}+s_2q_2^{|n|}$, $q_i<1$. Define
+
+\[
+ G(k)=2\sum_{i=1}^2s_iq_i^k/(1-q_i),\quad
+ \theta_c=\sum_{0<|n|\le n_A}\|[A_n]^U\|+G(n_A+1)
+             +\|[A_0]^U-B_0\|.
+\]
+
+The tail-to-tail operator norm is at most $\theta_c$ by convolution. For each window mode let
+
+\[
+ t_w=\sum_{\substack{|n|\le n_A\\|w+n|>K_e}}\|[A_n]^U\|+G(n_A+1),
+ \qquad r_j^U=\zeta_T\sum_wt_w|(V_b)_{w,j}|_1.
+\]
+
+These bound each window-to-tail output column. For tail input mode $m$,
+
+\[
+ b_m^U=\max_k\zeta_T^{-1}\sum_{w,l}\beta_{wl}^U
+                                      |[A_{w-m}]^U_{lk}|.
+\]
+
+Use the analytic entrywise majorant where an index is outside the coefficient enclosure range. Evaluate $K_e<|m|\le K_e+n_c$ in both signs. For farther inputs all $w-m$ have one sign and modulus at least $|m|-K_e$, so
+
+\[
+ b_m\le\frac{\beta_{\max}^U}{\zeta_T}\frac{G(|m|-K_e)}2
+ \le\frac{\beta_{\max}^U}{\zeta_T}\frac{G(n_c+1)}2.
+\]
+
+Taking the maximum of the near values and this far bound gives $\widehat b\ge\|E_{WT}\|$. All these estimates follow by summing absolute column entries; the factor $1/2$ removes the unused sign of the geometric tail. They require the majorant at every index used in the far estimate.
+
+Choose $\Omega=(-\delta,R_0)\times(a,b)$, with positively oriented boundary $\Gamma$, satisfying
+
+\[
+ \delta>0,\quad R_0>\alpha^U,
+ \quad a<0<b,\quad b-a\ge\omega_{\rm hi},
+ \quad b<\omega_{\rm lo},\quad -a<\omega_{\rm lo}.
+\]
+
+Here $\alpha^U$ is the sum of all coefficient norm bounds, including their omitted tail. Put $h_\Gamma=\max(|a|,|b|)$, $g_0=\omega_{\rm lo}(K_e+1)-h_\Gamma$, and choose $\epsilon>0$. For each $\mu$ in the open neighborhood
+
+\[
+ -\delta-\epsilon<\operatorname{Re}\mu<R_0+\epsilon,
+ \quad |\operatorname{Im}\mu|<h_\Gamma+\epsilon,
+\]
+
+and tail $m$, either $z=\mu+i\omega m$ or its conjugate has real part at least $-\delta-\epsilon$ and imaginary part at least $g_0-\epsilon$. Since $B_0$ is real, conjugation preserves its resolvent 1-norm. Choose an exact invertible $U$ and exact diagonal $\Lambda_T$; certify their inverses and put $F_T=U^{-1}B_0U-\Lambda_T$. If
+
+\[
+ \gamma=\min_l\max\{-\delta-\epsilon-\operatorname{Re}\lambda_{T,l},
+                         g_0-\epsilon-|\operatorname{Im}\lambda_{T,l}|\}
+ >\|F_T\|,
+\]
+
+then every tail block is invertible throughout that neighborhood, with
+
+\[
+ \|(\mu-B_m)^{-1}\|\le
+ \rho_T:=\frac{\|U\|\|U^{-1}\|}{\gamma-\|F_T\|}.
+\]
+
+Indeed each diagonal distance is at least $\gamma$, and the Neumann series for $z-\Lambda_T-F_T$ gives the bound after conjugating by $U$. For fixed $\mu$, the simpler Neumann bound $1/(|\mu+i\omega m|-\|B_0\|)$ tends to zero. The direct-sum inverse therefore is compact. It maps into $\mathcal D$, since $B_m(\mu-B_m)^{-1}=\mu(\mu-B_m)^{-1}-I$ is bounded and the displayed domain estimate applies. The tail resolvent is holomorphic on an open neighborhood of $\overline\Omega$; its contour integral vanishes. Hence $D$'s Riesz rank in $\Omega$ is exactly the number of its finite diagonal entries there.
+
+\begin{lemma}[Schur homotopy certificate]\label{lem:cg-9-1} Suppose $q_C<1$, all $d_j^U>0$, exactly one $\lambda_{0j}$ lies in $\Omega$, and
+
+\[
+ \theta_T=\theta_c\rho_T<1,\qquad
+ f_j^U+\frac{\widehat b\rho_T r_j^U}{1-\theta_T}<d_j^U
+ \quad\hbox{for every window column }j.
+\]
+
+Then $H_g$ has exactly one eigenvalue in $\Omega$, counted algebraically, and
+
+\[
+ \operatorname{spec}H_g\cap\{\operatorname{Re}\mu\ge-\delta\}
+ =i\omega\mathbb Z,
+\]
+
+each such eigenvalue being algebraically simple.
+
+\end{lemma}
+
+\begin{proof} For each $s\in[0,1]$, the tail block of $\mu-D-sE$ is invertible by a Neumann series, with inverse norm at most $\rho_T/(1-\theta_T)$. Its finite Schur complement is
+
+\[
+ \mu-\Lambda-sF_m-s^2E_{WT}(\mu-D_T-sE_{TT})^{-1}E_{TW}.
+\]
+
+Column $j$ of the subtracted perturbation has norm at most $f_j^U+\widehat b\rho_Tr_j^U/(1-\theta_T)$. Dividing by the diagonal $\mu-\Lambda$ gives norm below 1 on $\Gamma$. The Schur complement is invertible. The usual triangular factorization is valid on the domain: its lower factor maps the finite window into $\mathcal D$ through the tail inverse, and its upper factor is bounded on the tail into the finite window. Thus $\Gamma$ is in the resolvent of every $D+sE$. These operators have compact resolvent; their contour projections are norm continuous by the resolvent identity. Projections within norm distance less than 1 have equal finite rank: either projection restricts injectively from the other range, since a nonzero vector in its kernel would have norm strictly less than itself. Partitioning $[0,1]$ into such neighborhoods keeps the rank constant. Its initial rank is the finite inside count, one. Similarity transfers this count to $H_g$.
+
+The actual neutral vector from Section~\ref{sec:cg-7} lies at zero inside $\Omega$, so it exhausts that count and is algebraically simple. Any eigenvalue with real part at least $-\delta$ has real part below $R_0$ by the half-plane Neumann estimate of Section~\ref{sec:cg-7}. Shift it by an integer multiple of $i\omega$ into the closed interval $[a,b]$, possible because its length is at least $\omega$. No shifted eigenvalue can lie on $\Gamma$, which is resolvent. It is therefore inside $\Omega$, and must be zero. Conversely every shift of the actual neutral eigenvalue exists with the same multiplicity by Lemma~\ref{lem:cg-7-1}. \end{proof}
+
+All quantities in this proof were bounded on the whole parameter interval. At each fixed $g$, the same inequalities apply with its own $V(d),\Lambda(d)$, true frequency, and true coefficients. No continuity assertion for parameter-dependent Riesz projections is needed: only the $s$-homotopy for that fixed $g$. Thus Lemma~\ref{lem:cg-9-1} holds for every conductance of the unit. This proves the spectral part of Theorem~\ref{thm:conductance}(b) using Lemma~\ref{lem:cg-7-1} and $T(g)\ge2\pi/\omega_{\rm hi}$.
+
+\subsection{Local orbital stability and asymptotic phase}\label{sec:cg-10}
+
+Fix a conductance with the preceding certificate, and a point $z_*$ on its orbit. The vector field there is nonzero: otherwise uniqueness for the ODE would make the entire orbit constant. On the transverse affine section $\Sigma=\{z:\langle f(z_*),z-z_*\rangle=0\}$, the implicit function theorem supplies a smooth return time $\tau(z)$ near $T$ and a return map $P$. Its derivative is the projection of $Y(T)$ onto the section along the flow direction. In the splitting into flow direction and section, $Y(T)$ has triangular diagonal blocks 1 and $DP(z_*)$. Hence the return derivative has all 17 stable multipliers and spectral radius below $e^{-\delta T}$.
+
+For $0<\delta'<\delta$, choose a norm on the section and a contraction factor $q$ satisfying
+
+\[
+ r(DP(z_*))<q<e^{-\delta'T}.
+\]
+
+Such a norm is obtained by scaling each Jordan chain so its off-diagonal entries are arbitrarily small. Continuity of $DP$ then bounds its norm by $q$ on a sufficiently small convex section ball, and the mean value inequality gives $|P^kz-z_*|\le q^k|z-z_*|$. An initial point close to the orbit reaches that section within a bounded time, at a point whose distance to $z_*$ is bounded by a constant times its initial orbital distance; this follows from a finite flow interval and the smooth return-time function.
+
+If $z_k$ are successive section intersections at times $t_k$, smoothness of $\tau$ gives $|\tau(z_k)-T|\le Cq^k\operatorname{dist}(z_0,\mathcal O)$. The sum converges, so $t_k-kT\to\sigma_\infty$, with error at most $C'q^k\operatorname{dist}(z_0,\mathcal O)$. Set phase $\sigma=-\sigma_\infty$. At each section return both the perturbed orbit and $z_*(t_k+\sigma)$ are within $C''q^k\operatorname{dist}(z_0,\mathcal O)$ of $z_*$. Gronwall's inequality on the bounded intervals between returns propagates this estimate to every later time. Since $t_k=kT+O(1)$, $q^k\le C'''e^{-\delta't}$ on each such interval. On the initial bounded interval, smooth dependence on initial data and the fact that the limiting phase differs from the nearby orbit's initial phase by $O(\operatorname{dist}(z_0,\mathcal O))$ give the same estimate after increasing the constant. This proves the local stability assertion of Theorem~\ref{thm:conductance}(b). It does not compute the section size, Jordan norm or nonlinear constants.
+
+
+\section{The Hopf endpoint and amplitude bridge}\label{sec:hopf-methods}
+
+This section proves the implication used in Theorem~\ref{thm:conductance}(c). The amplitude desingularization and the transition back to ordinary periodic-orbit coordinates follow van den Berg, Lessard and Queirolo~\cite{vblq2021}, particularly their Sections~5 and~6. Their Section~2.2 already describes locally analytic nonpolynomial fields through DFT error and Banach-algebra derivative bounds; nonpolynomiality alone is not a new method. Here the guarded domains, Fourier remainders and full-ball bounds are made explicit for the fixed TP06 logarithmic and square-root expression. The amplitude parameter $\varepsilon$ below is unrelated to $1/N^2$ in Theorem~\ref{thm:alln}.
+
+\subsection{Complex domain and finite-dimensional contraction}\label{sec:ha-2}
+
+All complex extensions use the actual analytic branches in the vector field. The principal logarithm and square root are holomorphic on the right half-plane used by the domain guards. Every divisor is separated from zero. It is necessary to check the entire complex box or strip image used in an estimate, rather than only its real center.
+
+Let $F:\mathbb C^n\to\mathbb C^n$ be holomorphic on a neighborhood of the closed polydisc
+\[
+ P=\{z: |z_i-\bar z_i|\le r_i,\ 1\le i\le n\},\qquad r_i>0.
+\]
+Let $C$ be a proposed inverse and set $T(z)=z-CF(z)$. Suppose interval enclosures give
+\[
+ |(CF(\bar z))_i|\le b_i,\qquad
+ |(I-CDF(z))_{ij}|\le M_{ij}\quad(z\in P).
+\]
+If
+\[
+ b_i+\sum_jM_{ij}r_j\le r_i,\qquad
+ \kappa=\max_i\frac{\sum_jM_{ij}r_j}{r_i}<1,
+\]
+then $T$ maps $P$ into itself and is a contraction in the weighted maximum norm
+$\|v\|_r=\max_i|v_i|/r_i$.
+
+Indeed, integration of $DT$ along the segment from $\bar z$ to $z$ proves the first inequality, and integration along the segment between two points of the convex polydisc proves the Lipschitz bound $\kappa$. Banach's theorem gives a unique fixed point. At any point of $P$, the matrix $CDF=I-(I-CDF)$ is invertible by the Neumann series. Since both factors are square, $C$ and $DF$ are invertible. Thus a fixed point is a true zero of $F$, not merely a zero of $CF$. This also supplies the injectivity that cannot be inferred from a proposed numerical inverse alone.
+
+For a real parameter family the same estimates may hold uniformly over a closed parameter interval. Conjugation preserves a real problem and its enclosure, so uniqueness implies a real zero. Invertibility of $DF$ and the implicit function theorem identify the zeros locally as an analytic parameter family. Where a common uniqueness enclosure contains the local solutions, local families agree on overlaps and form one equilibrium branch. For the Hopf argument this common-enclosure check is required only on the identity interval $J_H$; no global branch identity over the larger cover is inferred merely from individual contractions.
+
+Apply this construction to $F(x;g)=f(x;g)$. Differentiating the equilibrium equation gives
+\[
+ x_e'(g)=-A(g)^{-1}f_1(x_e(g)),\qquad A(g)=D_xf(x_e(g);g),
+\]
+and hence
+\[
+ A'(g)=D_x^2f(x_e(g);g)[x_e'(g),\,\cdot]+D_xf_1(x_e(g)).
+\]
+A uniform interval enclosure of this derivative gives
+$A(g)\in A(g_c)+(g-g_c)A'(G)$ by the fundamental theorem of calculus. The midpoint enclosure used for $A(g_c)$ must be proved to lie in the same larger equilibrium enclosure on which the derivative bound is valid.
+
+\subsection{Spectrum and identity of the critical eigenpair}\label{sec:ha-3}
+
+Let $V$ be an invertible approximate eigenvector matrix. Interval evaluation of $V^{-1}A(g)V$ gives Gershgorin discs that contain its diagonal entries and row sums for every admitted equilibrium and parameter. A union of $k$ discs separated from the remaining discs contains exactly $k$ eigenvalues counted with algebraic multiplicity.
+
+For completeness, deform the off-diagonal part continuously to zero while keeping the diagonal fixed. All spectra remain in the same enclosing Gershgorin sets. A contour separating the selected union from the other discs cannot be crossed during this deformation. The argument principle, or continuity of the Riesz projection, keeps its eigenvalue count constant. At the diagonal endpoint the selected discs contain exactly the corresponding $k$ diagonal entries. The count is therefore $k$ throughout. For interval matrices the same argument is applied to each actual matrix using the common enclosing discs and separating contour.
+
+An augmented eigenpair problem
+\[
+ Aq-\lambda q=0,\qquad q_k=1
+\]
+is a square complex system. The polydisc contraction proves a true eigenpair. Its eigenvalue enclosure must meet only the designated simple critical Gershgorin component; its conjugate must meet only the conjugate component. Mere overlap with an approximate eigenvalue does not establish identity. The remaining 16 eigenvalues are enclosed strictly in the left half-plane.
+
+A left eigenvector satisfies $p^TA=\lambda p^T$. The same component-identification condition is required for its augmented proof. For a simple eigenvalue, $p^Tq\ne0$: otherwise $q$ belongs to the range of $A-\lambda I$, yielding a generalized eigenvector and contradicting algebraic simplicity. Differentiating $Aq=\lambda q$ and multiplying by $p^T$ therefore gives
+\[
+ \lambda'(g)=\frac{p^TA'(g)q}{p^Tq}.
+\]
+All numerator and denominator operations must be outward enclosures, with the denominator separated from zero.
+
+The accepted equilibrium Hopf gate must prove that the endpoint and central eigenpairs refer to this same critical component. One sufficient identification used in the source is a strict bound $B_{\rm im}$ on the imaginary parts of all noncritical eigenvalues, together with a critical imaginary-part lower bound exceeding $B_{\rm im}$. This identifies the eigenvalue of positive imaginary part throughout the common equilibrium cover.
+
+Let $G_H$ be the central crossing interval. Suppose its left endpoint has $\Re\lambda>0$, its right endpoint has $\Re\lambda<0$, and its derivative enclosure gives $\Re\lambda'<0$. Require a common equilibrium uniqueness enclosure over an identity interval $J_H\supset G_H$, containing every equilibrium-cover polydisc meeting $J_H$, and consistent critical-component identification there. Continuity and the intermediate value theorem produce one crossing in $G_H$; the derivative bound makes it unique there. The strict real-part signs on every cover interval to its left and right exclude any other imaginary-axis crossing on $J_H$. These statements concern the certified equilibrium family. They do not imply global uniqueness of equilibria elsewhere. Every central enclosure, including the Hopf enclosure itself, must be included in the reported maxima used for eigenvalue identification.
+
+\subsection{Qualitative Hopf theorem and the cubic coefficient}\label{sec:ha-4}
+
+The qualitative theorem used is the standard finite-dimensional Hopf theorem, with the hypotheses and sign convention described by Kuznetsov~\cite{kuznetsov2006}. Here the equilibrium family is smooth, its linearization has exactly one simple pair $\mu(g)\pm i\omega(g)$ with $\mu(g_H)=0$ and $\omega(g_H)>0$, every other eigenvalue has negative real part, $\mu'(g_H)\ne0$, and the first Lyapunov coefficient is nonzero.
+
+For the expansion at the equilibrium
+\[
+ f(x_H+y;g_H)=Ay+\frac12 B(y,y)+\frac16 C(y,y,y)+O(|y|^4),
+\]
+choose $Aq=i\omega_Hq$, $A^Tp=-i\omega_Hp$, and
+$\langle p,q\rangle=\overline p^{\,T}q=1$. In the convention used here,
+\[
+ l_1=\frac{1}{2\omega_H}\Re\left[
+ \langle p,C(q,q,\overline q)\rangle
+ -2\langle p,B(q,A^{-1}B(q,\overline q))\rangle
+ +\langle p,B(\overline q,(2i\omega_HI-A)^{-1}B(q,q))\rangle
+ \right].
+\]
+Both inverses in this formula must be certified. The spectral separation proves their existence, but their numerical action still requires outward bounds. The derivative tensors may be evaluated through exact truncated Taylor arithmetic: the quadratic directional derivative is $2[t^2]f(x+tv)$ and the cubic directional derivative is $6[t^3]f(x+tv)$. Polarization gives the mixed derivatives. Square-root and logarithm recurrences are valid only within the checked holomorphic domain. A change of normalization that rescales the coefficient by a positive factor preserves its sign, but does not justify comparing unnormalized numerical values.
+
+If $\mu'(g_H)<0$ and $l_1<0$, the theorem gives a supercritical stable family on the $g<g_H$ side, for sufficiently small distance from the Hopf point. Stability is orbital, with the neutral phase direction removed. This conclusion is local and existential. No lower bound on the size of the neighborhood is supplied by this invocation. The amplitude continuation below provides an explicit existence cover, not an automatic extension of this qualitative stability conclusion.
+
+\subsection{Desingularized equations and Banach spaces}\label{sec:ha-5}
+
+Let $\nu=e^{1/8}$ and define
+\[
+ \ell^1_\nu=\left\{a=(a_m)_{m\in\mathbb Z}:
+       \|a\|_\nu=\sum_{m\in\mathbb Z}|a_m|\nu^{|m|}<\infty\right\},
+ \qquad
+ \ell^1_{\nu,0}=\{a\in\ell^1_\nu:a_0=0\}.
+\]
+Convolution makes $\ell^1_\nu$ a Banach algebra, since
+$\nu^{|m+n|}\le\nu^{|m|}\nu^{|n|}$ and Tonelli's theorem gives
+$\|a*b\|_\nu\le\|a\|_\nu\|b\|_\nu$.
+
+The unknown is $X=(\omega,g,c,w)$ in
+\[
+ \mathcal X=\mathbb C^2\times\mathbb C^{18}
+                    \times(\ell^1_{\nu,0})^{18}.
+\]
+For positive component weights $\eta=(\eta_\omega,\eta_g,\eta_c,\eta_w)$,
+\[
+ \|X\|_\eta=
+ \max\left\{\frac{|\omega|}{\eta_\omega},
+ \frac{|g|}{\eta_g},
+ \max_j\frac{|c_j|}{\eta_{c_j}},
+ \max_j\frac{\|w_j\|_\nu}{\eta_{w_j}}\right\}.
+\]
+The residual sequence space is weaker:
+\[
+ \ell^{1\prime}_\nu=
+ \left\{a:\sum_m\frac{|a_m|\nu^{|m|}}{1+|m|}<\infty\right\}.
+\]
+Thus Fourier differentiation maps $\ell^1_\nu$ boundedly into
+$\ell^{1\prime}_\nu$. It must not be treated as a bounded operator on
+$\ell^1_\nu$ itself.
+
+Define the difference quotient without division by amplitude:
+\[
+ Q(c,u,\varepsilon;g)
+ =\int_0^1 D_xf(c+s\varepsilon u;g)u\,ds.
+\]
+On a domain containing every segment in this integral,
+\[
+ \varepsilon Q(c,u,\varepsilon;g)
+       =f(c+\varepsilon u;g)-f(c;g),
+ \qquad Q(c,u,0;g)=D_xf(c;g)u.
+\]
+The fundamental theorem of calculus proves the identity. Uniform holomorphy and boundedness on the compact segment permit differentiation under the integral, so $Q$ is jointly holomorphic including at $\varepsilon=0$.
+
+The desingularized residual is
+\[
+ N_+=w_{V,1}-\frac12,\qquad N_-=w_{V,-1}-\frac12,
+\]
+\[
+ E_0=f(c;g)+\varepsilon[Q(c,w,\varepsilon;g)]_0,\qquad
+ E_m=im\omega w_m-[Q(c,w,\varepsilon;g)]_m\quad(m\ne0).
+\]
+It maps $\mathcal X$ into
+$\mathcal X'=\mathbb C^2\times\mathbb C^{18}\times(\ell^{1\prime}_{\nu,0})^{18}$.
+
+For $\varepsilon>0$, $E_0=0$ is the mean equation for $f(c+\varepsilon w)$, and $\varepsilon E_m=0$ gives every nonzero Fourier equation for the ODE. Hence a zero is a genuine periodic orbit. Conjugate symmetry gives a real orbit. The normalization uses the fixed scaled TP06 coordinates of Section~\ref{sec:cell}: its voltage first harmonic is $a_{1,V}=\varepsilon/2\ne0$ there. Since the physical voltage scale is $\sigma_V=1/4$, the physical first-harmonic magnitude is $|\widehat V_1|=\varepsilon/8$~mV. Any period of a Fourier series with a nonzero first harmonic is an integer multiple of $2\pi$ in the normalized angle, so its least positive period is exactly $2\pi/\omega$.
+
+At $\varepsilon=0$, $E_0=0$ gives $f(c;g)=0$, and the first-mode equation gives $D_xf(c;g)w_1=i\omega w_1$ with $w_{V,1}=1/2$. Thus the zero-amplitude endpoint is an equilibrium with an imaginary eigenpair. Identity with the specific Hopf point still requires Section~\ref{sec:ha-10}.
+
+\subsection{Holomorphic Fourier estimates for the nonpolynomial field}\label{sec:ha-6}
+
+The following lemma makes the analytic composition estimate explicit when polynomial convolution formulas are unavailable.
+
+\begin{lemma}[Holomorphic composition]\label{lem:ha-composition} Let $p_\sigma(\theta)$ be a finite Fourier polynomial holomorphic for $|\sigma|\le T$ and $|\Im\theta|\le\rho_2$. Suppose $H$ is holomorphic on a neighborhood of every point
+$p_\sigma(\theta)+\zeta$ with $|\zeta_j|\le R_j$, and $|H|\le M$ there. Let $h$ have component Fourier norms $\|h_j\|_\nu\le t_j<R_j$, with $\rho_2>\log\nu$. Then
+\[
+ \|H(p_\sigma+h)\|_\nu\le
+ M Q_2\prod_j(1-t_j/R_j)^{-1},
+ \qquad
+ Q_2=\frac{1+q_2}{1-q_2},\quad q_2=\nu e^{-\rho_2}.
+\]
+For $|\sigma|<T$, its parameter derivative satisfies the additional bound
+\[
+ \|\partial_\sigma H(p_\sigma+h)\|_\nu
+ \le \frac{M Q_2\prod_j(1-t_j/R_j)^{-1}}{T-|\sigma|}.
+\]
+
+\end{lemma}
+
+\begin{proof} Expand in the state perturbation,
+$H(p_\sigma+\zeta)=\sum_\alpha a_\alpha(\sigma,\theta)\zeta^\alpha$.
+Multivariate Cauchy estimates give
+$|a_\alpha|\le M R^{-\alpha}$ uniformly on the angle strip. Shifting the Fourier contour to its upper or lower edge gives
+$|[a_\alpha]_m|\le M R^{-\alpha}e^{-\rho_2|m|}$.
+Consequently
+\[
+ \|a_\alpha\|_\nu\le M R^{-\alpha}
+                  \sum_m q_2^{|m|}
+              =M R^{-\alpha}Q_2.
+\]
+The Banach algebra estimate bounds the substituted term by
+$M Q_2\prod_j(t_j/R_j)^{\alpha_j}$.
+Summing the product of geometric series proves uniform absolute convergence in $\ell^1_\nu$ and the stated norm bound. On the real angle circle the sum equals the pointwise holomorphic composition by the Taylor theorem, so it represents the correct Fourier series. Uniform convergence on smaller parameter discs also proves Banach-space holomorphy. Cauchy's integral formula on parameter circles of radius approaching $T-|\sigma|$ proves the derivative estimate.
+
+\end{proof}
+
+For each amplitude piece, take
+$p_\sigma=c(\xi)+\sigma w(\xi)$, where $c,w$ are the affine center polynomials for the real amplitude interval. Every state and parameter perturbation used in the Newton estimate must lie in the checked complex domain. In particular the domain includes $|\sigma|\le T$, the full angle strip, state margins $R_j$, and a conductance margin $G_R$. Bounds on the Jacobian, state Hessian, and derivatives of $f_1$ are established there. Checking only $c+\xi w$ at real angle samples would not establish this lemma.
+
+For any strip-bounded scalar function $H$ with bound $S$, the Fourier coefficient and tail estimates are
+\[
+ |H_m|\le S e^{-\rho_2|m|},\qquad
+ \sum_{|m|>K}|H_m|\nu^{|m|}
+ \le 2S\,\frac{q_2^{K+1}}{1-q_2}.
+\]
+For an $M$-point discrete Fourier transform the alias error in coefficient $n$ is bounded by
+\[
+ S\sum_{\ell\ne0}e^{-\rho_2|n+\ell M|}.
+\]
+These sums are evaluated outward. Residual, Jacobian, and derivative coefficients each use their own valid strip bounds. Aliasing is not discarded merely because the approximate orbit has finitely many modes.
+
+\subsection{Finite and tail inverse, residual, and derivative bounds}\label{sec:ha-7}
+
+For a piece $\xi\in[e_c-h,e_c+h]$, let
+$\bar X(\xi)=\bar X_c+(\xi-e_c)t$.
+The center has finite Fourier support, exact conjugate symmetry, and exact voltage normalization. In particular the tangent's two normalization entries vanish.
+
+The proposed inverse $A:\mathcal X'\to\mathcal X$ consists of a finite square block for the normalization equations, the mean equation, and modes $0<|m|\le K$, and tail blocks
+\[
+ A_m=(im\omega_c-\widehat J_0)^{-1}\qquad(|m|>K).
+\]
+The finite matrix is a proposal whose entries are enclosed exactly. Every tail block must be invertible. A finite near-tail range is checked directly for both signs of $m$, and the remaining modes use a Neumann estimate with a proved threshold. Bounds on the component norms of $A_m$ and $mA_m$, denoted $\mathcal A_0$ and $\mathcal A_1$, prove boundedness from the weaker residual space to $\mathcal X$.
+
+Here is an explicit bound for the infinite tail. Choose $m_{\max}$ so that, with
+\[
+ Y=\omega_c(m_{\max}+1),\qquad
+ G=|\widehat J_0|/Y,\qquad\vartheta=\|G\|_\infty<1,
+\]
+the Neumann series applies for every $m>m_{\max}$. Entrywise define
+\[
+ S_G=I+G+G^2+\frac{\vartheta^3}{1-\vartheta}{\bf1},
+\]
+where the last matrix has every entry equal to one. Each entry of $G^k$ is at most its row sum, hence at most $\vartheta^k$ for $k\ge3$. Therefore
+\[
+ |A_m|\le S_G/Y,\qquad |m A_m|\le S_G/\omega_c.
+\]
+The explicitly inverted modes $K<m\le m_{\max}$ are included by entrywise maxima. For negative modes $A_{-m}=\overline{A_m}$, since $\widehat J_0$ and $\omega_c$ are real. Products with complex Fourier coefficients still require the corresponding conjugated enclosure.
+
+Write $J'_0=J_0-\widehat J_0$ and $J'_n=J_n$ otherwise, and obtain
+\[
+ C_n\ge\sup_{|m|>K}|A_mJ'_n|
+\]
+entrywise from explicit products for both signs in the finite near-tail range and the far-tail bound $|A_m||J'_n|$. If $|J_n|\le S_Je^{-\rho_2|n|}$ beyond the coefficient cutoff $K'$, the tail convolution block is bounded by
+\[
+ B_{ww}^{\rm tail}\le
+ \sum_{|n|\le K'}C_n\nu^{|n|}
+ +\mathcal A_0 S_J\,\frac{2q_2^{K'+1}}{1-q_2}.
+\]
+Indeed $\nu^{|m|}\le\nu^{|m-n|}\nu^{|n|}$, so summing $|A_mJ'_ny_{m-n}|\nu^{|m|}$ first in $m$ bounds it by this matrix applied to the component norms of $y$. The scalar-state column obeys
+\[
+ B_{wc}^{\rm tail}\le
+ \sum_{K<|m|\le K'}|A_m(K_c)_m|\nu^{|m|}
+ +\mathcal A_0 S_{K_c}\,\frac{2q_2^{K'+1}}{1-q_2},
+\]
+and the conductance column has the same formula with $k_g$ and its strip bound. These sums include both signs. For the line derivative replace coefficients by their proved line derivatives and include $|t_\omega|\mathcal A_1$ on the diagonal.
+
+For a finite output row at mode $m$, $|m|\le K$, and a far input mode $m'$,
+\[
+ |J_{m-m'}|\le S_J
+  e^{-\rho_2(|m'|-\operatorname{sgn}(m')m)}.
+\]
+Multiplication by $|A_{\rm fin}|$, summing the finite output Fourier weights, and dividing by the input weight $\nu^{|m'|}$ produces a constant times $(e^{-\rho_2}/\nu)^{|m'|}$. This decreases in $|m'|$, so the boundary columns $m'=\pm(K+L+1)$ bound all remaining columns after the explicit range $K<|m'|\le K+L$. Normalization rows have no such tail input because they depend only on modes $\pm1$. The same argument applies to the line derivative.
+
+For a block operator on the component maximum norm, component bounds $B_{ij}$ give
+\[
+ \|B\|_\eta\le\max_i\frac1{\eta_i}\sum_jB_{ij}\eta_j.
+\]
+For a sequence block, its operator bound is the Fourier-weighted column supremum
+\[
+ \sup_{m'}\frac{\sum_m|B(m,m')|\nu^{|m|}}{\nu^{|m'|}}.
+\]
+These inequalities justify the finite and tail assembly estimates.
+
+The bound $Z_1<1$ for $I-ADF(\bar X)$ implies invertibility of the finite compressed product and hence of the proposed finite inverse block. Invertibility of all tail blocks then proves injectivity of $A$. This injectivity is what turns fixed points of $X-AF(X)$ into zeros of $F$.
+
+For the residual, Taylor's theorem along the affine amplitude center gives
+\[
+ \sup_{\xi}\|AF(\bar X(\xi);\xi)\|_\eta
+ \le \max_i\frac{Y_{0p,i}+hY_{1,i}
+                       +\frac12h^2Y_{2,i}}{\eta_i}\le Y_0,
+\]
+where the three vectors bound $|AF(\bar X_c)|$,
+$|A\,d_\xi F(\bar X_c)|$, and
+$\sup_\xi|A\,d_\xi^2F(\bar X(\xi))|$.
+The second derivative of the integral quotient uses the full integrand
+\[
+ \frac{d^2}{d\xi^2}Q
+ =\int_0^1\frac{d^2}{d\xi^2}
+   \{D_xf(c(\xi)+s\xi w(\xi);g(\xi))w(\xi)\}\,ds.
+\]
+It includes derivatives of $c$, $w$, $g$, and $\xi$. Interval partitions in $s$ and $\xi$ enclose the whole integral and interval; evaluations at endpoints alone do not bound a Taylor remainder.
+
+At the center, the mean-row derivatives are the mean Jacobian acting on $\delta c$, the mean convolution of the full Jacobian with $\varepsilon\delta w$, and $[f_1(c+\varepsilon w)]_0\delta g$. For nonzero modes they are
+\[
+ imw_m\,\delta\omega+im\omega\,\delta w_m
+       -[J\delta w]_m-[K_c\delta c]_m-[k_g\delta g]_m,
+\]
+where
+\[
+ J=D_xf(c+\varepsilon w;g),\quad
+ K_c=\int_0^1D_x^2f(c+s\varepsilon w;g)[w,\,\cdot]\,ds,
+ \quad k_g=\int_0^1D_xf_1(c+s\varepsilon w)w\,ds.
+\]
+These formulas follow by differentiating the quotient integral, or its nonsingular holomorphic extension.
+
+The defect estimate is
+\[
+ \sup_{\xi}\|I-ADF(\bar X(\xi);\xi)\|_\eta
+        \le Z_{1c}+hZ_c\le Z_1,
+\]
+where $Z_c$ bounds the derivative of $ADF$ along the complete center interval. The final $Y_0$ and $Z_1$ are the recorded outward majorants used in the radii polynomial; admission must prove that each displayed intermediate expression is bounded above by its recorded constant. Its finite-finite part is a matrix enclosure. Its finite-tail part includes all near-tail columns and an exponential far-tail bound. Its tail-finite and tail-tail parts include the full Jacobian convolution, the constant mismatch $J_0-\widehat J_0$, the $K_c$ and $k_g$ columns, and both mode directions. In particular the varying-frequency diagonal contributes the bound involving $|t_\omega|\mathcal A_1$; it does not disappear because the center polynomial is finite. The actual frequency-column tail of that finite center is zero, but the derivative with respect to varying frequency still acts on arbitrary tail perturbations.
+
+The weighted far-tail estimates use the decreasing exponential ratio supplied by $\rho_2>\log\nu$. Their start index and the finite near-tail range must exhaust all omitted columns. The DFT alias bounds from Section~\ref{sec:ha-6} are propagated through the proposed finite matrix and every relevant tail bound.
+
+\subsection{Full-ball derivative variation}\label{sec:ha-8}
+
+Write $e_{\rm hi}=\max|\xi|$ on the piece and let $r_*$ be the largest admissible proof radius. Define
+\[
+ \tau_j=\eta_{c_j}+e_{\rm hi}\eta_{w_j},\quad
+ t_j=\tau_jr_*,\quad
+ P=\prod_j(1-t_j/R_j)^{-1},\quad T_m=T-e_{\rm hi}.
+\]
+The prerequisites are $t_j<R_j$, $T_m>0$, and $\eta_g r_*\le G_R$. Let $M_{H,kjl}$ bound the state Hessian and $M_{G,kj}$ bound $\partial_j(f_1)_k$ on the full complex domain. Set
+\[
+ a_{J,kj}=Q_2P\left(\sum_lM_{H,kjl}\tau_l
+                                  +M_{G,kj}\eta_g\right).
+\]
+If $\|\Delta X\|_\eta\le r\le r_*$, the composition lemma and the mean value integral bound the change in $J_{kj}$ by $r a_{J,kj}$.
+
+For the mean and nonzero-mode rows one may use
+\[
+ W_{0,k}=\sum_j a_{J,kj}
+       (\eta_{c_j}+e_{\rm hi}\eta_{w_j})
+       +\eta_g Q_2P\sum_l M_{G,kl}\tau_l,
+\]
+\[
+ \begin{split}
+ W_{E,k}={}&\sum_j a_{J,kj}\eta_{w_j}\\
+ &+\sum_j\left(Q_2P\sum_lM_{H,kjl}\eta_{w_l}
+                              +a_{J,kj}/T_m\right)\eta_{c_j}\\
+ &+\eta_g Q_2P\left(\sum_lM_{G,kl}\eta_{w_l}
+                         +\sum_lM_{G,kl}\tau_l/T_m\right).
+ \end{split}
+\]
+To see the quotient bounds in detail, write
+$h_s=\Delta c+s\xi\Delta w$ and $p_s=c(\xi)+s\xi w(\xi)$. Then
+\[
+ \begin{split}
+ K_c(X)-K_c(\bar X)
+ ={}&\int_0^1D_x^2f(p_s+h_s;g)\,[\Delta w,\,\cdot]\,ds\\
+ &+\int_0^1\{D_x^2f(p_s+h_s;g)-D_x^2f(p_s;\bar g)\}
+                                   [w(\xi),\,\cdot]\,ds .
+ \end{split}
+\]
+The first integral is bounded in entry $(k,j)$ by
+$rQ_2P\sum_lM_{H,kjl}\eta_{w_l}$.
+For the state part of the second, integrate the state Hessian derivative along $p_s+u h_s$, $0\le u\le1$. Its contraction with $w(\xi)$ is the derivative in a complex parameter $\sigma$ of
+$D_x^2f(p_s+u h_s+\sigma w(\xi))[h_s,\,\cdot]$.
+The base amplitude is $s\xi$, and the available parameter-disc radius is at least $T-e_{\rm hi}$. Section~\ref{sec:ha-6} bounds this derivative by the corresponding Hessian majorant divided by $T_m$. The conductance part is treated through $D_xf_1$ in the same way. Together they are bounded by $r a_{J,kj}/T_m$. Similarly,
+\[
+ \|(k_g(X)-k_g(\bar X))_k\|_\nu
+ \le rQ_2P\left(\sum_lM_{G,kl}\eta_{w_l}
+                         +\sum_lM_{G,kl}\tau_l/T_m\right),
+\]
+and
+\[
+ \|(f_1(c+\xi w)-f_1(\bar c+\xi\bar w))_k\|_\nu
+ \le rQ_2P\sum_lM_{G,kl}\tau_l.
+\]
+Combining these with the $J$ difference in the derivative rows gives $W_0$ and $W_E$ above.
+
+The terms involving $\eta_w$ arise from changes in the vector $w$ inside $K_c$ and $k_g$. The terms with $T_m^{-1}$ follow from the amplitude Cauchy estimate in Section~\ref{sec:ha-6}, which bounds the next state derivative needed for variation of the integral quotient. They require the full complex amplitude margin. Dependence on $g$ is affine, so $f_1$ has no further conductance derivative.
+
+For residual block $j$, define the finite inverse component norm by
+\[
+ N_{A;ij}=\sup_{\ell\ {\rm in\ block}\ j}
+       \frac{\sum_{a\ {\rm in\ output}\ i}
+                    |(A_{\rm fin})_{a\ell}|\nu^{|m_a|}}
+            {\nu^{|m_\ell|}},
+\]
+with mode zero for scalar blocks. Define $N_{A1;ij}$ by inserting the factor $|m_\ell|$ in each column expression. Below, $0k$ denotes mean component $k$ and $Ek$ its nonzero-mode residual block. Set $\mathcal A_{0,ik}=\mathcal A_{1,ik}=0$ for scalar output components; the tail matrices act only on $w$ output components. With the corresponding tail component bounds, a valid derivative-variation constant is
+\[
+ Z_2=\max_i\frac1{\eta_i}\sum_k\left[
+ N_{A;i,0k}W_{0,k}
+ +(N_{A;i,Ek}+\mathcal A_{0,ik})W_{E,k}
+ +(N_{A1;i,Ek}+\mathcal A_{1,ik})\,2\eta_\omega\eta_{w_k}
+ \right].
+\]
+The displayed expression, evaluated outward and bounded above by the recorded $Z_2$, proves
+\[
+ \|A(DF(\bar X+\Delta X)-DF(\bar X))\|_\eta
+      \le Z_2\|\Delta X\|_\eta.
+\]
+The final term comes from the bilinear product $\omega\,\partial_\theta w$ and includes both perturbation orders. The weak residual space is essential for bounding this derivative term. Every bound is on the full ball, including conductance perturbations, rather than just the real center curve.
+
+\subsection{Radii polynomial, continuity, and gluing}\label{sec:ha-9}
+
+Define
+\[
+ p(r)=Y_0+(Z_1-1)r+\frac12Z_2r^2.
+\]
+Suppose
+\[
+ 0<r_{\rm lo}\le r_{\rm hi}\le r_*,\qquad
+ p(r_{\rm lo})<0,\quad p(r_{\rm hi})<0,\quad
+ Z_1+Z_2r_{\rm hi}<1.
+\]
+Taylor's integral formula gives
+\[
+ \|AF(\bar X)+[ADF(\bar X)-I]v+
+ A\{F(\bar X+v)-F(\bar X)-DF(\bar X)v\}\|_\eta
+ \le Y_0+Z_1r+\frac12Z_2r^2
+\]
+for $\|v\|_\eta\le r$. Thus $T=X-AF(X)$ maps the radius-$r$ ball into itself whenever $p(r)<0$. Its derivative norm is at most $Z_1+Z_2r_{\rm hi}$ on the larger ball, so Banach's theorem gives one zero in the larger ball and locates it in the smaller ball. Section~\ref{sec:ha-7} proves that this is a true zero.
+
+The real Fourier involution swaps the positive and negative normalization equations and conjugates all coefficients. It preserves the problem and enclosure. Uniqueness forces conjugate symmetry and real $\omega,g,c$.
+
+Strict inequalities also prove continuity without requiring $r_{\rm lo}<r_{\rm hi}$. Since $p(r_{\rm lo})<0$, continuity of $p$ permits a radius $r'<r_{\rm lo}$ sufficiently close to $r_{\rm lo}$ with $p(r')<0$. The fixed point then has the positive margin $r_{\rm hi}-r'$ inside its larger ball. Nearby affine centers move by less than this margin. Both local zeros can therefore be compared in a common larger ball; the contraction inequality bounds their difference by the continuous change of the parameter-dependent map divided by $1-\kappa$. Hence the zeros depend continuously on amplitude. The local implicit function theorem supplies analyticity wherever the derivative is invertible.
+
+At a shared endpoint of adjacent pieces, one sufficient gluing inequality is
+\[
+ \|\bar X_L-\bar X_R\|_{\eta_R}
+       +r_{{\rm lo},L}\max_i\frac{\eta_{L,i}}{\eta_{R,i}}
+       \le r_{{\rm hi},R}.
+\]
+The left zero is then inside the right uniqueness ball and solves the identical normalized equations. Uniqueness identifies the zeros. An accepted cover of all 68 pieces and all 67 adjacent gluings therefore produces a continuous amplitude family over $[0,6427/50000]$. Missing a gluing cannot be replaced by similar-looking endpoint approximations.
+
+\subsection{Identifying the zero-amplitude endpoint}\label{sec:ha-10}
+
+The amplitude endpoint at $\varepsilon=0$ gives an equilibrium $c(0)$ and an eigenvalue $i\omega(0)$ with a nonzero first-mode eigenvector. To identify it with the certified Hopf point, require an outward inclusion $g(0)\in J_H$ and a common equilibrium contraction enclosure containing both $c(0)$ and the real equilibrium enclosures that meet $J_H$. The equilibrium uniqueness theorem in that common polydisc proves $c(0)=x_e(g(0))$.
+
+The eigenpair separation and positive imaginary-frequency enclosure from Section~\ref{sec:ha-3} identify $i\omega(0)$ with the unique critical eigenvalue. The unique crossing in $J_H$ therefore implies
+\[
+ g(0)=g_H,\qquad c(0)=x_H,\qquad\omega(0)=\omega_H.
+\]
+No global equilibrium uniqueness over a larger interval is needed. A claim that every equilibrium in that larger interval is the same branch would require an additional argument.
+
+Continuity now gives $c(\varepsilon)+\varepsilon w(\varepsilon)\to x_H$. The normalization and positive frequency keep the positive-amplitude solutions nonconstant. For sufficiently small amplitude these solutions lie in the neighborhood covered by the qualitative Hopf theorem, so they are its stable small cycles up to phase. This identifies their local stability but leaves the size of that neighborhood unquantified.
+
+\subsection{Fresh bridge at conductance 0.02778}\label{sec:ha-11}
+
+A fresh ordinary periodic-orbit proof with Fourier phase equation $a_{V,1}-a_{V,-1}=0$ at $g_s=0.02778$ supplies a center $a_s$, frequency $\bar\omega_s$, weights $\eta_s$, and an error radius $r_s$ in Fourier weight $\nu_P=e^{1/4}$. Its voltage first harmonic has positive real amplitude after phase fixing. Define the true normalized amplitude by
+\[
+ \varepsilon_s=2(a_s^{\rm true})_{V,1}.
+\]
+Its outward enclosure is
+\[
+ E=2\left[\bar a_{s,V,1}
+             -\eta_{s,V}r_s/\nu_P,\
+          \bar a_{s,V,1}
+             +\eta_{s,V}r_s/\nu_P\right],
+ \qquad \inf E>0.
+\]
+The amplitude family uses $\nu=e^{1/8}\le\nu_P$, so the point proof's error controls its norm in the amplitude space.
+
+The admitted amplitude pieces must cover all of $E$, and every amplitude piece $Q$ meeting $E$ must be checked. For $X=E\cap Q$, interval evaluation of its affine center yields the sufficient inclusion
+\[
+ \max\left\{\begin{aligned}
+ &\frac{|\bar\omega_s-\bar\omega_Q(X)|+\eta_{s,\omega}r_s}
+      {\eta_{Q,\omega}},
+ \frac{|g_s-\bar g_Q(X)|}{\eta_{Q,g}},\\
+ &\max_k\frac{|\bar a_{s,k,0}-\bar c_{Q,k}(X)|
+                                     +\eta_{s,k}r_s}{\eta_{Q,c_k}},\\
+ &\max_k
+ \frac{\sum_{m\ne0}|\bar a_{s,k,m}/X-\bar w_{Q,k,m}(X)|\nu^{|m|}
+                          +\eta_{s,k}r_s/\inf X}{\eta_{Q,w_k}}
+ \end{aligned}\right\}\le r_{{\rm hi},Q}.
+\]
+The finite coefficient difference includes the union of both center supports. The remaining infinite coefficients are controlled by the point error and $\nu\le\nu_P$. All divisions by $X$ require its positive lower bound.
+
+For the true point solution set
+\[
+ Y_s=\left(\omega_s,g_s,(a_s^{\rm true})_0,
+            ((a_s^{\rm true})_m/\varepsilon_s)_{m\ne0}\right).
+\]
+The bound above places $Y_s$ inside an amplitude uniqueness ball. Its Fourier equations and amplitude definition give both normalization equations and every desingularized residual equation. The analytic quotient is valid on this ball by the domain proof. Thus $Y_s$ is the amplitude-family zero at $\varepsilon_s$.
+
+A separate ordinary-branch inclusion places the same point solution in the relevant conductance-piece uniqueness ball:
+\[
+ \|\bar X_s-\bar X_P(g_s)\|_{\eta_P}
+       +r_s\max_i\frac{\eta_{s,i}}{\eta_{P,i}}
+       \le r_{{\rm hi},P}.
+\]
+The centers, phase conventions, Fourier weights, and component conversions in this inequality must match the actual two proofs. This proves that the point orbit lies on both certified families.
+
+Their union is connected. The continuous amplitude conductance map has endpoint values $g_H$ and $g_s$, so its image contains every intermediate value. For values strictly below $g_H$, an intermediate preimage is positive and represents a nonconstant orbit. Combining this with the conductance-family interval proves the existence conclusion of Theorem~\ref{thm:conductance}(c). No derivative sign for the entire amplitude curve is used.
+
+
+\subsection{Numerical inputs and admission gates}\label{sec:conductance-gates}\label{sec:ha-12}
+
+The final conductance log has 712 pieces in 57 center groups on the exact interval
+\[
+ J=[0.027499735464,\ 0.02778996093].
+\]
+The inputs use $K=12$, $\rho_0=1/4$, a coefficient strip of width $3/2$, Hessian strip $\rho_2=1$, $L=16$, $K'=40$, and 128 Fourier nodes. Exact per-piece weights, centers, polydisc radii, validity radii and precision settings are authoritative; defaults do not replace them. All 711 adjacent branch inclusions are recomputed from the final piece bounds. The new uniform computation covers those 712 pieces with 63 actual group or consecutive-subgroup certificates; no individual-piece fallback certificate is used in this final cover. Each accepted unit supplies its own exact interval, path settings, $\delta_u$, frequency bounds and multiplier bound. The common gap is $\delta=3\times10^{-5}$ per ms, and the maximum multiplier bound rounded upward to nine decimal places is $0.998413816$. A historical decomposition with 127 successes is not the current cover.
+
+The separately serialized upper bounds need not preserve every relation between the finer Arb bounds used during calculation. For each group certificate the receipt check therefore forms the exact conservative majorant
+\[
+ \kappa_{\rm check}=\max\{\kappa_{\rm stored},\ Z_{1,\rm stored}^{\rm path}+Z_{2,\rm stored}\rho_{\rm stored}\}
+\]
+and requires $\kappa_{\rm check}<1$ and $Y'_{\rm stored}\le(1-\kappa_{\rm check})\rho_{\rm stored}$. This stronger self-map check passed for all 63 certificates, with 35 larger majorants. The original raw receipts were preserved; no tolerance or rewritten scientific bound was used. Six unsuccessful whole-group attempts were followed by successful consecutive-subgroup proofs. Public receipts retain the spectral count and small-gain summaries, but omit the finite column vectors: reproducing those spectral inequalities requires the source-bound Arb calculation, rather than parsing a success flag from the receipt alone.
+
+The equilibrium Hopf certificate uses the full 516-interval cover, including its central crossing interval, and checks the identities and signs of the critical eigenpair and the 16 remaining eigenvalues. Amplitude continuation uses exactly 68 fresh pieces on $[0,6427/50000]$, all 67 adjacent inclusions, and the zero-amplitude identity in Section~\ref{sec:ha-10}. The first 41 pieces use $K=8$, $M=48$, and the last 27 use $K=12$, $M=64$; their exact logged centers, affine tangents, weights and cover settings govern the actual proofs. The bridge uses a fresh $K=32$ existence proof at $g_s=0.02778$. No Stage~S point certificate is needed for that identification. This point lies in the conductance interval $J$, so its stability follows from the uniform cover through its branch identity.
+
+For numerical application require a complete immutable final log; exact typed settings and input digests; the import-time scientific source snapshot; rigorous sign, self-map, contraction, domain and inverse checks; strict rejection of missing, duplicated, stale or malformed records; fresh recomputation of every gluing and both bridge inclusions; and independent inspection of the final records together with the formulas. A copied success flag, a printed decimal, or agreement with historical bounds is insufficient. Parse and hash the same input bytes. The branch and stability records must bind to the same final log and centers. The Hopf collection must require a successful zero-amplitude identity before writing a conclusion. Historical logs and the 1.0.0 evidence are preserved, including their failures, and never seed a fresh acceptance result.
+
+\paragraph{Final numerical evidence.} The full branch and the fresh uniform cover have completed scoped in-project record checks. The six amplitude shards and their collection workflow supplied the 67 inclusions, zero-amplitude identity and fresh bridge, which were independently inspected within the project. The original seven stability piece tests, thirteen group and half-group tests, six quick controls, and all 117 Hopf tests passed against the current programs; an additional half-group orchestration control also passed. These test counts are validation evidence, not additional theorem hypotheses. The records are \file{data/fourier-branch-gks.json}, \file{data/fourier-branch-stability-uniform.json} and \file{data/fourier-hopf.json}, with their final logs and inputs and exact source bindings. The review records state the separate scope of each inspection; no outside review is claimed.
+
+\begin{proof}[Proof of Theorem~\ref{thm:conductance}]
+Under the stated numerical hypotheses, Lemma~\ref{lem:cg-3-2} and Section~\ref{sec:cg-4} give the real, phase-fixed, locally unique continuous conductance family and its minimal period, proving (a). The moving-tube identification of Section~\ref{sec:cg-5}, the uniform coefficient and finite/tail bounds, Lemma~\ref{lem:cg-9-1} and Section~\ref{sec:cg-10} give (b) for every conductance in the accepted union of units, which is all of $J$. Sections~\ref{sec:ha-9} and~\ref{sec:ha-10} produce and identify the normalized amplitude family; the fresh inclusions of Section~\ref{sec:ha-11} identify a common orbit at $g_s$. Continuity and the intermediate value theorem give (c). The qualitative Hopf theorem supplies only the local small-amplitude stability statement. No step extends that local stability to the whole amplitude bridge.
+\end{proof}
+
 \section{The cell in the time domain}\label{sec:capd}
 
 The proof of Theorem~\ref{thm:cell}(i) uses CAPD \cite{capd2021}. Work in the scaled variables $z$ of Section~\ref{sec:cell}, and let $\mathcal S = \{z_V = s/\sigma_V\}$ (that is $V = s$; $s/\sigma_V = 4s$ is an exact double) and $g$ the first-return map to $\mathcal S$, crossed upward. The frame file \file{code/candidates/cell_frameF.txt}, whose SHA-256 the record \file{data/cell-gks0.0275.json} stores, gives a point $\hat x$ with $\hat x_V = s/\sigma_V$ exactly (the verifier refuses the file otherwise), an invertible $17 \times 17$ matrix $A_t$, and a partition of the 17 free coordinates into 14 blocks of size 1 or 2 with radii $\rho_b$ between $1.13 \times 10^{-13}$ and $8.36 \times 10^{-11}$ (listed in the record). With $A = \begin{pmatrix}1 & 0\\ 0 & A_t\end{pmatrix}$ the map $y \mapsto \hat x + A(0, y)$, $y \in \R^{17}$, is an affine parametrization of $\mathcal S$, since the first component of $A(0, y)$ is $0$. Let $\|y\| = \max_b\|y_b\|_2/\rho_b$ and
@@ -748,7 +1924,8 @@ $\hat x$ and $A_t$ are proposed by the untrusted programs \file{code/proofs/orbi
 \end{itemize}
 Then $G$ maps $\{\|y\| \le 1\}$ into itself and is a $q$-contraction there in the norm $\|\cdot\|$ (mean value inequality on a convex set), so $g$ has a unique fixed point $x_c$ in $B$ and every eigenvalue of $Dg(x_c)$ has modulus at most $q$. By Corollary~\ref{cor:section} with $N = 1$ ($Q = I$, $\tau = T$), $\det(\lambda I - Y(T)) = (\lambda - 1)\det(\lambda I - Dg(x_c))$, so these eigenvalues are the 17 nontrivial Floquet multipliers. Local orbital asymptotic stability, with asymptotic phase and rate $e^{-\delta' t}$ for every $\delta'$ with $e^{-\delta' T} > q$, follows from the proof of Theorem~\ref{thm:stab}(iii) with $\mathcal S_0$ replaced by $\mathcal S$ near $x_c$, $P$ by $g$ (whose return time is $C^1$ by transversality), and the ball $B_c$ by $B$ with the norm $\|\cdot\|$, in which $g$ is already a $q$-contraction. The period is the return time: since $g(x_c) = x_c$, the first return time $t_1$ of $x_c$ is a period, and since the orbit is back at $x_c \in \mathcal S$ at its minimal period, $t_1$ is the minimal period. The fixed point lies in the relative interior of $B$ in $\mathcal S$, as the proof of Theorem~\ref{thm:stab}(iii) needs: by the second check, $G$ maps $\{\|y\| \le 1\}$ into $\{\|y\| \le 0.99865\}$, and $x_c$ corresponds to a fixed point of $G$. The record gives $q \le 0.99864150686405151$ (stored as the double \texttt{0x1.ff4df088d18aap-1}), $\max_b(\|G(0)_b\|/\rho_b + \text{row sum}) \le 0.99864258833469344$, and the return time $[53.5855190480139, 53.585519630722438]$~ms; the run took $732$~s.
 
-\begin{lemma}[the two cell certificates enclose the same orbit; computer-assisted: \file{code/fourier/link_cell.py}, exact rational arithmetic]\label{lem:link}
+\begin{lemma}[the two cell certificates enclose the same orbit; computer-assisted, exact rational arithmetic]\label{lem:link}
+The computer-assisted check is performed by \file{code/fourier/link_cell.py}.
 Let $\phi_*$ be the profile of Theorem~\ref{thm:cell}(ii) and $p = \Sigma^{-1}\phi_*(0)$. Then $p \in B$, and the orbit $\{\Sigma^{-1}\phi_*(\theta)\}$ of Theorem~\ref{thm:cell}(ii), in scaled variables, is the orbit of the fixed point $x_c$ of Theorem~\ref{thm:cell}(i).
 \end{lemma}
 
@@ -785,7 +1962,9 @@ The phase reduction thus accounts for the size of the leading exponents, and so 
 
 \section{Reproducibility}\label{sec:reproduce}
 
-The programs are in \file{code/}, in the layout of the project folder in which they were run; that folder was developed in the GENChase repository, which is not part of the companion of this paper. The records in \file{data/} name the files they hash by paths relative to \file{code/}, with \file{data/} in the place of \file{results/}. \file{code/run_all.sh} rebuilds that layout in a scratch folder, with the records of \file{data/} in its \file{results/}, and there \file{code/fourier/check_records.py} rechecks all 90 stored hashes (sources, centers and the Stage~E records read by Stage~S) in a few seconds; run directly in \file{code/}, that program finds no records and checks nothing. The script then runs the link of Lemma~\ref{lem:link} (\file{code/fourier/link_cell.py}, standard library only), and reruns Stage~E and Stage~S for chosen $N$. For Theorem~\ref{thm:alln} it also checks the 15 hashes stored in \file{data/fourier-existence-alln.json} (its nine sources, among them \file{code/fourier/alln.py} and \file{code/fourier/branch.py}, its run log \file{code/fourier/data/alln/pieces.jsonl}, which holds the exact inputs of every piece, and the Stage~E records it identifies), and with the argument \texttt{alln} it re-derives in Arb, from the stored exact data, the piece order, every gluing inequality \eqref{eq:glue} and the inclusions \eqref{eq:incl} (\texttt{alln.py --collect}), and compares them with the record. Re-proving pieces from their stored inputs is done by \file{code/fourier/test_alln.py}. The script does not check the four source hashes stored in the CAPD record \file{data/cell-gks0.0275.json} (\file{code/proofs/verify.cpp}, \file{code/model/tp06_capd.hpp}, \file{setup.hpp} and \file{scales.txt}); they were compared with the copies by hand on 2026-10-02 and agree. \file{link_cell.py} checks the frame hash of that record, and the hash of the verifier binary, which is not shipped, is not checked. \file{code/plot_cardiac_rings.py}, which draws Figures~\ref{fig:cell} to~\ref{fig:alln} from stored files, belongs to this folder only, and no record hashes it. Table~\ref{tab:programs} lists the programs.
+For the unchanged all-$N$ certificate, \file{code/run_all.sh} verifies \file{code/fourier/branch-1.0.0.py} against the branch source hash stored in its record and restores those bytes under \file{fourier/branch.py} only in the historical scratch layout. The argument \texttt{continuation} uses a separate current-source layout for Theorem~\ref{thm:conductance}: it rederives the complete 712-piece branch and 711 inclusions, the uniform cover and the 68-piece Hopf collector, including all 67 amplitude inclusions and both bridge memberships. This collection run does not re-prove every piece. Exact source, input, typed-setting and gluing fields must agree. Runtime and path metadata are scoped separately; a regenerated zero-endpoint equilibrium polydisc must pass the full complex contraction and exact containment checks even when its floating-point proposal differs from the stored polydisc. No decimal tolerance substitutes for a rigorous inequality. The source archive preserves the 1.0.0 evidence without rebinding its hashes to newer programs.
+
+The programs are in \file{code/}, in the layout of the project folder in which they were run; that folder was developed in the GENChase repository, which is not part of the companion of this paper. The records in \file{data/} name the files they hash by paths relative to \file{code/}, with \file{data/} in the place of \file{results/}. \file{code/run_all.sh} rebuilds that layout in a scratch folder, with the records of \file{data/} in its \file{results/}, and there \file{code/fourier/check_records.py} rechecks all 90 stored hashes (sources, centers and the Stage~E records read by Stage~S) in a few seconds; run directly in \file{code/}, that program finds no records and checks nothing. The script then runs the link of Lemma~\ref{lem:link} (\file{code/fourier/link_cell.py}, standard library only), and reruns Stage~E and Stage~S for chosen $N$. For Theorem~\ref{thm:alln} it also checks the 15 hashes stored in \file{data/fourier-existence-alln.json} (its nine sources, among them \file{code/fourier/alln.py} and \file{code/fourier/branch.py}, its run log \file{code/fourier/data/alln/pieces.jsonl}, which holds the exact inputs of every piece, and the Stage~E records it identifies), and with the argument \texttt{alln} it re-derives in Arb, from the stored exact data, the piece order, every gluing inequality \eqref{eq:glue} and the inclusions \eqref{eq:incl} (\texttt{alln.py --collect}), and compares them with the record. Re-proving pieces from their stored inputs is done by \file{code/fourier/test_alln.py}. The script does not check the four source hashes stored in the CAPD record \file{data/cell-gks0.0275.json} (\file{code/proofs/verify.cpp}, \file{code/model/tp06_capd.hpp}, \file{setup.hpp} and \file{scales.txt}); they were compared with the copies by hand on 2026-10-02 and agree. \file{link_cell.py} checks the frame hash of that record, and the hash of the verifier binary, which is not shipped, is not checked. \file{code/plot_cardiac_rings.py}, which draws Figures~\ref{fig:cell} to~\ref{fig:branch} from stored files, belongs to this folder only, and no record hashes it. Table~\ref{tab:programs} lists the programs.
 
 \begin{table}[ht]
 \centering\small
@@ -796,22 +1975,25 @@ program & what it establishes & kind \\
 \file{code/fourier/existence.py} & Stage~E: Theorem~\ref{thm:cell}(ii) and Theorem~\ref{thm:ring}(a), (b) & P \\
 \file{code/fourier/stability.py} & Stage~S: (C0) to (C5), Theorem~\ref{thm:cell}(ii) and Theorem~\ref{thm:ring}(c) & P \\
 \file{code/fourier/alln.py} with \file{branch.py} & the pieces of Theorem~\ref{thm:alln}; with \texttt{--collect}, the gluing and the inclusions & P \\
+\file{code/fourier/branch.py} & Theorem~\ref{thm:conductance}(a): conductance pieces and adjacent inclusions & P \\
+\file{code/fourier/branch_stability.py} & Theorem~\ref{thm:conductance}(b): uniform moving-tube stability & P \\
+\file{code/fourier/hopf.py} & Theorem~\ref{thm:conductance}(c): Hopf point, amplitude pieces and bridge inclusions & P \\
 \file{code/fourier/link_cell.py} & Lemma~\ref{lem:link} & P \\
 \file{code/proofs/verify.cpp} with \file{certify.py} & Theorem~\ref{thm:cell}(i) (CAPD) & P \\
 \file{code/fourier/check_records.py}, \file{code/run_all.sh} & the stored hashes; the driver of the reruns & C \\
 \file{code/fourier/test_*.py} & tests of the code; the negative controls of Section~\ref{sec:numerics} & T, N \\
 \file{code/fourier/centre.py}, \file{code/proofs/frame.py}, \file{orbit_newton.cpp} & choose centers and frames; no proof & -- \\
 \file{code/numerics/*.py} & Section~\ref{sec:numerics} and Remark~\ref{rem:phase}; numerical & -- \\
-\file{code/plot_cardiac_rings.py} & Figures~\ref{fig:cell} to~\ref{fig:alln}; no check & -- \\
+\file{code/plot_cardiac_rings.py} & Figures~\ref{fig:cell} to~\ref{fig:branch}; provenance and layout checks, no proof & C \\
 \bottomrule
 \end{tabular}
 \caption{The programs. Kind: P, a step of a proof; C, a consistency check of the stored records; T, a test of the code, not part of a proof; N, a negative control, which must fail.}
 \label{tab:programs}
 \end{table}
 
-\paragraph{Trust base of the Fourier route.} Trusted: Arb and FLINT through python-flint 0.9.0 (FLINT 3.6.0, with the GMP and MPFR builds bundled in that pinned wheel; the wheel's SHA-256 is pinned in \file{code/fourier/arbmodel.py}, and \file{code/fourier/test_arbmodel.py} checks the installed files against the distribution's RECORD and, when the wheel file is given with \texttt{--wheel}, its SHA-256 against the pin), CPython, the programs \file{code/fourier/arbmodel.py}, the generated \file{code/fourier/tp06_18d_arb.py}, \file{fourier_eval.py}, \file{existence.py}, \file{stability.py}, the functions of \file{code/fourier/centre.py} that \file{existence.py} and \file{alln.py} call (\texttt{level\_exact}, the phase level $s/\sigma_V = 4s$ on which Lemma~\ref{lem:link} relies; \texttt{Layout}, the index layout; \texttt{load} and \texttt{text\_to\_dyadic}, which read the centers and the stored radii; and \texttt{dyadic\_to\_text}, which writes every stored exact bound), for Theorem~\ref{thm:alln} also \file{alln.py} and the functions of \file{branch.py} it calls (the assembly of the bounds, the Hessian cover with its second-order dual numbers, the distance of centers and the check of the piece order), and the reference translation \file{code/model/tp06_18d.py} with the scales. The rest of \file{centre.py} (the Newton solver and its floating-point helpers) only proposes centers. \file{link_cell.py} parses the center file and the Stage~E record with its own parser, so Lemma~\ref{lem:link} also relies on that parser agreeing with \texttt{load}. The generator rewrites every decimal literal of the reference translation as an exact rational by Python's tokenizer, and a freshness check compares the generated file byte for byte. numpy and LAPACK only propose centers, eigenvectors and weights. The tests in \file{code/fourier/test_arbmodel.py} compare the Arb field with a 50-digit mpmath evaluation of the reference translation at 104 real points (40 random states and the 64 points of the $N = 1$ orbit in \file{code/fourier/data/orbit_N1_M64.json}) and at 8 complex points near the orbit, and with the double and interval values of the CAPD field, printed by a binary built from \file{code/numerics/compare_rhs.cpp}, at the 104 real points. The other tests check the strip cover, the aliasing bound and the centered form against closed forms, and contain the negative controls of Section~\ref{sec:numerics}, independent floating-point estimates that every certified bound must dominate, and perturbation controls within the uniqueness ball.
+\paragraph{Trust base of the Fourier route.} Trusted: Arb and FLINT through python-flint 0.9.0 (FLINT 3.6.0, with the GMP and MPFR builds bundled in that pinned wheel; the wheel's SHA-256 is pinned in \file{code/fourier/arbmodel.py}, and \file{code/fourier/test_arbmodel.py} checks the installed files against the distribution's RECORD and, when the wheel file is given with \texttt{--wheel}, its SHA-256 against the pin), CPython, the programs \file{code/fourier/arbmodel.py}, the generated \file{code/fourier/tp06_18d_arb.py}, \file{fourier_eval.py}, \file{existence.py}, \file{stability.py}, the functions of \file{code/fourier/centre.py} that \file{existence.py} and \file{alln.py} call (\texttt{level\_exact}, the phase level $s/\sigma_V = 4s$ on which Lemma~\ref{lem:link} relies; \texttt{Layout}, the index layout; \texttt{load} and \texttt{text\_to\_dyadic}, which read the centers and the stored radii; and \texttt{dyadic\_to\_text}, which writes every stored exact bound), for Theorem~\ref{thm:alln} also \file{alln.py} and the functions of \file{branch.py} it calls (the assembly of the bounds, the Hessian cover with its second-order dual numbers, the distance of centers and the check of the piece order), and the reference translation \file{code/model/tp06_18d.py} with the scales. For the conductance extension of Theorem~\ref{thm:conductance}, the trust base additionally includes the rigorous routines and exact record checks of the current \file{code/fourier/branch.py}, \file{code/fourier/branch_stability.py} and \file{code/fourier/hopf.py}: conductance and amplitude bound assembly, guarded analytic covers, moving-tube identification, the uniform spectral certificate, equilibrium and eigenpair contraction, eigenvalue separation, the Lyapunov-coefficient enclosure, final source and input binding, and gluing and endpoint identification. The rigorous strip and DFT evaluations exercised by \file{code/fourier/bench_strip.py} rely on the same trusted \file{arbmodel.py} and \file{fourier_eval.py} routines; its center refinement and singularity scan are numerical proposals, and the benchmark itself certifies no orbit and is not consumed by the theorem certificates. The rest of \file{centre.py} (the Newton solver and its floating-point helpers) only proposes centers. \file{link_cell.py} parses the center file and the Stage~E record with its own parser, so Lemma~\ref{lem:link} also relies on that parser agreeing with \texttt{load}. The generator rewrites every decimal literal of the reference translation as an exact rational by Python's tokenizer, and a freshness check compares the generated file byte for byte. numpy and LAPACK only propose centers, eigenvectors and weights. The tests in \file{code/fourier/test_arbmodel.py} compare the Arb field with a 50-digit mpmath evaluation of the reference translation at 104 real points (40 random states and the 64 points of the $N = 1$ orbit in \file{code/fourier/data/orbit_N1_M64.json}) and at 8 complex points near the orbit, and with the double and interval values of the CAPD field, printed by a binary built from \file{code/numerics/compare_rhs.cpp}, at the 104 real points. The other tests check the strip cover, the aliasing bound and the centered form against closed forms, and contain the negative controls of Section~\ref{sec:numerics}, independent floating-point estimates that every certified bound must dominate, and perturbation controls within the uniqueness ball.
 
-\paragraph{Trust base of the CAPD route.} Trusted: CAPD 6.1.0 at commit \texttt{03dc5628203334b214bb7d9fd63788a175521005} with the local patch above, filib (CAPD's default interval type), MPFR and GMP (MPFR 4.2.1 and GMP 6.3.0 in the build of the rerun of 2026-10-02), g++ 13.3 with \texttt{-frounding-math}, the processor's directed rounding, and \file{code/proofs/verify.cpp} with \file{code/model/tp06_capd.hpp} and \file{setup.hpp}, in which every non-integer decimal enters as an interval enclosing that exact decimal. The driver \file{code/proofs/certify.py} checks that the frame file's header names the intended claim and records the hashes of the frame, the binary and the sources; the stored record also carries two fields added by hand (\texttt{sources\_match\_commit} and a note) that are not part of the certificate. Both routes link GMP and MPFR: CAPD's multiprecision intervals are built on MPFR, and the pinned python-flint wheel bundles GMP and MPFR with FLINT, so an error in these libraries could affect both proofs of Theorem~\ref{thm:cell}.
+\paragraph{Trust base of the CAPD route.} Trusted: CAPD 6.1.0 at commit \texttt{03dc5628203334b214bb7\allowbreak d9fd63788a175521005} with the local patch above, filib (CAPD's default interval type), MPFR and GMP (MPFR 4.2.1 and GMP 6.3.0 in the build of the rerun of 2026-10-02), g++ 13.3 with \texttt{-frounding-math}, the processor's directed rounding, and \file{code/proofs/verify.cpp} with \file{code/model/tp06_capd.hpp} and \file{setup.hpp}, in which every non-integer decimal enters as an interval enclosing that exact decimal. The driver \file{code/proofs/certify.py} checks that the frame file's header names the intended claim and records the hashes of the frame, the binary and the sources; the stored record also carries two fields added by hand (\texttt{sources\_match\_commit} and a note) that are not part of the certificate. Both routes link GMP and MPFR: CAPD's multiprecision intervals are built on MPFR, and the pinned python-flint wheel bundles GMP and MPFR with FLINT, so an error in these libraries could affect both proofs of Theorem~\ref{thm:cell}.
 
 \paragraph{What is certified, and reruns.} The theorems rest on the stored records in \file{data/}: the Stage~S records hash the stored Stage~E records they read, so the stored $r_{\mathrm{ex}}$ is the one consumed. On 2026-10-01 the existence and stability programs for $N = 1$ and $N = 8$ were rerun from the copies in \file{code/} with python-flint 0.9.0: the period and frequency enclosures, $r_{\mathrm{un}}$ and every stability bound of Table~\ref{tab:stability} agree exactly with the records, while the binary values of $Y_0$, $Z_1$, $Z_2$ and $r_{\mathrm{ex}}$ differ from the records in late digits ($Y_0$ beyond its 25 printed digits, the others from the 14th or 15th significant digit on). On 2026-10-02 the rest was rerun from the same copies. The CAPD certificate, with the verifier rebuilt against CAPD 6.1.0 with the patch, printed \texttt{VERIFIED}, and all 28 keys of the verifier's output, the period enclosure and the bounds $q$ and $r_0$ among them, equal the stored ones; only the hash of the rebuilt binary and the run time ($940$~s against $732$~s, on a shared machine) differ. Stage~E and Stage~S for $N = 16$, $32$, $64$ (\texttt{sh code/run\_all.sh 16,32,64}) reproduced the period and frequency enclosures, $r_{\mathrm{un}}$, $\delta$, $T_{\mathrm{lo}}$, both multiplier bounds and the eigenvalue count exactly; $Y_0$ differs beyond its 25 printed digits and $Z_1$, $Z_2$ and $r_{\mathrm{ex}}$ from the 14th to the 16th significant digit, and $\theta_T$ and $\alpha^{\mathrm{up}}$, which use $r_{\mathrm{ex}}$, differ only beyond their 25 printed digits, so Tables~\ref{tab:existence} and~\ref{tab:stability} are unaffected. The collection step (\texttt{sh code/run\_all.sh alln}) reproduced the piece table, the gluing and the inclusions of the record exactly, and \file{code/fourier/test_alln.py} passed all 13 of its tests, re-proving bit for bit four pieces of Theorem~\ref{thm:alln} (those containing $\varepsilon = 0$ and $1/4096$, $1/1024$, $1/256$ and $1/64$); the other 69 pieces were not re-proved from these copies. Later the same day the files of this paper's companion were staged afresh, \file{code/requirements.txt} was installed into a new Python 3.11 environment, and \texttt{sh code/run\_all.sh 1} was run from that copy: all 90 and all 15 stored hashes matched, the link passed with its negative control, and Stage~E and Stage~S for $N = 1$ reproduced every value the script compares (the period and frequency enclosures, $r_{\mathrm{un}}$, $\delta$, $T_{\mathrm{lo}}$, both multiplier bounds and the eigenvalue count) exactly. The rerun records are not kept. All these reruns set the number of BLAS threads to one (\file{run_all.sh} exports the thread variables), while the stored existence records do not record their thread settings; the untrusted floating-point inverse $A_{\mathrm{fin}}$ of \file{existence.py} may depend on them, which is a possible cause of the late-digit differences; it was not investigated. Any exact $A_{\mathrm{fin}}$ is admissible, and only the size of the bounds depends on it. \file{alln.py} sets the three thread variables to one unless the environment already sets them.
 
@@ -819,26 +2001,26 @@ The run times quoted are those of the records: about two minutes for each existe
 
 \section{Limitations and what has been checked}\label{sec:limits}
 
-\paragraph{What is not proved.} The theorems are about one modified cell model at one parameter value, $G_{Ks} = 0.0275$, and about rings with one coupling law: existence, local uniqueness and the minimal period for every $N \ge 8$ and for the cable \eqref{eq:cable} on a ring of unit length (Theorem~\ref{thm:alln}), and stability only for $N = 8, 16, 32, 64$ (Theorem~\ref{thm:ring}). Nothing is claimed for $N < 8$, for the stability of the waves with other $N$ or of the cable wave, for stability uniformly in $N$, for a rate of convergence as $N \to \infty$, for the published 19-state TP06 cell, for action potentials or reentry, or for tissue in two or three dimensions. For $N \ge 8$ other than $8, 16, 32, 64$ the period is enclosed only to about $1.2 \times 10^{-5}$~ms. The orbits are small depolarized oscillations (Section~\ref{sec:numerics}).
+\paragraph{What is not proved.} Theorems~\ref{thm:cell}, \ref{thm:ring} and~\ref{thm:alln} are about one modified cell model at one parameter value, $G_{Ks} = 0.0275$, and about rings with one coupling law: existence, local uniqueness and the minimal period for every $N \ge 8$ and for the cable \eqref{eq:cable} on a ring of unit length (Theorem~\ref{thm:alln}), and stability only for $N = 8, 16, 32, 64$ (Theorem~\ref{thm:ring}). Nothing is claimed for $N < 8$, for the stability of the waves with other $N$ or of the cable wave, for stability uniformly in $N$, for a rate of convergence as $N \to \infty$, for the published 19-state TP06 cell, for action potentials or reentry, or for tissue in two or three dimensions. For $N \ge 8$ other than $8, 16, 32, 64$ the period is enclosed only to about $1.2 \times 10^{-5}$~ms. The orbits are small depolarized oscillations (Section~\ref{sec:numerics}).
 
-That the cell orbit lies on the branch of periodic orbits born at Erhardt's first Hopf point is an inference, not a computation: no branch of periodic orbits was continued in $G_{Ks}$. Its basis is the floating-point observations of Section~\ref{sec:numerics}: the parameter is $1.46$ per cent below the Hopf point, the period, $53.59$~ms, is close to the Hopf period $52.65$~ms, and the amplitude is small. That the ring waves continue it as the coupling tends to $0$ is supported only by the weak-coupling comparison of Remark~\ref{rem:phase}. Theorem~\ref{thm:alln} connects the ring waves with each other and with the cable wave through $\varepsilon$, at the fixed value $G_{Ks} = 0.0275$; it says nothing about a continuation in $G_{Ks}$.
+The released fixed-conductance results inferred the Hopf connection from the numerical observations of Section~\ref{sec:numerics}. Theorem~\ref{thm:conductance} supplies a rigorous single-cell connection using the current equilibrium, amplitude, zero-amplitude identity and fresh bridge certificates. Uniform stability is supplied only on $J$. The fresh bridge proof at $0.02778$ is existence-only; its stability follows through the separately admitted uniform branch identity, without inheriting an old pointwise success. Neither local Hopf stability nor isolated point stability establishes attraction throughout the rest of the amplitude bridge. The conductance projection may turn, and global uniqueness of a periodic orbit for each conductance is not proved.
 
-A certified branch of these orbits on an interval of $G_{Ks}$ toward the Hopf point is future work; no result of it is used or claimed here.
+That the ring waves continue the cell as coupling tends to zero remains supported only by Remark~\ref{rem:phase}. Theorem~\ref{thm:alln} connects the ring waves and the cable through $1/N^2$ at fixed $G_{Ks}=0.0275$. The new single-cell conductance argument supplies no additional ring or cable stability, action-potential or clinical conclusion.
 
 Theorem~\ref{thm:cell}(i) assumes that the CAPD field (\file{code/model/tp06_capd.hpp}) evaluates Erhardt's \texttt{fun\_eval} with exact decimals, and (ii), Theorem~\ref{thm:ring} and Theorem~\ref{thm:alln} assume the same of the Arb field (\file{code/fourier/tp06_18d_arb.py}); Lemma~\ref{lem:link} uses both assumptions together. The tests compare the two programs' enclosures at 104 points, which is evidence, not a proof that they define the same function.
 
-\paragraph{Sources of the proofs.} The three facts of Section~\ref{sec:hill} are proved in Appendix~\ref{app:resolvent} from elementary facts (the Neumann series, the Hahn--Banach theorem, the Cauchy--Goursat and identity theorems, Jordan decomposition in finite dimension); Kato's book \cite{kato1976} is cited as the standard reference only; it was not checked against a copy, and no step depends on it. None of the background sources is a source of a proof step; only Erhardt's model source \cite{erhardtcode} and \cite{erhardt2025} (read in full) enter the setting. Read in part: Gameiro and Lessard \cite{gl2017} (Sections 1 and 7 and the theorem statements of Section 8 of the authors' version), Bayer and Leine \cite{bl2026} (Sections 1 to 4, 6 and 7 of arXiv:2503.21318v2), Ermentrout \cite{ermentrout1992} (pp.~1674--1677), Izhikevich \cite{izh2007} (Sect.~10.2.3, in a 2005 draft), Johnson and Zumbrun \cite{jz2012} (first page), Czechowski and Zgliczy\'nski \cite{cz2016} (Theorems 1.1 to 1.3). Known from abstracts: van den Berg, Lessard and Mischaikow \cite{vblm2010}, Paullet and Ermentrout \cite{pe1994}, Church and Lessard \cite{cl2022}, Arioli and Koch \cite{ak2020}, Kapela and Zgliczy\'nski \cite{kz2003}, Kuehn and Queirolo \cite{kq2022}, ten Tusscher and Panfilov \cite{tp2006}, Church et al.\ \cite{cdhlv2026}, Castelli and Lessard \cite{cl2013}, Rucklidge and Silber \cite{rs1998}, de Wolff \cite{dewolff2023}, the papers of Erhardt and Solem \cite{es2021,es2022} and of K\"ugler et al.\ \cite{keb2017,keb2018}. Known from its title and Czechowski and Zgliczy\'nski's account: Arioli and Koch \cite{ak2015}. Known from metadata or a table of contents: Golubitsky, Stewart and Schaeffer \cite{gss1988} (table of contents), Golubitsky and Stewart \cite{gs1985}, Figueras et al.\ \cite{fgld2017}, Courtemanche et al.\ \cite{cgk1993}, Pecora and Carroll \cite{pc1998}, Ashwin and Swift \cite{as1992}, Hoppensteadt and Izhikevich \cite{hi1997}. Known from excerpts of its abstract: Di Marco et al.\ \cite{dmfgkp2016}. Not checked against a copy: Kato \cite{kato1976}. Cited as the software used, whose correctness is part of the trust base of Section~\ref{sec:reproduce}, with no reading of the papers recorded: Johansson \cite{johansson2017} and Kapela et al.\ \cite{capd2021}. The statements about earlier work in Section~\ref{sec:intro} are limited accordingly. The project's development records, which are not part of the companion, hold a note on each reading.
+\paragraph{Sources of the proofs.} The three facts of Section~\ref{sec:hill} are proved in Appendix~\ref{app:resolvent} from elementary facts (the Neumann series, the Hahn--Banach theorem, the Cauchy--Goursat and identity theorems, Jordan decomposition in finite dimension); Kato's book \cite{kato1976} is cited as the standard reference only; it was not checked against a copy, and no step depends on it. For the fixed-conductance results, the background sources supply context and only Erhardt's model source \cite{erhardtcode} and \cite{erhardt2025} (read in full) enter the setting. For the conductance extension, the established continuation/desingularization methods are credited to~\cite{vbq2021,vblq2021}, and the local qualitative Hopf implication uses~\cite{kuznetsov2006}. The entire published Hopf article~\cite{vblq2021}, pp.~573--607, and the entire 46-page March 22, 2019 author preprint of~\cite{vbq2021} were read; the final typeset continuation article was not read in full. Scholarpedia's indexed primary text identifying revision 90964 supplied the definition, multidimensional hypotheses and coefficient convention; direct revision retrieval failed. These readings did not rerun the authors' MATLAB proofs. Read in part: Gameiro and Lessard \cite{gl2017} (Sections 1 and 7 and the theorem statements of Section 8 of the authors' version), Bayer and Leine \cite{bl2026} (Sections 1 to 4, 6 and 7 of arXiv:2503.21318v2), Ermentrout \cite{ermentrout1992} (pp.~1674--1677), Izhikevich \cite{izh2007} (Sect.~10.2.3, in a 2005 draft), Johnson and Zumbrun \cite{jz2012} (first page), Czechowski and Zgliczy\'nski \cite{cz2016} (Theorems 1.1 to 1.3). Known from abstracts: van den Berg, Lessard and Mischaikow \cite{vblm2010}, Paullet and Ermentrout \cite{pe1994}, Church and Lessard \cite{cl2022}, Arioli and Koch \cite{ak2020}, Kapela and Zgliczy\'nski \cite{kz2003}, Kuehn and Queirolo \cite{kq2022}, ten Tusscher and Panfilov \cite{tp2006}, Church et al.\ \cite{cdhlv2026}, Castelli and Lessard \cite{cl2013}, Rucklidge and Silber \cite{rs1998}, de Wolff \cite{dewolff2023}, the papers of Erhardt and Solem \cite{es2021,es2022} and of K\"ugler et al.\ \cite{keb2017,keb2018}. Known from its title and Czechowski and Zgliczy\'nski's account: Arioli and Koch \cite{ak2015}. Known from metadata or a table of contents: Golubitsky, Stewart and Schaeffer \cite{gss1988} (table of contents), Golubitsky and Stewart \cite{gs1985}, Figueras et al.\ \cite{fgld2017}, Courtemanche et al.\ \cite{cgk1993}, Pecora and Carroll \cite{pc1998}, Ashwin and Swift \cite{as1992}, Hoppensteadt and Izhikevich \cite{hi1997}. Known from excerpts of its abstract: Di Marco et al.\ \cite{dmfgkp2016}. Not checked against a copy: Kato \cite{kato1976}. Cited as the software used, whose correctness is part of the trust base of Section~\ref{sec:reproduce}, with no reading of the papers recorded: Johansson \cite{johansson2017} and Kapela et al.\ \cite{capd2021}. The statements about earlier work in Section~\ref{sec:intro} are limited accordingly. The project's development records, which are not part of the companion, hold a note on each reading.
 
-\paragraph{The searches.} On 2026-10-01 we searched GitHub code search, a general web search, zbMATH Open (through its API), the arXiv API, PubMed and Crossref. The query families were: the name of the model file; computer-assisted, interval, rigorous or validated, combined with cardiac, ventricular, ten Tusscher, Luo--Rudy or Beeler--Reuter, and with periodic orbit or limit cycle; computer-assisted or rigorous, combined with rotating wave, ring, lattice, coupled oscillators or choreographies; rigorous Floquet and Hill methods; and studies of TP06 rings. An earlier bounded search, of 2026-09-30, is not kept with this paper. The papers citing Erhardt \cite{erhardt2025} were not checked for a continuation of the first Hopf branch. The searches did not cover traveling waves of continuum cables of detailed ionic models, so no novelty is claimed for Theorem~\ref{thm:alln}(c). The statements on earlier work in Section~\ref{sec:intro} are limited to the searches of 2026-10-01.
+\paragraph{The searches.} On 2026-10-01 we searched GitHub code search, a general web search, zbMATH Open (through its API), the arXiv API, PubMed and Crossref. The query families were: the name of the model file; computer-assisted, interval, rigorous or validated, combined with cardiac, ventricular, ten Tusscher, Luo--Rudy or Beeler--Reuter, and with periodic orbit or limit cycle; computer-assisted or rigorous, combined with rotating wave, ring, lattice, coupled oscillators or choreographies; rigorous Floquet and Hill methods; and studies of TP06 rings. An earlier bounded search, of 2026-09-30, is not kept with this paper. A dedicated forward-citation check on October 2, 2026 queried the published DOI in OpenAlex, Crossref and Semantic Scholar; all returned one indexed forward citation. The primary publisher reference list of~\cite{isa2026}, reference 46, confirms the citation. The inspected introduction, model, bifurcation section and limitations concern a different compartmental tissue/ECG model, not a TP06 validated continuation certificate; that article was not read in full. The earlier WIAS preprint identifier was checked separately and returned zero OpenAlex forward works. These are dated index results, not exhaustive Google Scholar, Scopus or Web of Science searches and not a priority conclusion. The searches did not cover traveling waves of continuum cables of detailed ionic models, so no novelty is claimed for Theorem~\ref{thm:alln}(c). The statements on earlier work in Section~\ref{sec:intro} are limited to these dated searches and access scopes.
 
 \paragraph{What has been checked.} Appendix~\ref{app:resolvent} had an adversarial reading on 2026-10-02 by a separate AI agent session within the project, covering Appendix~A and its uses in Section~\ref{sec:stability} (\file{review/appendixA-reading-2026-10-02.md}); it found no error, two gaps in how Section~\ref{sec:stability} hands its operators to the appendix (the space of Lemma~\ref{lem:homotopy}; the domains of $\hat D$ and $D_T$ and the boundedness of $\hat E$) and exposition items, all addressed in this version. This is not an outside review. The programs of Stages~E and~S (\file{code/fourier/existence.py}, \file{code/fourier/stability.py}) and the stability lemmas each had an adversarial reading by a separate AI agent session within the project, followed by a second reading of the fixes, which found nothing unsound; the Fourier evaluation modules \file{arbmodel.py} and \file{fourier\_eval.py} had such a reading, whose fixes to tests and interface were not read again; the CAPD verifier had an adversarial review within the project, which led to the patch above; and the manuscript had two such readings, whose findings are addressed in this version. The program of Theorem~\ref{thm:alln}, \file{code/fourier/alln.py}, with its tests, record and the parts of \file{branch.py} it calls, had an adversarial reading by a separate AI agent session within the project (\file{review/alln-existence-review-2026-10-02.md}); it found nothing unsound and no gap affecting the theorem, re-proved two pieces bit for bit, and reported four weak tests and four minor items, which the program's author fixed without changing any bound (\file{review/alln-existence-fixcheck-2026-10-02.md}, not an independent reading); the record keeps the status its program wrote. The whole manuscript, including Theorem~\ref{thm:alln} (Sections~\ref{sec:family} and~\ref{sec:alln}), Appendix~\ref{app:resolvent} and Remark~\ref{rem:phase}, had a third in-project reading on 2026-10-02, in five parts (the existence proofs; the stability proofs and the appendix; the printed numbers against the records; claims and sources; the CAPD argument and reproducibility), each by a separate AI agent session, with every finding checked by two further sessions (\file{review/third-reading-2026-10-02.md}). It found no gap in the proofs; its confirmed findings concerned the record of checks, the trust base, the statements of the reruns, citations and reading bases, and a few printed numbers rounded the wrong way, and they are addressed in this version. These fixes have not been read by a further reader. The reports are in \file{review/}. None of these is an outside review. Two items of the program readings remain open: a few negligible terms (for example the strip tail of $S_J$ beyond $K'$) cannot be detected by any test, and the source hashes are taken after the modules are imported, a small window.
 
 \section{Discussion}\label{sec:discussion}
 
-The method separates the dimension of the ring from the cost of the proof: existence costs the same for every $N$, and stability grows with the window $K_e \approx N/2 + 16$ that must contain the $N$ near-axis copies of the spectrum. The Hill-sector theorem turns a $18N$-dimensional Floquet problem into a question about one operator on $\ell^1(\Z; \C^{18})$, and the Riesz homotopy with the Schur-complement small gain answers it with a count, which is what a stability proof needs and an eigenpair enclosure cannot give. The margins are thin: at $N = 8$ the floating-point leading nontrivial exponent (numerical, Section~\ref{sec:numerics}) is about $-6.32 \times 10^{-6}$ per ms, against the certified $\delta = 5 \times 10^{-6}$, so the multipliers are within about $3.4 \times 10^{-4}$ of the unit circle per period; the certificate still resolves them because the window is computed at 128 bits and the near-axis columns of (SC) have ratios below $10^{-6}$. The phase reduction of Remark~\ref{rem:phase} accounts for the size of these leading exponents, but not for the rest of the spectrum. For existence the dependence on $N$ is removed altogether: since the damping is an entire function of $\varepsilon = 1/N^2$, all rings with $N \ge 8$ and the cable are one family, and 73 pieces in $\varepsilon$ prove all of them at a cost of under an hour of computing time (Theorem~\ref{thm:alln}). Stability does not yet follow this route: Stage~S certifies the spectrum of one Hill operator, and a version uniform over a piece in $\varepsilon$ has not been attempted. Natural next steps are stability uniform in $N$ and for the cable, and an interval of $G_{Ks}$; both are future work.
+The method separates the dimension of the ring from the cost of the proof: existence costs the same for every $N$, and stability grows with the window $K_e \approx N/2 + 16$ that must contain the $N$ near-axis copies of the spectrum. The Hill-sector theorem turns a $18N$-dimensional Floquet problem into a question about one operator on $\ell^1(\Z; \C^{18})$, and the Riesz homotopy with the Schur-complement small gain answers it with a count, which is what a stability proof needs and an eigenpair enclosure cannot give. The margins are thin: at $N = 8$ the floating-point leading nontrivial exponent (numerical, Section~\ref{sec:numerics}) is about $-6.32 \times 10^{-6}$ per ms, against the certified $\delta = 5 \times 10^{-6}$, so the multipliers are within about $3.4 \times 10^{-4}$ of the unit circle per period; the certificate still resolves them because the window is computed at 128 bits and the near-axis columns of (SC) have ratios below $10^{-6}$. The phase reduction of Remark~\ref{rem:phase} accounts for the size of these leading exponents, but not for the rest of the spectrum. For existence the dependence on $N$ is removed altogether: since the damping is an entire function of $\varepsilon = 1/N^2$, all rings with $N \ge 8$ and the cable are one family, and 73 pieces in $\varepsilon$ prove all of them at a cost of under an hour of computing time (Theorem~\ref{thm:alln}). Stability does not yet follow this route: Stage~S certifies the spectrum of one Hill operator, and a version uniform over a piece in $\varepsilon$ has not been attempted. Natural next steps remain stability uniform in $N$ and for the cable. The conductance extension of Theorem~\ref{thm:conductance} addresses a separate single-cell parameter interval and Hopf connection; attraction across the entire amplitude bridge would require an additional argument.
 
 \medskip
-{\raggedright\noindent\textbf{Data availability.} The programs of this paper and their output are in its folder: the programs in \texttt{code/} (with \texttt{code/requirements.txt} and \texttt{code/run\_all.sh}, which rechecks the stored hashes and reruns the proofs), the records on which the theorems rest in \texttt{data/}, and the project's readings of the programs and the manuscript in \texttt{review/}. These files are available in the companion repository, \url{https://github.com/ChaseHendrick/cardiac-rings}; a release of it is to be archived on Zenodo with this paper.\par}
+{\raggedright\noindent\textbf{Data availability.} The programs of this paper and their output are in its folder: the programs in \texttt{code/} (with \texttt{code/requirements.txt} and \texttt{code/run\_all.sh}, which rechecks the stored hashes and reruns the proofs), the records on which the theorems rest in \texttt{data/}, and the project's readings of the programs and the manuscript in \texttt{review/}. These files are available in the companion repository, \url{https://github.com/ChaseHendrick/cardiac-rings}; companion releases are archived as preprints on Zenodo with the manuscript.\par}
 
 \noindent\textbf{Funding.} This research received no external funding.
 
@@ -1006,7 +2188,7 @@ By Lemma~\ref{lem:A-res}(e), every $\mu \in \Gamma$ lies in $\rho(H(s))$ and $R_
 
 \bibitem{fgld2017} J.-L. Figueras, M. Gameiro, J.-P. Lessard and R. de la Llave, A framework for the numerical computation and a posteriori verification of invariant objects of evolution equations, \emph{SIAM J. Appl. Dyn. Syst.} \textbf{16} (2017) 1070--1088; doi:10.1137/16M1073777.
 
-\bibitem{gl2017} M. Gameiro and J.-P. Lessard, A posteriori verification of invariant objects of evolution equations: periodic orbits in the Kuramoto--Sivashinsky PDE, \emph{SIAM J. Appl. Dyn. Syst.} \textbf{16} (2017) 687--728; doi:10.1137/16M1073789. Sections and the quoted passage are cited from the authors' version posted on J.-P. Lessard's web page (file KS\_v10.pdf); the journal version was not read.
+\bibitem{gl2017} M. Gameiro and J.-P. Lessard, A posteriori verification of invariant objects of evolution equations: periodic orbits in the Kuramoto--Sivashinsky PDE, \emph{SIAM J. Appl. Dyn. Syst.} \textbf{16} (2017) 687--728; doi:10.1137/16M1073789. Author version: KS\_v10.pdf, posted on J.-P. Lessard's web page.
 
 \bibitem{gs1985} M. Golubitsky and I. Stewart, Hopf bifurcation in the presence of symmetry, \emph{Arch. Rational Mech. Anal.} \textbf{87} (1985) 107--165; doi:10.1007/BF00280698.
 
@@ -1041,6 +2223,14 @@ By Lemma~\ref{lem:A-res}(e), every $\mu \in \Gamma$ lies in $\rho(H(s))$ and $R_
 \bibitem{tp2006} K. H. W. J. ten Tusscher and A. V. Panfilov, Alternans and spiral breakup in a human ventricular tissue model, \emph{Am. J. Physiol. Heart Circ. Physiol.} \textbf{291} (2006) H1088--H1100; doi:10.1152/ajpheart.00109.2006.
 
 \bibitem{vblm2010} J. B. van den Berg, J.-P. Lessard and K. Mischaikow, Global smooth solution curves using rigorous branch following, \emph{Math. Comp.} \textbf{79} (2010) 1565--1584; doi:10.1090/S0025-5718-10-02325-2.
+
+\bibitem{vbq2021} J. B. van den Berg and E. Queirolo, A general framework for validated continuation of periodic orbits in systems of polynomial ODEs, \emph{J. Comput. Dyn.} \textbf{8} (2021) 59--97; doi:10.3934/jcd.2021004. Author preprint (March 22, 2019): \url{https://www.math.vu.nl/~janbouwe/code/continuation/continuation.pdf}.
+
+\bibitem{vblq2021} J. B. van den Berg, J.-P. Lessard and E. Queirolo, Rigorous verification of Hopf bifurcations via desingularization and continuation, \emph{SIAM J. Appl. Dyn. Syst.} \textbf{20} (2021) 573--607; doi:10.1137/20M1343464.
+
+\bibitem{kuznetsov2006} Y. A. Kuznetsov, Andronov-Hopf bifurcation, \emph{Scholarpedia} \textbf{1}(10) (2006) 1858; doi:10.4249/scholarpedia.1858, revision 90964; \url{https://www.scholarpedia.org/article/Andronov-Hopf_bifurcation}.
+
+\bibitem{isa2026} M. A. Islam, R. Sultana and P. Ahmed, A nonlinear mathematical framework for cardiac tissue disease progression with ECG signal dynamics, bifurcation theory, sensitivity analysis, and optimal control, \emph{Journal of Mathematics} (2026) article 1998626; doi:10.1155/jom/1998626.
 
 \end{thebibliography}
 

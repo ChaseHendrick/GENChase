@@ -1,0 +1,36 @@
+{
+  "status": "final computer-assisted Theorem D mathematical scope and aligned abstract claims admitted; publication gates remain separate",
+  "prior_accepted_manuscript_sha256": "aa3138b38ced6e1a121b0d386a4b6d706626b2915ccab79698e18c0b68efe5e7",
+  "manuscript_sha256": "b50a19acb00c7512cdce32e70419a3308497dbfbb0a94be9d1886e4ea0144cd9",
+  "README_sha256": "2fb7a6fd138c0b3eaf6a1ed4fc10a62ac85c6ee7b25f0afa2448629c9f246ad6",
+  "theorem_D_conclusions_unchanged_from_previously_reviewed_HEAD": true,
+  "theorem_D_conclusions_sha256": "439fa5dea63e50775692a425e01649800135de5199538a01219b5ca36dbdb8ae",
+  "verified_scientific_chain_receipt": "review-current-scientific-chain-refresh-2026-10-02.json",
+  "verified_scientific_chain_receipt_sha256": "526372dff0a7fe434c78d1fc6f8981c66cb1d9ce62303acc094c9bf6c87ec4ec",
+  "scope": [
+    "712 conductance pieces and711 inclusions forming one locally unique phase-fixed minimal-period cell branch",
+    "63 source-bound uniform stability units on lower J only, common gap3e-5 and outward multiplier bound0.998413816",
+    "68 amplitude pieces and67 inclusions, true zero-amplitude Hopf identity and existence-only fresh bridge",
+    "qualitative local small-amplitude Hopf attraction with no explicit neighborhood size"
+  ],
+  "actual_original_controls": {
+    "piece": 7,
+    "group_functions": 13,
+    "extra_half": 1,
+    "Hopf": 117
+  },
+  "status_edits_reviewed": [
+    "discharged numerical hypotheses replacing conditional admission wording",
+    "aligned TeX and README abstract conductance/Hopf claims",
+    "record and numerical-control evidence without outside-review claims",
+    "preserved fixed-conductance all-N and cable limits"
+  ],
+  "no_global_monotonicity_or_uniform_bridge_stability_claim": true,
+  "no_manuscript_edit_by_reviewer": true,
+  "publication_not_yet_admitted": [
+    "actual successful final staged alln/continuation reproduction",
+    "corrected-source PDF build and all-page layout review",
+    "exact pinned per-file provenance registry and successful final staging",
+    "actual release/archive inspection"
+  ]
+}

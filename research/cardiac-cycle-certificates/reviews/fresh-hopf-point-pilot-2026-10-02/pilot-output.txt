@@ -1,0 +1,13 @@
+{"data": "/var/folders/_t/_b3llbg50ps6vfrd6hmy426c0000gn/T/cardiac-hopf-fresh-point-4fbochif", "source": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c"}
+    centre at g = 0.02778: float residual 1.3e-15, Arb residual history ['1.1e-15', '3.0e-29', '1.7e-41']
+  Hessian cover over g in [0.02778, 0.02778], 1 centres: 1504 boxes, 9.9 s; max_k sum_jl MH = 2.832e+01
+piece [0.02778, 0.02778] (g_c = 1389/50000): K = 32, K' = 80, M = 192
+  [strips: 6.4 s]
+  [dft: 1.0 s]
+  [A_fin, I - A_fin J_fin, A_fin D_fin: 33.3 s]
+  [Z1 finite x tail: 19.4 s]
+  [tail: 6.3 s]
+  [Y0 parts: 0.2 s]
+  [0.02778, 0.02778]: Y0 = 5.5800e-37, Z1 = 1.0790e-01, Z2 = 1.5490e+05, r_* = 9.095e-13, P = 1.000
+G_Ks point g = 0.02778: existence True, Stage S not run (82.0 s)
+{"status": "passed", "fresh_point": true, "stability_reproved": false, "negative_controls": 7, "data": "/var/folders/_t/_b3llbg50ps6vfrd6hmy426c0000gn/T/cardiac-hopf-fresh-point-4fbochif", "source": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c"}

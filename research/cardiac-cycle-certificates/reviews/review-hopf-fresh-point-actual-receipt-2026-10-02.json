@@ -1,0 +1,21 @@
+{
+  "status": "actual fresh isolated point receipt admitted for existence only; bridge membership pending",
+  "g": "0.02778",
+  "code_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "negative_controls": 9,
+  "controls": [
+    "('code_sha256',)",
+    "('sources_sha256',)",
+    "('MUTATED',)",
+    "('effective_settings', 'M')",
+    "('rec', 'Kprime')",
+    "('hessian_record', 'rho2')",
+    "('rec', 'p_at_r_existence', 'hex')",
+    "('rec', 'contraction_at_r_uniqueness', 'hex')",
+    "('rec', 'a1V_margin', 'hex')"
+  ],
+  "point_log_sha256": "7939a1ad9fff18d538e384408931b985bc03da4b33544374a8c08e23e58a12b7",
+  "point_centres_sha256": "3d7dd79ca900d3695d8da89b0f1ab80d7a7deda1631ba72b2be52b94bd2c9ff1",
+  "stage_S_reproved": false,
+  "amplitude_or_bridge_accepted": false
+}

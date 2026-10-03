@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "status": "visual pages 1 through 36 and all four figure pages passed for this built PDF; final post-editorial PDF remains a separate build gate",
+  "cloud_run_id": 37092891433,
+  "pdf_sha256": "ca04296c9b2f7f062d5438e239fcf77a1926b78fd0f101c18bbc43518ac6bee8",
+  "source_tex_sha256": "b50a19acb00c7512cdce32e70419a3308497dbfbb0a94be9d1886e4ea0144cd9",
+  "n_pages": 73,
+  "actual_pages_visually_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36
+  ],
+  "contact_sheets_inspected": {
+    "pages-01-06.png": "17e18db889ba31fb7f830068f7c52a7b86fa704e8bf441ba65c3c880fe752fa3",
+    "pages-07-12.png": "3ec2d9c6842b55f3d08e2093300b4740e1462d3608c2f96d066d272957880fa2",
+    "pages-13-18.png": "a27568d09894561467ad31e56f4d6fc1261307989062dd65b99cb4f86adada52",
+    "pages-19-24.png": "0d94471f4f649d7e799e59b69ee7d3fe52851310edaa44203d0043e701d1bdc4",
+    "pages-25-30.png": "09643c92aa0aca69924dea6342230663ad79ff531af0f10794a056a9def5d396",
+    "pages-31-36.png": "6e96f4025082684bdd142fc0fd7edf1a6933870cf803f36d37967735f2019f63"
+  },
+  "full_figure_pages_inspected": {
+    "7": "63851acc50820bd7965cfa422dd2b8c08741a3b771c30f6b600d58d8170390f1",
+    "9": "c5c4e349fbc9044aec82976146fe018e14e3d44a146c50cca84b24589aba33e9",
+    "13": "444b0494af4ace5f0ac852f0099f67412a5f24e088c843cfc889fae1f1b08738",
+    "24": "9f7b3b84d0d14b7d6b03f95bcc8f73e12a1e3e5c93bc2d1624c74134000cf799"
+  },
+  "grayscale_figure_pages_inspected": {
+    "7": "58f2d983194b4b37efa8e79b8a3434fe1f15f48c771c0e79dbb5478be806a54b",
+    "9": "03efc699e1881fe162a54e313ee5409c737f8656d4c916611a6db8667d465885",
+    "13": "29959a1bf5b17da311a6af486771e64e2d0ce07eece1b64dfca51f568e8e36e0",
+    "24": "ed2ca254813a61b08c72a2b199a0fa6bc59af403e809eef35574d1b3efa66d45"
+  },
+  "layout_findings": [
+    "No observed clipped body text, equation, title, table or caption on pages 1 through 36.",
+    "Page 7 cell-orbit figure: axes and both legends clear, caption fully visible; graph distinguishes resolved centre coefficients from the coefficient bound.",
+    "Page 9 ring-wave figure: two panels and shared physical mV scale clear, both axes and caption fully visible; grayscale heatmaps retain their wave pattern.",
+    "Page 13 conductance/Hopf figure: all four panels, both legend columns and caption fit; 712 branch pieces, 68 amplitude pieces and 63 uniform units are labelled distinctly. The fresh common orbit and certified Hopf point are distinct from the printed numerical Hopf value. The gray interval explicitly has no supplied quantitative uniform bound.",
+    "Page 24 historical all-N figure: all three panels, secondary N axes, legend and full caption fit; existence and uniqueness radii and gluing values remain distinguishable in grayscale.",
+    "Dense proof paragraphs and equations on pages 14 through 36 retain normal margins and readable separation."
+  ],
+  "nonblocking_readability_limit": "Thin enclosure bands and very small Hopf intervals are intentionally below or near plotting resolution; captions explicitly direct numerical claims to exact records. Main plot labels are approximately 7.4 to 10.2 PDF points; smaller 5.2 to 6.0 point text consists of mathematical subscripts and superscripts.",
+  "mechanical_checks": {
+    "tool": "PyMuPDF 1.26.7",
+    "word_boxes_checked_with_infinite_clip": true,
+    "out_of_page_word_boxes": [],
+    "font_resources_checked": 45,
+    "all_used_fonts_embedded": true,
+    "font_types": [
+      "Type0",
+      "Type1"
+    ],
+    "type3_fonts": 0,
+    "grayscale_render_scale": 1.75
+  },
+  "scope_limits": [
+    "Visual/layout audit only, not a new mathematical proof admission.",
+    "Pages 37 through 73 are assigned to another independent visual audit.",
+    "This receipt pins source b50a and PDF ca0429. Root is preparing later bibliography-comment and data-availability edits, so it does not certify the final post-editorial PDF or public archive."
+  ],
+  "main_tex_or_figure_files_changed": false
+}

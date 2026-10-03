@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "research/cardiac-cycle-certificates/fourier/hopf.py",
+    "--theorem-a"
+  ],
+  "pid": 52025,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 130.37895441707224,
+  "peak_aggregate_rss_mib": 96.1875,
+  "log": "/private/tmp/cardiac-theoremA-point-gate-2026-10-02.log"
+}

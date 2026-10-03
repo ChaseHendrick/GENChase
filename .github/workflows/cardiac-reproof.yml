@@ -1,0 +1,118 @@
+name: cardiac branch reproof
+
+# A push runs this expensive calculation only when its commit message opts in.
+# Manual dispatch is also available once this workflow is on the default branch.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cardiac-reproof.yml'
+      - '.github/scripts/cardiac-branch-shards.py'
+      - 'research/cardiac-cycle-certificates/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardiac-branch-reproof-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  branch-shard:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[cardiac reproof]')
+    name: branch groups (${{ matrix.shard }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install and check the pinned Linux arithmetic runtime
+        timeout-minutes: 5
+        run: |
+          set -o pipefail
+          mkdir -p work/wheels
+          git rev-parse HEAD > work/runtime.txt
+          timeout 180 python -m pip download --only-binary=:all: --no-deps python-flint==0.9.0 -d work/wheels
+          echo '376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76  work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl' | sha256sum -c -
+          timeout 180 python -m pip install work/wheels/*.whl numpy==2.4.6 scipy==1.17.1 mpmath==1.3.0
+          python -m pip freeze >> work/runtime.txt
+          uname -a >> work/runtime.txt
+          nproc >> work/runtime.txt
+          timeout 30 python research/cardiac-cycle-certificates/fourier/test_arbmodel.py -k test_flint_pinned --wheel work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl 2>&1 | tee work/wheel-check.log
+          # These controls use the native arithmetic/model sources. The separate
+          # CAPD-binary comparison is not run or claimed on this Arb-only runner.
+          for control in test_generated_file test_decimal_and_scale_balls test_scales_and_params_match_capd test_a_ test_c_ test_d_ test_ring_ test_damping_symbol test_domain_and_parameter_interval; do
+            timeout 60 python research/cardiac-cycle-certificates/fourier/test_arbmodel.py -k "$control" 2>&1 | tee -a work/model-controls.log
+          done
+      - name: Check shard bookkeeping controls
+        run: timeout 60 python .github/scripts/cardiac-branch-shards.py self-test
+      - name: Reprove assigned complete branch groups
+        timeout-minutes: 41
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 2450s python .github/scripts/cardiac-branch-shards.py shard --index '${{ matrix.shard }}' --count 6 --workers 3 --budget 2400 --out work/shard 2>&1 | tee work/shard.log
+      - name: Preserve source bound shard evidence and runtime details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-branch-shard-${{ matrix.shard }}
+          path: |
+            work/shard/
+            work/shard.log
+            work/runtime.txt
+            work/wheel-check.log
+            work/model-controls.log
+          if-no-files-found: error
+          retention-days: 30
+
+  merge-branch:
+    needs: branch-shard
+    name: validate all 712 pieces and 711 gluings
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the same pinned arithmetic runtime
+        timeout-minutes: 5
+        run: |
+          mkdir -p work/wheels
+          timeout 180 python -m pip download --only-binary=:all: --no-deps python-flint==0.9.0 -d work/wheels
+          echo '376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76  work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl' | sha256sum -c -
+          timeout 180 python -m pip install work/wheels/*.whl numpy==2.4.6 scipy==1.17.1 mpmath==1.3.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cardiac-branch-shard-*
+          path: work/shards
+      - name: Validate exact coverage, all current sources and all gluings
+        timeout-minutes: 8
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 420s python .github/scripts/cardiac-branch-shards.py merge --shards work/shards --out work/merged/run_K12_final.jsonl 2>&1 | tee work/merge.log
+      - name: Preserve merged proof evidence without promoting publication status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-branch-merged
+          path: |
+            work/merged/
+            work/merge.log
+          if-no-files-found: error
+          retention-days: 30

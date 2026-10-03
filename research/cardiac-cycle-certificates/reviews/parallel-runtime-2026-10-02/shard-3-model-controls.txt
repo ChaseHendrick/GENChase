@@ -1,0 +1,23 @@
+PASS test_generated_file (0.0s): fresh; reference SHA-256 pinned; 101 decimals -> _D, 164 integers -> _I, 22 exponents kept, 1843 other tokens identical
+ALL PASS in 0.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_decimal_and_scale_balls (0.0s): 83 decimal literals enclosed with radius <= 2^(2-prec)|q| at 53/128/256 bits; 42 integers and 36 scales exact
+ALL PASS in 0.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_scales_and_params_match_capd (0.0s): scale exponents and the 7 parameter decimals equal model/tp06_capd.hpp and model/setup.hpp
+ALL PASS in 0.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_a_field_contains_mpmath (0.5s): 2016 components at 104 real + 8 complex points contained; largest relative radius 1.8e-28 at 128 bits
+PASS test_a_control_float_literals (0.3s): control fails as required: 1456 of 1872 components miss with float literals
+ALL PASS in 0.7s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_c_jacobian (9.0s): 38304 derivative entries (Jacobian and df/dg_Ks) contained: complex step at 104 real points, central differences at 8 complex points; 67 structurally nonzero Jacobian entries; largest relative radius 5.9e-26
+ALL PASS in 9.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_d_last_digit_mutations (1.9s): all 279 numeric literals of field() perturbed in the last digit, one at a time: every mutant fails (a)
+PASS test_d_exponent_sign_flips (0.0s): exponent sign flips 3.1e5 -> 3.1e-5, 2.5428e4 -> 2.5428e-4, 6.948e-6 -> 6.948e6: every mutant fails (a)
+PASS test_d_jacobian_column_dropped (7.6s): each of the 18 Jacobian columns set to zero: every mutant fails (c)
+PASS test_d_dual_rules_falsified (0.1s): falsified dual rules, each must fail (c): exp (derivative times 1 + 2^-100); log (x / 2v); sqrt (x / s); Dual/Dual (quotient term dropped); scalar/Dual (sign); Dual**n (n+1); Dual*Dual (one product term)
+ALL PASS in 9.6s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_ring_coupling (0.1s): N = 3 ring field contains the mpmath reference with i_stim = Cm c (V_{k-1} - 2 V_k + V_{k+1}); N = 1 is the cell; the sign-flipped coupling fails
+PASS test_ring_symbol_consistency (0.0s): 4 (N, m) rotating modes: ring_field coupling on V equals -d_m times the mode; +d_m disjoint
+ALL PASS in 0.1s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_damping_symbol (0.0s): 987 (N, m) pairs: -d_m equals c (e^(-2 pi i m/N) - 2 + e^(2 pi i m/N)) and the eps = 1/N^2 form; eps = 0 gives D (2 pi m)^2; the eps interval [0, 1/64] encloses N = 8..199; N = 63 vs 64 differ at 63 modes
+ALL PASS in 0.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0
+PASS test_domain_and_parameter_interval (0.0s): DomainError for Na_i < 0, Ca_i = 0, V = 15 and a log argument with Re < 0; the g_Ks interval [0.0275, 0.0280] encloses its points and not g_Ks = 0.0281
+ALL PASS in 0.0s; python-flint 0.9.0, precision 128 bits, mpmath 1.3.0

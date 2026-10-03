@@ -1,0 +1,43 @@
+{
+  "checked_utc": "2026-10-03T03:31:01.654940+00:00",
+  "review_kind": "Independent byte binding of actual tracked-stage reproduction",
+  "producer_head": "c574f0b095e7dd43443167d1c612c6a8cdb32aad",
+  "producer_receipt_sha256": "ad57b238cae724d5b6c6b666052181c8b3fdf9b5e04ad1dc5e7abcd9a765798b",
+  "stage": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-final-tracked-stage-2026-10-02",
+  "verified_committed_stage_worktree_files": 84,
+  "verified_exact_provenance_grants": 14,
+  "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+  "paper_sync_sha256": "5a320f121ebb67f064525169470e40424aadeab5002c16dc94ea04adc75ec87b",
+  "actual_log_sha256": "c33def3de431e6e3db05fed643c7a15258c897db99a0db720e6f0ceacbd34e0b",
+  "actual_exit_code": 0,
+  "actual_wall_seconds": 29.636505082948133,
+  "actual_peak_rss_mib": 436.03125,
+  "paper_sync_check": {
+    "exit_code": 0,
+    "actual_output": "cardiac-rings: ready to publish as its own repository",
+    "interpretation": "Selected-file privacy and synchronization check only"
+  },
+  "admitted_scope": {
+    "historical_alln": "Stored sources/logs and every-N gluing and Stage E identifications rederived",
+    "branch": "712 pieces and 711 inclusions collected with exact matching source/input/settings",
+    "uniform_stability": "Complete 712-piece cover collected from accepted final source-bound native proof receipts",
+    "hopf": "68 amplitude pieces and 67 inclusions, zero identity and fresh existence-only bridge collected",
+    "comparison_exceptions": [
+      "runtime metadata",
+      "exact path relocation",
+      "directly validated zero-endpoint polydisc",
+      "reported display-only Y0/cap rounding after exact discriminant check"
+    ],
+    "excluded": [
+      "new full numerical reproof",
+      "new PDF build acceptance",
+      "release readiness"
+    ]
+  },
+  "result": "pass",
+  "remaining_publication_gates": [
+    "Final source-bound PDF package and complete visual inspection",
+    "Applicable release checks and deposited archive content verification"
+  ],
+  "registry_provenance_grants_exactly_match_producer_receipt": true
+}

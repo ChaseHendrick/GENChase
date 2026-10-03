@@ -1,0 +1,133 @@
+name: cardiac continuation reproof
+
+# Explicit opt-in keeps documentation pushes from restarting long proof jobs.
+on:
+  workflow_dispatch:
+    inputs:
+      proof:
+        description: Proof stage to run
+        type: choice
+        options: [both, stability, hopf]
+        default: both
+  push:
+    paths:
+      - '.github/workflows/cardiac-continuation.yml'
+      - '.github/scripts/cardiac-stability-shards.py'
+      - '.github/scripts/cardiac-hopf-shards.py'
+      - 'research/cardiac-cycle-certificates/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardiac-continuation-${{ github.ref }}-${{ inputs.proof || (contains(github.event.head_commit.message, '[cardiac stability]') && 'stability') || (contains(github.event.head_commit.message, '[cardiac hopf]') && 'hopf') || 'both' }}
+  cancel-in-progress: false
+
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  continuation-shard:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[cardiac continuation]') || contains(github.event.head_commit.message, '[cardiac stability]') || contains(github.event.head_commit.message, '[cardiac hopf]')
+    name: ${{ matrix.kind }} groups (${{ matrix.shard }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        kind: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.proof == 'stability' || contains(github.event.head_commit.message, '[cardiac stability]')) && '["stability"]' || (github.event_name == 'workflow_dispatch' && inputs.proof == 'hopf' || contains(github.event.head_commit.message, '[cardiac hopf]')) && '["hopf"]' || '["stability","hopf"]') }}
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install and check the pinned arithmetic runtime
+        timeout-minutes: 5
+        run: |
+          set -o pipefail
+          mkdir -p work/wheels
+          git rev-parse HEAD > work/runtime.txt
+          timeout 180 python -m pip download --only-binary=:all: --no-deps python-flint==0.9.0 -d work/wheels
+          echo '376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76  work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl' | sha256sum -c -
+          timeout 180 python -m pip install work/wheels/*.whl numpy==2.4.6 scipy==1.17.1 mpmath==1.3.0
+          python -m pip freeze >> work/runtime.txt
+          uname -a >> work/runtime.txt
+          python -c 'import os; print("hardware_cpu_count", os.cpu_count()); print("cpu_affinity", sorted(os.sched_getaffinity(0)))' >> work/runtime.txt
+          timeout 30 python research/cardiac-cycle-certificates/fourier/test_arbmodel.py -k test_flint_pinned --wheel work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl 2>&1 | tee work/wheel-check.log
+          # Native controls only. The separate CAPD comparison binary is unavailable.
+          for control in test_generated_file test_decimal_and_scale_balls test_scales_and_params_match_capd test_a_ test_c_ test_d_ test_ring_ test_damping_symbol test_domain_and_parameter_interval; do
+            timeout 60 python research/cardiac-cycle-certificates/fourier/test_arbmodel.py -k "$control" 2>&1 | tee -a work/model-controls.log
+          done
+      - name: Check orchestration controls
+        run: timeout 90 python '.github/scripts/cardiac-${{ matrix.kind }}-shards.py' self-test
+      - name: Reprove complete assigned groups
+        timeout-minutes: 41
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 2450s python '.github/scripts/cardiac-${{ matrix.kind }}-shards.py' shard --index '${{ matrix.shard }}' --count 6 --workers 3 --budget 2400 --out work/shard 2>&1 | tee work/shard.log
+      - name: Preserve actual proof evidence and runtime details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-${{ matrix.kind }}-shard-${{ matrix.shard }}
+          path: |
+            work/shard/
+            work/shard.log
+            work/runtime.txt
+            work/wheel-check.log
+            work/model-controls.log
+          if-no-files-found: error
+          retention-days: 30
+
+  merge-continuation:
+    needs: continuation-shard
+    if: always() && !cancelled() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[cardiac continuation]') || contains(github.event.head_commit.message, '[cardiac stability]') || contains(github.event.head_commit.message, '[cardiac hopf]'))
+    name: validate complete ${{ matrix.kind }} evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        kind: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.proof == 'stability' || contains(github.event.head_commit.message, '[cardiac stability]')) && '["stability"]' || (github.event_name == 'workflow_dispatch' && inputs.proof == 'hopf' || contains(github.event.head_commit.message, '[cardiac hopf]')) && '["hopf"]' || '["stability","hopf"]') }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the same pinned arithmetic runtime
+        timeout-minutes: 5
+        run: |
+          set -o pipefail
+          mkdir -p work/wheels
+          timeout 180 python -m pip download --only-binary=:all: --no-deps python-flint==0.9.0 -d work/wheels
+          echo '376b88cacd30612479e839ffdba887599d3f9c8c0e214852bf80bb2b194e4d76  work/wheels/python_flint-0.9.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl' | sha256sum -c -
+          timeout 180 python -m pip install work/wheels/*.whl numpy==2.4.6 scipy==1.17.1 mpmath==1.3.0
+          git rev-parse HEAD > work/runtime.txt
+          python -m pip freeze >> work/runtime.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cardiac-${{ matrix.kind }}-shard-*
+          path: work/shards
+      - name: Validate complete receipts and recompute inclusions
+        timeout-minutes: 12
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 660s python '.github/scripts/cardiac-${{ matrix.kind }}-shards.py' merge --shards work/shards --out work/merged 2>&1 | tee work/merge.log
+      - name: Preserve collected evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardiac-${{ matrix.kind }}-merged
+          path: |
+            work/merged/
+            work/merge.log
+            work/runtime.txt
+          if-no-files-found: error
+          retention-days: 30

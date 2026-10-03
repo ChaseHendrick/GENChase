@@ -1,0 +1,781 @@
+{
+  "schema": 1,
+  "status": "actual source-bound deterministic PDF passes structured all-page inspection; visual and final release gates separate",
+  "run_id": 37092891433,
+  "producer_commit": "76ceee2de38ad6485baa06c486bb9ed4c5038aaa",
+  "pdf_sha256": "ca04296c9b2f7f062d5438e239fcf77a1926b78fd0f101c18bbc43518ac6bee8",
+  "source_sha256": "b50a19acb00c7512cdce32e70419a3308497dbfbb0a94be9d1886e4ea0144cd9",
+  "figure_manifest_sha256": "72c82a3ee0c3bebf6a1a8178181d73073eacb9293c8594bd9ec96e28b469933b",
+  "bound_source_and_figure_files": [
+    "papers/cardiac-rings/paper/cardiac-rings.tex",
+    "papers/cardiac-rings/paper/figures/alln-pieces.pdf",
+    "papers/cardiac-rings/paper/figures/branch-hopf.pdf",
+    "papers/cardiac-rings/paper/figures/cell-orbit.pdf",
+    "papers/cardiac-rings/paper/figures/ring-wave.pdf",
+    "papers/cardiac-rings/paper/figures/sources.json",
+    "work/cardiac-package/cardiac-rings.pdf"
+  ],
+  "figure_input_count": 38,
+  "independent_build_PDF_copies_byte_identical": true,
+  "page_count": 73,
+  "embedded_font_xref_count": 45,
+  "all_font_streams_embedded": true,
+  "metadata": {
+    "format": "PDF 1.5",
+    "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
+    "author": "Chase Hendrick",
+    "subject": "",
+    "keywords": "",
+    "creator": "LaTeX with hyperref",
+    "producer": "pdfTeX-1.40.25",
+    "creationDate": "D:20261003032045Z",
+    "modDate": "D:20261003032045Z",
+    "trapped": "",
+    "encryption": null
+  },
+  "all_pages": [
+    {
+      "page": 1,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 462
+    },
+    {
+      "page": 2,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 697
+    },
+    {
+      "page": 3,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 675
+    },
+    {
+      "page": 4,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 476
+    },
+    {
+      "page": 5,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 533
+    },
+    {
+      "page": 6,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 492
+    },
+    {
+      "page": 7,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 378
+    },
+    {
+      "page": 8,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 590
+    },
+    {
+      "page": 9,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 238
+    },
+    {
+      "page": 10,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 639
+    },
+    {
+      "page": 11,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 583
+    },
+    {
+      "page": 12,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 632
+    },
+    {
+      "page": 13,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 304
+    },
+    {
+      "page": 14,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 602
+    },
+    {
+      "page": 15,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 590
+    },
+    {
+      "page": 16,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 618
+    },
+    {
+      "page": 17,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 541
+    },
+    {
+      "page": 18,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 774
+    },
+    {
+      "page": 19,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 692
+    },
+    {
+      "page": 20,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 721
+    },
+    {
+      "page": 21,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 679
+    },
+    {
+      "page": 22,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 760
+    },
+    {
+      "page": 23,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 676
+    },
+    {
+      "page": 24,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 442
+    },
+    {
+      "page": 25,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 583
+    },
+    {
+      "page": 26,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 751
+    },
+    {
+      "page": 27,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 534
+    },
+    {
+      "page": 28,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 652
+    },
+    {
+      "page": 29,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 683
+    },
+    {
+      "page": 30,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 532
+    },
+    {
+      "page": 31,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 692
+    },
+    {
+      "page": 32,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 720
+    },
+    {
+      "page": 33,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 438
+    },
+    {
+      "page": 34,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 481
+    },
+    {
+      "page": 35,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 464
+    },
+    {
+      "page": 36,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 461
+    },
+    {
+      "page": 37,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 491
+    },
+    {
+      "page": 38,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 426
+    },
+    {
+      "page": 39,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 413
+    },
+    {
+      "page": 40,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 399
+    },
+    {
+      "page": 41,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 495
+    },
+    {
+      "page": 42,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 300
+    },
+    {
+      "page": 43,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 472
+    },
+    {
+      "page": 44,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 536
+    },
+    {
+      "page": 45,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 551
+    },
+    {
+      "page": 46,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 486
+    },
+    {
+      "page": 47,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 518
+    },
+    {
+      "page": 48,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 363
+    },
+    {
+      "page": 49,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 496
+    },
+    {
+      "page": 50,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 403
+    },
+    {
+      "page": 51,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 402
+    },
+    {
+      "page": 52,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 375
+    },
+    {
+      "page": 53,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 433
+    },
+    {
+      "page": 54,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 491
+    },
+    {
+      "page": 55,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 451
+    },
+    {
+      "page": 56,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 623
+    },
+    {
+      "page": 57,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 642
+    },
+    {
+      "page": 58,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 673
+    },
+    {
+      "page": 59,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 662
+    },
+    {
+      "page": 60,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 641
+    },
+    {
+      "page": 61,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 461
+    },
+    {
+      "page": 62,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 665
+    },
+    {
+      "page": 63,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 635
+    },
+    {
+      "page": 64,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 673
+    },
+    {
+      "page": 65,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 683
+    },
+    {
+      "page": 66,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 702
+    },
+    {
+      "page": 67,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 574
+    },
+    {
+      "page": 68,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 697
+    },
+    {
+      "page": 69,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 652
+    },
+    {
+      "page": 70,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 720
+    },
+    {
+      "page": 71,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 404
+    },
+    {
+      "page": 72,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 423
+    },
+    {
+      "page": 73,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 259
+    }
+  ],
+  "text_outside_page_media_box": [],
+  "full_compiler_diagnostics": [
+    "Underfull \\hbox (badness 1158) in paragraph at lines 241--241",
+    "Overfull \\hbox (2.69937pt too wide) in paragraph at lines 406--407",
+    "Underfull \\hbox (badness 1163) in paragraph at lines 2183--2184",
+    "Underfull \\hbox (badness 8075) in paragraph at lines 2231--2232",
+    "Output written on cardiac-rings.pdf (73 pages, 1037070 bytes)."
+  ],
+  "no_unresolved_reference_or_citation": true,
+  "actual_guard_diagnostics_match_full_log": true,
+  "scope": "Producer commit, source, figures and figure input manifest verified. All pages scanned with INFINITE_RECT, fonts and full compiler diagnostics checked. This is not a visual page-by-page audit.",
+  "no_new_mathematical_source_edits": true,
+  "no_publication_admission": true
+}

@@ -1,0 +1,244 @@
+{
+  "scope": "Editorial inline mathematics delimiters only; no changes to scientific programs, lemmas, records or mathematical assertions. Manuscript integration still pending.",
+  "file": "papers/cardiac-rings/notes/v2-branch-methods-draft-2026-10-02.md",
+  "before_sha256": "05aa42c39b51c028bfcb47c2a3b52ad46201e731bedff43e835ab02bae1ff7ea",
+  "after_sha256": "a9935179cef7d04ae11283db75c1fc98dc07c6dc4bea0df38e6694e79157f3ee",
+  "initial_attempt": "Guard caught one nested malformed delimiter before any file was written; corrected explicit nested case on second pass.",
+  "replacements": [
+    {
+      "before": "**Lemma 7.1 $multiplicity, (N=1\\)$.**",
+      "after": "**Lemma 7.1 (multiplicity, $N=1$).**",
+      "count": 1
+    },
+    {
+      "before": "$Sigma=",
+      "after": "$\\Sigma=",
+      "count": 1
+    },
+    {
+      "before": "(X')",
+      "after": "$X'$",
+      "count": 1
+    },
+    {
+      "before": "(v)",
+      "after": "$v$",
+      "count": 1
+    },
+    {
+      "before": "((w,w')\\)",
+      "after": "$(w,w')$",
+      "count": 1
+    },
+    {
+      "before": "(Y(T)\\)",
+      "after": "$Y(T)$",
+      "count": 3
+    },
+    {
+      "before": "(AD'(0)\\)",
+      "after": "$AD'(0)$",
+      "count": 1
+    },
+    {
+      "before": "(AE(d)\\)",
+      "after": "$AE(d)$",
+      "count": 1
+    },
+    {
+      "before": "(V(d)\\)",
+      "after": "$V(d)$",
+      "count": 2
+    },
+    {
+      "before": "(I-A DF\\)",
+      "after": "$I-A DF$",
+      "count": 1
+    },
+    {
+      "before": "(K\\)",
+      "after": "$K$",
+      "count": 1
+    },
+    {
+      "before": "(f\\)",
+      "after": "$f$",
+      "count": 1
+    },
+    {
+      "before": "(Df\\)",
+      "after": "$Df$",
+      "count": 1
+    },
+    {
+      "before": "(Df\\)",
+      "after": "$Df$",
+      "count": 1
+    },
+    {
+      "before": "(im\\)",
+      "after": "$im$",
+      "count": 1
+    },
+    {
+      "before": "(P\\)",
+      "after": "$P$",
+      "count": 1
+    },
+    {
+      "before": "(A\\)",
+      "after": "$A$",
+      "count": 1
+    },
+    {
+      "before": "(k\\)",
+      "after": "$k$",
+      "count": 1
+    },
+    {
+      "before": "(L\\)",
+      "after": "$L$",
+      "count": 1
+    },
+    {
+      "before": "(i\\)",
+      "after": "$i$",
+      "count": 1
+    },
+    {
+      "before": "(i+1\\)",
+      "after": "$i+1$",
+      "count": 1
+    },
+    {
+      "before": "(i<j\\)",
+      "after": "$i<j$",
+      "count": 1
+    },
+    {
+      "before": "(i\\)",
+      "after": "$i$",
+      "count": 1
+    },
+    {
+      "before": "(i\\)",
+      "after": "$i$",
+      "count": 1
+    },
+    {
+      "before": "([0,1]\\)",
+      "after": "$[0,1]$",
+      "count": 1
+    },
+    {
+      "before": "(1/2\\)",
+      "after": "$1/2$",
+      "count": 1
+    },
+    {
+      "before": "(1-s\\)",
+      "after": "$1-s$",
+      "count": 1
+    },
+    {
+      "before": "([-h,h]\\)",
+      "after": "$[-h,h]$",
+      "count": 1
+    },
+    {
+      "before": "(P\\)",
+      "after": "$P$",
+      "count": 1
+    },
+    {
+      "before": "(Df\\)",
+      "after": "$Df$",
+      "count": 1
+    },
+    {
+      "before": "(B'\\)",
+      "after": "$B'$",
+      "count": 1
+    },
+    {
+      "before": "(B''\\)",
+      "after": "$B''$",
+      "count": 1
+    },
+    {
+      "before": "(K\\)",
+      "after": "$K$",
+      "count": 1
+    },
+    {
+      "before": "(K\\)",
+      "after": "$K$",
+      "count": 1
+    },
+    {
+      "before": "(t+nT\\)",
+      "after": "$t+nT$",
+      "count": 1
+    },
+    {
+      "before": "(n\\)",
+      "after": "$n$",
+      "count": 1
+    },
+    {
+      "before": "(t\\)",
+      "after": "$t$",
+      "count": 1
+    },
+    {
+      "before": "(w\\)",
+      "after": "$w$",
+      "count": 1
+    },
+    {
+      "before": "(I-C\\)",
+      "after": "$I-C$",
+      "count": 1
+    },
+    {
+      "before": "(w-m\\)",
+      "after": "$w-m$",
+      "count": 1
+    },
+    {
+      "before": "(1/2\\)",
+      "after": "$1/2$",
+      "count": 1
+    },
+    {
+      "before": "(D+sE\\)",
+      "after": "$D+sE$",
+      "count": 1
+    },
+    {
+      "before": "([0,1]\\)",
+      "after": "$[0,1]$",
+      "count": 1
+    },
+    {
+      "before": "([a,b]\\)",
+      "after": "$[a,b]$",
+      "count": 1
+    },
+    {
+      "before": "(P\\)",
+      "after": "$P$",
+      "count": 1
+    },
+    {
+      "before": "(DP\\)",
+      "after": "$DP$",
+      "count": 1
+    },
+    {
+      "before": "([0.027499735464,0.02778996093]\\)",
+      "after": "$[0.027499735464,0.02778996093]$",
+      "count": 1
+    }
+  ]
+}

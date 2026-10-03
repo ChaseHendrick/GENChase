@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "status": "actual original half controls and fresh source-bound proof accepted",
+  "run_id": 37091152974,
+  "producer_receipt_sha256": "2316f38ffed01c4d6062cd3b47c2faf2786567ae9dde1650b4288faa722772cf",
+  "producer_helper_sha256": "dd3a7c2b770f1b494a3abe857c2ab9b683f94e6d54c79cbb14bf7e214b67e4bd",
+  "fresh_proof_sha256": "23272431dfe4be243910f51475281a24124c364a455ec57c558f82c77d9430b4",
+  "original_fixture_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+  "working_fixture_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+  "runtime_sha256": "8f16da3075565ffe40a1f51e0bccac1263bf327ecffc1df680e97e191d445a65",
+  "log_sha256": "40272ef053102d04d0ee65ae5c86ffcf028c68703fcfad26f9e3f1c6429288d7",
+  "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "controls": [
+    "test_half_unit_reproduced",
+    "explicit_current_G12_half_comparison"
+  ],
+  "controls_passed": 2,
+  "wall_seconds": 344.934273271,
+  "peak_self_rss_mib": 854.609375,
+  "scope": "One unchanged original half test actually proves G12[0:8] twice and requires exact mutual fields. Extra helper control computes a third fresh half proof, matches exact identity/settings and passes the full712 conservative receipt gate; prior-platform bounds need not equal. Entire copied original log preserved unchanged, no G6 fixture replacement in half mode. Full finite SC vectors unavailable in public JSON.",
+  "no_canonical_data_modified": true,
+  "no_numerical_reproof_by_reviewer": true,
+  "no_full_group_suite_promotion": true
+}

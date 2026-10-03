@@ -1,0 +1,889 @@
+{
+  "schema": 1,
+  "status": "actual source-bound deterministic PDF compiled; layout acceptance FAILED pending repair and rebuilt artifact",
+  "run_id": 37091229961,
+  "producer_commit": "a8c82b031e08487d1c37e7af373533789a35f46b",
+  "pdf_sha256": "8423c6cdfa6a6360b7440e8d2b4abdb590bc383f93a2c91e66173c91aca6d058",
+  "source_sha256": "c8629b4f83ad234b16d5e21f162709f25bcc4dddf2af429e857302c92905fa8c",
+  "figure_manifest_sha256": "72c82a3ee0c3bebf6a1a8178181d73073eacb9293c8594bd9ec96e28b469933b",
+  "page_count": 73,
+  "embedded_font_xref_count": 45,
+  "all_font_streams_embedded": true,
+  "metadata": {
+    "format": "PDF 1.5",
+    "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
+    "author": "Chase Hendrick",
+    "subject": "",
+    "keywords": "",
+    "creator": "LaTeX with hyperref",
+    "producer": "pdfTeX-1.40.25",
+    "creationDate": "D:20261003025108Z",
+    "modDate": "D:20261003025108Z",
+    "trapped": "",
+    "encryption": null
+  },
+  "all_pages": [
+    {
+      "page": 1,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 466
+    },
+    {
+      "page": 2,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 697
+    },
+    {
+      "page": 3,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 667
+    },
+    {
+      "page": 4,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 498
+    },
+    {
+      "page": 5,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 533
+    },
+    {
+      "page": 6,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 492
+    },
+    {
+      "page": 7,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 378
+    },
+    {
+      "page": 8,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 590
+    },
+    {
+      "page": 9,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 238
+    },
+    {
+      "page": 10,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 639
+    },
+    {
+      "page": 11,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 577
+    },
+    {
+      "page": 12,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 634
+    },
+    {
+      "page": 13,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 304
+    },
+    {
+      "page": 14,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 602
+    },
+    {
+      "page": 15,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 590
+    },
+    {
+      "page": 16,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 618
+    },
+    {
+      "page": 17,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 541
+    },
+    {
+      "page": 18,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 774
+    },
+    {
+      "page": 19,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 692
+    },
+    {
+      "page": 20,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 721
+    },
+    {
+      "page": 21,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 679
+    },
+    {
+      "page": 22,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 760
+    },
+    {
+      "page": 23,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 676
+    },
+    {
+      "page": 24,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 442
+    },
+    {
+      "page": 25,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 583
+    },
+    {
+      "page": 26,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 751
+    },
+    {
+      "page": 27,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 534
+    },
+    {
+      "page": 28,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 652
+    },
+    {
+      "page": 29,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 683
+    },
+    {
+      "page": 30,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 532
+    },
+    {
+      "page": 31,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 692
+    },
+    {
+      "page": 32,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 720
+    },
+    {
+      "page": 33,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 438
+    },
+    {
+      "page": 34,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 481
+    },
+    {
+      "page": 35,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 464
+    },
+    {
+      "page": 36,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 461
+    },
+    {
+      "page": 37,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 491
+    },
+    {
+      "page": 38,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 426
+    },
+    {
+      "page": 39,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 413
+    },
+    {
+      "page": 40,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 399
+    },
+    {
+      "page": 41,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 495
+    },
+    {
+      "page": 42,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 299
+    },
+    {
+      "page": 43,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 472
+    },
+    {
+      "page": 44,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 536
+    },
+    {
+      "page": 45,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 551
+    },
+    {
+      "page": 46,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 486
+    },
+    {
+      "page": 47,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 518
+    },
+    {
+      "page": 48,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 363
+    },
+    {
+      "page": 49,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 496
+    },
+    {
+      "page": 50,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 403
+    },
+    {
+      "page": 51,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 402
+    },
+    {
+      "page": 52,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 375
+    },
+    {
+      "page": 53,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 433
+    },
+    {
+      "page": 54,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 491
+    },
+    {
+      "page": 55,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 464
+    },
+    {
+      "page": 56,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 597
+    },
+    {
+      "page": 57,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 660
+    },
+    {
+      "page": 58,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 643
+    },
+    {
+      "page": 59,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 668
+    },
+    {
+      "page": 60,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 632
+    },
+    {
+      "page": 61,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 448
+    },
+    {
+      "page": 62,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 681
+    },
+    {
+      "page": 63,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 652
+    },
+    {
+      "page": 64,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 677
+    },
+    {
+      "page": 65,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 685
+    },
+    {
+      "page": 66,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 691
+    },
+    {
+      "page": 67,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 596
+    },
+    {
+      "page": 68,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 714
+    },
+    {
+      "page": 69,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 631
+    },
+    {
+      "page": 70,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 715
+    },
+    {
+      "page": 71,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 420
+    },
+    {
+      "page": 72,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 407
+    },
+    {
+      "page": 73,
+      "rect": [
+        0.0,
+        0.0,
+        612.0,
+        792.0
+      ],
+      "word_count": 213
+    }
+  ],
+  "text_outside_page_media_box": [
+    {
+      "page": 55,
+      "bbox": [
+        531.6939697265625,
+        278.8647766113281,
+        614.0751953125,
+        292.6741943359375
+      ],
+      "word": "\u2212\u00afwQ,k,m(X)|\u03bd|m|"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        616.9990234375,
+        280.4287109375,
+        625.486328125,
+        291.3377990722656
+      ],
+      "word": "+"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        627.9080200195312,
+        280.6301574707031,
+        659.5025634765625,
+        292.6741943359375
+      ],
+      "word": "\u03b7s,krs/"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        661.321044921875,
+        280.4287109375,
+        673.7573852539062,
+        291.3377990722656
+      ],
+      "word": "inf"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        676.4280395507812,
+        280.6301574707031,
+        685.4716796875,
+        291.5392761230469
+      ],
+      "word": "X"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        687.5170288085938,
+        279.684326171875,
+        695.546875,
+        289.64691162109375
+      ],
+      "word": ")"
+    },
+    {
+      "page": 55,
+      "bbox": [
+        698.572998046875,
+        288.9128112792969,
+        734.6107177734375,
+        301.0640563964844
+      ],
+      "word": "\u2264rhi,Q."
+    },
+    {
+      "page": 62,
+      "bbox": [
+        394.81298828125,
+        320.6007385253906,
+        623.9041748046875,
+        331.50982666015625
+      ],
+      "word": "03dc5628203334b214bb7d9fd63788a175521005"
+    }
+  ],
+  "full_compiler_diagnostics": [
+    "Underfull \\hbox (badness 1158) in paragraph at lines 241--241",
+    "Overfull \\hbox (2.69937pt too wide) in paragraph at lines 406--407",
+    "LaTeX Warning: Float too large for page by 5.14142pt on input line 525.",
+    "Overfull \\hbox (35.70197pt too wide) in paragraph at lines 1234--1235",
+    "Overfull \\hbox (195.33786pt too wide) detected at line 1870",
+    "Overfull \\hbox (45.60773pt too wide) in paragraph at lines 1928--1929",
+    "Overfull \\hbox (84.21835pt too wide) in paragraph at lines 1995--1996",
+    "Underfull \\hbox (badness 1163) in paragraph at lines 2182--2183",
+    "Underfull \\hbox (badness 8075) in paragraph at lines 2230--2231",
+    "Output written on cardiac-rings.pdf (73 pages, 1035021 bytes)."
+  ],
+  "no_unresolved_reference_or_citation": true,
+  "original_workflow_guard_failure": "Actual workflow log confirms rg absent twice; empty layout diagnostics and skipped guarded reference scan are not claimed passed. Independent complete compiler-log scan performed here.",
+  "fixed_workflow_sha256": "4f99d998af9040e05b1c598897be640994dcb1943439995c3c4e5be268e85ffa",
+  "actual_fixed_node_guard_controls": [
+    {
+      "name": "valid",
+      "expected_pass": true,
+      "observed_exit": 0
+    },
+    {
+      "name": "missing marker",
+      "expected_pass": false,
+      "observed_exit": 1
+    },
+    {
+      "name": "missing PDF",
+      "expected_pass": false,
+      "observed_exit": 1
+    },
+    {
+      "name": "undefined refs",
+      "expected_pass": false,
+      "observed_exit": 1
+    },
+    {
+      "name": "undefined citation",
+      "expected_pass": false,
+      "observed_exit": 1
+    },
+    {
+      "name": "undefined reference",
+      "expected_pass": false,
+      "observed_exit": 1
+    }
+  ],
+  "fixed_guard_replays_actual_log_exactly": true,
+  "scope": "Source and all figure/input manifest bytes bound; both independently built PDF copies exactly equal. Structural all-page bounds/fonts/log audit only, not visual page reading. Large overfull boxes and actual clipped words require layout repair and rebuilt-PDF review.",
+  "no_mathematical_source_edits": true
+}

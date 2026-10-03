@@ -1,0 +1,30 @@
+{
+  "status": "bounded original group/half orchestration admitted; numerical results pending",
+  "helper_sha256": "0d09d59dbf32b3bd793d5c5ab67ba92defad3b4028fa919865de3fe9031f5607",
+  "workflow_sha256": "a8a2ab35f2388ff0e33ba3b74ab8ae354e7d48b04424b63ce2c59f6b823693dd",
+  "selected_original_controls": {
+    "group_base": [
+      "test_group_parts",
+      "test_group_acceptance",
+      "test_group_float_orbit_inside_ball",
+      "test_group_negative_drop_third_order_detected",
+      "test_group_window_dominated",
+      "test_group_negative_drop_d2_terms_detected",
+      "test_group_Z1_path_term"
+    ],
+    "group_heavy": [
+      "test_group_drop_moving_centre_hook_detected",
+      "test_group_negative_delta_above_exponent",
+      "test_group_negative_identification",
+      "test_jets_against_hess_and_differences",
+      "test_group_negative_widened"
+    ],
+    "half": [
+      "test_half_unit_reproduced"
+    ]
+  },
+  "independent_controls": 7,
+  "gate": "Complete copied current712/fallback receipts and unique actual G6/default fixture required; fresh exact comparison forced before tests; half G12[0:8] compared to actual logged half; unchanged scientific tests",
+  "budget": "600s internal unabsorbable deadline and610s outer limit; failure artifacts retained",
+  "source_changes": false
+}

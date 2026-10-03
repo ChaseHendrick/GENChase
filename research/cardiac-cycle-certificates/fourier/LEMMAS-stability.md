@@ -1049,8 +1049,10 @@ window at the piece's endpoints exceeding the mutated bound; the certified bound
    condition is e + rho <= r_hi (<= r_*) and why kappa contains Z2 (e + rho), not Z2 rho. The fixed point found is
    identified with x*(g) through Theorem B's uniqueness ball, so no new uniqueness statement is needed.
 2. The Taylor remainder of 10.1' is in d with theta fixed, for real d; the strip enclosures are for complex theta with
-   d in a real box. Holomorphy in theta of each d_d^2 G(.; xi) is what fourier_eval needs, and it is certified per xi by
-   the strip cover (the black box is an inclusion function for each xi). The exchange of the s-integral and the Fourier
+   d in a real box. The model is jointly holomorphic in (z, z1, xi) where all intermediate reciprocals exclude zero
+   and log and sqrt arguments have positive real part. Its xi derivatives are holomorphic in (z, z1), so each
+   fixed-xi black box satisfies fourier_eval's contract. The box strip cover certifies this domain for complex theta
+   and every real xi in [-h, h]. The exchange of the s-integral and the Fourier
    integral is Fubini for a continuous integrand on a compact set.
 3. Lemma 10.2(a) puts J1c_n (any exact matrix) into the affine part and only the deviation of the box enclosure into
    the ball; the deviation is h times the radius, second order when the radius is first order in h (it is: the box
@@ -1073,7 +1075,9 @@ window at the piece's endpoints exceeding the mutated bound; the certified bound
 Status: written 2026-10-02 for `fourier/branch_stability.py` (functions `prove_group_uniform`, `Jet`, `DJet`,
 `gjet_flat`, `djet_flat`, `path_ball`, `operator_blocks`, `lemma_11_1`, `identify`, and `_certify_uniform` with the
 data key `C2c`). One self-adversarial reading by the author (11.8). An independent in-project reading is recorded in
-`reviews/theoremC-uniform-review-2026-10-02.md`; no outside review has taken place. Nothing below is "verified".
+`reviews/theoremC-uniform-review-2026-10-02-partial.json`; its response and independent fix check are recorded in
+`reviews/theoremC-uniform-fixes-2026-10-02.md` and `reviews/theoremC-uniform-fixcheck-2026-10-02.md`.
+No outside review has taken place. These readings do not substitute for the final numerical certificates.
 
 Why. Section 10 certifies one branch piece (half-width h about 2.6e-7) per run. Its second-order remainders are balls
 of size about h^2, already a third of the (SC) margin on a piece, so it cannot be fed a whole group (about 12 pieces).
@@ -1086,8 +1090,9 @@ Taylor arithmetic. The comparison operator of the window stays affine in d, as i
 ### 11.0 Data and two auxiliary facts
 
 **The unit.** A run P_1, ..., P_n (n >= 1) of consecutive pieces of one group of Theorem B, sorted by g_lo, with the
-same weights eta and settings (checked), consecutive overlaps (lo_{i+1} <= hi_i, checked), so that
-I := [g_lo, g_hi] = P_1 u ... u P_n is an interval. The whole group is the run of all its pieces; the program also uses
+same weights eta and settings (checked), consecutive overlaps (lo_{i+1} <= hi_i, checked), and strictly increasing
+lower and upper endpoints (checked), so I := [g_lo, g_hi] = P_1 u ... u P_n is an interval with every P_i contained in I.
+The whole group is the run of all its pieces; the program also uses
 the two halves of a group (`part`, label G<gid>[i0:i1]). The centre: the exact centre xbar = (omega_bar, abar) of the
 piece of the run whose centre g is nearest the midpoint of I, at its exact decimal g_c in I (digest checked); an exact
 h >= max(g_hi - g_c, g_c - g_lo); d := g - g_c, |d| <= h for g in I.
@@ -1096,7 +1101,8 @@ h >= max(g_hi - g_c, g_c - g_lo); d := g - g_c, |d| <= h for g in I.
 the explicit tail inverses A_m, Abar0 = sup_{|m|>K} |A_m|, Abar1 = sup_{|m|>K} |m A_m|), the blocks B1 of
 I - A DF(xbar; g_c) (so that ||I - A DF(xbar; g_c)|| <= Z1_point := max_c (1/eta_c) sum_c' eta_c' B1_cc'), the point
 residual parts Y0p_c >= ||(A F(xbar; g_c))_c||, N0, N1, the enclosures [J0_n] (|n| <= K') of the Fourier coefficients
-of J0 := Df(phibar; g_c) with |J0_n| <= S_J0 e^{-rho |n|}, rho = 3/2. Z1_point < 1 makes A injective (E.2).
+of J0 := Df(phibar; g_c) with |J0_n| <= S_J0 e^{-rho |n|}, rho = 3/2. The nonnegative block bounds give
+Z1_point <= Z1_G, and Lemma 11.1 requires Z1_G < 1. Thus Z1_point < 1 and A is injective by E.2.
 
 **The path (untrusted).** Exact xbar_1 = (omega_1, abar_1) and xbar_2 = (omega_2, abar_2) with modes |m| <= K,
 conjugation symmetric, with Im abar_{1,1,V} = Im abar_{2,1,V} = 0 exactly, so F_ph(xbar_1) = F_ph(xbar_2) = 0 exactly
@@ -1113,18 +1119,20 @@ R_factor eta_i r_* (exact, R_factor = 256, r_* = 2^-20), the strip |Im theta| <=
 which contains I. It gives MH_{k,(j,l)} and W_k, and Z2 by the formula of Lemma B2 with the unit's eta and r_*.
 
 **Lemma 11.0 (Z2 about every point of the path).** For every g in [g_c - h, g_c + h], every y = (omega_y, a_y) whose
-coefficients lie in the cover's coefficient balls (in particular y = xtilde(g) for |d| <= h) and every x with
+sequence part is a trigonometric polynomial supported on |m| <= K with coefficients in the cover's coefficient balls
+(in particular y = xtilde(g) for |d| <= h) and every x with
 ||x - y|| <= r <= r_*: ||A (DF(x; g) - DF(y; g))|| <= Z2 r.
 *Proof.* Lemma B2 and its Z2 paragraph (branch.py section 4) with y in place of xbar. Their proof uses of the centre
 only that the polydisc of radii R about phi_y(theta) lies in the covered set for |Im theta| <= rho2, which holds because
 phi_y(theta) lies in the evaluation of Phi at theta (the TrigPoly evaluation is inclusion monotone in the coefficients),
 and that eta_l r_* < R_l (here R_l = 256 eta_l r_*). N0, N1, Abar0, Abar1 depend on A only, W_k on MH and eta r_* only;
-the first term of DF(x) - DF(y), i m (y_om delta a + delta_om y_a), does not depend on the centre. QED
+on a test vector v the first term of (DF(x) - DF(y))v is
+i m (v_om (x_a - y_a) + (x_om - y_om) v_a). Its bound depends on x - y and v, not on the moving centre y. QED
 
 **Lemma 11.0' (truncated Taylor arithmetic; classes `Jet` and `DJet`).** A Jet of degree P is a vector (c_0, ..., c_P)
 of complex balls. For an expression E built from +, -, x, /, integer powers, exp, log and sqrt (the operations of the
 generated model `tp06_18d_arb.py`), evaluate E on Jets whose coefficients enclose, for every xi0 in a real ball D, the
-Taylor coefficients at xi0 of real-analytic inputs u(xi). If every reciprocal has a finite enclosure (its argument's
+Taylor coefficients at xi0 of complex-valued inputs analytic in xi. If every reciprocal has a finite enclosure (its argument's
 c_0 excludes 0), every log and sqrt argument has Re c_0 > 0 certified, and every coefficient is finite, then for every
 xi0 in D the composite E(u(xi)) is holomorphic near xi0 and its Taylor coefficients of order 0 to P at xi0 lie in the
 output balls. A DJet carries a Jet value and Jets of first derivatives in the 18 state directions; with the derivative
@@ -1139,10 +1147,13 @@ arithmetic is inclusion monotone, so the recurrences evaluated on balls that con
 contain the outputs' coefficients at xi0. A DJet is a first-order dual number over Jets: (uv)' = u v' + u' v and
 phi(u)' = phi'(u) u' are exact at first order in the states, with phi'(u) itself computed as a Jet. QED
 The inputs: at base point xi0, the path component z_i(xi) = zbar_i + xi z1_i + (xi^2/2) z2_i has Taylor coefficients
-(zbar_i + xi0 z1_i + (xi0^2/2) z2_i, z1_i + xi0 z2_i, z2_i / 2, 0, ...), enclosed for every xi0 in D by the balls
-built with D and D2 (xi0^2 lies in D2); g_Ks(xi) = g_c + xi has coefficients (g_c + xi0, 1, 0, ...) (`_path_coeffs`,
-`gjet_flat`, `djet_flat`). These are admissible black boxes for fourier_eval (Lemmas 1 to 3) for each fixed xi0, with
-the strip variable theta complex and xi0 real, as in section 10.6, item 2.
+(zbar_i + xi0 z1_i + (xi0^2/2) z2_i, z1_i + xi0 z2_i, z2_i / 2, 0, ...), enclosed for every real xi0 in [-h, h] by the balls
+built with D and D2 (xi0 lies in D and xi0^2 lies in D2). No enclosure is claimed at the extra rounded rim of D.
+g_Ks(xi) = g_c + xi has coefficients (g_c + xi0, 1, 0, ...) (`_path_coeffs`,
+`gjet_flat`, `djet_flat`). The expression is jointly holomorphic in (z, z1, z2, xi) on the open set of domain-valid
+intermediates; its xi-Taylor coefficients are holomorphic in (z, z1, z2). Box checks certify this domain for the strip
+inputs and each real xi0 in [-h, h]. Thus these are admissible inclusion black boxes for fourier_eval (Lemmas 1 to 3)
+for each such xi0, with theta complex, as in section 10.6, item 2.
 
 ### 11.1 Lemma 11.1 (location of the orbit about the moving centre)
 
@@ -1160,7 +1171,8 @@ Then for every g in I, F(.; g) has exactly one zero x0(g) in the closed ball B_r
 gives exactly one fixed point in B. A is injective, so the zeros of F(.; g) in B are exactly the fixed points of T_g. QED
 
 **Lemma 11.1' (computation of Y').** Put G(theta; xi) := f(phitilde(theta; xi); g_c + xi). For fixed theta in the strip
-|Im theta| <= rho, xi -> G(theta; xi) is real analytic near [-h, h] (Lemma 11.0', certified by the strip covers below).
+|Im theta| <= rho, xi -> G(theta; xi) is analytic near [-h, h] (Lemma 11.0'). The box covers G_box and J_box certify
+the domain on the strip times [-h, h]; the point covers certify only xi = 0.
 Taylor's formula to order 3 with integral remainder gives
 G(.; d) = sum_{p=0}^{3} d^p c_p + d^4 int_0^1 4 (1 - s)^3 c_4(.; s d) ds, with c_p := (1/p!) d^p_xi G(.; 0) and
 c_4(.; xi) := (1/4!) d^4_xi G(.; xi). The linear part is a polynomial in d:
@@ -1172,7 +1184,8 @@ F_ph(xtilde(g)) = F_ph(xbar) + d F_ph(xbar_1) + (d^2/2) F_ph(xbar_2) = 0 exactly
       F(xtilde(g); g) = F(xbar; g_c) + sum_{p=1}^{4} d^p R_p(d),   R_p = (0, (i m l_{p,m} - [c_p]_m)_m) (p = 1, 2, 3),
       R_4(d) = (0, (i m l_{4,m} - [int_0^1 4 (1 - s)^3 c_4(.; s d) ds]_m)_m),
 
-and, since int_0^1 4 (1 - s)^3 ds = 1, the coefficients of the integral lie in the convex balls enclosing [c_4(.; xi)]_m
+The integrand is continuous on the compact real Fourier circle times [0, 1], so Fubini permits exchanging the
+s-integral and the Fourier integral. Since int_0^1 4 (1 - s)^3 ds = 1, the coefficients of the integral lie in the convex balls enclosing [c_4(.; xi)]_m
 for every xi in [-h, h], with the same strip majorant. The program encloses [c_1]_m, [c_2]_m, [c_3]_m at xi = 0 and
 [c_4(.; xi)]_m over the box (|m| <= K', strip sup, aliased DFT and Cauchy tail of fourier_eval on the 54-component
 polynomial (phibar, phi_1, phi_2), black box `gjet_flat`), and bounds each ||(A R_p)_c|| by the three-part bound of

@@ -17,19 +17,26 @@
 """The figures of the manuscript, drawn from stored files only (a few seconds, no proof is rerun).
 
     python3 code/plot_cardiac_rings.py     writes paper/figures/cell-orbit.pdf, ring-wave.pdf,
-                                           alln-pieces.pdf and paper/figures/sources.json
+                                           alln-pieces.pdf, branch-hopf.pdf and paper/figures/sources.json
 
 NOT a proof.  Figures 1 and 2 sum, in binary64, the Fourier series of the centers of the existence proofs
 (code/fourier/data/centre_N*_K32.json, exact dyadic numbers, each hashed by its record
 data/fourier-existence-N*.json, which this script checks).  The proofs place the true profile within r_ex
 of that center (Theorem B(a), Table 1), far below the resolution of the figures.  Figure 3 draws the
 stored enclosures and radii of data/fourier-existence-alln.json and the period enclosures of
-data/fourier-existence-N*.json as they are stored; nothing is recomputed.  Run from any working directory.
+data/fourier-existence-N*.json as they are stored; nothing is recomputed.  The figure branch-hopf.pdf draws
+the stored enclosures of the G_Ks branch (code/fourier/data/branch/run_K12_final.jsonl, with the first V harmonic
+of each piece's center in centres_K12.jsonl, matched to the piece by the SHA-256 its record stores, which
+this script recomputes), of the freshly re-proved Hopf bridge and the Hopf point
+(code/fourier/data/hopf/reprove_final.jsonl, theoremA_final.json, gluing_gks_final.json) and the stored uniform
+Floquet multiplier bounds (code/fourier/data/branch/stability_uniform_K12_final.jsonl), converted to binary64 for drawing;
+nothing is recomputed.  Run from any working directory.
 Needs numpy and matplotlib (the figures were made with numpy 2.4.6 and matplotlib 3.11.2; sources.json
 records the versions and the SHA-256 of every input); the output is byte-identical on regeneration.
 """
 import hashlib
 import json
+import math
 from decimal import Decimal
 from fractions import Fraction
 from pathlib import Path
@@ -87,6 +94,17 @@ def axes_in(fig, left, bottom, width, height):
 
 
 def save(fig, name, title):
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    legends = list(fig.legends) + [ax.get_legend() for ax in fig.axes if ax.get_legend() is not None]
+    for legend in legends:
+        bounds = legend.get_window_extent(renderer)
+        canvas = fig.bbox
+        if not (canvas.x0 <= bounds.x0 and bounds.x1 <= canvas.x1
+                and canvas.y0 <= bounds.y0 and bounds.y1 <= canvas.y1):
+            raise SystemExit(f"{name}: legend extends beyond the figure")
+        if any(bounds.overlaps(ax.get_window_extent(renderer)) for ax in fig.axes):
+            raise SystemExit(f"{name}: legend overlaps a data panel")
     fig.savefig(FIG / name, metadata={"CreationDate": None, "ModDate": None, "Title": title,
                                       "Author": "Chase Hendrick"})
     plt.close(fig)
@@ -350,11 +368,288 @@ print(f"  top axes: a minor tick at every integer N up to {n_minor_a} in (a) and
 print(f"  pieces: {len(P)}, gluing inequalities: {len(glue)}, max r_ex = {max(p['rex'] for p in P):.4e}, "
       f"min r_un = {min(p['run'] for p in P):.4e}")
 
+# ------------------------------------------------------------------------------ Figure branch-hopf: the G_Ks branch
+def read_record(rel):
+    return read(rel)
+
+
+def jsonl(rel):
+    return [json.loads(line) for line in read_record(rel).decode().splitlines() if line.strip()]
+
+
+def dyadic(t):
+    """(mantissa, exponent) of an exact '<sign>0x<hex>p<exp>' text, as written by code/fourier/centre.py."""
+    neg = t.startswith("-")
+    man, exp = t.lstrip("-")[2:].split("p")
+    return (-int(man, 16) if neg else int(man, 16)), int(exp)
+
+
+def dyadic_text(man, exp):
+    """centre.dyadic_to_text: the normalized text (odd mantissa; zero is 0x0p0)."""
+    if man == 0:
+        return "0x0p0"
+    while man % 2 == 0:
+        man, exp = man // 2, exp + 1
+    return f"{'-' if man < 0 else ''}0x{abs(man):x}p{exp}"
+
+
+def centre_digest(c):
+    """branch.centre_digest of a centre record: SHA-256 of omega and of a_{k,m}, m = -K..K (a_{-m} = conj a_m)."""
+    K = int(c["K"])
+    h = hashlib.sha256(dyadic_text(*dyadic(c["omega"])).encode())
+    for row in c["a"]:
+        for m in range(-K, K + 1):
+            (rm, re_), (im_m, ie) = (dyadic(t) for t in row[abs(m)])
+            h.update((dyadic_text(rm, re_) + dyadic_text(-im_m if m < 0 else im_m, ie)).encode())
+    return h.hexdigest()
+
+
+def dec(rec):
+    return Decimal(rec["dec"])
+
+
+BRANCH_RUN = "code/fourier/data/branch/run_K12_final.jsonl"
+BRANCH_CENTRES = "code/fourier/data/branch/centres_K12.jsonl"
+BRANCH_UNITS = "code/fourier/data/branch/stability_uniform_K12_final.jsonl"
+HOPF_PIECES = "code/fourier/data/hopf/reprove_final.jsonl"
+HOPF_THEOREM_A = "code/fourier/data/hopf/theoremA_final.json"
+HOPF_GLUING = "code/fourier/data/hopf/gluing_gks_final.json"
+
+# Bind the display inputs to the separately reviewed collected records. This checks provenance,
+# rather than rerunning any proof or inferring acceptance from a plotted numerical curve.
+B_RECORD = json.loads(read("data/fourier-branch-gks.json"))
+C_RECORD = json.loads(read("data/fourier-branch-stability-uniform.json"))
+H_RECORD = json.loads(read("data/fourier-hopf.json"))
+expected = {BRANCH_RUN: B_RECORD["run_log_sha256"],
+            BRANCH_CENTRES: B_RECORD["centres_sha256"],
+            BRANCH_UNITS: C_RECORD["log_sha256"]}
+expected.update({"code/fourier/data/hopf/" + name: digest for name, digest in H_RECORD["data_sha256"].items()})
+for record in (B_RECORD, C_RECORD, H_RECORD):
+    expected.update({"code/" + name: digest for name, digest in record["sources_sha256"].items()})
+for rel, digest in expected.items():
+    if sha256(read(rel)) != digest:
+        raise SystemExit(f"{rel} does not match its collected certificate")
+if (C_RECORD["theorem_B_sha256"] != sha256(read("data/fourier-branch-gks.json"))
+        or C_RECORD["n_pieces_uniform"] != 712 or not H_RECORD["hopf_gap_closed"]):
+    raise SystemExit("the complete uniform or Hopf certificate does not identify the accepted branch")
+
+# the G_Ks branch: pieces [g_lo, g_hi] with T in T_ms for every G_Ks of the piece, and |a_{1,V} - abar_{1,V}| <=
+# eta_V r_ex / nu (nu = e^rho0) about the center's real first V coefficient
+bpieces = [r["rec"] for r in jsonl(BRANCH_RUN) if r["type"] == "piece"]
+if len({p["label"] for p in bpieces}) != len(bpieces):
+    raise SystemExit("a piece label occurs twice in the branch run log")
+bpieces.sort(key=lambda p: Fraction(p["g_lo"]))
+if not all(Fraction(p["g_lo"]) < Fraction(q["g_lo"]) < Fraction(p["g_hi"]) < Fraction(q["g_hi"])
+           for p, q in zip(bpieces, bpieces[1:])):
+    raise SystemExit("branch pieces are not consecutive and overlapping")
+centres = {}
+for c in jsonl(BRANCH_CENTRES):
+    centres.setdefault(c["g"], []).append(c)
+BR = []
+for p in bpieces:
+    cs = [c for c in centres.get(p["centre_g"], []) if centre_digest(c) == p["centre_sha256"]]
+    if not cs:
+        raise SystemExit(f"{p['label']}: no center in {BRANCH_CENTRES} has the SHA-256 of its record")
+    re1, im1 = (dyadic(t) for t in cs[0]["a"][0][1])          # a_{1,V}: component V = 0, mode 1
+    if im1[0] != 0:
+        raise SystemExit(f"{p['label']}: Im abar_(1,V) is not 0")
+    a1 = abs(float(Fraction(re1[0]) * Fraction(2) ** re1[1]))
+    nu = math.exp(float(Fraction(p["settings"]["rho0"])))
+    rad = float(Fraction(p["eta"][1])) * float(dec(p["r_existence"])) / nu
+    if not a1 > rad:
+        raise SystemExit(f"{p['label']}: the stored radius does not keep a_(1,V) away from 0")
+    BR.append(dict(lo=float(Fraction(p["g_lo"])), hi=float(Fraction(p["g_hi"])),
+                   T=(float(dec(p["T_ms"]["lower"])), float(dec(p["T_ms"]["upper"]))),
+                   amp=(V_SCALE * (a1 - rad), V_SCALE * (a1 + rad))))
+
+# the Hopf bridge: on the piece [e_lo, e_hi] of the amplitude parameter (a_{1,V} = parameter/2), G_Ks and T in the
+# stored enclosures for every parameter value of the piece
+hp = sorted((d for d in jsonl(HOPF_PIECES) if d["type"] == "reprove"), key=lambda d: d["idx"])
+if (len(hp) != 68 or any(d["certified"] is not True for d in hp)
+        or [d["idx"] for d in hp] != list(range(len(hp))) or hp[0]["e_lo"] != "0"
+        or any(Fraction(p["e_hi"]) != Fraction(q["e_lo"]) for p, q in zip(hp, hp[1:]))):
+    raise SystemExit("the bridge pieces are not consecutive from 0")
+HB = [dict(e=(Fraction(d["e_lo"]), Fraction(d["e_hi"])),
+           g=(float(dec(d["result"]["g"]["lower"])), float(dec(d["result"]["g"]["upper"]))),
+           T=(float(dec(d["result"]["T_ms"]["lower"])), float(dec(d["result"]["T_ms"]["upper"]))))
+      for d in hp]
+for b in HB:
+    b["amp"] = tuple(V_SCALE * float(e) / 2 for e in b["e"])
+
+# the Hopf point and Erhardt's numerical value
+TA = json.loads(read_record(HOPF_THEOREM_A))
+gH = tuple(Fraction(x) for x in TA["gH_interval"])
+if not gH[0] < gH[1]:
+    raise SystemExit("unexpected Hopf interval")
+gH_mid = (gH[0] + gH[1]) / 2
+TH = 2 * math.pi / float((dec(TA["omega_H"]["lower"]) + dec(TA["omega_H"]["upper"])) / 2)
+g_erh = Fraction(TA["erhardt"]["g_H"])
+if not (Fraction(hp[0]["result"]["g"]["lower"]["dec"]) <= gH[0] < gH[1]
+        <= Fraction(hp[0]["result"]["g"]["upper"]["dec"])):
+    raise SystemExit("the first bridge piece does not enclose the Hopf interval")
+
+# Where the two families share an orbit. The fresh bridge point proves existence and identification;
+# its stability follows only where it is covered by the separate uniform lower-branch certificate.
+GL = json.loads(read_record(HOPF_GLUING))
+if not GL["ok"]:
+    raise SystemExit("the gluing record is not ok")
+if GL != H_RECORD["bridge_checks"]:
+    raise SystemExit("the gluing file does not match the collected Hopf certificate")
+glue_g = [float(Fraction(p["g"])) for p in GL["glue_points"]]
+if GL["stable_bridge_points"]:
+    raise SystemExit("unexpected inherited pointwise stability receipts in the fresh bridge")
+
+# the uniform stability units: every nontrivial Floquet multiplier of the branch orbit has modulus at most the
+# stored bound, for every G_Ks of the unit
+units = jsonl(BRANCH_UNITS)
+UOK = [u for u in units if u["type"] in ("unit", "group_unit") and u["ok"] is True and u["uniform"] is True]
+n_not_ok = len(units) - len(UOK)
+if len(UOK) != 63 or len(bpieces) != 712:
+    raise SystemExit("unexpected complete branch or uniform certificate count")
+U = [(Fraction(u["g"][0]), Fraction(u["g"][1]), float(dec(u["multiplier_bound_full_period"])), float(dec(u["delta"])))
+     for u in UOK]
+covered = []                  # union of the units, exact
+for lo, hi, _, _ in sorted(U):
+    if covered and lo <= covered[-1][1]:
+        covered[-1][1] = max(covered[-1][1], hi)
+    else:
+        covered.append([lo, hi])
+bare, x = [], Fraction(bpieces[0]["g_lo"])  # G_Ks from the start of the branch to g_H with no uniform bound
+for lo, hi in covered:
+    if lo > x:
+        bare.append((x, min(lo, gH_mid)))
+    x = max(x, hi)
+if x < gH_mid:
+    bare.append((x, gH_mid))
+
+fig = plt.figure(figsize=(6.5, 5.55))
+axA = axes_in(fig, 0.72, 3.75, 2.38, 1.5)
+axB = axes_in(fig, 3.95, 3.75, 2.4, 1.5)
+axC = axes_in(fig, 0.72, 1.55, 2.38, 1.5)
+axD = axes_in(fig, 3.95, 1.55, 2.4, 1.5)
+ERH = dict(color=MUTED, lw=0.9, ls=(0, (1, 1.5)), zorder=3)
+GLUE = dict(color=AQUA, lw=0.9, ls="-.", zorder=3)
+HOPF = dict(marker="o", color=INK, ms=4, ls="none", clip_on=False, zorder=6)
+
+
+def box(ax, x, y, color):
+    ax.add_patch(Rectangle((x[0], y[0]), x[1] - x[0], y[1] - y[0], facecolor=color, alpha=0.22, edgecolor=color,
+                           lw=0.5, zorder=2))
+
+
+g0, g1 = BR[0]["lo"], float(gH_mid)
+XL = (g0 - 0.03 * (g1 - g0), g1 + 0.04 * (g1 - g0))
+GTICKS = [k / 10000 for k in range(275, 280)]
+for ax in (axA, axB, axC):
+    ax.set_xlim(*XL)
+    ax.set_xticks(GTICKS)
+    ax.set_xticklabels([f"{t:.4f}" for t in GTICKS])
+    ax.set_xlabel(r"$G_{Ks}$ (nS/pF)")
+    for g in glue_g:
+        ax.axvline(g, **GLUE)
+    style(ax)
+
+for b in BR:
+    box(axA, (b["lo"], b["hi"]), b["T"], BLUE)
+    box(axB, (b["lo"], b["hi"]), b["amp"], BLUE)
+for b in HB:
+    box(axA, b["g"], b["T"], ORANGE)
+    box(axB, b["g"], b["amp"], ORANGE)
+for ax, y in ((axA, TH), (axB, 0.0)):
+    ax.axvline(float(g_erh), **ERH)
+    ax.plot([float(gH_mid)], [y], **HOPF)
+Tall = [t for b in BR + HB for t in b["T"]] + [TH]
+axA.set_ylim(min(Tall) - 0.06, max(Tall) + 0.06)
+axA.set_ylabel(r"period $T$ (ms)")
+axA.set_title("(a) period along the curve of orbits", loc="left")
+axB.set_ylim(0, 1.06 * max(b["amp"][1] for b in BR + HB))
+axB.set_ylabel(r"$|\hat V_1|$ (mV)")
+axB.set_title(r"(b) first Fourier coefficient of $V$", loc="left")
+
+for lo, hi, bound, _ in U:
+    axC.plot([float(lo), float(hi)], [bound] * 2, "-", color=BLUE, lw=1.6, solid_capstyle="butt", zorder=4)
+for lo, hi in bare:
+    axC.axvspan(float(lo), float(hi), color=GRID, alpha=0.55, lw=0, zorder=1)
+axC.axhline(1.0, color=MUTED, lw=0.8, ls="--", zorder=3)
+yc = [u[2] for u in U]
+axC.set_ylim(min(yc) - 0.0004, 1.0003)
+axC.set_yticks([0.998, 0.999, 1.0])
+axC.set_yticklabels(["0.998", "0.999", "1"])
+axC.set_ylabel(r"bound on $|\mu|$, $\mu$ nontrivial")
+axC.set_title(r"(c) Floquet multiplier bound", loc="left")
+
+# (d): the first pieces of the bridge near g_H, against G_Ks - OFF in 1e-8 nS/pF, |V_1| in 1e-4 mV
+OFF = Decimal(gH_mid.numerator) / Decimal(gH_mid.denominator)
+OFF = OFF.quantize(Decimal("1e-11"))
+XD, YD = (-30.0, 10.0), (0.0, 10.0)
+
+
+def zx(g):
+    return float((Fraction(g) - Fraction(OFF)) * 10 ** 8)
+
+
+for b, d in zip(HB, hp):
+    x = (zx(d["result"]["g"]["lower"]["dec"]), zx(d["result"]["g"]["upper"]["dec"]))
+    y = tuple(1e4 * a for a in b["amp"])
+    if y[0] < YD[1] and x[0] < XD[1] and x[1] > XD[0]:
+        box(axD, x, y, ORANGE)
+axD.axvline(zx(g_erh), **ERH)
+axD.plot([zx(gH_mid)], [0.0], **HOPF)
+axD.set_xlim(*XD)
+axD.set_ylim(*YD)
+axD.set_xlabel(rf"$G_{{Ks}} - {OFF}$ ($10^{{-8}}$ nS/pF)")
+axD.set_ylabel(r"$|\hat V_1|$ ($10^{-4}$ mV)")
+axD.set_title(r"(d) detail of (b) at the Hopf point", loc="left")
+style(axD)
+
+
+def sci(v):
+    m, e = f"{v:.0e}".split("e")
+    return rf"{m} \times 10^{{{int(e)}}}"
+
+
+keys_l = [Rectangle((0, 0), 1, 1, facecolor=BLUE, alpha=0.22, edgecolor=BLUE, lw=0.5),
+          Rectangle((0, 0), 1, 1, facecolor=ORANGE, alpha=0.22, edgecolor=ORANGE, lw=0.5),
+          Line2D([], [], **{k: v for k, v in HOPF.items() if k != "clip_on"}),
+          Line2D([], [], **{k: v for k, v in ERH.items() if k != "zorder"}),
+          Line2D([], [], **{k: v for k, v in GLUE.items() if k != "zorder"})]
+labels_l = [rf"$G_{{Ks}}$ branch: piece $\times$ enclosure ({len(BR)} pieces)",
+            rf"Hopf bridge: enclosure of $G_{{Ks}}$ $\times$ enclosure ({len(HB)} pieces)",
+            rf"Hopf point $g_H$ (enclosure of width ${sci(float(gH[1] - gH[0]))}$)",
+            rf"Erhardt's numerical Hopf value ${TA['erhardt']['g_H']}$",
+            rf"$G_{{Ks}} = {', '.join(p['g'] for p in GL['glue_points'])}$: the two families share this orbit"]
+fig.legend(keys_l, labels_l, loc="upper left", bbox_to_anchor=(0.55 / 6.5, 0.95 / 5.55), fontsize=7.6,
+           handlelength=1.8, borderaxespad=0, ncol=1)
+keys_r = [Line2D([], [], color=BLUE, lw=1.6),
+          Rectangle((0, 0), 1, 1, facecolor=GRID, alpha=0.55, lw=0),
+          Line2D([], [], color=MUTED, lw=0.8, ls="--")]
+labels_r = [rf"(c) bound over a unit ({len(U)} units)",
+            r"(c) no uniform bound supplied",
+            r"(c) modulus 1"]
+fig.legend(keys_r, labels_r, loc="upper left", bbox_to_anchor=(3.95 / 6.5, 0.95 / 5.55), fontsize=7.6,
+           handlelength=1.8, borderaxespad=0, ncol=1)
+save(fig, "branch-hopf.pdf", "The periodic orbit of the cell from G_Ks = 0.0275 to the Hopf point")
+print(f"  branch: {len(BR)} pieces, G_Ks in [{bpieces[0]['g_lo']}, {bpieces[-1]['g_hi']}], "
+      f"T in [{min(b['T'][0] for b in BR):.6f}, {max(b['T'][1] for b in BR):.6f}] ms, "
+      f"|V_1| in [{min(b['amp'][0] for b in BR):.6f}, {max(b['amp'][1] for b in BR):.6f}] mV")
+print(f"  bridge: {len(HB)} pieces, parameter in [0, {hp[-1]['e_hi']}], "
+      f"G_Ks in [{min(b['g'][0] for b in HB):.10f}, {max(b['g'][1] for b in HB):.10f}], "
+      f"T in [{min(b['T'][0] for b in HB):.6f}, {max(b['T'][1] for b in HB):.6f}] ms")
+print(f"  Hopf: g_H in [{TA['gH_interval_decimal'][0]}, {TA['gH_interval_decimal'][1]}], T_H = {TH:.9f} ms; "
+      f"Erhardt {TA['erhardt']['g_H']} is {float(g_erh - gH_mid):.4e} above the midpoint")
+print(f"  glued at G_Ks = {[p['g'] for p in GL['glue_points']]}; no inherited pointwise stability receipts")
+print(f"  uniform units: {len(U)} ok ({n_not_ok} other records), bound in [{min(u[2] for u in U):.8f}, "
+      f"{max(u[2] for u in U):.8f}], delta in {sorted({u[3] for u in U})}, "
+      f"union {[[str(float(a)), str(float(b))] for a, b in covered]}; no uniform bound on "
+      f"{[[f'{float(a):.11f}', f'{float(b):.11f}'] for a, b in bare]}")
+
 # ------------------------------------------------------------------------------ manifest
-srcs = {rel: sha256((ROOT / rel).read_bytes()) for rel in sorted(set(INPUTS))}
+srcs = {rel: sha256((ROOT / rel).read_bytes()) for rel in set(INPUTS)}
+srcs = dict(sorted(srcs.items()))
 srcs["code/plot_cardiac_rings.py"] = sha256(Path(__file__).read_bytes())
-manifest = {"description": "Display of stored centres, enclosures and radii; no proof is rerun.",
-            "figures": ["cell-orbit.pdf", "ring-wave.pdf", "alln-pieces.pdf"],
-            "inputs": srcs, "matplotlib": matplotlib.__version__, "numpy": np.__version__}
+manifest = {"description": "Display of stored centres, enclosures, radii and bounds; no proof is rerun.",
+            "figures": ["cell-orbit.pdf", "ring-wave.pdf", "alln-pieces.pdf", "branch-hopf.pdf"],
+            "inputs": srcs, "matplotlib": matplotlib.__version__, "numpy": np.__version__,
+            "layout_checks": "Every legend lies wholly inside the figure and outside every data panel."}
 (FIG / "sources.json").write_text(json.dumps(manifest, indent=2) + "\n")
 print("wrote", (FIG / "sources.json").relative_to(ROOT))

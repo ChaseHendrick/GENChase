@@ -1,0 +1,21 @@
+{
+  "run_all_sha256": "2a25dbd1d51e45ab523a23309b46b1b84f3de8f06669da842059ed792fa00a68",
+  "old_valid_receipt_refusal_reproduced": true,
+  "new_valid_receipt_passed": true,
+  "old_endpoint_precision": 192,
+  "new_endpoint_precision": 53,
+  "ambient_precision_restored": 53,
+  "import_precision": 53,
+  "fixture_ambient_precision": 53,
+  "negative_controls": [
+    "changed exact endpoint 0",
+    "changed exact endpoint 1",
+    "nonpositive polydisc radius",
+    "float polydisc coordinate"
+  ],
+  "accepted_hopf_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+  "mathematical_sources_changed": false,
+  "independent_reviewer_rerun_exit_code": 0,
+  "source_level_correspondence": "Endpoint ball and exact outward decimal interval constructed before192-bit polydisc block, matching frozen identification_at_eps0 and independently executed canonical validator",
+  "complete_staged_reproduction_pending_optional_output_repair": true
+}
