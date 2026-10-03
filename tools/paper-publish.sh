@@ -15,6 +15,11 @@
 #            so is a plain tag whose version the companion already has under its v tag.
 #            A tag with no published release must pass the new-release checks and match the reviewed
 #            candidate tree. A draft release is refused before any repository content is changed.
+#            New releases carry HendrickResearch_<paper-id>_<version>.zip. They require
+#            PAPER_ARCHIVE_MODE=manual-zenodo and ZENODO_GITHUB_INTEGRATION_DISABLED=true,
+#            the owner's confirmation that the automatic GitHub import is disabled for this
+#            future release. This script does not disable it or publish to Zenodo. Upload the
+#            exact branded asset into a new/unpublished version draft of the same DOI family.
 #
 # Direct edits are kept. The branch genchase-sync holds exactly what this repository published, one
 # commit per change, and each run merges it into the companion's default branch. Edits the owner makes
@@ -78,6 +83,11 @@ if [ -n "${RELEASE:-}" ]; then
     [ "$release_status" = 1 ] || { echo "::error::Could not inspect $repo release $RELEASE (gh exit $release_status)."; exit 1; }
   fi
   if [ "$published_release" = false ]; then
+    [ "${PAPER_ARCHIVE_MODE:-}" = manual-zenodo ] &&
+      [ "${ZENODO_GITHUB_INTEGRATION_DISABLED:-}" = true ] || {
+        echo "::error::A new paper release needs PAPER_ARCHIVE_MODE=manual-zenodo and ZENODO_GITHUB_INTEGRATION_DISABLED=true. Confirm the automatic import is disabled, then upload the branded ZIP into an unpublished Zenodo version draft. No repository changes were made."
+        exit 1
+      }
     node "$ROOT/tools/paper-check.js" --paper "$PAPER" --release
   fi
 fi
@@ -153,6 +163,18 @@ while read -r id repo; do
       echo "::error::$repo tag $RELEASE differs from the reviewed candidate tree. Choose a new version; existing tags are never changed."
       exit 1
     fi
+    python3 "$ROOT/tools/paper-archive-build.py" "$id" "$RELEASE" "$work/repo" "$work/archive" "$archive_ref" > "$work/archive-receipt.json"
+    archive_name=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).filename)' "$work/archive-receipt.json")
+    python3 - "$work/archive/${archive_name%.zip}.manifest.json" <<'PY'
+import json, sys
+from pathlib import Path
+p = Path(sys.argv[1])
+j = json.loads(p.read_text())
+j["zenodo_deposit_route"] = "manual-unpublished-version-draft"
+j["owner_confirmed_github_import_disabled"] = True
+j["confirmation_scope"] = "explicit workflow/operator prerequisite; not a remote API check"
+p.write_text(json.dumps(j, indent=2, sort_keys=True) + "\n")
+PY
   fi
 
   if [ "$(git rev-parse "$branch")" = "$had_main" ] && [ "$(git rev-parse "$SYNC")" = "$had_sync" ]; then
@@ -174,8 +196,9 @@ while read -r id repo; do
           echo "Updated the notes of $RELEASE in $repo from papers/$id/RELEASES.md; the tag and its files are unchanged. Zenodo keeps the description it archived."
         fi
       else
-        gh release create "$RELEASE" -R "$repo" --target "$candidate" --title "$RELEASE" --notes-file "$work/notes.md"
-        echo "Released $RELEASE of $repo. If Zenodo is switched on for it, the DOI appears on Zenodo within minutes."
+        printf '\nPaper archive: %s. Upload this exact asset manually to an unpublished Zenodo version draft; retain the existing concept DOI. Automatic GitHub import was confirmed disabled by the operator. The deposited archive and new version DOI still require verification.\n' "$archive_name" >> "$work/notes.md"
+        gh release create "$RELEASE" "$work/archive/$archive_name" "$work/archive/${archive_name%.zip}.manifest.json" -R "$repo" --target "$candidate" --title "$RELEASE" --notes-file "$work/notes.md"
+        echo "Released $RELEASE of $repo with $archive_name. Zenodo manual upload and verification remain required; no Zenodo publication was performed here."
       fi
     fi
   fi

@@ -145,6 +145,10 @@ Figure and manuscript evidence includes:
   licensing boundaries and DOI. Check the actual tag/release and deposited ZIP after publication: one valid archive
   root, complete expected member set and exact source, PDF, code/data and metadata bytes. Record type/subtype,
   version DOI and immutable tag commit. A passed archive check is a packaging check, not a mathematical review.
+- Future paper packages use the filename `HendrickResearch_<paper-id>_<version>.zip`. Inspect the actual deposited
+  filename as well as the contents. A branded release asset alone does not establish the name of a separate
+  GitHub-generated archive deposited by Zenodo's integration. Follow the branded-package deposit route in the
+  publishing runbook before a new release.
 
 Use the registered title consistently, in the chosen sentence or title case, across source, PDF, README, citation
 metadata and archive metadata. Keep the author/contact fields exact and public emails limited to the owner's

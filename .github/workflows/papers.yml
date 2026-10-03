@@ -13,6 +13,7 @@ on:
       - 'tools/paper-sync.js'
       - 'tools/paper-publish.sh'
       - 'tools/paper-archive-check.py'
+      - 'tools/paper-archive-build.py'
       - 'tools/paper-pull.sh'
       - '.github/workflows/papers.yml'
   schedule:
@@ -24,9 +25,14 @@ on:
         required: false
         default: ''
       release:
-        description: Also make this release in the paper's companion, for a Zenodo DOI (for example 1.0.0, without a leading v; an older release keeps its v tag)
+        description: Make a companion release with a branded paper ZIP; Zenodo uses a separate manual version-draft upload (plain version, for example 1.0.0)
         required: false
         default: ''
+      zenodo_github_import_disabled:
+        description: Confirm automatic Zenodo GitHub import is disabled for this future release; this workflow does not disable it
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -51,4 +57,6 @@ jobs:
           GH_TOKEN: ${{ secrets.PAPERS_TOKEN }}
           PAPER: ${{ inputs.paper }}
           RELEASE: ${{ inputs.release }}
+          PAPER_ARCHIVE_MODE: manual-zenodo
+          ZENODO_GITHUB_INTEGRATION_DISABLED: ${{ inputs.zenodo_github_import_disabled }}
         run: sh tools/paper-publish.sh

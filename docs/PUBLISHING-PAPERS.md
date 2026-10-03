@@ -115,7 +115,10 @@ Then:
    interactions limited to collaborators; rulesets that forbid deleting or force-pushing the main
    branch and deleting or moving tags. A monthly run renews the lock. You can still edit the
    companion yourself (below).
-3. On Zenodo's GitHub page, switch the companion **on**.
+3. Future paper releases use a branded ZIP and a separate manual Zenodo version draft. Follow
+   [PAPER-ARCHIVE-NAMING.md](PAPER-ARCHIVE-NAMING.md): confirm the companion's automatic GitHub import is disabled
+   for the new release, then use the exact branded release asset. Existing integrations and archives are not
+   changed by this documentation or by the publisher.
 4. Write the release notes in `papers/<id>/RELEASES.md` under `## 1.0.0` (a date may follow the
    version): what the paper shows, how it was checked, the files, how to reproduce, the licenses. Merge.
    Then Actions, **publish papers**, Run workflow, with the paper id and the release tag, the version
@@ -124,7 +127,10 @@ Then:
    to bring that release's notes up to date; the tag and its files never change, and Zenodo keeps the
    description it archived. A release made before 2026-09-26 keeps its tag with the v (for example
    `v2.1.0` of minimal-winding): run with that tag, and its notes come from `## 2.1.0`; the same
-   version under a plain tag is refused, so it is never released twice. Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+   version under a plain tag is refused, so it is never released twice. A new release also requires the explicit
+   manual-deposit route and import-disabled confirmation and attaches `HendrickResearch_<id>_<version>.zip`.
+   Upload that exact file to a new/unpublished Zenodo version draft within the same concept family, as described in
+   the naming guide; the publisher does not deposit or publish it. Cite the **version DOI** after actual verification, because
    it names exactly the programs you used; the concept DOI always points to the newest release.
 5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
    source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
@@ -155,6 +161,8 @@ including `rank-window`'s `note.tex`. LaTeX builds also accept `PAPER_PDF_ENGINE
 After Zenodo archives a new version, download the ZIP named by that record's API and inspect its
 members. Verify the manuscript bytes against the released PDF, then record the version DOI.
 Set `archiveVersion` in the same registry entry to the exact verified release version at `codeDoi`.
+For a future branded deposit, also set `archiveFilename` to the exact verified
+`HendrickResearch_<id>_<archiveVersion>.zip`; its read-only filename check does not rename historical files.
 Keep both fields on the verified archive when preparing a newer release; advance them together only
 after that new archive has passed the download check. A new `RELEASES.md` heading is not evidence
 that Zenodo imported it.
