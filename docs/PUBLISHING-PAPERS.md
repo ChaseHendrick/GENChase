@@ -65,6 +65,12 @@ missing or checked without evidence, and its self-test plants each of those mist
 paper's argument without writing it out does not meet item 1, and a second reading that is only planned does not
 meet item 6.
 
+The [paper quality standard](PAPER-QUALITY-STANDARD.md) specifies the applicable evidence behind those seven
+items, prospectively from 2026-10-03. Record adoption for a new release in its quality upgrade addendum; historical
+release records keep their original scope. Model provenance, full certificate replay and the spectral-to-nonlinear
+argument require explicit evidence when relevant. The stronger machine-gate manifest is proposed there for separate
+review; the current checker does not automatically enforce every scientific obligation in that document.
+
 Then:
 
 - Figure legends, numerical notes and point labels sit outside the data panels, in reserved margins,
@@ -72,8 +78,10 @@ Then:
   after regeneration, then inspect each figure in the rebuilt manuscript at its final size. Preserve
   the plotted values and scientific meaning when changing layout. The
   [September 29 figure audit](FIGURE-LAYOUT-AUDIT-2026-09-29.md) records the current eight-paper check.
-- A second reader in the field has read it. [REVIEWING.md](REVIEWING.md) and
-  [REVIEW-REQUEST.md](REVIEW-REQUEST.md) make that one step.
+- The independent adversarial second reading has actual recorded findings and dispositions. In-project independent
+  review is identified accurately and satisfies item 6; outside human review is not a blocking requirement in the
+  owner's workflow. Optional outside feedback uses [REVIEWING.md](REVIEWING.md) and
+  [REVIEW-REQUEST.md](REVIEW-REQUEST.md). Do not claim outside or journal peer review without evidence.
 - `node tools/paper-check.js --paper <id>` passes. It checks that the title is the same in every
   source; that every public contact email matches `author.email` in `papers/papers.json`; that the arXiv abstract fits arXiv's 1,920
   characters and its stated length is right; that the page counts in the metadata match the PDFs;

@@ -33,13 +33,43 @@ const norm = s => s.replace(/\$\\?([A-Za-z]+)\$/g, '$1').replace(/\\\\(\[[^\]]*\
 // The quality bar (papers/<id>/notes/QUALITY.md): seven items, each checked with its evidence before a paper is
 // "ready" or later, which is when it goes public as its own repository and gets a DOI.
 const BAR = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior article review', 'Adversarial second reading', 'Reproducible'];
+const QUALITY_STANDARD = '2026-10-03';
+
+// A new release explicitly adopts the prospective standard. Historical seven-item
+// records remain unchanged. This checks the record, not the scientific evidence.
+function qualityAdoption(text) {
+  // A quoted template or hidden comment is not an adoption record.
+  let fence = null;
+  text = text.replace(/<!--[\s\S]*?(?:-->|$)/g, m => m.replace(/[^\n]/g, ' '))
+    .split('\n').map(line => {
+      const marker = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+      if (fence) {
+        if (marker && marker[1][0] === fence.char && marker[1].length >= fence.length && !marker[2].trim()) fence = null;
+        return '';
+      }
+      if (marker) { fence = { char: marker[1][0], length: marker[1].length }; return ''; }
+      return line;
+    }).join('\n');
+  const versions = [...text.matchAll(/^\*\*Quality standard:\*\*[ \t]*(.*?)\s*$/gm)].map(m => m[1]);
+  const headings = [...text.matchAll(/^## Quality standard adoption \(([^)]+)\)[ \t]*$/gm)];
+  let items = [];
+  if (headings.length === 1) {
+    const start = headings[0].index + headings[0][0].length;
+    const tail = text.slice(start), next = tail.search(/^ {0,3}#{1,2}(?:[ \t]+|$)/m);
+    const section = next < 0 ? tail : tail.slice(0, next);
+    items = [...section.matchAll(/^- \[([ xX])\] \*\*U(\d+)\. ([^*]+?)\.\*\*[ \t]*(.*)$/gm)]
+      .map(m => ({ done: m[1] !== ' ', n: +m[2], title: m[3].trim(), evidence: m[4].trim() }));
+  }
+  return { versions, headings: headings.map(m => m[1]), items };
+}
 
 function quality(root, p) {
   const file = ['papers', p.id, 'notes', 'QUALITY.md'].join('/');
   if (!fs.existsSync(path.join(root, file))) return { file, items: null };
-  const items = [...read(root, file).matchAll(/^- \[([ xX])\] \*\*(\d+)\. ([^*]+?)\.\*\*[ \t]*(.*)$/gm)]
+  const text = read(root, file);
+  const items = [...text.matchAll(/^- \[([ xX])\] \*\*(\d+)\. ([^*]+?)\.\*\*[ \t]*(.*)$/gm)]
     .map(m => ({ done: m[1] !== ' ', n: +m[2], title: m[3].trim(), evidence: m[4].trim() }));
-  return { file, items };
+  return { file, items, adoption: qualityAdoption(text) };
 }
 
 function pdfPages(buf) {
@@ -105,6 +135,23 @@ function checkPaper(root, p, opts = {}) {
         if (due && !opts.requireCompleteQuality && /^10\.5281\/zenodo\.\d+$/.test(p.codeDoi || '')) note(msg + '; the Zenodo archive already exists and is not withdrawn');
         else say(msg + (due ? '; a paper is "ready" or later only when every item is checked' : ''));
       } else if (q.items.length >= BAR.length) note(q.file + ': the quality bar is met');
+      if (opts.requireCompleteQuality) {
+        const a = q.adoption;
+        if (a.versions.length !== 1 || a.versions[0] !== QUALITY_STANDARD ||
+            a.headings.length !== 1 || a.headings[0] !== QUALITY_STANDARD) {
+          bad(q.file + ': a new release needs one explicit quality standard adoption (' + QUALITY_STANDARD + ')');
+        } else {
+          if (a.items.length !== BAR.length) bad(q.file + ': quality standard adoption needs exactly seven U1-U7 items');
+          if (a.items.some((item, i) => item.n !== i + 1)) bad(q.file + ': adoption items must appear in U1-U7 order');
+          BAR.forEach((title, i) => {
+            const found = a.items.filter(x => x.n === i + 1);
+            if (found.length !== 1 || found[0].title !== title) bad(q.file + ': adoption item U' + (i + 1) + ' "' + title + '" is missing, duplicated or renamed');
+            else if (!found[0].done || !found[0].evidence) bad(q.file + ': adoption item U' + (i + 1) + ' needs completed evidence or an explicit inapplicable reason');
+          });
+        }
+      } else if (q.adoption.headings.length || q.adoption.versions.length) {
+        note(q.file + ': prospective standard adoption is checked for a new release with --release');
+      }
     }
   }
   const files = [p.typst, p.latex, p.markdown, p.pdf, p.arxiv && p.arxiv.metadata, p.journal && p.journal.coverLetter, p.zenodo && p.zenodo.metadata].filter(Boolean);
@@ -226,6 +273,7 @@ function selfTest() {
   };
   try {
     const record = open => 'Quality record\n\n' + BAR.map((t, i) => '- [' + (open.includes(i + 1) ? ' ' : 'x') + '] **' + (i + 1) + '. ' + t + '.** Evidence ' + (i + 1) + '.\n').join('');
+    const adoption = (open = []) => '\n## Quality standard adoption (' + QUALITY_STANDARD + ')\n\n**Quality standard:** ' + QUALITY_STANDARD + '\n\n' + BAR.map((t, i) => '- [' + (open.includes(i + 1) ? ' ' : 'x') + '] **U' + (i + 1) + '. ' + t + '.** New-scope evidence ' + (i + 1) + '.\n').join('');
     expect(true, 'a consistent paper passes');
     expect(false, 'an email address in the LaTeX source', () => w('p.tex', read(tmp, 'p.tex').replace('Text', 'Mail me@real-domain.org. Text')));
     expect(true, 'a you@example.com placeholder is allowed', () => w('letter.md', 'Write to you@example.com.\n'));
@@ -251,7 +299,32 @@ function selfTest() {
     expect(false, 'ready with an open item', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(true, 'an archived paper keeps an open item on the record', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(false, 'an existing DOI cannot excuse an open item for a new release', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([6])); }, { requireCompleteQuality: true });
-    expect(true, 'a new release passes with complete quality evidence', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([])); }, { requireCompleteQuality: true });
+    expect(true, 'a new release passes with complete quality and adoption evidence', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([]) + adoption()); }, { requireCompleteQuality: true });
+    const newRelease = (label, body, want = false) => expect(want, label, p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([]) + body); }, { requireCompleteQuality: true });
+    newRelease('a historical checklist cannot alone admit a new-standard release', '');
+    newRelease('a stale standard cannot admit a new release', adoption().replaceAll(QUALITY_STANDARD, '2026-09-29'));
+    newRelease('the standard version alone cannot admit a new release', '\n**Quality standard:** ' + QUALITY_STANDARD + '\n');
+    newRelease('the adoption heading alone cannot admit a new release', adoption().replace('**Quality standard:** ' + QUALITY_STANDARD, ''));
+    newRelease('duplicate standard declarations are refused', adoption() + '\n**Quality standard:** ' + QUALITY_STANDARD + '\n');
+    newRelease('duplicate adoption sections are refused', adoption() + '\n## Quality standard adoption (' + QUALITY_STANDARD + ')\n');
+    newRelease('duplicate adoption items are refused', adoption() + '- [x] **U1. Complete proofs.** Duplicated.\n');
+    newRelease('renamed adoption items are refused', adoption().replace('**U5. Prior article review.**', '**U5. Prior work.**'));
+    newRelease('empty adoption evidence is refused', adoption().replace('New-scope evidence 4.', ''));
+    newRelease('an out-of-range adoption item cannot replace U7', adoption().replace('**U7.', '**U8.'));
+    newRelease('adoption evidence outside its section is refused', adoption().replace('- [x] **U7.', '## Other notes\n\n- [x] **U7.'));
+    newRelease('an H1 also ends the adoption section', adoption().replace('- [x] **U7.', '# Other notes\n\n- [x] **U7.'));
+    newRelease('a tab-delimited H2 ends the adoption section', adoption().replace('- [x] **U7.', '##\tOther notes\n\n- [x] **U7.'));
+    newRelease('an H3 can organize evidence within adoption', adoption().replace('- [x] **U7.', '### Reproduction evidence\n\n- [x] **U7.'), true);
+    newRelease('a fenced adoption template cannot admit a release', '\n```markdown\n' + adoption() + '```\n');
+    newRelease('a tilde-fenced adoption template cannot admit a release', '\n~~~markdown\n' + adoption() + '~~~\n');
+    newRelease('an unclosed fence cannot admit a release', '\n```markdown\n' + adoption());
+    newRelease('a commented adoption template cannot admit a release', '\n<!--\n' + adoption() + '-->\n');
+    newRelease('an unclosed comment cannot admit a release', '\n<!--\n' + adoption());
+    newRelease('reversed adoption item order is refused', adoption().replace(/(?:^- \[x\] \*\*U.*\n)+/m, block => block.trimEnd().split('\n').reverse().join('\n') + '\n'));
+    newRelease('a real adoption can accompany a quoted unused template', adoption() + '\n```markdown\n' + adoption([1]) + '```\n', true);
+    for (let n = 1; n <= BAR.length; n++) newRelease('open adoption item U' + n + ' blocks a new release', adoption([n]));
+    newRelease('an explicit inapplicable reason can complete the applicable record', adoption().replace('New-scope evidence 2.', 'Inapplicable: purely analytic proof, no numerical proof step.'), true);
+    expect(true, 'historical archive checks preserve open prospective adoption', p => { p.status = 'ready'; p.codeDoi = '10.5281/zenodo.23013935'; w('papers/t/notes/QUALITY.md', record([]) + adoption([1, 2])); });
     expect(false, 'a draft cannot make a new release even with complete evidence', p => { p.status = 'draft'; w('papers/t/notes/QUALITY.md', record([])); }, { requireCompleteQuality: true });
     expect(false, 'a ready paper with an open item and a DOI that is not Zenodo', p => { p.status = 'ready'; p.codeDoi = '10.1000/not-an-archive'; w('papers/t/notes/QUALITY.md', record([6])); });
     expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior article review', 'Prior work')); });
