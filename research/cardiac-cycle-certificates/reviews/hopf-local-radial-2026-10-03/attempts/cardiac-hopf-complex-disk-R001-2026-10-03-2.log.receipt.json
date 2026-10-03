@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "hopf_stability_local.py",
+    "--complex-disk",
+    "1/100",
+    "--out",
+    "/private/tmp/cardiac-hopf-complex-disk-R001-2026-10-03-2.json"
+  ],
+  "pid": 94878,
+  "exit_code": 2,
+  "stop_reason": null,
+  "wall_seconds": 77.87206466705538,
+  "peak_aggregate_rss_mib": 413.65625,
+  "log": "/private/tmp/cardiac-hopf-complex-disk-R001-2026-10-03-2.log"
+}

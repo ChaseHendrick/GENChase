@@ -1,0 +1,325 @@
+{
+  "status": "scoped_translation_controls_pass",
+  "date_UTC": "2026-10-03",
+  "scope": "49 float/complex-step literal controls and exact generated/decimal/scales checks; not full symbolic model equivalence or a new certificate",
+  "primary_sources_sha256_checked": [
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/author-HVM2-index.html",
+      "sha256": "a104b1f2a217a91495a3245726929b730c9284e0a2cb8e4ba380aee22081a71e",
+      "url": "https://bioinformatics.bio.uu.nl/khwjtuss/SourceCodes/HVM2/"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/author-Main.cc",
+      "sha256": "0264d2b770ed7d8e01a1631298723f149cf777bfcb4c46c6a9c940c10d8106e3",
+      "url": "https://bioinformatics.bio.uu.nl/khwjtuss/SourceCodes/HVM2/Source/Main.cc"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/author-Step.cc",
+      "sha256": "8a305ae719a3a730e7e902a25107de942bb7cc93f6bfecefd6d79d6511f7a61c",
+      "url": "https://bioinformatics.bio.uu.nl/khwjtuss/SourceCodes/HVM2/Source/Step.cc"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/author-Variables.cc",
+      "sha256": "56c4f2a688cd024ff7107d241dd7ad5144f1d211eb5dad4864bbca38f7d68825",
+      "url": "https://bioinformatics.bio.uu.nl/khwjtuss/SourceCodes/HVM2/Source/Variables.cc"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/tp06-endo.cellml",
+      "sha256": "317a1dc029d7914017709d2e3556df6ce9c8473bf3149c4af279e869b63f2daa",
+      "url": "https://models.cellml.org/workspace/604/rawfile/de5a4e600b57c8b9b0bd477695648c82351bc6dd/ten_tusscher_model_2006_endo.cellml"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/TNNP-unit-fixes.pdf",
+      "sha256": "96ccd5e449a78357e97a24dad648d93bcfb15de0791c3cb8511a4aa7f1998dec",
+      "url": "https://models.cellml.org/workspace/604/rawfile/de5a4e600b57c8b9b0bd477695648c82351bc6dd/TNNP_unit_fixes.pdf"
+    },
+    {
+      "file": "work/cardiac-study/ap-model-audit/primary-sources/barral-units-supplement.pdf",
+      "sha256": "203872293c76b676a29db2a4af352fb5f28efb9defac1e2c09cdbc28c5774d7f",
+      "url": "https://www.frontiersin.org/api/v4/articles/879035/file/Presentation_1.pdf/879035_supplementary-materials_presentations_1_pdf/1"
+    }
+  ],
+  "matlab_sha256": "a50f6c08b4360dd257cce389a39ae72fda51e3642641bf5b8e5fced6c2225670",
+  "reference_sha256": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+  "control_source_sha256": "37c5a22ee28481b1055c967f176d1fff51294251e09a00c7b5f93c45c1666d76",
+  "worst_normalized_rhs_error": 4.64778597358183e-16,
+  "worst_normalized_jac_error": 4.8609075486327344e-15,
+  "rows": [
+    {
+      "V": -80.0,
+      "normalized_rhs_error": 4.3300748045253375e-19,
+      "normalized_jac_error": 3.3812118581319686e-16
+    },
+    {
+      "V": -40.001,
+      "normalized_rhs_error": 1.376898586637273e-16,
+      "normalized_jac_error": 1.8350328342441134e-16
+    },
+    {
+      "V": -40.0,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.213433239126736e-16
+    },
+    {
+      "V": -39.999,
+      "normalized_rhs_error": 1.376922947131133e-16,
+      "normalized_jac_error": 4.213526689895228e-16
+    },
+    {
+      "V": -20.0,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.589353017478777e-16
+    },
+    {
+      "V": 0.0,
+      "normalized_rhs_error": 5.4190431156225137e-20,
+      "normalized_jac_error": 2.9928643410917787e-16
+    },
+    {
+      "V": 14.99,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.874001672040893e-16
+    },
+    {
+      "V": 15.01,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.8609075486327344e-15
+    },
+    {
+      "V": 30.0,
+      "normalized_rhs_error": 2.7101865760097293e-20,
+      "normalized_jac_error": 1.3100972355807688e-16
+    },
+    {
+      "V": -12.689735146229204,
+      "normalized_rhs_error": 2.1651649746017413e-19,
+      "normalized_jac_error": 1.3004350466994725e-16
+    },
+    {
+      "V": 25.622400706170502,
+      "normalized_rhs_error": 1.694054411721672e-21,
+      "normalized_jac_error": 1.8374621470044074e-16
+    },
+    {
+      "V": -77.89518395565229,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 7.624306941345129e-16
+    },
+    {
+      "V": -13.393650707064804,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.1843849618925776e-16
+    },
+    {
+      "V": -82.66717411056571,
+      "normalized_rhs_error": 8.636710866965913e-19,
+      "normalized_jac_error": 8.009573497768327e-16
+    },
+    {
+      "V": 27.334954336384257,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.905599459859092e-16
+    },
+    {
+      "V": -27.12898232186403,
+      "normalized_rhs_error": 4.2351542118283574e-22,
+      "normalized_jac_error": 4.0671232161154416e-16
+    },
+    {
+      "V": -10.552587263876111,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.0318162929188819e-16
+    },
+    {
+      "V": -24.43292834524553,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.3794099223321843e-16
+    },
+    {
+      "V": -10.767932405896335,
+      "normalized_rhs_error": 6.797835001530624e-18,
+      "normalized_jac_error": 4.850804715180858e-16
+    },
+    {
+      "V": -1.6424058241993063,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.642010231680433e-16
+    },
+    {
+      "V": -49.76317784015668,
+      "normalized_rhs_error": 2.166598425006215e-19,
+      "normalized_jac_error": 3.4770135534205616e-16
+    },
+    {
+      "V": 2.915529789229771,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.537541002724745e-16
+    },
+    {
+      "V": 7.914721911164129,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.541485968079707e-16
+    },
+    {
+      "V": -16.494979313495044,
+      "normalized_rhs_error": 1.7246775602407902e-18,
+      "normalized_jac_error": 2.226522421320727e-16
+    },
+    {
+      "V": -54.07715883730332,
+      "normalized_rhs_error": 4.2351512327139583e-22,
+      "normalized_jac_error": 2.2087704534450225e-16
+    },
+    {
+      "V": -20.767493017896083,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.610223667306164e-16
+    },
+    {
+      "V": -26.029178660231196,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.0991932215263924e-16
+    },
+    {
+      "V": -68.86095820759493,
+      "normalized_rhs_error": 2.7636604777990734e-16,
+      "normalized_jac_error": 4.0615683551382993e-16
+    },
+    {
+      "V": -78.78622596987749,
+      "normalized_rhs_error": 4.327685463235987e-19,
+      "normalized_jac_error": 1.691143823570376e-16
+    },
+    {
+      "V": -65.35004149688321,
+      "normalized_rhs_error": 1.1353442510680603e-16,
+      "normalized_jac_error": 3.0388797513813326e-16
+    },
+    {
+      "V": -24.04917998402522,
+      "normalized_rhs_error": 1.1080125132391135e-16,
+      "normalized_jac_error": 4.1107586343196537e-16
+    },
+    {
+      "V": -36.79472633852675,
+      "normalized_rhs_error": 1.9272737099202595e-16,
+      "normalized_jac_error": 5.605474117463193e-16
+    },
+    {
+      "V": -8.759087513391242,
+      "normalized_rhs_error": 1.0834590589293173e-19,
+      "normalized_jac_error": 2.4785834354990736e-16
+    },
+    {
+      "V": -83.80918504660141,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.941108468567976e-16
+    },
+    {
+      "V": -64.80282791612301,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 1.361943361179731e-16
+    },
+    {
+      "V": -67.13394579748925,
+      "normalized_rhs_error": 2.1651262205517922e-19,
+      "normalized_jac_error": 4.682371884437818e-16
+    },
+    {
+      "V": -7.904198922232134,
+      "normalized_rhs_error": 2.0071170619164012e-16,
+      "normalized_jac_error": 2.2707819553334853e-16
+    },
+    {
+      "V": -53.44132028066254,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.3056252614869683e-16
+    },
+    {
+      "V": -80.24516397938041,
+      "normalized_rhs_error": 2.5369362518584725e-17,
+      "normalized_jac_error": 2.9041234172869124e-16
+    },
+    {
+      "V": 12.681404370524715,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 3.37091938341787e-16
+    },
+    {
+      "V": 13.444548676963528,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.2361129967845656e-16
+    },
+    {
+      "V": 24.362190200911364,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.2088546974214866e-16
+    },
+    {
+      "V": 27.011035628589195,
+      "normalized_rhs_error": 4.64778597358183e-16,
+      "normalized_jac_error": 3.3980070301178553e-16
+    },
+    {
+      "V": 17.025543336111,
+      "normalized_rhs_error": 8.470289214712964e-22,
+      "normalized_jac_error": 1.6929619481100382e-16
+    },
+    {
+      "V": 5.716591946110626,
+      "normalized_rhs_error": 4.3302786031971157e-19,
+      "normalized_jac_error": 4.567290929239533e-16
+    },
+    {
+      "V": 14.601554124730614,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 2.831908429278883e-16
+    },
+    {
+      "V": 13.337794924449675,
+      "normalized_rhs_error": 4.321951920214137e-19,
+      "normalized_jac_error": 3.976802131937206e-16
+    },
+    {
+      "V": -57.259904389620544,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.058998928601677e-16
+    },
+    {
+      "V": -32.989448247470975,
+      "normalized_rhs_error": 0.0,
+      "normalized_jac_error": 4.80747636860455e-16
+    }
+  ],
+  "trust_controls": [
+    {
+      "name": "test_generated_file",
+      "result": "fresh; reference SHA-256 pinned; 101 decimals -> _D, 164 integers -> _I, 22 exponents kept, 1843 other tokens identical"
+    },
+    {
+      "name": "test_decimal_and_scale_balls",
+      "result": "83 decimal literals enclosed with radius <= 2^(2-prec)|q| at 53/128/256 bits; 42 integers and 36 scales exact"
+    },
+    {
+      "name": "test_scales_and_params_match_capd",
+      "result": "scale exponents and the 7 parameter decimals equal model/tp06_capd.hpp and model/setup.hpp"
+    }
+  ],
+  "membrane_vs_internal_flux": {
+    "Ca_sr_Cm1": 0.0011281062224290917,
+    "Ca_sr_Cm0185": 0.0011281062224290917,
+    "Na_i_ratio": 5.405405405405405,
+    "false_all_flux_scale_difference": 0.004969765250160593
+  },
+  "charge_clamp": {
+    "full19_charge_derivative_float": -2.168404344971009e-19,
+    "clamped18_charge_derivative_float": 1.2717959929607137e-05,
+    "omitted_Ki_derivative_float": -1.2717959929607281e-05,
+    "conclusion": "Ki clamping is not reduction to the conserved full19 charge leaf"
+  },
+  "V15_refused_by_pure_scalar_reference_and_arb": true,
+  "negative_controls": {
+    "f2_170_to_240_refused_error": 0.019014662174789167
+  },
+  "wall_seconds": 1.1345450000371784
+}

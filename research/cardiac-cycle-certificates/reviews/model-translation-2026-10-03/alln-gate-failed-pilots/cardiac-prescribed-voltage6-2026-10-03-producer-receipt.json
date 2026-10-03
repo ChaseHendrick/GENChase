@@ -1,0 +1,65 @@
+{
+  "status": "failed",
+  "certified_alln_or_cable": false,
+  "bindings": {
+    "identity": "prescribed-voltage6-cable-eps0",
+    "sources": {
+      "fourier/alln_gate_certificate.py": "d085bc25f188f104c2475f9f18032ef5ed4f9ce7606dc1530fcd4cb535d1b5dc",
+      "fourier/alln_gate_core.py": "df6e1500e2c82c2d8ba930c4691df977ea1a85151064347708441275ab7a9f7b",
+      "fourier/alln.py": "efec79f5236f1535dea2de6919af41655e893836a83b5bd9c594e09d1342a414",
+      "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+      "fourier/stability_witness.py": "4b6317dfe596d9e28722753025a559397e09e110ec3ba07f82d86cb6ba983f7f",
+      "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+      "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+      "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+      "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+      "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+    },
+    "inputs": {
+      "fourier/data/alln/pieces.jsonl": "01374b0b965b6079eac051cc7fa99a79358ebdddcec157ffc07d2418771236cd"
+    },
+    "settings": {
+      "delta": "1e-5",
+      "Ke_offset": 24,
+      "n_c": 24,
+      "prec": 128,
+      "eta_tail": "1/1048576",
+      "S_exps": null,
+      "zeta": "ones",
+      "cluster_tols": [
+        0.0,
+        0.001,
+        0.003,
+        0.01,
+        0.02,
+        0.05,
+        0.1,
+        0.2
+      ],
+      "sanity_tol": "1e-6",
+      "rho": "1",
+      "rho2": "1/8",
+      "R": "1/8",
+      "nA": 40,
+      "nodes": 256
+    },
+    "domain": {
+      "epsilon": "0",
+      "GKs": "11/400",
+      "subset": [
+        10,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    },
+    "trust": "operator enclosures and admitted alln parent are premises; no physical phase premise"
+  },
+  "exception": "ValueError",
+  "reason": "operands could not be broadcast together with shapes (18,1) (6,6) ",
+  "wall_seconds": 3.320312875090167
+}

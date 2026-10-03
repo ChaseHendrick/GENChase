@@ -1,0 +1,35 @@
+fresh full18 Jacobian strip
+fresh full18 physical polydisc
+fresh DFT coefficients with interval alias bounds
+N = 1: K_e = 24 (n_W = 294), n_c = 24, delta = 1.000000e-05 (dyadic >= 1e-5), b = -a = 0.087937, prec = 128
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/alln_gate_certificate.py", line 162, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/alln_gate_certificate.py", line 136, in main
+    witness, result, capture = sw.capture(
+                               ^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 100, in capture
+    result = call()
+             ^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/alln_gate_certificate.py", line 137, in <lambda>
+    lambda: core.certify_gate(1, inp, settings, {}, log, lambda _: None, settings["prec"]),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/alln_gate_core.py", line 77, in certify_gate
+    e = search_S({n: Jmid[n] for n in range(-min(Kp, 60), min(Kp, 60) + 1)}, Xs_f, g0f, delf,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability.py", line 376, in search_S
+    r = minimize(g, 0.1 * np.random.default_rng(i).normal(size=36), method="Powell", options={"maxiter": 40000})
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 775, in minimize
+    res = _minimize_powell(fun, x0, args, callback, bounds, **options)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/lib/python3.12/site-packages/scipy/optimize/_optimize.py", line 3556, in _minimize_powell
+    fval = func(x)
+           ^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/lib/python3.12/site-packages/scipy/optimize/_optimize.py", line 560, in function_wrapper
+    fx = function(np.copy(x), *(wrapper_args + args))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability.py", line 372, in <lambda>
+    g = lambda x: math.log(_n1(np.exp(x[:18])[:, None] * U * np.exp(x[18:])[None, :]) *  # noqa: E731
+                               ~~~~~~~~~~~~~~~~~~~~~~~~^~~
+ValueError: operands could not be broadcast together with shapes (18,1) (6,6) 

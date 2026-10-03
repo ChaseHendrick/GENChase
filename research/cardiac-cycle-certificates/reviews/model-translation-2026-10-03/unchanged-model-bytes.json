@@ -1,0 +1,16 @@
+{
+  "unchanged_vs_HEAD": {
+    "research/cardiac-cycle-certificates/model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "research/cardiac-cycle-certificates/model/tp06_capd.hpp": "4eece8e152aaa8a70f35ed2d81bc71bbd505d381deb0d03acecfa7fe23f90549",
+    "research/cardiac-cycle-certificates/model/setup.hpp": "90e7e6cc791f04bdb2a1a589a154be5fd0cd91c265a1e4dc1e96d62e9efd8357",
+    "research/cardiac-cycle-certificates/model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "research/cardiac-cycle-certificates/fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "research/cardiac-cycle-certificates/fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "research/cardiac-cycle-certificates/fourier/test_arbmodel.py": "2b2a1a0dffab2b323ba135131f03ab142538d14cf37dc722f8262200bf0a4bce"
+  },
+  "new_preliminary_sources": {
+    "research/cardiac-cycle-certificates/fourier/LEMMAS-alln-stability.md": "51b303859a9c26cef4a4208a93453f3404b50c0b76da143e7de5ab50d7aa91b8",
+    "research/cardiac-cycle-certificates/fourier/alln_stability.py": "6a5400fe58ef75fea3e83bc5cb08acecbcaec93c17b724639a5cd43843d66271",
+    "research/cardiac-cycle-certificates/fourier/test_alln_stability.py": "9d3642b067fcb3b641a0d6f4b83f25e31b3bf60c433ead14f14b78da45655bb1"
+  }
+}

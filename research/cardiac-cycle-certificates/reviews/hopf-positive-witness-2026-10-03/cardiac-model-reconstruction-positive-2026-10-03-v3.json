@@ -1,0 +1,57 @@
+{
+  "schema": "cardiac-model-reconstruction-pilot/1",
+  "status": "passed",
+  "inputs": {
+    "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/witness.json.gz": "1cb70094886465f1e95f6faff16cda497476768a8bda4d42b7ebd4cce660bedc",
+    "/private/tmp/cardiac-hopf-positive-witness-2026-10-03-v1/family.json": "a04cfbd7561235af5d7b8ae808b3e17c5dd76edefd4079c8d5ca89e20e3aad11",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/reconstruct-model.py": "5099e48cc96ce0822c3d19ae201ab86ec69dfb7216538827e02b48acdd4488e9"
+  },
+  "checker_sources": {
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "fourier/model_enclosure_replay.py": "fd579d160d230ff8f60c2a4cac494744866991ff81f14c67ff13ec4c8aa14f8d"
+  },
+  "scope": "one exact saved positive-amplitude family; explicit existence/literal-model premises",
+  "result": {
+    "schema": "cardiac-model-enclosure-replay/1",
+    "status": "passed",
+    "scope": "one positive-amplitude affine single-cell Jacobian family, conditional on supplied existence tube",
+    "premises": [
+      "admitted orbit existence/identification and stated analytic state/parameter/frequency tube",
+      "pinned literal 18-state model translation and exact decimal/scaling loader"
+    ],
+    "independent_model_translation": false,
+    "independent_orbit_existence": false,
+    "operator_sha256": "06ef94a7d47f2ba5532b046dc43d6f1c4338a2df54371e36743df40525be4e4c",
+    "centre_sha256": "2b8c83f7f0ba1407c09561662d42030cbffe8e9da2b7eae951296d2814b5eb08",
+    "domain": [
+      "9499/1000000",
+      "9501/1000000"
+    ],
+    "tube_sha256": "c94b5f28224419a7bc2cc43799ee5b5fc607d34fe6c928a271c3f2833377796c",
+    "sources": {
+      "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+      "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+      "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+      "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+      "fourier/model_enclosure_replay.py": "fd579d160d230ff8f60c2a4cac494744866991ff81f14c67ff13ec4c8aa14f8d"
+    },
+    "runtime": {
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0-arm64-arm-64bit",
+      "python_flint": "0.9.0"
+    },
+    "settings": {
+      "M": 128,
+      "Kp": 64,
+      "nx": 32,
+      "ny": 8,
+      "subdivisions": 8,
+      "precision": 256
+    },
+    "checked_complex_coefficients": 83592,
+    "wall_s": 54.254251833073795
+  }
+}

@@ -1,0 +1,10 @@
+new untrusted centre K=20, residual=1.262e-12; proof still required
+  cover: T = 3/64, 1 piece(s), 1600 boxes, 37.5 s; max_k sum MH = 2.861e+01
+fresh subpiece epsilon=[0,1/500], parent=0
+  [0.000000, 0.002000]: Y0 = 7.176e-05 (p 1.2e-10, Y1 1.2e-04, Y2 1.44e+02), Z1 = 0.0307 (c 0.002, curve 30.70), Z2 = 2.856e+02, r = [7.486e-05, 1.000e-03]
+enclosing centre Jacobian coefficients
+enclosing uniform amplitude derivative of Jacobian
+  certify_uniform: K_e = 12 (n_W = 450), delta = 3.000000e-05, h = 1.0000e-03, omega in [0.119340517138, 0.119342205870]
+  S search: floating-point theta_T estimate 0.0017, e = [0, -6, 0, -8, 23, 30, 31, -4, -10, -8, -7, 3, 5, -7, -4, -9, -4, -7] (1.2 s local)
+  tail (route A): rho_T = 5.0859, sigma_off = 0.0012, ||A_0 - A0c|| = 1.274e-05, theta_T = 0.0059
+  window: q_C = 2.903e-04, bhat = 5.654e-03, (SC) worst ratio 1.9761e+01 at -8.84808e-08+1.64707e-16j; critical columns -4.694e-05-3.315e-17j: ratio 4.034e+00 (W0 6.6e-13, h W1 3.3e-06, h^2 W2 6.4e-08, ball 6.0e-05), -8.848e-08+1.647e-16j: ratio 1.976e+01 (W0 1.3e-13, h W1 1.1e-09, h^2 W2 8.3e-07, ball 5.8e-04), -1.685e-13-1.244e-16j: ratio 1.961e+01 (W0 1.3e-13, h W1 5.4e-11, h^2 W2 9.0e-07, ball 5.8e-04)

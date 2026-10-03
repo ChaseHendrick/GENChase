@@ -1,0 +1,45 @@
+{
+  "diagnostic": {
+    "Y0": {
+      "approx": 0.14202450198179617,
+      "dec": "0.1420245019817961640778784",
+      "hex": "0x48b76f7e7c292f34fb251d04674fd99e59868dfe1aa1cb3fp-193"
+    },
+    "Z1": {
+      "approx": 0.22967678613886558,
+      "dec": "0.2296767861388655681503159",
+      "hex": "0xeb306434779e04b3eebb15d5f3ad0827e5e58db5da69af99p-194"
+    },
+    "Z2": {
+      "approx": 3827.5610849243494,
+      "dec": "3827.561084924349327374058",
+      "hex": "0xef38fa342f85be71b31b6e7796485f22804eef3655f6ca3p-176"
+    },
+    "r_star": {
+      "approx": 0.1,
+      "dec": "0.1000000000000000000000001",
+      "hex": "0xcccccccccccccccccccccccccccccccccccccccccccccccdp-195"
+    }
+  },
+  "error": "augmented radial quotient contraction failed",
+  "kind": "hopf_local_failed_pilot",
+  "model_stability_certified": false,
+  "sources_sha256": {
+    "fourier/LEMMAS-hopf-stability-local.md": "8c914ef640c1eba3628d22df6ff3c7a553be2e212bdedfd761e274c542f6979e",
+    "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+    "fourier/hopf_stability_local.py": "b655b2536152f83b30500f22888d347a6fc9efb6bd006f5f0682e51dc22c261e",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+    "fourier/test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "status": "proof attempt failed"
+}

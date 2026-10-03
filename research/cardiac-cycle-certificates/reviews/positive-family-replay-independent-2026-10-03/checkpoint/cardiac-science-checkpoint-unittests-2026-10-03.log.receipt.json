@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/usr/bin/nice",
+    "-n10",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "-m",
+    "unittest",
+    "-v",
+    "test_alln_stability",
+    "test_hopf_stability_local",
+    "test_model_enclosure_replay",
+    "test_certificate_replay"
+  ],
+  "pid": 24728,
+  "exit_code": 0,
+  "stop_reason": null,
+  "wall_seconds": 2.1107682909350842,
+  "peak_aggregate_rss_mib": 76.0625,
+  "log": "/private/tmp/cardiac-science-checkpoint-unittests-2026-10-03.log"
+}

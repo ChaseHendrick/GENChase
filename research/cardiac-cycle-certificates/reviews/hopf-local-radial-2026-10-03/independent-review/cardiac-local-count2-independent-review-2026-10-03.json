@@ -1,0 +1,34 @@
+{
+  "schema": "cardiac-local-count2-independent-scoped-review/1",
+  "status": "source_reviewed_native_other16_exclusion_and_joint_local_implication_admitted",
+  "producer_receipt_sha256": "a9f5878b35ba09efa4afc46f40fc270fa43915a74aefff4cfcc0a5c22de220a5",
+  "adapter_sha256": "f14888572dbce6b70d4c4dc223643907d3389253dfd35814a94a99f6ecfd564d",
+  "scope": {
+    "N": 1,
+    "epsilon_interval": [
+      "-1/51200000",
+      "1/51200000"
+    ],
+    "expected_algebraic_count": 2,
+    "delta_exact": "17293822569103/576460752303423488",
+    "joint_radial_sign_interval": "0<epsilon<=1/51200000",
+    "model_stability_certified_flag_in_producer": false
+  },
+  "checks": [
+    "current scientific/Hill/input and private adapter byte hashes",
+    "only AST count guard1->2; every finite/tail/SC inequality retained",
+    "only Ke12 geometry override; no mutation or skip controls",
+    "positive frequency bounds, theta_T<1,q_C<1,delta_exact>=requested",
+    "radial sign interval exact match and radial disk radius below delta"
+  ],
+  "argument": [
+    "The affine uncertainty is a divided-difference enclosure. The explicit Cauchy O(epsilon^2) remainder supplies a uniform bound on R(epsilon)/epsilon, including its removable zero. This does not infer a derivative bound by division of an arbitrary uniform error.",
+    "Exact phase and strictly negative radial exponents are distinct. Their multiplicities each exceed or equal one and exhaust the native algebraic-rank-two critical count. Thus phase is simple; all other16 exponents are left of the certified negative boundary.",
+    "For each fixed strictly positive amplitude, standard finite-dimensional C1 Floquet theory yields local exponential orbital attraction. No uniform basin, prefactor, global bridge overlap or allN conclusion is supplied."
+  ],
+  "limitations": [
+    "No independent full finite/tail/SC-vector count2 witness replay. Public native receipt retains only summary/critical diagnostics.",
+    "Root literal model, complex branch identification and reviewed spectral lemmas remain explicit proof dependencies.",
+    "No new numerical run by the independent reviewer."
+  ]
+}

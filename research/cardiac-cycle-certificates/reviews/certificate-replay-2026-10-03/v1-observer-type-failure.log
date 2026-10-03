@@ -1,0 +1,33 @@
+  logs valid: 57 groups, 712 pieces, [0.027499735464, 0.02778996093], 0 gluing inequalities re-derived
+  G6: h = 3.1206e-06, Z1 point 0.1005, Z1 path 0.1723, Z2 2.441e+02, Y' = 2.543e-08 (Y0p 6.89e-11, h Y1 1.03e-12, h^2 Y2 6.54e-11, h^3 Y3 2.53e-08, h^4 Y4 5.70e-10), rho = 3.120e-08, kappa = 0.1723
+  certify_uniform: K_e = 12 (n_W = 450), delta = 3.000000e-05, h = 3.1206e-06, omega in [0.117427279454, 0.117459391948]
+  S search: floating-point theta_T estimate 0.4192, e = [0, -4, 0, -9, 22, 22, 22, -4, -10, -11, -6, 3, 5, -7, -6, -8, -4, -8] (1.0 s local)
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 162, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 153, in main
+    witness, result, receipt = capture(call, bs._certify_uniform, bindings)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 77, in capture
+    result = call()
+             ^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 152, in <lambda>
+    call = (lambda: bs.prove_piece_uniform(args.piece, settings=settings)) if args.group is None else (lambda: bs.prove_group_uniform(args.group, settings=settings))
+                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/branch_stability.py", line 1816, in prove_group_uniform
+    cert = certify_uniform(U, settings=st, controls=controls, log=log)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/branch_stability.py", line 411, in certify_uniform
+    out = _certify_uniform(U, st, controls, log, prec)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/branch_stability.py", line 586, in _certify_uniform
+    tail.append(dict(r=rr, cluster_tol=tol, kappa=float(kap), F_norm=float(Fn), gamma=float(gam),
+    ^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 70, in trace
+    damping=real(loc["dm"][loc["rr"]]), lambda_=[complex_rectangle(z) for z in loc["Lr"]]))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/stability_witness.py", line 24, in real
+    x = arb(x)
+        ^^^^^^
+  File "flint/types/arb.pyx", line 203, in flint.types.arb.arb.__init__
+TypeError: cannot create arb from type <class 'flint.types.acb.acb'>

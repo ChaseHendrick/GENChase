@@ -1,0 +1,6 @@
+fresh complex-line full-strip cover in 16.49s
+  [0.000000, 0.002000]: Y0 = 4.387e-04 (p 9.7e-06, Y1 9.4e-03, Y2 5.99e+01), Z1 = 0.1197 (c 0.002, curve 31.24), Z2 = 3.561e+02, r = [5.623e-04, 1.000e-03]
+fresh Taylor/Cauchy complex-square coefficients radius=1/100000
+  tail: Neumann for m > m_max = 387 (theta = 0.497); explicit inverses for 8 < m <= 387
+radial quotient: Y0=4.556e-04 Z1=3.680e-01 Z2=2.392e+02 r=8.613e-04
+fresh radial leading coefficient certified; e0 remains unset

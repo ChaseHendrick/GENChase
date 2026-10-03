@@ -238,7 +238,8 @@ def main():
                     log=lambda s: print(s, flush=True))
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(out, sort_keys=True, indent=2) + "\n")
+    with path.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(out, sort_keys=True, indent=2) + "\n")
     print(json.dumps({k: out[k] for k in ("certified", "seconds", "error") if k in out}), flush=True)
     return 0 if out["certified"] else 1
 

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "test_hopf_stability_local.py"
+  ],
+  "pid": 94170,
+  "exit_code": 1,
+  "stop_reason": null,
+  "wall_seconds": 0.5243771248497069,
+  "peak_aggregate_rss_mib": 54.296875,
+  "log": "/private/tmp/cardiac-hopf-local-complex-controls-2026-10-03.log"
+}

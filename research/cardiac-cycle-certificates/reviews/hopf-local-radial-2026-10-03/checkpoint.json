@@ -1,0 +1,75 @@
+{
+  "allN_or_cable_stability_certified": false,
+  "c_exact": "17598251151852745997420323/260617961456609980053454848",
+  "entire_hopf_bridge_certified": false,
+  "epsilon_positive_interval": [
+    "0",
+    "1/51200000"
+  ],
+  "full_independent_count2_sc_vector_replay": false,
+  "full_independent_quotient_witness_replay": false,
+  "hill_sources_sha256": {
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "inputs_sha256": {
+    "fourier/data/hopf/covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+    "fourier/data/hopf/gks_points.jsonl": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+    "fourier/data/hopf/gks_points_centres_K32.jsonl": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+    "fourier/data/hopf/pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+    "fourier/data/hopf/reprove_final.jsonl": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+    "fourier/data/hopf/theoremA_final.json": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+    "results/fourier-hopf.json": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff"
+  },
+  "model_stability_certified": false,
+  "native_results_sha256": {
+    "other16": "a9f5878b35ba09efa4afc46f40fc270fa43915a74aefff4cfcc0a5c22de220a5",
+    "radial": "8358e0ea087cb01e97fe2e8e48e46bf3f25600842bcf88eb16c54831b57e05c3"
+  },
+  "native_scoped_gates_passed": true,
+  "nonlinear_basin_computed": false,
+  "other16_delta_exact": "17293822569103/576460752303423488",
+  "pointwise_orbital_implication_reviewed": true,
+  "pointwise_orbital_rate": "min(3/100000,c*epsilon^2)/2",
+  "practical_away_overlap_certified": false,
+  "radial_exponent_upper": "-c*epsilon^2",
+  "rate_at_upper_endpoint_exact": "17598251151852745997420323/1366388697761631332222657353482240000000000",
+  "remaining_gap": "The interval from 1/51200000 to the separate narrow away pilot near epsilon .0095 has not been covered.",
+  "runtime": {
+    "existing_runtime_receipt_sha256": "373f11f5f7833754d06e2bfc666f6e9819ba4cd8bfd7ef258f2ec03591cce89f",
+    "machine": "arm64",
+    "python": "3.12.14",
+    "python_flint": "0.9.0",
+    "system": "Darwin"
+  },
+  "schema": "cardiac-hopf-local-reviewed-native-checkpoint/1",
+  "sources_sha256": {
+    "fourier/LEMMAS-hopf-stability-local.md": "c3eb4277b09460ff474b4bd3566ab72e6272ac0429880007cddea24589ae3283",
+    "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+    "fourier/hopf_stability_local.py": "486bada9b514e9ac91b1abfa33a61af1db60dd2be46b338c6f5c3dc5d6a5602b",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+    "fourier/test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9"
+  },
+  "status": "local radial and other16 native gates passed; pointwise nonlinear implication reviewed; practical bridge incomplete",
+  "test_methods": 9,
+  "transient_prefactor_computed": false,
+  "zero_endpoint_excluded": true
+}

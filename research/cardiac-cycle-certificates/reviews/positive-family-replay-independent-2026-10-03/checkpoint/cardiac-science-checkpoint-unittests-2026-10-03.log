@@ -1,0 +1,45 @@
+test_centered_sectors_include_every_direction (test_alln_stability.ReductionControls.test_centered_sectors_include_every_direction) ... ok
+test_constant_field_hill_sign_and_sector_shift (test_alln_stability.ReductionControls.test_constant_field_hill_sign_and_sector_shift) ... ok
+test_exact_spatial_bound_at_alias_edge_and_both_signs (test_alln_stability.ReductionControls.test_exact_spatial_bound_at_alias_edge_and_both_signs) ... ok
+test_float_bool_and_negative_majorants_refused (test_alln_stability.ReductionControls.test_float_bool_and_negative_majorants_refused) ... ok
+test_invalid_matrix_refused (test_alln_stability.ReductionControls.test_invalid_matrix_refused) ... ok
+test_membrane_capacitance_does_not_scale_internal_calcium_flux (test_alln_stability.ReductionControls.test_membrane_capacitance_does_not_scale_internal_calcium_flux)
+Reject the former documentation claim that every flux scales by Cm. ... ok
+test_prescribed_voltage_count0_and_no_skip_controls (test_alln_stability.ReductionControls.test_prescribed_voltage_count0_and_no_skip_controls) ... ok
+test_strict_schur_majorant_and_no_admission (test_alln_stability.ReductionControls.test_strict_schur_majorant_and_no_admission) ... ok
+test_closure_and_actual_scalar_function (test_hopf_stability_local.LocalControls.test_closure_and_actual_scalar_function) ... ok
+test_complex_grid_covers_square (test_hopf_stability_local.LocalControls.test_complex_grid_covers_square) ... ok
+test_float_boolean_and_ambiguous_text_refused (test_hopf_stability_local.LocalControls.test_float_boolean_and_ambiguous_text_refused) ... ok
+test_normalization_and_sign_invalid (test_hopf_stability_local.LocalControls.test_normalization_and_sign_invalid) ... ok
+test_planar_hopf_normalization_factor (test_hopf_stability_local.LocalControls.test_planar_hopf_normalization_factor) ... ok
+test_private_json_duplicate_and_nonfinite (test_hopf_stability_local.LocalControls.test_private_json_duplicate_and_nonfinite) ... ok
+test_quotient_full_tail_fixture (test_hopf_stability_local.LocalControls.test_quotient_full_tail_fixture)
+Exact planar Hopf block plus16 stable modes, including infinite tail. ... ok
+test_sign_remainder_and_boundary_rejections (test_hopf_stability_local.LocalControls.test_sign_remainder_and_boundary_rejections) ... ok
+test_strict_receipt_indices_and_tail (test_hopf_stability_local.LocalControls.test_strict_receipt_indices_and_tail) ... ok
+test_actual_model_gradient_and_direction (test_model_enclosure_replay.IndependentModelTests.test_actual_model_gradient_and_direction) ... ok
+test_complete_partition (test_model_enclosure_replay.IndependentModelTests.test_complete_partition) ... ok
+test_domain_and_exactness (test_model_enclosure_replay.IndependentModelTests.test_domain_and_exactness) ... ok
+test_invalid_alias_majorants_refused (test_model_enclosure_replay.IndependentModelTests.test_invalid_alias_majorants_refused) ... ok
+test_mixed_product_and_composition (test_model_enclosure_replay.IndependentModelTests.test_mixed_product_and_composition) ... ok
+test_nonzero_mixed_seed (test_model_enclosure_replay.IndependentModelTests.test_nonzero_mixed_seed) ... ok
+test_saved_bound_direction_and_strict_identity (test_model_enclosure_replay.IndependentModelTests.test_saved_bound_direction_and_strict_identity) ... ok
+test_signed_modes_and_alias_direction (test_model_enclosure_replay.IndependentModelTests.test_signed_modes_and_alias_direction) ... ok
+test_sparse_full_hessian (test_model_enclosure_replay.IndependentModelTests.test_sparse_full_hessian) ... ok
+test_complete_point (test_certificate_replay.ReplayTests.test_complete_point) ... ok
+test_complete_quadratic_uniform (test_certificate_replay.ReplayTests.test_complete_quadratic_uniform) ... ok
+test_exact_oracle (test_certificate_replay.ReplayTests.test_exact_oracle) ... ok
+test_generic_observer_point_fixture (test_certificate_replay.ReplayTests.test_generic_observer_point_fixture) ... ok
+test_large_exact_receipt_rationals (test_certificate_replay.ReplayTests.test_large_exact_receipt_rationals) ... ok
+test_mutations (test_certificate_replay.ReplayTests.test_mutations) ... ok
+test_primitive_binding_and_operator_mutations (test_certificate_replay.ReplayTests.test_primitive_binding_and_operator_mutations) ... ok
+test_real_interval_tail_comparison_block (test_certificate_replay.ReplayTests.test_real_interval_tail_comparison_block) ... ok
+test_reconstructed_operator_and_count_zero (test_certificate_replay.ReplayTests.test_reconstructed_operator_and_count_zero) ... ok
+test_ring_damping_and_similarity_are_reconstructed (test_certificate_replay.ReplayTests.test_ring_damping_and_similarity_are_reconstructed) ... ok
+test_strict_json (test_certificate_replay.ReplayTests.test_strict_json) ... ok
+test_uniform_remainder_and_variation (test_certificate_replay.ReplayTests.test_uniform_remainder_and_variation) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 1.110s
+
+OK

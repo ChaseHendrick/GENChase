@@ -1,0 +1,19 @@
+fresh complex-line full-strip cover in 18.22s
+Traceback (most recent call last):
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 388, in <module>
+    main()
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 372, in main
+    rec = leading_coefficient(args.precision) if args.pilot else complex_branch_pilot(args.complex_disk)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 252, in complex_branch_pilot
+    bl=complex_piece_blocks(C,rec['e_lo'],rec['e_hi'],cov,settings=settings,log=log)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 233, in complex_piece_blocks
+    return namespace['piece_blocks'](C,a,b,cov,settings=settings,log=log,label=label)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<reviewed complex-disk piece_blocks>", line 1, in piece_blocks
+  File "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/research/cardiac-cycle-certificates/fourier/hopf_stability_local.py", line 124, in square_grid
+    return [acb(hp._ball_interval(-R+2*R*Fraction(i,count), -R+2*R*Fraction(i+1,count)),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "flint/types/acb.pyx", line 158, in flint.types.acb.acb.__init__
+TypeError: cannot create arb from type <class 'flint.types.acb.acb'>

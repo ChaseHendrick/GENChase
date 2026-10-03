@@ -1,0 +1,100 @@
+{
+  "schema": "certificate-replay-artifact-manifest/2",
+  "status": "conditional spectral replay passed",
+  "files": {
+    "G6-capture.log": {
+      "sha256": "64bbc8647bfa070cf099b9ded3da2ede53e1ed7cc01f735cf0c98456209df077",
+      "size": 1699
+    },
+    "G6-replay.log": {
+      "sha256": "8c998502d460f6fb97c4424b344872fa8da5c559145e7363eb46311fdf5cd0d0",
+      "size": 63
+    },
+    "G6-independent-review.json": {
+      "sha256": "4615d07ec60d7e666f84224b57d8dd65f588dff14ceb813a3b417ae915dcefd4",
+      "size": 5741
+    },
+    "G6-replay-receipt.json": {
+      "sha256": "63300ec162449ab5c53b9ebf71ecb6849e6686820b9060b6d6c3e57bd668262d",
+      "size": 7156077
+    },
+    "v1-migration-review.json": {
+      "sha256": "f8e5455c0bd185e5d9f795e4e1a74b7310509e54ee97a7716352ef21dd2bb368",
+      "size": 4864096
+    },
+    "v1-duplicate-refusal.log": {
+      "sha256": "fa6938be5cc20b9e58fa2a0296cd91acfdc1c2415d0a63f618b4e129ff5b599e",
+      "size": 1271
+    },
+    "v1-observer-type-failure.log": {
+      "sha256": "fb63a0d79bdae68df01f94f0cbfd4247c9bb9f28d1289896b381cff68041e97d",
+      "size": 3818
+    },
+    "G6-witness.json.gz": {
+      "sha256": "541a45ae819c8632e3d9d161b50ebf15f7b17c481fbf1858d438fdf2a487ab7a",
+      "size": 26266241
+    },
+    "G6-bindings.json": {
+      "sha256": "66afbd0934e10b7065d2e239696ff6608266a90341030d99236bf50e188a597c",
+      "size": 3199
+    },
+    "tested-sources/test_certificate_replay.py": {
+      "sha256": "2361ce8b385e338122673c07e83404dc5c049725c0065e3e2fb1b931793926fb",
+      "size": 11832
+    },
+    "tested-sources/stability_witness.py": {
+      "sha256": "4b6317dfe596d9e28722753025a559397e09e110ec3ba07f82d86cb6ba983f7f",
+      "size": 10418
+    },
+    "tested-sources/certificate_replay.py": {
+      "sha256": "9f130d8b7e2163276144792efc5b6fa8e612863ffdb6509ffe39e4b4a05ab35b",
+      "size": 24652
+    },
+    "tested-sources/LEMMAS-certificate-replay.md": {
+      "sha256": "3b0275f5dfa83d44574a00367a23db75b1b8ff2ddc7e2251da74546ccde89a5c",
+      "size": 9561
+    }
+  },
+  "current_sources": {
+    "certificate_replay.py": "bb5a68329a17537bca3f22a82b4af6bbca1defde2ed4b1db5bc07dcb4c82c841",
+    "stability_witness.py": "f47972ab4d1cf1698b2e522dbd7e4f2ee7d67b8a81151a715570180ca9a25348",
+    "test_certificate_replay.py": "b89493aeb9e85c6395e8b0651533f50ad5897974fbf330aca6c5f93b0029853d",
+    "LEMMAS-certificate-replay.md": "3b0275f5dfa83d44574a00367a23db75b1b8ff2ddc7e2251da74546ccde89a5c"
+  },
+  "full_size_tested_sources": {
+    "certificate_replay.py": "9f130d8b7e2163276144792efc5b6fa8e612863ffdb6509ffe39e4b4a05ab35b",
+    "stability_witness.py": "4b6317dfe596d9e28722753025a559397e09e110ec3ba07f82d86cb6ba983f7f"
+  },
+  "current_changes_after_full_replay": [
+    "generic capture obtains DIM/IV from actual target globals",
+    "expected_count bound to independent geometry",
+    "CLI current-file checks before and after replay"
+  ],
+  "current_small_suite": {
+    "methods": 10,
+    "individual_negative_controls": 55,
+    "status": "passed"
+  },
+  "large_capture": {
+    "exit_code": 0,
+    "wall_s": 200.54064604104497,
+    "peak_aggregate_rss_mib": 913.453125,
+    "cap_s": 300,
+    "rss_cap_mib": 2500
+  },
+  "large_replay": {
+    "exit_code": 0,
+    "wall_s": 133.94730387511663,
+    "peak_aggregate_rss_mib": 1407.484375,
+    "cap_s": 300,
+    "rss_cap_mib": 2500
+  },
+  "limitations": [
+    "operator primitives remain trusted analytic/model enclosures",
+    "orbit existence and phase identity remain separately admitted premises",
+    "Hill-sector/compact-resolvent lemmas remain explicit mathematical premises",
+    "no model translation independent proof claimed",
+    "no physiological AP/reentry, full bridge, allN/cable extension admitted",
+    "full-size replay binds preserved tested source snapshot; generic final additions only cheaply tested"
+  ]
+}

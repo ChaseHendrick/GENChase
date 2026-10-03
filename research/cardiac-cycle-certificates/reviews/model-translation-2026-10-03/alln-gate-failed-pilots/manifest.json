@@ -1,0 +1,13 @@
+{
+  "files_sha256": {
+    "README.md": "e2d04afbaac73b7b03eddb5beadfb9a159d0f14f7fccfe47168b88dabac349a3",
+    "cardiac-prescribed-voltage6-2026-10-03-producer-receipt.json": "656d9487140c05ea8de0570ae0b2efb484b568fbd9fa3116391df82b024cdc18",
+    "cardiac-prescribed-voltage6-2026-10-03.log": "13941ebbdb2df6e4e2a7f5cf830e8d135633bb3632d265a82733c4e51b6f82aa",
+    "cardiac-prescribed-voltage6-2026-10-03.log.receipt.json": "ef21b92c82ff52f6e338437be5a9cde70e1de1b206d5acf23d15e071edc0d870",
+    "cardiac-prescribed-voltage6-retry-2026-10-03-producer-receipt.json": "fa829159a0613fe63adf31c4d3f0eac0cf108285de50a39462a067b2825468bb",
+    "cardiac-prescribed-voltage6-retry-2026-10-03.log": "35e3bf978be4ede0650a721687547d516de93f81d989adb9abdbc9b01a6ec66b",
+    "cardiac-prescribed-voltage6-retry-2026-10-03.log.receipt.json": "ed8e9ed0ea5d58b2b92aa2fd28fee584cb61c1d8fb010fb439b7faf2c0af128d"
+  },
+  "schema": 1,
+  "status": "failed actual pilot evidence preserved"
+}

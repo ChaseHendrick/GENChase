@@ -1,0 +1,68 @@
+{
+  "identity": "hopf-positive-p4-K20-h1e-6",
+  "settings": {
+    "delta": "1e-6",
+    "Ke_offset": 12,
+    "n_c": 24,
+    "prec": 128,
+    "eta_tail": "1/1048576",
+    "S_exps": null,
+    "zeta": "ones",
+    "cluster_tols": [
+      0.0,
+      0.001,
+      0.003,
+      0.01,
+      0.02,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "sanity_tol": "1e-6",
+    "tau": "1e-3",
+    "rho_margin": "1/64",
+    "strip_nx_new": 16,
+    "strip_rtol_new": 1000.0,
+    "strip_max_evals": 1200
+  },
+  "sources": {
+    "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+    "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+    "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0",
+    "fourier/branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+    "fourier/hopf_stability.py": "e059814c85311f27774b62f681ea14564290439368975d6eea12f68ce39e8590",
+    "fourier/stability_witness.py": "f47972ab4d1cf1698b2e522dbd7e4f2ee7d67b8a81151a715570180ca9a25348",
+    "fourier/certificate_replay.py": "bb5a68329a17537bca3f22a82b4af6bbca1defde2ed4b1db5bc07dcb4c82c841",
+    "reviews/hopf-positive-witness-2026-10-03/prepare.py": "92a64093d432a8bdd7ec0c63b59faffc344d3951282b0086c014f5224c54f4dd"
+  },
+  "inputs": {
+    "fourier/data/hopf/pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+    "fourier/data/hopf/covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+    "fourier/data/hopf/reprove_final.jsonl": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92"
+  },
+  "domain": [
+    "9499/1000000",
+    "9501/1000000"
+  ],
+  "parameter_center": "19/2000",
+  "geometry": {
+    "N": 1,
+    "DIM": 18,
+    "IV": 0,
+    "Ke": 12,
+    "nA": 64,
+    "nc": 24,
+    "D": "1/64000",
+    "expected_count": 1
+  },
+  "trust": "admitted parent identification and existence; independently reviewable Jacobian enclosure construction"
+}

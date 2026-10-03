@@ -1,0 +1,65 @@
+{
+  "current_unittests": {
+    "alln": 8,
+    "exit_code": 0,
+    "hard_cap_seconds": 120,
+    "local_hopf": 9,
+    "methods": 38,
+    "model": 9,
+    "peak_aggregate_rss_mib": 76.0625,
+    "rss_cap_mib": 2500,
+    "spectral_replay": 12,
+    "wall_seconds": 2.1107682909350842
+  },
+  "diff_check": {
+    "default_result": "four warnings retained only in immutable captured evidence",
+    "exception_files": [
+      "research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/prepare.py",
+      "research/cardiac-cycle-certificates/reviews/hopf-positive-witness-2026-10-03/reconstruct-model.py",
+      "research/cardiac-cycle-certificates/reviews/model-translation-2026-10-03/alln-gate-failed-pilots/cardiac-prescribed-voltage6-2026-10-03.log",
+      "research/cardiac-cycle-certificates/reviews/positive-family-replay-independent-2026-10-03/capture-snapshot/reviews/hopf-positive-witness-2026-10-03/prepare.py"
+    ],
+    "reason": "Trimming archived driver or failure-log bytes would invalidate their original source/evidence hashes. Current implementation and all other staged files use the unmodified default whitespace check."
+  },
+  "history_note": "Checkpoint supplements preserved manifests; it does not rewrite immutable capture bindings or earlier success/failure evidence.",
+  "packaging_guards": [
+    "All six artifact manifests checked against actual files; 136 entry hashes match.",
+    "Twenty original capture source/input bindings match saved historical snapshot.",
+    "No symlinks, unsafe relative paths or files at GitHub individual-file limit admitted."
+  ],
+  "preserved_failures": [
+    "Six-state count-zero initial implementation refusal and genuine 42-column SC failure; no count-zero admission.",
+    "Earlier large spectral replay refusals/formatting error and model reconstruction v1/v2 refusal.",
+    "Earlier local complex/radial/broad count-two failures."
+  ],
+  "preserved_successes": [
+    "One positive N=1 amplitude family, independent 450-column spectral replay and separate model enclosure reconstruction, with explicit model/existence/Hill premises.",
+    "Tiny fixed-positive-amplitude N=1 native radial and count-two gates with scoped source/scalar/method reviews; full augmented/count-two independent replay still absent."
+  ],
+  "required_build_check": "Studio assembly OK",
+  "required_science_check": "Coverage records OK: 62 unvalidated; 11 partially validated; 62 validated within stated limits",
+  "schema": 1,
+  "scope": "Durable reviewed research checkpoint; no full bridge or all-N/cable certificate, no published record or PDF rewrite.",
+  "sources_sha256": {
+    "LEMMAS-alln-stability.md": "51b303859a9c26cef4a4208a93453f3404b50c0b76da143e7de5ab50d7aa91b8",
+    "LEMMAS-certificate-replay.md": "d1743cf3e8705ad65a8e78dc775b0007ffa8f99cb2d80afb8c6454362b4af126",
+    "LEMMAS-hopf-stability-local.md": "c3eb4277b09460ff474b4bd3566ab72e6272ac0429880007cddea24589ae3283",
+    "LEMMAS-model-enclosure-replay.md": "d4dadf15d5267dac378faaabc2d61e2529e008f9f28e5823472510d914aaf616",
+    "alln_gate_certificate.py": "739d7578ca3cc55da0c6762c64f19c7164d27ea753180c2f220d710885335c69",
+    "alln_gate_core.py": "8dd7cf77ffb5ea61180fc29fffaa8ab31b54a334d18cf05fd0b96448f26bae21",
+    "alln_stability.py": "6a5400fe58ef75fea3e83bc5cb08acecbcaec93c17b724639a5cd43843d66271",
+    "certificate_replay.py": "91db1539afdd246f1378421f61f9992adc229c2bae24372327665cbd424c5281",
+    "hopf_stability.py": "e059814c85311f27774b62f681ea14564290439368975d6eea12f68ce39e8590",
+    "hopf_stability_local.py": "486bada9b514e9ac91b1abfa33a61af1db60dd2be46b338c6f5c3dc5d6a5602b",
+    "model_enclosure_replay.py": "fd579d160d230ff8f60c2a4cac494744866991ff81f14c67ff13ec4c8aa14f8d",
+    "stability_witness.py": "f47972ab4d1cf1698b2e522dbd7e4f2ee7d67b8a81151a715570180ca9a25348",
+    "test_alln_stability.py": "571f6799f83d72b620609a95d5a1fbff9b50dbab23e4536f1b32cdd11adb09ba",
+    "test_certificate_replay.py": "683c89619cb206d29afd002f5b89a87eaea8e17915cf0884b561cd89d6fbf3ea",
+    "test_hopf_stability_local.py": "a5acb3d6b8d477b8a0f710b0d6bf75106d29e8d1bd6512cc00e7a9b41d7460ab",
+    "test_model_enclosure_replay.py": "efd52118ca4031fb518d0650fb17cc900eba8fe503d5aaa4e19f1323fa1ad2e6"
+  },
+  "tests_logs_sha256": {
+    "cardiac-science-checkpoint-unittests-2026-10-03.log": "cc8750c5346d4d14cd8fc04058fc9c6f8569449b427f3bccc5e4aabf2ebbc801",
+    "cardiac-science-checkpoint-unittests-2026-10-03.log.receipt.json": "713b2cf19407ef1548c8bd4f8ab6fa9c09d40f33804b5fced651f72393bb22b0"
+  }
+}

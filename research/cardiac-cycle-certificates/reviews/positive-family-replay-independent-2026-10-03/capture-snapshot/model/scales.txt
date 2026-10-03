@@ -1,0 +1,3 @@
+# state scales sigma_i = 2^e_i (exact in binary floating point); integration variable z_i = x_i / sigma_i
+# derived once from the single-cell orbit at gKs = 0.0275 (nearest power of two to |x_i| on the section)
+-2 0 -5 -1 0 -28 -28 0 -4 -2 -1 -8 -5 -1 -10 2 -3 3
