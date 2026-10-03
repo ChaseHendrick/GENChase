@@ -21,7 +21,16 @@
     "branch numerical acceptance limited to separate 712-piece existence/local uniqueness/continuity/minimal-period receipt"
   ],
   "editorial_followups": [
-    "opening branch-admission status predates accepted scoped registry entry",
     "some inline math wrappers use plain parentheses with trailing LaTeX close delimiter"
-  ]
+  ],
+  "editorial_refresh": {
+    "original_reviewed_sha256": "5e97f6c7a0c9e4bd932707ecc886ca347f630735c466b00dac51eddff654c719",
+    "final_draft_sha256": "05aa42c39b51c028bfcb47c2a3b52ad46201e731bedff43e835ab02bae1ff7ea",
+    "verified_changes": [
+      "intro now references actual scoped 712-piece and 711-gluing acceptance",
+      "removed one trailing space at line430"
+    ],
+    "mathematical_argument_sections_unchanged": true,
+    "outcome": "prior conditional mathematical review applies to final draft; uniform stability and Hopf remain pending"
+  }
 }
