@@ -47,6 +47,14 @@
       },
       "codeDoi": "10.5281/zenodo.23096146",
       "archiveVersion": "2.2.5",
+      "archiveManuscript": {
+        "version": "2.2.5",
+        "doi": "10.5281/zenodo.23096146",
+        "path": "paper/minimal-winding.pdf",
+        "tagCommit": "d774cefc4262997102dff9265fb7eb77f22541bc",
+        "sha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee"
+      },
+      "archiveFilename": "HendrickResearch_minimal-winding_2.2.5.zip",
       "commitments": []
     },
     {
@@ -65,6 +73,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096161",
       "archiveVersion": "1.0.5",
+      "archiveManuscript": {
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096161",
+        "path": "paper/collapse-without-rotation.pdf",
+        "tagCommit": "8d0bd836b3b2828a6050fa6decb69b5f538e61f3",
+        "sha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f"
+      },
+      "archiveFilename": "HendrickResearch_collapse-without-rotation_1.0.5.zip",
       "commitments": []
     },
     {
@@ -83,6 +99,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096191",
       "archiveVersion": "1.0.5",
+      "archiveManuscript": {
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096191",
+        "path": "paper/stable-expansion.pdf",
+        "tagCommit": "9ce9afcb263805a1c5006b0e6adcb24cca6db6c8",
+        "sha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce"
+      },
+      "archiveFilename": "HendrickResearch_stable-expansion_1.0.5.zip",
       "commitments": []
     },
     {
@@ -101,6 +125,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096200",
       "archiveVersion": "1.0.5",
+      "archiveManuscript": {
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096200",
+        "path": "paper/note.pdf",
+        "tagCommit": "dd831d5537b0760624450ba9e6386ba763d8d942",
+        "sha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d"
+      },
+      "archiveFilename": "HendrickResearch_rank-window_1.0.5.zip",
       "commitments": []
     },
     {
@@ -119,6 +151,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096223",
       "archiveVersion": "1.0.6",
+      "archiveManuscript": {
+        "version": "1.0.6",
+        "doi": "10.5281/zenodo.23096223",
+        "path": "paper/hh-dynamics.pdf",
+        "tagCommit": "0f65d1ae666a2141c645f88fe53620054f765886",
+        "sha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646"
+      },
+      "archiveFilename": "HendrickResearch_hh-dynamics_1.0.6.zip",
       "commitments": []
     },
     {
@@ -154,6 +194,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096228",
       "archiveVersion": "1.0.5",
+      "archiveManuscript": {
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096228",
+        "path": "paper/double-pendulum.pdf",
+        "tagCommit": "d50c255a15f115a0a29c367ec9835636941fee4d",
+        "sha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015"
+      },
+      "archiveFilename": "HendrickResearch_double-pendulum_1.0.5.zip",
       "commitments": []
     },
     {
@@ -172,6 +220,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096242",
       "archiveVersion": "1.0.6",
+      "archiveManuscript": {
+        "version": "1.0.6",
+        "doi": "10.5281/zenodo.23096242",
+        "path": "paper/nf-pulse.pdf",
+        "tagCommit": "42443dee7846ce2cada2eef442d64766a5fcbda0",
+        "sha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262"
+      },
+      "archiveFilename": "HendrickResearch_nf-pulse_1.0.6.zip",
       "commitments": []
     },
     {
@@ -200,6 +256,14 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23096253",
       "archiveVersion": "1.0.5",
+      "archiveFilename": "HendrickResearch_hh-pulse_1.0.5.zip",
+      "archiveManuscript": {
+        "version": "1.0.5",
+        "doi": "10.5281/zenodo.23096253",
+        "path": "paper/hh-pulse.pdf",
+        "tagCommit": "cb5892c9315895ba4bdc7319bc468a075d400d6a",
+        "sha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29"
+      },
       "commitments": []
     },
     {
@@ -219,6 +283,14 @@
       "codeDoi": "10.5281/zenodo.23114240",
       "commitments": [],
       "archiveVersion": "1.1.0",
+      "archiveManuscript": {
+        "version": "1.1.0",
+        "doi": "10.5281/zenodo.23114240",
+        "path": "paper/cardiac-rings.pdf",
+        "tagCommit": "2dff17bbaec33b7941e9ee37e530226c14ca3ba9",
+        "sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1"
+      },
+      "archiveFilename": "HendrickResearch_cardiac-rings_1.1.0.zip",
       "companionProvenanceAllow": [
         {
           "file": "code/fourier/LEMMAS-hopf.md",
