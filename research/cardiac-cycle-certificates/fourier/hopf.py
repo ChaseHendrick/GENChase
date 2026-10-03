@@ -3152,6 +3152,7 @@ def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100
     logged to data/hopf/gks_points.jsonl and data/hopf/gks_points_centres_K32.jsonl (the branch logs are not touched).
     The float continuation from Stage E's centre goes in steps of at most `step` (untrusted)."""
     import branch as br
+    _assert_sources_current()
     ppath = os.path.join(data, "gks_points.jsonl")
     cpath = os.path.join(data, "gks_points_centres_K32.jsonl")
     trk = br.FloatTrack(K)
@@ -3162,14 +3163,21 @@ def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100
             trk.at(trk.g + Fraction(step))
         trk.at(g)
         omb, A, hist = br.refine_centre(trk.om, trk.a, br._dstr(g), prec=256, log=log)
-        _append(cpath, br.centre_record(br._dstr(g), omb, A, hist))
+        centre = br.centre_record(br._dstr(g), omb, A, hist)
+        _append(cpath, centre)
         fp = br.FloatPoint(float(omb), br.centre_float(A), float(g), need_hess=False)
         lead = fp.leading_nontrivial()[0]
         delta_s = f"{0.85 * abs(lead):.3e}"
         hb = br.HessBound([(omb, A)], br._dstr(g), br._dstr(g), ["1/4096"] * DIM, "1", None, log=log)
         rec = dict(type="point", g=br._dstr(g), K=K, delta_requested=delta_s, float_leading_exponent=lead,
                    centre_refinement=hist, made_by="hopf.gks_point_proofs (branch.py functions)",
-                   code_sha256=CODE_SHA256)
+                   code_sha256=CODE_SHA256, sources_sha256=dict(SOURCE_SHA256),
+                   centre_sha256=br.centre_digest(omb, A), centre_record_sha256=_record_digest(centre),
+                   effective_settings=dict(br.DEFAULTS, **br.POINT_SETTINGS),
+                   point_inputs=dict(g=br._dstr(g), K=K, eta=["1"] * (DIM + 1),
+                                     r_star="1/1099511627776", hessian_R=["1/4096"] * DIM, hessian_rho2="1"),
+                   hessian_record=hb.record())
+        rec["point_inputs_sha256"] = _record_digest(rec["point_inputs"])
         try:
             pp = br.prove_piece(omb, A, br._dstr(g), br._dstr(g), eta=["1"] * (DIM + 1), r_star="1/1099511627776",
                                 hess=hb, log=log, settings=br.POINT_SETTINGS)
@@ -3181,6 +3189,7 @@ def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100
                 rec.update(ok=False, stability="not run")
         except Exception as e:  # noqa: BLE001  (recorded as a failure, never as a proof)
             rec.update(ok=False, why=f"{type(e).__name__}: {e}")
+        _assert_sources_current()
         rec["wall"] = round(time.time() - t0, 1)
         _append(ppath, rec)
         log(f"G_Ks point g = {br._dstr(g)}: existence {rec.get('ok_existence', False)}, Stage S "
@@ -3189,19 +3198,90 @@ def gks_point_proofs(gs, stability=True, log=print, data=DATA, K=32, step="5/100
     return out
 
 
+def _gks_point_matches(r, centre):
+    """Only a fresh source-bound point proof can supply a radius to the Hopf bridge."""
+    import branch as br
+    import re
+    try:
+        p = r["rec"]
+        expected = dict(g=r["g"], K=32, eta=["1"] * (DIM + 1), r_star="1/1099511627776",
+                        hessian_R=["1/4096"] * DIM, hessian_rho2="1")
+        settings = dict(br.DEFAULTS, **br.POINT_SETTINGS)
+        om, coeffs = br.centre_from_record(centre)
+        if (r.get("type") != "point" or r.get("ok_existence") is not True or type(r.get("K")) is not int
+                or r["K"] != 32 or r.get("code_sha256") != CODE_SHA256
+                or _record_digest(r.get("sources_sha256")) != _record_digest(SOURCE_SHA256)
+                or "MUTATED" in p or "_obj" in p or "MUTATED" in r or "_obj" in r
+                or r.get("centre_record_sha256") != _record_digest(centre)
+                or r.get("centre_sha256") != br.centre_digest(om, coeffs) or p["centre_sha256"] != r["centre_sha256"]
+                or _record_digest(r.get("effective_settings")) != _record_digest(settings)
+                or _record_digest(p["settings"]) != _record_digest(settings)
+                or _record_digest(r.get("point_inputs")) != _record_digest(expected)
+                or r.get("point_inputs_sha256") != _record_digest(expected)
+                or _record_digest([p["g_lo"], p["g_hi"], p["centre_g"], centre["g"]]) != _record_digest([r["g"]] * 4)
+                or type(p["K"]) is not int or p["K"] != 32
+                or type(p["Kprime"]) is not int or p["Kprime"] != 64 + settings["L"]
+                or type(p["M"]) is not int or p["M"] != settings["M"]
+                or _record_digest(p["eta"]) != _record_digest(expected["eta"])
+                or hex_fraction(p["r_star"]) != Fraction(expected["r_star"])):
+            return False
+        hb = r["hessian_record"]
+        if (hb.get("full_strip") is not True or hb.get("phi_digest") != p["hessian_cover"]
+                or _record_digest(hb["g_hull"]) != _record_digest([r["g"]] * 2)
+                or _record_digest(hb["R"]) != _record_digest(expected["hessian_R"])
+                or type(hb["rho2"]) is not str or Fraction(hb["rho2"]) != 1):
+            return False
+        bounds = [p[key] for key in REPROVE_KEYS] + [p["a1V_margin"]]
+        bounds += [p[key][side] for key in ("omega", "T_ms") for side in ("lower", "upper")]
+        if any(type(b["hex"]) is not str or re.fullmatch(r"-?0x[0-9a-fA-F]+p[+-]?[0-9]+", b["hex"]) is None
+               for b in bounds):
+            return False
+        values = {key: hex_fraction(p[key]) for key in REPROVE_KEYS}
+        y, z1, z2 = (values[key] for key in ("Y0", "Z1", "Z2"))
+        rl, rh, rs = (values[key] for key in ("r_existence", "r_uniqueness", "r_star"))
+        if not (y >= 0 and 0 <= z1 < 1 and z2 >= 0 and 0 < rl <= rh <= rs):
+            return False
+        for radius, key in ((rl, "p_at_r_existence"), (rh, "p_at_r_uniqueness")):
+            if not y + (z1 - 1) * radius + z2 * radius * radius / 2 <= values[key] < 0:
+                return False
+        if not z1 + z2 * rh <= values["contraction_at_r_uniqueness"] < 1 or hex_fraction(p["a1V_margin"]) <= 0:
+            return False
+        for key in ("omega", "T_ms"):
+            if not 0 < hex_fraction(p[key]["lower"]) <= hex_fraction(p[key]["upper"]):
+                return False
+        # Stage S can only be inherited from this same freshly computed pinned point receipt.
+        if r.get("ok") is True:
+            st = r["stability"]
+            if not isinstance(st, dict) or not 0 < st["multiplier_bound_full_period"] < 1:
+                return False
+        elif r.get("ok") is not False or r.get("stability") != "not run":
+            return False
+        return True
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
 def gks_points(data=DATA):
-    """The point proofs (K = 32) of branch.py's log and of gks_point_proofs, with their centres:
+    """Current source-bound point proofs (K = 32), with their centres; historical successes are not admitted:
     (list of point records with a 'source' field, centres by (source, g))."""
     pts, cents = [], {}
     for src, pf, cf in (("branch", os.path.join(BRANCH_DIR, "points_K12.jsonl"),
                          os.path.join(BRANCH_DIR, "points_centres_K32.jsonl")),
                         ("hopf", os.path.join(data, "gks_points.jsonl"),
                          os.path.join(data, "gks_points_centres_K32.jsonl"))):
+        centres = {}
+        for c in _read_final_jsonl(cf):
+            centres.setdefault(c["g"], []).append(c)
+        current = set()
         for r in _read_final_jsonl(pf):
-            if r.get("type") == "point" and r.get("ok_existence") and r.get("rec"):
-                pts.append(dict(r, source=src))
-        for r in _read_final_jsonl(cf):
-            cents[(src, r["g"])] = r
+            matched = [c for c in centres.get(r.get("g"), []) if _gks_point_matches(r, c)]
+            if not matched:
+                continue                 # preserved historical or failed inputs cannot supply bridge radii or Stage S
+            if len(matched) != 1 or r["g"] in current:
+                raise ProofFailure("duplicated current-source point proof/centre")
+            current.add(r["g"])
+            pts.append(dict(r, source=src))
+            cents[(src, r["g"])] = matched[0]
     return pts, cents
 
 

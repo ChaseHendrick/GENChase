@@ -26032,10 +26032,10 @@
    }
   }
  ],
- "seconds": 129.9,
- "code_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+ "seconds": 306.4,
+ "code_sha256": "c4e4f77abad02362adbddffbb0a6a356221ec451d31ee0175399e944064759c3",
  "sources_sha256": {
-  "fourier/hopf.py": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "fourier/hopf.py": "c4e4f77abad02362adbddffbb0a6a356221ec451d31ee0175399e944064759c3",
   "fourier/test_hopf.py": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
   "fourier/LEMMAS-hopf.md": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
   "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",

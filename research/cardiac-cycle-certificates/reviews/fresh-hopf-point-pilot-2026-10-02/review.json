@@ -1,0 +1,46 @@
+{
+  "scope": "One actual fresh current-source bridge-point existence proof; no Stage S, amplitude-chain or complete Hopf theorem promotion",
+  "g": "0.02778",
+  "K": 32,
+  "hopf_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "python_flint": "0.9.0",
+  "FLINT": "3.6.0",
+  "platform": "macOS arm64",
+  "proof_passed": true,
+  "current_point_gate_passed": true,
+  "stability_run": false,
+  "negative_controls_passed": 7,
+  "negative_controls": [
+    "stale code hash",
+    "stale source map",
+    "top-level MUTATED",
+    "M integer changed to float",
+    "positive radii polynomial bound",
+    "wrong Kprime",
+    "changed centre_g"
+  ],
+  "supervisor": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "../cardiac-proof-venv/bin/python",
+      "/private/tmp/cardiac-hopf-fresh-point-smoke.py"
+    ],
+    "pid": 52090,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 82.6900209998712,
+    "peak_aggregate_rss_mib": 1835.75,
+    "log": "/private/tmp/cardiac-hopf-fresh-point-smoke.log"
+  },
+  "files_sha256": {
+    "gks_points.jsonl": "7939a1ad9fff18d538e384408931b985bc03da4b33544374a8c08e23e58a12b7",
+    "gks_points_centres_K32.jsonl": "3d7dd79ca900d3695d8da89b0f1ab80d7a7deda1631ba72b2be52b94bd2c9ff1",
+    "cardiac-hopf-fresh-point-smoke.log": "8d90bdb7a8f94be8bbaf8498caba15d2da6192b2286e1d8da0109731421fef32",
+    "cardiac-hopf-fresh-point-smoke.log.receipt.json": "443c09521a8dde40633bd271faea02accba0f23c51712fd7acc51e4e00d326c8",
+    "cardiac-hopf-fresh-point-smoke.py": "092fd32bdf98ce9a8f8acf366c25f9a82e26879562bc45ce3f127814f6c1ad8c"
+  },
+  "canonical_data_changed": false,
+  "note": "Preserved isolated pilot, not seeded into production amplitude or bridge collection. Linux result costs and arithmetic diagnostics may differ."
+}

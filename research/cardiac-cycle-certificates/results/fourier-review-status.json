@@ -67,6 +67,36 @@
     "paper1.1 release"
    ],
    "not_claimed": "No outside review; separate in-project AI-agent reading."
+  },
+  {
+   "date": "2026-10-02",
+   "record": "fourier/data/hopf/theoremA_final.json",
+   "record_sha256": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+   "program_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+   "outcome": "accepted separate in-project exact-record review of the fresh Theorem A component",
+   "scope": [
+    "complete 516-interval equilibrium and simple critical-eigenvalue cover",
+    "exact Hopf parameter enclosure",
+    "strict transversality and negative first Lyapunov coefficient",
+    "stable complementary spectrum and critical/stable imaginary separation"
+   ],
+   "n_intervals": 516,
+   "n_left": 286,
+   "n_central": 1,
+   "n_right": 229,
+   "reviews": [
+    "reviews/review-theoremA-point-gate-receipt-2026-10-02.json",
+    "reviews/theoremA-point-gate-run-receipt-2026-10-02.json"
+   ],
+   "previous_record_preserved": "reviews/theoremA-before-point-gate-2026-10-02.json",
+   "not_accepted": [
+    "68-piece amplitude branch",
+    "67 amplitude gluings",
+    "Hopf-to-conductance bridge",
+    "uniform conductance stability",
+    "manuscript 1.1.0 release"
+   ],
+   "not_claimed": "No outside or human review."
   }
  ]
 }
