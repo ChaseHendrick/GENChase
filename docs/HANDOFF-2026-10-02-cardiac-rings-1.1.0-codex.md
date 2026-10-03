@@ -124,3 +124,34 @@ with `paper=cardiac-rings` and `release=1.1.0`. Do not hand-push or move a tag. 
 source ZIP and the new Zenodo Publication / Preprint ZIP against the installed manuscript and reviewed code/data.
 Only after the deposited archive passes should a follow-up update the DOI/archive-version pair and recommended
 citation. No new DOI or publication is asserted by this preparation checkpoint; the 1.0.0 archive remains available.
+
+## Publication completed (2026-10-03 UTC)
+
+All 16 required checks passed on exact final commit `cd12b5c4b252c1fce61be858a0e9ec55ab598261`; all 51 check runs
+completed, with 43 successes and eight intentional opt-in skips. No unresolved review thread remained. PR #264
+merged as `467605f3dbe0c9fd08de5ed3836ccaab14a658ce`; its tree is byte-identical to the reviewed final commit.
+The first papers workflow updated the cardiac-rings companion main to
+`2dff17bbaec33b7941e9ee37e530226c14ca3ba9`. Its live PDF and source matched the accepted bytes. Successful
+[release workflow 37094413729](https://github.com/ChaseHendrick/GENChase/actions/runs/37094413729) then published
+[companion release 1.1.0](https://github.com/ChaseHendrick/cardiac-rings/releases/tag/1.1.0), without moving any tag.
+
+Zenodo imported [record 23114240](https://zenodo.org/records/23114240),
+[doi:10.5281/zenodo.23114240](https://doi.org/10.5281/zenodo.23114240), with publication date 2026-10-03,
+version 1.1.0 and resource type Publication / Preprint. Its mixed rights metadata is `other-closed`: manuscript and
+figures reserved, code/data Apache-2.0 with component notices. The actual GitHub tag ZIP and deposited Zenodo ZIP
+were downloaded and checked against the frozen accepted package. Both have SHA-256
+`2edef65e5c368641473c3fbcb5cbc031b56022a7a78e6cc03f4fe06ea7065075`; all 186 file bytes match, including all
+84 reviewed code/data files, source `9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac` and
+PDF `ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1`. Server size/MD5, exact tag commit,
+archive root, metadata and unchanged tag were also checked. The independently reviewed verifier passed 35
+network-free controls before this actual audit. No new numerical proof is implied by archive verification.
+
+The DOI-registration follow-up advances `archiveVersion` and `codeDoi` together to the now-verified 1.1.0,
+updates the current README/BibTeX locator and release history, and records the audit in
+`paper-zenodo-release-audit-2026-10-03-cardiac-rings-1.1.0.json`. The 1.0.0 DOI remains available as history.
+The new current companion citation is synchronized through the normal papers workflow after that follow-up merges.
+
+Future mathematics remains separate: no quantitative stability certificate covers the entire amplitude bridge,
+no global monotonicity or global uniqueness is claimed, and no tissue/action-potential reentry result is added by
+1.1.0. The all-N existence and fixed N = 8, 16, 32, 64 stability results keep their original scope. The new-paper
+openness audit did not establish an open theorem; do not turn its search gap into a priority or proof claim.

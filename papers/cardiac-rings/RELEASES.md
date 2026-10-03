@@ -3,7 +3,12 @@
 Each release of this repository is archived on Zenodo with its own DOI. The manuscript is a preprint and has not been
 peer reviewed.
 
-## 1.1.0
+## 1.1.0 (2026-10-03)
+
+**DOI:** [10.5281/zenodo.23114240](https://doi.org/10.5281/zenodo.23114240). Publication / Preprint.
+
+The actual GitHub and Zenodo source ZIPs were downloaded and verified: all 186 files match the reviewed package,
+including the complete manuscript PDF and all 84 code/data files. Earlier immutable releases remain available.
 
 The 73-page preprint adds computer-assisted Theorem D for the single cell: a 712-piece conductance family with 711 gluings,
 63 group or subgroup uniform-stability certificates covering the entire lower interval, and a 68-piece amplitude
@@ -22,8 +27,7 @@ recovered and accepted with stronger exact self-map checks, without changing any
 Four figures present the cell, ring wave, all-size existence pieces and conductance/Hopf extension. The manuscript,
 code, data and source-bound review receipts are included together. Separate layout and manuscript reviews, the
 quality record and the release checks document their scope. No outside or human review is claimed. The prior
-1.0.0 release and archive remain available; the registry keeps its DOI until the actual new Zenodo source ZIP is
-downloaded and its manuscript PDF is verified. The archive is a Publication / Preprint, with manuscript rights
+1.0.0 release and archive remain available; the registry now identifies the verified 1.1.0 version DOI. The archive is a Publication / Preprint, with manuscript rights
 distinct from the code and data licenses.
 
 The reproduction script adds `continuation` (alias `branch`) without redoing every amplitude or conductance piece

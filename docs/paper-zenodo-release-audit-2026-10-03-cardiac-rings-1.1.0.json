@@ -1,0 +1,54 @@
+{
+  "status": "pass",
+  "version": "1.1.0",
+  "doi": "10.5281/zenodo.23114240",
+  "tag_commit": "2dff17bbaec33b7941e9ee37e530226c14ca3ba9",
+  "accepted_manifest_sha256": "5b5e96e52a451b1732c8540a42d80de771e38254c3279412eaa5cc75b74670d0",
+  "pdf_sha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+  "github_zip_sha256": "2edef65e5c368641473c3fbcb5cbc031b56022a7a78e6cc03f4fe06ea7065075",
+  "zenodo_zip_sha256": "2edef65e5c368641473c3fbcb5cbc031b56022a7a78e6cc03f4fe06ea7065075",
+  "checked_file_count": 186,
+  "code_data_file_count": 84,
+  "same_member_bytes": true,
+  "scope": "Exact actual archive packaging; no scientific proof review.",
+  "checked_utc": "2026-10-03T03:54:07Z",
+  "publication_date": "2026-10-03",
+  "record_id": 23114240,
+  "record_url": "https://zenodo.org/records/23114240",
+  "resource_type": {
+    "title": "Preprint",
+    "type": "publication",
+    "subtype": "preprint"
+  },
+  "license": {
+    "id": "other-closed"
+  },
+  "creators": [
+    {
+      "name": "Hendrick, Chase",
+      "affiliation": "Independent Researcher",
+      "orcid": "0009-0002-9754-6087"
+    }
+  ],
+  "archive_file": {
+    "key": "ChaseHendrick/cardiac-rings-1.1.0.zip",
+    "size": 12245356,
+    "checksum": "md5:b740e0a233a30cd17d4821f562e57f66",
+    "links": {
+      "self": "https://zenodo.org/api/records/23114240/files/ChaseHendrick/cardiac-rings-1.1.0.zip/content"
+    }
+  },
+  "raw_zenodo_record_sha256": "986b87928218564da8f2099d0d2b32abfa693532d0d3be2cda9217fda1d0e364",
+  "github_release_url": "https://github.com/ChaseHendrick/cardiac-rings/releases/tag/1.1.0",
+  "github_release_published_at": "2026-10-03T03:52:18Z",
+  "release_workflow": 37094413729,
+  "merged_genchase_commit": "467605f3dbe0c9fd08de5ed3836ccaab14a658ce",
+  "reviewed_genchase_commit": "cd12b5c4b252c1fce61be858a0e9ec55ab598261",
+  "reviewed_tree_equals_merged_tree": true,
+  "verifier_sha256": "68da9c345e63890e1d8cefed63dc4e52bc9ead58234c6827c8932ccabe12b607",
+  "independent_verifier_controls_passed": 35,
+  "manuscript_source_sha256": "9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac",
+  "scoped_rights_verified": "Manuscript and figures reserved; programs/data Apache-2.0 with component notices; metadata other-closed.",
+  "previous_version": "1.0.0",
+  "previous_doi": "10.5281/zenodo.23101322"
+}
