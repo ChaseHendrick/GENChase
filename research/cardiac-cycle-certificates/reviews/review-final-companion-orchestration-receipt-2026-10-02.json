@@ -46,5 +46,16 @@
   "ordinary_seed_scratch_followup": {
     "final_run_all_sha256": "532a472f00ed650d2926948fcaf5b6a800e7d1bb612dc2659fb74febd26d461b",
     "scope": "Only an ordinary numerical Hopf seed copy and explanatory comment added. Removing these exact three lines reconstructs admitted85d bytes. Every proposed equilibrium enclosure remains subject to both stored complex-polydisc contraction and exact containment gates; seed claims not promoted."
+  },
+  "endpoint_precision_and_scratch_output_followup": {
+    "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+    "receipt": "companion-wrapper-reproduction-2026-10-02.json",
+    "receipt_sha256": "2e6fd27ac5f70344c1df41e999900d7d73f171ae18f44312884c3dd3a7fa4588",
+    "complete_private_reproduction_passed": true,
+    "wall_seconds": 31.10951133305207,
+    "peak_rss_mib": 431.0,
+    "negative_and_boundary_controls": 13,
+    "source_math_unchanged": true,
+    "public_stage_guard_pass_claimed": false
   }
 }

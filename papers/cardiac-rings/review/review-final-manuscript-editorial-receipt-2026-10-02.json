@@ -1,0 +1,15 @@
+{
+  "status": "final three editorial changes admitted; scientific theorem and arguments unchanged",
+  "previous_manuscript_sha256": "b50a19acb00c7512cdce32e70419a3308497dbfbb0a94be9d1886e4ea0144cd9",
+  "current_manuscript_sha256": "9d86b2d22b96b52c691100cdf6b728088f9f9faea1f317276c70ce17c17bdfac",
+  "changes": [
+    "generic already-established companion preprint archival wording",
+    "remove reading-status commentary from gl2017 bibliography while retaining author-version identifier",
+    "remove reading-status commentary from vbq2021 bibliography while retaining exact preprint date and URL"
+  ],
+  "three_single_line_replacements_only": true,
+  "source_reading_scope_paragraph_unchanged": true,
+  "prior_theoremD_claims_receipt": "review-final-theoremD-claims-receipt-2026-10-02.json",
+  "corrected_final_PDF_layout_review_pending": true,
+  "no_manuscript_edit_by_reviewer": true
+}

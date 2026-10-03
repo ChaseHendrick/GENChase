@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "status": "complete private collector reproduction passed; independent wrapper admission separately recorded; public staging and release remain separate gates",
+  "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+  "repair": "Endpoint enclosure and exact outward decimal endpoints are constructed at the actual ambient 53-bit native default before the 192-bit complex-polydisc validator, matching frozen collector order. No forced precision or tolerance.",
+  "scratch_output": "Only optional saved gluing_gks_final.json is archived inside private scratch when its key is absent from the accepted input manifest. Manifest-bound output is preserved and checked exactly. Resolved directory and symlink guards prevent public or external mutation. Fresh bridge checks still rederive every inclusion.",
+  "saved_optional_output_sha256": "fc35b028288ee0f0d5ae9a03ba6db47eb6f41c3237d9efa01463c879e435f58e",
+  "accepted_input_sha256": {
+    "pieces.jsonl": "88e8741429eb2eec9862e9462e8605e3a2b628c6a07cfe2c1f87eb577eaca7f6",
+    "covers.jsonl": "a5ac2fdc2829ef4aee711817b1d046af792f131d210fb746216bc6dc33335592",
+    "theoremA_final.json": "430e769e30f0502adb5775e2395b5d19529b64b959b357632195b4a0ee4722f6",
+    "gks_points.jsonl": "b511f99dfba1aeb165c375ed38050049c7976f12bd1493aa26e70ccc28c069fa",
+    "gks_points_centres_K32.jsonl": "45be596308d7aff61ccecd032dd097f2e61ad395725b775e7dfd07932deb6714",
+    "reprove_final.jsonl": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92"
+  },
+  "regression": {
+    "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+    "old_valid_receipt_refusal_reproduced": true,
+    "new_valid_receipt_passed": true,
+    "old_endpoint_precision": 192,
+    "new_endpoint_precision": 53,
+    "ambient_precision_restored": 53,
+    "import_precision": 53,
+    "fixture_ambient_precision": 53,
+    "negative_controls": [
+      "changed exact endpoint 0",
+      "changed exact endpoint 1",
+      "nonpositive polydisc radius",
+      "float polydisc coordinate"
+    ],
+    "optional_output_controls": [
+      "absent manifest archives only scratch output",
+      "present manifest preserves exact output",
+      "changed bound output refused",
+      "missing bound output refused",
+      "symlink output refused",
+      "non-scratch data refused",
+      "null manifest hash refused",
+      "external directory symlink refused",
+      "public output bytes unchanged"
+    ],
+    "accepted_hopf_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+    "mathematical_sources_changed": false
+  },
+  "regression_script_sha256": "31377360e4948de75006b65474111efed0989c3054eb0b3899939176e813d788",
+  "regression_log_sha256": "1ed93b093ac4549f18c6dd598a8258b2450bfed002c40ea8a5c386af47fb6413",
+  "regression_wall_seconds": 1.8192831249907613,
+  "regression_peak_rss_mib": 88.4375,
+  "complete_private_reproduction": {
+    "command": "/bin/sh code/run_all.sh alln,continuation",
+    "exit_code": 0,
+    "wall_seconds": 31.10951133305207,
+    "peak_aggregate_rss_mib": 431.0,
+    "seconds_cap": 200,
+    "rss_mib_cap": 3500,
+    "log_sha256": "9ffc31ffc30e492374bfbcd72c2093885f9bf5fb98ca0fbdf21444ecf35d3b75",
+    "checks": [
+      "90 provenance hashes",
+      "15 historical all-N provenance hashes",
+      "CAPD/Fourier linkage and negative control",
+      "73 historical all-N pieces and gluings",
+      "712 branch pieces and 711 freshly rederived inclusions",
+      "63 exact conservative uniform tube checks covering 712 pieces",
+      "68 current amplitude receipts and 67 freshly rederived gluings",
+      "complete 516-interval Theorem A cover and zero identity",
+      "fresh existence-only bridge point, no Stage S promotion",
+      "both stored zero-endpoint complex-polydisc contractions and exact inclusions",
+      "exact accepted mathematical and input fields after documented metadata/P/display exceptions"
+    ]
+  },
+  "cloud_run": {
+    "run_id": 37088805596,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "cf73fd1d044177793040c31e4332c5a9cb1547dd",
+    "created_at": "2026-10-03T02:09:38Z",
+    "updated_at": "2026-10-03T02:26:05Z",
+    "verified_live": true
+  },
+  "saved_committed_artifacts": [
+    {
+      "artifact": "accepted record",
+      "tree": "study",
+      "sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+      "committed_bytes_identical": true
+    },
+    {
+      "artifact": "accepted record",
+      "tree": "companion",
+      "sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+      "committed_bytes_identical": true
+    },
+    {
+      "artifact": "68 actual amplitude receipts",
+      "tree": "study",
+      "sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+      "committed_bytes_identical": true
+    },
+    {
+      "artifact": "68 actual amplitude receipts",
+      "tree": "companion",
+      "sha256": "b46f682bf1efa32ef3f5614c081518dd714a1fe2bafea7e33eb96a1f84b61d92",
+      "committed_bytes_identical": true
+    }
+  ],
+  "preserved_historical_branch_sha256": "97f7bbc586727bdab51a412d2b5b304fd6f858b79826f6c0319ef462ffbe29fa",
+  "mathematical_source_sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+  "mathematical_sources_changed": false,
+  "proof_records_changed": false,
+  "full_scientific_piece_proofs_rerun": false,
+  "prior_failed_probes": [
+    "Regression fixture incorrectly assumed ambient 256; corrected to actual native default 53 without changing wrapper/source.",
+    "Fresh tracked-only stage omitted untracked historical branch proposal seed; exact untrusted seed b761 was copied only into private stage.",
+    "After precision repair all mathematical gates passed, but optional saved gluing output added one data manifest key; private input layout reconstructed with no proof-input exemption."
+  ],
+  "public_stage_guard_pass_claimed": false
+}

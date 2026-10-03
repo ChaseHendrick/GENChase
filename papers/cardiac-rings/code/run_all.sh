@@ -104,6 +104,9 @@ case ",$NS," in
     mkdir -p "$WORK/continuation/results"
     cp -R "$HERE/code/." "$WORK/continuation/"
     cp "$HERE"/data/fourier-*.json "$WORK/continuation/results/"
+    # Ordinary numerical seed only; every resulting zero-endpoint enclosure is
+    # freshly validated below and does not inherit this file's numerical claims.
+    cp "$HERE/data/numerics-hopf-orbit.json" "$WORK/continuation/results/"
     (cd "$WORK/continuation" && OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 timeout 1200 \
       python3 - "$HERE/data" <<'CONTINUATION_PY'
 import copy, hashlib, json, math, os, re, sys
@@ -194,6 +197,29 @@ def compare(new, old, hopf=False, branch=False):
         keys = sorted(k for k in set(a) | set(b) if canonical(a.get(k)) != canonical(b.get(k)))
         raise RuntimeError("collector differs in exact fields: " + ", ".join(keys))
 
+def prepare_hopf_collect_inputs(hp, record):
+    # Match the accepted input set. This optional file is a saved derived output;
+    # bridge_checks rederives the closure without reading its saved success flags.
+    data = Path(hp.DATA)
+    cwd = Path.cwd()
+    if (cwd.name != "continuation" or not cwd.parent.name.startswith("cardiac-rings.")
+            or data.resolve() != cwd / "fourier/data/hopf"):
+        raise RuntimeError("Hopf output preparation requires the private continuation scratch directory")
+    output = data / "gluing_gks_final.json"
+    if output.is_symlink():
+        raise RuntimeError("scratch gluing output must not be a symlink")
+    expected = record["data_sha256"].get(output.name)
+    if output.name in record["data_sha256"]:
+        if not output.is_file() or type(expected) is not str or hashlib.sha256(output.read_bytes()).hexdigest() != expected:
+            raise RuntimeError("manifest-bound saved gluing output is missing or changed")
+    elif output.exists():
+        archived = output.with_name("gluing_gks_final.stored-output.json")
+        if archived.exists() or archived.is_symlink():
+            raise RuntimeError("scratch gluing-output archive already exists")
+        digest = hashlib.sha256(output.read_bytes()).hexdigest()
+        output.rename(archived)
+        print("saved derived gluing output archived only in scratch; SHA256=" + digest)
+
 def validate_stored_P(hp, record):
     ident = record["identification_at_eps0"]
     # Require exact dyadic text, not permissive float or malformed-prefix parsing.
@@ -204,11 +230,13 @@ def validate_stored_P(hp, record):
         if type(value) is not str or not re.fullmatch(r"-?0x[0-9a-fA-F]+p[+-]?[0-9]+", value):
             raise RuntimeError("zero-endpoint polydisc requires exact dyadic strings")
     first = hp.final_pieces()[0]
+    # Match identification_at_eps0: construct the endpoint and exact decimal
+    # interval at ambient precision, before its 192-bit complex-polydisc check.
+    omB, gB, cB, _, _ = hp.ball_of_piece_at(hp._piece_state(first), Fraction(0))
+    ga, gb = map(Fraction, ident["g_interval"])
+    if ga != Fraction(hp.dec(hp.lo(gB), "down", 25)) or gb != Fraction(hp.dec(hp.up(gB), "up", 25)):
+        raise RuntimeError("zero-endpoint parameter enclosure mismatch")
     with hp.am.precision(192):
-        omB, gB, cB, _, _ = hp.ball_of_piece_at(hp._piece_state(first), Fraction(0))
-        ga, gb = map(Fraction, ident["g_interval"])
-        if ga != Fraction(hp.dec(hp.lo(gB), "down", 25)) or gb != Fraction(hp.dec(hp.up(gB), "up", 25)):
-            raise RuntimeError("zero-endpoint parameter enclosure mismatch")
         thA = read_record(Path(hp.DATA) / hp.THEOREM_A_LOG)
         intervals = [dict(a=thA["gH_interval"][0], b=thA["gH_interval"][1], polydisc=thA["polydisc_GH"])]
         intervals += thA["cover_left"] + thA["cover_right"]
@@ -347,6 +375,7 @@ u = st.collect(12, write=False)
 compare(u, accepted["fourier-branch-stability-uniform.json"])
 if u["n_pieces_branch"] != 712 or u["n_pieces_uniform"] != 712 or u["uncovered_pieces"]:
     raise RuntimeError("uniform stability does not cover the entire branch")
+prepare_hopf_collect_inputs(hp, accepted["fourier-hopf.json"])
 h = hp.collect(write=False)
 validate_stored_P(hp, h)
 validate_stored_P(hp, accepted["fourier-hopf.json"])

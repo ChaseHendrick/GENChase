@@ -1,0 +1,50 @@
+{
+  "run_all_sha256": "a5e5fde1b51e56e7a62a7e2e9a0e7b3c91ae68560c401bc8edc92d65b819d26e",
+  "old_valid_receipt_refusal_reproduced": true,
+  "new_valid_receipt_passed": true,
+  "old_endpoint_precision": 192,
+  "new_endpoint_precision": 53,
+  "ambient_precision_restored": 53,
+  "import_precision": 53,
+  "fixture_ambient_precision": 53,
+  "negative_controls": [
+    "changed exact endpoint 0",
+    "changed exact endpoint 1",
+    "nonpositive polydisc radius",
+    "float polydisc coordinate"
+  ],
+  "optional_output_controls": [
+    "absent manifest archives only scratch output",
+    "present manifest preserves exact output",
+    "changed bound output refused",
+    "missing bound output refused",
+    "symlink output refused",
+    "non-scratch data refused",
+    "null manifest hash refused",
+    "external directory symlink refused",
+    "public output bytes unchanged"
+  ],
+  "accepted_hopf_sha256": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff",
+  "mathematical_sources_changed": false,
+  "status": "final wrapper and actual complete private collector reproduction independently admitted; public staging separate",
+  "independent_reviewer_regression_exit_code": 0,
+  "independent_regression_deadline_seconds": 45,
+  "complete_private_reproduction_supervisor": {
+    "command": [
+      "/bin/sh",
+      "code/run_all.sh",
+      "alln,continuation"
+    ],
+    "pid": 73018,
+    "exit_code": 0,
+    "stop_reason": null,
+    "wall_seconds": 31.10951133305207,
+    "peak_aggregate_rss_mib": 431.0,
+    "log": "/private/tmp/cardiac-companion-continuation-2026-10-02-4-final-a5.log"
+  },
+  "complete_private_reproduction_log_sha256": "9ffc31ffc30e492374bfbcd72c2093885f9bf5fb98ca0fbdf21444ecf35d3b75",
+  "author_reproduction_receipt_sha256": "2e6fd27ac5f70344c1df41e999900d7d73f171ae18f44312884c3dd3a7fa4588",
+  "scientific_full_piece_reproof_not_claimed": true,
+  "public_tracked_stage_check_pending": true,
+  "untracked_legacy_seed_must_be_included_in_final_tracked_stage": true
+}
