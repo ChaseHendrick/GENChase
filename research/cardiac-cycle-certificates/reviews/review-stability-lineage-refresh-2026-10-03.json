@@ -1,0 +1,155 @@
+{
+  "status": "complete final-source uniform stability lineage revalidated without physics rerun",
+  "failed_workflow_run": 37088569093,
+  "producer_commit": "81744b5cccacf6463b1cdd0aff1f316c44cff4a1",
+  "scientific_source_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "source_bytes_at_producer_commit_match_current": true,
+  "sources_sha256": {
+    "fourier/branch_stability.py": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+    "fourier/branch.py": "e5739a1583b44b8c355e8f74e8d47360c0c9af12f62988f4c2649dd4e5b274bf",
+    "fourier/stability.py": "00fbb6e03537f8c455fa80dd1e5940401214c580ca87bc13de32b0a310bccd8b",
+    "fourier/existence.py": "393f4c5b38de623539eb3457133033ff4c8e6b147e8a6274bdffaa007c6f9690",
+    "fourier/centre.py": "29fe756128eab09c3f65d10a6988d8cf0a88d97ada2780e5ede36315d550e907",
+    "fourier/arbmodel.py": "7f5838e3d0bad1991f7ca5ce0ba43288ac3cbe252ddd8cbff074b5180bc669e7",
+    "fourier/fourier_eval.py": "5ccd3215adc84f6e553861c8f0690396b50e4f3dd461f203c20c69c9bf9efadf",
+    "fourier/tp06_18d_arb.py": "cb010d494ec54c8681684f10668cb4eed0329589e90ccf1498229bd4bd07b819",
+    "model/tp06_18d.py": "76f7466a81d9498dd2d9b8d139f2c48667b7e33fad2c35a5eb61ab62f00620b9",
+    "model/scales.txt": "3ecc919b74bdc5889457d79292696be957442ae3de4bc55584feeb709bc855d0"
+  },
+  "record_sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
+  "log_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+  "immutable_raw_concatenation_equal_canonical": true,
+  "pieces": 712,
+  "units": 63,
+  "groups": 57,
+  "fallback_failures": [
+    {
+      "label": "G12",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.710362616362559e-05+1.2863103055138068e-16j) (ratio 1.277e+00)"
+    },
+    {
+      "label": "G13",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.709952983990586e-05+5.4143898751847664e-17j) (ratio 1.309e+00)"
+    },
+    {
+      "label": "G14",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.709545269504512e-05-9.461683925263011e-17j) (ratio 1.332e+00)"
+    },
+    {
+      "label": "G15",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.709140507529042e-05-4.172639252782456e-17j) (ratio 1.346e+00)"
+    },
+    {
+      "label": "G16",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.708739572934708e-05-4.8026965816606677e-17j) (ratio 1.365e+00)"
+    },
+    {
+      "label": "G11",
+      "why": "ProofFailure: (SC) fails for 1 window columns, e.g. lambda = (-4.710775376955779e-05-2.0447208200634775e-16j) (ratio 1.278e+00)"
+    }
+  ],
+  "half_successes": [
+    "G12[0:8]",
+    "G12[8:16]",
+    "G13[0:8]",
+    "G13[8:16]",
+    "G14[0:8]",
+    "G14[8:16]",
+    "G15[8:16]",
+    "G15[0:8]",
+    "G16[8:16]",
+    "G16[0:8]",
+    "G11[0:8]",
+    "G11[8:16]"
+  ],
+  "conservative_adjustments": 35,
+  "minimum_exact_selfmap_slack": "1679135447599334052550666233611/5444517870735015415413993718908291383296",
+  "worst_multiplier_exact": "84935654049614991416155505158747915155/85070591730234615865843651857942052864",
+  "published_upper": "0.998413816",
+  "current_collector_record_differences": [],
+  "original_recovery_record_differences": [
+    "log"
+  ],
+  "shard_coverage": [
+    124,
+    124,
+    124,
+    112,
+    116,
+    112
+  ],
+  "scientific_rerun_required_for_this_failure": false,
+  "remaining_limit": "Finite SC column vectors are not exposed in public receipts; fresh source-bound native Arb producer checks are retained, not independently reconstructed.",
+  "wall_seconds": 5.884152750018984,
+  "peak_self_rss_mib": 299.828125,
+  "retrieved_job_logs": [
+    {
+      "job_id": 111103799857,
+      "sha256": "bf8ff0a0e78f12956f3bec28cb5f8887a41ce0c44b12d3478d69a49ce4b755f2",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103799857",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111103800027,
+      "sha256": "8e3b443b16c5a22ab86f1e82121f2e375f9eaef9c5b86b0b990756d0eb5d3511",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103800027",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111103800034,
+      "sha256": "6c46dd1266b654e83e62e566fa9260d74d6dc5346284c5acf8b464baab8fa188",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103800034",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111103800032,
+      "sha256": "fa7021141c228bb21cec804f1214fee35d01e1d0279e9cadd5d51660d3b89b16",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103800032",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111103800081,
+      "sha256": "fcc84a6024e1231d22fea52e13567dffe5bb725c0aaa8c01ac2e2164d23dc469",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103800081",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111103800067,
+      "sha256": "e98c53a6446f5661f58e7dbc9dacde6d31cc84749508a1171bc4408ef6507aa7",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111103800067",
+      "failure": "invalid exact moving-center contraction"
+    },
+    {
+      "job_id": 111106215804,
+      "sha256": "ac9fb7d2302b736dcfa14eab430411c73fdb14317a82fbcad38ef7de648f7f4c",
+      "url": "https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093/job/111106215804",
+      "failure": "requires exactly six shard artifacts"
+    }
+  ],
+  "actual_command": [
+    "/usr/bin/nice",
+    "-n",
+    "10",
+    "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-proof-venv/bin/python",
+    "/private/tmp/cardiac-stability-lineage-audit-2026-10-03.py"
+  ],
+  "exit_code": 0,
+  "deadline_seconds": 110,
+  "audit_script_sha256": "e70efda27c3ab4edcd123eb398f4cbc2276d42ca7f0261eec9499aa07907b8c6",
+  "actual_log_sha256": "c02f6bcb35f064d0291ef9cb769c03abb7cf3c0d380549eee4e419e64fc3999b",
+  "execution_note": "Earlier process-tree supervisor and time -l attempts could not read restricted macOS sysctl metadata. The successful direct audit used a 110-second alarm and process getrusage; earlier logs remain preserved. No numerical proof was rerun.",
+  "review_scope": "Author provenance and collector consistency revalidation of certificates already independently admitted in review-stability-recovery-actual-receipt-2026-10-02.json; not a new independent reconstruction of finite SC vectors.",
+  "original_piece_controls": {
+    "run_id": 37089576992,
+    "passed": 7,
+    "receipt": "review-linux-piece-actual-receipt-2026-10-02.json",
+    "sha256": "f7b59a2e6160f7e49d1f04d358a95dcb98150be44964334ab9d2fd59c9742c69"
+  },
+  "original_group_half_controls": {
+    "run_id": 37091152974,
+    "passed": 13,
+    "extra": 1,
+    "receipt": "review-full-group-half-actual-receipt-2026-10-02.json",
+    "sha256": "176aceeda16a70213649d7916bf941f9a801907954d676eee6bb76749d0b30a5"
+  }
+}

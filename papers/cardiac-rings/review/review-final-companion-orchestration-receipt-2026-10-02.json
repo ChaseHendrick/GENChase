@@ -42,5 +42,9 @@
   ],
   "current_failure_followup_self_test_passed": true,
   "package_workflow_sha256": "19b3811a02d58853fa33003139c23531f2589feebe5519b8207fa233b6f62ad2",
-  "package_workflow_admission": "Read-only opt-in bounded project build and identical three-pass TeX rebuild; actual cloud build/layout outcomes pending."
+  "package_workflow_admission": "Read-only opt-in bounded project build and identical three-pass TeX rebuild; actual cloud build/layout outcomes pending.",
+  "ordinary_seed_scratch_followup": {
+    "final_run_all_sha256": "532a472f00ed650d2926948fcaf5b6a800e7d1bb612dc2659fb74febd26d461b",
+    "scope": "Only an ordinary numerical Hopf seed copy and explanatory comment added. Removing these exact three lines reconstructs admitted85d bytes. Every proposed equilibrium enclosure remains subject to both stored complex-polydisc contraction and exact containment gates; seed claims not promoted."
+  }
 }

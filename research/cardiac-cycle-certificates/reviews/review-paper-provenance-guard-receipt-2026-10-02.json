@@ -1,0 +1,62 @@
+{
+  "source": "/Users/chasehendrick/Documents/Codex/2026-09-29/github-plugin-github-openai-curated-remote/work/cardiac-rings-1.1.0-2026-10-02/tools/paper-sync.js",
+  "source_sha256": "5a320f121ebb67f064525169470e40424aadeab5002c16dc94ea04adc75ec87b",
+  "checks": 8,
+  "passed": 8,
+  "results": [
+    {
+      "name": "exact positive grant",
+      "accepted": true,
+      "error": null,
+      "pass": true
+    },
+    {
+      "name": "cross-paper context",
+      "accepted": false,
+      "error": "companionProvenanceAllow of t: requires the selected paper's tracked staging context",
+      "pass": true
+    },
+    {
+      "name": "staged bytes drift before validation",
+      "accepted": false,
+      "error": "companionProvenanceAllow of t: staged sha256 mismatch for code/proof.py",
+      "pass": true
+    },
+    {
+      "name": "staged parent symlink",
+      "accepted": false,
+      "error": "companionProvenanceAllow of t: artifact must be a regular file: code/proof.py",
+      "pass": true
+    },
+    {
+      "name": "unlisted email with matching pin",
+      "accepted": false,
+      "error": null,
+      "pass": true
+    },
+    {
+      "name": "unlisted parent link with matching pin",
+      "accepted": false,
+      "error": null,
+      "pass": true
+    },
+    {
+      "name": "legacy scan retains strict refusal",
+      "accepted": false,
+      "error": null,
+      "pass": true
+    },
+    {
+      "name": "same-read hash refuses drift after validation",
+      "pass": true,
+      "targetReads": 2,
+      "error": "companionProvenanceAllow of t: staged sha256 mismatch for code/proof.py"
+    }
+  ],
+  "existing_self_test": {
+    "checks": 140,
+    "exit_code": 0,
+    "output": "Paper sync self-test OK: 140 cases, including the planted mistakes",
+    "source_sha256": "5a320f121ebb67f064525169470e40424aadeab5002c16dc94ea04adc75ec87b"
+  }
+}

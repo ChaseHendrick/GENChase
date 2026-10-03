@@ -102,7 +102,7 @@
    "date": "2026-10-02",
    "record": "fourier-branch-stability-uniform.json",
    "record_sha256": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
-   "outcome": "accepted separate in-project exact conservative certificate collection; original scientific acceptance suites pending",
+   "outcome": "accepted separate in-project exact conservative certificate collection, with actual original seven piece controls and thirteen group/half controls passed",
    "scope": [
     "source-bound producer certificates of uniform single-cell orbital stability on the complete lower conductance branch",
     "exact conservative contraction and stronger self-map majorants for every used certificate",
@@ -126,18 +126,44 @@
    "reviews": [
     "reviews/review-stability-recovery-actual-receipt-2026-10-02.json",
     "reviews/theoremC-uniform-fixcheck-2026-10-02.md",
-    "reviews/uniform-stability-recovery-receipt-2026-10-02.jsonl"
+    "reviews/uniform-stability-recovery-receipt-2026-10-02.jsonl",
+    "reviews/review-linux-piece-actual-receipt-2026-10-02.json",
+    "reviews/review-full-group-half-actual-receipt-2026-10-02.json",
+    "reviews/review-stability-lineage-refresh-2026-10-03.json"
    ],
    "limitations": [
     "public SC receipts omit finite column vectors; acceptance retains the fresh source-bound Arb producer calculation",
-    "original piece, group, half and scientific negative suites remain separate prerequisites"
+    "Group acceptance uses genuine freshly computed isolated fixtures; cached serialization equality does not assert prior-bound numerical bit reproduction."
    ],
    "not_accepted": [
-    "complete original scientific acceptance suites",
     "uniform stability of the entire Hopf amplitude branch",
     "manuscript 1.1.0 release"
    ],
-   "not_claimed": "No outside or human review."
+   "not_claimed": "No outside or human review.",
+   "original_scientific_acceptance_controls": {
+    "piece": {
+     "run_id": 37089576992,
+     "passed": 7,
+     "receipt": "review-linux-piece-actual-receipt-2026-10-02.json",
+     "sha256": "f7b59a2e6160f7e49d1f04d358a95dcb98150be44964334ab9d2fd59c9742c69"
+    },
+    "group_half": {
+     "run_id": 37091152974,
+     "passed": 13,
+     "extra": 1,
+     "receipt": "review-full-group-half-actual-receipt-2026-10-02.json",
+     "sha256": "176aceeda16a70213649d7916bf941f9a801907954d676eee6bb76749d0b30a5"
+    },
+    "scientific_test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317"
+   },
+   "lineage_revalidated": {
+    "date": "2026-10-03",
+    "receipt_sha256": "aed3b1007a630339b11f255a344a3a2cf4d641cb41ffdc32d4f386b6060eaafa",
+    "source_bytes_at_producer_commit_match_current": true,
+    "all_raw_logs_equal_canonical": true,
+    "collector_record_differences": [],
+    "scientific_rerun_required_for_original_wrapper_failure": false
+   }
   },
   {
    "date": "2026-10-02",

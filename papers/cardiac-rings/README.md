@@ -2,16 +2,16 @@
 
 **Chase Hendrick**, Independent Researcher · [ORCID 0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-**Version 1.1.0 candidate**, not yet published or archived. The integrated manuscript and synchronized continuation evidence are under final acceptance. The original full numerical suites, complete PDF build and visual inspection, independent manuscript review, publication checks and archive verification remain separate gates.
+**Version 1.1.0 candidate**, not yet published or archived. The integrated manuscript and synchronized continuation evidence are under final acceptance. The original numerical suites and current scientific records have passed their scoped in-project checks. Final companion reproduction, corrected PDF inspection, manuscript review, publication checks and archive verification remain separate gates.
 
-**Preprint. Release 1.0.0** (2026-10-02) is archived on Zenodo with its original programs and output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
+Preprint. Release 1.0.0 (2026-10-02) is archived on Zenodo with its original programs and output ([doi:10.5281/zenodo.23101322](https://doi.org/10.5281/zenodo.23101322)). Not peer reviewed. The checks made of it, all within the project by separate AI agent sessions instructed to find errors, are
 in [`review/`](review/README.md); none is an outside review.
 
 **[Read the paper PDF](paper/cardiac-rings.pdf)**, built from [`paper/cardiac-rings.tex`](paper/cardiac-rings.tex).
 
-## Candidate extension and limits
+## Conductance extension and limits
 
-Theorem D in the integrated manuscript is conditional until the final acceptance gates pass. It adds single-cell
+Theorem D adds a computer-assisted single-cell
 continuation on the exact G_Ks interval [0.027499735464, 0.02778996093] with 712 pieces and 711 adjacent inclusions;
 uniform stability throughout that entire lower interval using 63 group or subgroup certificates, with no individual
 fallback certificate in the final cover, delta = 3e-5 per ms and every nontrivial multiplier at most 0.998413816;
@@ -53,7 +53,7 @@ Existence is a radii-polynomial argument in a weighted l^1 space, made uniform o
 rings, 0 for the cable) in 73 pieces glued by ball inclusion. Stability rests on one Hill operator whose spectrum gives
 every Floquet multiplier with its algebraic multiplicity; a Riesz-projection homotopy shows it meets {Re mu >= -delta}
 only in the eigenvalues i omega N Z, each algebraically simple. Stability is proved only for the cell and these four
-rings; the link to the Hopf branch is only numerical, and nothing is claimed for tissue.
+rings. For the single cell, a connected conductance family reaches a certified supercritical Hopf endpoint. Its 712-piece lower interval has uniform nontrivial multiplier bound 0.998413816, and a 68-piece amplitude family supplies the bridge. Quantitative uniform stability is proved only on the lower interval. Nothing is claimed for tissue.
 
 ## Released 1.0.0 results
 
@@ -101,7 +101,7 @@ rings; the link to the Hopf branch is only numerical, and nothing is claimed for
   16-cell waves in intervals that contain the periods proved here.
 - **Not claimed:** anything about the published 19-state TP06 cell, action potentials, reentry or tissue; N < 8;
   stability for N other than 8, 16, 32, 64, for the cable, or uniformly in N; a rate of convergence as N tends to
-  infinity. The released 1.0.0 did not certify conductance continuation. The conditional 1.1 candidate extension above concerns only the single cell.
+  infinity. The released 1.0.0 did not certify conductance continuation. The 1.1 candidate extension above concerns only the single cell.
 - **Checks made:** in-project adversarial readings of the programs and of the stability lemmas, and a second reading
   of their fixes; a review of the CAPD verifier, which led to its hardening and to the CAPD patch in `code/proofs/`; a
   first reading of this manuscript (`review/manuscript-reading-1-2026-10-01.md`) and a second reading of the revised
@@ -138,8 +138,8 @@ dx_j/dt = f(x_j) + c E (x_{j-1} - 2 x_j + x_{j+1}), c = N^2/64000 per ms, E the 
 
 ## Programs
 
-The canonical programs and records originate in `research/cardiac-cycle-certificates` in the development
-repository. The 1.1 candidate copies current reviewed Fourier programs and inputs byte for byte into `code/`, and
+The canonical programs and records are copied from the development repository. The 1.1 candidate copies current
+reviewed Fourier programs and inputs byte for byte into `code/`, and
 current records into `data/`. Source and input hashes retain their original execution-layout paths. A companion
 basename is not a freshness or acceptance check; the collectors validate the current source-bound complete logs.
 

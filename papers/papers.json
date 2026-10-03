@@ -207,8 +207,8 @@
       "title": "Stable Rotating Waves in Rings of a Modified Ventricular Cell Model: Computer-Assisted Proofs",
       "field": "Cardiac electrophysiology",
       "summary": "computer-assisted proofs of stable rotating waves in rings of a ventricular cell model",
-      "status": "ready",
-      "note": "Drafted in this repository by the owner's standing decision (2026-09-26) from research/cardiac-cycle-certificates/, the canonical location of its programs and records (every file in code/ and data/ that the study also has is a byte-identical copy, except code/fourier/LEMMAS-stability.md, which is kept at the version this paper uses; the records' hashes refer to paths relative to that folder). Computer-assisted proofs for Erhardt's 18-state modification of the TP06 endocardial cell at G_Ks = 0.0275: the cell's periodic orbit by CAPD (patched 6.1.0) and, independently, in Fourier space with Arb, with an exact check (code/fourier/link_cell.py) that the two enclose the same orbit; rotating 1-waves in rings of N = 8, 16, 32, 64 cells with existence, local uniqueness, minimal period and local exponential orbital stability (all 18N - 1 nontrivial Floquet multipliers below e^(-delta T), delta = 5e-6 per ms); and (Theorem C, 2026-10-02) existence, local uniqueness and minimal period of the rotating 1-wave for every N >= 8 and of a traveling wave of the continuum cable, as one family continuous in eps = 1/N^2 on [0, 1/64] (73 pieces glued by ball inclusion, code/fourier/alln.py), with stability only for N = 8, 16, 32, 64. A floating-point comparison with the weak-coupling phase reduction is a labelled numerical remark. The programs and the stability lemmas had in-project adversarial readings by separate AI agent sessions, with a second reading of the fixes, and the manuscript had two in-project readings (review/manuscript-reading-1-2026-10-01.md and -2-), whose findings are fixed (review/fix-check-2026-10-01.md), and a reading of Appendix A (review/appendixA-reading-2026-10-02.md), whose findings were fixed the same day. Identification with Erhardt's Hopf branch is numerical. The G_Ks branch (rec 2) with uniform stability and the Hopf bridge are in progress and not part of this version. The PDF (45 pages) is built with pdflatex by tools/paper-build.sh. A third in-project reading of the whole manuscript (review/third-reading-2026-10-02.md) found no gap in the proofs; its findings are fixed. Every item of notes/QUALITY.md is checked. No journal chosen. Ready (2026-10-02): quality items 1, 4 and 7 closed with their evidence after a third in-project reading (review/third-reading-2026-10-02.md) and reruns from the paper's copies, including one from a fresh staging of the companion with its own requirements (notes/rerun-2026-10-02.md). The fixes of the third reading have not been read again; no outside review has taken place. Release 1.0.0, the first public release, is archived as Publication / Preprint at doi:10.5281/zenodo.23101322 (concept doi:10.5281/zenodo.23101321, 2026-10-02); its Zenodo source ZIP, downloaded the same day, contains the registered manuscript PDF byte for byte (docs/paper-zenodo-release-audit-2026-10-02-cardiac-rings.json).",
+      "status": "preparing",
+      "note": "Version 1.1.0 preparation adds source-bound single-cell conductance continuation (712 pieces and 711 inclusions), uniform orbital stability on J=[0.027499735464,0.02778996093] (63 group or subgroup certificates, delta=3e-5 per ms), and a 68-piece amplitude family with 67 inclusions, zero-amplitude identity and a fresh existence-only bridge to the certified supercritical Hopf endpoint. Mathematical records and original numerical suites have scoped in-project acceptance; no outside review is claimed. Final companion reproduction, corrected PDF review and publication checks are pending. Original fixed-cell, N=8/16/32/64 stability and all-N/cable existence results retain their scope. Quantitative uniform stability on the entire amplitude bridge is not proved. The registered codeDoi/archiveVersion continue to identify the actual verified 1.0.0 preprint archive until a new version is downloaded and verified.",
       "typst": null,
       "latex": "papers/cardiac-rings/paper/cardiac-rings.tex",
       "pdf": "papers/cardiac-rings/paper/cardiac-rings.pdf",
@@ -218,7 +218,121 @@
       "journal": null,
       "codeDoi": "10.5281/zenodo.23101322",
       "commitments": [],
-      "archiveVersion": "1.0.0"
+      "archiveVersion": "1.0.0",
+      "companionProvenanceAllow": [
+        {
+          "file": "code/fourier/LEMMAS-hopf.md",
+          "sha256": "6ac96e4b9f8c0be8c42c912296ca3af3a96784995b9cdb171ead3327905a607c",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "code/fourier/LEMMAS-stability.md",
+          "sha256": "9dc27ff8d0e9d219435fd01141d3b7fa28e16358cab9d1897ed34327c033fcc8",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "code/fourier/hopf.py",
+          "sha256": "8635b9337fe9f26b1e712700da583e3e409ef8d6b3fa889ae7fbab882ff2bd0c",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "code/fourier/test_hopf.py",
+          "sha256": "30db4b3f6903e8bea14efaf26ffaeea7c11b8272172c06cb5c098604bfdf9244",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/hopf-bridge-fixcheck-2026-10-02.md",
+          "sha256": "f8b3316513fb1b65b000b25c59c951ee68b143570ddbb2bf309b99d0a9e1c2c2",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/methods-delimiter-repair-2026-10-02.json",
+          "sha256": "b32f48863cfd13b8b30e507ae628975b34254a76579ed137b83e2bd64d00fb92",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/parallel-branch-reproof-2026-10-02.md",
+          "sha256": "42f99843a6722ca12f05aa98f730719f3fba8894c8d98025a676cf171670d691",
+          "rules": [
+            "source-repository-url"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/review-branch-methods-draft-receipt-2026-10-02.json",
+          "sha256": "6c6e7ae4a5a7c7dd48510b5ba0eb231fe7bf7a6673186f1caf734aa00830b52c",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/review-hopf-full-original-suite-receipt-2026-10-02.json",
+          "sha256": "154f38a3acf07a8a0bc11f7d77f303980b23e0927112e51ec51f95ece54475e7",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/theoremA-point-gate-run-receipt-2026-10-02.json",
+          "sha256": "7d954d4ea1ccabb924af73659a713b0d62e4f8840123250bd0828c064eaabe3d",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/theoremC-uniform-fixcheck-2026-10-02.md",
+          "sha256": "7d0d5dd97ef0c6403004042922e28ecaed986b3361c273abc1c69cf0f2fda771",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/theoremC-uniform-fixes-2026-10-02.md",
+          "sha256": "f00d37fccfea39df9159df9e5bb8e551dfec652c3481b11a0035548a7a2e1424",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/v2-methods-conversion-check-2026-10-02.json",
+          "sha256": "b33af6cf8f28e0ff6cd512c91e7576b9c62e24e17509fd2a53c166b248709679",
+          "rules": [
+            "development-path"
+          ],
+          "reason": "Preserves inspected provenance references in reviewed immutable proof or review artifacts; GENChase is public. Manuscript, email and parent-folder-link checks remain strict."
+        },
+        {
+          "file": "review/review-stability-lineage-refresh-2026-10-03.json",
+          "sha256": "aed3b1007a630339b11f255a344a3a2cf4d641cb41ffdc32d4f386b6060eaafa",
+          "rules": [
+            "source-repository-url"
+          ],
+          "reason": "Inspected exact provenance links to the public original GitHub proof run; mathematical sources and failed attempts remain preserved."
+        }
+      ]
     }
   ]
 }

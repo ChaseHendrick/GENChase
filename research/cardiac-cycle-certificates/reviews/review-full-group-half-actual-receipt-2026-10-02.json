@@ -1,0 +1,33 @@
+{
+  "status": "actual original13GROUP_TESTS plus additional fresh half comparison passed and independently bound",
+  "run_id": 37091152974,
+  "original_tests_passed": 13,
+  "extra_helper_controls_passed": 1,
+  "source_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "producer_helper_sha256": "dd3a7c2b770f1b494a3abe857c2ab9b683f94e6d54c79cbb14bf7e214b67e4bd",
+  "individual_review_receipts": {
+    "review-group-base-actual-receipt-2026-10-02.json": "d88e18d726dc54586c2c90ffb0082df2ca08014190f8b2509e327942a9ce54ac",
+    "review-group-heavy-actual-receipt-2026-10-02.json": "f17118d0119b17f90d2cb57190c9518e9088e756d6d0d921bb1e65298457c12a",
+    "review-half-actual-receipt-2026-10-02.json": "cbe67d2801c7d8e69792ebbbc1235b3f8b4d026a802d8fe8557562a992454d4e"
+  },
+  "actual_modes": {
+    "actual original group_base7 controls and fresh source-bound G6 proof accepted; remaining group modes separate": {
+      "seconds": 151.91114692300005,
+      "rss_mib": 805.625,
+      "controls_passed": 7
+    },
+    "actual original group_heavy controls and fresh source-bound proof accepted": {
+      "seconds": 226.620236751,
+      "rss_mib": 910.6484375,
+      "controls_passed": 5
+    },
+    "actual original half controls and fresh source-bound proof accepted": {
+      "seconds": 344.934273271,
+      "rss_mib": 854.609375,
+      "controls_passed": 2
+    }
+  },
+  "scope": "All original live group/half functions unchanged. Group acceptance cached-fresh serialization is explicitly distinct from prior-bound numerical equality; initial G6 producer proof and all remaining live physics/mutation/float/jet controls are fresh. Canonical full63cover unchanged. Actual source-bound SC producer proof retained; exact full finite SC vectors not reconstructed from public receipt.",
+  "no_release_readiness_claim": true
+}

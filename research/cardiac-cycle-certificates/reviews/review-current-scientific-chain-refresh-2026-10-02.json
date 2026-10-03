@@ -1,0 +1,42 @@
+{
+  "status": "current bytes retain independently accepted scientific chain; publication gates separate",
+  "canonical_records_sha256": {
+    "fourier-branch-gks.json": "0ac338b9b09ea91775c180d35b7c95e075dc1956aa28e4a311f2623f388e17e3",
+    "fourier-branch-stability-uniform.json": "d6c960c9cf61d5464e4519874cd5223c199c26e97adfc7120a67348cc8608ee5",
+    "fourier-hopf.json": "9b0bc96cc60336562b949bb54b33d3ecfbe462e31528bcd2153a5134857ceeff"
+  },
+  "exact_current_source_and_input_pins_rechecked": 45,
+  "branch_pieces": 712,
+  "branch_inclusions": 711,
+  "uniform_units": 63,
+  "uniform_covered_pieces": 712,
+  "amplitude_pieces": 68,
+  "amplitude_inclusions": 67,
+  "original_group_functions": 13,
+  "additional_half_control": 1,
+  "original_hopf_checks": 117,
+  "current_manuscript_sha256": "aa3138b38ced6e1a121b0d386a4b6d706626b2915ccab79698e18c0b68efe5e7",
+  "guard_sha256": "5a320f121ebb67f064525169470e40424aadeab5002c16dc94ea04adc75ec87b",
+  "wrapper_candidate_sha256": "2a25dbd1d51e45ab523a23309b46b1b84f3de8f06669da842059ed792fa00a68",
+  "new_numerical_proofs_run": false,
+  "scope": [
+    "connected cell branch existence/local uniqueness/minimal period",
+    "uniform orbital stability on the lower J only",
+    "connected amplitude family and current Hopf endpoint plus existence-only fresh bridge"
+  ],
+  "remaining_publication": [
+    "repair and actually pass staged companion reproduction",
+    "coherent final manuscript and README acceptance wording",
+    "rebuilt corrected PDF and actual layout review",
+    "explicit pinned selected-paper provenance entries and final staging check",
+    "release and downloaded archive audit"
+  ],
+  "excluded_claims": [
+    "uniform stability across the entire amplitude bridge",
+    "global monotonicity or global orbit uniqueness at each conductance",
+    "historical Stage S inheritance",
+    "independent finite SC reconstruction from omitted public column vectors",
+    "release acceptance from stored producer status flags"
+  ],
+  "original_piece_checks": 7
+}

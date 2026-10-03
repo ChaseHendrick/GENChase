@@ -1,0 +1,13 @@
+{
+  "status": "layout-only mathematical-equivalence admitted; actual corrected PDF pending",
+  "before_tex_sha256": "c8629b4f83ad234b16d5e21f162709f25bcc4dddf2af429e857302c92905fa8c",
+  "after_tex_sha256": "aa3138b38ced6e1a121b0d386a4b6d706626b2915ccab79698e18c0b68efe5e7",
+  "changes": [
+    "same four-component bridge maximum and inequality with aligned rows, exact normalized token equality",
+    "same three diagonal terms split into inline fragments",
+    "file attribution relocated out of lemma heading; assertion/proof identical",
+    "same full CAPD commit text with allowbreak",
+    "alln figure12pt narrower; caption unchanged"
+  ],
+  "no_scientific_source_or_data_change": true
+}

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "status": "actual original group_heavy controls and fresh source-bound proof accepted",
+  "run_id": 37091152974,
+  "producer_receipt_sha256": "1a8a6d95545e8fb37d004f31032f5ea9d5bd94b85d00005aadabae1106df126e",
+  "producer_helper_sha256": "dd3a7c2b770f1b494a3abe857c2ab9b683f94e6d54c79cbb14bf7e214b67e4bd",
+  "fresh_proof_sha256": "b5b2009a1ba89a4cc0306999b72a3f0d36b0140cb1c827b39fb46f512cf26f6c",
+  "original_fixture_sha256": "be4560cfe6c38da2b8dbcb2fb12950768a6d18b1f1248b8e19c14ea1bb59f6f9",
+  "working_fixture_sha256": "f21329a03bea8e8504989e7930f7b589be3e237b57951d0ef9aa5598504a8e98",
+  "runtime_sha256": "8f16da3075565ffe40a1f51e0bccac1263bf327ecffc1df680e97e191d445a65",
+  "log_sha256": "c42b3d47447aae427acf88e8a2e7f254d335e9694069f158ae5cde5b8a9d48fb",
+  "program_sha256": "b04c1f827867cf5bbba31ed99f10e74cc6469b998ad43d3ad2372235cca59463",
+  "test_sha256": "527ef31bf59afb9bdb2dc68a2ae0c1c0d38d5d160ff2c75c72324ef2d2dbc317",
+  "controls": [
+    "test_group_drop_moving_centre_hook_detected",
+    "test_group_negative_delta_above_exponent",
+    "test_group_negative_identification",
+    "test_jets_against_hess_and_differences",
+    "test_group_negative_widened"
+  ],
+  "controls_passed": 5,
+  "wall_seconds": 226.620236751,
+  "peak_self_rss_mib": 910.6484375,
+  "scope": "Actual uncached fresh G6 default proof guarded by producer implementation, exact input/settings identity and full712 conservative receipt gate. Copied original log preserved byte-for-byte; declared working fixture differs in exactlyG6 actual fresh dump. test_group_acceptance compares cached fresh proof serialization, not independent old-bound reproduction. Other original live float/window/negative/jet controls retain their scientific meanings. Full finite SC vectors unavailable in public JSON.",
+  "no_canonical_data_modified": true,
+  "no_numerical_reproof_by_reviewer": true,
+  "no_full_group_suite_promotion": true
+}
