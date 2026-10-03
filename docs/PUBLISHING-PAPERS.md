@@ -163,9 +163,20 @@ members. Verify the manuscript bytes against the released PDF, then record the v
 Set `archiveVersion` in the same registry entry to the exact verified release version at `codeDoi`.
 For a future branded deposit, also set `archiveFilename` to the exact verified
 `HendrickResearch_<id>_<archiveVersion>.zip`; its read-only filename check does not rename historical files.
-Keep both fields on the verified archive when preparing a newer release; advance them together only
+Set `archiveManuscript` from the independently verified released PDF and immutable tag: exactly
+`{version, doi, path, tagCommit, sha256}`, all strings. Its version and DOI equal `archiveVersion` and
+`codeDoi`; its safe companion-relative path equals the registered PDF path after removing `papers/<id>/`.
+The tag commit and released-PDF SHA-256 are strict lowercase hexadecimal strings of length 40 and 64.
+This is the published reference even when the working manuscript advances. The scanner reports both digests,
+refuses stale or malformed declared bindings, and still requires exact downloaded-PDF equality. Full member
+maps and actual immutable tags are verified by the separate archive audit. In bound mode the scanner also
+requires the ZIP comment to equal the declared tag commit, alongside the exact PDF digest; this identifier
+check is not a fresh remote tag lookup or a substitute for complete-member verification.
+Keep all archive reference fields on the verified archive when preparing a newer release; advance them together only
 after that new archive has passed the download check. A new `RELEASES.md` heading is not evidence
 that Zenodo imported it.
+Refresh all five manuscript binding fields with that verified reference. The publisher itself changes no
+archive registry reference; never leave an old binding silently attached to a new version or DOI.
 The companion synchronizer uses this verified pair for the README's current archive locator and
 the citation file's archive version. Update recommended BibTeX entries in the canonical README at
 the same time; earlier archive links remain as history.

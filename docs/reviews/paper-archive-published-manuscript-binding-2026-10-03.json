@@ -1,0 +1,122 @@
+{
+  "automation": "Publisher advances no GENChase archive reference. Post-download verification must refresh all binding fields together when archiveVersion/codeDoi advances; stale version/DOI/path refuses.",
+  "bindings": [
+    {
+      "doi": "10.5281/zenodo.23096146",
+      "paper": "minimal-winding",
+      "releasedPdfSha256": "015b1382349e4443d6fdf90747d45f6c2fff23821efe250003abad64f4ae66ee",
+      "tagCommit": "d774cefc4262997102dff9265fb7eb77f22541bc",
+      "version": "2.2.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23096161",
+      "paper": "collapse-without-rotation",
+      "releasedPdfSha256": "0d8f93bf5fcc19fa2f7aa5a87158f3223574eb1caa494b55a980d728eb5fe82f",
+      "tagCommit": "8d0bd836b3b2828a6050fa6decb69b5f538e61f3",
+      "version": "1.0.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23096191",
+      "paper": "stable-expansion",
+      "releasedPdfSha256": "f408f4e6c20e5c47424c76bd18c140b1ae8f8bd955cd6c6ad42e74eab6414bce",
+      "tagCommit": "9ce9afcb263805a1c5006b0e6adcb24cca6db6c8",
+      "version": "1.0.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23096200",
+      "paper": "rank-window",
+      "releasedPdfSha256": "743c3fbd50ca2da1669ab1ae395223b6ef1a02b4d449c7c3896d96e3ef7f072d",
+      "tagCommit": "dd831d5537b0760624450ba9e6386ba763d8d942",
+      "version": "1.0.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23096223",
+      "paper": "hh-dynamics",
+      "releasedPdfSha256": "28e464cbe7ddce9ceecc564dcd59dd77704b303926aab569eed01ee67fb82646",
+      "tagCommit": "0f65d1ae666a2141c645f88fe53620054f765886",
+      "version": "1.0.6"
+    },
+    {
+      "doi": "10.5281/zenodo.23096228",
+      "paper": "double-pendulum",
+      "releasedPdfSha256": "fa1be29656c561d9fb5aeebb7ddf211f7f0f1dcc80b5fbeacc0386490b124015",
+      "tagCommit": "d50c255a15f115a0a29c367ec9835636941fee4d",
+      "version": "1.0.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23096242",
+      "paper": "nf-pulse",
+      "releasedPdfSha256": "228a7f5ec6ba35d75eea8cf338b682dab74c37bee70fad433195184eb5636262",
+      "tagCommit": "42443dee7846ce2cada2eef442d64766a5fcbda0",
+      "version": "1.0.6"
+    },
+    {
+      "doi": "10.5281/zenodo.23096253",
+      "paper": "hh-pulse",
+      "releasedPdfSha256": "b8e73e207fddaede6d7906a45d2594eeb11dbb4cd388ee2da59fabe041ebcb29",
+      "tagCommit": "cb5892c9315895ba4bdc7319bc468a075d400d6a",
+      "version": "1.0.5"
+    },
+    {
+      "doi": "10.5281/zenodo.23114240",
+      "paper": "cardiac-rings",
+      "releasedPdfSha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+      "tagCommit": "2dff17bbaec33b7941e9ee37e530226c14ca3ba9",
+      "version": "1.1.0"
+    }
+  ],
+  "gates": [
+    "Exactly five typed string binding fields; version/DOI/path must match current registered release.",
+    "Strict lowercase hexadecimal released-PDF digest and immutable tag identifier.",
+    "Exact downloaded PDF digest and ZIP comment must both match the release binding.",
+    "Working PDF remains separately reported; mismatches never alter the reviewed release pin.",
+    "Missing legacy binding retains previous exact working-PDF comparison; malformed/stale declared binding refuses before network access."
+  ],
+  "independent_parallel_review": {
+    "actual_archive_maps": 9,
+    "final_admission_receipt_sha256": "e6843137a47b1abfd510a40d3c905c6a49b66574c4716670e21c068f56363328",
+    "mocked_network_controls": 44,
+    "private_receipt_sha256": "3048883b4fc682667ba865bc26c74282e653f2c63a04e562e2e645cca4ac60d0",
+    "source_docs": "admitted after exact final hash review",
+    "unchanged_payloads": 1699
+  },
+  "limitations": [
+    "ZIP tag comment is an identifier check, not a fresh remote tag lookup.",
+    "Complete member maps and actual immutable release tags remain separately audited.",
+    "This scanner result supplies archive/reference checks, not new scientific validation."
+  ],
+  "live_final_scan": {
+    "exact_pdf_root_comment_gates": "all passed",
+    "passed_papers": 9,
+    "report": "paper-archives-published-reference-live-2026-10-03.json",
+    "report_sha256": "42367f02d1a48c8595eb32decbe6d8c7aa711cf9db2add3bf9449603127563bd",
+    "source_sha256": "71089b7590bc27d2855c0658a100f2cc1708db145c246e506214bd68c33826c5",
+    "working_pdf_difference": "Only cardiac differs; working99203 and publishedad231 remain separately reported."
+  },
+  "old_code_failure": {
+    "failure_receipt_sha256": "86946d948e5336e2f06f3febd8e9d18d6450604e4744835068bf386046e5aa5d",
+    "old_false_failure_reproduced": true,
+    "releasedPdfSha256": "ad23140dee90edaafc65c8571896089a81b464bc737cae88a1adecae37de22a1",
+    "scope": "Offline exact actual cardiac correction snapshot",
+    "workingPdfSha256": "99203ed5f186a1cb3dda6c329a973d8b547726461559ba708fd2cce70f5e07e9"
+  },
+  "registry_sha256": "cec6664486b8396b9dd0f6adc1c7ad7e7c87a0bce22ce3efb954a292a2e3b5be",
+  "schema": 1,
+  "scope": "Narrow published-versus-working manuscript reference repair; no PDF, version, DOI, scientific or archive-member change.",
+  "sources_sha256": {
+    "docs/PAPER-ARCHIVE-NAMING.md": "61bc69651e233c0c31824b9fa07811a39dec1383912ab4a4150e4b952408c6d4",
+    "docs/PUBLISHING-PAPERS.md": "752e8418e79bc1bafe02835d3333a136ab04c886269e06a1c29c8c57ad2da1a2",
+    "tools/paper-zenodo-check.py": "71089b7590bc27d2855c0658a100f2cc1708db145c246e506214bd68c33826c5"
+  },
+  "test_results": {
+    "build_check": "pass",
+    "ci_scope": 100,
+    "diff_check": "pass",
+    "first_release": 6,
+    "metadata": 13,
+    "paper_sync": 140,
+    "published_pdf_and_zip_comment": 42,
+    "science_check": "pass",
+    "version": 46
+  }
+}

@@ -64,6 +64,27 @@ After all applicable quality obligations are met and the new GitHub release is c
    This scanner checks filename, the exact branded root and rooted PDF, and publication metadata. Complete member-map and ZIP-byte verification against
    the reviewed release manifest is a separate required archive audit; a scanner pass does not replace it.
 
+Bind the reviewed released manuscript separately from a newer working draft with
+`archiveManuscript`: exactly the string fields `version`, `doi`, `path`, `tagCommit` and `sha256`.
+`version` and `doi` must equal `archiveVersion` and `codeDoi`; `path` is the safe companion-relative
+registered PDF path, such as `paper/cardiac-rings.pdf`. `tagCommit` is the exact 40-character lowercase
+commit of the independently verified immutable release tag, and `sha256` is the exact 64-character
+lowercase digest of its released PDF, checked against the complete published payload map.
+
+The scanner uses this reviewed published PDF digest as its reference and reports the working PDF digest
+separately. A different working draft does not invalidate an unchanged published release. A missing binding
+retains the legacy exact working-PDF comparison; a declared malformed or stale binding is refused before
+network access, without fallback. `matchesExpectedPdf` controls acceptance; `matchesRepository` records
+whether the released PDF also equals the current working PDF. Bound archives must also carry the exact
+declared tag commit as their ZIP comment. That identifier is checked alongside the exact PDF digest;
+it does not replace the separate complete-member and actual immutable-tag audit or constitute a fresh
+remote tag lookup.
+
+The publisher does not advance these archive registry fields when it creates a GitHub release. Until the new
+deposit is actually verified they continue to name the previous verified archive. When that reference advances,
+refresh all five `archiveManuscript` fields together with the verified version, DOI and filename. A retained
+old version, DOI or path causes refusal; do not silently discard a binding to bypass the release reference.
+
 The [Zenodo upload API documentation](https://developers.zenodo.org/#quickstart-upload) specifies the selected upload
 filename in the bucket URL. It provides a future API route if separately requested and reviewed; no token, upload,
 publication or integration-setting mutation was performed to implement this naming policy. Actual new Zenodo
