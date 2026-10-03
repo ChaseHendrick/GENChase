@@ -69,3 +69,10 @@ Because the Hopf source changed, Theorem A was recomputed rather than having its
 The workflow supports independent stability and Hopf stages with separate concurrency keys, so one does not wait for the other. Ordinary pushes skip both numerical stages. An explicit stage marker or dispatch is required. Merge rechecks each stage's own complete artifacts even if the other stage fails, and cannot turn partial receipts into accepted records. Every runtime retains the pinned Linux wheel and native model controls; the unavailable external CAPD binary comparison remains unrun.
 
 Fifty malformed inline mathematics delimiters in the candidate methods draft were repaired. The exact editorial replacements and before/after hashes are recorded in `methods-delimiter-repair-2026-10-02.json`. No mathematical assertion or scientific program changed in that editorial repair. Main manuscript integration, rebuilt figures, complete new numerical certificates, companion synchronization and release remain pending.
+
+## Status check (2026-10-03, Claude session)
+
+- The uniform-stability shard run [37088569093](https://github.com/ChaseHendrick/GENChase/actions/runs/37088569093) (commit `81744b5`) ended in **failure**; no complete fresh stability coverage exists yet. Read its logs, fix, and rerun with the `[cardiac stability]` marker.
+- The Hopf reproof run [37088805596](https://github.com/ChaseHendrick/GENChase/actions/runs/37088805596) (commit `cf73fd1`) **succeeded**; check that its artifacts were collected into the branch before relying on them.
+- Later runs (3 to 6) were skipped by design (no stage marker).
+- `node tools/paper-check.js --paper cardiac-rings --release` fails only on the README lacking a 1.1.0 version and DOI, but `paper/cardiac-rings.pdf` was not rebuilt after the large `.tex` change, and the manuscript review is not done. Do not release until those gates pass.
