@@ -2332,3 +2332,25 @@ October 1, 2026 cardiac continuation (status only): FixedQuarter prod+speed, N=3
 - These checks support credit for established methods and a rigorously checked application to the explicitly
   modified ventricular model. They establish no first-ever or clinical claim. Refresh the forward search before
   submission, and retain the separately recorded older background-reading tasks.
+
+### 2026-10-06  OpenAI `openai/math` manuscript collection against the project's papers and research studies  (session agent)
+
+- Source: https://github.com/openai/math at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a` (2026-10-06): 722
+  model-written manuscripts in 372 result families, with Lean formalizations for some. Its README states that
+  not all results are formalized and that unformalized ones may contain errors.
+- Searched: the full index (`CONTENTS.md`) and every `.tex` and `.md` source under `preprints/` (8,486 files), plus
+  `lean/` and `reasoning_traces/`, for: point vortex, point vortices, vortex patch, Gröbli, Kirchhoff, Hodgkin,
+  Huxley, neuron, neural field, FitzHugh, action potential, traveling or travelling pulse, cardiac, ventricular,
+  Luo-Rudy, double pendulum, homoclinic, Melnikov, non-integrability, Aztec diamond, arctic curve, lozenge tiling,
+  eigenspectrum, Stringer, Hopf bifurcation, self-similar collapse, Fekete, Smale, bipyramid, Kryvonos.
+- Found: no manuscript on any of the project's ten papers or its research studies. The nearest families are
+  different problems: 090 (triangular-lattice universal optimality and the Brauchart-Hardin-Saff linear term of
+  optimal logarithmic energy on the sphere, an N to infinity asymptotic; its Coulomb paper says it gives no
+  construction of near-optimal point sets, so it does not touch the seven-point local minimum in
+  `research/seven-vortex-sphere/`), 143 (Hilbert's sixteenth problem for polynomial vector fields; the
+  Hodgkin-Huxley field is not polynomial), 216 (XY-model and BKT vortices, which are spin defects, not Euler point
+  vortices), 226 (double-dimer loops to CLE4, not finite-size frozen regions) and 376 (computation in forced
+  Navier-Stokes flows).
+- Conclusion: no conflict and no prior result for any project paper or study in that snapshot.
+- Re-search: skip for this snapshot; reopen when the collection adds a family in fluid dynamics, mathematical
+  neuroscience or dimer finite-size asymptotics, and before a journal submission.
